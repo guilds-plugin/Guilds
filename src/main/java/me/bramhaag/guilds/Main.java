@@ -4,6 +4,7 @@ import be.maximvdw.placeholderapi.PlaceholderAPI;
 import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
+import me.bramhaag.guilds.api.Metrics;
 import me.bramhaag.guilds.commands.*;
 import me.bramhaag.guilds.commands.base.CommandHandler;
 import me.bramhaag.guilds.database.DatabaseProvider;
@@ -24,7 +25,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.mcstats.Metrics;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -131,12 +131,8 @@ public class Main extends JavaPlugin {
             getLogger().log(Level.INFO, "Not using Vault!");
         }
 
-        try {
-            Metrics metrics = new Metrics(this);
-            metrics.start();
-        } catch (IOException e) {
-            getLogger().log(Level.WARNING, "Failed to submit stats to mcstats.org!");
-        }
+        Metrics metrics = new Metrics(this);
+
 
         try {
             BasicFileAttributes attr = Files.readAttributes(Paths.get(getFile().getAbsolutePath()), BasicFileAttributes.class);
@@ -298,4 +294,5 @@ public class Main extends JavaPlugin {
     public LeaderboardHandler getLeaderboardHandler() {
         return leaderboardHandler;
     }
+
 }
