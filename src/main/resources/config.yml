@@ -21,12 +21,10 @@ name:
   regex: "^[a-zA-Z0-9]*$"
 
 prefix:
-# Minimum length of the guild prefixes
-  min-length: 1
-# Maximum length of the guild prefixes
-  max-length: 8
 # RegEx (https://en.wikipedia.org/wiki/Regular_expression) used to only allow certain characters (default only allows alphanumeric characters)
-  regex: "^[a-zA-Z0-9]*$"
+# With the default Regex currently set, the minimum length of the prefix is 1 and the maximum is 8.
+# To change this, adjust the numbers and maybe have a look at the link above.
+  regex: "[a-zA-Z0-9]{1,6}"
 # Set the format for the prefix
   format: "&c[{prefix}] "
 
