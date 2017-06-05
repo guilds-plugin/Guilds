@@ -1,0 +1,234 @@
+#The prefix of all messages send by this plugin to a player
+plugin-prefix: "&a[Guilds]"
+
+#List your server at https://glaremasters.me/server/
+#This is defaulted to false in order to allow you to opt-in to it.
+#To display your server, change "false" to "true" and restart your server.
+server-list: false
+
+updater:
+  check: true
+
+name:
+# Minimum length of guild names
+  min-length: 1
+# Maximum length of guild names
+  max-length: 64
+# RegEx (https://en.wikipedia.org/wiki/Regular_expression) used to only allow certain characters (default only allows alphanumeric characters)
+  regex: "^[a-zA-Z0-9]*$"
+
+prefix:
+# Minimum length of the guild prefixes
+  min-length: 1
+# Maximum length of the guild prefixes
+  max-length: 8
+# RegEx (https://en.wikipedia.org/wiki/Regular_expression) used to only allow certain characters (default only allows alphanumeric characters)
+  regex: "^[a-zA-Z0-9]*$"
+# Set the format for the prefix
+  format: "&c[{prefix}] "
+
+members:
+# Set to -1 to disable
+  max-members: 64
+
+chat:
+# Enable or disable custom chat formatting for players who are in a guild
+  enable: true
+# Custom chat format (only applied when the setting above is set to true)
+#   - "{guild}" is replaced with the guild prefix
+#   - "%s" (First) is replaced with the player's name
+#   - "%s" (Second) is replaced with the player's message
+  format: "{guild} <%s>: %s"
+
+placeholders:
+# Default value for placeholders that don't have a value (Set to "" to leave empty)
+
+#This currently is bugged and will be fixed soon 6-3-2017
+  default: "N/A"
+
+scoreboard:
+# Enable or disable scoreboard which handles friendly fire, prefixes and guild invisibility
+  enable: false
+# Enable or disable friendly fire
+  friendly-fire: false
+# Enable or disable being able to see invisible guild members
+  see-invisible: true
+
+database:
+# Set the type of the database (Either JSON or MySQL)
+  type: JSON
+# Uncomment when using MySQL
+#  host: "127.0.0.1"
+#  port: 3306
+#  username: "root"
+#  password: "password"
+## Note: Database needs to be created manually
+#  database: "guilds"
+#  pool-size: 10
+
+roles:
+  0:
+    name: "GuildMaster"
+    permissions:
+      chat: true
+      ally-chat: true
+      invite: true
+      kick: true
+      promote: true
+      demote: true
+      add-ally: true
+      remove-ally: true
+      change-prefix: true
+      change-master: true
+      remove-guild: true
+  1:
+    name: "Officer"
+    permissions:
+      chat: true
+      ally-chat: true
+      invite: true
+      kick: true
+      promote: true
+      demote: true
+      add-ally: true
+      remove-ally: true
+      change-prefix: false
+      change-master: false
+      remove-guild: false
+  2:
+    name: "Veteran"
+    permissions:
+      chat: true
+      ally-chat: true
+      invite: true
+      kick: false
+      promote: false
+      demote: false
+      add-ally: false
+      remove-ally: false
+      change-prefix: false
+      change-master: false
+      remove-guild: false
+  3:
+    name: "Member"
+    permissions:
+      chat: true
+      ally-chat: true
+      invite: false
+      kick: false
+      promote: false
+      demote: false
+      add-ally: false
+      remove-ally: false
+      change-prefix: false
+      change-master: false
+      remove-guild: false
+
+messages:
+  command:
+    error:
+      console: "&cThis command can only be executed by a player!"
+      args: "&cInvalid arguments! See /guilds help for more information"
+      permission: "&cYou don't have permission to do that!"
+      not-found: "&cCommand not found! See /guilds help for all commands"
+      no-guild: "&cYou're not in a guild!"
+      not-guildmaster: "&cYou're not the Guild Master of this guild"
+      invalid_number: "&c{input} is not a valid number!"
+      already-in-guild: "&cYou're already in a guild!"
+      player-not-found: "&cPlayer '{player}' does not exist or is not online!"
+      player-not-in-guild: "&cPlayer '{player}' is not in your guild!"
+      invalid-role: "&cRole '{input}' does not exist!"
+      guild-not-found: "&cGuild '{input}' cannot be found!"
+      role-no-permission: "&cYour role is not high enough to do that!"
+    help:
+      message: "&f/{command} {arguments} &7- &f{description}"
+      next-page: "&7See /guilds help {next-page} for the next page"
+      invalid-page: "&cPage not found!"
+    role:
+      players: "{player} - {role}"
+    list:
+      format: "The following guilds are:"
+    create:
+      successful: "&aGuild '{guild}' created successfully!"
+      cancelled: "&cGuild creation cancelled!"
+      warning: "&cType /guilds confirm to create your guild, type /guilds cancel to cancel."
+      error: "&cSomething went wrong while creating your guild!"
+      requirements: "&cYour guild's name does not match the requirements! You can only use alphanumeric characters and the length of the name cannot exceed 64"
+      guild-name-taken: "&cThis name is already taken!"
+    delete:
+      successful: "&aDeleted '{guild}' successfully!"
+      cancelled: "&cGuild deletion cancelled!"
+      warning: "&cType /guilds confirm to delete your guild, type /guilds cancel to cancel."
+      error: "&cSomething went wrong while deleting your guild!"
+    info:
+      header: "Information for &b{guild}"
+      name: "Name: &b{guild}&r (&bPrefix: {prefix}&r)"
+      master: "Guild Master: &b{master}"
+      member-count: "Members: &b{members}/64&r (&bOnline: {members-online}&r)"
+      rank: "Your rank: &b{rank}"
+    promote:
+      promoted: "&aYou've been promoted from {old-rank} to {new-rank}!"
+      successful: "&aYou've successfully promoted {player} from {old-rank} to {new-rank}!"
+      cannot-promote: "&cThis player cannot be promoted any further!"
+      not-promotion: "&cYou aren't promoting this player!"
+    demote:
+      promoted: "&cYou've been demoted from {old-rank} to {new-rank}!"
+      successful: "&aYou've successfully demoted {player} from {old-rank} to {new-rank}!"
+      cannot-demote: "&cThis player cannot be demoted any further!"
+      not-demotion: "&cYou aren't demoting this player!"
+    chat:
+      message: "&7&lGuild Chat> &r[{role}] {player}: {message}"
+    accept:
+      not-invited: "&cYou aren't invited for this guild!"
+      guild-full: "&cThis guild is full!"
+      successful: "&aYou joined guild '{guild}' successfully"
+      player-joined: "&aPlayer '{player}' joined your guild!"
+    invite:
+      message: "&a{player} has invited you to his/her guild, '{guild}'"
+      successful: "&aYou've successfully invited {player} to your guild!"
+      already-in-guild: "&cThis player is already in your guild!"
+    leave:
+      successful: "&aYou've successfully left your guild!"
+      cancelled: "&cLeaving guild cancelled!"
+      warning: "&cType /guilds confirm to leave your guild, type /guilds cancel to cancel."
+      warning-guildmaster: "&cYou're the Guild Master of this guild, leaving the guild will mean that the guild is deleted. Type /guilds confirm to leave and delete your guild, type /guilds cancel to cancel."
+      player-left: "&cPlayer '{player}' left your guild!"
+    boot:
+      successful: "&aSuccessfully kicked {player} from your guild!"
+      kicked: "&cYou have been kicked from your guild by {kicker}!"
+      player-kicked: "&cPlayer '{player}' has been kicked from the guild by {kicker}!"
+    prefix:
+      successful: "&aGuild's prefix changed successfully!"
+      requirements: "&cYour guild's prefix does not match the requirements! You can only use alphanumeric characters and the length of the prefix cannot exceed 8"
+    confirm:
+      error: "&cYou have no actions to confirm!"
+    cancel:
+      error: "&cYou have no actions to cancel!"
+    reload:
+      reloaded: "&aConfiguration file reloaded!"
+    update:
+      found: "&aFound an update! Go to {url} to download it!"
+      not-found: "&cNo update found!"
+    admin:
+      delete-successful: "&cGuild removed successfully!"
+      delete-error: "&cSomething went wrong while removing this guild!"
+      delete-warning: "&cType /guilds confirm to remove this guild, type /guilds cancel to cancel."
+      delete-cancelled: "&cGuild deletion cancelled!"
+      player-already-in-guild: "&cThis player is already in a guild!"
+      added-player: "&aAdded player to guild"
+      player-not-in-guild: "&cPlayer is not in this guild!"
+      removed-player: "&aRemoved player from guild!"
+    ally:
+      guild-not-pending: "&cThis guild has not send you an ally request!"
+      accepted: "&aThis guild is now allied with {guild}!"
+      accepted-target: "&a{guild} is now allied with us!"
+      declined: "&c{guild} does not want to be an ally!"
+      send: "&aSend ally request!"
+      send-target: "&aRecieved an ally request from {guild}! Type /guilds ally accept {guild} to accept or type /guilds ally decline {guild} to decline"
+      removed: "&cThis guild is no longer allied with {guild}!"
+      removed-target: "&c{guild} is no longer allied with us!"
+      already-allies: "&cYou're already allied with {guild}!"
+      not-allies: "&cYou aren't allied with {guild}!"
+  event:
+    join:
+      pending-invites: "&aYou have {number} pending invite(s) from the guild(s): &e{guilds}"

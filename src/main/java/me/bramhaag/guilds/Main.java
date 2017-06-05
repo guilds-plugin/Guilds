@@ -47,6 +47,7 @@ public class Main extends JavaPlugin {
     private LeaderboardHandler leaderboardHandler;
     private GuildScoreboardHandler scoreboardHandler;
 
+
     private static long creationTime;
 
     private static TaskChainFactory taskChainFactory;
