@@ -22,8 +22,9 @@ name:
 
 prefix:
 # RegEx (https://en.wikipedia.org/wiki/Regular_expression) used to only allow certain characters (default only allows alphanumeric characters)
-# With the default Regex currently set, the minimum length of the prefix is 1 and the maximum is 8.
+# With the default Regex currently set, the minimum length of the prefix is 1 and the maximum is 6.
 # To change this, adjust the numbers and maybe have a look at the link above.
+# When changing the {1,6} you MUST change the "requirements" field under "prefix" down in the config below to the MAX number you have redefined the regex as. E.x. for {1,2} change ("&cYour guild's prefix does not match the requirements! You can only use alphanumeric characters and the length of the prefix cannot exceed 6") to ("&cYour guild's prefix does not match the requirements! You can only use alphanumeric characters and the length of the prefix cannot exceed 2")
   regex: "[a-zA-Z0-9]{1,6}"
 # Set the format for the prefix
   format: "&c[{prefix}] "
@@ -202,7 +203,7 @@ messages:
       player-kicked: "&cPlayer '{player}' has been kicked from the guild by {kicker}!"
     prefix:
       successful: "&aGuild's prefix changed successfully!"
-      requirements: "&cYour guild's prefix does not match the requirements! You can only use alphanumeric characters and the length of the prefix cannot exceed 8"
+      requirements: "&cYour guild's prefix does not match the requirements! You can only use alphanumeric characters and the length of the prefix cannot exceed 6"
     confirm:
       error: "&cYou have no actions to confirm!"
     cancel:
