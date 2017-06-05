@@ -1,5 +1,5 @@
 name: Guilds
-version: 1.5.0-RELEASE
+version: 1.5.1-RELEASE
 main: me.bramhaag.guilds.Main
 softdepend: [MVdWPlaceholderAPI, PlaceholderAPI]
 authors: [blockslayer22, bramhaag]

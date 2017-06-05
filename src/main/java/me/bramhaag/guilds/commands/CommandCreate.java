@@ -6,6 +6,7 @@ import me.bramhaag.guilds.commands.base.CommandBase;
 import me.bramhaag.guilds.guild.Guild;
 import me.bramhaag.guilds.message.Message;
 import me.bramhaag.guilds.util.ConfirmAction;
+import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.entity.Player;
 
 import java.util.logging.Level;
@@ -29,7 +30,7 @@ public class CommandCreate extends CommandBase {
         String regex = Main.getInstance().getConfig().getString("name.regex");
 
         if (args[0].length() < minLength || args[0].length() > maxLength || !args[0].matches(regex)) {
-            Message.sendMessage(player, Message.COMMAND_CREATE_REQUIREMENTS);
+            Message.sendMessage(player, Message.COMMAND_CREATE_NAME_REQUIREMENTS);
             return;
         }
 
@@ -40,7 +41,18 @@ public class CommandCreate extends CommandBase {
             }
         }
 
-        Message.sendMessage(player, Message.COMMAND_CREATE_WARNING);
+        double requiredMoney = Main.getInstance().getConfig().getDouble("Requirement.cost");
+
+        if (Main.vault && requiredMoney != -1) {
+            if (Main.getInstance().getEconomy().getBalance(player) < requiredMoney) {
+                Message.sendMessage(player, Message.COMMAND_ERROR_NOT_ENOUGH_MONEY);
+                return;
+            }
+
+            Message.sendMessage(player, Message.COMMAND_CREATE_MONEY_WARNING.replace("{amount}", String.valueOf(requiredMoney)));
+        } else {
+            Message.sendMessage(player, Message.COMMAND_CREATE_WARNING);
+        }
 
         Main.getInstance().getCommandHandler().addAction(player, new ConfirmAction() {
             @Override
@@ -49,6 +61,12 @@ public class CommandCreate extends CommandBase {
 
                 GuildCreateEvent event = new GuildCreateEvent(player, guild);
                 if (event.isCancelled()) {
+                    return;
+                }
+
+                EconomyResponse response = Main.getInstance().getEconomy().withdrawPlayer(player, requiredMoney);
+                if (!response.transactionSuccess()) {
+                    Message.sendMessage(player, Message.COMMAND_ERROR_NOT_ENOUGH_MONEY);
                     return;
                 }
 

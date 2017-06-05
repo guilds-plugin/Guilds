@@ -34,7 +34,6 @@ public enum Message {
     COMMAND_CREATE_CANCELLED,
     COMMAND_CREATE_WARNING,
     COMMAND_CREATE_ERROR,
-    COMMAND_CREATE_REQUIREMENTS,
     COMMAND_CREATE_GUILD_NAME_TAKEN,
 
     COMMAND_DELETE_SUCCESSFUL,
@@ -109,7 +108,12 @@ public enum Message {
     COMMAND_ALLY_REMOVED,
     COMMAND_ALLY_REMOVED_TARGET,
 
-    EVENT_JOIN_PENDING_INVITES, COMMAND_ALLY_ALREADY_ALLIES, COMMAND_ALLY_NOT_ALLIES;
+    EVENT_JOIN_PENDING_INVITES,
+    COMMAND_ALLY_ALREADY_ALLIES,
+    COMMAND_ALLY_NOT_ALLIES,
+    COMMAND_CREATE_NAME_REQUIREMENTS,
+    COMMAND_CREATE_MONEY_WARNING,
+    COMMAND_ERROR_NOT_ENOUGH_MONEY;
 
     public static void sendMessage(CommandSender sender, Message message) {
         sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.PREFIX + Main.getInstance().getConfig().getString(getPath(message))));

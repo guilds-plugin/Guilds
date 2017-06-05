@@ -18,9 +18,11 @@ import me.bramhaag.guilds.placeholders.Placeholders;
 import me.bramhaag.guilds.scoreboard.GuildScoreboardHandler;
 import me.bramhaag.guilds.updater.Updater;
 import me.clip.placeholderapi.external.EZPlaceholderHook;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mcstats.Metrics;
 
@@ -47,12 +49,15 @@ public class Main extends JavaPlugin {
     private LeaderboardHandler leaderboardHandler;
     private GuildScoreboardHandler scoreboardHandler;
 
+    private static Economy econ;
+
 
     private static long creationTime;
 
     private static TaskChainFactory taskChainFactory;
 
     public static String PREFIX;
+    public static boolean vault;
 
     @SuppressWarnings("deprecation")
     @Override
@@ -120,6 +125,12 @@ public class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new JoinListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerDamangeListener(), this);
 
+        vault = setupEconomy();
+
+        if (!vault) {
+            getLogger().log(Level.INFO, "Not using Vault!");
+        }
+
         try {
             Metrics metrics = new Metrics(this);
             metrics.start();
@@ -173,6 +184,10 @@ public class Main extends JavaPlugin {
 
     public GuildScoreboardHandler getScoreboardHandler() {
         return scoreboardHandler;
+    }
+
+    public Economy getEconomy() {
+        return econ;
     }
 
     public void setDatabaseType() {
@@ -265,6 +280,19 @@ public class Main extends JavaPlugin {
             getLogger().log(Level.SEVERE, "Cannot sent request to server list!");
             ex.printStackTrace();
         }
+    }
+
+    private boolean setupEconomy() {
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            return false;
+        }
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+
+        if (rsp == null) {
+            return false;
+        }
+        econ = rsp.getProvider();
+        return econ != null;
     }
 
     public LeaderboardHandler getLeaderboardHandler() {

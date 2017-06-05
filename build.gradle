@@ -31,6 +31,7 @@ repositories {
     maven { url "http://repo.mvdw-software.be/content/groups/public/" }
     maven { url "http://repo.extendedclip.com/content/repositories/placeholderapi/" }
     maven { url "http://repo.mcstats.org/content/repositories/public" }
+    maven { url "http://nexus.hc.to/content/repositories/pub_releases" }
     maven { url "http://repo.maven.apache.org/maven2" }
 }
 
@@ -45,7 +46,10 @@ dependencies {
 
     compileOnly group: 'be.maximvdw',          name: 'MVdWPlaceholderAPI', version: '1.0.2-SNAPSHOT'
     compileOnly group: 'me.clip',              name: 'placeholderapi',     version: '2.0.8'
+
+    compileOnly group: 'net.milkbowl.vault',    name: 'VaultAPI',           version: '1.6'
 }
+
 
 processResources {
     filter ReplaceTokens, tokens: [
