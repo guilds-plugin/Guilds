@@ -26,7 +26,7 @@ public class CommandList extends CommandBase {
                 .map(Guild::getName)
                 .collect(Collectors.joining("\n"));
         Message.sendMessage(player, Message.COMMAND_LIST_FORMAT);
-        player.sendMessage(ChatColor.RED + guilds);
+        player.sendMessage(ChatColor.AQUA + guilds);
 
     }
 }
