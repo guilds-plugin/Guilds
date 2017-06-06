@@ -21,11 +21,12 @@ public class CommandList extends CommandBase {
     public void execute(Player player, String[] args) {
         Guild guild = Guild.getGuild(player.getUniqueId());
         String guilds = Main.getInstance().getGuildHandler().getGuilds().values()
+
                 .stream()
                 .map(Guild::getName)
                 .collect(Collectors.joining("\n"));
         Message.sendMessage(player, Message.COMMAND_LIST_FORMAT);
-        player.sendMessage(ChatColor.AQUA + guilds);
+        player.sendMessage(ChatColor.AQUA + guilds + guild.getMembers());
 
     }
 }
