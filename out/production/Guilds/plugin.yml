@@ -1,8 +1,10 @@
 name: Guilds
-version: 1.5.1-RELEASE
+version: 1.5.5-RELEASE
 main: me.bramhaag.guilds.Main
-softdepend: [MVdWPlaceholderAPI, PlaceholderAPI]
+description: Lightweight, flexible, popular plugin for any Minecraft server. Forget Factions! Guilds are here!
+softdepend: [MVdWPlaceholderAPI, PlaceholderAPI, VaultAPI]
 authors: [blockslayer22, bramhaag]
+
 
 commands:
   guild:

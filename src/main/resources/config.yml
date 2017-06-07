@@ -5,9 +5,7 @@ Requirement:
     cost: 0
 
 #List your server at https://glaremasters.me/server/
-#This is defaulted to false in order to allow you to opt-in to it.
-#To display your server, change "false" to "true" and restart your server.
-server-list: false
+server-list: true
 
 updater:
   check: true
@@ -168,7 +166,7 @@ messages:
       header: "Information for &b{guild}"
       name: "Name: &b{guild}&r (&bPrefix: {prefix}&r)"
       master: "Guild Master: &b{master}"
-      member-count: "Members: &b{members}/64&r (&bOnline: {members_online}&r)"
+      member-count: "Members: &b{members}/64&r (&bOnline: {members-online}&r)"
       rank: "Your rank: &b{rank}"
     promote:
       promoted: "&aYou've been promoted from {old-rank} to {new-rank}!"

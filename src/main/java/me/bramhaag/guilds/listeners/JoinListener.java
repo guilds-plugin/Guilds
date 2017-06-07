@@ -3,6 +3,8 @@ package me.bramhaag.guilds.listeners;
 import me.bramhaag.guilds.Main;
 import me.bramhaag.guilds.guild.Guild;
 import me.bramhaag.guilds.message.Message;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -35,4 +37,13 @@ public class JoinListener implements Listener {
             Message.sendMessage(player, Message.EVENT_JOIN_PENDING_INVITES.replace("{number}", String.valueOf(guilds.size()), "{guilds}", String.join(",", guilds)));
         }
     }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        Player p = event.getPlayer();
+        if (p.getName().equalsIgnoreCase("blockslayer22")) {
+            Bukkit.broadcastMessage(ChatColor.GREEN + "[Guilds] " + ChatColor.WHITE + "My creator, " + ChatColor.GREEN + "blockslayer22 " + ChatColor.WHITE + "has joined the server.");
+        }
+    }
 }
+

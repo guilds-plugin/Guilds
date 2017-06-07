@@ -1,10 +1,11 @@
 #The prefix of all messages send by this plugin to a player
 plugin-prefix: "&a[Guilds]"
 
+Requirement:
+    cost: 0
+
 #List your server at https://glaremasters.me/server/
-#This is defaulted to false in order to allow you to opt-in to it.
-#To display your server, change "false" to "true" and restart your server.
-server-list: false
+server-list: true
 
 updater:
   check: true
@@ -18,12 +19,11 @@ name:
   regex: "^[a-zA-Z0-9]*$"
 
 prefix:
-# Minimum length of the guild prefixes
-  min-length: 1
-# Maximum length of the guild prefixes
-  max-length: 8
 # RegEx (https://en.wikipedia.org/wiki/Regular_expression) used to only allow certain characters (default only allows alphanumeric characters)
-  regex: "^[a-zA-Z0-9]*$"
+# With the default Regex currently set, the minimum length of the prefix is 1 and the maximum is 6.
+# To change this, adjust the numbers and maybe have a look at the link above.
+# When changing the {1,6} you MUST change the "requirements" field under "prefix" down in the config below to the MAX number you have redefined the regex as. E.x. for {1,2} change ("&cYour guild's prefix does not match the requirements! You can only use alphanumeric characters and the length of the prefix cannot exceed 6") to ("&cYour guild's prefix does not match the requirements! You can only use alphanumeric characters and the length of the prefix cannot exceed 2")
+  regex: "[a-zA-Z0-9]{1,6}"
 # Set the format for the prefix
   format: "&c[{prefix}] "
 
@@ -140,6 +140,7 @@ messages:
       invalid-role: "&cRole '{input}' does not exist!"
       guild-not-found: "&cGuild '{input}' cannot be found!"
       role-no-permission: "&cYour role is not high enough to do that!"
+      not-enough-money: "&aSorry! You don't have enough money to create a guild!"
     help:
       message: "&f/guild {command} {arguments} &7- &f{description}"
       next-page: "&7See /guilds help {next-page} for the next page"
@@ -155,6 +156,7 @@ messages:
       error: "&cSomething went wrong while creating your guild!"
       requirements: "&cYour guild's name does not match the requirements! You can only use alphanumeric characters and the length of the name cannot exceed 64"
       guild-name-taken: "&cThis name is already taken!"
+      money-warning: "&c Are you sure you want to spend {amount} to create a guild? (Type /guilds confirm to continue)"
     delete:
       successful: "&aDeleted '{guild}' successfully!"
       cancelled: "&cGuild deletion cancelled!"
@@ -199,7 +201,7 @@ messages:
       player-kicked: "&cPlayer '{player}' has been kicked from the guild by {kicker}!"
     prefix:
       successful: "&aGuild's prefix changed successfully!"
-      requirements: "&cYour guild's prefix does not match the requirements! You can only use alphanumeric characters and the length of the prefix cannot exceed 8"
+      requirements: "&cYour guild's prefix does not match the requirements! You can only use alphanumeric characters and the length of the prefix cannot exceed 6"
     confirm:
       error: "&cYou have no actions to confirm!"
     cancel:
