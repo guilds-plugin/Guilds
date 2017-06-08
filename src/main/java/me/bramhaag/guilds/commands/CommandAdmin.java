@@ -7,6 +7,7 @@ import me.bramhaag.guilds.guild.GuildRole;
 import me.bramhaag.guilds.message.Message;
 import me.bramhaag.guilds.util.ConfirmAction;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -102,8 +103,7 @@ public class CommandAdmin extends CommandBase {
         } else if (args[0].equalsIgnoreCase("info")) {
             Message.sendMessage(sender, Message.COMMAND_INFO_HEADER.replace("{guild}", guild.getName()));
             Message.sendMessage(sender, Message.COMMAND_INFO_NAME.replace("{guild}", guild.getName(), "{prefix}", guild.getPrefix()));
-            Message.sendMessage(sender, Message.COMMAND_INFO_MASTER.replace("{master}", Bukkit.getPlayer(guild.getGuildMaster().getUniqueId()).getName()));
-            Message.sendMessage(sender, Message.COMMAND_INFO_MEMBER_COUNT.replace("{members}", String.valueOf(guild.getMembers().size())));
+            Message.sendMessage(sender, Message.COMMAND_INFO_MEMBER_COUNT.replace("{members}", String.valueOf(guild.getMembers().size()), "{members-online}", String.valueOf(guild.getMembers().stream().map(member -> Bukkit.getOfflinePlayer(member.getUniqueId())).filter(OfflinePlayer::isOnline).count())));
         }
     }
 }
