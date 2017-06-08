@@ -4,6 +4,7 @@ import be.maximvdw.placeholderapi.PlaceholderAPI;
 import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
+import me.bramhaag.guilds.api.MCUpdate;
 import me.bramhaag.guilds.api.Metrics;
 import me.bramhaag.guilds.commands.*;
 import me.bramhaag.guilds.commands.base.CommandHandler;
@@ -142,6 +143,14 @@ public class Main extends JavaPlugin {
             e.printStackTrace();
 
             creationTime = 0;
+        }
+
+        try {
+
+            MCUpdate update = new MCUpdate(this, true);
+
+        } catch (IOException e) {
+
         }
 
         if (getConfig().getBoolean("updater.check")) {
