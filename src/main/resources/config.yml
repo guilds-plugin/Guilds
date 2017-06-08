@@ -168,8 +168,8 @@ messages:
       member-count: "Members: &b{members}/64&r (&bOnline: {members-online}&r)"
       rank: "Your rank: &b{rank}"
     promote:
-      promoted: "&aYou've been promoted from {old-rank} to {new-rank}!"
-      successful: "&aYou've successfully promoted {player} from {old-rank} to {new-rank}!"
+      promoted: "&aYou've successfully promoted {player} from {old-rank} to {new-rank}!"
+      successful: "&aYou've been promoted from {old-rank} to {new-rank}!"
       cannot-promote: "&cThis player cannot be promoted any further!"
       not-promotion: "&cYou aren't promoting this player!"
     demote:
