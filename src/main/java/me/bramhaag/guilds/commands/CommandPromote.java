@@ -9,6 +9,8 @@ import me.bramhaag.guilds.message.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.util.logging.Level;
+
 public class CommandPromote extends CommandBase {
 
     public CommandPromote() {
@@ -76,8 +78,19 @@ public class CommandPromote extends CommandBase {
         String newRank = promotedRole.getName();
         Message.sendMessage(promotedPlayer, Message.COMMAND_PROMOTE_SUCCESSFUL.replace("{player}", promotedPlayer.getName(), "{old-rank}", oldRank, "{new-rank}", newRank));
         Message.sendMessage(player, Message.COMMAND_PROMOTE_PROMOTED.replace("{player}", promotedPlayer.getName(), "{old-rank}", oldRank, "{new-rank}", newRank));
-        Main.getInstance().getDatabaseProvider().updateGuildRank(promotedRole, (result, exception) -> {
-        });
         promotedMember.setRole(promotedRole);
+        updateGuild("", guild.getName(), Guild.getGuild(guild.getName()).getName());
+    }
+
+    public void updateGuild(String errorMessage, String guild, String... params) {
+        Main.getInstance().getDatabaseProvider().updateGuild(Guild.getGuild(guild), (result, exception) -> {
+            if (!result) {
+                Main.getInstance().getLogger().log(Level.SEVERE, String.format(errorMessage, params));
+
+                if (exception != null) {
+                    exception.printStackTrace();
+                }
+            }
+        });
     }
 }

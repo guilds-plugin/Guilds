@@ -182,11 +182,6 @@ public class MySql extends DatabaseProvider {
     }
 
     @Override
-    public void updateGuildRank(GuildRole role, Callback<Boolean, Exception> callback) {
-
-    }
-
-    @Override
     public void createLeaderboard(Leaderboard leaderboard, Callback<Boolean, Exception> callback) {
 
     }

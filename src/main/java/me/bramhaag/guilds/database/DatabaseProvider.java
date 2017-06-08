@@ -1,7 +1,6 @@
 package me.bramhaag.guilds.database;
 
 import me.bramhaag.guilds.guild.Guild;
-import me.bramhaag.guilds.guild.GuildRole;
 import me.bramhaag.guilds.leaderboard.Leaderboard;
 
 import java.util.HashMap;
@@ -17,8 +16,6 @@ public abstract class DatabaseProvider {
     public abstract void getGuilds(Callback<HashMap<String, Guild>, Exception> callback);
 
     public abstract void updateGuild(Guild guild, Callback<Boolean, Exception> callback);
-
-    public abstract void updateGuildRank(GuildRole role, Callback<Boolean, Exception> callback);
 
     public abstract void createLeaderboard(Leaderboard leaderboard, Callback<Boolean, Exception> callback);
 

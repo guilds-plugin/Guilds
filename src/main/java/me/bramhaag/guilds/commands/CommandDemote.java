@@ -9,6 +9,8 @@ import me.bramhaag.guilds.message.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.util.logging.Level;
+
 public class CommandDemote extends CommandBase {
 
     public CommandDemote() {
@@ -45,7 +47,8 @@ public class CommandDemote extends CommandBase {
 
         int currentLevel = demotedMember.getRole();
 
-        if (currentLevel >= 1) {
+        if (currentLevel == 3) {
+            Bukkit.broadcastMessage("CURRENT ROLE:: " + currentLevel);
             Message.sendMessage(player, Message.COMMAND_DEMOTE_CANNOT_DEMOTE);
             return;
         }
@@ -60,11 +63,13 @@ public class CommandDemote extends CommandBase {
             }
 
             if (role.getLevel() < demotedMember.getRole()) {
+                Bukkit.broadcastMessage("COMMAND_ERROR_ROLE_NO_PERMISSION:: ROLELEVEL " + role.getLevel() + " DEMOTEDROLE " + demotedMember.getRole());
                 Message.sendMessage(player, Message.COMMAND_ERROR_ROLE_NO_PERMISSION);
                 return;
             }
 
             if (currentLevel > demotedRole.getLevel()) {
+                Bukkit.broadcastMessage("COMMAND_DEMOTE_NOT_DEMOTION:: CURRENTLEVEL " + currentLevel + " DEMOTEDLEVEL " + demotedRole.getLevel());
                 Message.sendMessage(player, Message.COMMAND_DEMOTE_NOT_DEMOTION);
                 return;
             }
@@ -76,8 +81,19 @@ public class CommandDemote extends CommandBase {
         String newRank = demotedRole.getName();
         Message.sendMessage(demotedPlayer, Message.COMMAND_DEMOTE_DEMOTED.replace("{player}", demotedPlayer.getName(), "{old-rank}", oldRank, "{new-rank}", newRank));
         Message.sendMessage(player, Message.COMMAND_DEMOTE_SUCCESSFUL.replace("{player}", demotedPlayer.getName(), "{old-rank}", oldRank, "{new-rank}", newRank));
-        Main.getInstance().getDatabaseProvider().updateGuildRank(demotedRole, (result, exception) -> {
-        });
         demotedMember.setRole(demotedRole);
+        updateGuild("", guild.getName(), Guild.getGuild(guild.getName()).getName());
+    }
+
+    public void updateGuild(String errorMessage, String guild, String... params) {
+        Main.getInstance().getDatabaseProvider().updateGuild(Guild.getGuild(guild), (result, exception) -> {
+            if (!result) {
+                Main.getInstance().getLogger().log(Level.SEVERE, String.format(errorMessage, params));
+
+                if (exception != null) {
+                    exception.printStackTrace();
+                }
+            }
+        });
     }
 }
