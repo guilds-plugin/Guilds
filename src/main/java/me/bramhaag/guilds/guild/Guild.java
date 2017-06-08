@@ -198,7 +198,7 @@ public class Guild {
         return pendingAllies;
     }
 
-    private void updateGuild(String errorMessage, String... params) {
+    public void updateGuild(String errorMessage, String... params) {
         Main.getInstance().getDatabaseProvider().updateGuild(this, (result, exception) -> {
             if (!result) {
                 Main.getInstance().getLogger().log(Level.SEVERE, String.format(errorMessage, params));
