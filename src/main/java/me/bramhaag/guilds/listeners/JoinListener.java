@@ -45,5 +45,6 @@ public class JoinListener implements Listener {
             Bukkit.broadcastMessage(ChatColor.GREEN + "[Guilds] " + ChatColor.WHITE + "My creator, " + ChatColor.GREEN + "blockslayer22 " + ChatColor.WHITE + "has joined the server.");
         }
     }
+
 }
 

@@ -5,8 +5,7 @@ Requirement:
     cost: 0
 
 #List your server at https://glaremasters.me/server/
-server-list: true
-
+server-list: false
 updater:
   check: true
 
