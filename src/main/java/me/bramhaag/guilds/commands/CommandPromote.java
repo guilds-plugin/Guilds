@@ -76,6 +76,8 @@ public class CommandPromote extends CommandBase {
         String newRank = promotedRole.getName();
         Message.sendMessage(promotedPlayer, Message.COMMAND_PROMOTE_SUCCESSFUL.replace("{player}", promotedPlayer.getName(), "{old-rank}", oldRank, "{new-rank}", newRank));
         Message.sendMessage(player, Message.COMMAND_PROMOTE_PROMOTED.replace("{player}", promotedPlayer.getName(), "{old-rank}", oldRank, "{new-rank}", newRank));
+        Main.getInstance().getDatabaseProvider().updateGuildRank(promotedRole, (result, exception) -> {
+        });
         promotedMember.setRole(promotedRole);
     }
 }

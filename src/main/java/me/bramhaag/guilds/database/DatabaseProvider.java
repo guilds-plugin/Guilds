@@ -18,7 +18,7 @@ public abstract class DatabaseProvider {
 
     public abstract void updateGuild(Guild guild, Callback<Boolean, Exception> callback);
 
-    public abstract void updateGuildrank(Guild guild, GuildRole role);
+    public abstract void updateGuildRank(GuildRole role, Callback<Boolean, Exception> callback);
 
     public abstract void createLeaderboard(Leaderboard leaderboard, Callback<Boolean, Exception> callback);
 

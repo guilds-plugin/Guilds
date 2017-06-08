@@ -11,6 +11,7 @@ import me.bramhaag.guilds.database.databases.json.deserializer.GuildMapDeseriali
 import me.bramhaag.guilds.database.databases.json.deserializer.LeaderboardListDeserializer;
 import me.bramhaag.guilds.database.databases.json.serializer.LeaderboardListSerializer;
 import me.bramhaag.guilds.guild.Guild;
+import me.bramhaag.guilds.guild.GuildRole;
 import me.bramhaag.guilds.leaderboard.Leaderboard;
 
 import java.io.*;
@@ -170,6 +171,15 @@ public class Json extends DatabaseProvider {
                 .syncLast(successful -> callback.call(successful, null))
                 .execute();
     }
+
+    @Override
+    public void updateGuildRank(GuildRole role, Callback<Boolean, Exception> callback) {
+        Main.newChain()
+                .asyncFirst(() -> write(guildsFile, role, guildsType))
+                .syncLast(successful -> callback.call(successful, null))
+                .execute();
+    }
+
 
     @Override
     @SuppressWarnings("unchecked")
