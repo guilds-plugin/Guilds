@@ -45,7 +45,7 @@ public class CommandDemote extends CommandBase {
 
         int currentLevel = demotedMember.getRole();
 
-        if (currentLevel <= 1) {
+        if (currentLevel >= 1) {
             Message.sendMessage(player, Message.COMMAND_DEMOTE_CANNOT_DEMOTE);
             return;
         }
