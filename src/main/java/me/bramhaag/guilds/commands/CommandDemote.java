@@ -45,11 +45,19 @@ public class CommandDemote extends CommandBase {
             return;
         }
 
-        int currentLevel = demotedMember.getRole();
-
-        if (currentLevel == 3) {
-            Bukkit.broadcastMessage("CURRENT ROLE:: " + currentLevel);
+        if (demotedMember.getRole() == 3) {
+            Bukkit.broadcastMessage("Role of " + demotedMember + " is " + demotedMember.getRole());
             Message.sendMessage(player, Message.COMMAND_DEMOTE_CANNOT_DEMOTE);
+            return;
+        }
+
+        if (demotedMember.getRole() == 2) {
+            Bukkit.broadcastMessage("Role of " + demotedMember + " is " + demotedMember.getRole());
+            return;
+        }
+
+        if (demotedMember.getRole() == 1) {
+            Bukkit.broadcastMessage("Role of " + demotedMember + " is " + demotedMember.getRole());
             return;
         }
 
@@ -63,18 +71,16 @@ public class CommandDemote extends CommandBase {
             }
 
             if (role.getLevel() < demotedMember.getRole()) {
-                Bukkit.broadcastMessage("COMMAND_ERROR_ROLE_NO_PERMISSION:: ROLELEVEL " + role.getLevel() + " DEMOTEDROLE " + demotedMember.getRole());
                 Message.sendMessage(player, Message.COMMAND_ERROR_ROLE_NO_PERMISSION);
                 return;
             }
 
-            if (currentLevel > demotedRole.getLevel()) {
-                Bukkit.broadcastMessage("COMMAND_DEMOTE_NOT_DEMOTION:: CURRENTLEVEL " + currentLevel + " DEMOTEDLEVEL " + demotedRole.getLevel());
+            if (demotedMember.getRole() > demotedRole.getLevel()) {
                 Message.sendMessage(player, Message.COMMAND_DEMOTE_NOT_DEMOTION);
                 return;
             }
         } else {
-            demotedRole = GuildRole.getRole(currentLevel - 1);
+            demotedRole = GuildRole.getRole(demotedMember.getRole() - 1);
         }
 
         String oldRank = GuildRole.getRole(demotedMember.getRole()).getName();
