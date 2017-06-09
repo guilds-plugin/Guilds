@@ -1,3 +1,5 @@
+#Pick a language here, available languages: EN, NL
+lang: EN
 #The prefix of all messages send by this plugin to a player
 plugin-prefix: "&a[Guilds]"
 
