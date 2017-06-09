@@ -53,11 +53,15 @@ public class CommandDemote extends CommandBase {
 
         if (demotedMember.getRole() == 2) {
             Bukkit.broadcastMessage("Role of " + demotedMember + " is " + demotedMember.getRole());
-            return;
         }
 
         if (demotedMember.getRole() == 1) {
             Bukkit.broadcastMessage("Role of " + demotedMember + " is " + demotedMember.getRole());
+        }
+
+        if (demotedMember.getRole() == 0) {
+            Bukkit.broadcastMessage("Role of " + demotedMember + " is " + demotedMember.getRole());
+            Message.sendMessage(player, Message.COMMAND_DEMOTE_CANNOT_DEMOTE);
             return;
         }
 
