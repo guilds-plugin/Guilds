@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 public class CommandAccept extends CommandBase {
 
     public CommandAccept() {
-        super("accept", "Accept an invite to a guild", "guilds.command.accept", false, null, "<guild id>", 1, 1);
+        super("accept", "Accept an invite to a guild", "guilds.command.accept", false, new String[]{"join"}, "<guild id>", 1, 1);
     }
 
     public void execute(Player player, String[] args) {
