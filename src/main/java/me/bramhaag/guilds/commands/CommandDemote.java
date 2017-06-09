@@ -46,21 +46,11 @@ public class CommandDemote extends CommandBase {
         }
 
         if (demotedMember.getRole() == 3) {
-            Bukkit.broadcastMessage("Role of " + demotedMember + " is " + demotedMember.getRole());
             Message.sendMessage(player, Message.COMMAND_DEMOTE_CANNOT_DEMOTE);
             return;
         }
 
-        if (demotedMember.getRole() == 2) {
-            Bukkit.broadcastMessage("Role of " + demotedMember + " is " + demotedMember.getRole());
-        }
-
-        if (demotedMember.getRole() == 1) {
-            Bukkit.broadcastMessage("Role of " + demotedMember + " is " + demotedMember.getRole());
-        }
-
         if (demotedMember.getRole() == 0) {
-            Bukkit.broadcastMessage("Role of " + demotedMember + " is " + demotedMember.getRole());
             Message.sendMessage(player, Message.COMMAND_DEMOTE_CANNOT_DEMOTE);
             return;
         }
@@ -74,7 +64,7 @@ public class CommandDemote extends CommandBase {
                 return;
             }
 
-            if (role.getLevel() < demotedMember.getRole()) {
+            if (role.getLevel() > demotedMember.getRole()) {
                 Message.sendMessage(player, Message.COMMAND_ERROR_ROLE_NO_PERMISSION);
                 return;
             }
@@ -84,7 +74,7 @@ public class CommandDemote extends CommandBase {
                 return;
             }
         } else {
-            demotedRole = GuildRole.getRole(demotedMember.getRole() - 1);
+            demotedRole = GuildRole.getRole(demotedMember.getRole() + 1);
         }
 
         String oldRank = GuildRole.getRole(demotedMember.getRole()).getName();

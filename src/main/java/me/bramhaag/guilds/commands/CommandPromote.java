@@ -47,6 +47,16 @@ public class CommandPromote extends CommandBase {
 
         int currentLevel = promotedMember.getRole();
 
+        if (currentLevel == 1) {
+            Message.sendMessage(player, Message.COMMAND_PROMOTE_CANNOT_PROMOTE);
+            return;
+        }
+
+        if (currentLevel == 0) {
+            Message.sendMessage(player, Message.COMMAND_PROMOTE_CANNOT_PROMOTE);
+            return;
+        }
+
         if (currentLevel <= 1) {
             Message.sendMessage(player, Message.COMMAND_PROMOTE_CANNOT_PROMOTE);
             return;
