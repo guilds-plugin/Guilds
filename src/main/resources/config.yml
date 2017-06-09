@@ -173,7 +173,7 @@ messages:
       cannot-promote: "&cThis player cannot be promoted any further!"
       not-promotion: "&cYou aren't promoting this player!"
     demote:
-      promoted: "&cYou've been demoted from {old-rank} to {new-rank}!"
+      demoted: "&cYou've been demoted from {old-rank} to {new-rank}!"
       successful: "&aYou've successfully demoted {player} from {old-rank} to {new-rank}!"
       cannot-demote: "&cThis player cannot be demoted any further!"
       not-demotion: "&cYou aren't demoting this player!"
