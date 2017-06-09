@@ -23,13 +23,14 @@ import me.clip.placeholderapi.external.EZPlaceholderHook;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -51,7 +52,6 @@ public class Main extends JavaPlugin {
 
     private static Economy econ;
 
-
     private static long creationTime;
 
     private static TaskChainFactory taskChainFactory;
@@ -63,9 +63,9 @@ public class Main extends JavaPlugin {
     @Override
     public void onEnable() {
         this.saveDefaultConfig();
-        this.safeFile();
-        this.setFileData();
-        PREFIX = ChatColor.translateAlternateColorCodes('&', getConfig().getString("plugin-prefix")) + ChatColor.RESET + " ";
+        // this.setFileData();
+
+        PREFIX = ChatColor.translateAlternateColorCodes('&', this.getConfig().getString("plugin-prefix")) + ChatColor.RESET + " ";
         instance = this;
 
         taskChainFactory = BukkitTaskChainFactory.create(this);
@@ -151,7 +151,7 @@ public class Main extends JavaPlugin {
             MCUpdate update = new MCUpdate(this, true);
 
         } catch (IOException e) {
-
+            e.printStackTrace();
         }
 
         if (getConfig().getBoolean("updater.check")) {
@@ -305,10 +305,10 @@ public class Main extends JavaPlugin {
         return leaderboardHandler;
     }
 
-    public File file = new File(this.getDataFolder(), "languages/" + this.getConfig().getString("lang") + ".yml");
-    public YamlConfiguration yaml = YamlConfiguration.loadConfiguration(file);
+    // public File file = new File(Main.getInstance().getDataFolder(), "languages/" + Main.getInstance().getConfig().getString("lang") + ".yml");
+    // public YamlConfiguration yaml = YamlConfiguration.loadConfiguration(file);
 
-    public void safeFile() {
+    /*public void saveFile() {
         try {
             yaml.save(file);
         } catch (IOException ex) {
@@ -327,115 +327,115 @@ public class Main extends JavaPlugin {
     }
 
     public void setFileData() {
-        if (this.getConfig().getString("lang").equalsIgnoreCase("en")) {
-            String error = "messages.command.error.";
-            yaml.set(error + "console", "&cThis command can only be executed by a player!");
-            yaml.set(error + "args", "&cInvalid arguments! See /guilds help for more information");
-            yaml.set(error + "permission", "&cYou don't have permission to do that!");
-            yaml.set(error + "not-found", "&cCommand not found! See /guilds help for all commands");
-            yaml.set(error + "no-guild", "&cYou're not in a guild!");
-            yaml.set(error + "not-guildmaster", "&cYou're not the Guild Master of this guild");
-            yaml.set(error + "invalid_number", "&c{input} is not a valid number!");
-            yaml.set(error + "already-in-guild", "&c{input} is not a valid number!");
-            yaml.set(error + "player-not-found", "&cPlayer '{player}' does not exist or is not online!");
-            yaml.set(error + "player-not-in-guild", "&cPlayer '{player}' is not in your guild!");
-            yaml.set(error + "invalid-role", "&cRole '{input}' does not exist!");
-            yaml.set(error + "role-no-permission", "&cYour role is not high enough to do that!");
-            yaml.set(error + "not-enough-money", "&aSorry! You don't have enough money to create a guild!");
-            String help = "messages.command.help.";
-            yaml.set(help + "message", "&f/guild {command} {arguments} &7- &f{description}");
-            yaml.set(help + "next-page", "&7See /guilds help {next-page} for the next page");
-            yaml.set(help + "invalid-page", "&cPage not found!");
-            String role = "messages.command.role.";
-            yaml.set(role + "players", "{player} - {role}");
-            String list = "messages.command.list.";
-            yaml.set(list + "format", "The following guilds are:");
-            String create = "messages.command.create.";
-            yaml.set(create + "successful", "&aGuild '{guild}' created successfully!");
-            yaml.set(create + "cancelled", "&cGuild creation cancelled!");
-            yaml.set(create + "warning", "&cType /guilds confirm to create your guild, type /guilds cancel to cancel.");
-            yaml.set(create + "error", "&cSomething went wrong while creating your guild!");
-            yaml.set(create + "requirements", "&cYour guild's name does not match the requirements! You can only use alphanumeric characters and the length of the name cannot exceed 64");
-            yaml.set(create + "guild-name-taken", "&cThis name is already taken!");
-            yaml.set(create + "money-warning", "&c Are you sure you want to spend {amount} to create a guild? (Type /guilds confirm to continue)");
-            String delete = "messages.command.delete.";
-            yaml.set(delete + "successful", "&aDeleted '{guild}' successfully!");
-            yaml.set(delete + "cancelled", "&cGuild deletion cancelled!");
-            yaml.set(delete + "warning", "&cType /guilds confirm to delete your guild, type /guilds cancel to cancel.");
-            yaml.set(delete + "error", "&cSomething went wrong while deleting your guild!");
-            String info = "messages.command.info.";
-            yaml.set(info + "header", "Information for &b{guild}");
-            yaml.set(info + "name", "Name: &b{guild}&r (&bPrefix: {prefix}&r)");
-            yaml.set(info + "master", "Guild Master: &b{master}");
-            yaml.set(info + "member-count", "Members: &b{members}/64&r (&bOnline: {members-online}&r)");
-            yaml.set(info + "rank", "Your rank: &b{rank}");
-            String promote = "messages.command.promote.";
-            yaml.set(promote + "promoted", "&aYou've successfully promoted {player} from {old-rank} to {new-rank}!");
-            yaml.set(promote + "successful", "&aYou've been promoted from {old-rank} to {new-rank}!");
-            yaml.set(promote + "cannot-promote", "&cThis player cannot be promoted any further!");
-            yaml.set(promote + "not-promotion", "&cYou aren't promoting this player!");
-            String demote = "messages.command.demote.";
-            yaml.set(demote + "demoted", "&cYou've been demoted from {old-rank} to {new-rank}!");
-            yaml.set(demote + "successful", "&aYou've successfully demoted {player} from {old-rank} to {new-rank}!");
-            yaml.set(demote + "cannot-demote", "&cThis player cannot be demoted any further!");
-            yaml.set(demote + "not-demotion", "&cYou aren't demoting this player!");
-            String chat = "messages.command.chat.";
-            yaml.set(chat + "message", "&7&lGuild Chat> &r[{role}] {player}: {message}");
-            String accept = "messages.command.accept.";
-            yaml.set(accept + "not-invited", "&cYou aren't invited for this guild!");
-            yaml.set(accept + "guild-full", "&cThis guild is full!");
-            yaml.set(accept + "successful", "&aYou joined guild '{guild}' successfully");
-            yaml.set(accept + "player-joined", "&aPlayer '{player}' joined your guild!");
-            String invite = "messages.command.invite.";
-            yaml.set(invite + "message", "&a{player} has invited you to his/her guild, '{guild}'");
-            yaml.set(invite + "successful", "&aYou've successfully invited {player} to your guild!");
-            yaml.set(invite + "already-in-guild", "&cThis player is already in your guild!");
-            String leave = "messages.command.leave.";
-            yaml.set(leave + "successful", "&aYou've successfully left your guild!");
-            yaml.set(leave + "cancelled", "&cLeaving guild cancelled!");
-            yaml.set(leave + "warning", "&cType /guilds confirm to leave your guild, type /guilds cancel to cancel.");
-            yaml.set(leave + "warning-guildmaster", "&cYou're the Guild Master of this guild, leaving the guild will mean that the guild is deleted. Type /guilds confirm to leave and delete your guild, type /guilds cancel to cancel.");
-            yaml.set(leave + "player-left", "&cPlayer '{player}' left your guild!");
-            String boot = "messages.command.boot.";
-            yaml.set(boot + "successful", "&aSuccessfully kicked {player} from your guild!");
-            yaml.set(boot + "kicked", "&cYou have been kicked from your guild by {kicker}!");
-            yaml.set(boot + "player-kicked", "&cPlayer '{player}' has been kicked from the guild by {kicker}!");
-            String prefix = "messages.command.prefix.";
-            yaml.set(prefix + "successful", "&aGuild's prefix changed successfully!");
-            yaml.set(prefix + "requirements", "&cYour guild's prefix does not match the requirements! You can only use alphanumeric characters and the length of the prefix cannot exceed 6");
-            String confirm = "messages.command.confirm.";
-            yaml.set(confirm + "error", "&cYou have no actions to confirm!");
-            String cancel = "messages.command.cancel.";
-            yaml.set(cancel + "error", "&cYou have no actions to cancel!");
-            String reload = "messages.command.reload.";
-            yaml.set(reload + "reloaded", "&aConfiguration file reloaded!");
-            String update = "messages.command.update.";
-            yaml.set(update + "found", "&aFound an update! Go to {url} to download it!");
-            yaml.set(update + "not-found", "&cNo update found!");
-            String admin = "messages.command.admin.";
-            yaml.set(admin + "delete-successful", "&cGuild removed successfully!");
-            yaml.set(admin + "delete-error", "&cSomething went wrong while removing this guild!");
-            yaml.set(admin + "delete-warning", "&cType /guilds confirm to remove this guild, type /guilds cancel to cancel.");
-            yaml.set(admin + "delete-cancelled", "&cGuild deletion cancelled!");
-            yaml.set(admin + "player-already-in-guild", "&cThis player is already in a guild!");
-            yaml.set(admin + "added-player", "&aAdded player to guild");
-            yaml.set(admin + "player-not-in-guild", "&cPlayer is not in this guild!");
-            yaml.set(admin + "removed-player", "&aRemoved player from guild!");
-            String ally = "messages.commands.ally.";
-            yaml.set(ally + "guild-not-pending", "&cThis guild has not send you an ally request!");
-            yaml.set(ally + "accepted", "&aThis guild is now allied with {guild}!");
-            yaml.set(ally + "accepted-target", "&a{guild} is now allied with us!");
-            yaml.set(ally + "declined", "&c{guild} does not want to be an ally!");
-            yaml.set(ally + "send", "&aSend ally request!");
-            yaml.set(ally + "send-target", "&aRecieved an ally request from {guild}! Type /guilds ally accept {guild} to accept or type /guilds ally decline {guild} to decline");
-            yaml.set(ally + "removed", "&cThis guild is no longer allied with {guild}!");
-            yaml.set(ally + "removed-target", "&c{guild} is no longer allied with us!");
-            yaml.set(ally + "already-allies", "&cYou're already allied with {guild}!");
-            yaml.set(ally + "not-allies", "&cYou aren't allied with {guild}!");
-            String join = "messages.event.join.";
-            yaml.set(join + "pending-invites", "&aYou have {number} pending invite(s) from the guild(s): &e{guilds}");
+        if (Main.getInstance().getConfig().getString("lang").equalsIgnoreCase("en")) {
 
-            this.safeFile();
+            String error = "messages.command.error.";
+            yaml.addDefault(error + "console", "&cThis command can only be executed by a player!");
+            yaml.addDefault(error + "args", "&cInvalid arguments! See /guilds help for more information");
+            yaml.addDefault(error + "permission", "&cYou don't have permission to do that!");
+            yaml.addDefault(error + "not-found", "&cCommand not found! See /guilds help for all commands");
+            yaml.addDefault(error + "no-guild", "&cYou're not in a guild!");
+            yaml.addDefault(error + "not-guildmaster", "&cYou're not the Guild Master of this guild");
+            yaml.addDefault(error + "invalid_number", "&c{input} is not a valid number!");
+            yaml.addDefault(error + "already-in-guild", "&c{input} is not a valid number!");
+            yaml.addDefault(error + "player-not-found", "&cPlayer '{player}' does not exist or is not online!");
+            yaml.addDefault(error + "player-not-in-guild", "&cPlayer '{player}' is not in your guild!");
+            yaml.addDefault(error + "invalid-role", "&cRole '{input}' does not exist!");
+            yaml.addDefault(error + "role-no-permission", "&cYour role is not high enough to do that!");
+            yaml.addDefault(error + "not-enough-money", "&aSorry! You don't have enough money to create a guild!");
+            String help = "messages.command.help.";
+            yaml.addDefault(help + "message", "&f/guild {command} {arguments} &7- &f{description}");
+            yaml.addDefault(help + "next-page", "&7See /guilds help {next-page} for the next page");
+            yaml.addDefault(help + "invalid-page", "&cPage not found!");
+            String role = "messages.command.role.";
+            yaml.addDefault(role + "players", "{player} - {role}");
+            String list = "messages.command.list.";
+            yaml.addDefault(list + "format", "The following guilds are:");
+            String create = "messages.command.create.";
+            yaml.addDefault(create + "successful", "&aGuild '{guild}' created successfully!");
+            yaml.addDefault(create + "cancelled", "&cGuild creation cancelled!");
+            yaml.addDefault(create + "warning", "&cType /guilds confirm to create your guild, type /guilds cancel to cancel.");
+            yaml.addDefault(create + "error", "&cSomething went wrong while creating your guild!");
+            yaml.addDefault(create + "requirements", "&cYour guild's name does not match the requirements! You can only use alphanumeric characters and the length of the name cannot exceed 64");
+            yaml.addDefault(create + "guild-name-taken", "&cThis name is already taken!");
+            yaml.addDefault(create + "money-warning", "&c Are you sure you want to spend {amount} to create a guild? (Type /guilds confirm to continue)");
+            String delete = "messages.command.delete.";
+            yaml.addDefault(delete + "successful", "&aDeleted '{guild}' successfully!");
+            yaml.addDefault(delete + "cancelled", "&cGuild deletion cancelled!");
+            yaml.addDefault(delete + "warning", "&cType /guilds confirm to delete your guild, type /guilds cancel to cancel.");
+            yaml.addDefault(delete + "error", "&cSomething went wrong while deleting your guild!");
+            String info = "messages.command.info.";
+            yaml.addDefault(info + "header", "Information for &b{guild}");
+            yaml.addDefault(info + "name", "Name: &b{guild}&r (&bPrefix: {prefix}&r)");
+            yaml.addDefault(info + "master", "Guild Master: &b{master}");
+            yaml.addDefault(info + "member-count", "Members: &b{members}/64&r (&bOnline: {members-online}&r)");
+            yaml.addDefault(info + "rank", "Your rank: &b{rank}");
+            String promote = "messages.command.promote.";
+            yaml.addDefault(promote + "promoted", "&aYou've successfully promoted {player} from {old-rank} to {new-rank}!");
+            yaml.addDefault(promote + "successful", "&aYou've been promoted from {old-rank} to {new-rank}!");
+            yaml.addDefault(promote + "cannot-promote", "&cThis player cannot be promoted any further!");
+            yaml.addDefault(promote + "not-promotion", "&cYou aren't promoting this player!");
+            String demote = "messages.command.demote.";
+            yaml.addDefault(demote + "demoted", "&cYou've been demoted from {old-rank} to {new-rank}!");
+            yaml.addDefault(demote + "successful", "&aYou've successfully demoted {player} from {old-rank} to {new-rank}!");
+            yaml.addDefault(demote + "cannot-demote", "&cThis player cannot be demoted any further!");
+            yaml.addDefault(demote + "not-demotion", "&cYou aren't demoting this player!");
+            String chat = "messages.command.chat.";
+            yaml.addDefault(chat + "message", "&7&lGuild Chat> &r[{role}] {player}: {message}");
+            String accept = "messages.command.accept.";
+            yaml.addDefault(accept + "not-invited", "&cYou aren't invited for this guild!");
+            yaml.addDefault(accept + "guild-full", "&cThis guild is full!");
+            yaml.addDefault(accept + "successful", "&aYou joined guild '{guild}' successfully");
+            yaml.addDefault(accept + "player-joined", "&aPlayer '{player}' joined your guild!");
+            String invite = "messages.command.invite.";
+            yaml.addDefault(invite + "message", "&a{player} has invited you to his/her guild, '{guild}'");
+            yaml.addDefault(invite + "successful", "&aYou've successfully invited {player} to your guild!");
+            yaml.addDefault(invite + "already-in-guild", "&cThis player is already in your guild!");
+            String leave = "messages.command.leave.";
+            yaml.addDefault(leave + "successful", "&aYou've successfully left your guild!");
+            yaml.addDefault(leave + "cancelled", "&cLeaving guild cancelled!");
+            yaml.addDefault(leave + "warning", "&cType /guilds confirm to leave your guild, type /guilds cancel to cancel.");
+            yaml.addDefault(leave + "warning-guildmaster", "&cYou're the Guild Master of this guild, leaving the guild will mean that the guild is deleted. Type /guilds confirm to leave and delete your guild, type /guilds cancel to cancel.");
+            yaml.addDefault(leave + "player-left", "&cPlayer '{player}' left your guild!");
+            String boot = "messages.command.boot.";
+            yaml.addDefault(boot + "successful", "&aSuccessfully kicked {player} from your guild!");
+            yaml.addDefault(boot + "kicked", "&cYou have been kicked from your guild by {kicker}!");
+            yaml.addDefault(boot + "player-kicked", "&cPlayer '{player}' has been kicked from the guild by {kicker}!");
+            String prefix = "messages.command.prefix.";
+            yaml.addDefault(prefix + "successful", "&aGuild's prefix changed successfully!");
+            yaml.addDefault(prefix + "requirements", "&cYour guild's prefix does not match the requirements! You can only use alphanumeric characters and the length of the prefix cannot exceed 6");
+            String confirm = "messages.command.confirm.";
+            yaml.addDefault(confirm + "error", "&cYou have no actions to confirm!");
+            String cancel = "messages.command.cancel.";
+            yaml.addDefault(cancel + "error", "&cYou have no actions to cancel!");
+            String reload = "messages.command.reload.";
+            yaml.addDefault(reload + "reloaded", "&aConfiguration file reloaded!");
+            String update = "messages.command.update.";
+            yaml.addDefault(update + "found", "&aFound an update! Go to {url} to download it!");
+            yaml.addDefault(update + "not-found", "&cNo update found!");
+            String admin = "messages.command.admin.";
+            yaml.addDefault(admin + "delete-successful", "&cGuild removed successfully!");
+            yaml.addDefault(admin + "delete-error", "&cSomething went wrong while removing this guild!");
+            yaml.addDefault(admin + "delete-warning", "&cType /guilds confirm to remove this guild, type /guilds cancel to cancel.");
+            yaml.addDefault(admin + "delete-cancelled", "&cGuild deletion cancelled!");
+            yaml.addDefault(admin + "player-already-in-guild", "&cThis player is already in a guild!");
+            yaml.addDefault(admin + "added-player", "&aAdded player to guild");
+            yaml.addDefault(admin + "player-not-in-guild", "&cPlayer is not in this guild!");
+            yaml.addDefault(admin + "removed-player", "&aRemoved player from guild!");
+            String ally = "messages.command.ally.";
+            yaml.addDefault(ally + "guild-not-pending", "&cThis guild has not send you an ally request!");
+            yaml.addDefault(ally + "accepted", "&aThis guild is now allied with {guild}!");
+            yaml.addDefault(ally + "accepted-target", "&a{guild} is now allied with us!");
+            yaml.addDefault(ally + "declined", "&c{guild} does not want to be an ally!");
+            yaml.addDefault(ally + "send", "&aSend ally request!");
+            yaml.addDefault(ally + "send-target", "&aRecieved an ally request from {guild}! Type /guilds ally accept {guild} to accept or type /guilds ally decline {guild} to decline");
+            yaml.addDefault(ally + "removed", "&cThis guild is no longer allied with {guild}!");
+            yaml.addDefault(ally + "removed-target", "&c{guild} is no longer allied with us!");
+            yaml.addDefault(ally + "already-allies", "&cYou're already allied with {guild}!");
+            yaml.addDefault(ally + "not-allies", "&cYou aren't allied with {guild}!");
+            String join = "messages.event.join.";
+            yaml.addDefault(join + "pending-invites", "&aYou have {number} pending invite(s) from the guild(s): &e{guilds}");
+            this.saveFile();
         }
-    }
+    }*/
 }
