@@ -8,7 +8,7 @@ import org.bukkit.plugin.PluginDescriptionFile;
 
 public class CommandVersion extends CommandBase {
     public CommandVersion() {
-        super("version", "Check version", "guilds.command.version", true, null, null, 0, 0);
+        super("version", "Check version", "guilds.command.version", true, new String[]{"ver"}, null, 0, 0);
     }
 
     public void execute(CommandSender sender, String[] args) {
