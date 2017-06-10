@@ -65,8 +65,9 @@ public class Main extends JavaPlugin {
     public void onEnable() {
         this.saveDefaultConfig();
         this.saveResource("english.yml", true);
-
-
+        this.saveResource("chinese.yml", true);
+        this.saveResource("french.yml", true);
+        this.saveResource("dutch.yml", true);
         PREFIX = ChatColor.translateAlternateColorCodes('&', this.getConfig().getString("plugin-prefix")) + ChatColor.RESET + " ";
         instance = this;
 
