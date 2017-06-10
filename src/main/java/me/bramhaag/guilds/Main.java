@@ -70,7 +70,7 @@ public class Main extends JavaPlugin {
         this.saveResource("dutch.yml", true);
 
         try {
-            Main.getInstance().yaml.load(Main.getInstance().file);
+            this.yaml.load(this.file);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InvalidConfigurationException e) {
