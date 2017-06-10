@@ -1,13 +1,11 @@
 #You can choose a language file from the list of the languages section in this config.yml right under this option.
 lang: english
-
 #Here are all the language file names that you can use, if you use any other file name it can cause errors!
 #languages:
 # - english
 # - chinese
 # - french
 # - dutch
-
 #The prefix of all messages send by this plugin to a player
 plugin-prefix: "&a[Guilds]"
 
