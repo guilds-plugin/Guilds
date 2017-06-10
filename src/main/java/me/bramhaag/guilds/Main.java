@@ -76,8 +76,6 @@ public class Main extends JavaPlugin {
         } catch (InvalidConfigurationException e) {
             e.printStackTrace();
         }
-        this.reloadConfig();
-        this.setDatabaseType();
         PREFIX = ChatColor.translateAlternateColorCodes('&', this.getConfig().getString("plugin-prefix")) + ChatColor.RESET + " ";
         instance = this;
 
