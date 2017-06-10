@@ -116,7 +116,7 @@ public enum Message {
     COMMAND_ERROR_NOT_ENOUGH_MONEY;
 
     public static void sendMessage(CommandSender sender, Message message) {
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.PREFIX + Main.getInstance().getConfig().getString(getPath(message))));
+        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.PREFIX + Main.getInstance().yaml.getString(getPath(message))));
     }
 
     public static void sendMessage(CommandSender sender, String message) {
@@ -128,7 +128,7 @@ public enum Message {
             throw new IllegalArgumentException("Amount of keys and values do not match!");
         }
 
-        String message = Main.getInstance().getConfig().getString(getPath(this));
+        String message = Main.getInstance().yaml.getString(getPath(this));
 
         if (message == null) {
             return null;
