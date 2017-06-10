@@ -22,6 +22,7 @@ import me.clip.placeholderapi.external.EZPlaceholderHook;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -67,6 +68,16 @@ public class Main extends JavaPlugin {
         this.saveResource("chinese.yml", true);
         this.saveResource("french.yml", true);
         this.saveResource("dutch.yml", true);
+
+        try {
+            Main.getInstance().yaml.load(Main.getInstance().file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+        Main.getInstance().reloadConfig();
+        Main.getInstance().setDatabaseType();
         PREFIX = ChatColor.translateAlternateColorCodes('&', this.getConfig().getString("plugin-prefix")) + ChatColor.RESET + " ";
         instance = this;
 
