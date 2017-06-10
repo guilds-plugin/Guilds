@@ -7,6 +7,7 @@ lang: english
 # - chinese
 # - french
 # - dutch
+
 #The prefix of all messages send by this plugin to a player
 plugin-prefix: "&a[Guilds]"
 
@@ -15,6 +16,7 @@ Requirement:
 
 #List your server at https://glaremasters.me/server/
 server-list: false
+
 updater:
   check: true
 
