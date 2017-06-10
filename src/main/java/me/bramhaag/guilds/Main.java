@@ -22,7 +22,6 @@ import me.clip.placeholderapi.external.EZPlaceholderHook;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -63,19 +62,7 @@ public class Main extends JavaPlugin {
     @SuppressWarnings("deprecation")
     @Override
     public void onEnable() {
-        this.saveDefaultConfig();
-        this.saveResource("english.yml", true);
-        this.saveResource("chinese.yml", true);
-        this.saveResource("french.yml", true);
-        this.saveResource("dutch.yml", true);
 
-        try {
-            this.yaml.load(this.file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
         PREFIX = ChatColor.translateAlternateColorCodes('&', this.getConfig().getString("plugin-prefix")) + ChatColor.RESET + " ";
         instance = this;
 
@@ -130,7 +117,6 @@ public class Main extends JavaPlugin {
         commandHandler.register(new CommandVersion());
         commandHandler.register(new CommandHelp());
 
-
         if (Main.getInstance().getConfig().getBoolean("chat.enable")) {
             getServer().getPluginManager().registerEvents(new ChatListener(), this);
         }
@@ -146,7 +132,6 @@ public class Main extends JavaPlugin {
 
         Metrics metrics = new Metrics(this);
 
-
         try {
             BasicFileAttributes attr = Files.readAttributes(Paths.get(getFile().getAbsolutePath()), BasicFileAttributes.class);
             creationTime = attr.creationTime().toMillis();
@@ -156,7 +141,6 @@ public class Main extends JavaPlugin {
 
             creationTime = 0;
         }
-
 
         if (getConfig().getBoolean("updater.check")) {
             Updater.checkForUpdates((result, exception) -> {
@@ -171,6 +155,15 @@ public class Main extends JavaPlugin {
         if (getConfig().getBoolean("server-list")) {
             getServer().getScheduler().scheduleAsyncRepeatingTask(this, this::sendUpdate, 0L, 6000L); //5 minutes
         }
+
+        this.saveResource("english.yml", true);
+        this.saveResource("chinese.yml", true);
+        this.saveResource("french.yml", true);
+        this.saveResource("dutch.yml", true);
+        this.saveDefaultConfig();
+
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "guild reload");
+
     }
 
     @Override

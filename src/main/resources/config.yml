@@ -10,7 +10,7 @@ lang: english
 plugin-prefix: "&a[Guilds]"
 
 Requirement:
-    cost: 0
+  cost: 0
 
 #List your server at https://glaremasters.me/server/
 server-list: false
