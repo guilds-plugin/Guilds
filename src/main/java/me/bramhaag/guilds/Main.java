@@ -59,6 +59,9 @@ public class Main extends JavaPlugin {
     public File file = new File(this.getDataFolder(), this.getConfig().getString("lang") + ".yml");
     public YamlConfiguration yaml = YamlConfiguration.loadConfiguration(this.file);
 
+    public File guildhomes = new File(this.getDataFolder(), "guild-homes.yml");
+    public YamlConfiguration guildhomesconfig = YamlConfiguration.loadConfiguration(this.guildhomes);
+
     @SuppressWarnings("deprecation")
     @Override
     public void onEnable() {
@@ -110,6 +113,7 @@ public class Main extends JavaPlugin {
         commandHandler.register(new CommandCancel());
 
         commandHandler.register(new CommandAdmin());
+        commandHandler.register(new CommandSetHome());
 
         commandHandler.register(new CommandReload());
         commandHandler.register(new CommandList());
@@ -131,6 +135,14 @@ public class Main extends JavaPlugin {
         }
 
         Metrics metrics = new Metrics(this);
+
+        try {
+            Main.getInstance().guildhomesconfig.save(Main.getInstance().guildhomes);
+        } catch (IOException e) {
+            getLogger().log(Level.WARNING, "Could not create Guild's Home config!");
+            e.printStackTrace();
+        }
+
 
         try {
             BasicFileAttributes attr = Files.readAttributes(Paths.get(getFile().getAbsolutePath()), BasicFileAttributes.class);

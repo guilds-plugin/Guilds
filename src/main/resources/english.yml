@@ -31,6 +31,7 @@ messages:
       requirements: "&cYour guild's name does not match the requirements! You can only use alphanumeric characters and the length of the name cannot exceed 64"
       guild-name-taken: "&cThis name is already taken!"
       money-warning: "&c Are you sure you want to spend {amount} to create a guild? (Type /guilds confirm to continue)"
+      guild-home: "&cYou've set your guild home!"
     delete:
       successful: "&aDeleted '{guild}' successfully!"
       cancelled: "&cGuild deletion cancelled!"
