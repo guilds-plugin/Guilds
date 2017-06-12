@@ -14,12 +14,16 @@ messages:
       invalid-role: "&cLe rôle '{input}' n'éxiste pas !"
       guild-not-found: "&cLa guilde '{input}' n'a pas été trouvée !"
       role-no-permission: "&cVotre grade n'est pas assez élevé pour faire cela !"
+      not-enough-money: "&aVous avez été téléporté à votre home de guilde !"
+      no-home-set: "&cVous n'avez pas de home pour votre guilde ! Faite &a/guild sethome &c pour en créer un !"
     help:
       message: "&f/guild {command} {arguments} &7- &f{description}"
       next-page: "&7Faite /guilds help {next-page} pour changer de pasge"
       invalid-page: "&cPage non trouvée !"
     role:
       players: "{player} - {role}"
+    list:
+      format: "Les guildes sont:"
     create:
       successful: "&aLa guild '{guild}' a été crée avec succès !"
       cancelled: "&cLa création de la guilde a été annulé !"
@@ -27,6 +31,8 @@ messages:
       error: "&cQuelque chose ne va pas dans la création de la guilde !"
       requirements: "&cLe nom de votre guilde n'a pas les conditions espéré ! Vous pouvez seulement vous servir des lettres alphanumeriques et la longueur ne peut pas dépasser 32."
       guild-name-taken: "&cCe nom est déjà utilisé !"
+      money-warning: "&c Êtes-vous sûr de vouloir dépenser {amount} pour créer une guilde ? (Fait /guilds confirm pour continuer)"
+      guild-home: "&aVous avez créer le home de votre guilde !"
     delete:
       successful: "&aLa guilde '{guild}' a été supprimé avec succès !"
       cancelled: "&cSuppression de la guilde annulé !"
@@ -101,6 +107,8 @@ messages:
       removed-target: "&c{guild} n'est plus en aliance avec cette guilde !"
       already-allies: "&cVous êtes déjà en alliance avec {guild} !"
       not-allies: "&cVous n'êtes pas allié avec {guild} !"
+    home:
+      teleported: "&aVous avez été téléporter à votre home de guilde !"
   event:
     join:
       pending-invites: "&aVous avez {number} invitation(s) de: &e{guilds}"

@@ -116,7 +116,8 @@ public enum Message {
     COMMAND_ALLY_NOT_ALLIES,
     COMMAND_CREATE_NAME_REQUIREMENTS,
     COMMAND_CREATE_MONEY_WARNING,
-    COMMAND_ERROR_NOT_ENOUGH_MONEY;
+    COMMAND_ERROR_NOT_ENOUGH_MONEY,
+    COMMAND_HOME_TELEPORTED;
 
     public static void sendMessage(CommandSender sender, Message message) {
         sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.PREFIX + Main.getInstance().yaml.getString(getPath(message))));

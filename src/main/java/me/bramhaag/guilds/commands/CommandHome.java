@@ -5,7 +5,6 @@ import me.bramhaag.guilds.commands.base.CommandBase;
 import me.bramhaag.guilds.guild.Guild;
 import me.bramhaag.guilds.message.Message;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -35,7 +34,7 @@ public class CommandHome extends CommandBase {
             guildhome.setPitch(Float.parseFloat(data[5]));
 
             player.teleport(guildhome);
-            player.sendMessage(ChatColor.GREEN + "[Guilds] You've teleported to your guild home!");
+            Message.sendMessage(player, Message.COMMAND_HOME_TELEPORTED);
         }
     }
 }

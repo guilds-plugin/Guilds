@@ -103,9 +103,10 @@ roles:
       add-ally: true
       remove-ally: true
       change-prefix: false
+      change-home: true
       change-master: false
       remove-guild: false
-      change-home: true
+
   2:
     name: "Veteran"
     permissions:
