@@ -22,6 +22,8 @@ messages:
       invalid-page: "&c該頁面不存在!"
     role:
       players: "{player} - {role}"
+    list:
+      format: "The following guilds are:"
     create:
       successful: "&a成功創建公會 '{guild}' !"
       cancelled: "&c已取消公會創建之動作!"
@@ -29,6 +31,7 @@ messages:
       error: "&c創建公會時發生錯誤, 如看到此訊息請聯繫管理員"
       requirements: "&c您的公會名稱與伺服器所設定的字元要求不符合&4"
       guild-name-taken: "&c這個公會名字已經被使用!"
+      money-warning: "&c Are you sure you want to spend {amount} to create a guild? (Type /guilds confirm to continue)"
       guild-home: "&aYou've set your guild home!"
     delete:
       successful: "&a成功刪除公會 '{guild}' !"
