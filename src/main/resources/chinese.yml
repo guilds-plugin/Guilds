@@ -23,7 +23,7 @@ messages:
     role:
       players: "{player} - {role}"
     list:
-      format: "The following guilds are:"
+      format: "公會列表如下:"
     create:
       successful: "&a成功創建公會 '{guild}' !"
       cancelled: "&c已取消公會創建之動作!"
