@@ -15,7 +15,7 @@ messages:
       guild-not-found: "&cDe guild '{input}' kan niet worden gevonden!"
       role-no-permission: "&cJou rank is niet hoog genoeg om dit te doen!"
       not-enough-money: "&aSorry! Je hebt niet genoeg geld om dit uit te voeren!"
-      no-home-set: "&cNo home set! Use &a/guild sethome &cto set a home!"
+      no-home-set: "&cEr is nog geen guild home gezet! Gebruik &a/guild sethome &com een guild home te zetten!"
     help:
       message: "&f/guild {command} {arguments} &7- &f{description}"
       next-page: "&7Zie /guilds help {next-page} voor de volgende pagina."
@@ -32,7 +32,7 @@ messages:
       requirements: "&cDe naam van jou guild doet niet toe aan de eisen! Je kan alleen alfabetische tekens gebruiken en de lengte van jou Guild naam mag maximaal 64 tekens lang zijn"
       guild-name-taken: "&cDeze naam is al bezet"
       money-warning: "&cWeet je zeker dat je {amount} wilt spenderen om een guild te maken? (Type /guilds confirm om dit te voltooien)"
-      guild-home: "&aYou've set your guild home!"
+      guild-home: "&aJe hebt je guild home gezet!"
     delete:
       successful: "&aJou guild '{guild}' is nu verwijderd!"
       cancelled: "&cJe hebt het verwijderen van je guild gestopt"
@@ -108,7 +108,7 @@ messages:
       already-allies: "&cJe bent al een ally van {guild}!"
       not-allies: "&cJe bent niet geallied met {guild}!"
     home:
-      teleported: "&aYou've teleported to your guild home!"
+      teleported: "&aJe bent geteleporteerd naar je guild home!"
   event:
     join:
       pending-invites: "&aJe hebt {number} wachtende verzoek(en) van de guild(s): &e{guilds}"
