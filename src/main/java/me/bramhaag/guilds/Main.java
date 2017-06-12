@@ -136,14 +136,7 @@ public class Main extends JavaPlugin {
         }
 
         Metrics metrics = new Metrics(this);
-
-        try {
-            Main.getInstance().guildhomesconfig.save(Main.getInstance().guildhomes);
-        } catch (IOException e) {
-            getLogger().log(Level.WARNING, "Could not create Guild's Home config!");
-            e.printStackTrace();
-        }
-
+        this.saveGuildhomes();
 
         try {
             BasicFileAttributes attr = Files.readAttributes(Paths.get(getFile().getAbsolutePath()), BasicFileAttributes.class);
@@ -177,6 +170,15 @@ public class Main extends JavaPlugin {
 
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "guild reload");
 
+    }
+
+    public void saveGuildhomes() {
+        try {
+            Main.getInstance().guildhomesconfig.save(Main.getInstance().guildhomes);
+        } catch (IOException e) {
+            getLogger().log(Level.WARNING, "Could not create Guild's Home config!");
+            e.printStackTrace();
+        }
     }
 
     @Override
