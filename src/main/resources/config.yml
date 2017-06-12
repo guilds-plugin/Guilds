@@ -87,8 +87,10 @@ roles:
       add-ally: true
       remove-ally: true
       change-prefix: true
+      change-home: true
       change-master: true
       remove-guild: true
+
   1:
     name: "Officer"
     permissions:
@@ -103,6 +105,7 @@ roles:
       change-prefix: false
       change-master: false
       remove-guild: false
+      change-home: true
   2:
     name: "Veteran"
     permissions:

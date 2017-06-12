@@ -3,6 +3,7 @@ package me.bramhaag.guilds.commands;
 import me.bramhaag.guilds.Main;
 import me.bramhaag.guilds.commands.base.CommandBase;
 import me.bramhaag.guilds.guild.Guild;
+import me.bramhaag.guilds.guild.GuildRole;
 import me.bramhaag.guilds.message.Message;
 import org.bukkit.entity.Player;
 
@@ -17,6 +18,17 @@ public class CommandSetHome extends CommandBase {
 
     @Override
     public void execute(Player player, String[] args) {
+        Guild guild = Guild.getGuild(player.getUniqueId());
+        if (guild == null) {
+            Message.sendMessage(player, Message.COMMAND_ERROR_NO_GUILD);
+            return;
+        }
+
+        GuildRole role = GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole());
+        if (!role.canChangeHome()) {
+            Message.sendMessage(player, Message.COMMAND_ERROR_ROLE_NO_PERMISSION);
+            return;
+        }
 
         String world = player.getWorld().getName();
         double xloc = player.getLocation().getX();

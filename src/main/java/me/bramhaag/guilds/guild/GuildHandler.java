@@ -64,10 +64,11 @@ public class GuildHandler implements IHandler {
             boolean addAlly = section.getBoolean(path + "add-ally");
             boolean removeAlly = section.getBoolean(path + "remove-ally");
             boolean changePrefix = section.getBoolean(path + "change-prefix");
+            boolean changeHome = section.getBoolean(path + "change-home");
             boolean changeMaster = section.getBoolean(path + "change-master");
             boolean removeGuild = section.getBoolean(path + "remove-guild");
 
-            GuildRole role = new GuildRole(name, level, chat, allyChat, invite, kick, promote, demote, addAlly, removeAlly, changePrefix, changeMaster, removeGuild);
+            GuildRole role = new GuildRole(name, level, chat, allyChat, invite, kick, promote, demote, addAlly, removeAlly, changePrefix, changeHome, changeMaster, removeGuild);
             roles.add(role);
         }
     }

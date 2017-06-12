@@ -18,13 +18,15 @@ public class GuildRole {
     private boolean promote;
     private boolean demote;
     private boolean changePrefix;
+    private boolean changeHome;
     private boolean changeMaster;
     private boolean removeGuild;
     private boolean addAlly;
     private boolean removeAlly;
     private boolean allyChat;
 
-    GuildRole(String name, int level, boolean chat, boolean allyChat, boolean invite, boolean kick, boolean promote, boolean demote, boolean addAlly, boolean removeAlly, boolean changePrefix, boolean changeMaster, boolean removeGuild) {
+
+    GuildRole(String name, int level, boolean chat, boolean allyChat, boolean invite, boolean kick, boolean promote, boolean demote, boolean addAlly, boolean removeAlly, boolean changePrefix, boolean changeHome, boolean changeMaster, boolean removeGuild) {
         this.name = name;
 
         this.level = level;
@@ -38,8 +40,10 @@ public class GuildRole {
         this.addAlly = addAlly;
         this.removeAlly = removeAlly;
         this.changePrefix = changePrefix;
+        this.changeHome = changeHome;
         this.changeMaster = changeMaster;
         this.removeGuild = removeGuild;
+
     }
 
 
@@ -73,6 +77,10 @@ public class GuildRole {
 
     public boolean canChangePrefix() {
         return changePrefix;
+    }
+
+    public boolean canChangeHome() {
+        return changeHome;
     }
 
     public boolean canChangeMaster() {

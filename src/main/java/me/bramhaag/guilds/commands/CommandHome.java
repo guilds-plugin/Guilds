@@ -3,6 +3,7 @@ package me.bramhaag.guilds.commands;
 import me.bramhaag.guilds.Main;
 import me.bramhaag.guilds.commands.base.CommandBase;
 import me.bramhaag.guilds.guild.Guild;
+import me.bramhaag.guilds.message.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -21,7 +22,7 @@ public class CommandHome extends CommandBase {
     @Override
     public void execute(Player player, String[] args) {
         if (Main.getInstance().guildhomesconfig.getString(Guild.getGuild(player.getUniqueId()).getName()) == null)
-            player.sendMessage("NO HOME SET USE /SETHOME TO SET A HOME");
+            Message.sendMessage(player, Message.COMMAND_ERROR_NO_HOME_SET);
         else {
             String[] data = Main.getInstance().guildhomesconfig.getString(Guild.getGuild(player.getUniqueId()).getName()).split(":");
             World w = Bukkit.getWorld(data[0]);
