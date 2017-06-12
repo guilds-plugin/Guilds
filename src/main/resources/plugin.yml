@@ -54,6 +54,7 @@ permissions:
       guilds.command.role: true
       guilds.command.version: true
       guilds.command.list: true
+      guilds.command.bugreport: true
     default: true
   guilds.command.accept:
     description: Accept invite to a guild
@@ -93,3 +94,5 @@ permissions:
     description: Display which version of the plugin is currently running on the server!
   guilds.command.list:
     description: Display all guilds on the server
+  guilds.command.bugreport:
+    description: Important information to include in your bug report!
