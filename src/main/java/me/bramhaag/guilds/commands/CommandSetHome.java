@@ -36,20 +36,23 @@ public class CommandSetHome extends CommandBase {
         * Code here for the /guild home
         */
 
-        String[] data = Main.getInstance().guildhomesconfig.getString(Guild.getGuild(player.getUniqueId()).getName()).split(":");
-        World w = Bukkit.getWorld(data[0]);
-        double x = Double.parseDouble(data[1]);
-        double y = Double.parseDouble(data[2]);
-        double z = Double.parseDouble(data[3]);
+        if (Main.getInstance().guildhomesconfig.getString(Guild.getGuild(player.getUniqueId()).getName()) == null)
+            player.sendMessage("NO HOME SET USE /SETHOME TO SET A HOME");
+        else {
+            String[] data = Main.getInstance().guildhomesconfig.getString(Guild.getGuild(player.getUniqueId()).getName()).split(":");
+            World w = Bukkit.getWorld(data[0]);
+            double x = Double.parseDouble(data[1]);
+            double y = Double.parseDouble(data[2]);
+            double z = Double.parseDouble(data[3]);
 
-        Location guildhome = new Location(w, x, y, z);
-        guildhome.setYaw(Float.parseFloat(data[4]));
-        guildhome.setPitch(Float.parseFloat(data[5]));
+            Location guildhome = new Location(w, x, y, z);
+            guildhome.setYaw(Float.parseFloat(data[4]));
+            guildhome.setPitch(Float.parseFloat(data[5]));
 
-        player.teleport(guildhome);
-
-        /*
-        * Send a message that the player has been teleported to their home.
-        */
+            player.teleport(guildhome);
+            /*
+             * Send a message that the player has been teleported to their home.
+             */
+        }
     }
 }
