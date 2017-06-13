@@ -22,6 +22,7 @@ public class ChatListener implements Listener {
         }
 
         if (CommandChat.guildchat) {
+            e.setCancelled(true);
             if (guild == null) {
                 Message.sendMessage(player, Message.COMMAND_ERROR_NO_GUILD);
                 return;
@@ -35,7 +36,7 @@ public class ChatListener implements Listener {
 
             String message = e.getMessage();
             guild.sendMessage(Message.COMMAND_CHAT_MESSAGE.replace("{role}", GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole()).getName(), "{player}", player.getName(), "{message}", message));
-            e.setCancelled(true);
+            return;
         }
 
         String prefixFormat = ChatColor.translateAlternateColorCodes('&', Main.getInstance().getConfig().getString("prefix.format").replace("{prefix}", guild.getPrefix()));
