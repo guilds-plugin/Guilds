@@ -18,26 +18,24 @@ public class ChatListener implements Listener {
     public void onChat(AsyncPlayerChatEvent e) {
         Player player = e.getPlayer();
         Guild guild = Guild.getGuild(player.getUniqueId());
+
         if (guild == null) {
+            Message.sendMessage(player, Message.COMMAND_ERROR_NO_GUILD);
+            return;
+        }
+
+        GuildRole role = GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole());
+        if (!role.canChat()) {
+            Message.sendMessage(player, Message.COMMAND_ERROR_ROLE_NO_PERMISSION);
             return;
         }
 
         if (CommandChat.guildchat.contains(player.getUniqueId())) {
-            e.setCancelled(true);
-            if (guild == null) {
-                Message.sendMessage(player, Message.COMMAND_ERROR_NO_GUILD);
-                return;
-            }
-
-            GuildRole role = GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole());
-            if (!role.canChat()) {
-                Message.sendMessage(player, Message.COMMAND_ERROR_ROLE_NO_PERMISSION);
-                return;
-            }
-
             String message = e.getMessage();
             guild.sendMessage(Message.COMMAND_CHAT_MESSAGE.replace("{role}", GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole()).getName(), "{player}", player.getName(), "{message}", message));
+            e.setCancelled(true);
             return;
+
         } else
             Bukkit.broadcastMessage("DEBUG:: Player " + player.getName() + "  is not in the guild chat list.");
 
