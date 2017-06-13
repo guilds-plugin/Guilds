@@ -12,6 +12,8 @@ public class CommandChat extends CommandBase {
         super("chat", "Send a message to your guild members", "guilds.command.chat", false, new String[]{"c"}, "<message>", 1, -1);
     }
 
+    public static boolean guildchat = false;
+
     public void execute(Player player, String[] args) {
         Guild guild = Guild.getGuild(player.getUniqueId());
 
@@ -23,6 +25,26 @@ public class CommandChat extends CommandBase {
         GuildRole role = GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole());
         if (!role.canChat()) {
             Message.sendMessage(player, Message.COMMAND_ERROR_ROLE_NO_PERMISSION);
+            return;
+        }
+
+        if (args[1].equalsIgnoreCase("true")) {
+            if (guildchat) {
+                player.sendMessage("GUILD CHAT IS ALREADY ENABLED");
+            } else {
+                guildchat = false;
+                player.sendMessage("GUILD CHAT HAS BEEN DISABLED");
+            }
+            return;
+        }
+
+        if (args[1].equalsIgnoreCase("false")) {
+            if (!guildchat) {
+                player.sendMessage("GUILD CHAT IS ALREADY DISABLED");
+            } else {
+                guildchat = true;
+                player.sendMessage("GUILD CHAT HAS BEEN ENABLED");
+            }
             return;
         }
 
