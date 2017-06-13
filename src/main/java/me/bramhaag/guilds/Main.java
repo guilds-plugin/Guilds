@@ -143,6 +143,7 @@ public class Main extends JavaPlugin {
 
         Metrics metrics = new Metrics(this);
         this.saveGuildhomes();
+        this.saveGuildclaims();
 
         try {
             BasicFileAttributes attr = Files.readAttributes(Paths.get(getFile().getAbsolutePath()), BasicFileAttributes.class);
@@ -168,7 +169,6 @@ public class Main extends JavaPlugin {
             getServer().getScheduler().scheduleAsyncRepeatingTask(this, this::sendUpdate, 0L, 6000L); //5 minutes
         }
 
-        this.saveResource("guild-claims.yml", true);
         this.saveResource("english.yml", true);
         this.saveResource("chinese.yml", true);
         this.saveResource("french.yml", true);
@@ -184,6 +184,15 @@ public class Main extends JavaPlugin {
             Main.getInstance().guildhomesconfig.save(Main.getInstance().guildhomes);
         } catch (IOException e) {
             getLogger().log(Level.WARNING, "Could not create Guild's Home config!");
+            e.printStackTrace();
+        }
+    }
+
+    public void saveGuildclaims() {
+        try {
+            Main.getInstance().guildclaimsconfig.save(Main.getInstance().guildclaims);
+        } catch (IOException e) {
+            getLogger().log(Level.WARNING, "Could not create Guild's Claims config!");
             e.printStackTrace();
         }
     }
