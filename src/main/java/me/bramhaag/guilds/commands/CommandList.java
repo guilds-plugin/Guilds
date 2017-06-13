@@ -25,6 +25,6 @@ public class CommandList extends CommandBase {
                 .map(Guild::getName)
                 .collect(Collectors.joining("\n"));
         Message.sendMessage(player, Message.COMMAND_LIST_FORMAT);
-        player.sendMessage("§b" + guilds + " - §8(§b{members}/64§8)");
+        player.sendMessage("§b" + guilds + " - §8(§b" + String.valueOf(guild.getMembers().size()) + "/64§8)");
     }
 }
