@@ -32,7 +32,7 @@ public class CommandChat extends CommandBase {
             return;
         }
 
-        if (args.length == 0) {
+        if (args[0].equalsIgnoreCase("toggle")) {
             if (guildchat.contains(player.getUniqueId())) {
                 guildchat.remove(player.getUniqueId());
                 player.sendMessage("§cYou have been removed from the guild chat.");
