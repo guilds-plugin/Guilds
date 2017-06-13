@@ -95,7 +95,7 @@ roles:
   1:
     name: "Officer"
     permissions:
-      claim: false
+      claim: tue
       chat: true
       ally-chat: true
       invite: true
