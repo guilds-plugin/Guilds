@@ -8,7 +8,7 @@ import me.bramhaag.guilds.message.Message;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 
-import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by MisterFantasy on 13-6-2017.
@@ -35,15 +35,19 @@ public class CommandClaim extends CommandBase {
 
         Chunk chunk = player.getWorld().getChunkAt(player.getLocation());
 
-        if (Main.getInstance().guildclaimsconfig.getStringList(guild.getName() + ".claims").contains(chunk)) {
+        String[] singlechunk = new String[0];
+        List<String> chunks = Main.getInstance().guildclaimsconfig.getStringList(guild.getName() + ".claims");
+
+        for (String s : chunks)
+            singlechunk = s.split(":");
+
+
+        if (chunks.contains(singlechunk[0] + singlechunk[1])) {
             player.sendMessage("You have already claimed this chunk.");
+
         } else {
-            Main.getInstance().guildhomesconfig.getStringList(guild.getName() + ".claims").add(chunk.toString());
-            try {
-                Main.getInstance().guildhomesconfig.save(Main.getInstance().guildclaims);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            chunks.add(chunk.getX() + ":" + chunk.getZ());
+            Main.getInstance().saveGuildhomes();
 
             player.sendMessage("Claimed this chunk!");
         }

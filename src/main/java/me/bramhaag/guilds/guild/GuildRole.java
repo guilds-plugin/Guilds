@@ -29,9 +29,7 @@ public class GuildRole {
 
     GuildRole(String name, int level, boolean chat, boolean allyChat, boolean invite, boolean kick, boolean promote, boolean demote, boolean addAlly, boolean removeAlly, boolean changePrefix, boolean changeHome, boolean changeMaster, boolean removeGuild, boolean claim) {
         this.name = name;
-
         this.level = level;
-
         this.chat = chat;
         this.allyChat = allyChat;
         this.invite = invite;
