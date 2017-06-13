@@ -78,7 +78,7 @@ roles:
   0:
     name: "GuildMaster"
     permissions:
-      claim: false
+      claim: TRUE
       chat: true
       ally-chat: true
       invite: true
