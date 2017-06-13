@@ -14,8 +14,8 @@ messages:
       invalid-role: "&c職位 '{input}' 並不存在!"
       guild-not-found: "&c!!無法找到此公會 '{input}'"
       role-no-permission: "&c你的職位尚無許可權執行該動作!"
-      not-enough-money: "&aSorry! You don't have enough money to create a guild!"
-      no-home-set: "&cNo home set! Use &a/guild sethome &cto set a home!"
+      not-enough-money: "&a孩子, 你沒有足夠的金錢可以創建公會哦!"
+      no-home-set: "&c尚未擁有公會據點! , 輸入&b/guild sethome &r來創建公會據點!"
     help:
       message: "&f/{command} {arguments} &7- &f{description}"
       next-page: " 試試&7＂&b/guilds help {next-page}&7＂翻到下一頁"
@@ -23,7 +23,7 @@ messages:
     role:
       players: "{player} - {role}"
     list:
-      format: "The following guilds are:"
+      format: "公會列表如下:"
     create:
       successful: "&a成功創建公會 '{guild}' !"
       cancelled: "&c已取消公會創建之動作!"
@@ -31,8 +31,8 @@ messages:
       error: "&c創建公會時發生錯誤, 如看到此訊息請聯繫管理員"
       requirements: "&c您的公會名稱與伺服器所設定的字元要求不符合&4"
       guild-name-taken: "&c這個公會名字已經被使用!"
-      money-warning: "&c Are you sure you want to spend {amount} to create a guild? (Type /guilds confirm to continue)"
-      guild-home: "&aYou've set your guild home!"
+      money-warning: "&c 您確定要花費 {amount} $$ 來創建公會嗎? (輸入&b/guilds confirm &r來確認)"
+      guild-home: "&a你已設置好了公會據點!"
     delete:
       successful: "&a成功刪除公會 '{guild}' !"
       cancelled: "&c已取消公會刪除之動作!"
@@ -110,7 +110,7 @@ messages:
       already-allies: "&c你目前已經與 {guild} 聯盟了, 不能再接受其他公會的聯盟公會邀請函!"
       not-allies: "&c你尚未與與此公會 {guild} 有聯盟關係!"
     home:
-      teleported: "&aYou've teleported to your guild home!"
+      teleported: "&a已送達至您的公會據點!"
   event:
     join:
       pending-invites: "&aYou have {number} pending invite(s) from the guild(s): &e{guilds}"
