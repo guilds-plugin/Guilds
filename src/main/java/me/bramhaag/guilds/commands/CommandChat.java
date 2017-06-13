@@ -12,7 +12,7 @@ public class CommandChat extends CommandBase {
         super("chat", "Send a message to your guild members", "guilds.command.chat", false, new String[]{"c"}, "<message>", 1, -1);
     }
 
-    public static boolean guildchat = false;
+    public static boolean guildchat;
 
     public void execute(Player player, String[] args) {
         Guild guild = Guild.getGuild(player.getUniqueId());
@@ -33,17 +33,17 @@ public class CommandChat extends CommandBase {
                 player.sendMessage("§aYour guild chat has already been enabled!");
             } else {
                 guildchat = false;
-                player.sendMessage("§cou have disabled your guild chat");
+                player.sendMessage("§cYou have disabled your guild chat");
             }
             return;
         }
 
         if (args[0].equalsIgnoreCase("disable")) {
-            if (!guildchat) {
-                player.sendMessage("§aYour guild chat is already disabled!");
+            if (guildchat) {
+                player.sendMessage("§cYour guild chat is now disabled.");
             } else {
                 guildchat = true;
-                player.sendMessage("§cYour guild chat is now disabled.");
+                player.sendMessage("§aYour guild chat is already disabled!");
             }
             return;
         }
