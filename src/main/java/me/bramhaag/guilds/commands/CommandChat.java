@@ -30,20 +30,20 @@ public class CommandChat extends CommandBase {
 
         if (args[0].equalsIgnoreCase("enable")) {
             if (guildchat) {
-                player.sendMessage("GUILD CHAT IS ALREADY ENABLED");
+                player.sendMessage("§aYour guild chat has already been enabled!");
             } else {
                 guildchat = false;
-                player.sendMessage("GUILD CHAT HAS BEEN DISABLED");
+                player.sendMessage("§cou have disabled your guild chat");
             }
             return;
         }
 
         if (args[0].equalsIgnoreCase("disable")) {
             if (!guildchat) {
-                player.sendMessage("GUILD CHAT IS ALREADY DISABLED");
+                player.sendMessage("§aYour guild chat is already disabled!");
             } else {
                 guildchat = true;
-                player.sendMessage("GUILD CHAT HAS BEEN ENABLED");
+                player.sendMessage("§cYour guild chat is now disabled.");
             }
             return;
         }

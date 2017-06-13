@@ -24,7 +24,7 @@ messages:
       players: "{player} - {role}"
     list:
       format: "The following guilds are:"
-      message: " &b{guilds} - &8(&b{members/64&8)"
+      message: " &b{guilds} - &8(&b{members}/64&8)"
     create:
       successful: "&aGuild '{guild}' created successfully!"
       cancelled: "&cGuild creation cancelled!"
