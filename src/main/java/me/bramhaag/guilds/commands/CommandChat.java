@@ -6,13 +6,17 @@ import me.bramhaag.guilds.guild.GuildRole;
 import me.bramhaag.guilds.message.Message;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 public class CommandChat extends CommandBase {
 
     public CommandChat() {
         super("chat", "Send a message to your guild members", "guilds.command.chat", false, new String[]{"c"}, "<message>", 1, -1);
     }
 
-    public static boolean guildchat;
+    public static List<UUID> guildchat = new ArrayList<UUID>();
 
     public void execute(Player player, String[] args) {
         Guild guild = Guild.getGuild(player.getUniqueId());
@@ -28,20 +32,13 @@ public class CommandChat extends CommandBase {
             return;
         }
 
-        if (args[0].equalsIgnoreCase("enable")) {
-            if (!guildchat) {
-                player.sendMessage("§aYou have enabled your guild chat!");
+        if (args.length == 0) {
+            if (guildchat.contains(player.getUniqueId())) {
+                guildchat.remove(player.getUniqueId());
+                player.sendMessage("§cYou have been removed from the guild chat.");
             } else {
-                player.sendMessage("§4Your guild chat has already been enabled!");
-            }
-            return;
-        }
-
-        if (args[0].equalsIgnoreCase("disable")) {
-            if (guildchat) {
-                player.sendMessage("§cYou have now disabled your guild chat!");
-            } else {
-                player.sendMessage("§cYour guild chat is not enabled!");
+                guildchat.add(player.getUniqueId());
+                player.sendMessage("§aYou have been added to the guild chat.");
             }
             return;
         }

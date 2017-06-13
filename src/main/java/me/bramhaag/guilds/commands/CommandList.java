@@ -4,10 +4,11 @@ import me.bramhaag.guilds.Main;
 import me.bramhaag.guilds.commands.base.CommandBase;
 import me.bramhaag.guilds.guild.Guild;
 import me.bramhaag.guilds.message.Message;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 
@@ -20,8 +21,9 @@ public class CommandList extends CommandBase {
     @Override
     public void execute(Player player, String[] args) {
         Guild guild = Guild.getGuild(player.getUniqueId());
-        List<Collection<Guild>> guilds = new ArrayList<>();
-        guilds.add(Main.getInstance().getGuildHandler().getGuilds().values());
+        List<String> guilds = new ArrayList<String>();
+        for (OfflinePlayer players : Bukkit.getOfflinePlayers())
+            guilds.add(String.valueOf(Main.getInstance().getGuildHandler().getGuilds().get(players.getUniqueId())));
 
         Message.sendMessage(player, Message.COMMAND_LIST_FORMAT);
         player.sendMessage("§b" + guilds + " - §8(§b" + String.valueOf(guild.getMembers().size()) + "/64§8)");
