@@ -28,7 +28,7 @@ public class CommandChat extends CommandBase {
             return;
         }
 
-        if (args[1].equalsIgnoreCase("true")) {
+        if (args[1].equalsIgnoreCase("enable")) {
             if (guildchat) {
                 player.sendMessage("GUILD CHAT IS ALREADY ENABLED");
             } else {
@@ -38,7 +38,7 @@ public class CommandChat extends CommandBase {
             return;
         }
 
-        if (args[1].equalsIgnoreCase("false")) {
+        if (args[1].equalsIgnoreCase("disable")) {
             if (!guildchat) {
                 player.sendMessage("GUILD CHAT IS ALREADY DISABLED");
             } else {
