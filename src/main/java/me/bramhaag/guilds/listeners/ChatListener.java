@@ -30,14 +30,14 @@ public class ChatListener implements Listener {
             return;
         }
 
-        if (CommandChat.guildchat.contains(player.getUniqueId())) {
+        if (!CommandChat.guildchat.contains(player.getUniqueId())) {
+            Bukkit.broadcastMessage("DEBUG:: Player " + player.getName() + "  is not in the guild chat list.");
+        } else {
             String message = e.getMessage();
             guild.sendMessage(Message.COMMAND_CHAT_MESSAGE.replace("{role}", GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole()).getName(), "{player}", player.getName(), "{message}", message));
             e.setCancelled(true);
             return;
-
-        } else
-            Bukkit.broadcastMessage("DEBUG:: Player " + player.getName() + "  is not in the guild chat list.");
+        }
 
         String prefixFormat = ChatColor.translateAlternateColorCodes('&', Main.getInstance().getConfig().getString("prefix.format").replace("{prefix}", guild.getPrefix()));
         String chatFormat = Main.getInstance().getConfig().getString("chat.format").replace("{guild}", prefixFormat);

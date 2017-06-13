@@ -22,7 +22,7 @@ public class CommandList extends CommandBase {
         Guild guild = Guild.getGuild(player.getUniqueId());
         List<String> guilds = new ArrayList<String>();
         for (OfflinePlayer players : Bukkit.getOfflinePlayers())
-            guilds.add(String.valueOf(Guild.getGuild(player.getUniqueId())));
+            guilds.add(Guild.getGuild(player.getUniqueId()).getName());
 
         Message.sendMessage(player, Message.COMMAND_LIST_FORMAT);
         player.sendMessage("§b" + guilds + " - §8(§b" + String.valueOf(guild.getMembers().size()) + "/64§8)");
