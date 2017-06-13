@@ -57,6 +57,7 @@ permissions:
       guilds.command.bugreport: true
       guilds.command.home: true
       guilds.command.sethome: true
+      guilds.command.claim: true
     default: true
   guilds.command.accept:
     description: Accept invite to a guild

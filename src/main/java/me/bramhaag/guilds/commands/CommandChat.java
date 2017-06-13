@@ -6,17 +6,11 @@ import me.bramhaag.guilds.guild.GuildRole;
 import me.bramhaag.guilds.message.Message;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
 public class CommandChat extends CommandBase {
 
     public CommandChat() {
         super("chat", "Send a message to your guild members", "guilds.command.chat", false, new String[]{"c"}, "<message>", 1, -1);
     }
-
-    public static List<UUID> guildchat = new ArrayList<UUID>();
 
     public void execute(Player player, String[] args) {
         Guild guild = Guild.getGuild(player.getUniqueId());
@@ -29,17 +23,6 @@ public class CommandChat extends CommandBase {
         GuildRole role = GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole());
         if (!role.canChat()) {
             Message.sendMessage(player, Message.COMMAND_ERROR_ROLE_NO_PERMISSION);
-            return;
-        }
-
-        if (args[0].equalsIgnoreCase("toggle")) {
-            if (guildchat.contains(player.getUniqueId())) {
-                guildchat.remove(player.getUniqueId());
-                player.sendMessage("§cYou have been removed from the guild chat.");
-            } else {
-                guildchat.add(player.getUniqueId());
-                player.sendMessage("§aYou have been added to the guild chat.");
-            }
             return;
         }
 

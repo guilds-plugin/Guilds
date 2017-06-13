@@ -55,6 +55,7 @@ public class GuildHandler implements IHandler {
 
             int level = Integer.parseInt(s);
 
+            boolean claim = section.getBoolean(path + "claim");
             boolean chat = section.getBoolean(path + "chat");
             boolean allyChat = section.getBoolean(path + "ally-chat");
             boolean invite = section.getBoolean(path + "invite");
@@ -68,7 +69,7 @@ public class GuildHandler implements IHandler {
             boolean changeMaster = section.getBoolean(path + "change-master");
             boolean removeGuild = section.getBoolean(path + "remove-guild");
 
-            GuildRole role = new GuildRole(name, level, chat, allyChat, invite, kick, promote, demote, addAlly, removeAlly, changePrefix, changeHome, changeMaster, removeGuild);
+            GuildRole role = new GuildRole(name, level, chat, allyChat, invite, kick, promote, demote, addAlly, removeAlly, changePrefix, changeHome, changeMaster, removeGuild, claim);
             roles.add(role);
         }
     }

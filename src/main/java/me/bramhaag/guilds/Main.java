@@ -62,6 +62,9 @@ public class Main extends JavaPlugin {
     public File guildhomes = new File(this.getDataFolder(), "guild-homes.yml");
     public YamlConfiguration guildhomesconfig = YamlConfiguration.loadConfiguration(this.guildhomes);
 
+    public File guildclaims = new File(this.getDataFolder(), "guild-claims.yml");
+    public YamlConfiguration guildclaimsconfig = YamlConfiguration.loadConfiguration(this.guildclaims);
+
     @SuppressWarnings("deprecation")
     @Override
     public void onEnable() {
@@ -123,6 +126,8 @@ public class Main extends JavaPlugin {
         commandHandler.register(new CommandVersion());
         commandHandler.register(new CommandHelp());
 
+        commandHandler.register(new CommandClaim());
+
         if (Main.getInstance().getConfig().getBoolean("chat.enable")) {
             getServer().getPluginManager().registerEvents(new ChatListener(), this);
         }
@@ -163,6 +168,7 @@ public class Main extends JavaPlugin {
             getServer().getScheduler().scheduleAsyncRepeatingTask(this, this::sendUpdate, 0L, 6000L); //5 minutes
         }
 
+        this.saveResource("guild-claims.yml", true);
         this.saveResource("english.yml", true);
         this.saveResource("chinese.yml", true);
         this.saveResource("french.yml", true);

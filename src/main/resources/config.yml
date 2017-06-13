@@ -78,6 +78,7 @@ roles:
   0:
     name: "GuildMaster"
     permissions:
+      claim: false
       chat: true
       ally-chat: true
       invite: true
@@ -94,6 +95,7 @@ roles:
   1:
     name: "Officer"
     permissions:
+      claim: false
       chat: true
       ally-chat: true
       invite: true
@@ -110,6 +112,7 @@ roles:
   2:
     name: "Veteran"
     permissions:
+      claim: false
       chat: true
       ally-chat: true
       invite: true
@@ -124,6 +127,7 @@ roles:
   3:
     name: "Member"
     permissions:
+      claim: false
       chat: true
       ally-chat: true
       invite: false
