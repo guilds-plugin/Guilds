@@ -12,8 +12,6 @@ plugin-prefix: "&a[Guilds]"
 Requirement:
   cost: 0
 
-#List your server at https://glaremasters.me/server/
-server-list: false
 
 updater:
   check: true
@@ -78,6 +76,7 @@ roles:
   0:
     name: "GuildMaster"
     permissions:
+      claim: true
       chat: true
       ally-chat: true
       invite: true
@@ -87,11 +86,14 @@ roles:
       add-ally: true
       remove-ally: true
       change-prefix: true
+      change-home: true
       change-master: true
       remove-guild: true
+
   1:
     name: "Officer"
     permissions:
+      claim: true
       chat: true
       ally-chat: true
       invite: true
@@ -101,11 +103,14 @@ roles:
       add-ally: true
       remove-ally: true
       change-prefix: false
+      change-home: true
       change-master: false
       remove-guild: false
+
   2:
     name: "Veteran"
     permissions:
+      claim: false
       chat: true
       ally-chat: true
       invite: true
@@ -120,6 +125,7 @@ roles:
   3:
     name: "Member"
     permissions:
+      claim: false
       chat: true
       ally-chat: true
       invite: false

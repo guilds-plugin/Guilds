@@ -12,8 +12,6 @@ plugin-prefix: "&a[Guilds]"
 Requirement:
   cost: 0
 
-#List your server at https://glaremasters.me/server/
-server-list: true
 
 updater:
   check: true
@@ -95,7 +93,7 @@ roles:
   1:
     name: "Officer"
     permissions:
-      claim: tue
+      claim: true
       chat: true
       ally-chat: true
       invite: true
