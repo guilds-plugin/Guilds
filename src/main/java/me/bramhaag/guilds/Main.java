@@ -65,6 +65,9 @@ public class Main extends JavaPlugin {
     public File guildclaims = new File(this.getDataFolder(), "guild-claims.yml");
     public YamlConfiguration guildclaimsconfig = YamlConfiguration.loadConfiguration(this.guildclaims);
 
+    public File guilddescriptions = new File(this.getDataFolder(), "guild-descriptions.yml");
+    public YamlConfiguration guilddescriptionsconfig = YamlConfiguration.loadConfiguration(this.guilddescriptions);
+
     @SuppressWarnings("deprecation")
     @Override
     public void onEnable() {
@@ -127,6 +130,7 @@ public class Main extends JavaPlugin {
         commandHandler.register(new CommandHelp());
 
         commandHandler.register(new CommandClaim());
+        commandHandler.register(new CommandDescription());
 
         if (Main.getInstance().getConfig().getBoolean("chat.enable")) {
             getServer().getPluginManager().registerEvents(new ChatListener(), this);
@@ -192,6 +196,15 @@ public class Main extends JavaPlugin {
             Main.getInstance().guildclaimsconfig.save(Main.getInstance().guildclaims);
         } catch (IOException e) {
             getLogger().log(Level.WARNING, "Could not create Guild's Claims config!");
+            e.printStackTrace();
+        }
+    }
+
+    public void saveGuilddescriptions() {
+        try {
+            Main.getInstance().guilddescriptionsconfig.save(Main.getInstance().guilddescriptions);
+        } catch (IOException e) {
+            getLogger().log(Level.WARNING, "Could not create Guild's Description config!");
             e.printStackTrace();
         }
     }
