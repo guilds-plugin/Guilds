@@ -4,6 +4,7 @@ import me.bramhaag.guilds.Main;
 import me.bramhaag.guilds.commands.base.CommandBase;
 import me.bramhaag.guilds.guild.Guild;
 import me.bramhaag.guilds.message.Message;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.stream.Collectors;
@@ -22,9 +23,9 @@ public class CommandList extends CommandBase {
 
                 .stream()
                 .map(Guild::getName)
-                .collect(Collectors.joining("\n"));
+                .collect(Collectors.joining(", "));
 
         Message.sendMessage(player, Message.COMMAND_LIST_FORMAT);
-        player.sendMessage("§b" + guilds);
+        player.sendMessage(ChatColor.RED + guilds);
     }
 }
