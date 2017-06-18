@@ -32,6 +32,9 @@ public class Guild {
     @Expose
     private List<String> pendingAllies;
 
+    @Expose
+    private String home;
+
     public Guild(String name) {
         this.name = name;
 
@@ -49,6 +52,7 @@ public class Guild {
         this.allies = new ArrayList<>();
         this.invitedMembers = new ArrayList<>();
         this.pendingAllies = new ArrayList<>();
+        this.home = name.substring(0, Main.getInstance().getConfig().getInt("prefix.max-length") > name.length() ? name.length() : Main.getInstance().getConfig().getInt("prefix.max-length"));
     }
 
     public String getName() {
@@ -65,6 +69,10 @@ public class Guild {
 
     public List<UUID> getInvitedMembers() {
         return invitedMembers;
+    }
+
+    public String getHome() {
+        return home;
     }
 
     public GuildMember getGuildMaster() {

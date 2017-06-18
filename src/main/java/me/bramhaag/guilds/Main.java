@@ -18,12 +18,10 @@ import me.bramhaag.guilds.listeners.PlayerDamangeListener;
 import me.bramhaag.guilds.placeholders.Placeholders;
 import me.bramhaag.guilds.scoreboard.GuildScoreboardHandler;
 import me.bramhaag.guilds.updater.Updater;
-import me.clip.placeholderapi.external.EZPlaceholderHook;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -165,7 +163,6 @@ public class Main extends JavaPlugin {
             });
         }
 
-
         getServer().getScheduler().scheduleAsyncRepeatingTask(this, this::sendUpdate, 0L, 6000L); //5 minutes
 
         this.saveResource("english.yml", true);
@@ -263,33 +260,6 @@ public class Main extends JavaPlugin {
             PlaceholderAPI.registerPlaceholder(this, "guild_prefix", event -> Placeholders.getGuildPrefix(event.getPlayer()));
         }
 
-        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            try {
-                new EZPlaceholderHook(this, "guild") {
-                    @Override
-                    public String onPlaceholderRequest(Player player, String identifier) {
-                        if (player == null) {
-                            return getConfig().getString("placeholders.default");
-                        }
-
-                        switch (identifier) {
-                            case "name":
-                                return Placeholders.getGuild(player);
-                            case "master":
-                                return Placeholders.getGuildMaster(player);
-                            case "member_count":
-                                return Placeholders.getGuildMemberCount(player);
-                            case "prefix":
-                                return Placeholders.getGuildPrefix(player);
-                            default:
-                                return getConfig().getString("placeholders.default");
-                        }
-                    }
-                }.hook();
-            } catch (Exception ex) {
-                getLogger().log(Level.WARNING, "Error while creating PlaceholderAPI placeholders!");
-            }
-        }
     }
 
     private void sendUpdate() {
