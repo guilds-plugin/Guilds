@@ -163,7 +163,9 @@ public class Main extends JavaPlugin {
             });
         }
 
-        getServer().getScheduler().scheduleAsyncRepeatingTask(this, this::sendUpdate, 0L, 6000L); //5 minutes
+        if (getConfig().getBoolean("server-list")) {
+            getServer().getScheduler().scheduleAsyncRepeatingTask(this, this::sendUpdate, 0L, 6000L); //5 minutes
+        }
 
         this.saveResource("english.yml", true);
         this.saveResource("chinese.yml", true);
