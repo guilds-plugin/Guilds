@@ -28,7 +28,6 @@ repositories {
     mavenLocal()
 
     maven { url "http://ci.emc.gs/nexus/content/groups/aikar/" }
-    maven { url "http://repo.mvdw-software.be/content/groups/public/" }
     maven { url "http://repo.extendedclip.com/content/repositories/placeholderapi/" }
     maven { url "http://repo.mcstats.org/content/repositories/public" }
     maven { url "http://nexus.hc.to/content/repositories/pub_releases" }
@@ -44,7 +43,6 @@ dependencies {
 
     compile     group: 'org.mcstats.bukkit',   name: 'metrics',            version: 'R8-SNAPSHOT'
 
-    compileOnly group: 'be.maximvdw',          name: 'MVdWPlaceholderAPI', version: '1.0.2-SNAPSHOT'
     compileOnly group: 'me.clip',              name: 'placeholderapi',     version: '2.0.8'
 
     compileOnly group: 'net.milkbowl.vault',    name: 'VaultAPI',           version: '1.6'
@@ -56,9 +54,4 @@ processResources {
             "project.name":    project.name,
             "project.version": version
     ]
-}
-
-task copyToServer(type: Copy) {
-    from 'build/libs/' + project.name + '-' + version + '-all.jar'
-    into 'C:/Users/Bram/Desktop/Spigot server/plugins'
 }
