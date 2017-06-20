@@ -9,8 +9,10 @@ lang: english
 #The prefix of all messages send by this plugin to a player
 plugin-prefix: "&a[Guilds]"
 
-Requirement:
-  cost: 0
+require-money: false
+#Requirement:
+#  cost: 0
+#ONLY LEAVE THESE LINES COMMENTED IF YOU DON'T HAVE AN ECONOMY PLUGIN
 
 #List your server at https://glaremasters.me/server/
 server-list: true

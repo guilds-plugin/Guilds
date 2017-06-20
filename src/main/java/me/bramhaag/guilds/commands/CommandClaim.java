@@ -47,7 +47,7 @@ public class CommandClaim extends CommandBase {
 
         } else {
             chunks.add(chunk.getX() + ":" + chunk.getZ());
-            Main.getInstance().saveGuildhomes();
+            Main.getInstance().saveGuildclaims();
 
             player.sendMessage("Claimed this chunk!");
         }

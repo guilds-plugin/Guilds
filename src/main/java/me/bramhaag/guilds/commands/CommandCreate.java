@@ -64,10 +64,13 @@ public class CommandCreate extends CommandBase {
                     return;
                 }
 
-                EconomyResponse response = Main.getInstance().getEconomy().withdrawPlayer(player, requiredMoney);
-                if (!response.transactionSuccess()) {
-                    Message.sendMessage(player, Message.COMMAND_ERROR_NOT_ENOUGH_MONEY);
-                    return;
+                if (Main.getInstance().getConfig().getBoolean("require-money")) {
+
+                    EconomyResponse response = Main.getInstance().getEconomy().withdrawPlayer(player, requiredMoney);
+                    if (!response.transactionSuccess()) {
+                        Message.sendMessage(player, Message.COMMAND_ERROR_NOT_ENOUGH_MONEY);
+                        return;
+                    }
                 }
 
                 Main.getInstance().getDatabaseProvider().createGuild(guild, (result, exception) -> {
