@@ -125,7 +125,7 @@ public class Main extends JavaPlugin {
         commandHandler.register(new CommandHelp());
 
         commandHandler.register(new CommandClaim());
-
+        commandHandler.register(new CommandFort());
         if (Main.getInstance().getConfig().getBoolean("chat.enable")) {
             getServer().getPluginManager().registerEvents(new ChatListener(), this);
         }
