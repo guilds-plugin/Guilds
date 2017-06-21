@@ -83,6 +83,7 @@ roles:
   0:
     name: "GuildMaster"
     permissions:
+      spawn-fort: true
       claim: true
       chat: true
       ally-chat: true
@@ -100,6 +101,7 @@ roles:
   1:
     name: "Officer"
     permissions:
+      spawn-fort: false
       claim: true
       chat: true
       ally-chat: true
@@ -117,6 +119,7 @@ roles:
   2:
     name: "Veteran"
     permissions:
+      spawn-fort: false
       claim: false
       chat: true
       ally-chat: true
@@ -132,6 +135,7 @@ roles:
   3:
     name: "Member"
     permissions:
+      spawn-fort: false
       claim: false
       chat: true
       ally-chat: true

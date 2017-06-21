@@ -58,6 +58,7 @@ permissions:
       guilds.command.home: true
       guilds.command.sethome: true
       guilds.command.claim: true
+      guilds.command.fort: true
     default: true
   guilds.command.accept:
     description: Accept invite to a guild
@@ -103,3 +104,5 @@ permissions:
     description: Teleport to your guild's home!
   guilds.command.sethome:
     description: Set your guild's home!
+  guilds.command.fort:
+    description: Spawn your guild's fort!

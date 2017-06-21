@@ -8,6 +8,9 @@ import com.sk89q.worldedit.schematic.SchematicFormat;
 import com.sk89q.worldedit.world.DataException;
 import me.bramhaag.guilds.Main;
 import me.bramhaag.guilds.commands.base.CommandBase;
+import me.bramhaag.guilds.guild.Guild;
+import me.bramhaag.guilds.guild.GuildRole;
+import me.bramhaag.guilds.message.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -24,6 +27,18 @@ public class CommandFort extends CommandBase {
 
     @Override
     public void execute(Player player, String[] args) {
+        Guild guild = Guild.getGuild(player.getUniqueId());
+        if (guild == null) {
+            Message.sendMessage(player, Message.COMMAND_ERROR_NO_GUILD);
+            return;
+        }
+
+        GuildRole role = GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole());
+        if (!role.canSpawnFort()) {
+            Message.sendMessage(player, Message.COMMAND_ERROR_ROLE_NO_PERMISSION);
+            return;
+        }
+
         WorldEditPlugin we = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit");
         File file = new File(Main.getInstance().getDataFolder(), "test.schematic");
         if (file.exists() && !file.isDirectory()) {

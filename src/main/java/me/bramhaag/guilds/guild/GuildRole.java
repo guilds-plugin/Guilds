@@ -25,9 +25,10 @@ public class GuildRole {
     private boolean removeAlly;
     private boolean allyChat;
     private boolean claim;
+    private boolean spawnFort;
 
 
-    GuildRole(String name, int level, boolean chat, boolean allyChat, boolean invite, boolean kick, boolean promote, boolean demote, boolean addAlly, boolean removeAlly, boolean changePrefix, boolean changeHome, boolean changeMaster, boolean removeGuild, boolean claim) {
+    GuildRole(String name, int level, boolean chat, boolean allyChat, boolean invite, boolean kick, boolean promote, boolean demote, boolean addAlly, boolean removeAlly, boolean changePrefix, boolean changeHome, boolean changeMaster, boolean removeGuild, boolean claim, boolean spawnFort) {
         this.name = name;
         this.level = level;
         this.chat = chat;
@@ -43,6 +44,7 @@ public class GuildRole {
         this.changeMaster = changeMaster;
         this.removeGuild = removeGuild;
         this.claim = claim;
+        this.spawnFort = spawnFort;
     }
 
 
@@ -105,6 +107,11 @@ public class GuildRole {
     public boolean canClaim() {
         return claim;
     }
+
+    public boolean canSpawnFort() {
+        return spawnFort;
+    }
+
 
     public static GuildRole getRole(int level) {
         return Main.getInstance().getGuildHandler().getRoles().stream().filter(role -> role.getLevel() == level).findFirst().orElse(null);
