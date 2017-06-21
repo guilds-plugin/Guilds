@@ -22,7 +22,7 @@ import java.io.IOException;
  */
 public class CommandFort extends CommandBase {
     public CommandFort() {
-        super("fort", "Spawn your guild fort!", "guilds.command.fort", false, null, null, 0, 0);
+        super("fort", "Spawn your guild fort!", "guilds.command.fort", false, null, "<paste | undo>", 1, 1);
     }
 
     @Override
