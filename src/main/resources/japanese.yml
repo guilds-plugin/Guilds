@@ -1,0 +1,114 @@
+messages:
+  command:
+    error:
+      console: "&このコマンドはプレーヤのみ実行できます!"
+      args: "&c無効な引数です! さらなる情報は /guilds help を参照してください。"
+      permission: "&cあなたはそれを行う権限を持っていません!"
+      not-found: "&cコマンドが見つかりませんでした! 実行可能なコマンドは /guilds help を参照してください。"
+      no-guild: "&cあなたは、どのギルドにも所属していません!"
+      not-guildmaster: "&cあなたは、このギルドのギルドマスターではありません。"
+      invalid_number: "&c{input} は有効な数字ではありません!"
+      already-in-guild: "&cあなたはすでにギルドに所属しています!"
+      player-not-found: "&cプレーヤ '{player}' は存在していないか、現在オンラインではありません!"
+      player-not-in-guild: "&cプレーヤ '{player}' はあなたのギルドに所属していません!"
+      invalid-role: "&cその役 '{input}' は存在しません!"
+      guild-not-found: "&cギルド '{input}' は存在しません!"
+      role-no-permission: "&cあなたの役はそれを実行するには低すぎます!"
+      not-enough-money: "&a残念でした! あなたはギルドを作るために必要な資金がありません!"
+      no-home-set: "&cギルドのホームポジションが設定されていません! &a/guild sethome &cコマンドを使ってギルドのホームポジションを設定してください!"
+    help:
+      message: "&f/guild {command} {arguments} &7- &f{description}"
+      next-page: "&7/guilds help {next-page} で次のページに移ります。"
+      invalid-page: "&cページが見つかりませんでした!"
+    role:
+      players: "{player} - {role}"
+    list:
+      format: "以下のギルドは："
+    create:
+      successful: "&aギルド '{guild}' の作成に成功しました!"
+      cancelled: "&cギルドの作成がキャンセルされました!"
+      warning: "&c/guilds confirm とタイプしてギルドを作成、/guilds cancel とタイプして作成をキャンセルできます。"
+      error: "&cあなたのギルドを作成中に予期せぬことが起きてしまいました!"
+      requirements: "&cあなたのギルドの名前が命名規約に沿っていません! ギルドの名前はアルファベット文字で、最大６４文字までです。"
+      guild-name-taken: "&cこの名前はすでにしようされています!"
+      money-warning: "&c 本当に、{amount} 費やしてギルドを作成しますか? (/guilds confirm とタイプして続行)"
+      guild-home: "&aギルドのホームポジションを設定しました!"
+    delete:
+      successful: "&aギルド '{guild}' の削除に成功しました!"
+      cancelled: "&cギルドの削除がキャンセルされました!"
+      warning: "&c/guilds confirm とタイプしてギルドを削除、/guilds cancel とタイプしてギルドの削除をキャンセルします。"
+      error: "&cギルドの削除の際に予期せぬことが起きてしまいました!"
+    info:
+      header: "&b{guild} &rの情報"
+      name: "名前: &b{guild}&r (&bPrefix: {prefix}&r)"
+      master: "ギルドマスター: &b{master}"
+      member-count: "構成員: &b{members}/64&r (&bオンライン: {members-online}&r)"
+      rank: "あなたの位: &b{rank}"
+    promote:
+      promoted: "&aプレーヤ{player} が {old-rank} から {new-rank} へ昇格されました!"
+      successful: "&aあなたは {old-rank} から {new-rank} へ昇格されました!"
+      cannot-promote: "&cこのプレーヤはこれ以上昇格できません!"
+      not-promotion: "&cこのプレーヤを昇格しません!"
+    demote:
+      demoted: "&cあなたは {old-rank} から {new-rank} へ降格されました!"
+      successful: "&aあなたはプレーヤ {player} を {old-rank} から {new-rank} へ降格しました!"
+      cannot-demote: "&cこのプレーヤはこれ以上降格することができません!"
+      not-demotion: "&cこのプレーヤを降格しません!"
+    chat:
+      message: "&7&lギルドチャット> &r[{role}] {player}: {message}"
+    accept:
+      not-invited: "&cあなたはこのギルドに招待されていません!"
+      guild-full: "&cこのギルドは満員です!"
+      successful: "&aあなたは '{guild}' ギルドに加入しました。"
+      player-joined: "&aプレーヤ '{player}' があなたのギルドに加入しました!"
+    invite:
+      message: "&aプレーヤ {player} があなたをギルド '{guild}' に招待しました。"
+      successful: "&aプレーヤ {player} がギルドへ勧誘されました!"
+      already-in-guild: "&cこのプレーヤはすでにあなたのギルドの構成員です!"
+    leave:
+      successful: "&aギルドの脱退に成功しました!"
+      cancelled: "&cギルドの脱退がキャンセルされました!"
+      warning: "&c/guilds confirm とタイプしてギルドの脱退を完、/guilds cancel とタイプしてキャンセルしてください。"
+      warning-guildmaster: "&cあなたはこのギルドのギルドマスターです。ギルドマスターがギルドを脱退するとギルドが消滅します。/guilds confirm とタイプして脱退・ギルドの削除、/guilds cancel とタイプしてキャンセルしてください。"
+      player-left: "&cプレーヤ '{player}' があなたのギルドから脱退しました!"
+    boot:
+      successful: "&aプレーヤ {player} をあなたのギルドから追放しました!"
+      kicked: "&cあなたは {kicker} によってギルドから追放されました!"
+      player-kicked: "&cプレーヤ '{player}' が {kicker} によってギルドから追放されました!"
+    prefix:
+      successful: "&aギルドのプリフィックスが変更されました!"
+      requirements: "&cギルドのプリフィックスが命名規約に沿っていません! プリフィックスはアルファベット・数字で、最大６文字までです。"
+    confirm:
+      error: "&c承認するアクションがありません!"
+    cancel:
+      error: "&cキャンセルするアクションがありません!"
+    reload:
+      reloaded: "&a設定ファイルを再読みしました!"
+    update:
+      found: "&aプラグインのアップデートがあります! {url} からダウンロードしてください!"
+      not-found: "&cプラグインのアップデートはありません!"
+    admin:
+      delete-successful: "&cギルドが削除されました!"
+      delete-error: "&cギルドを削除中に予期せぬことが起こりました!"
+      delete-warning: "&c/guilds confirm とタイプしてギルドの削除、/guilds cancel とタイプしてギルドの削除をキャンセルします。"
+      delete-cancelled: "&cギルドの削除がキャンセルされました!"
+      player-already-in-guild: "&cこのプレーヤはすでにギルドの構成員です!"
+      added-player: "&aプレーヤをギルドに追加しました。"
+      player-not-in-guild: "&cプレーヤはこのギルドに所属していません!"
+      removed-player: "&aプレーヤをギルドから削除しました!"
+    ally:
+      guild-not-pending: "&cこのギルドは同盟の申請をしていません!"
+      accepted: "&aこのギルドはギルド {guild} と同盟を結びました!"
+      accepted-target: "&aギルド {guild} と同盟を結びました!"
+      declined: "&cギルド {guild} は同盟を拒否しました!"
+      send: "&a同盟申請を送信しました!"
+      send-target: "&aギルド {guild} より同盟締結の申請がありました! /guilds ally accept {guild} とタイプして申請を了承、/guilds ally decline {guild} とタイプしてキャンセルしてくだい。"
+      removed: "&cこのギルドはギルド {guild} と同盟関係にありません!"
+      removed-target: "&cギルド {guild} はもう我々と同盟関係にありません!"
+      already-allies: "&cあなたのギルドはギルド {guild} とすでに同盟関係にあります!"
+      not-allies: "&cあなたのギルドはギルド {guild} と同盟関係にありません!"
+    home:
+      teleported: "&aギルドのホームポジションにテレポートされました!"
+  event:
+    join:
+      pending-invites: "&a現在あなたに、&e{guilds} のギルドより {number} 通の招待状が届いています。"

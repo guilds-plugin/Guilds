@@ -171,6 +171,7 @@ public class Main extends JavaPlugin {
         this.saveResource("chinese.yml", true);
         this.saveResource("french.yml", true);
         this.saveResource("dutch.yml", true);
+        this.saveResource("japanese.yml", true);
         this.saveDefaultConfig();
 
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "guild reload");
