@@ -7,6 +7,7 @@ lang: english
 # - french
 # - dutch
 # - japanese
+# - swedish
 #The prefix of all messages send by this plugin to a player
 plugin-prefix: "&a[Guilds]"
 
