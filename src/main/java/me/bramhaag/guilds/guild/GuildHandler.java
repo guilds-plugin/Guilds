@@ -54,8 +54,6 @@ public class GuildHandler implements IHandler {
             String name = section.getString(s + ".name");
 
             int level = Integer.parseInt(s);
-            boolean spawnFort = section.getBoolean(path + "spawn-fort");
-            boolean claim = section.getBoolean(path + "claim");
             boolean chat = section.getBoolean(path + "chat");
             boolean allyChat = section.getBoolean(path + "ally-chat");
             boolean invite = section.getBoolean(path + "invite");
@@ -69,7 +67,7 @@ public class GuildHandler implements IHandler {
             boolean changeMaster = section.getBoolean(path + "change-master");
             boolean removeGuild = section.getBoolean(path + "remove-guild");
 
-            GuildRole role = new GuildRole(name, level, chat, allyChat, invite, kick, promote, demote, addAlly, removeAlly, changePrefix, changeHome, changeMaster, removeGuild, claim, spawnFort);
+            GuildRole role = new GuildRole(name, level, chat, allyChat, invite, kick, promote, demote, addAlly, removeAlly, changePrefix, changeHome, changeMaster, removeGuild);
             roles.add(role);
         }
     }

@@ -1,5 +1,5 @@
 name: Guilds
-version: 1.6.0-RELEASE
+version: 1.6.1-RELEASE
 main: me.bramhaag.guilds.Main
 description: Lightweight, flexible, popular plugin for any Minecraft server. Forget Factions! Guilds are here!
 softdepend: [MVdWPlaceholderAPI, PlaceholderAPI, VaultAPI]
@@ -57,8 +57,6 @@ permissions:
       guilds.command.bugreport: true
       guilds.command.home: true
       guilds.command.sethome: true
-      guilds.command.claim: true
-      guilds.command.fort: true
     default: true
   guilds.command.accept:
     description: Accept invite to a guild
@@ -104,5 +102,3 @@ permissions:
     description: Teleport to your guild's home!
   guilds.command.sethome:
     description: Set your guild's home!
-  guilds.command.fort:
-    description: Spawn your guild's fort!
