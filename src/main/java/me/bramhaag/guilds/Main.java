@@ -60,7 +60,7 @@ public class Main extends JavaPlugin {
     public File guildhomes = new File(this.getDataFolder(), "guild-homes.yml");
     public YamlConfiguration guildhomesconfig = YamlConfiguration.loadConfiguration(this.guildhomes);
 
-    public File guildclaims = new File(this.getDataFolder(), "guild-claims.yml");
+    public File guildclaims = new File(this.getDataFolder(), "guild-claims.4yml");
     public YamlConfiguration guildclaimsconfig = YamlConfiguration.loadConfiguration(this.guildclaims);
 
     @SuppressWarnings("deprecation")
@@ -172,6 +172,7 @@ public class Main extends JavaPlugin {
         this.saveResource("french.yml", true);
         this.saveResource("dutch.yml", true);
         this.saveResource("japanese.yml", true);
+        this.saveResource("swedish.yml", true);
         this.saveDefaultConfig();
 
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "guild reload");
