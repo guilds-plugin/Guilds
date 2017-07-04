@@ -16,6 +16,8 @@ messages:
       role-no-permission: "&cVotre grade n'est pas assez élevé pour faire cela !"
       not-enough-money: "&aVous avez été téléporté à votre home de guilde !"
       no-home-set: "&cVous n'avez pas de home pour votre guilde ! Faite &a/guild sethome &c pour en créer un !"
+      home-cooldown: "&cYou can't teleport to home for another {time} seconds!"
+      sethome-cooldown: "&cYou can't set your guild home for another {time} seconds!"
     help:
       message: "&f/guild {command} {arguments} &7- &f{description}"
       next-page: "&7Faite /guilds help {next-page} pour changer de pasge"

@@ -16,6 +16,8 @@ messages:
       role-no-permission: "&c你的職位尚無許可權執行該動作!"
       not-enough-money: "&a孩子, 你沒有足夠的金錢可以創建公會哦!"
       no-home-set: "&c尚未擁有公會據點! , 輸入&b/guild sethome &r來創建公會據點!"
+      home-cooldown: "&cYou can't teleport to home for another {time} seconds!"
+      sethome-cooldown: "&cYou can't set your guild home for another {time} seconds!"
     help:
       message: "&f/{command} {arguments} &7- &f{description}"
       next-page: " 試試&7＂&b/guilds help {next-page}&7＂翻到下一頁"

@@ -43,6 +43,7 @@ public class CommandHelp extends CommandBase {
             CommandBase command = Main.getInstance().getCommandHandler().getCommands().get(index);
 
             Message.sendMessage(sender, Message.COMMAND_HELP_MESSAGE.replace("{command}", command.getName(), "{arguments}", command.getArguments(), "{description}", command.getDescription()));
+
         }
 
         if (nextPage) {

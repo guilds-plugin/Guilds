@@ -32,6 +32,12 @@ name:
 # RegEx (https://en.wikipedia.org/wiki/Regular_expression) used to only allow certain characters (default only allows alphanumeric characters)
   regex: "^[a-zA-Z0-9]*$"
 
+home:
+  cool-down: 60
+
+sethome:
+  cool-down: 60
+
 prefix:
 # RegEx (https://en.wikipedia.org/wiki/Regular_expression) used to only allow certain characters (default only allows alphanumeric characters)
 # With the default Regex currently set, the minimum length of the prefix is 1 and the maximum is 6.
