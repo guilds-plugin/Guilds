@@ -160,14 +160,14 @@ public class Main extends JavaPlugin {
         if (getConfig().getBoolean("server-list")) {
             getServer().getScheduler().scheduleAsyncRepeatingTask(this, this::sendUpdate, 0L, 2000L); //5 minutes
         }
-
-        this.saveResource("english.yml", true);
-        this.saveResource("chinese.yml", true);
-        this.saveResource("french.yml", true);
-        this.saveResource("dutch.yml", true);
-        this.saveResource("japanese.yml", true);
-        this.saveResource("swedish.yml", true);
         this.saveDefaultConfig();
+        this.saveResource("english.yml", false);
+        this.saveResource("chinese.yml", false);
+        this.saveResource("french.yml", false);
+        this.saveResource("dutch.yml", false);
+        this.saveResource("japanese.yml", false);
+        this.saveResource("swedish.yml", false);
+
 
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "guild reload");
 
