@@ -5,6 +5,7 @@ import me.bramhaag.guilds.commands.base.CommandBase;
 import me.bramhaag.guilds.guild.Guild;
 import me.bramhaag.guilds.guild.GuildRole;
 import me.bramhaag.guilds.message.Message;
+import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -42,6 +43,23 @@ public class CommandSetHome extends CommandBase {
             return;
         }
 
+        double setHomeCost = Main.getInstance().getConfig().getDouble("Requirement.sethome-cost");
+
+        if (Main.vault && setHomeCost != -1) {
+            if (Main.getInstance().getEconomy().getBalance(player) < setHomeCost) {
+                Message.sendMessage(player, Message.COMMAND_ERROR_NOT_ENOUGH_MONEY);
+                return;
+            }
+        }
+
+        if (Main.getInstance().getConfig().getBoolean("require-money")) {
+
+            EconomyResponse response = Main.getInstance().getEconomy().withdrawPlayer(player, setHomeCost);
+            if (!response.transactionSuccess()) {
+                Message.sendMessage(player, Message.COMMAND_ERROR_NOT_ENOUGH_MONEY);
+                return;
+            }
+        }
         String world = player.getWorld().getName();
         double xloc = player.getLocation().getX();
         double yloc = player.getLocation().getY();

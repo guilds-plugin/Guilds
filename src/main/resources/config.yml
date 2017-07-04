@@ -14,6 +14,7 @@ plugin-prefix: "&a[Guilds]"
 require-money: false
 #Requirement:
 #  cost: 0
+#  sethome-cost: 0
 #For some reason the require-money doesn't matter. So here's how this works:
 #If you have an economy plugin on your server, uncomment the Requirement and Cost line and set your cost.
 #If you are not using an economy plugin but want to make guilds just leave the 2 lines commented above.
@@ -34,6 +35,7 @@ name:
 
 home:
   cool-down: 60
+  teleport-time: 5
 
 sethome:
   cool-down: 60

@@ -23,7 +23,9 @@ public class CommandHome extends CommandBase {
 
     @Override
     public void execute(Player player, String[] args) {
-        int cooldownTime = Main.getInstance().getConfig().getInt("home.cool-down"); // Get number of seconds from wherever you want
+        int cooldownTime = Main.getInstance().getConfig().getInt("home.cool-down");
+
+        int teleportTime = Main.getInstance().getConfig().getInt("home.teleport-time");
         if (Main.getInstance().guildhomesconfig.getString(Guild.getGuild(player.getUniqueId()).getName()) == null)
             Message.sendMessage(player, Message.COMMAND_ERROR_NO_HOME_SET);
 
