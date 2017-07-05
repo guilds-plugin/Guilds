@@ -44,7 +44,7 @@ public class CommandSetHome extends CommandBase {
             return;
         }
 
-        double setHomeCost = Main.getInstance().getConfig().getDouble("Requirement.cost");
+        double setHomeCost = Main.getInstance().getConfig().getDouble("Requirement.sethome-cost");
 
         if (Main.vault && setHomeCost != -1) {
             if (Main.getInstance().getEconomy().getBalance(player) < setHomeCost) {
