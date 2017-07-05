@@ -5,6 +5,7 @@ import me.bramhaag.guilds.commands.base.CommandBase;
 import me.bramhaag.guilds.guild.Guild;
 import me.bramhaag.guilds.guild.GuildRole;
 import me.bramhaag.guilds.message.Message;
+import me.bramhaag.guilds.util.ConfirmAction;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.entity.Player;
 
@@ -43,33 +44,50 @@ public class CommandSetHome extends CommandBase {
             return;
         }
 
-        double setHomeCost = Main.getInstance().getConfig().getDouble("Requirement.sethome-cost");
+        double setHomeCost = Main.getInstance().getConfig().getDouble("Requirement.cost");
 
         if (Main.vault && setHomeCost != -1) {
             if (Main.getInstance().getEconomy().getBalance(player) < setHomeCost) {
                 Message.sendMessage(player, Message.COMMAND_ERROR_NOT_ENOUGH_MONEY);
                 return;
             }
+
+            Message.sendMessage(player, Message.COMMAND_CREATE_MONEY_WARNING_SETHOME.replace("{amount}", String.valueOf(setHomeCost)));
+        } else {
+            Message.sendMessage(player, Message.COMMAND_CREATE_WARNING);
         }
 
-        if (Main.getInstance().getConfig().getBoolean("require-money")) {
+        Main.getInstance().getCommandHandler().addAction(player, new ConfirmAction() {
+            @Override
+            public void accept() {
+                if (Main.getInstance().getConfig().getBoolean("require-money")) {
 
-            EconomyResponse response = Main.getInstance().getEconomy().withdrawPlayer(player, setHomeCost);
-            if (!response.transactionSuccess()) {
-                Message.sendMessage(player, Message.COMMAND_ERROR_NOT_ENOUGH_MONEY);
-                return;
+                    EconomyResponse response = Main.getInstance().getEconomy().withdrawPlayer(player, setHomeCost);
+                    if (!response.transactionSuccess()) {
+                        Message.sendMessage(player, Message.COMMAND_ERROR_NOT_ENOUGH_MONEY);
+                        return;
+                    }
+                }
+
+                String world = player.getWorld().getName();
+                double xloc = player.getLocation().getX();
+                double yloc = player.getLocation().getY();
+                double zloc = player.getLocation().getZ();
+                float yaw = player.getLocation().getYaw();
+                float pitch = player.getLocation().getPitch();
+
+                Main.getInstance().guildhomesconfig.set(Guild.getGuild(player.getUniqueId()).getName(), world + ":" + xloc + ":" + yloc + ":" + zloc + ":" + yaw + ":" + pitch);
+                Main.getInstance().saveGuildhomes();
+                Message.sendMessage(player, Message.COMMAND_CREATE_GUILD_HOME);
+                cooldowns.put(player.getName(), System.currentTimeMillis());
+
             }
-        }
-        String world = player.getWorld().getName();
-        double xloc = player.getLocation().getX();
-        double yloc = player.getLocation().getY();
-        double zloc = player.getLocation().getZ();
-        float yaw = player.getLocation().getYaw();
-        float pitch = player.getLocation().getPitch();
 
-        Main.getInstance().guildhomesconfig.set(Guild.getGuild(player.getUniqueId()).getName(), world + ":" + xloc + ":" + yloc + ":" + zloc + ":" + yaw + ":" + pitch);
-        Main.getInstance().saveGuildhomes();
-        Message.sendMessage(player, Message.COMMAND_CREATE_GUILD_HOME);
-        cooldowns.put(player.getName(), System.currentTimeMillis());
+            @Override
+            public void decline() {
+                Message.sendMessage(player, Message.COMMAND_CREATE_CANCELLED_SETHOME);
+            }
+        });
+
     }
 }

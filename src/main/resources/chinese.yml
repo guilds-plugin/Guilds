@@ -34,6 +34,7 @@ messages:
       requirements: "&c您的公會名稱與伺服器所設定的字元要求不符合&4"
       guild-name-taken: "&c這個公會名字已經被使用!"
       money-warning: "&c 您確定要花費 {amount} $$ 來創建公會嗎? (輸入&b/guilds confirm &r來確認)"
+      money-warning-sethome: "&c You are about to spend {amount} to set your guild home. (Type /guilds confirm to continue)"
       guild-home: "&a你已設置好了公會據點!"
     delete:
       successful: "&a成功刪除公會 '{guild}' !"

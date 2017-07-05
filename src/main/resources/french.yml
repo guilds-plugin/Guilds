@@ -29,11 +29,13 @@ messages:
     create:
       successful: "&aLa guild '{guild}' a été crée avec succès !"
       cancelled: "&cLa création de la guilde a été annulé !"
+      cancelled-sethome: "&cGuild home was not set!"
       warning: "&cFaite /guild confirm pour créer votre guilde ou /guilds cancel pour annuler."
       error: "&cQuelque chose ne va pas dans la création de la guilde !"
       requirements: "&cLe nom de votre guilde n'a pas les conditions espéré ! Vous pouvez seulement vous servir des lettres alphanumeriques et la longueur ne peut pas dépasser 32."
       guild-name-taken: "&cCe nom est déjà utilisé !"
       money-warning: "&c Êtes-vous sûr de vouloir dépenser {amount} pour créer une guilde ? (Fait /guilds confirm pour continuer)"
+      money-warning-sethome: "&c You are about to spend {amount} to set your guild home. (Type /guilds confirm to continue)"
       guild-home: "&aVous avez créer le home de votre guilde !"
     delete:
       successful: "&aLa guilde '{guild}' a été supprimé avec succès !"

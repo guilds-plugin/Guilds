@@ -29,11 +29,13 @@ messages:
     create:
       successful: "&aGuilden '{guild}' färdigställd!"
       cancelled: "&cGuild skapandet avbryten!"
+      cancelled-sethome: "&cGuild home was not set!"
       warning: "&cSkriv /guilds confirm för att skapa din guild, skriv /guilds cancel för att avbryta"
       error: "&cNågot gick fel när du försökte skapa din guild!"
       requirements: "&cDitt guild namn matchar inte kraven! Du kan endast använda alfanumeriska tecken och längden får ej passera 64 tecken."
       guild-name-taken: "&cDetta namn är redan tagen!"
       money-warning: "&c Är du säker att du vill spendera {amount} för att skapa en guild? (Skriv /guilds confirm för att fortsätta)"
+      money-warning-sethome: "&c You are about to spend {amount} to set your guild home. (Type /guilds confirm to continue)"
       guild-home: "&aDu har nu fastställt din guild bostad!"
     delete:
       successful: "&aBorttaget '{guild}' framgångsrikt!"

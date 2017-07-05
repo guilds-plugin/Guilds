@@ -29,11 +29,13 @@ messages:
     create:
       successful: "&aギルド '{guild}' の作成に成功しました!"
       cancelled: "&cギルドの作成がキャンセルされました!"
+      cancelled-sethome: "&cGuild home was not set!"
       warning: "&c/guilds confirm とタイプしてギルドを作成、/guilds cancel とタイプして作成をキャンセルできます。"
       error: "&cあなたのギルドを作成中に予期せぬことが起きてしまいました!"
       requirements: "&cあなたのギルドの名前が命名規約に沿っていません! ギルドの名前はアルファベット文字で、最大６４文字までです。"
       guild-name-taken: "&cこの名前はすでにしようされています!"
       money-warning: "&c 本当に、{amount} 費やしてギルドを作成しますか? (/guilds confirm とタイプして続行)"
+      money-warning-sethome: "&c You are about to spend {amount} to set your guild home. (Type /guilds confirm to continue)"
       guild-home: "&aギルドのホームポジションを設定しました!"
     delete:
       successful: "&aギルド '{guild}' の削除に成功しました!"

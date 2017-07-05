@@ -29,11 +29,13 @@ messages:
     create:
       successful: "&aDe guild '{guild}' is met success gemaakt!"
       cancelled: "&cHet maken van deze guild is niet gelukt!"
+      cancelled-sethome: "&cGuild home was not set!"
       warning: "&cType /guilds confirm om je guild te maken, type /guilds cancel om het te stoppen."
       error: "&cEr is iets fout gegaan bij het maken van jouw guild"
       requirements: "&cDe naam van jou guild doet niet toe aan de eisen! Je kan alleen alfabetische tekens gebruiken en de lengte van jou Guild naam mag maximaal 64 tekens lang zijn"
       guild-name-taken: "&cDeze naam is al bezet"
       money-warning: "&cWeet je zeker dat je {amount} wilt spenderen om een guild te maken? (Type /guilds confirm om dit te voltooien)"
+      money-warning-sethome: "&c You are about to spend {amount} to set your guild home. (Type /guilds confirm to continue)"
       guild-home: "&aJe hebt je guild home gezet!"
     delete:
       successful: "&aJou guild '{guild}' is nu verwijderd!"

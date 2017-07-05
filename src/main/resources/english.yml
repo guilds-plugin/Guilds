@@ -29,11 +29,13 @@ messages:
     create:
       successful: "&aGuild '{guild}' created successfully!"
       cancelled: "&cGuild creation cancelled!"
+      cancelled-sethome: "&cGuild home was not set!"
       warning: "&cType /guilds confirm to create your guild, type /guilds cancel to cancel."
       error: "&cSomething went wrong while creating your guild!"
       requirements: "&cYour guild's name does not match the requirements! You can only use alphanumeric characters and the length of the name cannot exceed 64"
       guild-name-taken: "&cThis name is already taken!"
       money-warning: "&c Are you sure you want to spend {amount} to create a guild? (Type /guilds confirm to continue)"
+      money-warning-sethome: "&c You are about to spend {amount} to set your guild home. (Type /guilds confirm to continue)"
       guild-home: "&aYou've set your guild home!"
     delete:
       successful: "&aDeleted '{guild}' successfully!"
