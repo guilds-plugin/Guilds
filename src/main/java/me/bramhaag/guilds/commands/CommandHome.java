@@ -8,9 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -36,19 +34,19 @@ public class CommandHome
             Message.sendMessage(player, Message.COMMAND_ERROR_NO_HOME_SET);
         }
         if (this.cooldowns.containsKey(player.getName())) {
-            long secondsLeft = this.cooldowns.get(player.getName()).longValue() / 1000L + cooldownTime - System.currentTimeMillis() / 1000L;
-            if (secondsLeft > 0L) {
+            long secondsLeft = this.cooldowns.get(player.getName()).longValue() / 1000 + cooldownTime - System.currentTimeMillis() / 1000;
+            if (secondsLeft > 0) {
                 Message.sendMessage(player, Message.COMMAND_ERROR_HOME_COOLDOWN.replace(new String[]{"{time}", String.valueOf(secondsLeft)}));
                 return;
             }
-        } else {
+        }
             this.countdown.put(player.getUniqueId(), new BukkitRunnable() {
                 int count = Main.getInstance().getConfig().getInt("home.teleport-delay");
 
                 public void run() {
 
                     if (count > 0) {
-                        player.sendMessage("You will be teleporting in " + count + " second(s)!");
+                        Message.sendMessage(player, Message.COMMAND_HOME_TELEPORTING.replace(new String[]{"{count}", String.valueOf(count)}));
                         count--;
                     } else {
                         String[] data = Main.getInstance().guildhomesconfig.getString(Guild.getGuild(player.getUniqueId()).getName()).split(":");
@@ -71,15 +69,4 @@ public class CommandHome
             }.runTaskTimer(Main.getInstance(), 0L, 20L));
             return;
         }
-    }
-
-    @EventHandler
-    public void onPlayerMove(PlayerMoveEvent e) {
-        Player player = e.getPlayer();
-        if (this.countdown.containsKey(player.getUniqueId())) {
-            this.countdown.get(player.getUniqueId()).cancel();
-            this.countdown.remove(player.getUniqueId());
-            player.sendMessage("Oh no, you moved, teleport cancelled!");
-        }
-    }
 }

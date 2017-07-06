@@ -127,7 +127,6 @@ public class Main extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new JoinListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerDamangeListener(), this);
-        getServer().getPluginManager().registerEvents(new CommandHome(), this);
 
         vault = setupEconomy();
 

@@ -121,7 +121,8 @@ public enum Message {
     COMMAND_CREATE_MONEY_WARNING,
     COMMAND_CREATE_MONEY_WARNING_SETHOME,
     COMMAND_ERROR_NOT_ENOUGH_MONEY,
-    COMMAND_HOME_TELEPORTED;
+    COMMAND_HOME_TELEPORTED,
+    COMMAND_HOME_TELEPORTING;
 
     public static void sendMessage(CommandSender sender, Message message) {
         sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.PREFIX + Main.getInstance().yaml.getString(getPath(message))));
