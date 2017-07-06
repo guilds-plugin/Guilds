@@ -24,7 +24,7 @@ public class CommandHome
         extends CommandBase implements Listener {
     public HashMap<String, Long> cooldowns = new HashMap();
     public HashMap<UUID, BukkitTask> countdown = new HashMap();
-
+    public static int taskID;
     public CommandHome() {
         super("home", "Teleport to your guild home", "guilds.command.home", false, null, null, 0, 0);
     }
@@ -42,7 +42,7 @@ public class CommandHome
             }
         }
 
-        this.countdown.put(player.getUniqueId(), new BukkitRunnable() {
+        BukkitTask taskID = this.countdown.put(player.getUniqueId(), new BukkitRunnable() {
             int count = Main.getInstance().getConfig().getInt("home.teleport-delay");
 
             public void run() {
