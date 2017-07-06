@@ -65,6 +65,7 @@ public class CommandHome
                         Message.sendMessage(player, Message.COMMAND_HOME_TELEPORTED);
                         CommandHome.this.cooldowns.put(player.getName(), Long.valueOf(System.currentTimeMillis()));
                         CommandHome.this.countdown.remove(player.getUniqueId());
+                        this.cancel();
                     }
                 }
             }.runTaskTimer(Main.getInstance(), 0L, 20L));
