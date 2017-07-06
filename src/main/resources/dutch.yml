@@ -113,6 +113,7 @@ messages:
       not-allies: "&cJe bent niet geallied met {guild}!"
     home:
       teleported: "&aJe bent geteleporteerd naar je guild home!"
+      teleporting: "&cYou will be teleporting in {count} seconds."
   event:
     join:
       pending-invites: "&aJe hebt {number} wachtende verzoek(en) van de guild(s): &e{guilds}"

@@ -36,6 +36,7 @@ name:
 home:
   cool-down: 60
   teleport-delay: 5
+  freeze-player: true
 
 sethome:
   cool-down: 60

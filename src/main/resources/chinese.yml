@@ -114,6 +114,7 @@ messages:
       not-allies: "&c你尚未與與此公會 {guild} 有聯盟關係!"
     home:
       teleported: "&a已送達至您的公會據點!"
+      teleporting: "&cYou will be teleporting in {count} seconds."
   event:
     join:
       pending-invites: "&aYou have {number} pending invite(s) from the guild(s): &e{guilds}"

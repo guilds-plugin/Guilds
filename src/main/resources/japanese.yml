@@ -113,6 +113,7 @@ messages:
       not-allies: "&cあなたのギルドはギルド {guild} と同盟関係にありません!"
     home:
       teleported: "&aギルドのホームポジションにテレポートされました!"
+      teleporting: "&cYou will be teleporting in {count} seconds."
   event:
     join:
       pending-invites: "&a現在あなたに、&e{guilds} のギルドより {number} 通の招待状が届いています。"
