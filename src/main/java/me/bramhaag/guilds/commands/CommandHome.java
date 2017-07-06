@@ -8,48 +8,77 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by GlareMasters on 6/12/2017.
  */
-public class CommandHome extends CommandBase {
-    public HashMap<String, Long> cooldowns = new HashMap<String, Long>();
+public class CommandHome
+        extends CommandBase implements Listener {
+    public HashMap<String, Long> cooldowns = new HashMap();
+    final Map<UUID, BukkitTask> countdown = new HashMap();
 
     public CommandHome() {
         super("home", "Teleport to your guild home", "guilds.command.home", false, null, null, 0, 0);
     }
 
-    @Override
-    public void execute(Player player, String[] args) {
+    public void execute(final Player player, String[] args) {
         int cooldownTime = Main.getInstance().getConfig().getInt("home.cool-down");
-
-        if (Main.getInstance().guildhomesconfig.getString(Guild.getGuild(player.getUniqueId()).getName()) == null)
+        if (Main.getInstance().guildhomesconfig.getString(Guild.getGuild(player.getUniqueId()).getName()) == null) {
             Message.sendMessage(player, Message.COMMAND_ERROR_NO_HOME_SET);
-
-        if (cooldowns.containsKey(player.getName())) {
-            long secondsLeft = ((cooldowns.get(player.getName()) / 1000) + cooldownTime) - (System.currentTimeMillis() / 1000);
-            if (secondsLeft > 0) {
-                // Still cooling down
-                Message.sendMessage(player, Message.COMMAND_ERROR_HOME_COOLDOWN.replace("{time}", String.valueOf(secondsLeft)));
+        }
+        if (this.cooldowns.containsKey(player.getName())) {
+            long secondsLeft = this.cooldowns.get(player.getName()).longValue() / 1000L + cooldownTime - System.currentTimeMillis() / 1000L;
+            if (secondsLeft > 0L) {
+                Message.sendMessage(player, Message.COMMAND_ERROR_HOME_COOLDOWN.replace(new String[]{"{time}", String.valueOf(secondsLeft)}));
                 return;
             }
         } else {
-            String[] data = Main.getInstance().guildhomesconfig.getString(Guild.getGuild(player.getUniqueId()).getName()).split(":");
-            World w = Bukkit.getWorld(data[0]);
-            double x = Double.parseDouble(data[1]);
-            double y = Double.parseDouble(data[2]);
-            double z = Double.parseDouble(data[3]);
+            this.countdown.put(player.getUniqueId(), new BukkitRunnable() {
+                int count = Main.getInstance().getConfig().getInt("home.teleport-delay");
 
-            Location guildhome = new Location(w, x, y, z);
-            guildhome.setYaw(Float.parseFloat(data[4]));
-            guildhome.setPitch(Float.parseFloat(data[5]));
+                public void run() {
 
-            player.teleport(guildhome);
-            Message.sendMessage(player, Message.COMMAND_HOME_TELEPORTED);
-            cooldowns.put(player.getName(), System.currentTimeMillis());
+                    if (count > 0) {
+                        player.sendMessage("You will be teleporting in " + count + " second(s)!");
+                        count--;
+                    } else {
+                        String[] data = Main.getInstance().guildhomesconfig.getString(Guild.getGuild(player.getUniqueId()).getName()).split(":");
+                        World w = Bukkit.getWorld(data[0]);
+                        double x = Double.parseDouble(data[1]);
+                        double y = Double.parseDouble(data[2]);
+                        double z = Double.parseDouble(data[3]);
+
+                        Location guildhome = new Location(w, x, y, z);
+                        guildhome.setYaw(Float.parseFloat(data[4]));
+                        guildhome.setPitch(Float.parseFloat(data[5]));
+
+                        player.teleport(guildhome);
+                        Message.sendMessage(player, Message.COMMAND_HOME_TELEPORTED);
+                        CommandHome.this.cooldowns.put(player.getName(), Long.valueOf(System.currentTimeMillis()));
+                        CommandHome.this.countdown.remove(player.getUniqueId());
+                    }
+                }
+            }.runTaskTimer(Main.getInstance(), 0L, 20L));
+            return;
         }
+    }
 
+    @EventHandler
+    public void onPlayerMove(PlayerMoveEvent e) {
+        Player player = e.getPlayer();
+        if (this.countdown.containsKey(player.getUniqueId())) {
+            this.countdown.get(player.getUniqueId()).cancel();
+            this.countdown.remove(player.getUniqueId());
+            player.sendMessage("Oh no, you moved, teleport cancelled!");
+        }
     }
 }

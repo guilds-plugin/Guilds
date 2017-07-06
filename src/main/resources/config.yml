@@ -35,6 +35,7 @@ name:
 
 home:
   cool-down: 60
+  teleport-delay: 5
 
 sethome:
   cool-down: 60
