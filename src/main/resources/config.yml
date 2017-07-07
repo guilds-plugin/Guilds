@@ -37,6 +37,8 @@ home:
   cool-down: 60
   teleport-delay: 5
   freeze-player: true
+# Freezing a player will make them not able to move while teleporting.
+# Change the teleport-delay if you want them to wait longer to teleport after running the command.
 
 sethome:
   cool-down: 60

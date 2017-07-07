@@ -8,13 +8,17 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -23,13 +27,17 @@ import java.util.UUID;
 public class CommandHome
         extends CommandBase implements Listener {
     public HashMap<String, Long> cooldowns = new HashMap();
-    public HashMap<UUID, BukkitTask> countdown = new HashMap();
-    public static int taskID;
+
+    private static Map<UUID, BukkitTask> countdown = new HashMap<>();
+    private static Listener listener = null;
+    int count = Main.getInstance().getConfig().getInt("home.teleport-delay");
+    int cooldownTime = Main.getInstance().getConfig().getInt("home.cool-down");
     public CommandHome() {
         super("home", "Teleport to your guild home", "guilds.command.home", false, null, null, 0, 0);
     }
 
     public void execute(final Player player, String[] args) {
+
         int cooldownTime = Main.getInstance().getConfig().getInt("home.cool-down");
         if (Main.getInstance().guildhomesconfig.getString(Guild.getGuild(player.getUniqueId()).getName()) == null) {
             Message.sendMessage(player, Message.COMMAND_ERROR_NO_HOME_SET);
@@ -41,12 +49,37 @@ public class CommandHome
                 return;
             }
         }
+        start(player);
+        if (listener == null) {
+            listener = new Listener() {
 
-        BukkitTask taskID = this.countdown.put(player.getUniqueId(), new BukkitRunnable() {
-            int count = Main.getInstance().getConfig().getInt("home.teleport-delay");
+                @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+                public void onDamage(EntityDamageByEntityEvent e) {
+                    if (!(e.getEntity() instanceof Player)) {
+                        return;
+                    }
 
+                    Player damaged = (Player) e.getEntity();
+
+                    if (!countdown.containsKey(damaged.getUniqueId())) {
+                        return;
+                    }
+
+                    countdown.get(damaged.getUniqueId()).cancel();
+                    Message.sendMessage(player, Message.COMMAND_HOME_DAMAGE_TAKEN);
+                    player.removePotionEffect(PotionEffectType.SLOW);
+                    countdown.remove(damaged.getUniqueId());
+                }
+
+            };
+            Bukkit.getPluginManager().registerEvents(listener, /* plugin */Main.getInstance());
+        }
+    }
+
+    public void start(Player player) {
+        countdown.put(player.getUniqueId(), new BukkitRunnable() {
+            @Override
             public void run() {
-
                 if (count > 0) {
                     Message.sendMessage(player, Message.COMMAND_HOME_TELEPORTING.replace(new String[]{"{count}", String.valueOf(count)}));
                     count--;
@@ -68,13 +101,12 @@ public class CommandHome
                     player.teleport(guildhome);
                     Message.sendMessage(player, Message.COMMAND_HOME_TELEPORTED);
                     CommandHome.this.cooldowns.put(player.getName(), Long.valueOf(System.currentTimeMillis()));
-                    CommandHome.this.countdown.remove(player.getUniqueId());
+                    countdown.remove(player.getUniqueId());
                     this.cancel();
                 }
             }
+
         }.runTaskTimer(Main.getInstance(), 0L, 20L));
-        return;
     }
 
 }
-

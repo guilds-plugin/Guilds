@@ -114,6 +114,7 @@ messages:
     home:
       teleported: "&aJe bent geteleporteerd naar je guild home!"
       teleporting: "&cYou will be teleporting in {count} seconds."
+      damage-taken: "&cYou've been damaged! Cancelling teleport!"
   event:
     join:
       pending-invites: "&aJe hebt {number} wachtende verzoek(en) van de guild(s): &e{guilds}"
