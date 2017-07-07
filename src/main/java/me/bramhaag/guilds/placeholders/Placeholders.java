@@ -3,6 +3,7 @@ package me.bramhaag.guilds.placeholders;
 import me.bramhaag.guilds.Main;
 import me.bramhaag.guilds.guild.Guild;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 public class Placeholders {
@@ -34,6 +35,15 @@ public class Placeholders {
         }
 
         return String.valueOf(guild.getMembers().size());
+    }
+
+    public static String getGuildMembersOnline(Player player) {
+        Guild guild = Guild.getGuild(player.getUniqueId());
+        if (guild == null) {
+            return "";
+        }
+
+        return String.valueOf(guild.getMembers().stream().map(member -> Bukkit.getOfflinePlayer(member.getUniqueId())).filter(OfflinePlayer::isOnline).count());
     }
 
     public static String getGuildPrefix(Player player) {
