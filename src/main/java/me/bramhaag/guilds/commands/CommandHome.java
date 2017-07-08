@@ -32,6 +32,7 @@ public class CommandHome
     private static Listener listener = null;
     int count = Main.getInstance().getConfig().getInt("home.teleport-delay");
     int cooldownTime = Main.getInstance().getConfig().getInt("home.cool-down");
+
     public CommandHome() {
         super("home", "Teleport to your guild home", "guilds.command.home", false, null, null, 0, 0);
     }
@@ -41,6 +42,7 @@ public class CommandHome
         int cooldownTime = Main.getInstance().getConfig().getInt("home.cool-down");
         if (Main.getInstance().guildhomesconfig.getString(Guild.getGuild(player.getUniqueId()).getName()) == null) {
             Message.sendMessage(player, Message.COMMAND_ERROR_NO_HOME_SET);
+            return;
         }
         if (this.cooldowns.containsKey(player.getName())) {
             long secondsLeft = this.cooldowns.get(player.getName()).longValue() / 1000 + cooldownTime - System.currentTimeMillis() / 1000;
