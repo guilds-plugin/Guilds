@@ -1,38 +1,26 @@
 package me.bramhaag.guilds.listeners;
 
-import me.bramhaag.guilds.Main;
 import me.bramhaag.guilds.guild.Guild;
-import me.bramhaag.guilds.guild.GuildRole;
-import me.bramhaag.guilds.message.Message;
-import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+import static me.bramhaag.guilds.placeholders.Placeholders.getGuildMemberCount;
+import static me.bramhaag.guilds.placeholders.Placeholders.getGuildMembersOnline;
+
 public class ChatListener implements Listener {
 
     @EventHandler
-    public void onChat(AsyncPlayerChatEvent e) {
-        Player player = e.getPlayer();
+    public void onPlayerChat(AsyncPlayerChatEvent event) {
+        Player player = event.getPlayer();
         Guild guild = Guild.getGuild(player.getUniqueId());
-
-        if (guild == null) {
-            Message.sendMessage(player, Message.COMMAND_ERROR_NO_GUILD);
-            return;
-        }
-
-        GuildRole role = GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole());
-        if (!role.canChat()) {
-            Message.sendMessage(player, Message.COMMAND_ERROR_ROLE_NO_PERMISSION);
-            return;
-        }
-
-        String prefixFormat = ChatColor.translateAlternateColorCodes('&', Main.getInstance().getConfig().getString("prefix.format").replace("{prefix}", guild.getPrefix()));
-        String chatFormat = Main.getInstance().getConfig().getString("chat.format").replace("{guild}", prefixFormat);
-
-        e.setFormat(chatFormat);
+        event.setFormat(event.getFormat().replace("{ESSENTIALS_GUILD}", guild.getName()));
+        event.setFormat(event.getFormat().replace("{ESSENTIALS_GUILD_PREFIX}", guild.getPrefix()));
+        event.setFormat(event.getFormat().replace("{ESSENTIALS_GUILD_MASTER}", Bukkit.getOfflinePlayer(guild.getGuildMaster().getUniqueId()).getName()));
+        event.setFormat(event.getFormat().replace("{ESSENTIALS_GUILD_MEMBER_COUNT}", getGuildMemberCount(event.getPlayer())));
+        event.setFormat(event.getFormat().replace("{ESSENTIALS_GUILD_MEMBERS_ONLINE}", getGuildMembersOnline(event.getPlayer())));
     }
-
-
 }
+

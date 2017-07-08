@@ -56,15 +56,6 @@ members:
 # Set to -1 to disable
   max-members: 64
 
-chat:
-# Enable or disable custom chat formatting for players who are in a guild
-  enable: false
-# Custom chat format (only applied when the setting above is set to true)
-#   - "{guild}" is replaced with the guild prefix
-#   - "%s" (First) is replaced with the player's name
-#   - "%s" (Second) is replaced with the player's message
-  format: "{guild} <%s>: %s"
-
 placeholders:
 # Default value for placeholders that don't have a value (Set to "" to leave empty)
 

@@ -121,12 +121,11 @@ public class Main extends JavaPlugin {
         commandHandler.register(new CommandHelp());
         commandHandler.register(new CommandInspect());
 
-        if (Main.getInstance().getConfig().getBoolean("chat.enable")) {
-            getServer().getPluginManager().registerEvents(new ChatListener(), this);
-        }
+
 
         getServer().getPluginManager().registerEvents(new JoinListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerDamangeListener(), this);
+        getServer().getPluginManager().registerEvents(new ChatListener(), this);
         getServer().getPluginManager().registerEvents(new CommandHome(), this);
 
         vault = setupEconomy();
@@ -162,6 +161,7 @@ public class Main extends JavaPlugin {
             getServer().getScheduler().scheduleAsyncRepeatingTask(this, this::sendUpdate, 0L, 2000L); //5 minutes
         }
         this.saveDefaultConfig();
+
         this.saveResource("english.yml", false);
         this.saveResource("chinese.yml", false);
         this.saveResource("french.yml", false);
