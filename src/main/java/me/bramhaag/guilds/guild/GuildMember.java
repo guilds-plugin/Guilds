@@ -11,7 +11,6 @@ public class GuildMember {
 
     @Expose
     private int role;
-
     public GuildMember(UUID uuid, int role) {
         this.uuid = uuid;
         this.role = role;

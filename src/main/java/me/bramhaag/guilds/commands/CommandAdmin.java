@@ -12,6 +12,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("deprecation")
 public class CommandAdmin extends CommandBase {
@@ -105,6 +106,7 @@ public class CommandAdmin extends CommandBase {
             Message.sendMessage(sender, Message.COMMAND_INFO_NAME.replace("{guild}", guild.getName(), "{prefix}", guild.getPrefix()));
             Message.sendMessage(sender, Message.COMMAND_INFO_MASTER.replace("{master}", Bukkit.getOfflinePlayer(guild.getGuildMaster().getUniqueId()).getName()));
             Message.sendMessage(sender, Message.COMMAND_INFO_MEMBER_COUNT.replace("{members}", String.valueOf(guild.getMembers().size()), "{members-online}", String.valueOf(guild.getMembers().stream().map(member -> Bukkit.getOfflinePlayer(member.getUniqueId())).filter(OfflinePlayer::isOnline).count())));
+            Message.sendMessage(sender, Message.COMMAND_INFO_PLAYERS.replace("{players}", guild.getMembers().stream().map(member -> Bukkit.getOfflinePlayer(member.getUniqueId()).getName()).collect(Collectors.joining(", "))));
         }
     }
 }
