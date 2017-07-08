@@ -16,8 +16,8 @@ messages:
       role-no-permission: "&cDin roll är inte tillräckligt hög för att göra detta!"
       not-enough-money: "&aLedsen! Du har inte tillräckligt med pengar för att göra en guild!"
       no-home-set: "&cIngen bostad inställt! Använd &a/guild sethome &cför att skapa din bostad!"
-      home-cooldown: "&cYou can't teleport to home for another {time} seconds!"
-      sethome-cooldown: "&cYou can't set your guild home for another {time} seconds!"
+      home-cooldown: "&cDu kan inte teleportera till ditt hem förrän om {time} sekunder!"
+      sethome-cooldown: "&cDu kan inte sätta din guild-hem förrän om {time} sekunder!"
     help:
       message: "&f/guild {command} {arguments} &7- &f{description}"
       next-page: "&7Se /guilds help {next-page} för nästa sida"
@@ -48,7 +48,7 @@ messages:
       master: "Guild Mästare: &b{master}"
       member-count: "Medlemmar: &b{members}/64&r (&bOnline: {members-online}&r)"
       rank: "Din rank: &b{rank}"
-      players: "Members in guild: &b[{players}]"
+      players: "Medlemmar i guild: &b[{players}]"
     promote:
       promoted: "&aDu har lyckats befordrad {player} från {old-rank} till {new-rank}!"
       successful: "&aDu har blivit befordrad från {old-rank} till {new-rank}!"
@@ -114,8 +114,8 @@ messages:
       not-allies: "&cDu är inte allierade med {guild}!"
     home:
       teleported: "&aDu har teleporterats till ditt guild bostad!"
-      teleporting: "&cYou will be teleporting in {count} seconds."
-      damage-taken: "&cYou've been damaged! Cancelling teleport!"
+      teleporting: "&cDu kommer att teleporteras om {count} sekunder."
+      damage-taken: "&cDu har tagit skada! Teleportering avbruten!"
   event:
     join:
       pending-invites: "&aDu har {number} pendlande inbjudningar från guilden: &e{guilds}"
