@@ -48,6 +48,7 @@ messages:
       master: "ギルドマスター: &b{master}"
       member-count: "構成員: &b{members}/64&r (&bオンライン: {members-online}&r)"
       rank: "あなたの位: &b{rank}"
+      players: "Members in guild: &b[{players}]"
     promote:
       promoted: "&aプレーヤ{player} が {old-rank} から {new-rank} へ昇格されました!"
       successful: "&aあなたは {old-rank} から {new-rank} へ昇格されました!"

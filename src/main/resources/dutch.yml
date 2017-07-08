@@ -48,6 +48,7 @@ messages:
       master: "Guild Master: &b{master}"
       member-count: "Leden: &b{members}/64&r (&bOnline: {members-online}&r)"
       rank: "Jouw rank: &b{rank}"
+      players: "Members in guild: &b[{players}]"
     promote:
       promoted: "&aJe hebt {player} met success gepromoveerd van {old-rank} naar{new-rank}!"
       successful: "&aJe bent gepromoveerd van {old-rank} naar {new-rank}!"

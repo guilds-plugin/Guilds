@@ -48,6 +48,7 @@ messages:
       master: "Chef: &b{master}"
       member-count: "Membres: &b{members}/64&r (&bEn ligne: {members-online}&r)"
       rank: "Votre rang: &b{rank}"
+      players: "Members in guild: &b[{players}]"
     promote:
       promoted: "&aVous avez été promu de {old-rank} à {new-rank} !"
       successful: "&aVous avez été promu par {player} de {old-rank} à {new-rank}!"

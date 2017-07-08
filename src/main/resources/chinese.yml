@@ -47,6 +47,7 @@ messages:
       master: "公會長: &b{master}"
       member-count: "成員: &b{members}/64&r (&線上: {members-online}&r)"
       rank: "你的職位: &b{rank}"
+      players: "Members in guild: &b[{players}]"
     promote:
       promoted: "&a恭喜! 你從{old-rank} 被升職到 {new-rank} 了!"
       successful: "&a你成功的升級了把 {player} 從 {old-rank} 升職到 {new-rank}!"
