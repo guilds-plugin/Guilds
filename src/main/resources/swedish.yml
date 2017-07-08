@@ -48,6 +48,7 @@ messages:
       master: "Guild Mästare: &b{master}"
       member-count: "Medlemmar: &b{members}/64&r (&bOnline: {members-online}&r)"
       rank: "Din rank: &b{rank}"
+      players: "Members in guild: &b[{players}]"
     promote:
       promoted: "&aDu har lyckats befordrad {player} från {old-rank} till {new-rank}!"
       successful: "&aDu har blivit befordrad från {old-rank} till {new-rank}!"
