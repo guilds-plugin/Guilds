@@ -10,6 +10,53 @@ commands:
   guild:
     aliases: "guilds"
     description: See the Guild commands
+  guild accept:
+    description: /guild accept <guild name>
+  guild admin:
+    description: /guild admin <remove | info> <guild name>, or <addplayer | removeplayer> <guild name> <player name>
+  guild ally:
+    description: /guild ally <add | remove> <guild>, or chat <guild>
+  guild boot:
+    description: /guild boot <add | remove> <guild>, or chat <guild>
+  guild bugreport:
+    description: Submit a bug report!
+  guild cancel:
+    description: Cancel an action
+  guild chat:
+    description: /guild chat <message>
+  guild confirm:
+    description: Confirm an action
+  guild create:
+    description: /guild create <guild name>
+  guild delete:
+    description: Delete your current guild
+  guild demote:
+    description: /guild demote <player> [new role]
+  guild home:
+    description: Teleport to your guild home
+  guild info:
+    description: View your guild's info
+  guild inspect:
+    description: /guild inspect <guild name>
+  guild invite:
+    description: /guild invite <player>
+  guild leave:
+    description: Leave your current guild
+  guild list:
+    description: List all guilds on the server
+  guild prefix:
+    description: /guild prefix <new prefix>
+  guild promote:
+    description: /guild promote <player> [new role]
+  guild reload:
+    description: Reload Guilds' configuration file
+  guild sethome:
+    description: Set your guild's home!
+  guild update:
+    description: Update to the most recent version of Guilds
+  guild version:
+    description: Check version
+
 
 permissions:
   guilds.group.admin:
