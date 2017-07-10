@@ -13,6 +13,7 @@ import me.bramhaag.guilds.database.databases.mysql.MySql;
 import me.bramhaag.guilds.guild.GuildHandler;
 import me.bramhaag.guilds.leaderboard.LeaderboardHandler;
 import me.bramhaag.guilds.listeners.ChatListener;
+import me.bramhaag.guilds.listeners.ClickListener;
 import me.bramhaag.guilds.listeners.JoinListener;
 import me.bramhaag.guilds.listeners.PlayerDamangeListener;
 import me.bramhaag.guilds.placeholders.Placeholders;
@@ -127,6 +128,8 @@ public class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerDamangeListener(), this);
         getServer().getPluginManager().registerEvents(new ChatListener(), this);
         getServer().getPluginManager().registerEvents(new CommandHome(), this);
+        getServer().getPluginManager().registerEvents(new ClickListener(), this);
+
 
         vault = setupEconomy();
 

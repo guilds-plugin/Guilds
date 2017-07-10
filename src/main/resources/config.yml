@@ -16,6 +16,9 @@ plugin-prefix: "&a[Guilds]"
 description:
   patch: false
 
+gui:
+  info: true
+
 require-money: false
 #Requirement:
 #  cost: 100
