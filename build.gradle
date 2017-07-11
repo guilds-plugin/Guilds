@@ -5,7 +5,7 @@ apply plugin: 'maven'
 apply plugin: 'com.github.johnrengelman.shadow'
 apply plugin: 'rebel'
 
-group = 'me.bramhaag'
+group = 'me.glaremasters'
 version = '1.5.4-RELEASE'
 
 sourceCompatibility = 1.8
