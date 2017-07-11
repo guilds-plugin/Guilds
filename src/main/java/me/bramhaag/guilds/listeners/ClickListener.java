@@ -15,6 +15,9 @@ public class ClickListener implements Listener {
         if (e.getInventory().getTitle().equalsIgnoreCase(ChatColor.DARK_GREEN + "Guild Info")) {
             e.setCancelled(true);
         }
+        if (e.getInventory().getTitle().equalsIgnoreCase(ChatColor.DARK_GREEN + "Guild List")) {
+            e.setCancelled(true);
+        }
     }
 }
 
