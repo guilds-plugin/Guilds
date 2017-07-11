@@ -40,10 +40,10 @@ public class CommandInfo extends CommandBase implements Listener {
 
         SkullMeta meta = (SkullMeta) skull.getItemMeta();
         meta.setOwner(player.getName());
-        meta.setDisplayName(ChatColor.WHITE + "Name : " + ChatColor.GREEN + player.getName());
+        meta.setDisplayName(ChatColor.WHITE + Main.getInstance().getConfig().getString("info.playername") + ChatColor.GREEN + player.getName());
 
         ArrayList<String> info = new ArrayList<String>();
-        info.add(ChatColor.WHITE + "Guild : " + ChatColor.GREEN + guild.getName());
+        info.add(ChatColor.WHITE + Main.getInstance().getConfig().getString("info.guildname") + ChatColor.GREEN + guild.getName());
         meta.setLore(info);
 
         skull.setItemMeta(meta);
@@ -65,22 +65,22 @@ public class CommandInfo extends CommandBase implements Listener {
             // Item 1: Paper
             ArrayList<String> paperlore = new ArrayList<String>();
             paperlore.add(ChatColor.AQUA + Bukkit.getOfflinePlayer(guild.getGuildMaster().getUniqueId()).getName());
-            heads.setItem(1, createItemStack(Material.PAPER, "Guild Master:", paperlore));
+            heads.setItem(1, createItemStack(Material.PAPER, Main.getInstance().getConfig().getString("info.master"), paperlore));
 
             // Item 2: Anvil
             ArrayList<String> anvillore = new ArrayList<String>();
             anvillore.add(ChatColor.AQUA + String.valueOf(guild.getMembers().size()));
-            heads.setItem(2, createItemStack(Material.ANVIL, "Member Count:", anvillore));
+            heads.setItem(2, createItemStack(Material.ANVIL, Main.getInstance().getConfig().getString("info.member-count"), anvillore));
 
             // Item 3: Beacon
             ArrayList<String> beaconlore = new ArrayList<String>();
             beaconlore.add(ChatColor.AQUA + GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole()).getName());
-            heads.setItem(3, createItemStack(Material.BEACON, "Guild Role:", beaconlore));
+            heads.setItem(3, createItemStack(Material.BEACON, Main.getInstance().getConfig().getString("info.role"), beaconlore));
 
             // Item 4: Cake
             ArrayList<String> cakelore = new ArrayList<String>();
             cakelore.add(ChatColor.AQUA + guild.getMembers().stream().map(member -> Bukkit.getOfflinePlayer(member.getUniqueId()).getName()).collect(Collectors.joining(", ")));
-            heads.setItem(4, createItemStack(Material.CAKE, "Members In Guild:", cakelore));
+            heads.setItem(4, createItemStack(Material.CAKE, Main.getInstance().getConfig().getString("info.members"), cakelore));
 
             // Open inventory
             player.openInventory(heads);

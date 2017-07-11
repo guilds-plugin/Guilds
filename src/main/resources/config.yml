@@ -19,6 +19,23 @@ description:
 gui:
   info: true
 
+list:
+  prefix: "Guild Prefix: "
+  name: "Guild Name: "
+  master: "Guild Master: "
+  member-count: "Member Count: "
+  members: "Members: "
+
+info:
+  playername: "Name: "
+  guildname: "Guild: "
+  master: "Guild Master: "
+  member-count: "Member Count: "
+  role: "Guild Role: "
+  members: "Members In Guild: "
+
+
+
 require-money: false
 #Requirement:
 #  cost: 100
