@@ -56,6 +56,8 @@ commands:
     description: Update to the most recent version of Guilds
   guild version:
     description: Check version
+  guild toggle:
+    description: Toggle your guild Public / Private
 
 
 permissions:
@@ -105,6 +107,7 @@ permissions:
       guilds.command.home: true
       guilds.command.sethome: true
       guilds.command.inspect: true
+      guilds.command.toggle: true
     default: true
   guilds.command.accept:
     description: Accept invite to a guild
@@ -152,3 +155,5 @@ permissions:
     description: Set your guild's home!
   guilds.command.inspect:
     description: Inspect another guild!
+    guilds.command.toggle:
+      description: Toggle Public / Private

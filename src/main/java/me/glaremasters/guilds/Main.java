@@ -121,6 +121,7 @@ public class Main extends JavaPlugin {
         commandHandler.register(new CommandVersion());
         commandHandler.register(new CommandHelp());
         commandHandler.register(new CommandInspect());
+        commandHandler.register(new CommandToggle());
 
 
 
@@ -138,6 +139,17 @@ public class Main extends JavaPlugin {
         }
 
         Metrics metrics = new Metrics(this);
+        metrics.addCustomChart(new Metrics.SingleLineChart("guilds") {
+            @Override
+            public int getValue() {
+                // (This is useless as there is already a player chart by default.)
+                return Main.getInstance().getGuildHandler().getGuilds().values().size();
+            }
+        });
+
+
+
+
         this.saveGuildhomes();
 
         try {

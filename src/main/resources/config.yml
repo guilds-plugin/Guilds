@@ -121,6 +121,7 @@ roles:
       change-home: true
       change-master: true
       remove-guild: true
+      toggle-guild: true
 
   1:
     name: "Officer"
@@ -137,6 +138,7 @@ roles:
       change-home: true
       change-master: false
       remove-guild: false
+      toggle-guild: false
 
   2:
     name: "Veteran"
@@ -152,6 +154,7 @@ roles:
       change-prefix: false
       change-master: false
       remove-guild: false
+      toggle-guild: false
   3:
     name: "Member"
     permissions:
@@ -166,3 +169,4 @@ roles:
       change-prefix: false
       change-master: false
       remove-guild: false
+      toggle-guild: false
