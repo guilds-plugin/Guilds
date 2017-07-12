@@ -22,6 +22,9 @@ messages:
       message: "&f/guild {command} {arguments} &7- &f{description}"
       next-page: "&7Foloseste /guilds help {next-page} pentru pagina urmatoare"
       invalid-page: "&cPagina nu exista!"
+    status:
+      successful: "&aStatutul Breselei setat pe {status}!"
+      error: "&cStatutul Breslei trebuie sa fie public or private!"
     role:
       players: "{player} - {role}"
     list:

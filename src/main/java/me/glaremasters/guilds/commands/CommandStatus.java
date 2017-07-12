@@ -9,9 +9,9 @@ import org.bukkit.entity.Player;
 /**
  * Created by GlareMasters on 7/12/2017.
  */
-public class CommandToggle extends CommandBase {
-    public CommandToggle() {
-        super("toggle", "Toggle your guild Public / Private", "guilds.command.toggle", false, null, "<public | private>", 1, 1);
+public class CommandStatus extends CommandBase {
+    public CommandStatus() {
+        super("status", "Toggle your guild Public / Private", "guilds.command.status", false, null, "<public | private>", 1, 1);
     }
 
     @Override
@@ -23,7 +23,12 @@ public class CommandToggle extends CommandBase {
             Message.sendMessage(player, Message.COMMAND_ERROR_ROLE_NO_PERMISSION);
             return;
         }
-        guild.updateStatus(args[0]);
-
+        if (!(args[0].equalsIgnoreCase("private") || args[0].equalsIgnoreCase("public"))) {
+            Message.sendMessage(player, Message.COMMAND_STATUS_ERROR);
+            return;
+        } else {
+            guild.updateStatus(args[0]);
+            Message.sendMessage(player, Message.COMMAND_STATUS_SUCCESSFUL.replace("{status}", guild.getStatus()));
+        }
     }
 }

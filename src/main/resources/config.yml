@@ -27,6 +27,7 @@ list:
   master: "Guild Master: "
   member-count: "Member Count: "
   members: "Members: "
+  guildstatus: "Guild Status: "
 
 info:
   playername: "Name: "
@@ -35,6 +36,7 @@ info:
   member-count: "Member Count: "
   role: "Guild Role: "
   members: "Members In Guild: "
+  guildstatus: "Guild Status: "
 
 require-money: false
 #Requirement:

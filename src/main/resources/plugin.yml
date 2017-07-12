@@ -107,7 +107,7 @@ permissions:
       guilds.command.home: true
       guilds.command.sethome: true
       guilds.command.inspect: true
-      guilds.command.toggle: true
+      guilds.command.status: true
     default: true
   guilds.command.accept:
     description: Accept invite to a guild
@@ -155,5 +155,5 @@ permissions:
     description: Set your guild's home!
   guilds.command.inspect:
     description: Inspect another guild!
-    guilds.command.toggle:
+    guilds.command.status:
       description: Toggle Public / Private

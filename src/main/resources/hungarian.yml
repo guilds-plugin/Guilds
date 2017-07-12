@@ -22,6 +22,9 @@ messages:
       message: "&f/guild {command} {arguments} &7- &f{description}"
       next-page: "&7See /guilds help {next-page} a kÃ¶vetkezÅ‘ oldalÃ©rt"
       invalid-page: "&cOldal nem talÃ¡lhatÃ³!"
+    status:
+      successful: "&aGuild status set to {status}!"
+      error: "&cGuild status must be public or private!"
     role:
       players: "{player} - {role}"
     list:

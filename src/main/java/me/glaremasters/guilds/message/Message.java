@@ -122,6 +122,8 @@ public enum Message {
     COMMAND_ERROR_NOT_ENOUGH_MONEY,
     COMMAND_HOME_TELEPORTED,
     COMMAND_HOME_DAMAGE_TAKEN,
+    COMMAND_STATUS_SUCCESSFUL,
+    COMMAND_STATUS_ERROR,
     COMMAND_HOME_TELEPORTING;
 
     public static void sendMessage(CommandSender sender, Message message) {

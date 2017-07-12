@@ -51,6 +51,7 @@ public class CommandList extends CommandBase {
             lore.add(ChatColor.GREEN + Main.getInstance().getConfig().getString("list.master") + Bukkit.getOfflinePlayer(guild.getGuildMaster().getUniqueId()).getName());
             lore.add(ChatColor.YELLOW + Main.getInstance().getConfig().getString("list.member-count") + String.valueOf(guild.getMembers().size()));
             lore.add(ChatColor.GOLD + Main.getInstance().getConfig().getString("list.members") + guild.getMembers().stream().map(member -> Bukkit.getOfflinePlayer(member.getUniqueId()).getName()).collect(Collectors.joining(", ")));
+            lore.add(ChatColor.DARK_AQUA + Main.getInstance().getConfig().getString("list.guildstatus") + guild.getStatus());
             skullMeta.setLore(lore);
             skullMeta.setOwner(Bukkit.getOfflinePlayer(guild.getGuildMaster().getUniqueId()).getName());
             skullMeta.setDisplayName(ChatColor.AQUA + Bukkit.getOfflinePlayer(guild.getGuildMaster().getUniqueId()).getName() + "'s Guild");
