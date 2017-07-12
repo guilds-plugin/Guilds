@@ -24,17 +24,19 @@ public class CommandList extends CommandBase {
     }
 
     public static Inventory guildList = null;
+    public static HashMap<UUID, Integer> playerPages = new HashMap<>();
 
     @Override
     public void execute(Player player, String[] args) {
+        playerPages.put(player.getUniqueId(), 1);
         guildList = getSkullsPage(1);
-
         player.openInventory(guildList);
     }
 
     public static Inventory getSkullsPage(int page) {
         HashMap<UUID, ItemStack> skulls = new HashMap<>();
-        Inventory inv = Bukkit.createInventory(null, 54, ChatColor.DARK_GREEN + "Guild List - Page " + String.valueOf(page));
+        Inventory inv = Bukkit.createInventory(null, 54, ChatColor.DARK_GREEN + "Guild List");
+
         int startIndex = 0;
         int endIndex = 0;
 
@@ -64,22 +66,26 @@ public class CommandList extends CommandBase {
         ItemMeta nextMeta = next.getItemMeta();
         nextMeta.setDisplayName(ChatColor.GOLD + "Next page");
         next.setItemMeta(nextMeta);
+        ItemStack barrier = new ItemStack(Material.BARRIER, 1);
+        ItemMeta barrierMeta = barrier.getItemMeta();
+        barrierMeta.setDisplayName(ChatColor.GOLD + "Page: " + page);
+        barrier.setItemMeta(barrierMeta);
         inv.setItem(53, next);
+        inv.setItem(49, barrier);
         inv.setItem(45, previous);
 
+
         startIndex = (page - 1) * 45;
+        endIndex = startIndex + 45;
 
-        endIndex = startIndex + 45 - 1;
-
-        if (endIndex < skulls.values().size()) {
+        if (endIndex > skulls.values().size()) {
             endIndex = skulls.values().size();
         }
 
         int iCount = 0;
-        for (int i1 = startIndex; startIndex < endIndex; i1++) {
-            iCount++;
-            Bukkit.broadcastMessage(String.valueOf(i1));
+        for (int i1 = startIndex; i1 < endIndex; i1++) {
             inv.setItem(iCount, (ItemStack) skulls.values().toArray()[i1]);
+            iCount++;
         }
 
         return inv;

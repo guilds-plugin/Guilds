@@ -34,8 +34,6 @@ info:
   role: "Guild Role: "
   members: "Members In Guild: "
 
-
-
 require-money: false
 #Requirement:
 #  cost: 100
