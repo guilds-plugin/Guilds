@@ -22,12 +22,14 @@ public class ChatListener implements Listener {
             event.setFormat(event.getFormat().replace("{ESSENTIALS_GUILD_MASTER}", ""));
             event.setFormat(event.getFormat().replace("{ESSENTIALS_GUILD_MEMBER_COUNT}", ""));
             event.setFormat(event.getFormat().replace("{ESSENTIALS_GUILD_MEMBERS_ONLINE}", ""));
+            event.setFormat(event.getFormat().replace("{ESSENTIALS_GUILD_STATUS}", ""));
         } else {
             event.setFormat(event.getFormat().replace("{ESSENTIALS_GUILD}", guild.getName()));
             event.setFormat(event.getFormat().replace("{ESSENTIALS_GUILD_PREFIX}", guild.getPrefix()));
             event.setFormat(event.getFormat().replace("{ESSENTIALS_GUILD_MASTER}", Bukkit.getOfflinePlayer(guild.getGuildMaster().getUniqueId()).getName()));
             event.setFormat(event.getFormat().replace("{ESSENTIALS_GUILD_MEMBER_COUNT}", getGuildMemberCount(event.getPlayer())));
             event.setFormat(event.getFormat().replace("{ESSENTIALS_GUILD_MEMBERS_ONLINE}", getGuildMembersOnline(event.getPlayer())));
+            event.setFormat(event.getFormat().replace("{ESSENTIALS_GUILD_STATUS}", guild.getStatus()));
         }
     }
 }
