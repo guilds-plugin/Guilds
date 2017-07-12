@@ -26,9 +26,11 @@ public class CommandAccept extends CommandBase {
             return;
         }
 
-        if (!guild.getInvitedMembers().contains(player.getUniqueId())) {
-            Message.sendMessage(player, Message.COMMAND_ACCEPT_NOT_INVITED);
-            return;
+        if(guild.getStatus().equalsIgnoreCase("private")){
+            if (!guild.getInvitedMembers().contains(player.getUniqueId())) {
+                Message.sendMessage(player, Message.COMMAND_ACCEPT_NOT_INVITED);
+                return;
+            }
         }
 
         int maxMembers = Main.getInstance().getConfig().getInt("members.max-members");
