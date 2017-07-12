@@ -26,5 +26,6 @@ public class CommandBugReport extends CommandBase {
         player.sendMessage(ChatColor.GREEN + "Username: " + ChatColor.GRAY + player.getName());
         player.sendMessage("");
         player.sendMessage(ChatColor.GRAY + "When submitting a bug report, please include a screenshot of this information, along with the bug you are reporting. Clicking the following link will take you to the Guild's Information page where you can contact the developer - https://glaremasters.me/support/");
+        player.sendMessage(ChatColor.AQUA + "Need faster support? Join our discord! https://discord.gg/pDT2ZBS");
     }
 }
