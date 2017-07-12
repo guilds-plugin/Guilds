@@ -187,6 +187,7 @@ public class Main extends JavaPlugin {
             this.saveResource("swedish.yml", false);
             this.saveResource("hungarian.yml", false);
             this.saveResource("romanian.yml", false);
+            this.saveResource("slovak.yml", false);
         }
 
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "guild reload");
