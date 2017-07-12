@@ -46,6 +46,15 @@ public class Placeholders {
         return String.valueOf(guild.getMembers().stream().map(member -> Bukkit.getOfflinePlayer(member.getUniqueId())).filter(OfflinePlayer::isOnline).count());
     }
 
+    public static String getGuildStatus(Player player) {
+        Guild guild = Guild.getGuild(player.getUniqueId());
+        if (guild == null) {
+            return "";
+        }
+
+        return guild.getStatus();
+    }
+
     public static String getGuildPrefix(Player player) {
         Guild guild = Guild.getGuild(player.getUniqueId());
         if (guild == null) {

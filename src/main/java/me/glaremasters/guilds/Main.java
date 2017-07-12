@@ -270,6 +270,7 @@ public class Main extends JavaPlugin {
             PlaceholderAPI.registerPlaceholder(this, "guild_member_count", event -> Placeholders.getGuildMemberCount(event.getPlayer()));
             PlaceholderAPI.registerPlaceholder(this, "guild_prefix", event -> Placeholders.getGuildPrefix(event.getPlayer()));
             PlaceholderAPI.registerPlaceholder(this, "guild_members_online", event -> Placeholders.getGuildMembersOnline(event.getPlayer()));
+            PlaceholderAPI.registerPlaceholder(this, "guild_status", event -> Placeholders.getGuildStatus(event.getPlayer()));
         }
 
     }
