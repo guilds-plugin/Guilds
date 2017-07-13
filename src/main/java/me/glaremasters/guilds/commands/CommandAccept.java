@@ -26,7 +26,7 @@ public class CommandAccept extends CommandBase {
             return;
         }
 
-        if(guild.getStatus().equalsIgnoreCase("private")){
+        if(!guild.getStatus().equalsIgnoreCase("global")){
             if (!guild.getInvitedMembers().contains(player.getUniqueId())) {
                 Message.sendMessage(player, Message.COMMAND_ACCEPT_NOT_INVITED);
                 return;
