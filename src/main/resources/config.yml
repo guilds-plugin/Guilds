@@ -44,8 +44,21 @@ description:
 gui:
   info: true
 
+
 # As stated above, the name here such as list and info will modify data inside that commands GUI.
 # If your server's language is not english, you will need to manually modify these to your server's language and they will display in the GUI as your new input.
+
+
+# This section controls what shows in the "/guild list" command.
+display:
+  prefix: true
+  name: true
+  master: true
+  member-count: true
+  members: true
+  guildstatus: true
+
+
 list:
   prefix: "Guild Prefix: "
   name: "Guild Name: "
