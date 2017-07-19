@@ -1,0 +1,159 @@
+name: Guilds
+version: @version@
+main: me.glaremasters.guilds.Main
+softdepend: [MVdWPlaceholderAPI, PlaceholderAPI, Vault]
+authors: [blockslayer22, MisterFantasy]
+description: Lightweight, flexible, popular plugin for any Minecraft server. Forget Factions! Guilds are here!
+website: https://glaremasters.me/guilds/
+
+commands:
+  guild:
+    aliases: "guilds"
+    description: See the Guild commands
+  guild accept:
+    description: /guild accept <guild name>
+  guild admin:
+    description: /guild admin <remove | info> <guild name>, or <addplayer | removeplayer> <guild name> <player name>
+  guild ally:
+    description: /guild ally <add | remove> <guild>, or chat <guild>
+  guild boot:
+    description: /guild boot <add | remove> <guild>, or chat <guild>
+  guild bugreport:
+    description: Submit a bug report!
+  guild cancel:
+    description: Cancel an action
+  guild chat:
+    description: /guild chat <message>
+  guild confirm:
+    description: Confirm an action
+  guild create:
+    description: /guild create <guild name>
+  guild delete:
+    description: Delete your current guild
+  guild demote:
+    description: /guild demote <player> [new role]
+  guild home:
+    description: Teleport to your guild home
+  guild info:
+    description: View your guild's info
+  guild inspect:
+    description: /guild inspect <guild name>
+  guild invite:
+    description: /guild invite <player>
+  guild leave:
+    description: Leave your current guild
+  guild list:
+    description: List all guilds on the server
+  guild prefix:
+    description: /guild prefix <new prefix>
+  guild promote:
+    description: /guild promote <player> [new role]
+  guild reload:
+    description: Reload Guilds' configuration file
+  guild sethome:
+    description: Set your guild's home!
+  guild update:
+    description: Update to the most recent version of Guilds
+  guild version:
+    description: Check version
+  guild toggle:
+    description: Toggle your guild Public / Private
+
+
+permissions:
+  guilds.group.admin:
+    description: All commands for the Guilds plugin
+    children:
+      guilds.command.accept: true
+      guilds.command.admin: true
+      guilds.command.boot: true
+      guilds.command.cancel: true
+      guilds.command.chat: true
+      guilds.command.confirm: true
+      guilds.command.create: true
+      guilds.command.delete: true
+      guilds.command.demote: true
+      guilds.command.help: true
+      guilds.command.info: true
+      guilds.command.invite: true
+      guilds.command.leave: true
+      guilds.command.prefix: true
+      guilds.command.promote: true
+      guilds.command.reload: true
+      guilds.command.role: true
+      guilds.command.update: true
+    default: op
+  guilds.group.member:
+    description: All commands for the Guilds plugin
+    children:
+      guilds.command.accept: true
+      guilds.command.boot: true
+      guilds.command.cancel: true
+      guilds.command.chat: true
+      guilds.command.confirm: true
+      guilds.command.create: true
+      guilds.command.delete: true
+      guilds.command.demote: true
+      guilds.command.help: true
+      guilds.command.info: true
+      guilds.command.invite: true
+      guilds.command.leave: true
+      guilds.command.prefix: true
+      guilds.command.promote: true
+      guilds.command.role: true
+      guilds.command.version: true
+      guilds.command.list: true
+      guilds.command.bugreport: true
+      guilds.command.home: true
+      guilds.command.sethome: true
+      guilds.command.inspect: true
+      guilds.command.status: true
+    default: true
+  guilds.command.accept:
+    description: Accept invite to a guild
+  guilds.command.admin:
+    description: Access to admin commands
+  guilds.command.boot:
+    description: Kick a member from your guild
+  guilds.command.cancel:
+    description: Cancel a command
+  guilds.command.chat:
+    description: Use guild chat
+  guilds.command.confirm:
+    description: Confirm a command
+  guilds.command.create:
+    description: Create a guild
+  guilds.command.delete:
+    description: Delete your guild
+  guilds.command.demote:
+    description: Demote a member of your guild
+  guilds.command.help:
+    description: Use /guilds help command
+  guilds.command.info:
+    description: View Guild's info
+  guilds.command.invite:
+    description: Invite a member to your guild
+  guilds.command.leave:
+    description: Leave your guild
+  guilds.command.prefix:
+    description: Change your guild's prefix
+  guilds.command.promote:
+    description: Promote a member of your guild
+  guilds.command.reload:
+    description: Reload Guilds
+  guilds.command.role:
+    description: Change the role of a member from your guild
+  guilds.command.version:
+    description: Display which version of the plugin is currently running on the server!
+  guilds.command.list:
+    description: Display all guilds on the server
+  guilds.command.bugreport:
+    description: Important information to include in your bug report!
+  guilds.command.home:
+    description: Teleport to your guild's home!
+  guilds.command.sethome:
+    description: Set your guild's home!
+  guilds.command.inspect:
+    description: Inspect another guild!
+    guilds.command.status:
+      description: Toggle Public / Private

@@ -1,0 +1,124 @@
+messages:
+  command:
+    error:
+      console: "&cDetta kommando kan enbart köras av en spelare!"
+      args: "&cFelaktiga argument! Se /guilds help för mer information"
+      permission: "&cDu har ingen rättighet att göra detta!"
+      not-found: "&cKommando ej hittad! Se /guilds help för alla kommandon"
+      no-guild: "&cDu är inte i en guild!"
+      not-guildmaster: "&cDu är inte Guild Mästare av denna guild"
+      invalid_number: "&c{input} är inte ett korrekt nummer!"
+      already-in-guild: "&cDu är redan med i en guild!"
+      player-not-found: "&cSpelare '{player}' finns inte eller är ej online!"
+      player-not-in-guild: "&cSpelare '{player}' är inte medlem i din guild!"
+      invalid-role: "&cRoll '{input}' finns ej!"
+      guild-not-found: "&cGuild '{input}' kan inte hittas!"
+      role-no-permission: "&cDin roll är inte tillräckligt hög för att göra detta!"
+      not-enough-money: "&aLedsen! Du har inte tillräckligt med pengar för att göra en guild!"
+      no-home-set: "&cIngen bostad inställt! Använd &a/guild sethome &cför att skapa din bostad!"
+      home-cooldown: "&cDu kan inte teleportera till ditt hem förrän om {time} sekunder!"
+      sethome-cooldown: "&cDu kan inte sätta din guild-hem förrän om {time} sekunder!"
+    help:
+      message: "&f/guild {command} {arguments} &7- &f{description}"
+      next-page: "&7Se /guilds help {next-page} för nästa sida"
+      invalid-page: "&cSidan hittas ej!"
+    status:
+      successful: "&aGuild status set to {status}!"
+      error: "&cGuild status must be public or private!"
+    role:
+      players: "{player} - {role}"
+    list:
+      format: "Dom följande guildsen är:"
+    create:
+      successful: "&aGuilden '{guild}' färdigställd!"
+      cancelled: "&cGuild skapandet avbryten!"
+      cancelled-sethome: "&cGuild home was not set!"
+      warning: "&cSkriv /guilds confirm för att skapa din guild, skriv /guilds cancel för att avbryta"
+      error: "&cNågot gick fel när du försökte skapa din guild!"
+      name-requirements: "&cDitt guild namn matchar inte kraven! Du kan endast använda alfanumeriska tecken och längden får ej passera 64 tecken."
+      guild-name-taken: "&cDetta namn är redan tagen!"
+      money-warning: "&c Är du säker att du vill spendera {amount} för att skapa en guild? (Skriv /guilds confirm för att fortsätta)"
+      money-warning-sethome: "&c You are about to spend {amount} to set your guild home. (Type /guilds confirm to continue)"
+      guild-home: "&aDu har nu fastställt din guild bostad!"
+    delete:
+      successful: "&aBorttaget '{guild}' framgångsrikt!"
+      cancelled: "&cGuild borttagning avbryten"
+      warning: "&cSkriv /guilds confirm för att ta bort din guild, skriv /guilds cancel för att avbryta"
+      error: "&cNågot gick fel när du försökte ta bort din guild!"
+    info:
+      header: "Information för &b{guild}"
+      name: "Namn: &b{guild}&r (&bPrefix: {prefix}&r)"
+      master: "Guild Mästare: &b{master}"
+      member-count: "Medlemmar: &b{members}/64&r (&bOnline: {members-online}&r)"
+      rank: "Din rank: &b{rank}"
+      players: "Medlemmar i guild: &b[{players}]"
+    promote:
+      promoted: "&aDu har lyckats befordrad {player} från {old-rank} till {new-rank}!"
+      successful: "&aDu har blivit befordrad från {old-rank} till {new-rank}!"
+      cannot-promote: "&cDenna spelare kan ej bli befordrad ytterligare!"
+      not-promotion: "&cDu befordrar ej denna spelare!"
+    demote:
+      demoted: "&cDu har blivit degraderad från {old-rank} till {new-rank}!"
+      successful: "&aDu har lyckats att degradera {player} från {old-rank} till {new-rank}!"
+      cannot-demote: "&cDenna spelare kan inte degraderas ytterligare!"
+      not-demotion: "&cDu degraderar ej denna spelare!"
+    chat:
+      message: "&7&lGuild Chatt> &r[{role}] {player}: {message}"
+    accept:
+      not-invited: "&cDu är ej inbjuden till denna guild!"
+      guild-full: "&cDenna guild är full!"
+      successful: "&aDu har gått med guilden '{guild}' utan problem!"
+      player-joined: "&aSpelare '{player}' gick med din guild!"
+    invite:
+      message: "&a{player} har bjudit in dig till hans/hennes guild, '{guild}'"
+      successful: "&aDu har lyckats bjuda in {player} till din guild!"
+      already-in-guild: "&cDenna spelare är redan med i din guild!"
+    leave:
+      successful: "&aDu har lyckats lämna din guild!"
+      cancelled: "&cLämnar guild avbryten!"
+      warning: "&cSkriv /guilds confirm för att lämna din guild, skriv /guilds cancel för att avbryta"
+      warning-guildmaster: "&cDu är Guild Mästare av denna guild, att lämna din guild innebär även att guilden tas bort. Skriv /guilds confirm för att lämna och ta bort din guild, skriv /guilds cancel för att avbryta."
+      player-left: "&cSpelare '{player}' lämnade din guild!"
+    boot:
+      successful: "&aLyckades kicka {player} från din guild!"
+      kicked: "&cDu har blivit kickad från guilden av {kicker}!"
+      player-kicked: "&cSpelare '{player}' har blivit kickad från guilden av {kicker}!"
+    prefix:
+      successful: "&aGuildens prefix ändrad!"
+      requirements: "&cDin guilds prefix matchar inte kraven! Du kan endast använda dig utav alfanumeriska tecken och längden kan ej överstiga 6 tecken"
+    confirm:
+      error: "&cDu har inga handlingar att bekräfta!"
+    cancel:
+      error: "&cDu har inga handlingar att avbryta!"
+    reload:
+      reloaded: "&aKonfigurations filen omladdad!"
+    update:
+      found: "&aHittade en uppdatering! Gå till {url} för att ladda ner den!"
+      not-found: "&cIngen uppdatering hittad!"
+    admin:
+      delete-successful: "&cGuilden bortagen!"
+      delete-error: "&cNågot gick fel vid borttagningen av guilden!"
+      delete-warning: "&cSkriv /guilds confirm för att ta bort denna guild, skriv /guilds cancel för att avbryta."
+      delete-cancelled: "&cGuild borttagning avbryten!"
+      player-already-in-guild: "&cDenna spelare är redan med i en guild!"
+      added-player: "&aSpelare tillagd i guilden!"
+      player-not-in-guild: "&cSpelaren är ej med i denna guild!"
+      removed-player: "&aTog bort spelare från guilden!"
+    ally:
+      guild-not-pending: "&cDenna guild inte sänt dig någon allians förfrågan!"
+      accepted: "&aDenna guild är nu allierad med {guild}!"
+      accepted-target: "&a{guild} är nu allierade med oss!"
+      declined: "&c{guild} vill ej vara allierad med oss!"
+      send: "&aSkicka allians förfrågan!"
+      send-target: "&aMottog en allians förfrågan från {guild}! Skriv /guilds ally accept {guild} för att acceptera eller skriv /guilds ally decline {guild} för att avböja"
+      removed: "&cDenna guild är inte längre allierad med {guild}!"
+      removed-target: "&c{guild} är inte längre allierade med oss!"
+      already-allies: "&cDu är inte längre allierad med {guild}!"
+      not-allies: "&cDu är inte allierade med {guild}!"
+    home:
+      teleported: "&aDu har teleporterats till ditt guild bostad!"
+      teleporting: "&cDu kommer att teleporteras om {count} sekunder."
+      damage-taken: "&cDu har tagit skada! Teleportering avbruten!"
+  event:
+    join:
+      pending-invites: "&aDu har {number} pendlande inbjudningar från guilden: &e{guilds}"
