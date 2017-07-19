@@ -1,0 +1,121 @@
+messages:
+  command:
+    error:
+      console: "& cEta command can only be performed by a player!"
+      args: "! & cNedeystvitelny argument Enter / guilds help to view more information"
+      permission: "& Su You do not have permission to do that!"
+      not-found: "& cKomanda not found Type / guilds help to see all the teams!"
+      no-guild: "& cVy not in the guild!"
+      not-guildmaster: "& cVy no guild master of the guild!"
+      invalid_number: "& c {input} is not a valid number!"
+      already-in-guild: "& cVy already in the guild!"
+      player-not-found: "& cIgrok '{player}' does not exist or is not in the network!"
+      player-not-in-guild: "& cIgrok '{player}' is not in your guild!"
+      invalid-role: "& cRoli '{input}' does not exist!"
+      guild-not-found: "& cGildiya '{input}' can not be found!"
+      role-no-permission: "& cVy high-ranking enough to do it!"
+      not-enough-money: "& aIzvinite You do not have the money to create a guild!"
+      no-home-set: "& cTochka house is not put Use & a / guild sethome & c to the point of exhibiting the house!"
+      home-cooldown: "& cVy can not go home yet {time} seconds!"
+      sethome-cooldown: "& cVy can not put the point home more {time} seconds!"
+    help:
+      message: "& f / guild {command} {arguments} & 7- & f {description}"
+      next-page: "& 7Vvedite / guilds help {next-page} to view the next page"
+      invalid-page: "& cStranitsa not found!"
+    role:
+      players: "{player} - {role}"
+    list:
+      the format "following the guild"
+    create:
+      successful: "& aGildiya '{guild}' has been successfully created!"
+      cancelled: "& cSozdanie guild canceled!"
+      cancelled-sethome: "& cTochka guild house is not set!"
+      warning: "& cEnter / guilds confirm to create your own guild, enter / guilds cancel to cancel."
+      error: "& c at the creation of a guild that something went wrong!"
+      requirements: "& cNazvanie your guild does not meet the requirements, you can use only the English alphabet, and the total number of characters must not exceed 64!"
+      guild-name-taken: "& cThis name is already in use!"
+      money-warning: "& c Are you sure you want to spend {amount} to create a guild (Input / guilds confirm to continue)?"
+      money-warning-sethome: "& c at the point of creation of guild houses you spend {amount} (Input / guilds confirm to continue)."
+      guild-home: "& aVy set a guild house!"
+    delete:
+      successful: "& aGildiya '{guild}' successfully deleted!"
+      cancelled: "& cUdalenie guild canceled!"
+      warning: "& cEnter / guilds confirm to remove his guild, enter / guilds cancel to cancel."
+      error: "& c at the removal of the guild that something went wrong!"
+    info:
+      header: "Information & b {guild}"
+      name: "Title: & b {guild} & r (& bPrefiks: {prefix} & r)"
+      master: "Guild master: & b {master}"
+      member-count: "Participants: & b {members} / 64 & r (& bOnlayn: {members-online} & r)"
+      rank: "Your rank: & b {rank}"
+      players: "guild members: & b [{players}]"
+    promote:
+      He promoted: "& aVy successfully upgraded {player} to {old-rank} to {new-rank}!"
+      successful: "& aVy were raised with {old-rank} to {new-rank}!"
+      can not-promote: "& cEtot player can not be raised even higher!"
+      not-promotion: "& cVy can not raise this player!"
+    demote:
+      demoted: "& cVy were lowered to {old-rank} to {new-rank}!"
+      successful: "& aVy successfully downgraded {player} to {old-rank} to {new-rank}!"
+      can not-demote: "& cEtot player can not be reduced even lower!"
+      not-demotion: "& cVy can not lower this player!"
+    chat:
+      message: "& 7 & lChat Guild> & r [{role}] {player}: {message}"
+    accept:
+      not-invited: "& cVy not invited to the guild!"
+      guild-full: "& cEta guild is full!"
+      successful: "& aVy successfully joined the guild '{guild}'"
+      player-joined: "& aIgrok '{player}' to join your guild!"
+    invite:
+      message: "& a {player} has invited you to his / her guild '{guild}'"
+      successful: "& aVy successfully invited {player} to your guild!"
+      already-in-guild: "& cEtot player is already in your guild!"
+    leave:
+      successful: "& aVy successfully left the guild!"
+      cancelled: "& cVyhod guild was canceled!"
+      warning: "& cEnter / guilds confirm to exit the guild to enter / guilds cancel to cancel."
+      warning-guildmaster: "& cVy Guild Master of the guild, and it means that your departure guild will be dissolved Enter / guilds confirm for the care and removal of the guild, type / guilds cancel to cancel.."
+      player-left: "& cIgrok '{player}' leave your guild!"
+    boot:
+      successful: "& a {player} is successfully thrown out of your guild!"
+      kicked: "& cVy been kicked from the guild player {kicker}!"
+      player-kicked: "& c '{player}' was kicked out of the guild player {kicker}!"
+    prefix:
+      successful: "& aPrefiks guild was successfully changed!"
+      requirements: "& cPrefiks your guild does not meet the requirements, you can use only the English alphabet, and the total number of characters must not exceed 6!"
+    confirm:
+      error: "& Su do not have to confirm the action!"
+    cancel:
+      error: "& Su do not have to cancel the action!"
+    reload:
+      reloaded: "& aThe file configuration has been reset!"
+    update:
+      found: "! & aNaydeno update Go to {url} for download!"
+      not-found: "& cObnovleny not found!"
+    admin:
+      delete-successful: "& cGildiya was successfully deleted!"
+      delete-error: "& c at the removal of the guild that something went wrong!"
+      delete-warning: "& cEnter / guilds confirm to delete this guild, enter / guilds cancel to cancel."
+      delete-cancelled: "& cUdalenie guild canceled!"
+      player-already-in-guild: "& cEtot player already in the guild!"
+      added-player: "& aIgrok added to the guild"
+      player-not-in-guild: "& cIgrok not in the guild!"
+      removed-player: "& aIgrok kicked from the guild!"
+    ally:
+      guild-not-pending: "& cEta guild did not send you a request for an alliance!"
+      accepted: "& aEta guild is now allied with the {guild}!"
+      accepted-target: "& a {guild} now with us in the union!"
+      declined: "& c {guild} wants to be in the Union!"
+      send: "& aZapros an alliance has been sent!"
+      send-target: "& aPoluchen request from the Union {guild} Enter / guilds ally accept {guild} to accept or enter / guilds ally decline {guild} to reject!"
+      removed: "& cEta guild no longer in union with {guild}!"
+      removed-target: "& c {guild} is no longer in alliance with us!"
+      already-allies: "& cVy already in alliance with {guild}!"
+      not-allies: "& cVy not in union with {guild}!"
+    home:
+      teleported: "& aVy were teleported to the point of the guild house!"
+      teleporting: "& cVy will be teleported by {count} seconds."
+      damage-taken: "& cVam was damaged Cancel teleportation!"
+  event:
+    join:
+      pending-invites: "& Au you {number} invitations from the following guilds: & e {guilds}"
