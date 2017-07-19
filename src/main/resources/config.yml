@@ -1,0 +1,230 @@
+#-----------------------------------------------------------#
+#                     ABOUT THIS PLUGIN                     #
+#-----------------------------------------------------------#
+
+# Guilds by the Glare Masters
+# Guilds on DevBukkit: https://dev.bukkit.org/projects/the-guilds-plugin
+# Guilds on SpigotMC: https://www.spigotmc.org/resources/guilds.13388/
+# Guilds on GitHub: https://github.com/darbyjack/Guilds-Plugin
+
+#-----------------------------------------------------------#
+#                     CHOOSE YOUR LANGUAGE                  #
+#-----------------------------------------------------------#
+
+# Choosing your language for the plugin couldn't be easier! The default language is english.
+# Not an english server? No worries, you can choose from the following list of languages that we currently support.
+# If you speak another language but don't see it here, feel free to submit it via one of the links above to have it added to the plugin.
+lang: english
+# The plugin also supports the following other languages:
+# - english
+# - chinese
+# - french
+# - dutch
+# - japanese
+# - swedish
+# - hungarian
+# - romanian
+# - slovak
+
+# NOTE: If you change your language please ONLY use from the list above and use them EXACTLY as they are spelled in the list above.
+# Example: If I am a french server, I would change lang: english to lang: french
+# If you try and use a different language than any in the list above, the plugin will not function in a normal manner.
+
+# If you are NOT an english speaking server and want to change what is displayed in "/guild help" please change the follow line from false to true and this will allow you to modify the plugin.yml if you choose to do so.
+description:
+  patch: false
+
+#-----------------------------------------------------------#
+#                     GUI CONFIGURATION                     #
+#-----------------------------------------------------------#
+
+# In this section of the config you can choose if you would look a GUI for various commands. The ones displayed below are the only ones that have implemented GUIs on them.
+# For example: if info is set to true, you can change that to false and that would make /guild info display as text vs opening a GUI.
+gui:
+  info: true
+
+# As stated above, the name here such as list and info will modify data inside that commands GUI.
+# If your server's language is not english, you will need to manually modify these to your server's language and they will display in the GUI as your new input.
+list:
+  prefix: "Guild Prefix: "
+  name: "Guild Name: "
+  master: "Guild Master: "
+  member-count: "Member Count: "
+  members: "Members: "
+  guildstatus: "Guild Status: "
+
+info:
+  playername: "Name: "
+  guildname: "Guild: "
+  master: "Guild Master: "
+  member-count: "Member Count: "
+  role: "Guild Role: "
+  members: "Members In Guild: "
+  guildstatus: "Guild Status: "
+
+#-----------------------------------------------------------#
+#                     Vault Configuration                   #
+#-----------------------------------------------------------#
+
+# This section of the config will display options for your server based upon if you are using the Vault plugin or not.
+# This option only matters if you have an economy plugin on your server AND you have Vault installed.
+# The plugin will work without Vault but ONLY if you don't have an economy plugin also.
+require-money: false
+
+# Uncomment the lines below if you have Vault + an economy plugin and have change the option above to true.
+# You can define how much it costs for users to create a guild, the cost option, and you can define how much it costs for users to set a guild home.
+
+#Requirement:
+#  cost: 100
+#  sethome-cost: 100
+
+#-----------------------------------------------------------#
+#                     Community Server List                 #
+#-----------------------------------------------------------#
+
+# Guilds comes with it's own Server Listing website.
+# If you choose to not display your website among the others on the Server List, you can change the below option to false.
+# The Community Server List website is https://glaremasters.me/server/
+server-list: true
+
+#-----------------------------------------------------------#
+#                     Guild Configuration                   #
+#-----------------------------------------------------------#
+
+# This section of the config will talk about various parts of making a guild and options as server owner you can set.
+
+# The prefix of all messages send by this plugin to a player for all messages and commands
+plugin-prefix: "&a[Guilds]"
+
+# Check for update on startup (SUGGESTED YOU KEEP THIS ENABLED)
+updater:
+  check: true
+
+# This part pertains to the /guild home command
+home:
+# Define how long they must wait to use the command
+  cool-down: 60
+# Define how long they must stand still before being teleported
+  teleport-delay: 5
+# Keep this TRUE unless you really don't want it. It could mess up how teleport-delay works.
+  freeze-player: true
+# Freezing a player will make them not able to move while teleporting.
+# Change the teleport-delay if you want them to wait longer to teleport after running the command.
+
+# Define how long they must wait to use the command
+sethome:
+  cool-down: 60
+
+name:
+# Minimum length of guild names
+  min-length: 1
+# Maximum length of guild names
+  max-length: 64
+# RegEx (https://en.wikipedia.org/wiki/Regular_expression) used to only allow certain characters (default only allows alphanumeric characters)
+  regex: "^[a-zA-Z0-9]*$"
+
+prefix:
+# With the default Regex currently set, the minimum length of the prefix is 1 and the maximum is 6.
+# To change this, adjust the numbers and maybe have a look at the link above (RegEx).
+  regex: "[a-zA-Z0-9]{1,6}"
+
+members:
+# Set to -1 to disable
+  max-members: 64
+
+scoreboard:
+# Enable or disable scoreboard which handles friendly fire, prefixes and guild invisibility
+  enable: false
+# Enable or disable friendly fire (Allied Guilds)
+  friendly-fire: false
+# Enable or disable being able to see invisible guild members
+  see-invisible: true
+
+# There are lots of options when it comes to configuring the roles. We have NOT (yet) experience with adding new ranks, so if it breaks, do not be surprised.
+# You can change individual perms for each rank but please DO NOT modify the order in which they go along with the numbers such as 0, 1 ,2, 3, etc.
+
+roles:
+  0:
+    name: "GuildMaster"
+    permissions:
+      chat: true
+      ally-chat: true
+      invite: true
+      kick: true
+      promote: true
+      demote: true
+      add-ally: true
+      remove-ally: true
+      change-prefix: true
+      change-home: true
+      change-master: true
+      remove-guild: true
+      toggle-guild: true
+
+  1:
+    name: "Officer"
+    permissions:
+      chat: true
+      ally-chat: true
+      invite: true
+      kick: true
+      promote: true
+      demote: true
+      add-ally: true
+      remove-ally: true
+      change-prefix: false
+      change-home: true
+      change-master: false
+      remove-guild: false
+      toggle-guild: false
+
+  2:
+    name: "Veteran"
+    permissions:
+      chat: true
+      ally-chat: true
+      invite: true
+      kick: false
+      promote: false
+      demote: false
+      add-ally: false
+      remove-ally: false
+      change-prefix: false
+      change-master: false
+      remove-guild: false
+      toggle-guild: false
+  3:
+    name: "Member"
+    permissions:
+      chat: true
+      ally-chat: true
+      invite: false
+      kick: false
+      promote: false
+      demote: false
+      add-ally: false
+      remove-ally: false
+      change-prefix: false
+      change-master: false
+      remove-guild: false
+      toggle-guild: false
+
+#-----------------------------------------------------------#
+#                     Storage Configuration                 #
+#-----------------------------------------------------------#
+
+# In this part of the config, we will discuss data saving for the plugin.
+# MySQL is in, but there are many bugs but will be fixed as soon as we can
+# We recommend you use the default JSON storage
+
+database:
+# Set the type of the database (Either JSON or MySQL)
+  type: JSON
+# Uncomment when using MySQL
+#  host: "127.0.0.1"
+#  port: 3306
+#  username: "root"
+#  password: "password"
+## Note: Database needs to be created manually
+#  database: "guilds"
+#  pool-size: 10

@@ -1,0 +1,124 @@
+messages:
+  command:
+    error:
+      console: "&cTento prikaz moze vykonat iba hrac!"
+      args: "&cNespravne argumenty! Pouzi prikaz /guilds help pre viac informacii!"
+      permission: "&cNa tuto akciu nemas opravnenie!"
+      not-found: "&cPrikaz nebol najde! Pouzi prikaz /guilds help pre zobrazenie vsetkych prikazov"
+      no-guild: "&cNie si clenom ziadneho klanu!"
+      not-guildmaster: "&cNie si vodcom tohto klanu"
+      invalid_number: "&c{input} nie je platne cislo!"
+      already-in-guild: "&cUz si clenom nejakeho klanu!"
+      player-not-found: "&cHrac '{player}' neexistuje alebo nie je prihlaseny!"
+      player-not-in-guild: "&cHrac '{player}' nie je clenom tvojho klanu!"
+      invalid-role: "&cHodnost '{input}' neexistuje!"
+      guild-not-found: "&cKlan '{input}' nebol najdeny!"
+      role-no-permission: "&cTvoje postavenie v klane ta neopravnuje na tuto akciu!"
+      not-enough-money: "&cJe nam luto! Nemas dostatok penazi na vytvorenie klanu!"
+      no-home-set: "&cZiaden domov nie je nastaveny! Pouzi prikaz &c/guild sethome &cpre nastavenie domova!"
+      home-cooldown: "&cNa tento domov sa nemozes teleportovat nasledujucich {time} sekund!"
+      sethome-cooldown: "&cNemozes nastavit domov klanu nasledujucich {time} sekund!"
+    help:
+      message: "&f/guild {command} {arguments} &7- &f{description}"
+      next-page: "&7Pouzi prikaz /guilds help {next-page} pre zobrazenie dalsej stranky"
+      invalid-page: "&cStranka nenajdena!"
+    status:
+      successful: "&aStatus klanu nastaveny na {status}!"
+      error: "&cStatus klanu musi byt public or private!"
+    role:
+      players: "{player} - {role}"
+    list:
+      format: "Aktualny zoznam klanov:"
+    create:
+      successful: "&cKlan '{guild}' bol uspesne vytvoreny!"
+      cancelled: "&cVytvaranie klanu bolo prerusene!"
+      cancelled-sethome: "&cDomov klanu nebol nastaveny!"
+      warning: "&cZadaj prikaz /guilds confirm pre vytvorenie tvojho klanu, zadaj prikaz /guilds cancel pre zrusenie."
+      error: "&cPri vytvarani klanu sa nieco pokazilo!"
+      name-requirements: "&cMeno tvojho klanu nesplna podmienky! Mozes pouzit iba alfanumericke znaky a pocet znakov nesmie prekrocit limit 12 Znakov"
+      guild-name-taken: "&cToto meno je uz obsadene!"
+      money-warning: "&cSi si isty ze chces zaplatit {amount} na vytvorenie klanu? (Zadaj /guilds confirm pre pokracovanie)"
+      money-warning-sethome: "&cChystas sa zaplatit {amount} pre nastavenie domovu klanu. (Zadaj /guilds confirm pre pokracovanie)"
+      guild-home: "&cNastavil si svoj domov klanu!"
+    delete:
+      successful: "&cKlan '{guild}' bol uspesne vymazany!"
+      cancelled: "&cVymazanie klanu bolo zrusene!"
+      warning: "&cZadaj /guilds confirm pre vymazanie klanu, zadaj /guilds cancel pre zrusenie operacie."
+      error: "&cPocas mazania klanu sa nieco pokazilo!"
+    info:
+      header: "Informacie pre &b{guild}"
+      name: "Meno: &b{guild}&r (&bPrefix: {prefix}&r)"
+      master: "Vodca klanu: &b{master}"
+      member-count: "Clenovia: &b{members}/64&r (&bOnline: {members-online}&r)"
+      rank: "Tvoj rank: &b{rank}"
+      players: "Clenovia v klane: &b[{players}]"
+    promote:
+      promoted: "&cUspesne si povysil hraca {player} z hodnosti {old-rank} na hodnost {new-rank}!"
+      successful: "&cBol si povyseny z hodnosti {old-rank} na hodnost {new-rank}!"
+      cannot-promote: "&cTento hrac uz viac nemoze byt povyseny!"
+      not-promotion: "&cNepovysujes tohto hraca!"
+    demote:
+      demoted: "&cBol si degradovany z hodnosti {old-rank} na hodnost {new-rank}!"
+      successful: "&cUspesne si degradoval hraca {player} z hodnosti {old-rank} na hodnost {new-rank}!"
+      cannot-demote: "&cTento hrac uz nemoze byt viac degradovany!"
+      not-demotion: "&cNedegradujes tohto hraca!"
+    chat:
+      message: "&7&lKlanovy Chat> &r[{role}] {player}: {message}"
+    accept:
+      not-invited: "&cNebol si pozvany do tohto klanu!"
+      guild-full: "&cTento klan je plny!"
+      successful: "&cUspesne si vstupil do klanu '{guild}' "
+      player-joined: "&cHrac '{player}' sa pridal do tvojho klanu!"
+    invite:
+      message: "&cHrac {player} ta pozyva do svojho klanu '{guild}'"
+      successful: "&cUspesne si pozval hraca {player} do tvojho klanu!"
+      already-in-guild: "&cTento hrac uz je v tvojom klane!"
+    leave:
+      successful: "&cUspesne si opustil svoj klan!"
+      cancelled: "&cOpustenie klanu bolo zrusene!"
+      warning: "&cZadaj /guilds confirm tpre opustenie tvojho klanu, zadaj /guilds cancel pre zrusenie."
+      warning-guildmaster: "&cSi vodcom tohto klanu a ked ho opustis, automaticky sa vymaze. Zadaj /guilds confirm pre opustenie a zmazanie tvojho klanu, zadaj /guilds cancel pre zrusenie."
+      player-left: "&cHrac '{player}' opustil tvoj klan!"
+    boot:
+      successful: "&cUspesne si vyhodil hraca {player} z tvojho klanu!"
+      kicked: "&cBol si vyhodený z klanu hracom {kicker}!"
+      player-kicked: "&cHrac '{player}' bol vyhodeny z klanu hracom {kicker}!"
+    prefix:
+      successful: "&cPrefix klanu bol uspesne zmeneny!"
+      requirements: "&cPrefix tvojho klanu nesplna podmienky! Mozes pouzit iba alfanumericke znaky a ich pocet nesmie presiahnut 3 znaky"
+    confirm:
+      error: "&cNemas ziadne akcie na potvrdenie!"
+    cancel:
+      error: "&cNemas ziadne akcie na zrusenie!"
+    reload:
+      reloaded: "&cKonfiguracny subor bol uspesne nahrany!"
+    update:
+      found: "&cNasiel som update, chodte na stranku {url} pre jej stiahnutie!"
+      not-found: "&cZiaden update nebol najdeny!"
+    admin:
+      delete-successful: "&cKlan bol uspesne vymazany!"
+      delete-error: "&cNieco sa pokazilo pri odstranovani tohto klanu!"
+      delete-warning: "&cZadaj prikaz /guilds confirm pre odstranenie klanu, zadaj prikaz /guilds cancel pre zrusenie."
+      delete-cancelled: "&cKlan nebol zruseny!"
+      player-already-in-guild: "&cTento hrac je uz v inom klane!"
+      added-player: "&cHrac bol pridany do klanu"
+      player-not-in-guild: "&cHrac nie je v klane!"
+      removed-player: "&cHrac bol odstraneny z klanu!"
+    ally:
+      guild-not-pending: "&cTento klan ti neposlal spojenecky navrh!"
+      accepted: "&cTento klan ma teraz uzavretu spojenecku zmluvu s klanom {guild}!"
+      accepted-target: "&c{guild} uzavrel s nami spojenecku zmluvu!"
+      declined: "&c{guild} odmietol uzavriet spojenecku zmluvu!"
+      send: "&cSpojenecka ziadost bola odoslana!"
+      send-target: "&cObdrzal si ziadost o spojenectvo od klanu {guild}! Zadaj /guilds ally accept {guild} pre prijatie alebo zadaj /guilds ally decline {guild} pre odmietnutie"
+      removed: "&cTento klan vypovedal spojenecku zmluvu s klanom {guild}!"
+      removed-target: "&cKlan {guild} uz viac nie je nasim spojencom!"
+      already-allies: "&cUz si spojencom s klanom {guild}!"
+      not-allies: "&cNie si spojencom s klanom {guild}!"
+    home:
+      teleported: "&cBol si presunuty do domova klanu!"
+      teleporting: "&cBudes presunuty za {count} sekund."
+      damage-taken: "&cBol si zraneny! Prerusujem teleport!"
+  event:
+    join:
+      pending-invites: "&cMas {number} pozvani na vstup do klanov: &e{guilds}"

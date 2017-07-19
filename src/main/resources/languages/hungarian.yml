@@ -1,0 +1,124 @@
+messages:
+  command:
+    error:
+      console: "&cEzt a parancsot csak jÃ¡tÃ©kosok futtathatjÃ¡k le!"
+      args: "&cHelytelen parancs hasznÃ¡lat! HasznÃ¡ld a /guilds help parancsot tÃ¶bb informÃ¡ciÃ³Ã©rt"
+      permission: "&cNincs erre engedÃ©lyed!"
+      not-found: "&cIsmeretlen parancs! HasznÃ¡ld a /guilds help parancsot az Ã¶sszes parancsÃ©rt"
+      no-guild: "&cNem vagy cÃ©hben!"
+      not-guildmaster: "&cNem vagy ennek a cÃ©hnek a vezÃ©re"
+      invalid_number: "&c{input} is not a valid number!"
+      already-in-guild: "&cMÃ¡r benne vagy egy CÃ©hben!"
+      player-not-found: "&c'{player}' nem lÃ©tezik, vagy nincs fent a szerveren!"
+      player-not-in-guild: "&c'{player}' nincs a cÃ©hedben!"
+      invalid-role: "&c'{input}' cÃ©hrang nem lÃ©tezik!"
+      guild-not-found: "&cA '{input}' cÃ©h nem talÃ¡lhatÃ³!"
+      role-no-permission: "&cA cÃ©hrangod nem elÃ©g magas ehhez!"
+      not-enough-money: "&aNincs elÃ©g pÃ©nzed egy cÃ©h elkÃ©szÃ­tÃ©sÃ©hez!"
+      no-home-set: "&cNincs otthon beÃ¡llÃ­tva! HasznÃ¡ld a &a/guild sethome &cparancsot ehhez!"
+      home-cooldown: "&cMÃ©g nem teleportÃ¡lhatsz {time} mÃ¡sodpercig!"
+      sethome-cooldown: "&cMÃ©g nem Ã¡llÃ­thatod Ã¡t a cÃ©hotthont {time} mÃ¡sodpercig!"
+    help:
+      message: "&f/guild {command} {arguments} &7- &f{description}"
+      next-page: "&7See /guilds help {next-page} a kÃ¶vetkezÅ‘ oldalÃ©rt"
+      invalid-page: "&cOldal nem talÃ¡lhatÃ³!"
+    status:
+      successful: "&aGuild status set to {status}!"
+      error: "&cGuild status must be public or private!"
+    role:
+      players: "{player} - {role}"
+    list:
+      format: "CÃ©hek:"
+    create:
+      successful: "&a'{guild}' cÃ©h elkÃ©szÃ­tve!"
+      cancelled: "&cCÃ©hkÃ©szÃ­tÃ©s mellÅ‘zve!"
+      cancelled-sethome: "&cA cÃ©hotthon nem lett beÃ¡llÃ­tva!"
+      warning: "&cHasznÃ¡ld a /guilds confirm parancsot a cÃ©h elkÃ©szÃ­tÃ©shez, /guilds cancel a mellÅ‘zÃ©shez."
+      error: "&cValami hiba tÃ¶rtÃ©nt cÃ©hed elkÃ©szÃ­tÃ©se kÃ¶zben!"
+      name-requirements: "&cA cÃ©hed neve nem felel meg az elvÃ¡rÃ¡soknak! Csak alfanumerikus karaktereket hasznÃ¡lhatsz, Ã©s nem haladhatja meg a 64 karaktert!"
+      guild-name-taken: "&cMÃ¡r van egy cÃ©h ilyen nÃ©ven!"
+      money-warning: "&c Biztos vagy benne, hogy {amount} -Ã©rt cÃ©het kÃ©szÃ­tesz? (/guilds confirm a folytatÃ¡shoz)"
+      money-warning-sethome: "&c {amount} mennyisÃ©gÅ± pÃ©nzt fogsz elkÃ¶lteni a cÃ©hotthonÃ©rt. (/guilds confirm a folytatÅ›hoz)"
+      guild-home: "&aYou've set your guild home!"
+    delete:
+      successful: "&aSikeresen tÃ¶rÃ¶lted a'{guild}' cÃ©het!"
+      cancelled: "&cCÃ©h tÃ¶rlÃ©se mellÅ‘zve!"
+      warning: "&cHasznÃ¡ld a /guilds confirm parancsot a cÃ©hed tÃ¶rlÃ©sÃ©hez, /guilds cancel a mellÅ‘zÃ³eshez."
+      error: "&cHiba tÃ¶rtÃ©nt cÃ©hed tÃ¶rlÃ©sekor!"
+    info:
+      header: "&b{guild} informÃ¡ciÃ³i"
+      name: "NÃ©v: &b{guild}&r (&bElÅ‘tag: {prefix}&r)"
+      master: "CÃ©hmester: &b{master}"
+      member-count: "Tagok: &b{members}/64&r (&bOnline: {members-online}&r)"
+      rank: "Rangod: &b{rank}"
+      players: "Tagok ebben a cÃ©hben: &b[{players}]"
+    promote:
+      promoted: "&aElÅ‘relÃ©ptetted {player} nevÅ± jÃ¡tÃ©kost ({old-rank} -> {new-rank})"
+      successful: "&aElÅ‘re lettÃ©l lÃ©ptetve! ({old-rank} -> {new-rank})"
+      cannot-promote: "&cEzt a jÃ¡tÃ©kost mÃ¡r nem fokozhatod tovÃ¡bb!"
+      not-promotion: "&cNem lÃ©pteted elÅ‘re ezt a jÃ¡tÃ©kost!"
+    demote:
+      demoted: "&cLefokoztak! ({old-rank} -> {new-rank})"
+      successful: "&aSikeresen lefokoztad {player} nevÅ± jÃ¡tÃ©kost! ({old-rank} -> {new-rank})"
+      cannot-demote: "&cEzt a jÃ¡tÃ©kost nem fokozhatod le tovÃ¡bb!"
+      not-demotion: "&cNem fokozod le ezt a jÃ¡tÃ©kost!"
+    chat:
+      message: "&7&lCÃ©h Chat> &r[{role}] {player}: {message}"
+    accept:
+      not-invited: "&cNem vagy meghÃ­vva ebbe a cÃ©hbe!"
+      guild-full: "&cEz a cÃ©h tele van!"
+      successful: "&aSikeresen becsatlakoztÃ¡l a '{guild}' cÃ©hbe"
+      player-joined: "&a'{player}' csatlakozott a cÃ©hedbe!"
+    invite:
+      message: "&a{player} meghÃ­vott '{guild}' cÃ©hjÃ©be!"
+      successful: "&aSikeresen meghÃ­vtad {player} nevÅ± jÃ¡tÃ©kost a cÃ©hbe!"
+      already-in-guild: "&cEz a jÃ¡tÃ©kos mÃ¡r benne van a cÃ©hedbe!"
+    leave:
+      successful: "&aSikeresen elhagytad a cÃ©het!"
+      cancelled: "&cCÃ©h elhagyÃ¡sa mellÅ‘zve!"
+      warning: "&cHasznÃ¡ld a /guilds confirm parancsot a cÃ©h elhagyÃ¡sÃ¡hoz, /guilds cancel mellÅ‘zÃ©sÃ©hez."
+      warning-guildmaster: "&cTe vagy ennek a CÃ©hnek a Mestere, a cÃ©h elhagyÃ¡sa egyenlÅ‘ a cÃ©h tÃ¶rlÃ©sÃ©vel. HasznÃ¡ld a /guilds confirm parancsot a kilÃ©pÃ©shez, Ã©s tÃ¶rlÃ©shez, /guilds cancel a mellÅ‘zÃ©shez."
+      player-left: "&c'{player}' elhagyta a cÃ©het!"
+    boot:
+      successful: "&aSikeresen kirÃºgtad {player} nevÅ± jÃ¡tÃ©kost a cÃ©hbÅ‘l!"
+      kicked: "&c{kicker} kirÃºgott tÃ©ged a cÃ©hbÅ‘l!"
+      player-kicked: "&c'{player}' ki lett rÃºgva {kicker} Ã¡ltal!"
+    prefix:
+      successful: "&aCÃ©h elÅ‘tagja sikeresen megvÃ¡ltoztatva!"
+      requirements: "&cA cÃ©hed elÅ‘tagja nem felel meg az elvÃ¡rÃ¡soknak! Csak alfanumerikus karaktereket hasznÃ¡lhatsz, Ã©s nem haladhatja meg a 6 karaktert!"
+    confirm:
+      error: "&cNincs mit megerÅ‘sÃ­tened!"
+    cancel:
+      error: "&cNincs mit mellÅ‘znÃ¶d!"
+    reload:
+      reloaded: "&aKonfigurÃ¡ciÃ³s fÃ¡jlok ÃºjratÃ¶ltve!"
+    update:
+      found: "&aFrissÃ­tÃ©s elÃ©rhetÅ‘! Menj a {url} cÃ­mre a letÃ¶ltÃ©shez!"
+      not-found: "&cNincs Ãºj frissÃ­tÃ©s!"
+    admin:
+      delete-successful: "&cCÃ©h sikeresen tÃ¶rÃ¶lve!"
+      delete-error: "&cHiba tÃ¶rtÃ©nt a cÃ©h tÃ¶rlÃ©sekor!"
+      delete-warning: "&cHasznÃ¡ld a /guilds confirm parancsot a cÃ©h tÃ¶rlÃ©sÃ©hez, /guilds cancel a mellÅ‘zÃ©shez."
+      delete-cancelled: "&cCÃ©h tÃ¶rlÃ©se mellÅ‘zve!"
+      player-already-in-guild: "&cEz a jÃ¡tÃ©kos mÃ¡r bent van egy cÃ©hben!"
+      added-player: "&aJÃ¡tÃ©kos hozzÃ¡adva a cÃ©hhez"
+      player-not-in-guild: "&cA jÃ¡tÃ©kos nem ebben a cÃ©hben van!"
+      removed-player: "&aJÃ¡tÃ©kos tÃ¶rÃ¶lve a cÃ©hbÅ‘l"
+    ally:
+      guild-not-pending: "&cEz a cÃ©h nem kÃ¼ldÃ¶tt szÃ¶vetsÃ©gi meghÃ­vÃ³t!"
+      accepted: "&aEz a cÃ©h mostantÃ³l szÃ¶vetÅ›egben Ã¡ll a {guild} cÃ©hhel!"
+      accepted-target: "&a{guild} szÃ¶vetsÃ©gben Ã¡ll velÃ¼nk!"
+      declined: "&c{guild} nem akar szÃ¶vetsÃ©gben lenni!"
+      send: "&aSzÃ¶vetsÃ©gi felkÃ©rÃ©s meghÃ­vva!"
+      send-target: "&aSzÃ¶vetsÃ©g felkÃ©rÃ©st kaptÃ¡l a {guild} cÃ©htÅ‘l! HasznÃ¡ld a /guilds ally accept {guild} paracsot az elfogadÃ¡shoz,  /guilds ally decline {guild} elutasÃ­tÃ¡shoz"
+      removed: "&cEz a cÃ©h mÃ¡r nem Ã¡ll szÃ¶vetsÃ©gben a {guild} cÃ©hhel!"
+      removed-target: "&c{guild} mÃ¡r nem Ã¡ll szÃ¶vetsÃ©gben velÃ¼nk!"
+      already-allies: "&cMÃ¡r szÃ¶vetsÃ©gben Ã¡llsz a {guild} cÃ©hhel!"
+      not-allies: "&cNem Ã¡llsz szÃ¶vetsÃ©gben a {guild} cÃ©hhel!"
+    home:
+      teleported: "&aElteleportÃ¡ltÃ¡l a cÃ©hhotthonba!"
+      teleporting: "&cEl leszel teleportÃ¡lva {count} mÃ¡sodpercen belÃ¼l."
+      damage-taken: "&cMeg lettÃ©l sebezve! TeleportÃ¡lÃ¡s mellÅ‘zÃ©se!"
+  event:
+    join:
+      pending-invites: "&a{number} meghÃ­vÃ³d van a kÃ¶vetkezÅ‘ cÃ©hektÅ‘l: &e{guilds}"
