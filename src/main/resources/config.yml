@@ -65,6 +65,8 @@ display:
   members: true
   guildstatus: true
 
+tablist: '&7[&b{guild}&7]'
+
 list:
   prefix: "Guild Prefix: "
   name: "Guild Name: "
@@ -118,6 +120,9 @@ plugin-prefix: "&a[Guilds]"
 
 # Disable this if you don't want to allow Guild Signs to be made.
 guild-signs: true
+
+# Disable this to remove guild names showing next to a player in "TabList"
+tablist-guilds: true
 
 # Check for update on startup (SUGGESTED YOU KEEP THIS ENABLED)
 updater:
