@@ -17,6 +17,7 @@ import me.glaremasters.guilds.listeners.ClickListener;
 import me.glaremasters.guilds.listeners.JoinListener;
 import me.glaremasters.guilds.listeners.PlayerDamangeListener;
 import me.glaremasters.guilds.listeners.SignListener;
+import me.glaremasters.guilds.listeners.TablistListener;
 import me.glaremasters.guilds.placeholders.Placeholders;
 import me.glaremasters.guilds.scoreboard.GuildScoreboardHandler;
 import me.glaremasters.guilds.updater.Updater;
@@ -154,6 +155,9 @@ public class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ClickListener(), this);
         if (getConfig().getBoolean("guild-signs")) {
             getServer().getPluginManager().registerEvents(new SignListener(), this);
+        }
+        if (getConfig().getBoolean("tablist-guilds")) {
+            getServer().getPluginManager().registerEvents(new TablistListener(), this);
         }
 
         vault = setupEconomy();
