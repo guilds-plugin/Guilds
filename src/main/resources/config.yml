@@ -65,7 +65,6 @@ display:
   members: true
   guildstatus: true
 
-
 list:
   prefix: "Guild Prefix: "
   name: "Guild Name: "
@@ -116,6 +115,9 @@ server-list: true
 
 # The prefix of all messages send by this plugin to a player for all messages and commands
 plugin-prefix: "&a[Guilds]"
+
+# Disable this if you don't want to allow Guild Signs to be made.
+guild-signs: true
 
 # Check for update on startup (SUGGESTED YOU KEEP THIS ENABLED)
 updater:
