@@ -1,0 +1,125 @@
+messages:
+  command:
+    error:
+      console: "&c这个指令只可以在游戏中使用!"
+      args: "&c无效的参数! 试试 &8'&b/guilds help&8' &c来获得更多讯息"
+      permission: "&c你没有许可权执行该动作!"
+      not-found: "&c未知指令! 试试&8' &b/guilds help&8' &c来查看所有指令"
+      no-guild: "&c你不在公会中!"
+      not-guildmaster: "&c你不是这个公会的公会长"
+      invalid_number: "&c{input} 不是有效的数字!"
+      already-in-guild: "&c你已经有公会了!"
+      player-not-found: "&c玩家 '{player}' 并不不存在 or 离线状态!"
+      player-not-in-guild: "&c玩家 '{player}' 没有在你的公会里!"
+      invalid-role: "&c职位 '{input}' 并不存在!"
+      guild-not-found: "&c!!无法找到此公会 '{input}'"
+      role-no-permission: "&c你的职位尚无许可权执行该动作!"
+      not-enough-money: "&a孩子, 你没有足够的金钱可以创建公会哦!"
+      no-home-set: "&c尚未拥有公会据点! , 输入&b/guild sethome &r来创建公会据点!"
+      home-cooldown: "&c再次传送到公会据点需等待 &e{time} &c秒!"
+      sethome-cooldown: "&c再次重设公会据点需等待 &e{time} &c秒!"
+    help:
+      message: "&f/guild {command} {arguments} &7- &f{description}"
+      next-page: "&7试试 &8'&b/guilds help {next-page}&8' &7翻到下一页"
+      invalid-page: "&c该页面不存在!"
+    status:
+      successful: "&a公会状态已成功设置为 {status}!"
+      error: "&c公会的状态必须得是私人or公开的!"
+    role:
+      players: "{player} - {role}"
+    list:
+      format: "公会列表如下:"
+    create:
+      successful: "&a成功创建公会 '{guild}' !"
+      cancelled: "&c已取消公会创建之动作!"
+      warning: "&c输入 &8'&b/guilds confirm&8' &c来确认并创建公会. &c输入 &8'&b/guilds cancel&8' &c来取消创建公会."
+      error: "&c创建公会时发生错误, 如看到此讯息请联系管理员"
+      name-requirements: "&c您的公会名称与伺服器所设定的字元要求不符合&4"
+      guild-name-taken: "&c这个公会名字已经被使用!"
+      money-warning: "&c 您确定要花费 &a$${amount} &c来创建公会吗? (输入&b/guilds confirm &c来确认)"
+      money-warning-sethome: "&c 你将会花费 &a$${amount} &c来设置你的公会据点. (输入&b/guilds confirm &c来确认)"
+      guild-home: "&a你已设置好了公会据点!"
+    delete:
+      successful: "&a成功删除公会 '{guild}' !"
+      cancelled: "&c已取消公会删除之动作!"
+      warning: "&c输入 &8'&b/guilds confirm&8' &c来确认并删除公会. &c输入 &8'&b/guilds cancel&8' &c来取消删除公会."
+      error: "&c删除公会时发生错误, 如看到此讯息请联系管理员"
+    info:
+      header: "&b{guild} 的资讯"
+      name: "公会名: &b{guild}&r (&b称号: {prefix}&r)"
+      master: "公会长: &b{master}"
+      member-count: "成员: &b{members}/64&r (&线上: {members-online}&r)"
+      rank: "你的职位: &b{rank}"
+      players: "公会成员: &b[{players}]"
+    promote:
+      promoted: "&a恭喜! 你从{old-rank} 被升职到 {new-rank} 了!"
+      successful: "&a你成功的升级了把 {player} 从 {old-rank} 升职到 {new-rank}!"
+      cannot-promote: "&c该玩家不能再被升级职位了!!"
+      not-promotion: "&c你不能提升这个玩家的阶级!"
+    demote:
+      promoted: "&c恭喜! 你从{old-rank} 被降职到 {new-rank} 了!"
+      successful: "&a你成功的升级了把 {player} 从 {old-rank} 降职到 {new-rank}!"
+      cannot-demote: "&c该玩家不能再被降职了"
+      not-demotion: "&c你没有许可权对这个玩家降职!"
+    chat:
+      message: "&7&l公会频聊> &r[{role}] {player}: {message}"
+    accept:
+      not-invited: "&c这个公会尚未寄邀请函给你哦!"
+      guild-full: "&c这个公会人数已满!"
+      successful: "&a你成功了加入公会 '{guild}'"
+      player-joined: "&a玩家 '{player}' 加入了你的公会!"
+    invite:
+      message: "&a{player} 邀请了您加入他/她的公会 '{guild}'"
+      successful: "&a你成功的邀请了 {player} 加入您的公会!!"
+      already-in-guild: "&c这个玩家已经在你的公会了!"
+    leave:
+      successful: "&a已退出公会.... 说掰掰!"
+      cancelled: "&c已取消离开公会之动作!"
+      warning: "
+        &c输入&7”&b/guilds confirm&7”&c来确认并离开你的公会.
+        &c输入&7”&b/guilds cancel&7&7”&c来取消离开公会之动作."
+      warning-guildmaster: "&c你是公会会长, 如果要离开公会等同于公会解散.. &c输入 &8'&b/guilds confirm&8' &7来确认并解散你的公会. &c输入 &8'&b/guilds cancel&8' &c来取消解散公会之动作."
+      player-left: "&c玩家 '{player}' 离开了你的公会!"
+    boot:
+      successful: "&a {player} 已被踢出"
+      kicked: "&c{kicker} 把你从公会踢除!"
+      player-kicked: "&c{kicker} 已让玩家 '{player}' 离开公会"
+    prefix:
+      successful: "&a成功的更改了公会的昵称!"
+      requirements: "&c欲更换的公会昵称与伺服所设定的字元要求不符合&c, 你只能使用数字跟英文且长度不可超过8"
+    confirm:
+      error: "&c你没有任何需要确认的动作!"
+    cancel:
+      error: "&c你没有任何需要取消的动作!"
+    reload:
+      reloaded: "&a配置文件档已重载!"
+    update:
+      found: "&a公会系统有出新的版本啰! 不下载吗? &a点击右边网址来下载并更新哦! &b{url} !"
+      not-found: "&c尚未找到更新！"
+    admin:
+      delete-successful: "&c该公会已成功的被移除了!"
+      delete-error: "&c删除公会时发生错误.. 如看到此讯息请联系服主"
+      delete-warning: " &c输入 &8'&b/guilds confirm&8' &c来确认并删除该公会. &c输入 &8'&b/guilds cancel&8' &c来取消删除该公会之动作."
+      delete-cancelled: "&c已取消公会删除之动作!"
+      player-already-in-guild: "&c这个玩家已有公会!!"
+      added-player: "&a新增该玩家到公会"
+      player-not-in-guild: "&c该玩家没有公会!!"
+      removed-player: "&a从该公会移除该玩家!!"
+    ally:
+      guild-not-pending: "&c这个公会并没有发送联盟公会邀请函给你!"
+      accepted: "&a这个公会已经与{guild}联盟了!"
+      accepted-target: "&a{guild} 与我们联盟了!"
+      declined: "&c{guild} 目前还不想要与您联盟!"
+      send: "&a发送了联盟公会邀请函!"
+      send-target: "&a你收到了{guild} 的联盟公会邀请函! &c输入 &8'&b/guilds ally accept {guild}&8' &c来接受并成为联盟. &c输入 &8'&b/guilds ally decline&8' &c来拒绝该邀请."
+      removed: "&c这个公会已经不再与 {guild} 是联盟关系!"
+      removed-target: "&c{guild} 与我们已不再是联盟关系!"
+      already-allies: "&c你目前已经与 {guild} 联盟了, 不能再接受其他公会的联盟公会邀请函!"
+      not-allies: "&c你尚未与与此公会 {guild} 有联盟关系!"
+    home:
+      teleported: "&a已送达至您的公会据点!"
+      teleporting: "&c你将在 {count} 秒后传送!"
+      damage-taken: "&c你被攻击了!!传送取消!"
+  event:
+    join:
+      pending-invites: "&a你有 {number} 来自公会的邀请待处理: &e{guilds}"

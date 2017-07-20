@@ -2,9 +2,9 @@ messages:
   command:
     error:
       console: "&c這個指令只可以在遊戲中使用!"
-      args: "&c無效的參數! 試試&7＂&b/guilds help&7＂來獲得更多訊息"
+      args: "&c無效的參數! 試試 &8'&b/guilds help&8' &c來獲得更多訊息"
       permission: "&c你沒有許可權執行該動作!"
-      not-found: "&c未知指令! 試試&7＂&b/guilds help&7＂來查看所有指令"
+      not-found: "&c未知指令! 試試&8' &b/guilds help&8' &c來查看所有指令"
       no-guild: "&c你不在公會中!"
       not-guildmaster: "&c你不是這個公會的公會長"
       invalid_number: "&c{input} 不是有效的數字!"
@@ -16,15 +16,15 @@ messages:
       role-no-permission: "&c你的職位尚無許可權執行該動作!"
       not-enough-money: "&a孩子, 你沒有足夠的金錢可以創建公會哦!"
       no-home-set: "&c尚未擁有公會據點! , 輸入&b/guild sethome &r來創建公會據點!"
-      home-cooldown: "&c你無法傳送!! 你需要等待 {time} 秒後!在試一次"
-      sethome-cooldown: "&c你需要等 {time} 秒後 才能在執行!"
+      home-cooldown: "&c再次傳送到公會據點需等待 &e{time} &c秒!"
+      sethome-cooldown: "&c再次重設公會據點需等待 &e{time} &c秒!"
     help:
-      message: "&f/{command} {arguments} &7- &f{description}"
-      next-page: " 試試&7＂&b/guilds help {next-page}&7＂翻到下一頁"
+      message: "&f/guild {command} {arguments} &7- &f{description}"
+      next-page: "&7試試 &8'&b/guilds help {next-page}&8' &7翻到下一頁"
       invalid-page: "&c該頁面不存在!"
     status:
-      successful: "&aGuild status set to {status}!"
-      error: "&cGuild status must be public or private!"
+      successful: "&a公會狀態已成功設置為 {status}!"
+      error: "&c公會的狀態必須得是私人or公開的!"
     role:
       players: "{player} - {role}"
     list:
@@ -32,17 +32,17 @@ messages:
     create:
       successful: "&a成功創建公會 '{guild}' !"
       cancelled: "&c已取消公會創建之動作!"
-      warning: "&c輸入&7＂&b/guilds confirm&7＂&c來確認並創建公會. &c輸入&7＂&b/guilds cancel&7&7＂&c來取消創建公會."
+      warning: "&c輸入 &8'&b/guilds confirm&8' &c來確認並創建公會. &c輸入 &8'&b/guilds cancel&8' &c來取消創建公會."
       error: "&c創建公會時發生錯誤, 如看到此訊息請聯繫管理員"
       name-requirements: "&c您的公會名稱與伺服器所設定的字元要求不符合&4"
       guild-name-taken: "&c這個公會名字已經被使用!"
-      money-warning: "&c 您確定要花費 {amount} $$ 來創建公會嗎? (輸入&b/guilds confirm &r來確認)"
-      money-warning-sethome: "&c你需要花費 {amount} 來設置你的公會基地傳送點 (使用 /guilds confirm 來確認!)"
+      money-warning: "&c 您確定要花費 &a$${amount} &c來創建公會嗎? (輸入&b/guilds confirm &c來確認)"
+      money-warning-sethome: "&c 你將會花費 &a$${amount} &c來設置你的公會據點. (輸入&b/guilds confirm &c來確認)"
       guild-home: "&a你已設置好了公會據點!"
     delete:
       successful: "&a成功刪除公會 '{guild}' !"
       cancelled: "&c已取消公會刪除之動作!"
-      warning: "&c輸入&7＂&b/guilds confirm&7＂&c來確認並刪除公會. &c輸入&7＂&b/guilds cancel&7&7＂&c來取消刪除公會."
+      warning: "&c輸入 &8'&b/guilds confirm&8' &c來確認並刪除公會. &c輸入 &8'&b/guilds cancel&8' &c來取消刪除公會."
       error: "&c刪除公會時發生錯誤, 如看到此訊息請聯繫管理員"
     info:
       header: "&b{guild} 的資訊"
@@ -78,7 +78,7 @@ messages:
       warning: "
         &c輸入&7＂&b/guilds confirm&7＂&c來確認並離開你的公會.
         &c輸入&7＂&b/guilds cancel&7&7＂&c來取消離開公會之動作."
-      warning-guildmaster: "&c你是公會會長, 如果要離開公會等同於公會解散.. &c輸入&7＂&b/guilds confirm&7＂&c來確認並解散你的公會. &c輸入&7＂&b/guilds cancel&7&7＂&c來取消解散公會之動作."
+      warning-guildmaster: "&c你是公會會長, 如果要離開公會等同於公會解散.. &c輸入 &8'&b/guilds confirm&8' &7來確認並解散你的公會. &c輸入 &8'&b/guilds cancel&8' &c來取消解散公會之動作."
       player-left: "&c玩家 '{player}' 離開了你的公會!"
     boot:
       successful: "&a {player} 已被踢出"
@@ -95,11 +95,11 @@ messages:
       reloaded: "&a配置文件檔已重載!"
     update:
       found: "&a公會系統有出新的版本囉! 不下載嗎? &a點擊右邊網址來下載並更新哦! &b{url} !"
-      not-found: "&c沒有更新"
+      not-found: "&c尚未找到更新！"
     admin:
       delete-successful: "&c該公會已成功的被移除了!"
       delete-error: "&c刪除公會時發生錯誤.. 如看到此訊息請聯繫服主"
-      delete-warning: " &c輸入&7＂&b/guilds confirm&7＂&c來確認並刪除該公會. &c輸入&7＂&b/guilds cancel&7&7＂&c來取消刪除該公會之動作."
+      delete-warning: " &c輸入 &8'&b/guilds confirm&8' &c來確認並刪除該公會. &c輸入 &8'&b/guilds cancel&8' &c來取消刪除該公會之動作."
       delete-cancelled: "&c已取消公會刪除之動作!"
       player-already-in-guild: "&c這個玩家已有公會!!"
       added-player: "&a新增該玩家到公會"
@@ -111,7 +111,7 @@ messages:
       accepted-target: "&a{guild} 與我們聯盟了!"
       declined: "&c{guild} 目前還不想要與您聯盟!"
       send: "&a發送了聯盟公會邀請函!"
-      send-target: "&a你收到了{guild} 的聯盟公會邀請函! &c輸入&7＂&b/guilds ally accept {guild}&7＂&c來接受並成為聯盟. &c輸入&7＂&b/guilds ally decline＂&c來拒絕該邀請."
+      send-target: "&a你收到了{guild} 的聯盟公會邀請函! &c輸入 &8'&b/guilds ally accept {guild}&8' &c來接受並成為聯盟. &c輸入 &8'&b/guilds ally decline&8' &c來拒絕該邀請."
       removed: "&c這個公會已經不再與 {guild} 是聯盟關係!"
       removed-target: "&c{guild} 與我們已不再是聯盟關係!"
       already-allies: "&c你目前已經與 {guild} 聯盟了, 不能再接受其他公會的聯盟公會邀請函!"
