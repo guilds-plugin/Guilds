@@ -14,6 +14,7 @@ import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.leaderboard.LeaderboardHandler;
 import me.glaremasters.guilds.listeners.ChatListener;
 import me.glaremasters.guilds.listeners.ClickListener;
+import me.glaremasters.guilds.listeners.GuildDamageListener;
 import me.glaremasters.guilds.listeners.JoinListener;
 import me.glaremasters.guilds.listeners.PlayerDamangeListener;
 import me.glaremasters.guilds.listeners.SignListener;
@@ -158,6 +159,10 @@ public class Main extends JavaPlugin {
         }
         if (getConfig().getBoolean("tablist-guilds")) {
             getServer().getPluginManager().registerEvents(new TablistListener(), this);
+        }
+
+        if (getConfig().getBoolean("allow-guild-damage")) {
+            getServer().getPluginManager().registerEvents(new GuildDamageListener(), this);
         }
 
         vault = setupEconomy();

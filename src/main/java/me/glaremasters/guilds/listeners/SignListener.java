@@ -32,8 +32,8 @@ public class SignListener implements Listener {
   @EventHandler
   public void onPlayerClickSign(PlayerInteractEvent event){
     Player p = event.getPlayer();
+    if(event.getAction() == Action.RIGHT_CLICK_BLOCK){
     if(event.getClickedBlock().getType() == Material.SIGN ||event.getClickedBlock().getType() == Material.SIGN_POST ||event.getClickedBlock().getType() == Material.WALL_SIGN){
-      if(event.getAction() == Action.RIGHT_CLICK_BLOCK){
         Sign sign = (Sign) event.getClickedBlock().getState();
         if(ChatColor.stripColor(sign.getLine(0)).equalsIgnoreCase( "Join Guild")){
           p.chat("/guild join " + sign.getLine(1));
