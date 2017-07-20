@@ -16,12 +16,12 @@ public class ChatListener implements Listener {
         Player player = event.getPlayer();
         Guild guild = Guild.getGuild(player.getUniqueId());
         if (guild == null) {
-            event.setFormat(event.getFormat().replace("{ESSENTIALS_GUILD}", ""));
-            event.setFormat(event.getFormat().replace("{ESSENTIALS_GUILD_PREFIX}", ""));
-            event.setFormat(event.getFormat().replace("{ESSENTIALS_GUILD_MASTER}", ""));
-            event.setFormat(event.getFormat().replace("{ESSENTIALS_GUILD_MEMBER_COUNT}", ""));
-            event.setFormat(event.getFormat().replace("{ESSENTIALS_GUILD_MEMBERS_ONLINE}", ""));
-            event.setFormat(event.getFormat().replace("{ESSENTIALS_GUILD_STATUS}", ""));
+            event.setFormat(event.getFormat().replace("{ESSENTIALS_GUILD} ",""));
+            event.setFormat(event.getFormat().replace("{ESSENTIALS_GUILD_PREFIX} ",""));
+            event.setFormat(event.getFormat().replace("{ESSENTIALS_GUILD_MASTER} ",""));
+            event.setFormat(event.getFormat().replace("{ESSENTIALS_GUILD_MEMBER_COUNT} ",""));
+            event.setFormat(event.getFormat().replace("{ESSENTIALS_GUILD_MEMBERS_ONLINE} ",""));
+            event.setFormat(event.getFormat().replace("{ESSENTIALS_GUILD_STATUS} ",""));
         } else {
             event.setFormat(event.getFormat().replace("{ESSENTIALS_GUILD}", guild.getName()));
             event.setFormat(

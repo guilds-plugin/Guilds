@@ -18,8 +18,6 @@ public class Guild {
 
     @Expose private String prefix;
 
-    @Expose private String status;
-
     @Expose private List<GuildMember> members;
 
     @Expose private List<String> allies;
@@ -42,10 +40,7 @@ public class Guild {
             Main.getInstance().getConfig().getInt("prefix.max-length") > name.length() ?
                 name.length() :
                 Main.getInstance().getConfig().getInt("prefix.max-length"));
-        this.status = name.substring(0,
-            Main.getInstance().getConfig().getInt("prefix.max-length") > name.length() ?
-                name.length() :
-                Main.getInstance().getConfig().getInt("prefix.max-length"));
+
         this.members = new ArrayList<>();
         this.members.add(new GuildMember(master, 0));
 
@@ -86,11 +81,8 @@ public class Guild {
     }
 
     public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
+        return Main.getInstance().guildstatusconfig
+            .getString(getName());
     }
 
     public List<GuildMember> getMembers() {
@@ -183,14 +175,6 @@ public class Guild {
         updateGuild("An error occurred while updating prefix to '%s' for guild '%s'", prefix,
             this.name);
 
-        Main.getInstance().getScoreboardHandler().update();
-    }
-
-    public void updateStatus(String status) {
-        setStatus(status);
-
-        updateGuild("An error occured while updating prefix to '%s' for guild '%s'", status,
-            this.name);
         Main.getInstance().getScoreboardHandler().update();
     }
 

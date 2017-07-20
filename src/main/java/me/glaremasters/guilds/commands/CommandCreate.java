@@ -82,7 +82,8 @@ public class CommandCreate extends CommandBase {
 
                         Main.getInstance().getScoreboardHandler().update();
                         Main.getInstance().getScoreboardHandler().show(player);
-                        guild.updateStatus("Private");
+                        Main.getInstance().guildstatusconfig.set(guild.getName(), "Private");
+                        Main.getInstance().saveGuildstatus();
                     } else {
                         Message.sendMessage(player, Message.COMMAND_CREATE_ERROR);
 

@@ -62,8 +62,9 @@ dependencies {
     provided 'me.clip:placeholderapi:2.0.8'
     provided 'net.milkbowl.vault:VaultAPI:1.6'
 
-    compile 'com.google.code.gson:gson:2.8.0'
+
     compile 'com.zaxxer:HikariCP:2.5.1'
+    compile 'com.google.code.gson:gson:2.8.0'
     compile 'co.aikar:taskchain-core:3.4.3'
     compile 'co.aikar:taskchain-bukkit:3.4.3'
     compile group: 'commons-io', name: 'commons-io', version: '2.5'

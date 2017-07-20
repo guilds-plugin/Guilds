@@ -1,5 +1,6 @@
 package me.glaremasters.guilds.commands;
 
+import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
@@ -27,9 +28,16 @@ public class CommandStatus extends CommandBase {
             Message.sendMessage(player, Message.COMMAND_STATUS_ERROR);
             return;
         } else {
-            guild.updateStatus(args[0]);
-            Message.sendMessage(player,
-                Message.COMMAND_STATUS_SUCCESSFUL.replace("{status}", guild.getStatus()));
+
+            String status = args[0];
+
+
+            Main.getInstance().guildstatusconfig
+                .set(Guild.getGuild(player.getUniqueId()).getName(),
+                    status);
+
+            Message.sendMessage(player, Message.COMMAND_STATUS_SUCCESSFUL.replace("{status}", status));
+            Main.getInstance().saveGuildstatus();
         }
     }
 }
