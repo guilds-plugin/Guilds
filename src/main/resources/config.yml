@@ -25,6 +25,7 @@ lang: english
 # The plugin also supports the following other languages:
 # - english
 # - chinese
+# - simplifiedchinese
 # - french
 # - dutch
 # - japanese
@@ -33,6 +34,7 @@ lang: english
 # - romanian
 # - slovak
 # - russian
+
 
 # NOTE: If you change your language please ONLY use from the list above and use them EXACTLY as they are spelled in the list above.
 # Example: If I am a french server, I would change lang: english to lang: french
