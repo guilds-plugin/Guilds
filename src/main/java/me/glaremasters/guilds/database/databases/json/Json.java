@@ -31,8 +31,8 @@ public class Json extends DatabaseProvider {
     private Type leaderboardsType;
 
     @Override public void initialize() {
-        guildsFile = new File(Main.getInstance().getDataFolder(), "guilds.json");
-        leaderboardsFile = new File(Main.getInstance().getDataFolder(), "leaderboards.json");
+        guildsFile = new File(Main.getInstance().getDataFolder(), "data/guilds.json");
+        leaderboardsFile = new File(Main.getInstance().getDataFolder(), "data/leaderboards.json");
 
         guildsType = new TypeToken<Map<String, Guild>>() {
         }.getType();

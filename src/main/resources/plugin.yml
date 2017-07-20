@@ -56,7 +56,7 @@ commands:
     description: Update to the most recent version of Guilds
   guild version:
     description: Check version
-  guild toggle:
+  guild status:
     description: Toggle your guild Public / Private
 
 

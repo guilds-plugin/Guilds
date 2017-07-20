@@ -45,9 +45,12 @@ public class Main extends JavaPlugin {
     private static TaskChainFactory taskChainFactory;
     public File languageYamlFile;
     public YamlConfiguration yaml;
-    public File guildhomes = new File(this.getDataFolder(), "guild-homes.yml");
+    public File guildhomes = new File(this.getDataFolder(), "data/guild-homes.yml");
     public YamlConfiguration guildhomesconfig =
         YamlConfiguration.loadConfiguration(this.guildhomes);
+    public File guildstatus = new File(this.getDataFolder(), "data/guild-status.yml");
+    public YamlConfiguration guildstatusconfig =
+        YamlConfiguration.loadConfiguration(this.guildstatus);
     private DatabaseProvider database;
     private GuildHandler guildHandler;
     private CommandHandler commandHandler;
@@ -167,6 +170,7 @@ public class Main extends JavaPlugin {
 
 
         this.saveGuildhomes();
+        this.saveGuildstatus();
 
         try {
             BasicFileAttributes attr = Files
@@ -195,7 +199,19 @@ public class Main extends JavaPlugin {
             getServer().getScheduler()
                 .scheduleAsyncRepeatingTask(this, this::sendUpdate, 0L, 2000L); //5 minutes
         }
+
+        if (!getConfig().isSet("version")) {
+            File oldfile = new File(this.getDataFolder(), "config.yml");
+            File newfile = new File(this.getDataFolder(), "config-old.yml");
+            oldfile.renameTo(newfile);
+        }
+
+
         this.saveDefaultConfig();
+
+
+
+
         if (languageYamlFile.exists()) {
             return;
         } else {
@@ -220,6 +236,15 @@ public class Main extends JavaPlugin {
             Main.getInstance().guildhomesconfig.save(Main.getInstance().guildhomes);
         } catch (IOException e) {
             getLogger().log(Level.WARNING, "Could not create Guild's Home config!");
+            e.printStackTrace();
+        }
+    }
+
+    public void saveGuildstatus() {
+        try {
+            Main.getInstance().guildstatusconfig.save(Main.getInstance().guildstatus);
+        } catch (IOException e) {
+            getLogger().log(Level.WARNING, "Could not create Guild's Status config!");
             e.printStackTrace();
         }
     }
