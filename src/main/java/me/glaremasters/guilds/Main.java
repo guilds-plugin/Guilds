@@ -146,6 +146,7 @@ public class Main extends JavaPlugin {
         commandHandler.register(new CommandHelp());
         commandHandler.register(new CommandInspect());
         commandHandler.register(new CommandStatus());
+        commandHandler.register(new CommandVault());
 
 
 
