@@ -7,6 +7,7 @@ import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.message.Message;
 import me.glaremasters.guilds.util.ConfirmAction;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.logging.Level;
@@ -61,6 +62,9 @@ public class CommandLeave extends CommandBase {
 
                 guild.removeMember(player.getUniqueId());
                 Message.sendMessage(player, Message.COMMAND_LEAVE_SUCCESSFUL);
+                player.setPlayerListName(
+                    ChatColor
+                        .translateAlternateColorCodes('&',  ChatColor.RESET + player.getName()));
 
                 Main.getInstance().getCommandHandler().removeAction(player);
 

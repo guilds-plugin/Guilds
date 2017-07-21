@@ -7,6 +7,7 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.message.Message;
 import me.glaremasters.guilds.util.ConfirmAction;
 import net.milkbowl.vault.economy.EconomyResponse;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.logging.Level;
@@ -84,6 +85,8 @@ public class CommandCreate extends CommandBase {
                         Main.getInstance().getScoreboardHandler().show(player);
                         Main.getInstance().guildstatusconfig.set(guild.getName(), "Private");
                         Main.getInstance().saveGuildstatus();
+                        player.setPlayerListName(
+                            ChatColor.translateAlternateColorCodes('&', Main.getInstance().getConfig().getString("tablist").replace("{guild}", guild.getName()) + ChatColor.RESET + player.getName()));
                     } else {
                         Message.sendMessage(player, Message.COMMAND_CREATE_ERROR);
 
