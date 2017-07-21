@@ -33,16 +33,17 @@ public class CommandVault extends CommandBase {
       Message.sendMessage(player, Message.COMMAND_ERROR_NO_GUILD);
       return;
     }
+
     vaultf = new File(Main.getInstance().getDataFolder(),
         "data/vaults/" + guild.getName() + ".yml");
-
     vault = new YamlConfiguration();
     try {
-      vault.load(vaultf);
-      System.out.print(vaultf);
+      if (vaultf.exists()) vault.load(vaultf);
     } catch (IOException | InvalidConfigurationException e) {
       e.printStackTrace();
     }
+
+
     Inventory inv = Bukkit.createInventory(null, 36, guild.getName() + "'s Guild Vault");
     for (int i = 0; i < 36; i++) {
       if (vault.isSet("items.slot" + i)) {

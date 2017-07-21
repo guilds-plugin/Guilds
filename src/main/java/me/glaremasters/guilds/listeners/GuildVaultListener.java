@@ -35,17 +35,10 @@ public class GuildVaultListener implements Listener {
         vaultf.getParentFile().mkdirs();
       }
       FileConfiguration vault = new YamlConfiguration();
-      try {
-        vault.load(vaultf);
-
-      } catch (IOException | InvalidConfigurationException e) {
-        e.printStackTrace();
-      }
       for (int i = 0; i < inventory.getSize(); i++) {
         ItemStack item = new ItemStack(0, 0);
         if (inventory.getItem(i) != null) {
           vault.set("items.slot" + i, inventory.getItem(i));
-          event.getPlayer().getInventory().setContents(inventory.getContents());
         }
       }
       try {
