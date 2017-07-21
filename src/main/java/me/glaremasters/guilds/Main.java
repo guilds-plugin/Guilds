@@ -15,6 +15,7 @@ import me.glaremasters.guilds.leaderboard.LeaderboardHandler;
 import me.glaremasters.guilds.listeners.ChatListener;
 import me.glaremasters.guilds.listeners.ClickListener;
 import me.glaremasters.guilds.listeners.GuildDamageListener;
+import me.glaremasters.guilds.listeners.GuildVaultListener;
 import me.glaremasters.guilds.listeners.JoinListener;
 import me.glaremasters.guilds.listeners.PlayerDamangeListener;
 import me.glaremasters.guilds.listeners.SignListener;
@@ -165,6 +166,7 @@ public class Main extends JavaPlugin {
         if (getConfig().getBoolean("allow-guild-damage")) {
             getServer().getPluginManager().registerEvents(new GuildDamageListener(), this);
         }
+        getServer().getPluginManager().registerEvents(new GuildVaultListener(), this);
 
         vault = setupEconomy();
 
