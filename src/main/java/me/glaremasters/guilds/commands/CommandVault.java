@@ -6,16 +6,17 @@ import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.message.Message;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 
 /**
  * Created by GlareMasters on 7/20/2017.
  */
 public class CommandVault extends CommandBase {
-
   private File vaultf;
   private FileConfiguration vault;
 
@@ -31,7 +32,7 @@ public class CommandVault extends CommandBase {
       Message.sendMessage(player, Message.COMMAND_ERROR_NO_GUILD);
       return;
     }
-    vaultf = new File(Main.getInstance().getDataFolder(), "data/vault/" + guild.getName() + ".yml");
+    vaultf = new File(Main.getInstance().getDataFolder(), "data/vaults/" + guild.getName() + ".yml");
 
     if (!vaultf.exists()) {
       vaultf.getParentFile().mkdirs();
@@ -48,6 +49,8 @@ public class CommandVault extends CommandBase {
     } catch (IOException | InvalidConfigurationException e) {
       e.printStackTrace();
     }
+    Inventory inv = Bukkit.createInventory(null, 54, guild.getName() + "'s Guild Vault");
+    player.openInventory(inv);
   }
 
 }
