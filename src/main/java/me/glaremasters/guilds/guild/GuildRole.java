@@ -25,12 +25,13 @@ public class GuildRole {
     private boolean addAlly;
     private boolean removeAlly;
     private boolean allyChat;
+    private boolean openVault;
 
 
     GuildRole(String name, int level, boolean chat, boolean toggle, boolean allyChat,
         boolean invite, boolean kick, boolean promote, boolean demote, boolean addAlly,
         boolean removeAlly, boolean changePrefix, boolean changeHome, boolean changeMaster,
-        boolean removeGuild) {
+        boolean removeGuild, boolean openVault) {
         this.name = name;
         this.level = level;
         this.chat = chat;
@@ -46,6 +47,7 @@ public class GuildRole {
         this.changeHome = changeHome;
         this.changeMaster = changeMaster;
         this.removeGuild = removeGuild;
+        this.openVault = openVault;
     }
 
     public static GuildRole getRole(int level) {
@@ -124,4 +126,6 @@ public class GuildRole {
     public boolean canToggleGuild() {
         return toggle;
     }
+
+    public boolean canOpenVault() { return openVault; }
 }
