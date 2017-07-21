@@ -195,6 +195,7 @@ roles:
       change-master: true
       remove-guild: true
       toggle-guild: true
+      open-vault: true
 
   1:
     name: "Officer"
@@ -212,6 +213,7 @@ roles:
       change-master: false
       remove-guild: false
       toggle-guild: false
+      open-vault: true
 
   2:
     name: "Veteran"
@@ -228,6 +230,7 @@ roles:
       change-master: false
       remove-guild: false
       toggle-guild: false
+      open-vault: true
   3:
     name: "Member"
     permissions:
@@ -243,6 +246,7 @@ roles:
       change-master: false
       remove-guild: false
       toggle-guild: false
+      open-vault: true
 
 #-----------------------------------------------------------#
 #                     Storage Configuration                 #
