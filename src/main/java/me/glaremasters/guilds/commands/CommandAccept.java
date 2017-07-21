@@ -6,6 +6,7 @@ import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.message.Message;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class CommandAccept extends CommandBase {
@@ -51,6 +52,9 @@ public class CommandAccept extends CommandBase {
 
         guild.addMember(player.getUniqueId(), GuildRole.getLowestRole());
         guild.removeInvitedPlayer(player.getUniqueId());
+        player.setPlayerListName(
+            ChatColor
+                .translateAlternateColorCodes('&', Main.getInstance().getConfig().getString("tablist").replace("{guild}", guild.getName()) + ChatColor.RESET + player.getName()));
 
         Message.sendMessage(player,
             Message.COMMAND_ACCEPT_SUCCESSFUL.replace("{guild}", guild.getName()));

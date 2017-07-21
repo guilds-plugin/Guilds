@@ -21,6 +21,9 @@ public class SignListener implements Listener {
   public void onSignChange(SignChangeEvent event) {
     Player p = event.getPlayer();
     Guild guild = Guild.getGuild(p.getUniqueId());
+    if(guild == null) {
+      return;
+    }
     if(event.getLine(0).endsWith("[Guild]")){
       event.setLine(0, ChatColor.translateAlternateColorCodes('&', event.getLine(0).substring(0, event.getLine(0).length()-"[Guild]".length())+"Join Guild"));
       event.setLine(1, guild.getName());
