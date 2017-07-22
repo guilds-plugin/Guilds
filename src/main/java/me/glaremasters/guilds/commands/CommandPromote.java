@@ -18,7 +18,7 @@ public class CommandPromote extends CommandBase {
             new String[] {"rankup"}, "<player> [new role]", 1, 2);
     }
 
-    @SuppressWarnings({"Duplicates", "deprecation"}) @Override
+    @Override
     public void execute(Player player, String[] args) {
         Guild guild = Guild.getGuild(player.getUniqueId());
         if (guild == null) {
