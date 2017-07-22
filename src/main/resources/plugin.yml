@@ -58,6 +58,8 @@ commands:
     description: Check version
   guild status:
     description: Toggle your guild Public / Private
+  guild vault:
+    description: Open your Guild Vault!
 
 
 permissions:
@@ -108,6 +110,7 @@ permissions:
       guilds.command.sethome: true
       guilds.command.inspect: true
       guilds.command.status: true
+      guilds.command.vault: true
     default: true
   guilds.command.accept:
     description: Accept invite to a guild
@@ -157,3 +160,5 @@ permissions:
     description: Inspect another guild!
   guilds.command.status:
       description: Toggle Public / Private
+  guilds.command.vault:
+      description: Open your Guild Vault!
