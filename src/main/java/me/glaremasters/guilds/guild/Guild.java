@@ -190,8 +190,8 @@ public class Guild implements InventoryHolder {
     }
     inventory = Bukkit.createInventory(this, 54, getName() + "'s Guild Vault");
     for (int i = 0; i < inventory.getSize(); i++) {
-      if (vault.isSet("slot" + i)) {
-        inventory.setItem(i, vault.getItemStack("slot" + i));
+      if (vault.isSet("items.slot" + i)) {
+        inventory.setItem(i, vault.getItemStack("items.slot" + i));
       }
     }
     return inventory;
