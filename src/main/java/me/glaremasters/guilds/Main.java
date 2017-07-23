@@ -216,9 +216,12 @@ public class Main extends JavaPlugin {
                 .scheduleAsyncRepeatingTask(this, this::sendUpdate, 0L, 2000L); //5 minutes
         }
 
-        if (!getConfig().isSet("version") || getConfig().getInt("version") == 1 || getConfig().getInt("version") == 2 ) {
+        if (!getConfig().isSet("version") || getConfig().getInt("version") == 1 || getConfig().getInt("version") == 2 || getConfig().getInt("version") == 3 ) {
             File oldfile = new File(this.getDataFolder(), "config.yml");
             File newfile = new File(this.getDataFolder(), "config-old.yml");
+            File dir = new File(this.getDataFolder(), "languages");
+            File olddir = new File(this.getDataFolder(), "old-languages");
+            dir.renameTo(olddir);
             oldfile.renameTo(newfile);
         }
 
