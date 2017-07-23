@@ -114,4 +114,5 @@ permissions:
       guilds.command.status: true
       guilds.command.vault: true
       guilds.command.ally: true
+      guilds.command.transfer: true
     default: true
