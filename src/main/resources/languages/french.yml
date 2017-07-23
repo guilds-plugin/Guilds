@@ -18,6 +18,7 @@ messages:
       no-home-set: "&cVous n'avez pas de home pour votre guilde ! Faite &a/guild sethome &c pour en créer un !"
       home-cooldown: "&cYou can't teleport to home for another {time} seconds!"
       sethome-cooldown: "&cYou can't set your guild home for another {time} seconds!"
+      not-officer: "&cUser must be an Officer in your Guild!"
     help:
       message: "&f/guild {command} {arguments} &7- &f{description}"
       next-page: "&7Faite /guilds help {next-page} pour changer de pasge"

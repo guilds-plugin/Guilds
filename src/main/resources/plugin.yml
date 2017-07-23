@@ -60,6 +60,8 @@ commands:
     description: Toggle your guild Public / Private
   guild vault:
     description: Open your Guild Vault!
+  guild transfer:
+    description: Transfer your guild to a new member!
 
 
 permissions:
@@ -162,3 +164,5 @@ permissions:
       description: Toggle Public / Private
   guilds.command.vault:
       description: Open your Guild Vault!
+  guilds.command.transfer:
+      description: Transfer your guild to a new member

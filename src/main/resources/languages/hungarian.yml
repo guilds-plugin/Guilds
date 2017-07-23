@@ -18,6 +18,7 @@ messages:
       no-home-set: "&cNincs otthon beÃ¡llÃ­tva! HasznÃ¡ld a &a/guild sethome &cparancsot ehhez!"
       home-cooldown: "&cMÃ©g nem teleportÃ¡lhatsz {time} mÃ¡sodpercig!"
       sethome-cooldown: "&cMÃ©g nem Ã¡llÃ­thatod Ã¡t a cÃ©hotthont {time} mÃ¡sodpercig!"
+      not-officer: "&cUser must be an Officer in your Guild!"
     help:
       message: "&f/guild {command} {arguments} &7- &f{description}"
       next-page: "&7See /guilds help {next-page} a kÃ¶vetkezÅ‘ oldalÃ©rt"
