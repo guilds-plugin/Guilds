@@ -72,7 +72,7 @@ public class Guild implements InventoryHolder {
 
   public static Guild getGuild(String name) {
     return Main.getInstance().getGuildHandler().getGuilds().values().stream()
-        .filter(guild -> guild.getName().equals(name)).findFirst().orElse(null);
+        .filter(guild -> guild.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
   }
 
   public static boolean areAllies(UUID uuid1, UUID uuid2) {

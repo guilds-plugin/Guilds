@@ -61,6 +61,8 @@ public class CommandTransfer extends CommandBase {
       oldGuildMaster.setRole(oldGuildMasterRole);
       newGuildMaster.setRole(promotedRole);
       updateGuild("", guild.getName(), Guild.getGuild(guild.getName()).getName());
+      Message.sendMessage(player, Message.COMMAND_TRANSFER_SUCCESS);
+      Message.sendMessage(transferPlayer, Message.COMMAND_TRANSFER_NEWMASTER);
 
 
     }

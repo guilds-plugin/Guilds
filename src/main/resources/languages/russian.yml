@@ -19,6 +19,9 @@ messages:
       home-cooldown: "& cVy can not go home yet {time} seconds!"
       sethome-cooldown: "& cVy can not put the point home more {time} seconds!"
       not-officer: "&cUser must be an Officer in your Guild!"
+    transfer:
+      success: "Guild has been transferred!"
+      newmaster: "You are the new Guild Master of your Guild!"
     help:
       message: "& f / guild {command} {arguments} & 7- & f {description}"
       next-page: "& 7Vvedite / guilds help {next-page} to view the next page"

@@ -18,6 +18,9 @@ messages:
       no-home-set: "&cEr is nog geen Guild thuis gezet! Gebruik &a/guild sethome &com een Guild thuis te zetten!"
       home-cooldown: "&cJe moet {time} seconden wachten voordat je weer naar je Guild thuis kan teleporteren!"
       sethome-cooldown: "&cJe moet {time} seconden wachten voordat je weer je Guild thuis kan instellen!"
+    transfer:
+      success: "Guild has been transferred!"
+      newmaster: "You are the new Guild Master of your Guild!"
     help:
       message: "&f/guild {command} {arguments} &7- &f{description}"
       next-page: "&7Zie /guilds help {next-page} voor de volgende pagina."
