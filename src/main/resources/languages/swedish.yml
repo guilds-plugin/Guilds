@@ -19,6 +19,9 @@ messages:
       home-cooldown: "&cDu kan inte teleportera till ditt hem förrän om {time} sekunder!"
       sethome-cooldown: "&cDu kan inte sätta din guild-hem förrän om {time} sekunder!"
       not-officer: "&cUser must be an Officer in your Guild!"
+    transfer:
+      success: "Guild has been transferred!"
+      newmaster: "You are the new Guild Master of your Guild!"
     help:
       message: "&f/guild {command} {arguments} &7- &f{description}"
       next-page: "&7Se /guilds help {next-page} för nästa sida"

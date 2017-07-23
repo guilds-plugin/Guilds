@@ -19,6 +19,9 @@ messages:
       home-cooldown: "&cNa tento domov sa nemozes teleportovat nasledujucich {time} sekund!"
       sethome-cooldown: "&cNemozes nastavit domov klanu nasledujucich {time} sekund!"
       not-officer: "&cUser must be an Officer in your Guild!"
+    transfer:
+      success: "Guild has been transferred!"
+      newmaster: "You are the new Guild Master of your Guild!"
     help:
       message: "&f/guild {command} {arguments} &7- &f{description}"
       next-page: "&7Pouzi prikaz /guilds help {next-page} pre zobrazenie dalsej stranky"
