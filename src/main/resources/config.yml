@@ -76,13 +76,13 @@ list:
   guildstatus: "&3Guild Status: "
 
 info:
-  playername: "&fName: "
-  guildname: "&fGuild: "
-  master: "&fGuild Master: "
-  member-count: "&fMember Count: "
-  role: "&fGuild Role: "
-  members: "&fMembers In Guild: "
-  guildstatus: "&fGuild Status: "
+  playername: "Name: "
+  guildname: "Guild: "
+  master: "Guild Master: "
+  member-count: "Member Count: "
+  role: "Guild Role: "
+  members: "Members In Guild: "
+  guildstatus: "Guild Status: "
 
 #-----------------------------------------------------------#
 #                     Vault Configuration                   #

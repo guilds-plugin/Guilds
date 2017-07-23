@@ -70,7 +70,7 @@ messages:
       message: "&7&lGuild Chat> &r[{role}] {player}: {message}"
     accept:
       guild-full: "&cThis guild is full!"
-      not-invited: "&cYou aren't invited for this guild!"
+      not-invited: "&cThis guild is private / you haven't received an invite from the guild."
       player-joined: "&aPlayer '{player}' joined your guild!"
       successful: "&aYou joined guild '{guild}' successfully"
     invite:
