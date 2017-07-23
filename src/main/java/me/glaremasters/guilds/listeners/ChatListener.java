@@ -9,6 +9,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import static me.glaremasters.guilds.placeholders.Placeholders.getGuildMemberCount;
 import static me.glaremasters.guilds.placeholders.Placeholders.getGuildMembersOnline;
+import static me.glaremasters.guilds.placeholders.Placeholders.getGuildRole;
 
 public class ChatListener implements Listener {
 
@@ -22,6 +23,7 @@ public class ChatListener implements Listener {
             event.setFormat(event.getFormat().replace("{ESSENTIALS_GUILD_MEMBER_COUNT}", ""));
             event.setFormat(event.getFormat().replace("{ESSENTIALS_GUILD_MEMBERS_ONLINE}", ""));
             event.setFormat(event.getFormat().replace("{ESSENTIALS_GUILD_STATUS}", ""));
+            event.setFormat(event.getFormat().replace("{ESSENTIALS_GUILD_ROLE}", ""));
         } else {
             event.setFormat(event.getFormat().replace("{ESSENTIALS_GUILD}", guild.getName()));
             event.setFormat(
@@ -34,6 +36,9 @@ public class ChatListener implements Listener {
                 getGuildMembersOnline(event.getPlayer())));
             event.setFormat(
                 event.getFormat().replace("{ESSENTIALS_GUILD_STATUS}", guild.getStatus()));
+            event.setFormat(
+                event.getFormat().replace("{ESSENTIALS_GUILD_ROLE}", getGuildRole(event.getPlayer())));
+
         }
     }
 }

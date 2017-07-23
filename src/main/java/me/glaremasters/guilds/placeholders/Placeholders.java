@@ -1,6 +1,8 @@
 package me.glaremasters.guilds.placeholders;
 
 import me.glaremasters.guilds.guild.Guild;
+import me.glaremasters.guilds.guild.GuildMember;
+import me.glaremasters.guilds.guild.GuildRole;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -62,5 +64,14 @@ public class Placeholders {
         }
 
         return guild.getPrefix();
+    }
+
+    public static String getGuildRole(Player player) {
+        Guild guild = Guild.getGuild(player.getUniqueId());
+        GuildMember roleCheck = guild.getMember(player.getUniqueId());
+        if (guild == null) {
+            return "";
+        }
+        return GuildRole.getRole(roleCheck.getRole()).getName();
     }
 }

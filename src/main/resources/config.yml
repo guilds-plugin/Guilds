@@ -68,21 +68,21 @@ display:
   guildstatus: true
 
 list:
-  prefix: "Guild Prefix: "
-  name: "Guild Name: "
-  master: "Guild Master: "
-  member-count: "Member Count: "
-  members: "Members: "
-  guildstatus: "Guild Status: "
+  prefix: "&aGuild Prefix: "
+  name: "&cGuild Name: "
+  master: "&5Guild Master: "
+  member-count: "&6Member Count: "
+  members: "&8Members: "
+  guildstatus: "&3Guild Status: "
 
 info:
-  playername: "Name: "
-  guildname: "Guild: "
-  master: "Guild Master: "
-  member-count: "Member Count: "
-  role: "Guild Role: "
-  members: "Members In Guild: "
-  guildstatus: "Guild Status: "
+  playername: "&fName: "
+  guildname: "&fGuild: "
+  master: "&fGuild Master: "
+  member-count: "&fMember Count: "
+  role: "&fGuild Role: "
+  members: "&fMembers In Guild: "
+  guildstatus: "&fGuild Status: "
 
 #-----------------------------------------------------------#
 #                     Vault Configuration                   #
@@ -156,12 +156,14 @@ name:
 # Maximum length of guild names
   max-length: 64
 # RegEx (https://en.wikipedia.org/wiki/Regular_expression) used to only allow certain characters (default only allows alphanumeric characters)
-  regex: "^[a-zA-Z0-9]*$"
+# To turn off the ability for colored names change the regex to "^[a-zA-Z0-9]*$"
+  regex: "^[a-zA-Z0-9&]*$"
 
 prefix:
-# With the default Regex currently set, the minimum length of the prefix is 1 and the maximum is 6.
+# With the default Regex currently set, the minimum length of the prefix is 1 and the maximum is 20.
 # To change this, adjust the numbers and maybe have a look at the link above (RegEx).
-  regex: "[a-zA-Z0-9]{1,6}"
+# To turn off the ability for colored prefixes change the regex to "[a-zA-Z0-9&]{1,20}"
+  regex: "[a-zA-Z0-9&]{1,20}"
 
 members:
 # Set to -1 to disable
