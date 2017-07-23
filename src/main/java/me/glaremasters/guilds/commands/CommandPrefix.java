@@ -5,6 +5,7 @@ import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.message.Message;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class CommandPrefix extends CommandBase {
@@ -34,6 +35,6 @@ public class CommandPrefix extends CommandBase {
         }
 
         Message.sendMessage(player, Message.COMMAND_PREFIX_SUCCESSFUL);
-        guild.updatePrefix(args[0]);
+        guild.updatePrefix(ChatColor.translateAlternateColorCodes('&', args[0]));
     }
 }
