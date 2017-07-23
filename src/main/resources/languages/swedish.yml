@@ -18,6 +18,7 @@ messages:
       no-home-set: "&cIngen bostad inställt! Använd &a/guild sethome &cför att skapa din bostad!"
       home-cooldown: "&cDu kan inte teleportera till ditt hem förrän om {time} sekunder!"
       sethome-cooldown: "&cDu kan inte sätta din guild-hem förrän om {time} sekunder!"
+      not-officer: "&cUser must be an Officer in your Guild!"
     help:
       message: "&f/guild {command} {arguments} &7- &f{description}"
       next-page: "&7Se /guilds help {next-page} för nästa sida"

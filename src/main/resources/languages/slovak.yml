@@ -18,6 +18,7 @@ messages:
       no-home-set: "&cZiaden domov nie je nastaveny! Pouzi prikaz &c/guild sethome &cpre nastavenie domova!"
       home-cooldown: "&cNa tento domov sa nemozes teleportovat nasledujucich {time} sekund!"
       sethome-cooldown: "&cNemozes nastavit domov klanu nasledujucich {time} sekund!"
+      not-officer: "&cUser must be an Officer in your Guild!"
     help:
       message: "&f/guild {command} {arguments} &7- &f{description}"
       next-page: "&7Pouzi prikaz /guilds help {next-page} pre zobrazenie dalsej stranky"

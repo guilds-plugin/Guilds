@@ -18,6 +18,7 @@ messages:
       no-home-set: "&cギルドのホームポジションが設定されていません! &a/guild sethome &cコマンドを使ってギルドのホームポジションを設定してください!"
       home-cooldown: "&cYou can't teleport to home for another {time} seconds!"
       sethome-cooldown: "&cYou can't set your guild home for another {time} seconds!"
+      not-officer: "&cUser must be an Officer in your Guild!"
     help:
       message: "&f/guild {command} {arguments} &7- &f{description}"
       next-page: "&7/guilds help {next-page} で次のページに移ります。"

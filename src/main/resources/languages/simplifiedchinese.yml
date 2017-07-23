@@ -18,6 +18,7 @@ messages:
       no-home-set: "&c尚未拥有公会基地传送点! , 输入&b/guild sethome &r来创建公会基地传送点!"
       home-cooldown: "&c你无法传送!! 你需要等待 {time} 秒后!在试一次"
       sethome-cooldown: "&c你需要等 {time} 秒后 才能在执行!"
+      not-officer: "&cUser must be an Officer in your Guild!"
     help:
       message: "&f/guild {command} {arguments} &7- &f{description}"
       next-page: "&7使用 /guilds help {页码} 到下一页\n&e不管使用哪种公会指令前面一定要加上/guild (你要使用的指令)\n例如 /guild create 独步天下 <-这样就是创建一个名为独步天下的公会"

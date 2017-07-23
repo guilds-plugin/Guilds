@@ -18,6 +18,7 @@ messages:
       no-home-set: "&cNici o casa setata! Foloseste &a/guild sethome &cpentru a seta casa!"
       home-cooldown: "&cNu te poti teleporta acasa pentru inca {time} secunde!"
       sethome-cooldown: "&cNu poti seta casa Breaslei in {time} secunde!"
+      not-officer: "&cUser must be an Officer in your Guild!"
     help:
       message: "&f/guild {command} {arguments} &7- &f{description}"
       next-page: "&7Foloseste /guilds help {next-page} pentru pagina urmatoare"
