@@ -113,56 +113,5 @@ permissions:
       guilds.command.inspect: true
       guilds.command.status: true
       guilds.command.vault: true
+      guilds.command.ally: true
     default: true
-  guilds.command.accept:
-    description: Accept invite to a guild
-  guilds.command.admin:
-    description: Access to admin commands
-  guilds.command.boot:
-    description: Kick a member from your guild
-  guilds.command.cancel:
-    description: Cancel a command
-  guilds.command.chat:
-    description: Use guild chat
-  guilds.command.confirm:
-    description: Confirm a command
-  guilds.command.create:
-    description: Create a guild
-  guilds.command.delete:
-    description: Delete your guild
-  guilds.command.demote:
-    description: Demote a member of your guild
-  guilds.command.help:
-    description: Use /guilds help command
-  guilds.command.info:
-    description: View Guild's info
-  guilds.command.invite:
-    description: Invite a member to your guild
-  guilds.command.leave:
-    description: Leave your guild
-  guilds.command.prefix:
-    description: Change your guild's prefix
-  guilds.command.promote:
-    description: Promote a member of your guild
-  guilds.command.reload:
-    description: Reload Guilds
-  guilds.command.role:
-    description: Change the role of a member from your guild
-  guilds.command.version:
-    description: Display which version of the plugin is currently running on the server!
-  guilds.command.list:
-    description: Display all guilds on the server
-  guilds.command.bugreport:
-    description: Important information to include in your bug report!
-  guilds.command.home:
-    description: Teleport to your guild's home!
-  guilds.command.sethome:
-    description: Set your guild's home!
-  guilds.command.inspect:
-    description: Inspect another guild!
-  guilds.command.status:
-      description: Toggle Public / Private
-  guilds.command.vault:
-      description: Open your Guild Vault!
-  guilds.command.transfer:
-      description: Transfer your guild to a new member
