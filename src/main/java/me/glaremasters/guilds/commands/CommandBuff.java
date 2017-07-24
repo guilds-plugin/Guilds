@@ -23,6 +23,8 @@ public class CommandBuff extends CommandBase{
         null, null, 0, 0);
   }
 
+
+
   public ItemStack createItemStack(Material mat, String name, ArrayList<String> Lore) {
     ItemStack paper = new ItemStack(mat);
 
