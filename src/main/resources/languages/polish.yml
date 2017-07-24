@@ -1,0 +1,129 @@
+#Polish translation by pietrek777
+messages:
+  command:
+    error:
+      already-in-guild: "&cJu¿ jesteœ w gildii"
+      args: "&cB³êdne argumenty. Wiêcej informacji pod &a/guild help"
+      console: "&cKomenda mo¿e byæ wywo³ana tylko przez gracza"
+      guild-not-found: "&cGildia '{input}' nie istnieje!"
+      home-cooldown: "&cNie mo¿esz teleportowaæ sie do bazy przez nastêpne {time} sekund!"
+      invalid-role: "&cStopieñ '{input}' nie istnieje!"
+      invalid_number: "&c{input} nie jest poprawn¹ liczb¹!"
+      no-guild: "&cNie jesteœ w gildii!"
+      no-home-set: "&cBaza nie ustawiona! U¿yj &a/guild sethome &cw celu ustawienia bazy gildii!"
+      not-enough-money: "&aWybacz, ale nie masz wystarczaj¹co pieniêdzy, aby za³o¿yc gildiê!"
+      not-found: "&cNie ma takiej komendy! Komendy dostêpne pod /guilds help"
+      not-guildmaster: "&cNie jesteœ w³aœcicielem gildii"
+      not-officer: "&cU¿ytkownik musi byæ oficerem w Twojej gildii!"
+      permission: "&cNie masz do tego uprawnieñ!"
+      player-not-found: "&cGracz '{player}' nie istnieje, albo jest offline!"
+      player-not-in-guild: "&cGracz '{player}' nie jest w Twojej gildii!"
+      role-no-permission: "&cTwój stopieñ gildyjny jest za niski, aby to zrobiæ!"
+      sethome-cooldown: "&cYou can't set your guild home for another {time} seconds!"
+    transfer:
+      newmaster: "&aJesteœ nowym w³aœcicielem gildii!"
+      success: "&aGildia przetransferowana pomyœlnie!"
+    help:
+      invalid-page: "&cNie ma takiej strony!"
+      message: "&f/guild {command} {arguments} &7- &f{description}"
+      next-page: "&7Wpisz /guilds help {next-page} po nastêpn¹ stronê pomocy"
+    status:
+      error: "&cStatus gildii musi byæ publiczny, lub prywatny"
+      successful: "&aStatus gildii ustawiony na {status}!"
+    role:
+      players: "{player} - {role}"
+    list:
+      format: "Lista gildii:"
+    create:
+      cancelled-sethome: "&cBaza gildii nie zosta³a ustawiona"
+      cancelled: "&cAnulowano tworzenie gildii"
+      error: "&cPodczas tworzenia gildii wyst¹pi³ b³ad! Skontaktuj siê z Administratorem"
+      guild-home: "&aUstawi³eœ dom swojej gildii!"
+      guild-name-taken: "&cTa nazwa jest ju¿ zajêta!"
+      money-warning-sethome: "&cMasz zamiar wydaæ {amount} aby ustawiæ tutaj bazê swojej gildii. (Wpisz /guilds confirm aby potwierdziæ)"
+      money-warning: "&cCzy na pewno chcesz wydaæ {amount} aby utworzyæ gildiê? (Wpisz /guilds confirm aby potwierdziæ)"
+      name-requirements: "&cNazwa Twojej gildii jest niepoprawna. Poprawna nazwa mo¿e siê sk³adaæ tylko z liter i cyfr oraz nie mo¿e byæ d³u¿sza ni¿ 64 znaki.
+      successful: "&aGlidia '{guild}' pomyœlnie utworzona!"
+      warning: "&cWpisz /guilds confirm aby utworzyæ gildie, albo /guilds cancel aby anulowaæ."
+    delete:
+      cancelled: "&cPrzerwano tworzenie gildii!"
+      error: "&cPodczas usuwania Twojej gildii wyst¹pi³ b³¹d!"
+      successful: "&aGildia '{guild}' usuniêta pomyœlnie!"
+      warning: "&cWpisz /guilds confirm aby usun¹æ gildiê, albo /guilds cancel aby anulowaæ."
+    info:
+      header: "Informacje o gildii &b{guild}"
+      master: "W³aœciciel: &b{master}"
+      member-count: "Cz³onkowie: &b{members}/64&r (&bOnline: {members-online}&r)"
+      name: "Nazwa: &b{guild}&r (&bPrefix: {prefix}&r)"
+      players: "Cz³onków: &b[{players}]"
+      rank: "Twoja ranga: &b{rank}"
+    promote:
+      cannot-promote: "&cTen gracz nie mo¿e byæ wy¿ej awansowany!"
+      not-promotion: "&cNie awansujesz tego gracza!"
+      promoted: "&aPomyœlnie awansowa³eœ {player} z rangi {old-rank} do {new-rank}!"
+      successful: "&aZosta³eœ awansowany z rangi {old-rank} do {new-rank}!"
+    demote:
+      cannot-demote: "&cTen gracz nie mo¿e byæ ni¿ej zdegradowany!"
+      demoted: "&cZosta³eœ zdegradowany z rangi {old-rank} do {new-rank}!"
+      not-demotion: "&cNie degradujesz tego gracza!"
+      successful: "&aPomyœlnie zdegradowano {player} z rangi {old-rank} do {new-rank}!"
+    chat:
+      message: "&7&lCzat Gildijny> &r[{role}] {player}: {message}"
+    accept:
+      guild-full: "&cGildia jest ju¿ pe³na!"
+      not-invited: "&cTa gildia jest prywatna, lub nie otrzyma³eœ od niej zaproszenia."
+      player-joined: "&aGracz '{player}'  do³¹czy³ do Twojej gildii!"
+      successful: "&aPomyœlnie do³¹czy³eœ do gildii '{guild}'"
+    invite:
+      already-in-guild: "&cTen gracz jest ju¿ w Twojej gildii!"
+      message: "&a{player} zaprosi³ Ciebie do swojej gildii, '{guild}'"
+      successful: "&aPomyœlnie zaprosi³eœ {player} do swojej gildii!"
+    leave:
+      cancelled: "&cPrzerwano opuszczanie gildii!"
+      player-left: "&cPlayer '{player}' odszed³ z Twojej gildii!"
+      successful: "&aPomyœlnie odszed³eœ ze swojej gildii!"
+      warning-guildmaster: "&cJesteœ w³aœcicielem gildii, je¿eli j¹ opuœcisz bêdzie to równoznaczne z jej usuniêciem. Aby potwierdziæ odejœcie wpisz /guilds confirm, albo /guilds cancel aby anulowaæ."
+      warning: "&cWpisz /guilds confirm aby opuœciæ swoj¹ gildiê, albo /guilds cancel aby anulowaæ."
+    boot:
+      kicked: "&cZosta³eœ wyrzucony ze swojej gildii {kicker}!"
+      player-kicked: "&cGracz '{player}' zosta³ wyrzucony ze swojej gildii przez {kicker}!"
+      successful: "&aPomyœlnie wyrzuci³eœ {player} z Twojej gildii"
+    prefix:
+      requirements: "&cPrefix Twojej gildii nie spe³nia wymagañ. Poprawny prefix musi siê sk³adaæ z liter i cyfr, oraz nie mo¿e byæ d³u¿szy ni¿ 6 znaków."
+      successful: "&aPrefix gildii zmieniony pomyœlnie"
+    confirm:
+      error: "&cNie masz czego potwierdziæ!"
+    cancel:
+      error: "&cNie masz czego anulowaæ!"
+    reload:
+      reloaded: "&aConfiguration file reloaded!"
+    update:
+      found: "&aZnaleziono aktualizacjê! PrzejdŸ do {url} aby j¹ pobraæ"
+      not-found: "&cNie znaleziono aktualizacji!"
+    admin:
+      added-player: "&aDodano gracza do gildii"
+      delete-cancelled: "&cUsuwanie gildii anulowane!"
+      delete-error: "&cPodczas usuwania gildii wyst¹pi³ b³¹d!"
+      delete-successful: "&cGildia usuniêta pomyœlnie!"
+      delete-warning: "&cWpisz /guilds aby usun¹æ t¹ gildiê, albo /guilds cancel aby anulowaæ."
+      player-already-in-guild: "&cGracz ju¿ znajduje siê w gildii!"
+      player-not-in-guild: "&cGracz nie jest w tej gildii!"
+      removed-player: "&aUsuniêto gracza z gildii!"
+    ally:
+      accepted-target: "&a{guild} jest od teraz naszym sojusznikiem!"
+      accepted: "&aTa gildia jest od teraz sprzymierzona z {guild}!"
+      already-allies: "&cJu¿ jesteœ sprzymierzony z {guild}!"
+      declined: "Gildia &c{guild} nie chce byæ naszym sojusznikiem!"
+      guild-not-pending: "&cTa gildia nie wys³a³a Ci propozycji sojuszu"
+      not-allies: "&cNie jesteœcie sojusznikami z {guild}!"
+      removed-target: "&cGildia {guild} nie jest ju¿ naszym sojusznikiem!"
+      removed: "&cTa gildia ju¿ nie jest sprzymierzona z {guild}!"
+      send-target: "&aOtrzyma³eœ propozycjê sojuszu od gildii {guild}! Wpisz /guilds ally accept {guild} aby j¹ zaakceptowaæ, albo /guilds ally decline {guild} aby odrzuciæ"
+      send: "&aWys³ano propozycjê sojuszu!"
+    home:
+      damage-taken: "&cZosta³eœ zraniony! Teleportacja anulowana!"
+      teleported: "&aZosta³eœ teleportowany do bazy!"
+      teleporting: "&cTeleportacja za {count} sekund."
+  event:
+    join:
+      pending-invites: "&aMasz {number} oczekuj¹cych zaproszeñ z gildii: &e{guilds}"
