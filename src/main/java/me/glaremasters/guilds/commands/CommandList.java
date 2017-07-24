@@ -1,5 +1,8 @@
 package me.glaremasters.guilds.commands;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Stream;
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
@@ -61,12 +64,13 @@ public class CommandList extends CommandBase {
                         + String.valueOf(guild.getMembers().size())));
             }
             if(Main.getInstance().getConfig().getBoolean("display.members")) {
-                lore.add(
-                    ChatColor.translateAlternateColorCodes('&',Main.getInstance().getConfig().getString("list.members")
-                        + guild
-                        .getMembers().stream()
-                        .map(member -> Bukkit.getOfflinePlayer(member.getUniqueId()).getName())
-                        .collect(Collectors.joining(", "))));
+                List<String> lines = Arrays.asList(guild.getMembers().stream()
+                    .map(member -> Bukkit.getOfflinePlayer(member.getUniqueId()).getName())
+                            .collect(Collectors.joining(", "))
+                        .replaceAll("(([a-zA-Z0-9_]+, ){3})", "$0\n")
+                        .split("\n"));
+                lines.set(0, ChatColor.translateAlternateColorCodes('&',Main.getInstance().getConfig().getString("list.members")+lines.get(0)));
+                lore.addAll(lines);
             }
             if(Main.getInstance().getConfig().getBoolean("display.guildstatus")) {
                 lore.add(
