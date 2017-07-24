@@ -31,8 +31,9 @@ public class Json extends DatabaseProvider {
     private Type leaderboardsType;
 
     @Override public void initialize() {
-        guildsFile = new File(Main.getInstance().getDataFolder(), "data/guilds.json");
-        leaderboardsFile = new File(Main.getInstance().getDataFolder(), "data/leaderboards.json");
+        File folder = new File(Main.getInstance().getDataFolder(), "data/");
+        guildsFile = new File(folder, "guilds.json");
+        leaderboardsFile = new File(folder, "leaderboards.json");
 
         guildsType = new TypeToken<Map<String, Guild>>() {
         }.getType();
@@ -43,6 +44,11 @@ public class Json extends DatabaseProvider {
             .registerTypeAdapter(leaderboardsType, new LeaderboardListDeserializer())
             .registerTypeAdapter(leaderboardsType, new LeaderboardListSerializer())
             .excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().create();
+
+
+        if(!folder.exists()) {
+            folder.mkdirs();
+        }
 
         if (!guildsFile.exists()) {
             try {

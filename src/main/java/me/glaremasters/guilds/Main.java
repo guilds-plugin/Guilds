@@ -275,9 +275,7 @@ public class Main extends JavaPlugin {
         scoreboardHandler.disable();
     }
 
-    public DatabaseProvider getDatabaseProvider() {
-        return database;
-    }
+
 
     public GuildHandler getGuildHandler() {
         return guildHandler;
@@ -285,6 +283,10 @@ public class Main extends JavaPlugin {
 
     public CommandHandler getCommandHandler() {
         return commandHandler;
+    }
+
+    public DatabaseProvider getDatabaseProvider() {
+        return database;
     }
 
     public GuildScoreboardHandler getScoreboardHandler() {
@@ -310,6 +312,8 @@ public class Main extends JavaPlugin {
 
         database.initialize();
     }
+
+
 
     private void initializePlaceholder() {
         if (Bukkit.getPluginManager().isPluginEnabled("MVdWPlaceholderAPI")) {
