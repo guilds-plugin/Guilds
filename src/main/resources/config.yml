@@ -86,11 +86,25 @@ info:
   guildstatus: "Guild Status: "
 
 buff:
-  haste: "Substance of the Redmod Graff"
-  speed: "Blessing of the Cheetah"
-  fire-resistance: "Scales of the Dragon"
-  night-vision: "Eyes of the Lurking Demon"
-  invisibility: "Feet of the Ghostly Walker"
+  name:
+    haste: "Substance of the Redmod Graff"
+    speed: "Blessing of the Cheetah"
+    fire-resistance: "Scales of the Dragon"
+    night-vision: "Eyes of the Lurking Demon"
+    invisibility: "Feet of the Ghostly Walker"
+  price:
+    haste: 60
+    speed: 60
+    fire-resistance: 60
+    night-vision: 60
+    invisibility: 60
+  time:
+    haste: 60
+    speed: 60
+    fire-resistance: 60
+    night-vision: 60
+    invisibility: 60
+
 #-----------------------------------------------------------#
 #                     Vault Configuration                   #
 #-----------------------------------------------------------#
