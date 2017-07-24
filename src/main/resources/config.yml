@@ -23,17 +23,18 @@ version: 4
 # If you speak another language but don't see it here, feel free to submit it via one of the links above to have it added to the plugin.
 lang: english
 # The plugin also supports the following other languages:
-# - english
 # - chinese
-# - simplifiedchinese
-# - french
 # - dutch
-# - japanese
-# - swedish
+# - english
+# - french
 # - hungarian
+# - japanese
+# - polish
 # - romanian
-# - slovak
 # - russian
+# - simplifiedchinese
+# - slovak
+# - swedish
 
 
 # NOTE: If you change your language please ONLY use from the list above and use them EXACTLY as they are spelled in the list above.
