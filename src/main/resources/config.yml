@@ -92,6 +92,8 @@ info:
 # In this section of the config, you can modify the buff name, price, time, and amplifier (Haste 1, 2 ,3 4, etc).
 # The current will give Haste 2, Speed 2, etc with "1". If you make it "2", it'll change it to 3, and so on.
 
+disable-buff-stacking: true
+
 buff:
   name:
     haste: "Substance of the Redmod Graff"
