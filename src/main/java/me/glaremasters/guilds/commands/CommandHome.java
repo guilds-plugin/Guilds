@@ -37,7 +37,11 @@ public class CommandHome extends CommandBase implements Listener {
     }
 
     public void execute(final Player player, String[] args) {
-
+        Guild guild = Guild.getGuild(player.getUniqueId());
+        if (guild == null) {
+            Message.sendMessage(player, Message.COMMAND_ERROR_NO_GUILD);
+            return;
+        }
         int cooldownTime = Main.getInstance().getConfig().getInt("home.cool-down");
         if (Main.getInstance().guildhomesconfig
             .getString(Guild.getGuild(player.getUniqueId()).getName()) == null) {
