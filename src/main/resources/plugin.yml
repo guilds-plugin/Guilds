@@ -115,4 +115,5 @@ permissions:
       guilds.command.vault: true
       guilds.command.ally: true
       guilds.command.transfer: true
+      guilds.command.buff: true
     default: true
