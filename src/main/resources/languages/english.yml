@@ -19,6 +19,8 @@ messages:
       player-not-in-guild: "&cPlayer '{player}' is not in your guild!"
       role-no-permission: "&cYour role is not high enough to do that!"
       sethome-cooldown: "&cYou can't set your guild home for another {time} seconds!"
+    buff:
+      not-enough-money: "&cYou do not have enough money to buy this buff!"
     transfer:
       newmaster: "&aYou are the new Guild Master of your Guild!"
       success: "&aGuild has been transferred!"

@@ -71,9 +71,9 @@ display:
 list:
   prefix: "&aGuild Prefix: "
   name: "&cGuild Name: "
-  master: "&5Guild Master: "
+  master: "&8Guild Master: "
   member-count: "&6Member Count: "
-  members: "&8Members: "
+  members: "&5Members: "
   guildstatus: "&3Guild Status: "
 
 info:
@@ -84,6 +84,13 @@ info:
   role: "Guild Role: "
   members: "Members In Guild: "
   guildstatus: "Guild Status: "
+
+#-----------------------------------------------------------#
+#                     Buff Configuration                    #
+#-----------------------------------------------------------#
+
+# In this section of the config, you can modify the buff name, price, time, and amplifier (Haste 1, 2 ,3 4, etc).
+# The current will give Haste 2, Speed 2, etc with "1". If you make it "2", it'll change it to 3, and so on.
 
 buff:
   name:
@@ -104,6 +111,17 @@ buff:
     fire-resistance: 60
     night-vision: 60
     invisibility: 60
+  amplifier:
+    haste: 1
+    speed: 1
+    fire-resistance: 1
+    night-vision: 1
+    invisibility: 1
+
+# This message in is the buff configuration so that you can easily access it
+
+not-enough-buff-money: "You do not have enough money to buy this buff!"
+
 
 #-----------------------------------------------------------#
 #                     Vault Configuration                   #

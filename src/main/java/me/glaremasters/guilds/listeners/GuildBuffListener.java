@@ -13,7 +13,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryInteractEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -37,6 +36,7 @@ public class GuildBuffListener implements Listener {
     public final int time;
     public final double cost;
     public final String name;
+    public final int amplifier;
 
     GuildBuff(PotionEffectType potion, Material itemType, String configValueName) {
       this.time = Main.getInstance().getConfig().getInt("buff.time." + configValueName) * 20;
@@ -44,6 +44,7 @@ public class GuildBuffListener implements Listener {
       this.itemType = itemType;
       this.potion = potion;
       this.name = Main.getInstance().getConfig().getString("buff.name." + configValueName);
+      this.amplifier = Main.getInstance().getConfig().getInt("buff.amplifier." + configValueName);
     }
 
     public static GuildBuff get(Material itemType) {
@@ -54,15 +55,16 @@ public class GuildBuffListener implements Listener {
   }
 
   @EventHandler
-  public void onHasteBuy(InventoryClickEvent event) {
+  public void onBuffBuy(InventoryClickEvent event) {
     Player player = (Player) event.getWhoClicked();
     Guild guild = Guild.getGuild(player.getUniqueId());
     if (event.getInventory().getTitle().equals("Guild Buffs")) {
+      event.setCancelled(true);
       GuildBuff buff = GuildBuff.get(event.getCurrentItem().getType());
       if (buff != null) {
         if (Main.vault && buff.cost != -1) {
           if (Main.getInstance().getEconomy().getBalance(player) < buff.cost) {
-            Message.sendMessage(player, Message.COMMAND_ERROR_NOT_ENOUGH_MONEY);
+            Message.sendMessage(player, Message.COMMAND_BUFF_NOT_ENOUGH_MONEY);
             return;
           }
           if (player.hasPotionEffect(buff.potion)) {
@@ -71,7 +73,7 @@ public class GuildBuffListener implements Listener {
           EconomyResponse response =
               Main.getInstance().getEconomy().withdrawPlayer(player, buff.cost);
           if (!response.transactionSuccess()) {
-            Message.sendMessage(player, Message.COMMAND_ERROR_NOT_ENOUGH_MONEY);
+            Message.sendMessage(player, Message.COMMAND_BUFF_NOT_ENOUGH_MONEY);
             return;
           }
 
@@ -81,28 +83,13 @@ public class GuildBuffListener implements Listener {
               .forEach(member -> {
 
                 ((Player) member).addPotionEffect(
-                    new PotionEffect(buff.potion, buff.time, 2));
+                    new PotionEffect(buff.potion, buff.time, buff.amplifier));
 
               });
-          Bukkit.dispatchCommand(player, "guild chat " + "I just activated "
+          Bukkit.dispatchCommand(player, "guild chat " + "has activated "
               + buff.name + " for " + buff.time/20 + " seconds!");
         }
       }
     }
   }
-
-  @EventHandler
-  public void onClick(InventoryInteractEvent event) {
-    if (event.getInventory().getTitle().equals("Guild Buffs")) {
-      event.setCancelled(true);
-    }
-  }
-
-  @EventHandler
-  public void onClick2(InventoryClickEvent event) {
-    if (event.getInventory().getTitle().equals("Guild Buffs")) {
-      event.setCancelled(true);
-    }
-  }
-
 }
