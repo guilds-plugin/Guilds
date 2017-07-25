@@ -69,7 +69,9 @@ messages:
       not-demotion: "&cYou aren't demoting this player!"
       successful: "&aYou've successfully demoted {player} from {old-rank} to {new-rank}!"
     chat:
-      message: "&7&lGuild Chat> &r[{role}] {player}: {message}"
+      message: "&7&l[Guild Chat]&r &b[{role}] {player}: {message}"
+      enabled: "&aGuild Chat Enabled"
+      disabled: "&cGuild Chat Disabled"
     accept:
       guild-full: "&cThis guild is full!"
       not-invited: "&cThis guild is private / you haven't received an invite from the guild."

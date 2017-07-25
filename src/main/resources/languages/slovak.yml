@@ -67,7 +67,9 @@ messages:
       cannot-demote: "&cTento hrac uz nemoze byt viac degradovany!"
       not-demotion: "&cNedegradujes tohto hraca!"
     chat:
-      message: "&7&lKlanovy Chat> &r[{role}] {player}: {message}"
+      message: "&7&l[Guild Chat]&r &b[{role}] {player}: {message}"
+      enabled: "&aGuild Chat Enabled"
+      disabled: "&cGuild Chat Disabled"
     accept:
       not-invited: "&cNebol si pozvany do tohto klanu!"
       guild-full: "&cTento klan je plny!"

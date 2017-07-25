@@ -66,7 +66,9 @@ messages:
       cannot-demote: "&cDeze speler kan niet verder worden gedegradeerd"
       not-demotion: "&cJe kan deze speler niet degraderen"
     chat:
-      message: "&7&lGuild Chat> &r[{role}] {player}: {message}"
+      message: "&7&l[Guild Chat]&r &b[{role}] {player}: {message}"
+      enabled: "&aGuild Chat Enabled"
+      disabled: "&cGuild Chat Disabled"
     accept:
       not-invited: "&cJe bent niet uitgenodigd voor deze guild"
       guild-full: "&cDeze guild is vol"

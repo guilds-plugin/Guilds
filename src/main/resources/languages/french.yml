@@ -67,7 +67,9 @@ messages:
       cannot-demote: "&cCe joueur ne peut pas être rétrogader !"
       not-demotion: "&cVous ne pouvez pas rétrogader ce joueur !"
     chat:
-      message: "&7&lGuild Chat> &r[{role}] {player}: {message}"
+      message: "&7&l[Guild Chat]&r &b[{role}] {player}: {message}"
+      enabled: "&aGuild Chat Enabled"
+      disabled: "&cGuild Chat Disabled"
     accept:
       not-invited: "&cVous n'avez pas été invité par cette guilde !"
       guild-full: "&cCette guilde est pleine !"

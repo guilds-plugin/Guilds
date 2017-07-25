@@ -24,24 +24,30 @@ public class SignListener implements Listener {
   public void onSignChange(SignChangeEvent event) {
     Player p = event.getPlayer();
     Guild guild = Guild.getGuild(p.getUniqueId());
-    if(guild == null) {
+    if (guild == null) {
       return;
     }
-    if(event.getLine(0).endsWith("[Guild]")){
-      event.setLine(0, ChatColor.translateAlternateColorCodes('&', event.getLine(0).substring(0, event.getLine(0).length()-"[Guild]".length())+"Join Guild"));
+    if (event.getLine(0).endsWith("[Guild]")) {
+      event.setLine(0, ChatColor.translateAlternateColorCodes('&',
+          event.getLine(0).substring(0, event.getLine(0).length() - "[Guild]".length())
+              + "Join Guild"));
       event.setLine(1, guild.getName());
       event.setLine(2, "Members");
-      event.setLine(3, String.valueOf(guild.getMembers().size() + " / " + Main.getInstance().getConfig().getInt("members.max-members")));
+      event.setLine(3, String.valueOf(
+          guild.getMembers().size() + " / " + Main.getInstance().getConfig()
+              .getInt("members.max-members")));
     }
   }
 
   @EventHandler
-  public void onPlayerClickSign(PlayerInteractEvent event){
+  public void onPlayerClickSign(PlayerInteractEvent event) {
     Player p = event.getPlayer();
-    if(event.getAction() == Action.RIGHT_CLICK_BLOCK){
-    if(event.getClickedBlock().getType() == Material.SIGN ||event.getClickedBlock().getType() == Material.SIGN_POST ||event.getClickedBlock().getType() == Material.WALL_SIGN){
+    if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+      if (event.getClickedBlock().getType() == Material.SIGN
+          || event.getClickedBlock().getType() == Material.SIGN_POST
+          || event.getClickedBlock().getType() == Material.WALL_SIGN) {
         Sign sign = (Sign) event.getClickedBlock().getState();
-        if(ChatColor.stripColor(sign.getLine(0)).equalsIgnoreCase( "Join Guild")){
+        if (ChatColor.stripColor(sign.getLine(0)).equalsIgnoreCase("Join Guild")) {
           p.chat("/guild join " + sign.getLine(1));
           sign.update();
         }

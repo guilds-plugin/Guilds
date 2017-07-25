@@ -63,7 +63,9 @@ messages:
       cannot-demote: "&c這個玩家不能在降職了!"
       not-demotion: "&c你沒有許可權對這個玩家降職!"
     chat:
-      message: "&7&l公會聊天> &r&6[{role}] &e{player}: &f{message}"
+      message: "&7&l[Guild Chat]&r &b[{role}] {player}: {message}"
+      enabled: "&aGuild Chat Enabled"
+      disabled: "&cGuild Chat Disabled"
     accept:
       not-invited: "&c你沒有被邀請加入這個公會!"
       guild-full: "&c這個公會滿人了!"

@@ -67,7 +67,9 @@ messages:
       cannot-demote: "&cEzt a jÃ¡tÃ©kost nem fokozhatod le tovÃ¡bb!"
       not-demotion: "&cNem fokozod le ezt a jÃ¡tÃ©kost!"
     chat:
-      message: "&7&lCÃ©h Chat> &r[{role}] {player}: {message}"
+      message: "&7&l[Guild Chat]&r &b[{role}] {player}: {message}"
+      enabled: "&aGuild Chat Enabled"
+      disabled: "&cGuild Chat Disabled"
     accept:
       not-invited: "&cNem vagy meghÃ­vva ebbe a cÃ©hbe!"
       guild-full: "&cEz a cÃ©h tele van!"

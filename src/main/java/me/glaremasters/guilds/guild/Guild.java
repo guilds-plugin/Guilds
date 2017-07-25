@@ -95,6 +95,7 @@ public class Guild implements InventoryHolder {
     this.prefix = prefix;
   }
 
+
   public String getStatus() {
     return Main.getInstance().guildstatusconfig
         .getString(getName());
@@ -223,6 +224,7 @@ public class Guild implements InventoryHolder {
 
     Main.getInstance().getScoreboardHandler().update();
   }
+
 
   public List<String> getAllies() {
     return allies;

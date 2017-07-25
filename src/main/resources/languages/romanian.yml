@@ -67,7 +67,9 @@ messages:
       cannot-demote: "&cAcest jucator nu mai poate fi retrogradat !"
       not-demotion: "&cNu il retrogradezi pe acest jucator!"
     chat:
-      message: "&7&lChat Breasla> &r[{role}] {player}: {message}"
+      message: "&7&l[Guild Chat]&r &b[{role}] {player}: {message}"
+      enabled: "&aGuild Chat Enabled"
+      disabled: "&cGuild Chat Disabled"
     accept:
       not-invited: "&cNu esti invitat in aceasta Breasla!"
       guild-full: "&cAceasta Breasla este plina!"

@@ -11,18 +11,20 @@ import org.bukkit.event.player.PlayerJoinEvent;
 /**
  * Created by GlareMasters on 7/20/2017.
  */
-public class TablistListener implements Listener{
+public class TablistListener implements Listener {
 
 
   @EventHandler
   public void onPlayerJoin(PlayerJoinEvent event) {
     Player p = event.getPlayer();
     Guild guild = Guild.getGuild(p.getUniqueId());
-    if(guild == null) {
+    if (guild == null) {
       return;
-    }  else {
+    } else {
       event.getPlayer().setPlayerListName(
-          ChatColor.translateAlternateColorCodes('&', Main.getInstance().getConfig().getString("tablist").replace("{guild}", guild.getName()) + ChatColor.RESET + p.getName()));
+          ChatColor.translateAlternateColorCodes('&',
+              Main.getInstance().getConfig().getString("tablist")
+                  .replace("{guild}", guild.getName()) + ChatColor.RESET + p.getName()));
     }
   }
 

@@ -15,6 +15,7 @@ import me.glaremasters.guilds.leaderboard.LeaderboardHandler;
 import me.glaremasters.guilds.listeners.ChatListener;
 import me.glaremasters.guilds.listeners.ClickListener;
 import me.glaremasters.guilds.listeners.GuildBuffListener;
+import me.glaremasters.guilds.listeners.GuildChatListener;
 import me.glaremasters.guilds.listeners.GuildDamageListener;
 import me.glaremasters.guilds.listeners.GuildVaultListener;
 import me.glaremasters.guilds.listeners.JoinListener;
@@ -171,6 +172,7 @@ public class Main extends JavaPlugin {
         }
         getServer().getPluginManager().registerEvents(new GuildVaultListener(), this);
         getServer().getPluginManager().registerEvents(new GuildBuffListener(), this);
+        getServer().getPluginManager().registerEvents(new GuildChatListener(), this);
         vault = setupEconomy();
 
         if (!vault) {

@@ -192,6 +192,9 @@ tablist: "&7[&b{guild}&7]"
 # Disable this if you don't want to allow Guild Signs to be made.
 guild-signs: true
 
+# Here you can modify how the /guild chat message style works.
+guild-chat-format: "&7&l[Guild Chat]&r &b[{role}] %s: %s"
+
 # Change this to true if you want to allow players in the same guild to damage each other.
 allow-guild-damage: false
 
