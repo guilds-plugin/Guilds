@@ -23,7 +23,7 @@ public class GuildVaultListener implements Listener {
     Inventory inventory = event.getInventory();
     InventoryHolder holder = inventory.getHolder();
     if (holder != null && holder instanceof Guild) {
-      Guild guild = (Guild)holder;
+      Guild guild = (Guild) holder;
 
       File vaultf = new File(Main.getInstance().getDataFolder(),
           "data/vaults/" + guild.getName() + ".yml");

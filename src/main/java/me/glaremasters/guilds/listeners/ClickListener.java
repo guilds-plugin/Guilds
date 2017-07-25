@@ -17,54 +17,56 @@ import org.bukkit.inventory.Inventory;
  */
 public class ClickListener implements Listener {
 
-    @EventHandler public void onClick(InventoryClickEvent e) {
-        Player player = (Player) e.getWhoClicked();
-        if (e.getInventory().getTitle().equalsIgnoreCase(ChatColor.DARK_GREEN + "Guild Info")) {
-            e.setCancelled(true);
-            e.setResult(Event.Result.DENY);
-        }
-        if (e.getInventory().getTitle().equalsIgnoreCase(ChatColor.DARK_GREEN + "Guild List")) {
-            if (e.getAction().equals(InventoryAction.PICKUP_ALL)) {
-                if (e.getCurrentItem().getItemMeta().getDisplayName()
-                    .equals(ChatColor.GOLD + "Previous page")) {
-
-                    if (!(CommandList.playerPages.get(e.getWhoClicked().getUniqueId()) == 1)) {
-                        int newPage =
-                            CommandList.playerPages.get(e.getWhoClicked().getUniqueId()) - 1;
-
-                        CommandList.playerPages.remove(e.getWhoClicked().getUniqueId());
-                        CommandList.playerPages.put(e.getWhoClicked().getUniqueId(), newPage);
-                        Inventory guildList = CommandList.getSkullsPage(newPage);
-                        e.getWhoClicked().openInventory(guildList);
-                    }
-                }
-
-                if (e.getCurrentItem().getItemMeta().getDisplayName()
-                    .equals(ChatColor.GOLD + "Next page")) {
-
-                    int newPage = CommandList.playerPages.get(e.getWhoClicked().getUniqueId()) + 1;
-
-                    CommandList.playerPages.remove(e.getWhoClicked().getUniqueId());
-                    CommandList.playerPages.put(e.getWhoClicked().getUniqueId(), newPage);
-                    Inventory guildList = CommandList.getSkullsPage(newPage);
-                    e.getWhoClicked().openInventory(guildList);
-                }
-            }
-            e.setCancelled(true);
-            e.setResult(Event.Result.DENY);
-        }
+  @EventHandler
+  public void onClick(InventoryClickEvent e) {
+    Player player = (Player) e.getWhoClicked();
+    if (e.getInventory().getTitle().equalsIgnoreCase(ChatColor.DARK_GREEN + "Guild Info")) {
+      e.setCancelled(true);
+      e.setResult(Event.Result.DENY);
     }
+    if (e.getInventory().getTitle().equalsIgnoreCase(ChatColor.DARK_GREEN + "Guild List")) {
+      if (e.getAction().equals(InventoryAction.PICKUP_ALL)) {
+        if (e.getCurrentItem().getItemMeta().getDisplayName()
+            .equals(ChatColor.GOLD + "Previous page")) {
 
-    @EventHandler public void onClick2(InventoryInteractEvent e) {
-        if (e.getInventory().getTitle().equalsIgnoreCase(ChatColor.DARK_GREEN + "Guild Info")) {
-            e.setCancelled(true);
-            e.setResult(Event.Result.DENY);
+          if (!(CommandList.playerPages.get(e.getWhoClicked().getUniqueId()) == 1)) {
+            int newPage =
+                CommandList.playerPages.get(e.getWhoClicked().getUniqueId()) - 1;
+
+            CommandList.playerPages.remove(e.getWhoClicked().getUniqueId());
+            CommandList.playerPages.put(e.getWhoClicked().getUniqueId(), newPage);
+            Inventory guildList = CommandList.getSkullsPage(newPage);
+            e.getWhoClicked().openInventory(guildList);
+          }
         }
-        if (e.getInventory().getTitle().equalsIgnoreCase(ChatColor.DARK_GREEN + "Guild List")) {
-            e.setCancelled(true);
-            e.setResult(Event.Result.DENY);
+
+        if (e.getCurrentItem().getItemMeta().getDisplayName()
+            .equals(ChatColor.GOLD + "Next page")) {
+
+          int newPage = CommandList.playerPages.get(e.getWhoClicked().getUniqueId()) + 1;
+
+          CommandList.playerPages.remove(e.getWhoClicked().getUniqueId());
+          CommandList.playerPages.put(e.getWhoClicked().getUniqueId(), newPage);
+          Inventory guildList = CommandList.getSkullsPage(newPage);
+          e.getWhoClicked().openInventory(guildList);
         }
+      }
+      e.setCancelled(true);
+      e.setResult(Event.Result.DENY);
     }
+  }
+
+  @EventHandler
+  public void onClick2(InventoryInteractEvent e) {
+    if (e.getInventory().getTitle().equalsIgnoreCase(ChatColor.DARK_GREEN + "Guild Info")) {
+      e.setCancelled(true);
+      e.setResult(Event.Result.DENY);
+    }
+    if (e.getInventory().getTitle().equalsIgnoreCase(ChatColor.DARK_GREEN + "Guild List")) {
+      e.setCancelled(true);
+      e.setResult(Event.Result.DENY);
+    }
+  }
 }
 
 

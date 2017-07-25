@@ -12,78 +12,80 @@ import org.bukkit.scoreboard.Team;
 
 public class GuildScoreboardHandler implements IHandler {
 
-    private ScoreboardManager manager = Bukkit.getScoreboardManager();
-    private Scoreboard board = manager.getNewScoreboard();
+  private ScoreboardManager manager = Bukkit.getScoreboardManager();
+  private Scoreboard board = manager.getNewScoreboard();
 
-    @Override public void enable() {
-        update();
+  @Override
+  public void enable() {
+    update();
+  }
+
+  @Override
+  public void disable() {
+    board.getTeams().forEach(Team::unregister);
+  }
+
+  public void update() {
+    if (!Main.getInstance().getConfig().getBoolean("scoreboard.enable")) {
+      return;
     }
 
-    @Override public void disable() {
-        board.getTeams().forEach(Team::unregister);
+    board.getTeams().forEach(Team::unregister);
+
+    for (Guild guild : Main.getInstance().getGuildHandler().getGuilds().values()) {
+      Team team = board.registerNewTeam(guild.getName());
+
+      team.setPrefix(ChatColor.translateAlternateColorCodes('&',
+          Main.getInstance().getConfig().getString("prefix.format")
+              .replace("{prefix}", guild.getPrefix())));
+
+      team.setAllowFriendlyFire(
+          Main.getInstance().getConfig().getBoolean("scoreboard.friendly-fire"));
+      team.setCanSeeFriendlyInvisibles(
+          Main.getInstance().getConfig().getBoolean("scoreboard.see-invisible"));
     }
 
-    public void update() {
-        if (!Main.getInstance().getConfig().getBoolean("scoreboard.enable")) {
-            return;
-        }
+    for (Player player : Bukkit.getOnlinePlayers()) {
+      Guild guild = Guild.getGuild(player.getUniqueId());
 
-        board.getTeams().forEach(Team::unregister);
+      if (guild == null) {
+        return;
+      }
 
-        for (Guild guild : Main.getInstance().getGuildHandler().getGuilds().values()) {
-            Team team = board.registerNewTeam(guild.getName());
+      //noinspection deprecation
+      board.getTeam(guild.getName()).addPlayer(player);
+    }
+  }
 
-            team.setPrefix(ChatColor.translateAlternateColorCodes('&',
-                Main.getInstance().getConfig().getString("prefix.format")
-                    .replace("{prefix}", guild.getPrefix())));
-
-            team.setAllowFriendlyFire(
-                Main.getInstance().getConfig().getBoolean("scoreboard.friendly-fire"));
-            team.setCanSeeFriendlyInvisibles(
-                Main.getInstance().getConfig().getBoolean("scoreboard.see-invisible"));
-        }
-
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            Guild guild = Guild.getGuild(player.getUniqueId());
-
-            if (guild == null) {
-                return;
-            }
-
-            //noinspection deprecation
-            board.getTeam(guild.getName()).addPlayer(player);
-        }
+  public void show(Player player) {
+    if (!Main.getInstance().getConfig().getBoolean("scoreboard.enable")) {
+      return;
     }
 
-    public void show(Player player) {
-        if (!Main.getInstance().getConfig().getBoolean("scoreboard.enable")) {
-            return;
-        }
+    player.setScoreboard(board);
+    Guild guild = Guild.getGuild(player.getUniqueId());
 
-        player.setScoreboard(board);
-        Guild guild = Guild.getGuild(player.getUniqueId());
-
-        if (guild == null) {
-            return;
-        }
-
-        //noinspection deprecation
-        board.getTeam(guild.getName()).addPlayer(player);
-        player.setScoreboard(board);
+    if (guild == null) {
+      return;
     }
 
-    public void hide(Player player) {
-        if (!Main.getInstance().getConfig().getBoolean("scoreboard.enable")) {
-            return;
-        }
+    //noinspection deprecation
+    board.getTeam(guild.getName()).addPlayer(player);
+    player.setScoreboard(board);
+  }
 
-        Guild guild = Guild.getGuild(player.getUniqueId());
-
-        if (guild == null) {
-            return;
-        }
-
-        //noinspection deprecation
-        board.getTeam(guild.getName()).removePlayer(player);
+  public void hide(Player player) {
+    if (!Main.getInstance().getConfig().getBoolean("scoreboard.enable")) {
+      return;
     }
+
+    Guild guild = Guild.getGuild(player.getUniqueId());
+
+    if (guild == null) {
+      return;
+    }
+
+    //noinspection deprecation
+    board.getTeam(guild.getName()).removePlayer(player);
+  }
 }

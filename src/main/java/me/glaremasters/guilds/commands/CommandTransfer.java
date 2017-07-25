@@ -67,6 +67,7 @@ public class CommandTransfer extends CommandBase {
 
     }
   }
+
   public void updateGuild(String errorMessage, String guild, String... params) {
     Main.getInstance().getDatabaseProvider()
         .updateGuild(Guild.getGuild(guild), (result, exception) -> {
@@ -80,6 +81,6 @@ public class CommandTransfer extends CommandBase {
           }
         });
   }
-  }
+}
 
 

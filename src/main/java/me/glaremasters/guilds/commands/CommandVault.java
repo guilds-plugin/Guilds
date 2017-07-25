@@ -12,7 +12,6 @@ import org.bukkit.entity.Player;
 public class CommandVault extends CommandBase {
 
 
-
   public CommandVault() {
     super("vault", "Open your guild vault!", "guilds.command.vault", false, null,
         null, 0, 0);

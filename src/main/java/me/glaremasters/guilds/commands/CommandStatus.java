@@ -11,33 +11,34 @@ import org.bukkit.entity.Player;
  * Created by GlareMasters on 7/12/2017.
  */
 public class CommandStatus extends CommandBase {
-    public CommandStatus() {
-        super("status", "Toggle your guild Public / Private", "guilds.command.status", false, null,
-            "<public | private>", 1, 1);
+
+  public CommandStatus() {
+    super("status", "Toggle your guild Public / Private", "guilds.command.status", false, null,
+        "<public | private>", 1, 1);
+  }
+
+  @Override
+  public void execute(Player player, String[] args) {
+    Guild guild = Guild.getGuild(player.getUniqueId());
+
+    GuildRole role = GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole());
+    if (!role.canToggleGuild()) {
+      Message.sendMessage(player, Message.COMMAND_ERROR_ROLE_NO_PERMISSION);
+      return;
     }
+    if (!(args[0].equalsIgnoreCase("private") || args[0].equalsIgnoreCase("public"))) {
+      Message.sendMessage(player, Message.COMMAND_STATUS_ERROR);
+      return;
+    } else {
 
-    @Override public void execute(Player player, String[] args) {
-        Guild guild = Guild.getGuild(player.getUniqueId());
+      String status = args[0];
 
-        GuildRole role = GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole());
-        if (!role.canToggleGuild()) {
-            Message.sendMessage(player, Message.COMMAND_ERROR_ROLE_NO_PERMISSION);
-            return;
-        }
-        if (!(args[0].equalsIgnoreCase("private") || args[0].equalsIgnoreCase("public"))) {
-            Message.sendMessage(player, Message.COMMAND_STATUS_ERROR);
-            return;
-        } else {
+      Main.getInstance().guildstatusconfig
+          .set(Guild.getGuild(player.getUniqueId()).getName(),
+              status);
 
-            String status = args[0];
-
-
-            Main.getInstance().guildstatusconfig
-                .set(Guild.getGuild(player.getUniqueId()).getName(),
-                    status);
-
-            Message.sendMessage(player, Message.COMMAND_STATUS_SUCCESSFUL.replace("{status}", status));
-            Main.getInstance().saveGuildstatus();
-        }
+      Message.sendMessage(player, Message.COMMAND_STATUS_SUCCESSFUL.replace("{status}", status));
+      Main.getInstance().saveGuildstatus();
     }
+  }
 }

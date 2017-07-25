@@ -9,7 +9,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 /**
  * Created by GlareMasters on 7/20/2017.
  */
-public class GuildDamageListener implements Listener{
+public class GuildDamageListener implements Listener {
 
   @EventHandler
   public void onPlayerDamage2(EntityDamageByEntityEvent e) {
@@ -21,7 +21,9 @@ public class GuildDamageListener implements Listener{
     Guild guild = Guild.getGuild(player.getUniqueId());
     Guild guild2 = Guild.getGuild(damager.getUniqueId());
 
-    if (guild == null || guild2 == null) return;
+    if (guild == null || guild2 == null) {
+      return;
+    }
 
     if (guild.equals(guild2)) {
       e.setCancelled(true);

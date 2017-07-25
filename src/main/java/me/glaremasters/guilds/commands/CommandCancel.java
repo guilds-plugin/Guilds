@@ -8,17 +8,17 @@ import org.bukkit.entity.Player;
 
 public class CommandCancel extends CommandBase {
 
-    public CommandCancel() {
-        super("cancel", "Cancel an action", "guilds.command.cancel", false,
-            new String[] {"decline"}, null, 0, 0);
+  public CommandCancel() {
+    super("cancel", "Cancel an action", "guilds.command.cancel", false,
+        new String[]{"decline"}, null, 0, 0);
+  }
+
+  public void execute(Player player, String[] args) {
+    ConfirmAction action = Main.getInstance().getCommandHandler().getActions().get(player);
+    if (action == null) {
+      Message.sendMessage(player, Message.COMMAND_CANCEL_ERROR);
     }
 
-    public void execute(Player player, String[] args) {
-        ConfirmAction action = Main.getInstance().getCommandHandler().getActions().get(player);
-        if (action == null) {
-            Message.sendMessage(player, Message.COMMAND_CANCEL_ERROR);
-        }
-
-        action.decline();
-    }
+    action.decline();
+  }
 }

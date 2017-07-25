@@ -2,7 +2,7 @@ package me.glaremasters.guilds;
 
 public interface IHandler {
 
-    void enable();
+  void enable();
 
-    void disable();
+  void disable();
 }

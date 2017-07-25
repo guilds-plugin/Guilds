@@ -67,7 +67,8 @@ public class GuildBuffListener implements Listener {
             Message.sendMessage(player, Message.COMMAND_BUFF_NOT_ENOUGH_MONEY);
             return;
           }
-          if (Main.getInstance().getConfig().getBoolean("disable-buff-stacking") && !player.getActivePotionEffects().isEmpty()) {
+          if (Main.getInstance().getConfig().getBoolean("disable-buff-stacking") && !player
+              .getActivePotionEffects().isEmpty()) {
             return;
           }
 
@@ -88,7 +89,7 @@ public class GuildBuffListener implements Listener {
 
               });
           Bukkit.dispatchCommand(player, "guild chat " + "has activated "
-              + buff.name + " for " + buff.time/20 + " seconds!");
+              + buff.name + " for " + buff.time / 20 + " seconds!");
         }
       }
     }

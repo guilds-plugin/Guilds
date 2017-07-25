@@ -21,37 +21,37 @@ public class GuildsAPI {
         return leaderboard;
     }*/
 
-    public static Leaderboard createLeaderboard(Leaderboard leaderboard) {
-        Leaderboard existingLeaderboard = Main.getInstance().getLeaderboardHandler()
-            .getLeaderboard(leaderboard.getName(), leaderboard.getLeaderboardType());
+  public static Leaderboard createLeaderboard(Leaderboard leaderboard) {
+    Leaderboard existingLeaderboard = Main.getInstance().getLeaderboardHandler()
+        .getLeaderboard(leaderboard.getName(), leaderboard.getLeaderboardType());
 
-        if (existingLeaderboard == null) {
-            Main.getInstance().getDatabaseProvider()
-                .createLeaderboard(leaderboard, (result, exception) -> {
-                    if (!result && exception != null) {
-                        SneakyThrow.sneaky(exception);
-                    }
-                });
+    if (existingLeaderboard == null) {
+      Main.getInstance().getDatabaseProvider()
+          .createLeaderboard(leaderboard, (result, exception) -> {
+            if (!result && exception != null) {
+              SneakyThrow.sneaky(exception);
+            }
+          });
 
-            return leaderboard;
-        }
-
-        return existingLeaderboard;
+      return leaderboard;
     }
 
+    return existingLeaderboard;
+  }
 
-    public static void removeLeaderboard(String name, Leaderboard.LeaderboardType leaderboardType) {
-        Main.getInstance().getDatabaseProvider()
-            .removeLeaderboard(Leaderboard.getLeaderboard(name, leaderboardType),
-                (result, exception) -> {
-                    if (!result && exception != null) {
-                        SneakyThrow.sneaky(exception);
-                    }
-                });
-    }
 
-    public static Leaderboard getLeaderboard(String name,
-        Leaderboard.LeaderboardType leaderboardType) {
-        return Main.getInstance().getLeaderboardHandler().getLeaderboard(name, leaderboardType);
-    }
+  public static void removeLeaderboard(String name, Leaderboard.LeaderboardType leaderboardType) {
+    Main.getInstance().getDatabaseProvider()
+        .removeLeaderboard(Leaderboard.getLeaderboard(name, leaderboardType),
+            (result, exception) -> {
+              if (!result && exception != null) {
+                SneakyThrow.sneaky(exception);
+              }
+            });
+  }
+
+  public static Leaderboard getLeaderboard(String name,
+      Leaderboard.LeaderboardType leaderboardType) {
+    return Main.getInstance().getLeaderboardHandler().getLeaderboard(name, leaderboardType);
+  }
 }
