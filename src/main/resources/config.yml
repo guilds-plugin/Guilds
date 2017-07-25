@@ -220,6 +220,7 @@ roles:
       toggle-guild: true
       open-vault: true
       transfer-guild: true
+      activate-buff: true
 
   1:
     name: "Officer"
@@ -239,6 +240,7 @@ roles:
       toggle-guild: false
       open-vault: true
       transfer-guild: false
+      activate-buff: false
 
   2:
     name: "Veteran"
@@ -257,6 +259,7 @@ roles:
       toggle-guild: false
       open-vault: true
       transfer-guild: false
+      activate-buff: false
   3:
     name: "Member"
     permissions:
@@ -274,6 +277,7 @@ roles:
       toggle-guild: false
       open-vault: true
       transfer-guild: false
+      activate-buff: false
 
 #-----------------------------------------------------------#
 #                     Storage Configuration                 #

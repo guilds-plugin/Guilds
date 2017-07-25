@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
+import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.message.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -40,6 +41,12 @@ public class CommandBuff extends CommandBase{
     Guild guild = Guild.getGuild(player.getUniqueId());
     if (guild == null) {
       Message.sendMessage(player, Message.COMMAND_ERROR_NO_GUILD);
+      return;
+    }
+
+    GuildRole role = GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole());
+    if (!role.canActivateBuff()) {
+      Message.sendMessage(player, Message.COMMAND_ERROR_ROLE_NO_PERMISSION);
       return;
     }
 
