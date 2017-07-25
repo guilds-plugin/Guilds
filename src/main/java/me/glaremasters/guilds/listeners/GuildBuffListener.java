@@ -67,7 +67,7 @@ public class GuildBuffListener implements Listener {
             Message.sendMessage(player, Message.COMMAND_BUFF_NOT_ENOUGH_MONEY);
             return;
           }
-          if (player.hasPotionEffect(buff.potion)) {
+          if (!player.getActivePotionEffects().isEmpty()) {
             return;
           }
           EconomyResponse response =
