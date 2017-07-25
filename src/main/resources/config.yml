@@ -12,7 +12,7 @@
 #-----------------------------------------------------------#
 
 # DO NOT CHANGE THIS
-version: 5
+version: 6
 
 #-----------------------------------------------------------#
 #                     CHOOSE YOUR LANGUAGE                  #
@@ -117,6 +117,29 @@ buff:
     fire-resistance: 1
     night-vision: 1
     invisibility: 1
+  description:
+    price: "&bPrice: "
+    length: "&bLength of Buff: "
+    haste:
+    - "&bThis buff will allow you and your"
+    - "&bGuild Members to obtain increased"
+    - "&bmining speed for a certain amount of time."
+    speed:
+    - "&bThis buff will allow you and your"
+    - "&bGuild Members to obtain increased"
+    - "&bmovement speed for a certain amount of time."
+    fire-resistance:
+    - "&bThis buff will allow you and your"
+    - "&bGuild Members to obtain increased"
+    - "&fire resistance for a certain amount of time."
+    night-vision:
+    - "&bThis buff will allow you and your"
+    - "&bGuild Members to obtain increased"
+    - "&bnight vision for a certain amount of time."
+    invisibility:
+    - "&bThis buff will allow you and your"
+    - "&bGuild Members to obtain increased"
+    - "&binvisibility vision for a certain amount of time."
 
 # This message in is the buff configuration so that you can easily access it
 

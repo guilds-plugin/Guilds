@@ -16,13 +16,14 @@ import org.bukkit.inventory.meta.ItemMeta;
 /**
  * Created by GlareMasters on 7/24/2017.
  */
-public class CommandBuff extends CommandBase{
+public class CommandBuff extends CommandBase {
+
   Inventory buff = Bukkit.createInventory(null, 9, "Guild Buffs");
+
   public CommandBuff() {
     super("buff", "Buy buffs for your guild!", "guilds.command.buff", false,
         null, null, 0, 0);
   }
-
 
 
   public ItemStack createItemStack(Material mat, String name, ArrayList<String> Lore) {
@@ -45,12 +46,15 @@ public class CommandBuff extends CommandBase{
 
     // Buff 1: Haste
     ArrayList<String> haste = new ArrayList<String>();
-    haste.add(ChatColor.AQUA + "This buff will allow you and your");
-    haste.add(ChatColor.AQUA + "Guild Members to obtain increased");
-    haste.add(ChatColor.AQUA + "mining speed for a certain amount of time.");
+    Main.getInstance().getConfig().getStringList("buff.description.haste").stream()
+        .map(it -> ChatColor.translateAlternateColorCodes('&', it)).forEach(haste::add);
     haste.add("");
-    haste.add(ChatColor.AQUA + "Price: " + Main.getInstance().getConfig().getInt("buff.price.haste"));
-    haste.add(ChatColor.AQUA + "Length of Buff: " + Main.getInstance().getConfig().getInt("buff.time.haste"));
+    haste.add(ChatColor.translateAlternateColorCodes('&',
+        Main.getInstance().getConfig().getString("buff.description.price") + Main.getInstance()
+            .getConfig().getInt("buff.price.haste")));
+    haste.add(ChatColor.translateAlternateColorCodes('&',
+        Main.getInstance().getConfig().getString("buff.description.length") + Main.getInstance()
+            .getConfig().getInt("buff.time.haste")));
     buff.setItem(0, createItemStack(Material.FEATHER,
         Main.getInstance().getConfig().getString("buff.name.haste"), haste));
 
@@ -61,45 +65,57 @@ public class CommandBuff extends CommandBase{
 
     // Buff 2: Walk Speed
     ArrayList<String> speed = new ArrayList<String>();
-    speed.add(ChatColor.AQUA + "This buff will allow you and your");
-    speed.add(ChatColor.AQUA + "Guild Members to obtain increased");
-    speed.add(ChatColor.AQUA + "movement speed for a certain amount of time.");
+    Main.getInstance().getConfig().getStringList("buff.description.speed").stream()
+        .map(it -> ChatColor.translateAlternateColorCodes('&', it)).forEach(speed::add);
     speed.add("");
-    speed.add(ChatColor.AQUA + "Price: " + Main.getInstance().getConfig().getInt("buff.price.speed"));
-    speed.add(ChatColor.AQUA + "Length of Buff: " + Main.getInstance().getConfig().getInt("buff.time.speed"));
+    speed.add(ChatColor.translateAlternateColorCodes('&',
+        Main.getInstance().getConfig().getString("buff.description.price") + Main.getInstance()
+            .getConfig().getInt("buff.price.speed")));
+    speed.add(ChatColor.translateAlternateColorCodes('&',
+        Main.getInstance().getConfig().getString("buff.description.length") + Main.getInstance()
+            .getConfig().getInt("buff.time.speed")));
     buff.setItem(4, createItemStack(Material.SUGAR,
         Main.getInstance().getConfig().getString("buff.name.speed"), speed));
 
     // Buff 3: Fire Resistance
     ArrayList<String> fireResistance = new ArrayList<String>();
-    fireResistance.add(ChatColor.AQUA + "This buff will allow you and your");
-    fireResistance.add(ChatColor.AQUA + "Guild Members to obtain increased");
-    fireResistance.add(ChatColor.AQUA + "fire resistance for a certain amount of time.");
+    Main.getInstance().getConfig().getStringList("buff.description.fire-resistance").stream()
+        .map(it -> ChatColor.translateAlternateColorCodes('&', it)).forEach(fireResistance::add);
     fireResistance.add("");
-    fireResistance.add(ChatColor.AQUA + "Price: " + Main.getInstance().getConfig().getInt("buff.price.fire-resistance"));
-    fireResistance.add(ChatColor.AQUA + "Length of Buff: " + Main.getInstance().getConfig().getInt("buff.time.fire-resistance"));
+    fireResistance.add(ChatColor.translateAlternateColorCodes('&',
+        Main.getInstance().getConfig().getString("buff.description.price") + Main.getInstance()
+            .getConfig().getInt("buff.price.fire-resistance")));
+    fireResistance.add(ChatColor.translateAlternateColorCodes('&',
+        Main.getInstance().getConfig().getString("buff.description.length") + Main.getInstance()
+            .getConfig().getInt("buff.time.fire-resistance")));
     buff.setItem(2, createItemStack(Material.BLAZE_POWDER,
-        Main.getInstance().getConfig().getString("buff.name.fire-resistance"),fireResistance));
+        Main.getInstance().getConfig().getString("buff.name.fire-resistance"), fireResistance));
 
     // Buff 4: Night Vision
     ArrayList<String> nightvision = new ArrayList<String>();
-    nightvision.add(ChatColor.AQUA + "This buff will allow you and your");
-    nightvision.add(ChatColor.AQUA + "Guild Members to obtain increased");
-    nightvision.add(ChatColor.AQUA + "night vision for a certain amount of time.");
+    Main.getInstance().getConfig().getStringList("buff.description.night-vision").stream()
+        .map(it -> ChatColor.translateAlternateColorCodes('&', it)).forEach(nightvision::add);
     nightvision.add("");
-    nightvision.add(ChatColor.AQUA + "Price: " + Main.getInstance().getConfig().getInt("buff.price.night-vision"));
-    nightvision.add(ChatColor.AQUA + "Length of Buff: " + Main.getInstance().getConfig().getInt("buff.time.night-vision"));
+    nightvision.add(ChatColor.translateAlternateColorCodes('&',
+        Main.getInstance().getConfig().getString("buff.description.price") + Main.getInstance()
+            .getConfig().getInt("buff.price.night-vision")));
+    nightvision.add(ChatColor.translateAlternateColorCodes('&',
+        Main.getInstance().getConfig().getString("buff.description.length") + Main.getInstance()
+            .getConfig().getInt("buff.time.night-vision")));
     buff.setItem(6, createItemStack(Material.REDSTONE_TORCH_ON,
         Main.getInstance().getConfig().getString("buff.name.night-vision"), nightvision));
 
     // Buff 5: Invisibility
     ArrayList<String> invisibility = new ArrayList<String>();
-    invisibility.add(ChatColor.AQUA + "This buff will allow you and your");
-    invisibility.add(ChatColor.AQUA + "Guild Members to obtain increased");
-    invisibility.add(ChatColor.AQUA + "invisibility for a certain amount of time.");
+    Main.getInstance().getConfig().getStringList("buff.description.invisibility").stream()
+        .map(it -> ChatColor.translateAlternateColorCodes('&', it)).forEach(invisibility::add);
     invisibility.add("");
-    invisibility.add(ChatColor.AQUA + "Price: " + Main.getInstance().getConfig().getInt("buff.price.invisibility"));
-    invisibility.add(ChatColor.AQUA + "Length of Buff: " + Main.getInstance().getConfig().getInt("buff.time.invisibility"));
+    invisibility.add(ChatColor.translateAlternateColorCodes('&',
+        Main.getInstance().getConfig().getString("buff.description.price") + Main.getInstance()
+            .getConfig().getInt("buff.price.invisibility")));
+    invisibility.add(ChatColor.translateAlternateColorCodes('&',
+        Main.getInstance().getConfig().getString("buff.description.length") + Main.getInstance()
+            .getConfig().getInt("buff.time.invisibility")));
     buff.setItem(8, createItemStack(Material.EYE_OF_ENDER,
         Main.getInstance().getConfig().getString("buff.name.invisibility"), invisibility));
 
