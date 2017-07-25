@@ -1,15 +1,14 @@
 package me.glaremasters.guilds.listeners;
 
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.message.Message;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -23,36 +22,70 @@ import org.bukkit.potion.PotionEffectType;
  */
 public class GuildBuffListener implements Listener {
 
-  double hasteCost = Main.getInstance().getConfig().getDouble("buff.price.haste");
-  double speedCost = Main.getInstance().getConfig().getDouble("buff.price.speed");
-  double fireResistanceCost = Main.getInstance().getConfig().getDouble("buff.price.fire-resistance");
-  double nightVisionCost = Main.getInstance().getConfig().getDouble("buff.price.night-vision");
-  double invisibilityCost = Main.getInstance().getConfig().getDouble("buff.price.invisibility");
-  int hasteLength = Main.getInstance().getConfig().getInt("buff.time.haste") * 20;
+
+  public enum GuildBuff {
+
+    HASTE(PotionEffectType.FAST_DIGGING, Material.FEATHER, "haste"),
+    SPEED(PotionEffectType.SPEED, Material.SUGAR, "speed"),
+    FIRE_RESISTANCE(PotionEffectType.FIRE_RESISTANCE, Material.BLAZE_POWDER, "fire-resistance"),
+    NIGHT_VISION(PotionEffectType.NIGHT_VISION, Material.REDSTONE_TORCH_ON, "night-vision"),
+    INVISIBILITY(PotionEffectType.INVISIBILITY, Material.EYE_OF_ENDER, "invisibility");
+
+
+    public final PotionEffectType potion;
+    public final Material itemType;
+    public final int time;
+    public final double cost;
+    public final String name;
+
+    GuildBuff(PotionEffectType potion, Material itemType, String configValueName) {
+      this.time = Main.getInstance().getConfig().getInt("buff.time." + configValueName) * 20;
+      this.cost = Main.getInstance().getConfig().getDouble("buff.price." + configValueName);
+      this.itemType = itemType;
+      this.potion = potion;
+      this.name = Main.getInstance().getConfig().getString("buff.name." + configValueName);
+    }
+
+    public static GuildBuff get(Material itemType) {
+
+      return Stream.of(values()).filter(it -> it.itemType == itemType).findAny().orElse(null);
+    }
+
+  }
+
   @EventHandler
   public void onHasteBuy(InventoryClickEvent event) {
     Player player = (Player) event.getWhoClicked();
     Guild guild = Guild.getGuild(player.getUniqueId());
     if (event.getInventory().getTitle().equals("Guild Buffs")) {
-      if (event.getCurrentItem().getType() == Material.FEATHER) {
-        if (Main.vault && hasteCost != -1) {
-          if (Main.getInstance().getEconomy().getBalance(player) < hasteCost) {
+      GuildBuff buff = GuildBuff.get(event.getCurrentItem().getType());
+      if (buff != null) {
+        if (Main.vault && buff.cost != -1) {
+          if (Main.getInstance().getEconomy().getBalance(player) < buff.cost) {
             Message.sendMessage(player, Message.COMMAND_ERROR_NOT_ENOUGH_MONEY);
             return;
           }
-          if (player.hasPotionEffect(PotionEffectType.FAST_DIGGING)) {
+          if (player.hasPotionEffect(buff.potion)) {
             return;
           }
           EconomyResponse response =
-              Main.getInstance().getEconomy().withdrawPlayer(player, hasteCost);
+              Main.getInstance().getEconomy().withdrawPlayer(player, buff.cost);
           if (!response.transactionSuccess()) {
             Message.sendMessage(player, Message.COMMAND_ERROR_NOT_ENOUGH_MONEY);
             return;
           }
-player.addPotionEffect(
-              new PotionEffect(PotionEffectType.FAST_DIGGING, hasteLength, 3));
-          Bukkit.dispatchCommand(player,"guild chat " + "I just activated "
-              + Main.getInstance().getConfig().getString("buff.name.haste") + " for " + Main.getInstance().getConfig().getInt("buff.time.haste") + " seconds!");
+
+          guild.getMembers().stream()
+              .map(member -> Bukkit.getOfflinePlayer(member.getUniqueId()))
+              .filter(OfflinePlayer::isOnline)
+              .forEach(member -> {
+
+                ((Player) member).addPotionEffect(
+                    new PotionEffect(buff.potion, buff.time, 2));
+
+              });
+          Bukkit.dispatchCommand(player, "guild chat " + "I just activated "
+              + buff.name + " for " + buff.time/20 + " seconds!");
         }
       }
     }
