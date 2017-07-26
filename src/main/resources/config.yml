@@ -85,6 +85,10 @@ info:
   members: "Members In Guild: "
   guildstatus: "Guild Status: "
 
+# This is what controls after it says the guild name in /guild vault, you can change this to make it say something else.
+vault:
+  name: "Guild Vault"
+
 #-----------------------------------------------------------#
 #                     Buff Configuration                    #
 #-----------------------------------------------------------#

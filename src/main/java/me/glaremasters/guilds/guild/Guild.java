@@ -189,7 +189,8 @@ public class Guild implements InventoryHolder {
     } catch (IOException | InvalidConfigurationException e) {
       e.printStackTrace();
     }
-    inventory = Bukkit.createInventory(this, 54, getName() + "'s Guild Vault");
+    inventory = Bukkit.createInventory(this, 54,
+        getName() + "'s " + Main.getInstance().getConfig().getString("vault.name"));
     for (int i = 0; i < inventory.getSize(); i++) {
       if (vault.isSet("items.slot" + i)) {
         inventory.setItem(i, vault.getItemStack("items.slot" + i));
