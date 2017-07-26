@@ -53,9 +53,10 @@ public class CommandAccept extends CommandBase {
     guild.addMember(player.getUniqueId(), GuildRole.getLowestRole());
     guild.removeInvitedPlayer(player.getUniqueId());
     player.setPlayerListName(
-        ChatColor
-            .translateAlternateColorCodes('&', Main.getInstance().getConfig().getString("tablist")
-                .replace("{guild}", guild.getName()) + ChatColor.RESET + player.getName()));
+        ChatColor.translateAlternateColorCodes('&',
+            Main.getInstance().getConfig().getString("tablist")
+                .replace("{guild}", guild.getName()).replace("{prefix}", guild.getPrefix()) + player
+                .getName()));
 
     Message.sendMessage(player,
         Message.COMMAND_ACCEPT_SUCCESSFUL.replace("{guild}", guild.getName()));

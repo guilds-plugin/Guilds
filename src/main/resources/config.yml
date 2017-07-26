@@ -225,7 +225,8 @@ tablist-guilds: true
 
 # Change how the Prefixes in the TabList show!
 # Note: DO NOT REMOVE THE {guild}
-tablist: "&7[&b{guild}&7]"
+# You can use {prefix} to show the Guild Prefix instead if you would like.
+tablist: "&7[&b{guild}&7]&r"
 
 # Disable this if you don't want to allow Guild Signs to be made.
 guild-signs: true

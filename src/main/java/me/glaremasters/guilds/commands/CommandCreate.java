@@ -90,7 +90,8 @@ public class CommandCreate extends CommandBase {
             player.setPlayerListName(
                 ChatColor.translateAlternateColorCodes('&',
                     Main.getInstance().getConfig().getString("tablist")
-                        .replace("{guild}", guild.getName()) + ChatColor.RESET + player.getName()));
+                        .replace("{guild}", guild.getName()).replace("{prefix}", guild.getPrefix())
+                        + player.getName()));
           } else {
             Message.sendMessage(player, Message.COMMAND_CREATE_ERROR);
 

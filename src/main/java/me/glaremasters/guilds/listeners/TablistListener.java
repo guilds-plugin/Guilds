@@ -24,7 +24,8 @@ public class TablistListener implements Listener {
       event.getPlayer().setPlayerListName(
           ChatColor.translateAlternateColorCodes('&',
               Main.getInstance().getConfig().getString("tablist")
-                  .replace("{guild}", guild.getName()) + ChatColor.RESET + p.getName()));
+                  .replace("{guild}", guild.getName()).replace("{prefix}", guild.getPrefix()) + p
+                  .getName()));
     }
   }
 

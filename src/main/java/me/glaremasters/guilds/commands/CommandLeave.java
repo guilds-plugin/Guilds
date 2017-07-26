@@ -64,8 +64,10 @@ public class CommandLeave extends CommandBase {
         guild.removeMember(player.getUniqueId());
         Message.sendMessage(player, Message.COMMAND_LEAVE_SUCCESSFUL);
         player.setPlayerListName(
-            ChatColor
-                .translateAlternateColorCodes('&', ChatColor.RESET + player.getName()));
+            ChatColor.translateAlternateColorCodes('&',
+                Main.getInstance().getConfig().getString("tablist")
+                    .replace("{guild}", guild.getName()).replace("{prefix}", guild.getPrefix())
+                    + player.getName()));
 
         Main.getInstance().getCommandHandler().removeAction(player);
 
