@@ -9,8 +9,7 @@ import org.bukkit.entity.Player;
 public class CommandCancel extends CommandBase {
 
   public CommandCancel() {
-    super("cancel", "Cancel an action", "guilds.command.cancel", false,
-        new String[]{"decline"}, null, 0, 0);
+    super("cancel", "Cancel an action", "guilds.command.cancel", false, null, null, 0, 0);
   }
 
   public void execute(Player player, String[] args) {

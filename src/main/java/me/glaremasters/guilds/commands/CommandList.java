@@ -129,6 +129,7 @@ public class CommandList extends CommandBase {
 
   @Override
   public void execute(Player player, String[] args) {
+
     playerPages.put(player.getUniqueId(), 1);
     guildList = getSkullsPage(1);
     player.openInventory(guildList);

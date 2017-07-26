@@ -79,6 +79,8 @@ messages:
       message: "&a{player} tea invitat in Breasla, '{guild}'"
       successful: "&aLai invitat cu succes pe {player} in Breasla ta!"
       already-in-guild: "&cAcest jucator deja face parte in Breasla ta!"
+    decline:
+      success: "&aGuild Invite Declined!"
     leave:
       successful: "&aAi lasat Breasla cu succes!"
       cancelled: "&cParasirea Breaslei a fost anulata!"

@@ -79,6 +79,8 @@ messages:
       message: "&a{player} vous a invité dans la guilde '{guild}'"
       successful: "&aVous avez été invité dans votre guilde par {player} !"
       already-in-guild: "&cCe joueur est déjà dans une guilde !"
+    decline:
+      success: "&aGuild Invite Declined!"
     leave:
       successful: "&aVous avez quitté votre guilde !"
       cancelled: "&cDépart de votre guilde annulé !"

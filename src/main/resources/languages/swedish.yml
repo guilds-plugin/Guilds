@@ -79,6 +79,8 @@ messages:
       message: "&a{player} har bjudit in dig till hans/hennes guild, '{guild}'"
       successful: "&aDu har lyckats bjuda in {player} till din guild!"
       already-in-guild: "&cDenna spelare är redan med i din guild!"
+    decline:
+      success: "&aGuild Invite Declined!"
     leave:
       successful: "&aDu har lyckats lämna din guild!"
       cancelled: "&cLämnar guild avbryten!"

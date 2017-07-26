@@ -79,6 +79,8 @@ messages:
       message: "&cHrac {player} ta pozyva do svojho klanu '{guild}'"
       successful: "&cUspesne si pozval hraca {player} do tvojho klanu!"
       already-in-guild: "&cTento hrac uz je v tvojom klane!"
+    decline:
+      success: "&aGuild Invite Declined!"
     leave:
       successful: "&cUspesne si opustil svoj klan!"
       cancelled: "&cOpustenie klanu bolo zrusene!"

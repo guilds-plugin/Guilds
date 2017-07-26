@@ -78,6 +78,8 @@ messages:
       message: "&a{player} heeft jou voor zijn/haar guild '{guild}' uitgenodigd"
       successful: "&aJe hebt met success {player} uitgenodigd voor jouw guild!"
       already-in-guild: "&cDeze speler zit al in jouw guild!"
+    decline:
+      success: "&aGuild Invite Declined!"
     leave:
       successful: "&aJe hebt deze guild verlaten!"
       cancelled: "&cJe hebt deze guild niet verlaten!"

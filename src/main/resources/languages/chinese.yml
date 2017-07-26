@@ -75,6 +75,8 @@ messages:
       message: "&a{player} 邀請你加入他的公會, '{guild}' \n輸入 /guild accept (公會名稱) 來加入"
       successful: "&a你成功邀請了 玩家 {player} 加入了你的公會!"
       already-in-guild: "&c這個玩家已經在你的公會了!"
+    decline:
+      success: "&aGuild Invite Declined!"
     leave:
       successful: "&a你已經成功地離開了公會..!"
       cancelled: "&c離開公會取消!"

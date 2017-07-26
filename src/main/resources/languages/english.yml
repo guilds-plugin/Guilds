@@ -81,6 +81,8 @@ messages:
       already-in-guild: "&cThis player is already in your guild!"
       message: "&a{player} has invited you to his/her guild, '{guild}'"
       successful: "&aYou've successfully invited {player} to your guild!"
+    decline:
+      success: "&aGuild Invite Declined!"
     leave:
       cancelled: "&cLeaving guild cancelled!"
       player-left: "&cPlayer '{player}' left your guild!"

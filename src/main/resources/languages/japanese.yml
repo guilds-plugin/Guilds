@@ -79,6 +79,8 @@ messages:
       message: "&aプレーヤ {player} があなたをギルド '{guild}' に招待しました。"
       successful: "&aプレーヤ {player} がギルドへ勧誘されました!"
       already-in-guild: "&cこのプレーヤはすでにあなたのギルドの構成員です!"
+    decline:
+      success: "&aGuild Invite Declined!"
     leave:
       successful: "&aギルドの脱退に成功しました!"
       cancelled: "&cギルドの脱退がキャンセルされました!"

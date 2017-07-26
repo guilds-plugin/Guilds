@@ -79,6 +79,8 @@ messages:
       message: "&a{player} meghÃ­vott '{guild}' cÃ©hjÃ©be!"
       successful: "&aSikeresen meghÃ­vtad {player} nevÅ± jÃ¡tÃ©kost a cÃ©hbe!"
       already-in-guild: "&cEz a jÃ¡tÃ©kos mÃ¡r benne van a cÃ©hedbe!"
+    decline:
+      success: "&aGuild Invite Declined!"
     leave:
       successful: "&aSikeresen elhagytad a cÃ©het!"
       cancelled: "&cCÃ©h elhagyÃ¡sa mellÅ‘zve!"

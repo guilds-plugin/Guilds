@@ -64,6 +64,8 @@ commands:
     description: Transfer your guild to a new member!
   guild buff:
     description: Apply a buff to your guild members
+  guild decline:
+    description: Decline a Guild Invite
 
 
 permissions:
@@ -118,4 +120,5 @@ permissions:
       guilds.command.ally: true
       guilds.command.transfer: true
       guilds.command.buff: true
+      guilds.command.decline: true
     default: true
