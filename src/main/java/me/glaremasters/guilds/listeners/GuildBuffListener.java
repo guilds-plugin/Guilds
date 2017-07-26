@@ -28,7 +28,11 @@ public class GuildBuffListener implements Listener {
     SPEED(PotionEffectType.SPEED, Material.SUGAR, "speed"),
     FIRE_RESISTANCE(PotionEffectType.FIRE_RESISTANCE, Material.BLAZE_POWDER, "fire-resistance"),
     NIGHT_VISION(PotionEffectType.NIGHT_VISION, Material.REDSTONE_TORCH_ON, "night-vision"),
-    INVISIBILITY(PotionEffectType.INVISIBILITY, Material.EYE_OF_ENDER, "invisibility");
+    INVISIBILITY(PotionEffectType.INVISIBILITY, Material.EYE_OF_ENDER, "invisibility"),
+    STRENGTH(PotionEffectType.INCREASE_DAMAGE, Material.DIAMOND_SWORD, "strength"),
+    JUMP(PotionEffectType.JUMP, Material.DIAMOND_BOOTS, "jump"),
+    WATER_BREATHING(PotionEffectType.WATER_BREATHING, Material.BUCKET, "water-breathing"),
+    LUCK(PotionEffectType.LUCK, Material.EMERALD, "luck");
 
 
     public final PotionEffectType potion;
@@ -88,8 +92,6 @@ public class GuildBuffListener implements Listener {
                     new PotionEffect(buff.potion, buff.time, buff.amplifier));
 
               });
-          Bukkit.dispatchCommand(player, "guild chat " + "has activated "
-              + buff.name + " for " + buff.time / 20 + " seconds!");
         }
       }
     }

@@ -58,10 +58,6 @@ public class CommandBuff extends CommandBase {
     buff.setItem(0, createItemStack(Material.FEATHER,
         Main.getInstance().getConfig().getString("buff.name.haste"), haste));
 
-    buff.setItem(1, new ItemStack(Material.STAINED_GLASS_PANE));
-    buff.setItem(3, new ItemStack(Material.STAINED_GLASS_PANE));
-    buff.setItem(5, new ItemStack(Material.STAINED_GLASS_PANE));
-    buff.setItem(7, new ItemStack(Material.STAINED_GLASS_PANE));
 
     // Buff 2: Walk Speed
     ArrayList<String> speed = new ArrayList<String>();
@@ -118,6 +114,63 @@ public class CommandBuff extends CommandBase {
             .getConfig().getInt("buff.time.invisibility")));
     buff.setItem(8, createItemStack(Material.EYE_OF_ENDER,
         Main.getInstance().getConfig().getString("buff.name.invisibility"), invisibility));
+
+    // Buff 6: Strength
+    ArrayList<String> strength = new ArrayList<String>();
+    Main.getInstance().getConfig().getStringList("buff.description.strength").stream()
+        .map(it -> ChatColor.translateAlternateColorCodes('&', it)).forEach(strength::add);
+    strength.add("");
+    strength.add(ChatColor.translateAlternateColorCodes('&',
+        Main.getInstance().getConfig().getString("buff.description.price") + Main.getInstance()
+            .getConfig().getInt("buff.price.strength")));
+    strength.add(ChatColor.translateAlternateColorCodes('&',
+        Main.getInstance().getConfig().getString("buff.description.length") + Main.getInstance()
+            .getConfig().getInt("buff.time.strength")));
+    buff.setItem(1, createItemStack(Material.DIAMOND_SWORD,
+        Main.getInstance().getConfig().getString("buff.name.strength"), strength));
+
+    // Buff 7: Jump
+    ArrayList<String> jump = new ArrayList<String>();
+    Main.getInstance().getConfig().getStringList("buff.description.jump").stream()
+        .map(it -> ChatColor.translateAlternateColorCodes('&', it)).forEach(jump::add);
+    jump.add("");
+    jump.add(ChatColor.translateAlternateColorCodes('&',
+        Main.getInstance().getConfig().getString("buff.description.price") + Main.getInstance()
+            .getConfig().getInt("buff.price.jump")));
+    jump.add(ChatColor.translateAlternateColorCodes('&',
+        Main.getInstance().getConfig().getString("buff.description.length") + Main.getInstance()
+            .getConfig().getInt("buff.time.jump")));
+    buff.setItem(3, createItemStack(Material.DIAMOND_BOOTS,
+        Main.getInstance().getConfig().getString("buff.name.jump"), jump));
+
+    // Buff 8: Water Breathing
+    ArrayList<String> waterbreathing = new ArrayList<String>();
+    Main.getInstance().getConfig().getStringList("buff.description.water-breathing").stream()
+        .map(it -> ChatColor.translateAlternateColorCodes('&', it)).forEach(waterbreathing::add);
+    waterbreathing.add("");
+    waterbreathing.add(ChatColor.translateAlternateColorCodes('&',
+        Main.getInstance().getConfig().getString("buff.description.price") + Main.getInstance()
+            .getConfig().getInt("buff.price.water-breathing")));
+    waterbreathing.add(ChatColor.translateAlternateColorCodes('&',
+        Main.getInstance().getConfig().getString("buff.description.length") + Main.getInstance()
+            .getConfig().getInt("buff.time.water-breathing")));
+    buff.setItem(5, createItemStack(Material.BUCKET,
+        Main.getInstance().getConfig().getString("buff.name.water-breathing"), waterbreathing));
+
+    // Buff 9: Luck
+    ArrayList<String> luck = new ArrayList<String>();
+    Main.getInstance().getConfig().getStringList("buff.description.luck").stream()
+        .map(it -> ChatColor.translateAlternateColorCodes('&', it)).forEach(luck::add);
+    luck.add("");
+    luck.add(ChatColor.translateAlternateColorCodes('&',
+        Main.getInstance().getConfig().getString("buff.description.price") + Main.getInstance()
+            .getConfig().getInt("buff.price.luck")));
+    luck.add(ChatColor.translateAlternateColorCodes('&',
+        Main.getInstance().getConfig().getString("buff.description.length") + Main.getInstance()
+            .getConfig().getInt("buff.time.luck")));
+    buff.setItem(7, createItemStack(Material.EMERALD,
+        Main.getInstance().getConfig().getString("buff.name.luck"), luck));
+
 
     // Open inventory
     player.openInventory(buff);

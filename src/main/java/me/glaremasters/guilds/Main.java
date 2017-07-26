@@ -91,6 +91,7 @@ public class Main extends JavaPlugin {
     this.languageYamlFile = new File(languageFolder, getConfig().getString("lang") + ".yml");
     this.yaml = YamlConfiguration.loadConfiguration(languageYamlFile);
 
+
     PREFIX =
         ChatColor.translateAlternateColorCodes('&', this.getConfig().getString("plugin-prefix"))
             + ChatColor.RESET + " ";
@@ -220,7 +221,7 @@ public class Main extends JavaPlugin {
 
     if (!getConfig().isSet("version") || getConfig().getInt("version") == 1
         || getConfig().getInt("version") == 2 || getConfig().getInt("version") == 3
-        || getConfig().getInt("version") == 4 || getConfig().getInt("version") == 5) {
+        || getConfig().getInt("version") == 4) {
       File oldfile = new File(this.getDataFolder(), "config.yml");
       File newfile = new File(this.getDataFolder(), "config-old.yml");
       File dir = new File(this.getDataFolder(), "languages");
@@ -228,6 +229,7 @@ public class Main extends JavaPlugin {
       dir.renameTo(olddir);
       oldfile.renameTo(newfile);
     }
+
 
     this.saveDefaultConfig();
 

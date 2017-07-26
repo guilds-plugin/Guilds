@@ -101,24 +101,40 @@ buff:
     fire-resistance: "Scales of the Dragon"
     night-vision: "Eyes of the Lurking Demon"
     invisibility: "Feet of the Ghostly Walker"
+    strength: "Mighty Strength of the Pouncing Lion"
+    jump: "Bounce of the Quick Witted Rabbit"
+    water-breathing: "Lungs of the Albino Shark"
+    luck: "Intelligence of the Mystic Witch"
   price:
     haste: 60
     speed: 60
     fire-resistance: 60
     night-vision: 60
     invisibility: 60
+    strength: 60
+    jump: 60
+    water-breathing: 60
+    luck: 60
   time:
     haste: 60
     speed: 60
     fire-resistance: 60
     night-vision: 60
     invisibility: 60
+    strength: 60
+    jump: 60
+    water-breathing: 60
+    luck: 60
   amplifier:
     haste: 1
     speed: 1
     fire-resistance: 1
     night-vision: 1
     invisibility: 1
+    strength: 1
+    jump: 1
+    water-breathing: 1
+    luck: 1
   description:
     price: "&bPrice: "
     length: "&bLength of Buff: "
@@ -141,7 +157,25 @@ buff:
     invisibility:
     - "&bThis buff will allow you and your"
     - "&bGuild Members to obtain increased"
-    - "&binvisibility vision for a certain amount of time."
+    - "&binvisibility for a certain amount of time."
+    strength:
+    - "&bThis buff will allow you and your"
+    - "&bGuild Members to obtain increased"
+    - "&bstrength for a certain amount of time."
+    jump:
+    - "&bThis buff will allow you and your"
+    - "&bGuild Members to obtain increased"
+    - "&bjump for a certain amount of time."
+    water-breathing:
+    - "&bThis buff will allow you and your"
+    - "&bGuild Members to obtain increased"
+    - "&bwater-breathing for a certain amount of time."
+    luck:
+    - "&bThis buff will allow you and your"
+    - "&bGuild Members to obtain increased"
+    - "&bluck for a certain amount of time."
+
+
 
 # This message in is the buff configuration so that you can easily access it
 
