@@ -1,7 +1,7 @@
 # Guilds
 Guilds. Deal with it.
 
-[![Build Status](https://travis-ci.org/darbyjack/Guilds-Plugin.svg?branch=dev%2F2.0)](https://travis-ci.org/darbyjack/Guilds-Plugin) [![Discord](https://img.shields.io/discord/272126301010264064.svg)](https://glaremasters.me/discord)
+[![Build Status](https://travis-ci.org/darbyjack/Guilds-Plugin.svg?branch=dev%2F2.0)](https://travis-ci.org/darbyjack/Guilds-Plugin) [![Discord](https://img.shields.io/discord/272126301010264064.svg)](https://glaremasters.me/discord) [![Spigot](https://img.shields.io/badge/Spigot-page-brightgreen.svg)](https://www.spigotmc.org/resources/guilds.13388/)
 
 Importing this project is very simple.
 
