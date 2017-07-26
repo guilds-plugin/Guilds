@@ -64,6 +64,9 @@ public class GuildBuffListener implements Listener {
     Guild guild = Guild.getGuild(player.getUniqueId());
     if (event.getInventory().getTitle().equals("Guild Buffs")) {
       event.setCancelled(true);
+      if (event.getCurrentItem() == null) {
+        return;
+      }
       GuildBuff buff = GuildBuff.get(event.getCurrentItem().getType());
       if (buff != null) {
         if (Main.vault && buff.cost != -1) {
