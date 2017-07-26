@@ -62,6 +62,8 @@ commands:
     description: Open your Guild Vault!
   guild transfer:
     description: Transfer your guild to a new member!
+  guild buff:
+    description: Apply a buff to your guild members
 
 
 permissions:
