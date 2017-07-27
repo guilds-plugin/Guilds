@@ -1,0 +1,134 @@
+messages:
+  command:
+    error:
+      already-in-guild: "&cVocÃª jÃ¡ estÃ¡ em uma guild!"
+      args: "&cArgumentos invÃ¡lidos! use /guilds help para mais informaÃ§Ã£o"
+      console: "&cEsse comando sÃ³ pode ser utilizado por um jogador!"
+      guild-not-found: "&cGuild '{input}' nÃ£o pode ser encontrada!"
+      home-cooldown: "&cVocÃª nÃ£o pode teleportar para casa por {time} segundos!"
+      invalid-role: "&cRank '{input}' nÃ£o existe!"
+      invalid_number: "&c{input} nÃ£o Ã© um numero vÃ¡lido!"
+      no-guild: "&cVocÃª nÃ£o estÃ¡ em uma guild!"
+      no-home-set: "&cSem home setada! Use &a/guild sethome &cpara setar uma home!"
+      not-enough-money: "&aDesculpe! VocÃª nÃ£o tem dinheiro o suficiente para criar uma guild"
+      not-found: "&cComando nÃ£o encontrado! Use /guilds help para todos os comandos"
+      not-guildmaster: "&cVocÃª nÃ£o Ã© o lÃ­der da guild"
+      not-officer: "&cJogador precisa ser Officer na Guild!"
+      permission: "&cVocÃª nÃ£o tem permissÃ£o!"
+      player-not-found: "&cPlayer '{player}' nÃ£o existe ou estÃ¡ offline!"
+      player-not-in-guild: "&cPlayer '{player}' nÃ£o estÃ¡ em sua guild!"
+      role-no-permission: "&cSeu rank nÃ£o Ã© alto o suficiente para isto!"
+      sethome-cooldown: "&cVocÃª nÃ£o pode setar a home por {time} segundos!"
+    buff:
+      not-enough-money: "&cVocÃª nÃ£o tem dinheiro o suficiente para este buff!"
+    transfer:
+      newmaster: "&aVocÃª Ã© o novo Guild Master de sua guild!"
+      success: "&aGuild foi transferida!"
+    help:
+      invalid-page: "&cPÃ¡gina nÃ£o encontrada!"
+      message: "&f/guild {command} {arguments} &7- &f{description}"
+      next-page: "&7Use /guilds help {next-page} para prÃ³xima pagina"
+    status:
+      error: "&cStatus da Guild deve ser pÃºblica ou privada!"
+      successful: "&aStatus da Guild mudado para {status}!"
+    role:
+      players: "{player} - {role}"
+    list:
+      format: "Guild existentes:"
+    create:
+      cancelled-sethome: "&cHome da Guild nÃ£o encontrada!"
+      cancelled: "&cCriaÃ§Ã£o da Guild cancelada!"
+      error: "&cAlgo deu errado enquanto vocÃª tentava criar sua guild!"
+      guild-home: "&aVocÃª setou a home da sua Guild!"
+      guild-name-taken: "&cNome jÃ¡ foi pego!"
+      money-warning-sethome: "&c VocÃª estÃ¡ prestes a gastar {amount} para setar a home de sua guild. (Escreva /guilds confirm para continuar)"
+      money-warning: "&c VocÃª tem certeza que quer gastar {amount} para criar uma guild? (Escreva /guilds confirm para continuar)"
+      name-requirements: "&cYour guild's name does not match the requirements! You can only use alphanumeric characters and the length of the name cannot exceed 64"
+      successful: "&aGuild '{guild}' created successfully!"
+      warning: "&cEscreva /guilds confirm para criar sua guild, Escreva /guilds cancel para cancelar."
+    delete:
+      cancelled: "&cRemoÃ§Ã£o da guild cancelada!"
+      error: "&cAlgo deu errado enquanto vocÃª tentava deletar a guild!"
+      successful: "&aDeletou '{guild}' com sucesso!"
+      warning: "&cEscreva /guilds confirm para deletar sua guild, escreva /guilds cancel para cancelar."
+    info:
+      header: "InformaÃ§Ã£o de &b{guild}"
+      master: "Guild Master: &b{master}"
+      member-count: "Membros: &b{members}/64&r (&bOnline: {members-online}&r)"
+      name: "Nome: &b{guild}&r (&bPrefix: {prefix}&r)"
+      players: "Membros na guild: &b[{players}]"
+      rank: "Seu rank: &b{rank}"
+    promote:
+      cannot-promote: "&cEsse jogador nÃ£o pode ser mais promovido!"
+      not-promotion: "&cVocÃª nÃ£o pode promover este player!"
+      promoted: "&aVocÃª promoveu {player} de {old-rank} para {new-rank}!"
+      successful: "&aVocÃª foi promovido de {old-rank} para {new-rank}!"
+    demote:
+      cannot-demote: "&cEsse jogador nÃ£o pode ser mais rebaixado!"
+      demoted: "&cVocÃª foi rebaixado de {old-rank} para {new-rank}!"
+      not-demotion: "&cVocÃª nÃ£o pode rebaixar este jogador!"
+      successful: "&aVocÃª rebaixou {player} de {old-rank} para {new-rank}!"
+    chat:
+      message: "&7&l[Chat da Guild]&r &b[{role}] {player}: {message}"
+      enabled: "&aChat da guild Ativado"
+      disabled: "&cChat da guild Desativado"
+    accept:
+      guild-full: "&cEsta guild estÃ¡ cheia!"
+      not-invited: "&cEssa guild Ã© privada / vocÃª nÃ£o recebeu nenhum convite da guild."
+      player-joined: "&aPlayer '{player}' entrou na sua guild!"
+      successful: "&aVocÃª entrou na guild '{guild}' com sucesso"
+    invite:
+      already-in-guild: "&cEsse jogador jÃ¡ estÃ¡ na sua guild!"
+      message: "&a{player} convidou vocÃª para a guild dele/dela, '{guild}'"
+      successful: "&aVocÃª convidou {player} com sucesso para sua guild!"
+    decline:
+      success: "&aConvite de guild recusado!"
+    leave:
+      cancelled: "&cSaida da guild cancelada!"
+      player-left: "&cPlayer '{player}' saiu de sua guild!"
+      successful: "&aVocÃª saiu da guild com sucesso!"
+      warning-guildmaster: "&cVocÃª Ã© o Guild Master desta guild, sair dela vai fazer com que ela seja deletada. Escreva /guilds confirm para sair e deletar sua guild, Escreva /guilds cancel para cancelar."
+      warning: "&cEscreva /guilds confirm para sair de sua guild, Escreva /guilds cancel para cancelar."
+    boot:
+      kicked: "&cVocÃª foi kickado de sua guild por {kicker}!"
+      player-kicked: "&cPlayer '{player}' kickado da guild por {kicker}!"
+      successful: "&aKickou {player} com sucesso de sua guild!"
+    prefix:
+      requirements: "&cO prefix de sua guilda nÃ£o tem os requerimentos! VocÃª sÃ³ pode usar caracteres alfanumericos e nÃ£o pode exceder o tamanho de 6 palavras/numeros"
+      successful: "&aGuild's prefix changed successfully!"
+    confirm:
+      error: "&cVocÃª nÃ£o tem aÃ§Ãµes para confirmar!"
+    cancel:
+      error: "&cVocÃª nÃ£o tem aÃ§Ãµes para cancelar!"
+    reload:
+      reloaded: "&aConfiguraÃ§Ã£o recarregada!"
+    update:
+      found: "&aUpdate encontrado! {url} para baixÃ¡-lo!"
+      not-found: "&cNenhum update encontrado!"
+    admin:
+      added-player: "&aAdicionou o player a Guild"
+      delete-cancelled: "&cRemoÃ§Ã£o da Guild cancelada!"
+      delete-error: "&cAlgo deu errado ao deletar esta Guild!"
+      delete-successful: "&cGuild removida com sucesso!"
+      delete-warning: "&cEscreva /guilds confirm para remover esta guild, Escreva /guilds cancel para cancelar."
+      player-already-in-guild: "&cEste jogador jÃ¡ estÃ¡ em uma guild!"
+      player-not-in-guild: "&cJogador nÃ£o estÃ¡ nesta guild!"
+      removed-player: "&aRemoveu player da guild!"
+    ally:
+      accepted-target: "&a{guild} Ã© agora nosso aliado!"
+      accepted: "&aEssa guild Ã© agora aliada com {guild}!"
+      already-allies: "&cVocÃª jÃ¡ estÃ¡ aliado com {guild}!"
+      declined: "&c{guild} recusou o pedido de alianÃ§a!"
+      guild-not-pending: "&cEssa guild nÃ£o te enviou um pedido de alianÃ§a!"
+      not-allies: "&cVocÃª nÃ£o estÃ¡ aliado com {guild}!"
+      removed-target: "&c{guild} nÃ£o Ã© mais nosso aliado!"
+      removed: "&cEssa guild nÃ£o Ã© mais aliada com {guild}!"
+      send-target: "&aRecebeu um pedido de alianÃ§a de {guild}! Escreva /guilds ally accept {guild} para aceitar ou Escreva /guilds ally decline {guild} para recusar"
+      send: "&aSend ally request!"
+    home:
+      damage-taken: "&cVocÃª tomou dano! Cancelando teleporte"
+      teleported: "&aVocÃª foi teleportado para a home de sua guild!"
+      teleporting: "&cVocÃª serÃ¡ teleportado em {count} segundos."
+  event:
+    join:
+      pending-invites: "&aVocÃª tem {number} convite(s) da(s) guild(s): &e{guilds}"
