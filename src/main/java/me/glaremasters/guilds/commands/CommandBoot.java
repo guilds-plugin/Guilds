@@ -2,9 +2,11 @@ package me.glaremasters.guilds.commands;
 
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
+import me.glaremasters.guilds.guild.GuildMember;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.message.Message;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 public class CommandBoot extends CommandBase {
@@ -27,18 +29,23 @@ public class CommandBoot extends CommandBase {
       return;
     }
 
-    Player kickedPlayer = Bukkit.getPlayer(args[0]);
+    OfflinePlayer kickedPlayer = Bukkit.getOfflinePlayer(args[0]);
 
-    if (kickedPlayer == null || !kickedPlayer.isOnline()) {
+    if (kickedPlayer == null || kickedPlayer.getUniqueId() == null) {
+
       Message.sendMessage(player,
           Message.COMMAND_ERROR_PLAYER_NOT_FOUND.replace("{player}", args[0]));
+      return;
+    }
+    GuildMember kickedPlayer2 = guild.getMember(kickedPlayer.getUniqueId());
+    if (kickedPlayer2 == null) {
+      Message.sendMessage(player, Message.COMMAND_ERROR_PLAYER_NOT_IN_GUILD
+          .replace("{player}", kickedPlayer.getName()));
       return;
     }
 
     guild.removeMember(kickedPlayer.getUniqueId());
 
-    Message.sendMessage(kickedPlayer,
-        Message.COMMAND_BOOT_KICKED.replace("{kicker}", player.getName()));
     Message.sendMessage(player,
         Message.COMMAND_BOOT_SUCCESSFUL.replace("{player}", kickedPlayer.getName()));
 

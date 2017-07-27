@@ -18,6 +18,8 @@ public abstract class DatabaseProvider {
 
   public abstract void updateGuild(Guild guild, Callback<Boolean, Exception> callback);
 
+  public abstract void updatePrefix(Guild guild, Callback<Boolean, Exception> callback);
+
   public abstract void createLeaderboard(Leaderboard leaderboard,
       Callback<Boolean, Exception> callback);
 

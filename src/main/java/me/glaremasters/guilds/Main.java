@@ -155,6 +155,7 @@ public class Main extends JavaPlugin {
     commandHandler.register(new CommandTransfer());
     commandHandler.register(new CommandBuff());
     commandHandler.register(new CommandDecline());
+    commandHandler.register(new CommandCheck());
 
     getServer().getPluginManager().registerEvents(new JoinListener(), this);
     getServer().getPluginManager().registerEvents(new PlayerDamangeListener(), this);

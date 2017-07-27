@@ -66,6 +66,8 @@ commands:
     description: Apply a buff to your guild members
   guild decline:
     description: Decline a Guild Invite
+  guild check:
+    description: Check pending Guild Invites
 
 
 permissions:
@@ -121,4 +123,5 @@ permissions:
       guilds.command.transfer: true
       guilds.command.buff: true
       guilds.command.decline: true
+      guilds.command.check: true
     default: true

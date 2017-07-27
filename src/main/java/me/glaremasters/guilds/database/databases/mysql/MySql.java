@@ -82,6 +82,21 @@ public class MySql extends DatabaseProvider {
   }
 
   @Override
+  public void updatePrefix(Guild guild, Callback<Boolean, Exception> callback) {
+    Main.newChain().async(() -> execute(Query.UPDATE_PREFIX, guild.getName()))
+        .sync(() -> callback.call(true, null))
+        .execute((exception, task) -> {
+          if (exception != null) {
+            Main.getInstance().getLogger().log(Level.SEVERE,
+                "An error occurred while saving a guild to the MySQL database!");
+            exception.printStackTrace();
+
+            callback.call(false, exception);
+          }
+        });
+  }
+
+  @Override
   public void removeGuild(Guild guild, Callback<Boolean, Exception> callback) {
     Main.newChain().async(() -> guild.getMembers()
         .forEach(member -> execute(Query.REMOVE_MEMBER, member.getUniqueId().toString())))

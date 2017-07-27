@@ -128,6 +128,15 @@ public class Json extends DatabaseProvider {
   }
 
   @Override
+  public void updatePrefix(Guild guild, Callback<Boolean, Exception> callback) {
+    HashMap<String, Guild> guilds = getGuilds();
+    guilds.put(guild.getName(), guild);
+
+    Main.newChain().asyncFirst(() -> write(guildsFile, guilds, guildsType))
+        .syncLast(successful -> callback.call(successful, null)).execute();
+  }
+
+  @Override
   public void createLeaderboard(Leaderboard leaderboard, Callback<Boolean, Exception> callback) {
     List<Leaderboard> leaderboards =
         getLeaderboards() == null ? new ArrayList<>() : getLeaderboards();
