@@ -1,5 +1,7 @@
 package me.glaremasters.guilds.commands;
 
+import java.util.Arrays;
+import java.util.List;
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
@@ -89,12 +91,16 @@ public class CommandInfo extends CommandBase implements Listener {
               .getName());
       heads.setItem(3, createItemStack(Material.BEACON,
           Main.getInstance().getConfig().getString("info.role"), beaconlore));
-
       // Item 4: Cake
       ArrayList<String> cakelore = new ArrayList<String>();
-      cakelore.add(ChatColor.AQUA + guild.getMembers().stream()
+      List<String> lines = Arrays.asList(guild.getMembers().stream()
           .map(member -> Bukkit.getOfflinePlayer(member.getUniqueId()).getName())
-          .collect(Collectors.joining(", ")));
+          .collect(Collectors.joining(", "))
+          .replaceAll("(([a-zA-Z0-9_]+, ){3})", "$0\n")
+          .split("\n"));
+      cakelore.set(0, ChatColor.translateAlternateColorCodes('&',
+          Main.getInstance().getConfig().getString("list.members") + lines.get(0)));
+      lines.addAll(lines);
       heads.setItem(4, createItemStack(Material.CAKE,
           Main.getInstance().getConfig().getString("info.members"), cakelore));
 

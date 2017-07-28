@@ -36,10 +36,6 @@ public class CommandAlly extends CommandBase {
     GuildRole role = GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole());
 
     if (args[0].equals("accept")) {
-      if (!role.canAddAlly()) {
-        Message.sendMessage(player, Message.COMMAND_ERROR_ROLE_NO_PERMISSION);
-        return;
-      }
 
       if (!guild.getPendingAllies().contains(targetGuild.getName())) {
         Message.sendMessage(player, Message.COMMAND_ALLY_GUILD_NOT_PENDING);
