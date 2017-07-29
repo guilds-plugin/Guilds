@@ -16,6 +16,7 @@ public class CommandCancel extends CommandBase {
     ConfirmAction action = Main.getInstance().getCommandHandler().getActions().get(player);
     if (action == null) {
       Message.sendMessage(player, Message.COMMAND_CANCEL_ERROR);
+      return;
     }
 
     action.decline();
