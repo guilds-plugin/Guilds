@@ -95,11 +95,11 @@ public class CommandList extends CommandBase {
       skulls.put(guild.getGuildMaster().getUniqueId(), skull);
     }
 
-    ItemStack previous = new ItemStack(Material.TORCH, 1);
+    ItemStack previous = new ItemStack(Material.EMPTY_MAP, 1);
     ItemMeta previousMeta = previous.getItemMeta();
     previousMeta.setDisplayName(ChatColor.GOLD + "Previous page");
     previous.setItemMeta(previousMeta);
-    ItemStack next = new ItemStack(Material.TORCH, 1);
+    ItemStack next = new ItemStack(Material.EMPTY_MAP, 1);
     ItemMeta nextMeta = next.getItemMeta();
     nextMeta.setDisplayName(ChatColor.GOLD + "Next page");
     next.setItemMeta(nextMeta);
