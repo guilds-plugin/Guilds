@@ -1,5 +1,6 @@
 package me.glaremasters.guilds.listeners;
 
+import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.commands.CommandList;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -39,7 +40,11 @@ public class ClickListener implements Listener {
             e.getWhoClicked().openInventory(guildList);
           }
         }
-
+        if (Main.getInstance().getGuildHandler().getGuilds().values().size() < 45) {
+          e.setCancelled(true);
+          e.setResult(Event.Result.DENY);
+          return;
+        }
         if (e.getCurrentItem().getItemMeta().getDisplayName()
             .equals(ChatColor.GOLD + "Next page")) {
 
