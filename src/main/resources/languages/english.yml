@@ -119,7 +119,7 @@ messages:
       accepted: "&aThis guild is now allied with {guild}!"
       already-allies: "&cYou're already allied with {guild}!"
       declined: "&c{guild} does not want to be an ally!"
-      guild-not-pending: "&cThis guild has not send you an ally request!"
+      guild-not-pending: "&cThis guild has not sent you an ally request!"
       not-allies: "&cYou aren't allied with {guild}!"
       removed-target: "&c{guild} is no longer allied with us!"
       removed: "&cThis guild is no longer allied with {guild}!"
