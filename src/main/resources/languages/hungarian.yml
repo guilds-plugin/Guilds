@@ -72,7 +72,7 @@ messages:
       disabled: "&cGuild Chat Disabled"
     accept:
       not-invited: "&cNem vagy meghÃ­vva ebbe a cÃ©hbe!"
-      guild-full: "&cEz a cÃ©h tele van!"
+      guild-full: "&cEz a cÃ©h tele vann!"
       successful: "&aSikeresen becsatlakoztÃ¡l a '{guild}' cÃ©hbe"
       player-joined: "&a'{player}' csatlakozott a cÃ©hedbe!"
     invite:
