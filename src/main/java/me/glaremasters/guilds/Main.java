@@ -217,7 +217,7 @@ public class Main extends JavaPlugin {
 
     if (getConfig().getBoolean("server-list")) {
       getServer().getScheduler()
-          .scheduleAsyncRepeatingTask(this, this::sendUpdate, 0L, 2000L); //5 minutes
+          .scheduleAsyncRepeatingTask(this, this::sendUpdate, 0L, 6000L); //5 minutes
     }
 
     if (!getConfig().isSet("version") || getConfig().getInt("version") == 1
