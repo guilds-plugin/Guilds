@@ -38,11 +38,13 @@ public class CommandPrefix extends CommandBase {
     Message.sendMessage(player, Message.COMMAND_PREFIX_SUCCESSFUL);
     guild.updatePrefix(ChatColor.translateAlternateColorCodes('&', args[0]));
 
+    String name = Main.getInstance().getConfig().getBoolean("tablist-use-display-name") ? player
+        .getDisplayName() : player.getName();
     player.setPlayerListName(
         ChatColor.translateAlternateColorCodes('&',
             Main.getInstance().getConfig().getString("tablist")
                 .replace("{guild}", guild.getName()).replace("{prefix}", guild.getPrefix())
-                + player.getName()));
+                + name));
 
 
   }

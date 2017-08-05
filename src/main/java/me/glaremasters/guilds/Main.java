@@ -150,11 +150,17 @@ public class Main extends JavaPlugin {
         new CommandVersion()
     ).forEach(commandHandler::register);
 
-    getServer().getPluginManager().registerEvents(new JoinListener(), this);
-    getServer().getPluginManager().registerEvents(new PlayerDamangeListener(), this);
-    getServer().getPluginManager().registerEvents(new ChatListener(), this);
-    getServer().getPluginManager().registerEvents(new CommandHome(), this);
-    getServer().getPluginManager().registerEvents(new ClickListener(), this);
+    Stream.of(
+        new JoinListener(),
+        new PlayerDamangeListener(),
+        new ChatListener(),
+        new CommandHome(),
+        new ClickListener(),
+        new GuildVaultListener(),
+        new GuildBuffListener(),
+        new GuildChatListener()
+    ).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
+
     if (getConfig().getBoolean("guild-signs")) {
       getServer().getPluginManager().registerEvents(new SignListener(), this);
     }
@@ -165,9 +171,6 @@ public class Main extends JavaPlugin {
     if (getConfig().getBoolean("allow-guild-damage")) {
       getServer().getPluginManager().registerEvents(new GuildDamageListener(), this);
     }
-    getServer().getPluginManager().registerEvents(new GuildVaultListener(), this);
-    getServer().getPluginManager().registerEvents(new GuildBuffListener(), this);
-    getServer().getPluginManager().registerEvents(new GuildChatListener(), this);
     vault = setupEconomy();
 
     if (!vault) {
@@ -214,7 +217,7 @@ public class Main extends JavaPlugin {
           .scheduleAsyncRepeatingTask(this, this::sendUpdate, 0L, 000L); //5 minutes
     }
 
-    if (!getConfig().isSet("version") || getConfig().getInt("version") != 7) {
+    if (!getConfig().isSet("version") || getConfig().getInt("version") != 8) {
       File oldfile = new File(this.getDataFolder(), "config.yml");
       File newfile = new File(this.getDataFolder(), "config-old.yml");
       File dir = new File(this.getDataFolder(), "languages");

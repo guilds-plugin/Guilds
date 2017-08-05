@@ -12,7 +12,7 @@
 #-----------------------------------------------------------#
 
 # DO NOT CHANGE THIS
-version: 7
+version: 8
 
 #-----------------------------------------------------------#
 #                     CHOOSE YOUR LANGUAGE                  #
@@ -223,6 +223,8 @@ plugin-prefix: "&a[Guilds]"
 
 # Disable this to remove guild names showing next to a player in "TabList"
 tablist-guilds: true
+
+tablist-use-display-name: false
 
 # Change how the Prefixes in the TabList show!
 # Note: DO NOT REMOVE THE {guild}

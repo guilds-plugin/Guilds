@@ -87,11 +87,14 @@ public class CommandCreate extends CommandBase {
             Main.getInstance().getScoreboardHandler().show(player);
             Main.getInstance().guildstatusconfig.set(guild.getName(), "Private");
             Main.getInstance().saveGuildstatus();
+            String name =
+                Main.getInstance().getConfig().getBoolean("tablist-use-display-name") ? player
+                    .getDisplayName() : player.getName();
             player.setPlayerListName(
                 ChatColor.translateAlternateColorCodes('&',
                     Main.getInstance().getConfig().getString("tablist")
                         .replace("{guild}", guild.getName()).replace("{prefix}", guild.getPrefix())
-                        + player.getName()));
+                        + name));
           } else {
             Message.sendMessage(player, Message.COMMAND_CREATE_ERROR);
 

@@ -5,6 +5,7 @@ import me.glaremasters.guilds.guild.Guild;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
@@ -14,18 +15,21 @@ import org.bukkit.event.player.PlayerJoinEvent;
 public class TablistListener implements Listener {
 
 
-  @EventHandler
+  @EventHandler(priority = EventPriority.HIGH)
   public void onPlayerJoin(PlayerJoinEvent event) {
-    Player p = event.getPlayer();
-    Guild guild = Guild.getGuild(p.getUniqueId());
+
+    Player player = event.getPlayer();
+    Guild guild = Guild.getGuild(player.getUniqueId());
+    String name = Main.getInstance().getConfig().getBoolean("tablist-use-display-name") ? player
+        .getDisplayName() : player.getName();
     if (guild == null) {
       return;
     } else {
-      event.getPlayer().setPlayerListName(
+      player.setPlayerListName(
           ChatColor.translateAlternateColorCodes('&',
               Main.getInstance().getConfig().getString("tablist")
-                  .replace("{guild}", guild.getName()).replace("{prefix}", guild.getPrefix()) + p
-                  .getName()));
+                  .replace("{guild}", guild.getName()).replace("{prefix}", guild.getPrefix())
+                  + name));
     }
   }
 
