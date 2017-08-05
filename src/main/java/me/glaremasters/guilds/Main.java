@@ -41,9 +41,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.logging.Level;
-
 public class Main extends JavaPlugin {
-
   public static String PREFIX;
   public static boolean vault;
   private static Main instance;
@@ -214,7 +212,7 @@ public class Main extends JavaPlugin {
 
     if (getConfig().getBoolean("server-list")) {
       getServer().getScheduler()
-          .scheduleAsyncRepeatingTask(this, this::sendUpdate, 0L, 000L); //5 minutes
+          .scheduleAsyncRepeatingTask(this, this::sendUpdate, 0L, 5000L); //5 minutes
     }
 
     if (!getConfig().isSet("version") || getConfig().getInt("version") != 8) {

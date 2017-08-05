@@ -89,4 +89,5 @@ processResources {
 
 }
 
+
 build.dependsOn(shadowJar)
