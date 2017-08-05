@@ -131,4 +131,4 @@ messages:
       teleporting: "&cYou will be teleporting in {count} seconds."
   event:
     join:
-      pending-invites: "&aYou have {number} pending invite(s) from the guild(s): &e{guilds}"
+      pending-invites: "&aYou have {number} pending invite(s) from the guild(s): &e{guilds} . Use /guild accept <name> or /guild deny <name> to join or deny an invite!"
