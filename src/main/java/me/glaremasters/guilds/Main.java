@@ -4,6 +4,7 @@ import be.maximvdw.placeholderapi.PlaceholderAPI;
 import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
+import java.util.stream.Stream;
 import me.glaremasters.guilds.api.Metrics;
 import me.glaremasters.guilds.commands.*;
 import me.glaremasters.guilds.commands.base.CommandHandler;
@@ -116,45 +117,38 @@ public class Main extends JavaPlugin {
 
     getCommand("guild").setExecutor(commandHandler);
 
-    commandHandler.register(new CommandCreate());
-    commandHandler.register(new CommandDelete());
-
-    commandHandler.register(new CommandInvite());
-    commandHandler.register(new CommandAccept());
-    commandHandler.register(new CommandLeave());
-
-    commandHandler.register(new CommandAlly());
-
-    commandHandler.register(new CommandChat());
-
-    commandHandler.register(new CommandInfo());
-    commandHandler.register(new CommandBugReport());
-
-    commandHandler.register(new CommandPromote());
-    commandHandler.register(new CommandDemote());
-
-    commandHandler.register(new CommandPrefix());
-    commandHandler.register(new CommandBoot());
-
-    commandHandler.register(new CommandConfirm());
-    commandHandler.register(new CommandCancel());
-
-    commandHandler.register(new CommandAdmin());
-    commandHandler.register(new CommandSetHome());
-    commandHandler.register(new CommandHome());
-
-    commandHandler.register(new CommandReload());
-    commandHandler.register(new CommandList());
-    commandHandler.register(new CommandUpdate());
-    commandHandler.register(new CommandVersion());
-    commandHandler.register(new CommandHelp());
-    commandHandler.register(new CommandInspect());
-    commandHandler.register(new CommandStatus());
-    commandHandler.register(new CommandVault());
-    commandHandler.register(new CommandTransfer());
-    commandHandler.register(new CommandBuff());
-    commandHandler.register(new CommandDecline());
-    commandHandler.register(new CommandCheck());
+    Stream.of(
+        new CommandAccept(),
+        new CommandAdmin(),
+        new CommandAlly(),
+        new CommandBoot(),
+        new CommandBuff(),
+        new CommandBugReport(),
+        new CommandCancel(),
+        new CommandChat(),
+        new CommandCheck(),
+        new CommandConfirm(),
+        new CommandCreate(),
+        new CommandDecline(),
+        new CommandDelete(),
+        new CommandDemote(),
+        new CommandHelp(),
+        new CommandHome(),
+        new CommandInfo(),
+        new CommandInspect(),
+        new CommandInvite(),
+        new CommandLeave(),
+        new CommandList(),
+        new CommandPrefix(),
+        new CommandPromote(),
+        new CommandReload(),
+        new CommandSetHome(),
+        new CommandStatus(),
+        new CommandTransfer(),
+        new CommandUpdate(),
+        new CommandVault(),
+        new CommandVersion()
+    ).forEach(commandHandler::register);
 
     getServer().getPluginManager().registerEvents(new JoinListener(), this);
     getServer().getPluginManager().registerEvents(new PlayerDamangeListener(), this);
@@ -217,13 +211,10 @@ public class Main extends JavaPlugin {
 
     if (getConfig().getBoolean("server-list")) {
       getServer().getScheduler()
-          .scheduleAsyncRepeatingTask(this, this::sendUpdate, 0L, 5000L); //5 minutes
+          .scheduleAsyncRepeatingTask(this, this::sendUpdate, 0L, 000L); //5 minutes
     }
 
-    if (!getConfig().isSet("version") || getConfig().getInt("version") == 1
-        || getConfig().getInt("version") == 2 || getConfig().getInt("version") == 3
-        || getConfig().getInt("version") == 4 || getConfig().getInt("version") == 5
-        || getConfig().getInt("version") == 6) {
+    if (!getConfig().isSet("version") || getConfig().getInt("version") != 7) {
       File oldfile = new File(this.getDataFolder(), "config.yml");
       File newfile = new File(this.getDataFolder(), "config-old.yml");
       File dir = new File(this.getDataFolder(), "languages");

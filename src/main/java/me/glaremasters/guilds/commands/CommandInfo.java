@@ -98,9 +98,9 @@ public class CommandInfo extends CommandBase implements Listener {
           .collect(Collectors.joining(", "))
           .replaceAll("(([a-zA-Z0-9_]+, ){3})", "$0\n")
           .split("\n"));
-      cakelore.set(0, ChatColor.translateAlternateColorCodes('&',
+      cakelore.add(ChatColor.translateAlternateColorCodes('&',
           Main.getInstance().getConfig().getString("list.members") + lines.get(0)));
-      lines.addAll(lines);
+      cakelore.addAll(lines);
       heads.setItem(4, createItemStack(Material.CAKE,
           Main.getInstance().getConfig().getString("info.members"), cakelore));
 
