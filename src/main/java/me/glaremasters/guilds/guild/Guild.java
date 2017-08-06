@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.message.Message;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -72,7 +73,8 @@ public class Guild implements InventoryHolder {
 
   public static Guild getGuild(String name) {
     return Main.getInstance().getGuildHandler().getGuilds().values().stream()
-        .filter(guild -> guild.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
+        .filter(guild -> ChatColor.stripColor(guild.getName()).equalsIgnoreCase(name)).findFirst()
+        .orElse(null);
   }
 
   public static boolean areAllies(UUID uuid1, UUID uuid2) {

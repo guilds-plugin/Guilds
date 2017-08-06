@@ -19,12 +19,15 @@ messages:
       home-cooldown: "&c你無法傳送!! 你需要等待 {time} 秒後!在試一次"
       sethome-cooldown: "&c你需要等 {time} 秒後 才能在執行!"
     transfer:
-      success: "Guild has been transferred!"
-      newmaster: "You are the new Guild Master of your Guild!"
+      success: "公會已經被轉讓!"
+      newmaster: "你是新的公會會長了!"
     help:
       message: "&f/guild {command} {arguments} &7- &f{description}"
       next-page: "&7使用 /guilds help {頁碼} 到下一頁\n&e不管使用哪種公會指令前面一定要加上/guild (你要使用的指令)\n例如 /guild create 獨步天下 <-這樣就是創建一個名為獨步天下的公會"
       invalid-page: "&c找不到這一頁!"
+    status:
+      error: "&c公會的狀態必須是私人或公開的!!"
+      successful: "&a公會狀態設定為 {status}!"
     role:
       players: "{player} - {role}"
     list:

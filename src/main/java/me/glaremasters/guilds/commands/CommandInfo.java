@@ -99,7 +99,7 @@ public class CommandInfo extends CommandBase implements Listener {
           .replaceAll("(([a-zA-Z0-9_]+, ){3})", "$0\n")
           .split("\n"));
       cakelore.add(ChatColor.translateAlternateColorCodes('&',
-          Main.getInstance().getConfig().getString("list.members") + lines.get(0)));
+          Main.getInstance().getConfig().getString("list.members")));
       cakelore.addAll(lines);
       heads.setItem(4, createItemStack(Material.CAKE,
           Main.getInstance().getConfig().getString("info.members"), cakelore));

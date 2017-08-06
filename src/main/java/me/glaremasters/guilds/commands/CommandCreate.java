@@ -61,7 +61,8 @@ public class CommandCreate extends CommandBase {
     Main.getInstance().getCommandHandler().addAction(player, new ConfirmAction() {
       @Override
       public void accept() {
-        Guild guild = new Guild(args[0], player.getUniqueId());
+        Guild guild = new Guild(ChatColor.translateAlternateColorCodes('&', args[0]),
+            player.getUniqueId());
 
         GuildCreateEvent event = new GuildCreateEvent(player, guild);
         if (event.isCancelled()) {

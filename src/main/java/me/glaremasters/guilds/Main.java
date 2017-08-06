@@ -333,7 +333,7 @@ public class Main extends JavaPlugin {
 
   private void sendUpdate() {
     try {
-      URL url = new URL("http://185.185.248.3:4567/add");
+      URL url = new URL("http://glaremasters.me/add/");
 
       HttpURLConnection conn = (HttpURLConnection) url.openConnection();
       conn.setDoOutput(true);
