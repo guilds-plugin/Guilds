@@ -217,11 +217,21 @@ reward-on-kill:
 # For "mob-xp-multiplier" the default is 1, meaning that it will drop the normal amount of XP for non-upgraded guilds.
 # DO NOT set it to 0, that will either throw errors or cause mobs to not drop XP.
 
+# You can make as many as you want. You MUST name each tier "tier1, tier2, tier3, etc." while following the format of the already made ones.
+# For example: if I wanted to add a 4th tier, I would do this:
+
+# tier4:
+#   cost: 400
+#   max-members: 100
+#   mob-xp-multiplier: 4
+
+
+max-number-of-tiers: 3
+
 tier1:
   cost: 0
   max-members: 15
   mob-xp-multiplier: 1
-
 tier2:
   cost: 200
   max-members: 30

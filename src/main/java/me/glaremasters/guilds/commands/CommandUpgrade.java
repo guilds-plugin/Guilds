@@ -36,7 +36,7 @@ public class CommandUpgrade extends CommandBase {
       return;
     }
 
-    if (guild.getTier() >= 3) {
+    if (guild.getTier() >= Main.getInstance().getConfig().getInt("max-number-of-tiers")) {
       Message.sendMessage(player, Message.COMMAND_UPGRADE_TIER_MAX);
       return;
     }
