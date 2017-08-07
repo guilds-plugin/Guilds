@@ -207,6 +207,16 @@ reward-on-kill:
   enabled: true
   reward: 10
 
+
+#-----------------------------------------------------------#
+#                     Guild Upgrade Configuration           #
+#-----------------------------------------------------------#
+
+# This section of the config will talk about various parts of upgrading a guild and allow you to choose how it works.
+
+
+
+
 #-----------------------------------------------------------#
 #                     Community Server List                 #
 #-----------------------------------------------------------#
@@ -313,6 +323,7 @@ roles:
       open-vault: true
       transfer-guild: true
       activate-buff: true
+      upgrade-guild: true
 
   1:
     name: "Officer"
@@ -333,6 +344,7 @@ roles:
       open-vault: true
       transfer-guild: false
       activate-buff: false
+      upgrade-guild: false
 
   2:
     name: "Veteran"
@@ -352,6 +364,7 @@ roles:
       open-vault: true
       transfer-guild: false
       activate-buff: false
+      upgrade-guild: false
   3:
     name: "Member"
     permissions:
@@ -370,6 +383,7 @@ roles:
       open-vault: true
       transfer-guild: false
       activate-buff: false
+      upgrade-guild: false
 
 #-----------------------------------------------------------#
 #                     Storage Configuration                 #

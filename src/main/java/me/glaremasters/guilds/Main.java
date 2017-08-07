@@ -59,6 +59,9 @@ public class Main extends JavaPlugin {
   public File guildstatus = new File(this.getDataFolder(), "data/guild-status.yml");
   public YamlConfiguration guildstatusconfig =
       YamlConfiguration.loadConfiguration(this.guildstatus);
+  public File guildtiers = new File(this.getDataFolder(), "data/guild-tiers.yml");
+  public YamlConfiguration guildtiersconfig =
+      YamlConfiguration.loadConfiguration(this.guildtiers);
   private DatabaseProvider database;
   private GuildHandler guildHandler;
   private CommandHandler commandHandler;
@@ -148,7 +151,8 @@ public class Main extends JavaPlugin {
         new CommandTransfer(),
         new CommandUpdate(),
         new CommandVault(),
-        new CommandVersion()
+        new CommandVersion(),
+        new CommandUpgrade()
     ).forEach(commandHandler::register);
 
     Stream.of(
@@ -195,6 +199,7 @@ public class Main extends JavaPlugin {
 
     this.saveGuildhomes();
     this.saveGuildstatus();
+    this.saveGuildtiers();
 
     try {
       BasicFileAttributes attr = Files
@@ -271,6 +276,15 @@ public class Main extends JavaPlugin {
       Main.getInstance().guildstatusconfig.save(Main.getInstance().guildstatus);
     } catch (IOException e) {
       getLogger().log(Level.WARNING, "Could not create Guild's Status config!");
+      e.printStackTrace();
+    }
+  }
+
+  public void saveGuildtiers() {
+    try {
+      Main.getInstance().guildtiersconfig.save(Main.getInstance().guildtiers);
+    } catch (IOException e) {
+      getLogger().log(Level.WARNING, "Could not create Guild's Tier config!");
       e.printStackTrace();
     }
   }
