@@ -103,6 +103,20 @@ public class Guild implements InventoryHolder {
         .getString(getName());
   }
 
+  public int getTier() {
+    return Main.getInstance().guildtiersconfig
+        .getInt(getName());
+  }
+
+  public int getTierCost() {
+    return Main.getInstance().getConfig().getInt("tier" + getTier() + ".cost");
+  }
+
+  public int getMaxMembers() {
+    return Main.getInstance().getConfig().getInt("tier" + getTier() + ".max-members");
+  }
+
+
   public List<GuildMember> getMembers() {
     return members;
   }

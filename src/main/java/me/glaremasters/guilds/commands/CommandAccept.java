@@ -36,8 +36,8 @@ public class CommandAccept extends CommandBase {
       }
     }
 
-    int maxMembers = Main.getInstance().getConfig().getInt("members.max-members");
-    if (maxMembers != -1 && guild.getMembers().size() >= maxMembers) {
+    int maxMembers = guild.getMaxMembers();
+    if (guild.getMembers().size() >= maxMembers) {
       Message.sendMessage(player, Message.COMMAND_ACCEPT_GUILD_FULL);
       return;
     }

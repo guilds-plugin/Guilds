@@ -85,6 +85,7 @@ info:
   role: "Guild Role: "
   members: "Members In Guild: "
   guildstatus: "Guild Status: "
+  guildtier: "Guild Tier: "
 
 # This is what controls after it says the guild name in /guild vault, you can change this to make it say something else.
 vault:
@@ -214,7 +215,17 @@ reward-on-kill:
 
 # This section of the config will talk about various parts of upgrading a guild and allow you to choose how it works.
 
+tier1:
+  cost: 100
+  max-members: 30
 
+tier2:
+  cost: 200
+  max-members: 60
+
+tier3:
+  cost: 300
+  max-members: 90
 
 
 #-----------------------------------------------------------#
@@ -287,10 +298,6 @@ prefix:
 # To change this, adjust the numbers and maybe have a look at the link above (RegEx).
 # To turn off the ability for colored prefixes change the regex to "[a-zA-Z0-9]{1,20}"
   regex: "[a-zA-Z0-9&]{1,20}"
-
-members:
-# Set to -1 to disable
-  max-members: 64
 
 scoreboard:
 # Enable or disable scoreboard which handles friendly fire, prefixes and guild invisibility

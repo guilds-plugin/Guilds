@@ -18,6 +18,13 @@ messages:
       no-home-set: "&cEr is nog geen Guild thuis gezet! Gebruik &a/guild sethome &com een Guild thuis te zetten!"
       home-cooldown: "&cJe moet {time} seconden wachten voordat je weer naar je Guild thuis kan teleporteren!"
       sethome-cooldown: "&cJe moet {time} seconden wachten voordat je weer je Guild thuis kan instellen!"
+    upgrade:
+      tier-max: "&cCannot upgrade again! You're already maxed!"
+      money-warning: "&cYou are about to spend {amount} to set upgrade your guild. (Type /guilds confirm to continue)"
+      cancel: "&cUpgrade cancelled!"
+      success: "&aYou've successfully upgraded your guild!"
+    buff:
+      not-enough-money: "&cYou do not have enough money to buy this buff!"
     transfer:
       success: "Guild has been transferred!"
       newmaster: "You are the new Guild Master of your Guild!"

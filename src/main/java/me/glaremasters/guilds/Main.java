@@ -350,6 +350,8 @@ public class Main extends JavaPlugin {
           event -> Placeholders.getGuildStatus(event.getPlayer()));
       PlaceholderAPI.registerPlaceholder(this, "guild_role",
           event -> Placeholders.getGuildRole(event.getPlayer()));
+      PlaceholderAPI.registerPlaceholder(this, "guild_tier",
+          event -> Integer.toString(Placeholders.getGuildTier(event.getPlayer())));
     }
 
   }

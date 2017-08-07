@@ -95,6 +95,7 @@ public class CommandSetHome extends CommandBase {
       @Override
       public void decline() {
         Message.sendMessage(player, Message.COMMAND_CREATE_CANCELLED_SETHOME);
+        Main.getInstance().getCommandHandler().removeAction(player);
       }
     });
 

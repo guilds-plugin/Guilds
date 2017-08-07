@@ -19,6 +19,13 @@ messages:
       player-not-in-guild: "&cGracz '{player}' nie jest w Twojej gildii!"
       role-no-permission: "&cTwój stopień gildyjny jest za niski, aby to zrobić!"
       sethome-cooldown: "&cYou can't set your guild home for another {time} seconds!"
+    upgrade:
+      tier-max: "&cCannot upgrade again! You're already maxed!"
+      money-warning: "&cYou are about to spend {amount} to set upgrade your guild. (Type /guilds confirm to continue)"
+      cancel: "&cUpgrade cancelled!"
+      success: "&aYou've successfully upgraded your guild!"
+    buff:
+      not-enough-money: "&cYou do not have enough money to buy this buff!"
     transfer:
       newmaster: "&aJesteś nowym właścicielem gildii!"
       success: "&aGildia przetransferowana pomyślnie!"

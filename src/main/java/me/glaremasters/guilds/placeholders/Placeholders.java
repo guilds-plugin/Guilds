@@ -75,4 +75,14 @@ public class Placeholders {
     GuildMember roleCheck = guild.getMember(player.getUniqueId());
     return GuildRole.getRole(roleCheck.getRole()).getName();
   }
+
+  public static int getGuildTier(Player player) {
+    Guild guild = Guild.getGuild(player.getUniqueId());
+    if (guild == null) {
+      return 0;
+    }
+
+    return guild.getTier();
+  }
+
 }

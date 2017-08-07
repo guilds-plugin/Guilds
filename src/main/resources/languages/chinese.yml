@@ -18,6 +18,13 @@ messages:
       no-home-set: "&c尚未擁有公會基地傳送點! , 輸入&b/guild sethome &r來創建公會基地傳送點!"
       home-cooldown: "&c你無法傳送!! 你需要等待 {time} 秒後!在試一次"
       sethome-cooldown: "&c你需要等 {time} 秒後 才能在執行!"
+    upgrade:
+      tier-max: "&cCannot upgrade again! You're already maxed!"
+      money-warning: "&cYou are about to spend {amount} to set upgrade your guild. (Type /guilds confirm to continue)"
+      cancel: "&cUpgrade cancelled!"
+      success: "&aYou've successfully upgraded your guild!"
+    buff:
+      not-enough-money: "&cYou do not have enough money to buy this buff!"
     transfer:
       success: "公會已經被轉讓!"
       newmaster: "你是新的公會會長了!"

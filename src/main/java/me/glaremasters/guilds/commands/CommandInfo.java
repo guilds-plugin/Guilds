@@ -51,6 +51,8 @@ public class CommandInfo extends CommandBase implements Listener {
         + ChatColor.GREEN + guild.getName());
     info.add(ChatColor.WHITE + Main.getInstance().getConfig().getString("info.guildstatus")
         + ChatColor.GREEN + guild.getStatus());
+    info.add(ChatColor.WHITE + Main.getInstance().getConfig().getString("info.guildtier")
+        + ChatColor.GREEN + guild.getTier());
     meta.setLore(info);
 
     skull.setItemMeta(meta);

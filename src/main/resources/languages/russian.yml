@@ -19,6 +19,11 @@ messages:
       player-not-in-guild: "&cИгрок '{player}' не состоит в Вашей гильдии."
       role-no-permission: "&cВаш ранг слишком мал для этого."
       sethome-cooldown: "&cВы не сможете установить дом гильдии на протяжении {time} секунд."
+    upgrade:
+      tier-max: "&cCannot upgrade again! You're already maxed!"
+      money-warning: "&cYou are about to spend {amount} to set upgrade your guild. (Type /guilds confirm to continue)"
+      cancel: "&cUpgrade cancelled!"
+      success: "&aYou've successfully upgraded your guild!"
     buff:
       not-enough-money: "&cУ Вас недостаточно денег для покупки баффа"
     transfer:

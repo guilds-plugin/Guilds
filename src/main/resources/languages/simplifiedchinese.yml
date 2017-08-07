@@ -19,6 +19,13 @@ messages:
       home-cooldown: "&c你无法传送!! 你需要等待 {time} 秒后!在试一次"
       sethome-cooldown: "&c你需要等 {time} 秒后 才能在执行!"
       not-officer: "&cUser must be an Officer in your Guild!"
+    upgrade:
+      tier-max: "&cCannot upgrade again! You're already maxed!"
+      money-warning: "&cYou are about to spend {amount} to set upgrade your guild. (Type /guilds confirm to continue)"
+      cancel: "&cUpgrade cancelled!"
+      success: "&aYou've successfully upgraded your guild!"
+    buff:
+      not-enough-money: "&cYou do not have enough money to buy this buff!"
     transfer:
       success: "Guild has been transferred!"
       newmaster: "You are the new Guild Master of your Guild!"
