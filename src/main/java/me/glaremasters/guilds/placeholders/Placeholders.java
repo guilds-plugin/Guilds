@@ -68,10 +68,11 @@ public class Placeholders {
 
   public static String getGuildRole(Player player) {
     Guild guild = Guild.getGuild(player.getUniqueId());
-    GuildMember roleCheck = guild.getMember(player.getUniqueId());
+
     if (guild == null) {
       return "";
     }
+    GuildMember roleCheck = guild.getMember(player.getUniqueId());
     return GuildRole.getRole(roleCheck.getRole()).getName();
   }
 }
