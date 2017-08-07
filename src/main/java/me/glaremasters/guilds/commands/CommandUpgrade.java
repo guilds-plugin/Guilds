@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
 public class CommandUpgrade extends CommandBase {
 
   public CommandUpgrade() {
-    super("upgrade", "Upgrade your guild to a higher level!", "guilds.command.tier", false, null,
+    super("upgrade", "Upgrade your guild to a higher level!", "guilds.command.upgrade", false, null,
         null, 0, 0);
   }
 

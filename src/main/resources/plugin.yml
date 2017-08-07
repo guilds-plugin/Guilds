@@ -68,6 +68,8 @@ commands:
     description: Decline a Guild Invite
   guild check:
     description: Check pending Guild Invites
+  guild upgrade:
+    description: Upgrade your Guild!
 
 
 permissions:
@@ -124,4 +126,5 @@ permissions:
       guilds.command.buff: true
       guilds.command.decline: true
       guilds.command.check: true
+      guilds.command.upgrade: true
     default: true
