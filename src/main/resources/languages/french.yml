@@ -69,7 +69,7 @@ messages:
       promoted: "&aVous avez promu {player} de {old-rank} à {new-rank}!"
       successful: "&aVous avez été promu de {old-rank} à {new-rank}!"
     demote:
-      cannot-demote: "&cCe joueur ne peut plus être rétrougradé!"
+      cannot-demote: "&cCe joueur ne peut plus être rétrogradé!"
       demoted: "&cVous avez été rétrogradé de {old-rank} à {new-rank}!"
       not-demotion: "&cVous ne rétrogradez pas ce joueur!"
       successful: "&aVous avez rétrogradé {player} de {old-rank} à {new-rank}!"
@@ -137,5 +137,3 @@ messages:
   event:
     join:
       pending-invites: "&aVous avez {number} invitation(s) en attente de la part de: &e{guilds} . Faites /guild accept <nom> ou /guild deny <nom> pour accepter ou refuser une invitation!"
-
-#Translated in french by Kurotan (Park Taehyun) with love for my favorite guild plugin <3
