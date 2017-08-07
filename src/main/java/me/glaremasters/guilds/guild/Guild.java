@@ -99,13 +99,18 @@ public class Guild implements InventoryHolder {
 
 
   public String getStatus() {
-    return Main.getInstance().guildstatusconfig
+    return Main.getInstance().guildStatusConfig
         .getString(getName());
   }
 
   public int getTier() {
-    return Main.getInstance().guildtiersconfig
-        .getInt(getName());
+    YamlConfiguration tiersConfig = Main.getInstance().guildTiersConfig;
+    if (tiersConfig.isSet(getName())) {
+      return tiersConfig.getInt(getName());
+    } else {
+      tiersConfig.set(getName(), 1);
+      return 1;
+    }
   }
 
   public int getTierCost() {
@@ -118,6 +123,10 @@ public class Guild implements InventoryHolder {
 
   public int getMaxMembers() {
     return Main.getInstance().getConfig().getInt("tier" + getTier() + ".max-members");
+  }
+
+  public double getExpMultiplier() {
+    return Main.getInstance().getConfig().getDouble("tier" + getTier() + ".mob-xp-multiplier");
   }
 
 

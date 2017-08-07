@@ -214,18 +214,22 @@ reward-on-kill:
 #-----------------------------------------------------------#
 
 # This section of the config will talk about various parts of upgrading a guild and allow you to choose how it works.
+# For "mob-xp-multiplier" the default is 1, meaning that it will drop the normal amount of XP for non-upgraded guilds.
+# DO NOT set it to 0, that will either throw errors or cause mobs to not drop XP.
 
 tier1:
   cost: 0
   max-members: 15
+  mob-xp-multiplier: 1
 
 tier2:
   cost: 200
   max-members: 30
-
+  mob-xp-multiplier: 2
 tier3:
   cost: 300
   max-members: 50
+  mob-xp-multiplier: 3
 
 
 #-----------------------------------------------------------#

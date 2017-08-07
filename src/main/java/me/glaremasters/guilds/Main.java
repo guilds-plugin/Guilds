@@ -20,6 +20,7 @@ import me.glaremasters.guilds.listeners.GuildChatListener;
 import me.glaremasters.guilds.listeners.GuildDamageListener;
 import me.glaremasters.guilds.listeners.GuildVaultListener;
 import me.glaremasters.guilds.listeners.JoinListener;
+import me.glaremasters.guilds.listeners.MobDeathListner;
 import me.glaremasters.guilds.listeners.PlayerDamangeListener;
 import me.glaremasters.guilds.listeners.PlayerDeathListener;
 import me.glaremasters.guilds.listeners.SignListener;
@@ -54,13 +55,13 @@ public class Main extends JavaPlugin {
   public File languageYamlFile;
   public YamlConfiguration yaml;
   public File guildhomes = new File(this.getDataFolder(), "data/guild-homes.yml");
-  public YamlConfiguration guildhomesconfig =
+  public YamlConfiguration guildHomesConfig =
       YamlConfiguration.loadConfiguration(this.guildhomes);
   public File guildstatus = new File(this.getDataFolder(), "data/guild-status.yml");
-  public YamlConfiguration guildstatusconfig =
+  public YamlConfiguration guildStatusConfig =
       YamlConfiguration.loadConfiguration(this.guildstatus);
   public File guildtiers = new File(this.getDataFolder(), "data/guild-tiers.yml");
-  public YamlConfiguration guildtiersconfig =
+  public YamlConfiguration guildTiersConfig =
       YamlConfiguration.loadConfiguration(this.guildtiers);
   private DatabaseProvider database;
   private GuildHandler guildHandler;
@@ -163,7 +164,8 @@ public class Main extends JavaPlugin {
         new ClickListener(),
         new GuildVaultListener(),
         new GuildBuffListener(),
-        new GuildChatListener()
+        new GuildChatListener(),
+        new MobDeathListner()
 
     ).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
 
@@ -264,7 +266,7 @@ public class Main extends JavaPlugin {
 
   public void saveGuildhomes() {
     try {
-      Main.getInstance().guildhomesconfig.save(Main.getInstance().guildhomes);
+      Main.getInstance().guildHomesConfig.save(Main.getInstance().guildhomes);
     } catch (IOException e) {
       getLogger().log(Level.WARNING, "Could not create Guild's Home config!");
       e.printStackTrace();
@@ -273,7 +275,7 @@ public class Main extends JavaPlugin {
 
   public void saveGuildstatus() {
     try {
-      Main.getInstance().guildstatusconfig.save(Main.getInstance().guildstatus);
+      Main.getInstance().guildStatusConfig.save(Main.getInstance().guildstatus);
     } catch (IOException e) {
       getLogger().log(Level.WARNING, "Could not create Guild's Status config!");
       e.printStackTrace();
@@ -282,7 +284,7 @@ public class Main extends JavaPlugin {
 
   public void saveGuildtiers() {
     try {
-      Main.getInstance().guildtiersconfig.save(Main.getInstance().guildtiers);
+      Main.getInstance().guildTiersConfig.save(Main.getInstance().guildtiers);
     } catch (IOException e) {
       getLogger().log(Level.WARNING, "Could not create Guild's Tier config!");
       e.printStackTrace();

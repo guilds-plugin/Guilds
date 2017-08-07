@@ -44,7 +44,7 @@ public class CommandHome extends CommandBase implements Listener {
       return;
     }
     int cooldownTime = Main.getInstance().getConfig().getInt("home.cool-down");
-    if (Main.getInstance().guildhomesconfig
+    if (Main.getInstance().guildHomesConfig
         .getString(Guild.getGuild(player.getUniqueId()).getName()) == null) {
       Message.sendMessage(player, Message.COMMAND_ERROR_NO_HOME_SET);
       return;
@@ -100,7 +100,7 @@ public class CommandHome extends CommandBase implements Listener {
           }
 
         } else {
-          String[] data = Main.getInstance().guildhomesconfig
+          String[] data = Main.getInstance().guildHomesConfig
               .getString(Guild.getGuild(player.getUniqueId()).getName()).split(":");
           World w = Bukkit.getWorld(data[0]);
           double x = Double.parseDouble(data[1]);

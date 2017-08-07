@@ -83,7 +83,7 @@ public class CommandSetHome extends CommandBase {
         float yaw = player.getLocation().getYaw();
         float pitch = player.getLocation().getPitch();
 
-        Main.getInstance().guildhomesconfig
+        Main.getInstance().guildHomesConfig
             .set(Guild.getGuild(player.getUniqueId()).getName(),
                 world + ":" + xloc + ":" + yloc + ":" + zloc + ":" + yaw + ":" + pitch);
         Main.getInstance().saveGuildhomes();

@@ -33,7 +33,7 @@ public class CommandStatus extends CommandBase {
 
       String status = args[0];
 
-      Main.getInstance().guildstatusconfig
+      Main.getInstance().guildStatusConfig
           .set(Guild.getGuild(player.getUniqueId()).getName(),
               status);
 

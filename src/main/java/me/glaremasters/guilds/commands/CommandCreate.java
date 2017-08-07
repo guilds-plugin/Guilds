@@ -86,8 +86,8 @@ public class CommandCreate extends CommandBase {
 
             Main.getInstance().getScoreboardHandler().update();
             Main.getInstance().getScoreboardHandler().show(player);
-            Main.getInstance().guildstatusconfig.set(guild.getName(), "Private");
-            Main.getInstance().guildtiersconfig.set(guild.getName(), 1);
+            Main.getInstance().guildStatusConfig.set(guild.getName(), "Private");
+            Main.getInstance().guildTiersConfig.set(guild.getName(), 1);
             Main.getInstance().saveGuildstatus();
             Main.getInstance().saveGuildtiers();
             String name =

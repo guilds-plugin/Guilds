@@ -59,7 +59,7 @@ public class CommandUpgrade extends CommandBase {
       @Override
       public void accept() {
         Message.sendMessage(player, Message.COMMAND_UPGRADE_SUCCESS);
-        Main.getInstance().guildtiersconfig.set(guild.getName(), tier + 1);
+        Main.getInstance().guildTiersConfig.set(guild.getName(), tier + 1);
         Main.getInstance().saveGuildtiers();
         EconomyResponse response =
             Main.getInstance().getEconomy().withdrawPlayer(player, tierUpgradeCost);
