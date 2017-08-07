@@ -216,16 +216,16 @@ reward-on-kill:
 # This section of the config will talk about various parts of upgrading a guild and allow you to choose how it works.
 
 tier1:
-  cost: 100
-  max-members: 30
+  cost: 0
+  max-members: 15
 
 tier2:
   cost: 200
-  max-members: 60
+  max-members: 30
 
 tier3:
   cost: 300
-  max-members: 90
+  max-members: 50
 
 
 #-----------------------------------------------------------#
