@@ -109,6 +109,9 @@ public class Guild implements InventoryHolder {
   }
 
   public int getTierCost() {
+    if (getTier() >= 3) {
+      return 0;
+    }
     int upgradeTier = getTier() + 1;
     return Main.getInstance().getConfig().getInt("tier" + upgradeTier + ".cost");
   }

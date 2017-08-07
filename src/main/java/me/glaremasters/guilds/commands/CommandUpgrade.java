@@ -38,6 +38,7 @@ public class CommandUpgrade extends CommandBase {
 
     if (guild.getTier() >= 3) {
       Message.sendMessage(player, Message.COMMAND_UPGRADE_TIER_MAX);
+      return;
     }
 
     double tierUpgradeCost = guild.getTierCost();
