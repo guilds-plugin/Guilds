@@ -21,7 +21,14 @@ public class CommandUpgrade extends CommandBase {
 
   @Override
   public void execute(Player player, String[] args) {
+
     Guild guild = Guild.getGuild(player.getUniqueId());
+
+    if (guild == null) {
+      Message.sendMessage(player, Message.COMMAND_ERROR_NO_GUILD);
+      return;
+    }
+
     int tier = guild.getTier();
     GuildRole role = GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole());
     if (!role.canUpgradeGuild()) {
