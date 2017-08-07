@@ -21,6 +21,7 @@ import me.glaremasters.guilds.listeners.GuildDamageListener;
 import me.glaremasters.guilds.listeners.GuildVaultListener;
 import me.glaremasters.guilds.listeners.JoinListener;
 import me.glaremasters.guilds.listeners.PlayerDamangeListener;
+import me.glaremasters.guilds.listeners.PlayerDeathListener;
 import me.glaremasters.guilds.listeners.SignListener;
 import me.glaremasters.guilds.listeners.TablistListener;
 import me.glaremasters.guilds.placeholders.Placeholders;
@@ -41,7 +42,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.logging.Level;
+
 public class Main extends JavaPlugin {
+
   public static String PREFIX;
   public static boolean vault;
   private static Main instance;
@@ -157,6 +160,7 @@ public class Main extends JavaPlugin {
         new GuildVaultListener(),
         new GuildBuffListener(),
         new GuildChatListener()
+
     ).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
 
     if (getConfig().getBoolean("guild-signs")) {
@@ -169,6 +173,11 @@ public class Main extends JavaPlugin {
     if (getConfig().getBoolean("allow-guild-damage")) {
       getServer().getPluginManager().registerEvents(new GuildDamageListener(), this);
     }
+
+    if (getConfig().getBoolean("reward-on-kill.enabled")) {
+      getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
+    }
+
     vault = setupEconomy();
 
     if (!vault) {
@@ -215,7 +224,7 @@ public class Main extends JavaPlugin {
           .scheduleAsyncRepeatingTask(this, this::sendUpdate, 0L, 5000L); //5 minutes
     }
 
-    if (!getConfig().isSet("version") || getConfig().getInt("version") != 8) {
+    if (!getConfig().isSet("version") || getConfig().getInt("version") != 9) {
       File oldfile = new File(this.getDataFolder(), "config.yml");
       File newfile = new File(this.getDataFolder(), "config-old.yml");
       File dir = new File(this.getDataFolder(), "languages");

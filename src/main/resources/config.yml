@@ -12,7 +12,7 @@
 #-----------------------------------------------------------#
 
 # DO NOT CHANGE THIS
-version: 8
+version: 9
 
 #-----------------------------------------------------------#
 #                     CHOOSE YOUR LANGUAGE                  #
@@ -202,6 +202,10 @@ require-money: false
 #Requirement:
 #  cost: 100
 #  sethome-cost: 100
+
+reward-on-kill:
+  enabled: true
+  reward: 10
 
 #-----------------------------------------------------------#
 #                     Community Server List                 #
