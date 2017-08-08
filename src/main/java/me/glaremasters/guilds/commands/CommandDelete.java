@@ -7,6 +7,7 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.message.Message;
 import me.glaremasters.guilds.util.ConfirmAction;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.logging.Level;
@@ -61,6 +62,12 @@ public class CommandDelete extends CommandBase {
             }
           }
         });
+
+        String name = Main.getInstance().getConfig().getBoolean("tablist-use-display-name") ? player
+            .getDisplayName() : player.getName();
+        player.setPlayerListName(
+            ChatColor.translateAlternateColorCodes('&',
+                name));
 
         Main.getInstance().getCommandHandler().removeAction(player);
       }
