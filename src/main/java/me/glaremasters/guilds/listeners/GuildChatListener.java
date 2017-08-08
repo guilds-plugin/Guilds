@@ -35,7 +35,6 @@ public class GuildChatListener implements Listener {
           (Main.getInstance().getConfig().getString("guild-chat-format"))
               .replace("{role}", GuildRole
                   .getRole(guild.getMember(player.getUniqueId()).getRole()).getName())));
-      event.setCancelled(true);
     }
 
   }
