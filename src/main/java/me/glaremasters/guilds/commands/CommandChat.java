@@ -12,7 +12,7 @@ public class CommandChat extends CommandBase {
 
   public CommandChat() {
     super("chat", "Send a message to your guild members", "guilds.command.chat", false,
-        new String[]{"c"}, "<message>", 0, 1);
+        new String[]{"c"}, "<message>", 0, 100);
   }
 
   public void execute(Player player, String[] args) {
