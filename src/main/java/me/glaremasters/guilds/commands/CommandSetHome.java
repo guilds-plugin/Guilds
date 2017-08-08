@@ -86,7 +86,7 @@ public class CommandSetHome extends CommandBase {
         Main.getInstance().guildHomesConfig
             .set(Guild.getGuild(player.getUniqueId()).getName(),
                 world + ":" + xloc + ":" + yloc + ":" + zloc + ":" + yaw + ":" + pitch);
-        Main.getInstance().saveGuildhomes();
+        Main.getInstance().saveGuildHomes();
         Message.sendMessage(player, Message.COMMAND_CREATE_GUILD_HOME);
         cooldowns.put(player.getName(), System.currentTimeMillis());
 

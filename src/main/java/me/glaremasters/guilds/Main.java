@@ -106,6 +106,18 @@ public class Main extends JavaPlugin {
 
     setDatabaseType();
 
+    if (!getConfig().isSet("version") || getConfig().getInt("version") != 9) {
+      File oldfile = new File(this.getDataFolder(), "config.yml");
+      File newfile = new File(this.getDataFolder(), "config-old.yml");
+      File dir = new File(this.getDataFolder(), "languages");
+      File olddir = new File(this.getDataFolder(), "old-languages");
+      dir.renameTo(olddir);
+      oldfile.renameTo(newfile);
+    }
+
+    this.saveDefaultConfig();
+    getConfig().options().copyDefaults(true);
+
     guildHandler = new GuildHandler();
     guildHandler.enable();
 
@@ -199,9 +211,9 @@ public class Main extends JavaPlugin {
       }
     });
 
-    this.saveGuildhomes();
-    this.saveGuildstatus();
-    this.saveGuildtiers();
+    this.saveGuildHomes();
+    this.saveGuildStatus();
+    this.saveGuildTiers();
 
     try {
       BasicFileAttributes attr = Files
@@ -231,20 +243,12 @@ public class Main extends JavaPlugin {
           .scheduleAsyncRepeatingTask(this, this::sendUpdate, 0L, 5000L); //5 minutes
     }
 
-    if (!getConfig().isSet("version") || getConfig().getInt("version") != 9) {
-      File oldfile = new File(this.getDataFolder(), "config.yml");
-      File newfile = new File(this.getDataFolder(), "config-old.yml");
-      File dir = new File(this.getDataFolder(), "languages");
-      File olddir = new File(this.getDataFolder(), "old-languages");
-      dir.renameTo(olddir);
-      oldfile.renameTo(newfile);
-    }
 
-    this.saveDefaultConfig();
 
     if (languageYamlFile.exists()) {
       return;
     } else {
+
       this.saveResource("languages/english.yml", false);
       this.saveResource("languages/chinese.yml", false);
       this.saveResource("languages/french.yml", false);
@@ -265,7 +269,7 @@ public class Main extends JavaPlugin {
 
   }
 
-  public void saveGuildhomes() {
+  public void saveGuildHomes() {
     try {
       Main.getInstance().guildHomesConfig.save(Main.getInstance().guildhomes);
     } catch (IOException e) {
@@ -274,7 +278,7 @@ public class Main extends JavaPlugin {
     }
   }
 
-  public void saveGuildstatus() {
+  public void saveGuildStatus() {
     try {
       Main.getInstance().guildStatusConfig.save(Main.getInstance().guildstatus);
     } catch (IOException e) {
@@ -283,7 +287,7 @@ public class Main extends JavaPlugin {
     }
   }
 
-  public void saveGuildtiers() {
+  public void saveGuildTiers() {
     try {
       Main.getInstance().guildTiersConfig.save(Main.getInstance().guildtiers);
     } catch (IOException e) {

@@ -38,7 +38,7 @@ public class CommandStatus extends CommandBase {
               status);
 
       Message.sendMessage(player, Message.COMMAND_STATUS_SUCCESSFUL.replace("{status}", status));
-      Main.getInstance().saveGuildstatus();
+      Main.getInstance().saveGuildStatus();
     }
   }
 }

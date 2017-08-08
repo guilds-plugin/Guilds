@@ -88,8 +88,8 @@ public class CommandCreate extends CommandBase {
             Main.getInstance().getScoreboardHandler().show(player);
             Main.getInstance().guildStatusConfig.set(guild.getName(), "Private");
             Main.getInstance().guildTiersConfig.set(guild.getName(), 1);
-            Main.getInstance().saveGuildstatus();
-            Main.getInstance().saveGuildtiers();
+            Main.getInstance().saveGuildStatus();
+            Main.getInstance().saveGuildTiers();
             String name =
                 Main.getInstance().getConfig().getBoolean("tablist-use-display-name") ? player
                     .getDisplayName() : player.getName();
