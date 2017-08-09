@@ -382,8 +382,7 @@ public class Main extends JavaPlugin {
         conn.getResponseCode();
       }
     } catch (Exception ex) {
-      getLogger()
-          .log(Level.SEVERE, "Cannot sent request to server list! Serverlist must be down!");
+      return;
     }
   }
 
