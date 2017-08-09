@@ -21,7 +21,7 @@ import me.glaremasters.guilds.listeners.GuildDamageListener;
 import me.glaremasters.guilds.listeners.GuildVaultListener;
 import me.glaremasters.guilds.listeners.JoinListener;
 import me.glaremasters.guilds.listeners.MobDeathListner;
-import me.glaremasters.guilds.listeners.PlayerDamangeListener;
+import me.glaremasters.guilds.listeners.PlayerDamageListener;
 import me.glaremasters.guilds.listeners.PlayerDeathListener;
 import me.glaremasters.guilds.listeners.SignListener;
 import me.glaremasters.guilds.listeners.TablistListener;
@@ -106,7 +106,7 @@ public class Main extends JavaPlugin {
 
     setDatabaseType();
 
-    if (!getConfig().isSet("version") || getConfig().getInt("version") != 9) {
+    if (!getConfig().isSet("version") || getConfig().getInt("version") != 10) {
       File oldfile = new File(this.getDataFolder(), "config.yml");
       File newfile = new File(this.getDataFolder(), "config-old.yml");
       File dir = new File(this.getDataFolder(), "languages");
@@ -170,7 +170,6 @@ public class Main extends JavaPlugin {
 
     Stream.of(
         new JoinListener(),
-        new PlayerDamangeListener(),
         new ChatListener(),
         new CommandHome(),
         new ClickListener(),
@@ -190,6 +189,10 @@ public class Main extends JavaPlugin {
 
     if (getConfig().getBoolean("allow-guild-damage")) {
       getServer().getPluginManager().registerEvents(new GuildDamageListener(), this);
+    }
+
+    if (getConfig().getBoolean("allow-ally-damage")) {
+      getServer().getPluginManager().registerEvents(new PlayerDamageListener(), this);
     }
 
     if (getConfig().getBoolean("reward-on-kill.enabled")) {
