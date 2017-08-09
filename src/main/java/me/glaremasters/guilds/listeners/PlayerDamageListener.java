@@ -19,7 +19,7 @@ public class PlayerDamageListener implements Listener {
     Player damager = (Player) e.getDamager();
 
     if (Guild.areAllies(player.getUniqueId(), damager.getUniqueId())) {
-      e.setCancelled(true);
+      e.setCancelled(false);
     }
   }
 }

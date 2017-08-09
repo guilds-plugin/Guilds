@@ -26,7 +26,7 @@ public class GuildDamageListener implements Listener {
     }
 
     if (guild.equals(guild2)) {
-      e.setCancelled(true);
+      e.setCancelled(false);
     }
   }
 
