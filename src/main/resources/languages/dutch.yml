@@ -23,6 +23,7 @@ messages:
       money-warning: "&cYou are about to spend {amount} to set upgrade your guild. (Type /guilds confirm to continue)"
       cancel: "&cUpgrade cancelled!"
       success: "&aYou've successfully upgraded your guild!"
+      not-enough-money: "&aSorry! You don't have enough money to upgrade your Guild!"
     buff:
       not-enough-money: "&cYou do not have enough money to buy this buff!"
     transfer:

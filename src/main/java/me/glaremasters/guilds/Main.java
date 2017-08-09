@@ -176,7 +176,9 @@ public class Main extends JavaPlugin {
         new GuildVaultListener(),
         new GuildBuffListener(),
         new GuildChatListener(),
-        new MobDeathListner()
+        new MobDeathListner(),
+        new GuildDamageListener(),
+        new PlayerDamageListener()
 
     ).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
 
@@ -185,14 +187,6 @@ public class Main extends JavaPlugin {
     }
     if (getConfig().getBoolean("tablist-guilds")) {
       getServer().getPluginManager().registerEvents(new TablistListener(), this);
-    }
-
-    if (getConfig().getBoolean("allow-guild-damage")) {
-      getServer().getPluginManager().registerEvents(new GuildDamageListener(), this);
-    }
-
-    if (getConfig().getBoolean("allow-ally-damage")) {
-      getServer().getPluginManager().registerEvents(new PlayerDamageListener(), this);
     }
 
     if (getConfig().getBoolean("reward-on-kill.enabled")) {
@@ -245,8 +239,6 @@ public class Main extends JavaPlugin {
       getServer().getScheduler()
           .scheduleAsyncRepeatingTask(this, this::sendUpdate, 0L, 5000L); //5 minutes
     }
-
-
 
     if (languageYamlFile.exists()) {
       return;

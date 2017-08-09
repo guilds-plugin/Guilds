@@ -19,6 +19,12 @@ messages:
       player-not-in-guild: "&cDer Spieler '{player}' ist nicht in deiner Gilde!"
       role-no-permission: "&cDeine Rolle ist nicht hoch genug, um das zu tun!"
       sethome-cooldown: "&cDu kannst dein Gildenzuhause nicht für weitere {time} Sekunden festlegen!"
+    upgrade:
+      tier-max: "&cCannot upgrade again! You're already maxed!"
+      money-warning: "&cYou are about to spend {amount} to set upgrade your guild. (Type /guilds confirm to continue)"
+      cancel: "&cUpgrade cancelled!"
+      success: "&aYou've successfully upgraded your guild!"
+      not-enough-money: "&aSorry! You don't have enough money to upgrade your Guild!"
     buff:
       not-enough-money: "&cDu hast nicht genug Geld, um diesen Buff zu kaufen!"
     transfer:

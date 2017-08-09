@@ -1,5 +1,6 @@
 package me.glaremasters.guilds.listeners;
 
+import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.guild.Guild;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -26,7 +27,11 @@ public class GuildDamageListener implements Listener {
     }
 
     if (guild.equals(guild2)) {
-      e.setCancelled(false);
+      if (Main.getInstance().getConfig().getBoolean("allow-guild-damage")) {
+        e.setCancelled(false);
+      } else {
+        e.setCancelled(true);
+      }
     }
   }
 

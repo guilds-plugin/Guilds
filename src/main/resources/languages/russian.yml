@@ -20,10 +20,11 @@ messages:
       role-no-permission: "&cВаш ранг слишком мал для этого."
       sethome-cooldown: "&cВы не сможете установить дом гильдии на протяжении {time} секунд."
     upgrade:
-      tier-max: "&cCannot upgrade again! You're already maxed!"
-      money-warning: "&cYou are about to spend {amount} to set upgrade your guild. (Type /guilds confirm to continue)"
-      cancel: "&cUpgrade cancelled!"
-      success: "&aYou've successfully upgraded your guild!"
+      tier-max: "&cМаксимальный уровень гильдии."
+      money-warning: "&cСтоимость повышения уровня гильдии: {amount}. (Напишите /guild confirm для подтверждения)"
+      cancel: "&cУровень гильдии не повышен."
+      success: "&aУровень гильдии повышен."
+      not-enough-money: "&aSorry! You don't have enough money to upgrade your Guild!"
     buff:
       not-enough-money: "&cУ Вас недостаточно денег для покупки баффа"
     transfer:
@@ -79,7 +80,7 @@ messages:
       disabled: "&cЧат гильдии выключен."
     accept:
       guild-full: "&cВ гильдии достигнут лимит свободных мест."
-      not-invited: "&cЭта гильдия приватная. Вы не можете приглашать людей."
+      not-invited: "&cЭта гильдия приватная. Вы не можете присоединиться к гильдии."
       player-joined: "&aИгрок '{player}' присоединился к гильдии."
       successful: "&aВы присоединились к гильдии '{guild}'."
     invite:

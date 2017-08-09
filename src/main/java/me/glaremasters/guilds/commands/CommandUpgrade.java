@@ -64,7 +64,7 @@ public class CommandUpgrade extends CommandBase {
         EconomyResponse response =
             Main.getInstance().getEconomy().withdrawPlayer(player, tierUpgradeCost);
         if (!response.transactionSuccess()) {
-          Message.sendMessage(player, Message.COMMAND_ERROR_NOT_ENOUGH_MONEY);
+          Message.sendMessage(player, Message.COMMAND_UPGRADE_NOT_ENOUGH_MONEY);
           return;
         }
       }

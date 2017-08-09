@@ -1,5 +1,6 @@
 package me.glaremasters.guilds.listeners;
 
+import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.guild.Guild;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,7 +20,11 @@ public class PlayerDamageListener implements Listener {
     Player damager = (Player) e.getDamager();
 
     if (Guild.areAllies(player.getUniqueId(), damager.getUniqueId())) {
-      e.setCancelled(false);
+      if (Main.getInstance().getConfig().getBoolean("allow-ally-damage")) {
+        e.setCancelled(false);
+      } else {
+        e.setCancelled(true);
+      }
     }
   }
 }
