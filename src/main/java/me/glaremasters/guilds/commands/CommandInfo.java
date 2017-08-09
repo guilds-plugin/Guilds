@@ -68,7 +68,8 @@ public class CommandInfo extends CommandBase implements Listener {
         return;
       }
       Inventory heads = Bukkit
-          .createInventory(null, InventoryType.HOPPER, ChatColor.DARK_GREEN + "Guild Info");
+          .createInventory(null, InventoryType.HOPPER,
+              ChatColor.DARK_GREEN + Main.getInstance().getConfig().getString("gui-name.info"));
       // Skull: From player
       heads.setItem(0, createSkull(player));
 

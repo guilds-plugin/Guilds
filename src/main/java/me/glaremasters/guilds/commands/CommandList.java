@@ -33,7 +33,8 @@ public class CommandList extends CommandBase {
 
   public static Inventory getSkullsPage(int page) {
     HashMap<UUID, ItemStack> skulls = new HashMap<>();
-    Inventory inv = Bukkit.createInventory(null, 54, ChatColor.DARK_GREEN + "Guild List");
+    Inventory inv = Bukkit.createInventory(null, 54,
+        ChatColor.DARK_GREEN + Main.getInstance().getConfig().getString("gui-name.list.name"));
 
     int startIndex = 0;
     int endIndex = 0;
@@ -90,22 +91,25 @@ public class CommandList extends CommandBase {
           .setOwner(Bukkit.getOfflinePlayer(guild.getGuildMaster().getUniqueId()).getName());
       skullMeta.setDisplayName(
           ChatColor.AQUA + Bukkit.getOfflinePlayer(guild.getGuildMaster().getUniqueId())
-              .getName() + "'s Guild");
+              .getName() + Main.getInstance().getConfig().getString("gui-name.list.head-name"));
       skull.setItemMeta(skullMeta);
       skulls.put(guild.getGuildMaster().getUniqueId(), skull);
     }
 
     ItemStack previous = new ItemStack(Material.EMPTY_MAP, 1);
     ItemMeta previousMeta = previous.getItemMeta();
-    previousMeta.setDisplayName(ChatColor.GOLD + "Previous page");
+    previousMeta.setDisplayName(ChatColor.GOLD + Main.getInstance().getConfig()
+        .getString("gui-name.list.previous-page"));
     previous.setItemMeta(previousMeta);
     ItemStack next = new ItemStack(Material.EMPTY_MAP, 1);
     ItemMeta nextMeta = next.getItemMeta();
-    nextMeta.setDisplayName(ChatColor.GOLD + "Next page");
+    nextMeta.setDisplayName(ChatColor.GOLD + Main.getInstance().getConfig()
+        .getString("gui-name.list.next-page"));
     next.setItemMeta(nextMeta);
     ItemStack barrier = new ItemStack(Material.BARRIER, 1);
     ItemMeta barrierMeta = barrier.getItemMeta();
-    barrierMeta.setDisplayName(ChatColor.GOLD + "Page: " + page);
+    barrierMeta.setDisplayName(
+        ChatColor.GOLD + Main.getInstance().getConfig().getString("gui-name.list.page") + page);
     barrier.setItemMeta(barrierMeta);
     inv.setItem(53, next);
     inv.setItem(49, barrier);
