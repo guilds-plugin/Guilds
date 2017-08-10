@@ -17,7 +17,6 @@ import me.glaremasters.guilds.listeners.ChatListener;
 import me.glaremasters.guilds.listeners.ClickListener;
 import me.glaremasters.guilds.listeners.GuildBuffListener;
 import me.glaremasters.guilds.listeners.GuildChatListener;
-import me.glaremasters.guilds.listeners.GuildDamageListener;
 import me.glaremasters.guilds.listeners.GuildVaultListener;
 import me.glaremasters.guilds.listeners.JoinListener;
 import me.glaremasters.guilds.listeners.MobDeathListner;
@@ -177,7 +176,6 @@ public class Main extends JavaPlugin {
         new GuildBuffListener(),
         new GuildChatListener(),
         new MobDeathListner(),
-        new GuildDamageListener(),
         new PlayerDamageListener()
 
     ).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
