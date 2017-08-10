@@ -27,11 +27,7 @@ public class GuildDamageListener implements Listener {
     }
 
     if (guild.equals(guild2)) {
-      if (Main.getInstance().getConfig().getBoolean("allow-guild-damage")) {
-        e.setCancelled(false);
-      } else {
-        e.setCancelled(true);
-      }
+      e.setCancelled(!Main.getInstance().getConfig().getBoolean("allow-guild-damage"));
     }
   }
 

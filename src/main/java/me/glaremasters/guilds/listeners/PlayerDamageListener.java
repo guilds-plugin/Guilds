@@ -20,11 +20,7 @@ public class PlayerDamageListener implements Listener {
     Player damager = (Player) e.getDamager();
 
     if (Guild.areAllies(player.getUniqueId(), damager.getUniqueId())) {
-      if (Main.getInstance().getConfig().getBoolean("allow-ally-damage")) {
-        e.setCancelled(true);
-      } else {
-        e.setCancelled(false);
-      }
+      e.setCancelled(!Main.getInstance().getConfig().getBoolean("allow-ally-damage"));
     }
   }
 }
