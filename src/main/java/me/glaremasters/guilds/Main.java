@@ -351,6 +351,7 @@ public class Main extends JavaPlugin {
 
   }
 
+
   private void sendUpdate() {
     try {
       URL url = new URL("http://glaremasters.me/add/");
