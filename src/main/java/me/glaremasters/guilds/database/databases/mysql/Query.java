@@ -23,6 +23,10 @@ class Query {
   static final String CREATE_GUILD = "INSERT INTO guilds (name, prefix) VALUES(?, ?)";
   static final String REMOVE_GUILD = "DELETE FROM guilds WHERE name=?";
 
+  static final String SELECT_ALL_GUILD_DATA = "SELECT guilds.name, guilds.prefix, " +
+          "guild_members.uuid, guild_members.role FROM guilds " +
+          "INNER JOIN guild_members ON guild_members.guild=guilds.name";
+
   static final String UPDATE_PREFIX = "UPDATE guilds SET prefix=? WHERE name=?";
 
   static final String ADD_MEMBER =

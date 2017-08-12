@@ -19,6 +19,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 
@@ -114,7 +115,6 @@ public class MySql implements DatabaseProvider {
   @Override
   public void getGuilds(Callback<HashMap<String, Guild>, Exception> callback) {
     TaskChain<?> chain = Main.newChain();
-
     chain.async(() -> {
       ResultSet resultSet = executeQuery(Query.GET_GUILDS);
       if (resultSet == null) {
@@ -160,6 +160,24 @@ public class MySql implements DatabaseProvider {
 
         chain.setTaskData("guilds", guilds);
       }
+    }).async(() -> {
+      HashMap<String, Guild> guilds = chain.getTaskData("guilds");
+      for(Map.Entry<String, Guild> entry : guilds.entrySet()) {
+        try(ResultSet res = executeQuery(Query.FIND_ALLY, entry.getKey())) {
+          if(res == null) {
+            return;
+          }
+
+          while(res.next()) {
+            String allyName = res.getString("name");
+            entry.getValue().addAlly(guilds.get(allyName));
+          }
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+      }
+      chain.removeTaskData("guilds"); // Not sure if necessary.
+      chain.setTaskData("guilds", guilds);
     }).sync(() -> callback.call(chain.getTaskData("guilds"), null))
         .execute((exception, task) -> {
           if (exception != null) {

@@ -4,7 +4,6 @@ import be.maximvdw.placeholderapi.PlaceholderAPI;
 import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
-import java.util.stream.Stream;
 import me.glaremasters.guilds.api.Metrics;
 import me.glaremasters.guilds.commands.*;
 import me.glaremasters.guilds.commands.base.CommandHandler;
@@ -13,17 +12,7 @@ import me.glaremasters.guilds.database.databases.json.Json;
 import me.glaremasters.guilds.database.databases.mysql.MySql;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.leaderboard.LeaderboardHandler;
-import me.glaremasters.guilds.listeners.ChatListener;
-import me.glaremasters.guilds.listeners.ClickListener;
-import me.glaremasters.guilds.listeners.GuildBuffListener;
-import me.glaremasters.guilds.listeners.GuildChatListener;
-import me.glaremasters.guilds.listeners.GuildVaultListener;
-import me.glaremasters.guilds.listeners.JoinListener;
-import me.glaremasters.guilds.listeners.MobDeathListner;
-import me.glaremasters.guilds.listeners.PlayerDamageListener;
-import me.glaremasters.guilds.listeners.PlayerDeathListener;
-import me.glaremasters.guilds.listeners.SignListener;
-import me.glaremasters.guilds.listeners.TablistListener;
+import me.glaremasters.guilds.listeners.*;
 import me.glaremasters.guilds.placeholders.Placeholders;
 import me.glaremasters.guilds.scoreboard.GuildScoreboardHandler;
 import me.glaremasters.guilds.updater.Updater;
@@ -42,7 +31,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.logging.Level;
+import java.util.stream.Stream;
 
+//FIXME: Rename to Guilds
 public class Main extends JavaPlugin {
 
   public static String PREFIX;
