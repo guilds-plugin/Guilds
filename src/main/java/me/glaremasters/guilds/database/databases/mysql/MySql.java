@@ -1,6 +1,5 @@
 package me.glaremasters.guilds.database.databases.mysql;
 
-import co.aikar.taskchain.TaskChain;
 import com.sun.rowset.CachedRowSetImpl;
 import com.zaxxer.hikari.HikariDataSource;
 import me.glaremasters.guilds.Main;
@@ -114,11 +113,11 @@ public class MySql implements DatabaseProvider {
 
     @Override
     public void getGuilds(Callback<HashMap<String, Guild>, Exception> callback) {
-        TaskChain<?> chain = Main.newChain();
-        chain.async(() -> {
+//        TaskChain<?> chain = Main.newChain();
+        Main.newChain().asyncFirst(() -> {
             ResultSet resultSet = executeQuery(Query.GET_GUILDS);
             if (resultSet == null) {
-                return;
+                return null;
             }
 
             HashMap<String, String> guildData = new HashMap<>();
@@ -130,22 +129,21 @@ public class MySql implements DatabaseProvider {
                 SneakyThrow.sneaky(ex);
             }
 
-            chain.setTaskData("guild_data", guildData);
-        }).async(() -> {
+            return guildData;
+        }).abortIfNull().async(data -> {
             HashMap<String, Guild> guilds = new HashMap<>();
-            HashMap<String, String> guildData = chain.getTaskData("guild_data");
 
-            for (String name : guildData.keySet()) {
+            for (String name : data.keySet()) {
                 ResultSet resultSet = executeQuery(Query.GET_GUILD_MEMBERS, name);
 
                 if (resultSet == null) {
-                    return;
+                    return null;
                 }
 
                 try {
                     while (resultSet.next()) {
                         Guild guild = new Guild(name);
-                        guild.setPrefix(guildData.get(name));
+                        guild.setPrefix(data.get(name));
 
                         UUID uuid = UUID.fromString(resultSet.getString("uuid"));
                         GuildRole role = GuildRole.getRole(resultSet.getInt("role"));
@@ -158,14 +156,14 @@ public class MySql implements DatabaseProvider {
                     SneakyThrow.sneaky(ex);
                 }
 
-                chain.setTaskData("guilds", guilds);
             }
-        }).async(() -> {
-            HashMap<String, Guild> guilds = chain.getTaskData("guilds");
+            return guilds;
+        }).abortIfNull().async(guilds -> {
+//            HashMap<String, Guild> guilds = chain.getTaskData("guilds");
             for (Map.Entry<String, Guild> entry : guilds.entrySet()) {
                 try (ResultSet res = executeQuery(Query.FIND_ALLY, entry.getKey())) {
                     if (res == null) {
-                        return;
+                        return null;
                     }
 
                     while (res.next()) {
@@ -176,9 +174,8 @@ public class MySql implements DatabaseProvider {
                     e.printStackTrace();
                 }
             }
-            chain.removeTaskData("guilds"); // Not sure if necessary.
-            chain.setTaskData("guilds", guilds);
-        }).sync(() -> callback.call(chain.getTaskData("guilds"), null))
+            return guilds;
+        }).abortIfNull().syncLast(data -> callback.call(data, null))
                 .execute((exception, task) -> {
                     if (exception != null) {
                         callback.call(null, exception);
