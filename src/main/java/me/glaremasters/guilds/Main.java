@@ -1,9 +1,6 @@
 package me.glaremasters.guilds;
 
 import be.maximvdw.placeholderapi.PlaceholderAPI;
-import co.aikar.commands.BukkitCommandManager;
-import co.aikar.commands.CommandManager;
-import co.aikar.commands.InvalidCommandArgument;
 import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
@@ -13,19 +10,15 @@ import me.glaremasters.guilds.commands.base.CommandHandler;
 import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.database.databases.json.Json;
 import me.glaremasters.guilds.database.databases.mysql.MySql;
-import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.leaderboard.LeaderboardHandler;
 import me.glaremasters.guilds.listeners.*;
 import me.glaremasters.guilds.placeholders.Placeholders;
 import me.glaremasters.guilds.scoreboard.GuildScoreboardHandler;
 import me.glaremasters.guilds.updater.Updater;
-import me.glaremasters.guilds.util.ConfirmAction;
-import me.glaremasters.guilds.util.GuildMessageKeys;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -37,8 +30,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.stream.Stream;
 
@@ -67,9 +58,9 @@ public class Main extends JavaPlugin {
     private CommandHandler commandHandler;
     private LeaderboardHandler leaderboardHandler;
     private GuildScoreboardHandler scoreboardHandler;
-    private CommandManager commandManager;
+//    private CommandManager commandManager;
 
-    private Map<CommandSender, ConfirmAction> confirmationActions = new HashMap<>();
+//    private Map<CommandSender, ConfirmAction> confirmationActions = new HashMap<>();
 
     public static <T> TaskChain<T> newChain() {
         return taskChainFactory.newChain();
@@ -79,9 +70,9 @@ public class Main extends JavaPlugin {
         return taskChainFactory.newSharedChain(name);
     }
 
-    public CommandManager getCommandManager() {
-        return commandManager;
-    }
+//    public CommandManager getCommandManager() {
+//        return commandManager;
+//    }
 
     public static long getCreationTime() {
         return creationTime / 1000;
@@ -94,27 +85,28 @@ public class Main extends JavaPlugin {
     @SuppressWarnings("deprecation")
     @Override
     public void onEnable() {
-        commandManager = new BukkitCommandManager(this);
-
-        commandManager.getCommandContexts().registerContext(Guild.class, c -> {
-            String arg = c.popFirstArg();
-            Guild guild = Guild.getGuild(arg);
-            if (guild == null) {
-                throw new InvalidCommandArgument(GuildMessageKeys.INVALID_GUILD_NAME, "{name}", arg);
-            }
-            return guild;
-        });
-
-        commandManager.getCommandContexts().registerIssuerAwareContext(ConfirmAction.class, c -> {
-            CommandSender issuer = c.getIssuer().getIssuer();
-            ConfirmAction action = confirmationActions.remove(issuer);
-            if(action == null) {
-                throw new InvalidCommandArgument(GuildMessageKeys.NO_QUEUED_ACTION);
-            }
-            return action;
-        });
-
-        commandManager.registerCommand(new GuildsCommands());
+        // Not working at all
+//        commandManager = new BukkitCommandManager(this);
+//
+//        commandManager.getCommandContexts().registerContext(Guild.class, c -> {
+//            String arg = c.popFirstArg();
+//            Guild guild = Guild.getGuild(arg);
+//            if (guild == null) {
+//                throw new InvalidCommandArgument(GuildMessageKeys.INVALID_GUILD_NAME, "{name}", arg);
+//            }
+//            return guild;
+//        });
+//
+//        commandManager.getCommandContexts().registerIssuerAwareContext(ConfirmAction.class, c -> {
+//            CommandSender issuer = c.getIssuer().getIssuer();
+//            ConfirmAction action = confirmationActions.remove(issuer);
+//            if(action == null) {
+//                throw new InvalidCommandArgument(GuildMessageKeys.NO_QUEUED_ACTION);
+//            }
+//            return action;
+//        });
+//
+//        commandManager.registerCommand(new GuildsCommands());
 
         File languageFolder = new File(getDataFolder(), "languages");
         if (!languageFolder.exists()) {
@@ -154,7 +146,7 @@ public class Main extends JavaPlugin {
 
         initializePlaceholder();
 
-//        getCommand("guild").setExecutor(commandHandler);
+        getCommand("guild").setExecutor(commandHandler);
 
         Stream.of(
                 new CommandAccept(),
@@ -286,9 +278,9 @@ public class Main extends JavaPlugin {
 
     }
 
-    public void queueConfirmationAction(CommandSender sender, ConfirmAction action) {
-        confirmationActions.put(sender, action);
-    }
+//    public void queueConfirmationAction(CommandSender sender, ConfirmAction action) {
+//        confirmationActions.put(sender, action);
+//    }
 
     public void saveGuildHomes() {
         try {
