@@ -51,6 +51,7 @@ public class MySql implements DatabaseProvider {
 
     Main.newChain().async(() -> execute(Query.CREATE_TABLE_GUILDS))
         .async(() -> execute(Query.CREATE_TABLE_MEMBERS))
+        .async(() -> execute(Query.CREATE_TABLE_ALLIES))
         .async(() -> execute(Query.CREATE_TABLE_INVITED_MEMBERS)).sync(
         () -> Main.getInstance().getLogger()
             .log(Level.INFO, "Tables 'guilds', 'members' and 'invited_members' created!"))

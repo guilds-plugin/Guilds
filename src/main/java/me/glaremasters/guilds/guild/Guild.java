@@ -314,7 +314,9 @@ public class Guild implements InventoryHolder {
 
   public void addGuildAlly(Guild targetGuild) {
     Main.getInstance().getDatabaseProvider().addAlly(this, targetGuild, (res, ex) -> {
-      // TODO
+      if(!res) {
+        ex.printStackTrace();
+      }
     });
   }
 
