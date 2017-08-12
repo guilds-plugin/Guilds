@@ -154,7 +154,7 @@ public class Main extends JavaPlugin {
 
         initializePlaceholder();
 
-        getCommand("guild").setExecutor(commandHandler);
+//        getCommand("guild").setExecutor(commandHandler);
 
         Stream.of(
                 new CommandAccept(),
