@@ -11,13 +11,15 @@ public class LeaderboardHandler implements IHandler {
 
     private List<Leaderboard> leaderboards;
 
-    @Override public void enable() {
+    @Override
+    public void enable() {
         leaderboards = new ArrayList<>();
 
         initialize();
     }
 
-    @Override public void disable() {
+    @Override
+    public void disable() {
         leaderboards.clear();
         leaderboards = null;
     }
@@ -26,7 +28,7 @@ public class LeaderboardHandler implements IHandler {
         Main.getInstance().getDatabaseProvider().getLeaderboards((result, exception) -> {
             if (result == null && exception != null) {
                 Main.getInstance().getLogger()
-                    .log(Level.SEVERE, "An error occurred while loading leaderboards");
+                        .log(Level.SEVERE, "An error occurred while loading leaderboards");
                 exception.printStackTrace();
                 return;
             }
@@ -51,6 +53,6 @@ public class LeaderboardHandler implements IHandler {
 
     public Leaderboard getLeaderboard(String name, Leaderboard.LeaderboardType leaderboardType) {
         return leaderboards.stream().filter(leaderboard -> leaderboard.getName().equals(name)
-            && leaderboard.getLeaderboardType() == leaderboardType).findFirst().orElse(null);
+                && leaderboard.getLeaderboardType() == leaderboardType).findFirst().orElse(null);
     }
 }

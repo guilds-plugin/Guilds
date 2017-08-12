@@ -29,10 +29,10 @@ public class Either<E extends Exception, R> {
     }
 
     public void fold(Consumer<E> right, Consumer<R> result) {
-        if(this.error != null) {
+        if (this.error != null) {
             right.accept(error);
         }
-        if(this.result != null) {
+        if (this.result != null) {
             result.accept(this.result);
         }
     }

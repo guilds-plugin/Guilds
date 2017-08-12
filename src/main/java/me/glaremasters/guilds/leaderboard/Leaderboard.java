@@ -15,11 +15,14 @@ import java.util.logging.Level;
 
 public abstract class Leaderboard {
 
-    @Expose private String name;
+    @Expose
+    private String name;
 
-    @Expose private LeaderboardType leaderboardType;
+    @Expose
+    private LeaderboardType leaderboardType;
 
-    @Expose private SortType sortType;
+    @Expose
+    private SortType sortType;
 
     private List<Score> scores;
 
@@ -28,7 +31,7 @@ public abstract class Leaderboard {
     }
 
     public Leaderboard(String name, LeaderboardType leaderboardType, SortType sortType,
-        List<Score> scores) {
+                       List<Score> scores) {
         this.name = name;
         this.leaderboardType = leaderboardType;
         this.sortType = sortType;
@@ -61,7 +64,7 @@ public abstract class Leaderboard {
 
     public void addScore(Score score) {
         scores.stream().filter(s -> s.getOwner().equals(score.getOwner()))
-            .forEach(s -> scores.remove(score));
+                .forEach(s -> scores.remove(score));
 
         for (int i = 0; i < scores.size(); i++) {
             Score s = scores.get(i);
@@ -75,7 +78,7 @@ public abstract class Leaderboard {
         Main.getInstance().getDatabaseProvider().updateLeaderboard(this, (result, exception) -> {
             if (!result && exception != null) {
                 Main.getInstance().getLogger().log(Level.SEVERE,
-                    "Something went wrong while saving score for leaderboard " + this.name);
+                        "Something went wrong while saving score for leaderboard " + this.name);
                 exception.printStackTrace();
             }
         });
@@ -87,7 +90,7 @@ public abstract class Leaderboard {
         Main.getInstance().getDatabaseProvider().updateLeaderboard(this, (result, exception) -> {
             if (!result && exception != null) {
                 Main.getInstance().getLogger().log(Level.SEVERE,
-                    "Something went wrong while removing score from leaderboard " + this.name);
+                        "Something went wrong while removing score from leaderboard " + this.name);
                 exception.printStackTrace();
             }
         });
@@ -99,7 +102,7 @@ public abstract class Leaderboard {
         Main.getInstance().getDatabaseProvider().updateLeaderboard(this, (result, exception) -> {
             if (!result && exception != null) {
                 Main.getInstance().getLogger().log(Level.SEVERE,
-                    "Something went wrong while removing score from leaderboard " + this.name);
+                        "Something went wrong while removing score from leaderboard " + this.name);
                 exception.printStackTrace();
             }
         });
@@ -111,7 +114,7 @@ public abstract class Leaderboard {
         Main.getInstance().getDatabaseProvider().updateLeaderboard(this, (result, exception) -> {
             if (!result && exception != null) {
                 Main.getInstance().getLogger().log(Level.SEVERE,
-                    "Something went wrong while removing score from leaderboard " + this.name);
+                        "Something went wrong while removing score from leaderboard " + this.name);
                 exception.printStackTrace();
             }
         });
@@ -134,15 +137,16 @@ public abstract class Leaderboard {
 
             if (leaderboardType == LeaderboardType.PLAYER) {
                 sender.sendMessage(String.format("%d. %s - %d", i + 1,
-                    Bukkit.getPlayer(UUID.fromString(score.getOwner())), score.getValue()));
+                        Bukkit.getPlayer(UUID.fromString(score.getOwner())), score.getValue()));
             } else if (leaderboardType == LeaderboardType.GUILD) {
                 sender.sendMessage(
-                    String.format("%d. %s - %d", i + 1, score.getOwner(), score.getValue()));
+                        String.format("%d. %s - %d", i + 1, score.getOwner(), score.getValue()));
             }
         }
     }
 
-    @SuppressWarnings("unused") public enum LeaderboardType {
+    @SuppressWarnings("unused")
+    public enum LeaderboardType {
         @SerializedName("PLAYER")
         PLAYER,
 
@@ -151,7 +155,8 @@ public abstract class Leaderboard {
     }
 
 
-    @SuppressWarnings("unused") public enum SortType {
+    @SuppressWarnings("unused")
+    public enum SortType {
         @SerializedName("ASCENDING")
         ASCENDING,
 
