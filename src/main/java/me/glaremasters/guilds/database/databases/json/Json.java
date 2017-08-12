@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 //TODO handle exceptions
-public class Json extends DatabaseProvider {
+public class Json implements DatabaseProvider {
 
   private Gson gson;
   private File guildsFile;

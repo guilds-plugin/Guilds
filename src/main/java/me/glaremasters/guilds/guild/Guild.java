@@ -1,13 +1,6 @@
 package me.glaremasters.guilds.guild;
 
 import com.google.gson.annotations.Expose;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
-import java.util.logging.Level;
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.message.Message;
 import org.bukkit.Bukkit;
@@ -18,6 +11,14 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
+import java.util.logging.Level;
 
 public class Guild implements InventoryHolder {
 
@@ -249,7 +250,7 @@ public class Guild implements InventoryHolder {
   public void updatePrefix(String prefix) {
     setPrefix(prefix);
 
-    updateGuild("An error occurred while updating prefix to '%s' for guild '%s'", prefix,
+    updateGuildPrefix("An error occurred while updating prefix to '%s' for guild '%s'", prefix,
         this.name);
 
     Main.getInstance().getScoreboardHandler().update();
@@ -295,6 +296,19 @@ public class Guild implements InventoryHolder {
 
   public List<String> getPendingAllies() {
     return pendingAllies;
+  }
+
+  public void updateGuildPrefix(String errorMessage, String... params) {
+    Main.getInstance().getDatabaseProvider().updatePrefix(this, (res, ex) -> {
+      if(!res) {
+        Main.getInstance().getLogger()
+                .severe(String.format(errorMessage, (Object[]) params));
+
+        if(ex != null) {
+          ex.printStackTrace();
+        }
+      }
+    });
   }
 
   public void updateGuild(String errorMessage, String... params) {

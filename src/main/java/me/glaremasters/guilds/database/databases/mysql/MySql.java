@@ -23,7 +23,7 @@ import java.util.UUID;
 import java.util.logging.Level;
 
 
-public class MySql extends DatabaseProvider {
+public class MySql implements DatabaseProvider {
 
   private HikariDataSource hikari;
 
@@ -218,12 +218,7 @@ public class MySql extends DatabaseProvider {
 
   private void execute(String query, Object... parameters) {
 
-    Connection connection = null;
-    PreparedStatement statement = null;
-
-    try {
-      connection = hikari.getConnection();
-      statement = connection.prepareStatement(query);
+    try(Connection connection = hikari.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
 
       if (parameters != null) {
         for (int i = 0; i < parameters.length; i++) {
@@ -234,19 +229,11 @@ public class MySql extends DatabaseProvider {
       statement.execute();
     } catch (SQLException ex) {
       SneakyThrow.sneaky(ex);
-    } finally {
-      close(connection, statement);
     }
   }
 
   private ResultSet executeQuery(String query, Object... parameters) {
-    Connection connection = null;
-    PreparedStatement statement = null;
-
-    try {
-      connection = hikari.getConnection();
-      statement = connection.prepareStatement(query);
-
+    try(Connection connection = hikari.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
       if (parameters != null) {
         for (int i = 0; i < parameters.length; i++) {
           statement.setObject(i + 1, parameters[i]);
@@ -262,8 +249,6 @@ public class MySql extends DatabaseProvider {
       return resultCached;
     } catch (SQLException ex) {
       SneakyThrow.sneaky(ex);
-    } finally {
-      close(connection, statement);
     }
 
     return null;

@@ -27,4 +27,5 @@ class Query {
 
   static final String GET_GUILDS = "SELECT name, prefix FROM guilds";
   static final String GET_GUILD_MEMBERS = "SELECT uuid, role FROM guild_members WHERE guild=?";
+
 }
