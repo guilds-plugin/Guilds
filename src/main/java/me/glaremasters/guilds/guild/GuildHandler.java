@@ -86,6 +86,10 @@ public class GuildHandler implements IHandler {
         guilds.put(guild.getName(), guild);
     }
 
+    public void removeGuild(Guild guild) {
+        guilds.remove(guild.getName());
+    }
+
     public HashMap<String, Guild> getGuilds() {
         return guilds;
     }

@@ -42,6 +42,7 @@ public class CommandDelete extends CommandBase {
             public void accept() {
                 GuildRemoveEvent event =
                         new GuildRemoveEvent(player, guild, GuildRemoveEvent.RemoveCause.REMOVED);
+                Main.getInstance().getServer().getPluginManager().callEvent(event);
                 if (event.isCancelled()) {
                     return;
                 }
@@ -50,6 +51,7 @@ public class CommandDelete extends CommandBase {
                     if (result) {
                         Message.sendMessage(player,
                                 Message.COMMAND_DELETE_SUCCESSFUL.replace("{guild}", guild.getName()));
+                        Main.getInstance().getGuildHandler().removeGuild(guild);
                         Main.getInstance().getScoreboardHandler().update();
                     } else {
                         Message.sendMessage(player, Message.COMMAND_DELETE_ERROR);
