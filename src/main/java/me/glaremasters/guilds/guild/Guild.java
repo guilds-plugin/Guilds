@@ -269,6 +269,7 @@ public class Guild implements InventoryHolder {
   public void addAlly(Guild targetGuild) {
     allies.add(targetGuild.getName());
 
+    addGuildAlly(targetGuild);
     updateGuild("Something went wrong while adding the ally %s from guild %s",
         targetGuild.getName(), this.getName());
   }
@@ -308,6 +309,12 @@ public class Guild implements InventoryHolder {
           ex.printStackTrace();
         }
       }
+    });
+  }
+
+  public void addGuildAlly(Guild targetGuild) {
+    Main.getInstance().getDatabaseProvider().addAlly(this, targetGuild, (res, ex) -> {
+      // TODO
     });
   }
 

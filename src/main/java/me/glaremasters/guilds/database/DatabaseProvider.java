@@ -20,6 +20,8 @@ public interface DatabaseProvider {
 
   public void updatePrefix(Guild guild, Callback<Boolean, Exception> callback);
 
+  public void addAlly(Guild guild, Guild targetGuild, Callback<Boolean, Exception> callback);
+
   public void createLeaderboard(Leaderboard leaderboard,
       Callback<Boolean, Exception> callback);
 

@@ -137,6 +137,11 @@ public class Json implements DatabaseProvider {
   }
 
   @Override
+  public void addAlly(Guild guild, Guild targetGuild, Callback<Boolean, Exception> callback) {
+    //TODO: Necessary for json?
+  }
+
+  @Override
   public void createLeaderboard(Leaderboard leaderboard, Callback<Boolean, Exception> callback) {
     List<Leaderboard> leaderboards =
         getLeaderboards() == null ? new ArrayList<>() : getLeaderboards();
