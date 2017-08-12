@@ -83,7 +83,7 @@ public class MySql implements DatabaseProvider {
 
   @Override
   public void updatePrefix(Guild guild, Callback<Boolean, Exception> callback) {
-    Main.newChain().async(() -> execute(Query.UPDATE_PREFIX, guild.getName()))
+    Main.newChain().async(() -> execute(Query.UPDATE_PREFIX, guild.getPrefix(), guild.getName()))
         .sync(() -> callback.call(true, null))
         .execute((exception, task) -> {
           if (exception != null) {
