@@ -2,6 +2,7 @@ package me.glaremasters.guilds.database;
 
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.leaderboard.Leaderboard;
+import org.bukkit.Location;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +22,10 @@ public interface DatabaseProvider {
     public void updatePrefix(Guild guild, Callback<Boolean, Exception> callback);
 
     public void addAlly(Guild guild, Guild targetGuild, Callback<Boolean, Exception> callback);
+
+    public void setHome(Guild guild, Location homeLocation, Callback<Boolean, Exception> callback);
+
+    public void getHome(Guild guild, Callback<Location, Exception> callback);
 
     public void createLeaderboard(Leaderboard leaderboard,
                                   Callback<Boolean, Exception> callback);

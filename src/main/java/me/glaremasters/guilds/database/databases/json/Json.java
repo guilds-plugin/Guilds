@@ -12,6 +12,7 @@ import me.glaremasters.guilds.database.databases.json.deserializer.LeaderboardLi
 import me.glaremasters.guilds.database.databases.json.serializer.LeaderboardListSerializer;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.leaderboard.Leaderboard;
+import org.bukkit.Location;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -139,6 +140,16 @@ public class Json implements DatabaseProvider {
     @Override
     public void addAlly(Guild guild, Guild targetGuild, Callback<Boolean, Exception> callback) {
         //TODO: Necessary for json?
+    }
+
+    @Override
+    public void setHome(Guild guild, Location homeLocation, Callback<Boolean, Exception> callback) {
+
+    }
+
+    @Override
+    public void getHome(Guild guild, Callback<Location, Exception> callback) {
+
     }
 
     @Override
