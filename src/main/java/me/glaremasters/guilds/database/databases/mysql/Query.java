@@ -22,7 +22,7 @@ class Query {
                     "FOREIGN KEY (guild) REFERENCES guilds(name)," +
                     "PRIMARY KEY (uuid))";
 
-    static final String CREATE_GUILD = "INSERT INTO guilds (name, prefix, isPrivate) VALUES(?, ?, ?)";
+    static final String CREATE_GUILD = "INSERT INTO guilds (name, prefix, isPrivate, tier) VALUES(?, ?, ?, ?)";
     static final String REMOVE_GUILD = "DELETE FROM guilds WHERE name=?";
 
     static final String SELECT_ALL_GUILD_DATA = "SELECT guilds.name, guilds.prefix, " +
