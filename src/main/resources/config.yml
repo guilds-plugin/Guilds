@@ -44,9 +44,42 @@ lang: english
 # Example: If I am a french server, I would change lang: english to lang: french
 # If you try and use a different language than any in the list above, the plugin will not function in a normal manner.
 
-# If you are NOT an english speaking server and want to change what is displayed in "/guild help" please change the follow line from false to true and this will allow you to modify the plugin.yml if you choose to do so.
-description:
-  patch: false
+# You can modify how commands look like /guild help by simply configuring to a different language / style below
+
+commands:
+  description:
+    accept: "Accept a guild invite"
+    admin: "Admin command for managing guilds"
+    ally: "Ally commands"
+    boot: "Kick a player from your guild"
+    buff: "Buy buffs for your guild"
+    bugreport: "Submit a bug report"
+    cancel: "Cancel an action"
+    chat: "Send a message to your guild members"
+    check: "Check pending guild invites"
+    confirm: "Confirm an action"
+    create: "Create a guild"
+    decline: "Decline a guild invite"
+    delete: "Delete your current guild"
+    demote: "Demote a member of your guild"
+    help: "View all commands"
+    home: "Teleport to your guild home"
+    info: "View your guild's info"
+    inspect: "Inspect another guild"
+    invite: "Invite a player to your guild"
+    leave: "Leave your current guild"
+    list: "List all guilds on the server"
+    prefix: "Change your guild's prefix"
+    promote: "Promote a member of your guild"
+    reload: "Reload guild's configuration file"
+    sethome: "Set your guild's home"
+    status: "Toggle your guild public / private"
+    transfer: "Transfer your guild to another user"
+    update: "Update to the most recent version of guilds"
+    upgrade: "Upgrade your guild to a higher level"
+    vault: "Open your guild vault"
+    version: "Plugin info / version"
+
 
 #-----------------------------------------------------------#
 #                     GUI CONFIGURATION                     #

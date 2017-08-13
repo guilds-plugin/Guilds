@@ -1,5 +1,6 @@
 package me.glaremasters.guilds.commands;
 
+import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
@@ -12,26 +13,27 @@ import org.bukkit.entity.Player;
 public class CommandVault extends CommandBase {
 
 
-    public CommandVault() {
-        super("vault", "Open your guild vault!", "guilds.command.vault", false, null,
-                null, 0, 0);
+  public CommandVault() {
+    super("vault", Main.getInstance().getConfig().getString("commands.description.vault"),
+        "guilds.command.vault", false, null,
+        null, 0, 0);
+  }
+
+  public void execute(Player player, String[] args) {
+    Guild guild = Guild.getGuild(player.getUniqueId());
+    if (guild == null) {
+      Message.sendMessage(player, Message.COMMAND_ERROR_NO_GUILD);
+      return;
     }
 
-    public void execute(Player player, String[] args) {
-        Guild guild = Guild.getGuild(player.getUniqueId());
-        if (guild == null) {
-            Message.sendMessage(player, Message.COMMAND_ERROR_NO_GUILD);
-            return;
-        }
-
-        GuildRole role = GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole());
-        if (!role.canOpenVault()) {
-            Message.sendMessage(player, Message.COMMAND_ERROR_ROLE_NO_PERMISSION);
-            return;
-        }
-
-        player.openInventory(guild.getInventory());
-
+    GuildRole role = GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole());
+    if (!role.canOpenVault()) {
+      Message.sendMessage(player, Message.COMMAND_ERROR_ROLE_NO_PERMISSION);
+      return;
     }
+
+    player.openInventory(guild.getInventory());
+
+  }
 
 }

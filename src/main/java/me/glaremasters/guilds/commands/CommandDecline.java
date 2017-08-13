@@ -1,5 +1,6 @@
 package me.glaremasters.guilds.commands;
 
+import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.message.Message;
@@ -10,16 +11,17 @@ import org.bukkit.entity.Player;
  */
 public class CommandDecline extends CommandBase {
 
-    public CommandDecline() {
-        super("decline", "Decline a Guild Invite", "guilds.command.decline", false, null, null, 1, 1);
-    }
+  public CommandDecline() {
+    super("decline", Main.getInstance().getConfig().getString("commands.description.decline"),
+        "guilds.command.decline", false, null, null, 1, 1);
+  }
 
-    public void execute(Player player, String[] args) {
+  public void execute(Player player, String[] args) {
 
-        Guild guild = Guild.getGuild(args[0]);
+    Guild guild = Guild.getGuild(args[0]);
 
-        guild.removeInvitedPlayer(player.getUniqueId());
-        Message.sendMessage(player, Message.COMMAND_DECLINE_SUCCESSFUL);
-    }
+    guild.removeInvitedPlayer(player.getUniqueId());
+    Message.sendMessage(player, Message.COMMAND_DECLINE_SUCCESSFUL);
+  }
 
 }

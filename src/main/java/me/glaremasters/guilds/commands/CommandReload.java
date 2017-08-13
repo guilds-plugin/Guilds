@@ -12,26 +12,27 @@ import java.io.IOException;
 public class CommandReload extends CommandBase {
 
 
-    public CommandReload() {
-        super("reload", "Reload Guilds' configuration file", "guilds.command.reload", true, null,
-                null, 0, 0);
-    }
+  public CommandReload() {
+    super("reload", Main.getInstance().getConfig().getString("commands.description.reload"),
+        "guilds.command.reload", true, null,
+        null, 0, 0);
+  }
 
-    public void execute(CommandSender sender, String[] args) {
-        try {
-            Main.getInstance().yaml.load(Main.getInstance().languageYamlFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
-        Main.getInstance().reloadConfig();
-        Main.getInstance().setDatabaseType();
-
-        Main.PREFIX =
-                ChatColor.translateAlternateColorCodes('&',
-                        Main.getInstance().getConfig().getString("plugin-prefix"))
-                        + ChatColor.RESET + " ";
-        Message.sendMessage(sender, Message.COMMAND_RELOAD_RELOADED);
+  public void execute(CommandSender sender, String[] args) {
+    try {
+      Main.getInstance().yaml.load(Main.getInstance().languageYamlFile);
+    } catch (IOException e) {
+      e.printStackTrace();
+    } catch (InvalidConfigurationException e) {
+      e.printStackTrace();
     }
+    Main.getInstance().reloadConfig();
+    Main.getInstance().setDatabaseType();
+
+    Main.PREFIX =
+        ChatColor.translateAlternateColorCodes('&',
+            Main.getInstance().getConfig().getString("plugin-prefix"))
+            + ChatColor.RESET + " ";
+    Message.sendMessage(sender, Message.COMMAND_RELOAD_RELOADED);
+  }
 }
