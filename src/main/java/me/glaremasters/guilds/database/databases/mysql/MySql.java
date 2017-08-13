@@ -9,8 +9,6 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.leaderboard.Leaderboard;
 import me.glaremasters.guilds.util.SneakyThrow;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 
 import javax.sql.rowset.CachedRowSet;
@@ -85,52 +83,6 @@ public class MySql implements DatabaseProvider {
         Main.getInstance().getGuildHandler().addGuild(guild);
     }
 
-    @Override
-    public void setHome(Guild guild, Location homeLocation, Callback<Boolean, Exception> callback) {
-        Main.newChain().async(() -> {
-            ResultSet res = executeQuery(Query.GET_HOME, guild.getName());
-            try {
-                if(res != null && res.next()) {
-                    execute(Query.REMOVE_HOME, guild.getName());
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }).async(() -> execute(Query.SET_HOME, homeLocation.getBlockX(), homeLocation.getBlockY(),
-                homeLocation.getBlockZ(), homeLocation.getWorld().getName(), guild.getName())).sync(() -> callback.call(true, null)).execute((ex, task) -> {
-            if (ex != null) {
-                callback.call(false, ex);
-            }
-        });
-    }
-
-    @Override
-    public void getHome(Guild guild, Callback<Location, Exception> callback) {
-        Main.newChain().asyncFirst(() -> executeQuery(Query.GET_HOME, guild.getName())).async(res -> {
-            try {
-                if (res == null || !res.next()) {
-                    callback.call(null, null);
-                    return null;
-                } else {
-                    int x = res.getInt("x");
-                    int y = res.getInt("x");
-                    int z = res.getInt("x");
-                    String world = res.getString("world");
-                    return new Location(Bukkit.getWorld(world), x, y, z);
-                }
-            } catch (SQLException e) {
-                callback.call(null, e);
-                return null;
-            }
-
-        }).syncLast(loc -> callback.call(loc, null)).execute((ex, task) -> {
-            if (ex != null) {
-                callback.call(null, ex);
-            }
-        });
-    }
-
-    @Override
     public void updatePrefix(Guild guild, Callback<Boolean, Exception> callback) {
         Main.newChain().async(() -> execute(Query.UPDATE_PREFIX, guild.getPrefix(), guild.getName()))
                 .sync(() -> callback.call(true, null))

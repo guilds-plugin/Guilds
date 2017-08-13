@@ -23,10 +23,6 @@ public interface DatabaseProvider {
 
     public void addAlly(Guild guild, Guild targetGuild, Callback<Boolean, Exception> callback);
 
-    public void setHome(Guild guild, Location homeLocation, Callback<Boolean, Exception> callback);
-
-    public void getHome(Guild guild, Callback<Location, Exception> callback);
-
     public void createLeaderboard(Leaderboard leaderboard,
                                   Callback<Boolean, Exception> callback);
 
