@@ -313,6 +313,7 @@ public class Guild implements InventoryHolder {
     }
 
     public void addGuildAlly(Guild targetGuild) {
+        System.out.println("Adding guild ally");
         Main.getInstance().getDatabaseProvider().addAlly(this, targetGuild, (res, ex) -> {
             if (!res) {
                 ex.printStackTrace();
