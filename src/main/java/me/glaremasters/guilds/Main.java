@@ -191,7 +191,8 @@ public class Main extends JavaPlugin {
         new GuildBuffListener(),
         new GuildChatListener(),
         new MobDeathListner(),
-        new PlayerDamageListener()
+        new PlayerDamageListener(),
+        new DamageMultiplierListener()
 
     ).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
 

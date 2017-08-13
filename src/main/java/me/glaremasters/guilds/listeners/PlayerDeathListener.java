@@ -13,33 +13,33 @@ import org.bukkit.event.entity.PlayerDeathEvent;
  */
 public class PlayerDeathListener implements Listener {
 
-    @EventHandler
-    public void onPlayerDeathEvent(PlayerDeathEvent event) {
-        Player player = event.getEntity();
-        Player killer = player.getKiller();
+  @EventHandler
+  public void onPlayerDeathEvent(PlayerDeathEvent event) {
+    Player player = event.getEntity();
+    Player killer = player.getKiller();
 
-        if (killer == null) {
-            return;
-        }
-
-        Guild guild = Guild.getGuild(player.getUniqueId());
-        Guild guild2 = Guild.getGuild(killer.getUniqueId());
-
-        if (guild == null || guild2 == null) {
-            return;
-        }
-        if (guild.equals(guild2)) {
-            return;
-        }
-        if (Guild.areAllies(player.getUniqueId(), killer.getUniqueId())) {
-            return;
-        }
-        EconomyResponse response =
-                Main.getInstance().getEconomy()
-                        .depositPlayer(killer, Main.getInstance().getConfig().getInt("reward-on-kill.reward"));
-        if (response.transactionSuccess()) {
-            killer.sendMessage("You just killed someone, here's some money.");
-        }
+    if (killer == null) {
+      return;
     }
+
+    Guild guild = Guild.getGuild(player.getUniqueId());
+    Guild guild2 = Guild.getGuild(killer.getUniqueId());
+
+    if (guild == null || guild2 == null) {
+      return;
+    }
+    if (guild.equals(guild2)) {
+      return;
+    }
+    if (Guild.areAllies(player.getUniqueId(), killer.getUniqueId())) {
+      return;
+    }
+    EconomyResponse response =
+        Main.getInstance().getEconomy()
+            .depositPlayer(killer, Main.getInstance().getConfig().getInt("reward-on-kill.reward"));
+    if (response.transactionSuccess()) {
+      killer.sendMessage("You just killed someone, here's some money.");
+    }
+  }
 
 }
