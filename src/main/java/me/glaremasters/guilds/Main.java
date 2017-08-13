@@ -124,7 +124,7 @@ public class Main extends JavaPlugin {
     taskChainFactory = BukkitTaskChainFactory.create(this);
 
     setDatabaseType();
-    if (!getConfig().isSet("version") || getConfig().getInt("version") != 11) {
+    if (!getConfig().isSet("version") || getConfig().getInt("version") != 12) {
       Bukkit.getConsoleSender().sendMessage(
           "§a[Guilds] §3The config is not on the latest version! Please back up and delete the config.yml and allow the new one to generate, otherwise the plugin may not work as intended!");
     }
