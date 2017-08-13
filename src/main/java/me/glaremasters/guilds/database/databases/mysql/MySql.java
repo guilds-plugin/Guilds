@@ -252,6 +252,11 @@ public class MySql implements DatabaseProvider {
             guild.getMembers().forEach(
                     member -> execute(Query.ADD_MEMBER, member.getUniqueId().toString(),
                             guild.getName(), member.getRole()));
+
+            for(UUID invite : guild.getInvitedMembers()) {
+                execute(Query.REMOVE_INVITED_MEMBER, invite.toString());
+                execute(Query.ADD_INVITED_MEMBER, invite.toString(), guild.getName());
+            }
         }).sync(() -> callback.call(true, null)).execute((exception, task) -> {
             if (exception != null) {
                 callback.call(false, exception);

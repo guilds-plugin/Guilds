@@ -1,5 +1,6 @@
 package me.glaremasters.guilds.commands;
 
+import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.api.events.GuildInviteEvent;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
@@ -45,6 +46,7 @@ public class CommandInvite extends CommandBase {
         }
 
         GuildInviteEvent event = new GuildInviteEvent(player, guild, invitedPlayer);
+        Main.getInstance().getServer().getPluginManager().callEvent(event);
         if (event.isCancelled()) {
             return;
         }
