@@ -66,7 +66,7 @@ public class MySql implements DatabaseProvider {
 
     @Override
     public void createGuild(Guild guild, Callback<Boolean, Exception> callback) {
-        Main.newChain().async(() -> execute(Query.CREATE_GUILD, guild.getName(), guild.getPrefix(), guild.getStatus().equalsIgnoreCase("public") ? 1 : 0))
+        Main.newChain().async(() -> execute(Query.CREATE_GUILD, guild.getName(), guild.getPrefix(), "public".equalsIgnoreCase(guild.getStatus()) ? 1 : 0))
                 .async(() -> execute(Query.ADD_MEMBER, guild.getGuildMaster().getUniqueId().toString(),
                         guild.getName(), 0)).sync(() -> callback.call(true, null))
                 .execute((exception, task) -> {
