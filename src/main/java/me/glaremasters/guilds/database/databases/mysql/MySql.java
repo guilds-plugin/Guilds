@@ -209,7 +209,7 @@ public class MySql implements DatabaseProvider {
                 execute(Query.ADD_INVITED_MEMBER, invite.toString(), guild.getName());
             }
 
-            execute("UPDATE guilds SET isPublic=? WHERE name=?", guild.getStatus().equalsIgnoreCase("private") ? 1 : 0, guild.getName());
+            execute("UPDATE guilds SET isPrivate=? WHERE name=?", guild.getStatus().equalsIgnoreCase("private") ? 1 : 0, guild.getName());
             execute("UPDATE guilds SET tier=? WHERE name=?", guild.getTier(), guild.getName());
         }).sync(() -> callback.call(true, null)).execute((exception, task) -> {
             if (exception != null) {
