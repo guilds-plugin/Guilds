@@ -82,11 +82,11 @@ public class CommandList extends CommandBase {
                                 + guild.getStatus()));
             }
             skullMeta.setLore(lore);
+            String name = Bukkit.getOfflinePlayer(guild.getGuildMaster().getUniqueId()).getName();
             skullMeta
                     .setOwner(Bukkit.getOfflinePlayer(guild.getGuildMaster().getUniqueId()).getName());
             skullMeta.setDisplayName(
-                    ChatColor.AQUA + Bukkit.getOfflinePlayer(guild.getGuildMaster().getUniqueId())
-                            .getName() + Main.getInstance().getConfig().getString("gui-name.list.head-name"));
+                    ChatColor.AQUA +  Main.getInstance().getConfig().getString("gui-name.list.head-name").replace("{player}", name));
             skull.setItemMeta(skullMeta);
             skulls.put(guild.getGuildMaster().getUniqueId(), skull);
         }

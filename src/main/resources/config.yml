@@ -12,7 +12,7 @@
 #-----------------------------------------------------------#
 
 # DO NOT CHANGE THIS
-version: 10
+version: 11
 
 #-----------------------------------------------------------#
 #                     CHOOSE YOUR LANGUAGE                  #
@@ -37,7 +37,7 @@ lang: english
 # - swedish
 # - portuguese
 # - german
-# - vietnamese.yml
+# - vietnamese
 
 
 # NOTE: If you change your language please ONLY use from the list above and use them EXACTLY as they are spelled in the list above.
@@ -99,7 +99,7 @@ gui-name:
     next-page: "Next Page"
     previous-page: "Previous Page"
     page: "Page: "
-    head-name: "'s Guild"
+    head-name: "{player}'s Guild"
 # head-name is what show's when you hover over a head in the Guild List. For example, the default will show Username's Guild
 
 
