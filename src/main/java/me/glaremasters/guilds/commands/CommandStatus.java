@@ -28,7 +28,6 @@ public class CommandStatus extends CommandBase {
         }
         if (!(args[0].equalsIgnoreCase("private") || args[0].equalsIgnoreCase("public"))) {
             Message.sendMessage(player, Message.COMMAND_STATUS_ERROR);
-            return;
         } else {
 
             String status = args[0];
@@ -36,6 +35,7 @@ public class CommandStatus extends CommandBase {
             Main.getInstance().guildStatusConfig
                     .set(Guild.getGuild(player.getUniqueId()).getName(),
                             status);
+            Guild.getGuild(player.getUniqueId()).updateGuild("");
 
             Message.sendMessage(player, Message.COMMAND_STATUS_SUCCESSFUL.replace("{status}", status));
             Main.getInstance().saveGuildStatus();

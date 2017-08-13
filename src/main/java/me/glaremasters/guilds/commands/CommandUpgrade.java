@@ -67,6 +67,7 @@ public class CommandUpgrade extends CommandBase {
                     Message.sendMessage(player, Message.COMMAND_UPGRADE_NOT_ENOUGH_MONEY);
                     return;
                 }
+                guild.updateGuild("");
             }
 
 
