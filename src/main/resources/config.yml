@@ -196,11 +196,6 @@ buff:
 
 
 
-# This message in is the buff configuration so that you can easily access it
-
-not-enough-buff-money: "You do not have enough money to buy this buff!"
-
-
 #-----------------------------------------------------------#
 #                     Vault Configuration                   #
 #-----------------------------------------------------------#
