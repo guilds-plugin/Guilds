@@ -35,6 +35,7 @@ public class CommandLeave extends CommandBase {
             @Override
             public void accept() {
                 GuildLeaveEvent leaveEvent = new GuildLeaveEvent(player, guild);
+                Main.getInstance().getServer().getPluginManager().callEvent(leaveEvent);
                 if (leaveEvent.isCancelled()) {
                     return;
                 }
@@ -42,6 +43,7 @@ public class CommandLeave extends CommandBase {
                 if (guild.getGuildMaster().getUniqueId().equals(player.getUniqueId())) {
                     GuildRemoveEvent removeEvent =
                             new GuildRemoveEvent(player, guild, GuildRemoveEvent.RemoveCause.REMOVED);
+                    Main.getInstance().getServer().getPluginManager().callEvent(removeEvent);
                     if (removeEvent.isCancelled()) {
                         return;
                     }

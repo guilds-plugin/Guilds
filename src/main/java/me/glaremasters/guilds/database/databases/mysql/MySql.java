@@ -269,12 +269,8 @@ public class MySql implements DatabaseProvider {
     public void addAlly(Guild guild, Guild targetGuild, Callback<Boolean, Exception> callback) {
         Main.newChain().async(() -> {
             try (ResultSet res = executeQuery(Query.FIND_ALLY, guild.getName())) {
-                if (res == null) {
-                    callback.call(false, new RuntimeException("Empty result set."));
-                    return;
-                }
 
-                if (res.next()) {
+                if (res != null && res.next()) {
                     callback.call(false, new RuntimeException("Ally already in database."));
                 }
                 execute(Query.ADD_ALLY, targetGuild.getName(), guild.getName());
