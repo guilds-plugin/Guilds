@@ -16,7 +16,7 @@ import java.util.HashMap;
  */
 public class CommandSetHome extends CommandBase {
 
-    public HashMap<String, Long> cooldowns = new HashMap<String, Long>();
+    private HashMap<String, Long> cooldowns = new HashMap<>();
 
     public CommandSetHome() {
         super("sethome", "Set your guild's home!", "guilds.command.sethome", false, null, null, 0,

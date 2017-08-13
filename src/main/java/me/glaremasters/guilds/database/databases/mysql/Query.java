@@ -4,7 +4,8 @@ class Query {
 
     static final String CREATE_TABLE_GUILDS =
             "CREATE TABLE IF NOT EXISTS guilds (" + "name VARCHAR(255) NOT NULL, "
-                    + "prefix VARCHAR(255) NOT NULL, " + "PRIMARY KEY (name))";
+                    + "prefix VARCHAR(255) NOT NULL, " +
+                    "isPublic TININT(1), " + "PRIMARY KEY (name))";
     static final String CREATE_TABLE_ALLIES =
             "CREATE TABLE IF NOT EXISTS guild_allies(" + "name VARCHAR(255) NOT NULL, " +
                     "guildName VARCHAR(255) NOT NULL, " +
@@ -19,19 +20,8 @@ class Query {
                     + "guild VARCHAR(255) NOT NULL," +
                     "FOREIGN KEY (guild) REFERENCES guilds(name)," +
                     "PRIMARY KEY (uuid))";
-    static final String CREATE_TABLE_GUILD_HOMES =
-            "CREATE TABLE IF NOT EXISTS guild_homes(" +
-                    "id INT NOT NULL AUTO_INCREMENT, " +
-                    "x INT, " +
-                    "y INT, " +
-                    "z INT, " +
-                    "world TEXT, " +
-                    "guild VARCHAR(255) NOT NULL," +
-                    "PRIMARY KEY(id)," +
-                    "FOREIGN KEY(guild) REFERENCES guild(name))";
 
-
-    static final String CREATE_GUILD = "INSERT INTO guilds (name, prefix) VALUES(?, ?)";
+    static final String CREATE_GUILD = "INSERT INTO guilds (name, prefix, isPublic) VALUES(?, ?, ?)";
     static final String REMOVE_GUILD = "DELETE FROM guilds WHERE name=?";
 
     static final String SELECT_ALL_GUILD_DATA = "SELECT guilds.name, guilds.prefix, " +
@@ -53,13 +43,6 @@ class Query {
     static final String REMOVE_ALLY = "DELETE FROM guild_allies WHERE name=?";
     static final String FIND_ALLY =
             "SELECT name FROM guild_allies WHERE guildName=?";
-
-    static final String SET_HOME =
-            "INSERT INTO guild_homes(x, y, z, world, guild) VALUES(?, ?, ?, ?, ?)";
-    static final String REMOVE_HOME =
-            "DELETE FROM guild_homes WHERE guild=?";
-    static final String GET_HOME =
-            "SELECT x, y, z, world FROM guild_homes WHERE guild=?";
 
     static final String GET_GUILDS = "SELECT name, prefix FROM guilds";
     static final String GET_GUILD_MEMBERS = "SELECT uuid, role FROM guild_members WHERE guild=?";

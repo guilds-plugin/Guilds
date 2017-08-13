@@ -53,8 +53,7 @@ public class MySql implements DatabaseProvider {
                 .async(() -> execute(Query.CREATE_TABLE_MEMBERS))
                 .async(() -> execute(Query.CREATE_TABLE_ALLIES))
                 .async(() -> execute(Query.CREATE_TABLE_INVITED_MEMBERS))
-                .async(() -> execute(Query.CREATE_TABLE_GUILD_HOMES)).sync(
-                () -> Main.getInstance().getLogger()
+                .sync(() -> Main.getInstance().getLogger()
                         .log(Level.INFO, "Tables 'guilds', 'members', 'guild_homes', 'guild_allies', and 'invited_members' created!"))
                 .execute((exception, task) -> {
                     if (exception != null) {
@@ -67,7 +66,7 @@ public class MySql implements DatabaseProvider {
 
     @Override
     public void createGuild(Guild guild, Callback<Boolean, Exception> callback) {
-        Main.newChain().async(() -> execute(Query.CREATE_GUILD, guild.getName(), guild.getPrefix()))
+        Main.newChain().async(() -> execute(Query.CREATE_GUILD, guild.getName(), guild.getPrefix(), guild.getStatus().equalsIgnoreCase("public") ? 1 : 0))
                 .async(() -> execute(Query.ADD_MEMBER, guild.getGuildMaster().getUniqueId().toString(),
                         guild.getName(), 0)).sync(() -> callback.call(true, null))
                 .execute((exception, task) -> {
@@ -205,10 +204,12 @@ public class MySql implements DatabaseProvider {
                     member -> execute(Query.ADD_MEMBER, member.getUniqueId().toString(),
                             guild.getName(), member.getRole()));
 
-            for(UUID invite : guild.getInvitedMembers()) {
+            for (UUID invite : guild.getInvitedMembers()) {
                 execute(Query.REMOVE_INVITED_MEMBER, invite.toString());
                 execute(Query.ADD_INVITED_MEMBER, invite.toString(), guild.getName());
             }
+
+            execute("UPDATE guilds SET isPublic=? WHERE name=?", guild.getStatus().equalsIgnoreCase("public") ? 1 : 0, guild.getName());
         }).sync(() -> callback.call(true, null)).execute((exception, task) -> {
             if (exception != null) {
                 callback.call(false, exception);
