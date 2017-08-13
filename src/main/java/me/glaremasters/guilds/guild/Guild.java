@@ -325,9 +325,9 @@ public class Guild implements InventoryHolder {
     void removeGuildAlly(Guild targetGuild) {
         Main.getInstance().getDatabaseProvider().removeAlly(this, targetGuild, (res, ex) -> {
             if (!res) {
-                ex.printStackTrace()
+                ex.printStackTrace();
             }
-        })
+        });
     }
 
     public void updateGuild(String errorMessage, String... params) {

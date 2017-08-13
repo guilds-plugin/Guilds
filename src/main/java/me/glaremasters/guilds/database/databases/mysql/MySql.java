@@ -101,13 +101,14 @@ public class MySql implements DatabaseProvider {
         Main.newChain().async(() -> guild.getMembers()
                 .forEach(member -> execute(Query.REMOVE_MEMBER, member.getUniqueId().toString())))
                 .async(() -> execute(Query.REMOVE_GUILD, guild.getName()))
-                .sync(() -> callback.call(true, null)).execute((exception, task) -> {
-            Main.getInstance().getLogger().log(Level.SEVERE,
-                    "An error occurred while removing a guild from the MySQL database!");
-            exception.printStackTrace();
+                .sync(() -> callback.call(true, null))
+                .execute((exception, task) -> {
+                    Main.getInstance().getLogger().log(Level.SEVERE,
+                            "An error occurred while removing a guild from the MySQL database!");
+                    exception.printStackTrace();
 
-            callback.call(false, exception);
-        });
+                    callback.call(false, exception);
+                });
     }
 
     @Override
@@ -234,7 +235,7 @@ public class MySql implements DatabaseProvider {
                 e.printStackTrace();
             }
         }).execute((ex, task) -> {
-            if(ex != null) {
+            if (ex != null) {
                 callback.call(false, ex);
             }
         });
@@ -243,7 +244,7 @@ public class MySql implements DatabaseProvider {
     @Override
     public void removeAlly(Guild guild, Guild targetGuild, Callback<Boolean, Exception> callback) {
         Main.newChain().async(() -> {
-            try(ResultSet res = executeQuery(Query.FIND_ALLY, targetGuild.getName())) {
+            try (ResultSet res = executeQuery(Query.FIND_ALLY, targetGuild.getName())) {
                 if (res == null || !res.next()) {
                     return;
                 }
@@ -253,7 +254,7 @@ public class MySql implements DatabaseProvider {
                 e.printStackTrace();
             }
         }).execute((ex, task) -> {
-            if(ex != null) {
+            if (ex != null) {
                 callback.call(false, ex);
             }
         });
