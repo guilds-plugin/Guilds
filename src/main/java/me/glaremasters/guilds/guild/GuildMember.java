@@ -6,26 +6,26 @@ import java.util.UUID;
 
 public class GuildMember {
 
-  @Expose
-  private UUID uuid;
+    @Expose
+    private UUID uuid;
 
-  @Expose
-  private int role;
+    @Expose
+    private int role;
 
-  public GuildMember(UUID uuid, int role) {
-    this.uuid = uuid;
-    this.role = role;
-  }
+    public GuildMember(UUID uuid, int role) {
+        this.uuid = uuid;
+        this.role = role;
+    }
 
-  public UUID getUniqueId() {
-    return uuid;
-  }
+    public UUID getUniqueId() {
+        return uuid;
+    }
 
-  public int getRole() {
-    return role;
-  }
+    public int getRole() {
+        return role;
+    }
 
-  public void setRole(GuildRole role) {
-    this.role = role.getLevel();
-  }
+    public void setRole(GuildRole role) {
+        this.role = role.getLevel();
+    }
 }

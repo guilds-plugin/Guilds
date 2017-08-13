@@ -15,28 +15,28 @@ import org.bukkit.event.player.PlayerJoinEvent;
 public class TablistListener implements Listener {
 
 
-  @EventHandler(priority = EventPriority.HIGH)
-  public void onPlayerJoin(PlayerJoinEvent event) {
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onPlayerJoin(PlayerJoinEvent event) {
 
-    Player player = event.getPlayer();
-    Guild guild = Guild.getGuild(player.getUniqueId());
+        Player player = event.getPlayer();
+        Guild guild = Guild.getGuild(player.getUniqueId());
 
-    if (guild == null) {
-      return;
-    } else {
-      Main.getInstance().getServer().getScheduler()
-          .scheduleSyncDelayedTask(Main.getInstance(), () -> {
-            String name =
-                Main.getInstance().getConfig().getBoolean("tablist-use-display-name") ? player
-                    .getDisplayName() : player.getName();
-            player.setPlayerListName(
-                ChatColor.translateAlternateColorCodes('&',
-                    Main.getInstance().getConfig().getString("tablist")
-                        .replace("{guild}", guild.getName()).replace("{prefix}", guild.getPrefix())
-                        + name));
-          }, 30L);
+        if (guild == null) {
+            return;
+        } else {
+            Main.getInstance().getServer().getScheduler()
+                    .scheduleSyncDelayedTask(Main.getInstance(), () -> {
+                        String name =
+                                Main.getInstance().getConfig().getBoolean("tablist-use-display-name") ? player
+                                        .getDisplayName() : player.getName();
+                        player.setPlayerListName(
+                                ChatColor.translateAlternateColorCodes('&',
+                                        Main.getInstance().getConfig().getString("tablist")
+                                                .replace("{guild}", guild.getName()).replace("{prefix}", guild.getPrefix())
+                                                + name));
+                    }, 30L);
 
+        }
     }
-  }
 
 }

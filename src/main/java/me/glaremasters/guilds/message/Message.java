@@ -10,7 +10,7 @@ public enum Message {
 
     COMMAND_ERROR_CONSOLE, COMMAND_ERROR_ARGS, COMMAND_ERROR_NOT_OFFICER, COMMAND_ERROR_PERMISSION, COMMAND_ERROR_NOT_FOUND, COMMAND_ERROR_NO_GUILD, COMMAND_ERROR_NOT_GUILDMASTER, COMMAND_ERROR_INVALID_NUMBER, COMMAND_ERROR_ALREADY_IN_GUILD, COMMAND_ERROR_PLAYER_NOT_FOUND, COMMAND_ERROR_PLAYER_NOT_IN_GUILD, COMMAND_ERROR_INVALID_ROLE, COMMAND_ERROR_GUILD_NOT_FOUND, COMMAND_ERROR_ROLE_NO_PERMISSION, COMMAND_ERROR_NO_HOME_SET, COMMAND_ERROR_HOME_COOLDOWN, COMMAND_ERROR_SETHOME_COOLDOWN,
 
-    COMMAND_HELP_MESSAGE, COMMAND_HELP_NEXT_PAGE, COMMAND_HELP_INVALID_PAGE, COMMAND_TRANSFER_SUCCESS,COMMAND_TRANSFER_NEWMASTER,
+    COMMAND_HELP_MESSAGE, COMMAND_HELP_NEXT_PAGE, COMMAND_HELP_INVALID_PAGE, COMMAND_TRANSFER_SUCCESS, COMMAND_TRANSFER_NEWMASTER,
 
     COMMAND_ROLE_PLAYERS, COMMAND_CHAT_ENABLED, COMMAND_CHAT_DISABLED, COMMAND_DECLINE_SUCCESSFUL,
 
@@ -53,7 +53,7 @@ public enum Message {
 
     public static void sendMessage(CommandSender sender, Message message) {
         sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
-            Main.PREFIX + Main.getInstance().yaml.getString(getPath(message))));
+                Main.PREFIX + Main.getInstance().yaml.getString(getPath(message))));
     }
 
     public static void sendMessage(CommandSender sender, String message) {
@@ -65,7 +65,7 @@ public enum Message {
         String[] parts = message.name().toLowerCase().split("_");
 
         pathBuilder.append(parts[0]).append(".").append(parts[1]).append(".")
-            .append(String.join("-", Arrays.copyOfRange(parts, 2, parts.length)));
+                .append(String.join("-", Arrays.copyOfRange(parts, 2, parts.length)));
 
         return "messages." + pathBuilder.toString();
     }

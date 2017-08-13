@@ -20,15 +20,22 @@ public abstract class GuildEvent extends PlayerEvent implements Cancellable {
         this.cancelled = false;
     }
 
-    @Override public boolean isCancelled() {
+    @Override
+    public boolean isCancelled() {
         return cancelled;
     }
 
-    @Override public void setCancelled(boolean cancelled) {
+    @Override
+    public void setCancelled(boolean cancelled) {
         this.cancelled = cancelled;
     }
 
-    @Override public HandlerList getHandlers() {
+    @Override
+    public HandlerList getHandlers() {
+        return handlers;
+    }
+
+    public static HandlerList getHandlerList() {
         return handlers;
     }
 }

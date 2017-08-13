@@ -426,4 +426,12 @@ roles:
 
 # In this part of the config, we will discuss data saving for the plugin.
 database:
-  type: JSON
+  type: MySQL
+
+  host: 127.0.0.1
+  port: 3306
+  username: root
+  password: password
+
+  database: guilds
+  pool-size: 10
