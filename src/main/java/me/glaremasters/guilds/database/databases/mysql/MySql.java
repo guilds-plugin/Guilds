@@ -66,7 +66,7 @@ public class MySql implements DatabaseProvider {
 
     @Override
     public void createGuild(Guild guild, Callback<Boolean, Exception> callback) {
-        Main.newChain().async(() -> execute(Query.CREATE_GUILD, guild.getName(), guild.getPrefix(), "public".equalsIgnoreCase(guild.getStatus()) ? 1 : 0))
+        Main.newChain().async(() -> execute(Query.CREATE_GUILD, guild.getName(), guild.getPrefix(), "private".equalsIgnoreCase(guild.getStatus()) ? 1 : 0))
                 .async(() -> execute(Query.ADD_MEMBER, guild.getGuildMaster().getUniqueId().toString(),
                         guild.getName(), 0)).sync(() -> callback.call(true, null))
                 .execute((exception, task) -> {
@@ -209,7 +209,7 @@ public class MySql implements DatabaseProvider {
                 execute(Query.ADD_INVITED_MEMBER, invite.toString(), guild.getName());
             }
 
-            execute("UPDATE guilds SET isPublic=? WHERE name=?", guild.getStatus().equalsIgnoreCase("public") ? 1 : 0, guild.getName());
+            execute("UPDATE guilds SET isPublic=? WHERE name=?", guild.getStatus().equalsIgnoreCase("private") ? 1 : 0, guild.getName());
             execute("UPDATE guilds SET tier=? WHERE name=?", guild.getTier(), guild.getName());
         }).sync(() -> callback.call(true, null)).execute((exception, task) -> {
             if (exception != null) {
