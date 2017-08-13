@@ -8,15 +8,24 @@ import org.bukkit.plugin.PluginDescriptionFile;
 
 public class CommandVersion extends CommandBase {
 
-    public CommandVersion() {
-        super("version", "Check version", "guilds.command.version", true, new String[]{"ver"},
-                null, 0, 0);
-    }
+  public CommandVersion() {
+    super("version", "Check version", "guilds.command.version", true, new String[]{"ver"},
+        null, 0, 0);
+  }
 
-    public void execute(CommandSender sender, String[] args) {
-        PluginDescriptionFile pdf = Main.getInstance().getDescription();
-        sender.sendMessage(
-                ChatColor.RED + "Guilds v" + pdf.getVersion() + ChatColor.GREEN + " by " + String
-                        .join(" & ", pdf.getAuthors()));
-    }
+  public void execute(CommandSender sender, String[] args) {
+    PluginDescriptionFile pdf = Main.getInstance().getDescription();
+    sender.sendMessage(
+        ChatColor.RED + "Version:");
+    sender.sendMessage(
+        ChatColor.RED + "Guilds v" + pdf.getVersion());
+    sender.sendMessage("");
+    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&bCredits:"));
+    sender.sendMessage(
+        ChatColor.translateAlternateColorCodes('&', "&bProject Manager: &aBlockslayer22"));
+    sender.sendMessage(ChatColor
+        .translateAlternateColorCodes('&', "&bPast Co-Developers: &aMrFantasty & Bramhaag"));
+    sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
+        "&bOther Helpers: &aIfna_Try_, RubbaBoy, Tom1024, & Redrield"));
+  }
 }
