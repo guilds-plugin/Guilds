@@ -277,6 +277,8 @@ public class Guild implements InventoryHolder {
     public void removeAlly(Guild targetGuild) {
         allies.remove(targetGuild.getName());
 
+        removeGuildAlly(targetGuild);
+
         updateGuild("Something went wrong while removing the ally %s from guild %s",
                 targetGuild.getName(), this.getName());
     }
@@ -313,12 +315,19 @@ public class Guild implements InventoryHolder {
     }
 
     public void addGuildAlly(Guild targetGuild) {
-        System.out.println("Adding guild ally");
         Main.getInstance().getDatabaseProvider().addAlly(this, targetGuild, (res, ex) -> {
             if (!res) {
                 ex.printStackTrace();
             }
         });
+    }
+
+    void removeGuildAlly(Guild targetGuild) {
+        Main.getInstance().getDatabaseProvider().removeAlly(this, targetGuild, (res, ex) -> {
+            if (!res) {
+                ex.printStackTrace()
+            }
+        })
     }
 
     public void updateGuild(String errorMessage, String... params) {

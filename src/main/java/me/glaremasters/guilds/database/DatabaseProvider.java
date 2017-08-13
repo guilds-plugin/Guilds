@@ -22,6 +22,8 @@ public interface DatabaseProvider {
 
     void addAlly(Guild guild, Guild targetGuild, Callback<Boolean, Exception> callback);
 
+    void removeAlly(Guild guild, Guild targetguild, Callback<Boolean, Exception> callback);
+
     void createLeaderboard(Leaderboard leaderboard,
                            Callback<Boolean, Exception> callback);
 

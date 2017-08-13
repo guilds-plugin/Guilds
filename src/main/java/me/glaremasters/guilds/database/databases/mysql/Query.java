@@ -41,7 +41,7 @@ class Query {
 
     static final String ADD_ALLY =
             "INSERT INTO guild_allies(name, guildName) VALUES(?, ?)";
-    static final String REMOVE_ALLY = "DELETE FROM guild_allies WHERE name=?";
+    static final String REMOVE_ALLY = "DELETE FROM guild_allies WHERE name=? AND guildName=?";
     static final String FIND_ALLY =
             "SELECT name FROM guild_allies WHERE guildName=?";
 

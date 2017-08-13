@@ -241,6 +241,25 @@ public class MySql implements DatabaseProvider {
     }
 
     @Override
+    public void removeAlly(Guild guild, Guild targetGuild, Callback<Boolean, Exception> callback) {
+        Main.newChain().async(() -> {
+            try(ResultSet res = executeQuery(Query.FIND_ALLY, targetGuild.getName())) {
+                if (res == null || !res.next()) {
+                    return;
+                }
+                execute(Query.REMOVE_ALLY, targetGuild.getName(), guild.getName());
+                callback.call(true, null);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }).execute((ex, task) -> {
+            if(ex != null) {
+                callback.call(false, ex);
+            }
+        });
+    }
+
+    @Override
     public void createLeaderboard(Leaderboard leaderboard, Callback<Boolean, Exception> callback) {
 
     }
