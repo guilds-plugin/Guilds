@@ -425,13 +425,18 @@ roles:
 #-----------------------------------------------------------#
 
 # In this part of the config, we will discuss data saving for the plugin.
+
+# As of Guilds-1.8.3 MySQL has been remade, but it is EXPERIMENTAL, please report any and all bugs using MySQL to us before commenting poorly
+# on the Spigot plugin page.
+
 database:
-  type: MySQL
-
-  host: 127.0.0.1
-  port: 3306
-  username: root
-  password: password
-
-  database: guilds
-  pool-size: 10
+# Set the type of the database (Either JSON or MySQL)
+  type: JSON
+# Uncomment when using MySQL
+#  host: "127.0.0.1"
+#  port: 3306
+#  username: "root"
+#  password: "password"
+## Note: Database needs to be created manually
+#  database: "guilds"
+#  pool-size: 10
