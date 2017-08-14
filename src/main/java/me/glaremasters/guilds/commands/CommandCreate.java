@@ -91,14 +91,17 @@ public class CommandCreate extends CommandBase {
             Main.getInstance().guildTiersConfig.set(guild.getName(), 1);
             Main.getInstance().saveGuildStatus();
             Main.getInstance().saveGuildTiers();
-            String name =
-                Main.getInstance().getConfig().getBoolean("tablist-use-display-name") ? player
-                    .getDisplayName() : player.getName();
-            player.setPlayerListName(
-                ChatColor.translateAlternateColorCodes('&',
-                    Main.getInstance().getConfig().getString("tablist")
-                        .replace("{guild}", guild.getName()).replace("{prefix}", guild.getPrefix())
-                        + name));
+            if (Main.getInstance().getConfig().getBoolean("tablist-guilds")) {
+              String name =
+                  Main.getInstance().getConfig().getBoolean("tablist-use-display-name") ? player
+                      .getDisplayName() : player.getName();
+              player.setPlayerListName(
+                  ChatColor.translateAlternateColorCodes('&',
+                      Main.getInstance().getConfig().getString("tablist")
+                          .replace("{guild}", guild.getName())
+                          .replace("{prefix}", guild.getPrefix())
+                          + name));
+            }
           } else {
             Message.sendMessage(player, Message.COMMAND_CREATE_ERROR);
 

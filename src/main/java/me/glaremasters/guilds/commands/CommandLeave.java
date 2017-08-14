@@ -66,12 +66,14 @@ public class CommandLeave extends CommandBase {
 
         guild.removeMember(player.getUniqueId());
         Message.sendMessage(player, Message.COMMAND_LEAVE_SUCCESSFUL);
-        String name = Main.getInstance().getConfig().getBoolean("tablist-use-display-name") ? player
-            .getDisplayName() : player.getName();
-        player.setPlayerListName(
-            ChatColor.translateAlternateColorCodes('&',
-                name));
 
+        if (Main.getInstance().getConfig().getBoolean("tablist-guilds")) {
+          String name = Main.getInstance().getConfig().getBoolean("tablist-use-display-name") ? player
+              .getDisplayName() : player.getName();
+          player.setPlayerListName(
+              ChatColor.translateAlternateColorCodes('&',
+                  name));
+        }
         Main.getInstance().getCommandHandler().removeAction(player);
 
         guild.sendMessage(

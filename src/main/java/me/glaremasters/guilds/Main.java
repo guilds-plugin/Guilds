@@ -126,7 +126,7 @@ public class Main extends JavaPlugin {
     setDatabaseType();
     if (!getConfig().isSet("version") || getConfig().getInt("version") != 12) {
       Bukkit.getConsoleSender().sendMessage(
-          "§a[Guilds] §3The config is not on the latest version! Please back up and delete the config.yml and allow the new one to generate, otherwise the plugin may not work as intended!");
+          "§a[Guilds] §3The config is out of date. This update changed how commands are read. Please update the config to fix this.");
     }
 
     this.saveDefaultConfig();

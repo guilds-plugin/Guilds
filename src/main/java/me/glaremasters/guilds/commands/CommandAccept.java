@@ -53,13 +53,17 @@ public class CommandAccept extends CommandBase {
 
     guild.addMember(player.getUniqueId(), GuildRole.getLowestRole());
     guild.removeInvitedPlayer(player.getUniqueId());
-    String name = Main.getInstance().getConfig().getBoolean("tablist-use-display-name") ? player
-        .getDisplayName() : player.getName();
-    player.setPlayerListName(
-        ChatColor.translateAlternateColorCodes('&',
-            Main.getInstance().getConfig().getString("tablist")
-                .replace("{guild}", guild.getName()).replace("{prefix}", guild.getPrefix())
-                + name));
+    if (Main.getInstance().getConfig().getBoolean("tablist-guilds")) {
+      String name =
+          Main.getInstance().getConfig().getBoolean("tablist-use-display-name") ? player
+              .getDisplayName() : player.getName();
+      player.setPlayerListName(
+          ChatColor.translateAlternateColorCodes('&',
+              Main.getInstance().getConfig().getString("tablist")
+                  .replace("{guild}", guild.getName())
+                  .replace("{prefix}", guild.getPrefix())
+                  + name));
+    }
 
     Message.sendMessage(player,
         Message.COMMAND_ACCEPT_SUCCESSFUL.replace("{guild}", guild.getName()));
