@@ -11,7 +11,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 /**
  * Created by GlareMasters on 8/7/2017.
  */
-public class MobDeathListner implements Listener {
+public class MobDeathListener implements Listener {
 
   @EventHandler
   public void onMobDeathEvent(EntityDeathEvent event) {

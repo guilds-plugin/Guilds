@@ -1,7 +1,7 @@
 name: Guilds
 version: @version@
 main: me.glaremasters.guilds.Main
-softdepend: [MVdWPlaceholderAPI, PlaceholderAPI, Vault]
+softdepend: [MVdWPlaceholderAPI, PlaceholderAPI, Vault, WorldEdit, WorldGuard]
 authors: [blockslayer22]
 description: Lightweight, flexible, popular plugin for any Minecraft server. Forget Factions! Guilds are here!
 website: https://glaremasters.me/guilds/

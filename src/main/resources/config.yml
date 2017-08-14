@@ -16,6 +16,12 @@
 # DO NOT CHANGE THIS
 version: 12
 
+# Hooks will control what the plugin can hook into. For example:
+# Enabling the worldguard hook will make it check if PVP is allowed in a region before doing damage.
+
+hooks:
+  worldguard: false
+
 #-----------------------------------------------------------#
 #                     CHOOSE YOUR LANGUAGE                  #
 #-----------------------------------------------------------#

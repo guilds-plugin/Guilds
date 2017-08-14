@@ -4,6 +4,7 @@ import be.maximvdw.placeholderapi.PlaceholderAPI;
 import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import me.glaremasters.guilds.api.Metrics;
 import me.glaremasters.guilds.commands.*;
 import me.glaremasters.guilds.commands.base.CommandHandler;
@@ -20,6 +21,7 @@ import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -190,7 +192,7 @@ public class Main extends JavaPlugin {
         new GuildVaultListener(),
         new GuildBuffListener(),
         new GuildChatListener(),
-        new MobDeathListner(),
+        new MobDeathListener(),
         new PlayerDamageListener(),
         new DamageMultiplierListener()
 
@@ -212,6 +214,7 @@ public class Main extends JavaPlugin {
     if (!vault) {
       getLogger().log(Level.INFO, "Not using Vault!");
     }
+
 
     Metrics metrics = new Metrics(this);
     metrics.addCustomChart(new Metrics.SingleLineChart("guilds") {
@@ -419,4 +422,16 @@ public class Main extends JavaPlugin {
   public LeaderboardHandler getLeaderboardHandler() {
     return leaderboardHandler;
   }
+
+  private WorldGuardPlugin getWorldGuard() {
+    Plugin plugin = getServer().getPluginManager().getPlugin("WorldGuard");
+
+    // WorldGuard may not be loaded
+    if (plugin == null || !(plugin instanceof WorldGuardPlugin)) {
+      getLogger().log(Level.INFO, "Not using WorldGuard!");
+    }
+
+    return (WorldGuardPlugin) plugin;
+  }
+
 }

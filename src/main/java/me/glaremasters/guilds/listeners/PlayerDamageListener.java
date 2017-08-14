@@ -1,5 +1,9 @@
 package me.glaremasters.guilds.listeners;
 
+import com.sk89q.worldguard.bukkit.WGBukkit;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.flags.DefaultFlag;
+import com.sk89q.worldguard.protection.flags.StateFlag;
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.guild.Guild;
 import org.bukkit.entity.Player;
@@ -21,6 +25,13 @@ public class PlayerDamageListener implements Listener {
     Guild guild2 = Guild.getGuild(damager.getUniqueId());
     if (guild == null || guild2 == null) {
       return;
+    }
+    if (Main.getInstance().getConfig().getBoolean("hooks.worldguard")) {
+      ApplicableRegionSet set = WGBukkit.getPlugin().getRegionManager(player.getWorld())
+          .getApplicableRegions(player.getLocation());
+      if (set.queryState(null, DefaultFlag.PVP) == StateFlag.State.DENY) {
+        return;
+      }
     }
     if (guild.equals(guild2)) {
       event.setCancelled(!Main.getInstance().getConfig().getBoolean("allow-guild-damage"));
