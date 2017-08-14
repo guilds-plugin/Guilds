@@ -250,6 +250,7 @@ require-money: false
 reward-on-kill:
   enabled: true
   reward: 10
+  take-from-killed-player: 10
 
 
 #-----------------------------------------------------------#

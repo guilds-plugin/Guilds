@@ -2,6 +2,7 @@ package me.glaremasters.guilds.listeners;
 
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.guild.Guild;
+import me.glaremasters.guilds.message.Message;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -34,11 +35,25 @@ public class PlayerDeathListener implements Listener {
     if (Guild.areAllies(player.getUniqueId(), killer.getUniqueId())) {
       return;
     }
+    if (Main.getInstance().getEconomy()
+        .getBalance(player.getName()) < Main.getInstance().getConfig()
+        .getInt("reward-on-kill.take-from-killed-player")) {
+      return;
+    }
+    EconomyResponse response2 = Main.getInstance().getEconomy()
+        .withdrawPlayer(player,
+            Main.getInstance().getConfig().getInt("reward-on-kill.take-from-killed-player"));
     EconomyResponse response =
         Main.getInstance().getEconomy()
             .depositPlayer(killer, Main.getInstance().getConfig().getInt("reward-on-kill.reward"));
     if (response.transactionSuccess()) {
-      killer.sendMessage("You just killed someone, here's some money.");
+      Message.sendMessage(killer, Message.COMMAND_KILLREWARD_KILLER
+          .replace("{amount}",
+              Integer.toString(Main.getInstance().getConfig().getInt("reward-on-kill.reward"))));
+    }
+    if (response2.transactionSuccess()) {
+      Message.sendMessage(player, Message.COMMAND_KILLREWARD_PLAYER_WHO_DIED.replace("{amount}",
+          Integer.toString(Main.getInstance().getConfig().getInt("reward-on-kill.take-from-killed-player"))));
     }
   }
 
