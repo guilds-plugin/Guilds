@@ -134,7 +134,6 @@ public class Guild implements InventoryHolder {
     return Main.getInstance().getConfig().getDouble("tier" + getTier() + ".damage-multiplier");
   }
 
-
   public List<GuildMember> getMembers() {
     return members;
   }
@@ -347,3 +346,6 @@ public class Guild implements InventoryHolder {
     });
   }
 }
+
+
+
