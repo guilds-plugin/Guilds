@@ -19,6 +19,9 @@ messages:
       player-not-in-guild: "&cPlayer '{player}' nÃ£o estÃ¡ em sua guild!"
       role-no-permission: "&cSeu rank nÃ£o Ã© alto o suficiente para isto!"
       sethome-cooldown: "&cVocÃª nÃ£o pode setar a home por {time} segundos!"
+    killreward:
+      killer: "&aYou have killed another player and have earned {amount}!"
+      player-who-died: "&cYou have been killed by another player and have lost {amount}!"
     upgrade:
       tier-max: "&cCannot upgrade again! You're already maxed!"
       money-warning: "&cYou are about to spend {amount} to set upgrade your guild. (Type /guilds confirm to continue)"

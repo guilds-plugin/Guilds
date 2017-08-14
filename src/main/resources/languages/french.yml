@@ -19,6 +19,9 @@ messages:
       player-not-in-guild: "&cLe joueur '{player}' ne fait pas partie de votre guilde!"
       role-no-permission: "&cVotre rôle n'a pas la permission de faire ça!"
       sethome-cooldown: "&cVous ne pouvez pas définir de base pendant {time} secondes!"
+    killreward:
+      killer: "&aYou have killed another player and have earned {amount}!"
+      player-who-died: "&cYou have been killed by another player and have lost {amount}!"
     upgrade:
       tier-max: "&cVous ne pouvez plus augmenter! Vous êtes au maximum!"
       money-warning: "&cVous allez dépenser {amount} pour améliorer votre guilde. (Faites /guilds confirm pour continuer)"

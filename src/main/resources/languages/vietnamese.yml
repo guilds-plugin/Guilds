@@ -19,6 +19,9 @@ messages:
       player-not-in-guild: "&c'{player}' không ở trong guild của bạn!"
       role-no-permission: "&cVai trò của bạn không đủ để làm điều đó!"
       sethome-cooldown: "&cBạn phải đợi {time} giây để đặt nhà cho guild!"
+    killreward:
+      killer: "&aYou have killed another player and have earned {amount}!"
+      player-who-died: "&cYou have been killed by another player and have lost {amount}!"
     upgrade:
       tier-max: "&cKhông thể nâng cấp! Guild đã ở cấp cao nhất"
       money-warning: "&cBạn sẽ mất {amount} để nâng cấp guild của bạn. (Bấm /guilds confirm để xác nhận)"

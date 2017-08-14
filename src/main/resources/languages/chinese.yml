@@ -18,6 +18,9 @@ messages:
       no-home-set: "&c尚未擁有公會基地傳送點! , 輸入&b/guild sethome &r來創建公會基地傳送點!"
       home-cooldown: "&c你無法傳送!! 你需要等待 {time} 秒後!在試一次"
       sethome-cooldown: "&c你需要等 {time} 秒後 才能在執行!"
+    killreward:
+      killer: "&aYou have killed another player and have earned {amount}!"
+      player-who-died: "&cYou have been killed by another player and have lost {amount}!"
     upgrade:
       tier-max: "&cCannot upgrade again! You're already maxed!"
       money-warning: "&cYou are about to spend {amount} to set upgrade your guild. (Type /guilds confirm to continue)"
