@@ -6,58 +6,58 @@ messages:
       permission: "&cNu poti face acest lucru!"
       not-found: "&cComanda nu exista! Foloseste /guilds help pentru a vedea comenzile"
       no-guild: "&cNu faci parte de nici o Breasla!"
-      not-guildmaster: "&cNu esti Seful acestei Breasle"
+      not-guildmaster: "&cNu esti Seful acestei Bresle"
       invalid_number: "&c{input} nu este un numar valid!"
-      already-in-guild: "&cDeja faci parte de o Breasla!"
+      already-in-guild: "&cDeja apartii unei Bresle!"
       player-not-found: "&cJucatorul '{player}' nu exista sau nu este online!"
       player-not-in-guild: "&cJucatorul '{player}' nu face parte din Breasla ta!"
       invalid-role: "&cAcest rol '{input}' nu exista!"
-      guild-not-found: "&cBreasla '{input}' nu poate fi gasita!"
+      guild-not-found: "&cBreasla '{input}' nu exista!"
       role-no-permission: "&cRolul tau nu poate face acest lucru!"
       not-enough-money: "&aNe pare rau! Nu ai banii necesari pentru a crea o Breasla!"
       no-home-set: "&cNici o casa setata! Foloseste &a/guild sethome &cpentru a seta casa!"
       home-cooldown: "&cNu te poti teleporta acasa pentru inca {time} secunde!"
-      sethome-cooldown: "&cNu poti seta casa Breaslei in {time} secunde!"
-      not-officer: "&cUser must be an Officer in your Guild!"
+      sethome-cooldown: "&cNu poti seta casa Breslei pentru {time} secunde!"
+      not-officer: "&cJucatorul trebuie sa fie un Officer in breasla ta!"
     killreward:
-      killer: "&aYou have killed another player and have earned {amount}!"
-      player-who-died: "&cYou have been killed by another player and have lost {amount}!"
+      killer: "&aAi omorat un alt jucator si ai primit {amount}!"
+      player-who-died: "&cAi fost omorat de un alt jucator si ai pierdut {amount}!"
     upgrade:
-      tier-max: "&cCannot upgrade again! You're already maxed!"
-      money-warning: "&cYou are about to spend {amount} to set upgrade your guild. (Type /guilds confirm to continue)"
-      cancel: "&cUpgrade cancelled!"
-      success: "&aYou've successfully upgraded your guild!"
-      not-enough-money: "&aSorry! You don't have enough money to upgrade your Guild!"
+      tier-max: "&cNu mai poate fi upgradat! Este deja la maxim!"
+      money-warning: "&cEsti pe cale sa platesti {amount} pentru a upgrada breasla. (Scrie /guilds confirm pentru a continua)"
+      cancel: "&cUpgrade anulat!"
+      success: "&aAi upgradat cu succes breasla!"
+      not-enough-money: "&aNe pare rau! Nu ai destui bani pentru a upgrada breasla!"
     buff:
-      not-enough-money: "&cYou do not have enough money to buy this buff!"
+      not-enough-money: "&cNu ai destui bani pentru a cumpara acest Buff!"
     transfer:
-      success: "Guild has been transferred!"
-      newmaster: "You are the new Guild Master of your Guild!"
+      success: "Breasla a fost transferata!"
+      newmaster: "Esti noul Sef al breslei!"
     help:
       message: "&f/guild {command} {arguments} &7- &f{description}"
       next-page: "&7Foloseste /guilds help {next-page} pentru pagina urmatoare"
       invalid-page: "&cPagina nu exista!"
     status:
-      successful: "&aStatutul Breselei setat pe {status}!"
-      error: "&cStatutul Breslei trebuie sa fie public or private!"
+      successful: "&aStatutul Breslei setat pe {status}!"
+      error: "&cStatutul Breslei trebuie sa fie public sau private!"
     role:
       players: "{player} - {role}"
     list:
-      format: "Breaslele sunt urmatoarele:"
+      format: "Breslele sunt urmatoarele:"
     create:
       successful: "&aBreasla '{guild}' a fost creata cu success!"
-      cancelled: "&cCrearea Breaslei a fost oprita!"
-      cancelled-sethome: "&cCasa Breaslei nu a fost setata!"
+      cancelled: "&cCrearea Breslei a fost anulata!"
+      cancelled-sethome: "&cCasa Breslei nu a fost setata!"
       warning: "&cScrie /guilds confirm pentru a crea Breasla, sau /guilds cancel pentru a opri crearea."
       error: "&cCeva a mers gresit in timp ce creai Breasla!"
-      name-requirements: "&cNumele Breaslei nu intampina rechizitele necesare! Poti folosi doar caractere alphanumerice si lungimea nu poate fi mai mare de 64"
+      name-requirements: "&cNumele Breslei nu intampina rechizitele necesare! Poti folosi doar caractere alphanumerice si lungimea nu poate fi mai mare de 64"
       guild-name-taken: "&cAcest nume deja a fost folosit!"
       money-warning: "&c Esti sigur ca vrei sa platesti {amount} pentru a crea Breasla? (Scrie /guilds confirm pentru a continua)"
-      money-warning-sethome: "&c Esti sigur ca vrei sa platesti {amount} pentru a seta casa Breaslei. (Scrie /guilds confirm pentru a continua)"
-      guild-home: "&aAi setat casa Breaslei!"
+      money-warning-sethome: "&c Esti sigur ca vrei sa platesti {amount} pentru a seta casa Breslei. (Scrie /guilds confirm pentru a continua)"
+      guild-home: "&aAi setat casa Breslei!"
     delete:
       successful: "&aBreasla '{guild}' a fost stearsa cu succes!"
-      cancelled: "&cStergea Breaslei a fost oprita!"
+      cancelled: "&cStergea Breslei a fost anulata!"
       warning: "&cScrie /guilds confirm pentru a sterge Breasla, scrie /guilds cancel pentru a opri stergerea."
       error: "&cCeva a merg gresit in timp ce stergeai Breasla!"
     info:
@@ -69,7 +69,7 @@ messages:
       players: "Membri in Breasla: &b[{players}]"
     promote:
       promoted: "&aLai promovat cu success pe {player} de la {old-rank} la {new-rank}!"
-      successful: "&aAi fost promovat {old-rank} la {new-rank}!"
+      successful: "&aAi fost promovat de la {old-rank} la {new-rank}!"
       cannot-promote: "&cAcest jucator nu mai poate fi promovat!"
       not-promotion: "&cNu il promovezi pe acest jucator!"
     demote:
@@ -79,8 +79,8 @@ messages:
       not-demotion: "&cNu il retrogradezi pe acest jucator!"
     chat:
       message: "&7&l[Guild Chat]&r &b[{role}] {player}: {message}"
-      enabled: "&aGuild Chat Enabled"
-      disabled: "&cGuild Chat Disabled"
+      enabled: "&aChat-ul Breslei activat"
+      disabled: "&cChat-ul Breslei dezactivat"
     accept:
       not-invited: "&cNu esti invitat in aceasta Breasla!"
       guild-full: "&cAceasta Breasla este plina!"
@@ -91,26 +91,26 @@ messages:
       successful: "&aLai invitat cu succes pe {player} in Breasla ta!"
       already-in-guild: "&cAcest jucator deja face parte in Breasla ta!"
     decline:
-      success: "&aGuild Invite Declined!"
+      success: "&aInvitatia breslei a fost refuzata!"
     leave:
       successful: "&aAi lasat Breasla cu succes!"
-      cancelled: "&cParasirea Breaslei a fost anulata!"
+      cancelled: "&cParasirea Breslei a fost anulata!"
       warning: "&cScrie /guilds confirm pentru a parasi Breasla, scrie /guilds cancel pentru a anula."
-      warning-guildmaster: "&cEsti sef-ul Breaslei, daca o vei parasi aceasta va fi stearsa. Scrie /guilds confirm pentru a parasi si sterge Breasla, scrie /guilds cancel pentru a anula."
-      player-left: "&cJucatorul '{player}' a parasi Breasla!"
+      warning-guildmaster: "&cEsti sef-ul Breslei, daca o vei parasi aceasta va fi stearsa. Scrie /guilds confirm pentru a parasi si sterge Breasla, scrie /guilds cancel pentru a anula."
+      player-left: "&cJucatorul '{player}' a parasit Breasla!"
     boot:
       successful: "&aLai dat afara pe  {player} cu succes!"
       kicked: "&cAi fost dat afara din Breasla de {kicker}!"
       player-kicked: "&cJucatorul '{player}' a fost dat afara din Breasla de {kicker}!"
     prefix:
-      successful: "&aPrefix-ul Breaslei a fost schimbat cu succes!"
-      requirements: "&cPrefix-ul Breaslei nu intimpina toate rechizitele necesare! Poti folosi doar caractere alphanumerice si si poate fi lung maxim 6"
+      successful: "&aPrefix-ul Breslei a fost schimbat cu succes!"
+      requirements: "&cPrefix-ul Breslei nu intimpina toate rechizitele necesare! Poti folosi doar caractere alphanumerice si poate fi lung maxim 6"
     confirm:
       error: "&cNu ai nimic de confirmat!"
     cancel:
       error: "&cNu ai nimic de anulat!"
     reload:
-      reloaded: "&aConfiguration file reloaded!"
+      reloaded: "&aFile de configurare reincarcat!"
     update:
       found: "&aA fost gasit un Update! dute la {url} pentru al descarca!"
       not-found: "&cNu a fost gasit nici un Update!"
@@ -119,8 +119,8 @@ messages:
       delete-error: "&cCeva a mers gresit in timp ce se stergea Breasla!"
       delete-warning: "&cScrie /guilds confirm pentru a confirma , scrie /guilds cancel pentru a anula."
       delete-cancelled: "&cStergerea a fost anulata!"
-      player-already-in-guild: "&cAcest jucator face deja parte de o Breasla!"
-      added-player: "&aJucator adaugat Breaslei"
+      player-already-in-guild: "&cAcest jucator este deja membrul unei Bresle!"
+      added-player: "&aJucator adaugat Breslei"
       player-not-in-guild: "&cJucatorul nu este in aceasta Breasla!"
       removed-player: "&aJucator sters din aceasta Breasla!"
     ally:
@@ -135,9 +135,9 @@ messages:
       already-allies: "&cDeja esti aliata cu {guild}!"
       not-allies: "&cNu esti aliata cu {guild}!"
     home:
-      teleported: "&aAi fost teleportat la casa Breaslei!"
+      teleported: "&aAi fost teleportat la casa Breslei!"
       teleporting: "&cVrei fi teleportat in {count} secunde."
       damage-taken: "&cAi fost atacat! Anulez teleportarea!"
   event:
     join:
-      pending-invites: "&aAi {number} invitatii de la urmatoarele Breasle: &e{guilds}"
+      pending-invites: "&aAi {number} invitatii de la urmatoarele Bresle: &e{guilds}"
