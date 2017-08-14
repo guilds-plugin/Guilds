@@ -1,0 +1,143 @@
+messages:
+  command:
+    error:
+      already-in-guild: "&cDu er allerede i en guild!"
+      args: "&cUgyldige argumenter!  /guilds help for mer informasjon"
+      console: "&cDenne kommandoen kan bare spillere bruke!"
+      guild-not-found: "&cGuild '{input}' kunne ikke bli funnet!"
+      home-cooldown: "&cDu kan ikke teleportere hjem før om {time} sekunder!"
+      invalid-role: "&cRolle '{input}' does not exist!"
+      invalid_number: "&c{input} er ikke et gyldig nummer!"
+      no-guild: "&cDu er ikke i en guild!"
+      no-home-set: "&cIngen hjem satt! Bruk &a/guild sethome &cfor å sette et hjem!"
+      not-enough-money: "&aBeklager! Du har ikke nok penger for å lage en guild!"
+      not-found: "&cKommandoen eksisterer ikke! Se /guilds help for alle kommandoene"
+      not-guildmaster: "&cDu er ikke Guild Masteren av guilden!"
+      not-officer: "&cBrukeren må være en Officer av guilden!"
+      permission: "&cDu har ikke nok rettigheter til dette!"
+      player-not-found: "&cSpiller '{player}' eksisterer ikke eller er ikke pålogget!"
+      player-not-in-guild: "&cSpiller '{player}' er ikke i guilden din!"
+      role-no-permission: "&cRollen din er ikke høy nok for dette!"
+      sethome-cooldown: "&cDu kan ikke sette hjem før om {time} sekunder!"
+    killreward:
+      killer: "&aDu har drept en annen spiller og fikk {amount}!"
+      player-who-died: "&cDu har blitt drept av en annen spiller, og mistet {amount}!"
+    upgrade:
+      tier-max: "&cKan ikke oppgradere mer!"
+      money-warning: "&cDu er i ferd med å bruke {amount} for å oppgradere guilden. (Skriv /guilds confirm for å fortsette)"
+      cancel: "&cOppgradering kansellert!"
+      success: "&aDu har oppgradert guilden!"
+      not-enough-money: "&aBeklager! Du har ikke nok penger for å oppgradere guilden!"
+    buff:
+      not-enough-money: "&cDu har ikke nok penger for å kjøpe denne buffen!"
+    transfer:
+      newmaster: "&aDu er den nye Guild Masteren av guilden!"
+      success: "&aGuilden har blitt overført!"
+    help:
+      invalid-page: "&cSide ikke funnet!"
+      message: "&f/guild {command} {arguments} &7- &f{description}"
+      next-page: "&7Se /guilds help {next-page} for neste side"
+    status:
+      error: "&cGuild status må være public eller private!"
+      successful: "&aGuild status satt til {status}!"
+    role:
+      players: "{player} - {role}"
+    list:
+      format: "Eksisterende Guilds:"
+    create:
+      cancelled-sethome: "&cGuild hjem ble ikke satt!"
+      cancelled: "&cGuild opprettelse kansellert!"
+      error: "&cNoe gikk galt mens jeg prøvde å opprette guilden!"
+      guild-home: "&aDu satt guildens hjem!"
+      guild-name-taken: "&cDette navnet er allerede tatt!"
+      money-warning-sethome: "&c Du er i ferd med å bruke {amount} til å sette et guild hjem. (Skriv /guilds confirm for å fortsette)"
+      money-warning: "&c Er du sikker på at du vil bruke {amount} til å opprette er hjem? (Type /guilds confirm to continue)"
+      name-requirements: "&cGuild-navnet stemmer ikke med kriteriene! Du kan bare ha alfabetiske bokstaver og navnet må være under 64 tegn"
+      successful: "&aGuild '{guild}' opprettet!"
+      warning: "&cSkriv /guilds confirm for å opprette guilden, eller /guilds cancel for å kansellere."
+    delete:
+      cancelled: "&cFjerning av guilden kansellert!"
+      error: "&cNoe gikk galt mens jeg prøvde å fjerne guilden!"
+      successful: "&aFjernet '{guild}'!"
+      warning: "&cSkriv /guilds confirm for å slette guilden, eller /guilds cancel for å kansellere."
+    info:
+      header: "Informasjon for &b{guild}"
+      master: "Guild Master: &b{master}"
+      member-count: "Medlemmer: &b{members}/64&r (&bPålogget: {members-online}&r)"
+      name: "Navn: &b{guild}&r (&bPrefiks: {prefix}&r)"
+      players: "Medlemmer i guild: &b[{players}]"
+      rank: "Din rolle: &b{rank}"
+    promote:
+      cannot-promote: "&cDenne spilleren kan ikke promoteres mer!"
+      not-promotion: "&cDu er ikke høy nok rolle for dette!"
+      promoted: "&aDu har promotert {player} fra {old-rank} til {new-rank}!"
+      successful: "&aDu har blitt promotert fra {old-rank} til {new-rank}!"
+    demote:
+      cannot-demote: "&cDenne spilleren kan ikke demotes mer!"
+      demoted: "&cDu har blitt demotet fra {old-rank} til {new-rank}!"
+      not-demotion: "&cDu er ikke høy nok rolle for dette!"
+      successful: "&aDu har demotet {player} fra {old-rank} til {new-rank}!"
+    chat:
+      message: "&7&l[Guild Chat]&r &b[{role}] {player}: {message}"
+      enabled: "&aGuild Chat Aktivert"
+      disabled: "&cGuild Chat Deaktivert"
+    accept:
+      guild-full: "&cDenne guilden er full!"
+      not-invited: "&cDenne guilden er privat / du har ikke blitt invitert til denne guilden."
+      player-joined: "&aSpiller '{player}' ble med i guilden!"
+      successful: "&aDu ble medi '{guild}'"
+    invite:
+      already-in-guild: "&cDenne spilleren er allerede i guilden!"
+      message: "&a{player} har invitert deg til hans/hennes guild, '{guild}'"
+      successful: "&aDu har invitert {player} til guilden!"
+    decline:
+      success: "&aGuild Invitasjon Avslått!"
+    leave:
+      cancelled: "&cForlatelse av guild kansellert!"
+      player-left: "&cSpiller '{player}' forlot guilden!"
+      successful: "&aDu har forlatt guilden!"
+      warning-guildmaster: "&cDu er Guild Master av guilden. Hvis du forlater guilden, vil guilden slettes."
+      warning: "&cSkriv /guilds confirm for å forlate guilden, eller /guilds cancel for å kansellere."
+    boot:
+      kicked: "&cDu har blitt sparket fra guilden av {kicker}!"
+      player-kicked: "&cSpiller '{player}' har blitt sparket fra klanen av {kicker}!"
+      successful: "&aSparket {player} fra guilden!"
+    prefix:
+      requirements: "&cGuild-prefix stemmer ikke med kriteriene! Du kan bare ha alfabetiske bokstaver og prefix må være under 6 tegn"
+      successful: "&aGuild prefix endret!"
+    confirm:
+      error: "&cDu har ingenting å bekrefte!"
+    cancel:
+      error: "&cDu har ingenting å kansellere!"
+    reload:
+      reloaded: "&aKonfigurasjonsfil relastet!"
+    update:
+      found: "&aFant en oppdatering! Gå til {url} for å laste den ned!"
+      not-found: "&cFant ingen oppdatering!"
+    admin:
+      added-player: "&aLa spiller til guild"
+      delete-cancelled: "&cSletting av guild kansellert!"
+      delete-error: "&cNoe gikk galt mens jeg prøvde å slette guilden!"
+      delete-successful: "&cGuild fjernet!"
+      delete-warning: "&cSkriv /guilds confirm for å fjerne guilden, eller /guilds cancel for å kansellere."
+      player-already-in-guild: "&cDenne spilleren er allerede i en guild!"
+      player-not-in-guild: "&cSpilleren er ikke i guilden!"
+      removed-player: "&aFjernet spilleren fra guilden!"
+    ally:
+      accepted-target: "&a{guild} er nå alliert med oss!"
+      accepted: "&aDenne guilden er nå alliert med {guild}!"
+      already-allies: "&cGuilden er allerede alliert med {guild}!"
+      declined: "&c{guild} vil ikke bli alliert!"
+      guild-not-pending: "&cDenne guilden har ikke sendt en forespørsel!"
+      not-allies: "&cDu er ikke alliert med {guild}!"
+      removed-target: "&c{guild} er ikke lenger alliert med oss!"
+      removed: "&cDenne guilden er ikke lenger aliert med {guild}!"
+      send-target: "&aMottok en forespørsel om å bli alliert av {guild}! Skriv /guilds ally accept {guild} for å godta, eller /guilds ally decline {guild} for å avslå"
+      send: "&aForespørsel sendt!"
+    home:
+      damage-taken: "&cDu har tatt skade! Teleportering kansellert"
+      teleported: "&aDu er teleportert til guildens hjem!"
+      teleporting: "&cDu vil bli telportert om {count} sekunder."
+  event:
+    join:
+      pending-invites: "&aDu har {number} forespørs(el/ler) fra guild(ene): &e{guilds} . Bruk /guild accept <navn> eller /guild deny <navn> for å bli med eller avslå!"
