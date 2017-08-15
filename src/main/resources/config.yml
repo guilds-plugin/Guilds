@@ -113,6 +113,7 @@ display:
   member-count: true
   members: true
   guildstatus: true
+  guildtier: true
 
 list:
   prefix: "&aGuild Prefix: "
@@ -121,6 +122,7 @@ list:
   member-count: "&6Member Count: "
   members: "&5Members: "
   guildstatus: "&3Guild Status: "
+  guildtier: "&fGuild Tier: "
 
 info:
   playername: "Name: "

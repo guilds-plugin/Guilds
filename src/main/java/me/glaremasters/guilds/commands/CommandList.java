@@ -82,6 +82,12 @@ public class CommandList extends CommandBase {
                 .getString("list.guildstatus")
                 + guild.getStatus()));
       }
+      if (Main.getInstance().getConfig().getBoolean("display.guildtier")) {
+        lore.add(
+            ChatColor.translateAlternateColorCodes('&', Main.getInstance().getConfig()
+                .getString("list.guildtier")
+                + guild.getTier()));
+      }
       skullMeta.setLore(lore);
       String name = Bukkit.getOfflinePlayer(guild.getGuildMaster().getUniqueId()).getName();
       skullMeta
