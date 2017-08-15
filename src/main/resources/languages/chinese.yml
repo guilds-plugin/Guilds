@@ -19,16 +19,16 @@ messages:
       home-cooldown: "&c你無法傳送!! 你需要等待 {time} 秒後!在試一次"
       sethome-cooldown: "&c你需要等 {time} 秒後 才能在執行!"
     killreward:
-      killer: "&aYou have killed another player and have earned {amount}!"
-      player-who-died: "&cYou have been killed by another player and have lost {amount}!"
+      killer: "&a你殺死了一位玩家 獲得了 {amount}!"
+      player-who-died: "&c你被一位玩家殺死啦!!  被幹走了 {amount}!"
     upgrade:
-      tier-max: "&cCannot upgrade again! You're already maxed!"
-      money-warning: "&cYou are about to spend {amount} to set upgrade your guild. (Type /guilds confirm to continue)"
-      cancel: "&cUpgrade cancelled!"
-      success: "&aYou've successfully upgraded your guild!"
-      not-enough-money: "&aSorry! You don't have enough money to upgrade your Guild!"
+      tier-max: "&c公會不能再升級了!你已經到目前的頂級了!!"
+      money-warning: "&c你要花費 {amount} 來升級你的公會嗎?. (請輸入 /guilds confirm 來做確認)"
+      cancel: "&c公會升級已經取消!"
+      success: "&a你成功升級了你的公會!趕快招兵買馬壯大自己吧!"
+      not-enough-money: "&a抱歉 你沒有足夠的金錢來升級公會.."
     buff:
-      not-enough-money: "&cYou do not have enough money to buy this buff!"
+      not-enough-money: "&c你沒有足夠的金錢購買 增益效果"
     transfer:
       success: "公會已經被轉讓!"
       newmaster: "你是新的公會會長了!"
@@ -77,9 +77,9 @@ messages:
       cannot-demote: "&c這個玩家不能在降職了!"
       not-demotion: "&c你沒有許可權對這個玩家降職!"
     chat:
-      message: "&7&l[Guild Chat]&r &b[{role}] {player}: {message}"
-      enabled: "&aGuild Chat Enabled"
-      disabled: "&cGuild Chat Disabled"
+      message: "&7&l[公會聊天]&r &b[{role}] {player}: {message}"
+      enabled: "&a公會聊天開啟"
+      disabled: "&c公會聊天關閉"
     accept:
       not-invited: "&c你沒有被邀請加入這個公會!"
       guild-full: "&c這個公會滿人了!"
@@ -115,7 +115,7 @@ messages:
       not-found: "&c沒有更新"
     admin:
       delete-successful: "&c公會已成功地被刪除了!"
-      delete-error: "&c刪除這個公會時出現了問題.."
+      delete-error: "&c刪除這個公會���出現了問題.."
       delete-warning: "&c輸入 /guilds confirm 來確認刪除這個公會, 輸入 /guilds cancel 來取消"
       delete-cancelled: "&c公會刪除取消了!"
       player-already-in-guild: "&c這個玩家已經在一個公會內了!"

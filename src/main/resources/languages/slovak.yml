@@ -18,21 +18,21 @@ messages:
       no-home-set: "&cZiaden domov nie je nastaveny! Pouzi prikaz &c/guild sethome &cpre nastavenie domova!"
       home-cooldown: "&cNa tento domov sa nemozes teleportovat nasledujucich {time} sekund!"
       sethome-cooldown: "&cNemozes nastavit domov klanu nasledujucich {time} sekund!"
-      not-officer: "&cUser must be an Officer in your Guild!"
+      not-officer: "&cUzivatel musi byt dostojnikom v tvojom klane!"
     killreward:
-      killer: "&aYou have killed another player and have earned {amount}!"
-      player-who-died: "&cYou have been killed by another player and have lost {amount}!"
+      killer: "&aZabil si ineho hraca a ziskal si sumu {amount}!"
+      player-who-died: "&cBol si zabity inym hracom a stratil si sumu {amount}!"
     upgrade:
-      tier-max: "&cCannot upgrade again! You're already maxed!"
-      money-warning: "&cYou are about to spend {amount} to set upgrade your guild. (Type /guilds confirm to continue)"
-      cancel: "&cUpgrade cancelled!"
-      success: "&aYou've successfully upgraded your guild!"
-      not-enough-money: "&aSorry! You don't have enough money to upgrade your Guild!"
+      tier-max: "&cUz viac nemozes upgradovat! Si na maxime!"
+      money-warning: "&cChystas sa pouzit sumu {amount} na upgrade tvojho klanu. (Zadaj /guilds confirm pre pokracovanie)"
+      cancel: "&cUpgrade zruseny!"
+      success: "&aUspesne si vylepsil svoj klan!"
+      not-enough-money: "&aJe nam luto! Nemas dostatok penazi na upgrade tvojho klanu!"
     buff:
-      not-enough-money: "&cYou do not have enough money to buy this buff!"
+      not-enough-money: "&cNemas dostatok penazi na kupu tohto vylepsenia!"
     transfer:
-      success: "Guild has been transferred!"
-      newmaster: "You are the new Guild Master of your Guild!"
+      success: "Klan bol prevedeny!"
+      newmaster: "Si novym vodcom tohto klanu!"
     help:
       message: "&f/guild {command} {arguments} &7- &f{description}"
       next-page: "&7Pouzi prikaz /guilds help {next-page} pre zobrazenie dalsej stranky"
@@ -78,9 +78,9 @@ messages:
       cannot-demote: "&cTento hrac uz nemoze byt viac degradovany!"
       not-demotion: "&cNedegradujes tohto hraca!"
     chat:
-      message: "&7&l[Guild Chat]&r &b[{role}] {player}: {message}"
-      enabled: "&aGuild Chat Enabled"
-      disabled: "&cGuild Chat Disabled"
+      message: "&7&l[Chat Klanu]&r &b[{role}] {player}: {message}"
+      enabled: "&aChat klanu zapnuty"
+      disabled: "&cChat klanu vypnuty"
     accept:
       not-invited: "&cNebol si pozvany do tohto klanu!"
       guild-full: "&cTento klan je plny!"
@@ -91,7 +91,7 @@ messages:
       successful: "&cUspesne si pozval hraca {player} do tvojho klanu!"
       already-in-guild: "&cTento hrac uz je v tvojom klane!"
     decline:
-      success: "&aGuild Invite Declined!"
+      success: "&aPrijatie do klanu bolo zamietnute!"
     leave:
       successful: "&cUspesne si opustil svoj klan!"
       cancelled: "&cOpustenie klanu bolo zrusene!"
