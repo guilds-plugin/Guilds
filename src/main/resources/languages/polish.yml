@@ -18,18 +18,18 @@ messages:
       player-not-found: "&cGracz '{player}' nie istnieje, albo jest offline!"
       player-not-in-guild: "&cGracz '{player}' nie jest w Twojej gildii!"
       role-no-permission: "&cTwój stopień gildyjny jest za niski, aby to zrobić!"
-      sethome-cooldown: "&cYou can't set your guild home for another {time} seconds!"
+      sethome-cooldown: "&cNie możesz ustawić bazy gildii przez następne {time} sekund!"
     killreward:
-      killer: "&aYou have killed another player and have earned {amount}!"
-      player-who-died: "&cYou have been killed by another player and have lost {amount}!"
+      killer: "&aZyskałeś {amount} zabijając gracza!"
+      player-who-died: "&cZostałeś zabity przez innego gracza i straciłeś {amount}!"
     upgrade:
-      tier-max: "&cCannot upgrade again! You're already maxed!"
-      money-warning: "&cYou are about to spend {amount} to set upgrade your guild. (Type /guilds confirm to continue)"
-      cancel: "&cUpgrade cancelled!"
-      success: "&aYou've successfully upgraded your guild!"
-      not-enough-money: "&aSorry! You don't have enough money to upgrade your Guild!"
+      tier-max: "&cNie możesz już awansować! Osiągnięto maksymalny poziom!"
+      money-warning: "&cCzy na pewno chcesz wydać {amount} aby awansować swoją gildię? (Wpisz /guilds confirm aby potwierdzić)"
+      cancel: "&cAnulowano awansowanie!"
+      success: "&aYPomyślnie awansowałeś swoją gildię!"
+      not-enough-money: "&aWybacz, ale nie masz wystarczająco pieniędzy, aby awansować swoją gildię"
     buff:
-      not-enough-money: "&cYou do not have enough money to buy this buff!"
+      not-enough-money: "&cNie masz wystarczająco pieniędzy, aby kupić tego buff'a!"
     transfer:
       newmaster: "&aJesteś nowym właścicielem gildii!"
       success: "&aGildia przetransferowana pomyślnie!"
@@ -79,8 +79,8 @@ messages:
       successful: "&aPomyślnie zdegradowano {player} z rangi {old-rank} do {new-rank}!"
     chat:
       message: "&7&l[Guild Chat]&r &b[{role}] {player}: {message}"
-      enabled: "&aGuild Chat Enabled"
-      disabled: "&cGuild Chat Disabled"
+      enabled: "&aCzat Gildyjny włączony"
+      disabled: "&cCzat Gildyjny wyłączony"
     accept:
       guild-full: "&cGildia jest już pełna!"
       not-invited: "&cTa gildia jest prywatna, lub nie otrzymałeś od niej zaproszenia."
@@ -91,7 +91,7 @@ messages:
       message: "&a{player} zaprosił Ciebie do swojej gildii, '{guild}'"
       successful: "&aPomyślnie zaprosiłeś {player} do swojej gildii!"
     decline:
-      success: "&aGuild Invite Declined!"
+      success: "&aOdrzucono zaproszenie do gildii!"
     leave:
       cancelled: "&cPrzerwano opuszczanie gildii!"
       player-left: "&cPlayer '{player}' odszedł z Twojej gildii!"
@@ -110,7 +110,7 @@ messages:
     cancel:
       error: "&cNie masz czego anulować!"
     reload:
-      reloaded: "&aConfiguration file reloaded!"
+      reloaded: "&aPlik konfiguracyjny przeładowany pomyślnie!"
     update:
       found: "&aZnaleziono aktualizację! Przejdź do {url} aby ją pobrać"
       not-found: "&cNie znaleziono aktualizacji!"
