@@ -28,6 +28,8 @@ public class CommandReload extends CommandBase {
     }
     Main.getInstance().reloadConfig();
     Main.getInstance().setDatabaseType();
+    Main.getInstance().getGuildHandler().disable();
+    Main.getInstance().getGuildHandler().enable();
 
     Main.PREFIX =
         ChatColor.translateAlternateColorCodes('&',
