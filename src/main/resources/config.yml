@@ -278,6 +278,7 @@ reward-on-kill:
 #   cost: 400
 #   max-members: 100
 #   mob-xp-multiplier: 4
+#   damage-multiplier: 4
 
 # Keep in mind for the damage-multiplier, it applies to players also, so by default it's set to normal for every tier to allow you
 # to choose how it will work.
