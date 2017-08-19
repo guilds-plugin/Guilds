@@ -74,18 +74,19 @@ public class CommandBank extends CommandBase {
         return;
       }
 
-      Main.getInstance().guildBanksConfig.set(guild.getName(), balance - Double.valueOf(args[1]));
+
       Message.sendMessage(player, Message.COMMAND_BANK_WITHDRAW_SUCCESS
           .replace("{amount}", String.valueOf(Double.valueOf(args[1]))));
 
       EconomyResponse response =
           Main.getInstance().getEconomy().depositPlayer(player, Double.valueOf(args[1]));
-      Main.getInstance().saveGuildBanks();
       if (!response.transactionSuccess()) {
         Message.sendMessage(player, Message.COMMAND_BANK_WITHDRAW_FAILURE);
         return;
       }
 
+      Main.getInstance().guildBanksConfig.set(guild.getName(), balance - Double.valueOf(args[1]));
+      Main.getInstance().saveGuildBanks();
 
     }
 
