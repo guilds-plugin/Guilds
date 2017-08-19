@@ -45,6 +45,15 @@ public class CommandLeave extends CommandBase {
                             new GuildRemoveEvent(player, guild,
                                     GuildRemoveEvent.RemoveCause.REMOVED);
                     Main.getInstance().getServer().getPluginManager().callEvent(removeEvent);
+                    Main.getInstance().guildBanksConfig
+                            .set(guild.getName(), 0);
+                    Main.getInstance().guildTiersConfig
+                            .set(guild.getName(), 1);
+                    Main.getInstance().guildHomesConfig
+                            .set(guild.getName(), 0);
+                    Main.getInstance().saveGuildBanks();
+                    Main.getInstance().saveGuildTiers();
+                    Main.getInstance().saveGuildHomes();
                     if (removeEvent.isCancelled()) {
                         return;
                     }
