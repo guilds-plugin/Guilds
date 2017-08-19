@@ -22,6 +22,12 @@ messages:
     killreward:
       killer: "&aAi omorat un alt jucator si ai primit {amount}!"
       player-who-died: "&cAi fost omorat de un alt jucator si ai pierdut {amount}!"
+    bank:
+      balance: "&aYour guild's bank has a balance of {amount}."
+      deposit-success: "&aYou have just moved {amount} from your account into your guild bank!"
+      deposit-failure: "&cYou don't have enough to deposit the amount requested!"
+      withdraw-success: "&aYou have just moved {amount} from your guild bank to your account!"
+      withdraw-failure: "&cYou don't have enough to withdraw the amount requested!"
     upgrade:
       tier-max: "&cNu mai poate fi upgradat! Este deja la maxim!"
       money-warning: "&cEsti pe cale sa platesti {amount} pentru a upgrada breasla. (Scrie /guilds confirm pentru a continua)"

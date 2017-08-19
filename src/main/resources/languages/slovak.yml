@@ -22,6 +22,12 @@ messages:
     killreward:
       killer: "&aZabil si ineho hraca a ziskal si sumu {amount}!"
       player-who-died: "&cBol si zabity inym hracom a stratil si sumu {amount}!"
+    bank:
+      balance: "&aYour guild's bank has a balance of {amount}."
+      deposit-success: "&aYou have just moved {amount} from your account into your guild bank!"
+      deposit-failure: "&cYou don't have enough to deposit the amount requested!"
+      withdraw-success: "&aYou have just moved {amount} from your guild bank to your account!"
+      withdraw-failure: "&cYou don't have enough to withdraw the amount requested!"
     upgrade:
       tier-max: "&cUz viac nemozes upgradovat! Si na maxime!"
       money-warning: "&cChystas sa pouzit sumu {amount} na upgrade tvojho klanu. (Zadaj /guilds confirm pre pokracovanie)"

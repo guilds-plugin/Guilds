@@ -22,6 +22,12 @@ messages:
     killreward:
       killer: "&aZyskałeś {amount} zabijając gracza!"
       player-who-died: "&cZostałeś zabity przez innego gracza i straciłeś {amount}!"
+    bank:
+      balance: "&aYour guild's bank has a balance of {amount}."
+      deposit-success: "&aYou have just moved {amount} from your account into your guild bank!"
+      deposit-failure: "&cYou don't have enough to deposit the amount requested!"
+      withdraw-success: "&aYou have just moved {amount} from your guild bank to your account!"
+      withdraw-failure: "&cYou don't have enough to withdraw the amount requested!"
     upgrade:
       tier-max: "&cNie możesz już awansować! Osiągnięto maksymalny poziom!"
       money-warning: "&cCzy na pewno chcesz wydać {amount} aby awansować swoją gildię? (Wpisz /guilds confirm aby potwierdzić)"

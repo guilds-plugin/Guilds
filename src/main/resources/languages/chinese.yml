@@ -21,6 +21,12 @@ messages:
     killreward:
       killer: "&a你殺死了一位玩家 獲得了 {amount}!"
       player-who-died: "&c你被一位玩家殺死啦!!  被幹走了 {amount}!"
+    bank:
+      balance: "&aYour guild's bank has a balance of {amount}."
+      deposit-success: "&aYou have just moved {amount} from your account into your guild bank!"
+      deposit-failure: "&cYou don't have enough to deposit the amount requested!"
+      withdraw-success: "&aYou have just moved {amount} from your guild bank to your account!"
+      withdraw-failure: "&cYou don't have enough to withdraw the amount requested!"
     upgrade:
       tier-max: "&c公會不能再升級了!你已經到目前的頂級了!!"
       money-warning: "&c你要花費 {amount} 來升級你的公會嗎?. (請輸入 /guilds confirm 來做確認)"

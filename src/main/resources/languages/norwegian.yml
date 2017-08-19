@@ -22,6 +22,12 @@ messages:
     killreward:
       killer: "&aDu har drept en annen spiller og fikk {amount}!"
       player-who-died: "&cDu har blitt drept av en annen spiller, og mistet {amount}!"
+    bank:
+      balance: "&aYour guild's bank has a balance of {amount}."
+      deposit-success: "&aYou have just moved {amount} from your account into your guild bank!"
+      deposit-failure: "&cYou don't have enough to deposit the amount requested!"
+      withdraw-success: "&aYou have just moved {amount} from your guild bank to your account!"
+      withdraw-failure: "&cYou don't have enough to withdraw the amount requested!"
     upgrade:
       tier-max: "&cKan ikke oppgradere mer!"
       money-warning: "&cDu er i ferd med å bruke {amount} for å oppgradere guilden. (Skriv /guilds confirm for å fortsette)"
