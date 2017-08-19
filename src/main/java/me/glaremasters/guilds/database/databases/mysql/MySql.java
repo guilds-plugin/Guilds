@@ -2,16 +2,6 @@ package me.glaremasters.guilds.database.databases.mysql;
 
 import com.sun.rowset.CachedRowSetImpl;
 import com.zaxxer.hikari.HikariDataSource;
-import me.glaremasters.guilds.Main;
-import me.glaremasters.guilds.database.Callback;
-import me.glaremasters.guilds.database.DatabaseProvider;
-import me.glaremasters.guilds.guild.Guild;
-import me.glaremasters.guilds.guild.GuildRole;
-import me.glaremasters.guilds.leaderboard.Leaderboard;
-import me.glaremasters.guilds.util.SneakyThrow;
-import org.bukkit.configuration.ConfigurationSection;
-
-import javax.sql.rowset.CachedRowSet;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,6 +11,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
+import javax.sql.rowset.CachedRowSet;
+import me.glaremasters.guilds.Main;
+import me.glaremasters.guilds.database.Callback;
+import me.glaremasters.guilds.database.DatabaseProvider;
+import me.glaremasters.guilds.guild.Guild;
+import me.glaremasters.guilds.guild.GuildRole;
+import me.glaremasters.guilds.leaderboard.Leaderboard;
+import me.glaremasters.guilds.util.SneakyThrow;
+import org.bukkit.configuration.ConfigurationSection;
 
 
 public class MySql implements DatabaseProvider {
@@ -54,11 +53,13 @@ public class MySql implements DatabaseProvider {
                 .async(() -> execute(Query.CREATE_TABLE_ALLIES))
                 .async(() -> execute(Query.CREATE_TABLE_INVITED_MEMBERS))
                 .sync(() -> Main.getInstance().getLogger()
-                        .log(Level.INFO, "Tables 'guilds', 'members', 'guild_homes', 'guild_allies', and 'invited_members' created!"))
+                        .log(Level.INFO,
+                                "Tables 'guilds', 'members', 'guild_homes', 'guild_allies', and 'invited_members' created!"))
                 .execute((exception, task) -> {
                     if (exception != null) {
                         Main.getInstance().getLogger()
-                                .log(Level.SEVERE, "An error occurred while creating MySQL tables!");
+                                .log(Level.SEVERE,
+                                        "An error occurred while creating MySQL tables!");
                         exception.printStackTrace();
                     }
                 });
@@ -66,8 +67,10 @@ public class MySql implements DatabaseProvider {
 
     @Override
     public void createGuild(Guild guild, Callback<Boolean, Exception> callback) {
-        Main.newChain().async(() -> execute(Query.CREATE_GUILD, guild.getName(), guild.getPrefix(), "private".equalsIgnoreCase(guild.getStatus()) ? 1 : 0, 1))
-                .async(() -> execute(Query.ADD_MEMBER, guild.getGuildMaster().getUniqueId().toString(),
+        Main.newChain().async(() -> execute(Query.CREATE_GUILD, guild.getName(), guild.getPrefix(),
+                "private".equalsIgnoreCase(guild.getStatus()) ? 1 : 0, 1))
+                .async(() -> execute(Query.ADD_MEMBER,
+                        guild.getGuildMaster().getUniqueId().toString(),
                         guild.getName(), 0)).sync(() -> callback.call(true, null))
                 .execute((exception, task) -> {
                     if (exception != null) {
@@ -83,7 +86,8 @@ public class MySql implements DatabaseProvider {
     }
 
     public void updatePrefix(Guild guild, Callback<Boolean, Exception> callback) {
-        Main.newChain().async(() -> execute(Query.UPDATE_PREFIX, guild.getPrefix(), guild.getName()))
+        Main.newChain()
+                .async(() -> execute(Query.UPDATE_PREFIX, guild.getPrefix(), guild.getName()))
                 .sync(() -> callback.call(true, null))
                 .execute((exception, task) -> {
                     if (exception != null) {
@@ -210,7 +214,8 @@ public class MySql implements DatabaseProvider {
                 execute(Query.ADD_INVITED_MEMBER, invite.toString(), guild.getName());
             }
 
-            execute("UPDATE guilds SET isPrivate=? WHERE name=?", guild.getStatus().equalsIgnoreCase("private") ? 1 : 0, guild.getName());
+            execute("UPDATE guilds SET isPrivate=? WHERE name=?",
+                    guild.getStatus().equalsIgnoreCase("private") ? 1 : 0, guild.getName());
             execute("UPDATE guilds SET tier=? WHERE name=?", guild.getTier(), guild.getName());
         }).sync(() -> callback.call(true, null)).execute((exception, task) -> {
             if (exception != null) {
@@ -282,7 +287,9 @@ public class MySql implements DatabaseProvider {
 
     private void execute(String query, Object... parameters) {
 
-        try (Connection connection = hikari.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
+        try (Connection connection = hikari
+                .getConnection(); PreparedStatement statement = connection
+                .prepareStatement(query)) {
 
             if (parameters != null) {
                 for (int i = 0; i < parameters.length; i++) {
@@ -297,7 +304,9 @@ public class MySql implements DatabaseProvider {
     }
 
     private ResultSet executeQuery(String query, Object... parameters) {
-        try (Connection connection = hikari.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
+        try (Connection connection = hikari
+                .getConnection(); PreparedStatement statement = connection
+                .prepareStatement(query)) {
             if (parameters != null) {
                 for (int i = 0; i < parameters.length; i++) {
                     statement.setObject(i + 1, parameters[i]);

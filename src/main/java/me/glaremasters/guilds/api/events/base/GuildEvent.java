@@ -20,6 +20,10 @@ public abstract class GuildEvent extends PlayerEvent implements Cancellable {
         this.cancelled = false;
     }
 
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
+
     @Override
     public boolean isCancelled() {
         return cancelled;
@@ -32,10 +36,6 @@ public abstract class GuildEvent extends PlayerEvent implements Cancellable {
 
     @Override
     public HandlerList getHandlers() {
-        return handlers;
-    }
-
-    public static HandlerList getHandlerList() {
         return handlers;
     }
 }

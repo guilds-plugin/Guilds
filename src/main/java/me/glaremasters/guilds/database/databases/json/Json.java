@@ -4,6 +4,17 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.database.Callback;
 import me.glaremasters.guilds.database.DatabaseProvider;
@@ -12,13 +23,6 @@ import me.glaremasters.guilds.database.databases.json.deserializer.LeaderboardLi
 import me.glaremasters.guilds.database.databases.json.serializer.LeaderboardListSerializer;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.leaderboard.Leaderboard;
-
-import java.io.*;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 //TODO handle exceptions
 public class Json implements DatabaseProvider {
@@ -79,11 +83,12 @@ public class Json implements DatabaseProvider {
         guilds.put(guild.getName(), guild);
 
         Main.newChain().asyncFirst(() -> write(guildsFile, guilds, guildsType))
-                .syncLast(successful -> callback.call(successful, null)).execute((exception, task) -> {
-            if (exception != null) {
-                callback.call(false, exception);
-            }
-        });
+                .syncLast(successful -> callback.call(successful, null))
+                .execute((exception, task) -> {
+                    if (exception != null) {
+                        callback.call(false, exception);
+                    }
+                });
 
         Main.getInstance().getGuildHandler().addGuild(guild);
     }
@@ -202,7 +207,8 @@ public class Json implements DatabaseProvider {
     public void updateLeaderboard(Leaderboard leaderboard, Callback<Boolean, Exception> callback) {
         List<Leaderboard> leaderboards = getLeaderboards();
         leaderboards.remove(leaderboards.stream().filter(
-                l -> l.getName().equals(leaderboard.getName()) && l.getLeaderboardType() == leaderboard
+                l -> l.getName().equals(leaderboard.getName())
+                        && l.getLeaderboardType() == leaderboard
                         .getLeaderboardType()).findFirst().orElse(null));
         leaderboards.add(leaderboard);
 

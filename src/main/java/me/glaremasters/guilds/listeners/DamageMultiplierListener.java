@@ -11,18 +11,18 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
  */
 public class DamageMultiplierListener implements Listener {
 
-  @EventHandler
-  public void onEntityDamage(EntityDamageByEntityEvent event) {
-    if (event.getDamager() instanceof Player) {
-      Player player = (Player) event.getDamager();
-      Guild guild = Guild.getGuild(player.getUniqueId());
+    @EventHandler
+    public void onEntityDamage(EntityDamageByEntityEvent event) {
+        if (event.getDamager() instanceof Player) {
+            Player player = (Player) event.getDamager();
+            Guild guild = Guild.getGuild(player.getUniqueId());
 
-      if (guild == null) {
-        return;
-      }
-      event.setDamage((int) (event.getDamage() * guild.getDamageMultiplier()));
+            if (guild == null) {
+                return;
+            }
+            event.setDamage((int) (event.getDamage() * guild.getDamageMultiplier()));
+        }
+
     }
-
-  }
 
 }

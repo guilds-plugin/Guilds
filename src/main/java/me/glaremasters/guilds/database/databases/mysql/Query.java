@@ -14,7 +14,8 @@ class Query {
                     "FOREIGN KEY(guildName) REFERENCES guilds(name))";
     static final String CREATE_TABLE_MEMBERS =
             "CREATE TABLE IF NOT EXISTS guild_members ( " + "uuid VARCHAR(36) NOT NULL, "
-                    + "guild VARCHAR(255) NOT NULL, " + "role INTEGER NOT NULL, " + "PRIMARY KEY (uuid)," +
+                    + "guild VARCHAR(255) NOT NULL, " + "role INTEGER NOT NULL, "
+                    + "PRIMARY KEY (uuid)," +
                     "FOREIGN KEY(guild) REFERENCES guilds(name))";
     static final String CREATE_TABLE_INVITED_MEMBERS =
             "CREATE TABLE IF NOT EXISTS invited_members ( " + "uuid VARCHAR(36) NOT NULL, "

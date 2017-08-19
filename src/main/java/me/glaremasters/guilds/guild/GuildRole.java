@@ -9,149 +9,151 @@ import me.glaremasters.guilds.Main;
     MEMBER(3, true, false, false, false, false, false, false, false);*/
 public class GuildRole {
 
-  private String name;
+    private String name;
 
-  private int level;
+    private int level;
 
-  private boolean toggle;
-  private boolean chat;
-  private boolean invite;
-  private boolean kick;
-  private boolean promote;
-  private boolean demote;
-  private boolean changePrefix;
-  private boolean changeHome;
-  private boolean changeMaster;
-  private boolean removeGuild;
-  private boolean addAlly;
-  private boolean removeAlly;
-  private boolean allyChat;
-  private boolean openVault;
-  private boolean transferGuild;
-  private boolean activateBuff;
-  private boolean upgradeGuild;
-  private boolean useBank;
+    private boolean toggle;
+    private boolean chat;
+    private boolean invite;
+    private boolean kick;
+    private boolean promote;
+    private boolean demote;
+    private boolean changePrefix;
+    private boolean changeHome;
+    private boolean changeMaster;
+    private boolean removeGuild;
+    private boolean addAlly;
+    private boolean removeAlly;
+    private boolean allyChat;
+    private boolean openVault;
+    private boolean transferGuild;
+    private boolean activateBuff;
+    private boolean upgradeGuild;
+    private boolean useBank;
 
 
-  GuildRole(String name, int level, boolean chat, boolean toggle, boolean allyChat,
-      boolean invite, boolean kick, boolean promote, boolean demote, boolean addAlly,
-      boolean removeAlly, boolean changePrefix, boolean changeHome, boolean changeMaster,
-      boolean removeGuild, boolean openVault, boolean transferGuild, boolean activateBuff,
-      boolean upgradeGuild, boolean useBank) {
-    this.name = name;
-    this.level = level;
-    this.chat = chat;
-    this.toggle = toggle;
-    this.allyChat = allyChat;
-    this.invite = invite;
-    this.kick = kick;
-    this.promote = promote;
-    this.demote = demote;
-    this.addAlly = addAlly;
-    this.removeAlly = removeAlly;
-    this.changePrefix = changePrefix;
-    this.changeHome = changeHome;
-    this.changeMaster = changeMaster;
-    this.removeGuild = removeGuild;
-    this.openVault = openVault;
-    this.transferGuild = transferGuild;
-    this.activateBuff = activateBuff;
-    this.upgradeGuild = upgradeGuild;
-    this.useBank = useBank;
-  }
-
-  public static GuildRole getRole(int level) {
-    return Main.getInstance().getGuildHandler().getRoles().stream()
-        .filter(role -> role.getLevel() == level).findFirst().orElse(null);
-  }
-
-  public static GuildRole getLowestRole() {
-    GuildRole lowest = null;
-
-    for (GuildRole role : Main.getInstance().getGuildHandler().getRoles()) {
-      if (lowest == null || lowest.getLevel() < role.getLevel()) {
-        lowest = role;
-      }
+    GuildRole(String name, int level, boolean chat, boolean toggle, boolean allyChat,
+            boolean invite, boolean kick, boolean promote, boolean demote, boolean addAlly,
+            boolean removeAlly, boolean changePrefix, boolean changeHome, boolean changeMaster,
+            boolean removeGuild, boolean openVault, boolean transferGuild, boolean activateBuff,
+            boolean upgradeGuild, boolean useBank) {
+        this.name = name;
+        this.level = level;
+        this.chat = chat;
+        this.toggle = toggle;
+        this.allyChat = allyChat;
+        this.invite = invite;
+        this.kick = kick;
+        this.promote = promote;
+        this.demote = demote;
+        this.addAlly = addAlly;
+        this.removeAlly = removeAlly;
+        this.changePrefix = changePrefix;
+        this.changeHome = changeHome;
+        this.changeMaster = changeMaster;
+        this.removeGuild = removeGuild;
+        this.openVault = openVault;
+        this.transferGuild = transferGuild;
+        this.activateBuff = activateBuff;
+        this.upgradeGuild = upgradeGuild;
+        this.useBank = useBank;
     }
 
-    return lowest;
-  }
+    public static GuildRole getRole(int level) {
+        return Main.getInstance().getGuildHandler().getRoles().stream()
+                .filter(role -> role.getLevel() == level).findFirst().orElse(null);
+    }
 
-  public String getName() {
-    return name;
-  }
+    public static GuildRole getLowestRole() {
+        GuildRole lowest = null;
 
-  public int getLevel() {
-    return level;
-  }
+        for (GuildRole role : Main.getInstance().getGuildHandler().getRoles()) {
+            if (lowest == null || lowest.getLevel() < role.getLevel()) {
+                lowest = role;
+            }
+        }
 
-  public boolean canChat() {
-    return chat;
-  }
+        return lowest;
+    }
 
-  public boolean canInvite() {
-    return invite;
-  }
+    public String getName() {
+        return name;
+    }
 
-  public boolean canKick() {
-    return kick;
-  }
+    public int getLevel() {
+        return level;
+    }
 
-  public boolean canPromote() {
-    return promote;
-  }
+    public boolean canChat() {
+        return chat;
+    }
 
-  public boolean canDemote() {
-    return demote;
-  }
+    public boolean canInvite() {
+        return invite;
+    }
 
-  public boolean canChangePrefix() {
-    return changePrefix;
-  }
+    public boolean canKick() {
+        return kick;
+    }
 
-  public boolean canChangeHome() {
-    return changeHome;
-  }
+    public boolean canPromote() {
+        return promote;
+    }
 
-  public boolean canChangeMaster() {
-    return changeMaster;
-  }
+    public boolean canDemote() {
+        return demote;
+    }
 
-  public boolean canRemoveGuild() {
-    return removeGuild;
-  }
+    public boolean canChangePrefix() {
+        return changePrefix;
+    }
 
-  public boolean canAddAlly() {
-    return addAlly;
-  }
+    public boolean canChangeHome() {
+        return changeHome;
+    }
 
-  public boolean canRemoveAlly() {
-    return removeAlly;
-  }
+    public boolean canChangeMaster() {
+        return changeMaster;
+    }
 
-  public boolean useAllyChat() {
-    return allyChat;
-  }
+    public boolean canRemoveGuild() {
+        return removeGuild;
+    }
 
-  public boolean canToggleGuild() {
-    return toggle;
-  }
+    public boolean canAddAlly() {
+        return addAlly;
+    }
 
-  public boolean canOpenVault() {
-    return openVault;
-  }
+    public boolean canRemoveAlly() {
+        return removeAlly;
+    }
 
-  public boolean canTransfer() {
-    return transferGuild;
-  }
+    public boolean useAllyChat() {
+        return allyChat;
+    }
 
-  public boolean canActivateBuff() {
-    return activateBuff;
-  }
+    public boolean canToggleGuild() {
+        return toggle;
+    }
 
-  public boolean canUpgradeGuild() {
-    return upgradeGuild;
-  }
+    public boolean canOpenVault() {
+        return openVault;
+    }
 
-  public boolean canUseBank() { return useBank; }
+    public boolean canTransfer() {
+        return transferGuild;
+    }
+
+    public boolean canActivateBuff() {
+        return activateBuff;
+    }
+
+    public boolean canUpgradeGuild() {
+        return upgradeGuild;
+    }
+
+    public boolean canUseBank() {
+        return useBank;
+    }
 }
