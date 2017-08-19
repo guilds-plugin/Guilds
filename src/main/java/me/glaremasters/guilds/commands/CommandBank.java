@@ -26,12 +26,11 @@ public class CommandBank extends CommandBase {
       Message.sendMessage(player, Message.COMMAND_ERROR_NO_GUILD);
       return;
     }
-    int balance = guild.getBankBalance();
+    double balance = guild.getBankBalance();
 
     if (args[0].equalsIgnoreCase("balance")) {
-      player.sendMessage(
-          "Hey " + player.getName() + ", your guild: " + guild.getName() + " has a balance of: "
-              + Integer.toString(balance));
+      Message.sendMessage(player,
+          Message.COMMAND_BANK_BALANCE.replace("{amount}", Double.toString(balance)));
     }
 
     if (args[0].equalsIgnoreCase("deposit")) {
@@ -39,38 +38,43 @@ public class CommandBank extends CommandBase {
         return;
       }
       if (Main.getInstance().getEconomy().getBalance(player.getName()) < Double.valueOf(args[1])) {
-        Message.sendMessage(player, Message.COMMAND_UPGRADE_NOT_ENOUGH_MONEY);
+        Message.sendMessage(player, Message.COMMAND_BANK_DEPOSIT_FAILURE);
         return;
       }
 
       EconomyResponse response =
           Main.getInstance().getEconomy().withdrawPlayer(player, Double.valueOf(args[1]));
       if (!response.transactionSuccess()) {
-        Message.sendMessage(player, Message.COMMAND_UPGRADE_NOT_ENOUGH_MONEY);
+        Message.sendMessage(player, Message.COMMAND_BANK_DEPOSIT_FAILURE);
         return;
       }
 
-      Main.getInstance().guildBanksConfig.set(guild.getName(), balance + Integer.valueOf(args[1]));
-      player.sendMessage("You have just moved $" + Double.valueOf(args[1])
-          + " from your account into your guild bank!");
+      Main.getInstance().guildBanksConfig.set(guild.getName(), balance + Double.valueOf(args[1]));
+      Message.sendMessage(player, Message.COMMAND_BANK_DEPOSIT_SUCCESS
+          .replace("{amount}", String.valueOf(Double.valueOf(args[1]))));
 
       Main.getInstance().saveGuildBanks();
 
     }
 
-    if(args[0].equalsIgnoreCase("withdraw")) {
+    if (args[0].equalsIgnoreCase("withdraw")) {
       if (args.length != 2) {
         return;
       }
       if (balance < Double.valueOf(args[1])) {
-        Message.sendMessage(player, Message.COMMAND_UPGRADE_NOT_ENOUGH_MONEY);
+        Message.sendMessage(player, Message.COMMAND_BANK_WITHDRAW_FAILURE);
         return;
       }
 
+      Main.getInstance().guildBanksConfig.set(guild.getName(), balance - Double.valueOf(args[1]));
+      Message.sendMessage(player, Message.COMMAND_BANK_WITHDRAW_SUCCESS
+          .replace("{amount}", String.valueOf(Double.valueOf(args[1]))));
+
       EconomyResponse response =
           Main.getInstance().getEconomy().depositPlayer(player, Double.valueOf(args[1]));
+      Main.getInstance().saveGuildBanks();
       if (!response.transactionSuccess()) {
-        Message.sendMessage(player, Message.COMMAND_UPGRADE_NOT_ENOUGH_MONEY);
+        Message.sendMessage(player, Message.COMMAND_BANK_WITHDRAW_FAILURE);
         return;
       }
 

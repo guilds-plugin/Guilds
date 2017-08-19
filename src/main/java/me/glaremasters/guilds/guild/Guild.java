@@ -114,10 +114,10 @@ public class Guild implements InventoryHolder {
     }
   }
 
-  public int getBankBalance() {
+  public double getBankBalance() {
     YamlConfiguration banksConfig = Main.getInstance().guildBanksConfig;
     if (banksConfig.isSet(getName())) {
-      return banksConfig.getInt(getName());
+      return banksConfig.getDouble(getName());
     } else {
       banksConfig.set(getName(), 0);
       return 0;

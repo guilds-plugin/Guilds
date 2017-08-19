@@ -129,9 +129,9 @@ public class Main extends JavaPlugin {
     taskChainFactory = BukkitTaskChainFactory.create(this);
 
     setDatabaseType();
-    if (!getConfig().isSet("version") || getConfig().getInt("version") != 12) {
+    if (!getConfig().isSet("version") || getConfig().getInt("version") != 13) {
       Bukkit.getConsoleSender().sendMessage(
-          "§a[Guilds] §3The config is out of date. This update changed how commands are read. Please update the config to fix this.");
+          "§a[Guilds] §3The config is out of date. This update added Guild Banks. Please update the config to fix this.");
     }
 
     this.saveDefaultConfig();

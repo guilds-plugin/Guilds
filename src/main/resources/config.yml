@@ -14,7 +14,7 @@
 #-----------------------------------------------------------#
 
 # DO NOT CHANGE THIS
-version: 12
+version: 13
 
 # Hooks will control what the plugin can hook into. For example:
 # Enabling the worldguard hook will make it check if PVP is allowed in a region before doing damage.
@@ -62,6 +62,7 @@ commands:
     admin: "Admin command for managing guilds"
     ally: "Ally commands"
     boot: "Kick a player from your guild"
+    bank: "Use your guild bank"
     buff: "Buy buffs for your guild"
     bugreport: "Submit a bug report"
     cancel: "Cancel an action"
