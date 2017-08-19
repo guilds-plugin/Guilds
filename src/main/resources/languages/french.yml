@@ -20,14 +20,14 @@ messages:
       role-no-permission: "&cVotre rôle n'a pas la permission de faire ça!"
       sethome-cooldown: "&cVous ne pouvez pas définir de base pendant {time} secondes!"
     killreward:
-      killer: "&aYou have killed another player and have earned {amount}!"
-      player-who-died: "&cYou have been killed by another player and have lost {amount}!"
+      killer: "&aVous avez tué un joueur et remporté {amount}!"
+      player-who-died: "&cVous avez été tué par un joueur et perdu {amount}!"
     upgrade:
       tier-max: "&cVous ne pouvez plus augmenter! Vous êtes au maximum!"
       money-warning: "&cVous allez dépenser {amount} pour améliorer votre guilde. (Faites /guilds confirm pour continuer)"
       cancel: "&cAmélioration annulée!"
       success: "&aVous avez amélioré votre guilde avec succés!"
-      not-enough-money: "&aSorry! You don't have enough money to upgrade your Guild!"
+      not-enough-money: "&aDésolé! Vous n'avez pas assez d'argent pour améliorer votre guilde!"
     buff:
       not-enough-money: "&cVous n'avez pas assez d'argent pour acheter cette amélioration!"
     transfer:
