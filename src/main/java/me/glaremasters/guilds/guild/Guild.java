@@ -114,6 +114,16 @@ public class Guild implements InventoryHolder {
     }
   }
 
+  public int getBankBalance() {
+    YamlConfiguration banksConfig = Main.getInstance().guildBanksConfig;
+    if (banksConfig.isSet(getName())) {
+      return banksConfig.getInt(getName());
+    } else {
+      banksConfig.set(getName(), 0);
+      return 0;
+    }
+  }
+
   public int getTierCost() {
     if (getTier() >= Main.getInstance().getConfig().getInt("max-number-of-tiers")) {
       return 0;

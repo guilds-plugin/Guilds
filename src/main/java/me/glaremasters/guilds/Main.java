@@ -55,6 +55,9 @@ public class Main extends JavaPlugin {
   public File guildtiers = new File(this.getDataFolder(), "data/guild-tiers.yml");
   public YamlConfiguration guildTiersConfig =
       YamlConfiguration.loadConfiguration(this.guildtiers);
+  public File guildbanks = new File(this.getDataFolder(), "data/guild-banks.yml");
+  public YamlConfiguration guildBanksConfig =
+      YamlConfiguration.loadConfiguration(this.guildbanks);
   private DatabaseProvider database;
   private GuildHandler guildHandler;
   private CommandHandler commandHandler;
@@ -181,7 +184,8 @@ public class Main extends JavaPlugin {
         new CommandUpdate(),
         new CommandVault(),
         new CommandVersion(),
-        new CommandUpgrade()
+        new CommandUpgrade(),
+        new CommandBank()
     ).forEach(commandHandler::register);
 
     Stream.of(
@@ -228,6 +232,7 @@ public class Main extends JavaPlugin {
     this.saveGuildHomes();
     this.saveGuildStatus();
     this.saveGuildTiers();
+    this.saveGuildBanks();
 
     try {
       BasicFileAttributes attr = Files
@@ -301,6 +306,15 @@ public class Main extends JavaPlugin {
       Main.getInstance().guildStatusConfig.save(Main.getInstance().guildstatus);
     } catch (IOException e) {
       getLogger().log(Level.WARNING, "Could not create Guild's Status config!");
+      e.printStackTrace();
+    }
+  }
+
+  public void saveGuildBanks() {
+    try {
+      Main.getInstance().guildBanksConfig.save(Main.getInstance().guildbanks);
+    } catch (IOException e) {
+      getLogger().log(Level.WARNING, "Could not create Guild's Banks config!");
       e.printStackTrace();
     }
   }
