@@ -3,6 +3,7 @@ package me.glaremasters.guilds.commands;
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
+import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.message.Message;
 
 import net.milkbowl.vault.economy.EconomyResponse;
@@ -26,6 +27,13 @@ public class CommandBank extends CommandBase {
       Message.sendMessage(player, Message.COMMAND_ERROR_NO_GUILD);
       return;
     }
+
+    GuildRole role = GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole());
+    if (!role.canUseBank()) {
+      Message.sendMessage(player, Message.COMMAND_ERROR_ROLE_NO_PERMISSION);
+      return;
+    }
+
     double balance = guild.getBankBalance();
 
     if (args[0].equalsIgnoreCase("balance")) {
