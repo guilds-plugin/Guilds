@@ -14,7 +14,9 @@
 #-----------------------------------------------------------#
 
 # DO NOT CHANGE THIS
-version: 13
+version: 14
+
+auto-update-config: true
 
 # Hooks will control what the plugin can hook into. For example:
 # Enabling the worldguard hook will make it check if PVP is allowed in a region before doing damage.

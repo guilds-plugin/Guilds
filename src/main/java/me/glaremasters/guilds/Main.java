@@ -175,9 +175,21 @@ public class Main extends JavaPlugin {
         taskChainFactory = BukkitTaskChainFactory.create(this);
 
         setDatabaseType();
-        if (!getConfig().isSet("version") || getConfig().getInt("version") != 13) {
-            Bukkit.getConsoleSender().sendMessage(
-                    "§a[Guilds] §3The config is out of date. This update added Guild Banks. Please update the config to fix this.");
+        if (!getConfig().isSet("version") || getConfig().getInt("version") != 14) {
+            if (getConfig().getBoolean("auto-update-config")) {
+                File oldfile = new File(this.getDataFolder(), "config.yml");
+                File newfile = new File(this.getDataFolder(), "config-old.yml");
+                File dir = new File(this.getDataFolder(), "languages");
+                File olddir = new File(this.getDataFolder(), "old-languages");
+                dir.renameTo(olddir);
+                oldfile.renameTo(newfile);
+                Bukkit.getConsoleSender().sendMessage(
+                        "§a[Guilds] §3Your config has been auto-updated and regenerated. You can find your old config in §3config-old.yml. You can disable this feature in the config");
+            } else {
+                Bukkit.getConsoleSender().sendMessage(
+                        "§a[Guilds] §3The config is out of date. This update added Guild Banks. Please update the config to fix this.");
+            }
+
         }
 
         this.saveDefaultConfig();
