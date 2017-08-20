@@ -94,6 +94,7 @@ messages:
       successful: "&aVous avez rejoint la guilde '{guild}' avec succés"
     invite:
       already-in-guild: "&cCe joueur fait déjà partie de votre guilde!"
+      already-invited: "&cThis player has already been invited!"
       message: "&a{player} vous a invité dans la guilde '{guild}'! Faites /guilds accept {guild} pour accepter ou faites /guilds decline {guild} pour refuser."
       successful: "&aVous avez invité {player} dans votre guilde!"
     decline:

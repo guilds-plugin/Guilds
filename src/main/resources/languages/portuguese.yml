@@ -94,6 +94,7 @@ messages:
       successful: "&aVoce entrou na guild '{guild}' com sucesso"
     invite:
       already-in-guild: "&cEsse jogador ja esta na sua guild!"
+      already-invited: "&cThis player has already been invited!"
       message: "&a{player} convidou voce para a guild dele/dela, '{guild}'"
       successful: "&aVoce convidou {player} com sucesso para sua guild!"
     decline:

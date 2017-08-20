@@ -94,6 +94,7 @@ messages:
       successful: "&aDu ble medi '{guild}'"
     invite:
       already-in-guild: "&cDenne spilleren er allerede i guilden!"
+      already-invited: "&cThis player has already been invited!"
       message: "&a{player} har invitert deg til hans/hennes guild, '{guild}'"
       successful: "&aDu har invitert {player} til guilden!"
     decline:

@@ -14,7 +14,7 @@ public class CommandAccept extends CommandBase {
     public CommandAccept() {
         super("accept", Main.getInstance().getConfig().getString("commands.description.accept"),
                 "guilds.command.accept", false,
-                new String[]{"join"}, "<guild id>", 1, 1);
+                new String[]{"join"}, "<guild id>", 0, 1);
     }
 
     public void execute(Player player, String[] args) {
@@ -22,11 +22,35 @@ public class CommandAccept extends CommandBase {
             Message.sendMessage(player, Message.COMMAND_ERROR_ALREADY_IN_GUILD);
             return;
         }
+        Guild guild = (Guild) Main.getInstance().getGuildHandler().getGuilds().values().toArray()[0];
+        try {
+            if (args.length == 0){
+                int invites = 0;
+                int indexes = 0;
+                for (int i = 0; i<Main.getInstance().getGuildHandler().getGuilds().values().size();i++){
+                    Guild guildtmp = (Guild) Main.getInstance().getGuildHandler().getGuilds().values().toArray()[i];
+                    if (guildtmp.getInvitedMembers().contains(player.getUniqueId())){
+                        invites++;
+                        indexes = i;
+                    }
+                }
+                if (invites == 1){
+                    guild = (Guild) Main.getInstance().getGuildHandler().getGuilds().values().toArray()[indexes];
+                }
+                else {
+                    Message.sendMessage(player, Message.COMMAND_ACCEPT_NOT_INVITED);
+                    return;
+                }
+            }
+            else {
+                guild = Guild.getGuild(args[0]);
+            }
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
 
-        Guild guild = Guild.getGuild(args[0]);
         if (guild == null) {
-            Message.sendMessage(player,
-                    Message.COMMAND_ERROR_GUILD_NOT_FOUND.replace("{input}", args[0]));
+            Message.sendMessage(player, Message.COMMAND_ERROR_GUILD_NOT_FOUND.replace("{input}", args[0]));
             return;
         }
 

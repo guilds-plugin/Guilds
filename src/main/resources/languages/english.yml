@@ -94,6 +94,7 @@ messages:
       successful: "&aYou joined guild '{guild}&r&a' successfully"
     invite:
       already-in-guild: "&cThis player is already in your guild!"
+      already-invited: "&cThis player has already been invited!"
       message: "&a{player} has invited you to his/her guild, '{guild}'"
       successful: "&aYou've successfully invited {player} to your guild!"
     decline:

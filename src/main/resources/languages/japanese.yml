@@ -94,6 +94,7 @@ messages:
       player-joined: "&aプレーヤ '{player}' があなたのギルドに加入しました!"
     invite:
       message: "&aプレーヤ {player} があなたをギルド '{guild}' に招待しました。"
+      already-invited: "&cThis player has already been invited!"
       successful: "&aプレーヤ {player} がギルドへ勧誘されました!"
       already-in-guild: "&cこのプレーヤはすでにあなたのギルドの構成員です!"
     decline:

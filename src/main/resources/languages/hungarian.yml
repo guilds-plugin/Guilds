@@ -94,6 +94,7 @@ messages:
       player-joined: "&a'{player}' csatlakozott a cÃ©hedbe!"
     invite:
       message: "&a{player} meghÃ­vott '{guild}' cÃ©hjÃ©be!"
+      already-invited: "&cThis player has already been invited!"
       successful: "&aSikeresen meghÃ­vtad {player} nevÅ± jÃ¡tÃ©kost a cÃ©hbe!"
       already-in-guild: "&cEz a jÃ¡tÃ©kos mÃ¡r benne van a cÃ©hedbe!"
     decline:

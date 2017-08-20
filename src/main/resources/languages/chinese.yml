@@ -93,6 +93,7 @@ messages:
       player-joined: "&a玩家 '{player}' 加入了你的公會! 歡迎他吧"
     invite:
       message: "&a{player} 邀請你加入他的公會, '{guild}' \n輸入 /guild accept (公會名稱) 來加入"
+      already-invited: "&cThis player has already been invited!"
       successful: "&a你成功邀請了 玩家 {player} 加入了你的公會!"
       already-in-guild: "&c這個玩家已經在你的公會了!"
     decline:

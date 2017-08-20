@@ -92,6 +92,7 @@ messages:
       successful: "&aDu bist der Gilde '{guild}' erfolgreich beigetreten"
     invite:
       already-in-guild: "&cDieser Spieler ist schon in deiner Gilde!"
+      already-invited: "&cThis player has already been invited!"
       message: "&a{player} hat dich zu seiner/ihrer Gilde '{guild}' eingeladen"
       successful: "&aDu hast den Spieler {player} erfolgreich zu deiner Gilde eingeladen!"
     leave:

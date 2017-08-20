@@ -94,6 +94,7 @@ messages:
       player-joined: "&aSpelare '{player}' gick med din guild!"
     invite:
       message: "&a{player} har bjudit in dig till hans/hennes guild, '{guild}'"
+      already-invited: "&cThis player has already been invited!"
       successful: "&aDu har lyckats bjuda in {player} till din guild!"
       already-in-guild: "&cDenna spelare är redan med i din guild!"
     decline:
