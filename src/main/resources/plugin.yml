@@ -70,6 +70,8 @@ commands:
     description: Check pending Guild Invites
   guild upgrade:
     description: Upgrade your Guild!
+  guild bank:
+    description: Use your Guild Bank!
 
 
 permissions:
@@ -127,4 +129,5 @@ permissions:
       guilds.command.decline: true
       guilds.command.check: true
       guilds.command.upgrade: true
+      guilds.command.bank: true
     default: true
