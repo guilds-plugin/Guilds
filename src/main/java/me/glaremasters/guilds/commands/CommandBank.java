@@ -27,11 +27,6 @@ public class CommandBank extends CommandBase {
             return;
         }
 
-        GuildRole role = GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole());
-        if (!role.canUseBank()) {
-            Message.sendMessage(player, Message.COMMAND_ERROR_ROLE_NO_PERMISSION);
-            return;
-        }
 
         double balance = guild.getBankBalance();
 
@@ -41,6 +36,11 @@ public class CommandBank extends CommandBase {
         }
 
         if (args[0].equalsIgnoreCase("deposit")) {
+            GuildRole role = GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole());
+            if (!role.canDepositMoney()) {
+                Message.sendMessage(player, Message.COMMAND_ERROR_ROLE_NO_PERMISSION);
+                return;
+            }
             if (args.length != 2) {
                 return;
             }
@@ -67,6 +67,11 @@ public class CommandBank extends CommandBase {
         }
 
         if (args[0].equalsIgnoreCase("withdraw")) {
+            GuildRole role = GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole());
+            if (!role.canWithdrawMoney()) {
+                Message.sendMessage(player, Message.COMMAND_ERROR_ROLE_NO_PERMISSION);
+                return;
+            }
             if (args.length != 2) {
                 return;
             }

@@ -30,14 +30,15 @@ public class GuildRole {
     private boolean transferGuild;
     private boolean activateBuff;
     private boolean upgradeGuild;
-    private boolean useBank;
+    private boolean depositMoney;
+    private boolean withdrawMoney;
 
 
     GuildRole(String name, int level, boolean chat, boolean toggle, boolean allyChat,
             boolean invite, boolean kick, boolean promote, boolean demote, boolean addAlly,
             boolean removeAlly, boolean changePrefix, boolean changeHome, boolean changeMaster,
             boolean removeGuild, boolean openVault, boolean transferGuild, boolean activateBuff,
-            boolean upgradeGuild, boolean useBank) {
+            boolean upgradeGuild, boolean depositMoney, boolean withdrawMoney) {
         this.name = name;
         this.level = level;
         this.chat = chat;
@@ -57,7 +58,8 @@ public class GuildRole {
         this.transferGuild = transferGuild;
         this.activateBuff = activateBuff;
         this.upgradeGuild = upgradeGuild;
-        this.useBank = useBank;
+        this.depositMoney = depositMoney;
+        this.withdrawMoney = withdrawMoney;
     }
 
     public static GuildRole getRole(int level) {
@@ -153,7 +155,7 @@ public class GuildRole {
         return upgradeGuild;
     }
 
-    public boolean canUseBank() {
-        return useBank;
-    }
+    public boolean canDepositMoney() { return depositMoney; }
+
+    public boolean canWithdrawMoney() { return withdrawMoney; }
 }
