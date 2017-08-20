@@ -27,7 +27,6 @@ public class CommandBank extends CommandBase {
             return;
         }
 
-
         double balance = guild.getBankBalance();
 
         if (args[0].equalsIgnoreCase("balance")) {
@@ -60,7 +59,8 @@ public class CommandBank extends CommandBase {
             Main.getInstance().guildBanksConfig
                     .set(guild.getName(), balance + Double.valueOf(args[1]));
             Message.sendMessage(player, Message.COMMAND_BANK_DEPOSIT_SUCCESS
-                    .replace("{amount}", String.valueOf(Double.valueOf(args[1]))));
+                    .replace("{amount}", String.valueOf(Double.valueOf(args[1])), "{balance}",
+                            String.valueOf(balance + Double.valueOf(args[1]))));
 
             Main.getInstance().saveGuildBanks();
 
@@ -81,7 +81,8 @@ public class CommandBank extends CommandBase {
             }
 
             Message.sendMessage(player, Message.COMMAND_BANK_WITHDRAW_SUCCESS
-                    .replace("{amount}", String.valueOf(Double.valueOf(args[1]))));
+                    .replace("{amount}", String.valueOf(Double.valueOf(args[1])), "{balance}",
+                            String.valueOf(balance - Double.valueOf(args[1]))));
 
             EconomyResponse response =
                     Main.getInstance().getEconomy().depositPlayer(player, Double.valueOf(args[1]));

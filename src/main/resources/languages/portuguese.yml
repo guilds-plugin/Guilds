@@ -24,9 +24,9 @@ messages:
       player-who-died: "&cVoce foi morto por outro jogador e perdeu {amount}!"
     bank:
       balance: "&aYour guild's bank has a balance of {amount}."
-      deposit-success: "&aYou have just moved {amount} from your account into your guild bank!"
+      deposit-success: "&aYou have just moved {amount} from your account into your guild bank! Your new bank balance is {balance}."
       deposit-failure: "&cYou don't have enough to deposit the amount requested!"
-      withdraw-success: "&aYou have just moved {amount} from your guild bank to your account!"
+      withdraw-success: "&aYou have just moved {amount} from your guild bank to your account! Your new bank balance is {balance}."
       withdraw-failure: "&cYou don't have enough to withdraw the amount requested!"
     upgrade:
       tier-max: "&cVoce ja esta no nivel maximo!"
