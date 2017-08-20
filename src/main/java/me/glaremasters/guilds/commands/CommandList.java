@@ -45,18 +45,19 @@ public class CommandList extends CommandBase {
             ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
             SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
             ArrayList<String> lore = new ArrayList<String>();
-            if (Main.getInstance().getConfig().getBoolean("display.prefix")) {
-                lore.add(
-                        ChatColor.translateAlternateColorCodes('&',
-                                Main.getInstance().getConfig().getString("list.prefix") + guild
-                                        .getPrefix()));
-            }
             if (Main.getInstance().getConfig().getBoolean("display.name")) {
                 lore.add(
                         ChatColor.translateAlternateColorCodes('&',
                                 Main.getInstance().getConfig().getString("list.name")
                                         + guild.getName()));
             }
+            if (Main.getInstance().getConfig().getBoolean("display.prefix")) {
+                lore.add(
+                        ChatColor.translateAlternateColorCodes('&',
+                                Main.getInstance().getConfig().getString("list.prefix") + guild
+                                        .getPrefix()));
+            }
+
             if (Main.getInstance().getConfig().getBoolean("display.master")) {
                 lore.add(
                         ChatColor.translateAlternateColorCodes('&',
@@ -64,6 +65,24 @@ public class CommandList extends CommandBase {
                                         + Bukkit
                                         .getOfflinePlayer(guild.getGuildMaster().getUniqueId())
                                         .getName()));
+            }
+            if (Main.getInstance().getConfig().getBoolean("display.guildstatus")) {
+                lore.add(
+                        ChatColor.translateAlternateColorCodes('&', Main.getInstance().getConfig()
+                                .getString("list.guildstatus")
+                                + guild.getStatus()));
+            }
+            if (Main.getInstance().getConfig().getBoolean("display.guildtier")) {
+                lore.add(
+                        ChatColor.translateAlternateColorCodes('&', Main.getInstance().getConfig()
+                                .getString("list.guildtier")
+                                + guild.getTier()));
+            }
+            if (Main.getInstance().getConfig().getBoolean("display.guildbalance")) {
+                lore.add(
+                        ChatColor.translateAlternateColorCodes('&', Main.getInstance().getConfig()
+                                .getString("list.guildbalance")
+                                + guild.getBankBalance()));
             }
             if (Main.getInstance().getConfig().getBoolean("display.member-count")) {
                 lore.add(
@@ -80,18 +99,6 @@ public class CommandList extends CommandBase {
                 lines.set(0, ChatColor.translateAlternateColorCodes('&',
                         Main.getInstance().getConfig().getString("list.members") + lines.get(0)));
                 lore.addAll(lines);
-            }
-            if (Main.getInstance().getConfig().getBoolean("display.guildstatus")) {
-                lore.add(
-                        ChatColor.translateAlternateColorCodes('&', Main.getInstance().getConfig()
-                                .getString("list.guildstatus")
-                                + guild.getStatus()));
-            }
-            if (Main.getInstance().getConfig().getBoolean("display.guildtier")) {
-                lore.add(
-                        ChatColor.translateAlternateColorCodes('&', Main.getInstance().getConfig()
-                                .getString("list.guildtier")
-                                + guild.getTier()));
             }
             skullMeta.setLore(lore);
             String name = Bukkit.getOfflinePlayer(guild.getGuildMaster().getUniqueId()).getName();

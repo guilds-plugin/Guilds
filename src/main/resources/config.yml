@@ -99,33 +99,30 @@ commands:
 #-----------------------------------------------------------#
 
 # In this section of the config you can choose if you would look a GUI for various commands. The ones displayed below are the only ones that have implemented GUIs on them.
-# For example: if info is set to true, you can change that to false and that would make /guild info display as text vs opening a GUI.
-gui:
-  info: true
-
-
 # As stated above, the name here such as list and info will modify data inside that commands GUI.
 # If your server's language is not english, you will need to manually modify these to your server's language and they will display in the GUI as your new input.
 
 
 # This section controls what shows in the "/guild list" command.
 display:
-  prefix: true
   name: true
+  prefix: true
   master: true
-  member-count: true
-  members: true
   guildstatus: true
   guildtier: true
+  guildbalance: true
+  member-count: true
+  members: true
 
 list:
-  prefix: "&aGuild Prefix: "
   name: "&cGuild Name: "
+  prefix: "&aGuild Prefix: "
   master: "&8Guild Master: "
-  member-count: "&6Member Count: "
-  members: "&5Members: "
   guildstatus: "&3Guild Status: "
   guildtier: "&fGuild Tier: "
+  guildbalance: "&dGuild Balance: "
+  member-count: "&6Member Count: "
+  members: "&5Members: "
 
 info:
   playername: "Name: "
