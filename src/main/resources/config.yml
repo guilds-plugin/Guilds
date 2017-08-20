@@ -390,91 +390,91 @@ roles:
   0:
     name: "GuildMaster"
     permissions:
-      chat: true
-      ally-chat: true
-      invite: true
-      kick: true
-      promote: true
-      demote: true
+      activate-buff: true
       add-ally: true
-      remove-ally: true
-      change-prefix: true
+      ally-chat: true
       change-home: true
       change-master: true
+      change-prefix: true
+      chat: true
+      demote: true
+      deposit-money: true
+      invite: true
+      kick: true
+      open-vault: true
+      promote: true
+      remove-ally: true
       remove-guild: true
       toggle-guild: true
-      open-vault: true
       transfer-guild: true
-      activate-buff: true
       upgrade-guild: true
-      deposit-money: true
       withdraw-money: true
 
   1:
     name: "Officer"
     permissions:
-      chat: true
-      ally-chat: true
-      invite: true
-      kick: true
-      promote: true
-      demote: true
+      activate-buff: false
       add-ally: true
-      remove-ally: true
-      change-prefix: false
+      ally-chat: true
       change-home: true
       change-master: false
+      change-prefix: false
+      chat: true
+      demote: true
+      deposit-money: true
+      invite: true
+      kick: true
+      open-vault: true
+      promote: true
+      remove-ally: true
       remove-guild: false
       toggle-guild: false
-      open-vault: true
       transfer-guild: false
-      activate-buff: false
       upgrade-guild: false
-      deposit-money: true
       withdraw-money: true
 
   2:
     name: "Veteran"
     permissions:
-      chat: true
+      activate-buff: false
+      add-ally: false
       ally-chat: true
+      change-master: false
+      change-prefix: false
+      chat: true
+      demote: false
+      deposit-money: true
       invite: true
       kick: false
+      open-vault: true
       promote: false
-      demote: false
-      add-ally: false
       remove-ally: false
-      change-prefix: false
-      change-master: false
       remove-guild: false
       toggle-guild: false
-      open-vault: true
       transfer-guild: false
-      activate-buff: false
       upgrade-guild: false
       use-bank: true
-      deposit-money: true
       withdraw-money: flase
   3:
     name: "Member"
     permissions:
-      chat: true
+      activate-buff: false
+      add-ally: false
       ally-chat: true
+      change-master: false
+      change-prefix: false
+      chat: true
+      demote: false
+      deposit-money: true
       invite: false
       kick: false
+      open-vault: true
       promote: false
-      demote: false
-      add-ally: false
       remove-ally: false
-      change-prefix: false
-      change-master: false
       remove-guild: false
       toggle-guild: false
-      open-vault: true
       transfer-guild: false
-      activate-buff: false
       upgrade-guild: false
-      deposit-money: true
       withdraw-money: false
 
 #-----------------------------------------------------------#
