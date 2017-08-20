@@ -94,6 +94,7 @@ messages:
       player-joined: "&aJucatorul '{player}' a intrat in Breasla!"
     invite:
       message: "&a{player} tea invitat in Breasla, '{guild}'"
+      already-invited: "&cThis player has already been invited!"
       successful: "&aLai invitat cu succes pe {player} in Breasla ta!"
       already-in-guild: "&cAcest jucator deja face parte in Breasla ta!"
     decline:

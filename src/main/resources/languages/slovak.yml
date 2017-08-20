@@ -94,6 +94,7 @@ messages:
       player-joined: "&cHrac '{player}' sa pridal do tvojho klanu!"
     invite:
       message: "&cHrac {player} ta pozyva do svojho klanu '{guild}'"
+      already-invited: "&cThis player has already been invited!"
       successful: "&cUspesne si pozval hraca {player} do tvojho klanu!"
       already-in-guild: "&cTento hrac uz je v tvojom klane!"
     decline:

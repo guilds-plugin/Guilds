@@ -45,7 +45,10 @@ public class CommandInvite extends CommandBase {
             Message.sendMessage(player, Message.COMMAND_INVITE_ALREADY_IN_GUILD);
             return;
         }
-
+        if (guild.getInvitedMembers().contains(invitedPlayer.getUniqueId())){
+            Message.sendMessage(player, Message.COMMAND_INVITE_ALREADY_INVITED);
+            return;
+        }
         GuildInviteEvent event = new GuildInviteEvent(player, guild, invitedPlayer);
         Main.getInstance().getServer().getPluginManager().callEvent(event);
         if (event.isCancelled()) {

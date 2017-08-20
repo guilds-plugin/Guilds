@@ -93,6 +93,7 @@ messages:
       successful: "&aBạn đã gia nhập guild '{guild}' thành công"
     invite:
       already-in-guild: "&cNgười chơi này đã ở trong guild của bạn!"
+      already-invited: "&cThis player has already been invited!"
       message: "&a{player} đã mời bạn vào guild của họ, guild: '{guild}'"
       successful: "&aBạn đã mời {player} vào guild của bạn thành công!"
     decline:

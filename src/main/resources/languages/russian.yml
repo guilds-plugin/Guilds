@@ -94,6 +94,7 @@ messages:
       successful: "&aВы присоединились к гильдии '{guild}'."
     invite:
       already-in-guild: "&cЭтот игрок уже в гильдии."
+      already-invited: "&cThis player has already been invited!"
       message: "&aИгрок {player} пригласил Вас в свою гильдию '{guild}'. Напишите /guild accept <название гильдии> для подтверждения вступления в гильдию."
       successful: "&aВы пригласили игрока {player} в гильдию."
     leave:

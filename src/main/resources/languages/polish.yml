@@ -94,6 +94,7 @@ messages:
       successful: "&aPomyślnie dołączyłeś do gildii '{guild}'"
     invite:
       already-in-guild: "&cTen gracz jest już w Twojej gildii!"
+      already-invited: "&cThis player has already been invited!"
       message: "&a{player} zaprosił Ciebie do swojej gildii, '{guild}'"
       successful: "&aPomyślnie zaprosiłeś {player} do swojej gildii!"
     decline:

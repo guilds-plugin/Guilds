@@ -93,6 +93,7 @@ messages:
       player-joined: "&aSpeler '{player}' is jouw guild toegetreden!"
     invite:
       message: "&a{player} heeft jou voor zijn/haar guild '{guild}' uitgenodigd"
+      already-invited: "&cThis player has already been invited!"
       successful: "&aJe hebt met success {player} uitgenodigd voor jouw guild!"
       already-in-guild: "&cDeze speler zit al in jouw guild!"
     decline:
