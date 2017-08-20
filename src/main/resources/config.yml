@@ -282,6 +282,7 @@ reward-on-kill:
 #   max-members: 100
 #   mob-xp-multiplier: 4
 #   damage-multiplier: 4
+#   max-bank-balance: 40000
 
 # Keep in mind for the damage-multiplier, it applies to players also, so by default it's set to normal for every tier to allow you
 # to choose how it will work.
@@ -293,16 +294,19 @@ tier1:
   max-members: 15
   mob-xp-multiplier: 1
   damage-multiplier: 1
+  max-bank-balance: 10000
 tier2:
   cost: 200
   max-members: 30
   mob-xp-multiplier: 2
   damage-multiplier: 1
+  max-bank-balance: 20000
 tier3:
   cost: 300
   max-members: 50
   mob-xp-multiplier: 3
   damage-multiplier: 1
+  max-bank-balance: 30000
 
 
 #-----------------------------------------------------------#

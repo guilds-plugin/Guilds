@@ -28,6 +28,7 @@ messages:
       deposit-failure: "&cVous n'avez pas assez pour le montant que vous voulez déposer!"
       withdraw-success: "&aVous avez retiré {amount} de votre Banque de Guilde! Le nouveau solde de votre compte est de {balance}."
       withdraw-failure: "&cIl n'y a pas assez pour retirer le montant demandé!"
+      bank-balance-limit: "&cYou can't deposit any more money, bank balance limit reached. Upgrade your guild to deposit more!"
     upgrade:
       tier-max: "&cVous ne pouvez plus augmenter! Vous êtes au maximum!"
       money-warning: "&cVous allez dépenser {amount} pour améliorer votre guilde. (Faites /guilds confirm pour continuer)"

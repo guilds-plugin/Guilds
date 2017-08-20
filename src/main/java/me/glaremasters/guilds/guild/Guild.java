@@ -143,6 +143,10 @@ public class Guild implements InventoryHolder {
         return Main.getInstance().getConfig().getDouble("tier" + getTier() + ".damage-multiplier");
     }
 
+    public double getMaxBankBalance() {
+        return Main.getInstance().getConfig().getDouble("tier" + getTier() + ".max-bank-balance");
+    }
+
     public List<GuildMember> getMembers() {
         return members;
     }

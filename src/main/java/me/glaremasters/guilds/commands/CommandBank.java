@@ -43,6 +43,10 @@ public class CommandBank extends CommandBase {
             if (args.length != 2) {
                 return;
             }
+            if (balance + Double.valueOf(args[1]) > guild.getMaxBankBalance()) {
+                Message.sendMessage(player, Message.COMMAND_BANK_BANK_BALANCE_LIMIT);
+                return;
+            }
             if (Main.getInstance().getEconomy().getBalance(player.getName()) < Double
                     .valueOf(args[1])) {
                 Message.sendMessage(player, Message.COMMAND_BANK_DEPOSIT_FAILURE);

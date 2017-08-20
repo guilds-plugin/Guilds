@@ -28,6 +28,7 @@ messages:
       deposit-failure: "&cYou don't have enough to deposit the amount requested!"
       withdraw-success: "&aYou have just moved {amount} from your guild bank to your account! Your new bank balance is {balance}."
       withdraw-failure: "&cYou don't have enough to withdraw the amount requested!"
+      bank-balance-limit: "&cYou can't deposit any more money, bank balance limit reached. Upgrade your guild to deposit more!"
     upgrade:
       tier-max: "&cCannot upgrade again! You're already maxed!"
       money-warning: "&cYou are about to spend {amount} to set upgrade your guild. (Type /guilds confirm to continue)"
