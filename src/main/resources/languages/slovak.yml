@@ -106,6 +106,7 @@ messages:
       warning: "&cZadaj /guilds confirm tpre opustenie tvojho klanu, zadaj /guilds cancel pre zrusenie."
       warning-guildmaster: "&cSi vodcom tohto klanu a ked ho opustis, automaticky sa vymaze. Zadaj /guilds confirm pre opustenie a zmazanie tvojho klanu, zadaj /guilds cancel pre zrusenie."
       player-left: "&cHrac '{player}' opustil tvoj klan!"
+      guildmaster-left: "&cThe Guild Master, '{player}' has left the guild. The guild will now be disbanded."
     boot:
       successful: "&cUspesne si vyhodil hraca {player} z tvojho klanu!"
       kicked: "&cBol si vyhodený z klanu hracom {kicker}!"

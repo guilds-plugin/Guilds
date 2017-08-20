@@ -106,6 +106,7 @@ messages:
       warning: "&cSkriv /guilds confirm för att lämna din guild, skriv /guilds cancel för att avbryta"
       warning-guildmaster: "&cDu är Guild Mästare av denna guild, att lämna din guild innebär även att guilden tas bort. Skriv /guilds confirm för att lämna och ta bort din guild, skriv /guilds cancel för att avbryta."
       player-left: "&cSpelare '{player}' lämnade din guild!"
+      guildmaster-left: "&cThe Guild Master, '{player}' has left the guild. The guild will now be disbanded."
     boot:
       successful: "&aLyckades kicka {player} från din guild!"
       kicked: "&cDu har blivit kickad från guilden av {kicker}!"

@@ -106,6 +106,7 @@ messages:
       successful: "&aYou've successfully left your guild!"
       warning-guildmaster: "&cYou're the Guild Master of this guild, leaving the guild will mean that the guild is deleted. Type /guilds confirm to leave and delete your guild, type /guilds cancel to cancel."
       warning: "&cType /guilds confirm to leave your guild, type /guilds cancel to cancel."
+      guildmaster-left: "&cThe Guild Master, '{player}' has left the guild. The guild will now be disbanded."
     boot:
       kicked: "&cYou have been kicked from your guild by {kicker}!"
       player-kicked: "&cPlayer '{player}' has been kicked from the guild by {kicker}!"

@@ -105,6 +105,7 @@ messages:
       warning: "&c输入 /guilds confirm 来确认离开公会,输入 /guilds cancel 取消操作."
       warning-guildmaster: "&c你是这个公会的会长，你的离开就意味着 &4公会将被解散!.&e輸入 /guilds confirm 来确认并解散你的公会, 輸入 /guilds cancel 取消操作."
       player-left: "&c玩家 '{player}' 离开了公会.."
+      guildmaster-left: "&cThe Guild Master, '{player}' has left the guild. The guild will now be disbanded."
     boot:
       successful: "&a你已经成功把 {player} 踢出了你的公会!"
       kicked: "&c你已经被 {kicker} 踢出了公会!"

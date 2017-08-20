@@ -105,6 +105,7 @@ messages:
       successful: "&aBạn đã rời khỏi guild thành công!"
       warning-guildmaster: "&cBạn là Guild Master của guild này, rời khỏi guild có nghĩa là guild sẽ bị xóa. Bấm /guilds confirm để rời khỏi và xóa guild của bạn, bấm /guilds cancel để hủy bỏ."
       warning: "&cBấm /guilds confirm để rời khỏi guild của bạn, bấm /guilds cancel để hủy bỏ."
+      guildmaster-left: "&cThe Guild Master, '{player}' has left the guild. The guild will now be disbanded."
     boot:
       kicked: "&cBạn đã bị kick khỏi guild của bạn bời {kicker}!"
       player-kicked: "&c'{player}' đã bị kick khỏi guild của bạn bời {kicker}!"

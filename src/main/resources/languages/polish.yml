@@ -106,6 +106,7 @@ messages:
       successful: "&aPomyślnie odszedłeś ze swojej gildii!"
       warning-guildmaster: "&cJesteś właścicielem gildii, jeżeli ją opuścisz będzie to równoznaczne z jej usunięciem. Aby potwierdzić odejście wpisz /guilds confirm, albo /guilds cancel aby anulować."
       warning: "&cWpisz /guilds confirm aby opuścić swoją gildię, albo /guilds cancel aby anulować."
+      guildmaster-left: "&cThe Guild Master, '{player}' has left the guild. The guild will now be disbanded."
     boot:
       kicked: "&cZostałeś wyrzucony ze swojej gildii {kicker}!"
       player-kicked: "&cGracz '{player}' został wyrzucony ze swojej gildii przez {kicker}!"

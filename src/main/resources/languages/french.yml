@@ -106,6 +106,7 @@ messages:
       successful: "&aVous avez quitté votre guilde!"
       warning-guildmaster: "&cVous êtes le maître de cette guilde, la quitter entraînera la suppression de cette dernière. Faites /guilds confirm pour quitter et supprimer, faites /guilds cancel pour annuler."
       warning: "&cFaites /guilds confirm quitter votre guilde, faites /guilds cancel pour annuler."
+      guildmaster-left: "&cThe Guild Master, '{player}' has left the guild. The guild will now be disbanded."
     boot:
       kicked: "&cVous avez été banni de votre guilde par {kicker}!"
       player-kicked: "&cLe joueur '{player}' a été banni de la guilde par {kicker}!"

@@ -106,6 +106,7 @@ messages:
       successful: "&aDu har forlatt guilden!"
       warning-guildmaster: "&cDu er Guild Master av guilden. Hvis du forlater guilden, vil guilden slettes."
       warning: "&cSkriv /guilds confirm for å forlate guilden, eller /guilds cancel for å kansellere."
+      guildmaster-left: "&cThe Guild Master, '{player}' has left the guild. The guild will now be disbanded."
     boot:
       kicked: "&cDu har blitt sparket fra guilden av {kicker}!"
       player-kicked: "&cSpiller '{player}' har blitt sparket fra klanen av {kicker}!"

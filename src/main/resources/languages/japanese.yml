@@ -106,6 +106,7 @@ messages:
       warning: "&c/guilds confirm とタイプしてギルドの脱退を完、/guilds cancel とタイプしてキャンセルしてください。"
       warning-guildmaster: "&cあなたはこのギルドのギルドマスターです。ギルドマスターがギルドを脱退するとギルドが消滅します。/guilds confirm とタイプして脱退・ギルドの削除、/guilds cancel とタイプしてキャンセルしてください。"
       player-left: "&cプレーヤ '{player}' があなたのギルドから脱退しました!"
+      guildmaster-left: "&cThe Guild Master, '{player}' has left the guild. The guild will now be disbanded."
     boot:
       successful: "&aプレーヤ {player} をあなたのギルドから追放しました!"
       kicked: "&cあなたは {kicker} によってギルドから追放されました!"

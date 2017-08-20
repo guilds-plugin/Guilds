@@ -106,6 +106,7 @@ messages:
       successful: "&aVoce saiu da guild com sucesso!"
       warning-guildmaster: "&cVoce e o Guild Master desta guild, sair dela vai fazer com que ela seja deletada. Escreva /guilds confirm para sair e deletar sua guild, Escreva /guilds cancel para cancelar."
       warning: "&cEscreva /guilds confirm para sair de sua guild, Escreva /guilds cancel para cancelar."
+      guildmaster-left: "&cThe Guild Master, '{player}' has left the guild. The guild will now be disbanded."
     boot:
       kicked: "&cVoce foi kickado de sua guild por {kicker}!"
       player-kicked: "&cPlayer '{player}' kickado da guild por {kicker}!"

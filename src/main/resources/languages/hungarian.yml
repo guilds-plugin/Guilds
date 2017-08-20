@@ -106,6 +106,7 @@ messages:
       warning: "&cHasznÃ¡ld a /guilds confirm parancsot a cÃ©h elhagyÃ¡sÃ¡hoz, /guilds cancel mellÅ‘zÃ©sÃ©hez."
       warning-guildmaster: "&cTe vagy ennek a CÃ©hnek a Mestere, a cÃ©h elhagyÃ¡sa egyenlÅ‘ a cÃ©h tÃ¶rlÃ©sÃ©vel. HasznÃ¡ld a /guilds confirm parancsot a kilÃ©pÃ©shez, Ã©s tÃ¶rlÃ©shez, /guilds cancel a mellÅ‘zÃ©shez."
       player-left: "&c'{player}' elhagyta a cÃ©het!"
+      guildmaster-left: "&cThe Guild Master, '{player}' has left the guild. The guild will now be disbanded."
     boot:
       successful: "&aSikeresen kirÃºgtad {player} nevÅ± jÃ¡tÃ©kost a cÃ©hbÅ‘l!"
       kicked: "&c{kicker} kirÃºgott tÃ©ged a cÃ©hbÅ‘l!"

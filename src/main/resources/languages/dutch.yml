@@ -105,6 +105,7 @@ messages:
       warning: "&cTyp /guilds confirm om je guild te verlaten, typ /guilds cancel om dit te stoppen."
       warning-guildmaster: "&cJij bent de Guild Master van deze guild, het verlaten van deze guild betekent dat de guild verwijderd zal worden. Typ /guilds confirm om deze guild te verlaten en te verwijderen, typ /guilds cancel om te stoppen"
       player-left: "&cSpeler '{player}' heeft je guild verlaten!"
+      guildmaster-left: "&cThe Guild Master, '{player}' has left the guild. The guild will now be disbanded."
     boot:
       successful: "&aSpeler {player} is verwijderd van jouw guild!"
       kicked: "&cJe bent gekickt van deze guild door {kicker}!"

@@ -104,6 +104,7 @@ messages:
       successful: "&aВы успешно покинули гильдию."
       warning-guildmaster: "&cЕсли Вы покинете гильдию, то она будет расформирована. Напишите /guild confirm для подтверждения или /guild cancel для отмены ухода с гильдии и её дальнейшей расформировки."
       warning: "&cНапишите /guild confirm для подтверждения или /guild cancel для отмены ухода с гильдии."
+      guildmaster-left: "&cThe Guild Master, '{player}' has left the guild. The guild will now be disbanded."
     boot:
       kicked: "&cВы были выгнаны с гильдии игроком {kicker}."
       player-kicked: "&c'{player}' выгнан(а) с гильдии игроком {kicker}."

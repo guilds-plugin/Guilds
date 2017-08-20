@@ -102,6 +102,7 @@ messages:
       successful: "&aDu hast erfolgreich deine Gilde verlassen!"
       warning-guildmaster: "&cDu bist der Gildenmeister dieser Gilde. Wenn du diese verlässt, wird sie gelöscht. Verwende /guilds confirm um deine Gilde verlassen und zu löschen oder /guilds cancel zum Abbrechen."
       warning: "&cVerwende /guilds confirm um deine Gilde zu verlassen oder /guilds cancel zum Abbrechen."
+      guildmaster-left: "&cThe Guild Master, '{player}' has left the guild. The guild will now be disbanded."
     boot:
       kicked: "&cDu wurdest von {kicker} aus deiner Gilde geworfen!"
       player-kicked: "&cDer Spieler '{player}' wurde von {kicker} aus deiner Gilde geworfen!"

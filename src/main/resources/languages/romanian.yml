@@ -106,6 +106,7 @@ messages:
       warning: "&cScrie /guilds confirm pentru a parasi Breasla, scrie /guilds cancel pentru a anula."
       warning-guildmaster: "&cEsti sef-ul Breslei, daca o vei parasi aceasta va fi stearsa. Scrie /guilds confirm pentru a parasi si sterge Breasla, scrie /guilds cancel pentru a anula."
       player-left: "&cJucatorul '{player}' a parasit Breasla!"
+      guildmaster-left: "&cThe Guild Master, '{player}' has left the guild. The guild will now be disbanded."
     boot:
       successful: "&aLai dat afara pe  {player} cu succes!"
       kicked: "&cAi fost dat afara din Breasla de {kicker}!"
