@@ -449,6 +449,8 @@ public class Main extends JavaPlugin {
                     event -> Placeholders.getGuildRole(event.getPlayer()));
             PlaceholderAPI.registerPlaceholder(this, "guild_tier",
                     event -> Integer.toString(Placeholders.getGuildTier(event.getPlayer())));
+            PlaceholderAPI.registerPlaceholder(this, "guild_balance",
+                    event -> Double.toString(Placeholders.getBankBalance(event.getPlayer())));
         }
 
     }

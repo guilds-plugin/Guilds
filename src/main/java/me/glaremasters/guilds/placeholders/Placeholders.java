@@ -86,4 +86,13 @@ public class Placeholders {
         return guild.getTier();
     }
 
+    public static double getBankBalance(Player player) {
+        Guild guild = Guild.getGuild(player.getUniqueId());
+        if (guild == null) {
+            return 0;
+        }
+
+        return guild.getBankBalance();
+    }
+
 }
