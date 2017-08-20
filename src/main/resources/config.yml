@@ -409,6 +409,7 @@ roles:
       transfer-guild: true
       upgrade-guild: true
       withdraw-money: true
+      deposit-money: true
 
   1:
     name: "Officer"
@@ -432,6 +433,7 @@ roles:
       transfer-guild: false
       upgrade-guild: false
       withdraw-money: true
+      deposit-money: true
 
   2:
     name: "Veteran"
@@ -454,7 +456,8 @@ roles:
       transfer-guild: false
       upgrade-guild: false
       use-bank: true
-      withdraw-money: flase
+      withdraw-money: false
+      deposit-money: true
   3:
     name: "Member"
     permissions:
@@ -476,6 +479,7 @@ roles:
       transfer-guild: false
       upgrade-guild: false
       withdraw-money: false
+      deposit-money: true
 
 #-----------------------------------------------------------#
 #                     Storage Configuration                 #
