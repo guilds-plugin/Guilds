@@ -14,7 +14,7 @@ public class CommandChat extends CommandBase {
     public CommandChat() {
         super("chat", Main.getInstance().getConfig().getString("commands.description.chat"),
                 "guilds.command.chat", false,
-                new String[]{"c"}, "<message>", 0, 100);
+                new String[]{"gc"}, "<message>", 0, 100);
     }
 
     public void execute(Player player, String[] args) {
