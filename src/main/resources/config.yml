@@ -18,12 +18,25 @@ version: 14
 
 auto-update-config: true
 
+#-----------------------------------------------------------#
+#                     Hooks Configuration                   #
+#-----------------------------------------------------------#
+
 # Hooks will control what the plugin can hook into. For example:
 # Enabling the worldguard hook will make it check if PVP is allowed in a region before doing damage.
 # If you change a hook to true and don't actually have the plugin, it may throw errors.
 
+# Note on the NameTagEdit Hook: They may not all look the best if someone has a long Guild Name / User Name.
+# It will allow 16 characters before the user's Username.
+
 hooks:
   worldguard: false
+  nametagedit: false
+
+# You can also use {prefix} in this.
+
+nametagedit:
+  name: "&7[&b{guild}&7]&r "
 
 #-----------------------------------------------------------#
 #                     CHOOSE YOUR LANGUAGE                  #

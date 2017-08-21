@@ -1,5 +1,6 @@
 package me.glaremasters.guilds.commands;
 
+import com.nametagedit.plugin.NametagEdit;
 import java.util.logging.Level;
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.api.events.GuildCreateEvent;
@@ -90,6 +91,14 @@ public class CommandCreate extends CommandBase {
                         Main.getInstance().guildTiersConfig.set(guild.getName(), 1);
                         Main.getInstance().saveGuildStatus();
                         Main.getInstance().saveGuildTiers();
+                        if (Main.getInstance().getConfig().getBoolean("hooks.nametagedit")) {
+                            NametagEdit.getApi()
+                                    .setPrefix(player, ChatColor.translateAlternateColorCodes('&',
+                                            Main.getInstance().getConfig()
+                                                    .getString("nametagedit.name")
+                                                    .replace("{guild}", guild.getName())
+                                                    .replace("{prefix}", guild.getPrefix())));
+                        }
                         if (Main.getInstance().getConfig().getBoolean("tablist-guilds")) {
                             String name =
                                     Main.getInstance().getConfig()
