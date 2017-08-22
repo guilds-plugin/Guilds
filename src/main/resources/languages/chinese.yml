@@ -19,15 +19,14 @@ messages:
       home-cooldown: "&c你無法傳送!! 你需要等待 {time} 秒後!在試一次"
       sethome-cooldown: "&c你需要等 {time} 秒後 才能在執行!"
     killreward:
-      killer: "&a你殺死了一位玩家 獲得了 {amount}!"
-      player-who-died: "&c你被一位玩家殺死啦!!  被幹走了 {amount}!"
+      killer: "&a你殺死了一位玩家 獲得了 {amount} 元!"
+      player-who-died: "&c你被一位玩家殺死啦!!  被幹走了 {amount} 元!"
     bank:
-      balance: "&aYour guild's bank has a balance of {amount}."
-      deposit-success: "&aYou have just moved {amount} from your account into your guild bank! Your new bank balance is {balance}."
-      deposit-failure: "&cYou don't have enough to deposit the amount requested!"
-      withdraw-success: "&aYou have just moved {amount} from your guild bank to your account! Your new bank balance is {balance}."
-      withdraw-failure: "&cYou don't have enough to withdraw the amount requested!"
-      bank-balance-limit: "&cYou can't deposit any more money, bank balance limit reached. Upgrade your guild to deposit more!"
+      balance: "&a公會銀行的餘額 為: {amount}元."
+      deposit-success: "&a你把 {amount} 元 轉移到了 公會銀行!  你的餘額 為: {balance} 元"
+      deposit-failure: "&c你沒有足夠的金錢!!"
+      withdraw-success: "&a你把 {amount} 元 從公會銀行 提取了出來! 你的餘額 為: {balance} 元"
+      withdraw-failure: "&c公會銀行沒有足夠的金錢 可以提款!"
     upgrade:
       tier-max: "&c公會不能再升級了!你已經到目前的頂級了!!"
       money-warning: "&c你要花費 {amount} 來升級你的公會嗎?. (請輸入 /guilds confirm 來做確認)"
@@ -94,7 +93,6 @@ messages:
       player-joined: "&a玩家 '{player}' 加入了你的公會! 歡迎他吧"
     invite:
       message: "&a{player} 邀請你加入他的公會, '{guild}' \n輸入 /guild accept (公會名稱) 來加入"
-      already-invited: "&cThis player has already been invited!"
       successful: "&a你成功邀請了 玩家 {player} 加入了你的公會!"
       already-in-guild: "&c這個玩家已經在你的公會了!"
     decline:
@@ -105,7 +103,6 @@ messages:
       warning: "&c輸入 /guilds confirm 來確認離開你的公會,輸入 /guilds cancel 取消這個動作."
       warning-guildmaster: "&c你是這個工會的領袖 離開公會意味著公會 &4會解散!.&e輸入 /guilds confirm 來確認並且散你的公會, 輸入 /guilds cancel 取消這個動作."
       player-left: "&c玩家 '{player}' 離開了你的公會.."
-      guildmaster-left: "&cThe Guild Master, '{player}' has left the guild. The guild will now be disbanded."
     boot:
       successful: "&a你已經成功把 {player} 踹出了你的公會!XD"
       kicked: "&c你已經被 {kicker} 踹出了公會..你不再是他們的一員了..!"
