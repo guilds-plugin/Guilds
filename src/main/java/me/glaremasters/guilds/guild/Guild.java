@@ -264,6 +264,17 @@ public class Guild implements InventoryHolder {
         }
     }
 
+
+    public void sendTitle(String title, String subtitle, int fadeIn, int stay, int fadeOut) {
+        for (GuildMember member : this.members) {
+            Player receiver = Bukkit.getPlayer(member.getUniqueId());
+            if (receiver == null || !receiver.isOnline()) {
+                continue;
+            }
+            receiver.sendTitle(title,subtitle,fadeIn,stay,fadeOut);
+        }
+    }
+
     public void updatePrefix(String prefix) {
         setPrefix(prefix);
 

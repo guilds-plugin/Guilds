@@ -275,6 +275,48 @@ reward-on-kill:
   reward: 10
   take-from-killed-player: 10
 
+#-----------------------------------------------------------#
+#                     Title Configuration                   #
+#-----------------------------------------------------------#
+
+# This section of the config will walk you through making and configuring custom titles for different events in the plugin.
+# NOTE: When configuring times, keep in mind that 1 = 1 second, and so on.
+
+# CUSTOM TITLE PLACEHOLDERS: {guild} {prefix} {username} {tier}
+titles:
+  enabled: false
+  events:
+    guild-creation:
+      title: ""
+      sub-title: ""
+      fade-in: 3
+      stay: 3
+      fade-out: 3
+    player-joins-guild:
+      title: ""
+      sub-title: ""
+      fade-in: 3
+      stay: 3
+      fade-out: 3
+    player-leave-guild:
+      title: ""
+      sub-title: ""
+      fade-in: 3
+      stay: 3
+      fade-out: 3
+    guild-prefix-change:
+      title: ""
+      sub-title: ""
+      fade-in: 3
+      stay: 3
+      fade-out: 3
+    guild-tier-upgrade:
+      title: ""
+      sub-title: ""
+      fade-in: 3
+      stay: 3
+      fade-out: 3
+
 
 #-----------------------------------------------------------#
 #                     Guild Upgrade Configuration           #
