@@ -36,5 +36,5 @@ public class JoinListener implements Listener {
                             String.join(",", guilds)));
         }
     }
-}
 
+}

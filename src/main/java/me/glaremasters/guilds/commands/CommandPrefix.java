@@ -1,5 +1,6 @@
 package me.glaremasters.guilds.commands;
 
+import com.nametagedit.plugin.NametagEdit;
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
@@ -47,6 +48,15 @@ public class CommandPrefix extends CommandBase {
                                 .replace("{guild}", guild.getName())
                                 .replace("{prefix}", guild.getPrefix())
                                 + name));
+
+        if (Main.getInstance().getConfig().getBoolean("hooks.nametagedit")) {
+            NametagEdit.getApi()
+                    .setPrefix(player, ChatColor.translateAlternateColorCodes('&',
+                            Main.getInstance().getConfig()
+                                    .getString("nametagedit.name")
+                                    .replace("{guild}", guild.getName())
+                                    .replace("{prefix}", guild.getPrefix())));
+        }
 
 
     }

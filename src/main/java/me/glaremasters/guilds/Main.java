@@ -65,6 +65,7 @@ import me.glaremasters.guilds.listeners.GuildChatListener;
 import me.glaremasters.guilds.listeners.GuildVaultListener;
 import me.glaremasters.guilds.listeners.JoinListener;
 import me.glaremasters.guilds.listeners.MobDeathListener;
+import me.glaremasters.guilds.listeners.NameTagListener;
 import me.glaremasters.guilds.listeners.PlayerDamageListener;
 import me.glaremasters.guilds.listeners.PlayerDeathListener;
 import me.glaremasters.guilds.listeners.SignListener;
@@ -269,6 +270,10 @@ public class Main extends JavaPlugin {
 
         if (getConfig().getBoolean("reward-on-kill.enabled")) {
             getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
+        }
+
+        if (getConfig().getBoolean("hooks.nametagedit")) {
+            getServer().getPluginManager().registerEvents(new NameTagListener(), this);
         }
 
         vault = setupEconomy();

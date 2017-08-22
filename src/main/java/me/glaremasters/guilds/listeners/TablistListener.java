@@ -1,6 +1,5 @@
 package me.glaremasters.guilds.listeners;
 
-import com.nametagedit.plugin.NametagEdit;
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.guild.Guild;
 import org.bukkit.ChatColor;
@@ -38,15 +37,6 @@ public class TablistListener implements Listener {
                                                 .replace("{prefix}", guild.getPrefix())
                                                 + name));
                     }, 30L);
-
-            if (Main.getInstance().getConfig().getBoolean("hooks.nametagedit")) {
-                NametagEdit.getApi()
-                        .setPrefix(player, ChatColor.translateAlternateColorCodes('&',
-                                Main.getInstance().getConfig()
-                                        .getString("nametagedit.name")
-                                        .replace("{guild}", guild.getName())
-                                        .replace("{prefix}", guild.getPrefix())));
-            }
 
         }
     }

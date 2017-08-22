@@ -1,5 +1,6 @@
 package me.glaremasters.guilds.commands;
 
+import com.nametagedit.plugin.NametagEdit;
 import java.util.logging.Level;
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.api.events.GuildRemoveEvent;
@@ -83,6 +84,10 @@ public class CommandDelete extends CommandBase {
                     player.setPlayerListName(
                             ChatColor.translateAlternateColorCodes('&',
                                     name));
+                }
+                if (Main.getInstance().getConfig().getBoolean("hooks.nametagedit")) {
+                    NametagEdit.getApi()
+                            .setPrefix(player, "");
                 }
 
                 Main.getInstance().getCommandHandler().removeAction(player);
