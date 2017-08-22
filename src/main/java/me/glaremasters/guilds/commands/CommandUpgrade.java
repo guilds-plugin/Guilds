@@ -7,6 +7,7 @@ import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.message.Message;
 import me.glaremasters.guilds.util.ConfirmAction;
 import net.milkbowl.vault.economy.EconomyResponse;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
@@ -72,15 +73,25 @@ public class CommandUpgrade extends CommandBase {
                 if (config.getBoolean("titles.enabled")) {
                     try {
                         String creation = "titles.events.guild-tier-upgrade";
-                        guild.sendTitle(config.getString(creation + ".title"),
-                                config.getString(creation + ".sub-title"),
+                        guild.sendTitle(ChatColor
+                                        .translateAlternateColorCodes('&',
+                                                config.getString(creation + ".title").replace("{tier}",
+                                                        Integer.toString(guild.getTier()))),
+                                ChatColor.translateAlternateColorCodes('&',
+                                        config.getString(creation + ".sub-title").replace("{tier}",
+                                                Integer.toString(guild.getTier()))),
                                 config.getInt(creation + ".fade-in") * 20,
                                 config.getInt(creation + ".stay") * 20,
                                 config.getInt(creation + ".fade-out") * 20);
                     } catch (NoSuchMethodError error) {
                         String creation = "titles.events.guild-tier-upgrade";
-                        guild.sendTitleOld(config.getString(creation + ".title"),
-                                config.getString(creation + ".sub-title"));
+                        guild.sendTitleOld(ChatColor.translateAlternateColorCodes('&',
+                                config.getString(creation + ".title")
+                                        .replace("{tier}", Integer.toString(guild.getTier()))),
+                                ChatColor.translateAlternateColorCodes('&',
+                                        config.getString(creation + ".sub-title")
+                                                .replace("{tier}",
+                                                        Integer.toString(guild.getTier()))));
                     }
 
                 }

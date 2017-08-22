@@ -283,6 +283,9 @@ reward-on-kill:
 # NOTE: When configuring times, keep in mind that 1 = 1 second, and so on.
 
 # CUSTOM TITLE PLACEHOLDERS: {guild} {prefix} {username} {tier}
+
+# NOTE: There is a current bug which only allows Color Codes to work on creation, upgrade, and prefix.
+# IMPORTANT: This will ONLY work on servers 1.9 and ABOVE.
 titles:
   enabled: false
   events:
@@ -298,7 +301,7 @@ titles:
       fade-in: 3
       stay: 3
       fade-out: 3
-    player-leave-guild:
+    player-leaves-guild:
       title: ""
       sub-title: "{username} has just left the guild."
       fade-in: 3

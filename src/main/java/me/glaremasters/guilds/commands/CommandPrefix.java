@@ -33,7 +33,6 @@ public class CommandPrefix extends CommandBase {
             return;
         }
 
-
         FileConfiguration config = Main.getInstance().getConfig();
         if (!args[0].matches(Main.getInstance().getConfig().getString("prefix.regex"))) {
             Message.sendMessage(player, Message.COMMAND_PREFIX_REQUIREMENTS);
@@ -45,15 +44,23 @@ public class CommandPrefix extends CommandBase {
         if (Main.getInstance().getConfig().getBoolean("titles.enabled")) {
             try {
                 String creation = "titles.events.guild-prefix-change";
-                guild.sendTitle(Main.getInstance().getConfig().getString(creation + ".title"),
-                       config.getString(creation + ".sub-title"),
+                guild.sendTitle(ChatColor.translateAlternateColorCodes('&',
+                        Main.getInstance().getConfig().getString(creation + ".title")
+                                .replace("{prefix}", guild.getPrefix())),
+                        ChatColor.translateAlternateColorCodes('&',
+                                config.getString(creation + ".sub-title")
+                                        .replace("{prefix}", guild.getPrefix())),
                         config.getInt(creation + ".fade-in") * 20,
                         config.getInt(creation + ".stay") * 20,
                         config.getInt(creation + ".fade-out") * 20);
             } catch (NoSuchMethodError error) {
                 String creation = "titles.events.guild-prefix-change";
-                guild.sendTitleOld(Main.getInstance().getConfig().getString(creation + ".title"),
-                        config.getString(creation + ".sub-title"));
+                guild.sendTitleOld(ChatColor.translateAlternateColorCodes('&',
+                        Main.getInstance().getConfig().getString(creation + ".title")
+                                .replace("{prefix}", guild.getPrefix())),
+                        ChatColor.translateAlternateColorCodes('&',
+                                config.getString(creation + ".sub-title")
+                                        .replace("{prefix}", guild.getPrefix())));
             }
 
         }

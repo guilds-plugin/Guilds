@@ -89,8 +89,8 @@ public class CommandAccept extends CommandBase {
                         config.getInt(creation + ".fade-out") * 20);
             } catch (NoSuchMethodError error) {
                 String creation = "titles.events.player-joins-guild";
-                guild.sendTitleOld(config.getString(creation + ".title"),
-                        config.getString(creation + ".sub-title"));
+                guild.sendTitleOld(config.getString(creation + ".title").replace("{username}", player.getName()),
+                        config.getString(creation + ".sub-title").replace("{username}", player.getName()));
             }
 
         }
