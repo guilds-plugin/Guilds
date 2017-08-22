@@ -287,32 +287,32 @@ titles:
   enabled: false
   events:
     guild-creation:
-      title: ""
-      sub-title: ""
+      title: "Congrats"
+      sub-title: "{guild} has been created!"
       fade-in: 3
       stay: 3
       fade-out: 3
     player-joins-guild:
       title: ""
-      sub-title: ""
+      sub-title: "{username} has just joined the guild."
       fade-in: 3
       stay: 3
       fade-out: 3
     player-leave-guild:
       title: ""
-      sub-title: ""
+      sub-title: "{username} has just left the guild."
       fade-in: 3
       stay: 3
       fade-out: 3
     guild-prefix-change:
-      title: ""
-      sub-title: ""
+      title: "Congrats"
+      sub-title: "Your new prefix is {prefix}"
       fade-in: 3
       stay: 3
       fade-out: 3
     guild-tier-upgrade:
-      title: ""
-      sub-title: ""
+      title: "Success!"
+      sub-title: "Your guild is now Tier {tier}"
       fade-in: 3
       stay: 3
       fade-out: 3

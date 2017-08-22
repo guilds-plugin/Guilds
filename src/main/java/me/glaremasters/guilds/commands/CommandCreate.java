@@ -98,15 +98,15 @@ public class CommandCreate extends CommandBase {
                         if (config.getBoolean("titles.enabled")) {
                             try {
                                 String creation = "titles.events.guild-creation";
-                                guild.sendTitle(config.getString(creation + ".title"),
+                                guild.sendTitle(config.getString(creation + ".title").replace("{guild}", guild.getName()),
                                         config.getString(creation + ".sub-title"),
-                                        config.getInt(creation + ".fade-in"),
-                                        config.getInt(creation + ".stay"),
-                                        config.getInt(creation + ".fade-out"));
+                                        config.getInt(creation + ".fade-in") * 20,
+                                        config.getInt(creation + ".stay") * 20,
+                                        config.getInt(creation + ".fade-out") * 20);
                             } catch (NoSuchMethodError error) {
                                 String creation = "titles.events.guild-creation";
-                                guild.sendTitleOld(config.getString(creation + ".title"),
-                                        config.getString(creation + ".sub-title"));
+                                guild.sendTitleOld(config.getString(creation + ".title").replace("{guild}", guild.getName()),
+                                        config.getString(creation + ".sub-title").replace("{guild}", guild.getName()));
                             }
 
                         }

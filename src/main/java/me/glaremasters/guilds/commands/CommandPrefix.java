@@ -46,10 +46,10 @@ public class CommandPrefix extends CommandBase {
             try {
                 String creation = "titles.events.guild-prefix-change";
                 guild.sendTitle(Main.getInstance().getConfig().getString(creation + ".title"),
-                        Main.getInstance().getConfig().getString(creation + ".sub-title"),
-                        Main.getInstance().getConfig().getInt(creation + ".fade-in"),
-                        Main.getInstance().getConfig().getInt(creation + ".stay"),
-                        Main.getInstance().getConfig().getInt(creation + ".fade-out"));
+                       config.getString(creation + ".sub-title"),
+                        config.getInt(creation + ".fade-in") * 20,
+                        config.getInt(creation + ".stay") * 20,
+                        config.getInt(creation + ".fade-out") * 20);
             } catch (NoSuchMethodError error) {
                 String creation = "titles.events.guild-prefix-change";
                 guild.sendTitleOld(Main.getInstance().getConfig().getString(creation + ".title"),

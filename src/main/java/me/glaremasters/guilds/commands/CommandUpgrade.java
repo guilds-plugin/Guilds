@@ -74,9 +74,9 @@ public class CommandUpgrade extends CommandBase {
                         String creation = "titles.events.guild-tier-upgrade";
                         guild.sendTitle(config.getString(creation + ".title"),
                                 config.getString(creation + ".sub-title"),
-                                config.getInt(creation + ".fade-in"),
-                                config.getInt(creation + ".stay"),
-                                config.getInt(creation + ".fade-out"));
+                                config.getInt(creation + ".fade-in") * 20,
+                                config.getInt(creation + ".stay") * 20,
+                                config.getInt(creation + ".fade-out") * 20);
                     } catch (NoSuchMethodError error) {
                         String creation = "titles.events.guild-tier-upgrade";
                         guild.sendTitleOld(config.getString(creation + ".title"),

@@ -82,11 +82,11 @@ public class CommandAccept extends CommandBase {
         if (config.getBoolean("titles.enabled")) {
             try {
                 String creation = "titles.events.player-joins-guild";
-                guild.sendTitle(config.getString(creation + ".title"),
-                        config.getString(creation + ".sub-title"),
-                        config.getInt(creation + ".fade-in"),
-                        config.getInt(creation + ".stay"),
-                        config.getInt(creation + ".fade-out"));
+                guild.sendTitle(config.getString(creation + ".title").replace("{username}", player.getName()),
+                        config.getString(creation + ".sub-title").replace("{username}", player.getName()),
+                        config.getInt(creation + ".fade-in") * 20,
+                        config.getInt(creation + ".stay") * 20,
+                        config.getInt(creation + ".fade-out") * 20);
             } catch (NoSuchMethodError error) {
                 String creation = "titles.events.player-joins-guild";
                 guild.sendTitleOld(config.getString(creation + ".title"),
