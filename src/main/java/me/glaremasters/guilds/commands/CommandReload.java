@@ -1,12 +1,13 @@
 package me.glaremasters.guilds.commands;
 
-import java.io.IOException;
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.message.Message;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
+
+import java.io.IOException;
 
 public class CommandReload extends CommandBase {
 

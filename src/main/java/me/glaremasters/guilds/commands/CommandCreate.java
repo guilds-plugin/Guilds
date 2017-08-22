@@ -1,7 +1,6 @@
 package me.glaremasters.guilds.commands;
 
 import com.nametagedit.plugin.NametagEdit;
-import java.util.logging.Level;
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.api.events.GuildCreateEvent;
 import me.glaremasters.guilds.commands.base.CommandBase;
@@ -10,7 +9,10 @@ import me.glaremasters.guilds.message.Message;
 import me.glaremasters.guilds.util.ConfirmAction;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+
+import java.util.logging.Level;
 
 public class CommandCreate extends CommandBase {
 
@@ -28,6 +30,7 @@ public class CommandCreate extends CommandBase {
             return;
         }
 
+        final FileConfiguration config = Main.getInstance().getConfig();
         int minLength = Main.getInstance().getConfig().getInt("name.min-length");
         int maxLength = Main.getInstance().getConfig().getInt("name.max-length");
         String regex = Main.getInstance().getConfig().getString("name.regex");
@@ -70,7 +73,7 @@ public class CommandCreate extends CommandBase {
                     return;
                 }
 
-                if (Main.getInstance().getConfig().getBoolean("require-money")) {
+                if (config.getBoolean("require-money")) {
 
                     EconomyResponse response =
                             Main.getInstance().getEconomy().withdrawPlayer(player, requiredMoney);
@@ -91,22 +94,38 @@ public class CommandCreate extends CommandBase {
                         Main.getInstance().guildTiersConfig.set(guild.getName(), 1);
                         Main.getInstance().saveGuildStatus();
                         Main.getInstance().saveGuildTiers();
-                        if (Main.getInstance().getConfig().getBoolean("hooks.nametagedit")) {
+
+                        if (config.getBoolean("titles.enabled")) {
+                            try {
+                                String creation = "titles.events.guild-creation";
+                                guild.sendTitle(config.getString(creation + ".title"),
+                                        config.getString(creation + ".sub-title"),
+                                        config.getInt(creation + ".fade-in"),
+                                        config.getInt(creation + ".stay"),
+                                        config.getInt(creation + ".fade-out"));
+                            } catch (NoSuchMethodError error) {
+                                String creation = "titles.events.guild-creation";
+                                guild.sendTitleOld(config.getString(creation + ".title"),
+                                        config.getString(creation + ".sub-title"));
+                            }
+
+                        }
+                        if (config.getBoolean("hooks.nametagedit")) {
                             NametagEdit.getApi()
                                     .setPrefix(player, ChatColor.translateAlternateColorCodes('&',
-                                            Main.getInstance().getConfig()
+                                            config
                                                     .getString("nametagedit.name")
                                                     .replace("{guild}", guild.getName())
                                                     .replace("{prefix}", guild.getPrefix())));
                         }
-                        if (Main.getInstance().getConfig().getBoolean("tablist-guilds")) {
+                        if (config.getBoolean("tablist-guilds")) {
                             String name =
-                                    Main.getInstance().getConfig()
+                                    config
                                             .getBoolean("tablist-use-display-name") ? player
                                             .getDisplayName() : player.getName();
                             player.setPlayerListName(
                                     ChatColor.translateAlternateColorCodes('&',
-                                            Main.getInstance().getConfig().getString("tablist")
+                                            config.getString("tablist")
                                                     .replace("{guild}", guild.getName())
                                                     .replace("{prefix}", guild.getPrefix())
                                                     + name));

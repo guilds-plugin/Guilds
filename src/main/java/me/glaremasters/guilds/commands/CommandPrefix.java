@@ -7,6 +7,7 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.message.Message;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 public class CommandPrefix extends CommandBase {
@@ -32,6 +33,8 @@ public class CommandPrefix extends CommandBase {
             return;
         }
 
+
+        FileConfiguration config = Main.getInstance().getConfig();
         if (!args[0].matches(Main.getInstance().getConfig().getString("prefix.regex"))) {
             Message.sendMessage(player, Message.COMMAND_PREFIX_REQUIREMENTS);
             return;
@@ -39,20 +42,35 @@ public class CommandPrefix extends CommandBase {
 
         Message.sendMessage(player, Message.COMMAND_PREFIX_SUCCESSFUL);
         guild.updatePrefix(ChatColor.translateAlternateColorCodes('&', args[0]));
+        if (Main.getInstance().getConfig().getBoolean("titles.enabled")) {
+            try {
+                String creation = "titles.events.guild-prefix-change";
+                guild.sendTitle(Main.getInstance().getConfig().getString(creation + ".title"),
+                        Main.getInstance().getConfig().getString(creation + ".sub-title"),
+                        Main.getInstance().getConfig().getInt(creation + ".fade-in"),
+                        Main.getInstance().getConfig().getInt(creation + ".stay"),
+                        Main.getInstance().getConfig().getInt(creation + ".fade-out"));
+            } catch (NoSuchMethodError error) {
+                String creation = "titles.events.guild-prefix-change";
+                guild.sendTitleOld(Main.getInstance().getConfig().getString(creation + ".title"),
+                        config.getString(creation + ".sub-title"));
+            }
 
-        String name = Main.getInstance().getConfig().getBoolean("tablist-use-display-name") ? player
+        }
+
+        String name = config.getBoolean("tablist-use-display-name") ? player
                 .getDisplayName() : player.getName();
         player.setPlayerListName(
                 ChatColor.translateAlternateColorCodes('&',
-                        Main.getInstance().getConfig().getString("tablist")
+                        config.getString("tablist")
                                 .replace("{guild}", guild.getName())
                                 .replace("{prefix}", guild.getPrefix())
                                 + name));
 
-        if (Main.getInstance().getConfig().getBoolean("hooks.nametagedit")) {
+        if (config.getBoolean("hooks.nametagedit")) {
             NametagEdit.getApi()
                     .setPrefix(player, ChatColor.translateAlternateColorCodes('&',
-                            Main.getInstance().getConfig()
+                            config
                                     .getString("nametagedit.name")
                                     .replace("{guild}", guild.getName())
                                     .replace("{prefix}", guild.getPrefix())));

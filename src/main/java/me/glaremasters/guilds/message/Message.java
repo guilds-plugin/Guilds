@@ -1,9 +1,10 @@
 package me.glaremasters.guilds.message;
 
-import java.util.Arrays;
 import me.glaremasters.guilds.Main;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+
+import java.util.Arrays;
 
 public enum Message {
 

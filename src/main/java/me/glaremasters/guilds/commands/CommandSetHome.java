@@ -1,6 +1,5 @@
 package me.glaremasters.guilds.commands;
 
-import java.util.HashMap;
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
@@ -9,6 +8,8 @@ import me.glaremasters.guilds.message.Message;
 import me.glaremasters.guilds.util.ConfirmAction;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.entity.Player;
+
+import java.util.HashMap;
 
 /**
  * Created by GlareMasters on 6/11/2017.

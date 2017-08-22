@@ -1,6 +1,5 @@
 package me.glaremasters.guilds.commands;
 
-import java.util.stream.Collectors;
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
@@ -8,6 +7,8 @@ import me.glaremasters.guilds.message.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
+
+import java.util.stream.Collectors;
 
 /**
  * Created by GlareMasters on 7/7/2017.

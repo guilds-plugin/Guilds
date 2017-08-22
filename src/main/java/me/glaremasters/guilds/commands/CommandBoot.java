@@ -32,7 +32,6 @@ public class CommandBoot extends CommandBase {
         }
 
 
-
         OfflinePlayer kickedPlayer = Bukkit.getOfflinePlayer(args[0]);
 
 
@@ -43,7 +42,7 @@ public class CommandBoot extends CommandBase {
             return;
         }
         GuildMember kickedPlayer2 = guild.getMember(kickedPlayer.getUniqueId());
-        if(kickedPlayer2.equals(guild.getGuildMaster())) {
+        if (kickedPlayer2.equals(guild.getGuildMaster())) {
             Message.sendMessage(player, Message.COMMAND_ERROR_ROLE_NO_PERMISSION);
             return;
         }

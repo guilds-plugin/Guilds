@@ -7,6 +7,7 @@ import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.message.Message;
 import me.glaremasters.guilds.util.ConfirmAction;
 import net.milkbowl.vault.economy.EconomyResponse;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 /**
@@ -22,7 +23,7 @@ public class CommandUpgrade extends CommandBase {
 
     @Override
     public void execute(Player player, String[] args) {
-
+        final FileConfiguration config = Main.getInstance().getConfig();
         Guild guild = Guild.getGuild(player.getUniqueId());
 
         if (guild == null) {
@@ -67,6 +68,21 @@ public class CommandUpgrade extends CommandBase {
                 if (!response.transactionSuccess()) {
                     Message.sendMessage(player, Message.COMMAND_UPGRADE_NOT_ENOUGH_MONEY);
                     return;
+                }
+                if (config.getBoolean("titles.enabled")) {
+                    try {
+                        String creation = "titles.events.guild-tier-upgrade";
+                        guild.sendTitle(config.getString(creation + ".title"),
+                                config.getString(creation + ".sub-title"),
+                                config.getInt(creation + ".fade-in"),
+                                config.getInt(creation + ".stay"),
+                                config.getInt(creation + ".fade-out"));
+                    } catch (NoSuchMethodError error) {
+                        String creation = "titles.events.guild-tier-upgrade";
+                        guild.sendTitleOld(config.getString(creation + ".title"),
+                                config.getString(creation + ".sub-title"));
+                    }
+
                 }
                 guild.updateGuild("");
             }

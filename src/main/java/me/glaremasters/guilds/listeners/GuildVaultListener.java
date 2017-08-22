@@ -1,8 +1,6 @@
 package me.glaremasters.guilds.listeners;
 
 
-import java.io.File;
-import java.io.IOException;
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.guild.Guild;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -12,6 +10,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Created by GlareMasters on 7/21/2017.

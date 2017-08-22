@@ -3,14 +3,15 @@ package me.glaremasters.guilds.leaderboard;
 import com.google.common.collect.Lists;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-import java.util.logging.Level;
 import me.glaremasters.guilds.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+import java.util.logging.Level;
 
 public abstract class Leaderboard {
 
@@ -30,7 +31,7 @@ public abstract class Leaderboard {
     }
 
     public Leaderboard(String name, LeaderboardType leaderboardType, SortType sortType,
-            List<Score> scores) {
+                       List<Score> scores) {
         this.name = name;
         this.leaderboardType = leaderboardType;
         this.sortType = sortType;

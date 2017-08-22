@@ -1,11 +1,5 @@
 package me.glaremasters.guilds.commands.base;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.stream.Collectors;
 import me.glaremasters.guilds.IHandler;
 import me.glaremasters.guilds.message.Message;
 import me.glaremasters.guilds.util.ConfirmAction;
@@ -14,6 +8,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class CommandHandler implements CommandExecutor, TabCompleter, IHandler {
 
@@ -41,7 +38,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter, IHandler {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel,
-            String[] args) {
+                             String[] args) {
 
         if (!cmd.getName().equalsIgnoreCase("guild")) {
             return true;
@@ -116,7 +113,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter, IHandler {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command cmd, String commandLabel,
-            String[] args) {
+                                      String[] args) {
         if (cmd.getName().equalsIgnoreCase("guild")) {
             if (args.length == 1) {
                 List<String> commandNames = new ArrayList<>();

@@ -51,7 +51,7 @@ public class GuildsAPI {
     }
 
     public static Leaderboard getLeaderboard(String name,
-            Leaderboard.LeaderboardType leaderboardType) {
+                                             Leaderboard.LeaderboardType leaderboardType) {
         return Main.getInstance().getLeaderboardHandler().getLeaderboard(name, leaderboardType);
     }
 }

@@ -1,15 +1,13 @@
 package me.glaremasters.guilds.listeners;
 
-import static me.glaremasters.guilds.placeholders.Placeholders.getGuildMemberCount;
-import static me.glaremasters.guilds.placeholders.Placeholders.getGuildMembersOnline;
-import static me.glaremasters.guilds.placeholders.Placeholders.getGuildRole;
-
 import me.glaremasters.guilds.guild.Guild;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+
+import static me.glaremasters.guilds.placeholders.Placeholders.*;
 
 public class ChatListener implements Listener {
 

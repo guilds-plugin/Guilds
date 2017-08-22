@@ -8,6 +8,7 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.message.Message;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 public class CommandAccept extends CommandBase {
@@ -19,34 +20,33 @@ public class CommandAccept extends CommandBase {
     }
 
     public void execute(Player player, String[] args) {
+        final FileConfiguration config = Main.getInstance().getConfig();
         if (Guild.getGuild(player.getUniqueId()) != null) {
             Message.sendMessage(player, Message.COMMAND_ERROR_ALREADY_IN_GUILD);
             return;
         }
         Guild guild = (Guild) Main.getInstance().getGuildHandler().getGuilds().values().toArray()[0];
         try {
-            if (args.length == 0){
+            if (args.length == 0) {
                 int invites = 0;
                 int indexes = 0;
-                for (int i = 0; i<Main.getInstance().getGuildHandler().getGuilds().values().size();i++){
+                for (int i = 0; i < Main.getInstance().getGuildHandler().getGuilds().values().size(); i++) {
                     Guild guildtmp = (Guild) Main.getInstance().getGuildHandler().getGuilds().values().toArray()[i];
-                    if (guildtmp.getInvitedMembers().contains(player.getUniqueId())){
+                    if (guildtmp.getInvitedMembers().contains(player.getUniqueId())) {
                         invites++;
                         indexes = i;
                     }
                 }
-                if (invites == 1){
+                if (invites == 1) {
                     guild = (Guild) Main.getInstance().getGuildHandler().getGuilds().values().toArray()[indexes];
-                }
-                else {
+                } else {
                     Message.sendMessage(player, Message.COMMAND_ACCEPT_NOT_INVITED);
                     return;
                 }
-            }
-            else {
+            } else {
                 guild = Guild.getGuild(args[0]);
             }
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
 
@@ -78,21 +78,38 @@ public class CommandAccept extends CommandBase {
 
         guild.addMember(player.getUniqueId(), GuildRole.getLowestRole());
         guild.removeInvitedPlayer(player.getUniqueId());
-        if (Main.getInstance().getConfig().getBoolean("tablist-guilds")) {
+
+        if (config.getBoolean("titles.enabled")) {
+            try {
+                String creation = "titles.events.player-joins-guild";
+                guild.sendTitle(config.getString(creation + ".title"),
+                        config.getString(creation + ".sub-title"),
+                        config.getInt(creation + ".fade-in"),
+                        config.getInt(creation + ".stay"),
+                        config.getInt(creation + ".fade-out"));
+            } catch (NoSuchMethodError error) {
+                String creation = "titles.events.player-joins-guild";
+                guild.sendTitleOld(config.getString(creation + ".title"),
+                        config.getString(creation + ".sub-title"));
+            }
+
+        }
+
+        if (config.getBoolean("tablist-guilds")) {
             String name =
-                    Main.getInstance().getConfig().getBoolean("tablist-use-display-name") ? player
+                    config.getBoolean("tablist-use-display-name") ? player
                             .getDisplayName() : player.getName();
             player.setPlayerListName(
                     ChatColor.translateAlternateColorCodes('&',
-                            Main.getInstance().getConfig().getString("tablist")
+                            config.getString("tablist")
                                     .replace("{guild}", guild.getName())
                                     .replace("{prefix}", guild.getPrefix())
                                     + name));
         }
-        if (Main.getInstance().getConfig().getBoolean("hooks.nametagedit")) {
+        if (config.getBoolean("hooks.nametagedit")) {
             NametagEdit.getApi()
                     .setPrefix(player, ChatColor.translateAlternateColorCodes('&',
-                            Main.getInstance().getConfig()
+                            config
                                     .getString("nametagedit.name")
                                     .replace("{guild}", guild.getName())
                                     .replace("{prefix}", guild.getPrefix())));

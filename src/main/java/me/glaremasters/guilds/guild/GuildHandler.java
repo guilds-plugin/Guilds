@@ -1,12 +1,13 @@
 package me.glaremasters.guilds.guild;
 
+import me.glaremasters.guilds.IHandler;
+import me.glaremasters.guilds.Main;
+import org.bukkit.configuration.ConfigurationSection;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
-import me.glaremasters.guilds.IHandler;
-import me.glaremasters.guilds.Main;
-import org.bukkit.configuration.ConfigurationSection;
 
 public class GuildHandler implements IHandler {
 

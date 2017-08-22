@@ -1,6 +1,5 @@
 package me.glaremasters.guilds.commands;
 
-import java.util.Arrays;
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.api.events.GuildAddAllyEvent;
 import me.glaremasters.guilds.api.events.GuildRemoveAllyEvent;
@@ -10,6 +9,8 @@ import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.message.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+
+import java.util.Arrays;
 
 public class CommandAlly extends CommandBase {
 

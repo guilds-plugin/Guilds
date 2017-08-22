@@ -10,6 +10,7 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.message.Message;
 import me.glaremasters.guilds.util.ConfirmAction;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 public class CommandLeave extends CommandBase {
@@ -20,6 +21,7 @@ public class CommandLeave extends CommandBase {
     }
 
     public void execute(Player player, String[] args) {
+        final FileConfiguration config = Main.getInstance().getConfig();
         Guild guild = Guild.getGuild(player.getUniqueId());
         if (guild == null) {
             Message.sendMessage(player, Message.COMMAND_ERROR_NO_GUILD);
@@ -77,16 +79,33 @@ public class CommandLeave extends CommandBase {
                 guild.removeMember(player.getUniqueId());
                 Message.sendMessage(player, Message.COMMAND_LEAVE_SUCCESSFUL);
 
-                if (Main.getInstance().getConfig().getBoolean("tablist-guilds")) {
+                if (config.getBoolean("titles.enabled")) {
+                    try {
+                        String creation = "titles.events.player-leaves-guild";
+                        guild.sendTitle(config.getString(creation + ".title"),
+                                config.getString(creation + ".sub-title"),
+                                config.getInt(creation + ".fade-in"),
+                                config.getInt(creation + ".stay"),
+                                config.getInt(creation + ".fade-out"));
+                    } catch (NoSuchMethodError error) {
+                        String creation = "titles.events.player-leaves-guild";
+                        guild.sendTitleOld(config.getString(creation + ".title"),
+                                config.getString(creation + ".sub-title"));
+                    }
+
+                }
+
+
+                if (config.getBoolean("tablist-guilds")) {
                     String name =
-                            Main.getInstance().getConfig().getBoolean("tablist-use-display-name")
+                            config.getBoolean("tablist-use-display-name")
                                     ? player
                                     .getDisplayName() : player.getName();
                     player.setPlayerListName(
                             ChatColor.translateAlternateColorCodes('&',
                                     name));
                 }
-                if (Main.getInstance().getConfig().getBoolean("hooks.nametagedit")) {
+                if (config.getBoolean("hooks.nametagedit")) {
                     NametagEdit.getApi()
                             .setPrefix(player, "");
                 }

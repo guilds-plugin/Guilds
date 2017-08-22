@@ -1,6 +1,5 @@
 package me.glaremasters.guilds.commands;
 
-import java.util.logging.Level;
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
@@ -9,6 +8,8 @@ import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.message.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+
+import java.util.logging.Level;
 
 public class CommandDemote extends CommandBase {
 

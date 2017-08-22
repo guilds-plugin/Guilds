@@ -1,13 +1,13 @@
 package me.glaremasters.guilds.commands;
 
-import static me.glaremasters.guilds.listeners.GuildChatListener.GUILD_CHAT_PLAYERS;
-
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.message.Message;
 import org.bukkit.entity.Player;
+
+import static me.glaremasters.guilds.listeners.GuildChatListener.GUILD_CHAT_PLAYERS;
 
 public class CommandChat extends CommandBase {
 
