@@ -1,5 +1,6 @@
 package me.glaremasters.guilds.commands;
 
+import java.util.stream.Collectors;
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
@@ -10,8 +11,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import java.util.stream.Collectors;
 
 @SuppressWarnings("deprecation")
 public class CommandAdmin extends CommandBase {

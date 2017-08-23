@@ -82,19 +82,22 @@ public class CommandLeave extends CommandBase {
                 if (config.getBoolean("titles.enabled")) {
                     try {
                         String creation = "titles.events.player-leaves-guild";
-                        guild.sendTitle(config.getString(creation + ".title").replace("{username}", player.getName()),
-                                config.getString(creation + ".sub-title").replace("{username}", player.getName()),
+                        guild.sendTitle(config.getString(creation + ".title")
+                                        .replace("{username}", player.getName()),
+                                config.getString(creation + ".sub-title")
+                                        .replace("{username}", player.getName()),
                                 config.getInt(creation + ".fade-in") * 20,
                                 config.getInt(creation + ".stay") * 20,
                                 config.getInt(creation + ".fade-out") * 20);
                     } catch (NoSuchMethodError error) {
                         String creation = "titles.events.player-leaves-guild";
-                        guild.sendTitleOld(config.getString(creation + ".title").replace("{username}", player.getName()),
-                                config.getString(creation + ".sub-title").replace("{username}", player.getName()));
+                        guild.sendTitleOld(config.getString(creation + ".title")
+                                        .replace("{username}", player.getName()),
+                                config.getString(creation + ".sub-title")
+                                        .replace("{username}", player.getName()));
                     }
 
                 }
-
 
                 if (config.getBoolean("tablist-guilds")) {
                     String name =
@@ -112,10 +115,12 @@ public class CommandLeave extends CommandBase {
                 Main.getInstance().getCommandHandler().removeAction(player);
                 if (guild.getGuildMaster().getUniqueId().equals(player.getUniqueId())) {
                     guild.sendMessage(
-                            Message.COMMAND_LEAVE_GUILDMASTER_LEFT.replace("{player}", player.getName()));
-                } else{
+                            Message.COMMAND_LEAVE_GUILDMASTER_LEFT
+                                    .replace("{player}", player.getName()));
+                } else {
                     guild.sendMessage(
-                            Message.COMMAND_LEAVE_PLAYER_LEFT.replace("{player}", player.getName()));
+                            Message.COMMAND_LEAVE_PLAYER_LEFT
+                                    .replace("{player}", player.getName()));
                 }
 
             }

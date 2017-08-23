@@ -1,11 +1,10 @@
 package me.glaremasters.guilds.leaderboard;
 
-import me.glaremasters.guilds.IHandler;
-import me.glaremasters.guilds.Main;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
+import me.glaremasters.guilds.IHandler;
+import me.glaremasters.guilds.Main;
 
 public class LeaderboardHandler implements IHandler {
 

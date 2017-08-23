@@ -31,9 +31,7 @@ public class CommandBoot extends CommandBase {
             return;
         }
 
-
         OfflinePlayer kickedPlayer = Bukkit.getOfflinePlayer(args[0]);
-
 
         if (kickedPlayer == null || kickedPlayer.getUniqueId() == null) {
 

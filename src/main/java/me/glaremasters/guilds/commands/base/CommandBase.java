@@ -1,11 +1,10 @@
 package me.glaremasters.guilds.commands.base;
 
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public abstract class CommandBase {
 
@@ -22,7 +21,7 @@ public abstract class CommandBase {
     private int maximumArguments;
 
     public CommandBase(String name, String description, String permission, boolean allowConsole,
-                       String[] aliases, String arguments, int minimumArguments, int maximumArguments) {
+            String[] aliases, String arguments, int minimumArguments, int maximumArguments) {
         this.name = name;
         this.description = description;
         this.permission = permission;

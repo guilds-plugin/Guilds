@@ -1,6 +1,7 @@
 package me.glaremasters.guilds.listeners;
 
 
+import java.util.stream.Stream;
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.message.Message;
@@ -14,8 +15,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-
-import java.util.stream.Stream;
 
 /**
  * Created by GlareMasters on 7/24/2017.

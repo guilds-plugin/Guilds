@@ -138,14 +138,22 @@ list:
   members: "&5Members: "
 
 info:
-  playername: "Name: "
+  balance: "Bank Balance: "
+  deaths: "Deaths: "
   guildname: "Guild: "
-  master: "Guild Master: "
+  guildstatus: "Status: "
+  guildtier: "Tier: "
+  info: "Information: "
+  kills: "Kills: "
+  master: "Master: "
+  max-balance: "Max Balance: "
   member-count: "Member Count: "
-  role: "Guild Role: "
   members: "Members In Guild: "
-  guildstatus: "Guild Status: "
-  guildtier: "Guild Tier: "
+  money: "Money: "
+  playername: "Name: "
+  prefix: "Prefix: "
+  role: "Role: "
+
 
 # This part controls what is shown as the inventory name for things such as Guild List and Guild Vaults.
 gui-name:

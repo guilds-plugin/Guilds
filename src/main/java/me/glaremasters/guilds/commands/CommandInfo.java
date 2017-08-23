@@ -1,5 +1,6 @@
 package me.glaremasters.guilds.commands;
 
+import java.util.ArrayList;
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
@@ -9,6 +10,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.SkullType;
+import org.bukkit.Statistic;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryType;
@@ -16,11 +19,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class CommandInfo extends CommandBase implements Listener {
 
@@ -46,17 +44,16 @@ public class CommandInfo extends CommandBase implements Listener {
 
         SkullMeta meta = (SkullMeta) skull.getItemMeta();
         meta.setOwner(player.getName());
+        final Main instance = Main.getInstance();
         meta.setDisplayName(
-                ChatColor.WHITE + Main.getInstance().getConfig().getString("info.playername")
+                ChatColor.WHITE + instance.getConfig().getString("info.playername")
                         + ChatColor.GREEN + player.getName());
 
         ArrayList<String> info = new ArrayList<String>();
-        info.add(ChatColor.WHITE + Main.getInstance().getConfig().getString("info.guildname")
-                + ChatColor.GREEN + guild.getName());
-        info.add(ChatColor.WHITE + Main.getInstance().getConfig().getString("info.guildstatus")
-                + ChatColor.GREEN + guild.getStatus());
-        info.add(ChatColor.WHITE + Main.getInstance().getConfig().getString("info.guildtier")
-                + ChatColor.GREEN + guild.getTier());
+        info.add(ChatColor.WHITE + instance.getConfig().getString("info.kills")
+                + ChatColor.GREEN + player.getStatistic(Statistic.PLAYER_KILLS));
+        info.add(ChatColor.WHITE + instance.getConfig().getString("info.deaths")
+                + ChatColor.GREEN + player.getStatistic(Statistic.DEATHS));
         meta.setLore(info);
 
         skull.setItemMeta(meta);
@@ -70,47 +67,51 @@ public class CommandInfo extends CommandBase implements Listener {
             Message.sendMessage(player, Message.COMMAND_ERROR_NO_GUILD);
             return;
         }
+        FileConfiguration config = Main.getInstance().getConfig();
         Inventory heads = Bukkit
                 .createInventory(null, InventoryType.HOPPER,
-                        ChatColor.DARK_GREEN + Main.getInstance().getConfig()
+                        ChatColor.DARK_GREEN + config
                                 .getString("gui-name.info"));
         // Skull: From player
-        heads.setItem(0, createSkull(player));
+        heads.setItem(1, createSkull(player));
 
         // Item 1: Paper
         ArrayList<String> paperlore = new ArrayList<String>();
         paperlore.add(
-                ChatColor.AQUA + Bukkit.getOfflinePlayer(guild.getGuildMaster().getUniqueId())
-                        .getName());
-        heads.setItem(1, createItemStack(Material.PAPER,
-                Main.getInstance().getConfig().getString("info.master"), paperlore));
-
-        // Item 2: Anvil
-        ArrayList<String> anvillore = new ArrayList<String>();
-        anvillore.add(ChatColor.AQUA + String.valueOf(guild.getMembers().size()));
-        heads.setItem(2, createItemStack(Material.ANVIL,
-                Main.getInstance().getConfig().getString("info.member-count"), anvillore));
-
-        // Item 3: Beacon
-        ArrayList<String> beaconlore = new ArrayList<String>();
-        beaconlore.add(
-                ChatColor.AQUA + GuildRole
+                ChatColor.WHITE + config.getString("info.guildname")
+                        + ChatColor.GREEN + guild.getName());
+        paperlore.add(
+                ChatColor.WHITE + config.getString("info.prefix")
+                        + ChatColor.GREEN + guild.getPrefix());
+        paperlore.add(
+                ChatColor.WHITE + config.getString("info.role")
+                        + ChatColor.GREEN + GuildRole
                         .getRole(guild.getMember(player.getUniqueId()).getRole())
                         .getName());
-        heads.setItem(3, createItemStack(Material.BEACON,
-                Main.getInstance().getConfig().getString("info.role"), beaconlore));
-        // Item 4: Cake
-        ArrayList<String> cakelore = new ArrayList<String>();
-        List<String> lines = Arrays.asList(guild.getMembers().stream()
-                .map(member -> Bukkit.getOfflinePlayer(member.getUniqueId()).getName())
-                .collect(Collectors.joining(", "))
-                .replaceAll("(([a-zA-Z0-9_]+, ){3})", "$0\n")
-                .split("\n"));
-        cakelore.add(ChatColor.translateAlternateColorCodes('&',
-                Main.getInstance().getConfig().getString("list.members")));
-        cakelore.addAll(lines);
-        heads.setItem(4, createItemStack(Material.CAKE,
-                Main.getInstance().getConfig().getString("info.members"), cakelore));
+        paperlore.add(
+                ChatColor.WHITE + config.getString("info.master")
+                        + ChatColor.GREEN + Bukkit
+                        .getOfflinePlayer(guild.getGuildMaster().getUniqueId())
+                        .getName());
+        paperlore.add(
+                ChatColor.WHITE + config.getString("info.member-count")
+                        + ChatColor.GREEN + String.valueOf(guild.getMembers().size()));
+        paperlore.add(
+                ChatColor.WHITE + config.getString("info.guildstatus")
+                        + ChatColor.GREEN + guild.getStatus());
+        paperlore.add(
+                ChatColor.WHITE + config.getString("info.guildtier")
+                        + ChatColor.GREEN + guild.getTier());
+        heads.setItem(2, createItemStack(Material.PAPER, config.getString("info.info"), paperlore));
+
+        // Item 2: Diamond
+        ArrayList<String> diamondlore = new ArrayList<String>();
+        diamondlore.add(ChatColor.WHITE + config.getString("info.balance")
+                + ChatColor.GREEN + guild.getBankBalance());
+        diamondlore.add(ChatColor.WHITE + config.getString("info.max-balance")
+                + ChatColor.GREEN + guild.getMaxBankBalance());
+        heads.setItem(3, createItemStack(Material.DIAMOND,
+                config.getString("info.money"), diamondlore));
 
         // Open inventory
         player.openInventory(heads);

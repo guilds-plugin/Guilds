@@ -1,6 +1,7 @@
 package me.glaremasters.guilds.commands;
 
 import com.nametagedit.plugin.NametagEdit;
+import java.util.logging.Level;
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.api.events.GuildRemoveEvent;
 import me.glaremasters.guilds.commands.base.CommandBase;
@@ -10,8 +11,6 @@ import me.glaremasters.guilds.message.Message;
 import me.glaremasters.guilds.util.ConfirmAction;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-
-import java.util.logging.Level;
 
 public class CommandDelete extends CommandBase {
 

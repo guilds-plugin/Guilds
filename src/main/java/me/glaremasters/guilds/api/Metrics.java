@@ -1,22 +1,28 @@
 package me.glaremasters.guilds.api;
 
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.ServicePriority;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-
-import javax.net.ssl.HttpsURLConnection;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.zip.GZIPOutputStream;
+import javax.net.ssl.HttpsURLConnection;
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.ServicePriority;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 /**
  * Created by GlareMasters on 6/5/2017.
@@ -626,7 +632,7 @@ public class Metrics {
          * Gets the values of the pie.
          *
          * @param valueMap Just an empty map. The only reason it exists is to make your life easier.
-         *                 You don't have to create a map yourself!
+         * You don't have to create a map yourself!
          * @return The values of the pie.
          */
         public abstract HashMap<String, Integer> getValues(HashMap<String, Integer> valueMap);
@@ -712,7 +718,7 @@ public class Metrics {
          * Gets the values of the chart.
          *
          * @param valueMap Just an empty map. The only reason it exists is to make your life easier.
-         *                 You don't have to create a map yourself!
+         * You don't have to create a map yourself!
          * @return The values of the chart.
          */
         public abstract HashMap<String, Integer> getValues(HashMap<String, Integer> valueMap);
@@ -763,7 +769,7 @@ public class Metrics {
          * Gets the value of the chart.
          *
          * @param valueMap Just an empty map. The only reason it exists is to make your life easier.
-         *                 You don't have to create a map yourself!
+         * You don't have to create a map yourself!
          * @return The value of the chart.
          */
         public abstract HashMap<String, Integer> getValues(HashMap<String, Integer> valueMap);
@@ -807,7 +813,7 @@ public class Metrics {
          * Gets the value of the chart.
          *
          * @param valueMap Just an empty map. The only reason it exists is to make your life easier.
-         *                 You don't have to create a map yourself!
+         * You don't have to create a map yourself!
          * @return The value of the chart.
          */
         public abstract HashMap<String, int[]> getValues(HashMap<String, int[]> valueMap);
@@ -899,7 +905,7 @@ public class Metrics {
          * Gets the value of the chart.
          *
          * @param valueMap Just an empty map. The only reason it exists is to make your life easier.
-         *                 You don't have to create a map yourself!
+         * You don't have to create a map yourself!
          * @return The value of the chart.
          */
         public abstract HashMap<Country, Integer> getValues(HashMap<Country, Integer> valueMap);

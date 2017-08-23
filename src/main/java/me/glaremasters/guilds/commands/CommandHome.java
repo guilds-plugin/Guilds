@@ -1,5 +1,8 @@
 package me.glaremasters.guilds.commands;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
@@ -16,10 +19,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 
 /**
  * Created by GlareMasters on 6/12/2017.

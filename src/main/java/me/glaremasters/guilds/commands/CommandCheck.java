@@ -1,13 +1,12 @@
 package me.glaremasters.guilds.commands;
 
+import java.util.ArrayList;
+import java.util.List;
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.message.Message;
 import org.bukkit.entity.Player;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**

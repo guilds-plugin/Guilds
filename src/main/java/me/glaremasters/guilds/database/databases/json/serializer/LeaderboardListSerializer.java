@@ -1,16 +1,20 @@
 package me.glaremasters.guilds.database.databases.json.serializer;
 
-import com.google.gson.*;
-import me.glaremasters.guilds.leaderboard.Leaderboard;
-
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 import java.lang.reflect.Type;
 import java.util.List;
+import me.glaremasters.guilds.leaderboard.Leaderboard;
 
 public class LeaderboardListSerializer implements JsonSerializer<List<Leaderboard>> {
 
     @Override
     public JsonElement serialize(List<Leaderboard> src, Type type,
-                                 JsonSerializationContext context) {
+            JsonSerializationContext context) {
         Gson gson = new Gson();
         JsonArray array = new JsonArray();
 

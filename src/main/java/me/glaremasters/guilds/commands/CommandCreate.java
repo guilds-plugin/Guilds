@@ -111,8 +111,9 @@ public class CommandCreate extends CommandBase {
                                 guild.sendTitleOld(ChatColor.translateAlternateColorCodes('&',
                                         config.getString(creation + ".title")
                                                 .replace("{guild}", guild.getName())),
-                                        ChatColor.translateAlternateColorCodes('&',config.getString(creation + ".sub-title")
-                                                .replace("{guild}", guild.getName())));
+                                        ChatColor.translateAlternateColorCodes('&',
+                                                config.getString(creation + ".sub-title")
+                                                        .replace("{guild}", guild.getName())));
                             }
 
                         }

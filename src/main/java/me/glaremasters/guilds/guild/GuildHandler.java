@@ -1,13 +1,12 @@
 package me.glaremasters.guilds.guild;
 
-import me.glaremasters.guilds.IHandler;
-import me.glaremasters.guilds.Main;
-import org.bukkit.configuration.ConfigurationSection;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
+import me.glaremasters.guilds.IHandler;
+import me.glaremasters.guilds.Main;
+import org.bukkit.configuration.ConfigurationSection;
 
 public class GuildHandler implements IHandler {
 
@@ -81,7 +80,8 @@ public class GuildHandler implements IHandler {
                             addAlly,
                             removeAlly, changePrefix, changeHome, changeMaster, removeGuild,
                             toggleGuild,
-                            openVault, transferGuild, activateBuff, upgradeGuild, depositMoney, withdrawMoney);
+                            openVault, transferGuild, activateBuff, upgradeGuild, depositMoney,
+                            withdrawMoney);
             roles.add(role);
         }
     }

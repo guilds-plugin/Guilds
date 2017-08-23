@@ -1,5 +1,7 @@
 package me.glaremasters.guilds.listeners;
 
+import java.util.ArrayList;
+import java.util.List;
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.message.Message;
@@ -7,9 +9,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class JoinListener implements Listener {
 

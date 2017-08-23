@@ -1,5 +1,8 @@
 package me.glaremasters.guilds.listeners;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
@@ -9,10 +12,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
 
 /**
  * Created by GlareMasters on 7/25/2017.

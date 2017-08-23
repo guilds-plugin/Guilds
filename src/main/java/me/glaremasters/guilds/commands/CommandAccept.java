@@ -25,20 +25,24 @@ public class CommandAccept extends CommandBase {
             Message.sendMessage(player, Message.COMMAND_ERROR_ALREADY_IN_GUILD);
             return;
         }
-        Guild guild = (Guild) Main.getInstance().getGuildHandler().getGuilds().values().toArray()[0];
+        Guild guild = (Guild) Main.getInstance().getGuildHandler().getGuilds().values()
+                .toArray()[0];
         try {
             if (args.length == 0) {
                 int invites = 0;
                 int indexes = 0;
-                for (int i = 0; i < Main.getInstance().getGuildHandler().getGuilds().values().size(); i++) {
-                    Guild guildtmp = (Guild) Main.getInstance().getGuildHandler().getGuilds().values().toArray()[i];
+                for (int i = 0;
+                        i < Main.getInstance().getGuildHandler().getGuilds().values().size(); i++) {
+                    Guild guildtmp = (Guild) Main.getInstance().getGuildHandler().getGuilds()
+                            .values().toArray()[i];
                     if (guildtmp.getInvitedMembers().contains(player.getUniqueId())) {
                         invites++;
                         indexes = i;
                     }
                 }
                 if (invites == 1) {
-                    guild = (Guild) Main.getInstance().getGuildHandler().getGuilds().values().toArray()[indexes];
+                    guild = (Guild) Main.getInstance().getGuildHandler().getGuilds().values()
+                            .toArray()[indexes];
                 } else {
                     Message.sendMessage(player, Message.COMMAND_ACCEPT_NOT_INVITED);
                     return;
@@ -51,7 +55,8 @@ public class CommandAccept extends CommandBase {
         }
 
         if (guild == null) {
-            Message.sendMessage(player, Message.COMMAND_ERROR_GUILD_NOT_FOUND.replace("{input}", args[0]));
+            Message.sendMessage(player,
+                    Message.COMMAND_ERROR_GUILD_NOT_FOUND.replace("{input}", args[0]));
             return;
         }
 
@@ -82,15 +87,19 @@ public class CommandAccept extends CommandBase {
         if (config.getBoolean("titles.enabled")) {
             try {
                 String creation = "titles.events.player-joins-guild";
-                guild.sendTitle(config.getString(creation + ".title").replace("{username}", player.getName()),
-                        config.getString(creation + ".sub-title").replace("{username}", player.getName()),
+                guild.sendTitle(config.getString(creation + ".title")
+                                .replace("{username}", player.getName()),
+                        config.getString(creation + ".sub-title")
+                                .replace("{username}", player.getName()),
                         config.getInt(creation + ".fade-in") * 20,
                         config.getInt(creation + ".stay") * 20,
                         config.getInt(creation + ".fade-out") * 20);
             } catch (NoSuchMethodError error) {
                 String creation = "titles.events.player-joins-guild";
-                guild.sendTitleOld(config.getString(creation + ".title").replace("{username}", player.getName()),
-                        config.getString(creation + ".sub-title").replace("{username}", player.getName()));
+                guild.sendTitleOld(config.getString(creation + ".title")
+                                .replace("{username}", player.getName()),
+                        config.getString(creation + ".sub-title")
+                                .replace("{username}", player.getName()));
             }
 
         }

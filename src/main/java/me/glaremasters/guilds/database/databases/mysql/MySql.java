@@ -2,16 +2,6 @@ package me.glaremasters.guilds.database.databases.mysql;
 
 import com.sun.rowset.CachedRowSetImpl;
 import com.zaxxer.hikari.HikariDataSource;
-import me.glaremasters.guilds.Main;
-import me.glaremasters.guilds.database.Callback;
-import me.glaremasters.guilds.database.DatabaseProvider;
-import me.glaremasters.guilds.guild.Guild;
-import me.glaremasters.guilds.guild.GuildRole;
-import me.glaremasters.guilds.leaderboard.Leaderboard;
-import me.glaremasters.guilds.util.SneakyThrow;
-import org.bukkit.configuration.ConfigurationSection;
-
-import javax.sql.rowset.CachedRowSet;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,6 +11,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
+import javax.sql.rowset.CachedRowSet;
+import me.glaremasters.guilds.Main;
+import me.glaremasters.guilds.database.Callback;
+import me.glaremasters.guilds.database.DatabaseProvider;
+import me.glaremasters.guilds.guild.Guild;
+import me.glaremasters.guilds.guild.GuildRole;
+import me.glaremasters.guilds.leaderboard.Leaderboard;
+import me.glaremasters.guilds.util.SneakyThrow;
+import org.bukkit.configuration.ConfigurationSection;
 
 
 public class MySql implements DatabaseProvider {
