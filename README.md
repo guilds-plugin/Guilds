@@ -19,3 +19,31 @@ The Guilds Plugin was created to offer a RPG type system to servers. It was insp
 3. Make a run task (in IntelliJ) (Run > Edit Configuration) 
 4. Gradle project should be Guilds-Plugin and Tasks should be "clean build"
 
+# Maven Usage
+
+	<repositories>
+		<repository>
+		    <id>jitpack.io</id>
+		    <url>https://jitpack.io</url>
+		</repository>
+	</repositories>
+  
+  	<dependency>
+	    <groupId>com.github.darbyjack</groupId>
+	    <artifactId>Guilds-Plugin</artifactId>
+	    <version>master-SNAPSHOT</version>
+	</dependency>
+  
+  # Gradle Usage
+  
+  	allprojects {
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+	}
+  
+  	dependencies {
+	        compile 'com.github.darbyjack:Guilds-Plugin:master-SNAPSHOT'
+	}
+
