@@ -17,17 +17,9 @@ public class CommandVersion extends CommandBase {
     public void execute(CommandSender sender, String[] args) {
         PluginDescriptionFile pdf = Main.getInstance().getDescription();
         sender.sendMessage(
-                ChatColor.RED + "Version:");
-        sender.sendMessage(
-                ChatColor.RED + "Guilds v" + pdf.getVersion());
+                ChatColor.RED + "Guilds v" + pdf.getVersion() + ChatColor.GREEN + " by " + String
+                        .join(" & ", pdf.getAuthors()));
         sender.sendMessage("");
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&bCredits:"));
-        sender.sendMessage(
-                ChatColor.translateAlternateColorCodes('&', "&bProject Manager: &aBlockslayer22"));
-        sender.sendMessage(ChatColor
-                .translateAlternateColorCodes('&',
-                        "&bPast Co-Developers: &aMrFantasty & Bramhaag"));
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                "&bOther Helpers: &aIfna_Try_, RubbaBoy, Tom1024, & Redrield"));
+        sender.sendMessage(ChatColor.AQUA + "The full team behind this project can be found here https://glaremasters.me/team/");
     }
 }
