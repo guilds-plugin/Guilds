@@ -274,9 +274,9 @@ require-money: false
 # Uncomment the lines below if you have Vault + an economy plugin and have change the option above to true.
 # You can define how much it costs for users to create a guild, the cost option, and you can define how much it costs for users to set a guild home.
 
-#Requirement:
-#  cost: 100
-#  sethome-cost: 100
+Requirement:
+  cost: 100
+  sethome-cost: 100
 
 reward-on-kill:
   enabled: true
