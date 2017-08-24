@@ -1,13 +1,6 @@
 package me.glaremasters.guilds.guild;
 
 import com.google.gson.annotations.Expose;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
-import java.util.logging.Level;
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.message.Message;
 import org.bukkit.Bukkit;
@@ -18,6 +11,11 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
+import java.util.logging.Level;
 
 public class Guild implements InventoryHolder {
 
@@ -255,34 +253,19 @@ public class Guild implements InventoryHolder {
     }
 
     public void sendMessage(String message) {
-        for (GuildMember member : this.members) {
-            Player receiver = Bukkit.getPlayer(member.getUniqueId());
-            if (receiver == null || !receiver.isOnline()) {
-                continue;
-            }
-            Message.sendMessage(receiver, message);
-        }
+        members.stream().map(member -> Bukkit.getPlayer(member.getUniqueId())).filter(Objects::nonNull)
+                .forEach(player -> Message.sendMessage(player, message));
     }
 
 
     public void sendTitle(String title, String subtitle, int fadeIn, int stay, int fadeOut) {
-        for (GuildMember member : this.members) {
-            Player receiver = Bukkit.getPlayer(member.getUniqueId());
-            if (receiver == null || !receiver.isOnline()) {
-                continue;
-            }
-            receiver.sendTitle(title, subtitle, fadeIn, stay, fadeOut);
-        }
+        members.stream().map(member -> Bukkit.getPlayer(member.getUniqueId())).filter(Objects::nonNull)
+                .forEach(player -> player.sendTitle(title, subtitle, fadeIn, stay, fadeOut));
     }
 
     public void sendTitleOld(String title, String subtitle) {
-        for (GuildMember member : this.members) {
-            Player receiver = Bukkit.getPlayer(member.getUniqueId());
-            if (receiver == null || !receiver.isOnline()) {
-                continue;
-            }
-            receiver.sendTitle(title, subtitle);
-        }
+        members.stream().map(member -> Bukkit.getPlayer(member.getUniqueId())).filter(Objects::nonNull)
+                .forEach(player -> player.sendTitle(title, subtitle));
     }
 
     public void updatePrefix(String prefix) {
@@ -380,6 +363,7 @@ public class Guild implements InventoryHolder {
             }
         });
     }
+
 }
 
 
