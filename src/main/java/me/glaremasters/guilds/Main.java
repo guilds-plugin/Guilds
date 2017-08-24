@@ -186,7 +186,7 @@ public class Main extends JavaPlugin {
                 new CommandInfo(),
                 new CommandInspect(),
                 new CommandInvite(),
-                new CommandLeaderboard(this),
+                new CommandLeaderboard(),
                 new CommandLeave(),
                 new CommandList(),
                 new CommandPrefix(),

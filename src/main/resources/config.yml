@@ -94,6 +94,7 @@ commands:
     inspect: "Inspect another guild"
     invite: "Invite a player to your guild"
     leave: "Leave your current guild"
+    leaderboard: "See the top Guilds on your server"
     list: "List all guilds on the server"
     prefix: "Change your guild's prefix"
     promote: "Promote a member of your guild"
@@ -167,6 +168,18 @@ gui-name:
     page: "Page: "
     head-name: "{player}'s Guild"
 # head-name is what show's when you hover over a head in the Guild List. For example, the default will show Username's Guild
+
+
+#-----------------------------------------------------------#
+#                     Leaderboard Configuration             #
+#-----------------------------------------------------------#
+
+# In this section of the config, you can specify how many guilds to show in /guild leaderboard
+
+leaderboard:
+  header: "&dHere is top &3{amount}&d guilds for the server:"
+  amount: 10
+  error: "&aNo guilds found"
 
 
 
