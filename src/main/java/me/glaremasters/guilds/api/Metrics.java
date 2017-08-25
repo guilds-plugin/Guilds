@@ -20,17 +20,13 @@ import java.util.zip.GZIPOutputStream;
 import javax.net.ssl.HttpsURLConnection;
 
 /**
- * Created by GlareMasters on 6/5/2017.
- */
-
-
-/**
  * bStats collects some data for plugin authors. <p> Check out https://bStats.org/ to learn more about bStats!
  */
+@SuppressWarnings({ "unchecked", "unused" })
 public class Metrics {
 
 	// The version of this bStats class
-	public static final int B_STATS_VERSION = 1;
+	private static final int B_STATS_VERSION = 1;
 	// The url to which the data is sent
 	private static final String URL = "https://bStats.org/submitData/bukkit";
 	// Should failed requests be logged?
@@ -44,15 +40,11 @@ public class Metrics {
 
 	static {
 		// Maven's Relocate is clever and changes strings, too. So we have to use this little "trick" ... :D
-		final String defaultPackage =
-				new String(new byte[]{ 'o', 'r', 'g', '.', 'b', 's', 't', 'a', 't', 's' });
-		final String examplePackage =
-				new String(new byte[]{ 'y', 'o', 'u', 'r', '.', 'p', 'a', 'c', 'k', 'a', 'g', 'e' });
+		final String defaultPackage = new String(new byte[]{ 'o', 'r', 'g', '.', 'b', 's', 't', 'a', 't', 's' });
+		final String examplePackage = new String(new byte[]{ 'y', 'o', 'u', 'r', '.', 'p', 'a', 'c', 'k', 'a', 'g', 'e' });
 		// We want to make sure nobody just copy & pastes the example and use the wrong package names
-		if (Metrics.class.getPackage().getName().equals(defaultPackage) || Metrics.class
-				.getPackage().getName().equals(examplePackage)) {
-			throw new IllegalStateException(
-					"bStats Metrics class has not been relocated correctly!");
+		if (Metrics.class.getPackage().getName().equals(defaultPackage) || Metrics.class.getPackage().getName().equals(examplePackage)) {
+			throw new IllegalStateException("bStats Metrics class has not been relocated correctly!");
 		}
 	}
 
@@ -74,14 +66,12 @@ public class Metrics {
 
 		// Check if the config file exists
 		if (!config.isSet("serverUuid")) {
-
 			// Add default values
 			config.addDefault("enabled", true);
 			// Every server gets it's unique random id.
 			config.addDefault("serverUuid", UUID.randomUUID().toString());
 			// Should failed request be logged?
 			config.addDefault("logFailedRequests", false);
-
 			// Inform the server owners about bStats
 			config.options().header(
 					"bStats collects some data for plugin authors like how many servers are using their plugins.\n"
@@ -109,8 +99,7 @@ public class Metrics {
 				}
 			}
 			// Register our service
-			Bukkit.getServicesManager()
-					.register(Metrics.class, this, plugin, ServicePriority.Normal);
+			Bukkit.getServicesManager().register(Metrics.class, this, plugin, ServicePriority.Normal);
 			if (!found) {
 				// We are the first!
 				startSubmitting();
@@ -122,24 +111,16 @@ public class Metrics {
 	 * Starts the Scheduler which submits our data every 30 minutes.
 	 */
 	private void startSubmitting() {
-		final Timer timer =
-				new Timer(
-						true); // We use a timer cause the Bukkit scheduler is affected by server lags
+		final Timer timer = new Timer(true); // We use a timer cause the Bukkit scheduler is affected by server lags
 		timer.scheduleAtFixedRate(new TimerTask() {
-			@Override
-			public void run() {
+			@Override public void run() {
 				if (!plugin.isEnabled()) { // Plugin was disabled
 					timer.cancel();
 					return;
 				}
 				// Nevertheless we want our code to run in the Bukkit main thread, so we have to use the Bukkit scheduler
 				// Don't be afraid! The connection to the bStats server is still async, only the stats collection is sync ;)
-				Bukkit.getScheduler().runTask(plugin, new Runnable() {
-					@Override
-					public void run() {
-						submitData();
-					}
-				});
+				Bukkit.getScheduler().runTask(plugin, () -> submitData());
 			}
 		}, 1000 * 60 * 5, 1000 * 60 * 30);
 		// Submit the data every 30 minutes, first time after 5 minutes to give other plugins enough time to start
@@ -152,8 +133,8 @@ public class Metrics {
 	 */
 	private void submitData() {
 		final JSONObject data = getServerData();
-
 		JSONArray pluginData = new JSONArray();
+
 		// Search for all other bStats Metrics classes to get their plugin data
 		for (Class<?> service : Bukkit.getServicesManager().getKnownServices()) {
 			try {
@@ -163,27 +144,21 @@ public class Metrics {
 			}
 			// Found one!
 			try {
-				pluginData.add(service.getMethod("getPluginData")
-						.invoke(Bukkit.getServicesManager().load(service)));
+				pluginData.add(service.getMethod("getPluginData").invoke(Bukkit.getServicesManager().load(service)));
 			} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ignored) {
 			}
 		}
-
 		data.put("plugins", pluginData);
 
 		// Create a new thread for the connection to the bStats server
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					// Send the data
-					sendData(data);
-				} catch (Exception e) {
-					// Something went wrong! :(
-					if (logFailedRequests) {
-						plugin.getLogger().log(Level.WARNING,
-								"Could not submit plugin stats of " + plugin.getName(), e);
-					}
+		new Thread(() -> {
+			try {
+				// Send the data
+				sendData(data);
+			} catch (Exception e) {
+				// Something went wrong! :(
+				if (logFailedRequests) {
+					plugin.getLogger().log(Level.WARNING, "Could not submit plugin stats of " + plugin.getName(), e);
 				}
 			}
 		}).start();
@@ -199,9 +174,7 @@ public class Metrics {
 		int playerAmount = Bukkit.getOnlinePlayers().size();
 		int onlineMode = Bukkit.getOnlineMode() ? 1 : 0;
 		String bukkitVersion = org.bukkit.Bukkit.getVersion();
-		bukkitVersion =
-				bukkitVersion
-						.substring(bukkitVersion.indexOf("MC: ") + 4, bukkitVersion.length() - 1);
+		bukkitVersion = bukkitVersion.substring(bukkitVersion.indexOf("MC: ") + 4, bukkitVersion.length() - 1);
 
 		// OS/Java specific data
 		String javaVersion = System.getProperty("java.version");
@@ -211,19 +184,15 @@ public class Metrics {
 		int coreCount = Runtime.getRuntime().availableProcessors();
 
 		JSONObject data = new JSONObject();
-
 		data.put("serverUUID", serverUUID);
-
 		data.put("playerAmount", playerAmount);
 		data.put("onlineMode", onlineMode);
 		data.put("bukkitVersion", bukkitVersion);
-
 		data.put("javaVersion", javaVersion);
 		data.put("osName", osName);
 		data.put("osArch", osArch);
 		data.put("osVersion", osVersion);
 		data.put("coreCount", coreCount);
-
 		return data;
 	}
 
@@ -241,8 +210,8 @@ public class Metrics {
 			throw new IllegalAccessException(
 					"This method must not be called from the main thread!");
 		}
-		HttpsURLConnection connection = (HttpsURLConnection) new URL(URL).openConnection();
 
+		HttpsURLConnection connection = (HttpsURLConnection) new URL(URL).openConnection();
 		// Compress the data to save bandwidth
 		byte[] compressedData = compress(data.toString());
 
@@ -252,10 +221,8 @@ public class Metrics {
 		connection.addRequestProperty("Connection", "close");
 		connection.addRequestProperty("Content-Encoding", "gzip"); // We gzip our request
 		connection.addRequestProperty("Content-Length", String.valueOf(compressedData.length));
-		connection.setRequestProperty("Content-Type",
-				"application/json"); // We send our data in JSON format
+		connection.setRequestProperty("Content-Type", "application/json"); // We send our data in JSON format
 		connection.setRequestProperty("User-Agent", "MC-Server/" + B_STATS_VERSION);
-
 		// Send data
 		connection.setDoOutput(true);
 		DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream());
@@ -263,8 +230,7 @@ public class Metrics {
 		outputStream.flush();
 		outputStream.close();
 
-		connection.getInputStream()
-				.close(); // We don't care about the response - Just send our data :)
+		connection.getInputStream().close(); // We don't care about the response - Just send our data :)
 	}
 
 	/**
@@ -278,6 +244,7 @@ public class Metrics {
 		if (str == null) {
 			return null;
 		}
+
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		GZIPOutputStream gzip = new GZIPOutputStream(outputStream);
 		gzip.write(str.getBytes("UTF-8"));
@@ -304,7 +271,6 @@ public class Metrics {
 	 */
 	public JSONObject getPluginData() {
 		JSONObject data = new JSONObject();
-
 		String pluginName = plugin.getDescription().getName();
 		String pluginVersion = plugin.getDescription().getVersion();
 
@@ -320,7 +286,6 @@ public class Metrics {
 			customCharts.add(chart);
 		}
 		data.put("customCharts", customCharts);
-
 		return data;
 	}
 
@@ -531,21 +496,21 @@ public class Metrics {
 	public static abstract class CustomChart {
 
 		// The id of the chart
-		protected final String chartId;
+		final String chartId;
 
 		/**
 		 * Class constructor.
 		 *
 		 * @param chartId The id of the chart.
 		 */
-		public CustomChart(String chartId) {
+		CustomChart(String chartId) {
 			if (chartId == null || chartId.isEmpty()) {
 				throw new IllegalArgumentException("ChartId cannot be null or empty!");
 			}
 			this.chartId = chartId;
 		}
 
-		protected JSONObject getRequestJsonObject() {
+		JSONObject getRequestJsonObject() {
 			JSONObject chart = new JSONObject();
 			chart.put("chartId", chartId);
 			try {
@@ -557,8 +522,7 @@ public class Metrics {
 				chart.put("data", data);
 			} catch (Throwable t) {
 				if (logFailedRequests) {
-					Bukkit.getLogger().log(Level.WARNING,
-							"Failed to get data for custom chart with id " + chartId, t);
+					Bukkit.getLogger().log(Level.WARNING, "Failed to get data for custom chart with id " + chartId, t);
 				}
 				return null;
 			}
@@ -601,7 +565,8 @@ public class Metrics {
 		 *
 		 * @return The value of the pie.
 		 */
-		public abstract String getValue();
+		abstract String getValue();
+
 	}
 
 
@@ -625,13 +590,13 @@ public class Metrics {
 		 * @param valueMap Just an empty map. The only reason it exists is to make your life easier. You don't have to create a map yourself!
 		 * @return The values of the pie.
 		 */
-		public abstract HashMap<String, Integer> getValues(HashMap<String, Integer> valueMap);
+		abstract HashMap<String, Integer> getValues(HashMap<String, Integer> valueMap);
 
 		@Override
 		protected JSONObject getChartData() {
 			JSONObject data = new JSONObject();
 			JSONObject values = new JSONObject();
-			HashMap<String, Integer> map = getValues(new HashMap<String, Integer>());
+			Map<String, Integer> map = getValues(new HashMap<>());
 			if (map == null || map.isEmpty()) {
 				// Null = skip the chart
 				return null;
@@ -664,7 +629,7 @@ public class Metrics {
 		 *
 		 * @param chartId The id of the chart.
 		 */
-		public SingleLineChart(String chartId) {
+		protected SingleLineChart(String chartId) {
 			super(chartId);
 		}
 
@@ -710,13 +675,13 @@ public class Metrics {
 		 * @param valueMap Just an empty map. The only reason it exists is to make your life easier. You don't have to create a map yourself!
 		 * @return The values of the chart.
 		 */
-		public abstract HashMap<String, Integer> getValues(HashMap<String, Integer> valueMap);
+		abstract Map<String, Integer> getValues(Map<String, Integer> valueMap);
 
 		@Override
 		protected JSONObject getChartData() {
 			JSONObject data = new JSONObject();
 			JSONObject values = new JSONObject();
-			HashMap<String, Integer> map = getValues(new HashMap<String, Integer>());
+			Map<String, Integer> map = getValues(new HashMap<>());
 			if (map == null || map.isEmpty()) {
 				// Null = skip the chart
 				return null;
@@ -760,13 +725,13 @@ public class Metrics {
 		 * @param valueMap Just an empty map. The only reason it exists is to make your life easier. You don't have to create a map yourself!
 		 * @return The value of the chart.
 		 */
-		public abstract HashMap<String, Integer> getValues(HashMap<String, Integer> valueMap);
+		abstract HashMap<String, Integer> getValues(HashMap<String, Integer> valueMap);
 
 		@Override
 		protected JSONObject getChartData() {
 			JSONObject data = new JSONObject();
 			JSONObject values = new JSONObject();
-			HashMap<String, Integer> map = getValues(new HashMap<String, Integer>());
+			HashMap<String, Integer> map = getValues(new HashMap<>());
 			if (map == null || map.isEmpty()) {
 				// Null = skip the chart
 				return null;
@@ -803,13 +768,13 @@ public class Metrics {
 		 * @param valueMap Just an empty map. The only reason it exists is to make your life easier. You don't have to create a map yourself!
 		 * @return The value of the chart.
 		 */
-		public abstract HashMap<String, int[]> getValues(HashMap<String, int[]> valueMap);
+		abstract Map<String, int[]> getValues(Map<String, int[]> valueMap);
 
 		@Override
 		protected JSONObject getChartData() {
 			JSONObject data = new JSONObject();
 			JSONObject values = new JSONObject();
-			HashMap<String, int[]> map = getValues(new HashMap<String, int[]>());
+			Map<String, int[]> map = getValues(new HashMap<>());
 			if (map == null || map.isEmpty()) {
 				// Null = skip the chart
 				return null;
@@ -856,7 +821,7 @@ public class Metrics {
 		 *
 		 * @return The value of the chart.
 		 */
-		public abstract Country getValue();
+		abstract Country getValue();
 
 		@Override
 		protected JSONObject getChartData() {
@@ -894,13 +859,13 @@ public class Metrics {
 		 * @param valueMap Just an empty map. The only reason it exists is to make your life easier. You don't have to create a map yourself!
 		 * @return The value of the chart.
 		 */
-		public abstract HashMap<Country, Integer> getValues(HashMap<Country, Integer> valueMap);
+		abstract Map<Country, Integer> getValues(Map<Country, Integer> valueMap);
 
 		@Override
 		protected JSONObject getChartData() {
 			JSONObject data = new JSONObject();
 			JSONObject values = new JSONObject();
-			HashMap<Country, Integer> map = getValues(new HashMap<Country, Integer>());
+			Map<Country, Integer> map = getValues(new HashMap<>());
 			if (map == null || map.isEmpty()) {
 				// Null = skip the chart
 				return null;

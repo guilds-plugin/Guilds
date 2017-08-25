@@ -1,6 +1,5 @@
 package me.glaremasters.guilds.listeners;
 
-
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.message.Message;
@@ -15,13 +14,12 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.stream.Stream;
+import java.util.Arrays;
 
 /**
  * Created by GlareMasters on 7/24/2017.
  */
 public class GuildBuffListener implements Listener {
-
 
 	@EventHandler
 	public void onBuffBuy(InventoryClickEvent event) {
@@ -39,14 +37,11 @@ public class GuildBuffListener implements Listener {
 						Message.sendMessage(player, Message.COMMAND_BUFF_NOT_ENOUGH_MONEY);
 						return;
 					}
-					if (Main.getInstance().getConfig().getBoolean("disable-buff-stacking")
-							&& !player
-							.getActivePotionEffects().isEmpty()) {
+					if (Main.getInstance().getConfig().getBoolean("disable-buff-stacking") && !player.getActivePotionEffects().isEmpty()) {
 						return;
 					}
 
-					EconomyResponse response =
-							Main.getInstance().getEconomy().withdrawPlayer(player, buff.cost);
+					EconomyResponse response = Main.getInstance().getEconomy().withdrawPlayer(player, buff.cost);
 					if (!response.transactionSuccess()) {
 						Message.sendMessage(player, Message.COMMAND_BUFF_NOT_ENOUGH_MONEY);
 						return;
@@ -55,12 +50,7 @@ public class GuildBuffListener implements Listener {
 					guild.getMembers().stream()
 							.map(member -> Bukkit.getOfflinePlayer(member.getUniqueId()))
 							.filter(OfflinePlayer::isOnline)
-							.forEach(member -> {
-
-								((Player) member).addPotionEffect(
-										new PotionEffect(buff.potion, buff.time, buff.amplifier));
-
-							});
+							.forEach(member -> ((Player) member).addPotionEffect(new PotionEffect(buff.potion, buff.time, buff.amplifier)));
 				}
 			}
 		}
@@ -92,13 +82,11 @@ public class GuildBuffListener implements Listener {
 			this.itemType = itemType;
 			this.potion = potion;
 			this.name = Main.getInstance().getConfig().getString("buff.name." + configValueName);
-			this.amplifier = Main.getInstance().getConfig()
-					.getInt("buff.amplifier." + configValueName);
+			this.amplifier = Main.getInstance().getConfig().getInt("buff.amplifier." + configValueName);
 		}
 
 		public static GuildBuff get(Material itemType) {
-
-			return Stream.of(values()).filter(it -> it.itemType == itemType).findAny().orElse(null);
+			return Arrays.stream(values()).filter(it -> it.itemType == itemType).findAny().orElse(null);
 		}
 
 	}

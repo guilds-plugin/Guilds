@@ -1,21 +1,9 @@
-buildscript {
-
-    repositories {
-        jcenter()
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath 'org.zeroturnaround:gradle-jrebel-plugin:1.1.5'
-        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.4'
-    }
-
+plugins {
+    id 'java'
+    id 'maven'
+    id 'idea'
+    id 'com.github.johnrengelman.shadow' version '2.0.0'
 }
-
-apply plugin: 'java'
-apply plugin: 'maven'
-apply plugin: 'com.github.johnrengelman.shadow'
-apply plugin: 'rebel'
 
 // See the gradle.properties to change these.
 group = pluginGroup
@@ -24,29 +12,8 @@ version = pluginVersion
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-configurations {
-    provided
-
-    compileOnly.extendsFrom provided // Don't want shadow shading provided deps
-}
-
-// Adds a provided dependency type, so that we don't get unwanted
-// code in our JAR. Saves space, and confuses the ClassLoader less.
-sourceSets {
-    main {
-        compileClasspath += configurations.provided
-        runtimeClasspath += configurations.provided
-    }
-    test {
-        compileClasspath += configurations.provided
-        runtimeClasspath += configurations.provided
-    }
-}
-
 repositories {
-
     mavenCentral()
-
     maven { url 'https://hub.spigotmc.org/nexus/content/groups/public/' }
     maven { url 'https://oss.sonatype.org/content/groups/public/' }
     maven { url "http://repo.mvdw-software.be/content/groups/public/" }
@@ -55,43 +22,36 @@ repositories {
     maven { url "http://ci.emc.gs/nexus/content/groups/aikar/" }
     maven { url "http://maven.sk89q.com/repo/" }
     maven { url "http://ci.playmc.cc/plugin/repository/everything/" }
-
-    jcenter()
-
 }
 
 dependencies {
-    provided 'org.spigotmc:spigot-api:1.12-R0.1-SNAPSHOT'
-    provided 'be.maximvdw:MVdWPlaceholderAPI:1.0.2-SNAPSHOT'
-    provided 'me.clip:placeholderapi:2.0.8'
-    provided 'net.milkbowl.vault:VaultAPI:1.6'
-    provided 'com.sk89q.worldguard:worldguard-legacy:6.1.2-SNAPSHOT'
-    provided 'com.nametagedit:nametagedit:4.1.0'
+    compileOnly 'org.spigotmc:spigot-api:1.12-R0.1-SNAPSHOT'
+    compileOnly 'be.maximvdw:MVdWPlaceholderAPI:1.0.2-SNAPSHOT'
+    compileOnly 'me.clip:placeholderapi:2.0.8'
+    compileOnly 'net.milkbowl.vault:VaultAPI:1.6'
+    compileOnly 'com.sk89q.worldguard:worldguard-legacy:6.1.2-SNAPSHOT'
+    compileOnly 'com.nametagedit:nametagedit:4.1.0'
 
 
     compile 'com.zaxxer:HikariCP:2.5.1'
     compile 'com.google.code.gson:gson:2.8.0'
     compile 'co.aikar:taskchain-core:3.4.3'
     compile 'co.aikar:taskchain-bukkit:3.4.3'
-    //    compile "co.aikar:acf-bukkit:0.5.0-SNAPSHOT"
     compile group: 'commons-io', name: 'commons-io', version: '2.5'
 
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
-//shadowJar {
-//    relocate "co.aikar.commands", "me.glaremasters.guilds.acf"
-//}
+shadowJar {
+    relocate "co.aikar.taskchain", "me.glaremasters.guilds.tc"
+}
 
 import org.apache.tools.ant.filters.ReplaceTokens
 
 processResources {
-
     from(sourceSets.main.resources.srcDirs) {
         filter ReplaceTokens, tokens: [version: version]
     }
-
 }
-
 
 build.dependsOn(shadowJar)

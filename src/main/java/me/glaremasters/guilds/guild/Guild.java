@@ -200,6 +200,7 @@ public class Guild implements InventoryHolder {
 		updateGuild("An error occurred while inviting a member with the UUID of '%s' to guild '%s'", uuid.toString(), name);
 	}
 
+	@SuppressWarnings("ResultOfMethodCallIgnored")
 	public Inventory getInventory() {
 		if (inventory != null) {
 			return inventory;
@@ -255,7 +256,7 @@ public class Guild implements InventoryHolder {
 		Main.getInstance().getScoreboardHandler().update();
 	}
 
-	public void updateGuildPrefix(String errorMessage, String... params) {
+	private void updateGuildPrefix(String errorMessage, String... params) {
 		Main.getInstance().getDatabaseProvider().updatePrefix(this, (res, ex) -> {
 			if (!res) {
 				Main.getInstance().getLogger().severe(String.format(errorMessage, (Object[]) params));
@@ -272,7 +273,7 @@ public class Guild implements InventoryHolder {
 		updateGuild("Something went wrong while adding the ally %s from guild %s", targetGuild.getName(), name);
 	}
 
-	public void addGuildAlly(Guild targetGuild) {
+	private void addGuildAlly(Guild targetGuild) {
 		Main.getInstance().getDatabaseProvider().addAlly(this, targetGuild, (res, ex) -> {
 			if (!res) {
 				ex.printStackTrace();
@@ -286,7 +287,7 @@ public class Guild implements InventoryHolder {
 		updateGuild("Something went wrong while removing the ally %s from guild %s", targetGuild.getName(), name);
 	}
 
-	void removeGuildAlly(Guild targetGuild) {
+	private void removeGuildAlly(Guild targetGuild) {
 		Main.getInstance().getDatabaseProvider().removeAlly(this, targetGuild, (res, ex) -> {
 			if (!res) {
 				ex.printStackTrace();
