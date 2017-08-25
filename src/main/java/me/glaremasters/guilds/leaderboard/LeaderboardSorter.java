@@ -35,7 +35,7 @@ public final class LeaderboardSorter implements Comparator<Guild> {
 	public TreeMap<Guild, Double> getTop(int limit) {
 		TreeMap<Guild, Double> ordered = getTop();
 		while (ordered.size() > limit) {
-			ordered.pollLastEntry();
+			ordered.pollFirstEntry();
 		}
 		return ordered;
 	}
@@ -46,13 +46,13 @@ public final class LeaderboardSorter implements Comparator<Guild> {
 	 * @return a map containing the results in order from highest to lowest
 	 */
 	private TreeMap<Guild, Double> getTop() {
-		TreeMap<Guild, Double> ordered = new TreeMap<>(this);
+		TreeMap<Guild, Double> ordered = new TreeMap<>(reversed());
 		ordered.putAll(getGuilds());
 		return ordered;
 	}
 
 	/**
-	 * Gets all of the guilds and collects them in a {@link Map} ready for use with {@link OrderComparator#getOrdered()}.
+	 * Gets all of the guilds and collects them in a {@link Map} ready for use with {@link LeaderboardSorter#getTop()}.
 	 *
 	 * @return the guilds collected in map format.
 	 */

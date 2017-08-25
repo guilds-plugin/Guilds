@@ -245,6 +245,7 @@ public class Guild implements InventoryHolder {
 				.forEach(player -> player.sendTitle(title, subtitle, fadeIn, stay, fadeOut));
 	}
 
+	@Deprecated
 	public void sendTitleOld(String title, String subtitle) {
 		members.stream().map(member -> Bukkit.getPlayer(member.getUniqueId())).filter(Objects::nonNull)
 				.forEach(player -> player.sendTitle(title, subtitle));
