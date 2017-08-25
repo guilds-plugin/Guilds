@@ -6,15 +6,15 @@ import org.bukkit.entity.Player;
 
 public class GuildAddAllyEvent extends GuildEvent {
 
-    private Guild ally;
+	private Guild ally;
 
-    public GuildAddAllyEvent(Player player, Guild guild, Guild ally) {
-        super(player, guild);
+	public GuildAddAllyEvent(Player player, Guild guild, Guild ally) {
+		super(player, guild);
 
-        this.ally = ally;
-    }
+		this.ally = ally;
+	}
 
-    public Guild getAlly() {
-        return ally;
-    }
+	public Guild getAlly() {
+		return ally;
+	}
 }
