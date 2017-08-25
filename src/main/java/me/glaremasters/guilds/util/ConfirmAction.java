@@ -2,7 +2,7 @@ package me.glaremasters.guilds.util;
 
 public interface ConfirmAction {
 
-    void accept();
+	void accept();
 
-    void decline();
+	void decline();
 }

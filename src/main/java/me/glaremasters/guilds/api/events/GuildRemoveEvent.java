@@ -6,17 +6,17 @@ import org.bukkit.entity.Player;
 
 public class GuildRemoveEvent extends GuildEvent {
 
-    private RemoveCause cause;
+	private RemoveCause cause;
 
-    public GuildRemoveEvent(Player player, Guild guild, RemoveCause cause) {
-        super(player, guild);
-    }
+	public GuildRemoveEvent(Player player, Guild guild, RemoveCause cause) {
+		super(player, guild);
+	}
 
-    public RemoveCause getCause() {
-        return cause;
-    }
+	public RemoveCause getCause() {
+		return cause;
+	}
 
-    public enum RemoveCause {
-        MASTER_LEFT, REMOVED
-    }
+	public enum RemoveCause {
+		MASTER_LEFT, REMOVED
+	}
 }

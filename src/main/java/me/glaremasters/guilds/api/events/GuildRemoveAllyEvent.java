@@ -6,15 +6,15 @@ import org.bukkit.entity.Player;
 
 public class GuildRemoveAllyEvent extends GuildEvent {
 
-    private Guild ally;
+	private Guild ally;
 
-    public GuildRemoveAllyEvent(Player player, Guild guild, Guild ally) {
-        super(player, guild);
+	public GuildRemoveAllyEvent(Player player, Guild guild, Guild ally) {
+		super(player, guild);
 
-        this.ally = ally;
-    }
+		this.ally = ally;
+	}
 
-    public Guild getAlly() {
-        return ally;
-    }
+	public Guild getAlly() {
+		return ally;
+	}
 }

@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 
 public class GuildCreateEvent extends GuildEvent {
 
-    public GuildCreateEvent(Player player, Guild guild) {
-        super(player, guild);
-    }
+	public GuildCreateEvent(Player player, Guild guild) {
+		super(player, guild);
+	}
 }

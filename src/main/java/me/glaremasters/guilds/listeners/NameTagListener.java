@@ -14,22 +14,22 @@ import org.bukkit.event.player.PlayerJoinEvent;
  */
 public class NameTagListener implements Listener {
 
-    @EventHandler
-    public void nameTagJoin(PlayerJoinEvent event) {
-        Player player = event.getPlayer();
-        Guild guild = Guild.getGuild(player.getUniqueId());
+	@EventHandler
+	public void nameTagJoin(PlayerJoinEvent event) {
+		Player player = event.getPlayer();
+		Guild guild = Guild.getGuild(player.getUniqueId());
 
-        if (guild == null) {
-            return;
-        } else {
-            NametagEdit.getApi()
-                    .setPrefix(player, ChatColor.translateAlternateColorCodes('&',
-                            Main.getInstance().getConfig()
-                                    .getString("nametagedit.name")
-                                    .replace("{guild}", guild.getName())
-                                    .replace("{prefix}", guild.getPrefix())));
-        }
-    }
+		if (guild == null) {
+			return;
+		} else {
+			NametagEdit.getApi()
+					.setPrefix(player, ChatColor.translateAlternateColorCodes('&',
+							Main.getInstance().getConfig()
+									.getString("nametagedit.name")
+									.replace("{guild}", guild.getName())
+									.replace("{prefix}", guild.getPrefix())));
+		}
+	}
 
 
 }
