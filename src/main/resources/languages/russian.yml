@@ -20,21 +20,20 @@ messages:
       role-no-permission: "&cВаш ранг слишком мал для этого."
       sethome-cooldown: "&cВы не сможете установить дом гильдии на протяжении {time} секунд."
     killreward:
-      killer: "&aYou have killed another player and have earned {amount}!"
-      player-who-died: "&cYou have been killed by another player and have lost {amount}!"
+      killer: "&aВы убили игрока. Ваш заработок: {amount}."
+      player-who-died: "&cВы убиты игроком. Ваша потеря: {amount}."
     bank:
-      balance: "&aYour guild's bank has a balance of {amount}."
-      deposit-success: "&aYou have just moved {amount} from your account into your guild bank! Your new bank balance is {balance}."
-      deposit-failure: "&cYou don't have enough to deposit the amount requested!"
-      withdraw-success: "&aYou have just moved {amount} from your guild bank to your account! Your new bank balance is {balance}."
-      withdraw-failure: "&cYou don't have enough to withdraw the amount requested!"
-      bank-balance-limit: "&cYou can't deposit any more money, bank balance limit reached. Upgrade your guild to deposit more!"
+      balance: "&aБаланс банка гильдии: {amount}$."
+      deposit-success: "&aВы внесли {amount}$ на банк гильдии. Новый баланс банка: {balance}."
+      deposit-failure: "&cВы не можете внести деньги."
+      withdraw-success: "&aВы сняли {amount}$ с банка гильдии. Новый баланс банка: {balance}."
+      withdraw-failure: "&cВы не можете снять деньги."
     upgrade:
       tier-max: "&cМаксимальный уровень гильдии."
       money-warning: "&cСтоимость повышения уровня гильдии: {amount}. (Напишите /guild confirm для подтверждения)"
       cancel: "&cУровень гильдии не повышен."
       success: "&aУровень гильдии повышен."
-      not-enough-money: "&aSorry! You don't have enough money to upgrade your Guild!"
+      not-enough-money: "&aУ Вас недостаточно денег для повышения уровня гильдии."
     buff:
       not-enough-money: "&cУ Вас недостаточно денег для покупки баффа"
     transfer:
@@ -95,7 +94,6 @@ messages:
       successful: "&aВы присоединились к гильдии '{guild}'."
     invite:
       already-in-guild: "&cЭтот игрок уже в гильдии."
-      already-invited: "&cThis player has already been invited!"
       message: "&aИгрок {player} пригласил Вас в свою гильдию '{guild}'. Напишите /guild accept <название гильдии> для подтверждения вступления в гильдию."
       successful: "&aВы пригласили игрока {player} в гильдию."
     leave:
@@ -104,13 +102,12 @@ messages:
       successful: "&aВы успешно покинули гильдию."
       warning-guildmaster: "&cЕсли Вы покинете гильдию, то она будет расформирована. Напишите /guild confirm для подтверждения или /guild cancel для отмены ухода с гильдии и её дальнейшей расформировки."
       warning: "&cНапишите /guild confirm для подтверждения или /guild cancel для отмены ухода с гильдии."
-      guildmaster-left: "&cThe Guild Master, '{player}' has left the guild. The guild will now be disbanded."
     boot:
       kicked: "&cВы были выгнаны с гильдии игроком {kicker}."
       player-kicked: "&c'{player}' выгнан(а) с гильдии игроком {kicker}."
       successful: "&aИгрок {player} успешно выгнан с гильдии."
     prefix:
-      requirements: "&cОшибка в префиксе гильдии. Максимальный размер - 6. Используйте только английские/русские буквы."
+      requirements: "&cОшибка в префиксе гильдии. Максимальный размер - 10. Используйте только английские/русские буквы."
       successful: "&aПрефикс гильдии изменен."
     confirm:
       error: "&cВам ничего не предлагали."
@@ -147,4 +144,4 @@ messages:
       teleporting: "&cВы будете телепортированы через {count} секунд."
   event:
     join:
-      pending-invites: "&aYou have {number} pending invite(s) from the guild(s): &e{guild}"
+      pending-invites: "&aВы имеете {number} приглашений от гильдии: &e{guild}"
