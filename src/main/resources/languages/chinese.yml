@@ -23,9 +23,9 @@ messages:
       player-who-died: "&c你被一位玩家殺死啦!!  被幹走了 {amount} 元!"
     bank:
       balance: "&a公會銀行的餘額 為: {amount}元."
-      deposit-success: "&a你把 {amount} 元 轉移到了 公會銀行!  你的餘額 為: {balance} 元"
+      deposit-success: "&a你把 {amount} 元 轉移到了 公會銀行!  公會餘額 為: {balance} 元"
       deposit-failure: "&c你沒有足夠的金錢!!"
-      withdraw-success: "&a你把 {amount} 元 從公會銀行 提取了出來! 你的餘額 為: {balance} 元"
+      withdraw-success: "&a你把 {amount} 元 從公會銀行 提取了出來! 公會餘額 為: {balance} 元"
       withdraw-failure: "&c公會銀行沒有足夠的金錢 可以提款!"
     upgrade:
       tier-max: "&c公會不能再升級了!你已經到目前的頂級了!!"
@@ -96,7 +96,7 @@ messages:
       successful: "&a你成功邀請了 玩家 {player} 加入了你的公會!"
       already-in-guild: "&c這個玩家已經在你的公會了!"
     decline:
-      success: "&aGuild Invite Declined!"
+      success: "&a拒絕公會邀請!"
     leave:
       successful: "&a你已經成功地離開了公會..!"
       cancelled: "&c離開公會取消!"
