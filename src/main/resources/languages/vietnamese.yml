@@ -20,20 +20,21 @@ messages:
       role-no-permission: "&cVai trò của bạn không đủ để làm điều đó!"
       sethome-cooldown: "&cBạn phải đợi {time} giây để đặt nhà cho guild!"
     killreward:
-      killer: "&aYou have killed another player and have earned {amount}!"
-      player-who-died: "&cYou have been killed by another player and have lost {amount}!"
+      killer: "&aBạn đã giết người chơi khác và đã kiếm được {amount}!"
+      player-who-died: "&cBạn đã bị giết người chơi khác và đã mất {amount}!"
     bank:
-      balance: "&aYour guild's bank has a balance of {amount}."
-      deposit-success: "&aYou have just moved {amount} from your account into your guild bank! Your new bank balance is {balance}."
-      deposit-failure: "&cYou don't have enough to deposit the amount requested!"
-      withdraw-success: "&aYou have just moved {amount} from your guild bank to your account! Your new bank balance is {balance}."
-      withdraw-failure: "&cYou don't have enough to withdraw the amount requested!"
-      bank-balance-limit: "&cYou can't deposit any more money, bank balance limit reached. Upgrade your guild to deposit more!"
+      balance: "&aTài khoản ngân hàng guild của bạn là: {amount}."
+      deposit-success: "&aBạn vừa mới chuyển {amount} từ tài khoản của bạn vào ngân hàng guild của bạn! Số tiền hiện tại của bạn: {balance}."
+      deposit-failure: "&cBạn không có đủ tiền để gửi!"
+      withdraw-success: "&aBạn vừa mới chuyển {amount} từ ngân hàng guild vào tài khoản của bạn! Số tiền hiện tại của bạn: {balance}."
+      withdraw-failure: "&cBạn không có đủ tiền để rút!"
+      bank-balance-limit: "&cBạn không thể gửi thêm tiền, ngân hàng đã đạt giới hạn. Nâng cấp guild của bạn để gửi nhiều hơn!"
     upgrade:
       tier-max: "&cKhông thể nâng cấp! Guild đã ở cấp cao nhất"
       money-warning: "&cBạn sẽ mất {amount} để nâng cấp guild của bạn. (Bấm /guilds confirm để xác nhận)"
       cancel: "&cĐã hủy bỏ nâng cấp!"
       success: "&aBạn đã nâng cấp thành công guild của bạn!"
+      not-enough-money: "&aXin lỗi! Bạn không có đủ tiền để nâng cấp Guild của bạn!"
     buff:
       not-enough-money: "&cBạn không có đủ tiền để mua buff này!"
     transfer:
