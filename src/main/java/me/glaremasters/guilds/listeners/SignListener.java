@@ -31,10 +31,10 @@ public class SignListener implements Listener {
             event.setLine(1, guild.getName());
             event.setLine(2, "Members");
             event.setLine(3, String.valueOf(
-                    guild.getMembers().size() + " / " + Main.getInstance().getConfig()
-                            .getInt("members.max-members")));
+                    guild.getMembers().size() + " / " + guild.getMaxMembers()));
         }
     }
+
 
     @EventHandler
     public void onPlayerClickSign(PlayerInteractEvent event) {
