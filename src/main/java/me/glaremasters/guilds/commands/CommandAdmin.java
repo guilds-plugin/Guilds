@@ -125,6 +125,24 @@ public class CommandAdmin extends CommandBase {
 
             }
             guild.updateGuild("");
+        } else if (args[0].equalsIgnoreCase("status")) {
+            if (args.length != 3) {
+                Message.sendMessage(sender, Message.COMMAND_ERROR_ARGS);
+                return;
+            }
+            if (!(args[2].equalsIgnoreCase("private") || args[2].equalsIgnoreCase("public"))) {
+                Message.sendMessage(sender, Message.COMMAND_STATUS_ERROR);
+            } else {
+                String status = args[2];
+                Main.getInstance().guildStatusConfig
+                        .set(args[1],
+                                status);
+                Guild.getGuild(args[1]).updateGuild("");
+
+                Message.sendMessage(sender,
+                        Message.COMMAND_STATUS_SUCCESSFUL.replace("{status}", status));
+                Main.getInstance().saveGuildStatus();
+            }
         }
     }
 }
