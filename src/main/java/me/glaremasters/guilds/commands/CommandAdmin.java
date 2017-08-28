@@ -18,7 +18,10 @@ public class CommandAdmin extends CommandBase {
     public CommandAdmin() {
         super("admin", Main.getInstance().getConfig().getString("commands.description.admin"),
                 "guilds.command.admin", true, null,
-                "<remove | info> <guild name>, or <addplayer | removeplayer> <guild name> <player name>, or <upgrade> <guild name>, or <status> <guild name> <Public | Private>",
+                "<remove | info> <guild name>, "
+                        + "or <addplayer | removeplayer> <guild name> <player name>, "
+                        + "or <upgrade> <guild name>, or <status> <guild name> <Public | Private>, "
+                        + "or <prefix> <guild name> <new prefix>",
                 2, 3);
     }
 
@@ -90,7 +93,7 @@ public class CommandAdmin extends CommandBase {
             Message.sendMessage(player, Message.COMMAND_LEAVE_SUCCESSFUL);
             Message.sendMessage(sender, Message.COMMAND_ADMIN_REMOVED_PLAYER);
         } else if (args[0].equalsIgnoreCase("upgrade")) {
-            final FileConfiguration config = Main.getInstance().getConfig();
+            FileConfiguration config = Main.getInstance().getConfig();
             int tier = guild.getTier();
             if (guild.getTier() >= Main.getInstance().getConfig().getInt("max-number-of-tiers")) {
                 Message.sendMessage(sender, Message.COMMAND_UPGRADE_TIER_MAX);
@@ -142,6 +145,41 @@ public class CommandAdmin extends CommandBase {
                 Message.sendMessage(sender,
                         Message.COMMAND_STATUS_SUCCESSFUL.replace("{status}", status));
                 Main.getInstance().saveGuildStatus();
+            }
+        } else if (args[0].equalsIgnoreCase("prefix")) {
+            FileConfiguration config = Main.getInstance().getConfig();
+            if (args.length != 3) {
+                Message.sendMessage(sender, Message.COMMAND_ERROR_ARGS);
+                return;
+            }
+            if (!args[2].matches(Main.getInstance().getConfig().getString("prefix.regex"))) {
+                Message.sendMessage(sender, Message.COMMAND_PREFIX_REQUIREMENTS);
+                return;
+            }
+            Message.sendMessage(sender, Message.COMMAND_PREFIX_SUCCESSFUL);
+            guild.updatePrefix(ChatColor.translateAlternateColorCodes('&', args[2]));
+            if (Main.getInstance().getConfig().getBoolean("titles.enabled")) {
+                try {
+                    String creation = "titles.events.guild-prefix-change";
+                    guild.sendTitle(ChatColor.translateAlternateColorCodes('&',
+                            Main.getInstance().getConfig().getString(creation + ".title")
+                                    .replace("{prefix}", guild.getPrefix())),
+                            ChatColor.translateAlternateColorCodes('&',
+                                    config.getString(creation + ".sub-title")
+                                            .replace("{prefix}", guild.getPrefix())),
+                            config.getInt(creation + ".fade-in") * 20,
+                            config.getInt(creation + ".stay") * 20,
+                            config.getInt(creation + ".fade-out") * 20);
+                } catch (NoSuchMethodError error) {
+                    String creation = "titles.events.guild-prefix-change";
+                    guild.sendTitleOld(ChatColor.translateAlternateColorCodes('&',
+                            Main.getInstance().getConfig().getString(creation + ".title")
+                                    .replace("{prefix}", guild.getPrefix())),
+                            ChatColor.translateAlternateColorCodes('&',
+                                    config.getString(creation + ".sub-title")
+                                            .replace("{prefix}", guild.getPrefix())));
+                }
+
             }
         }
     }
