@@ -198,7 +198,8 @@ public class Main extends JavaPlugin {
                 new CommandVault(),
                 new CommandVersion(),
                 new CommandUpgrade(),
-                new CommandBank()
+                new CommandBank(),
+                new CommandGive()
         ).forEach(commandHandler::register);
 
         Stream.of(
