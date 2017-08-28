@@ -1,6 +1,5 @@
 package me.glaremasters.guilds.commands;
 
-import java.util.stream.Collectors;
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
@@ -8,8 +7,9 @@ import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.message.Message;
 import me.glaremasters.guilds.util.ConfirmAction;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 @SuppressWarnings("deprecation")
@@ -18,7 +18,7 @@ public class CommandAdmin extends CommandBase {
     public CommandAdmin() {
         super("admin", Main.getInstance().getConfig().getString("commands.description.admin"),
                 "guilds.command.admin", true, null,
-                "<remove | info> <guild name>, or <addplayer | removeplayer> <guild name> <player name>",
+                "<remove | info> <guild name>, or <addplayer | removeplayer> <guild name> <player name>, or <upgrade> <guild name>",
                 2, 3);
     }
 
@@ -38,24 +38,6 @@ public class CommandAdmin extends CommandBase {
             Main.getInstance().getCommandHandler().addAction(sender, new ConfirmAction() {
                 @Override
                 public void accept() {
-//                    Main.getInstance().getDatabaseProvider()
-//                            .removeGuild(guild, (result, exception) -> {
-//                                if (result) {
-//                                    Message.sendMessage(sender, Message.COMMAND_ADMIN_DELETE_SUCCESSFUL
-//                                            .replace("{guild}", guild.getName()));
-//                                    Main.getInstance().getScoreboardHandler().update();
-//                                } else {
-//                                    Message.sendMessage(sender, Message.COMMAND_ADMIN_DELETE_ERROR);
-//
-//                                    Main.getInstance().getLogger().log(Level.SEVERE, String.format(
-//                                            "An error occurred while player '%s' was trying to delete guild '%s'",
-//                                            sender.getName(), guild.getName()));
-//                                    if (exception != null) {
-//                                        exception.printStackTrace();
-//                                    }
-//                                }
-//                            });
-//
                     Main.getInstance().getCommandHandler().removeAction(sender);
                 }
 
@@ -107,23 +89,42 @@ public class CommandAdmin extends CommandBase {
 
             Message.sendMessage(player, Message.COMMAND_LEAVE_SUCCESSFUL);
             Message.sendMessage(sender, Message.COMMAND_ADMIN_REMOVED_PLAYER);
-        } else if (args[0].equalsIgnoreCase("info")) {
-            Message.sendMessage(sender,
-                    Message.COMMAND_INFO_HEADER.replace("{guild}", guild.getName()));
-            Message.sendMessage(sender, Message.COMMAND_INFO_NAME
-                    .replace("{guild}", guild.getName(), "{prefix}", guild.getPrefix()));
-            Message.sendMessage(sender, Message.COMMAND_INFO_MASTER.replace("{master}",
-                    Bukkit.getOfflinePlayer(guild.getGuildMaster().getUniqueId()).getName()));
-            Message.sendMessage(sender, Message.COMMAND_INFO_MEMBER_COUNT
-                    .replace("{members}", String.valueOf(guild.getMembers().size()),
-                            "{members-online}",
-                            String.valueOf(guild.getMembers().stream()
-                                    .map(member -> Bukkit.getOfflinePlayer(member.getUniqueId()))
-                                    .filter(OfflinePlayer::isOnline).count())));
-            Message.sendMessage(sender, Message.COMMAND_INFO_PLAYERS.replace("{players}",
-                    guild.getMembers().stream()
-                            .map(member -> Bukkit.getOfflinePlayer(member.getUniqueId()).getName())
-                            .collect(Collectors.joining(", "))));
+        } else if (args[0].equalsIgnoreCase("upgrade")) {
+            final FileConfiguration config = Main.getInstance().getConfig();
+            int tier = guild.getTier();
+            if (guild.getTier() >= Main.getInstance().getConfig().getInt("max-number-of-tiers")) {
+                Message.sendMessage(sender, Message.COMMAND_UPGRADE_TIER_MAX);
+                return;
+            }
+            Message.sendMessage(sender, Message.COMMAND_UPGRADE_SUCCESS);
+            Main.getInstance().guildTiersConfig.set(guild.getName(), tier + 1);
+            Main.getInstance().saveGuildTiers();
+            if (config.getBoolean("titles.enabled")) {
+                try {
+                    String creation = "titles.events.guild-tier-upgrade";
+                    guild.sendTitle(ChatColor
+                                    .translateAlternateColorCodes('&',
+                                            config.getString(creation + ".title").replace("{tier}",
+                                                    Integer.toString(guild.getTier()))),
+                            ChatColor.translateAlternateColorCodes('&',
+                                    config.getString(creation + ".sub-title").replace("{tier}",
+                                            Integer.toString(guild.getTier()))),
+                            config.getInt(creation + ".fade-in") * 20,
+                            config.getInt(creation + ".stay") * 20,
+                            config.getInt(creation + ".fade-out") * 20);
+                } catch (NoSuchMethodError error) {
+                    String creation = "titles.events.guild-tier-upgrade";
+                    guild.sendTitleOld(ChatColor.translateAlternateColorCodes('&',
+                            config.getString(creation + ".title")
+                                    .replace("{tier}", Integer.toString(guild.getTier()))),
+                            ChatColor.translateAlternateColorCodes('&',
+                                    config.getString(creation + ".sub-title")
+                                            .replace("{tier}",
+                                                    Integer.toString(guild.getTier()))));
+                }
+
+            }
+            guild.updateGuild("");
         }
     }
 }
