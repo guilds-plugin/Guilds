@@ -88,6 +88,7 @@ commands:
     decline: "Decline a guild invite"
     delete: "Delete your current guild"
     demote: "Demote a member of your guild"
+    give: "Give a player different rewards inside the plugin"
     help: "View all commands"
     home: "Teleport to your guild home"
     info: "View your guild's info"
@@ -106,6 +107,19 @@ commands:
     upgrade: "Upgrade your guild to a higher level"
     vault: "Open your guild vault"
     version: "Plugin info / version"
+
+
+#-----------------------------------------------------------#
+#              Rewards / Tickets Configuration              #
+#-----------------------------------------------------------#
+
+# This part of the config will allow you to configure what different rewards will look like inside the plugin.
+# Keep in mind, this is for stuff like voting or crate plugin rewards.
+# Console will be able to run the /guild give on a player to give different items.
+
+upgrade-ticket:
+  name: "&bGuild Upgrade Ticket"
+  lore: "&dRight click this ticket to upgrade your guild tier!"
 
 
 #-----------------------------------------------------------#
