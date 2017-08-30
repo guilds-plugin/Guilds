@@ -19,37 +19,37 @@ messages:
       home-cooldown: "&cJe moet {time} seconden wachten voordat je weer naar je Guild thuis kan teleporteren!"
       sethome-cooldown: "&cJe moet {time} seconden wachten voordat je weer je Guild thuis kan instellen!"
     killreward:
-      killer: "&aYou have killed another player and have earned {amount}!"
-      player-who-died: "&cYou have been killed by another player and have lost {amount}!"
+      killer: "&aJe hebt een andere speler vermoord en {amount} verdient!"
+      player-who-died: "&cJe bent vermoord door een andere speler en je bent {amount} verloren!"
     bank:
-      balance: "&aYour guild's bank has a balance of {amount}."
-      deposit-success: "&aYou have just moved {amount} from your account into your guild bank! Your new bank balance is {balance}."
-      deposit-failure: "&cYou don't have enough to deposit the amount requested!"
-      withdraw-success: "&aYou have just moved {amount} from your guild bank to your account! Your new bank balance is {balance}."
-      withdraw-failure: "&cYou don't have enough to withdraw the amount requested!"
-      bank-balance-limit: "&cYou can't deposit any more money, bank balance limit reached. Upgrade your guild to deposit more!"
+      balance: "&aHet banksaldo van je guild is {amount}."
+      deposit-success: "&aJe hebt net {amount} van je rekening naar je guild's rekening overgemaakt! Je nieuwe banksaldo is {balance}."
+      deposit-failure: "&cJe hebt niet genoeg geld om dit te kunnen doen!"
+      withdraw-success: "&aJe hebt {amount} van je guild's rekening naar jouw rekening overgemaakt! Je nieuwe banksaldo is {balance}."
+      withdraw-failure: "&cJe hebt niet genoeg geld om dit te kunnen doen!"
+      bank-balance-limit: "&cJe kan niet meer geld overmaken, je hebt je limiet bereikt. Upgrade je guild om je limiet te verhogen!"
     upgrade:
-      tier-max: "&cCannot upgrade again! You're already maxed!"
-      money-warning: "&cYou are about to spend {amount} to set upgrade your guild. (Type /guilds confirm to continue)"
-      cancel: "&cUpgrade cancelled!"
-      success: "&aYou've successfully upgraded your guild!"
-      not-enough-money: "&aSorry! You don't have enough money to upgrade your Guild!"
+      tier-max: "&cKan niet nog een keer upgraden, je bent al maximaal level!"
+      money-warning: "&cJe staat op het punt om {amount} uit te geven om je guild te upgraden. (Type /guilds confirm om verder te gaan)"
+      cancel: "&cUpgrade geannuleerd!"
+      success: "&aJe hebt je guild succesvol geupgrade!"
+      not-enough-money: "&aSorry! Je hebt hier niet genoeg geld voor!"
     buff:
-      not-enough-money: "&cYou do not have enough money to buy this buff!"
+      not-enough-money: "&cJe hebt niet genoeg geld om deze buff te kopen!"
     transfer:
-      success: "Guild has been transferred!"
-      newmaster: "You are the new Guild Master of your Guild!"
+      success: "Guild is met success overgeplaatst!"
+      newmaster: "Jij bent de nieuwe Guild Master!"
     help:
       message: "&f/guild {command} {arguments} &7- &f{description}"
       next-page: "&7Zie /guilds help {next-page} voor de volgende pagina."
       invalid-page: "&cDeze pagina kon niet worden gevonden."
     status:
-      successful: "&aGuild status set to {status}!"
-      error: "&cGuild status must be public or private!"
+      successful: "&aGuild status aangepast naar {status}!"
+      error: "&cGuild status moet publiek of prive zijn!"
     role:
       players: "{player} - {role}"
     list:
-      format: "De volgende guild zijn:"
+      format: "De volgende guilds zijn:"
     create:
       successful: "&aDe guild '{guild}' is met success gemaakt!"
       cancelled: "&cHet maken van deze guild is niet gelukt!"
@@ -85,8 +85,8 @@ messages:
       not-demotion: "&cJe kan deze speler niet degraderen"
     chat:
       message: "&7&l[Guild Chat]&r &b[{role}] {player}: {message}"
-      enabled: "&aGuild Chat Enabled"
-      disabled: "&cGuild Chat Disabled"
+      enabled: "&aGuild Chat Aangezet"
+      disabled: "&cGuild Chat Uitgezet"
     accept:
       not-invited: "&cJe bent niet uitgenodigd voor deze guild"
       guild-full: "&cDeze guild is vol"
@@ -98,14 +98,14 @@ messages:
       successful: "&aJe hebt met success {player} uitgenodigd voor jouw guild!"
       already-in-guild: "&cDeze speler zit al in jouw guild!"
     decline:
-      success: "&aGuild Invite Declined!"
+      success: "&aGuild Uitnodiging afgewezen!"
     leave:
       successful: "&aJe hebt deze guild verlaten!"
       cancelled: "&cJe hebt deze guild niet verlaten!"
       warning: "&cTyp /guilds confirm om je guild te verlaten, typ /guilds cancel om dit te stoppen."
       warning-guildmaster: "&cJij bent de Guild Master van deze guild, het verlaten van deze guild betekent dat de guild verwijderd zal worden. Typ /guilds confirm om deze guild te verlaten en te verwijderen, typ /guilds cancel om te stoppen"
       player-left: "&cSpeler '{player}' heeft je guild verlaten!"
-      guildmaster-left: "&cThe Guild Master, '{player}' has left the guild. The guild will now be disbanded."
+      guildmaster-left: "&cThe Guild Master, '{player}' heeft de guild verlaten. De guild wordt nu ontbonden!"
     boot:
       successful: "&aSpeler {player} is verwijderd van jouw guild!"
       kicked: "&cJe bent gekickt van deze guild door {kicker}!"
@@ -120,7 +120,7 @@ messages:
     reload:
       reloaded: "&aConfiguratie en taal bestanden zijn herladen."
     update:
-      found: "&aEr is een update gevonden! Ga naar {url} om het te downloaden!"
+      found: "&aEr is een update gevonden! Ga naar {url} om hem te downloaden!"
       not-found: "&cGeen update gevonden!"
     admin:
       delete-successful: "&cDe guild is met success verwijderd!"
