@@ -72,14 +72,19 @@ commands:
     description: Upgrade your Guild!
   guild bank:
     description: Use your Guild Bank!
+  guild give:
+    description: Give free upgrade tickets to player
 
 
 permissions:
   guilds.group.admin:
     description: All commands for the Guilds plugin
     children:
-      guilds.command.accept: true
       guilds.command.admin: true
+      guilds.command.reload: true
+      guilds.command.update: true
+      guilds.command.give: true
+      guilds.command.accept: true
       guilds.command.boot: true
       guilds.command.cancel: true
       guilds.command.chat: true
@@ -93,9 +98,22 @@ permissions:
       guilds.command.leave: true
       guilds.command.prefix: true
       guilds.command.promote: true
-      guilds.command.reload: true
       guilds.command.role: true
-      guilds.command.update: true
+      guilds.command.version: true
+      guilds.command.list: true
+      guilds.command.bugreport: true
+      guilds.command.home: true
+      guilds.command.sethome: true
+      guilds.command.inspect: true
+      guilds.command.status: true
+      guilds.command.vault: true
+      guilds.command.ally: true
+      guilds.command.transfer: true
+      guilds.command.buff: true
+      guilds.command.decline: true
+      guilds.command.check: true
+      guilds.command.upgrade: true
+      guilds.command.bank: true
     default: op
   guilds.group.member:
     description: All commands for the Guilds plugin
