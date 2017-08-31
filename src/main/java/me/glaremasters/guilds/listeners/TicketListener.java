@@ -35,20 +35,18 @@ public class TicketListener implements Listener {
             return;
         }
         if (item.getItemMeta().getDisplayName().equalsIgnoreCase(ticketName)) {
-            try {
+
                 int tier = guild.getTier();
                 if (tier >= config.getInt("max-number-of-tiers")) {
                     Message.sendMessage(player, Message.COMMAND_UPGRADE_TIER_MAX);
                     return;
                 }
                 event.getPlayer().getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+                event.setCancelled(true);
                 Message.sendMessage(player, Message.COMMAND_UPGRADE_SUCCESS);
                 Main.getInstance().guildTiersConfig.set(guild.getName(), tier + 1);
                 Main.getInstance().saveGuildTiers();
                 guild.updateGuild("");
-            } catch(AssertionError error){
-                return;
-            }
         }
     }
 
