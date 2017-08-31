@@ -212,8 +212,7 @@ public class Main extends JavaPlugin {
                 new GuildChatListener(),
                 new MobDeathListener(),
                 new PlayerDamageListener(),
-                new DamageMultiplierListener(),
-                new TicketListener()
+                new DamageMultiplierListener()
 
         ).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
 
@@ -230,6 +229,9 @@ public class Main extends JavaPlugin {
 
         if (getConfig().getBoolean("hooks.nametagedit")) {
             getServer().getPluginManager().registerEvents(new NameTagListener(), this);
+        }
+        if (getConfig().getBoolean("rewards-enabled")) {
+            getServer().getPluginManager().registerEvents(new TicketListener(), this);
         }
 
         vault = setupEconomy();

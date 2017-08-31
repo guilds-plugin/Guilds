@@ -116,7 +116,9 @@ commands:
 # This part of the config will allow you to configure what different rewards will look like inside the plugin.
 # Keep in mind, this is for stuff like voting or crate plugin rewards.
 # Console will be able to run the /guild give on a player to give different items.
+# This may throw errors if you are on 1.8
 
+rewards-enabled: true
 upgrade-ticket:
   name: "&bGuild Upgrade Ticket"
   lore: "&dRight click this ticket to upgrade your guild tier!"
@@ -288,8 +290,8 @@ require-money: false
 # You can define how much it costs for users to create a guild, the cost option, and you can define how much it costs for users to set a guild home.
 
 Requirement:
-  cost: 100
-  sethome-cost: 100
+  cost: 0
+  sethome-cost: 0
 
 reward-on-kill:
   enabled: true
@@ -457,12 +459,11 @@ prefix:
 # To turn off the ability for colored prefixes change the regex to "[a-zA-Z0-9]{1,20}"
   regex: "[a-zA-Z0-9&]{1,20}"
 
+# KEEP THIS DISABLED. IT WILL BREAK THE PLUGIN.
 scoreboard:
-# Enable or disable scoreboard which handles friendly fire, prefixes and guild invisibility
   enable: false
-# Enable or disable friendly fire (Allied Guilds)
   friendly-fire: false
-# Enable or disable being able to see invisible guild members
+
   see-invisible: true
 
 # There are lots of options when it comes to configuring the roles. We have NOT (yet) experience with adding new ranks, so if it breaks, do not be surprised.
