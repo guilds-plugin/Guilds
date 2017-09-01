@@ -187,20 +187,20 @@ public class CommandBuff extends CommandBase {
                 waterbreathing));
 
         // Buff 9: Luck
-        ArrayList<String> luck = new ArrayList<String>();
-        Main.getInstance().getConfig().getStringList("buff.description.luck").stream()
-                .map(it -> ChatColor.translateAlternateColorCodes('&', it)).forEach(luck::add);
-        luck.add("");
-        luck.add(ChatColor.translateAlternateColorCodes('&',
+        ArrayList<String> regeration = new ArrayList<String>();
+        Main.getInstance().getConfig().getStringList("buff.description.regeration").stream()
+                .map(it -> ChatColor.translateAlternateColorCodes('&', it)).forEach(regeration::add);
+        regeration.add("");
+        regeration.add(ChatColor.translateAlternateColorCodes('&',
                 Main.getInstance().getConfig().getString("buff.description.price") + Main
                         .getInstance()
-                        .getConfig().getInt("buff.price.luck")));
-        luck.add(ChatColor.translateAlternateColorCodes('&',
+                        .getConfig().getInt("buff.price.regeration")));
+        regeration.add(ChatColor.translateAlternateColorCodes('&',
                 Main.getInstance().getConfig().getString("buff.description.length") + Main
                         .getInstance()
-                        .getConfig().getInt("buff.time.luck")));
+                        .getConfig().getInt("buff.time.regeration")));
         buff.setItem(7, createItemStack(Material.EMERALD,
-                Main.getInstance().getConfig().getString("buff.name.luck"), luck));
+                Main.getInstance().getConfig().getString("buff.name.regeration"), regeration));
 
         // Open inventory
         player.openInventory(buff);
