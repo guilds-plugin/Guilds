@@ -1,7 +1,5 @@
 package me.glaremasters.guilds.listeners;
 
-import java.util.Arrays;
-import java.util.List;
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.message.Message;
@@ -36,17 +34,17 @@ public class TicketListener implements Listener {
         }
         if (item.getItemMeta().getDisplayName().equalsIgnoreCase(ticketName)) {
 
-                int tier = guild.getTier();
-                if (tier >= config.getInt("max-number-of-tiers")) {
-                    Message.sendMessage(player, Message.COMMAND_UPGRADE_TIER_MAX);
-                    return;
-                }
-                event.getPlayer().getInventory().setItemInMainHand(new ItemStack(Material.AIR));
-                event.setCancelled(true);
-                Message.sendMessage(player, Message.COMMAND_UPGRADE_SUCCESS);
-                Main.getInstance().guildTiersConfig.set(guild.getName(), tier + 1);
-                Main.getInstance().saveGuildTiers();
-                guild.updateGuild("");
+            int tier = guild.getTier();
+            if (tier >= config.getInt("max-number-of-tiers")) {
+                Message.sendMessage(player, Message.COMMAND_UPGRADE_TIER_MAX);
+                return;
+            }
+            event.getPlayer().getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+            event.setCancelled(true);
+            Message.sendMessage(player, Message.COMMAND_UPGRADE_SUCCESS);
+            Main.getInstance().guildTiersConfig.set(guild.getName(), tier + 1);
+            Main.getInstance().saveGuildTiers();
+            guild.updateGuild("");
         }
     }
 

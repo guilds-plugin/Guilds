@@ -95,4 +95,13 @@ public class Placeholders {
         return guild.getBankBalance();
     }
 
+    public static double getUpgradeCost(Player player) {
+        Guild guild = Guild.getGuild(player.getUniqueId());
+        if (guild == null) {
+            return 0;
+        }
+
+        return guild.getTierCost();
+    }
+
 }
