@@ -356,6 +356,7 @@ titles:
 # For example: if I wanted to add a 4th tier, I would do this:
 
 # tier4:
+#   name: "Diamond"
 #   cost: 400
 #   max-members: 100
 #   mob-xp-multiplier: 4
@@ -368,18 +369,21 @@ titles:
 max-number-of-tiers: 3
 
 tier1:
+  name: "Bronze"
   cost: 0
   max-members: 15
   mob-xp-multiplier: 1
   damage-multiplier: 1
   max-bank-balance: 10000
 tier2:
+  name: "Silver"
   cost: 200
   max-members: 30
   mob-xp-multiplier: 2
   damage-multiplier: 1
   max-bank-balance: 20000
 tier3:
+  name: "Gold"
   cost: 300
   max-members: 50
   mob-xp-multiplier: 3

@@ -416,6 +416,8 @@ public class Main extends JavaPlugin {
                     event -> Double.toString(Placeholders.getBankBalance(event.getPlayer())));
             PlaceholderAPI.registerPlaceholder(this, "guild_upgrade_cost",
                     event -> Double.toString(Placeholders.getUpgradeCost(event.getPlayer())));
+            PlaceholderAPI.registerPlaceholder(this, "guild_tier_name",
+                    event -> Placeholders.getTierName(event.getPlayer()));
         }
 
     }

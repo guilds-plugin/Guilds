@@ -104,4 +104,13 @@ public class Placeholders {
         return guild.getTierCost();
     }
 
+    public static String getTierName(Player player) {
+        Guild guild = Guild.getGuild(player.getUniqueId());
+        if (guild == null) {
+            return "";
+        }
+
+        return guild.getTierName();
+    }
+
 }
