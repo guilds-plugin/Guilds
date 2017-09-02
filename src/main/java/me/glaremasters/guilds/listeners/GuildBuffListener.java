@@ -32,22 +32,16 @@ public class GuildBuffListener implements Listener {
                 return;
             }
             GuildBuff buff = GuildBuff.get(event.getCurrentItem().getType());
+            double balance = guild.getBankBalance();
             if (buff != null) {
-                if (Main.vault && buff.cost != -1) {
-                    if (Main.getInstance().getEconomy().getBalance(player) < buff.cost) {
-                        Message.sendMessage(player, Message.COMMAND_BUFF_NOT_ENOUGH_MONEY);
+                if (Main.getInstance().getConfig().getBoolean("use-guild-bank")) {
+                    if (balance < buff.cost) {
+                        Message.sendMessage(player, Message.COMMAND_BANK_WITHDRAW_FAILURE);
                         return;
                     }
                     if (Main.getInstance().getConfig().getBoolean("disable-buff-stacking")
                             && !player
                             .getActivePotionEffects().isEmpty()) {
-                        return;
-                    }
-
-                    EconomyResponse response =
-                            Main.getInstance().getEconomy().withdrawPlayer(player, buff.cost);
-                    if (!response.transactionSuccess()) {
-                        Message.sendMessage(player, Message.COMMAND_BUFF_NOT_ENOUGH_MONEY);
                         return;
                     }
 
@@ -57,9 +51,46 @@ public class GuildBuffListener implements Listener {
                             .forEach(member -> {
 
                                 ((Player) member).addPotionEffect(
-                                        new PotionEffect(buff.potion, buff.time, buff.amplifier));
+                                        new PotionEffect(buff.potion, buff.time,
+                                                buff.amplifier));
 
                             });
+
+                    Main.getInstance().guildBanksConfig
+                            .set(guild.getName(), balance - buff.cost);
+                    Main.getInstance().saveGuildBanks();
+                }
+                else {
+
+                    if (Main.vault && buff.cost != -1) {
+                        if (Main.getInstance().getEconomy().getBalance(player) < buff.cost) {
+                            Message.sendMessage(player, Message.COMMAND_BUFF_NOT_ENOUGH_MONEY);
+                            return;
+                        }
+                        if (Main.getInstance().getConfig().getBoolean("disable-buff-stacking")
+                                && !player
+                                .getActivePotionEffects().isEmpty()) {
+                            return;
+                        }
+
+                        EconomyResponse response =
+                                Main.getInstance().getEconomy().withdrawPlayer(player, buff.cost);
+                        if (!response.transactionSuccess()) {
+                            Message.sendMessage(player, Message.COMMAND_BUFF_NOT_ENOUGH_MONEY);
+                            return;
+                        }
+
+                        guild.getMembers().stream()
+                                .map(member -> Bukkit.getOfflinePlayer(member.getUniqueId()))
+                                .filter(OfflinePlayer::isOnline)
+                                .forEach(member -> {
+
+                                    ((Player) member).addPotionEffect(
+                                            new PotionEffect(buff.potion, buff.time,
+                                                    buff.amplifier));
+
+                                });
+                    }
                 }
             }
         }

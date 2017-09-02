@@ -130,7 +130,7 @@ public class Main extends JavaPlugin {
         taskChainFactory = BukkitTaskChainFactory.create(this);
 
         setDatabaseType();
-        if (!getConfig().isSet("version") || getConfig().getInt("version") != 15) {
+        if (!getConfig().isSet("version") || getConfig().getInt("version") != 16) {
             if (getConfig().getBoolean("auto-update-config")) {
                 File oldfile = new File(this.getDataFolder(), "config.yml");
                 File newfile = new File(this.getDataFolder(), "config-old.yml");
