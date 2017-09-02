@@ -43,70 +43,123 @@ public class CommandUpgrade extends CommandBase {
             Message.sendMessage(player, Message.COMMAND_UPGRADE_TIER_MAX);
             return;
         }
-
+        double balance = guild.getBankBalance();
         double tierUpgradeCost = guild.getTierCost();
-
-        if (Main.vault && tierUpgradeCost != -1) {
-            if (Main.getInstance().getEconomy().getBalance(player) < tierUpgradeCost) {
+        if (Main.getInstance().getConfig().getBoolean("use-bank-balance")) {
+            if (balance < tierUpgradeCost) {
                 Message.sendMessage(player, Message.COMMAND_ERROR_NOT_ENOUGH_MONEY);
                 return;
             }
-
             Message.sendMessage(player, Message.COMMAND_UPGRADE_MONEY_WARNING
                     .replace("{amount}", String.valueOf(tierUpgradeCost)));
-        } else {
-            Message.sendMessage(player, Message.COMMAND_CREATE_WARNING);
-        }
+            Main.getInstance().getCommandHandler().addAction(player, new ConfirmAction() {
+                @Override
+                public void accept() {
+                    Message.sendMessage(player, Message.COMMAND_UPGRADE_SUCCESS);
+                    Main.getInstance().guildTiersConfig.set(guild.getName(), tier + 1);
+                    Main.getInstance().saveGuildTiers();
+                    Main.getInstance().guildBanksConfig
+                            .set(guild.getName(), balance - tierUpgradeCost);
+                    Main.getInstance().saveGuildBanks();
+                    if (config.getBoolean("titles.enabled")) {
+                        try {
+                            String creation = "titles.events.guild-tier-upgrade";
+                            guild.sendTitle(ChatColor
+                                            .translateAlternateColorCodes('&',
+                                                    config.getString(creation + ".title").replace("{tier}",
+                                                            Integer.toString(guild.getTier()))),
+                                    ChatColor.translateAlternateColorCodes('&',
+                                            config.getString(creation + ".sub-title")
+                                                    .replace("{tier}",
+                                                            Integer.toString(guild.getTier()))),
+                                    config.getInt(creation + ".fade-in") * 20,
+                                    config.getInt(creation + ".stay") * 20,
+                                    config.getInt(creation + ".fade-out") * 20);
+                        } catch (NoSuchMethodError error) {
+                            String creation = "titles.events.guild-tier-upgrade";
+                            guild.sendTitleOld(ChatColor.translateAlternateColorCodes('&',
+                                    config.getString(creation + ".title")
+                                            .replace("{tier}", Integer.toString(guild.getTier()))),
+                                    ChatColor.translateAlternateColorCodes('&',
+                                            config.getString(creation + ".sub-title")
+                                                    .replace("{tier}",
+                                                            Integer.toString(guild.getTier()))));
+                        }
 
-        Main.getInstance().getCommandHandler().addAction(player, new ConfirmAction() {
-            @Override
-            public void accept() {
-                Message.sendMessage(player, Message.COMMAND_UPGRADE_SUCCESS);
-                Main.getInstance().guildTiersConfig.set(guild.getName(), tier + 1);
-                Main.getInstance().saveGuildTiers();
-                EconomyResponse response =
-                        Main.getInstance().getEconomy().withdrawPlayer(player, tierUpgradeCost);
-                if (!response.transactionSuccess()) {
-                    Message.sendMessage(player, Message.COMMAND_UPGRADE_NOT_ENOUGH_MONEY);
+                    }
+                    guild.updateGuild("");
+                }
+
+
+                @Override
+                public void decline() {
+                    Message.sendMessage(player, Message.COMMAND_UPGRADE_CANCEL);
+                    Main.getInstance().getCommandHandler().removeAction(player);
+                }
+            });
+        } else {
+            if (Main.vault && tierUpgradeCost != -1) {
+                if (Main.getInstance().getEconomy().getBalance(player) < tierUpgradeCost) {
+                    Message.sendMessage(player, Message.COMMAND_ERROR_NOT_ENOUGH_MONEY);
                     return;
                 }
-                if (config.getBoolean("titles.enabled")) {
-                    try {
-                        String creation = "titles.events.guild-tier-upgrade";
-                        guild.sendTitle(ChatColor
-                                        .translateAlternateColorCodes('&',
-                                                config.getString(creation + ".title").replace("{tier}",
-                                                        Integer.toString(guild.getTier()))),
-                                ChatColor.translateAlternateColorCodes('&',
-                                        config.getString(creation + ".sub-title").replace("{tier}",
-                                                Integer.toString(guild.getTier()))),
-                                config.getInt(creation + ".fade-in") * 20,
-                                config.getInt(creation + ".stay") * 20,
-                                config.getInt(creation + ".fade-out") * 20);
-                    } catch (NoSuchMethodError error) {
-                        String creation = "titles.events.guild-tier-upgrade";
-                        guild.sendTitleOld(ChatColor.translateAlternateColorCodes('&',
-                                config.getString(creation + ".title")
-                                        .replace("{tier}", Integer.toString(guild.getTier()))),
-                                ChatColor.translateAlternateColorCodes('&',
-                                        config.getString(creation + ".sub-title")
-                                                .replace("{tier}",
-                                                        Integer.toString(guild.getTier()))));
+
+                Message.sendMessage(player, Message.COMMAND_UPGRADE_MONEY_WARNING
+                        .replace("{amount}", String.valueOf(tierUpgradeCost)));
+            } else {
+                Message.sendMessage(player, Message.COMMAND_CREATE_WARNING);
+            }
+
+            Main.getInstance().getCommandHandler().addAction(player, new ConfirmAction() {
+                @Override
+                public void accept() {
+                    Message.sendMessage(player, Message.COMMAND_UPGRADE_SUCCESS);
+                    Main.getInstance().guildTiersConfig.set(guild.getName(), tier + 1);
+                    Main.getInstance().saveGuildTiers();
+                    EconomyResponse response =
+                            Main.getInstance().getEconomy().withdrawPlayer(player, tierUpgradeCost);
+                    if (!response.transactionSuccess()) {
+                        Message.sendMessage(player, Message.COMMAND_UPGRADE_NOT_ENOUGH_MONEY);
+                        return;
                     }
+                    if (config.getBoolean("titles.enabled")) {
+                        try {
+                            String creation = "titles.events.guild-tier-upgrade";
+                            guild.sendTitle(ChatColor
+                                            .translateAlternateColorCodes('&',
+                                                    config.getString(creation + ".title").replace("{tier}",
+                                                            Integer.toString(guild.getTier()))),
+                                    ChatColor.translateAlternateColorCodes('&',
+                                            config.getString(creation + ".sub-title")
+                                                    .replace("{tier}",
+                                                            Integer.toString(guild.getTier()))),
+                                    config.getInt(creation + ".fade-in") * 20,
+                                    config.getInt(creation + ".stay") * 20,
+                                    config.getInt(creation + ".fade-out") * 20);
+                        } catch (NoSuchMethodError error) {
+                            String creation = "titles.events.guild-tier-upgrade";
+                            guild.sendTitleOld(ChatColor.translateAlternateColorCodes('&',
+                                    config.getString(creation + ".title")
+                                            .replace("{tier}", Integer.toString(guild.getTier()))),
+                                    ChatColor.translateAlternateColorCodes('&',
+                                            config.getString(creation + ".sub-title")
+                                                    .replace("{tier}",
+                                                            Integer.toString(guild.getTier()))));
+                        }
 
+                    }
+                    guild.updateGuild("");
                 }
-                guild.updateGuild("");
-            }
 
 
-            @Override
-            public void decline() {
-                Message.sendMessage(player, Message.COMMAND_UPGRADE_CANCEL);
-                Main.getInstance().getCommandHandler().removeAction(player);
-            }
-        });
+                @Override
+                public void decline() {
+                    Message.sendMessage(player, Message.COMMAND_UPGRADE_CANCEL);
+                    Main.getInstance().getCommandHandler().removeAction(player);
+                }
+            });
 
 
+        }
     }
-
 }
