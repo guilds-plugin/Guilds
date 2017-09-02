@@ -1,6 +1,14 @@
 package me.glaremasters.guilds.guild;
 
 import com.google.gson.annotations.Expose;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
+import java.util.logging.Level;
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.message.Message;
 import org.bukkit.Bukkit;
@@ -11,11 +19,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.*;
-import java.util.logging.Level;
 
 public class Guild implements InventoryHolder {
 
@@ -134,7 +137,8 @@ public class Guild implements InventoryHolder {
     }
 
     public String getTierName() {
-        return Main.getInstance().getConfig().getString("tier" + getTier() + ".name");
+        return ChatColor.translateAlternateColorCodes('&',
+                Main.getInstance().getConfig().getString("tier" + getTier() + ".name"));
     }
 
     public double getExpMultiplier() {
@@ -257,18 +261,21 @@ public class Guild implements InventoryHolder {
     }
 
     public void sendMessage(String message) {
-        members.stream().map(member -> Bukkit.getPlayer(member.getUniqueId())).filter(Objects::nonNull)
+        members.stream().map(member -> Bukkit.getPlayer(member.getUniqueId()))
+                .filter(Objects::nonNull)
                 .forEach(player -> Message.sendMessage(player, message));
     }
 
 
     public void sendTitle(String title, String subtitle, int fadeIn, int stay, int fadeOut) {
-        members.stream().map(member -> Bukkit.getPlayer(member.getUniqueId())).filter(Objects::nonNull)
+        members.stream().map(member -> Bukkit.getPlayer(member.getUniqueId()))
+                .filter(Objects::nonNull)
                 .forEach(player -> player.sendTitle(title, subtitle, fadeIn, stay, fadeOut));
     }
 
     public void sendTitleOld(String title, String subtitle) {
-        members.stream().map(member -> Bukkit.getPlayer(member.getUniqueId())).filter(Objects::nonNull)
+        members.stream().map(member -> Bukkit.getPlayer(member.getUniqueId()))
+                .filter(Objects::nonNull)
                 .forEach(player -> player.sendTitle(title, subtitle));
     }
 
