@@ -545,7 +545,6 @@ roles:
       toggle-guild: false
       transfer-guild: false
       upgrade-guild: false
-      use-bank: true
       withdraw-money: false
   3:
     name: "Member"
