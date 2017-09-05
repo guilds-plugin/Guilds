@@ -278,11 +278,6 @@ public class Main extends JavaPlugin {
             });
         }
 
-        if (getConfig().getBoolean("server-list")) {
-            getServer().getScheduler()
-                    .scheduleAsyncRepeatingTask(this, this::sendUpdate, 0L, 5000L); //5 minutes
-        }
-
         if (languageYamlFile.exists()) {
             return;
         } else {
@@ -422,29 +417,6 @@ public class Main extends JavaPlugin {
 
     }
 
-
-    private void sendUpdate() {
-        try {
-            URL url = new URL("http://glaremasters.me/add/");
-
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setDoOutput(true);
-            conn.setRequestMethod("POST");
-
-            try (DataOutputStream dos = new DataOutputStream(conn.getOutputStream())) {
-                URL checkIp = new URL("http://checkip.amazonaws.com");
-                BufferedReader in = new BufferedReader(new InputStreamReader(checkIp.openStream()));
-
-                String ip = in.readLine();
-                dos.write(String.format("ip=%s&port=%s", ip, getServer().getPort())
-                        .getBytes(StandardCharsets.UTF_8));
-
-                conn.getResponseCode();
-            }
-        } catch (Exception ex) {
-            return;
-        }
-    }
 
     private boolean setupEconomy() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
