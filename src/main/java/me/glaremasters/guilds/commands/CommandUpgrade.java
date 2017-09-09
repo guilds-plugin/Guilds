@@ -55,6 +55,10 @@ public class CommandUpgrade extends CommandBase {
             Main.getInstance().getCommandHandler().addAction(player, new ConfirmAction() {
                 @Override
                 public void accept() {
+                    if (Main.getInstance().getEconomy().getBalance(player) < tierUpgradeCost) {
+                        Message.sendMessage(player, Message.COMMAND_ERROR_NOT_ENOUGH_MONEY);
+                        return;
+                    }
                     Message.sendMessage(player, Message.COMMAND_UPGRADE_SUCCESS);
                     Main.getInstance().guildTiersConfig.set(guild.getName(), tier + 1);
                     Main.getInstance().saveGuildTiers();
@@ -113,6 +117,10 @@ public class CommandUpgrade extends CommandBase {
             Main.getInstance().getCommandHandler().addAction(player, new ConfirmAction() {
                 @Override
                 public void accept() {
+                    if (Main.getInstance().getEconomy().getBalance(player) < tierUpgradeCost) {
+                        Message.sendMessage(player, Message.COMMAND_ERROR_NOT_ENOUGH_MONEY);
+                        return;
+                    }
                     Message.sendMessage(player, Message.COMMAND_UPGRADE_SUCCESS);
                     Main.getInstance().guildTiersConfig.set(guild.getName(), tier + 1);
                     Main.getInstance().saveGuildTiers();
