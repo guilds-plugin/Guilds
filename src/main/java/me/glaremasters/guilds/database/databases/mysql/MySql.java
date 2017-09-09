@@ -217,6 +217,7 @@ public class MySql implements DatabaseProvider {
             execute("UPDATE guilds SET isPrivate=? WHERE name=?",
                     guild.getStatus().equalsIgnoreCase("private") ? 1 : 0, guild.getName());
             execute("UPDATE guilds SET tier=? WHERE name=?", guild.getTier(), guild.getName());
+            execute("UPDATE guilds SET balance=? WHERE name=?", guild.getBankBalance(), guild.getName());
         }).sync(() -> callback.call(true, null)).execute((exception, task) -> {
             if (exception != null) {
                 callback.call(false, exception);

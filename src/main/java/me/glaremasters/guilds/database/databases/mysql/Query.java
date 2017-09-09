@@ -5,7 +5,7 @@ class Query {
     static final String CREATE_TABLE_GUILDS =
             "CREATE TABLE IF NOT EXISTS guilds (" + "name VARCHAR(255) NOT NULL, "
                     + "prefix VARCHAR(255) NOT NULL, " +
-                    "tier INT, " +
+                    "tier INT, " + "balance DOUBLE, " +
                     "isPrivate TINYINT(1), " + "PRIMARY KEY (name))";
     static final String CREATE_TABLE_ALLIES =
             "CREATE TABLE IF NOT EXISTS guild_allies(" + "name VARCHAR(255) NOT NULL, " +
