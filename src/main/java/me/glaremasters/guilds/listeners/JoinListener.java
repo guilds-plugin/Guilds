@@ -16,6 +16,12 @@ public class JoinListener implements Listener {
     public void onJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
         Main.getInstance().getScoreboardHandler().show(player);
+        Guild guild1 = Guild.getGuild(player.getUniqueId());
+        Main.getInstance().getServer().getScheduler().scheduleSyncDelayedTask(Main.getInstance(), () -> {
+            Main.getInstance().getGuildHandler().disable();
+            Main.getInstance().getGuildHandler().enable();
+            guild1.updateGuild("");
+        }, 20L);
 
         if (Guild.getGuild(player.getUniqueId()) != null) {
             return;
