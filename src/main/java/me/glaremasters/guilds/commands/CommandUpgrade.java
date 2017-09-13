@@ -47,7 +47,9 @@ public class CommandUpgrade extends CommandBase {
         double tierUpgradeCost = guild.getTierCost();
         if (Main.getInstance().getConfig().getBoolean("use-bank-balance")) {
             if (balance < tierUpgradeCost) {
-                Message.sendMessage(player, Message.COMMAND_UPGRADE_NOT_ENOUGH_MONEY);
+                double needed = (tierUpgradeCost - balance);
+                Message.sendMessage(player, Message.COMMAND_UPGRADE_NOT_ENOUGH_MONEY
+                        .replace("{needed}", Double.toString(needed)));
                 return;
             }
             Message.sendMessage(player, Message.COMMAND_UPGRADE_MONEY_WARNING
@@ -104,7 +106,8 @@ public class CommandUpgrade extends CommandBase {
         } else {
             if (Main.vault && tierUpgradeCost != -1) {
                 if (Main.getInstance().getEconomy().getBalance(player) < tierUpgradeCost) {
-                    Message.sendMessage(player, Message.COMMAND_UPGRADE_NOT_ENOUGH_MONEY);
+                    double needed = (tierUpgradeCost - Main.getInstance().getEconomy().getBalance(player));
+                    Message.sendMessage(player, Message.COMMAND_UPGRADE_NOT_ENOUGH_MONEY.replace("{needed}", Double.toString(needed)));
                     return;
                 }
 

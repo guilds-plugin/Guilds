@@ -34,7 +34,7 @@ messages:
       money-warning: "&cEsti pe cale sa platesti {amount} pentru a upgrada breasla. (Scrie /guilds confirm pentru a continua)"
       cancel: "&cUpgrade anulat!"
       success: "&aAi upgradat cu succes breasla!"
-      not-enough-money: "&aNe pare rau! Nu ai destui bani pentru a upgrada breasla!"
+      not-enough-money: "&aNe pare rau! Nu ai destui bani pentru a upgrada breasla! You still need {needed}!"
     buff:
       not-enough-money: "&cNu ai destui bani pentru a cumpara acest Buff!"
     transfer:

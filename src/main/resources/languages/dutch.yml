@@ -33,7 +33,7 @@ messages:
       money-warning: "&cJe staat op het punt om {amount} uit te geven om je guild te upgraden. (Type /guilds confirm om verder te gaan)"
       cancel: "&cUpgrade geannuleerd!"
       success: "&aJe hebt je guild succesvol geupgrade!"
-      not-enough-money: "&aSorry! Je hebt hier niet genoeg geld voor!"
+      not-enough-money: "&aSorry! Je hebt hier niet genoeg geld voor! You still need {needed}!"
     buff:
       not-enough-money: "&cJe hebt niet genoeg geld om deze buff te kopen!"
     transfer:

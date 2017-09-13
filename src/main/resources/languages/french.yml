@@ -34,7 +34,7 @@ messages:
       money-warning: "&cVous allez dépenser {amount} pour améliorer votre guilde. (Faites /guilds confirm pour continuer)"
       cancel: "&cAmélioration annulée!"
       success: "&aVous avez amélioré votre guilde avec succés!"
-      not-enough-money: "&aDésolé! Vous n'avez pas assez d'argent pour améliorer votre guilde!"
+      not-enough-money: "&aDésolé! Vous n'avez pas assez d'argent pour améliorer votre guilde! You still need {needed}!"
     buff:
       not-enough-money: "&cVous n'avez pas assez d'argent pour acheter cette amélioration!"
     transfer:

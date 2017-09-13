@@ -34,7 +34,7 @@ messages:
       money-warning: "&cBạn sẽ mất {amount} để nâng cấp guild của bạn. (Bấm /guilds confirm để xác nhận)"
       cancel: "&cĐã hủy bỏ nâng cấp!"
       success: "&aBạn đã nâng cấp thành công guild của bạn!"
-      not-enough-money: "&aXin lỗi! Bạn không có đủ tiền để nâng cấp Guild của bạn!"
+      not-enough-money: "&aXin lỗi! Bạn không có đủ tiền để nâng cấp Guild của bạn! You still need {needed}!"
     buff:
       not-enough-money: "&cBạn không có đủ tiền để mua buff này!"
     transfer:

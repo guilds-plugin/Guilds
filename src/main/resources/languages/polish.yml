@@ -34,7 +34,7 @@ messages:
       money-warning: "&cCzy na pewno chcesz wydać {amount} aby awansować swoją gildię? (Wpisz /guilds confirm aby potwierdzić)"
       cancel: "&cAnulowano awansowanie!"
       success: "&aYPomyślnie awansowałeś swoją gildię!"
-      not-enough-money: "&aWybacz, ale nie masz wystarczająco pieniędzy, aby awansować swoją gildię"
+      not-enough-money: "&aWybacz, ale nie masz wystarczająco pieniędzy, aby awansować swoją gildię You still need {needed}!"
     buff:
       not-enough-money: "&cNie masz wystarczająco pieniędzy, aby kupić tego buff'a!"
     transfer:

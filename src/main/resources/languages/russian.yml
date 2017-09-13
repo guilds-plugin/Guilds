@@ -33,7 +33,7 @@ messages:
       money-warning: "&cСтоимость повышения уровня гильдии: {amount}. (Напишите /guild confirm для подтверждения)"
       cancel: "&cУровень гильдии не повышен."
       success: "&aУровень гильдии повышен."
-      not-enough-money: "&aУ Вас недостаточно денег для повышения уровня гильдии."
+      not-enough-money: "&aУ Вас недостаточно денег для повышения уровня гильдии. You still need {needed}!"
     buff:
       not-enough-money: "&cУ Вас недостаточно денег для покупки баффа"
     transfer:

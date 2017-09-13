@@ -34,7 +34,7 @@ messages:
       money-warning: "&cVoce esta prestes a gastar {amount} para fazer o upgrade de sua guild. (Escreva /guilds confirm para continuar)"
       cancel: "&cUpgrade cancelado!"
       success: "&aVoce fez o upgrade de sua guild!"
-      not-enough-money: "&aVoce nao tem dinheiro suficiente para fazer o upgrade de sua Guild!"
+      not-enough-money: "&aVoce nao tem dinheiro suficiente para fazer o upgrade de sua Guild! You still need {needed}!"
     buff:
       not-enough-money: "&cVoce nao tem dinheiro o suficiente para este buff!"
     transfer:

@@ -34,7 +34,7 @@ messages:
       money-warning: "&cChystas sa pouzit sumu {amount} na upgrade tvojho klanu. (Zadaj /guilds confirm pre pokracovanie)"
       cancel: "&cUpgrade zruseny!"
       success: "&aUspesne si vylepsil svoj klan!"
-      not-enough-money: "&aJe nam luto! Nemas dostatok penazi na upgrade tvojho klanu!"
+      not-enough-money: "&aJe nam luto! Nemas dostatok penazi na upgrade tvojho klanu! You still need {needed}!"
     buff:
       not-enough-money: "&cNemas dostatok penazi na kupu tohto vylepsenia!"
     transfer:

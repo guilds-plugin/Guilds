@@ -34,7 +34,7 @@ messages:
       money-warning: "&cDu er i ferd med Ã¥ bruke {amount} for Ã¥ oppgradere guilden. (Skriv /guilds confirm for Ã¥ fortsette)"
       cancel: "&cOppgradering kansellert!"
       success: "&aDu har oppgradert guilden!"
-      not-enough-money: "&aBeklager! Du har ikke nok penger for Ã¥ oppgradere guilden!"
+      not-enough-money: "&aBeklager! Du har ikke nok penger for Ã¥ oppgradere guilden! You still need {needed}!"
     buff:
       not-enough-money: "&cDu har ikke nok penger for Ã¥ kjÃ¸pe denne buffen!"
     transfer:

@@ -33,7 +33,7 @@ messages:
       money-warning: "&c你将花费 {amount} 来升级你的公会. (输入 /guilds 以确认你的操作"
       cancel: "&c升级取消!"
       success: "&a你成功升级了你的公会!"
-      not-enough-money: "&a对不起，你没有足够的钱升级你的公会!"
+      not-enough-money: "&a对不起，你没有足够的钱升级你的公会! You still need {needed}!"
     buff:
       not-enough-money: "&c你没有足够的钱买这个buff!"
     transfer:

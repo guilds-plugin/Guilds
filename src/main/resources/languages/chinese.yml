@@ -32,7 +32,7 @@ messages:
       money-warning: "&c你要花費 {amount} 來升級你的公會嗎?. (請輸入 /guilds confirm 來做確認)"
       cancel: "&c公會升級已經取消!"
       success: "&a你成功升級了你的公會!趕快招兵買馬壯大自己吧!"
-      not-enough-money: "&a抱歉 你沒有足夠的金錢來升級公會.."
+      not-enough-money: "&a抱歉 你沒有足夠的金錢來升級公會. You still need {needed}!."
     buff:
       not-enough-money: "&c你沒有足夠的金錢購買 增益效果"
     transfer:
