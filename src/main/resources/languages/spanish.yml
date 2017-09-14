@@ -1,0 +1,152 @@
+messages:
+  command:
+    error:
+      already-in-guild: "&cYa estas en el gremio!"
+      args: "&cArgumento invalido! ve /guilds help para mas ayuda"
+      console: "&cEste comando sÃ³lo puede ser ejecutado por un jugador!"
+      guild-not-found: "&cGremio '{input}&r&c' no puede ser encontrado!"
+      home-cooldown: "&cNo puede teletransportarse a su home del gremio por otro {time} segundos!"
+      invalid-role: "&cRol '{input}&r&c' no existe!"
+      invalid_number: "&c '{input}&r&c' no es un numero valido!"
+      no-guild: "&cNo estÃ¡s en un gremio!"
+      no-home-set: "&cNo home set! Usa &a/guild sethome &para establecer un home!"
+      not-enough-money: "&aLo sentimos! No tienes suficiente dinero para crear un gremio!"
+      not-found: "&cComando no encontrado! ve /guilds help para todos los comandos"
+      not-guildmaster: "&cNo eres el Guild Master de este gremio"
+      not-officer: "&cEl usuario debe ser un oficial en tu gremio!"
+      permission: "&cNo tienes permiso para hacer eso!"
+      player-not-found: "&cJugador '{player}&r&c' no existe o no esta en-linea!"
+      player-not-in-guild: "&cJugador '{player}&r&c' no esta en tu gremio!"
+      role-no-permission: "&cTu rango no es tan alto como para hacer eso!"
+      sethome-cooldown: "&cNo puedes establecer tu home del gremio por otro {time} segundos!"
+    killreward:
+      killer: "&a Has matado a otro jugador y has ganado {amount}!"
+      player-who-died: "&cHas sido matado por otro jugador y has perdido {amount}!"
+    bank:
+      balance: "&aEl banco de tu gremio tiene un saldo de {amount}."
+      deposit-success: "&aHas movido {amount} de su cuenta a su banco del gremio! Su nuevo saldo bancario es {balance}."
+      deposit-failure: "&cNo tienes suficiente para depositar la cantidad solicitada!"
+      withdraw-success: "&aHas movido {amount} de su banco del gremio a su cuenta! Su nuevo saldo bancario es {balance}."
+      withdraw-failure: "&cNo tiene suficiente para retirar la cantidad solicitada!"
+      bank-balance-limit: "&cNo puede depositar mÃ¡s dinero, limite bancario alcanzado. Mejora tu gremio para depositar mÃ¡s!"
+    upgrade:
+      tier-max: "&cNo puedes mejorar otra vez! Ya esta al maximo!"
+      money-warning: "&cEstas por gastar {amount} para mejorar tu gremio. (Escribe /guilds confirm para continuar)"
+      cancel: "&cMejora cancelada!"
+      success: "&aHas mejorado tu gremio correctamente!"
+      not-enough-money: "&aLo sentimos! No tienes el dinero suficiente para mejorar tu gremio!"
+    buff:
+      not-enough-money: "&cNo tienes suficiente dinero para comprar esta mejora!"
+    transfer:
+      newmaster: "&aTu eres el nuevo Guild Master de tu gremio!"
+      success: "&aEl gremio ha sido transferido!"
+    help:
+      invalid-page: "&cPagina no encontrada!"
+      message: "&f/guild {command} {arguments} &7- &f{description}"
+      next-page: "&7ver /guilds help {next-page} para mas informacion"
+    status:
+      error: "&cEl estatus del gremio debe ser publico o privado!"
+      successful: "&aEl estatus del gremio se establecio a {status}!"
+    role:
+      players: "{player} - {role}"
+    list:
+      format: "Los siguentes gremios son:"
+    create:
+      cancelled-sethome: "&cEl home del gremio no fue establecido!"
+      cancelled: "&cCreacion del gremio cancelado!"
+      error: "&cAlgo saliÃ³ mal mientras se creaba tu gremio!"
+      guild-home: "&aHas establecido el home de tu gremio!"
+      guild-name-taken: "&cEste nombre ya esta tomado!"
+      money-warning-sethome: "&c Estas apunto de gastar {amount} para establecer el home de tu gremio. (Escribe /guilds confirm para continuar)"
+      money-warning: "&c Estas seguro de que quieres gastar {amount} para crear un gremio? (Escribe /guilds confirm para confirmar)"
+      name-requirements: "&cEl nombre de tu gremio no cumple con los requerimientos! Tu solo puedes usar caracteres alfanumÃ©ricos y la longitud del nombre no puede exceder 64 caracteres"
+      successful: "&aGremio '{guild}&r&a' creado correctamente!"
+      warning: "&cEscribe /guilds confirm para crear tu gremio, escribe /guilds cancel para cancelar."
+    delete:
+      cancelled: "&cEliminaciÃ³n del Gremio cancelada!"
+      error: "&cAlgo saliÃ³ mal cuando se eliminaba tu gremio!"
+      successful: "&aEliminar '{guild}&r&a' correctamente!"
+      warning: "&cEscribe /guilds confirm para eliminar tu gremio, Escribe /guilds cancel para cancelar."
+    info:
+      header: "InformaciÃ³n para &b{guild}"
+      master: "Guild Master: &b{master}"
+      member-count: "Miembros: &b{members}/64&r (&bOnline: {members-online}&r)"
+      name: "Nombre: &b{guild}&r (&bPrefix: {prefix}&r)"
+      players: "Miembros en el gremio: &b[{players}]"
+      rank: "Tu rango: &b{rank}"
+    promote:
+      cannot-promote: "&cEste jugador no puede ser promovido!"
+      not-promotion: "&cNo esta promoviendo a este jugador!"
+      promoted: "&aHas sido promovido {player} de {old-rank} a {new-rank}!"
+      successful: "&aHas sido promovido de {old-rank} a {new-rank}!"
+    demote:
+      cannot-demote: "&cEste jugador no puede ser degradado!"
+      demoted: "&cHas sido degradado de {old-rank} a {new-rank}!"
+      not-demotion: "&cNo estas degradando a este judor!"
+      successful: "&aHas degradado {player} de {old-rank} a {new-rank}!"
+    chat:
+      message: "&7&l[Guild Chat]&r &b[{role}] {player}: {message}"
+      enabled: "&aChat del gremio activado"
+      disabled: "&cChat del gremio desactivado"
+    accept:
+      guild-full: "&cEste gremio esta lleno!"
+      not-invited: "&cEste gremio es privado / no has recivido una invitacion para este gremio."
+      player-joined: "&aJugador '{player}' se unio a tu gremio!"
+      successful: "&aTe has unido al gremio '{guild}&r&a' correctamente"
+    invite:
+      already-in-guild: "&cEste jugador ya estÃ¡ en tu gremio!"
+      already-invited: "&cEste jugador ya ha sido invitado!"
+      message: "&a{player} te ha invitado para su gremio, '{guild}'"
+      successful: "&aHas sido invitado {player} a tu gremio!"
+    decline:
+      success: "&aInvitacion al gremio declinada!"
+    leave:
+      cancelled: "&cDejando gremio cancelado!"
+      player-left: "&cJugador '{player}' dejo tu gremio!"
+      successful: "&aHas dejado tu gremio correctamente!"
+      warning-guildmaster: "&cTu eres el Guild Master de este gremio, dejar tu gremio significa que serÃ¡ eliminado. Escribe /guilds confirm para dejar y eliminar tu gremio, escribe /guilds cancel para cancelar."
+      warning: "&cEscribe /guilds confirm para dejar tu gremio, escribe /guilds cancel para cancelar."
+      guildmaster-left: "&cEl Guild Master, '{player}' a dejado el gremio. El gremio ahora va a ser disualto."
+    boot:
+      kicked: "&cHa sido expulsado por {kicker}!"
+      player-kicked: "&cJugador '{player}' ha sido expulsado por {kicker}!"
+      successful: "&aHa expulsado correctamente a {player} de tu gremio!"
+    prefix:
+      requirements: "&cLos prefijos de tu gremio no cumple los requerimientos! Solo puedes usar caracteres alfanumÃ©ricos y no debe tener mas de 6 caracteres"
+      successful: "&aGuild's prefix changed successfully!"
+    confirm:
+      error: "&cNo tienes acciones para confirmar!"
+    cancel:
+      error: "&cNo tienes acciones para cancelar!"
+    reload:
+      reloaded: "&aArchivo de configuraciÃ³n actualizado!"
+    update:
+      found: "&aSe ha conseguido una actualizaciÃ³n! ve a {url} para descargarla!"
+      not-found: "&cNo hay actualizaciones disponible!"
+    admin:
+      added-player: "&aJugador agregado al gremio"
+      delete-cancelled: "&cEliminacion del gremio cancelada!"
+      delete-error: "&cAlgo salio mal mientras se trataba de eliminar el gremio!"
+      delete-successful: "&cGremio eliminado correctamente!"
+      delete-warning: "&cEscribe /guilds confirm para eliminar el gremio, escribe /guilds cancel para cancelar."
+      player-already-in-guild: "&cEste jugador ya esta en un gremio!"
+      player-not-in-guild: "&cEl jugador no esta en este gremio!"
+      removed-player: "&aJugador removido de este gremio!"
+    ally:
+      accepted-target: "&a{guild}&r&a se ha aliado con nosotros!"
+      accepted: "&aEste gremio esta aliado con {guild}!"
+      already-allies: "&cYa estas aliado con {guild}!"
+      declined: "&c{guild}&r&c no quiere ser un aliado!"
+      guild-not-pending: "&cEste gremio no te ha mandado una solicitud de aliado!"
+      not-allies: "&cNo estas aliado con {guild}!"
+      removed-target: "&c{guild}&r&c ya no esta aliado con nosotros!"
+      removed: "&cEste gremio ya no esta aliado con {guild}!"
+      send-target: "&aHas recibido una solicitud de aliado de {guild}&r&a! Escribe /guilds ally accept {guild}&r&a para aceptar o escribe /guilds ally decline {guild}&r&a para declinar"
+      send: "&aSolicitud de aliado enviada!"
+    home:
+      damage-taken: "&cHa recibido dano!  Cancelando teletransportacion!"
+      teleported: "&aHa sido teletransportado al home de tu gremio!"
+      teleporting: "&cVa ser teletransportado en {count} segundos."
+  event:
+    join:
+      pending-invites: "&aTienes {number} de invitaciones pendientes de los gremios: &e{guilds}&r&a . Use /guild accept <name> o /guild deny <name> para unirte o declinar invitaciones!"
