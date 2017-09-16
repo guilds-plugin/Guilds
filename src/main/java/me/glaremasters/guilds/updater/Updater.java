@@ -15,7 +15,7 @@ public class Updater {
     private static final String USER_AGENT = "Guilds_Update_Checker";
     private static final String API_URL = "https://api.spiget.org/v2/resources";
     private static final String SPIGOT_URL = "https://www.spigotmc.org/resources";
-    private static int RESOURCE_ID = 13388;
+    private static int RESOURCE_ID = 46962;
     private static Gson gson = new Gson();
 
     public static void checkForUpdates(Callback<String, Exception> callback) {
