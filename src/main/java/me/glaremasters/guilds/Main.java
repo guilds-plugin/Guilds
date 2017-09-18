@@ -326,8 +326,6 @@ public class Main extends JavaPlugin {
         }
 
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "guild reload");
-        Bukkit.getConsoleSender().sendMessage(
-                "§a[Guilds] §3Guilds plugin page has been moved. If you are seeing this message. Please go to https://www.spigotmc.org/resources/guilds-premium.46962/ and read for more information.");
     }
 
     // TODO: Possibly make these into something like saveGuildData()?
