@@ -18,6 +18,8 @@ import org.bukkit.inventory.ItemStack;
  */
 public class TicketListener implements Listener {
 
+    // TODO: Make it so only 1 item is taken
+
     @EventHandler
     public void upgradeTicket(PlayerInteractEvent event) {
         FileConfiguration config = Main.getInstance().getConfig();

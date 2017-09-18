@@ -17,6 +17,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
  */
 public class SignListener implements Listener {
 
+    // TODO: Possibly auto-update all signs on a specific interval?
+
     @EventHandler
     public void onSignChange(SignChangeEvent event) {
         Player p = event.getPlayer();

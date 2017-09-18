@@ -5,18 +5,71 @@ import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.logging.Level;
+import java.util.stream.Stream;
 import me.glaremasters.guilds.api.Metrics;
-import me.glaremasters.guilds.commands.*;
+import me.glaremasters.guilds.commands.CommandAccept;
+import me.glaremasters.guilds.commands.CommandAdmin;
+import me.glaremasters.guilds.commands.CommandAlly;
+import me.glaremasters.guilds.commands.CommandBank;
+import me.glaremasters.guilds.commands.CommandBoot;
+import me.glaremasters.guilds.commands.CommandBuff;
+import me.glaremasters.guilds.commands.CommandBugReport;
+import me.glaremasters.guilds.commands.CommandCancel;
+import me.glaremasters.guilds.commands.CommandChat;
+import me.glaremasters.guilds.commands.CommandCheck;
+import me.glaremasters.guilds.commands.CommandConfirm;
+import me.glaremasters.guilds.commands.CommandCreate;
+import me.glaremasters.guilds.commands.CommandDecline;
+import me.glaremasters.guilds.commands.CommandDelete;
+import me.glaremasters.guilds.commands.CommandDemote;
+import me.glaremasters.guilds.commands.CommandGive;
+import me.glaremasters.guilds.commands.CommandHelp;
+import me.glaremasters.guilds.commands.CommandHome;
+import me.glaremasters.guilds.commands.CommandInfo;
+import me.glaremasters.guilds.commands.CommandInspect;
+import me.glaremasters.guilds.commands.CommandInvite;
+import me.glaremasters.guilds.commands.CommandLeave;
+import me.glaremasters.guilds.commands.CommandList;
+import me.glaremasters.guilds.commands.CommandPrefix;
+import me.glaremasters.guilds.commands.CommandPromote;
+import me.glaremasters.guilds.commands.CommandReload;
+import me.glaremasters.guilds.commands.CommandSetHome;
+import me.glaremasters.guilds.commands.CommandStatus;
+import me.glaremasters.guilds.commands.CommandTransfer;
+import me.glaremasters.guilds.commands.CommandUpdate;
+import me.glaremasters.guilds.commands.CommandUpgrade;
+import me.glaremasters.guilds.commands.CommandVault;
+import me.glaremasters.guilds.commands.CommandVersion;
 import me.glaremasters.guilds.commands.base.CommandHandler;
 import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.database.databases.json.Json;
 import me.glaremasters.guilds.database.databases.mysql.MySql;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.leaderboard.LeaderboardHandler;
-import me.glaremasters.guilds.listeners.*;
+import me.glaremasters.guilds.listeners.ChatListener;
+import me.glaremasters.guilds.listeners.ClickListener;
+import me.glaremasters.guilds.listeners.DamageMultiplierListener;
+import me.glaremasters.guilds.listeners.GuildBuffListener;
+import me.glaremasters.guilds.listeners.GuildChatListener;
+import me.glaremasters.guilds.listeners.GuildVaultListener;
+import me.glaremasters.guilds.listeners.JoinListener;
+import me.glaremasters.guilds.listeners.MobDeathListener;
+import me.glaremasters.guilds.listeners.NameTagListener;
+import me.glaremasters.guilds.listeners.PlayerDamageListener;
+import me.glaremasters.guilds.listeners.PlayerDeathListener;
+import me.glaremasters.guilds.listeners.PlayerSyncListener;
+import me.glaremasters.guilds.listeners.SignListener;
+import me.glaremasters.guilds.listeners.TablistListener;
+import me.glaremasters.guilds.listeners.TicketListener;
 import me.glaremasters.guilds.placeholders.Placeholders;
 import me.glaremasters.guilds.scoreboard.GuildScoreboardHandler;
-import me.glaremasters.guilds.updater.Updater;
+import me.glaremasters.guilds.updater.SpigotUpdater;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -25,17 +78,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.util.logging.Level;
-import java.util.stream.Stream;
-
-//FIXME: Rename to Guilds
 public class Main extends JavaPlugin {
 
     public static String PREFIX;
@@ -63,9 +105,6 @@ public class Main extends JavaPlugin {
     private CommandHandler commandHandler;
     private LeaderboardHandler leaderboardHandler;
     private GuildScoreboardHandler scoreboardHandler;
-//    private CommandManager commandManager;
-
-//    private Map<CommandSender, ConfirmAction> confirmationActions = new HashMap<>();
 
     public static <T> TaskChain<T> newChain() {
         return taskChainFactory.newChain();
@@ -75,9 +114,6 @@ public class Main extends JavaPlugin {
         return taskChainFactory.newSharedChain(name);
     }
 
-//    public CommandManager getCommandManager() {
-//        return commandManager;
-//    }
 
     public static long getCreationTime() {
         return creationTime / 1000;
@@ -90,28 +126,8 @@ public class Main extends JavaPlugin {
     @SuppressWarnings("deprecation")
     @Override
     public void onEnable() {
-        // Not working at all
-//        commandManager = new BukkitCommandManager(this);
-//
-//        commandManager.getCommandContexts().registerContext(Guild.class, c -> {
-//            String arg = c.popFirstArg();
-//            Guild guild = Guild.getGuild(arg);
-//            if (guild == null) {
-//                throw new InvalidCommandArgument(GuildMessageKeys.INVALID_GUILD_NAME, "{name}", arg);
-//            }
-//            return guild;
-//        });
-//
-//        commandManager.getCommandContexts().registerIssuerAwareContext(ConfirmAction.class, c -> {
-//            CommandSender issuer = c.getIssuer().getIssuer();
-//            ConfirmAction action = confirmationActions.remove(issuer);
-//            if(action == null) {
-//                throw new InvalidCommandArgument(GuildMessageKeys.NO_QUEUED_ACTION);
-//            }
-//            return action;
-//        });
-//
-//        commandManager.registerCommand(new GuildsCommands());
+
+        // TODO: Change each language to their own variable or something to that affect so that new languages can be added without needs to delete the config folder.
 
         File languageFolder = new File(getDataFolder(), "languages");
         if (!languageFolder.exists()) {
@@ -130,6 +146,9 @@ public class Main extends JavaPlugin {
         taskChainFactory = BukkitTaskChainFactory.create(this);
 
         setDatabaseType();
+
+        // TODO: Clean this up and make it function easier.
+
         if (!getConfig().isSet("version") || getConfig().getInt("version") != 16) {
             if (getConfig().getBoolean("auto-update-config")) {
                 File oldfile = new File(this.getDataFolder(), "config.yml");
@@ -216,6 +235,8 @@ public class Main extends JavaPlugin {
 
         ).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
 
+        // TODO: Possibly change these all to a switch statement?
+
         if (getConfig().getBoolean("guild-signs")) {
             getServer().getPluginManager().registerEvents(new SignListener(), this);
         }
@@ -267,16 +288,19 @@ public class Main extends JavaPlugin {
         }
 
         if (getConfig().getBoolean("updater.check")) {
-            Updater.checkForUpdates((result, exception) -> {
-                if (result != null) {
-                    getLogger().log(Level.INFO,
-                            "A new update for Guilds has been found! Go to " + result
-                                    + " to download it!");
-                } else {
-                    getLogger().log(Level.INFO, "No updates found!");
+            SpigotUpdater updater = new SpigotUpdater(this, 46962);
+            try {
+                if (updater.checkForUpdates()) {
+                    getLogger().info("An update was found! New version: " + updater.getLatestVersion()
+                            + " download: " + updater.getResourceURL());
                 }
-            });
+            } catch (Exception e) {
+                getLogger().info("Could not check for updates! Stacktrace:");
+                e.printStackTrace();
+            }
         }
+
+        // TODO: Clean this section up with a switch statement or something.
 
         if (languageYamlFile.exists()) {
             return;
@@ -302,12 +326,11 @@ public class Main extends JavaPlugin {
         }
 
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "guild reload");
-
+        Bukkit.getConsoleSender().sendMessage(
+                "§a[Guilds] §3Guilds plugin page has been moved. If you are seeing this message. Please go to https://www.spigotmc.org/resources/guilds-premium.46962/ and read for more information.");
     }
 
-//    public void queueConfirmationAction(CommandSender sender, ConfirmAction action) {
-//        confirmationActions.put(sender, action);
-//    }
+    // TODO: Possibly make these into something like saveGuildData()?
 
     public void saveGuildHomes() {
         try {
@@ -389,6 +412,7 @@ public class Main extends JavaPlugin {
         database.initialize();
     }
 
+    // TODO: Find a way to organize these.
 
     private void initializePlaceholder() {
         if (Bukkit.getPluginManager().isPluginEnabled("MVdWPlaceholderAPI")) {
@@ -418,7 +442,6 @@ public class Main extends JavaPlugin {
 
     }
 
-
     private boolean setupEconomy() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
             return false;
@@ -432,6 +455,8 @@ public class Main extends JavaPlugin {
         econ = rsp.getProvider();
         return econ != null;
     }
+
+    // TODO: Do I even use this stuff?
 
     public LeaderboardHandler getLeaderboardHandler() {
         return leaderboardHandler;
