@@ -2,8 +2,7 @@ package me.glaremasters.guilds.commands;
 
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.commands.base.CommandBase;
-import me.glaremasters.guilds.message.Message;
-import me.glaremasters.guilds.updater.Updater;
+import me.glaremasters.guilds.updater.SpigotUpdater;
 import org.bukkit.command.CommandSender;
 
 public class CommandUpdate extends CommandBase {
@@ -15,12 +14,16 @@ public class CommandUpdate extends CommandBase {
     }
 
     public void execute(CommandSender sender, String[] args) {
-        Updater.checkForUpdates((result, exception) -> {
-            if (result != null) {
-                Message.sendMessage(sender, Message.COMMAND_UPDATE_FOUND.replace("{url}", result));
-            } else {
-                Message.sendMessage(sender, Message.COMMAND_UPDATE_NOT_FOUND);
+        SpigotUpdater updater = new SpigotUpdater(Main.getInstance(), 46962);
+        try {
+            if (updater.checkForUpdates()) {
+                sender.sendMessage("An update was found! New version: " + updater.getLatestVersion()
+                        + " download: " + updater.getResourceURL());
             }
-        });
+        } catch (Exception e) {
+            sender.sendMessage("Could not check for updates!");
+            e.printStackTrace();
+        }
     }
 }
+

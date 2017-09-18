@@ -69,7 +69,7 @@ import me.glaremasters.guilds.listeners.TablistListener;
 import me.glaremasters.guilds.listeners.TicketListener;
 import me.glaremasters.guilds.placeholders.Placeholders;
 import me.glaremasters.guilds.scoreboard.GuildScoreboardHandler;
-import me.glaremasters.guilds.updater.Updater;
+import me.glaremasters.guilds.updater.SpigotUpdater;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -288,15 +288,16 @@ public class Main extends JavaPlugin {
         }
 
         if (getConfig().getBoolean("updater.check")) {
-            Updater.checkForUpdates((result, exception) -> {
-                if (result != null) {
-                    getLogger().log(Level.INFO,
-                            "A new update for Guilds has been found! Go to " + result
-                                    + " to download it!");
-                } else {
-                    getLogger().log(Level.INFO, "No updates found!");
+            SpigotUpdater updater = new SpigotUpdater(this, 46962);
+            try {
+                if (updater.checkForUpdates()) {
+                    getLogger().info("An update was found! New version: " + updater.getLatestVersion()
+                            + " download: " + updater.getResourceURL());
                 }
-            });
+            } catch (Exception e) {
+                getLogger().info("Could not check for updates! Stacktrace:");
+                e.printStackTrace();
+            }
         }
 
         // TODO: Clean this section up with a switch statement or something.
@@ -325,7 +326,8 @@ public class Main extends JavaPlugin {
         }
 
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "guild reload");
-
+        Bukkit.getConsoleSender().sendMessage(
+                "§a[Guilds] §3Guilds plugin page has been moved. If you are seeing this message. Please go to https://www.spigotmc.org/resources/guilds-premium.46962/ and read for more information.");
     }
 
     // TODO: Possibly make these into something like saveGuildData()?
