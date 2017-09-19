@@ -57,8 +57,10 @@ public class CommandUpgrade extends CommandBase {
             Main.getInstance().getCommandHandler().addAction(player, new ConfirmAction() {
                 @Override
                 public void accept() {
-                    if (Main.getInstance().getEconomy().getBalance(player) < tierUpgradeCost) {
-                        Message.sendMessage(player, Message.COMMAND_UPGRADE_NOT_ENOUGH_MONEY);
+                    if (balance < tierUpgradeCost) {
+                        double needed = (tierUpgradeCost - balance);
+                        Message.sendMessage(player, Message.COMMAND_UPGRADE_NOT_ENOUGH_MONEY
+                                .replace("{needed}", Double.toString(needed)));
                         return;
                     }
                     Message.sendMessage(player, Message.COMMAND_UPGRADE_SUCCESS);
