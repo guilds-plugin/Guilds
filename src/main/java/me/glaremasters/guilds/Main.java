@@ -302,24 +302,11 @@ public class Main extends JavaPlugin {
         if (languageYamlFile.exists()) {
             return;
         } else {
-
-            this.saveResource("languages/english.yml", false);
-            this.saveResource("languages/chinese.yml", false);
-            this.saveResource("languages/french.yml", false);
-            this.saveResource("languages/dutch.yml", false);
-            this.saveResource("languages/japanese.yml", false);
-            this.saveResource("languages/swedish.yml", false);
-            this.saveResource("languages/hungarian.yml", false);
-            this.saveResource("languages/romanian.yml", false);
-            this.saveResource("languages/slovak.yml", false);
-            this.saveResource("languages/russian.yml", false);
-            this.saveResource("languages/simplifiedchinese.yml", false);
-            this.saveResource("languages/polish.yml", false);
-            this.saveResource("languages/portuguese.yml", false);
-            this.saveResource("languages/german.yml", false);
-            this.saveResource("languages/vietnamese.yml", false);
-            this.saveResource("languages/norwegian.yml", false);
-            this.saveResource("languages/spanish.yml", false);
+            Stream.of(
+                    "english", "chinese", "french", "dutch", "japanese", "swedish", "hungarian", "romanian", "slovak",
+                    "russian", "simplifiedchinese", "polish", "portuguese", "german", "vietnamese", "norwegian",
+                    "spanish"
+            ).forEach(l -> this.saveResource("languages/" + l + ".yml", false));
         }
 
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "guild reload");
