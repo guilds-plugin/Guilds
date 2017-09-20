@@ -67,7 +67,7 @@ public class CommandBank extends CommandBase {
                     .replace("{amount}", String.valueOf(Double.valueOf(args[1])), "{balance}",
                             String.valueOf(balance + Double.valueOf(args[1]))));
 
-            Main.getInstance().saveGuildBanks();
+            Main.getInstance().saveGuildData();
             guild.updateGuild("");
 
         }
@@ -99,7 +99,7 @@ public class CommandBank extends CommandBase {
 
             Main.getInstance().guildBanksConfig
                     .set(guild.getName(), balance - Double.valueOf(args[1]));
-            Main.getInstance().saveGuildBanks();
+            Main.getInstance().saveGuildData();
             guild.updateGuild("");
         }
 

@@ -270,10 +270,7 @@ public class Main extends JavaPlugin {
             }
         });
 
-        this.saveGuildHomes();
-        this.saveGuildStatus();
-        this.saveGuildTiers();
-        this.saveGuildBanks();
+        this.saveGuildData();
 
         try {
             BasicFileAttributes attr = Files
@@ -330,38 +327,14 @@ public class Main extends JavaPlugin {
 
     // TODO: Possibly make these into something like saveGuildData()?
 
-    public void saveGuildHomes() {
+    public void saveGuildData() {
         try {
             Main.getInstance().guildHomesConfig.save(Main.getInstance().guildhomes);
-        } catch (IOException e) {
-            getLogger().log(Level.WARNING, "Could not create Guild's Home config!");
-            e.printStackTrace();
-        }
-    }
-
-    public void saveGuildStatus() {
-        try {
             Main.getInstance().guildStatusConfig.save(Main.getInstance().guildstatus);
-        } catch (IOException e) {
-            getLogger().log(Level.WARNING, "Could not create Guild's Status config!");
-            e.printStackTrace();
-        }
-    }
-
-    public void saveGuildBanks() {
-        try {
             Main.getInstance().guildBanksConfig.save(Main.getInstance().guildbanks);
-        } catch (IOException e) {
-            getLogger().log(Level.WARNING, "Could not create Guild's Banks config!");
-            e.printStackTrace();
-        }
-    }
-
-    public void saveGuildTiers() {
-        try {
             Main.getInstance().guildTiersConfig.save(Main.getInstance().guildtiers);
         } catch (IOException e) {
-            getLogger().log(Level.WARNING, "Could not create Guild's Tier config!");
+            getLogger().log(Level.WARNING, "Could not create Guild's Home config!");
             e.printStackTrace();
         }
     }

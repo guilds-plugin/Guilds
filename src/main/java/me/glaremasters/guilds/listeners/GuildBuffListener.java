@@ -58,7 +58,7 @@ public class GuildBuffListener implements Listener {
 
                     Main.getInstance().guildBanksConfig
                             .set(guild.getName(), balance - buff.cost);
-                    Main.getInstance().saveGuildBanks();
+                    Main.getInstance().saveGuildData();
                     guild.updateGuild("");
                 }
                 else {

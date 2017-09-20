@@ -54,9 +54,7 @@ public class CommandLeave extends CommandBase {
                             .set(guild.getName(), 1);
                     Main.getInstance().guildHomesConfig
                             .set(guild.getName(), 0);
-                    Main.getInstance().saveGuildBanks();
-                    Main.getInstance().saveGuildTiers();
-                    Main.getInstance().saveGuildHomes();
+                    Main.getInstance().saveGuildData();
                     if (removeEvent.isCancelled()) {
                         return;
                     }

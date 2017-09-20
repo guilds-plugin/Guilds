@@ -91,8 +91,7 @@ public class CommandCreate extends CommandBase {
                         Main.getInstance().getScoreboardHandler().show(player);
                         Main.getInstance().guildStatusConfig.set(guild.getName(), "Private");
                         Main.getInstance().guildTiersConfig.set(guild.getName(), 1);
-                        Main.getInstance().saveGuildStatus();
-                        Main.getInstance().saveGuildTiers();
+                        Main.getInstance().saveGuildData();
 
                         if (config.getBoolean("titles.enabled")) {
                             try {

@@ -61,9 +61,7 @@ public class CommandDelete extends CommandBase {
                                 .set(guild.getName(), 1);
                         Main.getInstance().guildHomesConfig
                                 .set(guild.getName(), 0);
-                        Main.getInstance().saveGuildBanks();
-                        Main.getInstance().saveGuildTiers();
-                        Main.getInstance().saveGuildHomes();
+                        Main.getInstance().saveGuildData();
                     } else {
                         Message.sendMessage(player, Message.COMMAND_DELETE_ERROR);
 

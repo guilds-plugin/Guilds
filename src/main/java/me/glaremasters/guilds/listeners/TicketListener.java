@@ -45,7 +45,7 @@ public class TicketListener implements Listener {
             event.setCancelled(true);
             Message.sendMessage(player, Message.COMMAND_UPGRADE_SUCCESS);
             Main.getInstance().guildTiersConfig.set(guild.getName(), tier + 1);
-            Main.getInstance().saveGuildTiers();
+            Main.getInstance().saveGuildData();
             guild.updateGuild("");
         }
     }

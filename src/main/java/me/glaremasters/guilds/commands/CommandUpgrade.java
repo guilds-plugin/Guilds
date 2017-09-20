@@ -65,10 +65,9 @@ public class CommandUpgrade extends CommandBase {
                     }
                     Message.sendMessage(player, Message.COMMAND_UPGRADE_SUCCESS);
                     Main.getInstance().guildTiersConfig.set(guild.getName(), tier + 1);
-                    Main.getInstance().saveGuildTiers();
                     Main.getInstance().guildBanksConfig
                             .set(guild.getName(), balance - tierUpgradeCost);
-                    Main.getInstance().saveGuildBanks();
+                    Main.getInstance().saveGuildData();
                     if (config.getBoolean("titles.enabled")) {
                         try {
                             String creation = "titles.events.guild-tier-upgrade";
@@ -128,7 +127,7 @@ public class CommandUpgrade extends CommandBase {
                     }
                     Message.sendMessage(player, Message.COMMAND_UPGRADE_SUCCESS);
                     Main.getInstance().guildTiersConfig.set(guild.getName(), tier + 1);
-                    Main.getInstance().saveGuildTiers();
+                    Main.getInstance().saveGuildData();
                     EconomyResponse response =
                             Main.getInstance().getEconomy().withdrawPlayer(player, tierUpgradeCost);
                     if (!response.transactionSuccess()) {
