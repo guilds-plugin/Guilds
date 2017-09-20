@@ -29,10 +29,10 @@ public class CommandCreate extends CommandBase {
             return;
         }
 
-        final FileConfiguration config = Main.getInstance().getConfig();
-        int minLength = Main.getInstance().getConfig().getInt("name.min-length");
-        int maxLength = Main.getInstance().getConfig().getInt("name.max-length");
-        String regex = Main.getInstance().getConfig().getString("name.regex");
+        FileConfiguration config = Main.getInstance().getConfig();
+        int minLength = config.getInt("name.min-length");
+        int maxLength = config.getInt("name.max-length");
+        String regex = config.getString("name.regex");
 
         if (args[0].length() < minLength || args[0].length() > maxLength || !args[0]
                 .matches(regex)) {
@@ -72,7 +72,7 @@ public class CommandCreate extends CommandBase {
                     return;
                 }
 
-                if (config.getBoolean("require-money")) {
+                if (Main.getInstance().getConfig().getBoolean("require-money")) {
 
                     EconomyResponse response =
                             Main.getInstance().getEconomy().withdrawPlayer(player, requiredMoney);

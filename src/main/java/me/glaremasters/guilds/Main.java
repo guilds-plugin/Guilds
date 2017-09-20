@@ -316,12 +316,12 @@ public class Main extends JavaPlugin {
 
     public void saveGuildData() {
         try {
-            Main.getInstance().guildHomesConfig.save(Main.getInstance().guildhomes);
-            Main.getInstance().guildStatusConfig.save(Main.getInstance().guildstatus);
-            Main.getInstance().guildBanksConfig.save(Main.getInstance().guildbanks);
-            Main.getInstance().guildTiersConfig.save(Main.getInstance().guildtiers);
+            guildHomesConfig.save(guildhomes);
+            guildStatusConfig.save(guildstatus);
+            guildBanksConfig.save(guildbanks);
+            guildTiersConfig.save(guildtiers);
         } catch (IOException e) {
-            getLogger().log(Level.WARNING, "Could not create Guild's Home config!");
+            getLogger().log(Level.WARNING, "Could not save Guild Data");
             e.printStackTrace();
         }
     }

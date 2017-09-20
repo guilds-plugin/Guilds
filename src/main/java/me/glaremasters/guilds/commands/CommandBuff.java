@@ -9,6 +9,7 @@ import me.glaremasters.guilds.message.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -59,12 +60,10 @@ public class CommandBuff extends CommandBase {
         haste.add("");
         haste.add(ChatColor.translateAlternateColorCodes('&',
                 Main.getInstance().getConfig().getString("buff.description.price") + Main
-                        .getInstance()
-                        .getConfig().getInt("buff.price.haste")));
+                        .getInstance().getConfig().getInt("buff.price.haste")));
         haste.add(ChatColor.translateAlternateColorCodes('&',
                 Main.getInstance().getConfig().getString("buff.description.length") + Main
-                        .getInstance()
-                        .getConfig().getInt("buff.time.haste")));
+                        .getInstance().getConfig().getInt("buff.time.haste")));
         buff.setItem(0, createItemStack(Material.FEATHER,
                 Main.getInstance().getConfig().getString("buff.name.haste"), haste));
 
@@ -75,12 +74,10 @@ public class CommandBuff extends CommandBase {
         speed.add("");
         speed.add(ChatColor.translateAlternateColorCodes('&',
                 Main.getInstance().getConfig().getString("buff.description.price") + Main
-                        .getInstance()
-                        .getConfig().getInt("buff.price.speed")));
+                        .getInstance().getConfig().getInt("buff.price.speed")));
         speed.add(ChatColor.translateAlternateColorCodes('&',
                 Main.getInstance().getConfig().getString("buff.description.length") + Main
-                        .getInstance()
-                        .getConfig().getInt("buff.time.speed")));
+                        .getInstance().getConfig().getInt("buff.time.speed")));
         buff.setItem(4, createItemStack(Material.SUGAR,
                 Main.getInstance().getConfig().getString("buff.name.speed"), speed));
 
@@ -92,12 +89,10 @@ public class CommandBuff extends CommandBase {
         fireResistance.add("");
         fireResistance.add(ChatColor.translateAlternateColorCodes('&',
                 Main.getInstance().getConfig().getString("buff.description.price") + Main
-                        .getInstance()
-                        .getConfig().getInt("buff.price.fire-resistance")));
+                        .getInstance().getConfig().getInt("buff.price.fire-resistance")));
         fireResistance.add(ChatColor.translateAlternateColorCodes('&',
                 Main.getInstance().getConfig().getString("buff.description.length") + Main
-                        .getInstance()
-                        .getConfig().getInt("buff.time.fire-resistance")));
+                        .getInstance().getConfig().getInt("buff.time.fire-resistance")));
         buff.setItem(2, createItemStack(Material.BLAZE_POWDER,
                 Main.getInstance().getConfig().getString("buff.name.fire-resistance"),
                 fireResistance));
@@ -110,12 +105,10 @@ public class CommandBuff extends CommandBase {
         nightvision.add("");
         nightvision.add(ChatColor.translateAlternateColorCodes('&',
                 Main.getInstance().getConfig().getString("buff.description.price") + Main
-                        .getInstance()
-                        .getConfig().getInt("buff.price.night-vision")));
+                        .getInstance().getConfig().getInt("buff.price.night-vision")));
         nightvision.add(ChatColor.translateAlternateColorCodes('&',
                 Main.getInstance().getConfig().getString("buff.description.length") + Main
-                        .getInstance()
-                        .getConfig().getInt("buff.time.night-vision")));
+                        .getInstance().getConfig().getInt("buff.time.night-vision")));
         buff.setItem(6, createItemStack(Material.REDSTONE_TORCH_ON,
                 Main.getInstance().getConfig().getString("buff.name.night-vision"), nightvision));
 
@@ -127,12 +120,10 @@ public class CommandBuff extends CommandBase {
         invisibility.add("");
         invisibility.add(ChatColor.translateAlternateColorCodes('&',
                 Main.getInstance().getConfig().getString("buff.description.price") + Main
-                        .getInstance()
-                        .getConfig().getInt("buff.price.invisibility")));
+                        .getInstance().getConfig().getInt("buff.price.invisibility")));
         invisibility.add(ChatColor.translateAlternateColorCodes('&',
                 Main.getInstance().getConfig().getString("buff.description.length") + Main
-                        .getInstance()
-                        .getConfig().getInt("buff.time.invisibility")));
+                        .getInstance().getConfig().getInt("buff.time.invisibility")));
         buff.setItem(8, createItemStack(Material.EYE_OF_ENDER,
                 Main.getInstance().getConfig().getString("buff.name.invisibility"), invisibility));
 
@@ -143,12 +134,10 @@ public class CommandBuff extends CommandBase {
         strength.add("");
         strength.add(ChatColor.translateAlternateColorCodes('&',
                 Main.getInstance().getConfig().getString("buff.description.price") + Main
-                        .getInstance()
-                        .getConfig().getInt("buff.price.strength")));
+                        .getInstance().getConfig().getInt("buff.price.strength")));
         strength.add(ChatColor.translateAlternateColorCodes('&',
                 Main.getInstance().getConfig().getString("buff.description.length") + Main
-                        .getInstance()
-                        .getConfig().getInt("buff.time.strength")));
+                        .getInstance().getConfig().getInt("buff.time.strength")));
         buff.setItem(1, createItemStack(Material.DIAMOND_SWORD,
                 Main.getInstance().getConfig().getString("buff.name.strength"), strength));
 
@@ -159,12 +148,10 @@ public class CommandBuff extends CommandBase {
         jump.add("");
         jump.add(ChatColor.translateAlternateColorCodes('&',
                 Main.getInstance().getConfig().getString("buff.description.price") + Main
-                        .getInstance()
-                        .getConfig().getInt("buff.price.jump")));
+                        .getInstance().getConfig().getInt("buff.price.jump")));
         jump.add(ChatColor.translateAlternateColorCodes('&',
                 Main.getInstance().getConfig().getString("buff.description.length") + Main
-                        .getInstance()
-                        .getConfig().getInt("buff.time.jump")));
+                        .getInstance().getConfig().getInt("buff.time.jump")));
         buff.setItem(3, createItemStack(Material.DIAMOND_BOOTS,
                 Main.getInstance().getConfig().getString("buff.name.jump"), jump));
 
@@ -176,12 +163,10 @@ public class CommandBuff extends CommandBase {
         waterbreathing.add("");
         waterbreathing.add(ChatColor.translateAlternateColorCodes('&',
                 Main.getInstance().getConfig().getString("buff.description.price") + Main
-                        .getInstance()
-                        .getConfig().getInt("buff.price.water-breathing")));
+                        .getInstance().getConfig().getInt("buff.price.water-breathing")));
         waterbreathing.add(ChatColor.translateAlternateColorCodes('&',
                 Main.getInstance().getConfig().getString("buff.description.length") + Main
-                        .getInstance()
-                        .getConfig().getInt("buff.time.water-breathing")));
+                        .getInstance().getConfig().getInt("buff.time.water-breathing")));
         buff.setItem(5, createItemStack(Material.BUCKET,
                 Main.getInstance().getConfig().getString("buff.name.water-breathing"),
                 waterbreathing));
@@ -193,12 +178,10 @@ public class CommandBuff extends CommandBase {
         regeration.add("");
         regeration.add(ChatColor.translateAlternateColorCodes('&',
                 Main.getInstance().getConfig().getString("buff.description.price") + Main
-                        .getInstance()
-                        .getConfig().getInt("buff.price.regeration")));
+                        .getInstance().getConfig().getInt("buff.price.regeration")));
         regeration.add(ChatColor.translateAlternateColorCodes('&',
                 Main.getInstance().getConfig().getString("buff.description.length") + Main
-                        .getInstance()
-                        .getConfig().getInt("buff.time.regeration")));
+                        .getInstance().getConfig().getInt("buff.time.regeration")));
         buff.setItem(7, createItemStack(Material.EMERALD,
                 Main.getInstance().getConfig().getString("buff.name.regeration"), regeration));
 
