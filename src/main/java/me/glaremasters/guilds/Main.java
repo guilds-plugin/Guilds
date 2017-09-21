@@ -185,54 +185,19 @@ public class Main extends JavaPlugin {
         getCommand("guild").setExecutor(commandHandler);
 
         Stream.of(
-                new CommandAccept(),
-                new CommandAdmin(),
-                new CommandAlly(),
-                new CommandBoot(),
-                new CommandBuff(),
-                new CommandBugReport(),
-                new CommandCancel(),
-                new CommandChat(),
-                new CommandCheck(),
-                new CommandConfirm(),
-                new CommandCreate(),
-                new CommandDecline(),
-                new CommandDelete(),
-                new CommandDemote(),
-                new CommandHelp(),
-                new CommandHome(),
-                new CommandInfo(),
-                new CommandInspect(),
-                new CommandInvite(),
-                new CommandLeave(),
-                new CommandList(),
-                new CommandPrefix(),
-                new CommandPromote(),
-                new CommandReload(),
-                new CommandSetHome(),
-                new CommandStatus(),
-                new CommandTransfer(),
-                new CommandUpdate(),
-                new CommandVault(),
-                new CommandVersion(),
-                new CommandUpgrade(),
-                new CommandBank(),
-                new CommandGive()
+                new CommandAccept(), new CommandAdmin(), new CommandAlly(), new CommandBoot(), new CommandBuff(),
+                new CommandBugReport(), new CommandCancel(), new CommandChat(), new CommandCheck(), new CommandConfirm(),
+                new CommandCreate(), new CommandDecline(), new CommandDelete(), new CommandDemote(), new CommandHelp(),
+                new CommandHome(), new CommandInfo(), new CommandInspect(), new CommandInvite(), new CommandLeave(),
+                new CommandList(), new CommandPrefix(), new CommandPromote(), new CommandReload(), new CommandSetHome(),
+                new CommandStatus(), new CommandTransfer(), new CommandUpdate(), new CommandVault(), new CommandVersion(),
+                new CommandUpgrade(), new CommandBank(), new CommandGive()
         ).forEach(commandHandler::register);
 
         Stream.of(
-                new JoinListener(),
-                new ChatListener(),
-                new CommandHome(),
-                new ClickListener(),
-                new GuildVaultListener(),
-                new GuildBuffListener(),
-                new GuildChatListener(),
-                new MobDeathListener(),
-                new PlayerDamageListener(),
-                new DamageMultiplierListener(),
-                new PlayerSyncListener()
-
+                new JoinListener(), new ChatListener(), new CommandHome(), new ClickListener(), new GuildVaultListener(),
+                new GuildBuffListener(), new GuildChatListener(), new MobDeathListener(), new PlayerDamageListener(),
+                new DamageMultiplierListener(), new PlayerSyncListener()
         ).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
 
         // TODO: Possibly change these all to a switch statement?
