@@ -227,13 +227,7 @@ public class Main extends JavaPlugin {
         }
 
         Metrics metrics = new Metrics(this);
-        metrics.addCustomChart(new Metrics.SingleLineChart("guilds") {
-            @Override
-            public int getValue() {
-                // (This is useless as there is already a player chart by default.)
-                return Main.getInstance().getGuildHandler().getGuilds().values().size();
-            }
-        });
+        metrics.addCustomChart(new Metrics.SingleLineChart("guilds", () -> Main.getInstance().getGuildHandler().getGuilds().values().size()));
 
         this.saveGuildData();
 
@@ -383,17 +377,6 @@ public class Main extends JavaPlugin {
 
     public LeaderboardHandler getLeaderboardHandler() {
         return leaderboardHandler;
-    }
-
-    private WorldGuardPlugin getWorldGuard() {
-        Plugin plugin = getServer().getPluginManager().getPlugin("WorldGuard");
-
-        // WorldGuard may not be loaded
-        if (plugin == null || !(plugin instanceof WorldGuardPlugin)) {
-            getLogger().log(Level.INFO, "Not using WorldGuard!");
-        }
-
-        return (WorldGuardPlugin) plugin;
     }
 
 }
