@@ -17,6 +17,7 @@
 version: 17
 
 auto-update-config: true
+important-announcements: true
 
 #-----------------------------------------------------------#
 #                     Hooks Configuration                   #

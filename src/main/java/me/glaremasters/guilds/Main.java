@@ -128,18 +128,20 @@ public class Main extends JavaPlugin {
     @SuppressWarnings("deprecation")
     @Override
     public void onEnable() {
-
-        try {
-            URL url = new URL("https://glaremasters.me/guilds/announcements/");
-            URLConnection con = url.openConnection();
-            con.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
-            InputStream in = con.getInputStream();
-            String encoding = con.getContentEncoding();
-            encoding = encoding == null ? "UTF-8" : encoding;
-            String body = IOUtils.toString(in, encoding);
-            Bukkit.getConsoleSender().sendMessage(body);
-        } catch (Exception exception) {
-            exception.printStackTrace();
+        if (getConfig().getBoolean("important-announcements")) {
+            try {
+                URL url = new URL("https://glaremasters.me/guilds/announcements/");
+                URLConnection con = url.openConnection();
+                con.setRequestProperty("User-Agent",
+                        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
+                InputStream in = con.getInputStream();
+                String encoding = con.getContentEncoding();
+                encoding = encoding == null ? "UTF-8" : encoding;
+                String body = IOUtils.toString(in, encoding);
+                Bukkit.getConsoleSender().sendMessage(body);
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
         }
 
         // TODO: Change each language to their own variable or something to that affect so that new languages can be added without needs to delete the config folder.
