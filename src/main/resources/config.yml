@@ -17,7 +17,9 @@
 version: 17
 
 auto-update-config: true
-important-announcements: true
+announcements:
+  enabled: true
+  in-game: true
 
 #-----------------------------------------------------------#
 #                     Hooks Configuration                   #

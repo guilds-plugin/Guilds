@@ -54,6 +54,7 @@ import me.glaremasters.guilds.database.databases.json.Json;
 import me.glaremasters.guilds.database.databases.mysql.MySql;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.leaderboard.LeaderboardHandler;
+import me.glaremasters.guilds.listeners.AnnouncementListener;
 import me.glaremasters.guilds.listeners.ChatListener;
 import me.glaremasters.guilds.listeners.ClickListener;
 import me.glaremasters.guilds.listeners.DamageMultiplierListener;
@@ -128,7 +129,7 @@ public class Main extends JavaPlugin {
     @SuppressWarnings("deprecation")
     @Override
     public void onEnable() {
-        if (getConfig().getBoolean("important-announcements")) {
+        if (getConfig().getBoolean("announcements.enabled")) {
             try {
                 URL url = new URL("https://glaremasters.me/guilds/announcements/");
                 URLConnection con = url.openConnection();
@@ -235,6 +236,10 @@ public class Main extends JavaPlugin {
         }
         if (getConfig().getBoolean("rewards-enabled")) {
             getServer().getPluginManager().registerEvents(new TicketListener(), this);
+        }
+
+        if (getConfig().getBoolean("announcements.in-game")) {
+            getServer().getPluginManager().registerEvents(new AnnouncementListener(), this);
         }
 
         vault = setupEconomy();
