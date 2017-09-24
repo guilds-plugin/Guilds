@@ -134,7 +134,7 @@ public class Main extends JavaPlugin {
     @SuppressWarnings("deprecation")
     @Override
     public void onEnable() {
-        if (getConfig().getBoolean("announcements.enabled")) {
+        if (getConfig().getBoolean("announcements.console")) {
             try {
                 URL url = new URL("https://glaremasters.me/guilds/announcements/1.9.0");
                 URLConnection con = url.openConnection();
@@ -220,7 +220,7 @@ public class Main extends JavaPlugin {
         Stream.of(
                 new JoinListener(), new ChatListener(), new CommandHome(), new ClickListener(), new GuildVaultListener(),
                 new GuildBuffListener(), new GuildChatListener(), new MobDeathListener(), new PlayerDamageListener(),
-                new DamageMultiplierListener()
+                new DamageMultiplierListener(), new AnnouncementListener()
         ).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
 
         // TODO: Possibly change these all to a switch statement?
@@ -245,10 +245,6 @@ public class Main extends JavaPlugin {
         }
         if (getConfig().getBoolean("rewards-enabled")) {
             getServer().getPluginManager().registerEvents(new TicketListener(), this);
-        }
-
-        if (getConfig().getBoolean("announcements.in-game")) {
-            getServer().getPluginManager().registerEvents(new AnnouncementListener(), this);
         }
 
         vault = setupEconomy();

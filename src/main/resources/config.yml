@@ -17,8 +17,11 @@
 version: 17
 
 auto-update-config: true
+
+# Get the latest plugin announcements. Console = In your console. In-Game = To in-game OPs on login.
+
 announcements:
-  enabled: true
+  console: true
   in-game: true
 
 
