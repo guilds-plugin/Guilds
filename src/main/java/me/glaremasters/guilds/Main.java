@@ -215,7 +215,7 @@ public class Main extends JavaPlugin {
         Stream.of(
                 new JoinListener(), new ChatListener(), new CommandHome(), new ClickListener(), new GuildVaultListener(),
                 new GuildBuffListener(), new GuildChatListener(), new MobDeathListener(), new PlayerDamageListener(),
-                new DamageMultiplierListener(), new PlayerSyncListener()
+                new DamageMultiplierListener()
         ).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
 
         // TODO: Possibly change these all to a switch statement?
@@ -225,6 +225,10 @@ public class Main extends JavaPlugin {
         }
         if (getConfig().getBoolean("tablist-guilds")) {
             getServer().getPluginManager().registerEvents(new TablistListener(), this);
+        }
+
+        if (getConfig().getBoolean("player-sync")) {
+            getServer().getPluginManager().registerEvents(new PlayerSyncListener(), this);
         }
 
         if (getConfig().getBoolean("reward-on-kill.enabled")) {

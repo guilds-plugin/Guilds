@@ -21,6 +21,12 @@ announcements:
   enabled: true
   in-game: true
 
+
+# This is an experimental feature for those using MySQL cross servers.
+# DO NOT turn this on otherwise as this could cause your Guilds to disappear
+
+player-sync: false
+
 #-----------------------------------------------------------#
 #                     Hooks Configuration                   #
 #-----------------------------------------------------------#
