@@ -405,6 +405,16 @@ tier3:
   damage-multiplier: 1
   max-bank-balance: 30000
 
+
+#-----------------------------------------------------------#
+#                     Community Server List                 #
+#-----------------------------------------------------------#
+
+# Guilds comes with it's own Server Listing website.
+# If you choose to not display your website among the others on the Server List, you can change the below option to false.
+# The Community Server List website is https://glaremasters.me/server/
+server-list: true
+
 #-----------------------------------------------------------#
 #                     Guild Configuration                   #
 #-----------------------------------------------------------#
