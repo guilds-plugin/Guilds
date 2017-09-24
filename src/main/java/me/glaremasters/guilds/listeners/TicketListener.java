@@ -41,6 +41,7 @@ public class TicketListener implements Listener {
                 Message.sendMessage(player, Message.COMMAND_UPGRADE_TIER_MAX);
                 return;
             }
+
             event.getPlayer().getInventory().setItemInMainHand(new ItemStack(Material.AIR));
             event.setCancelled(true);
             Message.sendMessage(player, Message.COMMAND_UPGRADE_SUCCESS);

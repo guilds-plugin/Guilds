@@ -3,6 +3,7 @@ package me.glaremasters.guilds.commands;
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.updater.SpigotUpdater;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 public class CommandUpdate extends CommandBase {
@@ -17,8 +18,8 @@ public class CommandUpdate extends CommandBase {
         SpigotUpdater updater = new SpigotUpdater(Main.getInstance(), 46962);
         try {
             if (updater.checkForUpdates()) {
-                sender.sendMessage("An update was found! New version: " + updater.getLatestVersion()
-                        + " download: " + updater.getResourceURL());
+                sender.sendMessage(ChatColor.GREEN + "An update was found! " + ChatColor.BLUE + "New version: " + updater.getLatestVersion()
+                        + ChatColor.GREEN + " download: " + updater.getResourceURL());
             }
         } catch (Exception e) {
             sender.sendMessage("Could not check for updates!");

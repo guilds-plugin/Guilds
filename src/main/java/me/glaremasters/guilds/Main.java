@@ -4,9 +4,16 @@ import be.maximvdw.placeholderapi.PlaceholderAPI;
 import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -52,6 +59,7 @@ import me.glaremasters.guilds.database.databases.json.Json;
 import me.glaremasters.guilds.database.databases.mysql.MySql;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.leaderboard.LeaderboardHandler;
+import me.glaremasters.guilds.listeners.AnnouncementListener;
 import me.glaremasters.guilds.listeners.ChatListener;
 import me.glaremasters.guilds.listeners.ClickListener;
 import me.glaremasters.guilds.listeners.DamageMultiplierListener;
@@ -71,10 +79,10 @@ import me.glaremasters.guilds.placeholders.Placeholders;
 import me.glaremasters.guilds.scoreboard.GuildScoreboardHandler;
 import me.glaremasters.guilds.updater.SpigotUpdater;
 import net.milkbowl.vault.economy.Economy;
+import org.apache.commons.io.IOUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -126,6 +134,21 @@ public class Main extends JavaPlugin {
     @SuppressWarnings("deprecation")
     @Override
     public void onEnable() {
+        if (getConfig().getBoolean("announcements.console")) {
+            try {
+                URL url = new URL("https://glaremasters.me/guilds/announcements/1.9.0");
+                URLConnection con = url.openConnection();
+                con.setRequestProperty("User-Agent",
+                        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
+                InputStream in = con.getInputStream();
+                String encoding = con.getContentEncoding();
+                encoding = encoding == null ? "UTF-8" : encoding;
+                String body = IOUtils.toString(in, encoding);
+                Bukkit.getConsoleSender().sendMessage(body);
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+        }
 
         // TODO: Change each language to their own variable or something to that affect so that new languages can be added without needs to delete the config folder.
 
@@ -149,7 +172,7 @@ public class Main extends JavaPlugin {
 
         // TODO: Clean this up and make it function easier.
 
-        if (!getConfig().isSet("version") || getConfig().getInt("version") != 16) {
+        if (!getConfig().isSet("version") || getConfig().getInt("version") != 17) {
             if (getConfig().getBoolean("auto-update-config")) {
                 File oldfile = new File(this.getDataFolder(), "config.yml");
                 File newfile = new File(this.getDataFolder(), "config-old.yml");
@@ -185,54 +208,19 @@ public class Main extends JavaPlugin {
         getCommand("guild").setExecutor(commandHandler);
 
         Stream.of(
-                new CommandAccept(),
-                new CommandAdmin(),
-                new CommandAlly(),
-                new CommandBoot(),
-                new CommandBuff(),
-                new CommandBugReport(),
-                new CommandCancel(),
-                new CommandChat(),
-                new CommandCheck(),
-                new CommandConfirm(),
-                new CommandCreate(),
-                new CommandDecline(),
-                new CommandDelete(),
-                new CommandDemote(),
-                new CommandHelp(),
-                new CommandHome(),
-                new CommandInfo(),
-                new CommandInspect(),
-                new CommandInvite(),
-                new CommandLeave(),
-                new CommandList(),
-                new CommandPrefix(),
-                new CommandPromote(),
-                new CommandReload(),
-                new CommandSetHome(),
-                new CommandStatus(),
-                new CommandTransfer(),
-                new CommandUpdate(),
-                new CommandVault(),
-                new CommandVersion(),
-                new CommandUpgrade(),
-                new CommandBank(),
-                new CommandGive()
+                new CommandAccept(), new CommandAdmin(), new CommandAlly(), new CommandBoot(), new CommandBuff(),
+                new CommandBugReport(), new CommandCancel(), new CommandChat(), new CommandCheck(), new CommandConfirm(),
+                new CommandCreate(), new CommandDecline(), new CommandDelete(), new CommandDemote(), new CommandHelp(),
+                new CommandHome(), new CommandInfo(), new CommandInspect(), new CommandInvite(), new CommandLeave(),
+                new CommandList(), new CommandPrefix(), new CommandPromote(), new CommandReload(), new CommandSetHome(),
+                new CommandStatus(), new CommandTransfer(), new CommandUpdate(), new CommandVault(), new CommandVersion(),
+                new CommandUpgrade(), new CommandBank(), new CommandGive()
         ).forEach(commandHandler::register);
 
         Stream.of(
-                new JoinListener(),
-                new ChatListener(),
-                new CommandHome(),
-                new ClickListener(),
-                new GuildVaultListener(),
-                new GuildBuffListener(),
-                new GuildChatListener(),
-                new MobDeathListener(),
-                new PlayerDamageListener(),
-                new DamageMultiplierListener(),
-                new PlayerSyncListener()
-
+                new JoinListener(), new ChatListener(), new CommandHome(), new ClickListener(), new GuildVaultListener(),
+                new GuildBuffListener(), new GuildChatListener(), new MobDeathListener(), new PlayerDamageListener(),
+                new DamageMultiplierListener(), new AnnouncementListener()
         ).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
 
         // TODO: Possibly change these all to a switch statement?
@@ -242,6 +230,10 @@ public class Main extends JavaPlugin {
         }
         if (getConfig().getBoolean("tablist-guilds")) {
             getServer().getPluginManager().registerEvents(new TablistListener(), this);
+        }
+
+        if (getConfig().getBoolean("player-sync")) {
+            getServer().getPluginManager().registerEvents(new PlayerSyncListener(), this);
         }
 
         if (getConfig().getBoolean("reward-on-kill.enabled")) {
@@ -262,13 +254,7 @@ public class Main extends JavaPlugin {
         }
 
         Metrics metrics = new Metrics(this);
-        metrics.addCustomChart(new Metrics.SingleLineChart("guilds") {
-            @Override
-            public int getValue() {
-                // (This is useless as there is already a player chart by default.)
-                return Main.getInstance().getGuildHandler().getGuilds().values().size();
-            }
-        });
+        metrics.addCustomChart(new Metrics.SingleLineChart("guilds", () -> Main.getInstance().getGuildHandler().getGuilds().values().size()));
 
         this.saveGuildData();
 
@@ -299,42 +285,34 @@ public class Main extends JavaPlugin {
 
         // TODO: Clean this section up with a switch statement or something.
 
+        if (getConfig().getBoolean("server-list")) {
+            getServer().getScheduler().scheduleSyncRepeatingTask(this, this::sendUpdate, 0L, 5000L);
+        }
+
         if (languageYamlFile.exists()) {
             return;
         } else {
-
-            this.saveResource("languages/english.yml", false);
-            this.saveResource("languages/chinese.yml", false);
-            this.saveResource("languages/french.yml", false);
-            this.saveResource("languages/dutch.yml", false);
-            this.saveResource("languages/japanese.yml", false);
-            this.saveResource("languages/swedish.yml", false);
-            this.saveResource("languages/hungarian.yml", false);
-            this.saveResource("languages/romanian.yml", false);
-            this.saveResource("languages/slovak.yml", false);
-            this.saveResource("languages/russian.yml", false);
-            this.saveResource("languages/simplifiedchinese.yml", false);
-            this.saveResource("languages/polish.yml", false);
-            this.saveResource("languages/portuguese.yml", false);
-            this.saveResource("languages/german.yml", false);
-            this.saveResource("languages/vietnamese.yml", false);
-            this.saveResource("languages/norwegian.yml", false);
-            this.saveResource("languages/spanish.yml", false);
+            Stream.of(
+                    "english", "chinese", "french", "dutch", "japanese", "swedish", "hungarian", "romanian", "slovak",
+                    "russian", "simplifiedchinese", "polish", "portuguese", "german", "vietnamese", "norwegian",
+                    "spanish"
+            ).forEach(l -> this.saveResource("languages/" + l + ".yml", false));
         }
 
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "guild reload");
+
     }
 
     // TODO: Possibly make these into something like saveGuildData()?
 
     public void saveGuildData() {
         try {
-            Main.getInstance().guildHomesConfig.save(Main.getInstance().guildhomes);
-            Main.getInstance().guildStatusConfig.save(Main.getInstance().guildstatus);
-            Main.getInstance().guildBanksConfig.save(Main.getInstance().guildbanks);
-            Main.getInstance().guildTiersConfig.save(Main.getInstance().guildtiers);
+            guildHomesConfig.save(guildhomes);
+            guildStatusConfig.save(guildstatus);
+            guildBanksConfig.save(guildbanks);
+            guildTiersConfig.save(guildtiers);
         } catch (IOException e) {
-            getLogger().log(Level.WARNING, "Could not create Guild's Home config!");
+            getLogger().log(Level.WARNING, "Could not save Guild Data");
             e.printStackTrace();
         }
     }
@@ -413,6 +391,28 @@ public class Main extends JavaPlugin {
 
     }
 
+    public void sendUpdate() {
+        try {
+            URL url = new URL("https://glaremasters.me/add/");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestProperty("User-Agent",
+                    "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
+            conn.setDoOutput(true);
+            conn.setRequestMethod("POST");
+            try (DataOutputStream dos = new DataOutputStream(conn.getOutputStream())) {
+                URL checkIp = new URL("http://checkip.amazonaws.com");
+                BufferedReader in = new BufferedReader(new InputStreamReader(checkIp.openStream()));
+                String ip = in.readLine();
+                dos.write(String.format("ip=%s&port=%s", ip, getServer().getPort())
+                        .getBytes(StandardCharsets.UTF_8));
+                conn.getResponseCode();
+            }
+        } catch (Exception ex) {
+            return;
+        }
+    }
+
+
     private boolean setupEconomy() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
             return false;
@@ -431,17 +431,6 @@ public class Main extends JavaPlugin {
 
     public LeaderboardHandler getLeaderboardHandler() {
         return leaderboardHandler;
-    }
-
-    private WorldGuardPlugin getWorldGuard() {
-        Plugin plugin = getServer().getPluginManager().getPlugin("WorldGuard");
-
-        // WorldGuard may not be loaded
-        if (plugin == null || !(plugin instanceof WorldGuardPlugin)) {
-            getLogger().log(Level.INFO, "Not using WorldGuard!");
-        }
-
-        return (WorldGuardPlugin) plugin;
     }
 
 }
