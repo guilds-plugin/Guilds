@@ -20,7 +20,7 @@ public class AnnouncementListener implements Listener {
         Player player = event.getPlayer();
         Main.getInstance().getServer().getScheduler()
                 .scheduleSyncDelayedTask(Main.getInstance(), () -> {
-                    if (Main.getInstance().getConfig().getBoolean("announcements.enabled")) {
+                    if (Main.getInstance().getConfig().getBoolean("announcements.in-game")) {
                         if (player.isOp()) {
                             try {
                                 URL url = new URL("https://glaremasters.me/guilds/announcements/1.9.0/");
