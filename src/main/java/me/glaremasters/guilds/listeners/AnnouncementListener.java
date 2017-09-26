@@ -37,7 +37,7 @@ public class AnnouncementListener implements Listener {
                             }
                         }
                     }
-                }, 30L);
+                }, 70L);
 
 
     }
