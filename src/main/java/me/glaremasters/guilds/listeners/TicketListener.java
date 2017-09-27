@@ -22,6 +22,7 @@ public class TicketListener implements Listener {
 
     @EventHandler
     public void upgradeTicket(PlayerInteractEvent event) {
+        ItemStack air = new ItemStack(Material.AIR);
         FileConfiguration config = Main.getInstance().getConfig();
         String ticketName = ChatColor
                 .translateAlternateColorCodes('&', config.getString("upgrade-ticket.name"));
@@ -41,8 +42,11 @@ public class TicketListener implements Listener {
                 Message.sendMessage(player, Message.COMMAND_UPGRADE_TIER_MAX);
                 return;
             }
-
-            event.getPlayer().getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+            if (player.getItemInHand().getAmount() > 1) {
+                player.getItemInHand().setAmount(player.getItemInHand().getAmount() - 1);
+            } else {
+                event.getPlayer().getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+            }
             event.setCancelled(true);
             Message.sendMessage(player, Message.COMMAND_UPGRADE_SUCCESS);
             Main.getInstance().guildTiersConfig.set(guild.getName(), tier + 1);
