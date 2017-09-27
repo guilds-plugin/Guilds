@@ -31,11 +31,18 @@ public class GuildChatListener implements Listener {
 
         if (GUILD_CHAT_PLAYERS.contains(player.getUniqueId())) {
             event.getRecipients().removeIf(r -> guild.getMember(r.getUniqueId()) == null);
-            event.setFormat(ChatColor.translateAlternateColorCodes('&',
-                    (Main.getInstance().getConfig().getString("guild-chat-format"))
-                            .replace("{role}", GuildRole
-                                    .getRole(guild.getMember(player.getUniqueId()).getRole())
-                                    .getName())));
+            if (player.hasPermission("guilds.chat.color")) {
+                event.setFormat(ChatColor.translateAlternateColorCodes('&',
+                        (Main.getInstance().getConfig().getString("guild-chat-format"))
+                                .replace("{role}", GuildRole
+                                        .getRole(guild.getMember(player.getUniqueId()).getRole())
+                                        .getName())));
+            } else {
+                event.setFormat(Main.getInstance().getConfig().getString("guild-chat-format")
+                        .replace("{role}", GuildRole
+                                .getRole(guild.getMember(player.getUniqueId()).getRole())
+                                .getName()));
+            }
         }
 
     }
