@@ -71,7 +71,6 @@ import me.glaremasters.guilds.listeners.MobDeathListener;
 import me.glaremasters.guilds.listeners.NameTagListener;
 import me.glaremasters.guilds.listeners.PlayerDamageListener;
 import me.glaremasters.guilds.listeners.PlayerDeathListener;
-import me.glaremasters.guilds.listeners.PlayerSyncListener;
 import me.glaremasters.guilds.listeners.SignListener;
 import me.glaremasters.guilds.listeners.TablistListener;
 import me.glaremasters.guilds.listeners.TicketListener;
@@ -231,10 +230,7 @@ public class Main extends JavaPlugin {
         if (getConfig().getBoolean("tablist-guilds")) {
             getServer().getPluginManager().registerEvents(new TablistListener(), this);
         }
-
-        if (getConfig().getBoolean("player-sync")) {
-            getServer().getPluginManager().registerEvents(new PlayerSyncListener(), this);
-        }
+        
 
         if (getConfig().getBoolean("reward-on-kill.enabled")) {
             getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
