@@ -178,6 +178,8 @@ public class Main extends JavaPlugin {
 
         // TODO: Possibly change these all to a switch statement?
 
+        
+
         if (getConfig().getBoolean("guild-signs")) {
             getServer().getPluginManager().registerEvents(new SignListener(), this);
         }
