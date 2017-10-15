@@ -146,6 +146,11 @@ public class Guild implements InventoryHolder {
          return true;
     }
 
+    public boolean canUseVault() {
+        Main.getInstance().getConfig().getBoolean("tier" + getTier() + ".use-vault");
+        return true;
+    }
+
     public double getExpMultiplier() {
         return Main.getInstance().getConfig().getDouble("tier" + getTier() + ".mob-xp-multiplier");
     }
