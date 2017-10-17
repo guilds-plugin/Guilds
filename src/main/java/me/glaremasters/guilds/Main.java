@@ -187,10 +187,6 @@ public class Main extends JavaPlugin {
             getServer().getPluginManager().registerEvents(new TablistListener(), this);
         }
 
-        if (getConfig().getBoolean("player-sync")) {
-            getServer().getPluginManager().registerEvents(new PlayerSyncListener(), this);
-        }
-
         if (getConfig().getBoolean("reward-on-kill.enabled")) {
             getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
         }
