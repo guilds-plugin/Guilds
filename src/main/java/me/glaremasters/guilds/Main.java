@@ -89,7 +89,7 @@ public class Main extends JavaPlugin {
     public void onEnable() {
         if (getConfig().getBoolean("announcements.console")) {
             try {
-                URL url = new URL("https://glaremasters.me/guilds/announcements/1.9.0");
+                URL url = new URL("https://glaremasters.me/guilds/announcements/1.9.2");
                 URLConnection con = url.openConnection();
                 con.setRequestProperty("User-Agent",
                         "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
