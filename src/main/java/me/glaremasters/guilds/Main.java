@@ -75,7 +75,7 @@ public class Main extends JavaPlugin {
         return taskChainFactory.newSharedChain(name);
     }
 
-    public static String URL = "https://glaremasters.me/guilds/announcements/1.9.2";
+
 
 
     public static long getCreationTime() {
@@ -89,9 +89,10 @@ public class Main extends JavaPlugin {
     @SuppressWarnings("deprecation")
     @Override
     public void onEnable() {
+        instance = this;
         if (getConfig().getBoolean("announcements.console")) {
             try {
-                URL url = new URL(URL);
+                URL url = new URL("https://glaremasters.me/guilds/announcements/" + getDescription().getVersion());
                 URLConnection con = url.openConnection();
                 con.setRequestProperty("User-Agent",
                         "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
@@ -119,7 +120,7 @@ public class Main extends JavaPlugin {
                 ChatColor.translateAlternateColorCodes('&',
                         this.getConfig().getString("plugin-prefix"))
                         + ChatColor.RESET + " ";
-        instance = this;
+
 
         taskChainFactory = BukkitTaskChainFactory.create(this);
 
@@ -385,5 +386,6 @@ public class Main extends JavaPlugin {
     public LeaderboardHandler getLeaderboardHandler() {
         return leaderboardHandler;
     }
+
 
 }

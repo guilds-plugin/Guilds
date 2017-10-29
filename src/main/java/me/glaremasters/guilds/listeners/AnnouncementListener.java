@@ -17,13 +17,14 @@ public class AnnouncementListener implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
+        String URL = "https://glaremasters.me/guilds/announcements/" + Main.getInstance().getDescription().getVersion();
         Player player = event.getPlayer();
         Main.getInstance().getServer().getScheduler()
                 .scheduleSyncDelayedTask(Main.getInstance(), () -> {
                     if (Main.getInstance().getConfig().getBoolean("announcements.in-game")) {
                         if (player.isOp()) {
                             try {
-                                URL url = new URL(Main.URL);
+                                URL url = new URL(URL);
                                 URLConnection con = url.openConnection();
                                 con.setRequestProperty("User-Agent",
                                         "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
