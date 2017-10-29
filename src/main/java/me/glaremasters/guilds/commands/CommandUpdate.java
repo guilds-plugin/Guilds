@@ -15,7 +15,7 @@ public class CommandUpdate extends CommandBase {
     }
 
     public void execute(CommandSender sender, String[] args) {
-        SpigotUpdater updater = new SpigotUpdater(Main.getInstance(), 46962);
+        SpigotUpdater updater = new SpigotUpdater(Main.getInstance(), 48920);
         try {
             if (updater.checkForUpdates()) {
                 sender.sendMessage(ChatColor.GREEN + "An update was found! " + ChatColor.BLUE + "New version: " + updater.getLatestVersion()

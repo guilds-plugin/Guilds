@@ -222,7 +222,7 @@ public class Main extends JavaPlugin {
         }
 
         if (getConfig().getBoolean("updater.check")) {
-            SpigotUpdater updater = new SpigotUpdater(this, 46962);
+            SpigotUpdater updater = new SpigotUpdater(this, 48920);
             try {
                 if (updater.checkForUpdates()) {
                     getLogger().info("An update was found! New version: " + updater.getLatestVersion()

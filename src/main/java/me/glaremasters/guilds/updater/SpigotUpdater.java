@@ -9,7 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class SpigotUpdater {
 
-    private int project = 46962;
+    private int project = 48920;
     private URL checkURL;
     private String newVersion = "";
     private JavaPlugin plugin;
