@@ -14,7 +14,7 @@
 #-----------------------------------------------------------#
 
 # DO NOT CHANGE THIS
-version: 17
+version: 18
 
 auto-update-config: true
 
@@ -38,6 +38,9 @@ announcements:
 hooks:
   worldguard: false
   nametagedit: false
+
+worldguard:
+  claims: false
 
 # You can also use {prefix} in this.
 
@@ -450,16 +453,6 @@ allow-ally-damage: false
 # Check for update on startup (SUGGESTED YOU KEEP THIS ENABLED)
 updater:
   check: true
-
-# This part allows you to configure Guild Claims (WorldGuard Regions) (WorldGuard Regions are tied to Guild SetHome)
-
-settings:
-  other-explosions: ALLOW
-
-
-
-
-
 
 # This part pertains to the /guild home command
 home:

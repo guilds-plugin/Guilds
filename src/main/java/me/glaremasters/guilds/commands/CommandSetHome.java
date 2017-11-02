@@ -1,12 +1,10 @@
 package me.glaremasters.guilds.commands;
 
 import com.sk89q.worldedit.BlockVector;
-import com.sk89q.worldedit.bukkit.selections.Selection;
 import com.sk89q.worldguard.bukkit.RegionContainer;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.domains.DefaultDomain;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
-import com.sk89q.worldguard.protection.flags.StateFlag.State;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
@@ -117,25 +115,30 @@ public class CommandSetHome extends CommandBase {
                 Message.sendMessage(player, Message.COMMAND_CREATE_GUILD_HOME);
                 cooldowns.put(player.getName(), System.currentTimeMillis());
 
+                if (config.getBoolean("worldguard.claims")) {
 
+                    BlockVector min = new BlockVector(player.getLocation().getX(), 0,
+                            player.getLocation().getZ());
+                    BlockVector max = new BlockVector(player.getLocation().getX() + 100, 255,
+                            player.getLocation().getZ() + 100);
+                    ProtectedRegion region = new ProtectedCuboidRegion(guild.getName(), min, max);
+                    RegionContainer container = getWorldGuard().getRegionContainer();
+                    RegionManager regions = container.get(player.getWorld());
+                    regions.addRegion(region);
+                    region.setFlag(DefaultFlag.GREET_MESSAGE,
+                            "Entering " + guild.getName() + "'s base");
+                    region.setFlag(DefaultFlag.FAREWELL_MESSAGE,
+                            "Leaving " + guild.getName() + "'s base");
 
-                BlockVector min = new BlockVector(player.getLocation().getX(), 0, player.getLocation().getZ());
-                BlockVector max = new BlockVector(player.getLocation().getX() + 100, 255, player.getLocation().getZ() + 100);
-                ProtectedRegion region = new ProtectedCuboidRegion(guild.getName(), min, max);
-                RegionContainer container = getWorldGuard().getRegionContainer();
-                RegionManager regions = container.get(player.getWorld());
-                regions.addRegion(region);
-                region.setFlag(DefaultFlag.GREET_MESSAGE, "Entering " + guild.getName() + "'s base");
-                region.setFlag(DefaultFlag.FAREWELL_MESSAGE, "Leaving " + guild.getName() + "'s base");
-
-                DefaultDomain members = region.getMembers();
-                DefaultDomain owners = region.getOwners();
-                owners.addPlayer(player.getName());
-                guild.getMembers().stream()
-                        .map(member -> Bukkit.getOfflinePlayer(member.getUniqueId()))
-                        .forEach(member -> {
-                           members.addPlayer(member.getName());
-                        });
+                    DefaultDomain members = region.getMembers();
+                    DefaultDomain owners = region.getOwners();
+                    owners.addPlayer(player.getName());
+                    guild.getMembers().stream()
+                            .map(member -> Bukkit.getOfflinePlayer(member.getUniqueId()))
+                            .forEach(member -> {
+                                members.addPlayer(member.getName());
+                            });
+                }
             }
 
             @Override
