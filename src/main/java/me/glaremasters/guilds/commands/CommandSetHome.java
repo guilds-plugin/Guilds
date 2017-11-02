@@ -124,6 +124,11 @@ public class CommandSetHome extends CommandBase {
                     ProtectedRegion region = new ProtectedCuboidRegion(guild.getName(), min, max);
                     RegionContainer container = getWorldGuard().getRegionContainer();
                     RegionManager regions = container.get(player.getWorld());
+
+                    if (region != null) {
+                        regions.removeRegion(guild.getName());
+                    }
+
                     regions.addRegion(region);
                     region.setFlag(DefaultFlag.GREET_MESSAGE,
                             "Entering " + guild.getName() + "'s base");
