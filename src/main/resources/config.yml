@@ -451,6 +451,16 @@ allow-ally-damage: false
 updater:
   check: true
 
+# This part allows you to configure Guild Claims (WorldGuard Regions) (WorldGuard Regions are tied to Guild SetHome)
+
+settings:
+  other-explosions: ALLOW
+
+
+
+
+
+
 # This part pertains to the /guild home command
 home:
 # Define how long they must wait to use the command

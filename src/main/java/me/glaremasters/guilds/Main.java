@@ -4,6 +4,7 @@ import be.maximvdw.placeholderapi.PlaceholderAPI;
 import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -35,7 +36,10 @@ import net.milkbowl.vault.economy.Economy;
 import org.apache.commons.io.IOUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -128,7 +132,8 @@ public class Main extends JavaPlugin {
 
         // TODO: Clean this up and make it function easier.
 
-        if (!getConfig().isSet("version") || getConfig().getInt("version") != 17) {
+
+        if (!getConfig().isSet("version") || getConfig().getInt("version") != 18) {
             if (getConfig().getBoolean("auto-update-config")) {
                 File oldfile = new File(this.getDataFolder(), "config.yml");
                 File newfile = new File(this.getDataFolder(), "config-old.yml");
@@ -136,6 +141,28 @@ public class Main extends JavaPlugin {
                 File olddir = new File(this.getDataFolder(), "old-languages");
                 dir.renameTo(olddir);
                 oldfile.renameTo(newfile);
+
+                try {
+
+                    FileConfiguration oldConfig = new YamlConfiguration();
+                    oldConfig.load(newfile);
+
+                    for (String path : getConfig().getKeys(false)) {
+                        if (oldConfig.contains(path)) {
+                            getConfig().set(path, oldConfig.get(path));
+                        }
+                    }
+
+
+                } catch (IOException | InvalidConfigurationException e) {
+                    e.printStackTrace();
+
+                }
+
+
+
+
+
                 Bukkit.getConsoleSender().sendMessage(
                         "§a[Guilds] §3Your config has been auto-updated and regenerated. You can find your old config in §3config-old.yml. You can disable this feature in the config");
             } else {
@@ -181,7 +208,7 @@ public class Main extends JavaPlugin {
 
         // TODO: Possibly change these all to a switch statement?
 
-        
+
 
         if (getConfig().getBoolean("guild-signs")) {
             getServer().getPluginManager().registerEvents(new SignListener(), this);
@@ -386,6 +413,8 @@ public class Main extends JavaPlugin {
     public LeaderboardHandler getLeaderboardHandler() {
         return leaderboardHandler;
     }
+
+
 
 
 }
