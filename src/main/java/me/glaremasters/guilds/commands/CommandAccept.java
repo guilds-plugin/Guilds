@@ -2,9 +2,8 @@ package me.glaremasters.guilds.commands;
 
 import com.nametagedit.plugin.NametagEdit;
 import com.sk89q.worldguard.bukkit.RegionContainer;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.managers.RegionManager;
-import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.api.events.GuildJoinEvent;
 import me.glaremasters.guilds.commands.base.CommandBase;
@@ -14,6 +13,7 @@ import me.glaremasters.guilds.message.Message;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 public class CommandAccept extends CommandBase {
 
@@ -22,6 +22,18 @@ public class CommandAccept extends CommandBase {
                 "guilds.command.accept", false,
                 new String[]{"join"}, "<guild id>", 0, 1);
     }
+
+    public WorldGuardPlugin getWorldGuard() {
+        Plugin plugin = Main.getInstance().getServer().getPluginManager().getPlugin("WorldGuard");
+
+        // WorldGuard may not be loaded
+        if (plugin == null || !(plugin instanceof WorldGuardPlugin)) {
+            return null; // Maybe you want throw an exception instead
+        }
+
+        return (WorldGuardPlugin) plugin;
+    }
+
 
     public void execute(Player player, String[] args) {
         final FileConfiguration config = Main.getInstance().getConfig();
@@ -88,6 +100,12 @@ public class CommandAccept extends CommandBase {
         guild.addMember(player.getUniqueId(), GuildRole.getLowestRole());
         guild.removeInvitedPlayer(player.getUniqueId());
 
+        RegionContainer container = getWorldGuard().getRegionContainer();
+        RegionManager regions = container.get(player.getWorld());
+
+        if (regions.getRegion(guild.getName()) != null) {
+            regions.getRegion(guild.getName()).getMembers().addPlayer(player.getName());
+        }
 
         if (config.getBoolean("titles.enabled")) {
             try {
