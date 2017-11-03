@@ -1,6 +1,9 @@
 package me.glaremasters.guilds.commands;
 
 import com.nametagedit.plugin.NametagEdit;
+import com.sk89q.worldguard.bukkit.RegionContainer;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.managers.RegionManager;
 import java.util.logging.Level;
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.api.events.GuildLeaveEvent;
@@ -12,6 +15,7 @@ import me.glaremasters.guilds.util.ConfirmAction;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 public class CommandLeave extends CommandBase {
 
@@ -19,6 +23,18 @@ public class CommandLeave extends CommandBase {
         super("leave", Main.getInstance().getConfig().getString("commands.description.leave"),
                 "guilds.command.leave", false, null, null, 0, 0);
     }
+
+    public WorldGuardPlugin getWorldGuard() {
+        Plugin plugin = Main.getInstance().getServer().getPluginManager().getPlugin("WorldGuard");
+
+        // WorldGuard may not be loaded
+        if (plugin == null || !(plugin instanceof WorldGuardPlugin)) {
+            return null; // Maybe you want throw an exception instead
+        }
+
+        return (WorldGuardPlugin) plugin;
+    }
+
 
     public void execute(Player player, String[] args) {
         final FileConfiguration config = Main.getInstance().getConfig();
@@ -37,6 +53,14 @@ public class CommandLeave extends CommandBase {
         Main.getInstance().getCommandHandler().addAction(player, new ConfirmAction() {
             @Override
             public void accept() {
+
+                RegionContainer container = getWorldGuard().getRegionContainer();
+                RegionManager regions = container.get(player.getWorld());
+
+                if (regions.getRegion(guild.getName()) != null) {
+                    regions.getRegion(guild.getName()).getMembers().removePlayer(player.getName());
+                }
+
                 GuildLeaveEvent leaveEvent = new GuildLeaveEvent(player, guild);
                 Main.getInstance().getServer().getPluginManager().callEvent(leaveEvent);
                 if (leaveEvent.isCancelled()) {
@@ -76,6 +100,8 @@ public class CommandLeave extends CommandBase {
 
                 guild.removeMember(player.getUniqueId());
                 Message.sendMessage(player, Message.COMMAND_LEAVE_SUCCESSFUL);
+
+
 
                 if (config.getBoolean("titles.enabled")) {
                     try {
