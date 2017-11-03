@@ -129,13 +129,12 @@ public class CommandSetHome extends CommandBase {
                     if (region != null) {
                         regions.removeRegion(guild.getName());
                     }
-
                     regions.addRegion(region);
                     player.sendMessage(ChatColor.GREEN +
-                            "Remember these! Your claim coordinates are: " + ChatColor.BLUE + player.getLocation()
-                                    .getX() + ", " + "0" + ", " + player
-                                    .getLocation().getZ() + ChatColor.GREEN + " to " + ChatColor.BLUE + player.getLocation().getX()
-                                    + 100 + ", " + "255, " + player.getLocation().getZ() + 100);
+                            "Remember these! Your claim coordinates are: " + ChatColor.BLUE + Math.ceil(player.getLocation()
+                                    .getX()) + ", " + "0" + ", " + Math.ceil(player
+                                    .getLocation().getZ()) + ChatColor.GREEN + " to " + ChatColor.BLUE + (Math.ceil(player.getLocation().getX()
+                                    + 100)) + ", " + "255, " + (Math.ceil(player.getLocation().getZ() + 100)));
                     region.setFlag(DefaultFlag.GREET_MESSAGE,
                             "Entering " + guild.getName() + "'s base");
                     region.setFlag(DefaultFlag.FAREWELL_MESSAGE,
