@@ -141,28 +141,6 @@ public class Main extends JavaPlugin {
                 File olddir = new File(this.getDataFolder(), "old-languages");
                 dir.renameTo(olddir);
                 oldfile.renameTo(newfile);
-
-                try {
-
-                    FileConfiguration oldConfig = new YamlConfiguration();
-                    oldConfig.load(newfile);
-
-                    for (String path : getConfig().getKeys(false)) {
-                        if (oldConfig.contains(path)) {
-                            getConfig().set(path, oldConfig.get(path));
-                        }
-                    }
-
-
-                } catch (IOException | InvalidConfigurationException e) {
-                    e.printStackTrace();
-
-                }
-
-
-
-
-
                 Bukkit.getConsoleSender().sendMessage(
                         "§a[Guilds] §3Your config has been auto-updated and regenerated. You can find your old config in §3config-old.yml. You can disable this feature in the config");
             } else {
