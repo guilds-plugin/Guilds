@@ -1,6 +1,9 @@
 package me.glaremasters.guilds.commands;
 
 import com.nametagedit.plugin.NametagEdit;
+import com.sk89q.worldguard.bukkit.RegionContainer;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.managers.RegionManager;
 import java.util.logging.Level;
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.api.events.GuildRemoveEvent;
@@ -11,6 +14,7 @@ import me.glaremasters.guilds.message.Message;
 import me.glaremasters.guilds.util.ConfirmAction;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 public class CommandDelete extends CommandBase {
 
@@ -18,6 +22,17 @@ public class CommandDelete extends CommandBase {
         super("delete", Main.getInstance().getConfig().getString("commands.description.delete"),
                 "guilds.command.delete", false,
                 new String[]{"disband"}, null, 0, 0);
+    }
+
+    public WorldGuardPlugin getWorldGuard() {
+        Plugin plugin = Main.getInstance().getServer().getPluginManager().getPlugin("WorldGuard");
+
+        // WorldGuard may not be loaded
+        if (plugin == null || !(plugin instanceof WorldGuardPlugin)) {
+            return null; // Maybe you want throw an exception instead
+        }
+
+        return (WorldGuardPlugin) plugin;
     }
 
     @Override
@@ -51,6 +66,14 @@ public class CommandDelete extends CommandBase {
 
                 main.getDatabaseProvider().removeGuild(guild, (result, exception) -> {
                     if (result) {
+
+                        RegionContainer container = getWorldGuard().getRegionContainer();
+                        RegionManager regions = container.get(player.getWorld());
+
+                        if (regions.getRegion(guild.getName()) != null) {
+                            regions.removeRegion(guild.getName());
+                        }
+
                         Message.sendMessage(player,
                                 Message.COMMAND_DELETE_SUCCESSFUL
                                         .replace("{guild}", guild.getName()));
@@ -63,6 +86,9 @@ public class CommandDelete extends CommandBase {
                         main.guildHomesConfig
                                 .set(guild.getName(), 0);
                         main.saveGuildData();
+
+
+
                     } else {
                         Message.sendMessage(player, Message.COMMAND_DELETE_ERROR);
 
