@@ -53,11 +53,6 @@ public class CommandBuff extends CommandBase {
             return;
         }
 
-        if (!guild.canUseBuffs()) {
-            Message.sendMessage(player, Message.COMMAND_ERROR_ROLE_NO_PERMISSION);
-            return;
-        }
-
         // Buff 1: Haste
         ArrayList<String> haste = new ArrayList<String>();
         Main.getInstance().getConfig().getStringList("buff.description.haste").stream()

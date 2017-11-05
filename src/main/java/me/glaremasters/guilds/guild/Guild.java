@@ -141,16 +141,6 @@ public class Guild implements InventoryHolder {
                 Main.getInstance().getConfig().getString("tier" + getTier() + ".name"));
     }
 
-    public boolean canUseBuffs() {
-        Main.getInstance().getConfig().getBoolean("tier" + getTier() + ".use-buffs");
-         return true;
-    }
-
-    public boolean canUseVault() {
-        Main.getInstance().getConfig().getBoolean("tier" + getTier() + ".use-vault");
-        return true;
-    }
-
     public double getExpMultiplier() {
         return Main.getInstance().getConfig().getDouble("tier" + getTier() + ".mob-xp-multiplier");
     }

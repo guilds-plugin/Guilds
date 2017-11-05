@@ -390,8 +390,6 @@ tier1:
   mob-xp-multiplier: 1
   damage-multiplier: 1
   max-bank-balance: 10000
-  use-buffs: true
-  use-vault: true
 tier2:
   name: "Silver"
   cost: 200
@@ -399,8 +397,6 @@ tier2:
   mob-xp-multiplier: 2
   damage-multiplier: 1
   max-bank-balance: 20000
-  use-buffs: true
-  use-vault: true
 tier3:
   name: "Gold"
   cost: 300
@@ -408,8 +404,6 @@ tier3:
   mob-xp-multiplier: 3
   damage-multiplier: 1
   max-bank-balance: 30000
-  use-buffs: true
-  use-vault: true
 
 
 #-----------------------------------------------------------#

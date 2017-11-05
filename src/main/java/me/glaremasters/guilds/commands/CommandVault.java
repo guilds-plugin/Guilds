@@ -32,10 +32,6 @@ public class CommandVault extends CommandBase {
             return;
         }
 
-        if (!guild.canUseVault()) {
-            Message.sendMessage(player, Message.COMMAND_ERROR_ROLE_NO_PERMISSION);
-            return;
-        }
 
         player.openInventory(guild.getInventory());
 
