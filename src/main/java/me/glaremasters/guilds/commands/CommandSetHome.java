@@ -4,6 +4,7 @@ import com.sk89q.worldedit.BlockVector;
 import com.sk89q.worldguard.bukkit.RegionContainer;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.domains.DefaultDomain;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
@@ -18,6 +19,7 @@ import me.glaremasters.guilds.util.ConfirmAction;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -125,16 +127,37 @@ public class CommandSetHome extends CommandBase {
                     ProtectedRegion region = new ProtectedCuboidRegion(guild.getName(), min, max);
                     RegionContainer container = getWorldGuard().getRegionContainer();
                     RegionManager regions = container.get(player.getWorld());
+/*
+                    Location loc = player.getLocation();
 
+                    ApplicableRegionSet set = regions.getApplicableRegions(loc);
+                    int size = set.size();
+                    if (size > 0) {
+                        return;
+                    }
+
+
+                    for (ProtectedRegion region2 : set) {
+                       if (set.size() > 0) {
+                           return;
+
+                       }
+
+                    }
+
+*/
                     if (region != null) {
                         regions.removeRegion(guild.getName());
                     }
                     regions.addRegion(region);
                     player.sendMessage(ChatColor.GREEN +
-                            "Remember these! Your claim coordinates are: " + ChatColor.BLUE + Math.ceil(player.getLocation()
+                            "Remember these! Your claim coordinates are: " + ChatColor.BLUE + Math
+                            .ceil(player.getLocation()
                                     .getX()) + ", " + "0.0" + ", " + Math.ceil(player
-                                    .getLocation().getZ()) + ChatColor.GREEN + " to " + ChatColor.BLUE + (Math.ceil(player.getLocation().getX()
-                                    + 100)) + ", " + "255.0, " + (Math.ceil(player.getLocation().getZ() + 100)));
+                            .getLocation().getZ()) + ChatColor.GREEN + " to " + ChatColor.BLUE
+                            + (Math.ceil(player.getLocation().getX()
+                            + 100)) + ", " + "255.0, " + (Math
+                            .ceil(player.getLocation().getZ() + 100)));
                     region.setFlag(DefaultFlag.GREET_MESSAGE,
                             "Entering " + guild.getName() + "'s base");
                     region.setFlag(DefaultFlag.FAREWELL_MESSAGE,

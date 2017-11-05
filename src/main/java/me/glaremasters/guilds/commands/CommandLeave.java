@@ -68,6 +68,11 @@ public class CommandLeave extends CommandBase {
                 }
 
                 if (guild.getGuildMaster().getUniqueId().equals(player.getUniqueId())) {
+
+                    if (regions.getRegion(guild.getName()) != null) {
+                        regions.removeRegion(guild.getName());
+                    }
+
                     GuildRemoveEvent removeEvent =
                             new GuildRemoveEvent(player, guild,
                                     GuildRemoveEvent.RemoveCause.REMOVED);
