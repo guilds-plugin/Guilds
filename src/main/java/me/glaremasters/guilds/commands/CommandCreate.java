@@ -1,6 +1,7 @@
 package me.glaremasters.guilds.commands;
 
 import com.nametagedit.plugin.NametagEdit;
+import java.util.List;
 import java.util.logging.Level;
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.api.events.GuildCreateEvent;
@@ -45,6 +46,15 @@ public class CommandCreate extends CommandBase {
         for (String name : Main.getInstance().getGuildHandler().getGuilds().keySet()) {
             if (name.equalsIgnoreCase(args[0])) {
                 Message.sendMessage(player, Message.COMMAND_CREATE_GUILD_NAME_TAKEN);
+                return;
+            }
+        }
+
+        List<String> blacklist = Main.getInstance().getConfig().getStringList("blacklist");
+
+        for (String censor: blacklist) {
+            if(args[0].toLowerCase().contains(censor)) {
+                Message.sendMessage(player, Message.COMMAND_ERROR_BLACKLIST);
                 return;
             }
         }

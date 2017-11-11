@@ -472,6 +472,15 @@ name:
 # To turn off the ability for colored names change the regex to "^[a-zA-Z0-9]*$"
   regex: "^[a-zA-Z0-9&]*$"
 
+
+# This will automatically prevent players from making a guild if it contains anything in the list below.
+# Note: Capitalization doesn't matter. I can put "crap" and Crap cRaP, etc, will be blocked.
+# Note: Also, it'll sense stuff such as "PieceofCrap", hopefully making it easier for you to make the blacklist.
+blacklist:
+  - "crap"
+  - "ass"
+  - "stupid"
+
 prefix:
 # With the default Regex currently set, the minimum length of the prefix is 1 and the maximum is 20.
 # To change this, adjust the numbers and maybe have a look at the link above (RegEx).

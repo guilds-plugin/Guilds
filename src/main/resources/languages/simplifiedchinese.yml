@@ -18,6 +18,7 @@ messages:
       no-home-set: "&c尚未拥有公会传送点! , 输入&b/guild sethome &来创建公会基地传送点!"
       home-cooldown: "&c你无法传送!! 你需要等待 {time} 秒"
       sethome-cooldown: "&c你需要等待 {time} 秒后 才能再执行!"
+      blacklist: "&cOne or more of the words in your guild name is on the blacklist!"
     killreward:
       killer: "&aYou have killed another player and have earned {amount}!"
       player-who-died: "&cYou have been killed by another player and have lost {amount}!"

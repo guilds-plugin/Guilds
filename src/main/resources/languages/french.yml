@@ -19,6 +19,7 @@ messages:
       player-not-in-guild: "&cLe joueur '{player}' ne fait pas partie de votre guilde!"
       role-no-permission: "&cVotre rôle n'a pas la permission de faire ça!"
       sethome-cooldown: "&cVous ne pouvez pas définir de base pendant {time} secondes!"
+      blacklist: "&cOne or more of the words in your guild name is on the blacklist!"
     killreward:
       killer: "&aVous avez tué un joueur et remporté {amount}!"
       player-who-died: "&cVous avez été tué par un joueur et perdu {amount}!"

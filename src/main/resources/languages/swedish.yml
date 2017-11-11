@@ -19,6 +19,7 @@ messages:
       home-cooldown: "&cDu kan inte teleportera till ditt hem förrän om {time} sekunder!"
       sethome-cooldown: "&cDu kan inte sätta din guild-hem förrän om {time} sekunder!"
       not-officer: "&cUser must be an Officer in your Guild!"
+      blacklist: "&cOne or more of the words in your guild name is on the blacklist!"
     killreward:
       killer: "&aDu har dödat en annan spelare och tjänat {amount}!"
       player-who-died: "&cDu har blivit dödad av en annan spelare och förlorat {amount}!"

@@ -19,6 +19,7 @@ messages:
       player-not-in-guild: "&cИгрок '{player}' не состоит в Вашей гильдии."
       role-no-permission: "&cВаш ранг слишком мал для этого."
       sethome-cooldown: "&cВы не сможете установить дом гильдии на протяжении {time} секунд."
+      blacklist: "&cOne or more of the words in your guild name is on the blacklist!"
     killreward:
       killer: "&aВы убили игрока. Ваш заработок: {amount}."
       player-who-died: "&cВы убиты игроком. Ваша потеря: {amount}."
