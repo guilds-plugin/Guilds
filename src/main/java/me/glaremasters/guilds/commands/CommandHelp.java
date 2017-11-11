@@ -3,6 +3,7 @@ package me.glaremasters.guilds.commands;
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.message.Message;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 public class CommandHelp extends CommandBase {
@@ -28,7 +29,7 @@ public class CommandHelp extends CommandBase {
                         Message.COMMAND_ERROR_INVALID_NUMBER.replace("{input}", args[0]));
             }
         }
-
+        sender.sendMessage(ChatColor.GREEN + "=====================================================");
         for (int i = 0; i < MAX_PAGE_SIZE; i++) {
 
             int index = ((page - 1) * 6) + i;
@@ -54,5 +55,6 @@ public class CommandHelp extends CommandBase {
             Message.sendMessage(sender, Message.COMMAND_HELP_NEXT_PAGE
                     .replace("{next-page}", String.valueOf((page + 1))));
         }
+        sender.sendMessage(ChatColor.GREEN + "=====================================================");
     }
 }

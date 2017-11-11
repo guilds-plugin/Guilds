@@ -47,7 +47,7 @@ messages:
       success: "&aGuild has been transferred!"
     help:
       invalid-page: "&cPage not found!"
-      message: "&f/guild {command} {arguments} &7- &f{description}"
+      message: "&f/guild {command} {arguments} &7- &7{description}"
       next-page: "&7See /guilds help {next-page} for the next page"
     status:
       error: "&cGuild status must be public or private!"
