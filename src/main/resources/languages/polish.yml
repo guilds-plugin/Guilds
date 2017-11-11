@@ -19,7 +19,7 @@ messages:
       player-not-in-guild: "&cGracz '{player}' nie jest w Twojej gildii!"
       role-no-permission: "&cTwój stopień gildyjny jest za niski, aby to zrobić!"
       sethome-cooldown: "&cNie możesz ustawić bazy gildii przez następne {time} sekund!"
-      blacklist: "&cOne or more of the words in your guild name is on the blacklist!"
+      blacklist: "&cOne or more of the words in your guild name / guild prefix is on the blacklist!"
     killreward:
       killer: "&aZyskałeś {amount} zabijając gracza!"
       player-who-died: "&cZostałeś zabity przez innego gracza i straciłeś {amount}!"

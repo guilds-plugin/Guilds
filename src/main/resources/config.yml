@@ -477,6 +477,7 @@ name:
 # This will automatically prevent players from making a guild if it contains anything in the list below.
 # Note: Capitalization doesn't matter. I can put "crap" and Crap cRaP, etc, will be blocked.
 # Note: Also, it'll sense stuff such as "PieceofCrap", hopefully making it easier for you to make the blacklist.
+enable-blacklist: true
 blacklist:
   - "crap"
   - "ass"

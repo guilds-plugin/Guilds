@@ -23,7 +23,6 @@ public class CommandCreate extends CommandBase {
     }
 
 
-
     @Override
     public void execute(Player player, String[] args) {
 
@@ -49,13 +48,14 @@ public class CommandCreate extends CommandBase {
                 return;
             }
         }
+        if (Main.getInstance().getConfig().getBoolean("enable-blacklist")) {
+            List<String> blacklist = Main.getInstance().getConfig().getStringList("blacklist");
 
-        List<String> blacklist = Main.getInstance().getConfig().getStringList("blacklist");
-
-        for (String censor: blacklist) {
-            if(args[0].toLowerCase().contains(censor)) {
-                Message.sendMessage(player, Message.COMMAND_ERROR_BLACKLIST);
-                return;
+            for (String censor : blacklist) {
+                if (args[0].toLowerCase().contains(censor)) {
+                    Message.sendMessage(player, Message.COMMAND_ERROR_BLACKLIST);
+                    return;
+                }
             }
         }
 

@@ -19,7 +19,7 @@ messages:
       home-cooldown: "&cMÃ©g nem teleportÃ¡lhatsz {time} mÃ¡sodpercig!"
       sethome-cooldown: "&cMÃ©g nem Ã¡llÃ­thatod Ã¡t a cÃ©hotthont {time} mÃ¡sodpercig!"
       not-officer: "&cUser must be an Officer in your Guild!"
-      blacklist: "&cOne or more of the words in your guild name is on the blacklist!"
+      blacklist: "&cOne or more of the words in your guild name / guild prefix is on the blacklist!"
     killreward:
       killer: "&aYou have killed another player and have earned {amount}!"
       player-who-died: "&cYou have been killed by another player and have lost {amount}!"

@@ -1,6 +1,7 @@
 package me.glaremasters.guilds.commands;
 
 import com.nametagedit.plugin.NametagEdit;
+import java.util.List;
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
@@ -37,6 +38,16 @@ public class CommandPrefix extends CommandBase {
         if (!args[0].matches(Main.getInstance().getConfig().getString("prefix.regex"))) {
             Message.sendMessage(player, Message.COMMAND_PREFIX_REQUIREMENTS);
             return;
+        }
+        if (Main.getInstance().getConfig().getBoolean("enable-blacklist")) {
+            List<String> blacklist = Main.getInstance().getConfig().getStringList("blacklist");
+
+            for (String censor : blacklist) {
+                if (args[0].toLowerCase().contains(censor)) {
+                    Message.sendMessage(player, Message.COMMAND_ERROR_BLACKLIST);
+                    return;
+                }
+            }
         }
 
         Message.sendMessage(player, Message.COMMAND_PREFIX_SUCCESSFUL);

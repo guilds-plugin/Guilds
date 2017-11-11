@@ -19,7 +19,7 @@ messages:
       home-cooldown: "&cNa tento domov sa nemozes teleportovat nasledujucich {time} sekund!"
       sethome-cooldown: "&cNemozes nastavit domov klanu nasledujucich {time} sekund!"
       not-officer: "&cUzivatel musi byt dostojnikom v tvojom klane!"
-      blacklist: "&cOne or more of the words in your guild name is on the blacklist!"
+      blacklist: "&cOne or more of the words in your guild name / guild prefix is on the blacklist!"
     killreward:
       killer: "&aZabil si ineho hraca a ziskal si sumu {amount}!"
       player-who-died: "&cBol si zabity inym hracom a stratil si sumu {amount}!"
