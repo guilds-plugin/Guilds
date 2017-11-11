@@ -20,6 +20,10 @@ messages:
       role-no-permission: "&cVotre rôle n'a pas la permission de faire ça!"
       sethome-cooldown: "&cVous ne pouvez pas définir de base pendant {time} secondes!"
       blacklist: "&cOne or more of the words in your guild name / guild prefix is on the blacklist!"
+    claim:
+      worldguard-required: "&cThe WorldGuard Hook is required for Guild Claims to work"
+      coordinates: "&aRemember these! Your claim coordinates are: "
+      too-close: "&cYou are too close to another claim! Try somewhere else!"
     killreward:
       killer: "&aVous avez tué un joueur et remporté {amount}!"
       player-who-died: "&cVous avez été tué par un joueur et perdu {amount}!"

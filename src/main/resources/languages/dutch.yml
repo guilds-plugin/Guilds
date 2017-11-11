@@ -19,6 +19,10 @@ messages:
       home-cooldown: "&cJe moet {time} seconden wachten voordat je weer naar je Guild thuis kan teleporteren!"
       sethome-cooldown: "&cJe moet {time} seconden wachten voordat je weer je Guild thuis kan instellen!"
       blacklist: "&cOne or more of the words in your guild name / guild prefix is on the blacklist!"
+    claim:
+      worldguard-required: "&cThe WorldGuard Hook is required for Guild Claims to work"
+      coordinates: "&aRemember these! Your claim coordinates are: "
+      too-close: "&cYou are too close to another claim! Try somewhere else!"
     killreward:
       killer: "&aJe hebt een andere speler vermoord en {amount} verdient!"
       player-who-died: "&cJe bent vermoord door een andere speler en je bent {amount} verloren!"

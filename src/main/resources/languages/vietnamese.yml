@@ -20,6 +20,10 @@ messages:
       role-no-permission: "&cVai trò của bạn không đủ để làm điều đó!"
       sethome-cooldown: "&cBạn phải đợi {time} giây để đặt nhà cho guild!"
       blacklist: "&cOne or more of the words in your guild name / guild prefix is on the blacklist!"
+    claim:
+      worldguard-required: "&cThe WorldGuard Hook is required for Guild Claims to work"
+      coordinates: "&aRemember these! Your claim coordinates are: "
+      too-close: "&cYou are too close to another claim! Try somewhere else!"
     killreward:
       killer: "&aBạn đã giết người chơi khác và đã kiếm được {amount}!"
       player-who-died: "&cBạn đã bị giết người chơi khác và đã mất {amount}!"

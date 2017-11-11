@@ -20,6 +20,10 @@ messages:
       sethome-cooldown: "&cNemozes nastavit domov klanu nasledujucich {time} sekund!"
       not-officer: "&cUzivatel musi byt dostojnikom v tvojom klane!"
       blacklist: "&cOne or more of the words in your guild name / guild prefix is on the blacklist!"
+    claim:
+      worldguard-required: "&cThe WorldGuard Hook is required for Guild Claims to work"
+      coordinates: "&aRemember these! Your claim coordinates are: "
+      too-close: "&cYou are too close to another claim! Try somewhere else!"
     killreward:
       killer: "&aZabil si ineho hraca a ziskal si sumu {amount}!"
       player-who-died: "&cBol si zabity inym hracom a stratil si sumu {amount}!"

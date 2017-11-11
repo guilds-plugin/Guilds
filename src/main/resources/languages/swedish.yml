@@ -20,6 +20,10 @@ messages:
       sethome-cooldown: "&cDu kan inte sätta din guild-hem förrän om {time} sekunder!"
       not-officer: "&cUser must be an Officer in your Guild!"
       blacklist: "&cOne or more of the words in your guild name / guild prefix is on the blacklist!"
+    claim:
+      worldguard-required: "&cThe WorldGuard Hook is required for Guild Claims to work"
+      coordinates: "&aRemember these! Your claim coordinates are: "
+      too-close: "&cYou are too close to another claim! Try somewhere else!"
     killreward:
       killer: "&aDu har dödat en annan spelare och tjänat {amount}!"
       player-who-died: "&cDu har blivit dödad av en annan spelare och förlorat {amount}!"

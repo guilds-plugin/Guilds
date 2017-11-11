@@ -1,13 +1,16 @@
 package me.glaremasters.guilds.commands;
 
+import com.google.common.collect.Lists;
 import com.sk89q.worldedit.BlockVector;
 import com.sk89q.worldguard.bukkit.RegionContainer;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.domains.DefaultDomain;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import java.util.List;
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
@@ -16,6 +19,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -65,6 +69,13 @@ public class CommandClaim extends CommandBase {
         if (region != null) {
             regions.removeRegion(guild.getName());
         }
+
+        ApplicableRegionSet set = regions.getApplicableRegions(region);
+        if (set.size() > 0) {
+            Message.sendMessage(player, Message.COMMAND_CLAIM_TOO_CLOSE);
+            return;
+        }
+
         regions.addRegion(region);
         Message.sendMessage(player, Message.COMMAND_CLAIM_COORDINATES);
         player.sendMessage(ChatColor.BLUE + "" + Math
@@ -77,6 +88,7 @@ public class CommandClaim extends CommandBase {
         region.setFlag(DefaultFlag.FAREWELL_MESSAGE,
                 "Leaving " + guild.getName() + "'s base");
 
+
         ProtectedRegion regionTest = regions.getRegion(guild.getName());
         Location outlineMin = new Location(player.getWorld(), 0, 0, 0);
         outlineMin.setX(regionTest.getMinimumPoint().getX());
@@ -87,6 +99,8 @@ public class CommandClaim extends CommandBase {
         outlineMax.setX(regionTest.getMaximumPoint().getX());
         outlineMax.setY(player.getLocation().getY());
         outlineMax.setZ(regionTest.getMaximumPoint().getZ());
+
+
 
         for (double x1 = 0; x1 <= outlineMax.getX() - outlineMin.getX(); x1++) {
             player.sendBlockChange(outlineMin.clone().add(x1, 0, 0), Material.DIRT, (byte) 0);

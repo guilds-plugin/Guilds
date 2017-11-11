@@ -20,6 +20,10 @@ messages:
       sethome-cooldown: "&cNu poti seta casa Breslei pentru {time} secunde!"
       not-officer: "&cJucatorul trebuie sa fie un Officer in breasla ta!"
       blacklist: "&cOne or more of the words in your guild name / guild prefix is on the blacklist!"
+    claim:
+      worldguard-required: "&cThe WorldGuard Hook is required for Guild Claims to work"
+      coordinates: "&aRemember these! Your claim coordinates are: "
+      too-close: "&cYou are too close to another claim! Try somewhere else!"
     killreward:
       killer: "&aAi omorat un alt jucator si ai primit {amount}!"
       player-who-died: "&cAi fost omorat de un alt jucator si ai pierdut {amount}!"

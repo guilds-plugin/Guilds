@@ -20,6 +20,10 @@ messages:
       role-no-permission: "&cTwój stopień gildyjny jest za niski, aby to zrobić!"
       sethome-cooldown: "&cNie możesz ustawić bazy gildii przez następne {time} sekund!"
       blacklist: "&cOne or more of the words in your guild name / guild prefix is on the blacklist!"
+    claim:
+      worldguard-required: "&cThe WorldGuard Hook is required for Guild Claims to work"
+      coordinates: "&aRemember these! Your claim coordinates are: "
+      too-close: "&cYou are too close to another claim! Try somewhere else!"
     killreward:
       killer: "&aZyskałeś {amount} zabijając gracza!"
       player-who-died: "&cZostałeś zabity przez innego gracza i straciłeś {amount}!"
