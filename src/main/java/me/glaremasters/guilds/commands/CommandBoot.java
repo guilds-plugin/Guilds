@@ -1,5 +1,8 @@
 package me.glaremasters.guilds.commands;
 
+import com.sk89q.worldguard.bukkit.RegionContainer;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.managers.RegionManager;
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
@@ -9,6 +12,7 @@ import me.glaremasters.guilds.message.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 public class CommandBoot extends CommandBase {
 
@@ -17,6 +21,18 @@ public class CommandBoot extends CommandBase {
                 "guilds.command.boot", false,
                 new String[]{"kick"}, "<player>", 1, 1);
     }
+
+    public WorldGuardPlugin getWorldGuard() {
+        Plugin plugin = Main.getInstance().getServer().getPluginManager().getPlugin("WorldGuard");
+
+        // WorldGuard may not be loaded
+        if (plugin == null || !(plugin instanceof WorldGuardPlugin)) {
+            return null; // Maybe you want throw an exception instead
+        }
+
+        return (WorldGuardPlugin) plugin;
+    }
+
 
     public void execute(Player player, String[] args) {
         Guild guild = Guild.getGuild(player.getUniqueId());
@@ -49,6 +65,16 @@ public class CommandBoot extends CommandBase {
             Message.sendMessage(player, Message.COMMAND_ERROR_PLAYER_NOT_IN_GUILD
                     .replace("{player}", kickedPlayer.getName()));
             return;
+        }
+
+        if (Main.getInstance().getConfig().getBoolean("hooks.worldguard")) {
+
+            RegionContainer container = getWorldGuard().getRegionContainer();
+            RegionManager regions = container.get(player.getWorld());
+
+            if (regions.getRegion(guild.getName()) != null) {
+                regions.getRegion(guild.getName()).getMembers().removePlayer(kickedPlayer.getName());
+            }
         }
 
         guild.removeMember(kickedPlayer.getUniqueId());
