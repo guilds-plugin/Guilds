@@ -66,12 +66,13 @@ public class CommandDelete extends CommandBase {
 
                 main.getDatabaseProvider().removeGuild(guild, (result, exception) -> {
                     if (result) {
+                        if (Main.getInstance().getConfig().getBoolean("hooks.worldguard")) {
+                            RegionContainer container = getWorldGuard().getRegionContainer();
+                            RegionManager regions = container.get(player.getWorld());
 
-                        RegionContainer container = getWorldGuard().getRegionContainer();
-                        RegionManager regions = container.get(player.getWorld());
-
-                        if (regions.getRegion(guild.getName()) != null) {
-                            regions.removeRegion(guild.getName());
+                            if (regions.getRegion(guild.getName()) != null) {
+                                regions.removeRegion(guild.getName());
+                            }
                         }
 
                         Message.sendMessage(player,

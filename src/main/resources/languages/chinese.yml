@@ -19,6 +19,7 @@ messages:
       home-cooldown: "&c你無法傳送!! 你需要等待 {time} 秒後!在試一次"
       sethome-cooldown: "&c你需要等 {time} 秒後 才能在執行!"
       blacklist: "&cOne or more of the words in your guild name / guild prefix is on the blacklist!"
+
     killreward:
       killer: "&a你殺死了一位玩家 獲得了 {amount} 元!"
       player-who-died: "&c你被一位玩家殺死啦!!  被幹走了 {amount} 元!"

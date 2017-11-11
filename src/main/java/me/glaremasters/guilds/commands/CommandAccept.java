@@ -99,12 +99,14 @@ public class CommandAccept extends CommandBase {
 
         guild.addMember(player.getUniqueId(), GuildRole.getLowestRole());
         guild.removeInvitedPlayer(player.getUniqueId());
+        if (Main.getInstance().getConfig().getBoolean("hooks.worldguard")) {
 
-        RegionContainer container = getWorldGuard().getRegionContainer();
-        RegionManager regions = container.get(player.getWorld());
+            RegionContainer container = getWorldGuard().getRegionContainer();
+            RegionManager regions = container.get(player.getWorld());
 
-        if (regions.getRegion(guild.getName()) != null) {
-            regions.getRegion(guild.getName()).getMembers().addPlayer(player.getName());
+            if (regions.getRegion(guild.getName()) != null) {
+                regions.getRegion(guild.getName()).getMembers().addPlayer(player.getName());
+            }
         }
 
         if (config.getBoolean("titles.enabled")) {

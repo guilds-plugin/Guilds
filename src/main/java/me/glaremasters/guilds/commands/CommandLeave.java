@@ -68,9 +68,10 @@ public class CommandLeave extends CommandBase {
                 }
 
                 if (guild.getGuildMaster().getUniqueId().equals(player.getUniqueId())) {
-
-                    if (regions.getRegion(guild.getName()) != null) {
-                        regions.removeRegion(guild.getName());
+                    if (Main.getInstance().getConfig().getBoolean("hooks.worldguard")) {
+                        if (regions.getRegion(guild.getName()) != null) {
+                            regions.removeRegion(guild.getName());
+                        }
                     }
 
                     GuildRemoveEvent removeEvent =
