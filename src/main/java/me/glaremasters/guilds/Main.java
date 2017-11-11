@@ -254,7 +254,7 @@ public class Main extends JavaPlugin {
             Stream.of(
                     "english", "chinese", "french", "dutch", "japanese", "swedish", "hungarian", "romanian", "slovak",
                     "russian", "simplifiedchinese", "polish", "portuguese", "german", "vietnamese", "norwegian",
-                    "spanish"
+                    "spanish", "italian"
             ).forEach(l -> this.saveResource("languages/" + l + ".yml", false));
         }
 

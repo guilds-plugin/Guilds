@@ -1,0 +1,152 @@
+messages:
+  command:
+    error:
+      already-in-guild: "&cAppartieni già ad una gilda!"
+      args: "&cArgomenti invalidi! Digita /guilds help per ulteriori informazioni."
+      console: "&cQuesto comando può essere eseguito solamente da un giocatore."
+      guild-not-found: "&cLa gilda '{input}&r&c' non può essere trovata!"
+      home-cooldown: "&cNon puoi teletrasportarti nella home della tua gilda per ancora {time} secondi!"
+      invalid-role: "&cIl ruolo '{input}&r&c' non esiste!"
+      invalid_number: "&c '{input}&r&c' non e' un numero valido!"
+      no-guild: "&cNon appartieni ad una gilda."
+      no-home-set: "&cNessuna home impostata! Usa &a/guild sethome &cper impostarla!"
+      not-enough-money: "&aSpiacenti! Non possiedi abbastanza denaro per poter creare una gilda!"
+      not-found: "&cComando non trovato. Digita /guilds help per una lista dei comandi."
+      not-guildmaster: "&cNon sei il maestro della gilda!"
+      not-officer: "&cL'utente deve essere un ufficiale della tua gilda!"
+      permission: "&cNo hai il permesso per poter eseguire questo comando."
+      player-not-found: "&cIl giocatore '{player}&r&c' non esiste o non e' online!"
+      player-not-in-guild: "&cIl giocatore'{player}&r&c' non appartiene alla tua gilda!"
+      role-no-permission: "&cIl tuo ruolo non e' abbastanza alto per poterlo fare!"
+      sethome-cooldown: "&cNon puoi impostare l'home della gilda per ancora {time} secondi!"
+    killreward:
+      killer: "&aHai ucciso un giocatore ed hai guadagnato {amount}!"
+      player-who-died: "&cSei stato ucciso da un altro giocatore e ti sono stati sottratti {amount}!"
+    bank:
+      balance: "&aLa banca della gilda ha un bilancio di {amount}."
+      deposit-success: "&aHai spostato {amount} dal tuo profilo alla banca della tua gilda! Il bilancio della banca ora e' di {balance}."
+      deposit-failure: "&cNon hai abbastanza denaro da depositare dalla cifra richiesta!"
+      withdraw-success: "&aHai spostato {amount} dalla banca della tua gilda al tuo account! Il tuo nuovo bilancio e' di {balance}."
+      withdraw-failure: "&cNon hai abbastanza denaro per ritirare la cifra richiesta!"
+      bank-balance-limit: "&cE' stato raggiunto il limite di denaro massimo della banca, non puoi depositare ulteriore denaro. Effettua l'upgrade della gilda per poterne depositare ulteriore!"
+    upgrade:
+      tier-max: "&cImpossibile effettuare ulteriori upgrade! Sei già al massimo!"
+      money-warning: "&cStati per spendere {amount} per effettuare un upgrade della tua gilda. (Digita /guilds confirm per continuare)"
+      cancel: "&cUpgrade annullato!"
+      success: "&aHai effettuato l'upgrade della tua gilda!"
+      not-enough-money: "&aNon hai abbastanza denaro per poter effettuare un upgrade della tua gilda! Sono necessari {needed}!"
+    buff:
+      not-enough-money: "&cNon hai abbastanza denaro per poter acquistare questa pelle!"
+    transfer:
+      newmaster: "&aSei il nuovo maestro della gilda!"
+      success: "&aLa gilda e' stata trasferita con successo!"
+    help:
+      invalid-page: "&cPagina non trovata!"
+      message: "&f/guild {command} {arguments} &7- &f{description}"
+      next-page: "&7Digita /guilds help {next-page} per la pagina successiva"
+    status:
+      error: "&cLo status della gilda deve essere pubblico o privato!"
+      successful: "&aStatus della gilda impostato! Ora e' {status}!"
+    role:
+      players: "{player} - {role}"
+    list:
+      format: "Le gilde seguenti sono:"
+    create:
+      cancelled-sethome: "&cLa home della gilda non e' stata impostata!"
+      cancelled: "&cCreazione della gilda annullata!"
+      error: "&cQualcosa e' andato storto nel creare la tua gilda!"
+      guild-home: "&aHai impostato l'home della gilda."
+      guild-name-taken: "&cQuesto nome e' già stato utilizzato!"
+      money-warning-sethome: "&c Stai per spendere {amount} per impostare la home della tua gilda. (Digita /guilds confirm per continuare)"
+      money-warning: "&c Sei sicuro di voler spendere {amount} per creare una gilda! (Digita /guilds confirm per continuare)"
+      name-requirements: "&cIl nome della tua gilda non rispetta i requisiti! Puoi solamente utilizzare caratteri alfanumerici e la lunghezza non può superare i 64 caratteri."
+      successful: "&aLa gilda '{guild}&r&a' e' stata creata con successo"
+      warning: "&cDigita /guilds confirm per creare la tua gilda, digita /guilds cancel per annullare."
+    delete:
+      cancelled: "&cCancellazione della gilda annullata"
+      error: "&cQualcosa e' andato storto nel cancellare la tua gilda!"
+      successful: "&aLa gilda '{guild}&r&a' e' stata cancellata con successo!"
+      warning: "&cDigita /guilds confirm per cancellare la tua gilda, digita /guilds cancel per annullare."
+    info:
+      header: "Informazioni della gilda &b{guild}"
+      master: "Maestro: &b{master}"
+      member-count: "Membri: &b{members}/64&r (&bOnline: {members-online}&r)"
+      name: "Nome: &b{guild}&r (&bPrefix: {prefix}&r)"
+      players: "Membri nella gilda: &b[{players}]"
+      rank: "Il tuo rank: &b{rank}"
+    promote:
+      cannot-promote: "&cQuesto giocatore non può essere promosso ulteriormente!"
+      not-promotion: "&cNon hai promosso questo player!"
+      promoted: "&aHai promosso il giocatore {player} da {old-rank} a {new-rank}!"
+      successful: "&aSei stato promosso da {old-rank} a {new-rank}!"
+    demote:
+      cannot-demote: "&cQuesto giocatore non può essere retrocesso ulteriormente!"
+      demoted: "&cSei stato retrocesso da {old-rank} a {new-rank}!"
+      not-demotion: "&cNon hai retrocesso questo giocatore!"
+      successful: "&aSei stato retrocesso {player}, da {old-rank} a {new-rank}!"
+    chat:
+      message: "&7&l[Chat Gilda]&r &b[{role}] {player}: {message}"
+      enabled: "&aChat della gilda abilitata"
+      disabled: "&cChat della gilda disabilitata"
+    accept:
+      guild-full: "&cQuesto gilda e' piena!"
+      not-invited: "&cQuesto gilda e' privata / non hai ricevuto un invito dalla gilda."
+      player-joined: "&aIl giocatore '{player}' e' entrato nella tua gilda!"
+      successful: "&aSei entrato nella gilda '{guild}&r&a'!"
+    invite:
+      already-in-guild: "&cQuesto giocatore appartiene già alla tua gilda!"
+      already-invited: "&cQuesto giocatore e' già stato invitato!"
+      message: "&a{player} ti ha inviato ad unirsi alla sua gilda, '{guild}'"
+      successful: "&aHai invitato il giocatore {player} a far parte della tua gilda."
+    decline:
+      success: "&aInvito rifiutato!"
+    leave:
+      cancelled: "&cAbbandono annullato!"
+      player-left: "&cIl giocatore '{player}' e' uscito dalla tua gilda!"
+      successful: "&aSei uscito dalla gilda!"
+      warning-guildmaster: "&cSei il maestro di questa gilda; uscendo da esso significherà che la gilda verrà cancellata. Digita /guilds confirm per uscire e cancellare la tua gilda, digita /guilds cancel per annullare."
+      warning: "&cDigita /guilds confirm per uscire dalla gilda, digita /guilds cancel per annullare."
+      guildmaster-left: "&cIl maestro della gilda, '{player}', e' uscito dalla gilda. La gilda e' stata disbandata."
+    boot:
+      kicked: "&c{kicker} ti ha cacciato dalla gilda!"
+      player-kicked: "&cIl giocatore '{player}' e' stato cacciato dalla gilda da {kicker}!"
+      successful: "&aIl giocatore {player} e' stato cacciato dalla gilda!"
+    prefix:
+      requirements: "&cIl prefisso della gilda non rispetta i requisiti. Puoi solamente utilizzare i caratteri alfanumerici e la quantità dei caratteri non può superare i 6."
+      successful: "&aPrefisso della gilda cambiato!"
+    confirm:
+      error: "&cNon hai azioni da confermare!"
+    cancel:
+      error: "&cNon hai azioni da annullare!"
+    reload:
+      reloaded: "&aConfigurazione dei file ricaricata!"
+    update:
+      found: "&aE' stato trovato un aggiornamento! Vai su {url} per scaricarlo!"
+      not-found: "&cNessun aggiornamento trovato!"
+    admin:
+      added-player: "&aAggiunto il giocatore alla gilda"
+      delete-cancelled: "&cCancellazione della gilda annullata!"
+      delete-error: "&cQualcosa e' andato storto cancellando questa gilda!"
+      delete-successful: "&cGilda cancellata con successo!"
+      delete-warning: "&cDigita /guilds confirm per rimuovere questa gilda, digita /guilds cancel per annullare."
+      player-already-in-guild: "&cQuesto giocatore appartiene già ad una gilda!"
+      player-not-in-guild: "&cIl giocatore non appartiene a questa gilda!"
+      removed-player: "&aGiocatore rimosso dalla gilda."
+    ally:
+      accepted-target: "&a{guild}&r&a e' ora alleata con noi!"
+      accepted: "&aQuesta gilda e' ora alleata con {guild}!"
+      already-allies: "&cSei già alleato con {guild}!"
+      declined: "&c{guild}&r&c non desidera essere alleata!"
+      guild-not-pending: "&cQuesta gilda non ti ha inviato alcuno richiesta di alleanza!"
+      not-allies: "&cNon sei alleato con {guild}!"
+      removed-target: "&c{guild}&r&c non e' più alleata con noi!"
+      removed: "&cQuesta gilda non e' più alleata di {guild}!"
+      send-target: "&aE' stata ricevuta una richiesta di alleanza da {guild}&r&a! Digita /guilds ally accept {guild}&r&a per accettare oppure digita /guilds ally decline {guild}&r&a per rifiutare"
+      send: "&aRichiesta di alleanza inviata!"
+    home:
+      damage-taken: "&cHai subito del danno! Teletrasporto annullato!"
+      teleported: "&aSei stato teletrasportato nella home della gilda!"
+      teleporting: "&cSarai teletrasporto in {count} secondi."
+  event:
+    join:
+      pending-invites: "&aHai {number} richieste di invito dalle seguenti gilde: &e{guilds}&r&a . Digita /guild accept <nome> per accettare un invito oppure /guild deny <nome> per rifiutarlo!"
