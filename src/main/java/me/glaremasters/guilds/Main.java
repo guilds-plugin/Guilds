@@ -175,7 +175,7 @@ public class Main extends JavaPlugin {
                 new CommandHome(), new CommandInfo(), new CommandInspect(), new CommandInvite(), new CommandLeave(),
                 new CommandList(), new CommandPrefix(), new CommandPromote(), new CommandReload(), new CommandSetHome(),
                 new CommandStatus(), new CommandTransfer(), new CommandUpdate(), new CommandVault(), new CommandVersion(),
-                new CommandUpgrade(), new CommandBank(), new CommandGive()
+                new CommandUpgrade(), new CommandBank(), new CommandGive(), new CommandClaim()
         ).forEach(commandHandler::register);
 
         Stream.of(

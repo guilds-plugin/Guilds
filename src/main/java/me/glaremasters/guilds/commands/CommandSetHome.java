@@ -37,17 +37,6 @@ public class CommandSetHome extends CommandBase {
                 0);
     }
 
-    public WorldGuardPlugin getWorldGuard() {
-        Plugin plugin = Main.getInstance().getServer().getPluginManager().getPlugin("WorldGuard");
-
-        // WorldGuard may not be loaded
-        if (plugin == null || !(plugin instanceof WorldGuardPlugin)) {
-            return null; // Maybe you want throw an exception instead
-        }
-
-        return (WorldGuardPlugin) plugin;
-    }
-
 
     @Override
     public void execute(Player player, String[] args) {
@@ -118,60 +107,6 @@ public class CommandSetHome extends CommandBase {
                 Message.sendMessage(player, Message.COMMAND_CREATE_GUILD_HOME);
                 cooldowns.put(player.getName(), System.currentTimeMillis());
 
-                if (config.getBoolean("worldguard.claims")) {
-
-                    BlockVector min = new BlockVector(player.getLocation().getX(), 0,
-                            player.getLocation().getZ());
-                    BlockVector max = new BlockVector(player.getLocation().getX() + 100, 255,
-                            player.getLocation().getZ() + 100);
-                    ProtectedRegion region = new ProtectedCuboidRegion(guild.getName(), min, max);
-                    RegionContainer container = getWorldGuard().getRegionContainer();
-                    RegionManager regions = container.get(player.getWorld());
-/*
-                    Location loc = player.getLocation();
-
-                    ApplicableRegionSet set = regions.getApplicableRegions(loc);
-                    int size = set.size();
-                    if (size > 0) {
-                        return;
-                    }
-
-
-                    for (ProtectedRegion region2 : set) {
-                       if (set.size() > 0) {
-                           return;
-
-                       }
-
-                    }
-
-*/
-                    if (region != null) {
-                        regions.removeRegion(guild.getName());
-                    }
-                    regions.addRegion(region);
-                    player.sendMessage(ChatColor.GREEN +
-                            "Remember these! Your claim coordinates are: " + ChatColor.BLUE + Math
-                            .ceil(player.getLocation()
-                                    .getX()) + ", " + "0.0" + ", " + Math.ceil(player
-                            .getLocation().getZ()) + ChatColor.GREEN + " to " + ChatColor.BLUE
-                            + (Math.ceil(player.getLocation().getX()
-                            + 100)) + ", " + "255.0, " + (Math
-                            .ceil(player.getLocation().getZ() + 100)));
-                    region.setFlag(DefaultFlag.GREET_MESSAGE,
-                            "Entering " + guild.getName() + "'s base");
-                    region.setFlag(DefaultFlag.FAREWELL_MESSAGE,
-                            "Leaving " + guild.getName() + "'s base");
-
-                    DefaultDomain members = region.getMembers();
-                    DefaultDomain owners = region.getOwners();
-                    owners.addPlayer(player.getName());
-                    guild.getMembers().stream()
-                            .map(member -> Bukkit.getOfflinePlayer(member.getUniqueId()))
-                            .forEach(member -> {
-                                members.addPlayer(member.getName());
-                            });
-                }
             }
 
             @Override

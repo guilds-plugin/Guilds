@@ -39,9 +39,6 @@ hooks:
   worldguard: false
   nametagedit: false
 
-worldguard:
-  claims: false
-
 # You can also use {prefix} in this.
 
 nametagedit:
@@ -94,6 +91,7 @@ commands:
     cancel: "Cancel an action"
     chat: "Send a message to your guild members"
     check: "Check pending guild invites"
+    claim: "Claim land for your guild"
     confirm: "Confirm an action"
     create: "Create a guild"
     decline: "Decline a guild invite"
