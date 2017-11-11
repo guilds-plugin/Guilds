@@ -46,7 +46,7 @@ messages:
       success: "Guild has been transferred!"
       newmaster: "You are the new Guild Master of your Guild!"
     help:
-      message: "&f/guild {command} {arguments} &7- &f{description}"
+      message: "&f/guild {command} {arguments} &7- &7{description}"
       next-page: "&7Se /guilds help {next-page} för nästa sida"
       invalid-page: "&cSidan hittas ej!"
     status:

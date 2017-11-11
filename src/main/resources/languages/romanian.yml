@@ -46,7 +46,7 @@ messages:
       success: "Breasla a fost transferata!"
       newmaster: "Esti noul Sef al breslei!"
     help:
-      message: "&f/guild {command} {arguments} &7- &f{description}"
+      message: "&f/guild {command} {arguments} &7- &7{description}"
       next-page: "&7Foloseste /guilds help {next-page} pentru pagina urmatoare"
       invalid-page: "&cPagina nu exista!"
     status:

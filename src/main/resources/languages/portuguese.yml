@@ -47,7 +47,7 @@ messages:
       success: "&aGuild foi transferida!"
     help:
       invalid-page: "&cPagina nao encontrada!"
-      message: "&f/guild {command} {arguments} &7- &f{description}"
+      message: "&f/guild {command} {arguments} &7- &7{description}"
       next-page: "&7Use /guilds help {next-page} para proxima pagina"
     status:
       error: "&cStatus da Guild deve ser publica ou privada!"

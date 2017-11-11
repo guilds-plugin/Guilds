@@ -46,7 +46,7 @@ messages:
       success: "Klan bol prevedeny!"
       newmaster: "Si novym vodcom tohto klanu!"
     help:
-      message: "&f/guild {command} {arguments} &7- &f{description}"
+      message: "&f/guild {command} {arguments} &7- &7{description}"
       next-page: "&7Pouzi prikaz /guilds help {next-page} pre zobrazenie dalsej stranky"
       invalid-page: "&cStranka nenajdena!"
     status:

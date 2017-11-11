@@ -47,7 +47,7 @@ messages:
       success: "&aGuilden har blitt overfÃ¸rt!"
     help:
       invalid-page: "&cSide ikke funnet!"
-      message: "&f/guild {command} {arguments} &7- &f{description}"
+      message: "&f/guild {command} {arguments} &7- &7{description}"
       next-page: "&7Se /guilds help {next-page} for neste side"
     status:
       error: "&cGuild status mÃ¥ vÃ¦re public eller private!"

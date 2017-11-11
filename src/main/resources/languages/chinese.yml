@@ -44,7 +44,7 @@ messages:
       success: "公會已經被轉讓!"
       newmaster: "你是新的公會會長了!"
     help:
-      message: "&f/guild {command} {arguments} &7- &f{description}"
+      message: "&f/guild {command} {arguments} &7- &7{description}"
       next-page: "&7使用 /guilds help {頁碼} 到下一頁\n&e不管使用哪種公會指令前面一定要加上/guild (你要使用的指令)\n例如 /guild create 獨步天下 <-這樣就是創建一個名為獨步天下的公會"
       invalid-page: "&c找不到這一頁!"
     status:

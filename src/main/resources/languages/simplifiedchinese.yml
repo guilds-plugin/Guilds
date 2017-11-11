@@ -45,7 +45,7 @@ messages:
       success: "公会已经被转让!"
       newmaster: "你是新的公会会长了!"
     help:
-      message: "&f/guild {command} {arguments} &7- &f{description}"
+      message: "&f/guild {command} {arguments} &7- &7{description}"
       next-page: "&7使用 /guilds help {页码} 到下一页\n&e不管使用哪种公会指令前面一定要加上/guild (你要使用的指令)\n例如 /guild create 普通のMC <-这样就是创建一个名为普通のMC的公会！"
       invalid-page: "&c找不到这一页!"
     status:

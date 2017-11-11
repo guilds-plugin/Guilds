@@ -45,7 +45,7 @@ messages:
       success: "Guild is met success overgeplaatst!"
       newmaster: "Jij bent de nieuwe Guild Master!"
     help:
-      message: "&f/guild {command} {arguments} &7- &f{description}"
+      message: "&f/guild {command} {arguments} &7- &7{description}"
       next-page: "&7Zie /guilds help {next-page} voor de volgende pagina."
       invalid-page: "&cDeze pagina kon niet worden gevonden."
     status:

@@ -47,7 +47,7 @@ messages:
       success: "&aDie Gilde wurde übertragen!"
     help:
       invalid-page: "&cSeite nicht gefunden!"
-      message: "&f/guild {command} {arguments} &7- &f{description}"
+      message: "&f/guild {command} {arguments} &7- &7{description}"
       next-page: "&7Verwende /guilds help {next-page} um dir die nächste Seite anzusehen"
     status:
       error: "&cDer Gildenstatus muss öffentlich oder privat sein!"

@@ -47,7 +47,7 @@ messages:
       success: "&aLa guilde a bien été transférée à son nouveau Maître!"
     help:
       invalid-page: "&cPage introuvable!"
-      message: "&f/guild {command} {arguments} &7- &f{description}"
+      message: "&f/guild {command} {arguments} &7- &7{description}"
       next-page: "&7Faites /guilds help {next-page} pour la page suivante"
     status:
       error: "&cLe statut de la guilde doit être public ou private!"

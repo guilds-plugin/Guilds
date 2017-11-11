@@ -47,7 +47,7 @@ messages:
       success: "&aGuild đã được chuyển!"
     help:
       invalid-page: "&cKhông tìm thấy trang!"
-      message: "&f/guild {command} {arguments} &7- &f{description}"
+      message: "&f/guild {command} {arguments} &7- &7{description}"
       next-page: "&7Bấm /guilds help {next-page} để xem trang tiếp theo"
     status:
       error: "&cTrạng thái của guild phải là public(công cộng) hoặc private(riêng tư)!"

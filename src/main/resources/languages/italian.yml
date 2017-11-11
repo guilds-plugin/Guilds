@@ -47,7 +47,7 @@ messages:
       success: "&aLa gilda e' stata trasferita con successo!"
     help:
       invalid-page: "&cPagina non trovata!"
-      message: "&f/guild {command} {arguments} &7- &f{description}"
+      message: "&f/guild {command} {arguments} &7- &7{description}"
       next-page: "&7Digita /guilds help {next-page} per la pagina successiva"
     status:
       error: "&cLo status della gilda deve essere pubblico o privato!"
