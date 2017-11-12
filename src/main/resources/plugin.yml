@@ -148,4 +148,5 @@ permissions:
       guilds.command.check: true
       guilds.command.upgrade: true
       guilds.command.bank: true
+      guilds.command.claim: true
     default: true
