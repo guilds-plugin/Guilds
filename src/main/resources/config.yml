@@ -505,7 +505,6 @@ roles:
       add-ally: true
       ally-chat: true
       change-home: true
-      change-master: true
       change-prefix: true
       chat: true
       demote: true
@@ -529,7 +528,6 @@ roles:
       add-ally: true
       ally-chat: true
       change-home: true
-      change-master: false
       change-prefix: false
       chat: true
       demote: true
@@ -552,7 +550,6 @@ roles:
       activate-buff: false
       add-ally: false
       ally-chat: true
-      change-master: false
       change-prefix: false
       chat: true
       demote: false
@@ -574,7 +571,6 @@ roles:
       activate-buff: false
       add-ally: false
       ally-chat: true
-      change-master: false
       change-prefix: false
       chat: true
       demote: false

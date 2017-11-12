@@ -21,7 +21,6 @@ public class GuildRole {
     private boolean demote;
     private boolean changePrefix;
     private boolean changeHome;
-    private boolean changeMaster;
     private boolean removeGuild;
     private boolean addAlly;
     private boolean removeAlly;
@@ -37,7 +36,7 @@ public class GuildRole {
 
     GuildRole(String name, int level, boolean chat, boolean toggle, boolean allyChat,
             boolean invite, boolean kick, boolean promote, boolean demote, boolean addAlly,
-            boolean removeAlly, boolean changePrefix, boolean changeHome, boolean changeMaster,
+            boolean removeAlly, boolean changePrefix, boolean changeHome,
             boolean removeGuild, boolean openVault, boolean transferGuild, boolean activateBuff,
             boolean upgradeGuild, boolean depositMoney, boolean withdrawMoney, boolean claimLand) {
         this.name = name;
@@ -53,7 +52,6 @@ public class GuildRole {
         this.removeAlly = removeAlly;
         this.changePrefix = changePrefix;
         this.changeHome = changeHome;
-        this.changeMaster = changeMaster;
         this.removeGuild = removeGuild;
         this.openVault = openVault;
         this.transferGuild = transferGuild;
@@ -115,10 +113,6 @@ public class GuildRole {
 
     public boolean canChangeHome() {
         return changeHome;
-    }
-
-    public boolean canChangeMaster() {
-        return changeMaster;
     }
 
     public boolean canRemoveGuild() {
