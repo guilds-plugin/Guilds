@@ -520,6 +520,7 @@ roles:
       transfer-guild: true
       upgrade-guild: true
       withdraw-money: true
+      claim-land: true
 
   1:
     name: "Officer"
@@ -543,6 +544,7 @@ roles:
       transfer-guild: false
       upgrade-guild: false
       withdraw-money: true
+      claim-land: false
 
   2:
     name: "Veteran"
@@ -565,6 +567,7 @@ roles:
       transfer-guild: false
       upgrade-guild: false
       withdraw-money: false
+      claim-land: false
   3:
     name: "Member"
     permissions:
