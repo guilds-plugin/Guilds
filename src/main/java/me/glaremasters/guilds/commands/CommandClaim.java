@@ -63,10 +63,10 @@ public class CommandClaim extends CommandBase {
             return;
         }
 
-        BlockVector min = new BlockVector((player.getLocation().getX() - 50), 0,
-                (player.getLocation().getZ() - 50));
-        BlockVector max = new BlockVector((player.getLocation().getX() + 50), 255,
-                (player.getLocation().getZ() + 50));
+        BlockVector min = new BlockVector((player.getLocation().getX() - (Main.getInstance().getConfig().getInt("claims.size") / 2)), 0,
+                (player.getLocation().getZ() - (Main.getInstance().getConfig().getInt("claims.size") / 2)));
+        BlockVector max = new BlockVector((player.getLocation().getX() + (Main.getInstance().getConfig().getInt("claims.size") / 2)), 255,
+                (player.getLocation().getZ() + (Main.getInstance().getConfig().getInt("claims.size") / 2)));
         ProtectedRegion region = new ProtectedCuboidRegion(guild.getName(), min, max);
         RegionContainer container = getWorldGuard().getRegionContainer();
         RegionManager regions = container.get(player.getWorld());
@@ -84,15 +84,14 @@ public class CommandClaim extends CommandBase {
         regions.addRegion(region);
         Message.sendMessage(player, Message.COMMAND_CLAIM_COORDINATES);
         player.sendMessage(ChatColor.BLUE + "" + Math
-                .ceil((player.getLocation().getX() - 50)) + ", " + "0.0" + ", " +
-                Math.ceil((player.getLocation().getZ() - 50)) + ChatColor.GREEN + " to " +
-                ChatColor.BLUE + (Math.ceil((player.getLocation().getX() + 50)) + ", " + "255.0, "
-                + (Math.ceil((player.getLocation().getZ() + 50)))));
+                .ceil((player.getLocation().getX() - (Main.getInstance().getConfig().getInt("claims.size") / 2))) + ", " + "0.0" + ", " +
+                Math.ceil((player.getLocation().getZ() - (Main.getInstance().getConfig().getInt("claims.size") / 2))) + ChatColor.GREEN + " to " +
+                ChatColor.BLUE + (Math.ceil((player.getLocation().getX() + (Main.getInstance().getConfig().getInt("claims.size") / 2))) + ", " + "255.0, "
+                + (Math.ceil((player.getLocation().getZ() + (Main.getInstance().getConfig().getInt("claims.size") / 2))))));
         region.setFlag(DefaultFlag.GREET_MESSAGE,
                 "Entering " + guild.getName() + "'s base");
         region.setFlag(DefaultFlag.FAREWELL_MESSAGE,
                 "Leaving " + guild.getName() + "'s base");
-
 
         ProtectedRegion regionTest = regions.getRegion(guild.getName());
         Location outlineMin = new Location(player.getWorld(), 0, 0, 0);
@@ -105,8 +104,6 @@ public class CommandClaim extends CommandBase {
         outlineMax.setY(player.getLocation().getY());
         outlineMax.setZ(regionTest.getMaximumPoint().getZ());
 
-
-
         for (double x1 = 0; x1 <= outlineMax.getX() - outlineMin.getX(); x1++) {
             player.sendBlockChange(outlineMin.clone().add(x1, 0, 0), Material.DIRT, (byte) 0);
         }
@@ -114,8 +111,6 @@ public class CommandClaim extends CommandBase {
         for (double z = 0; z <= outlineMax.getZ() - outlineMin.getZ(); z++) {
             player.sendBlockChange(outlineMin.clone().add(0, 0, z), Material.DIRT, (byte) 0);
         }
-
-
 
         DefaultDomain members = region.getMembers();
         DefaultDomain owners = region.getOwners();
