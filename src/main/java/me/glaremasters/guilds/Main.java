@@ -145,7 +145,7 @@ public class Main extends JavaPlugin {
                         "§a[Guilds] §3Your config has been auto-updated and regenerated. You can find your old config in §3config-old.yml. You can disable this feature in the config");
             } else {
                 Bukkit.getConsoleSender().sendMessage(
-                        "§a[Guilds] §3The config is out of date. This update added Guild Banks. Please update the config to fix this.");
+                        "§a[Guilds] §3The config is out of date.");
             }
 
         }
