@@ -23,6 +23,7 @@ messages:
       worldguard-required: "&cThe WorldGuard Hook is required for Guild Claims to work"
       coordinates: "&aRemember these! Your claim coordinates are: "
       too-close: "&cYou are too close to another claim! Try somewhere else!"
+      removed: "&aYou have successfully remove your claim!"
     killreward:
       killer: "&a你殺死了一位玩家 獲得了 {amount} 元!"
       player-who-died: "&c你被一位玩家殺死啦!!  被幹走了 {amount} 元!"

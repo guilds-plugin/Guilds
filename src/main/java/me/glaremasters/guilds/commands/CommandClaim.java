@@ -40,7 +40,7 @@ public class CommandClaim extends CommandBase {
     public CommandClaim() {
         super("claim", Main.getInstance().getConfig().getString("commands.description.claim"),
                 "guilds.command.claim", false,
-                null, null, 0, 0);
+                null, null, 0, 1);
     }
 
     @Override
@@ -63,6 +63,14 @@ public class CommandClaim extends CommandBase {
             return;
         }
 
+        if (args[0].equalsIgnoreCase("delete") || args[0].equalsIgnoreCase("remove")) {
+            RegionContainer containerRemove = getWorldGuard().getRegionContainer();
+            RegionManager regionRemove = containerRemove.get(player.getWorld());
+            regionRemove.removeRegion(guild.getName());
+            Message.sendMessage(player, Message.COMMAND_CLAIM_REMOVE);
+            return;
+        }
+
         BlockVector min = new BlockVector((player.getLocation().getX() - (Main.getInstance().getConfig().getInt("claims.size") / 2)), 0,
                 (player.getLocation().getZ() - (Main.getInstance().getConfig().getInt("claims.size") / 2)));
         BlockVector max = new BlockVector((player.getLocation().getX() + (Main.getInstance().getConfig().getInt("claims.size") / 2)), 255,
@@ -70,6 +78,8 @@ public class CommandClaim extends CommandBase {
         ProtectedRegion region = new ProtectedCuboidRegion(guild.getName(), min, max);
         RegionContainer container = getWorldGuard().getRegionContainer();
         RegionManager regions = container.get(player.getWorld());
+
+
 
         if (region != null) {
             regions.removeRegion(guild.getName());

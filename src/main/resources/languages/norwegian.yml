@@ -24,6 +24,7 @@ messages:
       worldguard-required: "&cThe WorldGuard Hook is required for Guild Claims to work"
       coordinates: "&aRemember these! Your claim coordinates are: "
       too-close: "&cYou are too close to another claim! Try somewhere else!"
+      removed: "&aYou have successfully remove your claim!"
     killreward:
       killer: "&aDu har drept en annen spiller og fikk {amount}!"
       player-who-died: "&cDu har blitt drept av en annen spiller, og mistet {amount}!"
