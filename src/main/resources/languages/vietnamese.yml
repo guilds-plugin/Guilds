@@ -19,12 +19,12 @@ messages:
       player-not-in-guild: "&c'{player}' không ở trong guild của bạn!"
       role-no-permission: "&cVai trò của bạn không đủ để làm điều đó!"
       sethome-cooldown: "&cBạn phải đợi {time} giây để đặt nhà cho guild!"
-      blacklist: "&cOne or more of the words in your guild name / guild prefix is on the blacklist!"
+      blacklist: "&cMột hoặc nhiều từ trong tên guild/tiền tố guild của bạn nằm trong danh sách đen!"
     claim:
-      worldguard-required: "&cThe WorldGuard Hook is required for Guild Claims to work"
-      coordinates: "&aRemember these! Your claim coordinates are: "
-      too-close: "&cYou are too close to another claim! Try somewhere else!"
-      removed: "&aYou have successfully remove your claim!"
+      worldguard-required: "&cCần WorldGuard để Guild Claims làm việc"
+      coordinates: "&aHãy nhớ điều này! Tọa độ mà bạn sở hữu là: "
+      too-close: "&cBạn quá gần 1 chỗ đã được sở hữu! Hãy thử 1 chỗ khác!"
+      removed: "&aBạn đã unclaim thành công!"
     killreward:
       killer: "&aBạn đã giết người chơi khác và đã kiếm được {amount}!"
       player-who-died: "&cBạn đã bị giết người chơi khác và đã mất {amount}!"
@@ -101,7 +101,7 @@ messages:
       successful: "&aBạn đã gia nhập guild '{guild}' thành công"
     invite:
       already-in-guild: "&cNgười chơi này đã ở trong guild của bạn!"
-      already-invited: "&cThis player has already been invited!"
+      already-invited: "&cNgười chơi này đã được mời!"
       message: "&a{player} đã mời bạn vào guild của họ, guild: '{guild}'"
       successful: "&aBạn đã mời {player} vào guild của bạn thành công!"
     decline:
@@ -112,7 +112,7 @@ messages:
       successful: "&aBạn đã rời khỏi guild thành công!"
       warning-guildmaster: "&cBạn là Guild Master của guild này, rời khỏi guild có nghĩa là guild sẽ bị xóa. Bấm /guilds confirm để rời khỏi và xóa guild của bạn, bấm /guilds cancel để hủy bỏ."
       warning: "&cBấm /guilds confirm để rời khỏi guild của bạn, bấm /guilds cancel để hủy bỏ."
-      guildmaster-left: "&cThe Guild Master, '{player}' has left the guild. The guild will now be disbanded."
+      guildmaster-left: "&cGuild Master, '{player}' đã rời khỏi guild. Guild sẽ bị giải tán."
     boot:
       kicked: "&cBạn đã bị kick khỏi guild của bạn bời {kicker}!"
       player-kicked: "&c'{player}' đã bị kick khỏi guild của bạn bời {kicker}!"
@@ -127,7 +127,7 @@ messages:
     reload:
       reloaded: "&aĐã tải lại cấu hình!"
     update:
-      found: "&aĐã tìm thấy bản cập nhật! Đi đến {url} để tải nó!"
+      found: "&aã tìm thấy bản cập nhật! Đi đến {url} để tải nó!"
       not-found: "&cKhông tìn thấy bản cập nhật!"
     admin:
       added-player: "&aĐã thêm người chơi vào guild"
@@ -140,17 +140,17 @@ messages:
       removed-player: "&aĐã xóa người chơi khỏi guild!"
     ally:
       accepted-target: "&aGuild {guild} hiện giờ đã là đồng minh của bạn!"
-      accepted: "&aGuild này hiện giờ đang liên minh với guild {guild}!"
+      accepted: "&aGuild của bạn hiện đang liên minh với guild {guild}!"
       already-allies: "&cBạn đã là đồng minh với guild {guild}!"
       declined: "&cGuild {guild} từ chối là đồng minh!"
       guild-not-pending: "&cGuild này không gửi cho bạn yêu cầu làm đồng minh!"
       not-allies: "&cBạn không phải đồng minh của guild {guild}!"
       removed-target: "&cGuild {guild} đã không còn liên minh với bạn!"
-      removed: "&cGuild này đã không còn liên minh với guild {guild}!"
+      removed: "&cGuild của bạn đã hủy liên minh với guild {guild}!"
       send-target: "&aĐã nhận được yêu cầu liên mình từ guild {guild}! Bấm /guilds ally accept {guild} để chấp nhận hoặc /guilds ally decline {guild} để từ chối"
       send: "&aLời mời liên minh đã được gửi!"
     home:
-      damage-taken: "&cBạn đã nhận sát thương! hủy bỏ dịch chuyển!"
+      damage-taken: "&cBạn đã nhận sát thương! Hủy bỏ dịch chuyển!"
       teleported: "&aBạn đã dịch chuyển đến nhà của guild!"
       teleporting: "&cBạn sẽ dịch chuyển trong vòng {count} giây."
   event:
