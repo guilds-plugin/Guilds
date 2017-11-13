@@ -19,28 +19,28 @@ messages:
       home-cooldown: "&cNu te poti teleporta acasa pentru inca {time} secunde!"
       sethome-cooldown: "&cNu poti seta casa Breslei pentru {time} secunde!"
       not-officer: "&cJucatorul trebuie sa fie un Officer in breasla ta!"
-      blacklist: "&cOne or more of the words in your guild name / guild prefix is on the blacklist!"
+      blacklist: "&cUnul sau mai multe dintre cuvintele din prefix-ul / numele breslei se afla in blacklist!"
     claim:
-      worldguard-required: "&cThe WorldGuard Hook is required for Guild Claims to work"
-      coordinates: "&aRemember these! Your claim coordinates are: "
-      too-close: "&cYou are too close to another claim! Try somewhere else!"
-      removed: "&aYou have successfully remove your claim!"
+      worldguard-required: "&cWorldGuard este necesar pentru functionarea functiei de Claims"
+      coordinates: "&aAmintesteti asta! Coordonatele Claim-ului tau sunt: "
+      too-close: "&cEsti prea aproape de alt Claim! Incearca alt undeva!"
+      removed: "&aAi sters Claim-ul cu success!"
     killreward:
       killer: "&aAi omorat un alt jucator si ai primit {amount}!"
       player-who-died: "&cAi fost omorat de un alt jucator si ai pierdut {amount}!"
     bank:
-      balance: "&aYour guild's bank has a balance of {amount}."
-      deposit-success: "&aYou have just moved {amount} from your account into your guild bank! Your new bank balance is {balance}."
-      deposit-failure: "&cYou don't have enough to deposit the amount requested!"
-      withdraw-success: "&aYou have just moved {amount} from your guild bank to your account! Your new bank balance is {balance}."
-      withdraw-failure: "&cYou don't have enough to withdraw the amount requested!"
-      bank-balance-limit: "&cYou can't deposit any more money, bank balance limit reached. Upgrade your guild to deposit more!"
+      balance: "&aBanca breslei tale are o balanta de {amount}."
+      deposit-success: "&aAi depositat {amount} in banca breslei! Noua balanta a bancii este de {balance}."
+      deposit-failure: "&cBalanta ta nu este destula pentru a depozita suma ceruta!"
+      withdraw-success: "&aAi retras suma de {amount} din banca Breslei! Noua balanta a bancii este de {balance}."
+      withdraw-failure: "&cBalanta nu este destula pentru a retrage suma ceruta!"
+      bank-balance-limit: "&cNu mai poti depozita bani, balanta bancii a ajuns la limita. Un Upgrade la banca este necesar pentru a putea depozita mai mult!"
     upgrade:
       tier-max: "&cNu mai poate fi upgradat! Este deja la maxim!"
       money-warning: "&cEsti pe cale sa platesti {amount} pentru a upgrada breasla. (Scrie /guilds confirm pentru a continua)"
       cancel: "&cUpgrade anulat!"
       success: "&aAi upgradat cu succes breasla!"
-      not-enough-money: "&aNe pare rau! Nu ai destui bani pentru a upgrada breasla! You still need {needed}!"
+      not-enough-money: "&aNe pare rau! Nu ai destui bani pentru a upgrada breasla! Mai ai nevoie de {needed}!"
     buff:
       not-enough-money: "&cNu ai destui bani pentru a cumpara acest Buff!"
     transfer:
@@ -101,7 +101,7 @@ messages:
       player-joined: "&aJucatorul '{player}' a intrat in Breasla!"
     invite:
       message: "&a{player} tea invitat in Breasla, '{guild}'"
-      already-invited: "&cThis player has already been invited!"
+      already-invited: "&cAcest jucator a fost deja invitat!"
       successful: "&aLai invitat cu succes pe {player} in Breasla ta!"
       already-in-guild: "&cAcest jucator deja face parte in Breasla ta!"
     decline:
@@ -112,7 +112,7 @@ messages:
       warning: "&cScrie /guilds confirm pentru a parasi Breasla, scrie /guilds cancel pentru a anula."
       warning-guildmaster: "&cEsti sef-ul Breslei, daca o vei parasi aceasta va fi stearsa. Scrie /guilds confirm pentru a parasi si sterge Breasla, scrie /guilds cancel pentru a anula."
       player-left: "&cJucatorul '{player}' a parasit Breasla!"
-      guildmaster-left: "&cThe Guild Master, '{player}' has left the guild. The guild will now be disbanded."
+      guildmaster-left: "&cSef-ul, '{player}' a parasit breasla. Breasla va fi defiintata."
     boot:
       successful: "&aLai dat afara pe  {player} cu succes!"
       kicked: "&cAi fost dat afara din Breasla de {kicker}!"
