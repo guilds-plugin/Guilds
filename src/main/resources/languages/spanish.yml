@@ -19,12 +19,12 @@ messages:
       player-not-in-guild: "&cJugador '{player}&r&c' no esta en tu gremio!"
       role-no-permission: "&cTu rango no es tan alto como para hacer eso!"
       sethome-cooldown: "&cNo puedes establecer tu home del gremio por otro {time} segundos!"
-      blacklist: "&cOne or more of the words in your guild name / guild prefix is on the blacklist!"
+      blacklist: "&cUna o más palabras del nombre de tu gremio / ¡El prefijo del gremio está en la lista negra!"
     claim:
-      worldguard-required: "&cThe WorldGuard Hook is required for Guild Claims to work"
-      coordinates: "&aRemember these! Your claim coordinates are: "
-      too-close: "&cYou are too close to another claim! Try somewhere else!"
-      removed: "&aYou have successfully remove your claim!"
+      worldguard-required: "&cEl WorldGuard es requerido para que funcione Guild Claims"
+      coordinates: "&aRemember ¡Estas! Las coordenadas de tu claim son: "
+      too-close: "&c¡Estas muy cerca de otro claim! ¡Intenta en otra parte!"
+      removed: "&aHas removido tu claim!"
     killreward:
       killer: "&a Has matado a otro jugador y has ganado {amount}!"
       player-who-died: "&cHas sido matado por otro jugador y has perdido {amount}!"
