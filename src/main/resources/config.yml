@@ -312,6 +312,7 @@ require-money: false
 Requirement:
   cost: 0
   sethome-cost: 0
+  land-claiming: 1000
 
 # This section allows you to reward players for killing others!
 # Players will only get money from players they kill in OTHER guilds (to help prevent abuse).
