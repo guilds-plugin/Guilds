@@ -13,13 +13,18 @@
 #                     IMPORTANT INFORMATION                 #
 #-----------------------------------------------------------#
 
-# DO NOT CHANGE THIS
+# This is used to determine what version of the config you are using.
+# Please do not change this as it may cause issues with your config.
 version: 19
 
+# This will automatically move your current config to "config-old.yml" and replace with a new, updated, "config.yml".
+# If you ever get tired of your config being moved, just change this to "false".
 auto-update-config: true
 
-# Get the latest plugin announcements. Console = In your console. In-Game = To in-game OPs on login.
-
+# This is used for the Guild's Announcement System, which allow me (The Author) to communicate to you guys without updating.
+# The way this works is very simple. If you have "console" set to "true", you will see the announcement when the server starts.
+# If you have "in-game" set to "true", your OPed players will see it the first time they login to the server.
+# OPed players will only be notified on the first time they login after each server reboot.
 announcements:
   console: true
   in-game: true
@@ -28,19 +33,17 @@ announcements:
 #                     Hooks Configuration                   #
 #-----------------------------------------------------------#
 
-# Hooks will control what the plugin can hook into. For example:
-# Enabling the worldguard hook will make it check if PVP is allowed in a region before doing damage.
+# Hooks will control what the plugin can hook into.
+# For Guild Claims to work, you MUST have WorldGuard installed & the WorldGuard Hook enabled.
 # If you change a hook to true and don't actually have the plugin, it may throw errors.
-
-# Note on the NameTagEdit Hook: They may not all look the best if someone has a long Guild Name / User Name.
+# Note on the NameTagEdit Hook: They may not all look the best if someone has a long guild name / username.
 # It will allow 16 characters before the user's Username.
-
 hooks:
   worldguard: false
   nametagedit: false
 
-# You can also use {prefix} in this.
-
+# This allows you to configure how nametags will work in game with NameTagEdit.
+# You can also display a guild's prefix by using {prefix} instead of {guild}.
 nametagedit:
   name: "&7[&b{guild}&7]&r "
 
@@ -51,6 +54,9 @@ nametagedit:
 # Choosing your language for the plugin couldn't be easier! The default language is english.
 # Not an english server? No worries, you can choose from the following list of languages that we currently support.
 # If you speak another language but don't see it here, feel free to submit it via one of the links above to have it added to the plugin.
+# NOTE: If you change your language please ONLY use from the list above and use them EXACTLY as they are spelled in the list above.
+# Example: If I am a french server, I would change lang: english to lang: french
+# If you try and use a different language than any in the list above, the plugin will not function in a normal manner.
 lang: english
 # The plugin also supports the following other languages:
 # - chinese
@@ -72,13 +78,13 @@ lang: english
 # - norwegian
 # - italian
 
+#-----------------------------------------------------------#
+#                     Command Descriptions                  #
+#-----------------------------------------------------------#
 
-# NOTE: If you change your language please ONLY use from the list above and use them EXACTLY as they are spelled in the list above.
-# Example: If I am a french server, I would change lang: english to lang: french
-# If you try and use a different language than any in the list above, the plugin will not function in a normal manner.
-
-# You can modify how commands look like /guild help by simply configuring to a different language / style below
-
+# This allows you to modify how /guild help look in-game.
+# This is mainly towards those who aren't English speaking servers.
+# This allows you to fully translate commands to your own language.
 commands:
   description:
     accept: "Accept a guild invite"
@@ -117,7 +123,6 @@ commands:
     vault: "Open your guild vault"
     version: "Plugin info / version"
 
-
 #-----------------------------------------------------------#
 #              Rewards / Tickets Configuration              #
 #-----------------------------------------------------------#
@@ -132,7 +137,6 @@ upgrade-ticket:
   name: "&bGuild Upgrade Ticket"
   lore: "&dRight click this ticket to upgrade your guild tier!"
 
-
 #-----------------------------------------------------------#
 #                     GUI CONFIGURATION                     #
 #-----------------------------------------------------------#
@@ -141,8 +145,8 @@ upgrade-ticket:
 # As stated above, the name here such as list and info will modify data inside that commands GUI.
 # If your server's language is not english, you will need to manually modify these to your server's language and they will display in the GUI as your new input.
 
-
-# This section controls what shows in the "/guild list" command.
+# The "display" section allows you to choose which parts you want to display in /guild list.
+# For example: If I didn't want to display the members, I could change that to "false".
 display:
   name: true
   prefix: true
@@ -153,6 +157,8 @@ display:
   member-count: true
   members: true
 
+# The "list" section allows you to choose how the /guild list is styled.
+# You can change the colors, and the language of all parts of the guild list GUI.
 list:
   name: "&cGuild Name: "
   prefix: "&aGuild Prefix: "
@@ -163,6 +169,8 @@ list:
   member-count: "&6Member Count: "
   members: "&5Members: "
 
+# The "info" section allows you to choose how information in /guild info is displayed to users.
+# You can change the colors, and the language of all parts of the guild info GUI.
 info:
   balance: "Bank Balance: "
   deaths: "Deaths: "
@@ -179,7 +187,6 @@ info:
   playername: "Name: "
   prefix: "Prefix: "
   role: "Role: "
-
 
 # This part controls what is shown as the inventory name for things such as Guild List and Guild Vaults.
 gui-name:
@@ -200,11 +207,16 @@ gui-name:
 
 # In this section of the config, you can modify the buff name, price, time, and amplifier (Haste 1, 2 ,3 4, etc).
 # The current will give Haste 2, Speed 2, etc with "1". If you make it "2", it'll change it to 3, and so on.
-# Changing "use-guild-bank" to true will use a Guild's Bank Balance to buy buffs.
 
+# Do you want disable the ability to buy multiple buffs at once?
 disable-buff-stacking: true
+
+# Do you want to use a guild's bank balance for buying the buffs?
 use-guild-bank: false
 
+# In this section you can modify the name of all the buffs, allowing you to have cool, custom names!
+# The price is all in a dollar amount.
+# The time is in seconds, so , haste: 60 is seconds.
 buff:
   name:
     haste: "Substance of the Redmod Graff"
@@ -286,8 +298,6 @@ buff:
     - "&bGuild Members to obtain increased"
     - "&bregeration for a certain amount of time."
 
-
-
 #-----------------------------------------------------------#
 #                     Vault Configuration                   #
 #-----------------------------------------------------------#
@@ -299,11 +309,12 @@ require-money: false
 
 # Uncomment the lines below if you have Vault + an economy plugin and have change the option above to true.
 # You can define how much it costs for users to create a guild, the cost option, and you can define how much it costs for users to set a guild home.
-
 Requirement:
   cost: 0
   sethome-cost: 0
 
+# This section allows you to reward players for killing others!
+# Players will only get money from players they kill in OTHER guilds (to help prevent abuse).
 reward-on-kill:
   enabled: true
   reward: 10
@@ -353,7 +364,6 @@ titles:
       fade-in: 3
       stay: 3
       fade-out: 3
-
 
 #-----------------------------------------------------------#
 #                     Guild Upgrade Configuration           #
@@ -426,6 +436,7 @@ plugin-prefix: "&a[Guilds]"
 # Disable this to remove guild names showing next to a player in "TabList"
 tablist-guilds: true
 
+# Would you like to display a user's displayname instead of their MC username?
 tablist-use-display-name: false
 
 # Change how the Prefixes in the TabList show!
@@ -471,11 +482,11 @@ name:
 # To turn off the ability for colored names change the regex to "^[a-zA-Z0-9]*$"
   regex: "^[a-zA-Z0-9&]*$"
 
-
 # This will automatically prevent players from making a guild if it contains anything in the list below.
 # Note: Capitalization doesn't matter. I can put "crap" and Crap cRaP, etc, will be blocked.
 # Note: Also, it'll sense stuff such as "PieceofCrap", hopefully making it easier for you to make the blacklist.
 enable-blacklist: true
+
 blacklist:
   - "crap"
   - "ass"
