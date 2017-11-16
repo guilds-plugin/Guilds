@@ -25,6 +25,7 @@ messages:
       coordinates: "&aHãy nhớ điều này! Tọa độ mà bạn sở hữu là: "
       too-close: "&cBạn quá gần 1 chỗ đã được sở hữu! Hãy thử 1 chỗ khác!"
       removed: "&aBạn đã unclaim thành công!"
+      confirm: "&aAre you sure you would like to claim this land?"
     killreward:
       killer: "&aBạn đã giết người chơi khác và đã kiếm được {amount}!"
       player-who-died: "&cBạn đã bị giết người chơi khác và đã mất {amount}!"

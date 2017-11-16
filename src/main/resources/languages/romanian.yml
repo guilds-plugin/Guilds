@@ -25,6 +25,7 @@ messages:
       coordinates: "&aAmintesteti asta! Coordonatele Claim-ului tau sunt: "
       too-close: "&cEsti prea aproape de alt Claim! Incearca alt undeva!"
       removed: "&aAi sters Claim-ul cu success!"
+      confirm: "&aAre you sure you would like to claim this land?"
     killreward:
       killer: "&aAi omorat un alt jucator si ai primit {amount}!"
       player-who-died: "&cAi fost omorat de un alt jucator si ai pierdut {amount}!"

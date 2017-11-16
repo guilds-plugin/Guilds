@@ -24,6 +24,7 @@ messages:
       worldguard-required: "&cДля работы Привата Гильдии требуется связка с плагином WorldGuard"
       coordinates: "&aЗапомните это! Координаты вашего привата: "
       too-close: "&cВы находитесь слишком близко к другому привату! Попробуйте в другом месте!"
+      confirm: "&aAre you sure you would like to claim this land?"
     killreward:
       killer: "&aВы убили игрока и заработали {amount}!"
       player-who-died: "&cВас убил другой игрок, и вы потеряли {amount}!"

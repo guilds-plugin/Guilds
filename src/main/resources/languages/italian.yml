@@ -25,6 +25,7 @@ messages:
       coordinates: "&aRemember these! Your claim coordinates are: "
       too-close: "&cYou are too close to another claim! Try somewhere else!"
       removed: "&aYou have successfully remove your claim!"
+      confirm: "&aAre you sure you would like to claim this land?"
     killreward:
       killer: "&aHai ucciso un giocatore ed hai guadagnato {amount}!"
       player-who-died: "&cSei stato ucciso da un altro giocatore e ti sono stati sottratti {amount}!"

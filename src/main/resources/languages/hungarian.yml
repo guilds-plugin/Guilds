@@ -25,6 +25,7 @@ messages:
       coordinates: "&aJegyezd meg ezeket! A foglalás kordinátáid: "
       too-close: "&cTúl közel vagy egy másik területhez! Próbáld meg máshol!"
       removed: "&aSikeresen törölted a területet!"
+      confirm: "&aAre you sure you would like to claim this land?"
     killreward:
       killer: "&aMegöltél egy másik játékost, és kaptál {amount} összeget!"
       player-who-died: "&cMegölt téged egy másik játékos, és veszítettél {amount} összeget!"
