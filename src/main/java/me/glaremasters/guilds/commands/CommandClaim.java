@@ -20,6 +20,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -60,7 +61,8 @@ public class CommandClaim extends CommandBase {
             return;
         }
 
-        if (!Main.getInstance().getConfig().getBoolean("hooks.worldguard")) {
+        final FileConfiguration config = Main.getInstance().getConfig();
+        if (!config.getBoolean("hooks.worldguard")) {
             Message.sendMessage(player, Message.COMMAND_CLAIM_WORLDGUARD_REQUIRED);
             return;
         }
@@ -74,7 +76,7 @@ public class CommandClaim extends CommandBase {
             return;
         }
 
-        double claimCost = Main.getInstance().getConfig().getDouble("Requirement.land-claiming");
+        double claimCost = config.getDouble("Requirement.land-claiming");
 
         if (Main.vault && claimCost != -1) {
             if (Main.getInstance().getEconomy().getBalance(player) < claimCost) {
@@ -100,10 +102,12 @@ public class CommandClaim extends CommandBase {
                 }
 
 
-                BlockVector min = new BlockVector((player.getLocation().getX() - (Main.getInstance().getConfig().getInt("claims.size") / 2)), 0,
-                        (player.getLocation().getZ() - (Main.getInstance().getConfig().getInt("claims.size") / 2)));
-                BlockVector max = new BlockVector((player.getLocation().getX() + (Main.getInstance().getConfig().getInt("claims.size") / 2)), 255,
-                        (player.getLocation().getZ() + (Main.getInstance().getConfig().getInt("claims.size") / 2)));
+                BlockVector min = new BlockVector((player.getLocation().getX() - (
+                        config.getInt("claims.size") / 2)), 0,
+                        (player.getLocation().getZ() - (config.getInt("claims.size") / 2)));
+                BlockVector max = new BlockVector((player.getLocation().getX() + (
+                        config.getInt("claims.size") / 2)), 255,
+                        (player.getLocation().getZ() + (config.getInt("claims.size") / 2)));
                 ProtectedRegion region = new ProtectedCuboidRegion(guild.getName(), min, max);
                 RegionContainer container = getWorldGuard().getRegionContainer();
                 RegionManager regions = container.get(player.getWorld());
@@ -122,10 +126,11 @@ public class CommandClaim extends CommandBase {
                 regions.addRegion(region);
                 Message.sendMessage(player, Message.COMMAND_CLAIM_COORDINATES);
                 player.sendMessage(ChatColor.BLUE + "" + Math
-                        .ceil((player.getLocation().getX() - (Main.getInstance().getConfig().getInt("claims.size") / 2))) + ", " + "0.0" + ", " +
-                        Math.ceil((player.getLocation().getZ() - (Main.getInstance().getConfig().getInt("claims.size") / 2))) + ChatColor.GREEN + " to " +
-                        ChatColor.BLUE + (Math.ceil((player.getLocation().getX() + (Main.getInstance().getConfig().getInt("claims.size") / 2))) + ", " + "255.0, "
-                        + (Math.ceil((player.getLocation().getZ() + (Main.getInstance().getConfig().getInt("claims.size") / 2))))));
+                        .ceil((player.getLocation().getX() - (config.getInt("claims.size") / 2))) + ", " + "0.0" + ", " +
+                        Math.ceil((player.getLocation().getZ() - (config.getInt("claims.size") / 2))) + ChatColor.GREEN + " to " +
+                        ChatColor.BLUE + (Math.ceil((player.getLocation().getX() + (
+                        config.getInt("claims.size") / 2))) + ", " + "255.0, "
+                        + (Math.ceil((player.getLocation().getZ() + (config.getInt("claims.size") / 2))))));
                 region.setFlag(DefaultFlag.GREET_MESSAGE,
                         "Entering " + guild.getName() + "'s base");
                 region.setFlag(DefaultFlag.FAREWELL_MESSAGE,
