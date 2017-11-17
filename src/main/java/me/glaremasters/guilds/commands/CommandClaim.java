@@ -67,28 +67,28 @@ public class CommandClaim extends CommandBase {
             return;
         }
 
-
-        if (args[0].equalsIgnoreCase("delete") || args[0].equalsIgnoreCase("remove")) {
-            RegionContainer containerRemove = getWorldGuard().getRegionContainer();
-            RegionManager regionRemove = containerRemove.get(player.getWorld());
-            regionRemove.removeRegion(guild.getName());
-            Message.sendMessage(player, Message.COMMAND_CLAIM_REMOVE);
-            return;
-        }
-
-        double claimCost = config.getDouble("Requirement.land-claiming");
-
-        if (Main.vault && claimCost != -1) {
-            if (Main.getInstance().getEconomy().getBalance(player) < claimCost) {
-                Message.sendMessage(player, Message.COMMAND_ERROR_NOT_ENOUGH_MONEY);
+        if (config.getBoolean("custom-claim-size")) {
+            if (args[0] == null) {
+                Message.sendMessage(player, Message.COMMAND_CLAIM_SIZE_REQUIRED);
                 return;
             }
+            double claimCost = (config.getDouble("custom-claim-size") * Double.valueOf(args[0]));
 
-            Message.sendMessage(player, Message.COMMAND_CREATE_MONEY_WARNING_SETHOME
-                    .replace("{amount}", String.valueOf(claimCost)));
-        } else {
-            Message.sendMessage(player, Message.COMMAND_CREATE_WARNING);
+            if (Main.vault && claimCost != -1) {
+                if (Main.getInstance().getEconomy().getBalance(player) < claimCost) {
+                    Message.sendMessage(player, Message.COMMAND_ERROR_NOT_ENOUGH_MONEY);
+                    return;
+                }
+
+                Message.sendMessage(player, Message.COMMAND_CREATE_MONEY_WARNING_SETHOME
+                        .replace("{amount}", String.valueOf(claimCost)));
+            } else {
+                Message.sendMessage(player, Message.COMMAND_CREATE_WARNING);
+            }
         }
+
+
+        double claimCost = (config.getDouble("custom-claim-size") * Double.valueOf(args[0]));
 
         Main.getInstance().getCommandHandler().addAction(player, new ConfirmAction() {
             @Override
@@ -101,7 +101,6 @@ public class CommandClaim extends CommandBase {
                     return;
                 }
 
-
                 BlockVector min = new BlockVector((player.getLocation().getX() - (
                         config.getInt("claims.size") / 2)), 0,
                         (player.getLocation().getZ() - (config.getInt("claims.size") / 2)));
@@ -111,7 +110,6 @@ public class CommandClaim extends CommandBase {
                 ProtectedRegion region = new ProtectedCuboidRegion(guild.getName(), min, max);
                 RegionContainer container = getWorldGuard().getRegionContainer();
                 RegionManager regions = container.get(player.getWorld());
-
 
                 if (region != null) {
                     regions.removeRegion(guild.getName());
@@ -126,11 +124,15 @@ public class CommandClaim extends CommandBase {
                 regions.addRegion(region);
                 Message.sendMessage(player, Message.COMMAND_CLAIM_COORDINATES);
                 player.sendMessage(ChatColor.BLUE + "" + Math
-                        .ceil((player.getLocation().getX() - (config.getInt("claims.size") / 2))) + ", " + "0.0" + ", " +
-                        Math.ceil((player.getLocation().getZ() - (config.getInt("claims.size") / 2))) + ChatColor.GREEN + " to " +
+                        .ceil((player.getLocation().getX() - (config.getInt("claims.size")
+                                / 2))) + ", " + "0.0" + ", " +
+                        Math.ceil((player.getLocation().getZ() - (config.getInt("claims.size")
+                                / 2))) + ChatColor.GREEN + " to " +
                         ChatColor.BLUE + (Math.ceil((player.getLocation().getX() + (
                         config.getInt("claims.size") / 2))) + ", " + "255.0, "
-                        + (Math.ceil((player.getLocation().getZ() + (config.getInt("claims.size") / 2))))));
+                        + (Math
+                        .ceil((player.getLocation().getZ() + (config.getInt("claims.size")
+                                / 2))))));
                 region.setFlag(DefaultFlag.GREET_MESSAGE,
                         "Entering " + guild.getName() + "'s base");
                 region.setFlag(DefaultFlag.FAREWELL_MESSAGE,
@@ -148,11 +150,13 @@ public class CommandClaim extends CommandBase {
                 outlineMax.setZ(regionTest.getMaximumPoint().getZ());
 
                 for (double x1 = 0; x1 <= outlineMax.getX() - outlineMin.getX(); x1++) {
-                    player.sendBlockChange(outlineMin.clone().add(x1, 0, 0), Material.DIRT, (byte) 0);
+                    player.sendBlockChange(outlineMin.clone().add(x1, 0, 0), Material.DIRT,
+                            (byte) 0);
                 }
 
                 for (double z = 0; z <= outlineMax.getZ() - outlineMin.getZ(); z++) {
-                    player.sendBlockChange(outlineMin.clone().add(0, 0, z), Material.DIRT, (byte) 0);
+                    player.sendBlockChange(outlineMin.clone().add(0, 0, z), Material.DIRT,
+                            (byte) 0);
                 }
 
                 DefaultDomain members = region.getMembers();
@@ -173,6 +177,7 @@ public class CommandClaim extends CommandBase {
             }
         });
     }
+
 }
 
 

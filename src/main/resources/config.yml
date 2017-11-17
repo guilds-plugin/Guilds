@@ -15,7 +15,7 @@
 
 # This is used to determine what version of the config you are using.
 # Please do not change this as it may cause issues with your config.
-version: 19
+version: 20
 
 # This will automatically move your current config to "config-old.yml" and replace with a new, updated, "config.yml".
 # If you ever get tired of your config being moved, just change this to "false".
@@ -312,7 +312,6 @@ require-money: false
 Requirement:
   cost: 0
   sethome-cost: 0
-  land-claiming: 1000
 
 # This section allows you to reward players for killing others!
 # Players will only get money from players they kill in OTHER guilds (to help prevent abuse).
@@ -320,6 +319,34 @@ reward-on-kill:
   enabled: true
   reward: 10
   take-from-killed-player: 10
+
+#-----------------------------------------------------------#
+#                  Guild Claims Configuration               #
+#-----------------------------------------------------------#
+# This section of the config will allow you to handle guild land claiming.
+# Remember that the enable / disable for this is the WorldGuard Hook at the TOP of the config.
+# There are multiple options when it comes to guild claims. For the time being, all guilds will only get one claim.
+# As a server owner, you will have a few options here.
+# First off, you will have the ability to have a standard set claim size.
+# There is an option you can modify if you want players to be able to set their own claim size.
+# Don't worry, you will be able to modify the max claim size to prevent abuse.
+# Prices for guilds will be based up each section of blocks they claim with the region.
+# For example: If I want a 25x25 claim, I'd do /guild claim 25 and I'd be charged 25 * price you set.
+
+# Would you like to allow players to set their own claim size?
+custom-claim-size: false
+
+# You can set the max size for the claim size, so players can't take some absurd amount
+custom-max-claim-size: 100
+
+# Here you can set the custom price for claiming with custom regions (read above to see how it works)
+custom-claim-price: 10.00
+
+# Here you can set the regular max claim size when you aren't allowing custom claims
+regular-max-claim-size: 100
+
+# Here you can set the price for regular claims when you aren't allowing custom claims
+regular-claim-price: 100.00
 
 #-----------------------------------------------------------#
 #                     Title Configuration                   #
