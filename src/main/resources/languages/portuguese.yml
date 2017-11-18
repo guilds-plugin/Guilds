@@ -19,23 +19,22 @@ messages:
       player-not-in-guild: "&cPlayer '{player}' nao esta em sua guild!"
       role-no-permission: "&cSeu rank nao e alto o suficiente para isto!"
       sethome-cooldown: "&cVoce nao pode setar a home por {time} segundos!"
-      blacklist: "&cOne or more of the words in your guild name / guild prefix is on the blacklist!"
+      blacklist: "&cUma ou mais palavras no nome de sua guild / prefix estao na blacklist!"
     claim:
-      worldguard-required: "&cThe WorldGuard Hook is required for Guild Claims to work"
-      coordinates: "&aRemember these! Your claim coordinates are: "
-      too-close: "&cYou are too close to another claim! Try somewhere else!"
-      removed: "&aYou have successfully remove your claim!"
-      confirm: "&aAre you sure you would like to claim this land?"
+      worldguard-required: "&cO hook do worldguard e necessario para claims de guild funcionarem!"
+      coordinates: "&aLembre-se, as coordenadas de sua guilda sao: "
+      too-close: "&cVoce esta muito perto de um claim afaste-se mais!"
+      removed: "&aVoce removeu seu claim!"
     killreward:
       killer: "&aVoce matou outro jogador e ganhou {amount}!"
       player-who-died: "&cVoce foi morto por outro jogador e perdeu {amount}!"
     bank:
-      balance: "&aYour guild's bank has a balance of {amount}."
-      deposit-success: "&aYou have just moved {amount} from your account into your guild bank! Your new bank balance is {balance}."
-      deposit-failure: "&cYou don't have enough to deposit the amount requested!"
-      withdraw-success: "&aYou have just moved {amount} from your guild bank to your account! Your new bank balance is {balance}."
-      withdraw-failure: "&cYou don't have enough to withdraw the amount requested!"
-      bank-balance-limit: "&cYou can't deposit any more money, bank balance limit reached. Upgrade your guild to deposit more!"
+      balance: "&aO banco de sua guild tem {amount}."
+      deposit-success: "&aVoce moveu {amount} de sua conta para o banco de sua guild! Seu novo saldo e {balance}."
+      deposit-failure: "&cVoce nao tem o suficiente para depositar!"
+      withdraw-success: "&aVoce moveu {amount} do banco de sua guild para seu saldo! Seu saldo do banco e {balance}."
+      withdraw-failure: "&cVoce nao tem o suficiente para sacar!"
+      bank-balance-limit: "&cVoce nao pode mais depositar dinheiro, limite do banco atingido. Melhore sua guild para depositar mais!"
     upgrade:
       tier-max: "&cVoce ja esta no nivel maximo!"
       money-warning: "&cVoce esta prestes a gastar {amount} para fazer o upgrade de sua guild. (Escreva /guilds confirm para continuar)"
@@ -102,7 +101,7 @@ messages:
       successful: "&aVoce entrou na guild '{guild}' com sucesso"
     invite:
       already-in-guild: "&cEsse jogador ja esta na sua guild!"
-      already-invited: "&cThis player has already been invited!"
+      already-invited: "&cEsse jogador ja foi convidado!"
       message: "&a{player} convidou voce para a guild dele/dela, '{guild}'"
       successful: "&aVoce convidou {player} com sucesso para sua guild!"
     decline:
@@ -113,7 +112,7 @@ messages:
       successful: "&aVoce saiu da guild com sucesso!"
       warning-guildmaster: "&cVoce e o Guild Master desta guild, sair dela vai fazer com que ela seja deletada. Escreva /guilds confirm para sair e deletar sua guild, Escreva /guilds cancel para cancelar."
       warning: "&cEscreva /guilds confirm para sair de sua guild, Escreva /guilds cancel para cancelar."
-      guildmaster-left: "&cThe Guild Master, '{player}' has left the guild. The guild will now be disbanded."
+      guildmaster-left: "&cO guild master, '{player}' saiu da guild. a guild vai ser excluida."
     boot:
       kicked: "&cVoce foi kickado de sua guild por {kicker}!"
       player-kicked: "&cPlayer '{player}' kickado da guild por {kicker}!"
