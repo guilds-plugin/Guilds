@@ -24,7 +24,11 @@ messages:
       worldguard-required: "&c必須和 WorldGuard 搭配 才能有公會領地"
       coordinates: "&a記住這個座標 是你的公會領地!: "
       too-close: "&c你太接近其他的公會領地了! 請離遠一點再試試看!"
-      confirm: "&aAre you sure you would like to claim this land?"
+      confirm: "&c You are about to spend {amount} to claim your new land. (Type /guilds confirm to continue)"
+      size-required: "&cPlease enter a number with the command, such as 25, this will put your claim 25 blocks in each direction!"
+      too-big: "&cSorry! Your custom claim size is too big! The max is {max}."
+      no-claim-found: "&cYou don't have any land to unclaim!"
+      remove-confirm:  "&cAre you sure you want to unclaim your land? (Type /guilds confirm to continue)"
     killreward:
       killer: "&a你殺死了一位玩家 獲得了 {amount} 元!"
       player-who-died: "&c你被一位玩家殺死啦!!  被幹走了 {amount} 元!"

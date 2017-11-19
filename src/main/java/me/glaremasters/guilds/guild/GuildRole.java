@@ -32,13 +32,14 @@ public class GuildRole {
     private boolean depositMoney;
     private boolean withdrawMoney;
     private boolean claimLand;
+    private boolean unclaimLand;
 
 
     GuildRole(String name, int level, boolean chat, boolean toggle, boolean allyChat,
             boolean invite, boolean kick, boolean promote, boolean demote, boolean addAlly,
             boolean removeAlly, boolean changePrefix, boolean changeHome,
             boolean removeGuild, boolean openVault, boolean transferGuild, boolean activateBuff,
-            boolean upgradeGuild, boolean depositMoney, boolean withdrawMoney, boolean claimLand) {
+            boolean upgradeGuild, boolean depositMoney, boolean withdrawMoney, boolean claimLand, boolean unclaimLand) {
         this.name = name;
         this.level = level;
         this.chat = chat;
@@ -60,6 +61,7 @@ public class GuildRole {
         this.depositMoney = depositMoney;
         this.withdrawMoney = withdrawMoney;
         this.claimLand = claimLand;
+        this.unclaimLand = unclaimLand;
     }
 
     public static GuildRole getRole(int level) {
@@ -160,5 +162,7 @@ public class GuildRole {
     }
 
     public boolean canClaimLand() { return claimLand; }
+
+    public boolean canUnclaimLand() { return unclaimLand; }
 
 }

@@ -74,6 +74,7 @@ public class GuildHandler implements IHandler {
             boolean depositMoney = section.getBoolean(path + "deposit-money");
             boolean withdrawMoney = section.getBoolean(path + "withdraw-money");
             boolean claimLand = section.getBoolean(path + "claim-land");
+            boolean unclaimLand = section.getBoolean(path + "unclaim-land");
 
             GuildRole role =
                     new GuildRole(name, level, chat, allyChat, invite, kick, promote, demote,
@@ -81,7 +82,7 @@ public class GuildHandler implements IHandler {
                             removeAlly, changePrefix, changeHome, removeGuild,
                             toggleGuild,
                             openVault, transferGuild, activateBuff, upgradeGuild, depositMoney,
-                            withdrawMoney, claimLand);
+                            withdrawMoney, claimLand, unclaimLand);
             roles.add(role);
         }
     }

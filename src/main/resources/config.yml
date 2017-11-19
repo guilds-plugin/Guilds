@@ -118,6 +118,7 @@ commands:
     sethome: "Set your guild's home"
     status: "Toggle your guild public / private"
     transfer: "Transfer your guild to another user"
+    unclaim: "Remove your guild claim!"
     update: "Update to the most recent version of guilds"
     upgrade: "Upgrade your guild to a higher level"
     vault: "Open your guild vault"
@@ -563,6 +564,7 @@ roles:
       upgrade-guild: true
       withdraw-money: true
       claim-land: true
+      unclaim-land: true
 
   1:
     name: "Officer"
@@ -586,6 +588,7 @@ roles:
       upgrade-guild: false
       withdraw-money: true
       claim-land: false
+      unclaim-land: false
 
   2:
     name: "Veteran"
@@ -608,6 +611,7 @@ roles:
       upgrade-guild: false
       withdraw-money: false
       claim-land: false
+      unclaim-land: false
   3:
     name: "Member"
     permissions:
@@ -628,6 +632,8 @@ roles:
       transfer-guild: false
       upgrade-guild: false
       withdraw-money: false
+      claim-land: false
+      unclaim-land: false
 
 #-----------------------------------------------------------#
 #                     Storage Configuration                 #

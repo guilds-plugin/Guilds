@@ -114,6 +114,8 @@ permissions:
       guilds.command.check: true
       guilds.command.upgrade: true
       guilds.command.bank: true
+      guilds.command.claim: true
+      guilds.command.unclaim: true
     default: op
   guilds.group.member:
     description: All commands for the Guilds plugin
@@ -149,4 +151,5 @@ permissions:
       guilds.command.upgrade: true
       guilds.command.bank: true
       guilds.command.claim: true
+      guilds.command.unclaim: true
     default: true

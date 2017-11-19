@@ -25,7 +25,11 @@ messages:
       coordinates: "&aHãy nhớ điều này! Tọa độ mà bạn sở hữu là: "
       too-close: "&cBạn quá gần 1 chỗ đã được sở hữu! Hãy thử 1 chỗ khác!"
       removed: "&aBạn đã unclaim thành công!"
-      confirm: "&aAre you sure you would like to claim this land?"
+      confirm: "&c You are about to spend {amount} to claim your new land. (Type /guilds confirm to continue)"
+      size-required: "&cPlease enter a number with the command, such as 25, this will put your claim 25 blocks in each direction!"
+      too-big: "&cSorry! Your custom claim size is too big! The max is {max}."
+      no-claim-found: "&cYou don't have any land to unclaim!"
+      remove-confirm:  "&cAre you sure you want to unclaim your land? (Type /guilds confirm to continue)"
     killreward:
       killer: "&aBạn đã giết người chơi khác và đã kiếm được {amount}!"
       player-who-died: "&cBạn đã bị giết người chơi khác và đã mất {amount}!"

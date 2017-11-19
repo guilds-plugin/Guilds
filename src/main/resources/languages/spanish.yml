@@ -25,7 +25,11 @@ messages:
       coordinates: "&aRemember ¡Estas! Las coordenadas de tu claim son: "
       too-close: "&c¡Estas muy cerca de otro claim! ¡Intenta en otra parte!"
       removed: "&aHas removido tu claim!"
-      confirm: "&aAre you sure you would like to claim this land?"
+      confirm: "&c You are about to spend {amount} to claim your new land. (Type /guilds confirm to continue)"
+      size-required: "&cPlease enter a number with the command, such as 25, this will put your claim 25 blocks in each direction!"
+      too-big: "&cSorry! Your custom claim size is too big! The max is {max}."
+      no-claim-found: "&cYou don't have any land to unclaim!"
+      remove-confirm:  "&cAre you sure you want to unclaim your land? (Type /guilds confirm to continue)"
     killreward:
       killer: "&a Has matado a otro jugador y has ganado {amount}!"
       player-who-died: "&cHas sido matado por otro jugador y has perdido {amount}!"
