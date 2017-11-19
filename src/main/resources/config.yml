@@ -343,7 +343,7 @@ custom-max-claim-size: 100
 custom-claim-price: 10.00
 
 # Here you can set the regular max claim size when you aren't allowing custom claims
-regular-max-claim-size: 100
+regular-claim-size: 100
 
 # Here you can set the price for regular claims when you aren't allowing custom claims
 regular-claim-price: 100.00
