@@ -24,7 +24,7 @@ messages:
       coordinates: "&aRemember these! Your claim coordinates are: "
       too-close: "&cYou are too close to another claim! Try somewhere else!"
       removed: "&aYou have successfully remove your claim!"
-      confirm: "&c You are about to spend {amount} to claim your new land. (Type /guilds confirm to continue)"
+      confirm: "&cYou are about to spend {amount} to claim your new land. (Type /guilds confirm to continue)"
       size-required: "&cPlease enter a number with the command, such as 25, this will put your claim 25 blocks in each direction!"
       too-big: "&cSorry! Your custom claim size is too big! The max is {max}."
       no-claim-found: "&cYou don't have any land to unclaim!"
