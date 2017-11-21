@@ -179,7 +179,7 @@ public class Main extends JavaPlugin {
         ).forEach(commandHandler::register);
 
         Stream.of(
-                new JoinListener(), new ChatListener(), new CommandHome(), new ClickListener(), new GuildVaultListener(),
+                new JoinListener(), new ChatListener(), new ClickListener(), new GuildVaultListener(),
                 new GuildBuffListener(), new GuildChatListener(), new MobDeathListener(), new PlayerDamageListener(),
                 new DamageMultiplierListener(), new AnnouncementListener()
         ).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
