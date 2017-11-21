@@ -1,7 +1,6 @@
 package me.glaremasters.guilds.commands;
 
 import com.sk89q.worldguard.bukkit.RegionContainer;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.commands.base.CommandBase;
@@ -9,11 +8,10 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildMember;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.message.Message;
-import me.glaremasters.guilds.util.WorldGuardHandler;
+import me.glaremasters.guilds.handlers.WorldGuardHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
 public class CommandBoot extends CommandBase {
 
@@ -23,7 +21,7 @@ public class CommandBoot extends CommandBase {
                 new String[]{"kick"}, "<player>", 1, 1);
     }
 
-    WorldGuardHandler wg = new WorldGuardHandler();
+    WorldGuardHandler WorldGuard = new WorldGuardHandler();
 
 
     public void execute(Player player, String[] args) {
@@ -61,7 +59,7 @@ public class CommandBoot extends CommandBase {
 
         if (Main.getInstance().getConfig().getBoolean("hooks.worldguard")) {
 
-            RegionContainer container = wg.getWorldGuard().getRegionContainer();
+            RegionContainer container = WorldGuard.getWorldGuard().getRegionContainer();
             RegionManager regions = container.get(player.getWorld());
 
             if (regions.getRegion(guild.getName()) != null) {

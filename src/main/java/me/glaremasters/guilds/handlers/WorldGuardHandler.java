@@ -1,4 +1,4 @@
-package me.glaremasters.guilds.util;
+package me.glaremasters.guilds.handlers;
 
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import me.glaremasters.guilds.Main;

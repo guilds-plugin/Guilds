@@ -6,9 +6,8 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.message.Message;
 import me.glaremasters.guilds.util.ConfirmAction;
-import me.glaremasters.guilds.util.TitleHandler;
+import me.glaremasters.guilds.handlers.TitleHandler;
 import net.milkbowl.vault.economy.EconomyResponse;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
@@ -23,7 +22,7 @@ public class CommandUpgrade extends CommandBase {
                 null, 0, 0);
     }
 
-    TitleHandler th = new TitleHandler(Main.getInstance());
+    TitleHandler TitleHandler = new TitleHandler(Main.getInstance());
 
     @Override
     public void execute(Player player, String[] args) {
@@ -71,7 +70,7 @@ public class CommandUpgrade extends CommandBase {
                     Main.getInstance().guildBanksConfig
                             .set(guild.getName(), balance - tierUpgradeCost);
                     Main.getInstance().saveGuildData();
-                    th.tierTitles(player);
+                    TitleHandler.tierTitles(player);
                     guild.updateGuild("");
                 }
 
@@ -85,8 +84,10 @@ public class CommandUpgrade extends CommandBase {
         } else {
             if (Main.vault && tierUpgradeCost != -1) {
                 if (Main.getInstance().getEconomy().getBalance(player) < tierUpgradeCost) {
-                    double needed = (tierUpgradeCost - Main.getInstance().getEconomy().getBalance(player));
-                    Message.sendMessage(player, Message.COMMAND_UPGRADE_NOT_ENOUGH_MONEY.replace("{needed}", Double.toString(needed)));
+                    double needed = (tierUpgradeCost - Main.getInstance().getEconomy()
+                            .getBalance(player));
+                    Message.sendMessage(player, Message.COMMAND_UPGRADE_NOT_ENOUGH_MONEY
+                            .replace("{needed}", Double.toString(needed)));
                     return;
                 }
 
@@ -113,7 +114,7 @@ public class CommandUpgrade extends CommandBase {
                         return;
                     }
 
-                    th.tierTitles(player);
+                    TitleHandler.tierTitles(player);
                     guild.updateGuild("");
                 }
 

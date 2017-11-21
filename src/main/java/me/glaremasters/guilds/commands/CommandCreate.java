@@ -7,9 +7,10 @@ import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.api.events.GuildCreateEvent;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
+import me.glaremasters.guilds.handlers.TablistHandler;
 import me.glaremasters.guilds.message.Message;
 import me.glaremasters.guilds.util.ConfirmAction;
-import me.glaremasters.guilds.util.TitleHandler;
+import me.glaremasters.guilds.handlers.TitleHandler;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -23,7 +24,9 @@ public class CommandCreate extends CommandBase {
                 "<name>", 1, 1);
     }
 
-    TitleHandler th = new TitleHandler(Main.getInstance());
+    TitleHandler TitleHandler = new TitleHandler(Main.getInstance());
+    TablistHandler TablistHandler = new TablistHandler(Main.getInstance());
+
     @Override
     public void execute(Player player, String[] args) {
 
@@ -106,8 +109,7 @@ public class CommandCreate extends CommandBase {
                         Main.getInstance().guildTiersConfig.set(guild.getName(), 1);
                         Main.getInstance().saveGuildData();
 
-
-                        th.createTitles(player);
+                        TitleHandler.createTitles(player);
 
                         if (config.getBoolean("hooks.nametagedit")) {
                             NametagEdit.getApi()
@@ -117,18 +119,7 @@ public class CommandCreate extends CommandBase {
                                                     .replace("{guild}", guild.getName())
                                                     .replace("{prefix}", guild.getPrefix())));
                         }
-                        if (config.getBoolean("tablist-guilds")) {
-                            String name =
-                                    config
-                                            .getBoolean("tablist-use-display-name") ? player
-                                            .getDisplayName() : player.getName();
-                            player.setPlayerListName(
-                                    ChatColor.translateAlternateColorCodes('&',
-                                            config.getString("tablist")
-                                                    .replace("{guild}", guild.getName())
-                                                    .replace("{prefix}", guild.getPrefix())
-                                                    + name));
-                        }
+                        TablistHandler.addTablist(player);
                     } else {
                         Message.sendMessage(player, Message.COMMAND_CREATE_ERROR);
 

@@ -2,7 +2,6 @@ package me.glaremasters.guilds.commands;
 
 import com.nametagedit.plugin.NametagEdit;
 import com.sk89q.worldguard.bukkit.RegionContainer;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import java.util.logging.Level;
 import me.glaremasters.guilds.Main;
@@ -10,14 +9,14 @@ import me.glaremasters.guilds.api.events.GuildLeaveEvent;
 import me.glaremasters.guilds.api.events.GuildRemoveEvent;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
+import me.glaremasters.guilds.handlers.TablistHandler;
 import me.glaremasters.guilds.message.Message;
 import me.glaremasters.guilds.util.ConfirmAction;
-import me.glaremasters.guilds.util.TitleHandler;
-import me.glaremasters.guilds.util.WorldGuardHandler;
+import me.glaremasters.guilds.handlers.TitleHandler;
+import me.glaremasters.guilds.handlers.WorldGuardHandler;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
 public class CommandLeave extends CommandBase {
 
@@ -26,8 +25,8 @@ public class CommandLeave extends CommandBase {
                 "guilds.command.leave", false, null, null, 0, 0);
     }
 
-    WorldGuardHandler wg = new WorldGuardHandler();
-    TitleHandler th = new TitleHandler(Main.getInstance());
+    WorldGuardHandler WorldGuard = new WorldGuardHandler();
+    TablistHandler TablistHandler = new TablistHandler(Main.getInstance());
 
     public void execute(Player player, String[] args) {
         final FileConfiguration config = Main.getInstance().getConfig();
@@ -47,7 +46,7 @@ public class CommandLeave extends CommandBase {
             @Override
             public void accept() {
 
-                RegionContainer container = wg.getWorldGuard().getRegionContainer();
+                RegionContainer container = WorldGuard.getWorldGuard().getRegionContainer();
                 RegionManager regions = container.get(player.getWorld());
 
                 if (regions.getRegion(guild.getName()) != null) {
@@ -100,17 +99,9 @@ public class CommandLeave extends CommandBase {
                 guild.removeMember(player.getUniqueId());
                 Message.sendMessage(player, Message.COMMAND_LEAVE_SUCCESSFUL);
 
-                th.leaveTitles(player);
+                TablistHandler.leaveTablist(player);
 
-                if (config.getBoolean("tablist-guilds")) {
-                    String name =
-                            config.getBoolean("tablist-use-display-name")
-                                    ? player
-                                    .getDisplayName() : player.getName();
-                    player.setPlayerListName(
-                            ChatColor.translateAlternateColorCodes('&',
-                                    name));
-                }
+
                 if (config.getBoolean("hooks.nametagedit")) {
                     NametagEdit.getApi()
                             .setPrefix(player, "");

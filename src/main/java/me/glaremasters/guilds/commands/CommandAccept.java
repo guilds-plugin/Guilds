@@ -8,9 +8,10 @@ import me.glaremasters.guilds.api.events.GuildJoinEvent;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
+import me.glaremasters.guilds.handlers.TablistHandler;
 import me.glaremasters.guilds.message.Message;
-import me.glaremasters.guilds.util.TitleHandler;
-import me.glaremasters.guilds.util.WorldGuardHandler;
+import me.glaremasters.guilds.handlers.TitleHandler;
+import me.glaremasters.guilds.handlers.WorldGuardHandler;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -23,8 +24,9 @@ public class CommandAccept extends CommandBase {
                 new String[]{"join"}, "<guild id>", 0, 1);
     }
 
-    WorldGuardHandler wg = new WorldGuardHandler();
-    TitleHandler th = new TitleHandler(Main.getInstance());
+    WorldGuardHandler WorldGuard = new WorldGuardHandler();
+    TitleHandler TitleHandler = new TitleHandler(Main.getInstance());
+    TablistHandler TablistHandler = new TablistHandler(Main.getInstance());
 
 
     public void execute(Player player, String[] args) {
@@ -94,7 +96,7 @@ public class CommandAccept extends CommandBase {
         guild.removeInvitedPlayer(player.getUniqueId());
         if (Main.getInstance().getConfig().getBoolean("hooks.worldguard")) {
 
-            RegionContainer container = wg.getWorldGuard().getRegionContainer();
+            RegionContainer container = WorldGuard.getWorldGuard().getRegionContainer();
             RegionManager regions = container.get(player.getWorld());
 
             if (regions.getRegion(guild.getName()) != null) {
@@ -102,20 +104,8 @@ public class CommandAccept extends CommandBase {
             }
         }
 
-        th.joinTitles(player);
-
-
-        if (config.getBoolean("tablist-guilds")) {
-            String name =
-                    config.getBoolean("tablist-use-display-name") ? player
-                            .getDisplayName() : player.getName();
-            player.setPlayerListName(
-                    ChatColor.translateAlternateColorCodes('&',
-                            config.getString("tablist")
-                                    .replace("{guild}", guild.getName())
-                                    .replace("{prefix}", guild.getPrefix())
-                                    + name));
-        }
+        TitleHandler.joinTitles(player);
+        TablistHandler.addTablist(player);
         if (config.getBoolean("hooks.nametagedit")) {
             NametagEdit.getApi()
                     .setPrefix(player, ChatColor.translateAlternateColorCodes('&',

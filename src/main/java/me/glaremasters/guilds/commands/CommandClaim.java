@@ -2,7 +2,6 @@ package me.glaremasters.guilds.commands;
 
 import com.sk89q.worldedit.BlockVector;
 import com.sk89q.worldguard.bukkit.RegionContainer;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.domains.DefaultDomain;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
@@ -15,7 +14,7 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.message.Message;
 import me.glaremasters.guilds.util.ConfirmAction;
-import me.glaremasters.guilds.util.WorldGuardHandler;
+import me.glaremasters.guilds.handlers.WorldGuardHandler;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -23,14 +22,13 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
 /**
  * Created by GlareMasters on 11/11/2017.
  */
 public class CommandClaim extends CommandBase {
 
-    WorldGuardHandler wg = new WorldGuardHandler();
+    WorldGuardHandler WorldGuard = new WorldGuardHandler();
 
     public CommandClaim() {
         super("claim", Main.getInstance().getConfig().getString("commands.description.claim"),
@@ -127,7 +125,7 @@ public class CommandClaim extends CommandBase {
                             (player.getLocation().getZ() + (config.getInt("regular-claim-size")
                                     / 2)));
                     ProtectedRegion region = new ProtectedCuboidRegion(guild.getName(), min, max);
-                    RegionContainer container = wg.getWorldGuard().getRegionContainer();
+                    RegionContainer container = WorldGuard.getWorldGuard().getRegionContainer();
                     RegionManager regions = container.get(player.getWorld());
 
                     if (region != null) {
@@ -197,7 +195,7 @@ public class CommandClaim extends CommandBase {
                             Integer.valueOf(args[0]) / 2)), 255,
                             (player.getLocation().getZ() + (Integer.valueOf(args[0]) / 2)));
                     ProtectedRegion region = new ProtectedCuboidRegion(guild.getName(), min, max);
-                    RegionContainer container = wg.getWorldGuard().getRegionContainer();
+                    RegionContainer container = WorldGuard.getWorldGuard().getRegionContainer();
                     RegionManager regions = container.get(player.getWorld());
 
                     if (region != null) {

@@ -1,4 +1,4 @@
-package me.glaremasters.guilds.util;
+package me.glaremasters.guilds.handlers;
 
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.guild.Guild;
@@ -66,29 +66,6 @@ public class TitleHandler {
         }
     }
 
-    public void leaveTitles(Player player) {
-        Guild guild = Guild.getGuild(player.getUniqueId());
-        if (plugin.getConfig().getBoolean("titles.enabled")) {
-            try {
-                String creation = "titles.events.player-leaves-guild";
-                guild.sendTitle(plugin.getConfig().getString(creation + ".title")
-                                .replace("{username}", player.getName()),
-                        plugin.getConfig().getString(creation + ".sub-title")
-                                .replace("{username}", player.getName()),
-                        plugin.getConfig().getInt(creation + ".fade-in") * 20,
-                        plugin.getConfig().getInt(creation + ".stay") * 20,
-                        plugin.getConfig().getInt(creation + ".fade-out") * 20);
-            } catch (NoSuchMethodError error) {
-                String creation = "titles.events.player-leaves-guild";
-                guild.sendTitleOld(plugin.getConfig().getString(creation + ".title")
-                                .replace("{username}", player.getName()),
-                        plugin.getConfig().getString(creation + ".sub-title")
-                                .replace("{username}", player.getName()));
-            }
-
-        }
-    }
-
     public void tierTitles(Player player) {
         Guild guild = Guild.getGuild(player.getUniqueId());
         if (plugin.getConfig().getBoolean("titles.enabled")) {
@@ -118,7 +95,7 @@ public class TitleHandler {
 
         }
     }
-    
+
     public void prefixTitles(Player player) {
         Guild guild = Guild.getGuild(player.getUniqueId());
         if (plugin.getConfig().getBoolean("titles.enabled")) {

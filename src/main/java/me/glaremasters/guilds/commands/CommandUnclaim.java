@@ -1,26 +1,22 @@
 package me.glaremasters.guilds.commands;
 
 import com.sk89q.worldguard.bukkit.RegionContainer;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.managers.RegionManager;
-import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.message.Message;
 import me.glaremasters.guilds.util.ConfirmAction;
-import me.glaremasters.guilds.util.WorldGuardHandler;
+import me.glaremasters.guilds.handlers.WorldGuardHandler;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
 /**
  * Created by GlareMasters on 11/19/2017.
  */
 public class CommandUnclaim extends CommandBase {
 
-    WorldGuardHandler wg = new WorldGuardHandler();
+    WorldGuardHandler WorldGuard = new WorldGuardHandler();
     public CommandUnclaim() {
         super("unclaim", Main.getInstance().getConfig().getString("commands.description.unclaim"),
                 "guilds.command.unclaim", false,
@@ -46,7 +42,7 @@ public class CommandUnclaim extends CommandBase {
             Message.sendMessage(player, Message.COMMAND_CLAIM_WORLDGUARD_REQUIRED);
             return;
         }
-        RegionContainer container = wg.getWorldGuard().getRegionContainer();
+        RegionContainer container = WorldGuard.getWorldGuard().getRegionContainer();
         RegionManager regions = container.get(player.getWorld());
 
         if (regions.getRegion(guild.getName()) == null) {

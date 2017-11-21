@@ -7,7 +7,7 @@ import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.message.Message;
-import me.glaremasters.guilds.util.TitleHandler;
+import me.glaremasters.guilds.handlers.TitleHandler;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -20,7 +20,9 @@ public class CommandPrefix extends CommandBase {
                 "guilds.command.prefix", false, null,
                 "<new prefix>", 1, 1);
     }
-    TitleHandler th = new TitleHandler(Main.getInstance());
+
+    TitleHandler TitleHandler = new TitleHandler(Main.getInstance());
+
     @Override
     public void execute(Player player, String[] args) {
         Guild guild = Guild.getGuild(player.getUniqueId());
@@ -54,7 +56,7 @@ public class CommandPrefix extends CommandBase {
         Message.sendMessage(player, Message.COMMAND_PREFIX_SUCCESSFUL);
         guild.updatePrefix(ChatColor.translateAlternateColorCodes('&', args[0]));
 
-        th.prefixTitles(player);
+        TitleHandler.prefixTitles(player);
 
         String name = config.getBoolean("tablist-use-display-name") ? player
                 .getDisplayName() : player.getName();
