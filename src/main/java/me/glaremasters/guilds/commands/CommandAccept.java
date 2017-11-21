@@ -1,6 +1,5 @@
 package me.glaremasters.guilds.commands;
 
-import com.nametagedit.plugin.NametagEdit;
 import com.sk89q.worldguard.bukkit.RegionContainer;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import me.glaremasters.guilds.Main;
@@ -8,11 +7,11 @@ import me.glaremasters.guilds.api.events.GuildJoinEvent;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
+import me.glaremasters.guilds.handlers.NameTagEditHandler;
 import me.glaremasters.guilds.handlers.TablistHandler;
-import me.glaremasters.guilds.message.Message;
 import me.glaremasters.guilds.handlers.TitleHandler;
 import me.glaremasters.guilds.handlers.WorldGuardHandler;
-import org.bukkit.ChatColor;
+import me.glaremasters.guilds.message.Message;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
@@ -27,6 +26,7 @@ public class CommandAccept extends CommandBase {
     WorldGuardHandler WorldGuard = new WorldGuardHandler();
     TitleHandler TitleHandler = new TitleHandler(Main.getInstance());
     TablistHandler TablistHandler = new TablistHandler(Main.getInstance());
+    NameTagEditHandler NTEHandler = new NameTagEditHandler(Main.getInstance());
 
 
     public void execute(Player player, String[] args) {
@@ -106,14 +106,7 @@ public class CommandAccept extends CommandBase {
 
         TitleHandler.joinTitles(player);
         TablistHandler.addTablist(player);
-        if (config.getBoolean("hooks.nametagedit")) {
-            NametagEdit.getApi()
-                    .setPrefix(player, ChatColor.translateAlternateColorCodes('&',
-                            config
-                                    .getString("nametagedit.name")
-                                    .replace("{guild}", guild.getName())
-                                    .replace("{prefix}", guild.getPrefix())));
-        }
+        NTEHandler.setTag(player);
 
         Message.sendMessage(player,
                 Message.COMMAND_ACCEPT_SUCCESSFUL.replace("{guild}", guild.getName()));

@@ -1,13 +1,14 @@
 package me.glaremasters.guilds.commands;
 
-import com.nametagedit.plugin.NametagEdit;
 import java.util.List;
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
-import me.glaremasters.guilds.message.Message;
+import me.glaremasters.guilds.handlers.NameTagEditHandler;
+import me.glaremasters.guilds.handlers.TablistHandler;
 import me.glaremasters.guilds.handlers.TitleHandler;
+import me.glaremasters.guilds.message.Message;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -22,6 +23,8 @@ public class CommandPrefix extends CommandBase {
     }
 
     TitleHandler TitleHandler = new TitleHandler(Main.getInstance());
+    TablistHandler TablistHandler = new TablistHandler(Main.getInstance());
+    NameTagEditHandler NTEHandler = new NameTagEditHandler(Main.getInstance());
 
     @Override
     public void execute(Player player, String[] args) {
@@ -57,24 +60,8 @@ public class CommandPrefix extends CommandBase {
         guild.updatePrefix(ChatColor.translateAlternateColorCodes('&', args[0]));
 
         TitleHandler.prefixTitles(player);
-
-        String name = config.getBoolean("tablist-use-display-name") ? player
-                .getDisplayName() : player.getName();
-        player.setPlayerListName(
-                ChatColor.translateAlternateColorCodes('&',
-                        config.getString("tablist")
-                                .replace("{guild}", guild.getName())
-                                .replace("{prefix}", guild.getPrefix())
-                                + name));
-
-        if (config.getBoolean("hooks.nametagedit")) {
-            NametagEdit.getApi()
-                    .setPrefix(player, ChatColor.translateAlternateColorCodes('&',
-                            config
-                                    .getString("nametagedit.name")
-                                    .replace("{guild}", guild.getName())
-                                    .replace("{prefix}", guild.getPrefix())));
-        }
+        TablistHandler.addTablist(player);
+        NTEHandler.setTag(player);
 
 
     }

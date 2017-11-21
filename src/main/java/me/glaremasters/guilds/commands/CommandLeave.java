@@ -1,6 +1,5 @@
 package me.glaremasters.guilds.commands;
 
-import com.nametagedit.plugin.NametagEdit;
 import com.sk89q.worldguard.bukkit.RegionContainer;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import java.util.logging.Level;
@@ -9,12 +8,11 @@ import me.glaremasters.guilds.api.events.GuildLeaveEvent;
 import me.glaremasters.guilds.api.events.GuildRemoveEvent;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
+import me.glaremasters.guilds.handlers.NameTagEditHandler;
 import me.glaremasters.guilds.handlers.TablistHandler;
+import me.glaremasters.guilds.handlers.WorldGuardHandler;
 import me.glaremasters.guilds.message.Message;
 import me.glaremasters.guilds.util.ConfirmAction;
-import me.glaremasters.guilds.handlers.TitleHandler;
-import me.glaremasters.guilds.handlers.WorldGuardHandler;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
@@ -27,6 +25,7 @@ public class CommandLeave extends CommandBase {
 
     WorldGuardHandler WorldGuard = new WorldGuardHandler();
     TablistHandler TablistHandler = new TablistHandler(Main.getInstance());
+    NameTagEditHandler NTEHandler = new NameTagEditHandler(Main.getInstance());
 
     public void execute(Player player, String[] args) {
         final FileConfiguration config = Main.getInstance().getConfig();
@@ -101,11 +100,7 @@ public class CommandLeave extends CommandBase {
 
                 TablistHandler.leaveTablist(player);
 
-
-                if (config.getBoolean("hooks.nametagedit")) {
-                    NametagEdit.getApi()
-                            .setPrefix(player, "");
-                }
+                NTEHandler.removeTag(player);
                 Main.getInstance().getCommandHandler().removeAction(player);
                 if (guild.getGuildMaster().getUniqueId().equals(player.getUniqueId())) {
                     guild.sendMessage(

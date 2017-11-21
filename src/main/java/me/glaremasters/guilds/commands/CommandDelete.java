@@ -1,6 +1,5 @@
 package me.glaremasters.guilds.commands;
 
-import com.nametagedit.plugin.NametagEdit;
 import com.sk89q.worldguard.bukkit.RegionContainer;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import java.util.logging.Level;
@@ -9,11 +8,11 @@ import me.glaremasters.guilds.api.events.GuildRemoveEvent;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
+import me.glaremasters.guilds.handlers.NameTagEditHandler;
 import me.glaremasters.guilds.handlers.TablistHandler;
+import me.glaremasters.guilds.handlers.WorldGuardHandler;
 import me.glaremasters.guilds.message.Message;
 import me.glaremasters.guilds.util.ConfirmAction;
-import me.glaremasters.guilds.handlers.WorldGuardHandler;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class CommandDelete extends CommandBase {
@@ -26,6 +25,7 @@ public class CommandDelete extends CommandBase {
 
     WorldGuardHandler WorldGuard = new WorldGuardHandler();
     TablistHandler TablistHandler = new TablistHandler(Main.getInstance());
+    NameTagEditHandler NTEHandler = new NameTagEditHandler(Main.getInstance());
 
     @Override
     public void execute(Player player, String[] args) {
@@ -59,7 +59,8 @@ public class CommandDelete extends CommandBase {
                 main.getDatabaseProvider().removeGuild(guild, (result, exception) -> {
                     if (result) {
                         if (Main.getInstance().getConfig().getBoolean("hooks.worldguard")) {
-                            RegionContainer container = WorldGuard.getWorldGuard().getRegionContainer();
+                            RegionContainer container = WorldGuard.getWorldGuard()
+                                    .getRegionContainer();
                             RegionManager regions = container.get(player.getWorld());
 
                             if (regions.getRegion(guild.getName()) != null) {
@@ -81,7 +82,6 @@ public class CommandDelete extends CommandBase {
                         main.saveGuildData();
 
 
-
                     } else {
                         Message.sendMessage(player, Message.COMMAND_DELETE_ERROR);
 
@@ -95,11 +95,7 @@ public class CommandDelete extends CommandBase {
                 });
 
                 TablistHandler.leaveTablist(player);
-
-                if (main.getConfig().getBoolean("hooks.nametagedit")) {
-                    NametagEdit.getApi()
-                            .setPrefix(player, "");
-                }
+                NTEHandler.removeTag(player);
 
                 main.getCommandHandler().removeAction(player);
             }
