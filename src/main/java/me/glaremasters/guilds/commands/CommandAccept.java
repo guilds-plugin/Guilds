@@ -10,6 +10,7 @@ import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.message.Message;
+import me.glaremasters.guilds.util.WorldGuardHandler;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -23,16 +24,7 @@ public class CommandAccept extends CommandBase {
                 new String[]{"join"}, "<guild id>", 0, 1);
     }
 
-    public WorldGuardPlugin getWorldGuard() {
-        Plugin plugin = Main.getInstance().getServer().getPluginManager().getPlugin("WorldGuard");
-
-        // WorldGuard may not be loaded
-        if (plugin == null || !(plugin instanceof WorldGuardPlugin)) {
-            return null; // Maybe you want throw an exception instead
-        }
-
-        return (WorldGuardPlugin) plugin;
-    }
+    WorldGuardHandler wg = new WorldGuardHandler();
 
 
     public void execute(Player player, String[] args) {
@@ -101,7 +93,7 @@ public class CommandAccept extends CommandBase {
         guild.removeInvitedPlayer(player.getUniqueId());
         if (Main.getInstance().getConfig().getBoolean("hooks.worldguard")) {
 
-            RegionContainer container = getWorldGuard().getRegionContainer();
+            RegionContainer container = wg.getWorldGuard().getRegionContainer();
             RegionManager regions = container.get(player.getWorld());
 
             if (regions.getRegion(guild.getName()) != null) {

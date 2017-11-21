@@ -15,6 +15,7 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.message.Message;
 import me.glaremasters.guilds.util.ConfirmAction;
+import me.glaremasters.guilds.util.WorldGuardHandler;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -29,16 +30,7 @@ import org.bukkit.plugin.Plugin;
  */
 public class CommandClaim extends CommandBase {
 
-    public WorldGuardPlugin getWorldGuard() {
-        Plugin plugin = Main.getInstance().getServer().getPluginManager().getPlugin("WorldGuard");
-
-        // WorldGuard may not be loaded
-        if (plugin == null || !(plugin instanceof WorldGuardPlugin)) {
-            return null; // Maybe you want throw an exception instead
-        }
-
-        return (WorldGuardPlugin) plugin;
-    }
+    WorldGuardHandler wg = new WorldGuardHandler();
 
     public CommandClaim() {
         super("claim", Main.getInstance().getConfig().getString("commands.description.claim"),
@@ -135,7 +127,7 @@ public class CommandClaim extends CommandBase {
                             (player.getLocation().getZ() + (config.getInt("regular-claim-size")
                                     / 2)));
                     ProtectedRegion region = new ProtectedCuboidRegion(guild.getName(), min, max);
-                    RegionContainer container = getWorldGuard().getRegionContainer();
+                    RegionContainer container = wg.getWorldGuard().getRegionContainer();
                     RegionManager regions = container.get(player.getWorld());
 
                     if (region != null) {
@@ -205,7 +197,7 @@ public class CommandClaim extends CommandBase {
                             Integer.valueOf(args[0]) / 2)), 255,
                             (player.getLocation().getZ() + (Integer.valueOf(args[0]) / 2)));
                     ProtectedRegion region = new ProtectedCuboidRegion(guild.getName(), min, max);
-                    RegionContainer container = getWorldGuard().getRegionContainer();
+                    RegionContainer container = wg.getWorldGuard().getRegionContainer();
                     RegionManager regions = container.get(player.getWorld());
 
                     if (region != null) {

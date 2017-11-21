@@ -11,6 +11,7 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildMember;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.message.Message;
+import me.glaremasters.guilds.util.WorldGuardHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -26,16 +27,7 @@ public class CommandTransfer extends CommandBase {
                 "<name>", 1, 1);
     }
 
-    public WorldGuardPlugin getWorldGuard() {
-        Plugin plugin = Main.getInstance().getServer().getPluginManager().getPlugin("WorldGuard");
-
-        // WorldGuard may not be loaded
-        if (plugin == null || !(plugin instanceof WorldGuardPlugin)) {
-            return null; // Maybe you want throw an exception instead
-        }
-
-        return (WorldGuardPlugin) plugin;
-    }
+    WorldGuardHandler wg = new WorldGuardHandler();
 
     @Override
     public void execute(Player player, String[] args) {
@@ -81,7 +73,7 @@ public class CommandTransfer extends CommandBase {
             Message.sendMessage(player, Message.COMMAND_TRANSFER_SUCCESS);
             Message.sendMessage(transferPlayer, Message.COMMAND_TRANSFER_NEWMASTER);
 
-            RegionContainer container = getWorldGuard().getRegionContainer();
+            RegionContainer container = wg.getWorldGuard().getRegionContainer();
             RegionManager regions = container.get(player.getWorld());
 
             if (regions.getRegion(guild.getName()) != null) {

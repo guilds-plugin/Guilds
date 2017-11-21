@@ -9,6 +9,7 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildMember;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.message.Message;
+import me.glaremasters.guilds.util.WorldGuardHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -22,16 +23,7 @@ public class CommandBoot extends CommandBase {
                 new String[]{"kick"}, "<player>", 1, 1);
     }
 
-    public WorldGuardPlugin getWorldGuard() {
-        Plugin plugin = Main.getInstance().getServer().getPluginManager().getPlugin("WorldGuard");
-
-        // WorldGuard may not be loaded
-        if (plugin == null || !(plugin instanceof WorldGuardPlugin)) {
-            return null; // Maybe you want throw an exception instead
-        }
-
-        return (WorldGuardPlugin) plugin;
-    }
+    WorldGuardHandler wg = new WorldGuardHandler();
 
 
     public void execute(Player player, String[] args) {
@@ -69,7 +61,7 @@ public class CommandBoot extends CommandBase {
 
         if (Main.getInstance().getConfig().getBoolean("hooks.worldguard")) {
 
-            RegionContainer container = getWorldGuard().getRegionContainer();
+            RegionContainer container = wg.getWorldGuard().getRegionContainer();
             RegionManager regions = container.get(player.getWorld());
 
             if (regions.getRegion(guild.getName()) != null) {

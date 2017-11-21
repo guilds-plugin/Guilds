@@ -11,6 +11,7 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.message.Message;
 import me.glaremasters.guilds.util.ConfirmAction;
+import me.glaremasters.guilds.util.WorldGuardHandler;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -19,17 +20,7 @@ import org.bukkit.plugin.Plugin;
  */
 public class CommandUnclaim extends CommandBase {
 
-    public WorldGuardPlugin getWorldGuard() {
-        Plugin plugin = Main.getInstance().getServer().getPluginManager().getPlugin("WorldGuard");
-
-        // WorldGuard may not be loaded
-        if (plugin == null || !(plugin instanceof WorldGuardPlugin)) {
-            return null; // Maybe you want throw an exception instead
-        }
-
-        return (WorldGuardPlugin) plugin;
-    }
-
+    WorldGuardHandler wg = new WorldGuardHandler();
     public CommandUnclaim() {
         super("unclaim", Main.getInstance().getConfig().getString("commands.description.unclaim"),
                 "guilds.command.unclaim", false,
@@ -55,7 +46,7 @@ public class CommandUnclaim extends CommandBase {
             Message.sendMessage(player, Message.COMMAND_CLAIM_WORLDGUARD_REQUIRED);
             return;
         }
-        RegionContainer container = getWorldGuard().getRegionContainer();
+        RegionContainer container = wg.getWorldGuard().getRegionContainer();
         RegionManager regions = container.get(player.getWorld());
 
         if (regions.getRegion(guild.getName()) == null) {
