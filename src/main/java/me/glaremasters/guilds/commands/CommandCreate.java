@@ -9,6 +9,7 @@ import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.message.Message;
 import me.glaremasters.guilds.util.ConfirmAction;
+import me.glaremasters.guilds.util.TitleHandler;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -22,7 +23,7 @@ public class CommandCreate extends CommandBase {
                 "<name>", 1, 1);
     }
 
-
+    TitleHandler th = new TitleHandler(Main.getInstance());
     @Override
     public void execute(Player player, String[] args) {
 
@@ -105,29 +106,9 @@ public class CommandCreate extends CommandBase {
                         Main.getInstance().guildTiersConfig.set(guild.getName(), 1);
                         Main.getInstance().saveGuildData();
 
-                        if (config.getBoolean("titles.enabled")) {
-                            try {
-                                String creation = "titles.events.guild-creation";
-                                guild.sendTitle(ChatColor.translateAlternateColorCodes('&',
-                                        config.getString(creation + ".title")
-                                                .replace("{guild}", guild.getName())),
-                                        ChatColor.translateAlternateColorCodes('&',
-                                                config.getString(creation + ".sub-title")
-                                                        .replace("{guild}", guild.getName())),
-                                        config.getInt(creation + ".fade-in") * 20,
-                                        config.getInt(creation + ".stay") * 20,
-                                        config.getInt(creation + ".fade-out") * 20);
-                            } catch (NoSuchMethodError error) {
-                                String creation = "titles.events.guild-creation";
-                                guild.sendTitleOld(ChatColor.translateAlternateColorCodes('&',
-                                        config.getString(creation + ".title")
-                                                .replace("{guild}", guild.getName())),
-                                        ChatColor.translateAlternateColorCodes('&',
-                                                config.getString(creation + ".sub-title")
-                                                        .replace("{guild}", guild.getName())));
-                            }
 
-                        }
+                        th.createTitles(player);
+
                         if (config.getBoolean("hooks.nametagedit")) {
                             NametagEdit.getApi()
                                     .setPrefix(player, ChatColor.translateAlternateColorCodes('&',

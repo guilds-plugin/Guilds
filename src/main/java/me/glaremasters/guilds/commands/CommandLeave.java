@@ -12,6 +12,7 @@ import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.message.Message;
 import me.glaremasters.guilds.util.ConfirmAction;
+import me.glaremasters.guilds.util.TitleHandler;
 import me.glaremasters.guilds.util.WorldGuardHandler;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -26,7 +27,7 @@ public class CommandLeave extends CommandBase {
     }
 
     WorldGuardHandler wg = new WorldGuardHandler();
-
+    TitleHandler th = new TitleHandler(Main.getInstance());
 
     public void execute(Player player, String[] args) {
         final FileConfiguration config = Main.getInstance().getConfig();
@@ -99,27 +100,7 @@ public class CommandLeave extends CommandBase {
                 guild.removeMember(player.getUniqueId());
                 Message.sendMessage(player, Message.COMMAND_LEAVE_SUCCESSFUL);
 
-
-
-                if (config.getBoolean("titles.enabled")) {
-                    try {
-                        String creation = "titles.events.player-leaves-guild";
-                        guild.sendTitle(config.getString(creation + ".title")
-                                        .replace("{username}", player.getName()),
-                                config.getString(creation + ".sub-title")
-                                        .replace("{username}", player.getName()),
-                                config.getInt(creation + ".fade-in") * 20,
-                                config.getInt(creation + ".stay") * 20,
-                                config.getInt(creation + ".fade-out") * 20);
-                    } catch (NoSuchMethodError error) {
-                        String creation = "titles.events.player-leaves-guild";
-                        guild.sendTitleOld(config.getString(creation + ".title")
-                                        .replace("{username}", player.getName()),
-                                config.getString(creation + ".sub-title")
-                                        .replace("{username}", player.getName()));
-                    }
-
-                }
+                th.leaveTitles(player);
 
                 if (config.getBoolean("tablist-guilds")) {
                     String name =

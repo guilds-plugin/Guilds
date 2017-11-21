@@ -6,6 +6,7 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.message.Message;
 import me.glaremasters.guilds.util.ConfirmAction;
+import me.glaremasters.guilds.util.TitleHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -24,7 +25,6 @@ public class CommandAdmin extends CommandBase {
                         + "or <prefix> <guild name> <new prefix>",
                 2, 3);
     }
-
     @Override
     public void execute(CommandSender sender, String[] args) {
         Guild guild = Guild.getGuild(args[1]);
@@ -102,31 +102,7 @@ public class CommandAdmin extends CommandBase {
             Message.sendMessage(sender, Message.COMMAND_UPGRADE_SUCCESS);
             Main.getInstance().guildTiersConfig.set(guild.getName(), tier + 1);
             Main.getInstance().saveGuildData();
-            if (config.getBoolean("titles.enabled")) {
-                try {
-                    String creation = "titles.events.guild-tier-upgrade";
-                    guild.sendTitle(ChatColor
-                                    .translateAlternateColorCodes('&',
-                                            config.getString(creation + ".title").replace("{tier}",
-                                                    Integer.toString(guild.getTier()))),
-                            ChatColor.translateAlternateColorCodes('&',
-                                    config.getString(creation + ".sub-title").replace("{tier}",
-                                            Integer.toString(guild.getTier()))),
-                            config.getInt(creation + ".fade-in") * 20,
-                            config.getInt(creation + ".stay") * 20,
-                            config.getInt(creation + ".fade-out") * 20);
-                } catch (NoSuchMethodError error) {
-                    String creation = "titles.events.guild-tier-upgrade";
-                    guild.sendTitleOld(ChatColor.translateAlternateColorCodes('&',
-                            config.getString(creation + ".title")
-                                    .replace("{tier}", Integer.toString(guild.getTier()))),
-                            ChatColor.translateAlternateColorCodes('&',
-                                    config.getString(creation + ".sub-title")
-                                            .replace("{tier}",
-                                                    Integer.toString(guild.getTier()))));
-                }
 
-            }
             guild.updateGuild("");
         } else if (args[0].equalsIgnoreCase("status")) {
             if (args.length != 3) {
@@ -158,29 +134,6 @@ public class CommandAdmin extends CommandBase {
             }
             Message.sendMessage(sender, Message.COMMAND_PREFIX_SUCCESSFUL);
             guild.updatePrefix(ChatColor.translateAlternateColorCodes('&', args[2]));
-            if (Main.getInstance().getConfig().getBoolean("titles.enabled")) {
-                try {
-                    String creation = "titles.events.guild-prefix-change";
-                    guild.sendTitle(ChatColor.translateAlternateColorCodes('&',
-                            Main.getInstance().getConfig().getString(creation + ".title")
-                                    .replace("{prefix}", guild.getPrefix())),
-                            ChatColor.translateAlternateColorCodes('&',
-                                    config.getString(creation + ".sub-title")
-                                            .replace("{prefix}", guild.getPrefix())),
-                            config.getInt(creation + ".fade-in") * 20,
-                            config.getInt(creation + ".stay") * 20,
-                            config.getInt(creation + ".fade-out") * 20);
-                } catch (NoSuchMethodError error) {
-                    String creation = "titles.events.guild-prefix-change";
-                    guild.sendTitleOld(ChatColor.translateAlternateColorCodes('&',
-                            Main.getInstance().getConfig().getString(creation + ".title")
-                                    .replace("{prefix}", guild.getPrefix())),
-                            ChatColor.translateAlternateColorCodes('&',
-                                    config.getString(creation + ".sub-title")
-                                            .replace("{prefix}", guild.getPrefix())));
-                }
-
-            }
         }
     }
 }

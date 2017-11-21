@@ -6,6 +6,7 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.message.Message;
 import me.glaremasters.guilds.util.ConfirmAction;
+import me.glaremasters.guilds.util.TitleHandler;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -21,6 +22,8 @@ public class CommandUpgrade extends CommandBase {
                 "guilds.command.upgrade", false, null,
                 null, 0, 0);
     }
+
+    TitleHandler th = new TitleHandler(Main.getInstance());
 
     @Override
     public void execute(Player player, String[] args) {
@@ -68,32 +71,7 @@ public class CommandUpgrade extends CommandBase {
                     Main.getInstance().guildBanksConfig
                             .set(guild.getName(), balance - tierUpgradeCost);
                     Main.getInstance().saveGuildData();
-                    if (config.getBoolean("titles.enabled")) {
-                        try {
-                            String creation = "titles.events.guild-tier-upgrade";
-                            guild.sendTitle(ChatColor
-                                            .translateAlternateColorCodes('&',
-                                                    config.getString(creation + ".title").replace("{tier}",
-                                                            Integer.toString(guild.getTier()))),
-                                    ChatColor.translateAlternateColorCodes('&',
-                                            config.getString(creation + ".sub-title")
-                                                    .replace("{tier}",
-                                                            Integer.toString(guild.getTier()))),
-                                    config.getInt(creation + ".fade-in") * 20,
-                                    config.getInt(creation + ".stay") * 20,
-                                    config.getInt(creation + ".fade-out") * 20);
-                        } catch (NoSuchMethodError error) {
-                            String creation = "titles.events.guild-tier-upgrade";
-                            guild.sendTitleOld(ChatColor.translateAlternateColorCodes('&',
-                                    config.getString(creation + ".title")
-                                            .replace("{tier}", Integer.toString(guild.getTier()))),
-                                    ChatColor.translateAlternateColorCodes('&',
-                                            config.getString(creation + ".sub-title")
-                                                    .replace("{tier}",
-                                                            Integer.toString(guild.getTier()))));
-                        }
-
-                    }
+                    th.tierTitles(player);
                     guild.updateGuild("");
                 }
 
@@ -134,32 +112,8 @@ public class CommandUpgrade extends CommandBase {
                         Message.sendMessage(player, Message.COMMAND_UPGRADE_NOT_ENOUGH_MONEY);
                         return;
                     }
-                    if (config.getBoolean("titles.enabled")) {
-                        try {
-                            String creation = "titles.events.guild-tier-upgrade";
-                            guild.sendTitle(ChatColor
-                                            .translateAlternateColorCodes('&',
-                                                    config.getString(creation + ".title").replace("{tier}",
-                                                            Integer.toString(guild.getTier()))),
-                                    ChatColor.translateAlternateColorCodes('&',
-                                            config.getString(creation + ".sub-title")
-                                                    .replace("{tier}",
-                                                            Integer.toString(guild.getTier()))),
-                                    config.getInt(creation + ".fade-in") * 20,
-                                    config.getInt(creation + ".stay") * 20,
-                                    config.getInt(creation + ".fade-out") * 20);
-                        } catch (NoSuchMethodError error) {
-                            String creation = "titles.events.guild-tier-upgrade";
-                            guild.sendTitleOld(ChatColor.translateAlternateColorCodes('&',
-                                    config.getString(creation + ".title")
-                                            .replace("{tier}", Integer.toString(guild.getTier()))),
-                                    ChatColor.translateAlternateColorCodes('&',
-                                            config.getString(creation + ".sub-title")
-                                                    .replace("{tier}",
-                                                            Integer.toString(guild.getTier()))));
-                        }
 
-                    }
+                    th.tierTitles(player);
                     guild.updateGuild("");
                 }
 
