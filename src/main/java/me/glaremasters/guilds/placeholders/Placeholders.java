@@ -25,7 +25,7 @@ public class Placeholders {
             return "";
         }
 
-        return Bukkit.getPlayer(guild.getGuildMaster().getUniqueId()).getName();
+        return Bukkit.getOfflinePlayer(guild.getGuildMaster().getUniqueId()).getName();
     }
 
     public static String getGuildMemberCount(Player player) {

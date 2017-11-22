@@ -153,7 +153,6 @@ public class MySql implements DatabaseProvider {
 
                         guild.addMember(uuid, role);
 
-                        guilds.put(name, guild);
                     }
                 } catch (SQLException ex) {
                     SneakyThrow.sneaky(ex);
