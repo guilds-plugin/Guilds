@@ -11,43 +11,31 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.database.Callback;
 import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.database.databases.json.deserializer.GuildMapDeserializer;
-import me.glaremasters.guilds.database.databases.json.deserializer.LeaderboardListDeserializer;
-import me.glaremasters.guilds.database.databases.json.serializer.LeaderboardListSerializer;
 import me.glaremasters.guilds.guild.Guild;
-import me.glaremasters.guilds.leaderboard.Leaderboard;
 
 //TODO handle exceptions
 public class Json implements DatabaseProvider {
 
     private Gson gson;
     private File guildsFile;
-    private File leaderboardsFile;
 
     private Type guildsType;
-    private Type leaderboardsType;
 
     @Override
     public void initialize() {
         File folder = new File(Main.getInstance().getDataFolder(), "data/");
         guildsFile = new File(folder, "guilds.json");
-        leaderboardsFile = new File(folder, "leaderboards.json");
 
         guildsType = new TypeToken<Map<String, Guild>>() {
         }.getType();
-        leaderboardsType = new TypeToken<ArrayList<Leaderboard>>() {
-        }.getType();
 
         gson = new GsonBuilder().registerTypeAdapter(guildsType, new GuildMapDeserializer())
-                .registerTypeAdapter(leaderboardsType, new LeaderboardListDeserializer())
-                .registerTypeAdapter(leaderboardsType, new LeaderboardListSerializer())
                 .excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().create();
 
         if (!folder.exists()) {
@@ -59,17 +47,6 @@ public class Json implements DatabaseProvider {
                 if (!guildsFile.createNewFile()) {
                     throw new IOException(
                             "Something went wrong when creating the guild storage file!");
-                }
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
-
-        if (!leaderboardsFile.exists()) {
-            try {
-                if (!leaderboardsFile.createNewFile()) {
-                    throw new IOException(
-                            "Something went wrong when creating the leaderboard storage file!");
                 }
             } catch (IOException ex) {
                 ex.printStackTrace();
@@ -151,70 +128,6 @@ public class Json implements DatabaseProvider {
 
     }
 
-    @Override
-    public void createLeaderboard(Leaderboard leaderboard, Callback<Boolean, Exception> callback) {
-        List<Leaderboard> leaderboards =
-                getLeaderboards() == null ? new ArrayList<>() : getLeaderboards();
-        leaderboards.add(leaderboard);
-
-        Main.newSharedChain(leaderboardsFile.getName()).asyncFirst(() -> {
-            boolean toReturn = write(leaderboardsFile, leaderboards, leaderboardsType);
-            Main.getInstance().getLeaderboardHandler().addLeaderboard(leaderboard);
-
-            return toReturn;
-        }).syncLast(successful -> callback.call(successful, null)).execute((exception, task) -> {
-            if (exception != null) {
-                callback.call(false, exception);
-            }
-        });
-
-        //Writes 2x because of this, moved inside of asyncFirst which seems to solve the issue
-        //Main.getInstance().getLeaderboardHandler().addLeaderboard(leaderboard);
-    }
-
-    @Override
-    public void removeLeaderboard(Leaderboard leaderboard, Callback<Boolean, Exception> callback) {
-        List<Leaderboard> leaderboards = getLeaderboards();
-
-        if (leaderboard == null || !leaderboards.contains(leaderboard)) {
-            return;
-        }
-
-        leaderboards.remove(leaderboard);
-
-        Main.newChain().asyncFirst(() -> write(guildsFile, leaderboards, leaderboardsType))
-                .syncLast(successful -> callback.call(successful, null)).execute();
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public void getLeaderboards(Callback<List<Leaderboard>, Exception> callback) {
-        Main.newChain().asyncFirst(() -> {
-            JsonReader reader;
-            try {
-                reader = new JsonReader(new FileReader(leaderboardsFile));
-            } catch (FileNotFoundException ex) {
-                ex.printStackTrace();
-                return null;
-            }
-
-            return gson.fromJson(reader, leaderboardsType);
-        }).syncLast(leaderboards -> callback.call((ArrayList<Leaderboard>) leaderboards, null))
-                .execute();
-    }
-
-    @Override
-    public void updateLeaderboard(Leaderboard leaderboard, Callback<Boolean, Exception> callback) {
-        List<Leaderboard> leaderboards = getLeaderboards();
-        leaderboards.remove(leaderboards.stream().filter(
-                l -> l.getName().equals(leaderboard.getName())
-                        && l.getLeaderboardType() == leaderboard
-                        .getLeaderboardType()).findFirst().orElse(null));
-        leaderboards.add(leaderboard);
-
-        Main.newChain().asyncFirst(() -> write(leaderboardsFile, leaderboards, leaderboardsType))
-                .syncLast(successful -> callback.call(successful, null)).execute();
-    }
 
     private boolean write(File file, Object toWrite, Type typeOfSrc) {
         try (Writer writer = new FileWriter(file)) {
@@ -230,7 +143,5 @@ public class Json implements DatabaseProvider {
         return Main.getInstance().getGuildHandler().getGuilds();
     }
 
-    private List<Leaderboard> getLeaderboards() {
-        return Main.getInstance().getLeaderboardHandler().getLeaderboards();
-    }
+
 }

@@ -1,9 +1,7 @@
 package me.glaremasters.guilds.database;
 
 import java.util.HashMap;
-import java.util.List;
 import me.glaremasters.guilds.guild.Guild;
-import me.glaremasters.guilds.leaderboard.Leaderboard;
 
 public interface DatabaseProvider {
 
@@ -23,14 +21,4 @@ public interface DatabaseProvider {
 
     void removeAlly(Guild guild, Guild targetguild, Callback<Boolean, Exception> callback);
 
-    void createLeaderboard(Leaderboard leaderboard,
-            Callback<Boolean, Exception> callback);
-
-    void removeLeaderboard(Leaderboard leaderboard,
-            Callback<Boolean, Exception> callback);
-
-    void getLeaderboards(Callback<List<Leaderboard>, Exception> callback);
-
-    void updateLeaderboard(Leaderboard leaderboard,
-            Callback<Boolean, Exception> callback);
 }

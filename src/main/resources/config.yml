@@ -110,7 +110,6 @@ commands:
     inspect: "Inspect another guild"
     invite: "Invite a player to your guild"
     leave: "Leave your current guild"
-    leaderboard: "See the top Guilds on your server"
     list: "List all guilds on the server"
     prefix: "Change your guild's prefix"
     promote: "Promote a member of your guild"
@@ -531,12 +530,6 @@ prefix:
 # To turn off the ability for colored prefixes change the regex to "[a-zA-Z0-9]{1,20}"
   regex: "[a-zA-Z0-9&]{1,20}"
 
-# KEEP THIS DISABLED. IT WILL BREAK THE PLUGIN.
-scoreboard:
-  enable: false
-  friendly-fire: false
-
-  see-invisible: true
 
 # There are lots of options when it comes to configuring the roles. We have NOT (yet) experience with adding new ranks, so if it breaks, do not be surprised.
 # You can change individual perms for each rank but please DO NOT modify the order in which they go along with the numbers such as 0, 1 ,2, 3, etc.

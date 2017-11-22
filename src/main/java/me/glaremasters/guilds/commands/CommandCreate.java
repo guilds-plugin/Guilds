@@ -104,8 +104,7 @@ public class CommandCreate extends CommandBase {
                         Message.sendMessage(player,
                                 Message.COMMAND_CREATE_SUCCESSFUL.replace("{guild}", args[0]));
 
-                        Main.getInstance().getScoreboardHandler().update();
-                        Main.getInstance().getScoreboardHandler().show(player);
+
                         Main.getInstance().guildStatusConfig.set(guild.getName(), "Private");
                         Main.getInstance().guildTiersConfig.set(guild.getName(), 1);
                         Main.getInstance().saveGuildData();

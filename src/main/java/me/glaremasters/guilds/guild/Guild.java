@@ -169,11 +169,6 @@ public class Guild implements InventoryHolder {
     public void addMember(UUID uuid, GuildRole role) {
         this.members.add(new GuildMember(uuid, role.getLevel()));
 
-        Player player = Bukkit.getPlayer(uuid);
-        if (player != null && player.isOnline()) {
-            Main.getInstance().getScoreboardHandler().show(player);
-        }
-
         updateGuild("An error occurred while adding a member with an UUID of '%s' to guild '%s'",
                 uuid.toString(), this.name);
     }
@@ -201,7 +196,6 @@ public class Guild implements InventoryHolder {
 
                 Main.getInstance().getGuildHandler().setGuilds(guilds);
 
-                Main.getInstance().getScoreboardHandler().update();
             });
             return;
         }
@@ -285,7 +279,6 @@ public class Guild implements InventoryHolder {
         updateGuildPrefix("An error occurred while updating prefix to '%s' for guild '%s'", prefix,
                 this.name);
 
-        Main.getInstance().getScoreboardHandler().update();
     }
 
 

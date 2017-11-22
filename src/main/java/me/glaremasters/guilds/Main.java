@@ -26,10 +26,8 @@ import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.database.databases.json.Json;
 import me.glaremasters.guilds.database.databases.mysql.MySql;
 import me.glaremasters.guilds.guild.GuildHandler;
-import me.glaremasters.guilds.leaderboard.LeaderboardHandler;
 import me.glaremasters.guilds.listeners.*;
 import me.glaremasters.guilds.placeholders.Placeholders;
-import me.glaremasters.guilds.scoreboard.GuildScoreboardHandler;
 import me.glaremasters.guilds.updater.SpigotUpdater;
 import net.milkbowl.vault.economy.Economy;
 import org.apache.commons.io.IOUtils;
@@ -64,8 +62,6 @@ public class Main extends JavaPlugin {
     private DatabaseProvider database;
     private GuildHandler guildHandler;
     private CommandHandler commandHandler;
-    private LeaderboardHandler leaderboardHandler;
-    private GuildScoreboardHandler scoreboardHandler;
 
     public static <T> TaskChain<T> newChain() {
         return taskChainFactory.newChain();
@@ -150,12 +146,6 @@ public class Main extends JavaPlugin {
 
         commandHandler = new CommandHandler();
         commandHandler.enable();
-
-        leaderboardHandler = new LeaderboardHandler();
-        leaderboardHandler.enable();
-
-        //scoreboardHandler is enabled after the guilds are loaded
-        scoreboardHandler = new GuildScoreboardHandler();
 
         initializePlaceholder();
 
@@ -285,7 +275,6 @@ public class Main extends JavaPlugin {
     public void onDisable() {
         guildHandler.disable();
         commandHandler.disable();
-        scoreboardHandler.disable();
     }
 
 
@@ -301,9 +290,6 @@ public class Main extends JavaPlugin {
         return database;
     }
 
-    public GuildScoreboardHandler getScoreboardHandler() {
-        return scoreboardHandler;
-    }
 
     public Economy getEconomy() {
         return econ;
@@ -389,12 +375,6 @@ public class Main extends JavaPlugin {
         }
         econ = rsp.getProvider();
         return econ != null;
-    }
-
-    // TODO: Do I even use this stuff?
-
-    public LeaderboardHandler getLeaderboardHandler() {
-        return leaderboardHandler;
     }
 
 

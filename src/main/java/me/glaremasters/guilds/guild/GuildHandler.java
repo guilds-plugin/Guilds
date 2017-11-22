@@ -41,7 +41,6 @@ public class GuildHandler implements IHandler {
 
             if (result != null) {
                 guilds = result;
-                Main.getInstance().getScoreboardHandler().enable();
             }
         });
 

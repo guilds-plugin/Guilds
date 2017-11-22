@@ -15,7 +15,6 @@ public class JoinListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
-        Main.getInstance().getScoreboardHandler().show(player);
 
         if (Guild.getGuild(player.getUniqueId()) != null) {
             return;

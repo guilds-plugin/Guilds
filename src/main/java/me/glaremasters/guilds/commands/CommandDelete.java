@@ -72,7 +72,6 @@ public class CommandDelete extends CommandBase {
                                 Message.COMMAND_DELETE_SUCCESSFUL
                                         .replace("{guild}", guild.getName()));
                         main.getGuildHandler().removeGuild(guild);
-                        main.getScoreboardHandler().update();
                         main.guildBanksConfig
                                 .set(guild.getName(), 0);
                         main.guildTiersConfig

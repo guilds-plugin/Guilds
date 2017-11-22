@@ -83,7 +83,6 @@ public class CommandLeave extends CommandBase {
                     Main.getInstance().getDatabaseProvider()
                             .removeGuild(guild, (result, exception) -> {
                                 if (result) {
-                                    Main.getInstance().getScoreboardHandler().update();
                                 } else {
                                     Main.getInstance().getLogger().log(Level.SEVERE, String.format(
                                             "An error occurred while player '%s' was trying to delete guild '%s'",

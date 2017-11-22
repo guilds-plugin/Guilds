@@ -17,7 +17,6 @@ import me.glaremasters.guilds.database.Callback;
 import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
-import me.glaremasters.guilds.leaderboard.Leaderboard;
 import me.glaremasters.guilds.util.SneakyThrow;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -266,25 +265,6 @@ public class MySql implements DatabaseProvider {
         });
     }
 
-    @Override
-    public void createLeaderboard(Leaderboard leaderboard, Callback<Boolean, Exception> callback) {
-
-    }
-
-    @Override
-    public void removeLeaderboard(Leaderboard leaderboard, Callback<Boolean, Exception> callback) {
-
-    }
-
-    @Override
-    public void getLeaderboards(Callback<List<Leaderboard>, Exception> callback) {
-
-    }
-
-    @Override
-    public void updateLeaderboard(Leaderboard leaderboard, Callback<Boolean, Exception> callback) {
-
-    }
 
     private void execute(String query, Object... parameters) {
 
