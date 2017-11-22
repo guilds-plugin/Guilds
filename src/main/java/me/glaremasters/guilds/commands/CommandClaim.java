@@ -170,12 +170,12 @@ public class CommandClaim extends CommandBase {
                     outlineMax.setZ(regionTest.getMaximumPoint().getZ());
 
                     for (double x1 = 0; x1 <= outlineMax.getX() - outlineMin.getX(); x1++) {
-                        player.sendBlockChange(outlineMin.clone().add(x1, 0, 0), Material.DIRT,
+                        player.sendBlockChange(outlineMin.clone().add(x1, 0, 0), Material.GLOWSTONE,
                                 (byte) 0);
                     }
 
                     for (double z = 0; z <= outlineMax.getZ() - outlineMin.getZ(); z++) {
-                        player.sendBlockChange(outlineMin.clone().add(0, 0, z), Material.DIRT,
+                        player.sendBlockChange(outlineMin.clone().add(0, 0, z), Material.GLOWSTONE,
                                 (byte) 0);
                     }
 
@@ -237,12 +237,12 @@ public class CommandClaim extends CommandBase {
                     outlineMax.setZ(regionTest.getMaximumPoint().getZ());
 
                     for (double x1 = 0; x1 <= outlineMax.getX() - outlineMin.getX(); x1++) {
-                        player.sendBlockChange(outlineMin.clone().add(x1, 0, 0), Material.DIRT,
+                        player.sendBlockChange(outlineMin.clone().add(x1, 0, 0), Material.GLOWSTONE,
                                 (byte) 0);
                     }
 
                     for (double z = 0; z <= outlineMax.getZ() - outlineMin.getZ(); z++) {
-                        player.sendBlockChange(outlineMin.clone().add(0, 0, z), Material.DIRT,
+                        player.sendBlockChange(outlineMin.clone().add(0, 0, z), Material.GLOWSTONE,
                                 (byte) 0);
                     }
 
