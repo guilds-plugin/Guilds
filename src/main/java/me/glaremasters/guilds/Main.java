@@ -4,7 +4,6 @@ import be.maximvdw.placeholderapi.PlaceholderAPI;
 import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -36,10 +35,7 @@ import net.milkbowl.vault.economy.Economy;
 import org.apache.commons.io.IOUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -80,8 +76,6 @@ public class Main extends JavaPlugin {
     }
 
 
-
-
     public static long getCreationTime() {
         return creationTime / 1000;
     }
@@ -96,7 +90,8 @@ public class Main extends JavaPlugin {
         instance = this;
         if (getConfig().getBoolean("announcements.console")) {
             try {
-                URL url = new URL("https://glaremasters.me/guilds/announcements/" + getDescription().getVersion());
+                URL url = new URL("https://glaremasters.me/guilds/announcements/" + getDescription()
+                        .getVersion());
                 URLConnection con = url.openConnection();
                 con.setRequestProperty("User-Agent",
                         "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
@@ -125,13 +120,11 @@ public class Main extends JavaPlugin {
                         this.getConfig().getString("plugin-prefix"))
                         + ChatColor.RESET + " ";
 
-
         taskChainFactory = BukkitTaskChainFactory.create(this);
 
         setDatabaseType();
 
         // TODO: Clean this up and make it function easier.
-
 
         if (!getConfig().isSet("version") || getConfig().getInt("version") != 20) {
             if (getConfig().getBoolean("auto-update-config")) {
@@ -169,24 +162,31 @@ public class Main extends JavaPlugin {
         getCommand("guild").setExecutor(commandHandler);
 
         Stream.of(
-                new CommandAccept(), new CommandAdmin(), new CommandAlly(), new CommandBoot(), new CommandBuff(),
-                new CommandBugReport(), new CommandCancel(), new CommandChat(), new CommandCheck(), new CommandConfirm(),
-                new CommandCreate(), new CommandDecline(), new CommandDelete(), new CommandDemote(), new CommandHelp(),
-                new CommandHome(), new CommandInfo(), new CommandInspect(), new CommandInvite(), new CommandLeave(),
-                new CommandList(), new CommandPrefix(), new CommandPromote(), new CommandReload(), new CommandSetHome(),
-                new CommandStatus(), new CommandTransfer(), new CommandUpdate(), new CommandVault(), new CommandVersion(),
-                new CommandUpgrade(), new CommandBank(), new CommandGive(), new CommandClaim(), new CommandUnclaim()
+                new CommandAccept(), new CommandAdmin(), new CommandAlly(), new CommandBoot(),
+                new CommandBuff(),
+                new CommandBugReport(), new CommandCancel(), new CommandChat(), new CommandCheck(),
+                new CommandConfirm(),
+                new CommandCreate(), new CommandDecline(), new CommandDelete(), new CommandDemote(),
+                new CommandHelp(),
+                new CommandHome(), new CommandInfo(), new CommandInspect(), new CommandInvite(),
+                new CommandLeave(),
+                new CommandList(), new CommandPrefix(), new CommandPromote(), new CommandReload(),
+                new CommandSetHome(),
+                new CommandStatus(), new CommandTransfer(), new CommandUpdate(), new CommandVault(),
+                new CommandVersion(),
+                new CommandUpgrade(), new CommandBank(), new CommandGive(), new CommandClaim(),
+                new CommandUnclaim()
         ).forEach(commandHandler::register);
 
         Stream.of(
-                new JoinListener(), new ChatListener(), new ClickListener(), new GuildVaultListener(),
-                new GuildBuffListener(), new GuildChatListener(), new MobDeathListener(), new PlayerDamageListener(),
+                new JoinListener(), new ChatListener(), new ClickListener(),
+                new GuildVaultListener(),
+                new GuildBuffListener(), new GuildChatListener(), new MobDeathListener(),
+                new PlayerDamageListener(),
                 new DamageMultiplierListener(), new AnnouncementListener()
         ).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
 
         // TODO: Possibly change these all to a switch statement?
-
-
 
         if (getConfig().getBoolean("guild-signs")) {
             getServer().getPluginManager().registerEvents(new SignListener(), this);
@@ -213,7 +213,8 @@ public class Main extends JavaPlugin {
         }
 
         Metrics metrics = new Metrics(this);
-        metrics.addCustomChart(new Metrics.SingleLineChart("guilds", () -> Main.getInstance().getGuildHandler().getGuilds().values().size()));
+        metrics.addCustomChart(new Metrics.SingleLineChart("guilds",
+                () -> Main.getInstance().getGuildHandler().getGuilds().values().size()));
 
         this.saveGuildData();
 
@@ -233,8 +234,10 @@ public class Main extends JavaPlugin {
             SpigotUpdater updater = new SpigotUpdater(this, 48920);
             try {
                 if (updater.checkForUpdates()) {
-                    getLogger().info("An update was found! New version: " + updater.getLatestVersion()
-                            + " download: " + updater.getResourceURL());
+                    getLogger()
+                            .info("You appear to be running a version other than our latest stable release."
+                                    + " You can download our newest version at: " + updater
+                                    .getResourceURL());
                 }
             } catch (Exception e) {
                 getLogger().info("Could not check for updates! Stacktrace:");
@@ -252,8 +255,10 @@ public class Main extends JavaPlugin {
             return;
         } else {
             Stream.of(
-                    "english", "chinese", "french", "dutch", "japanese", "swedish", "hungarian", "romanian", "slovak",
-                    "russian", "simplifiedchinese", "polish", "portuguese", "german", "vietnamese", "norwegian",
+                    "english", "chinese", "french", "dutch", "japanese", "swedish", "hungarian",
+                    "romanian", "slovak",
+                    "russian", "simplifiedchinese", "polish", "portuguese", "german", "vietnamese",
+                    "norwegian",
                     "spanish", "italian"
             ).forEach(l -> this.saveResource("languages/" + l + ".yml", false));
         }
@@ -391,8 +396,6 @@ public class Main extends JavaPlugin {
     public LeaderboardHandler getLeaderboardHandler() {
         return leaderboardHandler;
     }
-
-
 
 
 }
