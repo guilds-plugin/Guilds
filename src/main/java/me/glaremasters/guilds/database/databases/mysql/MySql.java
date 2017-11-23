@@ -7,7 +7,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -144,9 +143,9 @@ public class MySql implements DatabaseProvider {
                 }
 
                 try {
+                    Guild guild = new Guild(name);
+                    guild.setPrefix(data.get(name));
                     while (resultSet.next()) {
-                        Guild guild = new Guild(name);
-                        guild.setPrefix(data.get(name));
 
                         UUID uuid = UUID.fromString(resultSet.getString("uuid"));
                         GuildRole role = GuildRole.getRole(resultSet.getInt("role"));
@@ -154,6 +153,7 @@ public class MySql implements DatabaseProvider {
                         guild.addMember(uuid, role);
 
                     }
+                    guilds.put(name, guild);
                 } catch (SQLException ex) {
                     SneakyThrow.sneaky(ex);
                 }
@@ -215,7 +215,8 @@ public class MySql implements DatabaseProvider {
             execute("UPDATE guilds SET isPrivate=? WHERE name=?",
                     guild.getStatus().equalsIgnoreCase("private") ? 1 : 0, guild.getName());
             execute("UPDATE guilds SET tier=? WHERE name=?", guild.getTier(), guild.getName());
-            execute("UPDATE guilds SET balance=? WHERE name=?", guild.getBankBalance(), guild.getName());
+            execute("UPDATE guilds SET balance=? WHERE name=?", guild.getBankBalance(),
+                    guild.getName());
         }).sync(() -> callback.call(true, null)).execute((exception, task) -> {
             if (exception != null) {
                 callback.call(false, exception);
