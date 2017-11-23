@@ -100,8 +100,12 @@ public class Guild implements InventoryHolder {
 
 
     public String getStatus() {
-        return Main.getInstance().guildStatusConfig
-                .getString(getName());
+        try {
+            return Main.getInstance().guildStatusConfig
+                    .getString(getName());
+        }catch(NullPointerException npe) {
+            return "Unknown";
+        }
     }
 
     public int getTier() {
