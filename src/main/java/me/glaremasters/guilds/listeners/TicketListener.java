@@ -30,7 +30,7 @@ public class TicketListener implements Listener {
             return;
         }
         ItemStack item = event.getItem();
-        if (item == null || !item.getItemMeta().hasDisplayName()) {
+        if (item == null || item.getType() == Material.AIR || !item.getItemMeta().hasDisplayName()) {
             return;
         }
         if (item.getItemMeta().getDisplayName().equalsIgnoreCase(ticketName)) {
