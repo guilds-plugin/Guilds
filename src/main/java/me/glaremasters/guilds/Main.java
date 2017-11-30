@@ -357,6 +357,7 @@ public class Main extends JavaPlugin {
                 dos.write(String.format("ip=%s&port=%s", ip, getServer().getPort())
                         .getBytes(StandardCharsets.UTF_8));
                 conn.getResponseCode();
+                conn.disconnect();
             }
         } catch (Exception ex) {
             return;
