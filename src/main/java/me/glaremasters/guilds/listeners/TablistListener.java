@@ -24,7 +24,10 @@ public class TablistListener implements Listener {
         if (guild == null) {
             return;
         } else {
-            TablistHandler.addTablist(player);
+            Main.getInstance().getServer().getScheduler()
+                    .scheduleSyncDelayedTask(Main.getInstance(), () -> {
+                        TablistHandler.addTablist(player);
+                    }, 30L);
 
         }
     }

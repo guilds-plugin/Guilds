@@ -237,11 +237,11 @@ public class Main extends JavaPlugin {
         }
 
         // TODO: Clean this section up with a switch statement or something.
-
+/*
         if (getConfig().getBoolean("server-list")) {
             getServer().getScheduler().scheduleSyncRepeatingTask(this, this::sendUpdate, 0L, 5000L);
         }
-
+*/
         if (languageYamlFile.exists()) {
             return;
         } else {
@@ -341,7 +341,7 @@ public class Main extends JavaPlugin {
         }
 
     }
-
+/*
     public void sendUpdate() {
         try {
             URL url = new URL("https://glaremasters.me/add/");
@@ -363,6 +363,7 @@ public class Main extends JavaPlugin {
             return;
         }
     }
+    */
 
 
     private boolean setupEconomy() {
