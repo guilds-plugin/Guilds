@@ -34,7 +34,6 @@ import org.apache.commons.io.IOUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -68,15 +67,6 @@ public class Main extends JavaPlugin {
         return taskChainFactory.newChain();
     }
 
-    public static <T> TaskChain<T> newSharedChain(String name) {
-        return taskChainFactory.newSharedChain(name);
-    }
-
-
-    public static long getCreationTime() {
-        return creationTime / 1000;
-    }
-
     public static Main getInstance() {
         return instance;
     }
@@ -92,13 +82,14 @@ public class Main extends JavaPlugin {
                 URLConnection con = url.openConnection();
                 con.setRequestProperty("User-Agent",
                         "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
-                InputStream in = con.getInputStream();
-                String encoding = con.getContentEncoding();
-                encoding = encoding == null ? "UTF-8" : encoding;
-                String body = IOUtils.toString(in, encoding);
-                Bukkit.getConsoleSender().sendMessage(body);
+                try(InputStream in = con.getInputStream()) {
+                    String encoding = con.getContentEncoding();
+                    encoding = encoding == null ? "UTF-8" : encoding;
+                    String body = IOUtils.toString(in, encoding);
+                    Bukkit.getConsoleSender().sendMessage(body);
+                }
             } catch (Exception exception) {
-                exception.printStackTrace();
+                Bukkit.getConsoleSender().sendMessage("Could not connect to server list");
             }
         }
 
@@ -237,11 +228,11 @@ public class Main extends JavaPlugin {
         }
 
         // TODO: Clean this section up with a switch statement or something.
-/*
+
         if (getConfig().getBoolean("server-list")) {
-            getServer().getScheduler().scheduleSyncRepeatingTask(this, this::sendUpdate, 0L, 5000L);
+            getServer().getScheduler().scheduleAsyncRepeatingTask(this, this::sendUpdate, 0L, 5000L);
         }
-*/
+
         if (languageYamlFile.exists()) {
             return;
         } else {
@@ -341,7 +332,7 @@ public class Main extends JavaPlugin {
         }
 
     }
-/*
+
     public void sendUpdate() {
         try {
             URL url = new URL("https://glaremasters.me/add/");
@@ -363,7 +354,7 @@ public class Main extends JavaPlugin {
             return;
         }
     }
-    */
+
 
 
     private boolean setupEconomy() {
