@@ -1,9 +1,17 @@
 package me.glaremasters.guilds.commands;
 
+import com.sk89q.worldedit.BlockVector;
+import com.sk89q.worldedit.bukkit.WorldEditPlugin;
+import com.sk89q.worldedit.bukkit.selections.CuboidSelection;
+import com.sk89q.worldedit.bukkit.selections.Selection;
+import com.sk89q.worldguard.domains.DefaultDomain;
+import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
+import me.glaremasters.guilds.handlers.WorldGuardHandler;
 import me.glaremasters.guilds.message.Message;
 import me.glaremasters.guilds.util.ConfirmAction;
 import org.bukkit.Bukkit;
@@ -15,6 +23,8 @@ import org.bukkit.entity.Player;
 @SuppressWarnings("deprecation")
 public class CommandAdmin extends CommandBase {
 
+    WorldGuardHandler WorldGuard = new WorldGuardHandler();
+
     public CommandAdmin() {
         super("admin", Main.getInstance().getConfig().getString("commands.description.admin"),
                 "guilds.command.admin", true, null,
@@ -24,6 +34,7 @@ public class CommandAdmin extends CommandBase {
                         + "or <prefix> <guild name> <new prefix>",
                 2, 3);
     }
+
     @Override
     public void execute(CommandSender sender, String[] args) {
         Guild guild = Guild.getGuild(args[1]);
@@ -49,6 +60,41 @@ public class CommandAdmin extends CommandBase {
                     Main.getInstance().getCommandHandler().removeAction(sender);
                 }
             });
+        } else if (args[0].equalsIgnoreCase("claim")) {
+            if (args.length != 3) {
+                Message.sendMessage(sender, Message.COMMAND_ERROR_ARGS);
+                return;
+            }
+            Guild guildSelection = Guild.getGuild(args[1]);
+            if (guildSelection == null) {
+                Message.sendMessage(sender, Message.COMMAND_ERROR_NO_GUILD);
+                return;
+            }
+            final FileConfiguration config = Main.getInstance().getConfig();
+            if (!config.getBoolean("hooks.worldguard")) {
+                Message.sendMessage(sender, Message.COMMAND_CLAIM_WORLDGUARD_REQUIRED);
+                return;
+            }
+            WorldEditPlugin worldEditPlugin = null;
+            worldEditPlugin = (WorldEditPlugin) Main.getInstance().getServer().getPluginManager().getPlugin("WorldEdit");
+            Selection sel = worldEditPlugin.getSelection((Player) sender);
+            if (sel instanceof CuboidSelection) {
+                BlockVector min = sel.getNativeMinimumPoint().toBlockVector();
+                BlockVector max = sel.getNativeMaximumPoint().toBlockVector();
+                ProtectedRegion region = new ProtectedCuboidRegion(guildSelection.getName(), min, max);
+                DefaultDomain members = region.getMembers();
+                guildSelection.getMembers().stream()
+                        .map(member -> Bukkit.getOfflinePlayer(member.getUniqueId()))
+                        .forEach(member -> {
+                            members.addPlayer(member.getName());
+                        });
+            }
+            else {
+                sender.sendMessage("Error");
+                return;
+            }
+
+
         } else if (args[0].equalsIgnoreCase("addplayer")) {
             if (args.length != 3) {
                 Message.sendMessage(sender, Message.COMMAND_ERROR_ARGS);
