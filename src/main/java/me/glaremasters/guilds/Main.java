@@ -19,6 +19,8 @@ import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.logging.Level;
 import java.util.stream.Stream;
+
+import com.sun.xml.internal.ws.transport.http.client.HttpClientTransport;
 import me.glaremasters.guilds.api.Metrics;
 import me.glaremasters.guilds.commands.*;
 import me.glaremasters.guilds.commands.base.CommandHandler;
@@ -79,7 +81,7 @@ public class Main extends JavaPlugin {
             try {
                 URL url = new URL("https://glaremasters.me/guilds/announcements/" + getDescription()
                         .getVersion());
-                URLConnection con = url.openConnection();
+                HttpURLConnection con = (HttpURLConnection) url.openConnection();
                 con.setRequestProperty("User-Agent",
                         "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
                 try(InputStream in = con.getInputStream()) {
@@ -87,9 +89,10 @@ public class Main extends JavaPlugin {
                     encoding = encoding == null ? "UTF-8" : encoding;
                     String body = IOUtils.toString(in, encoding);
                     Bukkit.getConsoleSender().sendMessage(body);
+                    con.disconnect();
                 }
             } catch (Exception exception) {
-                Bukkit.getConsoleSender().sendMessage("Could not connect to server list");
+                Bukkit.getConsoleSender().sendMessage("Could not fetch announcements!");
             }
         }
 

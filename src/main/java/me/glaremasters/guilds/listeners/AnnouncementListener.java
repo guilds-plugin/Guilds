@@ -1,6 +1,7 @@
 package me.glaremasters.guilds.listeners;
 
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashSet;
@@ -8,6 +9,7 @@ import java.util.Set;
 import java.util.UUID;
 import me.glaremasters.guilds.Main;
 import org.apache.commons.io.IOUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -22,7 +24,6 @@ public class AnnouncementListener implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        String URL = "https://glaremasters.me/guilds/announcements/" + Main.getInstance().getDescription().getVersion();
         Player player = event.getPlayer();
         Main.getInstance().getServer().getScheduler()
                 .scheduleSyncDelayedTask(Main.getInstance(), () -> {
@@ -30,19 +31,22 @@ public class AnnouncementListener implements Listener {
                         if (player.isOp()) {
                             if (!ALREADY_INFORMED.contains(player.getUniqueId())) {
                                 try {
-                                    URL url = new URL(URL);
-                                    URLConnection con = url.openConnection();
+                                    URL url = new URL("https://glaremasters.me/guilds/announcements/" + Main.getInstance().getDescription()
+                                            .getVersion());
+                                    HttpURLConnection con = (HttpURLConnection) url.openConnection();
                                     con.setRequestProperty("User-Agent",
                                             "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
-                                    InputStream in = con.getInputStream();
-                                    String encoding = con.getContentEncoding();
-                                    encoding = encoding == null ? "UTF-8" : encoding;
-                                    String body = IOUtils.toString(in, encoding);
-                                    player.sendMessage(body);
-                                    ALREADY_INFORMED.add(player.getUniqueId());
+                                    try(InputStream in = con.getInputStream()) {
+                                        String encoding = con.getContentEncoding();
+                                        encoding = encoding == null ? "UTF-8" : encoding;
+                                        String body = IOUtils.toString(in, encoding);
+                                        player.sendMessage(body);
+                                        con.disconnect();
+                                    }
                                 } catch (Exception exception) {
-                                    exception.printStackTrace();
+                                    Bukkit.getConsoleSender().sendMessage("Could not fetch announcements!");
                                 }
+
                             }
                         }
                     }
