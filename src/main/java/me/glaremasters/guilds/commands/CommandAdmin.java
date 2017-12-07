@@ -31,7 +31,7 @@ public class CommandAdmin extends CommandBase {
                         + "or <claim> <guildname>,"
                         + "or <upgrade> <guild name>, or <status> <guild name> <Public | Private>, "
                         + "or <prefix> <guild name> <new prefix>",
-                2, 3);
+                1, 3);
     }
 
     @Override
@@ -60,10 +60,6 @@ public class CommandAdmin extends CommandBase {
                 }
             });
         } else if (args[0].equalsIgnoreCase("claim")) {
-            if (args.length != 2) {
-                Message.sendMessage(sender, Message.COMMAND_ERROR_ARGS);
-                return;
-            }
             if (guild == null) {
                 Message.sendMessage(sender, Message.COMMAND_ERROR_NO_GUILD);
                 return;
