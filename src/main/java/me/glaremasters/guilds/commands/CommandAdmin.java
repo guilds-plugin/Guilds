@@ -2,15 +2,19 @@ package me.glaremasters.guilds.commands;
 
 import com.sk89q.worldedit.BlockVector;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
-import com.sk89q.worldedit.bukkit.selections.CuboidSelection;
 import com.sk89q.worldedit.bukkit.selections.Selection;
+import com.sk89q.worldguard.bukkit.RegionContainer;
 import com.sk89q.worldguard.domains.DefaultDomain;
+import com.sk89q.worldguard.protection.flags.DefaultFlag;
+import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import me.glaremasters.guilds.Main;
+import me.glaremasters.guilds.api.events.GuildRemoveEvent;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
+import me.glaremasters.guilds.handlers.WorldGuardHandler;
 import me.glaremasters.guilds.message.Message;
 import me.glaremasters.guilds.util.ConfirmAction;
 import org.bukkit.Bukkit;
@@ -21,6 +25,8 @@ import org.bukkit.entity.Player;
 
 @SuppressWarnings("deprecation")
 public class CommandAdmin extends CommandBase {
+
+    WorldGuardHandler WorldGuard = new WorldGuardHandler();
 
 
     public CommandAdmin() {
@@ -73,21 +79,28 @@ public class CommandAdmin extends CommandBase {
             worldEditPlugin = (WorldEditPlugin) Main.getInstance().getServer().getPluginManager()
                     .getPlugin("WorldEdit");
             Selection sel = worldEditPlugin.getSelection((Player) sender);
-            if (sel instanceof CuboidSelection) {
-                BlockVector min = sel.getNativeMinimumPoint().toBlockVector();
-                BlockVector max = sel.getNativeMaximumPoint().toBlockVector();
-                ProtectedRegion region = new ProtectedCuboidRegion(guild.getName(), min, max);
-                DefaultDomain members = region.getMembers();
-                guild.getMembers().stream()
-                        .map(member -> Bukkit.getOfflinePlayer(member.getUniqueId()))
-                        .forEach(member -> {
-                            members.addPlayer(member.getName());
-                        });
-            } else {
-                sender.sendMessage("Error");
+            if (sel == null) {
+                sender.sendMessage("You don't have a selection!");
                 return;
             }
+            BlockVector min = sel.getNativeMinimumPoint().toBlockVector();
+            BlockVector max = sel.getNativeMaximumPoint().toBlockVector();
+            ProtectedRegion region = new ProtectedCuboidRegion(guild.getName(), min, max);
+            RegionContainer container = WorldGuard.getWorldGuard().getRegionContainer();
+            Player player = (Player) sender;
+            RegionManager regions = container.get(player.getWorld());
+            regions.addRegion(region);
+            DefaultDomain members = region.getMembers();
+            guild.getMembers().stream()
+                    .map(member -> Bukkit.getOfflinePlayer(member.getUniqueId()))
+                    .forEach(member -> {
+                        members.addPlayer(member.getName());
+                    });
 
+            region.setFlag(DefaultFlag.GREET_MESSAGE,
+                    "Entering " + guild.getName() + "'s base");
+            region.setFlag(DefaultFlag.FAREWELL_MESSAGE,
+                    "Leaving " + guild.getName() + "'s base");
 
         } else if (args[0].equalsIgnoreCase("addplayer")) {
             if (args.length != 3) {
