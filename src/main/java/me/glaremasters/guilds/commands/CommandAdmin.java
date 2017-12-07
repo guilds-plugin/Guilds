@@ -11,7 +11,6 @@ import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
-import me.glaremasters.guilds.handlers.WorldGuardHandler;
 import me.glaremasters.guilds.message.Message;
 import me.glaremasters.guilds.util.ConfirmAction;
 import org.bukkit.Bukkit;
@@ -23,13 +22,13 @@ import org.bukkit.entity.Player;
 @SuppressWarnings("deprecation")
 public class CommandAdmin extends CommandBase {
 
-    WorldGuardHandler WorldGuard = new WorldGuardHandler();
 
     public CommandAdmin() {
         super("admin", Main.getInstance().getConfig().getString("commands.description.admin"),
                 "guilds.command.admin", true, null,
                 "<remove | info> <guild name>, "
                         + "or <addplayer | removeplayer> <guild name> <player name>, "
+                        + "or <claim> <guildname>,"
                         + "or <upgrade> <guild name>, or <status> <guild name> <Public | Private>, "
                         + "or <prefix> <guild name> <new prefix>",
                 2, 3);
@@ -61,12 +60,11 @@ public class CommandAdmin extends CommandBase {
                 }
             });
         } else if (args[0].equalsIgnoreCase("claim")) {
-            if (args.length != 3) {
+            if (args.length != 2) {
                 Message.sendMessage(sender, Message.COMMAND_ERROR_ARGS);
                 return;
             }
-            Guild guildSelection = Guild.getGuild(args[1]);
-            if (guildSelection == null) {
+            if (guild == null) {
                 Message.sendMessage(sender, Message.COMMAND_ERROR_NO_GUILD);
                 return;
             }
@@ -76,20 +74,20 @@ public class CommandAdmin extends CommandBase {
                 return;
             }
             WorldEditPlugin worldEditPlugin = null;
-            worldEditPlugin = (WorldEditPlugin) Main.getInstance().getServer().getPluginManager().getPlugin("WorldEdit");
+            worldEditPlugin = (WorldEditPlugin) Main.getInstance().getServer().getPluginManager()
+                    .getPlugin("WorldEdit");
             Selection sel = worldEditPlugin.getSelection((Player) sender);
             if (sel instanceof CuboidSelection) {
                 BlockVector min = sel.getNativeMinimumPoint().toBlockVector();
                 BlockVector max = sel.getNativeMaximumPoint().toBlockVector();
-                ProtectedRegion region = new ProtectedCuboidRegion(guildSelection.getName(), min, max);
+                ProtectedRegion region = new ProtectedCuboidRegion(guild.getName(), min, max);
                 DefaultDomain members = region.getMembers();
-                guildSelection.getMembers().stream()
+                guild.getMembers().stream()
                         .map(member -> Bukkit.getOfflinePlayer(member.getUniqueId()))
                         .forEach(member -> {
                             members.addPlayer(member.getName());
                         });
-            }
-            else {
+            } else {
                 sender.sendMessage("Error");
                 return;
             }
