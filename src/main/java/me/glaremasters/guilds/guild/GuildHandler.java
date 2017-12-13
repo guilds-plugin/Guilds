@@ -65,7 +65,7 @@ public class GuildHandler implements IHandler {
             boolean changePrefix = section.getBoolean(path + "change-prefix");
             boolean changeHome = section.getBoolean(path + "change-home");
             boolean removeGuild = section.getBoolean(path + "remove-guild");
-            boolean toggleGuild = section.getBoolean(path + "toggle-guild");
+            boolean toggle = section.getBoolean(path + "toggle-guild");
             boolean openVault = section.getBoolean(path + "open-vault");
             boolean transferGuild = section.getBoolean(path + "transfer-guild");
             boolean activateBuff = section.getBoolean(path + "activate-buff");
@@ -79,7 +79,7 @@ public class GuildHandler implements IHandler {
                     new GuildRole(name, level, chat, allyChat, invite, kick, promote, demote,
                             addAlly,
                             removeAlly, changePrefix, changeHome, removeGuild,
-                            toggleGuild,
+                            toggle,
                             openVault, transferGuild, activateBuff, upgradeGuild, depositMoney,
                             withdrawMoney, claimLand, unclaimLand);
             roles.add(role);
