@@ -3,7 +3,6 @@ package me.glaremasters.guilds.listeners;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;

@@ -2,18 +2,12 @@ package me.glaremasters.guilds.guild;
 
 import me.glaremasters.guilds.Main;
 
-/*public enum GuildRole {
-    MASTER(0, true, true, true, true, true, true, true, true),
-    OFFICER(1, true, true, true, true, true, false, false, false),
-    VETERAN(2, true, true, false, false, false, false, false, false),
-    MEMBER(3, true, false, false, false, false, false, false, false);*/
 public class GuildRole {
 
     private String name;
 
     private int level;
 
-    private boolean toggle;
     private boolean chat;
     private boolean invite;
     private boolean kick;
@@ -27,6 +21,7 @@ public class GuildRole {
     private boolean allyChat;
     private boolean openVault;
     private boolean transferGuild;
+    private boolean changeStatus;
     private boolean activateBuff;
     private boolean upgradeGuild;
     private boolean depositMoney;
@@ -35,15 +30,14 @@ public class GuildRole {
     private boolean unclaimLand;
 
 
-    GuildRole(String name, int level, boolean chat, boolean toggle, boolean allyChat,
+    GuildRole(String name, int level, boolean chat, boolean allyChat,
             boolean invite, boolean kick, boolean promote, boolean demote, boolean addAlly,
             boolean removeAlly, boolean changePrefix, boolean changeHome,
-            boolean removeGuild, boolean openVault, boolean transferGuild, boolean activateBuff,
+            boolean removeGuild, boolean openVault, boolean transferGuild, boolean changeStatus, boolean activateBuff,
             boolean upgradeGuild, boolean depositMoney, boolean withdrawMoney, boolean claimLand, boolean unclaimLand) {
         this.name = name;
         this.level = level;
         this.chat = chat;
-        this.toggle = toggle;
         this.allyChat = allyChat;
         this.invite = invite;
         this.kick = kick;
@@ -56,6 +50,7 @@ public class GuildRole {
         this.removeGuild = removeGuild;
         this.openVault = openVault;
         this.transferGuild = transferGuild;
+        this.changeStatus = changeStatus;
         this.activateBuff = activateBuff;
         this.upgradeGuild = upgradeGuild;
         this.depositMoney = depositMoney;
@@ -133,10 +128,6 @@ public class GuildRole {
         return allyChat;
     }
 
-    public boolean canToggleGuild() {
-        return toggle;
-    }
-
     public boolean canOpenVault() {
         return openVault;
     }
@@ -144,6 +135,8 @@ public class GuildRole {
     public boolean canTransfer() {
         return transferGuild;
     }
+
+    public boolean canChangeStatus() { return changeStatus; }
 
     public boolean canActivateBuff() {
         return activateBuff;

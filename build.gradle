@@ -17,7 +17,6 @@ apply plugin: 'maven'
 apply plugin: 'com.github.johnrengelman.shadow'
 apply plugin: 'rebel'
 
-// See the gradle.properties to change these.
 group = pluginGroup
 version = pluginVersion
 
@@ -27,11 +26,8 @@ targetCompatibility = 1.8
 configurations {
     provided
 
-    compileOnly.extendsFrom provided // Don't want shadow shading provided deps
+    compileOnly.extendsFrom provided
 }
-
-// Adds a provided dependency type, so that we don't get unwanted
-// code in our JAR. Saves space, and confuses the ClassLoader less.
 sourceSets {
     main {
         compileClasspath += configurations.provided
@@ -73,16 +69,10 @@ dependencies {
     compile 'com.google.code.gson:gson:2.8.0'
     compile 'co.aikar:taskchain-core:3.4.3'
     compile 'co.aikar:taskchain-bukkit:3.4.3'
-//    compile "co.aikar:acf-bukkit:0.5.0-SNAPSHOT"
     compile group: 'commons-io', name: 'commons-io', version: '2.5'
 
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
-
-//shadowJar {
-//    relocate "co.aikar.commands", "me.glaremasters.guilds.acf"
-//}
-
 import org.apache.tools.ant.filters.ReplaceTokens
 
 processResources {

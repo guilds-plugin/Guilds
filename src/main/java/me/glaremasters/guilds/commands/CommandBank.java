@@ -1,6 +1,5 @@
 package me.glaremasters.guilds.commands;
 
-import java.util.logging.Level;
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
