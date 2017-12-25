@@ -1,6 +1,7 @@
 package me.glaremasters.guilds.commands;
 
 import java.util.Arrays;
+import java.util.Objects;
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.api.events.GuildAddAllyEvent;
 import me.glaremasters.guilds.api.events.GuildRemoveAllyEvent;
@@ -48,14 +49,15 @@ public class CommandAlly extends CommandBase {
             guild.addAlly(targetGuild);
             targetGuild.addAlly(guild);
 
-            guild.getMembers().forEach(member -> Message
-                    .sendMessage(Bukkit.getPlayer(member.getUniqueId()),
-                            Message.COMMAND_ALLY_ACCEPTED
-                                    .replace("{guild}", targetGuild.getName())));
-            targetGuild.getMembers().forEach(member -> Message
-                    .sendMessage(Bukkit.getPlayer(member.getUniqueId()),
-                            Message.COMMAND_ALLY_ACCEPTED_TARGET
-                                    .replace("{guild}", guild.getName())));
+            guild.getMembers().stream()
+                    .map(member -> Bukkit.getPlayer(member.getUniqueId()))
+                    .filter(Objects::nonNull).forEach(online -> Message.sendMessage(online, Message.COMMAND_ALLY_ACCEPTED_TARGET
+                    .replace("{guild}", guild.getName())));
+
+            targetGuild.getMembers().stream()
+                    .map(member -> Bukkit.getPlayer(member.getUniqueId()))
+                    .filter(Objects::nonNull).forEach(online -> Message.sendMessage(online, Message.COMMAND_ALLY_ACCEPTED_TARGET
+                    .replace("{guild}", guild.getName())));
         } else if (args[0].equalsIgnoreCase("decline")) {
             if (!role.canAddAlly()) {
                 Message.sendMessage(player, Message.COMMAND_ERROR_ROLE_NO_PERMISSION);

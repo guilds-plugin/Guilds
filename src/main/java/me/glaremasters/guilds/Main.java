@@ -4,6 +4,20 @@ import be.maximvdw.placeholderapi.PlaceholderAPI;
 import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.logging.Level;
+import java.util.stream.Stream;
 import me.glaremasters.guilds.api.Metrics;
 import me.glaremasters.guilds.commands.*;
 import me.glaremasters.guilds.commands.base.CommandHandler;
@@ -21,16 +35,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.util.logging.Level;
-import java.util.stream.Stream;
 
 public class Main extends JavaPlugin {
 
@@ -226,7 +230,7 @@ public class Main extends JavaPlugin {
         // TODO: Clean this section up with a switch statement or something.
 
         if (getConfig().getBoolean("server-list")) {
-            getServer().getScheduler().scheduleAsyncRepeatingTask(this, this::sendUpdate, 0L, 5000L);
+            getServer().getScheduler().scheduleAsyncRepeatingTask(this, this::sendUpdate, 0L, 6000L);
         }
 
         if (languageYamlFile.exists()) {
