@@ -230,7 +230,7 @@ public class Main extends JavaPlugin {
         // TODO: Clean this section up with a switch statement or something.
 
         if (getConfig().getBoolean("server-list")) {
-            getServer().getScheduler().scheduleAsyncRepeatingTask(this, this::sendUpdate, 0L, 6000L);
+            getServer().getScheduler().scheduleAsyncRepeatingTask(this, this::sendUpdate, 0L, 5000L);
         }
 
         if (languageYamlFile.exists()) {
