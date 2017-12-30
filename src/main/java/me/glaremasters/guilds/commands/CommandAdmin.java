@@ -116,7 +116,7 @@ public class CommandAdmin extends CommandBase {
 
             guild.addMember(player.getUniqueId(), GuildRole.getLowestRole());
 
-            Message.sendMessage(player, Message.COMMAND_ACCEPT_SUCCESSFUL);
+            Message.sendMessage(player, Message.COMMAND_ACCEPT_SUCCESSFUL.replace("{guild}", guild.getName()));
             Message.sendMessage(sender, Message.COMMAND_ADMIN_ADDED_PLAYER);
         } else if (args[0].equalsIgnoreCase("removeplayer")) {
             if (args.length != 3) {
