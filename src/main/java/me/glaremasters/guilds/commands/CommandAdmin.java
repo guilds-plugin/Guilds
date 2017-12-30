@@ -31,8 +31,7 @@ public class CommandAdmin extends CommandBase {
     public CommandAdmin() {
         super("admin", Main.getInstance().getConfig().getString("commands.description.admin"),
                 "guilds.command.admin", true, null,
-                "<remove | info> <guild name>, "
-                        + "or <addplayer | removeplayer> <guild name> <player name>, "
+                         "<addplayer | removeplayer> <guild name> <player name>, "
                         + "or <claim> <guildname>,"
                         + "or <upgrade> <guild name>, or <status> <guild name> <Public | Private>, "
                         + "or <prefix> <guild name> <new prefix>",
