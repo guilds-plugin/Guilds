@@ -21,7 +21,7 @@ public class CommandDecline extends CommandBase {
         Guild guild = Guild.getGuild(args[0]);
 
         guild.removeInvitedPlayer(player.getUniqueId());
-        Message.sendMessage(player, Message.COMMAND_DECLINE_SUCCESSFUL);
+        Message.sendMessage(player, Message.COMMAND_DECLINE_SUCCESS);
     }
 
 }
