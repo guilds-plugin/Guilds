@@ -10,7 +10,6 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import me.glaremasters.guilds.Main;
-import me.glaremasters.guilds.api.events.GuildRemoveEvent;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
@@ -44,6 +43,7 @@ public class CommandAdmin extends CommandBase {
     public void execute(CommandSender sender, String[] args) {
         Guild guild = Guild.getGuild(args[1]);
 
+
         if (guild == null) {
             Message.sendMessage(sender, Message.COMMAND_ERROR_NO_GUILD);
             return;
@@ -67,14 +67,10 @@ public class CommandAdmin extends CommandBase {
             });
         } else if (args[0].equalsIgnoreCase("claim")) {
             if (guild == null) {
-                Message.sendMessage(sender, Message.COMMAND_ERROR_NO_GUILD);
+                Message.sendMessage(sender, Message.COMMAND_ERROR_GUILD_NOT_FOUND);
                 return;
             }
             final FileConfiguration config = Main.getInstance().getConfig();
-            if (!config.getBoolean("hooks.worldguard")) {
-                Message.sendMessage(sender, Message.COMMAND_CLAIM_WORLDGUARD_REQUIRED);
-                return;
-            }
             WorldEditPlugin worldEditPlugin = null;
             worldEditPlugin = (WorldEditPlugin) Main.getInstance().getServer().getPluginManager()
                     .getPlugin("WorldEdit");

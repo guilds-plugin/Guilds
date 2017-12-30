@@ -144,7 +144,7 @@ public class Main extends JavaPlugin {
         getCommand("guild").setExecutor(commandHandler);
 
         Stream.of(
-                new CommandAccept(), new CommandAdmin(), new CommandAlly(), new CommandBoot(),
+                new CommandAccept(), new CommandAlly(), new CommandBoot(),
                 new CommandBuff(),
                 new CommandBugReport(), new CommandCancel(), new CommandChat(), new CommandCheck(),
                 new CommandConfirm(),
@@ -156,8 +156,7 @@ public class Main extends JavaPlugin {
                 new CommandSetHome(),
                 new CommandStatus(), new CommandTransfer(), new CommandUpdate(), new CommandVault(),
                 new CommandVersion(),
-                new CommandUpgrade(), new CommandBank(), new CommandGive(), new CommandClaim(),
-                new CommandUnclaim()
+                new CommandUpgrade(), new CommandBank(), new CommandGive(), new CommandClaim(), new CommandUnclaim(), new CommandAdmin()
         ).forEach(commandHandler::register);
 
         Stream.of(

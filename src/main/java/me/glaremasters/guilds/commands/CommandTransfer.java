@@ -9,8 +9,8 @@ import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildMember;
 import me.glaremasters.guilds.guild.GuildRole;
-import me.glaremasters.guilds.message.Message;
 import me.glaremasters.guilds.handlers.WorldGuardHandler;
+import me.glaremasters.guilds.message.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -70,14 +70,16 @@ public class CommandTransfer extends CommandBase {
             updateGuild("", guild.getName(), Guild.getGuild(guild.getName()).getName());
             Message.sendMessage(player, Message.COMMAND_TRANSFER_SUCCESS);
             Message.sendMessage(transferPlayer, Message.COMMAND_TRANSFER_NEWMASTER);
+            if (Main.getInstance().getConfig().getBoolean("hooks.worldguard")) {
 
-            RegionContainer container = WorldGuard.getWorldGuard().getRegionContainer();
-            RegionManager regions = container.get(player.getWorld());
+                RegionContainer container = WorldGuard.getWorldGuard().getRegionContainer();
+                RegionManager regions = container.get(player.getWorld());
 
-            if (regions.getRegion(guild.getName()) != null) {
-                DefaultDomain owners = regions.getRegion(guild.getName()).getOwners();
-                owners.removePlayer(oldGuildMaster.getUniqueId());
-                owners.addPlayer(newGuildMaster.getUniqueId());
+                if (regions.getRegion(guild.getName()) != null) {
+                    DefaultDomain owners = regions.getRegion(guild.getName()).getOwners();
+                    owners.removePlayer(oldGuildMaster.getUniqueId());
+                    owners.addPlayer(newGuildMaster.getUniqueId());
+                }
             }
 
 

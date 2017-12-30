@@ -44,27 +44,28 @@ public class CommandLeave extends CommandBase {
         Main.getInstance().getCommandHandler().addAction(player, new ConfirmAction() {
             @Override
             public void accept() {
+                if (Main.getInstance().getConfig().getBoolean("hooks.worldguard")) {
+                    RegionContainer container = WorldGuard.getWorldGuard().getRegionContainer();
+                    RegionManager regions = container.get(player.getWorld());
 
-                RegionContainer container = WorldGuard.getWorldGuard().getRegionContainer();
-                RegionManager regions = container.get(player.getWorld());
+                    if (regions.getRegion(guild.getName()) != null) {
+                        regions.getRegion(guild.getName()).getMembers()
+                                .removePlayer(player.getName());
+                    }
 
-                if (regions.getRegion(guild.getName()) != null) {
-                    regions.getRegion(guild.getName()).getMembers().removePlayer(player.getName());
-                }
+                    GuildLeaveEvent leaveEvent = new GuildLeaveEvent(player, guild);
+                    Main.getInstance().getServer().getPluginManager().callEvent(leaveEvent);
+                    if (leaveEvent.isCancelled()) {
+                        return;
+                    }
 
-                GuildLeaveEvent leaveEvent = new GuildLeaveEvent(player, guild);
-                Main.getInstance().getServer().getPluginManager().callEvent(leaveEvent);
-                if (leaveEvent.isCancelled()) {
-                    return;
-                }
-
-                if (guild.getGuildMaster().getUniqueId().equals(player.getUniqueId())) {
-                    if (Main.getInstance().getConfig().getBoolean("hooks.worldguard")) {
+                    if (guild.getGuildMaster().getUniqueId().equals(player.getUniqueId())) {
                         if (regions.getRegion(guild.getName()) != null) {
                             regions.removeRegion(guild.getName());
                         }
                     }
-
+                }
+                if (guild.getGuildMaster().getUniqueId().equals(player.getUniqueId())) {
                     GuildRemoveEvent removeEvent =
                             new GuildRemoveEvent(player, guild,
                                     GuildRemoveEvent.RemoveCause.REMOVED);
