@@ -12,9 +12,9 @@ import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
+import me.glaremasters.guilds.handlers.WorldGuardHandler;
 import me.glaremasters.guilds.message.Message;
 import me.glaremasters.guilds.util.ConfirmAction;
-import me.glaremasters.guilds.handlers.WorldGuardHandler;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -187,6 +187,7 @@ public class CommandClaim extends CommandBase {
                             .forEach(member -> {
                                 members.addPlayer(member.getName());
                             });
+                    Main.getInstance().getCommandHandler().removeAction(player);
                 } else {
                     BlockVector min = new BlockVector(
                             (player.getLocation().getX() - (Integer.valueOf(args[0]) / 2)), 0,
@@ -254,6 +255,7 @@ public class CommandClaim extends CommandBase {
                             .forEach(member -> {
                                 members.addPlayer(member.getName());
                             });
+                    Main.getInstance().getCommandHandler().removeAction(player);
                 }
             }
 
