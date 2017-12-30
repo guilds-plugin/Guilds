@@ -43,6 +43,8 @@ public class CommandHome extends CommandBase implements Listener {
             Message.sendMessage(player, Message.COMMAND_ERROR_NO_GUILD);
             return;
         }
+
+
         int cooldownTime = Main.getInstance().getConfig().getInt("home.cool-down");
         if (Main.getInstance().guildHomesConfig
                 .getString(Guild.getGuild(player.getUniqueId()).getName()) == null) {
@@ -55,7 +57,7 @@ public class CommandHome extends CommandBase implements Listener {
                             - System.currentTimeMillis() / 1000;
             if (secondsLeft > 0) {
                 Message.sendMessage(player, Message.COMMAND_ERROR_HOME_COOLDOWN
-                        .replace(new String[]{"{time}", String.valueOf(secondsLeft)}));
+                        .replace("{time}", String.valueOf(secondsLeft)));
                 return;
             }
         }
@@ -92,7 +94,7 @@ public class CommandHome extends CommandBase implements Listener {
             public void run() {
                 if (count > 0) {
                     Message.sendMessage(player, Message.COMMAND_HOME_TELEPORTING
-                            .replace(new String[]{"{count}", String.valueOf(count)}));
+                            .replace("{count}", String.valueOf(count)));
                     count--;
                     if (Main.getInstance().getConfig().getBoolean("home.freeze-player")) {
                         player.addPotionEffect(

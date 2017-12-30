@@ -73,11 +73,11 @@ public class CommandDelete extends CommandBase {
                                         .replace("{guild}", guild.getName()));
                         main.getGuildHandler().removeGuild(guild);
                         main.guildBanksConfig
-                                .set(guild.getName(), 0);
+                                .set(guild.getName(), null);
                         main.guildTiersConfig
-                                .set(guild.getName(), 1);
+                                .set(guild.getName(), null);
                         main.guildHomesConfig
-                                .set(guild.getName(), 0);
+                                .set(guild.getName(), null);
                         main.saveGuildData();
 
 
