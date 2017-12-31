@@ -154,6 +154,8 @@ messages:
       removed: "&cEssa guild nao e mais aliada com {guild}!"
       send-target: "&aRecebeu um pedido de aliancaa de {guild}! Escreva /guilds ally accept {guild} para aceitar ou Escreva /guilds ally decline {guild} para recusar"
       send: "&aPedido de alianca enviado!"
+      none: "&cYou do not have any allies!"
+      list: "&aYour guild has the following allies: "
     home:
       damage-taken: "&cVoce tomou dano! Cancelando teleporte"
       teleported: "&aVoce foi teleportado para a home de sua guild!"

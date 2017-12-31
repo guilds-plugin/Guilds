@@ -154,6 +154,8 @@ messages:
       removed-target: "&c{guild} är inte längre allierade med oss!"
       already-allies: "&cDu är inte längre allierad med {guild}!"
       not-allies: "&cDu är inte allierade med {guild}!"
+      none: "&cYou do not have any allies!"
+      list: "&aYour guild has the following allies: "
     home:
       teleported: "&aDu har teleporterats till ditt guild bostad!"
       teleporting: "&cDu kommer att teleporteras om {count} sekunder."

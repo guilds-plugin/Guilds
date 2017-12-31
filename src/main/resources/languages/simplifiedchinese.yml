@@ -153,6 +153,8 @@ messages:
       removed-target: "&c{guild} 不再是我们的盟友了！"
       already-allies: "&c你和公会 {guild} 结盟啦!!"
       not-allies: "&c你没有和 {guild} 結盟!"
+      none: "&cYou do not have any allies!"
+      list: "&aYour guild has the following allies: "
     home:
       teleported: "&a你已传送至公会基地!!"
       teleporting: "&c你将在 {count} 秒后传送!"

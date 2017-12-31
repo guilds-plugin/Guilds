@@ -154,6 +154,8 @@ messages:
       removed: "&cTa gildia już nie jest sprzymierzona z {guild}!"
       send-target: "&aOtrzymałeś propozycję sojuszu od gildii {guild}! Wpisz /guilds ally accept {guild} aby ją zaakceptować, albo /guilds ally decline {guild} aby odrzucić"
       send: "&aWysłano propozycję sojuszu!"
+      none: "&cYou do not have any allies!"
+      list: "&aYour guild has the following allies: "
     home:
       damage-taken: "&cZostałeś zraniony! Teleportacja anulowana!"
       teleported: "&aZostałeś teleportowany do bazy!"

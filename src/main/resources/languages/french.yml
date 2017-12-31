@@ -154,6 +154,8 @@ messages:
       removed: "&cCette guilde n'est plus alliée avec {guild}!"
       send-target: "&aVous avez reçu une requête d'alliance de la guilde {guild}! Faites /guilds ally accept {guild} pour accepter ou faites /guilds ally decline {guild} pour refuser"
       send: "&aRequête d'alliance envoyée!"
+      none: "&cYou do not have any allies!"
+      list: "&aYour guild has the following allies: "
     home:
       damage-taken: "&cVous avez reçu des dégâts! Téléportation annulée!"
       teleported: "&aVous avez été téléporté à votre base de guilde!"

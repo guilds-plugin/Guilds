@@ -154,6 +154,8 @@ messages:
       removed-target: "&c{guild} nu mai este aliata cu noi!"
       already-allies: "&cDeja esti aliata cu {guild}!"
       not-allies: "&cNu esti aliata cu {guild}!"
+      none: "&cYou do not have any allies!"
+      list: "&aYour guild has the following allies: "
     home:
       teleported: "&aAi fost teleportat la casa Breslei!"
       teleporting: "&cVrei fi teleportat in {count} secunde."

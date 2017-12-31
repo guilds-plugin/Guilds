@@ -17,7 +17,7 @@ public class CommandAlly extends CommandBase {
     public CommandAlly() {
         super("ally", Main.getInstance().getConfig().getString("commands.description.ally"),
                 "guilds.command.ally", false, null,
-                "<add | remove> <guild>, or chat <guild>", 2, -1);
+                "<add | remove> <guild>, or chat <guild>", 1, -1);
     }
 
     @Override
@@ -25,6 +25,18 @@ public class CommandAlly extends CommandBase {
         Guild guild = Guild.getGuild(player.getUniqueId());
         if (guild == null) {
             Message.sendMessage(player, Message.COMMAND_ERROR_NO_GUILD);
+            return;
+        }
+
+        if (args[0].equals("list")) {
+            if (guild.getAllies().size() < 1) {
+                Message.sendMessage(player, Message.COMMAND_ALLY_NONE);
+                return;
+            }
+            Message.sendMessage(player, Message.COMMAND_ALLY_LIST);
+            for (String list : guild.getAllies()) {
+                player.sendMessage(list);
+            }
             return;
         }
 

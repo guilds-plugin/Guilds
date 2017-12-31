@@ -153,6 +153,8 @@ messages:
       removed: "&cЭта гильдия больше не в союзе с гильдией {guild}!"
       send-target: "&aПолучен запрос на союз от гильдии {guild}! Введите /guilds ally accept {guild} для подтверждения или /guilds ally decline {guild} для отмены союза."
       send: "&aЗапрос на союз отправлен!"
+      none: "&cYou do not have any allies!"
+      list: "&aYour guild has the following allies: "
     home:
       damage-taken: "&cВы получили урон! Телепортация отменена."
       teleported: "&aВы телепортированы на дом гильдии."

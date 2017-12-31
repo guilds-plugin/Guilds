@@ -154,6 +154,8 @@ messages:
       removed: "&cQuesta gilda non e' più alleata di {guild}!"
       send-target: "&aE' stata ricevuta una richiesta di alleanza da {guild}&r&a! Digita /guilds ally accept {guild}&r&a per accettare oppure digita /guilds ally decline {guild}&r&a per rifiutare"
       send: "&aRichiesta di alleanza inviata!"
+      none: "&cYou do not have any allies!"
+      list: "&aYour guild has the following allies: "
     home:
       damage-taken: "&cHai subito del danno! Teletrasporto annullato!"
       teleported: "&aSei stato teletrasportato nella home della gilda!"

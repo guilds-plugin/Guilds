@@ -154,6 +154,8 @@ messages:
       removed: "&cDenne guilden er ikke lenger aliert med {guild}!"
       send-target: "&aMottok en forespørsel om å bli alliert av {guild}! Skriv /guilds ally accept {guild} for å godta, eller /guilds ally decline {guild} for å avslå"
       send: "&aForespørsel sendt!"
+      none: "&cYou do not have any allies!"
+      list: "&aYour guild has the following allies: "
     home:
       damage-taken: "&cDu har tatt skade! Teleportering kansellert"
       teleported: "&aDu er teleportert til guildens hjem!"

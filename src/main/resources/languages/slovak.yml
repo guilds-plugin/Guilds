@@ -154,6 +154,8 @@ messages:
       removed-target: "&cKlan {guild} uz viac nie je nasim spojencom!"
       already-allies: "&cUz si spojencom s klanom {guild}!"
       not-allies: "&cNie si spojencom s klanom {guild}!"
+      none: "&cYou do not have any allies!"
+      list: "&aYour guild has the following allies: "
     home:
       teleported: "&cBol si presunuty do domova klanu!"
       teleporting: "&cBudes presunuty za {count} sekund."

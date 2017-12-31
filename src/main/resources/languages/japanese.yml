@@ -154,6 +154,8 @@ messages:
       removed-target: "&cギルド {guild} はもう我々と同盟関係にありません!"
       already-allies: "&cあなたのギルドはギルド {guild} とすでに同盟関係にあります!"
       not-allies: "&cあなたのギルドはギルド {guild} と同盟関係にありません!"
+      none: "&cYou do not have any allies!"
+      list: "&aYour guild has the following allies: "
     home:
       teleported: "&aギルドのホームポジションにテレポートされました!"
       teleporting: "&cYou will be teleporting in {count} seconds."

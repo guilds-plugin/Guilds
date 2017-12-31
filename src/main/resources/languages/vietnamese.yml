@@ -154,6 +154,8 @@ messages:
       removed: "&cGuild của bạn đã hủy liên minh với guild {guild}!"
       send-target: "&aĐã nhận được yêu cầu liên mình từ guild {guild}! Bấm /guilds ally accept {guild} để chấp nhận hoặc /guilds ally decline {guild} để từ chối"
       send: "&aLời mời liên minh đã được gửi!"
+      none: "&cYou do not have any allies!"
+      list: "&aYour guild has the following allies: "
     home:
       damage-taken: "&cBạn đã nhận sát thương! Hủy bỏ dịch chuyển!"
       teleported: "&aBạn đã dịch chuyển đến nhà của guild!"

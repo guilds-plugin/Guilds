@@ -154,6 +154,8 @@ messages:
       removed-target: "&c{guild} már nem áll szövetségben velünk!"
       already-allies: "&cMár szövetséges vagy a {guild} céhhel!"
       not-allies: "&cNem vagy szövetséges a {guild} céhhel!"
+      none: "&cYou do not have any allies!"
+      list: "&aYour guild has the following allies: "
     home:
       teleported: "&aElteleportáltál a céhotthonba!"
       teleporting: "&cEl leszel teleportálva {count} másodpercen belül."

@@ -154,6 +154,8 @@ messages:
       removed: "&cThis guild is no longer allied with {guild}!"
       send-target: "&aRecieved an ally request from {guild}&r&a! Type /guilds ally accept {guild}&r&a to accept or type /guilds ally decline {guild}&r&a to decline"
       send: "&aAlly request sent!"
+      none: "&cYou do not have any allies!"
+      list: "&aYour guild has the following allies: "
     home:
       damage-taken: "&cYou've been damaged! Cancelling teleport!"
       teleported: "&aYou've teleported to your guild home!"

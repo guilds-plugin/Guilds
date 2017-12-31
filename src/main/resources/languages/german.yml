@@ -150,6 +150,8 @@ messages:
       removed: "&cDiese Gilde ist nicht mehr mit {guild} verbündet!"
       send-target: "&aVerbündungsanfrage von {guild} erhalten! Verwende /guilds ally accept {guild} zum Annehmen oder /guilds ally decline {guild} zum Ablehnen"
       send: "&aVerbündungsanfrage gesendet!"
+      none: "&cYou do not have any allies!"
+      list: "&aYour guild has the following allies: "
     home:
       damage-taken: "&cDu wurdest verletzt! Teleport abgebrochen!"
       teleported: "&aDu wurdest zu deinem Gildenzuhause teleportiert!"

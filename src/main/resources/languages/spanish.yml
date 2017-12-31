@@ -154,6 +154,8 @@ messages:
       removed: "&cEste gremio ya no esta aliado con {guild}!"
       send-target: "&aHas recibido una solicitud de aliado de {guild}&r&a! Escribe /guilds ally accept {guild}&r&a para aceptar o escribe /guilds ally decline {guild}&r&a para declinar"
       send: "&aSolicitud de aliado enviada!"
+      none: "&cYou do not have any allies!"
+      list: "&aYour guild has the following allies: "
     home:
       damage-taken: "&cHa recibido dano!  Cancelando teletransportacion!"
       teleported: "&aHa sido teletransportado al home de tu gremio!"

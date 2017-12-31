@@ -153,6 +153,8 @@ messages:
       removed-target: "&c{guild} is niet langer een vriend van ons!"
       already-allies: "&cJe bent al vrienden met {guild}!"
       not-allies: "&cJe bent niet bevriend met {guild}!"
+      none: "&cYou do not have any allies!"
+      list: "&aYour guild has the following allies: "
     home:
       teleported: "&aJe bent geteleporteerd naar je guild thuis!"
       teleporting: "&cJe wordt geteleporteerd in {count} seconds."
