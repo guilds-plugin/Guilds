@@ -7,8 +7,8 @@ import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildMember;
 import me.glaremasters.guilds.guild.GuildRole;
-import me.glaremasters.guilds.message.Message;
 import me.glaremasters.guilds.handlers.WorldGuardHandler;
+import me.glaremasters.guilds.message.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -46,6 +46,11 @@ public class CommandBoot extends CommandBase {
             return;
         }
         GuildMember kickedPlayer2 = guild.getMember(kickedPlayer.getUniqueId());
+
+        if (!Guild.areAllies(kickedPlayer.getUniqueId(), kickedPlayer2.getUniqueId())) {
+            Message.sendMessage(player, Message.COMMAND_ERROR_PLAYER_NOT_IN_GUILD);
+            return;
+        }
 
         if (kickedPlayer2.equals(guild.getGuildMaster())) {
             Message.sendMessage(player, Message.COMMAND_ERROR_ROLE_NO_PERMISSION);
