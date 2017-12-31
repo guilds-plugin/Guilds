@@ -41,8 +41,17 @@ public class CommandBank extends CommandBase {
                 return;
             }
             if (args.length != 2) {
+                Message.sendMessage(player, Message.COMMAND_ERROR_ARGS);
                 return;
             }
+
+            try {
+                Double.parseDouble(args[1]);
+            } catch (NumberFormatException exception) {
+                Message.sendMessage(player, Message.COMMAND_ERROR_ARGS);
+                return;
+            }
+
             if (balance + Double.valueOf(args[1]) > guild.getMaxBankBalance()) {
                 Message.sendMessage(player, Message.COMMAND_BANK_BANK_BALANCE_LIMIT);
                 return;
@@ -78,8 +87,17 @@ public class CommandBank extends CommandBase {
                 return;
             }
             if (args.length != 2) {
+                Message.sendMessage(player, Message.COMMAND_ERROR_ARGS);
                 return;
             }
+
+            try {
+                Double.parseDouble(args[1]);
+            } catch (NumberFormatException exception) {
+                Message.sendMessage(player, Message.COMMAND_ERROR_ARGS);
+                return;
+            }
+
             if (balance < Double.valueOf(args[1])) {
                 Message.sendMessage(player, Message.COMMAND_BANK_WITHDRAW_FAILURE);
                 return;

@@ -5,6 +5,7 @@ import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.message.Message;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.entity.Player;
 
 /**
@@ -35,7 +36,8 @@ public class CommandStatus extends CommandBase {
             Message.sendMessage(player, Message.COMMAND_STATUS_ERROR);
         } else {
 
-            String status = args[0];
+            String status = StringUtils.capitalize(args[0]);
+
 
             Main.getInstance().guildStatusConfig
                     .set(Guild.getGuild(player.getUniqueId()).getName(),
