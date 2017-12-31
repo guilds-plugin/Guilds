@@ -1,14 +1,5 @@
 package me.glaremasters.guilds.commands;
 
-import com.sk89q.worldedit.BlockVector;
-import com.sk89q.worldedit.bukkit.WorldEditPlugin;
-import com.sk89q.worldedit.bukkit.selections.Selection;
-import com.sk89q.worldguard.bukkit.RegionContainer;
-import com.sk89q.worldguard.domains.DefaultDomain;
-import com.sk89q.worldguard.protection.flags.DefaultFlag;
-import com.sk89q.worldguard.protection.managers.RegionManager;
-import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
@@ -25,23 +16,22 @@ import org.bukkit.entity.Player;
 @SuppressWarnings("deprecation")
 public class CommandAdmin extends CommandBase {
 
-    WorldGuardHandler WorldGuard = new WorldGuardHandler();
-
 
     public CommandAdmin() {
         super("admin", Main.getInstance().getConfig().getString("commands.description.admin"),
                 "guilds.command.admin", true, null,
-                         "<addplayer | removeplayer> <guild name> <player name>, "
+                "<addplayer | removeplayer> <guild name> <player name>, "
                         + "or <claim> <guildname>,"
                         + "or <upgrade> <guild name>, or <status> <guild name> <Public | Private>, "
                         + "or <prefix> <guild name> <new prefix>",
                 1, 3);
     }
 
+    WorldGuardHandler WorldGuard = new WorldGuardHandler();
+
     @Override
     public void execute(CommandSender sender, String[] args) {
         Guild guild = Guild.getGuild(args[1]);
-
 
         if (guild == null) {
             Message.sendMessage(sender, Message.COMMAND_ERROR_NO_GUILD);
@@ -64,40 +54,44 @@ public class CommandAdmin extends CommandBase {
                     Main.getInstance().getCommandHandler().removeAction(sender);
                 }
             });
-        } else if (args[0].equalsIgnoreCase("claim")) {
-            if (guild == null) {
-                Message.sendMessage(sender, Message.COMMAND_ERROR_GUILD_NOT_FOUND);
+        } /* else if (args[0].equalsIgnoreCase("claim")) {
+            if (Main.getInstance().getConfig().getBoolean("hooks.worldguard")) {
+                if (guild == null) {
+                    Message.sendMessage(sender, Message.COMMAND_ERROR_GUILD_NOT_FOUND);
+                    return;
+                }
+                final FileConfiguration config = Main.getInstance().getConfig();
+                WorldEditPlugin worldEditPlugin = null;
+                worldEditPlugin = (WorldEditPlugin) Main.getInstance().getServer()
+                        .getPluginManager()
+                        .getPlugin("WorldEdit");
+                Selection sel = worldEditPlugin.getSelection((Player) sender);
+                if (sel == null) {
+                    sender.sendMessage("You don't have a selection!");
+                    return;
+                }
+                BlockVector min = sel.getNativeMinimumPoint().toBlockVector();
+                BlockVector max = sel.getNativeMaximumPoint().toBlockVector();
+                ProtectedRegion region = new ProtectedCuboidRegion(guild.getName(), min, max);
+                RegionContainer container = WorldGuard.getWorldGuard().getRegionContainer();
+                Player player = (Player) sender;
+                RegionManager regions = container.get(player.getWorld());
+                regions.addRegion(region);
+                DefaultDomain members = region.getMembers();
+                guild.getMembers().stream()
+                        .map(member -> Bukkit.getOfflinePlayer(member.getUniqueId()))
+                        .forEach(member -> {
+                            members.addPlayer(member.getName());
+                        });
+
+                region.setFlag(DefaultFlag.GREET_MESSAGE,
+                        "Entering " + guild.getName() + "'s base");
+                region.setFlag(DefaultFlag.FAREWELL_MESSAGE,
+                        "Leaving " + guild.getName() + "'s base");
+            } else {
                 return;
             }
-            final FileConfiguration config = Main.getInstance().getConfig();
-            WorldEditPlugin worldEditPlugin = null;
-            worldEditPlugin = (WorldEditPlugin) Main.getInstance().getServer().getPluginManager()
-                    .getPlugin("WorldEdit");
-            Selection sel = worldEditPlugin.getSelection((Player) sender);
-            if (sel == null) {
-                sender.sendMessage("You don't have a selection!");
-                return;
-            }
-            BlockVector min = sel.getNativeMinimumPoint().toBlockVector();
-            BlockVector max = sel.getNativeMaximumPoint().toBlockVector();
-            ProtectedRegion region = new ProtectedCuboidRegion(guild.getName(), min, max);
-            RegionContainer container = WorldGuard.getWorldGuard().getRegionContainer();
-            Player player = (Player) sender;
-            RegionManager regions = container.get(player.getWorld());
-            regions.addRegion(region);
-            DefaultDomain members = region.getMembers();
-            guild.getMembers().stream()
-                    .map(member -> Bukkit.getOfflinePlayer(member.getUniqueId()))
-                    .forEach(member -> {
-                        members.addPlayer(member.getName());
-                    });
-
-            region.setFlag(DefaultFlag.GREET_MESSAGE,
-                    "Entering " + guild.getName() + "'s base");
-            region.setFlag(DefaultFlag.FAREWELL_MESSAGE,
-                    "Leaving " + guild.getName() + "'s base");
-
-        } else if (args[0].equalsIgnoreCase("addplayer")) {
+        } */ else if (args[0].equalsIgnoreCase("addplayer")) {
             if (args.length != 3) {
                 Message.sendMessage(sender, Message.COMMAND_ERROR_ARGS);
                 return;
@@ -116,7 +110,8 @@ public class CommandAdmin extends CommandBase {
 
             guild.addMember(player.getUniqueId(), GuildRole.getLowestRole());
 
-            Message.sendMessage(player, Message.COMMAND_ACCEPT_SUCCESSFUL.replace("{guild}", guild.getName()));
+            Message.sendMessage(player,
+                    Message.COMMAND_ACCEPT_SUCCESSFUL.replace("{guild}", guild.getName()));
             Message.sendMessage(sender, Message.COMMAND_ADMIN_ADDED_PLAYER);
         } else if (args[0].equalsIgnoreCase("removeplayer")) {
             if (args.length != 3) {
