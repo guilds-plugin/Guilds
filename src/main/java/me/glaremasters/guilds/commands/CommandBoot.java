@@ -47,9 +47,19 @@ public class CommandBoot extends CommandBase {
         }
         GuildMember kickedPlayer2 = guild.getMember(kickedPlayer.getUniqueId());
 
+
         if (kickedPlayer2 == null) {
             Message.sendMessage(player, Message.COMMAND_ERROR_PLAYER_NOT_IN_GUILD
                     .replace("{player}", kickedPlayer.getName()));
+            return;
+        }
+        Guild targetGuild = Guild.getGuild(kickedPlayer2.getUniqueId());
+        if (targetGuild == null) {
+            Message.sendMessage(player, Message.COMMAND_ERROR_NO_GUILD);
+            return;
+        }
+
+        if (guild.getName().equals(targetGuild.getName())) {
             return;
         }
 
