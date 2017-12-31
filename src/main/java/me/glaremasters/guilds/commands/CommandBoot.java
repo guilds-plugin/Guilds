@@ -47,30 +47,17 @@ public class CommandBoot extends CommandBase {
         }
         GuildMember kickedPlayer2 = guild.getMember(kickedPlayer.getUniqueId());
 
-
-
-        Guild guild2 = Guild.getGuild(kickedPlayer2.getUniqueId());
-
-        if (guild2 == null) {
-            Message.sendMessage(player, Message.COMMAND_ERROR_NO_GUILD);
-            return;
-        }
-
-        if (!guild.getName().equals(guild2.getName())) {
-            Message.sendMessage(player, Message.COMMAND_ERROR_PLAYER_NOT_IN_GUILD);
-            return;
-        }
-
-
-        if (kickedPlayer2.equals(guild.getGuildMaster())) {
-            Message.sendMessage(player, Message.COMMAND_ERROR_ROLE_NO_PERMISSION);
-            return;
-        }
         if (kickedPlayer2 == null) {
             Message.sendMessage(player, Message.COMMAND_ERROR_PLAYER_NOT_IN_GUILD
                     .replace("{player}", kickedPlayer.getName()));
             return;
         }
+
+        if (kickedPlayer2.equals(guild.getGuildMaster())) {
+            Message.sendMessage(player, Message.COMMAND_ERROR_ROLE_NO_PERMISSION);
+            return;
+        }
+
 
         if (Main.getInstance().getConfig().getBoolean("hooks.worldguard")) {
 
