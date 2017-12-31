@@ -72,15 +72,14 @@ public class CommandAlly extends CommandBase {
             guild.removePendingAlly(targetGuild);
 
             guild.getMembers().stream()
-                    .filter(member -> GuildRole.getRole(member.getRole()).canAddAlly()).forEach(
-                    member -> Message.sendMessage(Bukkit.getPlayer(member.getUniqueId()),
-                            Message.COMMAND_ALLY_DECLINED
-                                    .replace("{guild}", targetGuild.getName())));
+                    .map(member -> Bukkit.getPlayer(member.getUniqueId()))
+                    .filter(Objects::nonNull).forEach(online -> Message.sendMessage(online, Message.COMMAND_ALLY_DECLINED
+                    .replace("{guild}", targetGuild.getName())));
+
             targetGuild.getMembers().stream()
-                    .filter(member -> GuildRole.getRole(member.getRole()).canAddAlly()).forEach(
-                    member -> Message.sendMessage(Bukkit.getPlayer(member.getUniqueId()),
-                            Message.COMMAND_ALLY_DECLINED
-                                    .replace("{guild}", targetGuild.getName())));
+                    .map(member -> Bukkit.getPlayer(member.getUniqueId()))
+                    .filter(Objects::nonNull).forEach(online -> Message.sendMessage(online, Message.COMMAND_ALLY_DECLINED
+                    .replace("{guild}", targetGuild.getName())));
 
         }
         if (args[0].equalsIgnoreCase("add")) {
@@ -103,10 +102,12 @@ public class CommandAlly extends CommandBase {
             }
 
             Message.sendMessage(player, Message.COMMAND_ALLY_SEND);
+
             targetGuild.getMembers().stream()
-                    .filter(member -> GuildRole.getRole(member.getRole()).canAddAlly()).forEach(
-                    member -> Message.sendMessage(Bukkit.getPlayer(member.getUniqueId()),
-                            Message.COMMAND_ALLY_SEND_TARGET.replace("{guild}", guild.getName())));
+                    .map(member -> Bukkit.getPlayer(member.getUniqueId()))
+                    .filter(Objects::nonNull).forEach(online -> Message.sendMessage(online, Message.COMMAND_ALLY_SEND_TARGET
+                    .replace("{guild}", guild.getName())));
+
             targetGuild.addPendingAlly(guild);
         } else if (args[0].equalsIgnoreCase("remove")) {
             if (!role.canRemoveAlly()) {
