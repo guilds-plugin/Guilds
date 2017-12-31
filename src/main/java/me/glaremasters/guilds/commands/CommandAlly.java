@@ -40,6 +40,11 @@ public class CommandAlly extends CommandBase {
             return;
         }
 
+        if (args.length < 2) {
+            Message.sendMessage(player, Message.COMMAND_ERROR_ARGS);
+            return;
+        }
+
         Guild targetGuild = Guild.getGuild(args[1]);
         if (targetGuild == null) {
             Message.sendMessage(player,
