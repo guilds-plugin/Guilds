@@ -17,7 +17,7 @@ public class CommandAlly extends CommandBase {
     public CommandAlly() {
         super("ally", Main.getInstance().getConfig().getString("commands.description.ally"),
                 "guilds.command.ally", false, null,
-                "<add | remove> <guild>, or chat <guild>", 1, -1);
+                "<add | remove> <guild>, or chat <guild>. or <list>", 1, -1);
     }
 
     @Override
