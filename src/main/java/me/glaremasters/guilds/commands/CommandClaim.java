@@ -88,7 +88,7 @@ public class CommandClaim extends CommandBase {
                     Message.sendMessage(player, Message.COMMAND_ERROR_NOT_ENOUGH_MONEY);
                     return;
                 }
-                Message.sendMessage(player, Message.COMMAND_CREATE_MONEY_WARNING_SETHOME
+                Message.sendMessage(player, Message.COMMAND_CLAIM_CONFIRM
                         .replace("{amount}", String.valueOf(claimCost)));
 
             }
