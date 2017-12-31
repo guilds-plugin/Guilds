@@ -31,6 +31,12 @@ public class CommandAdmin extends CommandBase {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
+
+        if (args.length < 2) {
+            Message.sendMessage(sender, Message.COMMAND_ERROR_ARGS);
+            return;
+        }
+
         Guild guild = Guild.getGuild(args[1]);
 
         if (guild == null) {
