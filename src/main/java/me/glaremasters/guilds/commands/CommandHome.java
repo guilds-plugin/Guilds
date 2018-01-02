@@ -3,7 +3,7 @@ package me.glaremasters.guilds.commands;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import me.glaremasters.guilds.Main;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.message.Message;
@@ -28,11 +28,11 @@ public class CommandHome extends CommandBase implements Listener {
     private static Map<UUID, BukkitTask> countdown = new HashMap<>();
     private static Listener listener = null;
     public HashMap<String, Long> cooldowns = new HashMap();
-    int count = Main.getInstance().getConfig().getInt("home.teleport-delay");
-    int cooldownTime = Main.getInstance().getConfig().getInt("home.cool-down");
+    int count = Guilds.getInstance().getConfig().getInt("home.teleport-delay");
+    int cooldownTime = Guilds.getInstance().getConfig().getInt("home.cool-down");
 
     public CommandHome() {
-        super("home", Main.getInstance().getConfig().getString("commands.description.home"),
+        super("home", Guilds.getInstance().getConfig().getString("commands.description.home"),
                 "guilds.command.home", false, null, null, 0,
                 0);
     }
@@ -45,8 +45,8 @@ public class CommandHome extends CommandBase implements Listener {
         }
 
 
-        int cooldownTime = Main.getInstance().getConfig().getInt("home.cool-down");
-        if (Main.getInstance().guildHomesConfig
+        int cooldownTime = Guilds.getInstance().getConfig().getInt("home.cool-down");
+        if (Guilds.getInstance().guildHomesConfig
                 .getString(Guild.getGuild(player.getUniqueId()).getName()) == null) {
             Message.sendMessage(player, Message.COMMAND_ERROR_NO_HOME_SET);
             return;
@@ -84,7 +84,7 @@ public class CommandHome extends CommandBase implements Listener {
                 }
 
             };
-            Bukkit.getPluginManager().registerEvents(listener, /* plugin */Main.getInstance());
+            Bukkit.getPluginManager().registerEvents(listener, /* plugin */Guilds.getInstance());
         }
     }
 
@@ -96,13 +96,13 @@ public class CommandHome extends CommandBase implements Listener {
                     Message.sendMessage(player, Message.COMMAND_HOME_TELEPORTING
                             .replace("{count}", String.valueOf(count)));
                     count--;
-                    if (Main.getInstance().getConfig().getBoolean("home.freeze-player")) {
+                    if (Guilds.getInstance().getConfig().getBoolean("home.freeze-player")) {
                         player.addPotionEffect(
                                 new PotionEffect(PotionEffectType.SLOW, cooldownTime, 100));
                     }
 
                 } else {
-                    String[] data = Main.getInstance().guildHomesConfig
+                    String[] data = Guilds.getInstance().guildHomesConfig
                             .getString(Guild.getGuild(player.getUniqueId()).getName()).split(":");
                     World w = Bukkit.getWorld(data[0]);
                     double x = Double.parseDouble(data[1]);
@@ -122,7 +122,7 @@ public class CommandHome extends CommandBase implements Listener {
                 }
             }
 
-        }.runTaskTimer(Main.getInstance(), 0L, 20L));
+        }.runTaskTimer(Guilds.getInstance(), 0L, 20L));
     }
 
 }

@@ -1,7 +1,7 @@
 package me.glaremasters.guilds.commands;
 
 import java.util.List;
-import me.glaremasters.guilds.Main;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
@@ -17,14 +17,14 @@ public class CommandPrefix extends CommandBase {
 
 
     public CommandPrefix() {
-        super("prefix", Main.getInstance().getConfig().getString("commands.description.prefix"),
+        super("prefix", Guilds.getInstance().getConfig().getString("commands.description.prefix"),
                 "guilds.command.prefix", false, null,
                 "<new prefix>", 1, 1);
     }
 
-    TitleHandler TitleHandler = new TitleHandler(Main.getInstance());
-    TablistHandler TablistHandler = new TablistHandler(Main.getInstance());
-    NameTagEditHandler NTEHandler = new NameTagEditHandler(Main.getInstance());
+    TitleHandler TitleHandler = new TitleHandler(Guilds.getInstance());
+    TablistHandler TablistHandler = new TablistHandler(Guilds.getInstance());
+    NameTagEditHandler NTEHandler = new NameTagEditHandler(Guilds.getInstance());
 
     @Override
     public void execute(Player player, String[] args) {
@@ -40,13 +40,13 @@ public class CommandPrefix extends CommandBase {
             return;
         }
 
-        FileConfiguration config = Main.getInstance().getConfig();
-        if (!args[0].matches(Main.getInstance().getConfig().getString("prefix.regex"))) {
+        FileConfiguration config = Guilds.getInstance().getConfig();
+        if (!args[0].matches(Guilds.getInstance().getConfig().getString("prefix.regex"))) {
             Message.sendMessage(player, Message.COMMAND_PREFIX_REQUIREMENTS);
             return;
         }
-        if (Main.getInstance().getConfig().getBoolean("enable-blacklist")) {
-            List<String> blacklist = Main.getInstance().getConfig().getStringList("blacklist");
+        if (Guilds.getInstance().getConfig().getBoolean("enable-blacklist")) {
+            List<String> blacklist = Guilds.getInstance().getConfig().getStringList("blacklist");
 
             for (String censor : blacklist) {
                 if (args[0].toLowerCase().contains(censor)) {

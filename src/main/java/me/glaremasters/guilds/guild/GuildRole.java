@@ -1,6 +1,6 @@
 package me.glaremasters.guilds.guild;
 
-import me.glaremasters.guilds.Main;
+import me.glaremasters.guilds.Guilds;
 
 public class GuildRole {
 
@@ -60,14 +60,14 @@ public class GuildRole {
     }
 
     public static GuildRole getRole(int level) {
-        return Main.getInstance().getGuildHandler().getRoles().stream()
+        return Guilds.getInstance().getGuildHandler().getRoles().stream()
                 .filter(role -> role.getLevel() == level).findFirst().orElse(null);
     }
 
     public static GuildRole getLowestRole() {
         GuildRole lowest = null;
 
-        for (GuildRole role : Main.getInstance().getGuildHandler().getRoles()) {
+        for (GuildRole role : Guilds.getInstance().getGuildHandler().getRoles()) {
             if (lowest == null || lowest.getLevel() < role.getLevel()) {
                 lowest = role;
             }

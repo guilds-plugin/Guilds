@@ -9,14 +9,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.logging.Level;
-import me.glaremasters.guilds.Main;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.message.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 
@@ -52,9 +51,9 @@ public class Guild implements InventoryHolder {
         this.name = name;
 
         this.prefix = name.substring(0,
-                Main.getInstance().getConfig().getInt("prefix.max-length") > name.length() ?
+                Guilds.getInstance().getConfig().getInt("prefix.max-length") > name.length() ?
                         name.length() :
-                        Main.getInstance().getConfig().getInt("prefix.max-length"));
+                        Guilds.getInstance().getConfig().getInt("prefix.max-length"));
 
         this.members = new ArrayList<>();
         this.members.add(new GuildMember(master, 0));
@@ -65,14 +64,14 @@ public class Guild implements InventoryHolder {
     }
 
     public static Guild getGuild(UUID uuid) {
-        return Main.getInstance().getGuildHandler().getGuilds().values().stream().filter(
+        return Guilds.getInstance().getGuildHandler().getGuilds().values().stream().filter(
                 guild -> guild.getMembers().stream()
                         .anyMatch(member -> member.getUniqueId().equals(uuid))).findFirst()
                 .orElse(null);
     }
 
     public static Guild getGuild(String name) {
-        return Main.getInstance().getGuildHandler().getGuilds().values().stream()
+        return Guilds.getInstance().getGuildHandler().getGuilds().values().stream()
                 .filter(guild -> ChatColor.stripColor(guild.getName()).equalsIgnoreCase(name))
                 .findFirst()
                 .orElse(null);
@@ -101,7 +100,7 @@ public class Guild implements InventoryHolder {
 
     public String getStatus() {
         try {
-            return Main.getInstance().guildStatusConfig
+            return Guilds.getInstance().guildStatusConfig
                     .getString(getName());
         }catch(NullPointerException npe) {
             return "Unknown";
@@ -109,7 +108,7 @@ public class Guild implements InventoryHolder {
     }
 
     public int getTier() {
-        YamlConfiguration tiersConfig = Main.getInstance().guildTiersConfig;
+        YamlConfiguration tiersConfig = Guilds.getInstance().guildTiersConfig;
         if (tiersConfig.isSet(getName())) {
             return tiersConfig.getInt(getName());
         } else {
@@ -119,7 +118,7 @@ public class Guild implements InventoryHolder {
     }
 
     public double getBankBalance() {
-        YamlConfiguration banksConfig = Main.getInstance().guildBanksConfig;
+        YamlConfiguration banksConfig = Guilds.getInstance().guildBanksConfig;
         if (banksConfig.isSet(getName())) {
             return banksConfig.getDouble(getName());
         } else {
@@ -129,32 +128,32 @@ public class Guild implements InventoryHolder {
     }
 
     public int getTierCost() {
-        if (getTier() >= Main.getInstance().getConfig().getInt("max-number-of-tiers")) {
+        if (getTier() >= Guilds.getInstance().getConfig().getInt("max-number-of-tiers")) {
             return 0;
         }
         int upgradeTier = getTier() + 1;
-        return Main.getInstance().getConfig().getInt("tier" + upgradeTier + ".cost");
+        return Guilds.getInstance().getConfig().getInt("tier" + upgradeTier + ".cost");
     }
 
     public int getMaxMembers() {
-        return Main.getInstance().getConfig().getInt("tier" + getTier() + ".max-members");
+        return Guilds.getInstance().getConfig().getInt("tier" + getTier() + ".max-members");
     }
 
     public String getTierName() {
         return ChatColor.translateAlternateColorCodes('&',
-                Main.getInstance().getConfig().getString("tier" + getTier() + ".name"));
+                Guilds.getInstance().getConfig().getString("tier" + getTier() + ".name"));
     }
 
     public double getExpMultiplier() {
-        return Main.getInstance().getConfig().getDouble("tier" + getTier() + ".mob-xp-multiplier");
+        return Guilds.getInstance().getConfig().getDouble("tier" + getTier() + ".mob-xp-multiplier");
     }
 
     public double getDamageMultiplier() {
-        return Main.getInstance().getConfig().getDouble("tier" + getTier() + ".damage-multiplier");
+        return Guilds.getInstance().getConfig().getDouble("tier" + getTier() + ".damage-multiplier");
     }
 
     public double getMaxBankBalance() {
-        return Main.getInstance().getConfig().getDouble("tier" + getTier() + ".max-bank-balance");
+        return Guilds.getInstance().getConfig().getDouble("tier" + getTier() + ".max-bank-balance");
     }
 
     public List<GuildMember> getMembers() {
@@ -184,9 +183,9 @@ public class Guild implements InventoryHolder {
         }
 
         if (member == getGuildMaster()) {
-            Main.getInstance().getDatabaseProvider().removeGuild(this, (result, exception) -> {
+            Guilds.getInstance().getDatabaseProvider().removeGuild(this, (result, exception) -> {
                 if (!result) {
-                    Main.getInstance().getLogger().log(Level.SEVERE,
+                    Guilds.getInstance().getLogger().log(Level.SEVERE,
                             String.format("An error occurred while removing guild '%s'",
                                     this.name));
                     if (exception != null) {
@@ -195,10 +194,10 @@ public class Guild implements InventoryHolder {
                     return;
                 }
 
-                HashMap<String, Guild> guilds = Main.getInstance().getGuildHandler().getGuilds();
+                HashMap<String, Guild> guilds = Guilds.getInstance().getGuildHandler().getGuilds();
                 guilds.remove(this.name);
 
-                Main.getInstance().getGuildHandler().setGuilds(guilds);
+                Guilds.getInstance().getGuildHandler().setGuilds(guilds);
 
             });
             return;
@@ -222,7 +221,7 @@ public class Guild implements InventoryHolder {
         if (inventory != null) {
             return inventory;
         }
-        File vaultf = new File(Main.getInstance().getDataFolder(),
+        File vaultf = new File(Guilds.getInstance().getDataFolder(),
                 "data/vaults/" + getName() + ".yml");
 
         if (!vaultf.exists()) {
@@ -241,7 +240,7 @@ public class Guild implements InventoryHolder {
             e.printStackTrace();
         }
         inventory = Bukkit.createInventory(this, 54,
-                getName() + "'s " + Main.getInstance().getConfig().getString("gui-name.vault"));
+                getName() + "'s " + Guilds.getInstance().getConfig().getString("gui-name.vault"));
         for (int i = 0; i < inventory.getSize(); i++) {
             if (vault.isSet("items.slot" + i)) {
                 inventory.setItem(i, vault.getItemStack("items.slot" + i));
@@ -331,9 +330,9 @@ public class Guild implements InventoryHolder {
     }
 
     public void updateGuildPrefix(String errorMessage, String... params) {
-        Main.getInstance().getDatabaseProvider().updatePrefix(this, (res, ex) -> {
+        Guilds.getInstance().getDatabaseProvider().updatePrefix(this, (res, ex) -> {
             if (!res) {
-                Main.getInstance().getLogger()
+                Guilds.getInstance().getLogger()
                         .severe(String.format(errorMessage, (Object[]) params));
 
                 if (ex != null) {
@@ -344,7 +343,7 @@ public class Guild implements InventoryHolder {
     }
 
     public void addGuildAlly(Guild targetGuild) {
-        Main.getInstance().getDatabaseProvider().addAlly(this, targetGuild, (res, ex) -> {
+        Guilds.getInstance().getDatabaseProvider().addAlly(this, targetGuild, (res, ex) -> {
             if (!res) {
                 ex.printStackTrace();
             }
@@ -352,7 +351,7 @@ public class Guild implements InventoryHolder {
     }
 
     void removeGuildAlly(Guild targetGuild) {
-        Main.getInstance().getDatabaseProvider().removeAlly(this, targetGuild, (res, ex) -> {
+        Guilds.getInstance().getDatabaseProvider().removeAlly(this, targetGuild, (res, ex) -> {
             if (!res) {
                 ex.printStackTrace();
             }
@@ -360,9 +359,9 @@ public class Guild implements InventoryHolder {
     }
 
     public void updateGuild(String errorMessage, String... params) {
-        Main.getInstance().getDatabaseProvider().updateGuild(this, (result, exception) -> {
+        Guilds.getInstance().getDatabaseProvider().updateGuild(this, (result, exception) -> {
             if (!result) {
-                Main.getInstance().getLogger()
+                Guilds.getInstance().getLogger()
                         .log(Level.SEVERE, String.format(errorMessage, params));
 
                 if (exception != null) {

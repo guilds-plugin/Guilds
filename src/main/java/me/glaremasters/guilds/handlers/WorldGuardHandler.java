@@ -1,7 +1,7 @@
 package me.glaremasters.guilds.handlers;
 
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import me.glaremasters.guilds.Main;
+import me.glaremasters.guilds.Guilds;
 import org.bukkit.plugin.Plugin;
 
 /**
@@ -10,7 +10,7 @@ import org.bukkit.plugin.Plugin;
 public class WorldGuardHandler {
 
     public WorldGuardPlugin getWorldGuard() {
-        Plugin plugin = Main.getInstance().getServer().getPluginManager().getPlugin("WorldGuard");
+        Plugin plugin = Guilds.getInstance().getServer().getPluginManager().getPlugin("WorldGuard");
 
         // WorldGuard may not be loaded
         if (plugin == null || !(plugin instanceof WorldGuardPlugin)) {

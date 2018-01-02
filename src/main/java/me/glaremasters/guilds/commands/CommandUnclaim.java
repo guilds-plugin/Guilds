@@ -2,13 +2,13 @@ package me.glaremasters.guilds.commands;
 
 import com.sk89q.worldguard.bukkit.RegionContainer;
 import com.sk89q.worldguard.protection.managers.RegionManager;
-import me.glaremasters.guilds.Main;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
+import me.glaremasters.guilds.handlers.WorldGuardHandler;
 import me.glaremasters.guilds.message.Message;
 import me.glaremasters.guilds.util.ConfirmAction;
-import me.glaremasters.guilds.handlers.WorldGuardHandler;
 import org.bukkit.entity.Player;
 
 /**
@@ -18,7 +18,7 @@ public class CommandUnclaim extends CommandBase {
 
     WorldGuardHandler WorldGuard = new WorldGuardHandler();
     public CommandUnclaim() {
-        super("unclaim", Main.getInstance().getConfig().getString("commands.description.unclaim"),
+        super("unclaim", Guilds.getInstance().getConfig().getString("commands.description.unclaim"),
                 "guilds.command.unclaim", false,
                 null, null, 0, 0);
     }
@@ -38,7 +38,7 @@ public class CommandUnclaim extends CommandBase {
             return;
         }
 
-        if (!Main.getInstance().getConfig().getBoolean("hooks.worldguard")) {
+        if (!Guilds.getInstance().getConfig().getBoolean("hooks.worldguard")) {
             Message.sendMessage(player, Message.COMMAND_CLAIM_WORLDGUARD_REQUIRED);
             return;
         }
@@ -50,7 +50,7 @@ public class CommandUnclaim extends CommandBase {
             return;
         }
         Message.sendMessage(player, Message.COMMAND_CLAIM_REMOVE_CONFIRM);
-        Main.getInstance().getCommandHandler().addAction(player, new ConfirmAction() {
+        Guilds.getInstance().getCommandHandler().addAction(player, new ConfirmAction() {
             @Override
             public void accept() {
                 regions.removeRegion(guild.getName());
@@ -59,7 +59,7 @@ public class CommandUnclaim extends CommandBase {
 
             @Override
             public void decline() {
-                Main.getInstance().getCommandHandler().removeAction(player);
+                Guilds.getInstance().getCommandHandler().removeAction(player);
             }
         });
 

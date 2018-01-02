@@ -6,7 +6,7 @@ import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
-import me.glaremasters.guilds.Main;
+import me.glaremasters.guilds.Guilds;
 import org.apache.commons.io.IOUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -24,13 +24,14 @@ public class AnnouncementListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        Main.getInstance().getServer().getScheduler()
-                .scheduleSyncDelayedTask(Main.getInstance(), () -> {
-                    if (Main.getInstance().getConfig().getBoolean("announcements.in-game")) {
+        Guilds.getInstance().getServer().getScheduler()
+                .scheduleSyncDelayedTask(Guilds.getInstance(), () -> {
+                    if (Guilds.getInstance().getConfig().getBoolean("announcements.in-game")) {
                         if (player.isOp()) {
                             if (!ALREADY_INFORMED.contains(player.getUniqueId())) {
                                 try {
-                                    URL url = new URL("https://glaremasters.me/guilds/announcements/" + Main.getInstance().getDescription()
+                                    URL url = new URL("https://glaremasters.me/guilds/announcements/" + Guilds
+                                            .getInstance().getDescription()
                                             .getVersion());
                                     HttpURLConnection con = (HttpURLConnection) url.openConnection();
                                     con.setRequestProperty("User-Agent",

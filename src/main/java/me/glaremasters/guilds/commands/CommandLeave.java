@@ -3,7 +3,7 @@ package me.glaremasters.guilds.commands;
 import com.sk89q.worldguard.bukkit.RegionContainer;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import java.util.logging.Level;
-import me.glaremasters.guilds.Main;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.api.events.GuildLeaveEvent;
 import me.glaremasters.guilds.api.events.GuildRemoveEvent;
 import me.glaremasters.guilds.commands.base.CommandBase;
@@ -19,16 +19,16 @@ import org.bukkit.entity.Player;
 public class CommandLeave extends CommandBase {
 
     public CommandLeave() {
-        super("leave", Main.getInstance().getConfig().getString("commands.description.leave"),
+        super("leave", Guilds.getInstance().getConfig().getString("commands.description.leave"),
                 "guilds.command.leave", false, null, null, 0, 0);
     }
 
     WorldGuardHandler WorldGuard = new WorldGuardHandler();
-    TablistHandler TablistHandler = new TablistHandler(Main.getInstance());
-    NameTagEditHandler NTEHandler = new NameTagEditHandler(Main.getInstance());
+    TablistHandler TablistHandler = new TablistHandler(Guilds.getInstance());
+    NameTagEditHandler NTEHandler = new NameTagEditHandler(Guilds.getInstance());
 
     public void execute(Player player, String[] args) {
-        final FileConfiguration config = Main.getInstance().getConfig();
+        final FileConfiguration config = Guilds.getInstance().getConfig();
         Guild guild = Guild.getGuild(player.getUniqueId());
         if (guild == null) {
             Message.sendMessage(player, Message.COMMAND_ERROR_NO_GUILD);
@@ -41,10 +41,10 @@ public class CommandLeave extends CommandBase {
             Message.sendMessage(player, Message.COMMAND_LEAVE_WARNING);
         }
 
-        Main.getInstance().getCommandHandler().addAction(player, new ConfirmAction() {
+        Guilds.getInstance().getCommandHandler().addAction(player, new ConfirmAction() {
             @Override
             public void accept() {
-                if (Main.getInstance().getConfig().getBoolean("hooks.worldguard")) {
+                if (Guilds.getInstance().getConfig().getBoolean("hooks.worldguard")) {
                     RegionContainer container = WorldGuard.getWorldGuard().getRegionContainer();
                     RegionManager regions = container.get(player.getWorld());
 
@@ -54,7 +54,7 @@ public class CommandLeave extends CommandBase {
                     }
 
                     GuildLeaveEvent leaveEvent = new GuildLeaveEvent(player, guild);
-                    Main.getInstance().getServer().getPluginManager().callEvent(leaveEvent);
+                    Guilds.getInstance().getServer().getPluginManager().callEvent(leaveEvent);
                     if (leaveEvent.isCancelled()) {
                         return;
                     }
@@ -69,23 +69,23 @@ public class CommandLeave extends CommandBase {
                     GuildRemoveEvent removeEvent =
                             new GuildRemoveEvent(player, guild,
                                     GuildRemoveEvent.RemoveCause.REMOVED);
-                    Main.getInstance().getServer().getPluginManager().callEvent(removeEvent);
-                    Main.getInstance().guildBanksConfig
+                    Guilds.getInstance().getServer().getPluginManager().callEvent(removeEvent);
+                    Guilds.getInstance().guildBanksConfig
                             .set(guild.getName(), null);
-                    Main.getInstance().guildTiersConfig
+                    Guilds.getInstance().guildTiersConfig
                             .set(guild.getName(), null);
-                    Main.getInstance().guildHomesConfig
+                    Guilds.getInstance().guildHomesConfig
                             .set(guild.getName(), null);
-                    Main.getInstance().saveGuildData();
+                    Guilds.getInstance().saveGuildData();
                     if (removeEvent.isCancelled()) {
                         return;
                     }
 
-                    Main.getInstance().getDatabaseProvider()
+                    Guilds.getInstance().getDatabaseProvider()
                             .removeGuild(guild, (result, exception) -> {
                                 if (result) {
                                 } else {
-                                    Main.getInstance().getLogger().log(Level.SEVERE, String.format(
+                                    Guilds.getInstance().getLogger().log(Level.SEVERE, String.format(
                                             "An error occurred while player '%s' was trying to delete guild '%s'",
                                             player.getName(), guild.getName()));
                                     if (exception != null) {
@@ -101,7 +101,7 @@ public class CommandLeave extends CommandBase {
                 TablistHandler.leaveTablist(player);
 
                 NTEHandler.removeTag(player);
-                Main.getInstance().getCommandHandler().removeAction(player);
+                Guilds.getInstance().getCommandHandler().removeAction(player);
                 if (guild.getGuildMaster().getUniqueId().equals(player.getUniqueId())) {
                     guild.sendMessage(
                             Message.COMMAND_LEAVE_GUILDMASTER_LEFT
@@ -118,7 +118,7 @@ public class CommandLeave extends CommandBase {
             public void decline() {
                 Message.sendMessage(player, Message.COMMAND_LEAVE_CANCELLED);
 
-                Main.getInstance().getCommandHandler().removeAction(player);
+                Guilds.getInstance().getCommandHandler().removeAction(player);
             }
         });
     }

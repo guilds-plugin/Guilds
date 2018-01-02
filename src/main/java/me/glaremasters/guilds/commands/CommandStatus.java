@@ -1,6 +1,6 @@
 package me.glaremasters.guilds.commands;
 
-import me.glaremasters.guilds.Main;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
 public class CommandStatus extends CommandBase {
 
     public CommandStatus() {
-        super("status", Main.getInstance().getConfig().getString("commands.description.status"),
+        super("status", Guilds.getInstance().getConfig().getString("commands.description.status"),
                 "guilds.command.status", false, null,
                 "<public | private>", 1, 1);
     }
@@ -39,14 +39,14 @@ public class CommandStatus extends CommandBase {
             String status = StringUtils.capitalize(args[0]);
 
 
-            Main.getInstance().guildStatusConfig
+            Guilds.getInstance().guildStatusConfig
                     .set(Guild.getGuild(player.getUniqueId()).getName(),
                             status);
             Guild.getGuild(player.getUniqueId()).updateGuild("");
 
             Message.sendMessage(player,
                     Message.COMMAND_STATUS_SUCCESSFUL.replace("{status}", status));
-            Main.getInstance().saveGuildData();
+            Guilds.getInstance().saveGuildData();
         }
     }
 }

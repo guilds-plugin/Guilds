@@ -1,6 +1,6 @@
 package me.glaremasters.guilds.commands;
 
-import me.glaremasters.guilds.Main;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.message.Message;
@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 public class CommandDecline extends CommandBase {
 
     public CommandDecline() {
-        super("decline", Main.getInstance().getConfig().getString("commands.description.decline"),
+        super("decline", Guilds.getInstance().getConfig().getString("commands.description.decline"),
                 "guilds.command.decline", false, null, null, 1, 1);
     }
 

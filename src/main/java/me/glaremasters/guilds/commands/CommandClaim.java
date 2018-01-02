@@ -8,7 +8,7 @@ import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import me.glaremasters.guilds.Main;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
@@ -31,7 +31,7 @@ public class CommandClaim extends CommandBase {
     WorldGuardHandler WorldGuard = new WorldGuardHandler();
 
     public CommandClaim() {
-        super("claim", Main.getInstance().getConfig().getString("commands.description.claim"),
+        super("claim", Guilds.getInstance().getConfig().getString("commands.description.claim"),
                 "guilds.command.claim", false,
                 null, null, 0, 1);
     }
@@ -51,7 +51,7 @@ public class CommandClaim extends CommandBase {
             return;
         }
 
-        final FileConfiguration config = Main.getInstance().getConfig();
+        final FileConfiguration config = Guilds.getInstance().getConfig();
         if (!config.getBoolean("hooks.worldguard")) {
             Message.sendMessage(player, Message.COMMAND_CLAIM_WORLDGUARD_REQUIRED);
             return;
@@ -70,8 +70,8 @@ public class CommandClaim extends CommandBase {
             }
 
             claimCost = (config.getDouble("custom-claim-price") * Integer.valueOf(args[0]));
-            if (Main.vault && claimCost != -1) {
-                if (Main.getInstance().getEconomy().getBalance(player) < claimCost) {
+            if (Guilds.vault && claimCost != -1) {
+                if (Guilds.getInstance().getEconomy().getBalance(player) < claimCost) {
                     Message.sendMessage(player, Message.COMMAND_ERROR_NOT_ENOUGH_MONEY);
                     return;
                 }
@@ -83,8 +83,8 @@ public class CommandClaim extends CommandBase {
             }
         } else {
             claimCost = config.getDouble("regular-claim-price");
-            if (Main.vault && claimCost != -1) {
-                if (Main.getInstance().getEconomy().getBalance(player) < claimCost) {
+            if (Guilds.vault && claimCost != -1) {
+                if (Guilds.getInstance().getEconomy().getBalance(player) < claimCost) {
                     Message.sendMessage(player, Message.COMMAND_ERROR_NOT_ENOUGH_MONEY);
                     return;
                 }
@@ -94,14 +94,14 @@ public class CommandClaim extends CommandBase {
             }
         }
 
-        Main.getInstance().getCommandHandler().addAction(player, new ConfirmAction() {
+        Guilds.getInstance().getCommandHandler().addAction(player, new ConfirmAction() {
             @Override
             public void accept() {
                 if (config.getBoolean("custom-claim-size")) {
                     double claimCost = (config.getDouble("custom-claim-price") * Double
                             .valueOf(args[0]));
                     EconomyResponse response =
-                            Main.getInstance().getEconomy().withdrawPlayer(player, claimCost);
+                            Guilds.getInstance().getEconomy().withdrawPlayer(player, claimCost);
                     if (!response.transactionSuccess()) {
                         Message.sendMessage(player, Message.COMMAND_ERROR_NOT_ENOUGH_MONEY);
                         return;
@@ -109,7 +109,7 @@ public class CommandClaim extends CommandBase {
                 } else {
                     double claimCost2 = config.getDouble("regular-claim-price");
                     EconomyResponse response2 =
-                            Main.getInstance().getEconomy().withdrawPlayer(player, claimCost2);
+                            Guilds.getInstance().getEconomy().withdrawPlayer(player, claimCost2);
                     if (!response2.transactionSuccess()) {
                         Message.sendMessage(player, Message.COMMAND_ERROR_NOT_ENOUGH_MONEY);
                         return;
@@ -187,7 +187,7 @@ public class CommandClaim extends CommandBase {
                             .forEach(member -> {
                                 members.addPlayer(member.getName());
                             });
-                    Main.getInstance().getCommandHandler().removeAction(player);
+                    Guilds.getInstance().getCommandHandler().removeAction(player);
                 } else {
                     BlockVector min = new BlockVector(
                             (player.getLocation().getX() - (Integer.valueOf(args[0]) / 2)), 0,
@@ -255,13 +255,13 @@ public class CommandClaim extends CommandBase {
                             .forEach(member -> {
                                 members.addPlayer(member.getName());
                             });
-                    Main.getInstance().getCommandHandler().removeAction(player);
+                    Guilds.getInstance().getCommandHandler().removeAction(player);
                 }
             }
 
             @Override
             public void decline() {
-                Main.getInstance().getCommandHandler().removeAction(player);
+                Guilds.getInstance().getCommandHandler().removeAction(player);
             }
         });
     }

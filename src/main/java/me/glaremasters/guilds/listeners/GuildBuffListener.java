@@ -2,7 +2,7 @@ package me.glaremasters.guilds.listeners;
 
 
 import java.util.stream.Stream;
-import me.glaremasters.guilds.Main;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.message.Message;
 import net.milkbowl.vault.economy.EconomyResponse;
@@ -34,12 +34,12 @@ public class GuildBuffListener implements Listener {
             GuildBuff buff = GuildBuff.get(event.getCurrentItem().getType());
             double balance = guild.getBankBalance();
             if (buff != null) {
-                if (Main.getInstance().getConfig().getBoolean("use-guild-bank")) {
+                if (Guilds.getInstance().getConfig().getBoolean("use-guild-bank")) {
                     if (balance < buff.cost) {
                         Message.sendMessage(player, Message.COMMAND_BANK_WITHDRAW_FAILURE);
                         return;
                     }
-                    if (Main.getInstance().getConfig().getBoolean("disable-buff-stacking")
+                    if (Guilds.getInstance().getConfig().getBoolean("disable-buff-stacking")
                             && !player
                             .getActivePotionEffects().isEmpty()) {
                         return;
@@ -56,26 +56,26 @@ public class GuildBuffListener implements Listener {
 
                             });
 
-                    Main.getInstance().guildBanksConfig
+                    Guilds.getInstance().guildBanksConfig
                             .set(guild.getName(), balance - buff.cost);
-                    Main.getInstance().saveGuildData();
+                    Guilds.getInstance().saveGuildData();
                     guild.updateGuild("");
                 }
                 else {
 
-                    if (Main.vault && buff.cost != -1) {
-                        if (Main.getInstance().getEconomy().getBalance(player) < buff.cost) {
+                    if (Guilds.vault && buff.cost != -1) {
+                        if (Guilds.getInstance().getEconomy().getBalance(player) < buff.cost) {
                             Message.sendMessage(player, Message.COMMAND_BUFF_NOT_ENOUGH_MONEY);
                             return;
                         }
-                        if (Main.getInstance().getConfig().getBoolean("disable-buff-stacking")
+                        if (Guilds.getInstance().getConfig().getBoolean("disable-buff-stacking")
                                 && !player
                                 .getActivePotionEffects().isEmpty()) {
                             return;
                         }
 
                         EconomyResponse response =
-                                Main.getInstance().getEconomy().withdrawPlayer(player, buff.cost);
+                                Guilds.getInstance().getEconomy().withdrawPlayer(player, buff.cost);
                         if (!response.transactionSuccess()) {
                             Message.sendMessage(player, Message.COMMAND_BUFF_NOT_ENOUGH_MONEY);
                             return;
@@ -118,12 +118,12 @@ public class GuildBuffListener implements Listener {
         public final int amplifier;
 
         GuildBuff(PotionEffectType potion, Material itemType, String configValueName) {
-            this.time = Main.getInstance().getConfig().getInt("buff.time." + configValueName) * 20;
-            this.cost = Main.getInstance().getConfig().getDouble("buff.price." + configValueName);
+            this.time = Guilds.getInstance().getConfig().getInt("buff.time." + configValueName) * 20;
+            this.cost = Guilds.getInstance().getConfig().getDouble("buff.price." + configValueName);
             this.itemType = itemType;
             this.potion = potion;
-            this.name = Main.getInstance().getConfig().getString("buff.name." + configValueName);
-            this.amplifier = Main.getInstance().getConfig()
+            this.name = Guilds.getInstance().getConfig().getString("buff.name." + configValueName);
+            this.amplifier = Guilds.getInstance().getConfig()
                     .getInt("buff.amplifier." + configValueName);
         }
 

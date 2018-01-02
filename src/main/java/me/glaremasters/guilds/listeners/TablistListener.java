@@ -1,6 +1,6 @@
 package me.glaremasters.guilds.listeners;
 
-import me.glaremasters.guilds.Main;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.handlers.TablistHandler;
 import org.bukkit.entity.Player;
@@ -17,15 +17,15 @@ public class TablistListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerJoin(PlayerJoinEvent event) {
-        TablistHandler TablistHandler = new TablistHandler(Main.getInstance());
+        TablistHandler TablistHandler = new TablistHandler(Guilds.getInstance());
         Player player = event.getPlayer();
         Guild guild = Guild.getGuild(player.getUniqueId());
 
         if (guild == null) {
             return;
         } else {
-            Main.getInstance().getServer().getScheduler()
-                    .scheduleSyncDelayedTask(Main.getInstance(), () -> {
+            Guilds.getInstance().getServer().getScheduler()
+                    .scheduleSyncDelayedTask(Guilds.getInstance(), () -> {
                         TablistHandler.addTablist(player);
                     }, 30L);
 

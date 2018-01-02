@@ -1,6 +1,6 @@
 package me.glaremasters.guilds.listeners;
 
-import me.glaremasters.guilds.Main;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.message.Message;
 import org.bukkit.ChatColor;
@@ -21,7 +21,7 @@ public class TicketListener implements Listener {
     @EventHandler
     public void upgradeTicket(PlayerInteractEvent event) {
         ItemStack air = new ItemStack(Material.AIR);
-        FileConfiguration config = Main.getInstance().getConfig();
+        FileConfiguration config = Guilds.getInstance().getConfig();
         String ticketName = ChatColor
                 .translateAlternateColorCodes('&', config.getString("upgrade-ticket.name"));
         Player player = event.getPlayer();
@@ -47,8 +47,8 @@ public class TicketListener implements Listener {
             }
             event.setCancelled(true);
             Message.sendMessage(player, Message.COMMAND_UPGRADE_SUCCESS);
-            Main.getInstance().guildTiersConfig.set(guild.getName(), tier + 1);
-            Main.getInstance().saveGuildData();
+            Guilds.getInstance().guildTiersConfig.set(guild.getName(), tier + 1);
+            Guilds.getInstance().saveGuildData();
             guild.updateGuild("");
         }
     }

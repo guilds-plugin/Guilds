@@ -1,7 +1,7 @@
 package me.glaremasters.guilds.handlers;
 
 import com.nametagedit.plugin.NametagEdit;
-import me.glaremasters.guilds.Main;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.guild.Guild;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -11,9 +11,9 @@ import org.bukkit.entity.Player;
  */
 public class NameTagEditHandler {
 
-    private final Main plugin;
+    private final Guilds plugin;
 
-    public NameTagEditHandler(Main plugin) {
+    public NameTagEditHandler(Guilds plugin) {
         this.plugin = plugin;
     }
 

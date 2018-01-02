@@ -1,6 +1,6 @@
 package me.glaremasters.guilds.commands;
 
-import me.glaremasters.guilds.Main;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
@@ -18,7 +18,7 @@ public class CommandAdmin extends CommandBase {
 
 
     public CommandAdmin() {
-        super("admin", Main.getInstance().getConfig().getString("commands.description.admin"),
+        super("admin", Guilds.getInstance().getConfig().getString("commands.description.admin"),
                 "guilds.command.admin", true, null,
                 "<addplayer | removeplayer> <guild name> <player name>, "
                         + "or <claim> <guildname>,"
@@ -48,27 +48,27 @@ public class CommandAdmin extends CommandBase {
             Message.sendMessage(sender,
                     Message.COMMAND_ADMIN_DELETE_WARNING.replace("{guild}", args[1]));
 
-            Main.getInstance().getCommandHandler().addAction(sender, new ConfirmAction() {
+            Guilds.getInstance().getCommandHandler().addAction(sender, new ConfirmAction() {
                 @Override
                 public void accept() {
-                    Main.getInstance().getCommandHandler().removeAction(sender);
+                    Guilds.getInstance().getCommandHandler().removeAction(sender);
                 }
 
                 @Override
                 public void decline() {
                     Message.sendMessage(sender, Message.COMMAND_ADMIN_DELETE_CANCELLED);
-                    Main.getInstance().getCommandHandler().removeAction(sender);
+                    Guilds.getInstance().getCommandHandler().removeAction(sender);
                 }
             });
         } /* else if (args[0].equalsIgnoreCase("claim")) {
-            if (Main.getInstance().getConfig().getBoolean("hooks.worldguard")) {
+            if (Guilds.getInstance().getConfig().getBoolean("hooks.worldguard")) {
                 if (guild == null) {
                     Message.sendMessage(sender, Message.COMMAND_ERROR_GUILD_NOT_FOUND);
                     return;
                 }
-                final FileConfiguration config = Main.getInstance().getConfig();
+                final FileConfiguration config = Guilds.getInstance().getConfig();
                 WorldEditPlugin worldEditPlugin = null;
-                worldEditPlugin = (WorldEditPlugin) Main.getInstance().getServer()
+                worldEditPlugin = (WorldEditPlugin) Guilds.getInstance().getServer()
                         .getPluginManager()
                         .getPlugin("WorldEdit");
                 Selection sel = worldEditPlugin.getSelection((Player) sender);
@@ -141,15 +141,15 @@ public class CommandAdmin extends CommandBase {
             Message.sendMessage(player, Message.COMMAND_LEAVE_SUCCESSFUL);
             Message.sendMessage(sender, Message.COMMAND_ADMIN_REMOVED_PLAYER);
         } else if (args[0].equalsIgnoreCase("upgrade")) {
-            FileConfiguration config = Main.getInstance().getConfig();
+            FileConfiguration config = Guilds.getInstance().getConfig();
             int tier = guild.getTier();
-            if (guild.getTier() >= Main.getInstance().getConfig().getInt("max-number-of-tiers")) {
+            if (guild.getTier() >= Guilds.getInstance().getConfig().getInt("max-number-of-tiers")) {
                 Message.sendMessage(sender, Message.COMMAND_UPGRADE_TIER_MAX);
                 return;
             }
             Message.sendMessage(sender, Message.COMMAND_UPGRADE_SUCCESS);
-            Main.getInstance().guildTiersConfig.set(guild.getName(), tier + 1);
-            Main.getInstance().saveGuildData();
+            Guilds.getInstance().guildTiersConfig.set(guild.getName(), tier + 1);
+            Guilds.getInstance().saveGuildData();
 
             guild.updateGuild("");
         } else if (args[0].equalsIgnoreCase("status")) {
@@ -161,22 +161,22 @@ public class CommandAdmin extends CommandBase {
                 Message.sendMessage(sender, Message.COMMAND_STATUS_ERROR);
             } else {
                 String status = args[2];
-                Main.getInstance().guildStatusConfig
+                Guilds.getInstance().guildStatusConfig
                         .set(args[1],
                                 status);
                 Guild.getGuild(args[1]).updateGuild("");
 
                 Message.sendMessage(sender,
                         Message.COMMAND_STATUS_SUCCESSFUL.replace("{status}", status));
-                Main.getInstance().saveGuildData();
+                Guilds.getInstance().saveGuildData();
             }
         } else if (args[0].equalsIgnoreCase("prefix")) {
-            FileConfiguration config = Main.getInstance().getConfig();
+            FileConfiguration config = Guilds.getInstance().getConfig();
             if (args.length != 3) {
                 Message.sendMessage(sender, Message.COMMAND_ERROR_ARGS);
                 return;
             }
-            if (!args[2].matches(Main.getInstance().getConfig().getString("prefix.regex"))) {
+            if (!args[2].matches(Guilds.getInstance().getConfig().getString("prefix.regex"))) {
                 Message.sendMessage(sender, Message.COMMAND_PREFIX_REQUIREMENTS);
                 return;
             }

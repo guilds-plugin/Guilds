@@ -1,6 +1,6 @@
 package me.glaremasters.guilds.handlers;
 
-import me.glaremasters.guilds.Main;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.guild.Guild;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -10,9 +10,9 @@ import org.bukkit.entity.Player;
  */
 public class TitleHandler {
 
-    private final Main plugin;
+    private final Guilds plugin;
 
-    public TitleHandler(Main plugin) {
+    public TitleHandler(Guilds plugin) {
         this.plugin = plugin;
     }
 
@@ -102,7 +102,7 @@ public class TitleHandler {
             try {
                 String creation = "titles.events.guild-prefix-change";
                 guild.sendTitle(ChatColor.translateAlternateColorCodes('&',
-                        Main.getInstance().getConfig().getString(creation + ".title")
+                        Guilds.getInstance().getConfig().getString(creation + ".title")
                                 .replace("{prefix}", guild.getPrefix())),
                         ChatColor.translateAlternateColorCodes('&',
                                 plugin.getConfig().getString(creation + ".sub-title")
@@ -113,7 +113,7 @@ public class TitleHandler {
             } catch (NoSuchMethodError error) {
                 String creation = "titles.events.guild-prefix-change";
                 guild.sendTitleOld(ChatColor.translateAlternateColorCodes('&',
-                        Main.getInstance().getConfig().getString(creation + ".title")
+                        Guilds.getInstance().getConfig().getString(creation + ".title")
                                 .replace("{prefix}", guild.getPrefix())),
                         ChatColor.translateAlternateColorCodes('&',
                                 plugin.getConfig().getString(creation + ".sub-title")

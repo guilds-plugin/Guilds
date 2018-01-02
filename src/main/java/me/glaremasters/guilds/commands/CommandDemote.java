@@ -1,7 +1,7 @@
 package me.glaremasters.guilds.commands;
 
 import java.util.logging.Level;
-import me.glaremasters.guilds.Main;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildMember;
@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 public class CommandDemote extends CommandBase {
 
     public CommandDemote() {
-        super("demote", Main.getInstance().getConfig().getString("commands.description.demote"),
+        super("demote", Guilds.getInstance().getConfig().getString("commands.description.demote"),
                 "guilds.command.demote", false,
                 new String[]{"rankdown"}, "<player> [new role]", 1, 2);
     }
@@ -61,7 +61,7 @@ public class CommandDemote extends CommandBase {
         GuildRole demotedRole;
 
         if (args.length == 2) {
-            demotedRole = Main.getInstance().getGuildHandler().getRoles().stream()
+            demotedRole = Guilds.getInstance().getGuildHandler().getRoles().stream()
                     .filter(r -> r.getName().equalsIgnoreCase(args[1])).findFirst().orElse(null);
             if (demotedRole == null) {
                 Message.sendMessage(player,
@@ -95,10 +95,10 @@ public class CommandDemote extends CommandBase {
     }
 
     public void updateGuild(String errorMessage, String guild, String... params) {
-        Main.getInstance().getDatabaseProvider()
+        Guilds.getInstance().getDatabaseProvider()
                 .updateGuild(Guild.getGuild(guild), (result, exception) -> {
                     if (!result) {
-                        Main.getInstance().getLogger()
+                        Guilds.getInstance().getLogger()
                                 .log(Level.SEVERE, String.format(errorMessage, params));
 
                         if (exception != null) {

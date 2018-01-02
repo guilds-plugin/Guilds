@@ -1,6 +1,6 @@
 package me.glaremasters.guilds.commands;
 
-import me.glaremasters.guilds.Main;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.message.Message;
 import org.bukkit.ChatColor;
@@ -11,7 +11,7 @@ public class CommandHelp extends CommandBase {
     private final int MAX_PAGE_SIZE = 6;
 
     public CommandHelp() {
-        super("help", Main.getInstance().getConfig().getString("commands.description.help"),
+        super("help", Guilds.getInstance().getConfig().getString("commands.description.help"),
                 "guilds.command.help", true, null, "[page]", 0, 1);
     }
 
@@ -33,7 +33,7 @@ public class CommandHelp extends CommandBase {
         for (int i = 0; i < MAX_PAGE_SIZE; i++) {
 
             int index = ((page - 1) * 6) + i;
-            if (index > Main.getInstance().getCommandHandler().getCommands().size() - 1) {
+            if (index > Guilds.getInstance().getCommandHandler().getCommands().size() - 1) {
                 nextPage = false;
                 if (i == 0) {
                     Message.sendMessage(sender, Message.COMMAND_HELP_INVALID_PAGE);
@@ -43,7 +43,7 @@ public class CommandHelp extends CommandBase {
             }
 
             CommandBase command =
-                    Main.getInstance().getCommandHandler().getCommands().get(index);
+                    Guilds.getInstance().getCommandHandler().getCommands().get(index);
 
             Message.sendMessage(sender, Message.COMMAND_HELP_MESSAGE
                     .replace("{command}", command.getName(), "{arguments}", command.getArguments(),

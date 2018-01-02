@@ -1,6 +1,6 @@
 package me.glaremasters.guilds.handlers;
 
-import me.glaremasters.guilds.Main;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.guild.Guild;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -10,9 +10,9 @@ import org.bukkit.entity.Player;
  */
 public class TablistHandler {
 
-    private final Main plugin;
+    private final Guilds plugin;
 
-    public TablistHandler(Main plugin) {
+    public TablistHandler(Guilds plugin) {
         this.plugin = plugin;
     }
 

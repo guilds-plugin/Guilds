@@ -1,7 +1,7 @@
 package me.glaremasters.guilds.listeners;
 
-import me.glaremasters.guilds.Main;
-import me.glaremasters.guilds.commands.CommandList;
+import me.glaremasters.guilds.Guilds;
+import me.glaremasters.guilds.commands.*;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -22,16 +22,16 @@ public class ClickListener implements Listener {
     public void onClick(InventoryClickEvent e) {
         Player player = (Player) e.getWhoClicked();
         if (e.getInventory().getTitle().equalsIgnoreCase(
-                ChatColor.DARK_GREEN + Main.getInstance().getConfig().getString("gui-name.info"))) {
+                ChatColor.DARK_GREEN + Guilds.getInstance().getConfig().getString("gui-name.info"))) {
             e.setCancelled(true);
             e.setResult(Event.Result.DENY);
         }
         if (e.getInventory().getTitle().equalsIgnoreCase(
-                ChatColor.DARK_GREEN + Main.getInstance().getConfig()
+                ChatColor.DARK_GREEN + Guilds.getInstance().getConfig()
                         .getString("gui-name.list.name"))) {
             if (e.getAction().equals(InventoryAction.PICKUP_ALL)) {
                 if (e.getCurrentItem().getItemMeta().getDisplayName()
-                        .equals(ChatColor.GOLD + Main.getInstance().getConfig()
+                        .equals(ChatColor.GOLD + Guilds.getInstance().getConfig()
                                 .getString("gui-name.list.previous-page"))) {
 
                     if (!(CommandList.playerPages.get(e.getWhoClicked().getUniqueId()) == 1)) {
@@ -44,13 +44,13 @@ public class ClickListener implements Listener {
                         e.getWhoClicked().openInventory(guildList);
                     }
                 }
-                if (Main.getInstance().getGuildHandler().getGuilds().values().size() < 45) {
+                if (Guilds.getInstance().getGuildHandler().getGuilds().values().size() < 45) {
                     e.setCancelled(true);
                     e.setResult(Event.Result.DENY);
                     return;
                 }
                 if (e.getCurrentItem().getItemMeta().getDisplayName()
-                        .equals(ChatColor.GOLD + Main.getInstance().getConfig()
+                        .equals(ChatColor.GOLD + Guilds.getInstance().getConfig()
                                 .getString("gui-name.list.next-page"))) {
 
                     int newPage = CommandList.playerPages.get(e.getWhoClicked().getUniqueId()) + 1;
@@ -69,12 +69,12 @@ public class ClickListener implements Listener {
     @EventHandler
     public void onClick2(InventoryInteractEvent e) {
         if (e.getInventory().getTitle().equalsIgnoreCase(
-                ChatColor.DARK_GREEN + Main.getInstance().getConfig().getString("gui-name.info"))) {
+                ChatColor.DARK_GREEN + Guilds.getInstance().getConfig().getString("gui-name.info"))) {
             e.setCancelled(true);
             e.setResult(Event.Result.DENY);
         }
         if (e.getInventory().getTitle().equalsIgnoreCase(
-                ChatColor.DARK_GREEN + Main.getInstance().getConfig()
+                ChatColor.DARK_GREEN + Guilds.getInstance().getConfig()
                         .getString("gui-name.list.name"))) {
             e.setCancelled(true);
             e.setResult(Event.Result.DENY);

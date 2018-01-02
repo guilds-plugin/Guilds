@@ -2,7 +2,7 @@ package me.glaremasters.guilds.commands;
 
 import java.util.List;
 import java.util.logging.Level;
-import me.glaremasters.guilds.Main;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.api.events.GuildCreateEvent;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
@@ -19,14 +19,14 @@ import org.bukkit.entity.Player;
 public class CommandCreate extends CommandBase {
 
     public CommandCreate() {
-        super("create", Main.getInstance().getConfig().getString("commands.description.create"),
+        super("create", Guilds.getInstance().getConfig().getString("commands.description.create"),
                 "guilds.command.create", false, new String[]{"c"},
                 "<name>", 1, 1);
     }
 
-    TitleHandler TitleHandler = new TitleHandler(Main.getInstance());
-    TablistHandler TablistHandler = new TablistHandler(Main.getInstance());
-    NameTagEditHandler NTEHandler = new NameTagEditHandler(Main.getInstance());
+    TitleHandler TitleHandler = new TitleHandler(Guilds.getInstance());
+    TablistHandler TablistHandler = new TablistHandler(Guilds.getInstance());
+    NameTagEditHandler NTEHandler = new NameTagEditHandler(Guilds.getInstance());
 
     @Override
     public void execute(Player player, String[] args) {
@@ -36,7 +36,7 @@ public class CommandCreate extends CommandBase {
             return;
         }
 
-        FileConfiguration config = Main.getInstance().getConfig();
+        FileConfiguration config = Guilds.getInstance().getConfig();
         int minLength = config.getInt("name.min-length");
         int maxLength = config.getInt("name.max-length");
         String regex = config.getString("name.regex");
@@ -47,14 +47,14 @@ public class CommandCreate extends CommandBase {
             return;
         }
 
-        for (String name : Main.getInstance().getGuildHandler().getGuilds().keySet()) {
+        for (String name : Guilds.getInstance().getGuildHandler().getGuilds().keySet()) {
             if (name.equalsIgnoreCase(args[0])) {
                 Message.sendMessage(player, Message.COMMAND_CREATE_GUILD_NAME_TAKEN);
                 return;
             }
         }
-        if (Main.getInstance().getConfig().getBoolean("enable-blacklist")) {
-            List<String> blacklist = Main.getInstance().getConfig().getStringList("blacklist");
+        if (Guilds.getInstance().getConfig().getBoolean("enable-blacklist")) {
+            List<String> blacklist = Guilds.getInstance().getConfig().getStringList("blacklist");
 
             for (String censor : blacklist) {
                 if (args[0].toLowerCase().contains(censor)) {
@@ -64,10 +64,10 @@ public class CommandCreate extends CommandBase {
             }
         }
 
-        double requiredMoney = Main.getInstance().getConfig().getDouble("Requirement.cost");
+        double requiredMoney = Guilds.getInstance().getConfig().getDouble("Requirement.cost");
 
-        if (Main.vault && requiredMoney != -1) {
-            if (Main.getInstance().getEconomy().getBalance(player) < requiredMoney) {
+        if (Guilds.vault && requiredMoney != -1) {
+            if (Guilds.getInstance().getEconomy().getBalance(player) < requiredMoney) {
                 Message.sendMessage(player, Message.COMMAND_ERROR_NOT_ENOUGH_MONEY);
                 return;
             }
@@ -78,7 +78,7 @@ public class CommandCreate extends CommandBase {
             Message.sendMessage(player, Message.COMMAND_CREATE_WARNING);
         }
 
-        Main.getInstance().getCommandHandler().addAction(player, new ConfirmAction() {
+        Guilds.getInstance().getCommandHandler().addAction(player, new ConfirmAction() {
             @Override
             public void accept() {
                 Guild guild = new Guild(ChatColor.translateAlternateColorCodes('&', args[0]),
@@ -89,25 +89,25 @@ public class CommandCreate extends CommandBase {
                     return;
                 }
 
-                if (Main.getInstance().getConfig().getBoolean("require-money")) {
+                if (Guilds.getInstance().getConfig().getBoolean("require-money")) {
 
                     EconomyResponse response =
-                            Main.getInstance().getEconomy().withdrawPlayer(player, requiredMoney);
+                            Guilds.getInstance().getEconomy().withdrawPlayer(player, requiredMoney);
                     if (!response.transactionSuccess()) {
                         Message.sendMessage(player, Message.COMMAND_ERROR_NOT_ENOUGH_MONEY);
                         return;
                     }
                 }
 
-                Main.getInstance().getDatabaseProvider().createGuild(guild, (result, exception) -> {
+                Guilds.getInstance().getDatabaseProvider().createGuild(guild, (result, exception) -> {
                     if (result) {
                         Message.sendMessage(player,
                                 Message.COMMAND_CREATE_SUCCESSFUL.replace("{guild}", args[0]));
 
 
-                        Main.getInstance().guildStatusConfig.set(guild.getName(), "Private");
-                        Main.getInstance().guildTiersConfig.set(guild.getName(), 1);
-                        Main.getInstance().saveGuildData();
+                        Guilds.getInstance().guildStatusConfig.set(guild.getName(), "Private");
+                        Guilds.getInstance().guildTiersConfig.set(guild.getName(), 1);
+                        Guilds.getInstance().saveGuildData();
 
                         TitleHandler.createTitles(player);
                         TablistHandler.addTablist(player);
@@ -115,7 +115,7 @@ public class CommandCreate extends CommandBase {
                     } else {
                         Message.sendMessage(player, Message.COMMAND_CREATE_ERROR);
 
-                        Main.getInstance().getLogger().log(Level.SEVERE, String.format(
+                        Guilds.getInstance().getLogger().log(Level.SEVERE, String.format(
                                 "An error occurred while player '%s' was trying to create guild '%s'",
                                 player.getName(), args[0]));
                         if (exception != null) {
@@ -124,13 +124,13 @@ public class CommandCreate extends CommandBase {
                     }
                 });
 
-                Main.getInstance().getCommandHandler().removeAction(player);
+                Guilds.getInstance().getCommandHandler().removeAction(player);
             }
 
             @Override
             public void decline() {
                 Message.sendMessage(player, Message.COMMAND_CREATE_CANCELLED);
-                Main.getInstance().getCommandHandler().removeAction(player);
+                Guilds.getInstance().getCommandHandler().removeAction(player);
             }
         });
     }

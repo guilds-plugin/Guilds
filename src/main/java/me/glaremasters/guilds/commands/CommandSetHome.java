@@ -1,7 +1,7 @@
 package me.glaremasters.guilds.commands;
 
 import java.util.HashMap;
-import me.glaremasters.guilds.Main;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
@@ -19,7 +19,7 @@ public class CommandSetHome extends CommandBase {
     private HashMap<String, Long> cooldowns = new HashMap<>();
 
     public CommandSetHome() {
-        super("sethome", Main.getInstance().getConfig().getString("commands.description.sethome"),
+        super("sethome", Guilds.getInstance().getConfig().getString("commands.description.sethome"),
                 "guilds.command.sethome", false, null, null, 0,
                 0);
     }
@@ -27,7 +27,7 @@ public class CommandSetHome extends CommandBase {
 
     @Override
     public void execute(Player player, String[] args) {
-        final FileConfiguration config = Main.getInstance().getConfig();
+        final FileConfiguration config = Guilds.getInstance().getConfig();
         int cooldownTime = config
                 .getInt("sethome.cool-down"); // Get number of seconds from wherever you want
         Guild guild = Guild.getGuild(player.getUniqueId());
@@ -54,8 +54,8 @@ public class CommandSetHome extends CommandBase {
 
         double setHomeCost = config.getDouble("Requirement.sethome-cost");
 
-        if (Main.vault && setHomeCost != -1) {
-            if (Main.getInstance().getEconomy().getBalance(player) < setHomeCost) {
+        if (Guilds.vault && setHomeCost != -1) {
+            if (Guilds.getInstance().getEconomy().getBalance(player) < setHomeCost) {
                 Message.sendMessage(player, Message.COMMAND_ERROR_NOT_ENOUGH_MONEY);
                 return;
             }
@@ -66,13 +66,13 @@ public class CommandSetHome extends CommandBase {
             Message.sendMessage(player, Message.COMMAND_CREATE_WARNING);
         }
 
-        Main.getInstance().getCommandHandler().addAction(player, new ConfirmAction() {
+        Guilds.getInstance().getCommandHandler().addAction(player, new ConfirmAction() {
             @Override
             public void accept() {
                 if (config.getBoolean("require-money")) {
 
                     EconomyResponse response =
-                            Main.getInstance().getEconomy().withdrawPlayer(player, setHomeCost);
+                            Guilds.getInstance().getEconomy().withdrawPlayer(player, setHomeCost);
                     if (!response.transactionSuccess()) {
                         Message.sendMessage(player, Message.COMMAND_ERROR_NOT_ENOUGH_MONEY);
                         return;
@@ -86,21 +86,21 @@ public class CommandSetHome extends CommandBase {
                 float yaw = player.getLocation().getYaw();
                 float pitch = player.getLocation().getPitch();
 
-                Main.getInstance().guildHomesConfig
+                Guilds.getInstance().guildHomesConfig
                         .set(Guild.getGuild(player.getUniqueId()).getName(),
                                 world + ":" + xloc + ":" + yloc + ":" + zloc + ":" + yaw + ":"
                                         + pitch);
-                Main.getInstance().saveGuildData();
+                Guilds.getInstance().saveGuildData();
                 Message.sendMessage(player, Message.COMMAND_CREATE_GUILD_HOME);
                 cooldowns.put(player.getName(), System.currentTimeMillis());
-                Main.getInstance().getCommandHandler().removeAction(player);
+                Guilds.getInstance().getCommandHandler().removeAction(player);
 
             }
 
             @Override
             public void decline() {
                 Message.sendMessage(player, Message.COMMAND_CREATE_CANCELLED_SETHOME);
-                Main.getInstance().getCommandHandler().removeAction(player);
+                Guilds.getInstance().getCommandHandler().removeAction(player);
             }
         });
 

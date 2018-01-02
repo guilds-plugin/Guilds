@@ -1,6 +1,6 @@
 package me.glaremasters.guilds.commands;
 
-import me.glaremasters.guilds.Main;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -15,14 +15,14 @@ public class CommandBugReport extends CommandBase {
     public CommandBugReport() {
 
         super("bugreport",
-                Main.getInstance().getConfig().getString("commands.description.bugreport"),
+                Guilds.getInstance().getConfig().getString("commands.description.bugreport"),
                 "guilds.command.bugreport", false, null, null, 0,
                 0);
     }
 
     @Override
     public void execute(Player player, String[] args) {
-        PluginDescriptionFile pdf = Main.getInstance().getDescription();
+        PluginDescriptionFile pdf = Guilds.getInstance().getDescription();
         player.sendMessage(ChatColor.GREEN + "Details:");
         player.sendMessage("");
         player

@@ -1,6 +1,6 @@
 package me.glaremasters.guilds.commands;
 
-import me.glaremasters.guilds.Main;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
@@ -14,7 +14,7 @@ public class CommandVault extends CommandBase {
 
 
     public CommandVault() {
-        super("vault", Main.getInstance().getConfig().getString("commands.description.vault"),
+        super("vault", Guilds.getInstance().getConfig().getString("commands.description.vault"),
                 "guilds.command.vault", false, null,
                 null, 0, 0);
     }

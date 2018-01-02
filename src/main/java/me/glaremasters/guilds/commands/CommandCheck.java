@@ -2,7 +2,7 @@ package me.glaremasters.guilds.commands;
 
 import java.util.ArrayList;
 import java.util.List;
-import me.glaremasters.guilds.Main;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.message.Message;
@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
 public class CommandCheck extends CommandBase {
 
     public CommandCheck() {
-        super("check", Main.getInstance().getConfig().getString("commands.description.check"),
+        super("check", Guilds.getInstance().getConfig().getString("commands.description.check"),
                 "guilds.command.check", false,
                 null, null, 0, 0);
     }
@@ -28,7 +28,7 @@ public class CommandCheck extends CommandBase {
             return;
         }
         List<String> guilds = new ArrayList<>();
-        for (Guild guild : Main.getInstance().getGuildHandler().getGuilds().values()) {
+        for (Guild guild : Guilds.getInstance().getGuildHandler().getGuilds().values()) {
             if (!guild.getInvitedMembers().contains(player.getUniqueId())) {
                 continue;
             }

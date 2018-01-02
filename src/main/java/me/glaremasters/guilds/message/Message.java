@@ -1,7 +1,7 @@
 package me.glaremasters.guilds.message;
 
 import java.util.Arrays;
-import me.glaremasters.guilds.Main;
+import me.glaremasters.guilds.Guilds;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
@@ -69,11 +69,11 @@ public enum Message {
 
     public static void sendMessage(CommandSender sender, Message message) {
         sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                Main.PREFIX + Main.getInstance().yaml.getString(getPath(message))));
+                Guilds.PREFIX + Guilds.getInstance().yaml.getString(getPath(message))));
     }
 
     public static void sendMessage(CommandSender sender, String message) {
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.PREFIX + message));
+        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Guilds.PREFIX + message));
     }
 
     private static String getPath(Message message) {
@@ -91,7 +91,7 @@ public enum Message {
             throw new IllegalArgumentException("Amount of keys and values do not match!");
         }
 
-        String message = Main.getInstance().yaml.getString(getPath(this));
+        String message = Guilds.getInstance().yaml.getString(getPath(this));
 
         if (message == null) {
             return null;

@@ -1,12 +1,12 @@
 package me.glaremasters.guilds.commands;
 
-import me.glaremasters.guilds.Main;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
+import me.glaremasters.guilds.handlers.TitleHandler;
 import me.glaremasters.guilds.message.Message;
 import me.glaremasters.guilds.util.ConfirmAction;
-import me.glaremasters.guilds.handlers.TitleHandler;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -17,16 +17,16 @@ import org.bukkit.entity.Player;
 public class CommandUpgrade extends CommandBase {
 
     public CommandUpgrade() {
-        super("upgrade", Main.getInstance().getConfig().getString("commands.description.upgrade"),
+        super("upgrade", Guilds.getInstance().getConfig().getString("commands.description.upgrade"),
                 "guilds.command.upgrade", false, null,
                 null, 0, 0);
     }
 
-    TitleHandler TitleHandler = new TitleHandler(Main.getInstance());
+    TitleHandler TitleHandler = new TitleHandler(Guilds.getInstance());
 
     @Override
     public void execute(Player player, String[] args) {
-        final FileConfiguration config = Main.getInstance().getConfig();
+        final FileConfiguration config = Guilds.getInstance().getConfig();
         Guild guild = Guild.getGuild(player.getUniqueId());
 
         if (guild == null) {
@@ -41,13 +41,13 @@ public class CommandUpgrade extends CommandBase {
             return;
         }
 
-        if (guild.getTier() >= Main.getInstance().getConfig().getInt("max-number-of-tiers")) {
+        if (guild.getTier() >= Guilds.getInstance().getConfig().getInt("max-number-of-tiers")) {
             Message.sendMessage(player, Message.COMMAND_UPGRADE_TIER_MAX);
             return;
         }
         double balance = guild.getBankBalance();
         double tierUpgradeCost = guild.getTierCost();
-        if (Main.getInstance().getConfig().getBoolean("use-bank-balance")) {
+        if (Guilds.getInstance().getConfig().getBoolean("use-bank-balance")) {
             if (balance < tierUpgradeCost) {
                 double needed = (tierUpgradeCost - balance);
                 Message.sendMessage(player, Message.COMMAND_UPGRADE_NOT_ENOUGH_MONEY
@@ -56,7 +56,7 @@ public class CommandUpgrade extends CommandBase {
             }
             Message.sendMessage(player, Message.COMMAND_UPGRADE_MONEY_WARNING
                     .replace("{amount}", String.valueOf(tierUpgradeCost)));
-            Main.getInstance().getCommandHandler().addAction(player, new ConfirmAction() {
+            Guilds.getInstance().getCommandHandler().addAction(player, new ConfirmAction() {
                 @Override
                 public void accept() {
                     if (balance < tierUpgradeCost) {
@@ -66,10 +66,10 @@ public class CommandUpgrade extends CommandBase {
                         return;
                     }
                     Message.sendMessage(player, Message.COMMAND_UPGRADE_SUCCESS);
-                    Main.getInstance().guildTiersConfig.set(guild.getName(), tier + 1);
-                    Main.getInstance().guildBanksConfig
+                    Guilds.getInstance().guildTiersConfig.set(guild.getName(), tier + 1);
+                    Guilds.getInstance().guildBanksConfig
                             .set(guild.getName(), balance - tierUpgradeCost);
-                    Main.getInstance().saveGuildData();
+                    Guilds.getInstance().saveGuildData();
                     TitleHandler.tierTitles(player);
                     guild.updateGuild("");
                 }
@@ -78,13 +78,13 @@ public class CommandUpgrade extends CommandBase {
                 @Override
                 public void decline() {
                     Message.sendMessage(player, Message.COMMAND_UPGRADE_CANCEL);
-                    Main.getInstance().getCommandHandler().removeAction(player);
+                    Guilds.getInstance().getCommandHandler().removeAction(player);
                 }
             });
         } else {
-            if (Main.vault && tierUpgradeCost != -1) {
-                if (Main.getInstance().getEconomy().getBalance(player) < tierUpgradeCost) {
-                    double needed = (tierUpgradeCost - Main.getInstance().getEconomy()
+            if (Guilds.vault && tierUpgradeCost != -1) {
+                if (Guilds.getInstance().getEconomy().getBalance(player) < tierUpgradeCost) {
+                    double needed = (tierUpgradeCost - Guilds.getInstance().getEconomy()
                             .getBalance(player));
                     Message.sendMessage(player, Message.COMMAND_UPGRADE_NOT_ENOUGH_MONEY
                             .replace("{needed}", Double.toString(needed)));
@@ -97,18 +97,18 @@ public class CommandUpgrade extends CommandBase {
                 Message.sendMessage(player, Message.COMMAND_CREATE_WARNING);
             }
 
-            Main.getInstance().getCommandHandler().addAction(player, new ConfirmAction() {
+            Guilds.getInstance().getCommandHandler().addAction(player, new ConfirmAction() {
                 @Override
                 public void accept() {
-                    if (Main.getInstance().getEconomy().getBalance(player) < tierUpgradeCost) {
+                    if (Guilds.getInstance().getEconomy().getBalance(player) < tierUpgradeCost) {
                         Message.sendMessage(player, Message.COMMAND_UPGRADE_NOT_ENOUGH_MONEY);
                         return;
                     }
                     Message.sendMessage(player, Message.COMMAND_UPGRADE_SUCCESS);
-                    Main.getInstance().guildTiersConfig.set(guild.getName(), tier + 1);
-                    Main.getInstance().saveGuildData();
+                    Guilds.getInstance().guildTiersConfig.set(guild.getName(), tier + 1);
+                    Guilds.getInstance().saveGuildData();
                     EconomyResponse response =
-                            Main.getInstance().getEconomy().withdrawPlayer(player, tierUpgradeCost);
+                            Guilds.getInstance().getEconomy().withdrawPlayer(player, tierUpgradeCost);
                     if (!response.transactionSuccess()) {
                         Message.sendMessage(player, Message.COMMAND_UPGRADE_NOT_ENOUGH_MONEY);
                         return;
@@ -122,7 +122,7 @@ public class CommandUpgrade extends CommandBase {
                 @Override
                 public void decline() {
                     Message.sendMessage(player, Message.COMMAND_UPGRADE_CANCEL);
-                    Main.getInstance().getCommandHandler().removeAction(player);
+                    Guilds.getInstance().getCommandHandler().removeAction(player);
                 }
             });
 

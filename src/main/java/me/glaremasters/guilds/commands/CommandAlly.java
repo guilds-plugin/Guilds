@@ -2,7 +2,7 @@ package me.glaremasters.guilds.commands;
 
 import java.util.Arrays;
 import java.util.Objects;
-import me.glaremasters.guilds.Main;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.api.events.GuildAddAllyEvent;
 import me.glaremasters.guilds.api.events.GuildRemoveAllyEvent;
 import me.glaremasters.guilds.commands.base.CommandBase;
@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
 public class CommandAlly extends CommandBase {
 
     public CommandAlly() {
-        super("ally", Main.getInstance().getConfig().getString("commands.description.ally"),
+        super("ally", Guilds.getInstance().getConfig().getString("commands.description.ally"),
                 "guilds.command.ally", false, null,
                 "<add | remove> <guild>, or chat <guild>. or <list>", 1, -1);
     }

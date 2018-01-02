@@ -2,7 +2,7 @@ package me.glaremasters.guilds.commands;
 
 import com.sk89q.worldguard.bukkit.RegionContainer;
 import com.sk89q.worldguard.protection.managers.RegionManager;
-import me.glaremasters.guilds.Main;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildMember;
@@ -16,7 +16,7 @@ import org.bukkit.entity.Player;
 public class CommandBoot extends CommandBase {
 
     public CommandBoot() {
-        super("boot", Main.getInstance().getConfig().getString("commands.description.boot"),
+        super("boot", Guilds.getInstance().getConfig().getString("commands.description.boot"),
                 "guilds.command.boot", false,
                 new String[]{"kick"}, "<player>", 1, 1);
     }
@@ -69,7 +69,7 @@ public class CommandBoot extends CommandBase {
         }
 
 
-        if (Main.getInstance().getConfig().getBoolean("hooks.worldguard")) {
+        if (Guilds.getInstance().getConfig().getBoolean("hooks.worldguard")) {
 
             RegionContainer container = WorldGuard.getWorldGuard().getRegionContainer();
             RegionManager regions = container.get(player.getWorld());

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.IHandler;
-import me.glaremasters.guilds.Main;
 import org.bukkit.configuration.ConfigurationSection;
 
 public class GuildHandler implements IHandler {
@@ -31,9 +31,9 @@ public class GuildHandler implements IHandler {
     }
 
     private void initialize() {
-        Main.getInstance().getDatabaseProvider().getGuilds((result, exception) -> {
+        Guilds.getInstance().getDatabaseProvider().getGuilds((result, exception) -> {
             if (result == null && exception != null) {
-                Main.getInstance().getLogger()
+                Guilds.getInstance().getLogger()
                         .log(Level.SEVERE, "An error occurred while loading guilds");
                 exception.printStackTrace();
                 return;
@@ -47,7 +47,7 @@ public class GuildHandler implements IHandler {
         guilds.values().forEach(this::addGuild);
 
         ConfigurationSection section =
-                Main.getInstance().getConfig().getConfigurationSection("roles");
+                Guilds.getInstance().getConfig().getConfigurationSection("roles");
         for (String s : section.getKeys(false)) {
             String path = s + ".permissions.";
 

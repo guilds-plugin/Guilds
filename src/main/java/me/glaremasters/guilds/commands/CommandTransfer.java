@@ -4,7 +4,7 @@ import com.sk89q.worldguard.bukkit.RegionContainer;
 import com.sk89q.worldguard.domains.DefaultDomain;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import java.util.logging.Level;
-import me.glaremasters.guilds.Main;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildMember;
@@ -20,7 +20,7 @@ import org.bukkit.entity.Player;
 public class CommandTransfer extends CommandBase {
 
     public CommandTransfer() {
-        super("transfer", Main.getInstance().getConfig().getString("commands.description.transfer"),
+        super("transfer", Guilds.getInstance().getConfig().getString("commands.description.transfer"),
                 "guilds.command.transfer", false, null,
                 "<name>", 1, 1);
     }
@@ -70,7 +70,7 @@ public class CommandTransfer extends CommandBase {
             updateGuild("", guild.getName(), Guild.getGuild(guild.getName()).getName());
             Message.sendMessage(player, Message.COMMAND_TRANSFER_SUCCESS);
             Message.sendMessage(transferPlayer, Message.COMMAND_TRANSFER_NEWMASTER);
-            if (Main.getInstance().getConfig().getBoolean("hooks.worldguard")) {
+            if (Guilds.getInstance().getConfig().getBoolean("hooks.worldguard")) {
 
                 RegionContainer container = WorldGuard.getWorldGuard().getRegionContainer();
                 RegionManager regions = container.get(player.getWorld());
@@ -87,10 +87,10 @@ public class CommandTransfer extends CommandBase {
     }
 
     public void updateGuild(String errorMessage, String guild, String... params) {
-        Main.getInstance().getDatabaseProvider()
+        Guilds.getInstance().getDatabaseProvider()
                 .updateGuild(Guild.getGuild(guild), (result, exception) -> {
                     if (!result) {
-                        Main.getInstance().getLogger()
+                        Guilds.getInstance().getLogger()
                                 .log(Level.SEVERE, String.format(errorMessage, params));
 
                         if (exception != null) {

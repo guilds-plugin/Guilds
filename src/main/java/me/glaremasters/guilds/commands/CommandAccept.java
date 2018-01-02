@@ -2,7 +2,7 @@ package me.glaremasters.guilds.commands;
 
 import com.sk89q.worldguard.bukkit.RegionContainer;
 import com.sk89q.worldguard.protection.managers.RegionManager;
-import me.glaremasters.guilds.Main;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.api.events.GuildJoinEvent;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
@@ -18,33 +18,33 @@ import org.bukkit.entity.Player;
 public class CommandAccept extends CommandBase {
 
     public CommandAccept() {
-        super("accept", Main.getInstance().getConfig().getString("commands.description.accept"),
+        super("accept", Guilds.getInstance().getConfig().getString("commands.description.accept"),
                 "guilds.command.accept", false,
                 new String[]{"join"}, "<guild id>", 0, 1);
     }
 
     WorldGuardHandler WorldGuard = new WorldGuardHandler();
-    TitleHandler TitleHandler = new TitleHandler(Main.getInstance());
-    TablistHandler TablistHandler = new TablistHandler(Main.getInstance());
-    NameTagEditHandler NTEHandler = new NameTagEditHandler(Main.getInstance());
+    TitleHandler TitleHandler = new TitleHandler(Guilds.getInstance());
+    TablistHandler TablistHandler = new TablistHandler(Guilds.getInstance());
+    NameTagEditHandler NTEHandler = new NameTagEditHandler(Guilds.getInstance());
 
 
     public void execute(Player player, String[] args) {
 
-        final FileConfiguration config = Main.getInstance().getConfig();
+        final FileConfiguration config = Guilds.getInstance().getConfig();
         if (Guild.getGuild(player.getUniqueId()) != null) {
             Message.sendMessage(player, Message.COMMAND_ERROR_ALREADY_IN_GUILD);
             return;
         }
-        Guild guild = (Guild) Main.getInstance().getGuildHandler().getGuilds().values()
+        Guild guild = (Guild) Guilds.getInstance().getGuildHandler().getGuilds().values()
                 .toArray()[0];
         try {
             if (args.length == 0) {
                 int invites = 0;
                 int indexes = 0;
                 for (int i = 0;
-                        i < Main.getInstance().getGuildHandler().getGuilds().values().size(); i++) {
-                    Guild guildtmp = (Guild) Main.getInstance().getGuildHandler().getGuilds()
+                        i < Guilds.getInstance().getGuildHandler().getGuilds().values().size(); i++) {
+                    Guild guildtmp = (Guild) Guilds.getInstance().getGuildHandler().getGuilds()
                             .values().toArray()[i];
                     if (guildtmp.getInvitedMembers().contains(player.getUniqueId())) {
                         invites++;
@@ -52,7 +52,7 @@ public class CommandAccept extends CommandBase {
                     }
                 }
                 if (invites == 1) {
-                    guild = (Guild) Main.getInstance().getGuildHandler().getGuilds().values()
+                    guild = (Guild) Guilds.getInstance().getGuildHandler().getGuilds().values()
                             .toArray()[indexes];
                 } else {
                     Message.sendMessage(player, Message.COMMAND_ACCEPT_NOT_INVITED);
@@ -94,7 +94,7 @@ public class CommandAccept extends CommandBase {
 
         guild.addMember(player.getUniqueId(), GuildRole.getLowestRole());
         guild.removeInvitedPlayer(player.getUniqueId());
-        if (Main.getInstance().getConfig().getBoolean("hooks.worldguard")) {
+        if (Guilds.getInstance().getConfig().getBoolean("hooks.worldguard")) {
 
             RegionContainer container = WorldGuard.getWorldGuard().getRegionContainer();
             RegionManager regions = container.get(player.getWorld());

@@ -1,8 +1,7 @@
 package me.glaremasters.guilds.commands;
 
 import static me.glaremasters.guilds.listeners.GuildChatListener.GUILD_CHAT_PLAYERS;
-
-import me.glaremasters.guilds.Main;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
@@ -12,7 +11,7 @@ import org.bukkit.entity.Player;
 public class CommandChat extends CommandBase {
 
     public CommandChat() {
-        super("chat", Main.getInstance().getConfig().getString("commands.description.chat"),
+        super("chat", Guilds.getInstance().getConfig().getString("commands.description.chat"),
                 "guilds.command.chat", false,
                 new String[]{"gc"}, "<message>", 0, 100);
     }

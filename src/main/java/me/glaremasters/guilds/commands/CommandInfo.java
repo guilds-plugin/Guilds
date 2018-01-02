@@ -1,7 +1,7 @@
 package me.glaremasters.guilds.commands;
 
 import java.util.ArrayList;
-import me.glaremasters.guilds.Main;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
@@ -23,7 +23,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 public class CommandInfo extends CommandBase implements Listener {
 
     public CommandInfo() {
-        super("info", Main.getInstance().getConfig().getString("commands.description.info"),
+        super("info", Guilds.getInstance().getConfig().getString("commands.description.info"),
                 "guilds.command.info", false, null, null, 0, 0);
     }
 
@@ -44,7 +44,7 @@ public class CommandInfo extends CommandBase implements Listener {
 
         SkullMeta meta = (SkullMeta) skull.getItemMeta();
         meta.setOwner(player.getName());
-        final Main instance = Main.getInstance();
+        final Guilds instance = Guilds.getInstance();
         meta.setDisplayName(
                 ChatColor.WHITE + instance.getConfig().getString("info.playername")
                         + ChatColor.GREEN + player.getName());
@@ -67,7 +67,7 @@ public class CommandInfo extends CommandBase implements Listener {
             Message.sendMessage(player, Message.COMMAND_ERROR_NO_GUILD);
             return;
         }
-        FileConfiguration config = Main.getInstance().getConfig();
+        FileConfiguration config = Guilds.getInstance().getConfig();
         Inventory heads = Bukkit
                 .createInventory(null, InventoryType.HOPPER,
                         ChatColor.DARK_GREEN + config

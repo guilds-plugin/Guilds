@@ -1,6 +1,6 @@
 package me.glaremasters.guilds.listeners;
 
-import me.glaremasters.guilds.Main;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.message.Message;
 import net.milkbowl.vault.economy.EconomyResponse;
@@ -35,29 +35,29 @@ public class PlayerDeathListener implements Listener {
         if (Guild.areAllies(player.getUniqueId(), killer.getUniqueId())) {
             return;
         }
-        if (Main.getInstance().getEconomy()
-                .getBalance(player.getName()) < Main.getInstance().getConfig()
+        if (Guilds.getInstance().getEconomy()
+                .getBalance(player.getName()) < Guilds.getInstance().getConfig()
                 .getInt("reward-on-kill.take-from-killed-player")) {
             return;
         }
-        EconomyResponse response2 = Main.getInstance().getEconomy()
+        EconomyResponse response2 = Guilds.getInstance().getEconomy()
                 .withdrawPlayer(player,
-                        Main.getInstance().getConfig()
+                        Guilds.getInstance().getConfig()
                                 .getInt("reward-on-kill.take-from-killed-player"));
         EconomyResponse response =
-                Main.getInstance().getEconomy()
+                Guilds.getInstance().getEconomy()
                         .depositPlayer(killer,
-                                Main.getInstance().getConfig().getInt("reward-on-kill.reward"));
+                                Guilds.getInstance().getConfig().getInt("reward-on-kill.reward"));
         if (response.transactionSuccess()) {
             Message.sendMessage(killer, Message.COMMAND_KILLREWARD_KILLER
                     .replace("{amount}",
-                            Integer.toString(Main.getInstance().getConfig()
+                            Integer.toString(Guilds.getInstance().getConfig()
                                     .getInt("reward-on-kill.reward"))));
         }
         if (response2.transactionSuccess()) {
             Message.sendMessage(player,
                     Message.COMMAND_KILLREWARD_PLAYER_WHO_DIED.replace("{amount}",
-                            Integer.toString(Main.getInstance().getConfig()
+                            Integer.toString(Guilds.getInstance().getConfig()
                                     .getInt("reward-on-kill.take-from-killed-player"))));
         }
     }

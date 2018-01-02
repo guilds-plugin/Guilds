@@ -2,7 +2,7 @@ package me.glaremasters.guilds.commands;
 
 import java.util.ArrayList;
 import java.util.List;
-import me.glaremasters.guilds.Main;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -19,14 +19,14 @@ import org.bukkit.inventory.meta.ItemMeta;
 public class CommandGive extends CommandBase {
 
     public CommandGive() {
-        super("give", Main.getInstance().getConfig().getString("commands.description.give"),
+        super("give", Guilds.getInstance().getConfig().getString("commands.description.give"),
                 "guilds.command.give", true, null,
                 null, 2, 2);
     }
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        FileConfiguration config = Main.getInstance().getConfig();
+        FileConfiguration config = Guilds.getInstance().getConfig();
         Player player = Bukkit.getPlayer(args[0]);
         Integer amount = Integer.valueOf(args[1]);
         ItemStack upgradeTicket = new ItemStack(Material.PAPER, amount);

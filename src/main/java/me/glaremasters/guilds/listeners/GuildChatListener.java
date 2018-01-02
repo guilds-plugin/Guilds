@@ -3,7 +3,7 @@ package me.glaremasters.guilds.listeners;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
-import me.glaremasters.guilds.Main;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
 import org.bukkit.ChatColor;
@@ -33,12 +33,12 @@ public class GuildChatListener implements Listener {
             event.getRecipients().removeIf(r -> guild.getMember(r.getUniqueId()) == null);
             if (player.hasPermission("guilds.chat.color")) {
                 event.setFormat(ChatColor.translateAlternateColorCodes('&',
-                        (Main.getInstance().getConfig().getString("guild-chat-format"))
+                        (Guilds.getInstance().getConfig().getString("guild-chat-format"))
                                 .replace("{role}", GuildRole
                                         .getRole(guild.getMember(player.getUniqueId()).getRole())
                                         .getName())));
             } else {
-                event.setFormat(Main.getInstance().getConfig().getString("guild-chat-format")
+                event.setFormat(Guilds.getInstance().getConfig().getString("guild-chat-format")
                         .replace("{role}", GuildRole
                                 .getRole(guild.getMember(player.getUniqueId()).getRole())
                                 .getName()));

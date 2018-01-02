@@ -1,6 +1,6 @@
 package me.glaremasters.guilds.commands;
 
-import me.glaremasters.guilds.Main;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.api.events.GuildInviteEvent;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 public class CommandInvite extends CommandBase {
 
     public CommandInvite() {
-        super("invite", Main.getInstance().getConfig().getString("commands.description.invite"),
+        super("invite", Guilds.getInstance().getConfig().getString("commands.description.invite"),
                 "guilds.command.invite", false, null,
                 "<player>", 1, 1);
     }
@@ -50,7 +50,7 @@ public class CommandInvite extends CommandBase {
             return;
         }
         GuildInviteEvent event = new GuildInviteEvent(player, guild, invitedPlayer);
-        Main.getInstance().getServer().getPluginManager().callEvent(event);
+        Guilds.getInstance().getServer().getPluginManager().callEvent(event);
         if (event.isCancelled()) {
             return;
         }

@@ -13,7 +13,7 @@ import java.io.Writer;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
-import me.glaremasters.guilds.Main;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.database.Callback;
 import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.database.databases.json.deserializer.GuildMapDeserializer;
@@ -29,7 +29,7 @@ public class Json implements DatabaseProvider {
 
     @Override
     public void initialize() {
-        File folder = new File(Main.getInstance().getDataFolder(), "data/");
+        File folder = new File(Guilds.getInstance().getDataFolder(), "data/");
         guildsFile = new File(folder, "guilds.json");
 
         guildsType = new TypeToken<Map<String, Guild>>() {
@@ -59,7 +59,7 @@ public class Json implements DatabaseProvider {
         HashMap<String, Guild> guilds = getGuilds() == null ? new HashMap<>() : getGuilds();
         guilds.put(guild.getName(), guild);
 
-        Main.newChain().asyncFirst(() -> write(guildsFile, guilds, guildsType))
+        Guilds.newChain().asyncFirst(() -> write(guildsFile, guilds, guildsType))
                 .syncLast(successful -> callback.call(successful, null))
                 .execute((exception, task) -> {
                     if (exception != null) {
@@ -67,7 +67,7 @@ public class Json implements DatabaseProvider {
                     }
                 });
 
-        Main.getInstance().getGuildHandler().addGuild(guild);
+        Guilds.getInstance().getGuildHandler().addGuild(guild);
     }
 
     @Override
@@ -80,14 +80,14 @@ public class Json implements DatabaseProvider {
 
         guilds.remove(guild.getName());
 
-        Main.newChain().asyncFirst(() -> write(guildsFile, guilds, guildsType))
+        Guilds.newChain().asyncFirst(() -> write(guildsFile, guilds, guildsType))
                 .syncLast(successful -> callback.call(successful, null)).execute();
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public void getGuilds(Callback<HashMap<String, Guild>, Exception> callback) {
-        Main.newChain().asyncFirst(() -> {
+        Guilds.newChain().asyncFirst(() -> {
             JsonReader reader;
             try {
                 reader = new JsonReader(new FileReader(guildsFile));
@@ -105,7 +105,7 @@ public class Json implements DatabaseProvider {
         HashMap<String, Guild> guilds = getGuilds();
         guilds.put(guild.getName(), guild);
 
-        Main.newChain().asyncFirst(() -> write(guildsFile, guilds, guildsType))
+        Guilds.newChain().asyncFirst(() -> write(guildsFile, guilds, guildsType))
                 .syncLast(successful -> callback.call(successful, null)).execute();
     }
 
@@ -114,7 +114,7 @@ public class Json implements DatabaseProvider {
         HashMap<String, Guild> guilds = getGuilds();
         guilds.put(guild.getName(), guild);
 
-        Main.newChain().asyncFirst(() -> write(guildsFile, guilds, guildsType))
+        Guilds.newChain().asyncFirst(() -> write(guildsFile, guilds, guildsType))
                 .syncLast(successful -> callback.call(successful, null)).execute();
     }
 
@@ -140,7 +140,7 @@ public class Json implements DatabaseProvider {
     }
 
     private HashMap<String, Guild> getGuilds() {
-        return Main.getInstance().getGuildHandler().getGuilds();
+        return Guilds.getInstance().getGuildHandler().getGuilds();
     }
 
 

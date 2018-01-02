@@ -1,6 +1,5 @@
 package me.glaremasters.guilds.listeners;
 
-import me.glaremasters.guilds.Main;
 import me.glaremasters.guilds.guild.Guild;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

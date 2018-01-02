@@ -2,7 +2,7 @@ package me.glaremasters.guilds.listeners;
 
 import java.util.ArrayList;
 import java.util.List;
-import me.glaremasters.guilds.Main;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.message.Message;
 import org.bukkit.entity.Player;
@@ -21,7 +21,7 @@ public class JoinListener implements Listener {
         }
 
         List<String> guilds = new ArrayList<>();
-        for (Guild guild : Main.getInstance().getGuildHandler().getGuilds().values()) {
+        for (Guild guild : Guilds.getInstance().getGuildHandler().getGuilds().values()) {
             if (!guild.getInvitedMembers().contains(player.getUniqueId())) {
                 continue;
             }
