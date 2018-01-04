@@ -48,6 +48,7 @@ messages:
       not-enough-money: "&aLo sentimos! No tienes el dinero suficiente para mejorar tu gremio!"
     buff:
       not-enough-money: "&cNo tienes suficiente dinero para comprar esta mejora!"
+      success: "&a{player} just purchased {buff} for {time} seconds!" # Possible placeholders: {guild}, {player}, {buff}, {time}, {cost}, {amplifier}
     transfer:
       newmaster: "&aTu eres el nuevo Guild Master de tu gremio!"
       success: "&aEl gremio ha sido transferido!"

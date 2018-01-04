@@ -48,6 +48,7 @@ messages:
       not-enough-money: "&aJe nam luto! Nemas dostatok penazi na upgrade tvojho klanu! You still need {needed}!"
     buff:
       not-enough-money: "&cNemas dostatok penazi na kupu tohto vylepsenia!"
+      success: "&a{player} just purchased {buff} for {time} seconds!" # Possible placeholders: {guild}, {player}, {buff}, {time}, {cost}, {amplifier}
     transfer:
       success: "Klan bol prevedeny!"
       newmaster: "Si novym vodcom tohto klanu!"

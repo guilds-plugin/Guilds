@@ -48,6 +48,7 @@ messages:
       not-enough-money: "&aNincs elég pénzed fejleszteni a céhed! Még kell {needed} összeg!"
     buff:
       not-enough-money: "&cNincs elég pénzed megvenni ezt az elönyt!"
+      success: "&a{player} just purchased {buff} for {time} seconds!" # Possible placeholders: {guild}, {player}, {buff}, {time}, {cost}, {amplifier}
     transfer:
       success: "Céh sikeresen átrakva!"
       newmaster: "Te vagy az új Céhmester a Céhedben!"

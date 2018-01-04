@@ -48,6 +48,7 @@ messages:
       not-enough-money: "&aBeklager! Du har ikke nok penger for å oppgradere guilden! Du trenger {needed} mer!"
     buff:
       not-enough-money: "&cDu har ikke nok penger for å kjøpe denne buffen!"
+      success: "&a{player} just purchased {buff} for {time} seconds!" # Possible placeholders: {guild}, {player}, {buff}, {time}, {cost}, {amplifier}
     transfer:
       newmaster: "&aDu er den nye Guild Masteren av guilden!"
       success: "&aGuilden har blitt overført!"

@@ -48,6 +48,7 @@ messages:
       not-enough-money: "&aSorry! You don't have enough money to upgrade your Guild! You still need {needed}!"
     buff:
       not-enough-money: "&cYou do not have enough money to buy this buff!"
+      success: "&a{player} just purchased {buff} for {time} seconds!" # Possible placeholders: {guild}, {player}, {buff}, {time}, {cost}, {amplifier}
     transfer:
       success: "Guild has been transferred!"
       newmaster: "You are the new Guild Master of your Guild!"

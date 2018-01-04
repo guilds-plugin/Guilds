@@ -48,6 +48,7 @@ messages:
       not-enough-money: "&aNon hai abbastanza denaro per poter effettuare un upgrade della tua gilda! Sono necessari {needed}!"
     buff:
       not-enough-money: "&cNon hai abbastanza denaro per poter acquistare questa pelle!"
+      success: "&a{player} just purchased {buff} for {time} seconds!" # Possible placeholders: {guild}, {player}, {buff}, {time}, {cost}, {amplifier}
     transfer:
       newmaster: "&aSei il nuovo maestro della gilda!"
       success: "&aLa gilda e' stata trasferita con successo!"

@@ -47,6 +47,7 @@ messages:
       not-enough-money: "&aУ Вас недостаточно денег для повышения уровня гильдии. Вам требуется ещё {needed}!"
     buff:
       not-enough-money: "&cУ Вас недостаточно денег для покупки этого баффа!"
+      success: "&a{player} just purchased {buff} for {time} seconds!" # Possible placeholders: {guild}, {player}, {buff}, {time}, {cost}, {amplifier}
     transfer:
       newmaster: "&aТеперь Вы новый Мастер Гильдии!"
       success: "&aГильдия передана новому Мастеру!"

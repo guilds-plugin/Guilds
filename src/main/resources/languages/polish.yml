@@ -48,6 +48,7 @@ messages:
       not-enough-money: "&aWybacz, ale nie masz wystarczająco pieniędzy, aby awansować swoją gildię You still need {needed}!"
     buff:
       not-enough-money: "&cNie masz wystarczająco pieniędzy, aby kupić tego buff'a!"
+      success: "&a{player} just purchased {buff} for {time} seconds!" # Possible placeholders: {guild}, {player}, {buff}, {time}, {cost}, {amplifier}
     transfer:
       newmaster: "&aJesteś nowym właścicielem gildii!"
       success: "&aGildia przetransferowana pomyślnie!"

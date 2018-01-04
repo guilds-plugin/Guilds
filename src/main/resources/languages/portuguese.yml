@@ -48,6 +48,7 @@ messages:
       not-enough-money: "&aVoce nao tem dinheiro suficiente para fazer o upgrade de sua Guild! You still need {needed}!"
     buff:
       not-enough-money: "&cVoce nao tem dinheiro o suficiente para este buff!"
+      success: "&a{player} just purchased {buff} for {time} seconds!" # Possible placeholders: {guild}, {player}, {buff}, {time}, {cost}, {amplifier}
     transfer:
       newmaster: "&aVoce e o novo Guild Master de sua guild!"
       success: "&aGuild foi transferida!"

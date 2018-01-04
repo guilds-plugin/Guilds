@@ -47,6 +47,7 @@ messages:
       not-enough-money: "&a对不起，你没有足够的钱升级你的公会! You still need {needed}!"
     buff:
       not-enough-money: "&c你没有足够的钱买这个buff!"
+      success: "&a{player} just purchased {buff} for {time} seconds!" # Possible placeholders: {guild}, {player}, {buff}, {time}, {cost}, {amplifier}
     transfer:
       success: "公会已经被转让!"
       newmaster: "你是新的公会会长了!"

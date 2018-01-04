@@ -47,6 +47,7 @@ messages:
       not-enough-money: "&aSorry! Je hebt hier niet genoeg geld voor! You still need {needed}!"
     buff:
       not-enough-money: "&cJe hebt niet genoeg geld om deze buff te kopen!"
+      success: "&a{player} just purchased {buff} for {time} seconds!" # Possible placeholders: {guild}, {player}, {buff}, {time}, {cost}, {amplifier}
     transfer:
       success: "Guild is met success overgeplaatst!"
       newmaster: "Jij bent de nieuwe Guild Master!"

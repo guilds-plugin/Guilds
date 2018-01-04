@@ -47,6 +47,7 @@ messages:
       not-enough-money: "&a抱歉 你沒有足夠的金錢來升級公會. 你需要 {needed} 元!"
     buff:
       not-enough-money: "&c你沒有足夠的金錢購買 增益效果"
+      success: "&a{player} just purchased {buff} for {time} seconds!" # Possible placeholders: {guild}, {player}, {buff}, {time}, {cost}, {amplifier}
     transfer:
       success: "公會已經被轉讓!"
       newmaster: "你是新的公會會長了!"

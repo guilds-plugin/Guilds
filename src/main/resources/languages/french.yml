@@ -48,6 +48,7 @@ messages:
       not-enough-money: "&aDésolé! Vous n'avez pas assez d'argent pour améliorer votre guilde! You still need {needed}!"
     buff:
       not-enough-money: "&cVous n'avez pas assez d'argent pour acheter cette amélioration!"
+      success: "&a{player} just purchased {buff} for {time} seconds!" # Possible placeholders: {guild}, {player}, {buff}, {time}, {cost}, {amplifier}
     transfer:
       newmaster: "&aVous êtes maintenant le nouveau Maître de votre guilde!"
       success: "&aLa guilde a bien été transférée à son nouveau Maître!"

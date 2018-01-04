@@ -60,8 +60,7 @@ public class GuildBuffListener implements Listener {
                             .set(guild.getName(), balance - buff.cost);
                     Guilds.getInstance().saveGuildData();
                     guild.updateGuild("");
-                }
-                else {
+                } else {
 
                     if (Guilds.vault && buff.cost != -1) {
                         if (Guilds.getInstance().getEconomy().getBalance(player) < buff.cost) {
@@ -92,7 +91,9 @@ public class GuildBuffListener implements Listener {
 
                                 });
                         guild.sendMessage(Message.COMMAND_BUFF_SUCCESS.replace("{player}",
-                                player.getName(), "{buff}", buff.name, "{time}", Integer.toString(buff.time)));
+                                player.getName(), "{buff}", buff.name, "{time}",
+                                Integer.toString(buff.time), "{guild}", guild.getName(), "{cost}",
+                                Double.toString(buff.cost), "{amplifier}", Integer.toString(buff.amplifier)));
                     }
                 }
             }
@@ -120,7 +121,8 @@ public class GuildBuffListener implements Listener {
         public final int amplifier;
 
         GuildBuff(PotionEffectType potion, Material itemType, String configValueName) {
-            this.time = Guilds.getInstance().getConfig().getInt("buff.time." + configValueName) * 20;
+            this.time =
+                    Guilds.getInstance().getConfig().getInt("buff.time." + configValueName) * 20;
             this.cost = Guilds.getInstance().getConfig().getDouble("buff.price." + configValueName);
             this.itemType = itemType;
             this.potion = potion;

@@ -48,6 +48,7 @@ messages:
       not-enough-money: "&aXin lỗi! Bạn không có đủ tiền để nâng cấp Guild của bạn! You still need {needed}!"
     buff:
       not-enough-money: "&cBạn không có đủ tiền để mua buff này!"
+      success: "&a{player} just purchased {buff} for {time} seconds!" # Possible placeholders: {guild}, {player}, {buff}, {time}, {cost}, {amplifier}
     transfer:
       newmaster: "&aBạn là Guild Master mới trong Guild của bạn!"
       success: "&aGuild đã được chuyển!"

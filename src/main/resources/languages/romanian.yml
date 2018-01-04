@@ -48,6 +48,7 @@ messages:
       not-enough-money: "&aNe pare rau! Nu ai destui bani pentru a upgrada breasla! Mai ai nevoie de {needed}!"
     buff:
       not-enough-money: "&cNu ai destui bani pentru a cumpara acest Buff!"
+      success: "&a{player} just purchased {buff} for {time} seconds!" # Possible placeholders: {guild}, {player}, {buff}, {time}, {cost}, {amplifier}
     transfer:
       success: "Breasla a fost transferata!"
       newmaster: "Esti noul Sef al breslei!"
