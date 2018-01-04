@@ -91,6 +91,8 @@ public class GuildBuffListener implements Listener {
                                                     buff.amplifier));
 
                                 });
+                        guild.sendMessage(Message.COMMAND_BUFF_SUCCESS.replace("{player}",
+                                player.getName(), "{buff}", buff.name, "{time}", Integer.toString(buff.time)));
                     }
                 }
             }
