@@ -416,8 +416,8 @@ titles:
 #   damage-multiplier: 4
 #   max-bank-balance: 40000
 #   permissions:
-#    - "i.am.a.god"
-#    - "bow.down.to.me"
+#    - "example.permission.one"
+#    - "example.permission.two"
 
 # Keep in mind for the damage-multiplier, it applies to players also, so by default it's set to normal for every tier to allow you
 # to choose how it will work.
