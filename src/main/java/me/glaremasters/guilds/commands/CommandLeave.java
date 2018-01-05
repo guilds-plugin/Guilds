@@ -70,7 +70,7 @@ public class CommandLeave extends CommandBase {
                     guild.getMembers().stream().map(member -> Bukkit.getOfflinePlayer(member.getUniqueId()))
                             .forEach(member -> {
                                 for (String perms : guild.getGuildPerms()) {
-                                    Guilds.getPermissions().playerRemove(null, player, perms);
+                                    Guilds.getPermissions().playerRemove(null, member, perms);
                                 }
                             });
                     GuildRemoveEvent removeEvent =

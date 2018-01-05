@@ -110,7 +110,7 @@ public class CommandUpgrade extends CommandBase {
                         guild.getMembers().stream().map(member -> Bukkit.getOfflinePlayer(member.getUniqueId()))
                                 .forEach(member -> {
                                     for (String perms : guild.getGuildPerms()) {
-                                        Guilds.getPermissions().playerRemove(null, player, perms);
+                                        Guilds.getPermissions().playerRemove(null, member, perms);
                                     }
                                 });
                     }
@@ -119,7 +119,7 @@ public class CommandUpgrade extends CommandBase {
                     guild.getMembers().stream().map(member -> Bukkit.getOfflinePlayer(member.getUniqueId()))
                             .forEach(member -> {
                                 for (String perms : guild.getGuildPerms()) {
-                                    Guilds.getPermissions().playerAdd(null, player, perms);
+                                    Guilds.getPermissions().playerAdd(null, member, perms);
                                 }
                             });
                     EconomyResponse response =
