@@ -26,44 +26,52 @@ public class CommandBoot extends CommandBase {
 
     public void execute(Player player, String[] args) {
         Guild guild = Guild.getGuild(player.getUniqueId());
+
         if (guild == null) {
             Message.sendMessage(player, Message.COMMAND_ERROR_NO_GUILD);
             return;
         }
 
         GuildRole role = GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole());
+
         if (!role.canKick()) {
             Message.sendMessage(player, Message.COMMAND_ERROR_ROLE_NO_PERMISSION);
             return;
         }
 
-        OfflinePlayer kickedPlayer = Bukkit.getOfflinePlayer(args[0]);
+        OfflinePlayer bootedPlayer = Bukkit.getOfflinePlayer(args[0]);
 
-        if (kickedPlayer == null || kickedPlayer.getUniqueId() == null) {
 
-            Message.sendMessage(player,
-                    Message.COMMAND_ERROR_PLAYER_NOT_FOUND.replace("{player}", args[0]));
+        if (bootedPlayer == null) {
+            Message.sendMessage(player, Message.COMMAND_ERROR_PLAYER_NOT_FOUND.replace("{player}", args[0]));
             return;
         }
-        GuildMember kickedPlayer2 = guild.getMember(kickedPlayer.getUniqueId());
 
-
-        if (kickedPlayer2 == null) {
-            Message.sendMessage(player, Message.COMMAND_ERROR_PLAYER_NOT_IN_GUILD
-                    .replace("{player}", kickedPlayer.getName()));
+        if (bootedPlayer.getUniqueId() == null) {
+            Message.sendMessage(player, Message.COMMAND_ERROR_PLAYER_NOT_FOUND.replace("{player}", args[0]));
             return;
         }
-        Guild targetGuild = Guild.getGuild(kickedPlayer2.getUniqueId());
+
+        GuildMember kickedPlayer = guild.getMember(bootedPlayer.getUniqueId());
+
+
+        if (kickedPlayer == null) {
+            Message.sendMessage(player, Message.COMMAND_ERROR_PLAYER_NOT_IN_GUILD.replace("{player}", bootedPlayer.getName()));
+            return;
+        }
+
+        Guild targetGuild = Guild.getGuild(kickedPlayer.getUniqueId());
+
         if (targetGuild == null) {
             Message.sendMessage(player, Message.COMMAND_ERROR_NO_GUILD);
             return;
         }
 
-        if (guild.getName().equals(targetGuild.getName())) {
+        if (!guild.getName().equals(targetGuild.getName())) {
             return;
         }
 
-        if (kickedPlayer2.equals(guild.getGuildMaster())) {
+        if (kickedPlayer.equals(guild.getGuildMaster())) {
             Message.sendMessage(player, Message.COMMAND_ERROR_ROLE_NO_PERMISSION);
             return;
         }
@@ -75,16 +83,16 @@ public class CommandBoot extends CommandBase {
             RegionManager regions = container.get(player.getWorld());
 
             if (regions.getRegion(guild.getName()) != null) {
-                regions.getRegion(guild.getName()).getMembers().removePlayer(kickedPlayer.getName());
+                regions.getRegion(guild.getName()).getMembers().removePlayer(bootedPlayer.getName());
             }
         }
 
         guild.removeMember(kickedPlayer.getUniqueId());
 
         Message.sendMessage(player,
-                Message.COMMAND_BOOT_SUCCESSFUL.replace("{player}", kickedPlayer.getName()));
+                Message.COMMAND_BOOT_SUCCESSFUL.replace("{player}", bootedPlayer.getName()));
 
         guild.sendMessage(Message.COMMAND_BOOT_PLAYER_KICKED
-                .replace("{player}", kickedPlayer.getName(), "{kicker}", player.getName()));
+                .replace("{player}", bootedPlayer.getName(), "{kicker}", player.getName()));
     }
 }
