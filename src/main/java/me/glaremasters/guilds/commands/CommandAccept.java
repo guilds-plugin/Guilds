@@ -104,6 +104,8 @@ public class CommandAccept extends CommandBase {
             }
         }
 
+        Guilds.getPermissions().playerAdd(null, player, "guilds.tier." + guild.getTier());
+
         TitleHandler.joinTitles(player);
         TablistHandler.addTablist(player);
         NTEHandler.setTag(player);

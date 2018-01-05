@@ -29,6 +29,7 @@ import me.glaremasters.guilds.listeners.*;
 import me.glaremasters.guilds.placeholders.Placeholders;
 import me.glaremasters.guilds.updater.SpigotUpdater;
 import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.permission.Permission;
 import org.apache.commons.io.IOUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -42,6 +43,7 @@ public class Guilds extends JavaPlugin {
     public static boolean vault;
     private static Guilds instance;
     private static Economy econ;
+    public static Permission perms = null;
     private static long creationTime;
     private static TaskChainFactory taskChainFactory;
     public File languageYamlFile;
@@ -164,7 +166,7 @@ public class Guilds extends JavaPlugin {
                 new GuildVaultListener(),
                 new GuildBuffListener(), new GuildChatListener(), new MobDeathListener(),
                 new PlayerDamageListener(),
-                new DamageMultiplierListener(), new AnnouncementListener()
+                new DamageMultiplierListener(), new AnnouncementListener(), new TierJoinListener()
         ).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
 
         // TODO: Possibly change these all to a switch statement?
@@ -188,10 +190,12 @@ public class Guilds extends JavaPlugin {
         }
 
         vault = setupEconomy();
+        setupPermissions();
 
         if (!vault) {
             getLogger().log(Level.INFO, "Not using Vault!");
         }
+
 
         Metrics metrics = new Metrics(this);
         metrics.addCustomChart(new Metrics.SingleLineChart("guilds",
@@ -368,6 +372,17 @@ public class Guilds extends JavaPlugin {
         econ = rsp.getProvider();
         return econ != null;
     }
+
+    private boolean setupPermissions() {
+        RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
+        perms = rsp.getProvider();
+        return perms != null;
+    }
+
+    public static Permission getPermissions() {
+        return perms;
+    }
+
 
 
 }

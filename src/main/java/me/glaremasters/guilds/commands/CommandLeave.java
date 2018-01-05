@@ -13,6 +13,7 @@ import me.glaremasters.guilds.handlers.TablistHandler;
 import me.glaremasters.guilds.handlers.WorldGuardHandler;
 import me.glaremasters.guilds.message.Message;
 import me.glaremasters.guilds.util.ConfirmAction;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
@@ -66,6 +67,12 @@ public class CommandLeave extends CommandBase {
                     }
                 }
                 if (guild.getGuildMaster().getUniqueId().equals(player.getUniqueId())) {
+                    guild.getMembers().stream()
+                            .map(member -> Bukkit.getOfflinePlayer(member.getUniqueId()))
+                            .forEach(member -> {
+                                Guilds.getPermissions().playerRemove(null, member,
+                                        "guilds.tier." + guild.getTier());
+                            });
                     GuildRemoveEvent removeEvent =
                             new GuildRemoveEvent(player, guild,
                                     GuildRemoveEvent.RemoveCause.REMOVED);
@@ -94,7 +101,7 @@ public class CommandLeave extends CommandBase {
                                 }
                             });
                 }
-
+                Guilds.getPermissions().playerRemove(null, player, "guilds.tier." + guild.getTier());
                 guild.removeMember(player.getUniqueId());
                 Message.sendMessage(player, Message.COMMAND_LEAVE_SUCCESSFUL);
 
