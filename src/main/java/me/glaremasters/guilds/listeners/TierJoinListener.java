@@ -22,11 +22,10 @@ public class TierJoinListener implements Listener {
             return;
         }
 
-        if (player.hasPermission("guilds.tier." + guild.getTier())) {
-            return;
-        }
-
         for (String perms : guild.getGuildPerms()) {
+            if (player.hasPermission(perms)) {
+                return;
+            }
             Guilds.getPermissions().playerAdd(null, player, perms);
         }
 
