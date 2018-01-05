@@ -8,7 +8,6 @@ import me.glaremasters.guilds.handlers.TitleHandler;
 import me.glaremasters.guilds.message.Message;
 import me.glaremasters.guilds.util.ConfirmAction;
 import net.milkbowl.vault.economy.EconomyResponse;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
@@ -106,20 +105,8 @@ public class CommandUpgrade extends CommandBase {
                         return;
                     }
                     Message.sendMessage(player, Message.COMMAND_UPGRADE_SUCCESS);
-                    guild.getMembers().stream()
-                            .map(member -> Bukkit.getOfflinePlayer(member.getUniqueId()))
-                            .forEach(member -> {
-                                Guilds.getPermissions().playerRemove(null, member,
-                                        "guilds.tier." + guild.getTier());
-                            });
                     Guilds.getInstance().guildTiersConfig.set(guild.getName(), tier + 1);
                     Guilds.getInstance().saveGuildData();
-                    guild.getMembers().stream()
-                            .map(member -> Bukkit.getOfflinePlayer(member.getUniqueId()))
-                            .forEach(member -> {
-                                Guilds.getPermissions().playerAdd(null, member,
-                                        "guilds.tier." + guild.getTier());
-                            });
                     EconomyResponse response =
                             Guilds.getInstance().getEconomy().withdrawPlayer(player, tierUpgradeCost);
                     if (!response.transactionSuccess()) {

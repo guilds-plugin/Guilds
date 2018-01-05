@@ -41,6 +41,7 @@ announcements:
 hooks:
   worldguard: false
   nametagedit: false
+  discordsrv: false
 
 # This allows you to configure how nametags will work in game with NameTagEdit.
 # You can also display a guild's prefix by using {prefix} instead of {guild}.
@@ -427,6 +428,10 @@ tier1:
   mob-xp-multiplier: 1
   damage-multiplier: 1
   max-bank-balance: 10000
+  permissions:
+    - "permission.1"
+    - "permission.2"
+    - "permission.3"
 tier2:
   name: "Silver"
   cost: 200

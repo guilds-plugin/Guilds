@@ -51,6 +51,7 @@ repositories {
     maven { url "http://ci.emc.gs/nexus/content/groups/aikar/" }
     maven { url "http://maven.sk89q.com/repo/" }
     maven { url "http://ci.playmc.cc/plugin/repository/everything/" }
+    maven { url "http://ci.scarsz.me/plugin/repository/everything/" }
 
     jcenter()
 
@@ -63,6 +64,7 @@ dependencies {
     provided 'net.milkbowl.vault:VaultAPI:1.6'
     provided 'com.sk89q.worldguard:worldguard-legacy:6.1.2-SNAPSHOT'
     provided 'com.nametagedit:nametagedit:4.1.0'
+    provided 'github.scarsz.discordsrv:DiscordSRV:16.0'
 
 
     compile 'com.zaxxer:HikariCP:2.7.4'

@@ -4,6 +4,7 @@ import be.maximvdw.placeholderapi.PlaceholderAPI;
 import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
+import github.scarsz.discordsrv.DiscordSRV;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -28,6 +29,7 @@ import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.listeners.*;
 import me.glaremasters.guilds.placeholders.Placeholders;
 import me.glaremasters.guilds.updater.SpigotUpdater;
+import me.glaremasters.guilds.util.DiscordSRVUtil;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.apache.commons.io.IOUtils;
@@ -62,6 +64,7 @@ public class Guilds extends JavaPlugin {
             YamlConfiguration.loadConfiguration(this.guildbanks);
     private DatabaseProvider database;
     private GuildHandler guildHandler;
+    private DiscordSRVUtil discordsrvUtil = new DiscordSRVUtil();
     private CommandHandler commandHandler;
 
     public static <T> TaskChain<T> newChain() {
@@ -189,6 +192,11 @@ public class Guilds extends JavaPlugin {
             getServer().getPluginManager().registerEvents(new TicketListener(), this);
         }
 
+        if (getConfig().getBoolean("hooks.discordsrv")) {
+            getServer().getPluginManager().registerEvents(new me.glaremasters.guilds.listeners.DiscordSRVListener(), this);
+            DiscordSRV.api.subscribe(discordsrvUtil);
+        }
+
         vault = setupEconomy();
         setupPermissions();
 
@@ -270,6 +278,8 @@ public class Guilds extends JavaPlugin {
     public void onDisable() {
         guildHandler.disable();
         commandHandler.disable();
+        saveGuildData();
+        DiscordSRV.api.unsubscribe(discordsrvUtil);
     }
 
 

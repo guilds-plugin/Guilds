@@ -61,6 +61,7 @@ public class ClickListener implements Listener {
                     e.getWhoClicked().openInventory(guildList);
                 }
             }
+
             e.setCancelled(true);
             e.setResult(Event.Result.DENY);
         }
