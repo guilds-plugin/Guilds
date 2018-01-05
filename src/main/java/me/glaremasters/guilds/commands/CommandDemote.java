@@ -91,20 +91,7 @@ public class CommandDemote extends CommandBase {
                 .replace("{player}", demotedPlayer.getName(), "{old-rank}", oldRank, "{new-rank}",
                         newRank));
         demotedMember.setRole(demotedRole);
-        updateGuild("", guild.getName(), Guild.getGuild(guild.getName()).getName());
+        guild.updateGuild("", guild.getName(), Guild.getGuild(guild.getName()).getName());
     }
 
-    public void updateGuild(String errorMessage, String guild, String... params) {
-        Guilds.getInstance().getDatabaseProvider()
-                .updateGuild(Guild.getGuild(guild), (result, exception) -> {
-                    if (!result) {
-                        Guilds.getInstance().getLogger()
-                                .log(Level.SEVERE, String.format(errorMessage, params));
-
-                        if (exception != null) {
-                            exception.printStackTrace();
-                        }
-                    }
-                });
-    }
 }
