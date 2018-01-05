@@ -103,7 +103,9 @@ public class CommandAccept extends CommandBase {
                 regions.getRegion(guild.getName()).getMembers().addPlayer(player.getName());
             }
         }
-
+        for (String perms : guild.getGuildPerms()) {
+            Guilds.getPermissions().playerAdd(null, player, perms);
+        }
 
         TitleHandler.joinTitles(player);
         TablistHandler.addTablist(player);

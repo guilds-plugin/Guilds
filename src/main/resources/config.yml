@@ -412,6 +412,9 @@ titles:
 #   mob-xp-multiplier: 4
 #   damage-multiplier: 4
 #   max-bank-balance: 40000
+#   permissions:
+#    - "i.am.a.god"
+#    - "bow.down.to.me"
 
 # Keep in mind for the damage-multiplier, it applies to players also, so by default it's set to normal for every tier to allow you
 # to choose how it will work.
@@ -429,9 +432,7 @@ tier1:
   damage-multiplier: 1
   max-bank-balance: 10000
   permissions:
-    - "permission.1"
-    - "permission.2"
-    - "permission.3"
+    -
 tier2:
   name: "Silver"
   cost: 200
@@ -439,6 +440,8 @@ tier2:
   mob-xp-multiplier: 2
   damage-multiplier: 1
   max-bank-balance: 20000
+  permissions:
+    -
 tier3:
   name: "Gold"
   cost: 300
@@ -446,7 +449,8 @@ tier3:
   mob-xp-multiplier: 3
   damage-multiplier: 1
   max-bank-balance: 30000
-
+  permissions:
+    -
 
 #-----------------------------------------------------------#
 #                     Community Server List                 #

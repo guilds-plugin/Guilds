@@ -148,6 +148,10 @@ public class Guild implements InventoryHolder {
         return Guilds.getInstance().getConfig().getDouble("tier" + getTier() + ".mob-xp-multiplier");
     }
 
+    public List<String> getGuildPerms() {
+        return Guilds.getInstance().getConfig().getStringList("tier" + getTier() + ".permissions");
+    }
+
     public double getDamageMultiplier() {
         return Guilds.getInstance().getConfig().getDouble("tier" + getTier() + ".damage-multiplier");
     }

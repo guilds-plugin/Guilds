@@ -13,6 +13,7 @@ import me.glaremasters.guilds.handlers.TablistHandler;
 import me.glaremasters.guilds.handlers.WorldGuardHandler;
 import me.glaremasters.guilds.message.Message;
 import me.glaremasters.guilds.util.ConfirmAction;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class CommandDelete extends CommandBase {
@@ -71,6 +72,12 @@ public class CommandDelete extends CommandBase {
                         Message.sendMessage(player,
                                 Message.COMMAND_DELETE_SUCCESSFUL
                                         .replace("{guild}", guild.getName()));
+                        guild.getMembers().stream().map(member -> Bukkit.getOfflinePlayer(member.getUniqueId()))
+                                .forEach(member -> {
+                                    for (String perms : guild.getGuildPerms()) {
+                                        Guilds.getPermissions().playerRemove(null, player, perms);
+                                    }
+                                });
                         guilds.getGuildHandler().removeGuild(guild);
                         guilds.guildBanksConfig
                                 .set(guild.getName(), null);

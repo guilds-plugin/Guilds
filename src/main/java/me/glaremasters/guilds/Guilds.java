@@ -279,7 +279,9 @@ public class Guilds extends JavaPlugin {
         guildHandler.disable();
         commandHandler.disable();
         saveGuildData();
-        DiscordSRV.api.unsubscribe(discordsrvUtil);
+        if (getConfig().getBoolean("hooks.discordsrv")) {
+            DiscordSRV.api.unsubscribe(discordsrvUtil);
+        }
     }
 
 

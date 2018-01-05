@@ -108,6 +108,9 @@ public class CommandCreate extends CommandBase {
                         Guilds.getInstance().guildStatusConfig.set(guild.getName(), "Private");
                         Guilds.getInstance().guildTiersConfig.set(guild.getName(), 1);
                         Guilds.getInstance().saveGuildData();
+                        for (String perms : guild.getGuildPerms()) {
+                            Guilds.getPermissions().playerAdd(null, player, perms);
+                        }
 
                         TitleHandler.createTitles(player);
                         TablistHandler.addTablist(player);

@@ -26,7 +26,9 @@ public class TierJoinListener implements Listener {
             return;
         }
 
-        Guilds.getPermissions().playerAdd(null, player, "guilds.tier." + guild.getTier());
+        for (String perms : guild.getGuildPerms()) {
+            Guilds.getPermissions().playerAdd(null, player, perms);
+        }
 
     }
 
