@@ -67,7 +67,7 @@ public class CommandTransfer extends CommandBase {
         if (guild.getMember(player.getUniqueId()).getRole() == 0) {
             oldGuildMaster.setRole(oldGuildMasterRole);
             newGuildMaster.setRole(promotedRole);
-            updateGuild("", guild.getName(), Guild.getGuild(guild.getName()).getName());
+            guild.updateGuild("", guild.getName(), Guild.getGuild(guild.getName()).getName());
             Message.sendMessage(player, Message.COMMAND_TRANSFER_SUCCESS);
             Message.sendMessage(transferPlayer, Message.COMMAND_TRANSFER_NEWMASTER);
             if (Guilds.getInstance().getConfig().getBoolean("hooks.worldguard")) {
@@ -86,19 +86,6 @@ public class CommandTransfer extends CommandBase {
         }
     }
 
-    public void updateGuild(String errorMessage, String guild, String... params) {
-        Guilds.getInstance().getDatabaseProvider()
-                .updateGuild(Guild.getGuild(guild), (result, exception) -> {
-                    if (!result) {
-                        Guilds.getInstance().getLogger()
-                                .log(Level.SEVERE, String.format(errorMessage, params));
-
-                        if (exception != null) {
-                            exception.printStackTrace();
-                        }
-                    }
-                });
-    }
 }
 
 
