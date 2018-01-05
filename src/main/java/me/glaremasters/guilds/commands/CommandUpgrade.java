@@ -106,12 +106,14 @@ public class CommandUpgrade extends CommandBase {
                         return;
                     }
                     Message.sendMessage(player, Message.COMMAND_UPGRADE_SUCCESS);
-                    guild.getMembers().stream().map(member -> Bukkit.getOfflinePlayer(member.getUniqueId()))
-                            .forEach(member -> {
-                                for (String perms : guild.getGuildPerms()) {
-                                    Guilds.getPermissions().playerRemove(null, player, perms);
-                                }
-                            });
+                    if (!Guilds.getInstance().getConfig().getBoolean("carry-over-perms")) {
+                        guild.getMembers().stream().map(member -> Bukkit.getOfflinePlayer(member.getUniqueId()))
+                                .forEach(member -> {
+                                    for (String perms : guild.getGuildPerms()) {
+                                        Guilds.getPermissions().playerRemove(null, player, perms);
+                                    }
+                                });
+                    }
                     Guilds.getInstance().guildTiersConfig.set(guild.getName(), tier + 1);
                     Guilds.getInstance().saveGuildData();
                     guild.getMembers().stream().map(member -> Bukkit.getOfflinePlayer(member.getUniqueId()))

@@ -43,6 +43,9 @@ hooks:
   nametagedit: false
   discordsrv: false
 
+# If you are using DiscordSRV, us enable this hook. When you are toggled in /guild chat, it will not send the messages
+# to the discord
+
 # This allows you to configure how nametags will work in game with NameTagEdit.
 # You can also display a guild's prefix by using {prefix} instead of {guild}.
 nametagedit:
@@ -423,6 +426,7 @@ titles:
 
 max-number-of-tiers: 3
 use-bank-balance: false
+carry-over-perms: true
 
 tier1:
   name: "Bronze"
