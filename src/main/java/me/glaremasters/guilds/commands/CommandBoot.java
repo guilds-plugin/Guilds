@@ -95,10 +95,13 @@ public class CommandBoot extends CommandBase {
         guild.sendMessage(Message.COMMAND_BOOT_PLAYER_KICKED
                 .replace("{player}", bootedPlayer.getName(), "{kicker}", player.getName()));
 
-        if (bootedPlayer != null) {
             Player online = Bukkit.getPlayerExact(args[0]);
+
+            if (online != null) {
             Message.sendMessage(online, Message.COMMAND_BOOT_KICKED.replace("{kicker}", player.getName()));
-        }
+        } else {
+                return;
+            }
 
     }
 }

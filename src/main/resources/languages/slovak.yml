@@ -83,7 +83,7 @@ messages:
       header: "Informacie pre &b{guild}"
       name: "Meno: &b{guild}&r (&bPrefix: {prefix}&r)"
       master: "Vodca klanu: &b{master}"
-      member-count: "Clenovia: &b{members}/64&r (&bOnline: {members-online}&r)"
+      member-count: "Clenovia: &b{members}/{max-members}&r (&bOnline: {members-online}&r)"
       rank: "Tvoj rank: &b{rank}"
       players: "Clenovia v klane: &b[{players}]"
     promote:

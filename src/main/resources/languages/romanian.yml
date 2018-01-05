@@ -83,7 +83,7 @@ messages:
       header: "Informatii pentru &b{guild}"
       name: "Nume: &b{guild}&r (&bPrefix: {prefix}&r)"
       master: "Sef: &b{master}"
-      member-count: "Membri: &b{members}/64&r (&bOnline: {members-online}&r)"
+      member-count: "Membri: &b{members}/{max-members}&r (&bOnline: {members-online}&r)"
       rank: "Gradul tau: &b{rank}"
       players: "Membri in Breasla: &b[{players}]"
     promote:

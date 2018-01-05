@@ -82,7 +82,7 @@ messages:
     info:
       header: "Informazioni della gilda &b{guild}"
       master: "Maestro: &b{master}"
-      member-count: "Membri: &b{members}/64&r (&bOnline: {members-online}&r)"
+      member-count: "Membri: &b{members}/{max-members}&r (&bOnline: {members-online}&r)"
       name: "Nome: &b{guild}&r (&bPrefix: {prefix}&r)"
       players: "Membri nella gilda: &b[{players}]"
       rank: "Il tuo rank: &b{rank}"

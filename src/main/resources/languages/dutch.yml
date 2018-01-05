@@ -82,7 +82,7 @@ messages:
       header: "Informatie voor &b{guild}"
       name: "Naam: &b{guild}&r (&bVoorvoegsel: {prefix}&r)"
       master: "Guild Master: &b{master}"
-      member-count: "Leden: &b{members}/64&r (&bOnline: {members-online}&r)"
+      member-count: "Leden: &b{members}/{max-members}&r (&bOnline: {members-online}&r)"
       rank: "Jouw rank: &b{rank}"
       players: "Leden in guild: &b[{players}]"
     promote:

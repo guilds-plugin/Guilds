@@ -82,7 +82,7 @@ messages:
     info:
       header: "Informasjon for &b{guild}"
       master: "Guild Master: &b{master}"
-      member-count: "Medlemmer: &b{members}/64&r (&bPålogget: {members-online}&r)"
+      member-count: "Medlemmer: &b{members}/{max-members}&r (&bPålogget: {members-online}&r)"
       name: "Navn: &b{guild}&r (&bPrefiks: {prefix}&r)"
       players: "Medlemmer i guild: &b[{players}]"
       rank: "Din rolle: &b{rank}"

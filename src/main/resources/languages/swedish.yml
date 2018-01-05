@@ -83,7 +83,7 @@ messages:
       header: "Information för &b{guild}"
       name: "Namn: &b{guild}&r (&bPrefix: {prefix}&r)"
       master: "Guild Mästare: &b{master}"
-      member-count: "Medlemmar: &b{members}/64&r (&bOnline: {members-online}&r)"
+      member-count: "Medlemmar: &b{members}/{max-members}&r (&bOnline: {members-online}&r)"
       rank: "Din rank: &b{rank}"
       players: "Medlemmar i guild: &b[{players}]"
     promote:

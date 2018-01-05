@@ -83,7 +83,7 @@ messages:
       header: "&b{guild} információi"
       name: "Név: &b{guild}&r (&bElötag: {prefix}&r)"
       master: "Céhmester: &b{master}"
-      member-count: "Tagok: &b{members}/64&r (&bOnline: {members-online}&r)"
+      member-count: "Tagok: &b{members}/{max-members}&r (&bOnline: {members-online}&r)"
       rank: "Rangod: &b{rank}"
       players: "Tagok ebben a céhben: &b[{players}]"
     promote:

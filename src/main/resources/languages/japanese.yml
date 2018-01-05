@@ -83,7 +83,7 @@ messages:
       header: "&b{guild} &rの情報"
       name: "名前: &b{guild}&r (&bPrefix: {prefix}&r)"
       master: "ギルドマスター: &b{master}"
-      member-count: "構成員: &b{members}/64&r (&bオンライン: {members-online}&r)"
+      member-count: "構成員: &b{members}/{max-members}&r (&bオンライン: {members-online}&r)"
       rank: "あなたの位: &b{rank}"
       players: "Members in guild: &b[{players}]"
     promote:

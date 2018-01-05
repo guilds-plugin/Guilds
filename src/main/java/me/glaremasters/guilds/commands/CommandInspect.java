@@ -35,7 +35,7 @@ public class CommandInspect extends CommandBase {
                     Bukkit.getOfflinePlayer(guild.getGuildMaster().getUniqueId()).getName()));
             Message.sendMessage(sender, Message.COMMAND_INFO_MEMBER_COUNT
                     .replace("{members}", String.valueOf(guild.getMembers().size()),
-                            "{members-online}",
+                            "{members-online}", "{max-members}", Integer.toString(guild.getMaxMembers()),
                             String.valueOf(guild.getMembers().stream()
                                     .map(member -> Bukkit.getOfflinePlayer(member.getUniqueId()))
                                     .filter(OfflinePlayer::isOnline).count())));

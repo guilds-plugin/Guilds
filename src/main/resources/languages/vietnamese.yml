@@ -82,7 +82,7 @@ messages:
     info:
       header: "Thông tin của guild &b{guild}:"
       master: "Guild Master: &b{master}"
-      member-count: "Members: &b{members}/64&r (&bOnline: {members-online}&r)"
+      member-count: "Members: &b{members}/{max-members}&r (&bOnline: {members-online}&r)"
       name: "Tên: &b{guild}&r (&bPrefix: {prefix}&r)"
       players: "Các thành viên trong guild: &b[{players}]"
       rank: "Rank của bạn: &b{rank}"

@@ -82,7 +82,7 @@ messages:
     info:
       header: "Informations sur &b{guild}"
       master: "Maître: &b{master}"
-      member-count: "Membres: &b{members}/64&r (&bEn Ligne: {members-online}&r)"
+      member-count: "Membres: &b{members}/{max-members}&r (&bEn Ligne: {members-online}&r)"
       name: "Nom: &b{guild}&r (&bPréfixe: {prefix}&r)"
       players: "Membres dans la guilde: &b[{players}]"
       rank: "Rôle: &b{rank}"
