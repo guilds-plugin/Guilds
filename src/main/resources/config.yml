@@ -533,10 +533,6 @@ blacklist:
   - "ass"
   - "stupid"
 
-# Here you can set the size of the claims. For example if it's 50, it'll be 50x50, 100 = 100x100, etc.
-claims:
-  size: 100
-
 prefix:
 # With the default Regex currently set, the minimum length of the prefix is 1 and the maximum is 20.
 # To change this, adjust the numbers and maybe have a look at the link above (RegEx).
