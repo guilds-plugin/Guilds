@@ -262,6 +262,16 @@ buff:
     jump: 1
     water-breathing: 1
     regeneration: 1
+  icon:
+    haste: "FEATHER"
+    speed: "SUGAR"
+    fire-resistance: "BLAZE_POWDER"
+    night-vision: "REDSTONE_TORCH_ON"
+    invisibility: "EYE_OF_ENDER"
+    strength: "DIAMOND_SWORD"
+    jump: "DIAMOND_BOOTS"
+    water-breathing: "BUCKET"
+    regeneration: "EMERALD"
   description:
     price: "&bPrice: "
     length: "&bLength of Buff: "
