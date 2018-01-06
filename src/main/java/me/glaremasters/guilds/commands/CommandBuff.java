@@ -171,18 +171,18 @@ public class CommandBuff extends CommandBase {
                 waterbreathing));
 
         // Buff 9: Luck
-        ArrayList<String> regeration = new ArrayList<String>();
-        Guilds.getInstance().getConfig().getStringList("buff.description.regeration").stream()
-                .map(it -> ChatColor.translateAlternateColorCodes('&', it)).forEach(regeration::add);
-        regeration.add("");
-        regeration.add(ChatColor.translateAlternateColorCodes('&',
+        ArrayList<String> regeneration = new ArrayList<String>();
+        Guilds.getInstance().getConfig().getStringList("buff.description.regeneration").stream()
+                .map(it -> ChatColor.translateAlternateColorCodes('&', it)).forEach(regeneration::add);
+        regeneration.add("");
+        regeneration.add(ChatColor.translateAlternateColorCodes('&',
                 Guilds.getInstance().getConfig().getString("buff.description.price") + Guilds
-                        .getInstance().getConfig().getInt("buff.price.regeration")));
-        regeration.add(ChatColor.translateAlternateColorCodes('&',
+                        .getInstance().getConfig().getInt("buff.price.regeneration")));
+        regeneration.add(ChatColor.translateAlternateColorCodes('&',
                 Guilds.getInstance().getConfig().getString("buff.description.length") + Guilds
-                        .getInstance().getConfig().getInt("buff.time.regeration")));
+                        .getInstance().getConfig().getInt("buff.time.regeneration")));
         buff.setItem(7, createItemStack(Material.EMERALD,
-                Guilds.getInstance().getConfig().getString("buff.name.regeration"), regeration));
+                Guilds.getInstance().getConfig().getString("buff.name.regeneration"), regeneration));
 
         // Open inventory
         player.openInventory(buff);

@@ -110,7 +110,7 @@ public class GuildBuffListener implements Listener {
         STRENGTH(PotionEffectType.INCREASE_DAMAGE, Material.DIAMOND_SWORD, "strength"),
         JUMP(PotionEffectType.JUMP, Material.DIAMOND_BOOTS, "jump"),
         WATER_BREATHING(PotionEffectType.WATER_BREATHING, Material.BUCKET, "water-breathing"),
-        REGENERATION(PotionEffectType.REGENERATION, Material.EMERALD, "regeration");
+        REGENERATION(PotionEffectType.REGENERATION, Material.EMERALD, "regeneration");
 
 
         public final PotionEffectType potion;

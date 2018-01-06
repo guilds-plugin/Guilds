@@ -231,7 +231,7 @@ buff:
     strength: "Mighty Strength of the Pouncing Lion"
     jump: "Bounce of the Quick Witted Rabbit"
     water-breathing: "Lungs of the Albino Shark"
-    regeration: "Integrity of the Mystic Witch"
+    regeneration: "Integrity of the Mystic Witch"
   price:
     haste: 60
     speed: 60
@@ -241,7 +241,7 @@ buff:
     strength: 60
     jump: 60
     water-breathing: 60
-    regeration: 60
+    regeneration: 60
   time:
     haste: 60
     speed: 60
@@ -251,7 +251,7 @@ buff:
     strength: 60
     jump: 60
     water-breathing: 60
-    regeration: 60
+    regeneration: 60
   amplifier:
     haste: 1
     speed: 1
@@ -261,7 +261,7 @@ buff:
     strength: 1
     jump: 1
     water-breathing: 1
-    regeration: 1
+    regeneration: 1
   description:
     price: "&bPrice: "
     length: "&bLength of Buff: "
@@ -297,10 +297,10 @@ buff:
     - "&bThis buff will allow you and your"
     - "&bGuild Members to obtain increased"
     - "&bwater-breathing for a certain amount of time."
-    regeration:
+    regeneration:
     - "&bThis buff will allow you and your"
     - "&bGuild Members to obtain increased"
-    - "&bregeration for a certain amount of time."
+    - "&bregeneration for a certain amount of time."
 
 #-----------------------------------------------------------#
 #                     Vault Configuration                   #
