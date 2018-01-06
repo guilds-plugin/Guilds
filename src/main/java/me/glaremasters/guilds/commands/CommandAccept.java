@@ -104,7 +104,7 @@ public class CommandAccept extends CommandBase {
             }
         }
 
-        for (int i = 1; i < guild.getTier(); i++) {
+        for (int i = 1; i <= guild.getTier(); i++) {
             for (String perms : Guilds.getInstance().getConfig().getStringList("tier" + i + ".permissions")) {
                 Guilds.getPermissions().playerAdd(null, player, perms);
             }
