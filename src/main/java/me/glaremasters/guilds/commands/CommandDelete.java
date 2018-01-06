@@ -74,8 +74,10 @@ public class CommandDelete extends CommandBase {
                                         .replace("{guild}", guild.getName()));
                         guild.getMembers().stream().map(member -> Bukkit.getOfflinePlayer(member.getUniqueId()))
                                 .forEach(member -> {
-                                    for (String perms : guild.getGuildPerms()) {
-                                        Guilds.getPermissions().playerRemove(null, member, perms);
+                                    for (int i = 1; i <= guild.getTier(); i++) {
+                                        for (String perms : Guilds.getInstance().getConfig().getStringList("tier" + i + ".permissions")) {
+                                            Guilds.getPermissions().playerRemove(null, member, perms);
+                                        }
                                     }
                                 });
                         guilds.getGuildHandler().removeGuild(guild);
