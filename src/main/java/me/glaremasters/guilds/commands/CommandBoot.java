@@ -86,9 +86,10 @@ public class CommandBoot extends CommandBase {
                 regions.getRegion(guild.getName()).getMembers().removePlayer(bootedPlayer.getName());
             }
         }
-
-        for (String perms : guild.getGuildPerms()) {
-            Guilds.getPermissions().playerRemove(null, bootedPlayer, perms);
+        for (int i = 1; i <= guild.getTier(); i++) {
+            for (String perms : Guilds.getInstance().getConfig().getStringList("tier" + i + ".permissions")) {
+                Guilds.getPermissions().playerRemove(null, player, perms);
+            }
         }
 
         guild.removeMember(kickedPlayer.getUniqueId());

@@ -43,7 +43,7 @@ public class CommandAccept extends CommandBase {
                 int invites = 0;
                 int indexes = 0;
                 for (int i = 0;
-                        i < Guilds.getInstance().getGuildHandler().getGuilds().values().size(); i++) {
+                     i < Guilds.getInstance().getGuildHandler().getGuilds().values().size(); i++) {
                     Guild guildtmp = (Guild) Guilds.getInstance().getGuildHandler().getGuilds()
                             .values().toArray()[i];
                     if (guildtmp.getInvitedMembers().contains(player.getUniqueId())) {
@@ -108,7 +108,6 @@ public class CommandAccept extends CommandBase {
             for (String perms : Guilds.getInstance().getConfig().getStringList("tier" + i + ".permissions")) {
                 Guilds.getPermissions().playerAdd(null, player, perms);
             }
-
         }
 
         TitleHandler.joinTitles(player);
