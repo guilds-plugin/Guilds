@@ -1,6 +1,5 @@
 package me.glaremasters.guilds.commands;
 
-import java.util.stream.Collectors;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
@@ -8,6 +7,8 @@ import me.glaremasters.guilds.message.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
+
+import java.util.stream.Collectors;
 
 /**
  * Created by GlareMasters on 7/7/2017.
@@ -35,10 +36,9 @@ public class CommandInspect extends CommandBase {
                     Bukkit.getOfflinePlayer(guild.getGuildMaster().getUniqueId()).getName()));
             Message.sendMessage(sender, Message.COMMAND_INFO_MEMBER_COUNT
                     .replace("{members}", String.valueOf(guild.getMembers().size()),
-                            "{members-online}", "{max-members}", Integer.toString(guild.getMaxMembers()),
-                            String.valueOf(guild.getMembers().stream()
+                            "{members-online}", String.valueOf(guild.getMembers().stream()
                                     .map(member -> Bukkit.getOfflinePlayer(member.getUniqueId()))
-                                    .filter(OfflinePlayer::isOnline).count())));
+                                    .filter(OfflinePlayer::isOnline).count()), "{max-members}", String.valueOf(guild.getMaxMembers())));
             Message.sendMessage(sender, Message.COMMAND_INFO_PLAYERS.replace("{players}",
                     guild.getMembers().stream()
                             .map(member -> Bukkit.getOfflinePlayer(member.getUniqueId()).getName())
