@@ -87,11 +87,13 @@ public class CommandBoot extends CommandBase {
             }
         }
 
-        guild.removeMember(kickedPlayer.getUniqueId());
-
         for (String perms : guild.getGuildPerms()) {
             Guilds.getPermissions().playerRemove(null, bootedPlayer, perms);
         }
+
+        guild.removeMember(kickedPlayer.getUniqueId());
+
+
 
         Message.sendMessage(player,
                 Message.COMMAND_BOOT_SUCCESSFUL.replace("{player}", bootedPlayer.getName()));
