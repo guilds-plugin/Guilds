@@ -88,7 +88,7 @@ public class CommandBoot extends CommandBase {
         }
         for (int i = 1; i <= guild.getTier(); i++) {
             for (String perms : Guilds.getInstance().getConfig().getStringList("tier" + i + ".permissions")) {
-                Guilds.getPermissions().playerRemove(null, player, perms);
+                Guilds.getPermissions().playerRemove(null, bootedPlayer, perms);
             }
         }
 
