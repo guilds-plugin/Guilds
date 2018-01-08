@@ -30,6 +30,7 @@ import me.glaremasters.guilds.listeners.*;
 import me.glaremasters.guilds.placeholders.Placeholders;
 import me.glaremasters.guilds.updater.SpigotUpdater;
 import me.glaremasters.guilds.util.DiscordSRVUtil;
+import me.glaremasters.guilds.util.SLPUtil;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.apache.commons.io.IOUtils;
@@ -395,6 +396,14 @@ public class Guilds extends JavaPlugin {
         return perms;
     }
 
+
+    @Override
+    public void onLoad() {
+        if (getConfig().getBoolean("hooks.serverlistplus")) {
+            SLPUtil slp = new SLPUtil();
+            slp.registerSLP();
+        }
+    }
 
 
 }

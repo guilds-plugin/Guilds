@@ -42,6 +42,7 @@ hooks:
   worldguard: false
   nametagedit: false
   discordsrv: false
+  serverlistplus: false
 
 # If you are using DiscordSRV, us enable this hook. When you are toggled in /guild chat, it will not send the messages
 # to the discord
