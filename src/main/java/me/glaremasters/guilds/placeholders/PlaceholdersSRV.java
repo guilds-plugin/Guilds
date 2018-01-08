@@ -1,18 +1,18 @@
 package me.glaremasters.guilds.placeholders;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildMember;
 import me.glaremasters.guilds.guild.GuildRole;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
 
-/**
- * Created by GlareMasters on 1/7/2018.
- */
-public class PlaceholderAPI {
+public class PlaceholdersSRV {
 
-    public static String getGuild(Player player) {
+
+    public static String getGuild(OfflinePlayer player) {
         Guild guild = Guild.getGuild(player.getUniqueId());
         if (guild == null) {
             return "";
@@ -21,7 +21,7 @@ public class PlaceholderAPI {
         return guild.getName();
     }
 
-    public static String getGuildMaster(Player player) {
+    public static String getGuildMaster(OfflinePlayer player) {
         Guild guild = Guild.getGuild(player.getUniqueId());
         if (guild == null) {
             return "";
@@ -30,7 +30,7 @@ public class PlaceholderAPI {
         return Bukkit.getOfflinePlayer(guild.getGuildMaster().getUniqueId()).getName();
     }
 
-    public static String getGuildMemberCount(Player player) {
+    public static String getGuildMemberCount(OfflinePlayer player) {
         Guild guild = Guild.getGuild(player.getUniqueId());
         if (guild == null) {
             return "";
@@ -39,7 +39,7 @@ public class PlaceholderAPI {
         return String.valueOf(guild.getMembers().size());
     }
 
-    public static String getGuildMembersOnline(Player player) {
+    public static String getGuildMembersOnline(OfflinePlayer player) {
         Guild guild = Guild.getGuild(player.getUniqueId());
         if (guild == null) {
             return "";
@@ -51,7 +51,20 @@ public class PlaceholderAPI {
                         .filter(OfflinePlayer::isOnline).count());
     }
 
-    public static String getGuildStatus(Player player) {
+    public static String getGuildMembers(OfflinePlayer player) {
+        Guild guild = Guild.getGuild(player.getUniqueId());
+        if (guild == null) {
+            return "";
+        }
+        List<String> lines = Arrays.asList(guild.getMembers().stream()
+                .map(member -> Bukkit.getOfflinePlayer(member.getUniqueId()).getName())
+                .collect(Collectors.joining(", "))
+                .replaceAll("(([a-zA-Z0-9_]+, ){3})", "$0\n")
+                .split("\n"));
+        return lines.get(0);
+    }
+
+    public static String getGuildStatus(OfflinePlayer player) {
         Guild guild = Guild.getGuild(player.getUniqueId());
         if (guild == null) {
             return "";
@@ -60,7 +73,7 @@ public class PlaceholderAPI {
         return guild.getStatus();
     }
 
-    public static String getGuildPrefix(Player player) {
+    public static String getGuildPrefix(OfflinePlayer player) {
         Guild guild = Guild.getGuild(player.getUniqueId());
         if (guild == null) {
             return "";
@@ -69,7 +82,7 @@ public class PlaceholderAPI {
         return guild.getPrefix();
     }
 
-    public static String getGuildRole(Player player) {
+    public static String getGuildRole(OfflinePlayer player) {
         Guild guild = Guild.getGuild(player.getUniqueId());
 
         if (guild == null) {
@@ -79,7 +92,7 @@ public class PlaceholderAPI {
         return GuildRole.getRole(roleCheck.getRole()).getName();
     }
 
-    public static int getGuildTier(Player player) {
+    public static int getGuildTier(OfflinePlayer player) {
         Guild guild = Guild.getGuild(player.getUniqueId());
         if (guild == null) {
             return 0;
@@ -88,7 +101,7 @@ public class PlaceholderAPI {
         return guild.getTier();
     }
 
-    public static double getBankBalance(Player player) {
+    public static double getBankBalance(OfflinePlayer player) {
         Guild guild = Guild.getGuild(player.getUniqueId());
         if (guild == null) {
             return 0;
@@ -97,7 +110,7 @@ public class PlaceholderAPI {
         return guild.getBankBalance();
     }
 
-    public static double getUpgradeCost(Player player) {
+    public static double getUpgradeCost(OfflinePlayer player) {
         Guild guild = Guild.getGuild(player.getUniqueId());
         if (guild == null) {
             return 0;
@@ -106,7 +119,7 @@ public class PlaceholderAPI {
         return guild.getTierCost();
     }
 
-    public static String getTierName(Player player) {
+    public static String getTierName(OfflinePlayer player) {
         Guild guild = Guild.getGuild(player.getUniqueId());
         if (guild == null) {
             return "";

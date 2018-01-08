@@ -1,6 +1,6 @@
 package me.glaremasters.guilds.util;
 
-import me.glaremasters.guilds.placeholders.Placeholders;
+import me.glaremasters.guilds.placeholders.PlaceholdersSRV;
 import net.minecrell.serverlistplus.core.ServerListPlusCore;
 import net.minecrell.serverlistplus.core.player.PlayerIdentity;
 import net.minecrell.serverlistplus.core.replacement.LiteralPlaceholder;
@@ -21,7 +21,7 @@ public class SLPUtil {
                 PlayerIdentity identity = response.getRequest().getIdentity();
                 if (identity != null) {
                     return this.replace(s,
-                            Placeholders.getGuild(Bukkit.getOfflinePlayer(identity.getName())));
+                            PlaceholdersSRV.getGuild(Bukkit.getOfflinePlayer(identity.getName())));
 
                 } else // Use the method below if player is unknown
                 {
@@ -41,7 +41,7 @@ public class SLPUtil {
                 PlayerIdentity identity = response.getRequest().getIdentity();
                 if (identity != null) {
                     return this.replace(s,
-                            Placeholders
+                            PlaceholdersSRV
                                     .getGuildMaster(Bukkit.getOfflinePlayer(identity.getName())));
 
                 } else // Use the method below if player is unknown
@@ -62,7 +62,7 @@ public class SLPUtil {
                 PlayerIdentity identity = response.getRequest().getIdentity();
                 if (identity != null) {
                     return this.replace(s,
-                            Placeholders.getGuildMemberCount(Bukkit.getOfflinePlayer(identity.getName())));
+                            PlaceholdersSRV.getGuildMemberCount(Bukkit.getOfflinePlayer(identity.getName())));
                 } else // Use the method below if player is unknown
                 {
                     return super.replace(response, s);
@@ -81,7 +81,7 @@ public class SLPUtil {
                 PlayerIdentity identity = response.getRequest().getIdentity();
                 if (identity != null) {
                     return this.replace(s,
-                            Placeholders.getGuildMembersOnline(Bukkit.getOfflinePlayer(identity.getName())));
+                            PlaceholdersSRV.getGuildMembersOnline(Bukkit.getOfflinePlayer(identity.getName())));
                 } else // Use the method below if player is unknown
                 {
                     return super.replace(response, s);
@@ -100,7 +100,7 @@ public class SLPUtil {
                 PlayerIdentity identity = response.getRequest().getIdentity();
                 if (identity != null) {
                     return this.replace(s,
-                            Placeholders.getGuildStatus(Bukkit.getOfflinePlayer(identity.getName())));
+                            PlaceholdersSRV.getGuildStatus(Bukkit.getOfflinePlayer(identity.getName())));
                 } else // Use the method below if player is unknown
                 {
                     return super.replace(response, s);
@@ -119,7 +119,7 @@ public class SLPUtil {
                 PlayerIdentity identity = response.getRequest().getIdentity();
                 if (identity != null) {
                     return this.replace(s,
-                            Placeholders.getGuildPrefix(Bukkit.getOfflinePlayer(identity.getName())));
+                            PlaceholdersSRV.getGuildPrefix(Bukkit.getOfflinePlayer(identity.getName())));
                 } else // Use the method below if player is unknown
                 {
                     return super.replace(response, s);
@@ -138,7 +138,7 @@ public class SLPUtil {
                 PlayerIdentity identity = response.getRequest().getIdentity();
                 if (identity != null) {
                     return this.replace(s,
-                            Placeholders.getGuildRole(Bukkit.getOfflinePlayer(identity.getName())));
+                            PlaceholdersSRV.getGuildRole(Bukkit.getOfflinePlayer(identity.getName())));
                 } else // Use the method below if player is unknown
                 {
                     return super.replace(response, s);
@@ -157,7 +157,7 @@ public class SLPUtil {
                 PlayerIdentity identity = response.getRequest().getIdentity();
                 if (identity != null) {
                     return this.replace(s,
-                            Placeholders.getGuildTier(Bukkit.getOfflinePlayer(identity.getName())));
+                            PlaceholdersSRV.getGuildTier(Bukkit.getOfflinePlayer(identity.getName())));
                 } else // Use the method below if player is unknown
                 {
                     return super.replace(response, s);
@@ -176,7 +176,7 @@ public class SLPUtil {
                 PlayerIdentity identity = response.getRequest().getIdentity();
                 if (identity != null) {
                     return this.replace(s,
-                            Placeholders.getBankBalance(Bukkit.getOfflinePlayer(identity.getName())));
+                            PlaceholdersSRV.getBankBalance(Bukkit.getOfflinePlayer(identity.getName())));
                 } else // Use the method below if player is unknown
                 {
                     return super.replace(response, s);
@@ -195,7 +195,7 @@ public class SLPUtil {
                 PlayerIdentity identity = response.getRequest().getIdentity();
                 if (identity != null) {
                     return this.replace(s,
-                            Placeholders.getTierName(Bukkit.getOfflinePlayer(identity.getName())));
+                            PlaceholdersSRV.getTierName(Bukkit.getOfflinePlayer(identity.getName())));
                 } else // Use the method below if player is unknown
                 {
                     return super.replace(response, s);
@@ -214,7 +214,7 @@ public class SLPUtil {
                 PlayerIdentity identity = response.getRequest().getIdentity();
                 if (identity != null) {
                     return this.replace(s,
-                            Placeholders.getGuildMembers(Bukkit.getOfflinePlayer(identity.getName())));
+                            PlaceholdersSRV.getGuildMembers(Bukkit.getOfflinePlayer(identity.getName())));
                 } else // Use the method below if player is unknown
                 {
                     return super.replace(response, s);

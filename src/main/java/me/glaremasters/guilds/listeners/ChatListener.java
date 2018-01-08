@@ -1,9 +1,8 @@
 package me.glaremasters.guilds.listeners;
 
-import static me.glaremasters.guilds.placeholders.Placeholders.getGuildMemberCount;
-import static me.glaremasters.guilds.placeholders.Placeholders.getGuildMembersOnline;
-import static me.glaremasters.guilds.placeholders.Placeholders.getGuildRole;
-
+import static me.glaremasters.guilds.placeholders.PlaceholdersSRV.getGuildMemberCount;
+import static me.glaremasters.guilds.placeholders.PlaceholdersSRV.getGuildMembersOnline;
+import static me.glaremasters.guilds.placeholders.PlaceholdersSRV.getGuildRole;
 import me.glaremasters.guilds.guild.Guild;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

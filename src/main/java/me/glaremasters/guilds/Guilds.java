@@ -27,7 +27,7 @@ import me.glaremasters.guilds.database.databases.json.Json;
 import me.glaremasters.guilds.database.databases.mysql.MySql;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.listeners.*;
-import me.glaremasters.guilds.placeholders.Placeholders;
+import me.glaremasters.guilds.placeholders.PlaceholdersSRV;
 import me.glaremasters.guilds.updater.SpigotUpdater;
 import me.glaremasters.guilds.util.DiscordSRVUtil;
 import me.glaremasters.guilds.util.SLPUtil;
@@ -324,27 +324,27 @@ public class Guilds extends JavaPlugin {
     private void initializePlaceholder() {
         if (Bukkit.getPluginManager().isPluginEnabled("MVdWPlaceholderAPI")) {
             PlaceholderAPI.registerPlaceholder(this, "guild_name",
-                    event -> Placeholders.getGuild(event.getPlayer()));
+                    event -> PlaceholdersSRV.getGuild(event.getPlayer()));
             PlaceholderAPI.registerPlaceholder(this, "guild_master",
-                    event -> Placeholders.getGuildMaster(event.getPlayer()));
+                    event -> PlaceholdersSRV.getGuildMaster(event.getPlayer()));
             PlaceholderAPI.registerPlaceholder(this, "guild_member_count",
-                    event -> Placeholders.getGuildMemberCount(event.getPlayer()));
+                    event -> PlaceholdersSRV.getGuildMemberCount(event.getPlayer()));
             PlaceholderAPI.registerPlaceholder(this, "guild_prefix",
-                    event -> Placeholders.getGuildPrefix(event.getPlayer()));
+                    event -> PlaceholdersSRV.getGuildPrefix(event.getPlayer()));
             PlaceholderAPI.registerPlaceholder(this, "guild_members_online",
-                    event -> Placeholders.getGuildMembersOnline(event.getPlayer()));
+                    event -> PlaceholdersSRV.getGuildMembersOnline(event.getPlayer()));
             PlaceholderAPI.registerPlaceholder(this, "guild_status",
-                    event -> Placeholders.getGuildStatus(event.getPlayer()));
+                    event -> PlaceholdersSRV.getGuildStatus(event.getPlayer()));
             PlaceholderAPI.registerPlaceholder(this, "guild_role",
-                    event -> Placeholders.getGuildRole(event.getPlayer()));
+                    event -> PlaceholdersSRV.getGuildRole(event.getPlayer()));
             PlaceholderAPI.registerPlaceholder(this, "guild_tier",
-                    event -> Integer.toString(Placeholders.getGuildTier(event.getPlayer())));
+                    event -> Integer.toString(PlaceholdersSRV.getGuildTier(event.getPlayer())));
             PlaceholderAPI.registerPlaceholder(this, "guild_balance",
-                    event -> Double.toString(Placeholders.getBankBalance(event.getPlayer())));
+                    event -> Double.toString(PlaceholdersSRV.getBankBalance(event.getPlayer())));
             PlaceholderAPI.registerPlaceholder(this, "guild_upgrade_cost",
-                    event -> Double.toString(Placeholders.getUpgradeCost(event.getPlayer())));
+                    event -> Double.toString(PlaceholdersSRV.getUpgradeCost(event.getPlayer())));
             PlaceholderAPI.registerPlaceholder(this, "guild_tier_name",
-                    event -> Placeholders.getTierName(event.getPlayer()));
+                    event -> PlaceholdersSRV.getTierName(event.getPlayer()));
         }
 
     }
