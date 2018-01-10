@@ -128,16 +128,41 @@ public class Guilds extends JavaPlugin {
                 File olddir = new File(this.getDataFolder(), "old-languages");
                 dir.renameTo(olddir);
                 oldfile.renameTo(newfile);
-                Bukkit.getConsoleSender().sendMessage(
-                        "§a[Guilds] §3Your config has been auto-updated and regenerated. You can find your old config in §3config-old.yml. You can disable this feature in the config");
+                getLogger().info("Your config has been auto updated. You can disable this in the config.");
             } else {
-                Bukkit.getConsoleSender().sendMessage(
-                        "§a[Guilds] §3The config is out of date.");
+                getLogger().info("Your config is out of date!");
             }
 
         }
         this.saveDefaultConfig();
         getConfig().options().copyDefaults(true);
+/*
+        if (getConfig().getBoolean("hooks.discordsrv.enabled")) {
+            if (getServer().getPluginManager().isPluginEnabled("DiscordSRV")) {
+                BukkitRunnable category = new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        if (DiscordSRV.isReady) {
+                            Guild mainGuild = DiscordSRV.getPlugin().getMainGuild();
+                            List<Category> guilds = mainGuild.getCategoriesByName("guilds", true);
+                            if (guilds != null && guilds.isEmpty()) {
+                                mainGuild.getController().createCategory("guilds").queue();
+                            }
+                            cancel();
+                            getLogger().info("Discord Category Created!");
+                        } else {
+                            getLogger().warning(
+                                    "DiscordSRV was not found. Please disable the hook or install the plugin");
+                        }
+                    }
+
+                };
+                category.runTaskTimerAsynchronously(this, 0L, 500L);
+
+            }
+        }
+*/
+
 
         guildHandler = new GuildHandler();
         guildHandler.enable();
@@ -162,7 +187,8 @@ public class Guilds extends JavaPlugin {
                 new CommandSetHome(),
                 new CommandStatus(), new CommandTransfer(), new CommandUpdate(), new CommandVault(),
                 new CommandVersion(),
-                new CommandUpgrade(), new CommandBank(), new CommandGive(), new CommandClaim(), new CommandUnclaim(), new CommandAdmin()
+                new CommandUpgrade(), new CommandBank(), new CommandGive(), new CommandClaim(),
+                new CommandUnclaim(), new CommandAdmin()
         ).forEach(commandHandler::register);
 
         Stream.of(
@@ -193,18 +219,12 @@ public class Guilds extends JavaPlugin {
             getServer().getPluginManager().registerEvents(new TicketListener(), this);
         }
 
-        if (getConfig().getBoolean("hooks.discordsrv")) {
-            getServer().getPluginManager().registerEvents(new me.glaremasters.guilds.listeners.DiscordSRVListener(), this);
-            DiscordSRV.api.subscribe(discordsrvUtil);
-        }
-
         vault = setupEconomy();
         setupPermissions();
 
         if (!vault) {
             getLogger().log(Level.INFO, "Not using Vault!");
         }
-
 
         Metrics metrics = new Metrics(this);
         metrics.addCustomChart(new Metrics.SingleLineChart("guilds",
@@ -242,7 +262,8 @@ public class Guilds extends JavaPlugin {
         // TODO: Clean this section up with a switch statement or something.
 
         if (getConfig().getBoolean("server-list")) {
-            getServer().getScheduler().scheduleAsyncRepeatingTask(this, this::sendUpdate, 0L, 5000L);
+            getServer().getScheduler()
+                    .scheduleAsyncRepeatingTask(this, this::sendUpdate, 0L, 5000L);
         }
 
         if (languageYamlFile.exists()) {
@@ -387,7 +408,8 @@ public class Guilds extends JavaPlugin {
     }
 
     private boolean setupPermissions() {
-        RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
+        RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager()
+                .getRegistration(Permission.class);
         perms = rsp.getProvider();
         return perms != null;
     }

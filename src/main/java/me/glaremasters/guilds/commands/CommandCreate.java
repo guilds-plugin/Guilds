@@ -99,33 +99,44 @@ public class CommandCreate extends CommandBase {
                     }
                 }
 
-                Guilds.getInstance().getDatabaseProvider().createGuild(guild, (result, exception) -> {
-                    if (result) {
-                        Message.sendMessage(player,
-                                Message.COMMAND_CREATE_SUCCESSFUL.replace("{guild}", args[0]));
+                Guilds.getInstance().getDatabaseProvider()
+                        .createGuild(guild, (result, exception) -> {
+                            if (result) {
+                                Message.sendMessage(player,
+                                        Message.COMMAND_CREATE_SUCCESSFUL
+                                                .replace("{guild}", args[0]));
+
+                                Guilds.getInstance().guildStatusConfig
+                                        .set(guild.getName(), "Private");
+                                Guilds.getInstance().guildTiersConfig.set(guild.getName(), 1);
+                                Guilds.getInstance().saveGuildData();
+                                for (String perms : guild.getGuildPerms()) {
+                                    Guilds.getPermissions().playerAdd(null, player, perms);
+                                }
+
+                                TitleHandler.createTitles(player);
+                                TablistHandler.addTablist(player);
+                                NTEHandler.setTag(player);
+
+                                /*
+                                if (Guilds.getInstance().getConfig().getBoolean("hooks.discordsrv.enabled")) {
+                                    DiscordSRVUtil.createGuildChannel(Guild.getGuild(player.getUniqueId()));
+                                }
+                                */
 
 
-                        Guilds.getInstance().guildStatusConfig.set(guild.getName(), "Private");
-                        Guilds.getInstance().guildTiersConfig.set(guild.getName(), 1);
-                        Guilds.getInstance().saveGuildData();
-                        for (String perms : guild.getGuildPerms()) {
-                            Guilds.getPermissions().playerAdd(null, player, perms);
-                        }
 
-                        TitleHandler.createTitles(player);
-                        TablistHandler.addTablist(player);
-                        NTEHandler.setTag(player);
-                    } else {
-                        Message.sendMessage(player, Message.COMMAND_CREATE_ERROR);
+                            } else {
+                                Message.sendMessage(player, Message.COMMAND_CREATE_ERROR);
 
-                        Guilds.getInstance().getLogger().log(Level.SEVERE, String.format(
-                                "An error occurred while player '%s' was trying to create guild '%s'",
-                                player.getName(), args[0]));
-                        if (exception != null) {
-                            exception.printStackTrace();
-                        }
-                    }
-                });
+                                Guilds.getInstance().getLogger().log(Level.SEVERE, String.format(
+                                        "An error occurred while player '%s' was trying to create guild '%s'",
+                                        player.getName(), args[0]));
+                                if (exception != null) {
+                                    exception.printStackTrace();
+                                }
+                            }
+                        });
 
                 Guilds.getInstance().getCommandHandler().removeAction(player);
             }
@@ -137,4 +148,6 @@ public class CommandCreate extends CommandBase {
             }
         });
     }
+
+
 }

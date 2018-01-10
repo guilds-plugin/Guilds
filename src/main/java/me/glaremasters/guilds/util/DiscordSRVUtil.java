@@ -23,12 +23,25 @@ public class DiscordSRVUtil {
 
     @Subscribe
     public void accountsLinked(AccountLinkedEvent event) {
-        Bukkit.broadcastMessage(event.getPlayer().getName() + " just linked their MC account to their Discord user " + event.getUser() + "!");
+        Bukkit.broadcastMessage(
+                event.getPlayer().getName() + " just linked their MC account to their Discord user "
+                        + event.getUser() + "!");
     }
 
     @Subscribe
     public void discordMessageProcessed(DiscordGuildMessagePostProcessEvent event) {
-        event.setProcessedMessage(event.getProcessedMessage().replace("cat", "dog")); // dogs are superior to cats, obviously
+        event.setProcessedMessage(event.getProcessedMessage()
+                .replace("cat", "dog")); // dogs are superior to cats, obviously
     }
-
+/*
+    public static void createGuildChannel(Guild guild) {
+        github.scarsz.discordsrv.dependencies.jda.core.entities.Guild mainGuild = DiscordSRV
+                .getPlugin().getMainGuild();
+        //you can make an optional if statement here to check if the text channel already exists
+        //also another optional if statement is to check if the category exists (in case someone deleted it after startup)
+        mainGuild.getController().createTextChannel(guild.getName()).setParent(mainGuild.getCategoriesByName(
+                Guilds.getInstance().getConfig().getString("hooks.discordsrv.category-name"), false)
+                .get(0)).queue();
+    }
+*/
 }
