@@ -30,6 +30,7 @@ messages:
       too-big: "&cSorry! Your custom claim size is too big! The max is {max}."
       no-claim-found: "&cYou don't have any land to unclaim!"
       remove-confirm:  "&cAre you sure you want to unclaim your land? (Type /guilds confirm to continue)"
+      disabled-world: "&cSorry! This function has been disabled in your current world!"
     killreward:
       killer: "&aBạn đã giết người chơi khác và đã kiếm được {amount}!"
       player-who-died: "&cBạn đã bị giết người chơi khác và đã mất {amount}!"

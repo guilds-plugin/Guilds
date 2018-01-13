@@ -30,6 +30,7 @@ messages:
       too-big: "&cImi pare rau! Valoarea personalizata de claim este prea mare! Maxim-ul este de {max}."
       no-claim-found: "&cNu ai nici un teritoriu la care poti da unclaim!"
       remove-confirm:  "&cEsti sigur ca vrei sa dai unclaim acestui teritoriu? (Scrie /guilds confirm pentru a continua)"
+      disabled-world: "&cSorry! This function has been disabled in your current world!"
     killreward:
       killer: "&aAi omorat un alt jucator si ai primit {amount}!"
       player-who-died: "&cAi fost omorat de un alt jucator si ai pierdut {amount}!"

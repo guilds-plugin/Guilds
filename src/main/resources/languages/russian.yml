@@ -29,6 +29,7 @@ messages:
       too-big: "&cИзвините! Размер вашей территории слишком велик! Максимальное значение {max}."
       no-claim-found: "&cУ Вас нет территории, с которой можно снять приват!"
       remove-confirm:  "&cВы уверены, что хотите снять приват со своей территории? (Введите /guilds confirm для подтверждения)"
+      disabled-world: "&cSorry! This function has been disabled in your current world!"
     killreward:
       killer: "&aВы убили игрока и заработали {amount}!"
       player-who-died: "&cВас убил другой игрок, и вы потеряли {amount}!"

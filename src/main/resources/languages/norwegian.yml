@@ -30,6 +30,7 @@ messages:
       too-big: "&cBeklager! Det er for stort landområde! Maksimum er {max}."
       no-claim-found: "&cDu har ikke noe landområde å claime!"
       remove-confirm:  "&cEr du sikker på at du vil fjerne claimen? (Skriv /guilds confirm for å fortsette)"
+      disabled-world: "&cSorry! This function has been disabled in your current world!"
     killreward:
       killer: "&aDu har drept en annen spiller og fikk {amount}!"
       player-who-died: "&cDu har blitt drept av en annen spiller, og mistet {amount}!"

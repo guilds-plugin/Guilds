@@ -30,6 +30,7 @@ messages:
       too-big: "&cDesculpe! O tamanho inserido e muito grande! O maximo e {max}."
       no-claim-found: "&cVoce nao tem terras para deixar!"
       remove-confirm:  "&cVoce tem certeza que deseja deixar sua terra? (Escreva /guilds confirm para continuar)"
+      disabled-world: "&cSorry! This function has been disabled in your current world!"
     killreward:
       killer: "&aVoce matou outro jogador e ganhou {amount}!"
       player-who-died: "&cVoce foi morto por outro jogador e perdeu {amount}!"

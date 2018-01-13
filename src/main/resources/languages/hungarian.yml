@@ -30,6 +30,7 @@ messages:
       too-big: "&cA megadott kijelölési terület túl magas! A maximum {max}."
       no-claim-found: "&cNincs semmilyen területed, amelyet feloldhatnál."
       remove-confirm:  "&cBiztos vagy benne, hogy feloldod ezt a területet? (/guilds confirm a folytatához)"
+      disabled-world: "&cSorry! This function has been disabled in your current world!"
     killreward:
       killer: "&aMegöltél egy másik játékost, és kaptál {amount} összeget!"
       player-who-died: "&cMegölt téged egy másik játékos, és veszítettél {amount} összeget!"

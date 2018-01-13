@@ -29,6 +29,7 @@ messages:
       too-big: "&c痾...抱歉! 你要求的土地太大啦!! 伺服器最高上限 為: {max}."
       no-claim-found: "&c你沒有任何的公會領地!!"
       remove-confirm:  "&c你確定你要刪除你的公會領地!? (請輸入 /guilds confirm 來移除他)"
+      disabled-world: "&cSorry! This function has been disabled in your current world!"
     killreward:
       killer: "&a你殺死了一位玩家 獲得了 {amount} 元!"
       player-who-died: "&c你被一位玩家殺死啦!!  被幹走了 {amount} 元!"
