@@ -39,9 +39,6 @@ announcements:
 # Note on the NameTagEdit Hook: They may not all look the best if someone has a long guild name / username.
 # It will allow 16 characters before the user's Username.
 hooks:
-  discordsrv:
-    enabled: false
-    category-name: "Guilds"
   worldguard: false
   nametagedit: false
   serverlistplus: false

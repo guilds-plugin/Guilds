@@ -4,7 +4,6 @@ import be.maximvdw.placeholderapi.PlaceholderAPI;
 import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
-import github.scarsz.discordsrv.DiscordSRV;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -29,7 +28,6 @@ import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.listeners.*;
 import me.glaremasters.guilds.placeholders.PlaceholdersSRV;
 import me.glaremasters.guilds.updater.SpigotUpdater;
-import me.glaremasters.guilds.util.DiscordSRVUtil;
 import me.glaremasters.guilds.util.SLPUtil;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -65,7 +63,6 @@ public class Guilds extends JavaPlugin {
             YamlConfiguration.loadConfiguration(this.guildbanks);
     private DatabaseProvider database;
     private GuildHandler guildHandler;
-    private DiscordSRVUtil discordsrvUtil = new DiscordSRVUtil();
     private CommandHandler commandHandler;
 
     public static <T> TaskChain<T> newChain() {
@@ -301,9 +298,6 @@ public class Guilds extends JavaPlugin {
         guildHandler.disable();
         commandHandler.disable();
         saveGuildData();
-        if (getConfig().getBoolean("hooks.discordsrv")) {
-            DiscordSRV.api.unsubscribe(discordsrvUtil);
-        }
     }
 
 

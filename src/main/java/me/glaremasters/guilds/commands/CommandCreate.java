@@ -91,8 +91,7 @@ public class CommandCreate extends CommandBase {
 
                 if (Guilds.getInstance().getConfig().getBoolean("require-money")) {
 
-                    EconomyResponse response =
-                            Guilds.getInstance().getEconomy().withdrawPlayer(player, requiredMoney);
+                    EconomyResponse response = Guilds.getInstance().getEconomy().withdrawPlayer(player, requiredMoney);
                     if (!response.transactionSuccess()) {
                         Message.sendMessage(player, Message.COMMAND_ERROR_NOT_ENOUGH_MONEY);
                         return;
