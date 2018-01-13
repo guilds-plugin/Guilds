@@ -56,6 +56,14 @@ public class CommandClaim extends CommandBase {
             Message.sendMessage(player, Message.COMMAND_CLAIM_WORLDGUARD_REQUIRED);
             return;
         }
+
+        String wName = player.getWorld().getName();
+
+        if (config.getStringList("disabled-worlds").contains(wName)) {
+            Message.sendMessage(player, Message.COMMAND_CLAIM_DISABLED_WORLD);
+            return;
+        }
+
         double claimCost;
 
         if (config.getBoolean("custom-claim-size")) {
