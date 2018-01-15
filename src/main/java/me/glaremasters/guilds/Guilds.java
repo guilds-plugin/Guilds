@@ -133,33 +133,6 @@ public class Guilds extends JavaPlugin {
         }
         this.saveDefaultConfig();
         getConfig().options().copyDefaults(true);
-/*
-        if (getConfig().getBoolean("hooks.discordsrv.enabled")) {
-            if (getServer().getPluginManager().isPluginEnabled("DiscordSRV")) {
-                BukkitRunnable category = new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        if (DiscordSRV.isReady) {
-                            Guild mainGuild = DiscordSRV.getPlugin().getMainGuild();
-                            List<Category> guilds = mainGuild.getCategoriesByName("guilds", true);
-                            if (guilds != null && guilds.isEmpty()) {
-                                mainGuild.getController().createCategory("guilds").queue();
-                            }
-                            cancel();
-                            getLogger().info("Discord Category Created!");
-                        } else {
-                            getLogger().warning(
-                                    "DiscordSRV was not found. Please disable the hook or install the plugin");
-                        }
-                    }
-
-                };
-                category.runTaskTimerAsynchronously(this, 0L, 500L);
-
-            }
-        }
-*/
-
 
         guildHandler = new GuildHandler();
         guildHandler.enable();

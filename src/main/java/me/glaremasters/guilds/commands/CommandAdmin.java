@@ -1,13 +1,5 @@
 package me.glaremasters.guilds.commands;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.UUID;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
@@ -41,72 +33,6 @@ public class CommandAdmin extends CommandBase {
 
         if (args.length < 2) {
             Message.sendMessage(sender, Message.COMMAND_ERROR_ARGS);
-            return;
-        }
-
-        if (args[0].equalsIgnoreCase("create")) {
-
-            FileConfiguration config = Guilds.getInstance().getConfig();
-            int minLength = config.getInt("name.min-length");
-            int maxLength = config.getInt("name.max-length");
-            String regex = config.getString("name.regex");
-
-            if (args[1].length() < minLength || args[1].length() > maxLength || !args[1]
-                    .matches(regex)) {
-                Message.sendMessage(sender, Message.COMMAND_CREATE_NAME_REQUIREMENTS);
-                return;
-            }
-
-            for (String name : Guilds.getInstance().getGuildHandler().getGuilds().keySet()) {
-                if (name.equalsIgnoreCase(args[1])) {
-                    Message.sendMessage(sender, Message.COMMAND_CREATE_GUILD_NAME_TAKEN);
-                    return;
-                }
-            }
-
-            String name = args[2];
-            String URL = "https://use.gameapis.net/mc/player/uuid/" + name;
-
-            try {
-                URL url = new URL(URL);
-                HttpURLConnection request = (HttpURLConnection) url.openConnection();
-                request.connect();
-
-                JsonParser jp = new JsonParser(); //from gson
-                JsonElement root = jp
-                        .parse(new InputStreamReader((InputStream) request.getContent()));
-                JsonObject rootobj = root.getAsJsonObject();
-
-                UUID uuid = UUID.fromString(rootobj.get("uuid_formatted").getAsString());
-
-                Guild guild = new Guild(ChatColor.translateAlternateColorCodes('&', args[1]), uuid);
-
-                Guilds.getInstance().getDatabaseProvider()
-                        .createGuild(guild, (result, exception) -> {
-                            if (result) {
-                                Message.sendMessage(sender,
-                                        Message.COMMAND_CREATE_SUCCESSFUL
-                                                .replace("{guild}", args[1]));
-
-                                Guilds.getInstance().guildStatusConfig
-                                        .set(guild.getName(), "Public");
-                                Guilds.getInstance().guildTiersConfig.set(guild.getName(), 1);
-                                Guilds.getInstance().saveGuildData();
-                                for (String perms : guild.getGuildPerms()) {
-                                    Guilds.getPermissions()
-                                            .playerAdd(null, Bukkit.getOfflinePlayer(uuid), perms);
-                                }
-                            } else {
-                                Message.sendMessage(sender, Message.COMMAND_CREATE_ERROR);
-                                if (exception != null) {
-                                    exception.printStackTrace();
-                                }
-                            }
-                        });
-
-            } catch (Exception exception) {
-                Guilds.getInstance().getLogger().warning("Could not make guild. API down?");
-            }
             return;
         }
 

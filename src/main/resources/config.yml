@@ -347,7 +347,7 @@ reward-on-kill:
 # Prices for guilds will be based up each section of blocks they claim with the region.
 # For example: If I want a 25x25 claim, I'd do /guild claim 25 and I'd be charged 25 * price you set.
 
-# Would you like to disable guild claiming in specifc worlds?
+# Would you like to disable guild claiming in specific worlds?
 disabled-worlds:
 -
 

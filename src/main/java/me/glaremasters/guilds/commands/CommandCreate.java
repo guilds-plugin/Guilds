@@ -116,15 +116,6 @@ public class CommandCreate extends CommandBase {
                                 TitleHandler.createTitles(player);
                                 TablistHandler.addTablist(player);
                                 NTEHandler.setTag(player);
-
-                                /*
-                                if (Guilds.getInstance().getConfig().getBoolean("hooks.discordsrv.enabled")) {
-                                    DiscordSRVUtil.createGuildChannel(Guild.getGuild(player.getUniqueId()));
-                                }
-                                */
-
-
-
                             } else {
                                 Message.sendMessage(player, Message.COMMAND_CREATE_ERROR);
 
