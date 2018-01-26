@@ -8,7 +8,7 @@ website: https://glaremasters.me/guilds/
 
 commands:
   guild:
-    aliases: "guilds"
+    aliases: [guilds, g]
     description: See the Guild commands
   guild accept:
     description: /guild accept <guild name>
