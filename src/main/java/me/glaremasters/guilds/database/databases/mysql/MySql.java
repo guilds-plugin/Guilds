@@ -44,6 +44,9 @@ public class MySql implements DatabaseProvider {
         hikari.addDataSourceProperty("user", databaseSection.getString("username"));
         hikari.addDataSourceProperty("password", databaseSection.getString("password"));
 
+        hikari.addDataSourceProperty("characterEncoding","utf8");
+        hikari.addDataSourceProperty("useUnicode","true");
+
         hikari.validate();
 
         Guilds.newChain().async(() -> execute(Query.CREATE_TABLE_GUILDS))

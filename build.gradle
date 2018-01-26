@@ -64,8 +64,8 @@ dependencies {
     provided 'me.clip:placeholderapi:2.0.8'
     provided 'net.milkbowl.vault:VaultAPI:1.6'
     provided 'com.sk89q.worldguard:worldguard-legacy:6.1.2-SNAPSHOT'
-    provided 'com.nametagedit:nametagedit:4.1.0'
     provided 'com.github.Minecrell:ServerListPlus:3.4.8'
+    provided files('libs/NameTagEdit.jar')
 
 
     compile 'com.zaxxer:HikariCP:2.7.4'
