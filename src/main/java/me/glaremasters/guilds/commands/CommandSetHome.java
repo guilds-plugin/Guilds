@@ -93,7 +93,6 @@ public class CommandSetHome extends CommandBase {
                 Guilds.getInstance().saveGuildData();
                 Message.sendMessage(player, Message.COMMAND_CREATE_GUILD_HOME);
                 cooldowns.put(player.getName(), System.currentTimeMillis());
-                Guilds.getInstance().getCommandHandler().removeAction(player);
 
             }
 

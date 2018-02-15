@@ -4,15 +4,11 @@ import be.maximvdw.placeholderapi.PlaceholderAPI;
 import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -231,10 +227,6 @@ public class Guilds extends JavaPlugin {
 
         // TODO: Clean this section up with a switch statement or something.
 
-        if (getConfig().getBoolean("server-list")) {
-            getServer().getScheduler()
-                    .scheduleAsyncRepeatingTask(this, this::sendUpdate, 0L, 5000L);
-        }
 
         if (languageYamlFile.exists()) {
             return;
@@ -336,29 +328,6 @@ public class Guilds extends JavaPlugin {
         }
 
     }
-
-    public void sendUpdate() {
-        try {
-            URL url = new URL("https://glaremasters.me/add/");
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestProperty("User-Agent",
-                    "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
-            conn.setDoOutput(true);
-            conn.setRequestMethod("POST");
-            try (DataOutputStream dos = new DataOutputStream(conn.getOutputStream())) {
-                URL checkIp = new URL("http://checkip.amazonaws.com");
-                BufferedReader in = new BufferedReader(new InputStreamReader(checkIp.openStream()));
-                String ip = in.readLine();
-                dos.write(String.format("ip=%s&port=%s", ip, getServer().getPort())
-                        .getBytes(StandardCharsets.UTF_8));
-                conn.getResponseCode();
-                conn.disconnect();
-            }
-        } catch (Exception ex) {
-            return;
-        }
-    }
-
 
     private boolean setupEconomy() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {

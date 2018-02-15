@@ -53,6 +53,7 @@ repositories {
     maven { url "http://maven.sk89q.com/repo/" }
     maven { url "http://ci.playmc.cc/plugin/repository/everything/" }
     maven { url 'https://jitpack.io' }
+    maven { url 'https://cdn.rawgit.com/Rayzr522/maven-repo/master/'}
 
     jcenter()
 
@@ -67,7 +68,7 @@ dependencies {
     provided 'com.nametagedit:nametagedit:4.1.0'
     provided 'com.github.Minecrell:ServerListPlus:3.4.8'
 
-
+    compile 'me.rayzr522:jsonmessage:1.0.0'
     compile 'com.zaxxer:HikariCP:2.7.4'
     compile 'com.google.code.gson:gson:2.8.2'
     compile 'co.aikar:taskchain-core:3.6.0'
