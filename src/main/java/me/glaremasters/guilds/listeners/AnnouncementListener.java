@@ -7,8 +7,10 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 import me.glaremasters.guilds.Guilds;
+import me.rayzr522.jsonmessage.JSONMessage;
 import org.apache.commons.io.IOUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -42,7 +44,10 @@ public class AnnouncementListener implements Listener {
                                         String encoding = con.getContentEncoding();
                                         encoding = encoding == null ? "UTF-8" : encoding;
                                         String body = IOUtils.toString(in, encoding);
-                                        player.sendMessage(body);
+                                        JSONMessage.create(ChatColor
+                                                .translateAlternateColorCodes('&',
+                                                        "&bAnnouncement")).tooltip(
+                                                ChatColor.translateAlternateColorCodes('&', body)).send(player);
                                         con.disconnect();
                                     }
                                 } catch (Exception exception) {
