@@ -311,6 +311,16 @@ buff:
     - "&bThis buff will allow you and your"
     - "&bGuild Members to obtain increased"
     - "&bregeneration for a certain amount of time."
+  display:
+    haste: true
+    speed: true
+    fire-resistance: true
+    night-vision: true
+    invisibility: true
+    strength: true
+    jump: true
+    water-breathing: true
+    regeneration: true
 
 #-----------------------------------------------------------#
 #                     Vault Configuration                   #

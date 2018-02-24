@@ -63,9 +63,10 @@ public class CommandBuff extends CommandBase {
                 config.getString("buff.description.price") + config.getInt("buff.price.haste")));
         haste.add(ChatColor.translateAlternateColorCodes('&',
                 config.getString("buff.description.length") + config.getInt("buff.time.haste")));
-        buff.setItem(0, createItemStack(Material.getMaterial(config.getString("buff.icon.haste")),
-                config.getString("buff.name.haste"), haste));
-
+        if (config.getBoolean("buff.display.haste")) {
+            buff.setItem(0, createItemStack(Material.getMaterial(config.getString("buff.icon.haste")),
+                    config.getString("buff.name.haste"), haste));
+        }
         // Buff 2: Walk Speed
         ArrayList<String> speed = new ArrayList<String>();
         config.getStringList("buff.description.speed").stream()
@@ -75,8 +76,11 @@ public class CommandBuff extends CommandBase {
                 config.getString("buff.description.price") + config.getInt("buff.price.speed")));
         speed.add(ChatColor.translateAlternateColorCodes('&',
                 config.getString("buff.description.length") + config.getInt("buff.time.speed")));
-        buff.setItem(4, createItemStack(Material.getMaterial(config.getString("buff.icon.speed")),
-                config.getString("buff.name.speed"), speed));
+        if (config.getBoolean("buff.display.speed")) {
+            buff.setItem(4,
+                    createItemStack(Material.getMaterial(config.getString("buff.icon.speed")),
+                            config.getString("buff.name.speed"), speed));
+        }
 
         // Buff 3: Fire Resistance
         ArrayList<String> fireResistance = new ArrayList<String>();
@@ -88,9 +92,12 @@ public class CommandBuff extends CommandBase {
                 config.getString("buff.description.price") + config.getInt("buff.price.fire-resistance")));
         fireResistance.add(ChatColor.translateAlternateColorCodes('&',
                 config.getString("buff.description.length") + config.getInt("buff.time.fire-resistance")));
-        buff.setItem(2, createItemStack(Material.getMaterial(config.getString("buff.icon.fire-resistance")),
-                config.getString("buff.name.fire-resistance"),
-                fireResistance));
+        if (config.getBoolean("buff.display.fire-resistance")) {
+            buff.setItem(2, createItemStack(
+                    Material.getMaterial(config.getString("buff.icon.fire-resistance")),
+                    config.getString("buff.name.fire-resistance"),
+                    fireResistance));
+        }
 
         // Buff 4: Night Vision
         ArrayList<String> nightvision = new ArrayList<String>();
@@ -102,8 +109,11 @@ public class CommandBuff extends CommandBase {
                 config.getString("buff.description.price") + config.getInt("buff.price.night-vision")));
         nightvision.add(ChatColor.translateAlternateColorCodes('&',
                 config.getString("buff.description.length") + config.getInt("buff.time.night-vision")));
-        buff.setItem(6, createItemStack(Material.getMaterial(config.getString("buff.icon.night-vision")),
-                config.getString("buff.name.night-vision"), nightvision));
+        if (config.getBoolean("buff.display.night-vision")) {
+            buff.setItem(6, createItemStack(
+                    Material.getMaterial(config.getString("buff.icon.night-vision")),
+                    config.getString("buff.name.night-vision"), nightvision));
+        }
 
         // Buff 5: Invisibility
         ArrayList<String> invisibility = new ArrayList<String>();
@@ -115,8 +125,11 @@ public class CommandBuff extends CommandBase {
                 config.getString("buff.description.price") + config.getInt("buff.price.invisibility")));
         invisibility.add(ChatColor.translateAlternateColorCodes('&',
                 config.getString("buff.description.length") + config.getInt("buff.time.invisibility")));
-        buff.setItem(8, createItemStack(Material.getMaterial(config.getString("buff.icon.invisibility")),
-                config.getString("buff.name.invisibility"), invisibility));
+        if (config.getBoolean("buff.display.invisibility")) {
+            buff.setItem(8, createItemStack(
+                    Material.getMaterial(config.getString("buff.icon.invisibility")),
+                    config.getString("buff.name.invisibility"), invisibility));
+        }
 
         // Buff 6: Strength
         ArrayList<String> strength = new ArrayList<String>();
@@ -127,8 +140,11 @@ public class CommandBuff extends CommandBase {
                 config.getString("buff.description.price") + config.getInt("buff.price.strength")));
         strength.add(ChatColor.translateAlternateColorCodes('&',
                 config.getString("buff.description.length") + config.getInt("buff.time.strength")));
-        buff.setItem(1, createItemStack(Material.getMaterial(config.getString("buff.icon.strength")),
-                config.getString("buff.name.strength"), strength));
+        if (config.getBoolean("buff.display.strength")) {
+            buff.setItem(1,
+                    createItemStack(Material.getMaterial(config.getString("buff.icon.strength")),
+                            config.getString("buff.name.strength"), strength));
+        }
 
         // Buff 7: Jump
         ArrayList<String> jump = new ArrayList<String>();
@@ -139,8 +155,11 @@ public class CommandBuff extends CommandBase {
                 config.getString("buff.description.price") + config.getInt("buff.price.jump")));
         jump.add(ChatColor.translateAlternateColorCodes('&',
                 config.getString("buff.description.length") + config.getInt("buff.time.jump")));
-        buff.setItem(3, createItemStack(Material.getMaterial(config.getString("buff.icon.jump")),
-                config.getString("buff.name.jump"), jump));
+        if (config.getBoolean("buff.display.jump")) {
+            buff.setItem(3,
+                    createItemStack(Material.getMaterial(config.getString("buff.icon.jump")),
+                            config.getString("buff.name.jump"), jump));
+        }
 
         // Buff 8: Water Breathing
         ArrayList<String> waterbreathing = new ArrayList<String>();
@@ -152,9 +171,12 @@ public class CommandBuff extends CommandBase {
                 config.getString("buff.description.price") + config.getInt("buff.price.water-breathing")));
         waterbreathing.add(ChatColor.translateAlternateColorCodes('&',
                 config.getString("buff.description.length") + config.getInt("buff.time.water-breathing")));
-        buff.setItem(5, createItemStack(Material.getMaterial(config.getString("buff.icon.water-breathing")),
-                config.getString("buff.name.water-breathing"),
-                waterbreathing));
+        if (config.getBoolean("buff.display.water-breathing")) {
+            buff.setItem(5, createItemStack(
+                    Material.getMaterial(config.getString("buff.icon.water-breathing")),
+                    config.getString("buff.name.water-breathing"),
+                    waterbreathing));
+        }
 
         // Buff 9: Luck
         ArrayList<String> regeneration = new ArrayList<String>();
@@ -165,8 +187,11 @@ public class CommandBuff extends CommandBase {
                 config.getString("buff.description.price") + config.getInt("buff.price.regeneration")));
         regeneration.add(ChatColor.translateAlternateColorCodes('&',
                 config.getString("buff.description.length") + config.getInt("buff.time.regeneration")));
-        buff.setItem(7, createItemStack(Material.getMaterial(config.getString("buff.icon.regeneration")),
-                config.getString("buff.name.regeneration"), regeneration));
+        if (config.getBoolean("buff.display.regeneration")) {
+            buff.setItem(7, createItemStack(
+                    Material.getMaterial(config.getString("buff.icon.regeneration")),
+                    config.getString("buff.name.regeneration"), regeneration));
+        }
 
         // Open inventory
         player.openInventory(buff);
