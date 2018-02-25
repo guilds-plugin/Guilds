@@ -32,27 +32,18 @@ public class AnnouncementListener implements Listener {
                         if (player.isOp()) {
                             if (!ALREADY_INFORMED.contains(player.getUniqueId())) {
                                 try {
-                                    URL url = new URL(
-                                            "https://glaremasters.me/guilds/announcements/" + Guilds
-                                                    .getInstance().getDescription()
-                                                    .getVersion());
-                                    HttpURLConnection con = (HttpURLConnection) url
-                                            .openConnection();
-                                    con.setRequestProperty("User-Agent",
-                                            "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
+                                    URL url = new URL("https://glaremasters.me/guilds/announcements/" + Guilds.getInstance().getDescription().getVersion());
+                                    HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                                    con.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
                                     try (InputStream in = con.getInputStream()) {
                                         String encoding = con.getContentEncoding();
                                         encoding = encoding == null ? "UTF-8" : encoding;
                                         String body = IOUtils.toString(in, encoding);
-                                        JSONMessage.create(ChatColor
-                                                .translateAlternateColorCodes('&',
-                                                        Guilds.PREFIX + "&bAnnouncement")).tooltip(
-                                                ChatColor.translateAlternateColorCodes('&', body)).openURL("https://glaremasters.me/discord").send(player);
+                                        JSONMessage.create(ChatColor.translateAlternateColorCodes('&', Guilds.PREFIX + "&bAnnouncement")).tooltip(ChatColor.translateAlternateColorCodes('&', body)).openURL("https://glaremasters.me/discord").send(player);
                                         con.disconnect();
                                     }
                                 } catch (Exception exception) {
-                                    Bukkit.getConsoleSender()
-                                            .sendMessage("Could not fetch announcements!");
+                                    Bukkit.getConsoleSender().sendMessage("Could not fetch announcements!");
                                 }
                                 ALREADY_INFORMED.add(player.getUniqueId());
                             }

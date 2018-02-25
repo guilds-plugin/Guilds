@@ -40,47 +40,25 @@ public class CommandList extends CommandBase {
         int endIndex = 0;
 
         for (int i = 0; i < Guilds.getInstance().getGuildHandler().getGuilds().values().size(); i++) {
-            Guild guild =
-                    (Guild) Guilds.getInstance().getGuildHandler().getGuilds().values().toArray()[i];
+            Guild guild = (Guild) Guilds.getInstance().getGuildHandler().getGuilds().values().toArray()[i];
             ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
             SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
             ArrayList<String> lore = new ArrayList<String>();
-            if (config.getBoolean("display.name")) {
-                lore.add(color(config.getString("list.name") + guild.getName()));
-            }
-            if (config.getBoolean("display.prefix")) {
-                lore.add(color(config.getString("list.prefix") + guild.getPrefix()));
-            }
-
-            if (config.getBoolean("display.master")) {
-                lore.add(color(config.getString("list.master") + Bukkit.getOfflinePlayer(guild.getGuildMaster().getUniqueId()).getName()));
-            }
-            if (config.getBoolean("display.guildstatus")) {
-                lore.add(color(config.getString("list.guildstatus") + guild.getStatus()));
-            }
-            if (config.getBoolean("display.guildtier")) {
-                lore.add(color(config.getString("list.guildtier") + guild.getTier()));
-            }
-            if (config.getBoolean("display.guildbalance")) {
-                lore.add(color(config.getString("list.guildbalance") + guild.getBankBalance()));
-            }
-            if (config.getBoolean("display.member-count")) {
-                lore.add(color(config.getString("list.member-count") + String.valueOf(guild.getMembers().size())));
-            }
+            if (config.getBoolean("display.name")) { lore.add(color(config.getString("list.name") + guild.getName())); }
+            if (config.getBoolean("display.prefix")) { lore.add(color(config.getString("list.prefix") + guild.getPrefix())); }
+            if (config.getBoolean("display.master")) { lore.add(color(config.getString("list.master") + Bukkit.getOfflinePlayer(guild.getGuildMaster().getUniqueId()).getName())); }
+            if (config.getBoolean("display.guildstatus")) { lore.add(color(config.getString("list.guildstatus") + guild.getStatus())); }
+            if (config.getBoolean("display.guildtier")) { lore.add(color(config.getString("list.guildtier") + guild.getTier())); }
+            if (config.getBoolean("display.guildbalance")) { lore.add(color(config.getString("list.guildbalance") + guild.getBankBalance())); }
+            if (config.getBoolean("display.member-count")) { lore.add(color(config.getString("list.member-count") + String.valueOf(guild.getMembers().size()))); }
             if (config.getBoolean("display.members")) {
-                List<String> lines = Arrays.asList(guild.getMembers().stream()
-                        .map(member -> Bukkit.getOfflinePlayer(member.getUniqueId()).getName())
-                        .collect(Collectors.joining(", "))
-                        .replaceAll("(([a-zA-Z0-9_]+, ){3})", "$0\n")
-                        .split("\n"));
+                List<String> lines = Arrays.asList(guild.getMembers().stream().map(member -> Bukkit.getOfflinePlayer(member.getUniqueId()).getName()).collect(Collectors.joining(", ")).replaceAll("(([a-zA-Z0-9_]+, ){3})", "$0\n").split("\n"));
                 lines.set(0, color(config.getString("list.members") + lines.get(0)));
                 lore.addAll(lines);
             }
             skullMeta.setLore(lore);
             String name = Bukkit.getOfflinePlayer(guild.getGuildMaster().getUniqueId()).getName();
-            skullMeta
-                    .setOwner(Bukkit.getOfflinePlayer(guild.getGuildMaster().getUniqueId())
-                            .getName());
+            skullMeta.setOwner(Bukkit.getOfflinePlayer(guild.getGuildMaster().getUniqueId()).getName());
             skullMeta.setDisplayName(color(config.getString("gui-name.list.head-name").replace("{player}", name)));
             skull.setItemMeta(skullMeta);
             skulls.put(guild.getGuildMaster().getUniqueId(), skull);
@@ -105,9 +83,7 @@ public class CommandList extends CommandBase {
         startIndex = (page - 1) * 45;
         endIndex = startIndex + 45;
 
-        if (endIndex > skulls.values().size()) {
-            endIndex = skulls.values().size();
-        }
+        if (endIndex > skulls.values().size()) { endIndex = skulls.values().size(); }
 
         int iCount = 0;
         for (int i1 = startIndex; i1 < endIndex; i1++) {

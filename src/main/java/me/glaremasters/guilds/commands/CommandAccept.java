@@ -36,24 +36,21 @@ public class CommandAccept extends CommandBase {
             Message.sendMessage(player, Message.COMMAND_ERROR_ALREADY_IN_GUILD);
             return;
         }
-        Guild guild = (Guild) Guilds.getInstance().getGuildHandler().getGuilds().values()
-                .toArray()[0];
+        Guild guild = (Guild) Guilds.getInstance().getGuildHandler().getGuilds().values().toArray()[0];
         try {
             if (args.length == 0) {
                 int invites = 0;
                 int indexes = 0;
                 for (int i = 0;
                      i < Guilds.getInstance().getGuildHandler().getGuilds().values().size(); i++) {
-                    Guild guildtmp = (Guild) Guilds.getInstance().getGuildHandler().getGuilds()
-                            .values().toArray()[i];
+                    Guild guildtmp = (Guild) Guilds.getInstance().getGuildHandler().getGuilds().values().toArray()[i];
                     if (guildtmp.getInvitedMembers().contains(player.getUniqueId())) {
                         invites++;
                         indexes = i;
                     }
                 }
                 if (invites == 1) {
-                    guild = (Guild) Guilds.getInstance().getGuildHandler().getGuilds().values()
-                            .toArray()[indexes];
+                    guild = (Guild) Guilds.getInstance().getGuildHandler().getGuilds().values().toArray()[indexes];
                 } else {
                     Message.sendMessage(player, Message.COMMAND_ACCEPT_NOT_INVITED);
                     return;
@@ -66,8 +63,7 @@ public class CommandAccept extends CommandBase {
         }
 
         if (guild == null) {
-            Message.sendMessage(player,
-                    Message.COMMAND_ERROR_GUILD_NOT_FOUND.replace("{input}", args[0]));
+            Message.sendMessage(player, Message.COMMAND_ERROR_GUILD_NOT_FOUND.replace("{input}", args[0]));
             return;
         }
 
@@ -85,12 +81,9 @@ public class CommandAccept extends CommandBase {
         }
 
         GuildJoinEvent event = new GuildJoinEvent(player, guild);
-        if (event.isCancelled()) {
-            return;
-        }
+        if (event.isCancelled()) { return; }
 
-        guild.sendMessage(
-                Message.COMMAND_ACCEPT_PLAYER_JOINED.replace("{player}", player.getName()));
+        guild.sendMessage(Message.COMMAND_ACCEPT_PLAYER_JOINED.replace("{player}", player.getName()));
 
         guild.addMember(player.getUniqueId(), GuildRole.getLowestRole());
         guild.removeInvitedPlayer(player.getUniqueId());
@@ -99,9 +92,7 @@ public class CommandAccept extends CommandBase {
             RegionContainer container = WorldGuard.getWorldGuard().getRegionContainer();
             RegionManager regions = container.get(player.getWorld());
 
-            if (regions.getRegion(guild.getName()) != null) {
-                regions.getRegion(guild.getName()).getMembers().addPlayer(player.getName());
-            }
+            if (regions.getRegion(guild.getName()) != null) { regions.getRegion(guild.getName()).getMembers().addPlayer(player.getName()); }
         }
 
         for (int i = 1; i <= guild.getTier(); i++) {
@@ -114,7 +105,6 @@ public class CommandAccept extends CommandBase {
         TablistHandler.addTablist(player);
         NTEHandler.setTag(player);
 
-        Message.sendMessage(player,
-                Message.COMMAND_ACCEPT_SUCCESSFUL.replace("{guild}", guild.getName()));
+        Message.sendMessage(player, Message.COMMAND_ACCEPT_SUCCESSFUL.replace("{guild}", guild.getName()));
     }
 }
