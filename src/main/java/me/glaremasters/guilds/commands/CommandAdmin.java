@@ -1,5 +1,6 @@
 package me.glaremasters.guilds.commands;
 
+import static me.glaremasters.guilds.util.ColorUtil.color;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
@@ -7,7 +8,6 @@ import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.message.Message;
 import me.glaremasters.guilds.util.ConfirmAction;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -141,7 +141,7 @@ public class CommandAdmin extends CommandBase {
                 return;
             }
             Message.sendMessage(sender, Message.COMMAND_PREFIX_SUCCESSFUL);
-            guild.updatePrefix(ChatColor.translateAlternateColorCodes('&', args[2]));
+            guild.updatePrefix(color(args[2]));
         }
     }
 }

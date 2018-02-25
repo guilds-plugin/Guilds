@@ -1,11 +1,11 @@
 package me.glaremasters.guilds.commands;
 
+import static me.glaremasters.guilds.util.ColorUtil.color;
 import java.util.ArrayList;
 import java.util.List;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -32,8 +32,8 @@ public class CommandGive extends CommandBase {
         ItemStack upgradeTicket = new ItemStack(Material.PAPER, amount);
         ItemMeta meta = upgradeTicket.getItemMeta();
         List<String> lores = new ArrayList<String>();
-        lores.add(ChatColor.translateAlternateColorCodes('&', config.getString("upgrade-ticket.lore")));
-        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', config.getString("upgrade-ticket.name")));
+        lores.add(color(config.getString("upgrade-ticket.lore")));
+        meta.setDisplayName(color(config.getString("upgrade-ticket.name")));
         meta.setLore(lores);
         upgradeTicket.setItemMeta(meta);
         player.getInventory().addItem(upgradeTicket);

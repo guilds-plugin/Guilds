@@ -1,5 +1,6 @@
 package me.glaremasters.guilds.commands;
 
+import static me.glaremasters.guilds.util.ColorUtil.color;
 import java.util.List;
 import java.util.logging.Level;
 import me.glaremasters.guilds.Guilds;
@@ -12,7 +13,6 @@ import me.glaremasters.guilds.handlers.TitleHandler;
 import me.glaremasters.guilds.message.Message;
 import me.glaremasters.guilds.util.ConfirmAction;
 import net.milkbowl.vault.economy.EconomyResponse;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
@@ -81,7 +81,7 @@ public class CommandCreate extends CommandBase {
         Guilds.getInstance().getCommandHandler().addAction(player, new ConfirmAction() {
             @Override
             public void accept() {
-                Guild guild = new Guild(ChatColor.translateAlternateColorCodes('&', args[0]),
+                Guild guild = new Guild(color(args[0]),
                         player.getUniqueId());
 
                 GuildCreateEvent event = new GuildCreateEvent(player, guild);
