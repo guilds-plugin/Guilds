@@ -46,8 +46,8 @@ public class AnnouncementListener implements Listener {
                                         String body = IOUtils.toString(in, encoding);
                                         JSONMessage.create(ChatColor
                                                 .translateAlternateColorCodes('&',
-                                                        "&bAnnouncement")).tooltip(
-                                                ChatColor.translateAlternateColorCodes('&', body)).send(player);
+                                                        Guilds.PREFIX + "&bAnnouncement")).tooltip(
+                                                ChatColor.translateAlternateColorCodes('&', body)).openURL("https://glaremasters.me/discord").send(player);
                                         con.disconnect();
                                     }
                                 } catch (Exception exception) {

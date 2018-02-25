@@ -1,5 +1,6 @@
 package me.glaremasters.guilds.commands;
 
+import static me.glaremasters.guilds.util.ColorUtil.color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -10,8 +11,8 @@ import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -32,9 +33,8 @@ public class CommandList extends CommandBase {
 
     public static Inventory getSkullsPage(int page) {
         HashMap<UUID, ItemStack> skulls = new HashMap<>();
-        Inventory inv = Bukkit.createInventory(null, 54,
-                ChatColor.DARK_GREEN + Guilds.getInstance().getConfig()
-                        .getString("gui-name.list.name"));
+        FileConfiguration config = Guilds.getInstance().getConfig();
+        Inventory inv = Bukkit.createInventory(null, 54, (config.getString("gui-name.list.name")));
 
         int startIndex = 0;
         int endIndex = 0;
@@ -45,59 +45,35 @@ public class CommandList extends CommandBase {
             ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
             SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
             ArrayList<String> lore = new ArrayList<String>();
-            if (Guilds.getInstance().getConfig().getBoolean("display.name")) {
-                lore.add(
-                        ChatColor.translateAlternateColorCodes('&',
-                                Guilds.getInstance().getConfig().getString("list.name")
-                                        + guild.getName()));
+            if (config.getBoolean("display.name")) {
+                lore.add(color(config.getString("list.name") + guild.getName()));
             }
-            if (Guilds.getInstance().getConfig().getBoolean("display.prefix")) {
-                lore.add(
-                        ChatColor.translateAlternateColorCodes('&',
-                                Guilds.getInstance().getConfig().getString("list.prefix") + guild
-                                        .getPrefix()));
+            if (config.getBoolean("display.prefix")) {
+                lore.add(color(config.getString("list.prefix") + guild.getPrefix()));
             }
 
-            if (Guilds.getInstance().getConfig().getBoolean("display.master")) {
-                lore.add(
-                        ChatColor.translateAlternateColorCodes('&',
-                                Guilds.getInstance().getConfig().getString("list.master")
-                                        + Bukkit
-                                        .getOfflinePlayer(guild.getGuildMaster().getUniqueId())
-                                        .getName()));
+            if (config.getBoolean("display.master")) {
+                lore.add(color(config.getString("list.master") + Bukkit.getOfflinePlayer(guild.getGuildMaster().getUniqueId()).getName()));
             }
-            if (Guilds.getInstance().getConfig().getBoolean("display.guildstatus")) {
-                lore.add(
-                        ChatColor.translateAlternateColorCodes('&', Guilds.getInstance().getConfig()
-                                .getString("list.guildstatus")
-                                + guild.getStatus()));
+            if (config.getBoolean("display.guildstatus")) {
+                lore.add(color(config.getString("list.guildstatus") + guild.getStatus()));
             }
-            if (Guilds.getInstance().getConfig().getBoolean("display.guildtier")) {
-                lore.add(
-                        ChatColor.translateAlternateColorCodes('&', Guilds.getInstance().getConfig()
-                                .getString("list.guildtier")
-                                + guild.getTier()));
+            if (config.getBoolean("display.guildtier")) {
+                lore.add(color(config.getString("list.guildtier") + guild.getTier()));
             }
-            if (Guilds.getInstance().getConfig().getBoolean("display.guildbalance")) {
-                lore.add(
-                        ChatColor.translateAlternateColorCodes('&', Guilds.getInstance().getConfig()
-                                .getString("list.guildbalance")
-                                + guild.getBankBalance()));
+            if (config.getBoolean("display.guildbalance")) {
+                lore.add(color(config.getString("list.guildbalance") + guild.getBankBalance()));
             }
-            if (Guilds.getInstance().getConfig().getBoolean("display.member-count")) {
-                lore.add(
-                        ChatColor.translateAlternateColorCodes('&',
-                                Guilds.getInstance().getConfig().getString("list.member-count")
-                                        + String.valueOf(guild.getMembers().size())));
+            if (config.getBoolean("display.member-count")) {
+                lore.add(color(config.getString("list.member-count") + String.valueOf(guild.getMembers().size())));
             }
-            if (Guilds.getInstance().getConfig().getBoolean("display.members")) {
+            if (config.getBoolean("display.members")) {
                 List<String> lines = Arrays.asList(guild.getMembers().stream()
                         .map(member -> Bukkit.getOfflinePlayer(member.getUniqueId()).getName())
                         .collect(Collectors.joining(", "))
                         .replaceAll("(([a-zA-Z0-9_]+, ){3})", "$0\n")
                         .split("\n"));
-                lines.set(0, ChatColor.translateAlternateColorCodes('&',
-                        Guilds.getInstance().getConfig().getString("list.members") + lines.get(0)));
+                lines.set(0, color(config.getString("list.members") + lines.get(0)));
                 lore.addAll(lines);
             }
             skullMeta.setLore(lore);
@@ -105,29 +81,22 @@ public class CommandList extends CommandBase {
             skullMeta
                     .setOwner(Bukkit.getOfflinePlayer(guild.getGuildMaster().getUniqueId())
                             .getName());
-            skullMeta.setDisplayName(
-                    ChatColor.AQUA + Guilds.getInstance().getConfig()
-                            .getString("gui-name.list.head-name")
-                            .replace("{player}", name));
+            skullMeta.setDisplayName(color(config.getString("gui-name.list.head-name").replace("{player}", name)));
             skull.setItemMeta(skullMeta);
             skulls.put(guild.getGuildMaster().getUniqueId(), skull);
         }
 
         ItemStack previous = new ItemStack(Material.EMPTY_MAP, 1);
         ItemMeta previousMeta = previous.getItemMeta();
-        previousMeta.setDisplayName(ChatColor.GOLD + Guilds.getInstance().getConfig()
-                .getString("gui-name.list.previous-page"));
+        previousMeta.setDisplayName(color(config.getString("gui-name.list.previous-page")));
         previous.setItemMeta(previousMeta);
         ItemStack next = new ItemStack(Material.EMPTY_MAP, 1);
         ItemMeta nextMeta = next.getItemMeta();
-        nextMeta.setDisplayName(ChatColor.GOLD + Guilds.getInstance().getConfig()
-                .getString("gui-name.list.next-page"));
+        nextMeta.setDisplayName(color(config.getString("gui-name.list.next-page")));
         next.setItemMeta(nextMeta);
         ItemStack barrier = new ItemStack(Material.BARRIER, 1);
         ItemMeta barrierMeta = barrier.getItemMeta();
-        barrierMeta.setDisplayName(
-                ChatColor.GOLD + Guilds.getInstance().getConfig().getString("gui-name.list.page")
-                        + page);
+        barrierMeta.setDisplayName(color(config.getString("gui-name.list.page") + page));
         barrier.setItemMeta(barrierMeta);
         inv.setItem(53, next);
         inv.setItem(49, barrier);

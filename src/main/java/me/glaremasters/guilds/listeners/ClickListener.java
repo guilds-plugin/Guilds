@@ -22,12 +22,12 @@ public class ClickListener implements Listener {
     public void onClick(InventoryClickEvent e) {
         Player player = (Player) e.getWhoClicked();
         if (e.getInventory().getTitle().equalsIgnoreCase(
-                ChatColor.DARK_GREEN + Guilds.getInstance().getConfig().getString("gui-name.info"))) {
+                Guilds.getInstance().getConfig().getString("gui-name.info"))) {
             e.setCancelled(true);
             e.setResult(Event.Result.DENY);
         }
         if (e.getInventory().getTitle().equalsIgnoreCase(
-                ChatColor.DARK_GREEN + Guilds.getInstance().getConfig()
+                Guilds.getInstance().getConfig()
                         .getString("gui-name.list.name"))) {
             if (e.getAction().equals(InventoryAction.PICKUP_ALL)) {
                 if (e.getCurrentItem().getItemMeta().getDisplayName()
@@ -70,12 +70,12 @@ public class ClickListener implements Listener {
     @EventHandler
     public void onClick2(InventoryInteractEvent e) {
         if (e.getInventory().getTitle().equalsIgnoreCase(
-                ChatColor.DARK_GREEN + Guilds.getInstance().getConfig().getString("gui-name.info"))) {
+                Guilds.getInstance().getConfig().getString("gui-name.info"))) {
             e.setCancelled(true);
             e.setResult(Event.Result.DENY);
         }
         if (e.getInventory().getTitle().equalsIgnoreCase(
-                ChatColor.DARK_GREEN + Guilds.getInstance().getConfig()
+                Guilds.getInstance().getConfig()
                         .getString("gui-name.list.name"))) {
             e.setCancelled(true);
             e.setResult(Event.Result.DENY);

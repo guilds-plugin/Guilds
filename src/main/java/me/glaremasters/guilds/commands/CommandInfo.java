@@ -8,7 +8,6 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.message.Message;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.SkullType;
 import org.bukkit.Statistic;
@@ -65,7 +64,7 @@ public class CommandInfo extends CommandBase implements Listener {
             return;
         }
 
-        Inventory heads = Bukkit.createInventory(null, InventoryType.HOPPER, ChatColor.DARK_GREEN + config.getString("gui-name.info"));
+        Inventory heads = Bukkit.createInventory(null, InventoryType.HOPPER, config.getString("gui-name.info"));
         // Skull: From player
         heads.setItem(1, createSkull(player));
 
