@@ -177,20 +177,19 @@ list:
 # You can change the colors, and the language of all parts of the guild info GUI.
 info:
   balance: "&bBank Balance: &c{guild-balance}"
-  deaths: "Deaths: {deaths}"
-  guildname: "Guild: {guild-name}"
-  guildstatus: "Status: {guild-status}"
-  guildtier: "Tier: {guild-tier}"
+  deaths: "&bDeaths: &c{deaths}"
+  guildname: "&bGuild: &c{guild-name}"
+  guildstatus: "&bStatus: &c{guild-status}"
+  guildtier: "&bTier: &c{guild-tier}"
   info: "Information: "
-  kills: "Kills: {kills}"
-  master: "Master: {guild-master}"
-  max-balance: "Max Balance: {guild-max-balance}"
-  member-count: "Member Count: {member-count}"
-  members: "Members In Guild: "
+  kills: "&bKills: &c{kills}"
+  master: "&bMaster: &c{guild-master}"
+  max-balance: "&bMax Balance: &c{guild-max-balance}"
+  member-count: "&bMember Count: &c{member-count}"
   money: "Money: "
-  playername: "Name: {player-name}"
-  prefix: "Prefix: {guild-prefix}"
-  role: "Role: {guild-role}"
+  playername: "&bName: &c{player-name}"
+  prefix: "&bPrefix: &c{guild-prefix}"
+  role: "&bRole: &c{guild-role}"
 
 # This part controls what is shown as the inventory name for things such as Guild List and Guild Vaults.
 gui-name:
