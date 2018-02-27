@@ -102,16 +102,8 @@ public class CommandHome extends CommandBase implements Listener {
                     }
 
                 } else {
-                    String[] data = Guilds.getInstance().guildHomesConfig
-                            .getString(Guild.getGuild(player.getUniqueId()).getName()).split(":");
-                    World w = Bukkit.getWorld(data[0]);
-                    double x = Double.parseDouble(data[1]);
-                    double y = Double.parseDouble(data[2]);
-                    double z = Double.parseDouble(data[3]);
 
-                    Location guildhome = new Location(w, x, y, z);
-                    guildhome.setYaw(Float.parseFloat(data[4]));
-                    guildhome.setPitch(Float.parseFloat(data[5]));
+                    Location guildhome = (Location) Guilds.getInstance().guildHomesConfig.get(Guild.getGuild(player.getUniqueId()).getName());
 
                     player.teleport(guildhome);
                     Message.sendMessage(player, Message.COMMAND_HOME_TELEPORTED);

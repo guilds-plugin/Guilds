@@ -79,17 +79,7 @@ public class CommandSetHome extends CommandBase {
                     }
                 }
 
-                String world = player.getWorld().getName();
-                double xloc = player.getLocation().getX();
-                double yloc = player.getLocation().getY();
-                double zloc = player.getLocation().getZ();
-                float yaw = player.getLocation().getYaw();
-                float pitch = player.getLocation().getPitch();
-
-                Guilds.getInstance().guildHomesConfig
-                        .set(Guild.getGuild(player.getUniqueId()).getName(),
-                                world + ":" + xloc + ":" + yloc + ":" + zloc + ":" + yaw + ":"
-                                        + pitch);
+                Guilds.getInstance().guildHomesConfig.set(Guild.getGuild(player.getUniqueId()).getName(), player.getLocation());
                 Guilds.getInstance().saveGuildData();
                 Message.sendMessage(player, Message.COMMAND_CREATE_GUILD_HOME);
                 cooldowns.put(player.getName(), System.currentTimeMillis());
