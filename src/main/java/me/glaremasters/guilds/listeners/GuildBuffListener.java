@@ -48,14 +48,7 @@ public class GuildBuffListener implements Listener {
                     guild.getMembers().stream()
                             .map(member -> Bukkit.getOfflinePlayer(member.getUniqueId()))
                             .filter(OfflinePlayer::isOnline)
-                            .forEach(member -> {
-
-                                ((Player) member).addPotionEffect(
-                                        new PotionEffect(buff.potion, buff.time,
-                                                buff.amplifier));
-
-                            });
-
+                            .forEach(member -> ((Player) member).addPotionEffect(new PotionEffect(buff.potion, buff.time, buff.amplifier)));
                     Guilds.getInstance().guildBanksConfig
                             .set(guild.getName(), balance - buff.cost);
                     Guilds.getInstance().saveGuildData();

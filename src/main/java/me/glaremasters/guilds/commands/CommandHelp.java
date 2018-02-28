@@ -25,8 +25,7 @@ public class CommandHelp extends CommandBase {
             try {
                 page = Integer.valueOf(args[0]);
             } catch (NumberFormatException ex) {
-                Message.sendMessage(sender,
-                        Message.COMMAND_ERROR_INVALID_NUMBER.replace("{input}", args[0]));
+                Message.sendMessage(sender, Message.COMMAND_ERROR_INVALID_NUMBER.replace("{input}", args[0]));
             }
         }
         sender.sendMessage(ChatColor.GREEN + "=====================================================");
@@ -42,8 +41,7 @@ public class CommandHelp extends CommandBase {
                 break;
             }
 
-            CommandBase command =
-                    Guilds.getInstance().getCommandHandler().getCommands().get(index);
+            CommandBase command = Guilds.getInstance().getCommandHandler().getCommands().get(index);
 
             Message.sendMessage(sender, Message.COMMAND_HELP_MESSAGE
                     .replace("{command}", command.getName(), "{arguments}", command.getArguments(),

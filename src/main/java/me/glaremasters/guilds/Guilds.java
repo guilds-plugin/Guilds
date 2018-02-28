@@ -9,9 +9,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.util.logging.Level;
 import java.util.stream.Stream;
 import me.glaremasters.guilds.api.Metrics;
@@ -41,7 +38,6 @@ public class Guilds extends JavaPlugin {
     private static Guilds instance;
     private static Economy econ;
     public static Permission perms = null;
-    private static long creationTime;
     private static TaskChainFactory taskChainFactory;
     public File languageYamlFile;
     public YamlConfiguration yaml;
@@ -113,7 +109,7 @@ public class Guilds extends JavaPlugin {
 
         // TODO: Clean this up and make it function easier.
 
-        if (!getConfig().isSet("version") || getConfig().getInt("version") != 21) {
+        if (!getConfig().isSet("version") || getConfig().getInt("version") != 22) {
             if (getConfig().getBoolean("auto-update-config")) {
                 File oldfile = new File(this.getDataFolder(), "config.yml");
                 File newfile = new File(this.getDataFolder(), "config-old.yml");
@@ -197,19 +193,6 @@ public class Guilds extends JavaPlugin {
                 () -> Guilds.getInstance().getGuildHandler().getGuilds().values().size()));
 
         this.saveGuildData();
-
-        try {
-            BasicFileAttributes attr = Files
-                    .readAttributes(Paths.get(getFile().getAbsolutePath()),
-                            BasicFileAttributes.class);
-            creationTime = attr.creationTime().toMillis();
-        } catch (IOException e) {
-            getLogger().log(Level.WARNING, "Cannot get plugin file's creation time!");
-            e.printStackTrace();
-
-            creationTime = 0;
-        }
-
         if (getConfig().getBoolean("updater.check")) {
             SpigotUpdater updater = new SpigotUpdater(this, 48920);
             try {
