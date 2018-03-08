@@ -4,7 +4,6 @@ import static me.glaremasters.guilds.placeholders.PlaceholdersSRV.getGuildMember
 import static me.glaremasters.guilds.placeholders.PlaceholdersSRV.getGuildMembersOnline;
 import static me.glaremasters.guilds.placeholders.PlaceholdersSRV.getGuildRole;
 import me.glaremasters.guilds.guild.Guild;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -30,8 +29,6 @@ public class ChatListener implements Listener {
             event.setFormat(event.getFormat().replace("{ESSENTIALS_GUILD}", guild.getName()));
             event.setFormat(
                     event.getFormat().replace("{ESSENTIALS_GUILD_PREFIX}", guild.getPrefix()));
-            event.setFormat(event.getFormat().replace("{ESSENTIALS_GUILD_MASTER}",
-                    Bukkit.getOfflinePlayer(guild.getGuildMaster().getUniqueId()).getName()));
             event.setFormat(event.getFormat().replace("{ESSENTIALS_GUILD_MEMBER_COUNT}",
                     getGuildMemberCount(event.getPlayer())));
             event.setFormat(event.getFormat().replace("{ESSENTIALS_GUILD_MEMBERS_ONLINE}",
