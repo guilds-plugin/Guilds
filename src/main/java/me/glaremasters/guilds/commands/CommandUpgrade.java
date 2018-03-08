@@ -46,6 +46,11 @@ public class CommandUpgrade extends CommandBase {
             Message.sendMessage(player, Message.COMMAND_UPGRADE_TIER_MAX);
             return;
         }
+
+        if (guild.getMemebersRankupRequire() != 0 && guild.getMembers().size() < guild.getMemebersRankupRequire()) {
+            Message.sendMessage(player, Message.COMMAND_UPGRADE_NOT_ENOUGH_MEMBERS.replace("{amount}", String.valueOf(guild.getMemebersRankupRequire())));
+            return;
+        }
         double balance = guild.getBankBalance();
         double tierUpgradeCost = guild.getTierCost();
         if (Guilds.getInstance().getConfig().getBoolean("use-bank-balance")) {

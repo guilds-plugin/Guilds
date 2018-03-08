@@ -139,6 +139,10 @@ public class Guild implements InventoryHolder {
         return Guilds.getInstance().getConfig().getInt("tier" + getTier() + ".max-members");
     }
 
+    public int getMemebersRankupRequire() {
+        return Guilds.getInstance().getConfig().getInt("tier" + getTier() + ".members-to-rankup");
+    }
+
     public String getTierName() {
         return ChatColor.translateAlternateColorCodes('&',
                 Guilds.getInstance().getConfig().getString("tier" + getTier() + ".name"));

@@ -46,7 +46,8 @@ messages:
       money-warning: "&cYou are about to spend {amount} to set upgrade your guild. (Type /guilds confirm to continue)"
       cancel: "&cUpgrade cancelled!"
       success: "&aYou've successfully upgraded your guild!"
-      not-enough-money: "&aSorry! You don't have enough money to upgrade your Guild! You still need {needed}!"
+      not-enough-money: "&cSorry! You don't have enough money to upgrade your Guild! You still need {needed}!"
+      not-enough-members: "&cSorry! You need at least {amount} members to rank up your Guild Tier!"
     buff:
       not-enough-money: "&cYou do not have enough money to buy this buff!"
       success: "&a{player} just purchased {buff} for {time} seconds!" # Possible placeholders: {guild}, {player}, {buff}, {time}, {cost}, {amplifier}
