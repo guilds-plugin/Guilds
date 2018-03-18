@@ -42,21 +42,19 @@ public class CommandClaim extends CommandBase {
         Guild guild = Guild.getGuild(player.getUniqueId());
         if (guild == null) {
             Message.sendMessage(player, Message.COMMAND_ERROR_NO_GUILD);
-            Bukkit.broadcastMessage("1");
             return;
         }
 
         GuildRole role = GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole());
         if (!role.canClaimLand()) {
             Message.sendMessage(player, Message.COMMAND_ERROR_ROLE_NO_PERMISSION);
-            Bukkit.broadcastMessage("2");
             return;
         }
 
         final FileConfiguration config = Guilds.getInstance().getConfig();
         if (!config.getBoolean("hooks.worldguard")) {
             Message.sendMessage(player, Message.COMMAND_CLAIM_WORLDGUARD_REQUIRED);
-            Bukkit.broadcastMessage("3");
+
             return;
         }
 
@@ -64,7 +62,7 @@ public class CommandClaim extends CommandBase {
 
         if (config.getStringList("disabled-worlds").contains(wName)) {
             Message.sendMessage(player, Message.COMMAND_CLAIM_DISABLED_WORLD);
-            Bukkit.broadcastMessage("4");
+
             return;
         }
 
@@ -73,13 +71,12 @@ public class CommandClaim extends CommandBase {
         if (config.getBoolean("custom-claim-size")) {
             if (args.length != 1) {
                 Message.sendMessage(player, Message.COMMAND_CLAIM_ENTER_SIZE);
-                Bukkit.broadcastMessage("5");
-                return;
+
             }
             if (Integer.valueOf(args[0]) > config.getInt("custom-max-claim-size")) {
                 Message.sendMessage(player, Message.COMMAND_CLAIM_TOO_BIG
                         .replace("{max}", String.valueOf(config.getInt("custom-max-claim-size"))));
-                Bukkit.broadcastMessage("6");
+
                 return;
             }
 
@@ -87,13 +84,12 @@ public class CommandClaim extends CommandBase {
             if (Guilds.vault && claimCost != -1) {
                 if (Guilds.getInstance().getEconomy().getBalance(player) < claimCost) {
                     Message.sendMessage(player, Message.COMMAND_ERROR_NOT_ENOUGH_MONEY);
-                    Bukkit.broadcastMessage("7");
+
                     return;
                 }
 
                 Message.sendMessage(player, Message.COMMAND_CREATE_MONEY_WARNING_SETHOME
                         .replace("{amount}", String.valueOf(claimCost)));
-                Bukkit.broadcastMessage("8");
 
 
             }
@@ -106,7 +102,7 @@ public class CommandClaim extends CommandBase {
                 }
                 Message.sendMessage(player, Message.COMMAND_CLAIM_CONFIRM
                         .replace("{amount}", String.valueOf(claimCost)));
-                Bukkit.broadcastMessage("9");
+
 
             }
         }
