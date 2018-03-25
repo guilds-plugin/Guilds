@@ -54,6 +54,7 @@ public class CommandClaim extends CommandBase {
         final FileConfiguration config = Guilds.getInstance().getConfig();
         if (!config.getBoolean("hooks.worldguard")) {
             Message.sendMessage(player, Message.COMMAND_CLAIM_WORLDGUARD_REQUIRED);
+
             return;
         }
 
@@ -61,6 +62,7 @@ public class CommandClaim extends CommandBase {
 
         if (config.getStringList("disabled-worlds").contains(wName)) {
             Message.sendMessage(player, Message.COMMAND_CLAIM_DISABLED_WORLD);
+
             return;
         }
 
@@ -69,11 +71,12 @@ public class CommandClaim extends CommandBase {
         if (config.getBoolean("custom-claim-size")) {
             if (args.length != 1) {
                 Message.sendMessage(player, Message.COMMAND_CLAIM_ENTER_SIZE);
-                return;
+
             }
             if (Integer.valueOf(args[0]) > config.getInt("custom-max-claim-size")) {
                 Message.sendMessage(player, Message.COMMAND_CLAIM_TOO_BIG
                         .replace("{max}", String.valueOf(config.getInt("custom-max-claim-size"))));
+
                 return;
             }
 
@@ -81,6 +84,7 @@ public class CommandClaim extends CommandBase {
             if (Guilds.vault && claimCost != -1) {
                 if (Guilds.getInstance().getEconomy().getBalance(player) < claimCost) {
                     Message.sendMessage(player, Message.COMMAND_ERROR_NOT_ENOUGH_MONEY);
+
                     return;
                 }
 
@@ -98,6 +102,7 @@ public class CommandClaim extends CommandBase {
                 }
                 Message.sendMessage(player, Message.COMMAND_CLAIM_CONFIRM
                         .replace("{amount}", String.valueOf(claimCost)));
+
 
             }
         }
