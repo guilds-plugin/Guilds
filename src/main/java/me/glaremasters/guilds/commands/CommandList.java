@@ -53,7 +53,9 @@ public class CommandList extends CommandBase {
             if (config.getBoolean("display.member-count")) { lore.add(color(config.getString("list.member-count") + String.valueOf(guild.getMembers().size()))); }
             if (config.getBoolean("display.members")) {
                 List<String> lines = Arrays.asList(guild.getMembers().stream().map(member -> Bukkit.getOfflinePlayer(member.getUniqueId()).getName()).collect(Collectors.joining(", ")).replaceAll("(([a-zA-Z0-9_]+, ){3})", "$0\n").split("\n"));
-                lines.set(0, color(config.getString("list.members") + lines.get(0)));
+                for (int j = 0; j < lines.size(); j ++) {
+                    lines.set(j, color(config.getString("list.members") + lines.get(j)));
+                }
                 lore.addAll(lines);
             }
             skullMeta.setLore(lore);
