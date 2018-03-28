@@ -102,11 +102,6 @@ public class CommandHome extends CommandBase implements Listener {
 
                 } else {
 
-                    try {
-                        Location guildhome = (Location) Guilds.getInstance().guildHomesConfig
-                                .get(Guild.getGuild(player.getUniqueId()).getName());
-                        player.teleport(guildhome);
-                    } catch (ClassCastException e) {
                         String[] data = Guilds.getInstance().guildHomesConfig
                                 .getString(Guild.getGuild(player.getUniqueId()).getName())
                                 .split(":");
@@ -119,7 +114,7 @@ public class CommandHome extends CommandBase implements Listener {
                         guildhome.setYaw(Float.parseFloat(data[4]));
                         guildhome.setPitch(Float.parseFloat(data[5]));
                         player.teleport(guildhome);
-                    }
+
                     Message.sendMessage(player, Message.COMMAND_HOME_TELEPORTED);
                     CommandHome.this.cooldowns
                             .put(player.getName(), Long.valueOf(System.currentTimeMillis()));
