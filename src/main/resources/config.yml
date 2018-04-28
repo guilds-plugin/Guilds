@@ -360,8 +360,8 @@ reward-on-kill:
 # Customize the entrance and exit message of joining claims
 # Supports {prefix} for guild prefix and {guild} for guild name
 # Also supports color codes!
-claim-enter-message: ""
-claim-exit-message: ""
+claim-enter-message: "&aNow entering &d{guild}'s &aclaim!"
+claim-exit-message: "&aNow leaving &d{guild}'s &aclaim!"
 
 # Would you like to disable guild claiming in specific worlds?
 disabled-worlds:
