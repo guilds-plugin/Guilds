@@ -31,18 +31,25 @@ public class GuildChatListener implements Listener {
 
         if (GUILD_CHAT_PLAYERS.contains(player.getUniqueId())) {
             event.getRecipients().removeIf(r -> guild.getMember(r.getUniqueId()) == null);
-            if (player.hasPermission("guilds.chat.color")) {
-                event.setFormat(ChatColor.translateAlternateColorCodes('&',
-                        (Guilds.getInstance().getConfig().getString("guild-chat-format"))
-                                .replace("{role}", GuildRole
-                                        .getRole(guild.getMember(player.getUniqueId()).getRole())
-                                        .getName())));
-            } else {
-                event.setFormat(Guilds.getInstance().getConfig().getString("guild-chat-format")
-                        .replace("{role}", GuildRole
-                                .getRole(guild.getMember(player.getUniqueId()).getRole())
-                                .getName()));
+            for (Player p2 : event.getRecipients()) {
+                if (player.hasPermission("guilds.chat.color")) {
+                    p2.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                            (Guilds.getInstance().getConfig().getString("guild-chat-format"))
+                                    .replace("{role}", GuildRole
+                                            .getRole(
+                                                    guild.getMember(player.getUniqueId()).getRole())
+                                            .getName())
+                                    .replace("{player}", event.getPlayer().getName())
+                                    .replace("{message}", event.getMessage())));
+                } else {
+                    p2.sendMessage(Guilds.getInstance().getConfig().getString("guild-chat-format")
+                            .replace("{role}", GuildRole
+                                    .getRole(guild.getMember(player.getUniqueId()).getRole())
+                                    .getName()));
+                }
             }
+
+            event.setCancelled(true);
         }
 
     }
