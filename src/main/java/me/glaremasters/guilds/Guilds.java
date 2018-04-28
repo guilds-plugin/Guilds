@@ -109,7 +109,7 @@ public class Guilds extends JavaPlugin {
 
         // TODO: Clean this up and make it function easier.
 
-        if (!getConfig().isSet("version") || getConfig().getInt("version") != 22) {
+        if (!getConfig().isSet("version") || getConfig().getInt("version") != 23) {
             if (getConfig().getBoolean("auto-update-config")) {
                 File oldfile = new File(this.getDataFolder(), "config.yml");
                 File newfile = new File(this.getDataFolder(), "config-old.yml");
