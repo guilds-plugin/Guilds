@@ -1,5 +1,6 @@
 package me.glaremasters.guilds.commands;
 
+import static me.glaremasters.guilds.util.ColorUtil.color;
 import com.sk89q.worldedit.BlockVector;
 import com.sk89q.worldguard.bukkit.RegionContainer;
 import com.sk89q.worldguard.domains.DefaultDomain;
@@ -167,9 +168,11 @@ public class CommandClaim extends CommandBase {
                                     config.getInt("regular-claim-size")
                                             / 2))))));
                     region.setFlag(DefaultFlag.GREET_MESSAGE,
-                            "Entering " + guild.getName() + "'s base");
+                            color(config.getString("claim-enter-message")
+                                    .replace("{prefix}", guild.getPrefix()).replace("{guild}", guild.getName())));
                     region.setFlag(DefaultFlag.FAREWELL_MESSAGE,
-                            "Leaving " + guild.getName() + "'s base");
+                            color(config.getString("claim-exit-message")
+                                    .replace("{prefix}", guild.getPrefix()).replace("{guild}", guild.getName())));
 
                     ProtectedRegion regionTest = regions.getRegion(guild.getName());
                     Location outlineMin = new Location(player.getWorld(), 0, 0, 0);
@@ -235,9 +238,11 @@ public class CommandClaim extends CommandBase {
                             .ceil((player.getLocation().getZ() + (Integer.valueOf(args[0])
                                     / 2))))));
                     region.setFlag(DefaultFlag.GREET_MESSAGE,
-                            "Entering " + guild.getName() + "'s base");
+                            color(config.getString("claim-enter-message")
+                                    .replace("{prefix}", guild.getPrefix()).replace("{guild}", guild.getName())));
                     region.setFlag(DefaultFlag.FAREWELL_MESSAGE,
-                            "Leaving " + guild.getName() + "'s base");
+                            color(config.getString("claim-exit-message")
+                                    .replace("{prefix}", guild.getPrefix()).replace("{guild}", guild.getName())));
 
                     ProtectedRegion regionTest = regions.getRegion(guild.getName());
                     Location outlineMin = new Location(player.getWorld(), 0, 0, 0);
