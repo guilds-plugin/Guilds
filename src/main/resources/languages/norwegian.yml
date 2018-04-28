@@ -30,7 +30,7 @@ messages:
       too-big: "&cBeklager! Det er for stort landområde! Maksimum er {max}."
       no-claim-found: "&cDu har ikke noe landområde å claime!"
       remove-confirm:  "&cEr du sikker på at du vil fjerne claimen? (Skriv /guilds confirm for å fortsette)"
-      disabled-world: "&cSorry! This function has been disabled in your current world!"
+      disabled-world: "&cBeklager, denne funksjonen fungere ikke i denne verden!"
     killreward:
       killer: "&aDu har drept en annen spiller og fikk {amount}!"
       player-who-died: "&cDu har blitt drept av en annen spiller, og mistet {amount}!"
@@ -46,10 +46,10 @@ messages:
       money-warning: "&cDu er i ferd med å bruke {amount} for å oppgradere guilden. (Skriv /guilds confirm for å fortsette)"
       cancel: "&cOppgradering kansellert!"
       success: "&aDu har oppgradert guilden!"
-      not-enough-money: "&aBeklager! Du har ikke nok penger for å oppgradere guilden! Du trenger {needed} mer!"
+      not-enough-money: "&aBeklager! Du har ikke nok penger for å oppgradere guilden! Du trenger {needed}!"
     buff:
       not-enough-money: "&cDu har ikke nok penger for å kjøpe denne buffen!"
-      success: "&a{player} just purchased {buff} for {time} seconds!" # Possible placeholders: {guild}, {player}, {buff}, {time}, {cost}, {amplifier}
+      success: "&a{player} kjøpte {buff} for {time} sekunder!" # Possible placeholders: {guild}, {player}, {buff}, {time}, {cost}, {amplifier}
     transfer:
       newmaster: "&aDu er den nye Guild Masteren av guilden!"
       success: "&aGuilden har blitt overført!"
@@ -156,8 +156,8 @@ messages:
       removed: "&cDenne guilden er ikke lenger aliert med {guild}!"
       send-target: "&aMottok en forespørsel om å bli alliert av {guild}! Skriv /guilds ally accept {guild} for å godta, eller /guilds ally decline {guild} for å avslå"
       send: "&aForespørsel sendt!"
-      none: "&cYou do not have any allies!"
-      list: "&aYour guild has the following allies: "
+      none: "&cDu har ingen allierte!"
+      list: "&aDin guild har følgende allierte; "
     home:
       damage-taken: "&cDu har tatt skade! Teleportering kansellert"
       teleported: "&aDu er teleportert til guildens hjem!"
