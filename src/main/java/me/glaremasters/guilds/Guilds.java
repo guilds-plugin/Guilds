@@ -219,7 +219,7 @@ public class Guilds extends JavaPlugin {
                     "romanian", "slovak",
                     "russian", "simplifiedchinese", "polish", "portuguese", "german", "vietnamese",
                     "norwegian",
-                    "spanish", "italian"
+                    "spanish", "italian", "danish"
             ).forEach(l -> this.saveResource("languages/" + l + ".yml", false));
         }
 

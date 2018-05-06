@@ -1,0 +1,168 @@
+messages:
+  command:
+    error:
+      already-in-guild: "&cDu er allerede i et guild!"
+      args: "&cForkerte argumenter! Se /guilds help for mere information."
+      console: "&cDenne kommando kan kun udføres af en spiller!"
+      guild-not-found: "&cGuild '{input}&r&c' blev ikke fundet!"
+      home-cooldown: "&cDu kan ikke teleportere til dit guild hjem før om {time} sekunder!"
+      invalid-role: "&cRollen '{input}&r&c' eksiterer ikke!"
+      invalid_number: "&c '{input}&r&c' er ikke et gyldigt nummer!"
+      no-guild: "&cDu er ikke i et guild!"
+      no-home-set: "&cDer er ikke sat noget hjem! Brug &a/guild sethome &cfor at sætte et hjem!"
+      not-enough-money: "&aBeklager! Du har ikke nok penge til at oprette et guild!"
+      not-found: "&cKommando ikke fundet! Se /guilds help for alle kommandoer."
+      not-guildmaster: "&cDu er ikke Guild Masteren i dette guild."
+      not-officer: "&cBrugeren skal være en Officer i dit Guild!"
+      permission: "&cDu har ikke permission til at gøre det!"
+      player-not-found: "&cSpilleren '{player}&r&c' eksisterer ikke, eller er ikke online!"
+      player-not-in-guild: "&cSpilleren '{player}&r&c' er ikke i dit guild!"
+      role-no-permission: "&cDet er din rolle ikke høj nok til at gøre!"
+      sethome-cooldown: "&cDu kan ikke sætte et nyt guild hjem før om {time} sekunder!"
+      blacklist: "&cEn eller flere af ordene i dit guild navn / guild prefix er på blacklisten!"
+    claim:
+      worldguard-required: "&cGuild Claims kræver WorldGuard Hook for at fungere."
+      coordinates: "&aHusk disse! Dine claim koordinator er: "
+      too-close: "&cDu er for tæt på et andet claim! Prøv et andet sted!"
+      removed: "&aDu har lykkedes at fjerne dit claim!"
+      confirm: "&cDu er ved at bruge {amount} på at claime nyt land. (Skriv /guilds confirm for at fortsætte)"
+      enter-size: "&cIndtast venligst et nummer med kommandoen, så som 25, dette vil sætte dit claim til 25 blocks i hver retning!"
+      too-big: "&cBeklager! Din ønskede claim størrelse er for stor! Det største er {max}."
+      no-claim-found: "&cDu har ikke noget land at unclaime!"
+      remove-confirm:  "&cEr du sikker på at du vil unclaime dit land? (Skriv /guilds confirm for at fortsætte)"
+      disabled-world: "&Beklager! Denne funktion er slået fra i den verden du befinder dig i!"
+    killreward:
+      killer: "&aDu har dræbt en anden spiller og tjent {amount}!"
+      player-who-died: "&cDu blev dræbt af en anden spiller og har tabt {amount}!"
+    bank:
+      balance: "&aDit guilds bank har en saldo på {amount}."
+      deposit-success: "&aDu har flyttet {amount} fra din konto ind i din guild bank! Din nye bank saldo er {balance}."
+      deposit-failure: "&cDu har ikke nok penge til at indsætte det ønskede beløb!"
+      withdraw-success: "&aDu har flyttet {amount} fra din guild bank til din konto! Din nye bank saldo er {balance}."
+      withdraw-failure: "&cDu har ikke nok til at hæve det ønskede beløb!"
+      bank-balance-limit: "&cDu kan ikke indsætte flere penge, bank saldo begrænsning nået. Opgrader dit guild for at indsætte mere!"
+    upgrade:
+      tier-max: "&cKan ikke opgradere igen! Du er allerede fuldt opgraderet!"
+      money-warning: "&cDu er ved at bruge {amount} på at opgradere dit guild. (Skriv /guilds confirm for at fortsætte)"
+      cancel: "&cOpgradering annulleret!"
+      success: "&aDu har opgraderet dit guild!"
+      not-enough-money: "&cBeklager! Du har ikke nok penge til at opgradere dit guild! Du mangler {needed}!"
+      not-enough-members: "&cBeklager! Du skal have mindst {amount} medlemmer for at opgradere dit Guild Rank!"
+    buff:
+      not-enough-money: "&cDu har ikke nok penge til at købe den buff!"
+      success: "&a{player} købte {buff} for {time} sekunder!" # Possible placeholders: {guild}, {player}, {buff}, {time}, {cost}, {amplifier}
+    transfer:
+      newmaster: "&aDu er den nye Guild Master i dit Guild!"
+      success: "&aGuild er blevet overført!"
+    help:
+      invalid-page: "&cSide ikke fundet!"
+      message: "&f/guild {command} {arguments} &7- &7{description}"
+      next-page: "&7Se /guilds help {next-page} for næste side."
+    status:
+      error: "&cGuild status skal være offentlig (public) eller privat (private)!"
+      successful: "&aGuild status sat til {status}!"
+    role:
+      players: "{player} - {role}"
+    list:
+      format: "De følgende guilds er:"
+    create:
+      cancelled-sethome: "&cGuild hjem blev ikke sat!"
+      cancelled: "&cGuild oprettelse annulleret!"
+      error: "&cNoget gik galt mens dit guild blev oprettet!"
+      guild-home: "&aDu satte dit guild hjem!"
+      guild-name-taken: "&cDet navn er allerede taget!"
+      money-warning-sethome: "&cDu er ved at bruge {amount} på at sætte dit guild hjem. (Skriv /guilds confirm for at fortsætte)"
+      money-warning: "&cEr du sikker på at du vil bruge {amount} på at oprette et guild? (Skriv /guilds confirm for at fortsætte)"
+      name-requirements: "&cDit guilds navn lever ikke op til kravene! Du kan kun bruge alfanumeriske tegn, og navnet må højst være på 64 tegn."
+      successful: "&aGuild '{guild}&r&a' oprettet!"
+      warning: "&cSkriv /guilds confirm for at oprette dit guild, skriv /guilds cancel for at annullere."
+    delete:
+      cancelled: "&cGuild fjernelse annulleret!"
+      error: "&cNoget gik galt mens dit guild blev fjernet!"
+      successful: "&aFjernede '{guild}&r&a'!"
+      warning: "&cSkriv /guilds confirm for at slette dit guild, skriv /guilds cancel for at annullere."
+    info:
+      header: "Information om &b{guild}"
+      master: "Guild Master: &b{master}"
+      member-count: "Medlemmer: &b{members}/{max-members}&r (&bOnline: {members-online}&r)"
+      name: "Navn: &b{guild}&r (&bPrefix: {prefix}&r)"
+      players: "Medlemmer i guild: &b[{players}]"
+      rank: "Din rank: &b{rank}"
+    promote:
+      cannot-promote: "&cDen spiller kan ikke bleve forfremmet yderligere!"
+      not-promotion: "&cDu forfremmer ikke den spiller!"
+      promoted: "&aDu har forfremmet {player} fra {old-rank} til {new-rank}!"
+      successful: "&aDu er blevet forfremmet fra {old-rank} til {new-rank}!"
+    demote:
+      cannot-demote: "&cDen spiller kan ikke blive degraderet yderligere!"
+      demoted: "&cDu er blevet degraderet fra {old-rank} til {new-rank}!"
+      not-demotion: "&cDu degraderer ikke den spiller!"
+      successful: "&aDu har degraderet {player} fra {old-rank} til {new-rank}!"
+    chat:
+      message: "&7&l[Guild Chat]&r &b[{role}] {player}: {message}"
+      enabled: "&aGuild Chat Aktiveret"
+      disabled: "&cGuild Chat Deaktiveret"
+    accept:
+      guild-full: "&cDet guild er fyldt!"
+      not-invited: "&cDet guild er privat / du har ikke modtaget en invitation fra guildet."
+      player-joined: "&aSpilleren '{player}' blev medlem af dit guild!"
+      successful: "&aDu blev medlem af guild '{guild}&r&a'!"
+    invite:
+      already-in-guild: "&cDen spiller er allerede i dit guild!"
+      already-invited: "&cDen spiller er allerede blevet inviteret!"
+      message: "&a{player} har inviteret dig til sit guild, '{guild}'"
+      successful: "&aDu inviterede {player} til dit guild!"
+    decline:
+      success: "&aGuild Invitation Afvist!"
+    leave:
+      cancelled: "&cAnnullerede at forlade guild!"
+      player-left: "&cSpilleren '{player}' forlod dit guild!"
+      successful: "&aDu har forladt dit guild!"
+      warning-guildmaster: "&cDu er Guild Masteren i dette guild, hvis du forlader guildet vil det blive slettet. Skriv /guilds confirm for at forlade og slette dit guild, skriv /guilds cancel for at annullere."
+      warning: "&cSkriv /guilds confirm for at forlade dit guild, skriv /guilds cancel for at annullere."
+      guildmaster-left: "&cGuild Masteren, '{player}' har forladet guildet. Guildet vil nu blive opløst."
+    boot:
+      kicked: "&cDu er blevet smidt ud af dit guild af {kicker}!"
+      player-kicked: "&cSpilleren '{player}' er blevet smidt ud af guildet af {kicker}!"
+      successful: "&aSmed {player} ud fra dit guild!"
+    prefix:
+      requirements: "&cDit guilds prefix lever ikke op til kravene! Du kan kun bruge alfanumeriske tegn, og prefixet kan ikke være længere end 6 tegn."
+      successful: "&aGuild prefix blev ændret!"
+    confirm:
+      error: "&cDu har ikke nogen handlinger at bekræfte!"
+    cancel:
+      error: "&cDu har ikke nogen handlinger at annullere!"
+    reload:
+      reloaded: "&aKonfigurationsfil genindlæst!"
+    update:
+      found: "&aFandt en opdatering! Gå til {url} for at downloade den!"
+      not-found: "&cIngen opdatering fundet!"
+    admin:
+      added-player: "&aTilføjede spiller til guild"
+      delete-cancelled: "&cGuild fjernelse annulleret!"
+      delete-error: "&cNoget gik galt mens det guild blev fjernet!"
+      delete-successful: "&cGuild fjernet!"
+      delete-warning: "&cSkriv /guilds confirm for at fjerne det guild, skriv /guilds cancel for at annullere."
+      player-already-in-guild: "&cDen spiller er allerede i et guild!"
+      player-not-in-guild: "&cSpiller er ikke i det guild!"
+      removed-player: "&aFjernede spiller fra guild!"
+    ally:
+      accepted-target: "&a{guild}&r&a er nu vores allierede!"
+      accepted: "&aDette guild er nu allierede med {guild}!"
+      already-allies: "&cDu er allerede allierede med {guild}!"
+      declined: "&c{guild}&r&c vil ikke være allieret!"
+      guild-not-pending: "&cDet guild har ikke sendt dig en anmodning om at blive allierede!"
+      not-allies: "&cDu er ikke allieret med {guild}!"
+      removed-target: "&c{guild}&r&c er ikke længere allierede med os!"
+      removed: "&cDette guild er ikke længere allieret med {guild}!"
+      send-target: "&aModtog en anmodning om at blive allierede fra {guild}&r&a! Skriv /guilds ally accept {guild}&r&a for at acceptere, eller skriv /guilds ally decline {guild}&r&a for at afvise anmodningen."
+      send: "&aAnmodning om at blive allierede blev sendt!"
+      none: "&cDu har ikke nogen allierede!"
+      list: "&aDit guild er allieret med følgende: "
+    home:
+      damage-taken: "&cDu er blevet skadet! Annullerer teleportering!"
+      teleported: "&aDu blev teleporteret til dit guild hjem!"
+      teleporting: "&cDu vil blive teleporteret om {count} sekunder."
+  event:
+    join:
+      pending-invites: "&aDu har {number} ventende invitation(er) fra følgende guild(s): &e{guilds}&r&a . Brug /guild accept <navn> or /guild deny <navn> for at acceptere eller afvise en invitation!"
