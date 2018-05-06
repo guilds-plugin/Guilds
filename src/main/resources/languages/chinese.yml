@@ -29,7 +29,7 @@ messages:
       too-big: "&c痾...抱歉! 你要求的土地太大啦!! 伺服器最高上限 為: {max}."
       no-claim-found: "&c你沒有任何的公會領地!!"
       remove-confirm:  "&c你確定你要刪除你的公會領地!? (請輸入 /guilds confirm 來移除他)"
-      disabled-world: "&cSorry! This function has been disabled in your current world!"
+      disabled-world: "&c對不起! 這個功能已經在你的世界被關閉!"
     killreward:
       killer: "&a你殺死了一位玩家 獲得了 {amount} 元!"
       player-who-died: "&c你被一位玩家殺死啦!!  被幹走了 {amount} 元!"
@@ -48,7 +48,7 @@ messages:
       not-enough-money: "&a抱歉 你沒有足夠的金錢來升級公會. 你需要 {needed} 元!"
     buff:
       not-enough-money: "&c你沒有足夠的金錢購買 增益效果"
-      success: "&a{player} just purchased {buff} for {time} seconds!" # Possible placeholders: {guild}, {player}, {buff}, {time}, {cost}, {amplifier}
+      success: "&a{player} 剛買了 {time} 秒的{buff}！" # Possible placeholders: {guild}, {player}, {buff}, {time}, {cost}, {amplifier}
     transfer:
       success: "公會已經被轉讓!"
       newmaster: "你是新的公會會長了!"
@@ -155,8 +155,8 @@ messages:
       removed-target: "&c{guild} 不再是我們的盟友!!"
       already-allies: "&c你已經和 {guild} 結盟啦!!"
       not-allies: "&c你沒有和 {guild} 結盟!"
-      none: "&cYou do not have any allies!"
-      list: "&aYour guild has the following allies: "
+      none: "&c你的公會沒有任何盟友!"
+      list: "&a你的公會有以下的盟友: "
     home:
       teleported: "&a已傳送到公會基地!!"
       teleporting: "&c你將在 {count} 秒後傳送!"
