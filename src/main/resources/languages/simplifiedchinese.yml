@@ -18,28 +18,28 @@ messages:
       no-home-set: "&c尚未拥有公会传送点! , 输入&b/guild sethome &来创建公会基地传送点!"
       home-cooldown: "&c你无法传送!! 你需要等待 {time} 秒"
       sethome-cooldown: "&c你需要等待 {time} 秒后 才能再执行!"
-      blacklist: "&cOne or more of the words in your guild name / guild prefix is on the blacklist!"
+      blacklist: "&c你的公会名称/前称中含有一个或多个在黑名单中的字!"
     claim:
-      worldguard-required: "&cThe WorldGuard Hook is required for Guild Claims to work"
-      coordinates: "&aRemember these! Your claim coordinates are: "
-      too-close: "&cYou are too close to another claim! Try somewhere else!"
-      removed: "&aYou have successfully remove your claim!"
-      confirm: "&cYou are about to spend {amount} to claim your new land. (Type /guilds confirm to continue)"
-      size-required: "&cPlease enter a number with the command, such as 25, this will put your claim 25 blocks in each direction!"
-      too-big: "&cSorry! Your custom claim size is too big! The max is {max}."
-      no-claim-found: "&cYou don't have any land to unclaim!"
-      remove-confirm:  "&cAre you sure you want to unclaim your land? (Type /guilds confirm to continue)"
-      disabled-world: "&cSorry! This function has been disabled in your current world!"
+      worldguard-required: "&c索取公会领地必须配搭插件WorldGuard来使用"
+      coordinates: "&a以下是你公会领地的坐标!请记住这些!: "
+      too-close: "&c你离其他公会领地太近!去别处试试!"
+      removed: "&a你已经成功移除你的领地！"
+      confirm: "&c你将会用{amount}来索取你的新领地. (键入 /guilds confirm 来继续)"
+      size-required: "&c请在你的指令输入大小,例如 25, 这样你会让领地在四方八面延伸出25格!"
+      too-big: "&cS对不起! 你自定的领土大小太大! 限制为 {max}."
+      no-claim-found: "&c你没有任何领地！"
+      remove-confirm:  "&c你确定要移除你的领地吗? (键入 /guilds confirm 来继续)"
+      disabled-world: "&c对不起! 在你的世界，这个功能已经被停用!"
     killreward:
-      killer: "&aYou have killed another player and have earned {amount}!"
-      player-who-died: "&cYou have been killed by another player and have lost {amount}!"
+      killer: "&a你杀了其他玩家并获得 {amount}!"
+      player-who-died: "&c你被其他玩家杀了并失去了 {amount}!"
     bank:
-      balance: "&aYour guild's bank has a balance of {amount}."
-      deposit-success: "&aYou have just moved {amount} from your account into your guild bank! Your new bank balance is {balance}."
-      deposit-failure: "&cYou don't have enough to deposit the amount requested!"
-      withdraw-success: "&aYou have just moved {amount} from your guild bank to your account! Your new bank balance is {balance}."
-      withdraw-failure: "&cYou don't have enough to withdraw the amount requested!"
-      bank-balance-limit: "&cYou can't deposit any more money, bank balance limit reached. Upgrade your guild to deposit more!"
+      balance: "&a你领地的银行有余额{amount}."
+      deposit-success: "&a你从你的户口转移了{amount}到你的领地银行! 你的新银行余额是 {balance}。"
+      deposit-failure: "&c你没有足够的钱来存下你要求的金额!"
+      withdraw-success: "&a你从你的领地银行提取了{amount}到你的户口! 你的新银行余额是 {balance}。"
+      withdraw-failure: "&c你没有足够的钱来提取你要求的金额"
+      bank-balance-limit: "&c你不能存下任何钱因为银行余额已经达到了限制. 升级你的公会来存下更多的钱!"
     upgrade:
       tier-max: "&c无法再次升级，你已经满级了！"
       money-warning: "&c你将花费 {amount} 来升级你的公会. (输入 /guilds 以确认你的操作"
@@ -48,7 +48,7 @@ messages:
       not-enough-money: "&a对不起，你没有足够的钱升级你的公会! You still need {needed}!"
     buff:
       not-enough-money: "&c你没有足够的钱买这个buff!"
-      success: "&a{player} just purchased {buff} for {time} seconds!" # Possible placeholders: {guild}, {player}, {buff}, {time}, {cost}, {amplifier}
+      success: "&a{player} 刚买了 {time} 秒的{buff}!" # Possible placeholders: {guild}, {player}, {buff}, {time}, {cost}, {amplifier}
     transfer:
       success: "公会已经被转让!"
       newmaster: "你是新的公会会长了!"
@@ -107,7 +107,7 @@ messages:
       player-joined: "&a玩家 '{player}' 加入了你的公会！ 欢迎他吧"
     invite:
       message: "&a{player} 邀请你加入他的公会, '{guild}' \n輸入 /guild accept (公会名称) 来同意加入"
-      already-invited: "&cThis player has already been invited!"
+      already-invited: "&c这个玩家已经被邀请!"
       successful: "&a你成功邀請了 玩家 {player} 加入了你的公会!"
       already-in-guild: "&c这个玩家已经在你的公会了!"
     decline:
@@ -118,7 +118,7 @@ messages:
       warning: "&c输入 /guilds confirm 来确认离开公会,输入 /guilds cancel 取消操作."
       warning-guildmaster: "&c你是这个公会的会长，你的离开就意味着 &4公会将被解散!.&e輸入 /guilds confirm 来确认并解散你的公会, 輸入 /guilds cancel 取消操作."
       player-left: "&c玩家 '{player}' 离开了公会.."
-      guildmaster-left: "&cThe Guild Master, '{player}' has left the guild. The guild will now be disbanded."
+      guildmaster-left: "&c公会首领, '{player}' 已经离开了公会. 公会现在会被解散."
     boot:
       successful: "&a你已经成功把 {player} 踢出了你的公会!"
       kicked: "&c你已经被 {kicker} 踢出了公会!"
@@ -155,8 +155,8 @@ messages:
       removed-target: "&c{guild} 不再是我们的盟友了！"
       already-allies: "&c你和公会 {guild} 结盟啦!!"
       not-allies: "&c你没有和 {guild} 結盟!"
-      none: "&cYou do not have any allies!"
-      list: "&aYour guild has the following allies: "
+      none: "&c你没有任何盟友!"
+      list: "&a你的公会有以下盟友: "
     home:
       teleported: "&a你已传送至公会基地!!"
       teleporting: "&c你将在 {count} 秒后传送!"
