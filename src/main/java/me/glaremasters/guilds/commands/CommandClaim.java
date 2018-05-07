@@ -72,7 +72,7 @@ public class CommandClaim extends CommandBase {
         if (config.getBoolean("custom-claim-size")) {
             if (args.length != 1) {
                 Message.sendMessage(player, Message.COMMAND_CLAIM_ENTER_SIZE);
-
+                return;
             }
             if (Integer.valueOf(args[0]) > config.getInt("custom-max-claim-size")) {
                 Message.sendMessage(player, Message.COMMAND_CLAIM_TOO_BIG
