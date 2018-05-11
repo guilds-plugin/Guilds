@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 import me.glaremasters.guilds.Guilds;
+import me.rayzr522.jsonmessage.JSONMessage;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -30,7 +31,7 @@ public class AnnouncementListener implements Listener {
                     .scheduleAsyncDelayedTask(Guilds.getInstance(), () -> {
                         if (player.isOp()) {
                             if (!ALREADY_INFORMED.contains(player.getUniqueId())) {
-                                player.sendMessage(guilds.getAnnouncements());
+                                JSONMessage.create(Guilds.PREFIX + "Announcements").tooltip(guilds.getAnnouncements()).send(player);
                                 ALREADY_INFORMED.add(player.getUniqueId());
                             }
                         }
