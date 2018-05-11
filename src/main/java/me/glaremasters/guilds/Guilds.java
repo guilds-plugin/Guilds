@@ -34,10 +34,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class Guilds extends JavaPlugin {
 
     public static String PREFIX;
-    public static boolean vault;
+    private static boolean vaultEconomy;
+    private static boolean vaultPermissions;
     private static Guilds instance;
-    private static Economy econ;
-    public static Permission perms = null;
+    private static Permission permission = null;
+    private static Economy economy = null;
     private static TaskChainFactory taskChainFactory;
     public File languageYamlFile;
     public YamlConfiguration yaml;
@@ -181,12 +182,8 @@ public class Guilds extends JavaPlugin {
             getServer().getPluginManager().registerEvents(new TicketListener(), this);
         }
 
-        vault = setupEconomy();
-        setupPermissions();
-
-        if (!vault) {
-            getLogger().log(Level.INFO, "Not using Vault!");
-        }
+        vaultEconomy = setupEconomy();
+        vaultPermissions = setupPermissions();
 
         Metrics metrics = new Metrics(this);
         metrics.addCustomChart(new Metrics.SingleLineChart("guilds",
@@ -264,7 +261,7 @@ public class Guilds extends JavaPlugin {
 
 
     public Economy getEconomy() {
-        return econ;
+        return economy;
     }
 
     public void setDatabaseType() {
@@ -313,29 +310,34 @@ public class Guilds extends JavaPlugin {
 
     }
 
+    /**
+     * Sets up the boolean for initializing Guilds to hook into Vault's economy system.
+     *
+     * @return Vault's economy setup
+     */
     private boolean setupEconomy() {
-        if (getServer().getPluginManager().getPlugin("Vault") == null) {
-            return false;
+        RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
+        if (economyProvider != null) {
+            economy = economyProvider.getProvider();
         }
-        RegisteredServiceProvider<Economy> rsp =
-                getServer().getServicesManager().getRegistration(Economy.class);
-
-        if (rsp == null) {
-            return false;
-        }
-        econ = rsp.getProvider();
-        return econ != null;
+        return (economy != null);
     }
 
+    /**
+     * Sets up the boolean for initializing Guilds to hook into Vault's permission system.
+     *
+     * @return Vault's permission setup
+     */
     private boolean setupPermissions() {
-        RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager()
-                .getRegistration(Permission.class);
-        perms = rsp.getProvider();
-        return perms != null;
+        RegisteredServiceProvider<Permission> permissionProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
+        if (permissionProvider != null) {
+            permission = permissionProvider.getProvider();
+        }
+        return (permission != null);
     }
 
     public static Permission getPermissions() {
-        return perms;
+        return permission;
     }
 
 
