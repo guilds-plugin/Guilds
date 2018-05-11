@@ -194,15 +194,16 @@ public class Guilds extends JavaPlugin {
 
         this.saveGuildData();
         if (getConfig().getBoolean("updater.check")) {
+            // Check to see if there's any updates for the plugin
             SpigotUpdater updater = new SpigotUpdater(this, 48920);
             try {
+                // If there's an update, tell the user that they can update
                 if (updater.checkForUpdates()) {
-                    getLogger()
-                            .info("You appear to be running a version other than our latest stable release."
-                                    + " You can download our newest version at: " + updater
-                                    .getResourceURL());
+                    getLogger().info("You appear to be running a version other than our latest stable release."
+                            + " You can download our newest version at: " + updater.getResourceURL());
                 }
             } catch (Exception e) {
+                // If it can't check for an update, tell the user and throw an error.
                 getLogger().info("Could not check for updates! Stacktrace:");
                 e.printStackTrace();
             }
