@@ -14,15 +14,13 @@ import org.bukkit.event.player.PlayerJoinEvent;
  */
 public class AnnouncementListener implements Listener {
 
-    public static Set<UUID> ALREADY_INFORMED = new HashSet<>();
+    private Set<UUID> ALREADY_INFORMED = new HashSet<>();
 
     private Guilds guilds;
 
     public AnnouncementListener(Guilds guilds) {
         this.guilds = guilds;
     }
-
-
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
@@ -36,7 +34,6 @@ public class AnnouncementListener implements Listener {
                                 ALREADY_INFORMED.add(player.getUniqueId());
                             }
                         }
-
                     }, 70L);
         }
 

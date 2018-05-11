@@ -144,7 +144,7 @@ public class Guilds extends JavaPlugin {
                 new GuildVaultListener(),
                 new GuildBuffListener(), new GuildChatListener(), new MobDeathListener(),
                 new PlayerDamageListener(),
-                new DamageMultiplierListener(), new AnnouncementListener(), new TierJoinListener()
+                new DamageMultiplierListener(), new AnnouncementListener(this), new TierJoinListener()
         ).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
 
         // TODO: Possibly change these all to a switch statement?
