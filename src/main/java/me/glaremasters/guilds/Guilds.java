@@ -71,22 +71,7 @@ public class Guilds extends JavaPlugin {
     public void onEnable() {
         instance = this;
         if (getConfig().getBoolean("announcements.console")) {
-            try {
-                URL url = new URL("https://glaremasters.me/guilds/announcements/" + getDescription()
-                        .getVersion());
-                HttpURLConnection con = (HttpURLConnection) url.openConnection();
-                con.setRequestProperty("User-Agent",
-                        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
-                try (InputStream in = con.getInputStream()) {
-                    String encoding = con.getContentEncoding();
-                    encoding = encoding == null ? "UTF-8" : encoding;
-                    String body = IOUtils.toString(in, encoding);
-                    Bukkit.getConsoleSender().sendMessage(body);
-                    con.disconnect();
-                }
-            } catch (Exception exception) {
-                Bukkit.getConsoleSender().sendMessage("Could not fetch announcements!");
-            }
+           Bukkit.getConsoleSender().sendMessage(getAnnouncements());
         }
 
         // TODO: Change each language to their own variable or something to that affect so that new languages can be added without needs to delete the config folder.
@@ -347,6 +332,26 @@ public class Guilds extends JavaPlugin {
             SLPUtil slp = new SLPUtil();
             slp.registerSLP();
         }
+    }
+
+    public String getAnnouncements() {
+        String announcement = "";
+        try {
+            URL url = new URL("https://glaremasters.me/guilds/announcements/" + getDescription()
+                    .getVersion());
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestProperty("User-Agent",
+                    "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
+            try (InputStream in = con.getInputStream()) {
+                String encoding = con.getContentEncoding();
+                encoding = encoding == null ? "UTF-8" : encoding;
+                announcement = IOUtils.toString(in, encoding);
+                con.disconnect();
+            }
+        } catch (Exception exception) {
+            announcement = "Could not fetch announcements!";
+        }
+        return announcement;
     }
 
 
