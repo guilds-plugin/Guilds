@@ -55,7 +55,7 @@ public class GuildBuffListener implements Listener {
                     guild.updateGuild("");
                 } else {
 
-                    if (Guilds.vault && buff.cost != -1) {
+                    if (Guilds.vaultEconomy && buff.cost != -1) {
                         if (Guilds.getInstance().getEconomy().getBalance(player) < buff.cost) {
                             Message.sendMessage(player, Message.COMMAND_BUFF_NOT_ENOUGH_MONEY);
                             return;

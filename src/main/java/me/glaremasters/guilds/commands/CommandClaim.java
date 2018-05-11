@@ -82,7 +82,7 @@ public class CommandClaim extends CommandBase {
             }
 
             claimCost = (config.getDouble("custom-claim-price") * Integer.valueOf(args[0]));
-            if (Guilds.vault && claimCost != -1) {
+            if (Guilds.vaultEconomy && claimCost != -1) {
                 if (Guilds.getInstance().getEconomy().getBalance(player) < claimCost) {
                     Message.sendMessage(player, Message.COMMAND_ERROR_NOT_ENOUGH_MONEY);
 
@@ -96,7 +96,7 @@ public class CommandClaim extends CommandBase {
             }
         } else {
             claimCost = config.getDouble("regular-claim-price");
-            if (Guilds.vault && claimCost != -1) {
+            if (Guilds.vaultEconomy && claimCost != -1) {
                 if (Guilds.getInstance().getEconomy().getBalance(player) < claimCost) {
                     Message.sendMessage(player, Message.COMMAND_ERROR_NOT_ENOUGH_MONEY);
                     return;
@@ -169,10 +169,12 @@ public class CommandClaim extends CommandBase {
                                             / 2))))));
                     region.setFlag(DefaultFlag.GREET_MESSAGE,
                             color(config.getString("claim-enter-message")
-                                    .replace("{prefix}", guild.getPrefix()).replace("{guild}", guild.getName())));
+                                    .replace("{prefix}", guild.getPrefix())
+                                    .replace("{guild}", guild.getName())));
                     region.setFlag(DefaultFlag.FAREWELL_MESSAGE,
                             color(config.getString("claim-exit-message")
-                                    .replace("{prefix}", guild.getPrefix()).replace("{guild}", guild.getName())));
+                                    .replace("{prefix}", guild.getPrefix())
+                                    .replace("{guild}", guild.getName())));
 
                     ProtectedRegion regionTest = regions.getRegion(guild.getName());
                     Location outlineMin = new Location(player.getWorld(), 0, 0, 0);
@@ -239,10 +241,12 @@ public class CommandClaim extends CommandBase {
                                     / 2))))));
                     region.setFlag(DefaultFlag.GREET_MESSAGE,
                             color(config.getString("claim-enter-message")
-                                    .replace("{prefix}", guild.getPrefix()).replace("{guild}", guild.getName())));
+                                    .replace("{prefix}", guild.getPrefix())
+                                    .replace("{guild}", guild.getName())));
                     region.setFlag(DefaultFlag.FAREWELL_MESSAGE,
                             color(config.getString("claim-exit-message")
-                                    .replace("{prefix}", guild.getPrefix()).replace("{guild}", guild.getName())));
+                                    .replace("{prefix}", guild.getPrefix())
+                                    .replace("{guild}", guild.getName())));
 
                     ProtectedRegion regionTest = regions.getRegion(guild.getName());
                     Location outlineMin = new Location(player.getWorld(), 0, 0, 0);

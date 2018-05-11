@@ -34,8 +34,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class Guilds extends JavaPlugin {
 
     public static String PREFIX;
-    private static boolean vaultEconomy;
-    private static boolean vaultPermissions;
+    public static boolean vaultEconomy;
+    public static boolean vaultPermissions;
     private static Guilds instance;
     private static Permission permission = null;
     private static Economy economy = null;

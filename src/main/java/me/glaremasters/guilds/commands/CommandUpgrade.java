@@ -88,7 +88,7 @@ public class CommandUpgrade extends CommandBase {
                 }
             });
         } else {
-            if (Guilds.vault && tierUpgradeCost != -1) {
+            if (Guilds.vaultEconomy && tierUpgradeCost != -1) {
                 if (Guilds.getInstance().getEconomy().getBalance(player) < tierUpgradeCost) {
                     double needed = (tierUpgradeCost - Guilds.getInstance().getEconomy()
                             .getBalance(player));

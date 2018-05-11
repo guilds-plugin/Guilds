@@ -54,7 +54,7 @@ public class CommandSetHome extends CommandBase {
 
         double setHomeCost = config.getDouble("Requirement.sethome-cost");
 
-        if (Guilds.vault && setHomeCost != -1) {
+        if (Guilds.vaultEconomy && setHomeCost != -1) {
             if (Guilds.getInstance().getEconomy().getBalance(player) < setHomeCost) {
                 Message.sendMessage(player, Message.COMMAND_ERROR_NOT_ENOUGH_MONEY);
                 return;
