@@ -31,7 +31,7 @@ public class AnnouncementListener implements Listener {
                     .scheduleAsyncDelayedTask(Guilds.getInstance(), () -> {
                         if (player.isOp()) {
                             if (!ALREADY_INFORMED.contains(player.getUniqueId())) {
-                                JSONMessage.create(Guilds.PREFIX + "Announcements").tooltip(guilds.getAnnouncements()).send(player);
+                                JSONMessage.create(Guilds.PREFIX + "Announcements").tooltip(guilds.getAnnouncements()).openURL("https://glaremasters.me/discord").send(player);
                                 ALREADY_INFORMED.add(player.getUniqueId());
                             }
                         }
