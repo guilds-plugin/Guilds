@@ -21,14 +21,9 @@ public class TablistListener implements Listener {
         Player player = event.getPlayer();
         Guild guild = Guild.getGuild(player.getUniqueId());
 
-        if (guild == null) {
-            return;
-        } else {
+        if (guild != null) {
             Guilds.getInstance().getServer().getScheduler()
-                    .scheduleSyncDelayedTask(Guilds.getInstance(), () -> {
-                        TablistHandler.addTablist(player);
-                    }, 30L);
-
+                    .scheduleAsyncDelayedTask(Guilds.getInstance(), () -> TablistHandler.addTablist(player), 30L);
         }
     }
 
