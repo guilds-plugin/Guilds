@@ -16,6 +16,8 @@ public class CommandVersion extends CommandBase {
 
     public void execute(CommandSender sender, String[] args) {
         PluginDescriptionFile pdf = Guilds.getInstance().getDescription();
-        sender.sendMessage(Guilds.PREFIX + ChatColor.RED + "Guilds v" + pdf.getVersion() + ChatColor.GREEN + " by " + String.join(" & ", pdf.getAuthors()));
+        sender.sendMessage(
+                Guilds.PREFIX + ChatColor.RED + "Guilds v" + pdf.getVersion() + ChatColor.GREEN
+                        + " by " + String.join(" & ", pdf.getAuthors()));
     }
 }
