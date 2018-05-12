@@ -71,7 +71,7 @@ public class Guilds extends JavaPlugin {
     public void onEnable() {
         instance = this;
         if (getConfig().getBoolean("announcements.console")) {
-           Bukkit.getConsoleSender().sendMessage(getAnnouncements());
+            Bukkit.getConsoleSender().sendMessage(getAnnouncements());
         }
 
         // TODO: Change each language to their own variable or something to that affect so that new languages can be added without needs to delete the config folder.
@@ -103,7 +103,8 @@ public class Guilds extends JavaPlugin {
                 File olddir = new File(this.getDataFolder(), "old-languages");
                 dir.renameTo(olddir);
                 oldfile.renameTo(newfile);
-                getLogger().info("Your config has been auto updated. You can disable this in the config.");
+                getLogger()
+                        .info("Your config has been auto updated. You can disable this in the config.");
             } else {
                 getLogger().info("Your config is out of date!");
             }
@@ -124,8 +125,7 @@ public class Guilds extends JavaPlugin {
 
         Stream.of(
                 new CommandAccept(), new CommandAlly(), new CommandBoot(),
-                new CommandBuff(),
-                new CommandBugReport(), new CommandCancel(), new CommandChat(), new CommandCheck(),
+                new CommandBuff(), new CommandCancel(), new CommandChat(), new CommandCheck(),
                 new CommandConfirm(),
                 new CommandCreate(), new CommandDecline(), new CommandDelete(), new CommandDemote(),
                 new CommandHelp(),
@@ -144,7 +144,8 @@ public class Guilds extends JavaPlugin {
                 new GuildVaultListener(),
                 new GuildBuffListener(this), new GuildChatListener(this), new MobDeathListener(),
                 new PlayerDamageListener(this),
-                new DamageMultiplierListener(), new AnnouncementListener(this), new TierJoinListener()
+                new DamageMultiplierListener(), new AnnouncementListener(this),
+                new TierJoinListener()
         ).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
 
         // TODO: Possibly change these all to a switch statement?
@@ -181,8 +182,10 @@ public class Guilds extends JavaPlugin {
             try {
                 // If there's an update, tell the user that they can update
                 if (updater.checkForUpdates()) {
-                    getLogger().info("You appear to be running a version other than our latest stable release."
-                            + " You can download our newest version at: " + updater.getResourceURL());
+                    getLogger()
+                            .info("You appear to be running a version other than our latest stable release."
+                                    + " You can download our newest version at: " + updater
+                                    .getResourceURL());
                 }
             } catch (Exception e) {
                 // If it can't check for an update, tell the user and throw an error.
@@ -192,7 +195,6 @@ public class Guilds extends JavaPlugin {
         }
 
         // TODO: Clean this section up with a switch statement or something.
-
 
         if (languageYamlFile.exists()) {
             return;
@@ -301,7 +303,8 @@ public class Guilds extends JavaPlugin {
      * @return Vault's economy setup
      */
     private boolean setupEconomy() {
-        RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
+        RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager()
+                .getRegistration(net.milkbowl.vault.economy.Economy.class);
         if (economyProvider != null) {
             economy = economyProvider.getProvider();
         }
@@ -314,7 +317,8 @@ public class Guilds extends JavaPlugin {
      * @return Vault's permission setup
      */
     private boolean setupPermissions() {
-        RegisteredServiceProvider<Permission> permissionProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
+        RegisteredServiceProvider<Permission> permissionProvider = getServer().getServicesManager()
+                .getRegistration(net.milkbowl.vault.permission.Permission.class);
         if (permissionProvider != null) {
             permission = permissionProvider.getProvider();
         }
