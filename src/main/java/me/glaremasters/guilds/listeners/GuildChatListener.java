@@ -18,6 +18,12 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
  */
 public class GuildChatListener implements Listener {
 
+    public GuildChatListener(Guilds guilds) {
+        this.guilds = guilds;
+    }
+
+    private Guilds guilds;
+
     public static final Set<UUID> GUILD_CHAT_PLAYERS = new HashSet<>();
 
     @EventHandler(priority = EventPriority.HIGH)
@@ -34,7 +40,7 @@ public class GuildChatListener implements Listener {
             for (Player p2 : event.getRecipients()) {
                 if (player.hasPermission("guilds.chat.color")) {
                     p2.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                            (Guilds.getInstance().getConfig().getString("guild-chat-format"))
+                            (guilds.getConfig().getString("guild-chat-format"))
                                     .replace("{role}", GuildRole
                                             .getRole(
                                                     guild.getMember(player.getUniqueId()).getRole())
@@ -42,7 +48,7 @@ public class GuildChatListener implements Listener {
                                     .replace("{player}", event.getPlayer().getName())
                                     .replace("{message}", event.getMessage())));
                 } else {
-                    p2.sendMessage(Guilds.getInstance().getConfig().getString("guild-chat-format")
+                    p2.sendMessage(guilds.getConfig().getString("guild-chat-format")
                             .replace("{role}", GuildRole
                                     .getRole(guild.getMember(player.getUniqueId()).getRole())
                                     .getName()));

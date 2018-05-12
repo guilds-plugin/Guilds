@@ -140,10 +140,10 @@ public class Guilds extends JavaPlugin {
         ).forEach(commandHandler::register);
 
         Stream.of(
-                new JoinListener(), new ChatListener(), new ClickListener(),
+                new JoinListener(), new ChatListener(), new ClickListener(this),
                 new GuildVaultListener(),
-                new GuildBuffListener(), new GuildChatListener(), new MobDeathListener(),
-                new PlayerDamageListener(),
+                new GuildBuffListener(this), new GuildChatListener(this), new MobDeathListener(),
+                new PlayerDamageListener(this),
                 new DamageMultiplierListener(), new AnnouncementListener(this), new TierJoinListener()
         ).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
 
@@ -157,7 +157,7 @@ public class Guilds extends JavaPlugin {
         }
 
         if (getConfig().getBoolean("reward-on-kill.enabled")) {
-            getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
+            getServer().getPluginManager().registerEvents(new PlayerDeathListener(this), this);
         }
 
         if (getConfig().getBoolean("hooks.nametagedit")) {

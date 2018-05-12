@@ -14,6 +14,12 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 public class PlayerDamageListener implements Listener {
 
+    public PlayerDamageListener(Guilds guilds) {
+        this.guilds = guilds;
+    }
+
+    private Guilds guilds;
+
     @EventHandler
     public void onDamageOfPlayer(EntityDamageByEntityEvent event) {
         if (!(event.getEntity() instanceof Player) || !(event.getDamager() instanceof Player)) {
@@ -26,7 +32,7 @@ public class PlayerDamageListener implements Listener {
         if (guild == null || guild2 == null) {
             return;
         }
-        if (Guilds.getInstance().getConfig().getBoolean("hooks.worldguard")) {
+        if (guilds.getConfig().getBoolean("hooks.worldguard")) {
             ApplicableRegionSet set = WGBukkit.getPlugin().getRegionManager(player.getWorld())
                     .getApplicableRegions(player.getLocation());
             if (set.queryState(null, DefaultFlag.PVP) == StateFlag.State.DENY) {
@@ -34,10 +40,10 @@ public class PlayerDamageListener implements Listener {
             }
         }
         if (guild.equals(guild2)) {
-            event.setCancelled(!Guilds.getInstance().getConfig().getBoolean("allow-guild-damage"));
+            event.setCancelled(!guilds.getConfig().getBoolean("allow-guild-damage"));
         }
         if (Guild.areAllies(player.getUniqueId(), damager.getUniqueId())) {
-            event.setCancelled(!Guilds.getInstance().getConfig().getBoolean("allow-ally-damage"));
+            event.setCancelled(!guilds.getConfig().getBoolean("allow-ally-damage"));
         }
     }
 }

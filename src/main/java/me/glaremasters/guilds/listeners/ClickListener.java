@@ -18,16 +18,22 @@ import org.bukkit.inventory.Inventory;
  */
 public class ClickListener implements Listener {
 
+    public ClickListener(Guilds guilds) {
+        this.guilds = guilds;
+    }
+
+    private Guilds guilds;
+
     @EventHandler
     public void onClick(InventoryClickEvent e) {
         Player player = (Player) e.getWhoClicked();
-        if (e.getInventory().getTitle().equalsIgnoreCase(Guilds.getInstance().getConfig().getString("gui-name.info"))) {
+        if (e.getInventory().getTitle().equalsIgnoreCase(guilds.getConfig().getString("gui-name.info"))) {
             e.setCancelled(true);
             e.setResult(Event.Result.DENY);
         }
-        if (e.getInventory().getTitle().equalsIgnoreCase(Guilds.getInstance().getConfig().getString("gui-name.list.name"))) {
+        if (e.getInventory().getTitle().equalsIgnoreCase(guilds.getConfig().getString("gui-name.list.name"))) {
             if (e.getAction().equals(InventoryAction.PICKUP_ALL)) {
-                if (e.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.GOLD + Guilds.getInstance().getConfig().getString("gui-name.list.previous-page"))) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.GOLD + guilds.getConfig().getString("gui-name.list.previous-page"))) {
                     if (!(CommandList.playerPages.get(e.getWhoClicked().getUniqueId()) == 1)) {
                         int newPage = CommandList.playerPages.get(e.getWhoClicked().getUniqueId()) - 1;
 
@@ -37,12 +43,12 @@ public class ClickListener implements Listener {
                         e.getWhoClicked().openInventory(guildList);
                     }
                 }
-                if (Guilds.getInstance().getGuildHandler().getGuilds().values().size() < 45) {
+                if (guilds.getGuildHandler().getGuilds().values().size() < 45) {
                     e.setCancelled(true);
                     e.setResult(Event.Result.DENY);
                     return;
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.GOLD + Guilds.getInstance().getConfig().getString("gui-name.list.next-page"))) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.GOLD + guilds.getConfig().getString("gui-name.list.next-page"))) {
 
                     int newPage = CommandList.playerPages.get(e.getWhoClicked().getUniqueId()) + 1;
 
@@ -60,11 +66,11 @@ public class ClickListener implements Listener {
 
     @EventHandler
     public void onClick2(InventoryInteractEvent e) {
-        if (e.getInventory().getTitle().equalsIgnoreCase(Guilds.getInstance().getConfig().getString("gui-name.info"))) {
+        if (e.getInventory().getTitle().equalsIgnoreCase(guilds.getConfig().getString("gui-name.info"))) {
             e.setCancelled(true);
             e.setResult(Event.Result.DENY);
         }
-        if (e.getInventory().getTitle().equalsIgnoreCase(Guilds.getInstance().getConfig().getString("gui-name.list.name"))) {
+        if (e.getInventory().getTitle().equalsIgnoreCase(guilds.getConfig().getString("gui-name.list.name"))) {
             e.setCancelled(true);
             e.setResult(Event.Result.DENY);
         }
