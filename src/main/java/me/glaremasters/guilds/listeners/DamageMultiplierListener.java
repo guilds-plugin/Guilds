@@ -17,10 +17,9 @@ public class DamageMultiplierListener implements Listener {
             Player player = (Player) event.getDamager();
             Guild guild = Guild.getGuild(player.getUniqueId());
 
-            if (guild == null) {
-                return;
+            if (guild != null) {
+                event.setDamage((int) (event.getDamage() * guild.getDamageMultiplier()));
             }
-            event.setDamage((int) (event.getDamage() * guild.getDamageMultiplier()));
         }
 
     }
