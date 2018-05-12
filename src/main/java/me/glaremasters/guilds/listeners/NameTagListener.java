@@ -19,10 +19,7 @@ public class NameTagListener implements Listener {
     public void nameTagJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         Guild guild = Guild.getGuild(player.getUniqueId());
-
-        if (guild == null) {
-            return;
-        } else {
+        if (guild != null) {
             NTEHandler.setTag(player);
         }
     }
