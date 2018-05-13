@@ -453,10 +453,8 @@ titles:
 # Keep in mind for the damage-multiplier, it applies to players also, so by default it's set to normal for every tier to allow you
 # to choose how it will work.
 
-# Change "use-bank-balance" to true to make it use Guild Banks for upgrading tiers.
 
 max-number-of-tiers: 3
-use-bank-balance: false
 carry-over-perms: true
 
 tier1:
