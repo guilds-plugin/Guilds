@@ -53,6 +53,13 @@ public class CommandClaim extends CommandBase {
         }
 
         final FileConfiguration config = Guilds.getInstance().getConfig();
+
+        if (guild.getMembers().size() < config.getInt("members-required")) {
+            Message.COMMAND_CLAIM_NOT_ENOUGH_MEMBERS
+                    .replace("{amount}", String.valueOf(config.getInt("members-required")));
+            return;
+        }
+
         if (!config.getBoolean("hooks.worldguard")) {
             Message.sendMessage(player, Message.COMMAND_CLAIM_WORLDGUARD_REQUIRED);
 

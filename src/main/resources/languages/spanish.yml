@@ -31,6 +31,7 @@ messages:
       no-claim-found: "&c¡No te queda terreno que unclaimear!"
       remove-confirm:  "&c¿Estas seguro que quieres unclaimear tu terreno? (Type /guilds confirm para continuar)"
       disabled-world: "&c¡Lo sentimos! ¡Esta función esta desactivada en este mundo!"
+      not-enough-members: "&cSorry! You need at least {amount} members to claim land!"
     killreward:
       killer: "&a ¡Has matado a otro jugador y has ganado {amount}!"
       player-who-died: "&c¡Te han matado y has perdido {amount}!"

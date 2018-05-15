@@ -31,6 +31,7 @@ messages:
       no-claim-found: "&cDu har ikke noget land at unclaime!"
       remove-confirm:  "&cEr du sikker på at du vil unclaime dit land? (Skriv /guilds confirm for at fortsætte)"
       disabled-world: "&Beklager! Denne funktion er slået fra i den verden du befinder dig i!"
+      not-enough-members: "&cSorry! You need at least {amount} members to claim land!"
     killreward:
       killer: "&aDu har dræbt en anden spiller og tjent {amount}!"
       player-who-died: "&cDu blev dræbt af en anden spiller og har tabt {amount}!"

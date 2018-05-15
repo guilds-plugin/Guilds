@@ -31,6 +31,7 @@ messages:
       no-claim-found: "&cDu har inget land att av claima!"
       remove-confirm:  "&cÄr du säker på att du vill av claima detta land? (Skriv /guilds confirm för att fortsätta)"
       disabled-world: "&cFörlåt! Den här funktionen är avstängd i denna värld!"
+      not-enough-members: "&cSorry! You need at least {amount} members to claim land!"
     killreward:
       killer: "&aDu har dödat en annan spelare och tjänat {amount}!"
       player-who-died: "&cDu har blivit dödad av en annan spelare och förlorat {amount}!"

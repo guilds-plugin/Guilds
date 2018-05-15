@@ -30,6 +30,7 @@ messages:
       no-claim-found: "&cJe hebt geen land om te unclaimen."
       remove-confirm:  "&cWeet je zeker dat je dit land wilt unclaimen (Typ /guilds confirm om door te gaan)"
       disabled-world: "&cSorry! Dit is uitgezet in deze wereld!"
+      not-enough-members: "&cSorry! You need at least {amount} members to claim land!"
     killreward:
       killer: "&aJe hebt een andere speler vermoord en {amount} verdient!"
       player-who-died: "&cJe bent vermoord door een andere speler en je hebt {amount} verloren!"

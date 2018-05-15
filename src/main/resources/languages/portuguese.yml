@@ -31,6 +31,7 @@ messages:
       no-claim-found: "&cVocê não tem terras para remover!"
       remove-confirm:  "&cVocê tem certeza que deseja remover sua terra? (Escreva /guilds confirm para continuar)"
       disabled-world: "&cDesculpe! Esta função foi desativada no mundo atual!"
+      not-enough-members: "&cSorry! You need at least {amount} members to claim land!"
     killreward:
       killer: "&aVocê matou um jogador e ganhou {amount}!"
       player-who-died: "&cVocê foi morto por um jogador e perdeu {amount}!"

@@ -31,6 +31,7 @@ messages:
       no-claim-found: "&cNu ai nici un teritoriu la care poti da unclaim!"
       remove-confirm:  "&cEsti sigur ca vrei sa dai unclaim acestui teritoriu? (Scrie /guilds confirm pentru a continua)"
       disabled-world: "&cSorry! This function has been disabled in your current world!"
+      not-enough-members: "&cSorry! You need at least {amount} members to claim land!"
     killreward:
       killer: "&aAi omorat un alt jucator si ai primit {amount}!"
       player-who-died: "&cAi fost omorat de un alt jucator si ai pierdut {amount}!"

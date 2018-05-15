@@ -30,6 +30,7 @@ messages:
       no-claim-found: "&c你没有任何领地！"
       remove-confirm:  "&c你确定要移除你的领地吗? (键入 /guilds confirm 来继续)"
       disabled-world: "&c对不起! 在你的世界，这个功能已经被停用!"
+      not-enough-members: "&cSorry! You need at least {amount} members to claim land!"
     killreward:
       killer: "&a你杀了其他玩家并获得 {amount}!"
       player-who-died: "&c你被其他玩家杀了并失去了 {amount}!"
