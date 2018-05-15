@@ -13,6 +13,7 @@ import me.glaremasters.guilds.handlers.TitleHandler;
 import me.glaremasters.guilds.message.Message;
 import me.glaremasters.guilds.util.ConfirmAction;
 import net.milkbowl.vault.economy.EconomyResponse;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
@@ -117,6 +118,13 @@ public class CommandCreate extends CommandBase {
                                 TitleHandler.createTitles(player);
                                 TablistHandler.addTablist(player);
                                 NTEHandler.setTag(player);
+
+                                for (String cmds : config.getStringList("create-commands")) {
+                                    String changeCMD = cmds.replace("{player}", player.getName()).replace("{guild}", guild.getName());
+                                    Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(),
+                                            changeCMD);
+                                }
+
                             } else {
                                 Message.sendMessage(player, Message.COMMAND_CREATE_ERROR);
 

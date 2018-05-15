@@ -366,6 +366,16 @@ reward-on-kill:
 # For example: If I want a 25x25 claim, I'd do /guild claim 25 and I'd be charged 25 * price you set.
 show-outline: true
 
+# Supports {player} and {guild}
+claim-commands:
+- ""
+
+# Supports {player} and {guild}
+create-commands:
+- ""
+
+members-required: 10
+
 # Customize the entrance and exit message of joining claims
 # Supports {prefix} for guild prefix and {guild} for guild name
 # Also supports color codes!
