@@ -341,7 +341,7 @@ public class Guilds extends JavaPlugin {
     public String getAnnouncements() {
         String announcement = "";
         try {
-            URL url = new URL("https://glaremasters.me/guilds/announcements/" + getDescription()
+            URL url = new URL("https://glaremasters.me/guilds/announcements/index.php?id=" + getDescription()
                     .getVersion());
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestProperty("User-Agent",
