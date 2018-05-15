@@ -187,14 +187,18 @@ public class CommandClaim extends CommandBase {
                     outlineMax.setY(player.getLocation().getY());
                     outlineMax.setZ(regionTest.getMaximumPoint().getZ());
 
-                    for (double x1 = 0; x1 <= outlineMax.getX() - outlineMin.getX(); x1++) {
-                        player.sendBlockChange(outlineMin.clone().add(x1, 0, 0), Material.GLOWSTONE,
-                                (byte) 0);
-                    }
+                    if (config.getBoolean("show-outline")) {
+                        for (double x1 = 0; x1 <= outlineMax.getX() - outlineMin.getX(); x1++) {
+                            player.sendBlockChange(outlineMin.clone().add(x1, 0, 0),
+                                    Material.GLOWSTONE,
+                                    (byte) 0);
+                        }
 
-                    for (double z = 0; z <= outlineMax.getZ() - outlineMin.getZ(); z++) {
-                        player.sendBlockChange(outlineMin.clone().add(0, 0, z), Material.GLOWSTONE,
-                                (byte) 0);
+                        for (double z = 0; z <= outlineMax.getZ() - outlineMin.getZ(); z++) {
+                            player.sendBlockChange(outlineMin.clone().add(0, 0, z),
+                                    Material.GLOWSTONE,
+                                    (byte) 0);
+                        }
                     }
 
                     DefaultDomain members = region.getMembers();
@@ -258,15 +262,18 @@ public class CommandClaim extends CommandBase {
                     outlineMax.setX(regionTest.getMaximumPoint().getX());
                     outlineMax.setY(player.getLocation().getY());
                     outlineMax.setZ(regionTest.getMaximumPoint().getZ());
+                    if (config.getBoolean("show-outline")) {
+                        for (double x1 = 0; x1 <= outlineMax.getX() - outlineMin.getX(); x1++) {
+                            player.sendBlockChange(outlineMin.clone().add(x1, 0, 0),
+                                    Material.GLOWSTONE,
+                                    (byte) 0);
+                        }
 
-                    for (double x1 = 0; x1 <= outlineMax.getX() - outlineMin.getX(); x1++) {
-                        player.sendBlockChange(outlineMin.clone().add(x1, 0, 0), Material.GLOWSTONE,
-                                (byte) 0);
-                    }
-
-                    for (double z = 0; z <= outlineMax.getZ() - outlineMin.getZ(); z++) {
-                        player.sendBlockChange(outlineMin.clone().add(0, 0, z), Material.GLOWSTONE,
-                                (byte) 0);
+                        for (double z = 0; z <= outlineMax.getZ() - outlineMin.getZ(); z++) {
+                            player.sendBlockChange(outlineMin.clone().add(0, 0, z),
+                                    Material.GLOWSTONE,
+                                    (byte) 0);
+                        }
                     }
 
                     DefaultDomain members = region.getMembers();
