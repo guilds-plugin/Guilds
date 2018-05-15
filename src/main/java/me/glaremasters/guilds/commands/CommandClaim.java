@@ -167,6 +167,13 @@ public class CommandClaim extends CommandBase {
                             .ceil((player.getLocation().getZ() + (
                                     config.getInt("regular-claim-size")
                                             / 2))))));
+
+                    for (String cmds : config.getStringList("claim-commands")) {
+                        String changeCMD = cmds.replace("{player}", player.getName()).replace("{guild}", guild.getName());
+                        Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(),
+                                changeCMD);
+                    }
+
                     region.setFlag(DefaultFlag.GREET_MESSAGE,
                             color(config.getString("claim-enter-message")
                                     .replace("{prefix}", guild.getPrefix())
@@ -243,6 +250,13 @@ public class CommandClaim extends CommandBase {
                             + (Math
                             .ceil((player.getLocation().getZ() + (Integer.valueOf(args[0])
                                     / 2))))));
+
+                    for (String cmds : config.getStringList("claim-commands")) {
+                        String changeCMD = cmds.replace("{player}", player.getName()).replace("{guild}", guild.getName());
+                        Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(),
+                                changeCMD);
+                    }
+
                     region.setFlag(DefaultFlag.GREET_MESSAGE,
                             color(config.getString("claim-enter-message")
                                     .replace("{prefix}", guild.getPrefix())
