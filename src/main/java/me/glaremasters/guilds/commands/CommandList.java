@@ -17,7 +17,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.SkullMeta;
 
 
 public class CommandList extends CommandBase {
@@ -41,8 +40,8 @@ public class CommandList extends CommandBase {
 
         for (int i = 0; i < Guilds.getInstance().getGuildHandler().getGuilds().values().size(); i++) {
             Guild guild = (Guild) Guilds.getInstance().getGuildHandler().getGuilds().values().toArray()[i];
-            ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
-            SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
+            ItemStack item = new ItemStack(Material.getMaterial(config.getString("list.item")));
+            ItemMeta itemMeta = item.getItemMeta();
             ArrayList<String> lore = new ArrayList<String>();
             if (config.getBoolean("display.name")) { lore.add(color(config.getString("list.name") + guild.getName())); }
             if (config.getBoolean("display.prefix")) { lore.add(color(config.getString("list.prefix") + guild.getPrefix())); }
@@ -58,12 +57,11 @@ public class CommandList extends CommandBase {
                 }
                 lore.addAll(lines);
             }
-            skullMeta.setLore(lore);
+            itemMeta.setLore(lore);
             String name = Bukkit.getOfflinePlayer(guild.getGuildMaster().getUniqueId()).getName();
-            skullMeta.setOwner(Bukkit.getOfflinePlayer(guild.getGuildMaster().getUniqueId()).getName());
-            skullMeta.setDisplayName(color(config.getString("gui-name.list.head-name").replace("{player}", name)));
-            skull.setItemMeta(skullMeta);
-            skulls.put(guild.getGuildMaster().getUniqueId(), skull);
+            itemMeta.setDisplayName(color(config.getString("gui-name.list.head-name").replace("{player}", name)));
+            item.setItemMeta(itemMeta);
+            skulls.put(guild.getGuildMaster().getUniqueId(), item);
         }
 
         ItemStack previous = new ItemStack(Material.EMPTY_MAP, 1);
