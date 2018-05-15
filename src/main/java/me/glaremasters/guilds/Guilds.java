@@ -269,6 +269,9 @@ public class Guilds extends JavaPlugin {
 
     // TODO: Find a way to organize these.
 
+    /**
+     * Register MVdWPlaceholderAPI placeholders
+     */
     private void initializePlaceholder() {
         if (Bukkit.getPluginManager().isPluginEnabled("MVdWPlaceholderAPI")) {
             PlaceholderAPI.registerPlaceholder(this, "guild_name",
@@ -325,11 +328,18 @@ public class Guilds extends JavaPlugin {
         return (permission != null);
     }
 
+    /**
+     * Setup easy way to get Vault Permissions
+     * @return permissions
+     */
     public static Permission getPermissions() {
         return permission;
     }
 
 
+    /**
+     * Sets up the usage of the ServerListPlus addon
+     */
     @Override
     public void onLoad() {
         if (getConfig().getBoolean("hooks.serverlistplus")) {
@@ -338,10 +348,14 @@ public class Guilds extends JavaPlugin {
         }
     }
 
+    /**
+     * Grab the announcement from the API
+     * @return announcement in string text form
+     */
     public String getAnnouncements() {
         String announcement = "";
         try {
-            URL url = new URL("https://glaremasters.me/guilds/announcements/index.php?id=" + getDescription()
+            URL url = new URL("https://glaremasters.me/guilds/announcements/?id=" + getDescription()
                     .getVersion());
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestProperty("User-Agent",
