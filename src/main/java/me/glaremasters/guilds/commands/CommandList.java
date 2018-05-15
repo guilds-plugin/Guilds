@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import me.glaremasters.guilds.Guilds;
@@ -23,6 +24,8 @@ public class CommandList extends CommandBase {
 
     public static Inventory guildList = null;
     public static HashMap<UUID, Integer> playerPages = new HashMap<>();
+    public static FileConfiguration config = Guilds.getInstance().getConfig();
+    public static List<String> possible_items = config.getStringList("random-items");
 
     public CommandList() {
         super("list", Guilds.getInstance().getConfig().getString("commands.description.list"),
@@ -32,7 +35,6 @@ public class CommandList extends CommandBase {
 
     public static Inventory getSkullsPage(int page) {
         HashMap<UUID, ItemStack> skulls = new HashMap<>();
-        FileConfiguration config = Guilds.getInstance().getConfig();
         Inventory inv = Bukkit.createInventory(null, 54, (config.getString("gui-name.list.name")));
 
         int startIndex = 0;
@@ -40,7 +42,7 @@ public class CommandList extends CommandBase {
 
         for (int i = 0; i < Guilds.getInstance().getGuildHandler().getGuilds().values().size(); i++) {
             Guild guild = (Guild) Guilds.getInstance().getGuildHandler().getGuilds().values().toArray()[i];
-            ItemStack item = new ItemStack(Material.getMaterial(config.getString("list.item")));
+            ItemStack item = new ItemStack(Material.getMaterial(randomItem()));
             ItemMeta itemMeta = item.getItemMeta();
             ArrayList<String> lore = new ArrayList<String>();
             if (config.getBoolean("display.name")) { lore.add(color(config.getString("list.name") + guild.getName())); }
@@ -100,6 +102,12 @@ public class CommandList extends CommandBase {
         playerPages.put(player.getUniqueId(), 1);
         guildList = getSkullsPage(1);
         player.openInventory(guildList);
+    }
+
+    public static String randomItem() {
+        int random = new Random().nextInt(possible_items.size());
+        String mat_name = possible_items.get(random);
+        return mat_name;
     }
 }
 
