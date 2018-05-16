@@ -1,5 +1,6 @@
 package me.glaremasters.guilds;
 
+import static me.glaremasters.guilds.util.AnnouncementUtil.unescape_perl_string;
 import be.maximvdw.placeholderapi.PlaceholderAPI;
 import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
@@ -25,7 +26,6 @@ import me.glaremasters.guilds.util.SLPUtil;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -364,7 +364,7 @@ public class Guilds extends JavaPlugin {
             try (InputStream in = con.getInputStream()) {
                 String encoding = con.getContentEncoding();
                 encoding = encoding == null ? "UTF-8" : encoding;
-                announcement = StringEscapeUtils.unescapeJava(IOUtils.toString(in, encoding));
+                announcement = unescape_perl_string(IOUtils.toString(in, encoding));
                 con.disconnect();
             }
         } catch (Exception exception) {
