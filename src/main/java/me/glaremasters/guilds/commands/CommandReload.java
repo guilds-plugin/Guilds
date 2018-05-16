@@ -1,5 +1,6 @@
 package me.glaremasters.guilds.commands;
 
+import static me.glaremasters.guilds.util.ColorUtil.color;
 import java.io.IOException;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.commands.base.CommandBase;
@@ -18,22 +19,18 @@ public class CommandReload extends CommandBase {
     }
 
     public void execute(CommandSender sender, String[] args) {
+        Guilds instance = Guilds.getInstance();
         try {
-            Guilds.getInstance().yaml.load(Guilds.getInstance().languageYamlFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InvalidConfigurationException e) {
+            instance.yaml.load(instance.languageYamlFile);
+        } catch (InvalidConfigurationException | IOException e) {
             e.printStackTrace();
         }
-        Guilds.getInstance().reloadConfig();
-        Guilds.getInstance().setDatabaseType();
-        Guilds.getInstance().getGuildHandler().disable();
-        Guilds.getInstance().getGuildHandler().enable();
+        instance.reloadConfig();
+        instance.setDatabaseType();
+        instance.getGuildHandler().disable();
+        instance.getGuildHandler().enable();
 
-        Guilds.PREFIX =
-                ChatColor.translateAlternateColorCodes('&',
-                        Guilds.getInstance().getConfig().getString("plugin-prefix"))
-                        + ChatColor.RESET + " ";
+        Guilds.PREFIX = color(instance.getConfig().getString("plugin-prefix")) + ChatColor.RESET + " ";
         Message.sendMessage(sender, Message.COMMAND_RELOAD_RELOADED);
     }
 }
