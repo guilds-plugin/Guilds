@@ -25,6 +25,7 @@ import me.glaremasters.guilds.util.SLPUtil;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -363,7 +364,7 @@ public class Guilds extends JavaPlugin {
             try (InputStream in = con.getInputStream()) {
                 String encoding = con.getContentEncoding();
                 encoding = encoding == null ? "UTF-8" : encoding;
-                announcement = IOUtils.toString(in, encoding);
+                announcement = StringEscapeUtils.unescapeJava(IOUtils.toString(in, encoding));
                 con.disconnect();
             }
         } catch (Exception exception) {
