@@ -18,6 +18,11 @@ import org.bukkit.inventory.meta.ItemMeta;
  */
 public class CommandGive extends CommandBase {
 
+    private FileConfiguration config = Guilds.getInstance().getConfig();
+    private String ticketName = color(config.getString("upgrade-ticket.name"));
+    private String ticketMaterial = config.getString("upgrade-ticket.material");
+    private String ticketLore = color(config.getString("upgrade-ticket.lore"));
+
     public CommandGive() {
         super("give", Guilds.getInstance().getConfig().getString("commands.description.give"),
                 "guilds.command.give", true, null,
@@ -26,17 +31,23 @@ public class CommandGive extends CommandBase {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        FileConfiguration config = Guilds.getInstance().getConfig();
         Player player = Bukkit.getPlayer(args[0]);
-        Integer amount = Integer.valueOf(args[1]);
-        ItemStack upgradeTicket = new ItemStack(Material.PAPER, amount);
-        ItemMeta meta = upgradeTicket.getItemMeta();
-        List<String> lores = new ArrayList<String>();
-        lores.add(color(config.getString("upgrade-ticket.lore")));
-        meta.setDisplayName(color(config.getString("upgrade-ticket.name")));
-        meta.setLore(lores);
-        upgradeTicket.setItemMeta(meta);
-        player.getInventory().addItem(upgradeTicket);
+
+        if (player == null) return;
+
+        try {
+            Integer amount = Integer.valueOf(args[1]);
+            ItemStack upgradeTicket = new ItemStack(Material.getMaterial(ticketMaterial), amount);
+            ItemMeta meta = upgradeTicket.getItemMeta();
+            List<String> lores = new ArrayList<String>();
+            lores.add(ticketLore);
+            meta.setDisplayName(ticketName);
+            meta.setLore(lores);
+            upgradeTicket.setItemMeta(meta);
+            player.getInventory().addItem(upgradeTicket);
+        } catch (NumberFormatException e) {
+            return;
+        }
     }
 
 
