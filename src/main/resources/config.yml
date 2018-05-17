@@ -138,6 +138,7 @@ rewards-enabled: true
 upgrade-ticket:
   name: "&bGuild Upgrade Ticket"
   lore: "&dRight click this ticket to upgrade your guild tier!"
+  material: "PAPER"
 
 #-----------------------------------------------------------#
 #                     GUI CONFIGURATION                     #
