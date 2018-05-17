@@ -166,7 +166,7 @@ public class Guilds extends JavaPlugin {
             getServer().getPluginManager().registerEvents(new NameTagListener(), this);
         }
         if (getConfig().getBoolean("rewards-enabled")) {
-            getServer().getPluginManager().registerEvents(new TicketListener(), this);
+            getServer().getPluginManager().registerEvents(new TicketListener(this), this);
         }
 
         vaultEconomy = setupEconomy();
