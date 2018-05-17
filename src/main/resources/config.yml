@@ -43,9 +43,6 @@ hooks:
   nametagedit: false
   serverlistplus: false
 
-# If you are using DiscordSRV, us enable this hook. When you are toggled in /guild chat, it will not send the messages
-# to the discord
-
 # This allows you to configure how nametags will work in game with NameTagEdit.
 # You can also display a guild's prefix by using {prefix} instead of {guild}.
 nametagedit:
