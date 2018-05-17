@@ -130,7 +130,7 @@ public class Guilds extends JavaPlugin {
                 new CommandConfirm(),
                 new CommandCreate(), new CommandDecline(), new CommandDelete(), new CommandDemote(),
                 new CommandHelp(),
-                new CommandHome(), new CommandInfo(), new CommandInspect(), new CommandInvite(),
+                new CommandHome(), new CommandInfo(), new CommandInvite(),
                 new CommandLeave(),
                 new CommandList(), new CommandPrefix(), new CommandPromote(), new CommandReload(),
                 new CommandSetHome(),
@@ -331,6 +331,7 @@ public class Guilds extends JavaPlugin {
 
     /**
      * Setup easy way to get Vault Permissions
+     *
      * @return permissions
      */
     public static Permission getPermissions() {
@@ -351,6 +352,7 @@ public class Guilds extends JavaPlugin {
 
     /**
      * Grab the announcement from the API
+     *
      * @return announcement in string text form
      */
     public String getAnnouncements() {

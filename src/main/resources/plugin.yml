@@ -101,7 +101,6 @@ permissions:
       guilds.command.list: true
       guilds.command.home: true
       guilds.command.sethome: true
-      guilds.command.inspect: true
       guilds.command.status: true
       guilds.command.vault: true
       guilds.command.ally: true
