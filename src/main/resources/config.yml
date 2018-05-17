@@ -407,7 +407,6 @@ regular-claim-price: 100.00
 # CUSTOM TITLE PLACEHOLDERS: {guild} {prefix} {username} {tier}
 
 # NOTE: There is a current bug which only allows Color Codes to work on creation, upgrade, and prefix.
-# IMPORTANT: This will ONLY work on servers 1.9 and ABOVE.
 titles:
   enabled: false
   events:
@@ -512,7 +511,7 @@ tier3:
 plugin-prefix: "&a[Guilds]"
 
 # Disable this to remove guild names showing next to a player in "TabList"
-tablist-guilds: true
+tablist-guilds: false
 
 # Would you like to display a user's displayname instead of their MC username?
 tablist-use-display-name: false
@@ -523,7 +522,7 @@ tablist-use-display-name: false
 tablist: "&7[&b{guild}&7]&r"
 
 # Disable this if you don't want to allow Guild Signs to be made.
-guild-signs: true
+guild-signs: false
 
 # Here you can modify how the /guild chat message style works.
 guild-chat-format: "&7&l[Guild Chat]&r &b[{role}] {player}: {message}"
