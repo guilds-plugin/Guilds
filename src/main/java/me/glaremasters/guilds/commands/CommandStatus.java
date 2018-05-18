@@ -21,32 +21,37 @@ public class CommandStatus extends CommandBase {
 
     @Override
     public void execute(Player player, String[] args) {
+        // Get the player guild
         Guild guild = Guild.getGuild(player.getUniqueId());
+        // Check if the guild is null
         if (guild == null) {
             Message.sendMessage(player, Message.COMMAND_ERROR_NO_GUILD);
             return;
         }
-
+        // Set instance variable
+        Guilds instance = Guilds.getInstance();
+        // Get the role of a player
         GuildRole role = GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole());
+        // Check if they have the role permission to change status
         if (!role.canChangeStatus()) {
             Message.sendMessage(player, Message.COMMAND_ERROR_ROLE_NO_PERMISSION);
             return;
         }
-        if (!(args[0].equalsIgnoreCase("private") || args[0].equalsIgnoreCase("public"))) {
+        // Make sure it's either private or public
+        boolean argCheck = !args[0].equalsIgnoreCase("private") && !args[0].equalsIgnoreCase("public");
+        if (argCheck) {
             Message.sendMessage(player, Message.COMMAND_STATUS_ERROR);
-        } else {
-
-            String status = StringUtils.capitalize(args[0]);
-
-
-            Guilds.getInstance().guildStatusConfig
-                    .set(Guild.getGuild(player.getUniqueId()).getName(),
-                            status);
-            Guild.getGuild(player.getUniqueId()).updateGuild("");
-
-            Message.sendMessage(player,
-                    Message.COMMAND_STATUS_SUCCESSFUL.replace("{status}", status));
-            Guilds.getInstance().saveGuildData();
+            return;
         }
+        // Capitalize it to look nice
+        String status = StringUtils.capitalize(args[0]);
+        // Save in the guild status file
+        instance.guildStatusConfig.set(guild.getName(), status);
+        // Send out the update command
+        guild.updateGuild("");
+        // Tell the user they updated their prefix with the new prefix.
+        Message.sendMessage(player, Message.COMMAND_STATUS_SUCCESSFUL.replace("{status}", status));
+        // Save the file
+        instance.saveGuildData();
     }
 }
