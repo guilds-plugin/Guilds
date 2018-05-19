@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 import me.glaremasters.guilds.Guilds;
+import me.glaremasters.guilds.util.ConfigUtil;
 import me.rayzr522.jsonmessage.JSONMessage;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -26,9 +27,10 @@ public class AnnouncementListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        if (Guilds.getInstance().getConfig().getBoolean("announcements.in-game")) {
-            Guilds.getInstance().getServer().getScheduler()
-                    .scheduleAsyncDelayedTask(Guilds.getInstance(), () -> {
+        ConfigUtil cu = new ConfigUtil(guilds);
+        if (cu.getBoolean("announcements.in-game")) {
+            guilds.getServer().getScheduler()
+                    .scheduleAsyncDelayedTask(guilds, () -> {
                         if (player.isOp()) {
                             if (!ALREADY_INFORMED.contains(player.getUniqueId())) {
                                 JSONMessage.create(Guilds.PREFIX + "Announcements").tooltip(guilds.getAnnouncements()).openURL(guilds.getDescription().getWebsite()).send(player);
