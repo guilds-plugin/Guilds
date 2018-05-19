@@ -134,7 +134,7 @@ public class Guilds extends JavaPlugin {
                 new CommandLeave(),
                 new CommandList(), new CommandPrefix(), new CommandPromote(), new CommandReload(),
                 new CommandSetHome(),
-                new CommandStatus(), new CommandTransfer(), new CommandUpdate(), new CommandVault(),
+                new CommandStatus(), new CommandTransfer(), new CommandVault(),
                 new CommandVersion(),
                 new CommandUpgrade(), new CommandBank(), new CommandGive(), new CommandClaim(),
                 new CommandUnclaim(), new CommandAdmin()

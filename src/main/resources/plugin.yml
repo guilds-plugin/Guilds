@@ -50,8 +50,6 @@ commands:
     description: Reload Guilds' configuration file
   guild sethome:
     description: Set your guild's home!
-  guild update:
-    description: Update to the most recent version of Guilds
   guild version:
     description: Check version
   guild status:
@@ -80,7 +78,6 @@ permissions:
     children:
       guilds.command.admin: true
       guilds.command.reload: true
-      guilds.command.update: true
       guilds.command.give: true
       guilds.command.accept: true
       guilds.command.boot: true

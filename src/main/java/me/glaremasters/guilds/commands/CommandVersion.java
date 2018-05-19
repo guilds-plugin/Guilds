@@ -1,8 +1,9 @@
 package me.glaremasters.guilds.commands;
 
+import static me.glaremasters.guilds.util.ColorUtil.color;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.commands.base.CommandBase;
-import org.bukkit.ChatColor;
+import me.glaremasters.guilds.updater.SpigotUpdater;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.PluginDescriptionFile;
 
@@ -14,10 +15,19 @@ public class CommandVersion extends CommandBase {
                 null, 0, 0);
     }
 
+
     public void execute(CommandSender sender, String[] args) {
-        PluginDescriptionFile pdf = Guilds.getInstance().getDescription();
-        sender.sendMessage(
-                Guilds.PREFIX + ChatColor.RED + "Guilds v" + pdf.getVersion() + ChatColor.GREEN
-                        + " by " + String.join(" & ", pdf.getAuthors()));
+        Guilds instance = Guilds.getInstance();
+        SpigotUpdater updater = new SpigotUpdater(instance, 48920);
+        PluginDescriptionFile pdf = instance.getDescription();
+        try {
+            sender.sendMessage(
+                    color("&aPlugin Info:\n&aVersion - Current : " + pdf.getVersion()
+                            + " Latest : "
+                            + updater.getLatestVersion() + "\n&aAuthor - blockslayer22"
+                            + "\n&aSupport - https://glaremasters.me/discord"));
+        } catch (Exception e) {
+            return;
+        }
     }
 }

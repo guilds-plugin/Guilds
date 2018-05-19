@@ -30,7 +30,11 @@ public class SpigotUpdater {
 
     public JavaPlugin getPlugin() { return plugin; }
 
-    public String getLatestVersion() { return newVersion; }
+    public String getLatestVersion() throws Exception {
+        URLConnection con = checkURL.openConnection();
+        this.newVersion = new BufferedReader(new InputStreamReader(con.getInputStream())).readLine();
+        return newVersion;
+    }
 
     public String getResourceURL() { return "https://www.spigotmc.org/resources/" + project; }
 
