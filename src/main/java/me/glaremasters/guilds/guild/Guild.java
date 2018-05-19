@@ -139,7 +139,7 @@ public class Guild implements InventoryHolder {
         return Guilds.getInstance().getConfig().getInt("tier" + getTier() + ".max-members");
     }
 
-    public int getMemebersRankupRequire() {
+    public int getMembersRankupRequire() {
         return Guilds.getInstance().getConfig().getInt("tier" + getTier() + ".members-to-rankup");
     }
 

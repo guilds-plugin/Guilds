@@ -46,10 +46,10 @@ public class CommandUpgrade extends CommandBase {
             return;
         }
 
-        if (guild.getMemebersRankupRequire() != 0 && guild.getMembers().size() < guild
-                .getMemebersRankupRequire()) {
+        if (guild.getMembersRankupRequire() != 0 && guild.getMembers().size() < guild
+                .getMembersRankupRequire()) {
             Message.sendMessage(player, Message.COMMAND_UPGRADE_NOT_ENOUGH_MEMBERS
-                    .replace("{amount}", String.valueOf(guild.getMemebersRankupRequire())));
+                    .replace("{amount}", String.valueOf(guild.getMembersRankupRequire())));
             return;
         }
         double balance = guild.getBankBalance();
