@@ -1,5 +1,8 @@
 package me.glaremasters.guilds.handlers;
 
+import static me.glaremasters.guilds.util.ConfigUtil.getBoolean;
+import static me.glaremasters.guilds.util.ConfigUtil.getInt;
+import static me.glaremasters.guilds.util.ConfigUtil.getString;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.guild.Guild;
 import org.bukkit.ChatColor;
@@ -18,22 +21,18 @@ public class TitleHandler {
 
     public void joinTitles(Player player) {
         Guild guild = Guild.getGuild(player.getUniqueId());
-        if (plugin.getConfig().getBoolean("titles.enabled")) {
+        if (getBoolean("titles.enabled")) {
             try {
                 String creation = "titles.events.player-joins-guild";
-                guild.sendTitle(plugin.getConfig().getString(creation + ".title")
-                                .replace("{username}", player.getName()),
-                        plugin.getConfig().getString(creation + ".sub-title")
-                                .replace("{username}", player.getName()),
-                        plugin.getConfig().getInt(creation + ".fade-in") * 20,
-                        plugin.getConfig().getInt(creation + ".stay") * 20,
-                        plugin.getConfig().getInt(creation + ".fade-out") * 20);
+                guild.sendTitle(
+                        getString(creation + ".title").replace("{username}", player.getName()), getString(creation + ".sub-title").replace("{username}", player.getName()),
+                        getInt(creation + ".fade-in") * 20,
+                        getInt(creation + ".stay") * 20,
+                        getInt(creation + ".fade-out") * 20);
             } catch (NoSuchMethodError error) {
                 String creation = "titles.events.player-joins-guild";
-                guild.sendTitleOld(plugin.getConfig().getString(creation + ".title")
-                                .replace("{username}", player.getName()),
-                        plugin.getConfig().getString(creation + ".sub-title")
-                                .replace("{username}", player.getName()));
+                guild.sendTitleOld(getString(creation + ".title").replace("{username}", player.getName()), getString(creation + ".sub-title")
+                        .replace("{username}", player.getName()));
             }
 
         }
