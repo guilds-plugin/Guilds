@@ -87,7 +87,7 @@ public class CommandAccept extends CommandBase {
 
         guild.addMember(player.getUniqueId(), GuildRole.getLowestRole());
         guild.removeInvitedPlayer(player.getUniqueId());
-        if (Guilds.getInstance().getConfig().getBoolean("hooks.worldguard")) {
+        if (config.getBoolean("hooks.worldguard")) {
 
             RegionContainer container = WorldGuard.getWorldGuard().getRegionContainer();
             RegionManager regions = container.get(player.getWorld());
@@ -96,7 +96,7 @@ public class CommandAccept extends CommandBase {
         }
 
         for (int i = 1; i <= guild.getTier(); i++) {
-            for (String perms : Guilds.getInstance().getConfig().getStringList("tier" + i + ".permissions")) {
+            for (String perms : config.getStringList("tier" + i + ".permissions")) {
                 Guilds.getPermissions().playerAdd(null, player, perms);
             }
         }
