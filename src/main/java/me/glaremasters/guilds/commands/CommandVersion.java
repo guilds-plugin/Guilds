@@ -33,7 +33,7 @@ public class CommandVersion extends CommandBase {
                     color("&aPlugin Info:\n&aName - " + pdf.getName() + "\n&aVersion - Current : " + pdf.getVersion()
                             + " Latest : "
                             + updater.getLatestVersion() + "\n&aAuthor - " + pdf.getAuthors()
-                            + "\n&aSupport - https://glaremasters.me/discord" + message));
+                            + "\n&aSupport - " + pdf.getWebsite() + message));
         } catch (Exception e) {
             e.printStackTrace();
         }
