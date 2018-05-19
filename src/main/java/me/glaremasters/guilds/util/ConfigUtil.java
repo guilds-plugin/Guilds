@@ -6,20 +6,16 @@ import me.glaremasters.guilds.Guilds;
 /**
  * Created by GlareMasters on 5/18/2018.
  */
-public class ConfigUtil {
+public final class ConfigUtil {
 
-    private Guilds guilds;
-
-    public ConfigUtil(Guilds guilds) {
-        this.guilds = guilds;
-    }
+    private static final Guilds guilds = Guilds.getInstance();
 
     /**
      * Get a string from the config
      * @param path from config
      * @return string
      */
-    public String getString(String path) {
+    public static String getString(String path) {
         return color(guilds.getConfig().getString((path)));
     }
 
@@ -28,7 +24,7 @@ public class ConfigUtil {
      * @param path from config
      * @return int
      */
-    public int getInt(String path) {
+    public static int getInt(String path) {
         return guilds.getConfig().getInt(path);
     }
 
@@ -37,9 +33,8 @@ public class ConfigUtil {
      * @param path from config
      * @return true / false
      */
-    public boolean getBoolean(String path) {
+    public static boolean getBoolean(String path) {
         return guilds.getConfig().getBoolean(path);
     }
-
 
 }

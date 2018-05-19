@@ -1,6 +1,7 @@
 package me.glaremasters.guilds.listeners;
 
 
+import static me.glaremasters.guilds.util.ConfigUtil.getBoolean;
 import java.util.stream.Stream;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.guild.Guild;
@@ -40,12 +41,12 @@ public class GuildBuffListener implements Listener {
             GuildBuff buff = GuildBuff.get(event.getCurrentItem().getType());
             double balance = guild.getBankBalance();
             if (buff != null) {
-                if (guilds.getConfig().getBoolean("use-guild-bank")) {
+                if (getBoolean("use-guild-bank")) {
                     if (balance < buff.cost) {
                         Message.sendMessage(player, Message.COMMAND_BANK_WITHDRAW_FAILURE);
                         return;
                     }
-                    if (guilds.getConfig().getBoolean("disable-buff-stacking")
+                    if (getBoolean("disable-buff-stacking")
                             && !player
                             .getActivePotionEffects().isEmpty()) {
                         return;
@@ -66,7 +67,7 @@ public class GuildBuffListener implements Listener {
                             Message.sendMessage(player, Message.COMMAND_BUFF_NOT_ENOUGH_MONEY);
                             return;
                         }
-                        if (guilds.getConfig().getBoolean("disable-buff-stacking")
+                        if (getBoolean("disable-buff-stacking")
                                 && !player
                                 .getActivePotionEffects().isEmpty()) {
                             return;
@@ -120,8 +121,7 @@ public class GuildBuffListener implements Listener {
         public final int amplifier;
 
         GuildBuff(PotionEffectType potion, Material itemType, String configValueName) {
-            this.time =
-                    Guilds.getInstance().getConfig().getInt("buff.time." + configValueName) * 20;
+            this.time = Guilds.getInstance().getConfig().getInt("buff.time." + configValueName) * 20;
             this.cost = Guilds.getInstance().getConfig().getDouble("buff.price." + configValueName);
             this.itemType = itemType;
             this.potion = potion;

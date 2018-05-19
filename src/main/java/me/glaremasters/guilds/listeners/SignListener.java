@@ -1,5 +1,6 @@
 package me.glaremasters.guilds.listeners;
 
+import static me.glaremasters.guilds.util.ColorUtil.color;
 import me.glaremasters.guilds.guild.Guild;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -26,13 +27,10 @@ public class SignListener implements Listener {
             return;
         }
         if (event.getLine(0).endsWith("[Guild]")) {
-            event.setLine(0, ChatColor.translateAlternateColorCodes('&',
-                    event.getLine(0).substring(0, event.getLine(0).length() - "[Guild]".length())
-                            + "Join Guild"));
+            event.setLine(0, color(event.getLine(0).substring(0, event.getLine(0).length() - "[Guild]".length()) + "Join Guild"));
             event.setLine(1, guild.getName());
             event.setLine(2, "Members");
-            event.setLine(3, String.valueOf(
-                    guild.getMembers().size() + " / " + guild.getMaxMembers()));
+            event.setLine(3, String.valueOf(guild.getMembers().size() + " / " + guild.getMaxMembers()));
         }
     }
 

@@ -1,8 +1,10 @@
 package me.glaremasters.guilds.listeners;
 
+import static me.glaremasters.guilds.util.ConfigUtil.getInt;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.message.Message;
+import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,11 +16,14 @@ import org.bukkit.event.entity.PlayerDeathEvent;
  */
 public class PlayerDeathListener implements Listener {
 
-    public PlayerDeathListener(Guilds guilds) {
+    private Guilds guilds;
+    private Economy economy;
+
+    public PlayerDeathListener(Guilds guilds, Economy economy) {
         this.guilds = guilds;
+        this.economy = economy;
     }
 
-    private Guilds guilds;
 
     @EventHandler
     public void onPlayerDeathEvent(PlayerDeathEvent event) {
@@ -32,39 +37,19 @@ public class PlayerDeathListener implements Listener {
         Guild guild = Guild.getGuild(player.getUniqueId());
         Guild guild2 = Guild.getGuild(killer.getUniqueId());
 
-        if (guild == null || guild2 == null) {
-            return;
+        if (guild == null || guild2 == null || guild.equals(guild2)) return;
+
+        if (Guild.areAllies(player.getUniqueId(), killer.getUniqueId())) return;
+
+        if (economy.getBalance(player.getName()) < getInt("reward-on-kill.take-from-killed-player")) return;
+
+        EconomyResponse withdrawPlayer = economy.withdrawPlayer(player, getInt("reward-on-kill.take-from-killed-player"));
+        EconomyResponse depositPlayer = economy.depositPlayer(killer, guilds.getConfig().getInt("reward-on-kill.reward"));
+        if (depositPlayer.transactionSuccess()) {
+            Message.sendMessage(killer, Message.COMMAND_KILLREWARD_KILLER.replace("{amount}", Integer.toString(getInt("reward-on-kill.reward"))));
         }
-        if (guild.equals(guild2)) {
-            return;
-        }
-        if (Guild.areAllies(player.getUniqueId(), killer.getUniqueId())) {
-            return;
-        }
-        if (guilds.getEconomy()
-                .getBalance(player.getName()) < guilds.getConfig()
-                .getInt("reward-on-kill.take-from-killed-player")) {
-            return;
-        }
-        EconomyResponse response2 = guilds.getEconomy()
-                .withdrawPlayer(player,
-                        guilds.getConfig()
-                                .getInt("reward-on-kill.take-from-killed-player"));
-        EconomyResponse response =
-                guilds.getEconomy()
-                        .depositPlayer(killer,
-                                guilds.getConfig().getInt("reward-on-kill.reward"));
-        if (response.transactionSuccess()) {
-            Message.sendMessage(killer, Message.COMMAND_KILLREWARD_KILLER
-                    .replace("{amount}",
-                            Integer.toString(guilds.getConfig()
-                                    .getInt("reward-on-kill.reward"))));
-        }
-        if (response2.transactionSuccess()) {
-            Message.sendMessage(player,
-                    Message.COMMAND_KILLREWARD_PLAYER_WHO_DIED.replace("{amount}",
-                            Integer.toString(guilds.getConfig()
-                                    .getInt("reward-on-kill.take-from-killed-player"))));
+        if (withdrawPlayer.transactionSuccess()) {
+            Message.sendMessage(player, Message.COMMAND_KILLREWARD_PLAYER_WHO_DIED.replace("{amount}", Integer.toString(getInt("reward-on-kill.take-from-killed-player"))));
         }
     }
 

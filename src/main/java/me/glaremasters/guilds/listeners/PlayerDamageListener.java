@@ -1,5 +1,6 @@
 package me.glaremasters.guilds.listeners;
 
+import static me.glaremasters.guilds.util.ConfigUtil.getBoolean;
 import com.sk89q.worldguard.bukkit.WGBukkit;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
@@ -32,18 +33,17 @@ public class PlayerDamageListener implements Listener {
         if (guild == null || guild2 == null) {
             return;
         }
-        if (guilds.getConfig().getBoolean("hooks.worldguard")) {
-            ApplicableRegionSet set = WGBukkit.getPlugin().getRegionManager(player.getWorld())
-                    .getApplicableRegions(player.getLocation());
+        if (getBoolean("hooks.worldguard")) {
+            ApplicableRegionSet set = WGBukkit.getPlugin().getRegionManager(player.getWorld()).getApplicableRegions(player.getLocation());
             if (set.queryState(null, DefaultFlag.PVP) == StateFlag.State.DENY) {
                 return;
             }
         }
         if (guild.equals(guild2)) {
-            event.setCancelled(!guilds.getConfig().getBoolean("allow-guild-damage"));
+            event.setCancelled(!getBoolean("allow-guild-damage"));
         }
         if (Guild.areAllies(player.getUniqueId(), damager.getUniqueId())) {
-            event.setCancelled(!guilds.getConfig().getBoolean("allow-ally-damage"));
+            event.setCancelled(!getBoolean("allow-ally-damage"));
         }
     }
 }

@@ -141,8 +141,8 @@ public class Guilds extends JavaPlugin {
         ).forEach(commandHandler::register);
 
         Stream.of(
-                new JoinListener(), new ChatListener(), new ClickListener(this),
-                new GuildVaultListener(),
+                new JoinListener(this), new ChatListener(), new ClickListener(this),
+                new GuildVaultListener(this),
                 new GuildBuffListener(this), new GuildChatListener(this), new MobDeathListener(),
                 new PlayerDamageListener(this),
                 new DamageMultiplierListener(), new AnnouncementListener(this),
@@ -155,11 +155,11 @@ public class Guilds extends JavaPlugin {
             getServer().getPluginManager().registerEvents(new SignListener(), this);
         }
         if (getConfig().getBoolean("tablist-guilds")) {
-            getServer().getPluginManager().registerEvents(new TablistListener(), this);
+            getServer().getPluginManager().registerEvents(new TablistListener(this), this);
         }
 
         if (getConfig().getBoolean("reward-on-kill.enabled")) {
-            getServer().getPluginManager().registerEvents(new PlayerDeathListener(this), this);
+            getServer().getPluginManager().registerEvents(new PlayerDeathListener(this, economy), this);
         }
 
         if (getConfig().getBoolean("hooks.nametagedit")) {

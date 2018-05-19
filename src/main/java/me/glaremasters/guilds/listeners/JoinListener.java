@@ -12,6 +12,12 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 public class JoinListener implements Listener {
 
+    private Guilds guilds;
+
+    public JoinListener(Guilds guilds) {
+        this.guilds = guilds;
+    }
+
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
@@ -20,19 +26,17 @@ public class JoinListener implements Listener {
             return;
         }
 
-        List<String> guilds = new ArrayList<>();
-        for (Guild guild : Guilds.getInstance().getGuildHandler().getGuilds().values()) {
+        List<String> guildList = new ArrayList<>();
+        for (Guild guild : guilds.getGuildHandler().getGuilds().values()) {
             if (!guild.getInvitedMembers().contains(player.getUniqueId())) {
                 continue;
             }
 
-            guilds.add(guild.getName());
+            guildList.add(guild.getName());
         }
 
-        if (guilds.size() > 0) {
-            Message.sendMessage(player, Message.EVENT_JOIN_PENDING_INVITES
-                    .replace("{number}", String.valueOf(guilds.size()), "{guilds}",
-                            String.join(",", guilds)));
+        if (guildList.size() > 0) {
+            Message.sendMessage(player, Message.EVENT_JOIN_PENDING_INVITES.replace("{number}", String.valueOf(guildList.size()), "{guilds}", String.join(",", guildList)));
         }
     }
 }

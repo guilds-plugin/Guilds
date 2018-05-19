@@ -1,13 +1,12 @@
 package me.glaremasters.guilds.listeners;
 
-import static me.glaremasters.guilds.util.ColorUtil.color;
+import static me.glaremasters.guilds.util.ConfigUtil.getString;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -27,8 +26,6 @@ public class GuildChatListener implements Listener {
 
     public static final Set<UUID> GUILD_CHAT_PLAYERS = new HashSet<>();
 
-    FileConfiguration c = Guilds.getInstance().getConfig();
-
     @EventHandler(priority = EventPriority.HIGH)
     public void onChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
@@ -41,8 +38,8 @@ public class GuildChatListener implements Listener {
         if (GUILD_CHAT_PLAYERS.contains(player.getUniqueId())) {
             event.getRecipients().removeIf(r -> guild.getMember(r.getUniqueId()) == null);
             for (Player recipient : event.getRecipients()) {
-                recipient.sendMessage(color(c.getString("guild-chat-format")).replace("{role}", GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole())
-                                .getName()).replace("{player}", event.getPlayer().getName()).replace("{message}", event.getMessage()));
+                recipient.sendMessage((getString("guild-chat-format")).replace("{role}", GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole())
+                                .getName()).replace("{player}", player.getName()).replace("{message}", event.getMessage()));
             }
             event.setCancelled(true);
         }

@@ -1,11 +1,11 @@
 package me.glaremasters.guilds.listeners;
 
-import static me.glaremasters.guilds.util.ColorUtil.color;
+import static me.glaremasters.guilds.util.ConfigUtil.getInt;
+import static me.glaremasters.guilds.util.ConfigUtil.getString;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.message.Message;
 import org.bukkit.Material;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,10 +19,9 @@ import org.bukkit.inventory.meta.ItemMeta;
  */
 public class TicketListener implements Listener {
 
-    private FileConfiguration config = Guilds.getInstance().getConfig();
-    private String ticketName = color(config.getString("upgrade-ticket.name"));
-    private String ticketMaterial = config.getString("upgrade-ticket.material");
-    private String ticketLore = color(config.getString("upgrade-ticket.lore"));
+    private String ticketName = getString("upgrade-ticket.name");
+    private String ticketMaterial = getString("upgrade-ticket.material");
+    private String ticketLore =getString("upgrade-ticket.lore");
     private Guilds guilds;
 
     public TicketListener(Guilds guilds) {
@@ -56,7 +55,7 @@ public class TicketListener implements Listener {
 
         int tier = guild.getTier();
 
-        if (tier >= config.getInt("max-number-of-tiers")) {
+        if (tier >= getInt("max-number-of-tiers")) {
             Message.sendMessage(player, Message.COMMAND_UPGRADE_TIER_MAX);
             return;
         }

@@ -18,14 +18,20 @@ import org.bukkit.inventory.InventoryHolder;
  */
 public class GuildVaultListener implements Listener {
 
+    public GuildVaultListener(Guilds guilds) {
+        this.guilds = guilds;
+    }
+
+    private Guilds guilds;
+
     @EventHandler
     public void onGuildVaultClose(InventoryCloseEvent event) {
         Inventory inventory = event.getInventory();
         InventoryHolder holder = inventory.getHolder();
-        if (holder != null && holder instanceof Guild) {
+        if (holder instanceof Guild) {
             Guild guild = (Guild) holder;
 
-            File vaultf = new File(Guilds.getInstance().getDataFolder(),
+            File vaultf = new File(guilds.getDataFolder(),
                     "data/vaults/" + guild.getName() + ".yml");
             if (!vaultf.exists()) {
                 vaultf.getParentFile().mkdirs();

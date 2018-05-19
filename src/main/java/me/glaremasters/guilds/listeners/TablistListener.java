@@ -14,16 +14,21 @@ import org.bukkit.event.player.PlayerJoinEvent;
  */
 public class TablistListener implements Listener {
 
+    private Guilds guilds;
+
+    public TablistListener(Guilds guilds) {
+        this.guilds = guilds;
+    }
+
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerJoin(PlayerJoinEvent event) {
-        TablistHandler TablistHandler = new TablistHandler(Guilds.getInstance());
+        TablistHandler TablistHandler = new TablistHandler(guilds);
         Player player = event.getPlayer();
         Guild guild = Guild.getGuild(player.getUniqueId());
 
         if (guild != null) {
-            Guilds.getInstance().getServer().getScheduler()
-                    .scheduleAsyncDelayedTask(Guilds.getInstance(), () -> TablistHandler.addTablist(player), 30L);
+           guilds.getServer().getScheduler().scheduleAsyncDelayedTask(guilds, () -> TablistHandler.addTablist(player), 30L);
         }
     }
 
