@@ -1,8 +1,10 @@
 package me.glaremasters.guilds.handlers;
 
+import static me.glaremasters.guilds.util.ColorUtil.color;
+import static me.glaremasters.guilds.util.ConfigUtil.getBoolean;
+import static me.glaremasters.guilds.util.ConfigUtil.getString;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.guild.Guild;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 /**
@@ -18,29 +20,16 @@ public class TablistHandler {
 
     public void addTablist(Player player) {
         Guild guild = Guild.getGuild(player.getUniqueId());
-        if (plugin.getConfig().getBoolean("tablist-guilds")) {
-            String name =
-                    plugin.getConfig()
-                            .getBoolean("tablist-use-display-name") ? player
-                            .getDisplayName() : player.getName();
-            player.setPlayerListName(
-                    ChatColor.translateAlternateColorCodes('&',
-                            plugin.getConfig().getString("tablist")
-                                    .replace("{guild}", guild.getName())
-                                    .replace("{prefix}", guild.getPrefix())
-                                    + name));
+        if (getBoolean("tablist-guilds")) {
+            String name = getBoolean("tablist-use-display-name") ? player.getDisplayName() : player.getName();
+            player.setPlayerListName(getString("tablist").replace("{guild}", guild.getName()).replace("{prefix}", guild.getPrefix()) + name);
         }
     }
 
     public void leaveTablist(Player player) {
-        if (plugin.getConfig().getBoolean("tablist-guilds")) {
-            String name =
-                    plugin.getConfig().getBoolean("tablist-use-display-name")
-                            ? player
-                            .getDisplayName() : player.getName();
-            player.setPlayerListName(
-                    ChatColor.translateAlternateColorCodes('&',
-                            name));
+        if (getBoolean("tablist-guilds")) {
+            String name = getBoolean("tablist-use-display-name") ? player.getDisplayName() : player.getName();
+            player.setPlayerListName(color(name));
         }
     }
 
