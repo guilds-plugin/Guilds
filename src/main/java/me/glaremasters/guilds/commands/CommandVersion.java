@@ -15,19 +15,27 @@ public class CommandVersion extends CommandBase {
                 null, 0, 0);
     }
 
+    private String message;
+
 
     public void execute(CommandSender sender, String[] args) {
         Guilds instance = Guilds.getInstance();
         SpigotUpdater updater = new SpigotUpdater(instance, 48920);
         PluginDescriptionFile pdf = instance.getDescription();
         try {
+            if (updater.getLatestVersion().equalsIgnoreCase(pdf.getVersion())) {
+                this.message = null;
+            }
+            else {
+                this.message = "";
+            }
             sender.sendMessage(
-                    color("&aPlugin Info:\n&aVersion - Current : " + pdf.getVersion()
+                    color("&aPlugin Info:\n&aName - " + pdf.getName() + "\n&aVersion - Current : " + pdf.getVersion()
                             + " Latest : "
                             + updater.getLatestVersion() + "\n&aAuthor - " + pdf.getAuthors()
-                            + "\n&aSupport - https://glaremasters.me/discord"));
+                            + "\n&aSupport - https://glaremasters.me/discord" + message));
         } catch (Exception e) {
-            return;
+            e.printStackTrace();
         }
     }
 }
