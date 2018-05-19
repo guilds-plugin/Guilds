@@ -24,7 +24,7 @@ public class CommandVersion extends CommandBase {
             sender.sendMessage(
                     color("&aPlugin Info:\n&aVersion - Current : " + pdf.getVersion()
                             + " Latest : "
-                            + updater.getLatestVersion() + "\n&aAuthor - blockslayer22"
+                            + updater.getLatestVersion() + "\n&aAuthor - " + pdf.getAuthors()
                             + "\n&aSupport - https://glaremasters.me/discord"));
         } catch (Exception e) {
             return;
