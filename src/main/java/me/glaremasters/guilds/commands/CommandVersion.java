@@ -15,19 +15,18 @@ public class CommandVersion extends CommandBase {
                 null, 0, 0);
     }
 
-    private String message;
-
 
     public void execute(CommandSender sender, String[] args) {
         Guilds instance = Guilds.getInstance();
         SpigotUpdater updater = new SpigotUpdater(instance, 48920);
         PluginDescriptionFile pdf = instance.getDescription();
         try {
+            String message;
             if (updater.getLatestVersion().equalsIgnoreCase(pdf.getVersion())) {
-                this.message = null;
+                message = null;
             }
             else {
-                this.message = "";
+                message = "";
             }
             sender.sendMessage(
                     color("&aPlugin Info:\n&aName - " + pdf.getName() + "\n&aVersion - Current : " + pdf.getVersion()
