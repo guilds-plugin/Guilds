@@ -1,7 +1,5 @@
 package me.glaremasters.guilds.listeners;
 
-import me.glaremasters.guilds.Guilds;
-import me.glaremasters.guilds.commands.*;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -11,70 +9,75 @@ import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryInteractEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
+import me.glaremasters.guilds.Guilds;
+import me.glaremasters.guilds.commands.CommandList;
+
+import static me.glaremasters.guilds.util.ConfigUtil.getString;
 
 /**
  * Created by GlareMasters on 7/10/2017.
  */
 public class ClickListener implements Listener {
 
+    private Guilds guilds;
+
     public ClickListener(Guilds guilds) {
         this.guilds = guilds;
     }
 
-    private Guilds guilds;
-
     @EventHandler
-    public void onClick(InventoryClickEvent e) {
-        Player player = (Player) e.getWhoClicked();
-        if (e.getInventory().getTitle().equalsIgnoreCase(guilds.getConfig().getString("gui-name.info"))) {
-            e.setCancelled(true);
-            e.setResult(Event.Result.DENY);
+    public void onClick(InventoryClickEvent event) {
+        Player player = (Player) event.getWhoClicked();
+        if (event.getInventory().getTitle().equalsIgnoreCase(getString("gui-name.info"))) {
+            event.setCancelled(true);
+            event.setResult(Event.Result.DENY);
         }
-        if (e.getInventory().getTitle().equalsIgnoreCase(guilds.getConfig().getString("gui-name.list.name"))) {
-            if (e.getAction().equals(InventoryAction.PICKUP_ALL)) {
-                if (e.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.GOLD + guilds.getConfig().getString("gui-name.list.previous-page"))) {
-                    if (!(CommandList.playerPages.get(e.getWhoClicked().getUniqueId()) == 1)) {
-                        int newPage = CommandList.playerPages.get(e.getWhoClicked().getUniqueId()) - 1;
 
-                        CommandList.playerPages.remove(e.getWhoClicked().getUniqueId());
-                        CommandList.playerPages.put(e.getWhoClicked().getUniqueId(), newPage);
-                        Inventory guildList = CommandList.getSkullsPage(newPage);
-                        e.getWhoClicked().openInventory(guildList);
-                    }
-                }
-                if (guilds.getGuildHandler().getGuilds().values().size() < 45) {
-                    e.setCancelled(true);
-                    e.setResult(Event.Result.DENY);
-                    return;
-                }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.GOLD + guilds.getConfig().getString("gui-name.list.next-page"))) {
+        Inventory inventory = event.getInventory();
+        ItemStack itemStack = event.getCurrentItem();
+        if (!inventory.getTitle().equalsIgnoreCase(getString("gui-name.list.name")) || event.getAction() == InventoryAction.PICKUP_ALL) {
+            return;
+        }
 
-                    int newPage = CommandList.playerPages.get(e.getWhoClicked().getUniqueId()) + 1;
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        if (itemStack.hasItemMeta() && itemMeta.hasDisplayName()) {
+            String displayName = itemMeta.getDisplayName();
+            if (displayName.equals(ChatColor.GOLD + getString("gui-name.list.previous-page"))
+                    && CommandList.playerPages.get(player.getUniqueId()) == 1) {
+                int newPage = CommandList.playerPages.get(player.getUniqueId()) - 1;
 
-                    CommandList.playerPages.remove(e.getWhoClicked().getUniqueId());
-                    CommandList.playerPages.put(e.getWhoClicked().getUniqueId(), newPage);
-                    Inventory guildList = CommandList.getSkullsPage(newPage);
-                    e.getWhoClicked().openInventory(guildList);
-                }
+                CommandList.playerPages.replace(player.getUniqueId(), newPage);
+                player.openInventory(CommandList.getSkullsPage(newPage));
+            } else if (displayName.equals(ChatColor.GOLD + getString("gui-name.list.next-page"))) {
+                int newPage = CommandList.playerPages.get(player.getUniqueId()) + 1;
+
+                CommandList.playerPages.replace(player.getUniqueId(), newPage);
+                player.openInventory(CommandList.getSkullsPage(newPage));
             }
 
-            e.setCancelled(true);
-            e.setResult(Event.Result.DENY);
+            if (guilds.getGuildHandler().getGuilds().values().size() < 45) {
+                event.setCancelled(true);
+                event.setResult(Event.Result.DENY);
+                return;
+            }
+
+            event.setCancelled(true);
+            event.setResult(Event.Result.DENY);
         }
     }
 
     @EventHandler
-    public void onClick2(InventoryInteractEvent e) {
-        if (e.getInventory().getTitle().equalsIgnoreCase(guilds.getConfig().getString("gui-name.info"))) {
-            e.setCancelled(true);
-            e.setResult(Event.Result.DENY);
-        }
-        if (e.getInventory().getTitle().equalsIgnoreCase(guilds.getConfig().getString("gui-name.list.name"))) {
-            e.setCancelled(true);
-            e.setResult(Event.Result.DENY);
+    public void onClick2(InventoryInteractEvent event) {
+        String title = event.getInventory().getTitle();
+        if (title.equalsIgnoreCase(getString("gui-name.info")) || title.equalsIgnoreCase(getString("gui-name.list.name"))) {
+            event.setCancelled(true);
+            event.setResult(Event.Result.DENY);
         }
     }
+
 }
 
 
