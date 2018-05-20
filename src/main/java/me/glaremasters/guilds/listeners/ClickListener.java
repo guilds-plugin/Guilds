@@ -1,5 +1,7 @@
 package me.glaremasters.guilds.listeners;
 
+import static me.glaremasters.guilds.util.ConfigUtil.getString;
+import java.util.UUID;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.commands.*;
 import org.bukkit.ChatColor;
@@ -26,23 +28,22 @@ public class ClickListener implements Listener {
     @EventHandler
     public void onClick(InventoryClickEvent e) {
         Player player = (Player) e.getWhoClicked();
-        if (e.getInventory().getTitle()
-                .equalsIgnoreCase(guilds.getConfig().getString("gui-name.info"))) {
+        UUID uuid = player.getUniqueId();
+        String title = e.getInventory().getTitle();
+        if (title.equalsIgnoreCase(getString("gui-name.info"))) {
             e.setCancelled(true);
             e.setResult(Event.Result.DENY);
         }
-        if (e.getInventory().getTitle()
-                .equalsIgnoreCase(guilds.getConfig().getString("gui-name.list.name"))) {
+        if (title.equalsIgnoreCase(getString("gui-name.list.name"))) {
             if (e.getAction().equals(InventoryAction.PICKUP_ALL)) {
-                if (e.getCurrentItem().getItemMeta().getDisplayName()
-                        .equals(ChatColor.GOLD + guilds.getConfig()
+                if (e.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.GOLD + guilds.getConfig()
                                 .getString("gui-name.list.previous-page"))) {
-                    if (!(CommandList.playerPages.get(e.getWhoClicked().getUniqueId()) == 1)) {
+                    if (!(CommandList.playerPages.get(uuid) == 1)) {
                         int newPage =
-                                CommandList.playerPages.get(e.getWhoClicked().getUniqueId()) - 1;
+                                CommandList.playerPages.get(uuid) - 1;
 
-                        CommandList.playerPages.remove(e.getWhoClicked().getUniqueId());
-                        CommandList.playerPages.put(e.getWhoClicked().getUniqueId(), newPage);
+                        CommandList.playerPages.remove(uuid);
+                        CommandList.playerPages.put(uuid, newPage);
                         Inventory guildList = CommandList.getSkullsPage(newPage);
                         e.getWhoClicked().openInventory(guildList);
                     }
@@ -56,12 +57,12 @@ public class ClickListener implements Listener {
                         .equals(ChatColor.GOLD + guilds.getConfig()
                                 .getString("gui-name.list.next-page"))) {
 
-                    int newPage = CommandList.playerPages.get(e.getWhoClicked().getUniqueId()) + 1;
+                    int newPage = CommandList.playerPages.get(uuid) + 1;
 
-                    CommandList.playerPages.remove(e.getWhoClicked().getUniqueId());
-                    CommandList.playerPages.put(e.getWhoClicked().getUniqueId(), newPage);
+                    CommandList.playerPages.remove(uuid);
+                    CommandList.playerPages.put(uuid, newPage);
                     Inventory guildList = CommandList.getSkullsPage(newPage);
-                    e.getWhoClicked().openInventory(guildList);
+                    player.openInventory(guildList);
                 }
             }
 
