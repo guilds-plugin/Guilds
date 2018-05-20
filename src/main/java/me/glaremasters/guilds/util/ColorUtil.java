@@ -7,6 +7,11 @@ import org.bukkit.ChatColor;
  */
 public class ColorUtil {
 
+    /**
+     * Transform a regular string and support color
+     * @param string message to translate
+     * @return colorfied string
+     */
     public static String color(String string) {
         return ChatColor.translateAlternateColorCodes('&', string);
     }
