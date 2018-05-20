@@ -31,7 +31,9 @@ public class CommandVersion extends CommandBase {
                     color("&8&m--------------------------------------------------"
                             + "\n&8» &7Name - &a"
                             + pdf.getName() + "\n&8» &7Version - &a" + pdf.getVersion()
-                            + "\n&8» &7Author - &a" + pdf.getAuthors() + "\n&8» &7Support - &a" + pdf.getWebsite() + message + "\n&8&m--------------------------------------------------"));
+                            + "\n&8» &7Author - &a" + pdf.getAuthors() + "\n&8» &7Support - &a"
+                            + pdf.getWebsite() + message
+                            + "\n&8&m--------------------------------------------------"));
         } catch (Exception e) {
             e.printStackTrace();
         }
