@@ -23,16 +23,15 @@ public class CommandVersion extends CommandBase {
         try {
             String message;
             if (updater.getLatestVersion().equalsIgnoreCase(pdf.getVersion())) {
-                message = null;
-            }
-            else {
                 message = "";
+            } else {
+                message = "\n&8» &7An update has been found! &f- " + updater.getResourceURL();
             }
             sender.sendMessage(
-                    color("&aPlugin Info:\n&aName - " + pdf.getName() + "\n&aVersion - Current : " + pdf.getVersion()
-                            + " Latest : "
-                            + updater.getLatestVersion() + "\n&aAuthor - " + pdf.getAuthors()
-                            + "\n&aSupport - " + pdf.getWebsite() + message));
+                    color("&8&m--------------------------------------------------"
+                            + "\n&8» &7Name - &a"
+                            + pdf.getName() + "\n&8» &7Version - &a" + pdf.getVersion()
+                            + "\n&8» &7Author - &a" + pdf.getAuthors() + "\n&8» &7Support - &a" + pdf.getWebsite() + message + "\n&8&m--------------------------------------------------"));
         } catch (Exception e) {
             e.printStackTrace();
         }
