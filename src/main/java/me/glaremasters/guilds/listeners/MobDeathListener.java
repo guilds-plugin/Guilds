@@ -15,24 +15,18 @@ public class MobDeathListener implements Listener {
 
     @EventHandler
     public void onMobDeathEvent(EntityDeathEvent event) {
-        if (event.getEntity() instanceof Monster) {
-            Monster monster = (Monster) event.getEntity();
-            Player killer = monster.getKiller();
-            if (killer == null) {
-                return;
-            }
+        if (!(event.getEntity() instanceof Monster)) return;
 
-            Guild guild = Guild.getGuild(killer.getUniqueId());
+        Monster monster = (Monster) event.getEntity();
 
-            if (guild == null) {
-                return;
-            }
+        Player killer = monster.getKiller();
 
-            event.setDroppedExp((int) (event.getDroppedExp() * guild.getExpMultiplier()));
+        if (killer == null) return;
 
+        Guild guild = Guild.getGuild(killer.getUniqueId());
 
-        }
+        if (guild == null) return;
+
+        event.setDroppedExp((int) (event.getDroppedExp() * guild.getExpMultiplier()));
     }
-
-
 }
