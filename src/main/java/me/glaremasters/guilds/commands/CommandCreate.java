@@ -117,7 +117,8 @@ public class CommandCreate extends CommandBase {
 
                                 TitleHandler.createTitles(player);
                                 TablistHandler.addTablist(player);
-                                NTEHandler.setTag(player);
+                                NTEHandler.setPrefix(player);
+                                NTEHandler.setSuffix(player);
 
                                 for (String cmds : config.getStringList("create-commands")) {
                                     String changeCMD = cmds.replace("{player}", player.getName()).replace("{guild}", guild.getName());

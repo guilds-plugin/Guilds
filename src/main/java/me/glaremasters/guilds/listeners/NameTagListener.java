@@ -20,7 +20,8 @@ public class NameTagListener implements Listener {
         Player player = event.getPlayer();
         Guild guild = Guild.getGuild(player.getUniqueId());
         if (guild != null) {
-            NTEHandler.setTag(player);
+            NTEHandler.setPrefix(player);
+            NTEHandler.setSuffix(player);
         }
     }
 

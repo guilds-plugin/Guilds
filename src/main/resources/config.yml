@@ -46,7 +46,12 @@ hooks:
 # This allows you to configure how nametags will work in game with NameTagEdit.
 # You can also display a guild's prefix by using {prefix} instead of {guild}.
 nametagedit:
-  name: "&7[&b{guild}&7]&r "
+  prefix:
+    enabled: true
+    prefix: "&7[&b{guild}&7]&r "
+  suffix:
+    enabled: false
+    suffix: "&7[&b{guild}&7]&r "
 
 #-----------------------------------------------------------#
 #                     CHOOSE YOUR LANGUAGE                  #

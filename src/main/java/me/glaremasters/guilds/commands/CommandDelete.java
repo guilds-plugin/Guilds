@@ -105,7 +105,8 @@ public class CommandDelete extends CommandBase {
                 });
 
                 TablistHandler.leaveTablist(player);
-                NTEHandler.removeTag(player);
+                NTEHandler.removePrefix(player);
+                NTEHandler.removeSuffix(player);
 
                 guilds.getCommandHandler().removeAction(player);
             }

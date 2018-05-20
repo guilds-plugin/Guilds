@@ -103,7 +103,8 @@ public class CommandAccept extends CommandBase {
 
         TitleHandler.joinTitles(player);
         TablistHandler.addTablist(player);
-        NTEHandler.setTag(player);
+        NTEHandler.setPrefix(player);
+        NTEHandler.setSuffix(player);
 
         Message.sendMessage(player, Message.COMMAND_ACCEPT_SUCCESSFUL.replace("{guild}", guild.getName()));
     }

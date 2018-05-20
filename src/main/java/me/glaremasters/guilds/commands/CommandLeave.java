@@ -113,7 +113,8 @@ public class CommandLeave extends CommandBase {
 
                 TablistHandler.leaveTablist(player);
 
-                NTEHandler.removeTag(player);
+                NTEHandler.removePrefix(player);
+                NTEHandler.removeSuffix(player);
                 Guilds.getInstance().getCommandHandler().removeAction(player);
                 if (guild.getGuildMaster().getUniqueId().equals(player.getUniqueId())) {
                     guild.sendMessage(

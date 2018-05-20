@@ -61,7 +61,8 @@ public class CommandPrefix extends CommandBase {
 
         TitleHandler.prefixTitles(player);
         TablistHandler.addTablist(player);
-        NTEHandler.setTag(player);
+        NTEHandler.setPrefix(player);
+        NTEHandler.setSuffix(player);
 
 
     }

@@ -18,16 +18,34 @@ public class NameTagEditHandler {
         this.plugin = plugin;
     }
 
-    public void setTag(Player player) {
+    public void setPrefix(Player player) {
         Guild guild = Guild.getGuild(player.getUniqueId());
         if (getBoolean("hooks.nametagedit")) {
-            NametagEdit.getApi().setPrefix(player, getString("nametagedit.name").replace("{guild}", guild.getName()).replace("{prefix}", guild.getPrefix()));
+            if (getBoolean("nametagedit.prefix.enabled")) {
+                NametagEdit.getApi().setPrefix(player, getString("nametagedit.prefix.prefix").replace("{guild}", guild.getName()).replace("{prefix}", guild.getPrefix()));
+            }
         }
     }
 
-    public void removeTag(Player player) {
+    public void removePrefix(Player player) {
         if (getBoolean("hooks.nametagedit")) {
             NametagEdit.getApi().setPrefix(player, "");
+        }
+    }
+
+    public void setSuffix(Player player) {
+        Guild guild = Guild.getGuild(player.getUniqueId());
+        if (getBoolean("hooks.nametagedit")) {
+            if (getBoolean("nametagedit.suffix.enabled")) {
+                NametagEdit.getApi().setSuffix(player, getString("nametagedit.suffix.suffix").replace("{guild}", guild.getName()).replace("{prefix}", guild.getPrefix()));
+            }
+        }
+    }
+
+    public void removeSuffix(Player player) {
+        if (getBoolean("hooks.nametagedit")) {
+            if (getBoolean("nametagedit.suffix.enabled"))
+            NametagEdit.getApi().setSuffix(player, "");
         }
     }
 
