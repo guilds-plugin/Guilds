@@ -19,20 +19,16 @@ public class JoinListener implements Listener {
     }
 
     @EventHandler
-    public void onJoin(PlayerJoinEvent e) {
-        Player player = e.getPlayer();
+    public void onJoin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
 
-        if (Guild.getGuild(player.getUniqueId()) != null) {
-            return;
-        }
+        if (Guild.getGuild(player.getUniqueId()) != null) return;
 
         List<String> guildList = new ArrayList<>();
-        for (Guild guild : guilds.getGuildHandler().getGuilds().values()) {
-            if (!guild.getInvitedMembers().contains(player.getUniqueId())) {
-                continue;
-            }
 
-            guildList.add(guild.getName());
+        for (Guild guild : guilds.getGuildHandler().getGuilds().values()) {
+            if (!guild.getInvitedMembers().contains(player.getUniqueId())) continue;
+            guildList.add(guilds.getName());
         }
 
         if (guildList.size() > 0) {
