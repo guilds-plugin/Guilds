@@ -12,6 +12,11 @@ import org.bukkit.entity.Player;
  */
 public class Placeholders {
 
+    /**
+     * Get the guild of the player
+     * @param player guild
+     * @return name of guild
+     */
     public static String getGuild(Player player) {
         Guild guild = Guild.getGuild(player.getUniqueId());
         if (guild == null) {
@@ -21,6 +26,11 @@ public class Placeholders {
         return guild.getName();
     }
 
+    /**
+     * Get the guild master of a guild
+     * @param player guild master
+     * @return name of guild master
+     */
     public static String getGuildMaster(Player player) {
         Guild guild = Guild.getGuild(player.getUniqueId());
         if (guild == null) {
@@ -30,6 +40,11 @@ public class Placeholders {
         return Bukkit.getOfflinePlayer(guild.getGuildMaster().getUniqueId()).getName();
     }
 
+    /**
+     * Get the amount of members in a guild
+     * @param player member
+     * @return amount of members in the guild
+     */
     public static String getGuildMemberCount(Player player) {
         Guild guild = Guild.getGuild(player.getUniqueId());
         if (guild == null) {
@@ -39,6 +54,11 @@ public class Placeholders {
         return String.valueOf(guild.getMembers().size());
     }
 
+    /**
+     * Get amount of members online
+     * @param player member
+     * @return amount of members online
+     */
     public static String getGuildMembersOnline(Player player) {
         Guild guild = Guild.getGuild(player.getUniqueId());
         if (guild == null) {
@@ -51,6 +71,11 @@ public class Placeholders {
                         .filter(OfflinePlayer::isOnline).count());
     }
 
+    /**
+     * Status of a guild
+     * @param player status
+     * @return the status of a guild
+     */
     public static String getGuildStatus(Player player) {
         Guild guild = Guild.getGuild(player.getUniqueId());
         if (guild == null) {
@@ -60,6 +85,11 @@ public class Placeholders {
         return guild.getStatus();
     }
 
+    /**
+     * Prefix of a guild
+     * @param player prefix
+     * @return the prefix of a guild
+     */
     public static String getGuildPrefix(Player player) {
         Guild guild = Guild.getGuild(player.getUniqueId());
         if (guild == null) {
@@ -69,6 +99,11 @@ public class Placeholders {
         return guild.getPrefix();
     }
 
+    /**
+     * Get the role of a player
+     * @param player role
+     * @return the role of a player
+     */
     public static String getGuildRole(Player player) {
         Guild guild = Guild.getGuild(player.getUniqueId());
 
@@ -79,6 +114,11 @@ public class Placeholders {
         return GuildRole.getRole(roleCheck.getRole()).getName();
     }
 
+    /**
+     * Get the tier of a guild
+     * @param player tier
+     * @return the tier of a guild
+     */
     public static int getGuildTier(Player player) {
         Guild guild = Guild.getGuild(player.getUniqueId());
         if (guild == null) {
@@ -88,6 +128,11 @@ public class Placeholders {
         return guild.getTier();
     }
 
+    /**
+     * Get the bank balance of a guild
+     * @param player balance
+     * @return the balance of the guild
+     */
     public static double getBankBalance(Player player) {
         Guild guild = Guild.getGuild(player.getUniqueId());
         if (guild == null) {
@@ -97,6 +142,11 @@ public class Placeholders {
         return guild.getBankBalance();
     }
 
+    /**
+     * Get the cost of an upgrade
+     * @param player upgrade
+     * @return the cost of an upgrade
+     */
     public static double getUpgradeCost(Player player) {
         Guild guild = Guild.getGuild(player.getUniqueId());
         if (guild == null) {
@@ -106,6 +156,11 @@ public class Placeholders {
         return guild.getTierCost();
     }
 
+    /**
+     * Get the name of a tier
+     * @param player tier
+     * @return name of tier
+     */
     public static String getTierName(Player player) {
         Guild guild = Guild.getGuild(player.getUniqueId());
         if (guild == null) {

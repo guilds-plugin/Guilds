@@ -30,14 +30,28 @@ public class SpigotUpdater {
 
     public JavaPlugin getPlugin() { return plugin; }
 
+    /**
+     * Check latest plugin version
+     * @return latest version
+     * @throws Exception I/O Exception
+     */
     public String getLatestVersion() throws Exception {
         URLConnection con = checkURL.openConnection();
         this.newVersion = new BufferedReader(new InputStreamReader(con.getInputStream())).readLine();
         return newVersion;
     }
 
+    /**
+     * Get the URL of the plugin
+     * @return URL of plugin
+     */
     public String getResourceURL() { return "https://www.spigotmc.org/resources/" + project; }
 
+    /**
+     * Check for updates
+     * @return if plugin version is the latest plugin version
+     * @throws Exception I/O Exception
+     */
     public boolean checkForUpdates() throws Exception {
         URLConnection con = checkURL.openConnection();
         this.newVersion = new BufferedReader(new InputStreamReader(con.getInputStream())).readLine();
