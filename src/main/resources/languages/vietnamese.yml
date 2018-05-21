@@ -25,13 +25,13 @@ messages:
       coordinates: "&aHãy nhớ điều này! Tọa độ mà bạn sở hữu là: "
       too-close: "&cBạn quá gần 1 chỗ đã được sở hữu! Hãy thử 1 chỗ khác!"
       removed: "&aBạn đã unclaim thành công!"
-      confirm: "&cYou are about to spend {amount} to claim your new land. (Type /guilds confirm to continue)"
-      size-required: "&cPlease enter a number with the command, such as 25, this will put your claim 25 blocks in each direction!"
-      too-big: "&cSorry! Your custom claim size is too big! The max is {max}."
-      no-claim-found: "&cYou don't have any land to unclaim!"
-      remove-confirm:  "&cAre you sure you want to unclaim your land? (Type /guilds confirm to continue)"
-      disabled-world: "&cSorry! This function has been disabled in your current world!"
-      not-enough-members: "&cSorry! You need at least {amount} members to claim land!"
+      confirm: "&cBạn sẽ tiêu {amount} để claim vùng đất mới của bạn. (Bấm /guilds confirm để tiếp tục)"
+      size-required: "&cVui lòng nhập một số, ví dụ như 25, điều này sẽ claim 25 blocks về mỗi phía!"
+      too-big: "&cXin lỗi! Kích thước claim của bạn quá lớn! Nhiều nhất là {max}."
+      no-claim-found: "&cBạn không có đất để unclaim!"
+      remove-confirm:  "&cBạn chắc chắn muốn unclaim mảnh đất của bạn? (Bấm /guilds confirm để tiếp tục)"
+      disabled-world: "&cXin lỗi! Chức năng này bị vô hiệu hóa trong world hiện tại!"
+      not-enough-members: "&cXin lỗi! Bạn cần ít nhất {amount} thành viên để claim đất!"
     killreward:
       killer: "&aBạn đã giết người chơi khác và đã kiếm được {amount}!"
       player-who-died: "&cBạn đã bị giết người chơi khác và đã mất {amount}!"
@@ -50,7 +50,7 @@ messages:
       not-enough-money: "&aXin lỗi! Bạn không có đủ tiền để nâng cấp Guild của bạn! You still need {needed}!"
     buff:
       not-enough-money: "&cBạn không có đủ tiền để mua buff này!"
-      success: "&a{player} just purchased {buff} for {time} seconds!" # Possible placeholders: {guild}, {player}, {buff}, {time}, {cost}, {amplifier}
+      success: "&a{player} vừa tiêu {cost} để mua {buff} trong {time} giây!" # Possible placeholders: {guild}, {player}, {buff}, {time}, {cost}, {amplifier}
     transfer:
       newmaster: "&aBạn là Guild Master mới trong Guild của bạn!"
       success: "&aGuild đã được chuyển!"
@@ -59,7 +59,7 @@ messages:
       message: "&f/guild {command} {arguments} &7- &7{description}"
       next-page: "&7Bấm /guilds help {next-page} để xem trang tiếp theo"
     status:
-      error: "&cTrạng thái của guild phải là public(công cộng) hoặc private(riêng tư)!"
+      error: "&cTrạng thái của guild phải là public(công khai) hoặc private(riêng tư)!"
       successful: "&aTrạng thái guild đac đặt thành: {status}!"
     role:
       players: "{player} - {role}"
@@ -120,7 +120,7 @@ messages:
       successful: "&aBạn đã rời khỏi guild thành công!"
       warning-guildmaster: "&cBạn là Guild Master của guild này, rời khỏi guild có nghĩa là guild sẽ bị xóa. Bấm /guilds confirm để rời khỏi và xóa guild của bạn, bấm /guilds cancel để hủy bỏ."
       warning: "&cBấm /guilds confirm để rời khỏi guild của bạn, bấm /guilds cancel để hủy bỏ."
-      guildmaster-left: "&cGuild Master, '{player}' đã rời khỏi guild. Guild sẽ bị giải tán."
+      guildmaster-left: "&cGuild Master '{player}' đã rời khỏi guild. Guild sẽ bị giải tán."
     boot:
       kicked: "&cBạn đã bị kick khỏi guild của bạn bời {kicker}!"
       player-kicked: "&c'{player}' đã bị kick khỏi guild của bạn bời {kicker}!"
@@ -157,8 +157,8 @@ messages:
       removed: "&cGuild của bạn đã hủy liên minh với guild {guild}!"
       send-target: "&aĐã nhận được yêu cầu liên mình từ guild {guild}! Bấm /guilds ally accept {guild} để chấp nhận hoặc /guilds ally decline {guild} để từ chối"
       send: "&aLời mời liên minh đã được gửi!"
-      none: "&cYou do not have any allies!"
-      list: "&aYour guild has the following allies: "
+      none: "&cBạn không có đồng minh nào!"
+      list: "&aGuild của bạn có những đồng minh sau: "
     home:
       damage-taken: "&cBạn đã nhận sát thương! Hủy bỏ dịch chuyển!"
       teleported: "&aBạn đã dịch chuyển đến nhà của guild!"
