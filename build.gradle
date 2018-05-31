@@ -51,7 +51,7 @@ repositories {
     maven { url "http://repo.extendedclip.com/content/repositories/placeholderapi/" }
     maven { url "http://ci.emc.gs/nexus/content/groups/aikar/" }
     maven { url "http://maven.sk89q.com/repo/" }
-    maven { url "http://ci.playmc.cc/plugin/repository/everything/" }
+    maven { url "https://ci.glaremasters.me/plugin/repository/everything" }
     maven { url 'https://jitpack.io' }
     maven { url 'https://cdn.rawgit.com/Rayzr522/maven-repo/master/'}
 
