@@ -39,6 +39,9 @@ public class SignListener implements Listener {
     public void onPlayerClickSign(PlayerInteractEvent event) {
         Player p = event.getPlayer();
         Material type = event.getClickedBlock().getType();
+        if (type == null) {
+            return;
+        }
         if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
             if (type == Material.SIGN ||type == Material.SIGN_POST || type == Material.WALL_SIGN) {
                 Sign sign = (Sign) event.getClickedBlock().getState();
