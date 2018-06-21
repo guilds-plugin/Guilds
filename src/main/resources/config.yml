@@ -605,6 +605,9 @@ roles:
       withdraw-money: true
       claim-land: true
       unclaim-land: true
+      destroy: true
+      place: true
+      interact: true
 
   1:
     name: "Officer"
@@ -629,6 +632,9 @@ roles:
       withdraw-money: true
       claim-land: false
       unclaim-land: false
+      destroy: true
+      place: true
+      interact: true
 
   2:
     name: "Veteran"
@@ -652,6 +658,9 @@ roles:
       withdraw-money: false
       claim-land: false
       unclaim-land: false
+      destroy: true
+      place: true
+      interact: true
   3:
     name: "Member"
     permissions:
@@ -674,6 +683,9 @@ roles:
       withdraw-money: false
       claim-land: false
       unclaim-land: false
+      destroy: true
+      place: true
+      interact: true
 
 #-----------------------------------------------------------#
 #                     Storage Configuration                 #
