@@ -155,7 +155,7 @@ messages:
       send-target: "&aAi primit o cerere de alianta de la {guild}! Scrie /guilds ally accept {guild} pentru a accepta sau /guilds ally decline {guild} pentru a refuza."
       removed: "&cAceasta Breasla nu mai este aliata cu {guild}!"
       removed-target: "&c{guild} nu mai este aliata cu noi!"
-      already-allies: "&cDeja esti aliata cu {guild}!"
+      already-allies: "&cEsti deja esti aliat cu {guild}!"
       not-allies: "&cNu esti aliata cu {guild}!"
       none: "&cNu aveti aliati!"
       list: "&aBreasta ta are urmatorii aliati: "
