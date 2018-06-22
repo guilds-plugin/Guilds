@@ -30,8 +30,8 @@ messages:
       too-big: "&cImi pare rau! Valoarea personalizata de claim este prea mare! Maxim-ul este de {max}."
       no-claim-found: "&cNu ai nici un teritoriu la care poti da unclaim!"
       remove-confirm:  "&cEsti sigur ca vrei sa dai unclaim acestui teritoriu? (Scrie /guilds confirm pentru a continua)"
-      disabled-world: "&cSorry! This function has been disabled in your current world!"
-      not-enough-members: "&cSorry! You need at least {amount} members to claim land!"
+      disabled-world: "&cImi pare rau! Aceasta functie a fost dezactivata in lumea curenta!"
+      not-enough-members: "&cNe pare rau! Ai nevoie de cel putin {members} memberii pentru a revendica teren!"
     killreward:
       killer: "&aAi omorat un alt jucator si ai primit {amount}!"
       player-who-died: "&cAi fost omorat de un alt jucator si ai pierdut {amount}!"
@@ -50,7 +50,7 @@ messages:
       not-enough-money: "&aNe pare rau! Nu ai destui bani pentru a upgrada breasla! Mai ai nevoie de {needed}!"
     buff:
       not-enough-money: "&cNu ai destui bani pentru a cumpara acest Buff!"
-      success: "&a{player} just purchased {buff} for {time} seconds!" # Possible placeholders: {guild}, {player}, {buff}, {time}, {cost}, {amplifier}
+      success: "&a{player} a achizitionat {buff} pentru {time} secunde!" # Possible placeholders: {guild}, {player}, {buff}, {time}, {cost}, {amplifier}
     transfer:
       success: "Breasla a fost transferata!"
       newmaster: "Esti noul Sef al breslei!"
@@ -89,13 +89,13 @@ messages:
       rank: "Gradul tau: &b{rank}"
       players: "Membri in Breasla: &b[{players}]"
     promote:
-      promoted: "&aLai promovat cu success pe {player} de la {old-rank} la {new-rank}!"
+      promoted: "&aL-ai promovat cu success pe {player} de la {old-rank} la {new-rank}!"
       successful: "&aAi fost promovat de la {old-rank} la {new-rank}!"
       cannot-promote: "&cAcest jucator nu mai poate fi promovat!"
       not-promotion: "&cNu il promovezi pe acest jucator!"
     demote:
       demoted: "&cAi fost retrogradat de la {old-rank} la {new-rank}!"
-      successful: "&aLai retrogradat pe {player} de la {old-rank} la {new-rank}!"
+      successful: "&aL-ai retrogradat pe {player} de la {old-rank} la {new-rank}!"
       cannot-demote: "&cAcest jucator nu mai poate fi retrogradat !"
       not-demotion: "&cNu il retrogradezi pe acest jucator!"
     chat:
@@ -108,7 +108,7 @@ messages:
       successful: "&aAi intrat in '{guild}' cu succes"
       player-joined: "&aJucatorul '{player}' a intrat in Breasla!"
     invite:
-      message: "&a{player} tea invitat in Breasla, '{guild}'"
+      message: "&a{player} te-a invitat in Breasla '{guild}'"
       already-invited: "&cAcest jucator a fost deja invitat!"
       successful: "&aLai invitat cu succes pe {player} in Breasla ta!"
       already-in-guild: "&cAcest jucator deja face parte in Breasla ta!"
@@ -157,8 +157,8 @@ messages:
       removed-target: "&c{guild} nu mai este aliata cu noi!"
       already-allies: "&cDeja esti aliata cu {guild}!"
       not-allies: "&cNu esti aliata cu {guild}!"
-      none: "&cYou do not have any allies!"
-      list: "&aYour guild has the following allies: "
+      none: "&cNu aveti aliati!"
+      list: "&aBreasta ta are urmatorii aliati: "
     home:
       teleported: "&aAi fost teleportat la casa Breslei!"
       teleporting: "&cVrei fi teleportat in {count} secunde."
