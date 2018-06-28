@@ -2,6 +2,8 @@ package me.glaremasters.guilds;
 
 import java.io.File;
 import java.util.stream.Stream;
+import me.glaremasters.guilds.database.DatabaseProvider;
+import me.glaremasters.guilds.database.databases.yaml.YAML;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -13,6 +15,7 @@ public final class Guilds extends JavaPlugin {
     private static Guilds guilds;
     private static Economy econ = null;
     private static Permission perms = null;
+    private DatabaseProvider database;
     private File guild, language, languageFolder;
     public YamlConfiguration guildConfig, languageConfig;
 
@@ -23,6 +26,7 @@ public final class Guilds extends JavaPlugin {
         setupPermissions();
         initData();
         saveData();
+        database = new YAML();
     }
 
     @Override
