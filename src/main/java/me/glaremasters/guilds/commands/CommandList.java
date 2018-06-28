@@ -74,7 +74,7 @@ public class CommandList extends CommandBase {
         ItemMeta nextMeta = next.getItemMeta();
         nextMeta.setDisplayName(color(config.getString("gui-name.list.next-page")));
         next.setItemMeta(nextMeta);
-        ItemStack barrier = new ItemStack(Material.BARRIER, 1);
+        ItemStack barrier = new ItemStack(Material.getMaterial(config.getString("list.page-item")), 1);
         ItemMeta barrierMeta = barrier.getItemMeta();
         barrierMeta.setDisplayName(color(config.getString("gui-name.list.page") + page));
         barrier.setItemMeta(barrierMeta);

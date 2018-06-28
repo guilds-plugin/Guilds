@@ -174,6 +174,7 @@ list:
   guildbalance: "&dGuild Balance: "
   member-count: "&6Member Count: "
   members: "&5Members: "
+  page-item: "DIAMOND_BLOCK"
 
 # You can choose what random items are used to display Guilds in the Guild List
 random-items:
