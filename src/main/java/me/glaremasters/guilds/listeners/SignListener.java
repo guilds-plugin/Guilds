@@ -38,6 +38,7 @@ public class SignListener implements Listener {
     @EventHandler
     public void onPlayerClickSign(PlayerInteractEvent event) {
         Player p = event.getPlayer();
+        if (event.getClickedBlock() == null) return;
         Material type = event.getClickedBlock().getType();
         if (type == null) {
             return;
