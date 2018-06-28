@@ -67,6 +67,10 @@
       <id>vault-repo</id>
       <url>http://nexus.hc.to/content/repositories/pub_releases</url>
     </repository>
+    <repository>
+      <id>Aikari</id>
+      <url>http://ci.emc.gs/nexus/content/groups/aikar/</url>
+    </repository>
   </repositories>
 
   <dependencies>
@@ -81,6 +85,16 @@
       <artifactId>VaultAPI</artifactId>
       <version>1.6</version>
       <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>co.aikar</groupId>
+      <artifactId>taskchain-core</artifactId>
+      <version>3.6.0</version>
+    </dependency>
+    <dependency>
+      <groupId>co.aikar</groupId>
+      <artifactId>taskchain-bukkit</artifactId>
+      <version>3.6.0</version>
     </dependency>
   </dependencies>
 </project>
