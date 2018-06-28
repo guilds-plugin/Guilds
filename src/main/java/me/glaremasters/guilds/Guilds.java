@@ -72,6 +72,7 @@ public final class Guilds extends JavaPlugin {
         this.guild = new File(getDataFolder(), "guilds.yml");
         this.language = new File(languageFolder, getConfig().getString("lang") + ".yml");
         this.languageConfig = YamlConfiguration.loadConfiguration(language);
+        this.guildConfig = YamlConfiguration.loadConfiguration(guild);
     }
 
     /**
