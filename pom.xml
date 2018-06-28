@@ -63,6 +63,10 @@
       <id>sonatype</id>
       <url>https://oss.sonatype.org/content/groups/public/</url>
     </repository>
+    <repository>
+      <id>vault-repo</id>
+      <url>http://nexus.hc.to/content/repositories/pub_releases</url>
+    </repository>
   </repositories>
 
   <dependencies>
@@ -70,6 +74,12 @@
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot-api</artifactId>
       <version>1.12.2-R0.1-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.milkbowl.vault</groupId>
+      <artifactId>VaultAPI</artifactId>
+      <version>1.6</version>
       <scope>provided</scope>
     </dependency>
   </dependencies>

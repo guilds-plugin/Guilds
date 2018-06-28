@@ -2,5 +2,6 @@ name: Guilds
 version: ${project.version}
 main: me.glaremasters.guilds.Guilds
 authors: [blockslayer22]
+depend: [Vault]
 description: Guilds
 website: https://glaremasters.me/discord
