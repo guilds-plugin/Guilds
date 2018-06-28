@@ -1,6 +1,7 @@
 package me.glaremasters.guilds.commands;
 
 import static me.glaremasters.guilds.util.ColorUtil.color;
+import static me.glaremasters.guilds.util.ConfigUtil.getString;
 import java.util.ArrayList;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.commands.base.CommandBase;
@@ -64,7 +65,7 @@ public class CommandInfo extends CommandBase implements Listener {
             return;
         }
 
-        Inventory heads = Bukkit.createInventory(null, InventoryType.HOPPER, config.getString("gui-name.info"));
+        Inventory heads = Bukkit.createInventory(null, InventoryType.HOPPER, getString("gui-name.info"));
         // Skull: From player
         heads.setItem(1, createSkull(player));
 

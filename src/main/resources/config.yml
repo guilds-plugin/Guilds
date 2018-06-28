@@ -15,7 +15,7 @@
 
 # This is used to determine what version of the config you are using.
 # Please do not change this as it may cause issues with your config.
-version: 24
+version: 25
 
 # This will automatically move your current config to "config-old.yml" and replace with a new, updated, "config.yml".
 # If you ever get tired of your config being moved, just change this to "false".
@@ -150,18 +150,6 @@ upgrade-ticket:
 # As stated above, the name here such as list and info will modify data inside that commands GUI.
 # If your server's language is not english, you will need to manually modify these to your server's language and they will display in the GUI as your new input.
 
-# The "display" section allows you to choose which parts you want to display in /guild list.
-# For example: If I didn't want to display the members, I could change that to "false".
-display:
-  name: true
-  prefix: true
-  master: true
-  guildstatus: true
-  guildtier: true
-  guildbalance: true
-  member-count: true
-  members: true
-
 # The "list" section allows you to choose how the /guild list is styled.
 # You can change the colors, and the language of all parts of the guild list GUI.
 # The item is what is used to display all the guilds.
@@ -175,6 +163,24 @@ list:
   member-count: "&6Member Count: "
   members: "&5Members: "
   page-item: "DIAMOND_BLOCK"
+
+guild-list:
+  gui-name: "Guild List"
+  item-name: "{player}'s Guild"
+  next-page-item: "EMPTY_MAP"
+  next-page-item-name: "Next Page"
+  previous-page-item: "EMPTY_MAP"
+  previous-page-item-name: "Previous Page"
+  page-number-item: "DIAMOND_BLOCK"
+  page-number-item-name: "Page: {page}"
+  head-lore:
+  - "Guild Name: {guild-name}"
+  - "Guild Prefix: {guild-prefix}"
+  - "Guild Master: {guild-master}"
+  - "Guild Status: {guild-status}"
+  - "Guild Tier: {guild-tier}"
+  - "Guild Balance: {guild-balance}"
+  - "Guild Memeber Count: {guild-member-count}"
 
 # You can choose what random items are used to display Guilds in the Guild List
 random-items:
@@ -206,12 +212,6 @@ gui-name:
   vault: "Guild Vault"
   info: "Guild Info"
   buff: "Guild Buffs"
-  list:
-    name: "Guild List"
-    next-page: "Next Page"
-    previous-page: "Previous Page"
-    page: "Page: "
-    head-name: "{player}'s Guild"
 # head-name is what show's when you hover over a head in the Guild List. For example, the default will show Username's Guild
 
 #-----------------------------------------------------------#

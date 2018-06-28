@@ -4,9 +4,8 @@ import static me.glaremasters.guilds.util.ConfigUtil.getString;
 import java.util.UUID;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.commands.*;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
+import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryAction;
@@ -25,63 +24,57 @@ public class ClickListener implements Listener {
 
     private Guilds guilds;
 
-    @EventHandler
-    public void onClick(InventoryClickEvent e) {
-        Player player = (Player) e.getWhoClicked();
-        UUID uuid = player.getUniqueId();
-        String title = e.getInventory().getTitle();
-        if (title.equalsIgnoreCase(getString("gui-name.info"))) {
-            e.setCancelled(true);
-            e.setResult(Event.Result.DENY);
-        }
-        if (title.equalsIgnoreCase(getString("gui-name.list.name"))) {
-            if (e.getAction().equals(InventoryAction.PICKUP_ALL)) {
-                if (e.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.GOLD + guilds.getConfig()
-                                .getString("gui-name.list.previous-page"))) {
-                    if (!(CommandList.playerPages.get(uuid) == 1)) {
-                        int newPage =
-                                CommandList.playerPages.get(uuid) - 1;
 
+
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent event) {
+        Player player = (Player) event.getWhoClicked();
+        UUID uuid = player.getUniqueId();
+        String title = event.getInventory().getTitle();
+        if (title.equalsIgnoreCase(getString("gui-name.info"))) {
+            event.setCancelled(true);
+            event.setResult(Result.DENY);
+            return;
+        }
+        if (title.equalsIgnoreCase(getString("guild-list.gui-name"))) {
+            if (event.getAction().equals(InventoryAction.PICKUP_ALL)) {
+                if (event.getCurrentItem().getItemMeta().getDisplayName().equals(getString("guild-list.previous-page-item-name"))) {
+                    if (!(CommandList.playerPages.get(uuid) == 1)) {
+                        int newPage = CommandList.playerPages.get(uuid) - 1;
                         CommandList.playerPages.remove(uuid);
                         CommandList.playerPages.put(uuid, newPage);
                         Inventory guildList = CommandList.getSkullsPage(newPage);
-                        e.getWhoClicked().openInventory(guildList);
+                        player.openInventory(guildList);
                     }
                 }
                 if (guilds.getGuildHandler().getGuilds().values().size() < 45) {
-                    e.setCancelled(true);
-                    e.setResult(Event.Result.DENY);
+                    event.setCancelled(true);
+                    event.setResult(Result.DENY);
                     return;
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName()
-                        .equals(ChatColor.GOLD + guilds.getConfig()
-                                .getString("gui-name.list.next-page"))) {
-
+                if (event.getCurrentItem().getItemMeta().getDisplayName().equals(getString("guild-list.next-page-item-name"))) {
                     int newPage = CommandList.playerPages.get(uuid) + 1;
-
                     CommandList.playerPages.remove(uuid);
                     CommandList.playerPages.put(uuid, newPage);
                     Inventory guildList = CommandList.getSkullsPage(newPage);
                     player.openInventory(guildList);
                 }
             }
-
-            e.setCancelled(true);
-            e.setResult(Event.Result.DENY);
+            event.setCancelled(true);
+            event.setResult(Result.DENY);
         }
     }
 
     @EventHandler
-    public void onClick2(InventoryInteractEvent e) {
-        if (e.getInventory().getTitle()
-                .equalsIgnoreCase(guilds.getConfig().getString("gui-name.info"))) {
-            e.setCancelled(true);
-            e.setResult(Event.Result.DENY);
+    public void onInventoryInteract(InventoryInteractEvent event) {
+        String title = event.getInventory().getTitle();
+        if (title.equals(getString("guild-list.gui-name"))) {
+            event.setCancelled(true);
+            event.setResult(Result.DENY);
         }
-        if (e.getInventory().getTitle()
-                .equalsIgnoreCase(guilds.getConfig().getString("gui-name.list.name"))) {
-            e.setCancelled(true);
-            e.setResult(Event.Result.DENY);
+        if (title.equals(getString("gui-name.info"))) {
+            event.setCancelled(true);
+            event.setResult(Result.DENY);
         }
     }
 }
