@@ -1,17 +1,27 @@
 package me.glaremasters.guilds;
 
+import java.io.File;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Guilds extends JavaPlugin {
 
+    private static Guilds guilds;
+
     @Override
     public void onEnable() {
-        // Plugin startup logic
 
     }
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+
+    }
+
+    /**
+     * Grabs an instance of the plugin
+     * @return instance of plugin
+     */
+    public static Guilds getGuilds() {
+        return guilds;
     }
 }
