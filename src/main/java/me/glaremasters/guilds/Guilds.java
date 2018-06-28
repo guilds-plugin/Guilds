@@ -26,7 +26,7 @@ public final class Guilds extends JavaPlugin {
         setupPermissions();
         initData();
         saveData();
-        database = new YAML();
+        database = new YAML(this);
     }
 
     @Override
@@ -80,5 +80,13 @@ public final class Guilds extends JavaPlugin {
     private void saveData() {
         if (!this.guild.exists()) this.saveResource("guilds.yml", false);
         if (!this.language.exists()) Stream.of("english").forEach(l -> this.saveResource("languages/" + l + ".yml", false));
+    }
+
+    /**
+     * Get the database we are using to store data
+     * @return the database currently being used
+     */
+    public DatabaseProvider getDatabase() {
+        return database;
     }
 }
