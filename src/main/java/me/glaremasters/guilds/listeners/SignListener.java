@@ -4,6 +4,7 @@ import static me.glaremasters.guilds.util.ColorUtil.color;
 import me.glaremasters.guilds.guild.Guild;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -37,19 +38,19 @@ public class SignListener implements Listener {
 
     @EventHandler
     public void onPlayerClickSign(PlayerInteractEvent event) {
-        Player p = event.getPlayer();
+        Player player = event.getPlayer();
+        Block block = event.getClickedBlock();
+        Action action = event.getAction();
         if (event.getClickedBlock() == null) return;
-        Material type = event.getClickedBlock().getType();
-        if (type == null) {
-            return;
-        }
-        if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            if (type == Material.SIGN ||type == Material.SIGN_POST || type == Material.WALL_SIGN) {
-                Sign sign = (Sign) event.getClickedBlock().getState();
-                if (ChatColor.stripColor(sign.getLine(0)).equalsIgnoreCase("Join Guild")) {
-                    p.chat("/guild join " + sign.getLine(1));
-                    sign.update();
-                }
+        Material type = block.getType();
+        if (type == null) return;
+        if (action == null) return;
+        if (action != Action.RIGHT_CLICK_BLOCK) return;
+        if (type == Material.SIGN || type == Material.SIGN_POST || type == Material.WALL_SIGN) {
+            Sign sign = (Sign) block.getState();
+            if (ChatColor.stripColor(sign.getLine(0)).equalsIgnoreCase("Join Guild")) {
+                player.chat("/guild join " + sign.getLine(1));
+                sign.update();
             }
         }
     }
