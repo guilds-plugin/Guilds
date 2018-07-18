@@ -50,7 +50,7 @@ public class Guild {
 
     public Guild(String name, UUID master) {
         this.name = name;
-        this.prefix = name.substring(0, getInt("prefix.max-length") > name.length() ? name.length() : getInt("prefix.max-length"));
+        this.prefix = "";
         this.status = "";
         this.home = "";
         this.tier = 1;
