@@ -1,14 +1,16 @@
 package me.glaremasters.guilds;
 
-import java.io.File;
-import java.util.stream.Stream;
 import me.glaremasters.guilds.database.DatabaseProvider;
-import me.glaremasters.guilds.database.databases.yaml.YAML;
+import me.glaremasters.guilds.database.databases.json.JSON;
+import me.glaremasters.guilds.guild.GuildHandler;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
+import java.util.stream.Stream;
 
 public final class Guilds extends JavaPlugin {
 
@@ -16,6 +18,7 @@ public final class Guilds extends JavaPlugin {
     private static Economy econ = null;
     private static Permission perms = null;
     private DatabaseProvider database;
+    private GuildHandler guildHandler;
     private File guild, language, languageFolder;
     public YamlConfiguration guildConfig, languageConfig;
 
@@ -26,7 +29,12 @@ public final class Guilds extends JavaPlugin {
         setupPermissions();
         initData();
         saveData();
-        database = new YAML(this);
+
+        database = new JSON(this);
+        database.initialize();
+
+        guildHandler = new GuildHandler();
+        guildHandler.enable();
     }
 
     @Override
@@ -89,5 +97,13 @@ public final class Guilds extends JavaPlugin {
      */
     public DatabaseProvider getDatabase() {
         return database;
+    }
+
+    /**
+     * Get the guild handler in the plugin
+     * @return the guild handler being used
+     */
+    public GuildHandler getGuildHandler() {
+        return guildHandler;
     }
 }

@@ -1,36 +1,93 @@
 package me.glaremasters.guilds.guild;
 
+import com.google.gson.annotations.Expose;
+import me.glaremasters.guilds.Guilds;
+import org.bukkit.ChatColor;
+import org.bukkit.inventory.Inventory;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import org.bukkit.inventory.Inventory;
+
+import static me.glaremasters.guilds.utils.ConfigUtils.getInt;
 
 /**
  * Created by GlareMasters on 6/28/2018.
  */
 public class Guild {
 
+    @Expose(serialize = false)
     private String name;
-    private String prefix;
-    // private List<GuildMember> members;
+
+    @Expose
+    private String prefix, tier, home, status, bank;
+
+    @Expose
+    private List<GuildMember> members;
+
+    @Expose
     private List<String> allies;
+
+    @Expose
     private List<UUID> invitedMembers;
+
+    @Expose
     private List<String> pendingAllies;
+
     private Inventory inventory;
 
     public Guild(String name) {
         this.name = name;
-        // this.members = new ArrayList<>();
+        this.members = new ArrayList<>();
         this.invitedMembers = new ArrayList<>();
     }
 
     public Guild(String name, UUID master) {
         this.name = name;
-        // this.prefix=name.substring(0, getInt("prefix.max-length") > name.length() ? name.length() : getInt("prefix.max-length");
-        // this.members = new ArrayList<>();
-        // this.members.add(new GuildMember(master, 0));
+        this.prefix = name.substring(0, getInt("prefix.max-length") > name.length() ? name.length() : getInt("prefix.max-length"));
+        this.members = new ArrayList<>();
+        this.members.add(new GuildMember(master, 0));
         this.invitedMembers = new ArrayList<>();
         this.pendingAllies = new ArrayList<>();
+    }
+
+    public static Guild getGuild(UUID uuid) {
+        return Guilds.getGuilds().getGuildHandler().getGuilds().values().stream().filter(guild -> guild.getMembers().stream().anyMatch(member -> member.getUuid().equals(uuid))).findFirst().orElse(null);
+    }
+
+    public static Guild getGuild(String name) {
+        return Guilds.getGuilds().getGuildHandler().getGuilds().values().stream().filter(guild -> ChatColor.stripColor(guild.getName()).equalsIgnoreCase(name)).findFirst().orElse(null);
+    }
+
+    public static boolean areAllies(UUID uuid1, UUID uuid2) {
+        Guild guild1 = getGuild(uuid1);
+        Guild guild2 = getGuild(uuid2);
+
+        return !(guild1 == null || guild2 == null) && guild1.getAllies().contains(guild2.getName());
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getPrefix() {
+        return prefix;
+    }
+
+    public List<String> getPendingAllies() {
+        return pendingAllies;
+    }
+
+    public List<String> getAllies() {
+        return allies;
+    }
+
+    public List<GuildMember> getMembers() {
+        return members;
+    }
+
+    public List<UUID> getInvitedMembers() {
+        return invitedMembers;
     }
 
 
