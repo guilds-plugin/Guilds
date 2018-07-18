@@ -54,7 +54,10 @@ public final class Guilds extends JavaPlugin {
     }
 
     @Override
-    public void onDisable() {}
+    public void onDisable() {
+        guildHandler.disable();
+        commandHandler.disable();
+    }
 
     /**
      * Grabs an instance of the plugin
