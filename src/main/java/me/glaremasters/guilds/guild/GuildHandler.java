@@ -24,6 +24,8 @@ public class GuildHandler implements IHandler {
     public void enable() {
         guilds = new HashMap<>();
         roles = new ArrayList<>();
+
+        initialize();
     }
 
     @Override
