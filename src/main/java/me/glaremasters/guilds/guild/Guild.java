@@ -51,6 +51,10 @@ public class Guild {
     public Guild(String name, UUID master) {
         this.name = name;
         this.prefix = name.substring(0, getInt("prefix.max-length") > name.length() ? name.length() : getInt("prefix.max-length"));
+        this.status = "";
+        this.home = "";
+        this.tier = 1;
+        this.balance = 0.0;
         this.members = new ArrayList<>();
         this.members.add(new GuildMember(master, 0));
         this.invitedMembers = new ArrayList<>();
@@ -58,7 +62,7 @@ public class Guild {
     }
 
     public static Guild getGuild(UUID uuid) {
-        return Guilds.getGuilds().getGuildHandler().getGuilds().values().stream().filter(guild -> guild.getMembers().stream().anyMatch(member -> member.getUuid().equals(uuid))).findFirst().orElse(null);
+        return Guilds.getGuilds().getGuildHandler().getGuilds().values().stream().filter(guild -> guild.getMembers().stream().anyMatch(member -> member.getUniqueId().equals(uuid))).findFirst().orElse(null);
     }
 
     public static Guild getGuild(String name) {
@@ -135,6 +139,14 @@ public class Guild {
         return this.members.stream().filter(member -> member.getRole() == 0).findFirst().orElse(null);
     }
 
+    public void updateGuild(String error, String... params) {
+        try {
+            Guilds.getGuilds().getDatabase().updateGuild(this);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+    }
 
 
 }

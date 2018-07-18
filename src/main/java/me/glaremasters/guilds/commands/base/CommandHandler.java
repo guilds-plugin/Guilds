@@ -43,7 +43,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter, IHandler {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (!cmd.getName().equalsIgnoreCase("guild")) return true;
         if (args.length == 0 || args[0].isEmpty()) {
-            getCommand("help").execute(sender, args);
+            getCommand("create").execute(sender, args);
             return true;
         }
 

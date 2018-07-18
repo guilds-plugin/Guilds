@@ -13,7 +13,7 @@ public interface DatabaseProvider {
 
     void initialize();
 
-    void createGuild(Guild guild, Callback<Boolean, Exception> callback);
+    void createGuild(Guild guild);
 
     void getGuilds(Callback<HashMap<String, Guild>, Exception> callback);
 

@@ -1,5 +1,7 @@
 package me.glaremasters.guilds.guild;
 
+import me.glaremasters.guilds.Guilds;
+
 /**
  * Created by GlareMasters on 6/28/2018.
  */
@@ -45,4 +47,105 @@ public class GuildRole {
         this.place = place;
         this.interact = interact;
     }
+
+    public static GuildRole getRole(int level) {
+        return Guilds.getGuilds().getGuildHandler().getRoles().stream().filter(role -> role.getLevel() == level).findFirst().orElse(null);
+    }
+
+    public static GuildRole getLowestRole() {
+        GuildRole lowest = null;
+
+        for (GuildRole role  : Guilds.getGuilds().getGuildHandler().getRoles()) {
+            if (lowest == null || lowest.getLevel() < role.getLevel()) lowest = role;
+        }
+        return lowest;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public boolean canChat() {
+        return chat;
+    }
+
+    public boolean canInvite() {
+        return invite;
+    }
+
+    public boolean canKick() {
+        return kick;
+    }
+
+    public boolean canPromote() {
+        return promote;
+    }
+
+    public boolean canDemote() {
+        return demote;
+    }
+
+    public boolean canChangePrefix() {
+        return changePrefix;
+    }
+
+    public boolean canChangeHome() {
+        return changeHome;
+    }
+
+    public boolean canRemoveGuild() {
+        return removeGuild;
+    }
+
+    public boolean canAddAlly() {
+        return addAlly;
+    }
+
+    public boolean canRemoveAlly() {
+        return removeAlly;
+    }
+
+    public boolean useAllyChat() {
+        return allyChat;
+    }
+
+    public boolean canOpenVault() {
+        return openVault;
+    }
+
+    public boolean canTransfer() {
+        return transferGuild;
+    }
+
+    public boolean canChangeStatus() { return changeStatus; }
+
+    public boolean canActivateBuff() {
+        return activateBuff;
+    }
+
+    public boolean canUpgradeGuild() {
+        return upgradeGuild;
+    }
+
+    public boolean canDepositMoney() {
+        return depositMoney;
+    }
+
+    public boolean canWithdrawMoney() {
+        return withdrawMoney;
+    }
+
+    public boolean canClaimLand() { return claimLand; }
+
+    public boolean canUnclaimLand() { return unclaimLand; }
+
+    public boolean canDestroy() { return destroy; }
+
+    public boolean canPlace() { return place; }
+
+    public boolean canInteract() { return interact; }
 }

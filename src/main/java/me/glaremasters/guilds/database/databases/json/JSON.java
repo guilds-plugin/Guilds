@@ -37,7 +37,7 @@ public class JSON implements DatabaseProvider {
     public void initialize() {
 
         folder = new File(guilds.getDataFolder(), "data/");
-        guildsFile = new File(folder, "guild.json");
+        guildsFile = new File(folder, "guilds.json");
         guildsType = new TypeToken<Map<String, Guild>>() {
         }.getType();
 
@@ -58,7 +58,7 @@ public class JSON implements DatabaseProvider {
     }
 
     @Override
-    public void createGuild(Guild guild, Callback<Boolean, Exception> callback) {
+    public void createGuild(Guild guild) {
         HashMap<String, Guild> guilds = getGuilds() == null ? new HashMap<>() : getGuilds();
         guilds.put(guild.getName(), guild);
         write(guildsFile, guilds, guildsType);

@@ -8,6 +8,7 @@ import java.util.logging.Level;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.utils.IHandler;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
 
 /**
  * Created by GlareMasters on 6/28/2018.
@@ -42,7 +43,7 @@ public class GuildHandler implements IHandler {
             }
             if (result != null) guilds = result;
 
-            // guilds.values().forEach(this::addGuild);
+            guilds.values().forEach(this::addGuild);
         }));
     }
 

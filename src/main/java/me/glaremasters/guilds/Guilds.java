@@ -3,6 +3,8 @@ package me.glaremasters.guilds;
 import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
+import me.glaremasters.guilds.commands.CommandCreate;
+import me.glaremasters.guilds.commands.base.CommandHandler;
 import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.database.databases.json.JSON;
 import me.glaremasters.guilds.guild.GuildHandler;
@@ -22,6 +24,7 @@ public final class Guilds extends JavaPlugin {
     private static Permission perms = null;
     private DatabaseProvider database;
     private GuildHandler guildHandler;
+    private CommandHandler commandHandler;
     private static TaskChainFactory taskChainFactory;
     private File guild, language, languageFolder;
     public YamlConfiguration guildConfig, languageConfig;
@@ -41,6 +44,13 @@ public final class Guilds extends JavaPlugin {
 
         guildHandler = new GuildHandler();
         guildHandler.enable();
+
+        commandHandler = new CommandHandler();
+        commandHandler.enable();
+
+        getCommand("guild").setExecutor(commandHandler);
+
+        Stream.of(new CommandCreate()).forEach(commandHandler::register);
     }
 
     @Override
