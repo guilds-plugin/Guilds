@@ -88,12 +88,22 @@ public class Guild {
         this.prefix = prefix;
     }
 
+    public void updatePrefix(String prefix) {
+        setPrefix(prefix);
+        updateGuild("Error occurred while update a guild prefix", prefix, this.name);
+    }
+
     public String getStatus() {
         return status;
     }
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public void updateStatus(String status) {
+        setStatus(status);
+        updateGuild("Error occured while updating a guild status", status, this.name);
     }
 
     public int getTier() {
