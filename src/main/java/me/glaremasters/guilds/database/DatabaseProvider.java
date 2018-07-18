@@ -17,5 +17,9 @@ public interface DatabaseProvider {
 
     void getGuilds(Callback<HashMap<String, Guild>, Exception> callback);
 
+    void updateGuild(Guild guild);
+
+    void removeGuild(Guild guild);
+
 
 }

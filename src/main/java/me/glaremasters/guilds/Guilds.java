@@ -1,5 +1,8 @@
 package me.glaremasters.guilds;
 
+import co.aikar.taskchain.BukkitTaskChainFactory;
+import co.aikar.taskchain.TaskChain;
+import co.aikar.taskchain.TaskChainFactory;
 import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.database.databases.json.JSON;
 import me.glaremasters.guilds.guild.GuildHandler;
@@ -19,6 +22,7 @@ public final class Guilds extends JavaPlugin {
     private static Permission perms = null;
     private DatabaseProvider database;
     private GuildHandler guildHandler;
+    private static TaskChainFactory taskChainFactory;
     private File guild, language, languageFolder;
     public YamlConfiguration guildConfig, languageConfig;
 
@@ -29,6 +33,8 @@ public final class Guilds extends JavaPlugin {
         setupPermissions();
         initData();
         saveData();
+
+        taskChainFactory = BukkitTaskChainFactory.create(this);
 
         database = new JSON(this);
         database.initialize();
@@ -105,5 +111,14 @@ public final class Guilds extends JavaPlugin {
      */
     public GuildHandler getGuildHandler() {
         return guildHandler;
+    }
+
+    /**
+     * Create a new chain for async
+     * @param <T> taskchain
+     * @return the new chain created for data modification
+     */
+    public static <T> TaskChain<T> newChain() {
+        return taskChainFactory.newChain();
     }
 }

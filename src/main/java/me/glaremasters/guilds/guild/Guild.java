@@ -20,7 +20,13 @@ public class Guild {
     private String name;
 
     @Expose
-    private String prefix, tier, home, status, bank;
+    private String prefix, home, status;
+
+    @Expose
+    private Integer tier;
+
+    @Expose
+    private Double balance;
 
     @Expose
     private List<GuildMember> members;
@@ -74,6 +80,41 @@ public class Guild {
         return prefix;
     }
 
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public int getTier() {
+        return tier;
+    }
+
+    public void setTier(int tier) {
+        this.tier = tier;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
+    public int getTierCost() {
+        if (getTier() >= getInt("max-number-of-tiers")) return 0;
+        int upgradeTier = getTier() + 1;
+        return getInt("tier" + upgradeTier + ".cost");
+    }
+
+
     public List<String> getPendingAllies() {
         return pendingAllies;
     }
@@ -88,6 +129,10 @@ public class Guild {
 
     public List<UUID> getInvitedMembers() {
         return invitedMembers;
+    }
+
+    public GuildMember getGuildMaster() {
+        return this.members.stream().filter(member -> member.getRole() == 0).findFirst().orElse(null);
     }
 
 
