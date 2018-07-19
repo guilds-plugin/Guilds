@@ -137,6 +137,11 @@ public class Guild {
         this.tier = tier;
     }
 
+    public void updateTier(Integer tier) {
+        setTier(tier);
+        updateGuild("", String.valueOf(tier), this.name);
+    }
+
     public Double getBalance() {
         return balance;
     }
