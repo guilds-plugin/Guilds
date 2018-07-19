@@ -48,10 +48,19 @@ public class GuildRole {
         this.interact = interact;
     }
 
+    /**
+     * Get the role
+     * @param level the level of the role
+     * @return the level of the role
+     */
     public static GuildRole getRole(int level) {
         return Guilds.getGuilds().getGuildHandler().getRoles().stream().filter(role -> role.getLevel() == level).findFirst().orElse(null);
     }
 
+    /**
+     * Check the lowest role possible
+     * @return the lowest role possible
+     */
     public static GuildRole getLowestRole() {
         GuildRole lowest = null;
 
