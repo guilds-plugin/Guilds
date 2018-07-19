@@ -1,6 +1,5 @@
 package me.glaremasters.guilds.commands;
 
-import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import org.bukkit.entity.Player;
@@ -15,7 +14,7 @@ import static me.glaremasters.guilds.utils.ConfigUtils.color;
 public class CommandBank extends CommandBase {
 
     public CommandBank() {
-        super("bank", Guilds.getGuilds().getConfig().getString("commands.description.bank"),
+        super("bank", "",
                 "guilds.command.bank", false, null,
                 "deposit <amount> | withdraw <amount> | balance", 1, 2);
     }

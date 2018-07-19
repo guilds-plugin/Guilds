@@ -1,6 +1,5 @@
 package me.glaremasters.guilds.commands;
 
-import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import org.bukkit.Bukkit;
@@ -16,7 +15,7 @@ import org.bukkit.entity.Player;
 public class CommandHome extends CommandBase {
 
     public CommandHome() {
-        super("home", Guilds.getGuilds().getConfig().getString("commands.description.home"),
+        super("home", "",
                 "guilds.command.home", false, null, null, 0,
                 0);
     }
@@ -24,6 +23,9 @@ public class CommandHome extends CommandBase {
     public void execute(final Player player, String[] args) {
         Guild guild = Guild.getGuild(player.getUniqueId());
         if (guild == null) return;
+
+        if (guild.getHome().equals("")) return;
+
         String[] data = guild.getHome().split(":");
         World w = Bukkit.getWorld(data[0]);
         double x = Double.parseDouble(data[1]);

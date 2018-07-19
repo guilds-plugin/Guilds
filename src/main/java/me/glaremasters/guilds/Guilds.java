@@ -25,9 +25,8 @@ public final class Guilds extends JavaPlugin {
     private GuildHandler guildHandler;
     private CommandHandler commandHandler;
     private static TaskChainFactory taskChainFactory;
-    private File guild;
     private File language;
-    public YamlConfiguration guildConfig, languageConfig;
+    public YamlConfiguration languageConfig;
 
     @Override
     public void onEnable() {
@@ -53,7 +52,7 @@ public final class Guilds extends JavaPlugin {
 
         getCommand("guild").setExecutor(commandHandler);
 
-        Stream.of(new CommandCreate(), new CommandPrefix(), new CommandStatus(), new CommandBank(), new CommandSetHome(), new CommandHome()).forEach(commandHandler::register);
+        Stream.of(new CommandCreate(), new CommandPrefix(), new CommandStatus(), new CommandBank(), new CommandSetHome(), new CommandHome(), new CommandVersion()).forEach(commandHandler::register);
     }
 
     @Override
@@ -99,17 +98,14 @@ public final class Guilds extends JavaPlugin {
         saveDefaultConfig();
         File languageFolder = new File(getDataFolder(), "languages");
         if (!languageFolder.exists()) languageFolder.mkdirs();
-        this.guild = new File(getDataFolder(), "guilds.yml");
         this.language = new File(languageFolder, getConfig().getString("lang") + ".yml");
         this.languageConfig = YamlConfiguration.loadConfiguration(language);
-        this.guildConfig = YamlConfiguration.loadConfiguration(guild);
     }
 
     /**
      * Save and handle new files if needed
      */
     private void saveData() {
-        if (!this.guild.exists()) this.saveResource("guilds.yml", false);
         if (!this.language.exists()) Stream.of("english").forEach(l -> this.saveResource("languages/" + l + ".yml", false));
     }
 

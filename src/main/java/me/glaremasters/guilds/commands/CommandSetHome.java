@@ -1,6 +1,5 @@
 package me.glaremasters.guilds.commands;
 
-import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import org.bukkit.entity.Player;
@@ -13,7 +12,7 @@ import org.bukkit.entity.Player;
 public class CommandSetHome extends CommandBase {
 
     public CommandSetHome() {
-        super("sethome", Guilds.getGuilds().getConfig().getString("commands.description.sethome"),
+        super("sethome", "",
                 "guilds.command.sethome", false, null, null, 0,
                 0);
     }

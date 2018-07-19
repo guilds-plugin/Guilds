@@ -14,7 +14,7 @@ import static me.glaremasters.guilds.utils.ConfigUtils.color;
 public class CommandCreate extends CommandBase {
 
     public CommandCreate() {
-        super("create", Guilds.getGuilds().getConfig().getString("commands.description.create"),
+        super("create", "",
                 "guilds.command.create", false, new String[]{"c"},
                 "<name>", 1, 1);
     }
