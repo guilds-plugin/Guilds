@@ -5,17 +5,16 @@ import me.glaremasters.guilds.Guilds;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
-import static me.glaremasters.guilds.utils.ConfigUtils.color;
+import static me.glaremasters.guilds.utils.ConfigUtils.*;
 
 /**
  * Created by GlareMasters on 6/28/2018.
  */
 public class Guild {
+
+    private static final Guilds guilds = Guilds.getGuilds();
 
     @Expose(serialize = false)
     private String name;
@@ -107,10 +106,6 @@ public class Guild {
         updateGuild("Error occured while updating a guild status", status, this.name);
     }
 
-    public String getTierName() {
-        return color(Guilds.getGuilds().getConfig().getString("tier" + getTier() + ".name"));
-    }
-
     public String getHome() {
         return home;
     }
@@ -183,8 +178,56 @@ public class Guild {
         return this.members.stream().filter(member -> member.getRole() == 0).findFirst().orElse(null);
     }
 
+    public String getTierName() {
+        return getString("tier" + getTier() + ".name");
+    }
+
+    public int getTierCost() {
+        if (getTier() >= getInt("max-number-of-tiers")) return 0;
+        int newTier = getTier() + 1;
+        return getInt("tier" + newTier + ".cost");
+    }
+
+    public int getMaxMembers() {
+        return getInt("tier" + getTier() + ".max-members");
+    }
+
+    public int getMembersToRankup() {
+        return getInt("tier" + tier + ".members-to-rankup");
+    }
+
+    public double getExpMultiplier() {
+        return getDouble("tier" + getTier() + ".mob-xp-multiplier");
+    }
+
+    public List<String> getGuildPerms() {
+        return getStringList("tier" + getTier() + ".permissions");
+    }
+
+    public double getDamageMultiplier() {
+        return getDouble("tier" + getTier() + ".damage-multiplier");
+    }
+
+    public double getMaxBankBalance() {
+        return getDouble("tier" + getTier() + ".max-bank-balance");
+    }
+
     public void addMember(UUID uuid, GuildRole role) {
         this.members.add(new GuildMember(uuid, role.getLevel()));
+        updateGuild("", uuid.toString(), this.name);
+    }
+
+    public void removeMember(UUID uuid) {
+        GuildMember member = getMember(uuid);
+        if (member == null) return;
+        if (member == getGuildMaster()) {
+            guilds.getDatabase().removeGuild(this);
+            HashMap<String, Guild> guild = guilds.getGuildHandler().getGuilds();
+            guild.remove(this.name);
+            guilds.getGuildHandler().setGuilds(guild);
+            return;
+        }
+        this.members.remove(member);
         updateGuild("", uuid.toString(), this.name);
     }
 
