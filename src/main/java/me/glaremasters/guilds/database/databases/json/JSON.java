@@ -33,6 +33,10 @@ public class JSON implements DatabaseProvider {
         this.guilds = guilds;
     }
 
+
+    /**
+     * Initializing the JSON data storage system will allow the plugin to work and update as needed
+     */
     @Override
     public void initialize() {
 
@@ -57,6 +61,10 @@ public class JSON implements DatabaseProvider {
 
     }
 
+    /**
+     * This method creates a guild into the JSON file
+     * @param guild the guild being created
+     */
     @Override
     public void createGuild(Guild guild) {
         HashMap<String, Guild> guilds = getGuilds() == null ? new HashMap<>() : getGuilds();
@@ -65,6 +73,10 @@ public class JSON implements DatabaseProvider {
         Guilds.getGuilds().getGuildHandler().addGuild(guild);
     }
 
+    /**
+     * This method removes a guild from the JSON file
+     * @param guild the guild being removed
+     */
     @Override
     public void removeGuild(Guild guild) {
         HashMap<String, Guild> guilds = getGuilds();
@@ -73,6 +85,10 @@ public class JSON implements DatabaseProvider {
         write(guildsFile, guilds, guildsType);
     }
 
+    /**
+     * This method is called on the start of the server to load all the guilds into local memory so that it can handle as needed
+     * @param callback all the guilds currently loaded on the server
+     */
     @Override
     @SuppressWarnings("unchecked")
     public void getGuilds(Callback<HashMap<String, Guild>, Exception> callback) {
@@ -89,6 +105,10 @@ public class JSON implements DatabaseProvider {
         }).syncLast(guilds -> callback.call((HashMap<String, Guild>) guilds, null)).execute();
     }
 
+    /**
+     * This method is super important. It updates data in different places for each guild as needed
+     * @param guild the guild being updated
+     */
     @Override
     public void updateGuild(Guild guild) {
         HashMap<String, Guild> guilds = getGuilds();
@@ -96,6 +116,13 @@ public class JSON implements DatabaseProvider {
         write(guildsFile, guilds, guildsType);
     }
 
+    /**
+     * This method will write new data
+     * @param file the file being written to
+     * @param toWrite the content being updated
+     * @param typeOfSrc the GSON type that is being used
+     * @return true or false if it can write
+     */
     private boolean write(File file, Object toWrite, Type typeOfSrc) {
         try (Writer writer = new FileWriter(file)) {
             gson.toJson(toWrite, typeOfSrc, writer);
@@ -106,7 +133,10 @@ public class JSON implements DatabaseProvider {
         }
     }
 
-
+    /**
+     * The Map of all guilds on the server
+     * @return hashmap of all guilds
+     */
     private HashMap<String, Guild> getGuilds() {
         return guilds.getGuildHandler().getGuilds();
     }

@@ -17,7 +17,7 @@ public class Guild {
     private String name;
 
     @Expose
-    private String prefix, home, status;
+    private String prefix, home, status, inventory;
 
     @Expose
     private Integer tier;
@@ -48,6 +48,7 @@ public class Guild {
         this.prefix = "";
         this.status = "";
         this.home = "";
+        this.inventory = "";
         this.tier = 1;
         this.balance = 0.0;
         this.members = new ArrayList<>();
@@ -113,6 +114,19 @@ public class Guild {
     public void updateHome(String home) {
         setHome(home);
         updateGuild("Error occurred while updating a guild home", home, this.name);
+    }
+
+    public String getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(String inventory) {
+        this.inventory = inventory;
+    }
+
+    public void updateInventory(String inventory) {
+        setInventory(inventory);
+        updateGuild("", inventory, this.name);
     }
 
     public Integer getTier() {
