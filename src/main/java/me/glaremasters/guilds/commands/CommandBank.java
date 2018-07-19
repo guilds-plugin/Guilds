@@ -36,6 +36,16 @@ public class CommandBank extends CommandBase {
             }
             guild.updateBalance(balance + Double.valueOf(args[1]));
         }
+        if (args[0].equalsIgnoreCase("withdraw")) {
+            if (args.length != 2) return;
+            try {
+                Double.parseDouble(args[1]);
+            } catch (NumberFormatException ex) {
+                ex.printStackTrace();
+            }
+            if ((guild.getBalance() < Double.parseDouble(args[1]))) return;
+            guild.updateBalance(balance - Double.valueOf(args[1]));
+        }
     }
 
 }

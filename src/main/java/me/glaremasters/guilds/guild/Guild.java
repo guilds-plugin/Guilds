@@ -102,6 +102,19 @@ public class Guild {
         updateGuild("Error occured while updating a guild status", status, this.name);
     }
 
+    public String getHome() {
+        return home;
+    }
+
+    public void setHome(String home) {
+        this.home = home;
+    }
+
+    public void updateHome(String home) {
+        setHome(home);
+        updateGuild("Error occurred while updating a guild home", home, this.name);
+    }
+
     public Integer getTier() {
         return tier;
     }
