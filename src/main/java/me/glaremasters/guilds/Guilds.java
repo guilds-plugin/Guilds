@@ -21,13 +21,12 @@ import java.util.stream.Stream;
 public final class Guilds extends JavaPlugin {
 
     private static Guilds guilds;
-    private static Economy econ = null;
-    private static Permission perms = null;
     private DatabaseProvider database;
     private GuildHandler guildHandler;
     private CommandHandler commandHandler;
     private static TaskChainFactory taskChainFactory;
-    private File guild, language, languageFolder;
+    private File guild;
+    private File language;
     public YamlConfiguration guildConfig, languageConfig;
 
     @Override
@@ -79,7 +78,7 @@ public final class Guilds extends JavaPlugin {
         if (getServer().getPluginManager().getPlugin("Vault") == null) return false;
         RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
         if (rsp == null) return false;
-        econ = rsp.getProvider();
+        Economy econ = rsp.getProvider();
         return econ != null;
     }
 
@@ -89,7 +88,7 @@ public final class Guilds extends JavaPlugin {
      */
     private boolean setupPermissions() {
         RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
-        perms = rsp.getProvider();
+        Permission perms = rsp.getProvider();
         return perms != null;
     }
 
@@ -98,7 +97,7 @@ public final class Guilds extends JavaPlugin {
      */
     private void initData() {
         saveDefaultConfig();
-        this.languageFolder = new File(getDataFolder(), "languages");
+        File languageFolder = new File(getDataFolder(), "languages");
         if (!languageFolder.exists()) languageFolder.mkdirs();
         this.guild = new File(getDataFolder(), "guilds.yml");
         this.language = new File(languageFolder, getConfig().getString("lang") + ".yml");

@@ -2,11 +2,15 @@ package me.glaremasters.guilds.guild;
 
 import com.google.gson.annotations.Expose;
 import me.glaremasters.guilds.Guilds;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
+
+import static me.glaremasters.guilds.utils.ConfigUtils.color;
 
 /**
  * Created by GlareMasters on 6/28/2018.
@@ -103,6 +107,10 @@ public class Guild {
         updateGuild("Error occured while updating a guild status", status, this.name);
     }
 
+    public String getTierName() {
+        return color(Guilds.getGuilds().getConfig().getString("tier" + getTier() + ".name"));
+    }
+
     public String getHome() {
         return home;
     }
@@ -174,6 +182,38 @@ public class Guild {
     public GuildMember getGuildMaster() {
         return this.members.stream().filter(member -> member.getRole() == 0).findFirst().orElse(null);
     }
+
+    public void addMember(UUID uuid, GuildRole role) {
+        this.members.add(new GuildMember(uuid, role.getLevel()));
+        updateGuild("", uuid.toString(), this.name);
+    }
+
+    public void inviteMember(UUID uuid) {
+        invitedMembers.add(uuid);
+        updateGuild("An error occurred while inviting a member with the UUID of '%s' to guild '%s'", uuid.toString(), this.name);
+    }
+
+    public void removeInvitedPlayer(UUID uuid) {
+        invitedMembers.remove(uuid);
+        updateGuild("An error occurred while removing an invited member member with the UUID of '%s' to guild '%s'", uuid.toString(), this.name);
+    }
+
+    public void sendMessage(String message) {
+        members.stream().map(m -> Bukkit.getPlayer(m.getUniqueId())).filter(Objects::nonNull).forEach(p -> p.sendMessage(color(message)));
+    }
+
+    public void sendTitle(String title, String subtitle, int fadeIn, int stay, int fadeOut) {
+        members.stream().map(m -> Bukkit.getPlayer(m.getUniqueId())).filter(Objects::nonNull).forEach(p -> p.sendTitle(title, subtitle, fadeIn, stay, fadeOut));
+    }
+
+    public void sendTitleOld(String title, String subtitle) {
+        members.stream().map(m -> Bukkit.getPlayer(m.getUniqueId())).filter(Objects::nonNull).forEach(p -> p.sendTitle(title, subtitle));
+    }
+
+    public GuildMember getMember(UUID uuid) {
+        return members.stream().filter(m -> m.getUniqueId().equals(uuid)).findFirst().orElse(null);
+    }
+
 
     public void updateGuild(String error, String... params) {
         try {
