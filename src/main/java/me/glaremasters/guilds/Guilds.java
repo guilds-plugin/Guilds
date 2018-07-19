@@ -8,6 +8,7 @@ import me.glaremasters.guilds.commands.base.CommandHandler;
 import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.database.databases.json.JSON;
 import me.glaremasters.guilds.guild.GuildHandler;
+import me.glaremasters.guilds.updater.SpigotUpdater;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -47,6 +48,9 @@ public final class Guilds extends JavaPlugin {
 
         commandHandler = new CommandHandler();
         commandHandler.enable();
+
+        SpigotUpdater updater = new SpigotUpdater(this, 48920);
+        updateCheck(updater);
 
         getCommand("guild").setExecutor(commandHandler);
 
@@ -133,5 +137,20 @@ public final class Guilds extends JavaPlugin {
      */
     public static <T> TaskChain<T> newChain() {
         return taskChainFactory.newChain();
+    }
+
+    /**
+     * Execute the update checker
+     * @param updater the SpigotUpdater
+     */
+    private void updateCheck(SpigotUpdater updater) {
+        try {
+            if (updater.checkForUpdates()) {
+                getLogger().info("You appear to be running a version other than our latest stable release." + " You can download our newest version at: " + updater.getResourceURL());
+            }
+        } catch (Exception ex) {
+            getLogger().info("Could not check for updates! Stacktrace:");
+            ex.printStackTrace();
+        }
     }
 }
