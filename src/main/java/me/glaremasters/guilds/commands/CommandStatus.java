@@ -13,7 +13,7 @@ public class CommandStatus extends CommandBase {
 
     public CommandStatus() {
         super("status", Guilds.getGuilds().getConfig().getString("commands.description.status"),
-                "guilds.command.prefix", false, null,
+                "guilds.command.status", false, null,
                 "<status>", 1, 1);
     }
 

@@ -3,13 +3,10 @@ package me.glaremasters.guilds.guild;
 import com.google.gson.annotations.Expose;
 import me.glaremasters.guilds.Guilds;
 import org.bukkit.ChatColor;
-import org.bukkit.inventory.Inventory;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
-import static me.glaremasters.guilds.utils.ConfigUtils.getInt;
 
 /**
  * Created by GlareMasters on 6/28/2018.
@@ -39,8 +36,6 @@ public class Guild {
 
     @Expose
     private List<String> pendingAllies;
-
-    private Inventory inventory;
 
     public Guild(String name) {
         this.name = name;
@@ -106,28 +101,26 @@ public class Guild {
         updateGuild("Error occured while updating a guild status", status, this.name);
     }
 
-    public int getTier() {
+    public Integer getTier() {
         return tier;
     }
 
-    public void setTier(int tier) {
+    public void setTier(Integer tier) {
         this.tier = tier;
     }
 
-    public double getBalance() {
+    public Double getBalance() {
         return balance;
     }
 
-    public void setBalance(double balance) {
+    public void setBalance(Double balance) {
         this.balance = balance;
     }
 
-    public int getTierCost() {
-        if (getTier() >= getInt("max-number-of-tiers")) return 0;
-        int upgradeTier = getTier() + 1;
-        return getInt("tier" + upgradeTier + ".cost");
+    public void updateBalance(Double balance) {
+        setBalance(balance);
+        updateGuild("Error updating guild balance", String.valueOf(balance), this.name);
     }
-
 
     public List<String> getPendingAllies() {
         return pendingAllies;

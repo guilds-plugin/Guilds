@@ -3,6 +3,7 @@ package me.glaremasters.guilds;
 import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
+import me.glaremasters.guilds.commands.CommandBank;
 import me.glaremasters.guilds.commands.CommandCreate;
 import me.glaremasters.guilds.commands.CommandPrefix;
 import me.glaremasters.guilds.commands.CommandStatus;
@@ -52,7 +53,7 @@ public final class Guilds extends JavaPlugin {
 
         getCommand("guild").setExecutor(commandHandler);
 
-        Stream.of(new CommandCreate(), new CommandPrefix(), new CommandStatus()).forEach(commandHandler::register);
+        Stream.of(new CommandCreate(), new CommandPrefix(), new CommandStatus(), new CommandBank()).forEach(commandHandler::register);
     }
 
     @Override
