@@ -8,9 +8,12 @@ import me.glaremasters.guilds.commands.base.CommandHandler;
 import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.database.databases.json.JSON;
 import me.glaremasters.guilds.guild.GuildHandler;
+import me.glaremasters.guilds.listeners.GuildPerks;
+import me.glaremasters.guilds.listeners.Players;
 import me.glaremasters.guilds.updater.SpigotUpdater;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -53,6 +56,7 @@ public final class Guilds extends JavaPlugin {
         getCommand("guild").setExecutor(commandHandler);
 
         Stream.of(new CommandCreate(), new CommandPrefix(), new CommandStatus(), new CommandBank(), new CommandSetHome(), new CommandHome(), new CommandVersion()).forEach(commandHandler::register);
+        Stream.of(new GuildPerks(), new Players(this)).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
     }
 
     @Override

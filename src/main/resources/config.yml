@@ -1,3 +1,6 @@
 lang: english
 
 plugin-prefix: "[&b&lGuilds] "
+
+allow-guild-damage: false
+allow-ally-damage: false

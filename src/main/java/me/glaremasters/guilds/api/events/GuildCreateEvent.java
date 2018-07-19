@@ -12,5 +12,4 @@ public class GuildCreateEvent extends GuildEvent {
     public GuildCreateEvent(Player player, Guild guild) {
         super(player, guild);
     }
-
 }
