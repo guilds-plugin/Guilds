@@ -6,7 +6,8 @@ import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import org.bukkit.entity.Player;
 
-import static me.glaremasters.guilds.utils.ConfigUtils.color;
+import static me.glaremasters.guilds.utils.ConfigUtils.*;
+import static me.glaremasters.guilds.utils.DiscordUtils.sendEmbed;
 
 /**
  * Created by GlareMasters on 6/28/2018.
@@ -25,6 +26,8 @@ public class CommandCreate extends CommandBase {
         GuildCreateEvent event = new GuildCreateEvent(player, guild);
         if (event.isCancelled()) return;
         Guilds.getGuilds().getDatabase().createGuild(guild);
+        if (!getBoolean("discord.enabled")) return;
+        sendEmbed(getString("discord.webhook-url"), getString("discord.guild-create.description").replace("{player}", player.getName()).replace("{guild}", guild.getName()), getString("discord.guild-create.username"), getString("discord.avatar-url"));
     }
 
 }

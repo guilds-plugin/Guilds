@@ -4,3 +4,12 @@ plugin-prefix: "[&b&lGuilds] "
 
 allow-guild-damage: false
 allow-ally-damage: false
+
+discord:
+  enabled: false
+  webhook-url: ""
+  avatar-url: ""
+  guild-create:
+    enabled: false
+    username: ""
+    description: ""

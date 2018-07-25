@@ -27,7 +27,7 @@ public class ConfigUtils {
      * @return the value of the string in the config
      */
     public static String getString(String path) {
-        return color(guilds.getConfig().getString("path"));
+        return color(guilds.getConfig().getString(path));
     }
 
     /**
