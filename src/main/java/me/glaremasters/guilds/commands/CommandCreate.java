@@ -22,6 +22,8 @@ public class CommandCreate extends CommandBase {
 
     @Override
     public void execute(Player player,String[] args) {
+
+        if (Guild.getGuild(player.getUniqueId()) != null) return;
         Guild guild = new Guild(color(args[0]), player.getUniqueId());
         GuildCreateEvent event = new GuildCreateEvent(player, guild);
         if (event.isCancelled()) return;
