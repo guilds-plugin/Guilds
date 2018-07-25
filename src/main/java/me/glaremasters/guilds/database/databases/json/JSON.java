@@ -2,10 +2,6 @@ package me.glaremasters.guilds.database.databases.json;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
-
-import java.io.*;
-import java.lang.reflect.Type;
-
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
 import me.glaremasters.guilds.Guilds;
@@ -13,6 +9,8 @@ import me.glaremasters.guilds.database.Callback;
 import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.guild.Guild;
 
+import java.io.*;
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 

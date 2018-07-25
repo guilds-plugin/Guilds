@@ -66,7 +66,7 @@ public class Guild {
     }
 
     public static Guild getGuild(String name) {
-        return Guilds.getGuilds().getGuildHandler().getGuilds().values().stream().filter(guild -> ChatColor.stripColor(guild.getName()).equalsIgnoreCase(name)).findFirst().orElse(null);
+        return Guilds.getGuilds().getGuildHandler().getGuilds().values().stream().filter(guild -> guild.getName().equalsIgnoreCase(name)).findAny().orElse(null);
     }
 
     public static boolean areAllies(UUID uuid1, UUID uuid2) {
@@ -143,6 +143,15 @@ public class Guild {
     public void updateTier(Integer tier) {
         setTier(tier);
         updateGuild("", String.valueOf(tier), this.name);
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void updateName(String name) {
+        setName(name);
+        updateGuild("", name, this.name);
     }
 
     public Double getBalance() {
