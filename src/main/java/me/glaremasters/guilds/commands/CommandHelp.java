@@ -2,7 +2,6 @@ package me.glaremasters.guilds.commands;
 
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.commands.base.CommandBase;
-import me.glaremasters.guilds.messages.Message;
 import org.bukkit.command.CommandSender;
 
 import static me.glaremasters.guilds.utils.ConfigUtils.color;
