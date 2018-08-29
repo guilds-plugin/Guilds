@@ -3,6 +3,7 @@ package me.glaremasters.guilds;
 import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
+import me.glaremasters.guilds.api.GuildsAPI;
 import me.glaremasters.guilds.commands.*;
 import me.glaremasters.guilds.commands.base.CommandHandler;
 import me.glaremasters.guilds.database.DatabaseProvider;
@@ -30,10 +31,12 @@ public final class Guilds extends JavaPlugin {
     private static TaskChainFactory taskChainFactory;
     private File language;
     public YamlConfiguration languageConfig;
+    private GuildsAPI api;
 
     @Override
     public void onEnable() {
         guilds = this;
+        api = new GuildsAPI();
         setupEconomy();
         setupPermissions();
         initData();
@@ -163,5 +166,13 @@ public final class Guilds extends JavaPlugin {
             getLogger().info("Could not check for updates! Stacktrace:");
             ex.printStackTrace();
         }
+    }
+
+    /**
+     * Get a holder of the API
+     * @return API holder
+     */
+    public GuildsAPI getApi() {
+        return api;
     }
 }
