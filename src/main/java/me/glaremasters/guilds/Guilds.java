@@ -58,7 +58,7 @@ public final class Guilds extends JavaPlugin {
         Stream.of(new CommandCreate(guilds), new CommandPrefix(guilds), new CommandStatus(guilds),
                 new CommandBank(guilds), new CommandSetHome(guilds), new CommandHome(guilds),
                 new CommandVersion(guilds), new CommandRename(guilds), new CommandBoot(guilds),
-                new CommandCancel(guilds)).forEach(commandHandler::register);
+                new CommandCancel(guilds), new CommandConfirm(guilds)).forEach(commandHandler::register);
         Stream.of(new GuildPerks(), new Players(this)).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
     }
 
