@@ -14,10 +14,13 @@ import static me.glaremasters.guilds.utils.DiscordUtils.sendEmbed;
  */
 public class CommandCreate extends CommandBase {
 
-    public CommandCreate() {
+    private Guilds guilds;
+
+    public CommandCreate(Guilds guilds) {
         super("create", "",
                 "guilds.command.create", false, new String[]{"c"},
                 "<name>", 1, 1);
+        this.guilds = guilds;
     }
 
     @Override

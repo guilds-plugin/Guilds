@@ -1,21 +1,23 @@
 package me.glaremasters.guilds.commands;
 
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.entity.Player;
-
-import static me.glaremasters.guilds.utils.ConfigUtils.getString;
 
 /**
  * Created by GlareMasters on 6/28/2018.
  */
 public class CommandStatus extends CommandBase {
 
-    public CommandStatus() {
+    private Guilds guilds;
+
+    public CommandStatus(Guilds guilds) {
         super("status", "",
                 "guilds.command.status", false, null,
                 "<status>", 1, 1);
+        this.guilds = guilds;
     }
 
     @Override

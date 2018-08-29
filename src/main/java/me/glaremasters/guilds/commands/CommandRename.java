@@ -3,7 +3,6 @@ package me.glaremasters.guilds.commands;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import static me.glaremasters.guilds.utils.ConfigUtils.color;
@@ -13,10 +12,13 @@ import static me.glaremasters.guilds.utils.ConfigUtils.color;
  */
 public class CommandRename extends CommandBase {
 
-    public CommandRename() {
+    private Guilds guilds;
+
+    public CommandRename(Guilds guilds) {
         super("rename", "",
                 "guilds.command.rename", false, null,
                 "<name>", 1, 1);
+        this.guilds = guilds;
     }
 
     @Override

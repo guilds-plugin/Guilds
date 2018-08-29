@@ -15,10 +15,13 @@ import static me.glaremasters.guilds.utils.ConfigUtils.color;
  */
 public class CommandVersion extends CommandBase {
 
-    public CommandVersion() {
+    private Guilds guilds;
+
+    public CommandVersion(Guilds guilds) {
         super("version", "",
                 "guilds.command.version", true, new String[]{"ver", "v"},
                 null, 0, 0);
+        this.guilds = guilds;
     }
 
     public void execute(CommandSender sender, String[] args) {

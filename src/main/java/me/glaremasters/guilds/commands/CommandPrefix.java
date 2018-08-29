@@ -1,5 +1,6 @@
 package me.glaremasters.guilds.commands;
 
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import org.bukkit.entity.Player;
@@ -11,10 +12,13 @@ import static me.glaremasters.guilds.utils.ConfigUtils.color;
  */
 public class CommandPrefix extends CommandBase {
 
-    public CommandPrefix() {
+    private Guilds guilds;
+
+    public CommandPrefix(Guilds guilds) {
         super("prefix", "",
                 "guilds.command.prefix", false, null,
                 "<prefix>", 1, 1);
+        this.guilds = guilds;
     }
 
     @Override
