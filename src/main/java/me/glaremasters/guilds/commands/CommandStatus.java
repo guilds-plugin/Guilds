@@ -14,9 +14,7 @@ public class CommandStatus extends CommandBase {
     private Guilds guilds;
 
     public CommandStatus(Guilds guilds) {
-        super("status", "",
-                "guilds.command.status", false, null,
-                "<status>", 1, 1);
+        super(guilds, "status", false, null, "<status>", 1, 1);
         this.guilds = guilds;
     }
 

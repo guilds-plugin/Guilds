@@ -18,7 +18,7 @@ public class CommandDelete extends CommandBase {
     private Guilds guilds;
 
     public CommandDelete(Guilds guilds) {
-        super("delete", "", "guilds.command.delete", false, new String[]{"disband"}, null, 0, 0);
+        super(guilds, "delete", false, new String[]{"disband"}, null, 0, 0);
         this.guilds = guilds;
     }
 

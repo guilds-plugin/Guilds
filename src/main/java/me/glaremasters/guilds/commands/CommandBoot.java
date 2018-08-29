@@ -19,7 +19,7 @@ public class CommandBoot extends CommandBase {
     private Guilds guilds;
 
     public CommandBoot(Guilds guilds) {
-        super("boot", "", "guilds.command.boot", false, new String[]{"kick"}, "<player>", 1, 1);
+        super(guilds, "boot", false, new String[]{"kick"}, "<player>", 1, 1);
         this.guilds = guilds;
     }
 

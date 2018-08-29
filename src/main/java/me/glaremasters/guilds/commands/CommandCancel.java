@@ -15,7 +15,7 @@ public class CommandCancel extends CommandBase {
     private Guilds guilds;
 
     public CommandCancel(Guilds guilds) {
-        super("cancel", "", "guilds.command.cancel", false, null, null, 0, 0);
+        super(guilds, "cancel", false, null, null, 0, 0);
         this.guilds = guilds;
     }
 

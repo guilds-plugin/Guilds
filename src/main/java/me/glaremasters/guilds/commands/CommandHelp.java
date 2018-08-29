@@ -18,7 +18,7 @@ public class CommandHelp extends CommandBase {
     private final int MAX_PAGE_SIZE = 6;
 
     public CommandHelp(Guilds guilds) {
-        super("help", "", "guilds.command.help", true, null, "[page]", 0, 1);
+        super(guilds, "help", true, null, "[page]", 0, 1);
         this.guilds = guilds;
     }
 

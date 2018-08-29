@@ -17,10 +17,7 @@ public class CommandBank extends CommandBase {
     private Guilds guilds;
 
     public CommandBank(Guilds guilds) {
-        super("bank", "",
-                "guilds.command.bank", false, null,
-                "deposit <amount> | withdraw <amount> | balance", 1, 2);
-        this.guilds = guilds;
+        super(guilds, "bank", false, null, "deposit <amount> | withdraw <amount> | balance", 1, 2);
     }
 
     public void execute(Player player, String[] args) {

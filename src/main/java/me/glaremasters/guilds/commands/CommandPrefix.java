@@ -15,9 +15,7 @@ public class CommandPrefix extends CommandBase {
     private Guilds guilds;
 
     public CommandPrefix(Guilds guilds) {
-        super("prefix", "",
-                "guilds.command.prefix", false, null,
-                "<prefix>", 1, 1);
+        super(guilds, "prefix", false, null, "<prefix>", 1, 1);
         this.guilds = guilds;
     }
 

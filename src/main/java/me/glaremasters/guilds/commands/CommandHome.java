@@ -18,9 +18,7 @@ public class CommandHome extends CommandBase {
     private Guilds guilds;
 
     public CommandHome(Guilds guilds) {
-        super("home", "",
-                "guilds.command.home", false, null, null, 0,
-                0);
+        super(guilds, "home", false, null, null, 0, 0);
         this.guilds = guilds;
     }
 

@@ -3,14 +3,19 @@ package me.glaremasters.guilds.commands.base;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import me.glaremasters.guilds.Guilds;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import static me.glaremasters.guilds.utils.ConfigUtils.color;
 
 /**
  * Created by GlareMasters on 6/28/2018.
  */
 public abstract class CommandBase {
 
+    private Guilds guilds;
     private String name;
     private String description;
     private String permission;
@@ -23,11 +28,11 @@ public abstract class CommandBase {
     private int minArgs;
     private int maxArgs;
 
-    public CommandBase(String name, String description, String permission, boolean allowConsole,
-            String[] aliases, String arguments, int minArgs, int maxArgs) {
+    public CommandBase(Guilds guilds, String name, boolean allowConsole, String[] aliases, String arguments, int minArgs, int maxArgs) {
+        this.guilds = guilds;
         this.name = name;
-        this.description = description;
-        this.permission = permission;
+        this.description = color(guilds.getConfig().getString("commands.description." + name));
+        this.permission = "guilds.commands." + name;
 
         this.allowConsole = allowConsole;
 

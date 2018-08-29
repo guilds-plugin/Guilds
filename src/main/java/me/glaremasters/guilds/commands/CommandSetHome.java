@@ -15,9 +15,7 @@ public class CommandSetHome extends CommandBase {
     private Guilds guilds;
 
     public CommandSetHome(Guilds guilds) {
-        super("sethome", "",
-                "guilds.command.sethome", false, null, null, 0,
-                0);
+        super(guilds, "sethome", false, null, null, 0, 0);
         this.guilds = guilds;
     }
 

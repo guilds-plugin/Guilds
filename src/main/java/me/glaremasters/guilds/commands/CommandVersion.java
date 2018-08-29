@@ -18,9 +18,7 @@ public class CommandVersion extends CommandBase {
     private Guilds guilds;
 
     public CommandVersion(Guilds guilds) {
-        super("version", "",
-                "guilds.command.version", true, new String[]{"ver", "v"},
-                null, 0, 0);
+        super(guilds, "version", true, new String[]{"ver", "v"}, null, 0, 0);
         this.guilds = guilds;
     }
 

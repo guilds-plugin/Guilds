@@ -18,7 +18,7 @@ public class CommandTransfer extends CommandBase {
     private Guilds guilds;
 
     public CommandTransfer(Guilds guilds) {
-        super("transfer","", "guilds.command.transfer", false, null, "<name>", 1, 1);
+        super(guilds, "transfer",false, null, "<name>", 1, 1);
         this.guilds = guilds;
     }
 

@@ -17,9 +17,7 @@ public class CommandCreate extends CommandBase {
     private Guilds guilds;
 
     public CommandCreate(Guilds guilds) {
-        super("create", "",
-                "guilds.command.create", false, new String[]{"c"},
-                "<name>", 1, 1);
+        super(guilds, "create", false, new String[]{"c"}, "<name>", 1, 1);
         this.guilds = guilds;
     }
 

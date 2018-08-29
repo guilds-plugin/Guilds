@@ -15,7 +15,7 @@ public class CommandConfirm extends CommandBase {
     private Guilds guilds;
 
     public CommandConfirm(Guilds guilds) {
-        super("confirm", "", "guilds.command.confirm", false, null, null, 0, 0);
+        super(guilds, "confirm", false, null, null, 0, 0);
         this.guilds = guilds;
     }
 

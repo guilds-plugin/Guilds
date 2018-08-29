@@ -15,9 +15,7 @@ public class CommandRename extends CommandBase {
     private Guilds guilds;
 
     public CommandRename(Guilds guilds) {
-        super("rename", "",
-                "guilds.command.rename", false, null,
-                "<name>", 1, 1);
+        super(guilds, "rename", false, null, "<name>", 1, 1);
         this.guilds = guilds;
     }
 

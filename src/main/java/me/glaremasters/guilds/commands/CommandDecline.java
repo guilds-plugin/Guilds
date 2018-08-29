@@ -15,7 +15,7 @@ public class CommandDecline extends CommandBase {
     private Guilds guilds;
 
     public CommandDecline(Guilds guilds) {
-        super("decline", "", "guilds.command.decline", false, null, null, 1 ,1);
+        super(guilds, "decline", false, null, null, 1 ,1);
         this.guilds = guilds;
     }
 
