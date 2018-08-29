@@ -16,7 +16,7 @@ public class GuildsAPI {
      * @param player the players you're getting the guild of
      * @return the guild that the player is in
      */
-    public static String getGuild(Player player) {
+    public String getGuild(Player player) {
         Guild guild = Guild.getGuild(player.getUniqueId());
         return (guild == null) ? "" : guild.getName();
     }
@@ -26,7 +26,7 @@ public class GuildsAPI {
      * @param player the player you're getting the guild of
      * @return name of the guild master
      */
-    public static String getGuildMaster(Player player) {
+    public String getGuildMaster(Player player) {
         Guild guild = Guild.getGuild(player.getUniqueId());
         return (guild == null) ? "" : Bukkit.getOfflinePlayer(guild.getGuildMaster().getUniqueId()).getName();
     }
@@ -36,7 +36,7 @@ public class GuildsAPI {
      * @param player the player you're getting the guild of
      * @return amount of members in the guild
      */
-    public static String getGuildMemberCount(Player player) {
+    public String getGuildMemberCount(Player player) {
         Guild guild = Guild.getGuild(player.getUniqueId());
         return (guild == null) ? "" : String.valueOf(guild.getMembers().size());
     }
@@ -46,7 +46,7 @@ public class GuildsAPI {
      * @param player member
      * @return amount of members online
      */
-    public static String getGuildMembersOnline(Player player) {
+    public String getGuildMembersOnline(Player player) {
         Guild guild = Guild.getGuild(player.getUniqueId());
         return (guild == null) ? "" : String.valueOf(guild.getMembers().stream().map(m -> Bukkit.getOfflinePlayer(m.getUniqueId())).filter(OfflinePlayer::isOnline).count());
     }
@@ -56,7 +56,7 @@ public class GuildsAPI {
      * @param player status
      * @return the status of a guild
      */
-    public static String getGuildStatus(Player player) {
+    public String getGuildStatus(Player player) {
         Guild guild = Guild.getGuild(player.getUniqueId());
         return (guild == null) ? "" : guild.getStatus();
     }
@@ -66,7 +66,7 @@ public class GuildsAPI {
      * @param player prefix
      * @return the prefix of a guild
      */
-    public static String getGuildPrefix(Player player) {
+    public String getGuildPrefix(Player player) {
         Guild guild = Guild.getGuild(player.getUniqueId());
         return (guild == null) ? "" : guild.getPrefix();
     }
@@ -76,7 +76,7 @@ public class GuildsAPI {
      * @param player role
      * @return the role of a player
      */
-    public static String getGuildRole(Player player) {
+    public String getGuildRole(Player player) {
         Guild guild = Guild.getGuild(player.getUniqueId());
         return (guild == null) ? "" : GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole()).getName();
     }
@@ -86,7 +86,7 @@ public class GuildsAPI {
      * @param player tier
      * @return name of tier
      */
-    public static String getTierName(Player player) {
+    public String getTierName(Player player) {
         Guild guild = Guild.getGuild(player.getUniqueId());
         return (guild == null) ? "" : guild.getTierName();
     }
@@ -96,7 +96,7 @@ public class GuildsAPI {
      * @param player tier
      * @return the tier of a guild
      */
-    public static int getGuildTier(Player player) {
+    public int getGuildTier(Player player) {
         Guild guild = Guild.getGuild(player.getUniqueId());
         return (guild == null) ? 0 : guild.getTier();
     }
@@ -106,7 +106,7 @@ public class GuildsAPI {
      * @param player balance
      * @return the balance of the guild
      */
-    public static double getBankBalance(Player player) {
+    public double getBankBalance(Player player) {
         Guild guild = Guild.getGuild(player.getUniqueId());
         return (guild == null) ? 0 : guild.getBalance();
     }
