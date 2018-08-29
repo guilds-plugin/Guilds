@@ -55,7 +55,10 @@ public final class Guilds extends JavaPlugin {
 
         getCommand("guild").setExecutor(commandHandler);
 
-        Stream.of(new CommandCreate(guilds), new CommandPrefix(guilds), new CommandStatus(guilds), new CommandBank(guilds), new CommandSetHome(guilds), new CommandHome(guilds), new CommandVersion(guilds), new CommandRename(guilds), new CommandBoot(guilds)).forEach(commandHandler::register);
+        Stream.of(new CommandCreate(guilds), new CommandPrefix(guilds), new CommandStatus(guilds),
+                new CommandBank(guilds), new CommandSetHome(guilds), new CommandHome(guilds),
+                new CommandVersion(guilds), new CommandRename(guilds), new CommandBoot(guilds),
+                new CommandCancel(guilds)).forEach(commandHandler::register);
         Stream.of(new GuildPerks(), new Players(this)).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
     }
 
@@ -127,6 +130,14 @@ public final class Guilds extends JavaPlugin {
      */
     public GuildHandler getGuildHandler() {
         return guildHandler;
+    }
+
+    /**
+     * Get the command handler in the plugin
+     * @return the command handler being used
+     */
+    public CommandHandler getCommandHandler() {
+        return commandHandler;
     }
 
     /**
