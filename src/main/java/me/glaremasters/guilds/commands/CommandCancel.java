@@ -21,7 +21,6 @@ public class CommandCancel extends CommandBase {
 
     public void execute(Player player, String[] args) {
         ConfirmAction action = guilds.getCommandHandler().getActions().get(player);
-        if (action == null) return;
-        action.decline();
+        if (action != null) action.decline();
     }
 }

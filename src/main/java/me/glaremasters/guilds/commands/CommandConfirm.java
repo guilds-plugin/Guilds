@@ -21,7 +21,6 @@ public class CommandConfirm extends CommandBase {
 
     public void execute(Player player, String[] args) {
         ConfirmAction action = guilds.getCommandHandler().getActions().get(player);
-        if (action == null) return;
-        action.accept();
+        if (action != null) action.accept();
     }
 }
