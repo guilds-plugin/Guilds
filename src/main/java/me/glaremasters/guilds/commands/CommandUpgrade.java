@@ -19,11 +19,10 @@ public class CommandUpgrade extends CommandBase {
     private Guilds guilds;
 
     public CommandUpgrade(Guilds guilds) {
-        super(guilds, "upgrade",false, null, "<name>", 0, 0);
+        super(guilds, "upgrade",false, null, null, 0, 0);
         this.guilds = guilds;
     }
 
-    @Override
     public void execute(Player player, String[] args) {
         Guild guild = Guild.getGuild(player.getUniqueId());
         if (guild == null) return;
