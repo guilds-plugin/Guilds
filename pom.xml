@@ -10,14 +10,24 @@
   <packaging>jar</packaging>
 
   <name>Guilds</name>
+  <url>https://www.spigotmc.org/resources/48920/</url>
 
-  <description>Guilds</description>
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/darbyjack/Guilds-Plugin/issues</url>
+  </issueManagement>
+
+  <scm>
+    <connection>https://github.com/darbyjack/Guilds-Plugin.git</connection>
+    <url>https://github.com/darbyjack/Guilds-Plugin</url>
+  </scm>
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
-  <url>https://glaremasters.me/discord</url>
 
   <build>
+    <finalName>${project.name}-${project.version}</finalName>
     <defaultGoal>clean package</defaultGoal>
     <plugins>
       <plugin>
@@ -27,6 +37,9 @@
         <configuration>
           <source>1.8</source>
           <target>1.8</target>
+          <compilerArgs>
+            <arg>-parameters</arg>
+          </compilerArgs>
         </configuration>
       </plugin>
       <plugin>
@@ -72,8 +85,8 @@
       <url>http://ci.emc.gs/nexus/content/groups/aikar/</url>
     </repository>
     <repository>
-      <id>jitpack.io</id>
-      <url>https://jitpack.io</url>
+      <id>aikar</id>
+      <url>https://repo.aikar.co/content/groups/aikar/</url>
     </repository>
   </repositories>
 
@@ -107,9 +120,9 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>com.github.MrPowerGamerBR</groupId>
-      <artifactId>TemmieWebhook</artifactId>
-      <version>master-59de40c3b6-1</version>
+      <groupId>co.aikar</groupId>
+      <artifactId>acf-bukkit</artifactId>
+      <version>0.5.0-SNAPSHOT</version>
     </dependency>
   </dependencies>
 </project>

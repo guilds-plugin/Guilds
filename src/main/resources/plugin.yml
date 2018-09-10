@@ -5,8 +5,3 @@ authors: [blockslayer22]
 depend: [Vault]
 description: Guilds
 website: https://glaremasters.me/discord
-
-commands:
-  guild:
-    aliases: [guilds, g]
-    description: See the Guild commands

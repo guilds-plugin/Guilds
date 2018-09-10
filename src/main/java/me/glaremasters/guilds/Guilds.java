@@ -1,17 +1,18 @@
 package me.glaremasters.guilds;
 
+import co.aikar.commands.BukkitCommandManager;
 import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
 import me.glaremasters.guilds.api.GuildsAPI;
-import me.glaremasters.guilds.commands.*;
-import me.glaremasters.guilds.commands.base.CommandHandler;
+import me.glaremasters.guilds.commands.CommandGuilds;
 import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.database.databases.json.JSON;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.listeners.GuildPerks;
 import me.glaremasters.guilds.listeners.Players;
 import me.glaremasters.guilds.updater.SpigotUpdater;
+import me.glaremasters.guilds.utils.ActionHandler;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
@@ -27,7 +28,7 @@ public final class Guilds extends JavaPlugin {
     private static Guilds guilds;
     private DatabaseProvider database;
     private GuildHandler guildHandler;
-    private CommandHandler commandHandler;
+    private ActionHandler actionHandler;
     private static TaskChainFactory taskChainFactory;
     private File language;
     public YamlConfiguration languageConfig;
@@ -50,27 +51,22 @@ public final class Guilds extends JavaPlugin {
         guildHandler = new GuildHandler();
         guildHandler.enable();
 
-        commandHandler = new CommandHandler();
-        commandHandler.enable();
+        actionHandler = new ActionHandler();
+        actionHandler.enable();
+
+        BukkitCommandManager manager = new BukkitCommandManager(this);
+        manager.enableUnstableAPI("help");
+        manager.registerCommand(new CommandGuilds(guilds));
 
         SpigotUpdater updater = new SpigotUpdater(this, 48920);
         updateCheck(updater);
 
-        getCommand("guild").setExecutor(commandHandler);
-
-        Stream.of(new CommandCreate(guilds), new CommandPrefix(guilds), new CommandStatus(guilds),
-                new CommandBank(guilds), new CommandSetHome(guilds), new CommandHome(guilds),
-                new CommandVersion(guilds), new CommandRename(guilds), new CommandBoot(guilds),
-                new CommandCancel(guilds), new CommandConfirm(guilds), new CommandDecline(guilds),
-                new CommandDelete(guilds), new CommandTransfer(guilds), new CommandHelp(guilds),
-                new CommandUpgrade(guilds), new CommandReload(guilds), new CommandLeave(guilds)).forEach(commandHandler::register);
         Stream.of(new GuildPerks(), new Players(this)).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
     }
 
     @Override
     public void onDisable() {
         guildHandler.disable();
-        commandHandler.disable();
     }
 
     /**
@@ -138,11 +134,11 @@ public final class Guilds extends JavaPlugin {
     }
 
     /**
-     * Get the command handler in the plugin
-     * @return the command handler being used
+     * Get the action handler in the plugin
+     * @return the action handler being used
      */
-    public CommandHandler getCommandHandler() {
-        return commandHandler;
+    public ActionHandler getActionHandler() {
+        return actionHandler;
     }
 
     /**

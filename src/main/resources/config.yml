@@ -2,50 +2,5 @@ lang: english
 
 plugin-prefix: "[&b&lGuilds] "
 
-commands:
-  description:
-    accept: "Accept a guild invite"
-    admin: "Admin command for managing guilds"
-    ally: "Ally commands"
-    boot: "Kick a player from your guild"
-    bank: "Use your guild bank"
-    buff: "Buy buffs for your guild"
-    cancel: "Cancel an action"
-    chat: "Send a message to your guild members"
-    check: "Check pending guild invites"
-    claim: "Claim land for your guild"
-    confirm: "Confirm an action"
-    create: "Create a guild"
-    decline: "Decline a guild invite"
-    delete: "Delete your current guild"
-    demote: "Demote a member of your guild"
-    give: "Give a player different rewards inside the plugin"
-    help: "View all commands"
-    home: "Teleport to your guild home"
-    info: "View your guild's info"
-    invite: "Invite a player to your guild"
-    leave: "Leave your current guild"
-    list: "List all guilds on the server"
-    prefix: "Change your guild's prefix"
-    promote: "Promote a member of your guild"
-    reload: "Reload guild's configuration file"
-
-    sethome: "Set your guild's home"
-    status: "Toggle your guild public / private"
-    transfer: "Transfer your guild to another user"
-    unclaim: "Remove your guild claim!"
-    upgrade: "Upgrade your guild to a higher level"
-    vault: "Open your guild vault"
-    version: "Plugin info / version"
-
 allow-guild-damage: false
 allow-ally-damage: false
-
-discord:
-  enabled: false
-  webhook-url: ""
-  avatar-url: ""
-  guild-create:
-    enabled: false
-    username: ""
-    description: ""
