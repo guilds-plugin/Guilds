@@ -5,6 +5,8 @@ import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
 import me.glaremasters.guilds.api.GuildsAPI;
+import me.glaremasters.guilds.commands.CommandAdmin;
+import me.glaremasters.guilds.commands.CommandBank;
 import me.glaremasters.guilds.commands.CommandGuilds;
 import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.database.databases.json.JSON;
@@ -57,6 +59,8 @@ public final class Guilds extends JavaPlugin {
         BukkitCommandManager manager = new BukkitCommandManager(this);
         manager.enableUnstableAPI("help");
         manager.registerCommand(new CommandGuilds(guilds));
+        manager.registerCommand(new CommandBank(guilds));
+        manager.registerCommand(new CommandAdmin(guilds));
 
         SpigotUpdater updater = new SpigotUpdater(this, 48920);
         updateCheck(updater);
