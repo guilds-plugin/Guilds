@@ -172,7 +172,7 @@ public class CommandGuilds extends BaseCommand {
     public void onPrefix(Player player, String prefix) {
         Guild guild = Guild.getGuild(player.getUniqueId());
         if (guild == null) return;
-        guild.updateName(color(prefix));
+        guild.updatePrefix(color(prefix));
     }
 
     @Subcommand("version|v|ver")
@@ -493,6 +493,17 @@ public class CommandGuilds extends BaseCommand {
         }
         guild.updateStatus(StringUtils.capitalize(status));
         // send message to admin saying the status has been changed
+    }
+
+    @Subcommand("admin prefix")
+    @Description("Admin command to change a Guild's prefix")
+    @CommandPermission("guilds.command.admin")
+    @Syntax("<name> <prefix>")
+    public void onAdminGuildPrefix(Player player, String name, String prefix) {
+        Guild guild = Guild.getGuild(name);
+        if (guild == null) return;
+        guild.updatePrefix(color(prefix));
+        // send message to admin saying the prefix has been changed
     }
 
     @HelpCommand
