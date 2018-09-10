@@ -2,10 +2,12 @@ package me.glaremasters.guilds.listeners;
 
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.guild.Guild;
+import me.glaremasters.guilds.utils.Serialization;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 
 import static me.glaremasters.guilds.utils.ConfigUtils.getBoolean;
 
@@ -36,5 +38,14 @@ public class Players implements Listener {
         if (playerGuild == null || damagerGuild == null) return;
         if (playerGuild.equals(damagerGuild)) event.setCancelled(!getBoolean("allow-guild-damage"));
         if (Guild.areAllies(player.getUniqueId(), damager.getUniqueId())) event.setCancelled(!getBoolean("allow-ally-damage"));
+    }
+
+    @EventHandler
+    public void onInvClose(InventoryCloseEvent event) {
+        Player player = (Player) event.getPlayer();
+        Guild guild = Guild.getGuild(player.getUniqueId());
+        if (guild == null) return;
+        if (!event.getInventory().getName().equalsIgnoreCase(guild.getName() + "'s Guild Vault")) return;
+        guild.updateInventory(Serialization.serializeInventory(event.getInventory()));
     }
 }

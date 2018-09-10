@@ -13,13 +13,16 @@ import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.messages.Message;
 import me.glaremasters.guilds.updater.SpigotUpdater;
 import me.glaremasters.guilds.utils.ConfirmAction;
+import me.glaremasters.guilds.utils.Serialization;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.PluginDescriptionFile;
 
 import static me.glaremasters.guilds.utils.ConfigUtils.color;
@@ -388,6 +391,24 @@ public class CommandGuilds extends BaseCommand {
         }
         if ((guild.getBalance() < Double.parseDouble(amount))) return;
         guild.updateBalance(balance - Double.valueOf(amount));
+    }
+
+    @Subcommand("vault")
+    @Description("Opens the Guild vault")
+    @CommandPermission("guilds.command.vault")
+    public void onVault(Player player) {
+        Guild guild = Guild.getGuild(player.getUniqueId());
+        if (guild == null) return;
+        if (guild.getInventory().equalsIgnoreCase("")) {
+            Inventory inv = Bukkit.createInventory(null, 54, guild.getName() + "'s Guild Vault");
+            player.openInventory(inv);
+            return;
+        }
+        try {
+            player.openInventory(Serialization.deserializeInventory(guild.getInventory()));
+        } catch (InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
     }
 
     @HelpCommand
