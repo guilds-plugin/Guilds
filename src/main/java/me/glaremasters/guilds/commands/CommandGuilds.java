@@ -363,6 +363,7 @@ public class CommandGuilds extends BaseCommand {
     @Subcommand("bank deposit")
     @Description("Put money in your Guild bank")
     @CommandPermission("guilds.command.bank")
+    @Syntax("<amount>")
     public void onDeposit(Player player, String amount) {
         Guild guild = Guild.getGuild(player.getUniqueId());
         if (guild == null) return;
@@ -379,6 +380,7 @@ public class CommandGuilds extends BaseCommand {
     @Subcommand("bank withdraw")
     @Description("Take money from your Guild bank")
     @CommandPermission("guilds.command.bank")
+    @Syntax("<amount>")
     public void onWithdraw(Player player, String amount) {
         Guild guild = Guild.getGuild(player.getUniqueId());
         if (guild == null) return;
@@ -409,6 +411,46 @@ public class CommandGuilds extends BaseCommand {
         } catch (InvalidConfigurationException e) {
             e.printStackTrace();
         }
+    }
+
+    @Subcommand("admin remove")
+    @Description("Admin command to remove a Guild from the server.")
+    @CommandPermission("guilds.command.admin")
+    @Syntax("<guild name>")
+    public void onGuildRemove(Player player, String name) {
+        Guild guild = Guild.getGuild(name);
+        if (guild == null) return;
+        // send message warning about deleting guild
+        guilds.getActionHandler().addAction(player, new ConfirmAction() {
+            @Override
+            public void accept() {
+
+                guilds.getDatabase().removeGuild(guild);
+                guilds.getActionHandler().removeAction(player);
+                // send message saying guild has been deleted
+            }
+
+            @Override
+            public void decline() {
+                guilds.getActionHandler().removeAction(player);
+                // send message saying guild has not been removed
+            }
+        });
+    }
+
+    @Subcommand("admin addplayer")
+    @Description("Admin command to add a player to a Guild")
+    @CommandPermission("guilds.command.admin")
+    @Syntax("<player> <guild>")
+    public void onAdminAddPlayer(Player player, String target, String guild) {
+        Player playerToAdd = Bukkit.getPlayerExact(target);
+        if (player == null || !player.isOnline()) return;
+        if (Guild.getGuild(playerToAdd.getUniqueId()) != null) return;
+        Guild targetGuild = Guild.getGuild(guild);
+        if (targetGuild == null) return;
+        targetGuild.addMember(playerToAdd.getUniqueId(), GuildRole.getLowestRole());
+        // send message to player saying they've been added to guild
+        // send message to admin saying player has been added to guild
     }
 
     @HelpCommand
