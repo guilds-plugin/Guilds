@@ -456,6 +456,7 @@ public class CommandGuilds extends BaseCommand {
     @Subcommand("admin removeplayer")
     @Description("Admin command to remove a player from a Guild")
     @CommandPermission("guilds.command.admin")
+    @Syntax("<name>")
     public void onAdminRemovePlayer(Player player, String target) {
         Player playerToRemove = Bukkit.getPlayerExact(target);
         if (player == null || !player.isOnline()) return;
@@ -464,7 +465,34 @@ public class CommandGuilds extends BaseCommand {
         guild.removeMember(playerToRemove.getUniqueId());
         // send message to player saying they've been removed from the guild
         // send message to admin saying player has been removed from the guild
+    }
 
+    @Subcommand("admin upgrade")
+    @Description("Admin command to upgrade a Guild's tier")
+    @CommandPermission("guilds.command.admin")
+    @Syntax("<guild name>")
+    public void onAdminUpgradeGuild(Player player, String name) {
+        Guild guild = Guild.getGuild(name);
+        if (guild == null) return;
+        int tier = guild.getTier();
+        if (tier >= guild.getMaxTier()) return;
+        guild.updateTier(tier + 1);
+        // send message to admin saying guild was upgraded
+    }
+
+    @Subcommand("admin status")
+    @Description("Admin command to change a Guild's status")
+    @CommandPermission("guilds.command.admin")
+    @Syntax("<name> <private/public>")
+    public void onAdminGuildStatus(Player player, String name, String status) {
+        Guild guild = Guild.getGuild(name);
+        if (guild == null) return;
+        if (!status.equalsIgnoreCase("private") && !status.equalsIgnoreCase("public")) {
+            // send message saying choose one or other
+            return;
+        }
+        guild.updateStatus(StringUtils.capitalize(status));
+        // send message to admin saying the status has been changed
     }
 
     @HelpCommand

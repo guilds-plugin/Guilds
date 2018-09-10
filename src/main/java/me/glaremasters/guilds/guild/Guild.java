@@ -221,6 +221,10 @@ public class Guild {
         return getDouble("tier" + getTier() + ".max-bank-balance");
     }
 
+    public int getMaxTier() {
+        return getInt("max-number-of-tiers");
+    }
+
     public void addMember(UUID uuid, GuildRole role) {
         this.members.add(new GuildMember(uuid, role.getLevel()));
         updateGuild("", uuid.toString(), this.name);
