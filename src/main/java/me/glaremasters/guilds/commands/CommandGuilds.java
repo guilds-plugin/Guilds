@@ -453,6 +453,20 @@ public class CommandGuilds extends BaseCommand {
         // send message to admin saying player has been added to guild
     }
 
+    @Subcommand("admin removeplayer")
+    @Description("Admin command to remove a player from a Guild")
+    @CommandPermission("guilds.command.admin")
+    public void onAdminRemovePlayer(Player player, String target) {
+        Player playerToRemove = Bukkit.getPlayerExact(target);
+        if (player == null || !player.isOnline()) return;
+        if (Guild.getGuild(playerToRemove.getUniqueId()) == null) return;
+        Guild guild = Guild.getGuild(playerToRemove.getUniqueId());
+        guild.removeMember(playerToRemove.getUniqueId());
+        // send message to player saying they've been removed from the guild
+        // send message to admin saying player has been removed from the guild
+
+    }
+
     @HelpCommand
     @CommandPermission("guilds.command.help")
     @Syntax("")
