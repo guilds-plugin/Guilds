@@ -16,14 +16,10 @@ import static me.glaremasters.guilds.utils.ConfigUtils.color;
 @CommandAlias("guild|guilds")
 public class CommandBank extends BaseCommand {
 
-    private Guilds guilds;
-
-    public CommandBank(Guilds guilds) {
-        this.guilds = guilds;
-    }
+    @Dependency private Guilds guilds;
 
     @Subcommand("bank balance")
-    @Description("Get the balance of your Guild's Bank")
+    @Description("{@@test}")
     @CommandPermission("guilds.command.bank")
     public void onBalance(Player player) {
         Guild guild = Guild.getGuild(player.getUniqueId());
@@ -36,17 +32,11 @@ public class CommandBank extends BaseCommand {
     @Description("Put money in your Guild bank")
     @CommandPermission("guilds.command.bank")
     @Syntax("<amount>")
-    public void onDeposit(Player player, String amount) {
+    public void onDeposit(Player player, Double amount) {
         Guild guild = Guild.getGuild(player.getUniqueId());
         if (guild == null) return;
         Double balance = guild.getBalance();
-        try {
-            Double.parseDouble(amount);
-        } catch (NumberFormatException ex) {
-            ex.printStackTrace();
-            return;
-        }
-        guild.updateBalance(balance + Double.valueOf(amount));
+        guild.updateBalance(balance + amount);
     }
 
     @Subcommand("bank withdraw")

@@ -36,11 +36,7 @@ import static me.glaremasters.guilds.utils.ConfigUtils.getInt;
 @CommandAlias("guild|guilds")
 public class CommandGuilds extends BaseCommand {
 
-    private Guilds guilds;
-
-    public CommandGuilds(Guilds guilds) {
-        this.guilds = guilds;
-    }
+    @Dependency private Guilds guilds;
 
     @Subcommand("create")
     @Description("Create a Guild")

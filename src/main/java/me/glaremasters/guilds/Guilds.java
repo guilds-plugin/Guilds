@@ -19,11 +19,14 @@ import me.glaremasters.guilds.utils.ActionHandler;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.Locale;
 import java.util.stream.Stream;
 
 public final class Guilds extends JavaPlugin {
@@ -44,7 +47,6 @@ public final class Guilds extends JavaPlugin {
         setupEconomy();
         setupPermissions();
         initData();
-        saveData();
 
         taskChainFactory = BukkitTaskChainFactory.create(this);
 
@@ -59,10 +61,15 @@ public final class Guilds extends JavaPlugin {
 
         BukkitCommandManager manager = new BukkitCommandManager(this);
         manager.enableUnstableAPI("help");
-        manager.registerCommand(new CommandGuilds(guilds));
-        manager.registerCommand(new CommandBank(guilds));
-        manager.registerCommand(new CommandAdmin(guilds));
-        manager.registerCommand(new CommandAlly(guilds));
+        try {
+            manager.getLocales().loadYamlLanguageFile("lang_en.yml", Locale.ENGLISH);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+        manager.registerCommand(new CommandGuilds());
+        manager.registerCommand(new CommandBank());
+        manager.registerCommand(new CommandAdmin());
+        manager.registerCommand(new CommandAlly());
 
         SpigotUpdater updater = new SpigotUpdater(this, 48920);
         updateCheck(updater);
@@ -110,18 +117,23 @@ public final class Guilds extends JavaPlugin {
      */
     private void initData() {
         saveDefaultConfig();
+        this.saveResource("lang_en.yml", false);
+        /*
         File languageFolder = new File(getDataFolder(), "languages");
         if (!languageFolder.exists()) languageFolder.mkdirs();
         this.language = new File(languageFolder, getConfig().getString("lang") + ".yml");
         this.languageConfig = YamlConfiguration.loadConfiguration(language);
+        */
     }
 
     /**
      * Save and handle new files if needed
      */
+    /*
     private void saveData() {
-        if (!this.language.exists()) Stream.of("english").forEach(l -> this.saveResource("languages/" + l + ".yml", false));
+        if (!this.language.exists()) Stream.of("lang_en").forEach(l -> this.saveResource(l + ".yml", false));
     }
+    /*
 
     /**
      * Get the database we are using to store data

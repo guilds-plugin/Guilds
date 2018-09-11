@@ -17,11 +17,7 @@ import org.bukkit.entity.Player;
 @CommandAlias("guild|guilds")
 public class CommandAlly extends BaseCommand {
 
-    private Guilds guilds;
-
-    public CommandAlly(Guilds guilds) {
-        this.guilds = guilds;
-    }
+    @Dependency private Guilds guilds;
 
     @Subcommand("ally list")
     @Description("List all the allies of your Guild")

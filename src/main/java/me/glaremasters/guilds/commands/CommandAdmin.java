@@ -20,11 +20,7 @@ import static me.glaremasters.guilds.utils.ConfigUtils.color;
 @CommandAlias("guild|guilds")
 public class CommandAdmin extends BaseCommand {
 
-    private Guilds guilds;
-
-    public CommandAdmin(Guilds guilds) {
-        this.guilds = guilds;
-    }
+    @Dependency private Guilds guilds;
 
     @Subcommand("admin remove")
     @Description("Admin command to remove a Guild from the server.")
