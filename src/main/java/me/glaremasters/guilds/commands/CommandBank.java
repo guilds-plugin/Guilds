@@ -21,9 +21,7 @@ public class CommandBank extends BaseCommand {
     @Subcommand("bank balance")
     @Description("{@@test}")
     @CommandPermission("guilds.command.bank")
-    public void onBalance(Player player) {
-        Guild guild = Guild.getGuild(player.getUniqueId());
-        if (guild == null) return;
+    public void onBalance(Player player, Guild guild) {
         Double balance = guild.getBalance();
         player.sendMessage(color(String.valueOf(balance)));
     }
@@ -32,9 +30,7 @@ public class CommandBank extends BaseCommand {
     @Description("Put money in your Guild bank")
     @CommandPermission("guilds.command.bank")
     @Syntax("<amount>")
-    public void onDeposit(Player player, Double amount) {
-        Guild guild = Guild.getGuild(player.getUniqueId());
-        if (guild == null) return;
+    public void onDeposit(Player player, Guild guild, Double amount) {
         Double balance = guild.getBalance();
         guild.updateBalance(balance + amount);
     }
@@ -43,18 +39,10 @@ public class CommandBank extends BaseCommand {
     @Description("Take money from your Guild bank")
     @CommandPermission("guilds.command.bank")
     @Syntax("<amount>")
-    public void onWithdraw(Player player, String amount) {
-        Guild guild = Guild.getGuild(player.getUniqueId());
-        if (guild == null) return;
+    public void onWithdraw(Player player, Guild guild, Double amount) {
         Double balance = guild.getBalance();
-        try {
-            Double.parseDouble(amount);
-        } catch (NumberFormatException ex) {
-            ex.printStackTrace();
-            return;
-        }
-        if ((guild.getBalance() < Double.parseDouble(amount))) return;
-        guild.updateBalance(balance - Double.valueOf(amount));
+        if ((guild.getBalance() < amount)) return;
+        guild.updateBalance(Math.min(balance, amount));
     }
 
 }

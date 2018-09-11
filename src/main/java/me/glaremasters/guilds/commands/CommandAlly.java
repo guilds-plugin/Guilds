@@ -22,9 +22,7 @@ public class CommandAlly extends BaseCommand {
     @Subcommand("ally list")
     @Description("List all the allies of your Guild")
     @CommandPermission("guilds.command.ally")
-    public void onAllyList(Player player) {
-        Guild guild = Guild.getGuild(player.getUniqueId());
-        if (guild == null) return;
+    public void onAllyList(Player player, Guild guild) {
         if (guild.getAllies().size() < 1) {
             // send message saying no allies
             return;
@@ -39,9 +37,7 @@ public class CommandAlly extends BaseCommand {
     @Description("Accept an ally invite from another guild")
     @CommandPermission("guilds.command.ally")
     @Syntax("<guild name>")
-    public void onAllyAccept(Player player, String name) {
-        Guild guild = Guild.getGuild(player.getUniqueId());
-        if (guild == null) return;
+    public void onAllyAccept(Player player, Guild guild, String name) {
         Guild targetGuild = Guild.getGuild(name);
         if (targetGuild == null) return;
         if (!guild.getPendingAllies().contains(targetGuild.getName())) return;
@@ -55,9 +51,7 @@ public class CommandAlly extends BaseCommand {
     @Description("Decline an ally invite from another Guild")
     @CommandPermission("guilds.command.ally")
     @Syntax("<guild name>")
-    public void onAllyDeclince(Player player, String name) {
-        Guild guild = Guild.getGuild(player.getUniqueId());
-        if (guild == null) return;
+    public void onAllyDeclince(Player player, Guild guild, String name) {
         Guild targetGuild = Guild.getGuild(name);
         if (targetGuild == null) return;
 
@@ -70,9 +64,7 @@ public class CommandAlly extends BaseCommand {
     @Description("Add a Guild as an ally")
     @CommandPermission("guilds.command.ally")
     @Syntax("<guild name>")
-    public void onAllyAdd(Player player, String name) {
-        Guild guild = Guild.getGuild(player.getUniqueId());
-        if (guild == null) return;
+    public void onAllyAdd(Player player, Guild guild, String name) {
         Guild targetGuild = Guild.getGuild(name);
         if (targetGuild == null) return;
 
@@ -93,9 +85,7 @@ public class CommandAlly extends BaseCommand {
     @Description("Add a Guild as an ally")
     @CommandPermission("guilds.command.ally")
     @Syntax("<guild name>")
-    public void onAllyRemove(Player player, String name) {
-        Guild guild = Guild.getGuild(player.getUniqueId());
-        if (guild == null) return;
+    public void onAllyRemove(Player player, Guild guild, String name) {
         Guild targetGuild = Guild.getGuild(name);
         if (targetGuild == null) return;
 

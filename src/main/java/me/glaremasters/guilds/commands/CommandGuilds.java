@@ -102,12 +102,8 @@ public class CommandGuilds extends BaseCommand {
     @Subcommand("sethome")
     @Description("Set your Guild's home")
     @CommandPermission("guilds.command.sethome")
-    public void onSetHome(Player player) {
-        Guild guild = Guild.getGuild(player.getUniqueId());
-        if (guild == null) {
-            Message.sendMessage(player, Message.COMMAND_ERROR_NO_GUILD);
-            return;
-        }
+    public void onSetHome(Player player, Guild guild) {
+
         String world = player.getWorld().getName();
         double xloc = player.getLocation().getX();
         double yloc = player.getLocation().getY();
@@ -120,9 +116,7 @@ public class CommandGuilds extends BaseCommand {
     @Subcommand("home")
     @Description("Go to your Guild home")
     @CommandPermission("guilds.command.home")
-    public void onHome(Player player) {
-        Guild guild = Guild.getGuild(player.getUniqueId());
-        if (guild == null) return;
+    public void onHome(Player player, Guild guild) {
         if (guild.getHome().equals("")) return;
         String[] data = guild.getHome().split(":");
         World w = Bukkit.getWorld(data[0]);
@@ -140,9 +134,7 @@ public class CommandGuilds extends BaseCommand {
     @Description("Change the name of your Guild")
     @CommandPermission("guilds.command.rename")
     @Syntax("<name>")
-    public void onRename(Player player, String name) {
-        Guild guild = Guild.getGuild(player.getUniqueId());
-        if (guild == null) return;
+    public void onRename(Player player, Guild guild, String name) {
         String oldName = guild.getName();
         guilds.getDatabase().removeGuild(Guild.getGuild(oldName));
         guild.updateName(color(name));
@@ -152,9 +144,7 @@ public class CommandGuilds extends BaseCommand {
     @Description("Change the status of your Guild")
     @CommandPermission("guilds.command.status")
     @Syntax("<private/public>")
-    public void onStatus(Player player, String status) {
-        Guild guild = Guild.getGuild(player.getUniqueId());
-        if (guild == null) return;
+    public void onStatus(Player player, Guild guild, String status) {
         boolean argCheck = !status.equalsIgnoreCase("private") && !status.equalsIgnoreCase("public");
         if (argCheck) return;
         String updatedStatus = StringUtils.capitalize(status);
@@ -165,9 +155,7 @@ public class CommandGuilds extends BaseCommand {
     @Description("Change the prefix of your Guild")
     @CommandPermission("guilds.command.prefix")
     @Syntax("<prefix>")
-    public void onPrefix(Player player, String prefix) {
-        Guild guild = Guild.getGuild(player.getUniqueId());
-        if (guild == null) return;
+    public void onPrefix(Player player, Guild guild, String prefix) {
         guild.updatePrefix(color(prefix));
     }
 
@@ -198,9 +186,7 @@ public class CommandGuilds extends BaseCommand {
     @Subcommand("upgrade")
     @Description("Upgrade your Guild tier!")
     @CommandPermission("guilds.command.upgrade")
-    public void onUpgrade(Player player) {
-        Guild guild = Guild.getGuild(player.getUniqueId());
-        if (guild == null) return;
+    public void onUpgrade(Player player, Guild guild) {
         int tier = guild.getTier();
         if (tier >= getInt("max-number-of-tiers")) return;
         if (guild.getMembersToRankup() != 0 && guild.getMembers().size() < guild.getMembersToRankup()) return;
@@ -227,9 +213,7 @@ public class CommandGuilds extends BaseCommand {
     @Description("Transfer your Guild to another user")
     @CommandPermission("guilds.command.transfer")
     @Syntax("<player>")
-    public void onTransfer(Player player, String target) {
-        Guild guild = Guild.getGuild(player.getUniqueId());
-        if (guild == null) return;
+    public void onTransfer(Player player, Guild guild, String target) {
 
         Player transferPlayer = Bukkit.getPlayerExact(target);
         if (transferPlayer == null) return;
@@ -256,9 +240,7 @@ public class CommandGuilds extends BaseCommand {
     @Subcommand("leave|exit")
     @Description("Leave your Guild")
     @CommandPermission("guilds.command.leave")
-    public void onLeave(Player player) {
-        Guild guild = Guild.getGuild(player.getUniqueId());
-        if (guild == null) return;
+    public void onLeave(Player player, Guild guild) {
 
         guilds.getActionHandler().addAction(player, new ConfirmAction() {
             @Override
@@ -289,10 +271,7 @@ public class CommandGuilds extends BaseCommand {
     @Subcommand("delete")
     @Description("Delete your guild")
     @CommandPermission("guilds.command.delete")
-    public void onDelete(Player player) {
-        Guild guild = Guild.getGuild(player.getUniqueId());
-        if (guild == null) return;
-
+    public void onDelete(Player player, Guild guild) {
         guilds.getActionHandler().addAction(player, new ConfirmAction() {
             @Override
             public void accept() {
@@ -327,9 +306,7 @@ public class CommandGuilds extends BaseCommand {
     @Description("Kick someone from your Guild")
     @CommandPermission("guilds.command.boot")
     @Syntax("<name>")
-    public void onKick(Player player, String name) {
-        Guild guild = Guild.getGuild(player.getUniqueId());
-        if (guild == null) return;
+    public void onKick(Player player, Guild guild, String name) {
 
         OfflinePlayer bootedPlayer = Bukkit.getOfflinePlayer(name);
         if (bootedPlayer == null) return;
@@ -349,9 +326,7 @@ public class CommandGuilds extends BaseCommand {
     @Subcommand("vault")
     @Description("Opens the Guild vault")
     @CommandPermission("guilds.command.vault")
-    public void onVault(Player player) {
-        Guild guild = Guild.getGuild(player.getUniqueId());
-        if (guild == null) return;
+    public void onVault(Player player, Guild guild) {
         if (guild.getInventory().equalsIgnoreCase("")) {
             Inventory inv = Bukkit.createInventory(null, 54, guild.getName() + "'s Guild Vault");
             player.openInventory(inv);

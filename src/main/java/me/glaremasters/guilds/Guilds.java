@@ -1,6 +1,7 @@
 package me.glaremasters.guilds;
 
 import co.aikar.commands.BukkitCommandManager;
+import co.aikar.commands.InvalidCommandArgument;
 import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
@@ -11,6 +12,7 @@ import me.glaremasters.guilds.commands.CommandBank;
 import me.glaremasters.guilds.commands.CommandGuilds;
 import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.database.databases.json.JSON;
+import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.listeners.GuildPerks;
 import me.glaremasters.guilds.listeners.Players;
@@ -19,14 +21,11 @@ import me.glaremasters.guilds.utils.ActionHandler;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.Locale;
 import java.util.stream.Stream;
 
 public final class Guilds extends JavaPlugin {
@@ -47,6 +46,7 @@ public final class Guilds extends JavaPlugin {
         setupEconomy();
         setupPermissions();
         initData();
+        saveData();
 
         taskChainFactory = BukkitTaskChainFactory.create(this);
 
@@ -61,15 +61,21 @@ public final class Guilds extends JavaPlugin {
 
         BukkitCommandManager manager = new BukkitCommandManager(this);
         manager.enableUnstableAPI("help");
-        try {
-            manager.getLocales().loadYamlLanguageFile("lang_en.yml", Locale.ENGLISH);
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
+
+        manager.getCommandContexts().registerIssuerOnlyContext(Guild.class, c-> {
+            Guild guild = Guild.getGuild(c.getPlayer().getUniqueId());
+            if (guild == null) {
+                throw new InvalidCommandArgument("No guild");
+            }
+            return guild;
+        });
+
         manager.registerCommand(new CommandGuilds());
         manager.registerCommand(new CommandBank());
         manager.registerCommand(new CommandAdmin());
         manager.registerCommand(new CommandAlly());
+
+
 
         SpigotUpdater updater = new SpigotUpdater(this, 48920);
         updateCheck(updater);
@@ -117,23 +123,18 @@ public final class Guilds extends JavaPlugin {
      */
     private void initData() {
         saveDefaultConfig();
-        this.saveResource("lang_en.yml", false);
-        /*
         File languageFolder = new File(getDataFolder(), "languages");
         if (!languageFolder.exists()) languageFolder.mkdirs();
         this.language = new File(languageFolder, getConfig().getString("lang") + ".yml");
         this.languageConfig = YamlConfiguration.loadConfiguration(language);
-        */
     }
 
     /**
      * Save and handle new files if needed
      */
-    /*
     private void saveData() {
-        if (!this.language.exists()) Stream.of("lang_en").forEach(l -> this.saveResource(l + ".yml", false));
+        if (!this.language.exists()) Stream.of("english").forEach(l -> this.saveResource("languages/" + l + ".yml", false));
     }
-    /*
 
     /**
      * Get the database we are using to store data
