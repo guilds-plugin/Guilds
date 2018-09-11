@@ -69,11 +69,7 @@ public final class Guilds extends JavaPlugin {
             }
             return guild;
         });
-
-        manager.registerCommand(new CommandGuilds());
-        manager.registerCommand(new CommandBank());
-        manager.registerCommand(new CommandAdmin());
-        manager.registerCommand(new CommandAlly());
+        Stream.of(new CommandGuilds(), new CommandBank(), new CommandAdmin(), new CommandAlly()).forEach(manager::registerCommand);
 
 
 
