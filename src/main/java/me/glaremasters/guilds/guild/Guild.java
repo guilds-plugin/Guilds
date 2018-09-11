@@ -270,6 +270,41 @@ public class Guild {
         return members.stream().filter(m -> m.getUniqueId().equals(uuid)).findFirst().orElse(null);
     }
 
+    public void addAlly(Guild targetGuild) {
+        allies.add(targetGuild.getName());
+        addGuildAlly(targetGuild);
+        updateGuild("", targetGuild.getName(), this.getName());
+    }
+
+    public void removeAlly(Guild targetGuild) {
+        allies.remove(targetGuild.getName());
+        removeGuildAlly(targetGuild);
+        updateGuild("", targetGuild.getName(), this.getName());
+    }
+
+    public void addPendingAlly(Guild targetGuild) {
+        pendingAllies.add(targetGuild.getName());
+
+        updateGuild("Something went wrong while adding pending ally %s from guild %s",
+                targetGuild.getName(), this.getName());
+    }
+
+    public void removePendingAlly(Guild targetGuild) {
+        pendingAllies.remove(targetGuild.getName());
+
+        updateGuild("Something went wrong while removing pending ally %s from guild %s",
+                targetGuild.getName(), this.getName());
+    }
+
+    public void addGuildAlly(Guild targetGuild) {
+        guilds.getDatabase().addAlly(this, targetGuild);
+    }
+
+    public void removeGuildAlly(Guild targetGuild) {
+        guilds.getDatabase().removeAlly(this, targetGuild);
+    }
+
+
 
     public void updateGuild(String error, String... params) {
         try {

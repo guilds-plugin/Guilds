@@ -83,6 +83,16 @@ public class JSON implements DatabaseProvider {
         write(guildsFile, guilds, guildsType);
     }
 
+    @Override
+    public void addAlly(Guild guild, Guild targetGuild) {
+
+    }
+
+    @Override
+    public void removeAlly(Guild guild, Guild targetGuild) {
+
+    }
+
     /**
      * This method is called on the start of the server to load all the guilds into local memory so that it can handle as needed
      * @param callback all the guilds currently loaded on the server

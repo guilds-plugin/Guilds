@@ -21,5 +21,9 @@ public interface DatabaseProvider {
 
     void removeGuild(Guild guild);
 
+    void addAlly(Guild guild, Guild targetGuild);
+
+    void removeAlly(Guild guild, Guild targetGuild);
+
 
 }
