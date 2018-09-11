@@ -6,6 +6,7 @@ import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
 import me.glaremasters.guilds.api.GuildsAPI;
 import me.glaremasters.guilds.commands.CommandAdmin;
+import me.glaremasters.guilds.commands.CommandAlly;
 import me.glaremasters.guilds.commands.CommandBank;
 import me.glaremasters.guilds.commands.CommandGuilds;
 import me.glaremasters.guilds.database.DatabaseProvider;
@@ -61,6 +62,7 @@ public final class Guilds extends JavaPlugin {
         manager.registerCommand(new CommandGuilds(guilds));
         manager.registerCommand(new CommandBank(guilds));
         manager.registerCommand(new CommandAdmin(guilds));
+        manager.registerCommand(new CommandAlly(guilds));
 
         SpigotUpdater updater = new SpigotUpdater(this, 48920);
         updateCheck(updater);
