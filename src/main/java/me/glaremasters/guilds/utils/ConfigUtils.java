@@ -67,6 +67,11 @@ public class ConfigUtils {
         return guilds.getConfig().getStringList(path);
     }
 
+    /**
+     * Easily get a configuration section from the config
+     * @param path the path in the config to grab the configuration section from
+     * @return the value of the configuration section in the config
+     */
     public static ConfigurationSection getSection(String path) {
         return guilds.getConfig().getConfigurationSection(path);
     }

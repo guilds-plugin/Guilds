@@ -32,6 +32,9 @@ public class Guild {
     private List<GuildMember> members;
 
     @Expose
+    private List<GuildStats> stats;
+
+    @Expose
     private List<String> allies;
 
     @Expose
@@ -56,6 +59,8 @@ public class Guild {
         this.balance = 0.0;
         this.members = new ArrayList<>();
         this.members.add(new GuildMember(master, 0));
+        this.stats = new ArrayList<>();
+        this.stats.add(new GuildStats(0, 0, 0, 0));
         this.allies = new ArrayList<>();
         this.invitedMembers = new ArrayList<>();
         this.pendingAllies = new ArrayList<>();
