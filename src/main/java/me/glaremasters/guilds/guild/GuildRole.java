@@ -8,6 +8,7 @@ import me.glaremasters.guilds.Guilds;
 public class GuildRole {
 
     private String name;
+    private String node;
 
     private int level;
 
@@ -15,13 +16,14 @@ public class GuildRole {
             removeAlly, allyChat, openVault, transferGuild, changeStatus, activateBuff, upgradeGuild, depositMoney,
             withdrawMoney, claimLand, unclaimLand, destroy, place, interact;
 
-    public GuildRole(String name, int level, boolean chat, boolean invite, boolean kick,
+    public GuildRole(String name, String node, int level, boolean chat, boolean invite, boolean kick,
             boolean promote, boolean demote, boolean changePrefix, boolean changeHome,
             boolean removeGuild, boolean addAlly, boolean removeAlly, boolean allyChat,
             boolean openVault, boolean transferGuild, boolean changeStatus, boolean activateBuff,
             boolean upgradeGuild, boolean depositMoney, boolean withdrawMoney, boolean claimLand,
             boolean unclaimLand, boolean destroy, boolean place, boolean interact) {
         this.name = name;
+        this.node = node;
         this.level = level;
         this.chat = chat;
         this.invite = invite;
@@ -72,6 +74,10 @@ public class GuildRole {
 
     public String getName() {
         return name;
+    }
+
+    public String getNode() {
+        return node;
     }
 
     public int getLevel() {

@@ -10,6 +10,8 @@ import me.glaremasters.guilds.utils.IHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 
+import static me.glaremasters.guilds.utils.ConfigUtils.getSection;
+
 /**
  * Created by GlareMasters on 6/28/2018.
  */
@@ -55,6 +57,47 @@ public class GuildHandler implements IHandler {
             if (result != null) guilds = result;
 
             guilds.values().forEach(this::addGuild);
+
+            ConfigurationSection section = getSection("roles");
+
+            for (String s : section.getKeys(false)) {
+                String path = s + ".permissions.";
+                String name = section.getString(s + ".name");
+                String node = section.getString(s + ".permission-node");
+
+                int level = Integer.parseInt(s);
+                boolean chat = section.getBoolean(path + "chat");
+                boolean allyChat = section.getBoolean(path + "ally-chat");
+                boolean invite = section.getBoolean(path + "invite");
+                boolean kick = section.getBoolean(path + "kick");
+                boolean promote = section.getBoolean(path + "promote");
+                boolean demote = section.getBoolean(path + "demote");
+                boolean addAlly = section.getBoolean(path + "add-ally");
+                boolean removeAlly = section.getBoolean(path + "remove-ally");
+                boolean changePrefix = section.getBoolean(path + "change-prefix");
+                boolean changeHome = section.getBoolean(path + "change-home");
+                boolean removeGuild = section.getBoolean(path + "remove-guild");
+                boolean changeStatus = section.getBoolean(path + "toggle-guild");
+                boolean openVault = section.getBoolean(path + "open-vault");
+                boolean transferGuild = section.getBoolean(path + "transfer-guild");
+                boolean activateBuff = section.getBoolean(path + "activate-buff");
+                boolean upgradeGuild = section.getBoolean(path + "upgrade-guild");
+                boolean depositMoney = section.getBoolean(path + "deposit-money");
+                boolean withdrawMoney = section.getBoolean(path + "withdraw-money");
+                boolean claimLand = section.getBoolean(path + "claim-land");
+                boolean unclaimLand = section.getBoolean(path + "unclaim-land");
+                boolean canDestroy = section.getBoolean(path + "destroy");
+                boolean canPlace = section.getBoolean(path + "place");
+                boolean canInteract = section.getBoolean(path + "interact");
+
+                GuildRole role =
+                        new GuildRole(name, node, level, chat, allyChat, invite, kick, promote, demote,
+                                addAlly, removeAlly, changePrefix, changeHome, removeGuild,
+                                openVault, transferGuild, changeStatus, activateBuff, upgradeGuild, depositMoney,
+                                withdrawMoney, claimLand, unclaimLand, canDestroy, canPlace, canInteract);
+                roles.add(role);
+            }
+
         }));
     }
 

@@ -2,6 +2,7 @@ package me.glaremasters.guilds.utils;
 
 import me.glaremasters.guilds.Guilds;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.List;
 
@@ -64,6 +65,10 @@ public class ConfigUtils {
      */
     public static List<String> getStringList(String path) {
         return guilds.getConfig().getStringList(path);
+    }
+
+    public static ConfigurationSection getSection(String path) {
+        return guilds.getConfig().getConfigurationSection(path);
     }
 
     /**
