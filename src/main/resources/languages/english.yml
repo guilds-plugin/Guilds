@@ -1,11 +1,29 @@
-messages:
-  command:
-    error:
-      already-in-guild: "&cYou're already in a guild!"
-      no-guild: "&cYou're not in a guild!"
-      role-no-permission: "&cYour role is not high enough to do that!"
-    create:
-      guild-name-taken: "&cThis name is already taken!"
-      warning: "&cType /guilds confirm to create your guild, type /guilds cancel to cancel."
-      successful: "&aGuild '{guild}&r&a' created successfully!"
-      cancelled: "&cGuild creation cancelled!"
+descriptions:
+  create: "Create a Guild"
+  confirm: "Confirm an action"
+  cancel: "Cancel an action"
+  reload: "Reloads the plugin's configuration file"
+  sethome: "Set your Guild's home"
+  home: "Go to your Guild home"
+  rename: "Change the name of your Guild"
+  status: "Change the status of your Guild"
+  prefix: "Change the prefix of your Guild"
+  version: "Information about the plugin"
+  upgrade: "Upgrade your Guild tier!"
+  transfer: "Transfer your Guild to another user"
+  leave: "Leave your Guild"
+  delete: "Delete your guild"
+  decline: "Decline a Guild invite"
+  kick: "Kick someone from your Guild"
+  vault: "Opens the Guild vault"
+  help: "Show this help menu"
+
+create:
+  guild-name-taken: "&cThis name is already taken!"
+  warning: "&cType /guilds confirm to create your guild, type /guilds cancel to cancel."
+  successful: "&aGuild '{guild}&r&a' created successfully!"
+  cancelled: "&cGuild creation cancelled!"
+error:
+  already-in-guild: "&cYou're already in a guild!"
+  no-guild: "&cYou're not in a guild!"
+  role-no-permission: "&cYour role is not high enough to do that!"

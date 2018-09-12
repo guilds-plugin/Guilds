@@ -1,7 +1,7 @@
 package me.glaremasters.guilds;
 
-import co.aikar.commands.BukkitCommandManager;
-import co.aikar.commands.InvalidCommandArgument;
+import co.aikar.commands.*;
+import co.aikar.locales.MessageKey;
 import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
@@ -18,14 +18,18 @@ import me.glaremasters.guilds.listeners.GuildPerks;
 import me.glaremasters.guilds.listeners.Players;
 import me.glaremasters.guilds.updater.SpigotUpdater;
 import me.glaremasters.guilds.utils.ActionHandler;
+import me.glaremasters.guilds.utils.LoggerUtils;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.Locale;
 import java.util.stream.Stream;
 
 public final class Guilds extends JavaPlugin {
@@ -34,9 +38,8 @@ public final class Guilds extends JavaPlugin {
     private DatabaseProvider database;
     private GuildHandler guildHandler;
     private ActionHandler actionHandler;
+    private BukkitCommandManager manager;
     private static TaskChainFactory taskChainFactory;
-    private File language;
-    public YamlConfiguration languageConfig;
     private GuildsAPI api;
 
     @Override
@@ -45,7 +48,6 @@ public final class Guilds extends JavaPlugin {
         api = new GuildsAPI();
         setupEconomy();
         setupPermissions();
-        initData();
         saveData();
 
         taskChainFactory = BukkitTaskChainFactory.create(this);
@@ -59,7 +61,15 @@ public final class Guilds extends JavaPlugin {
         actionHandler = new ActionHandler();
         actionHandler.enable();
 
-        BukkitCommandManager manager = new BukkitCommandManager(this);
+        manager = new BukkitCommandManager(this);
+        try {
+            File languageFolder = new File(getDataFolder(), "languages");
+            manager.getLocales().loadYamlLanguageFile(new File(languageFolder, getConfig().getString("lang") + ".yml"), Locale.ENGLISH);
+            LoggerUtils.info("Loaded successfully");
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+            LoggerUtils.info("Failed to load");
+        }
         manager.enableUnstableAPI("help");
 
         manager.getCommandContexts().registerIssuerOnlyContext(Guild.class, c-> {
@@ -78,6 +88,7 @@ public final class Guilds extends JavaPlugin {
 
         Stream.of(new GuildPerks(), new Players(this)).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
     }
+
 
     @Override
     public void onDisable() {
@@ -115,21 +126,13 @@ public final class Guilds extends JavaPlugin {
     }
 
     /**
-     * Initiate plugin data
-     */
-    private void initData() {
-        saveDefaultConfig();
-        File languageFolder = new File(getDataFolder(), "languages");
-        if (!languageFolder.exists()) languageFolder.mkdirs();
-        this.language = new File(languageFolder, getConfig().getString("lang") + ".yml");
-        this.languageConfig = YamlConfiguration.loadConfiguration(language);
-    }
-
-    /**
      * Save and handle new files if needed
      */
     private void saveData() {
-        if (!this.language.exists()) Stream.of("english").forEach(l -> this.saveResource("languages/" + l + ".yml", false));
+        File languageFolder = new File(getDataFolder(), "languages");
+        if (!languageFolder.exists()) languageFolder.mkdirs();
+        File language = new File(languageFolder, getConfig().getString("lang") + ".yml");
+        if (!language.exists()) Stream.of("english").forEach(l -> this.saveResource("languages/" + l + ".yml", false));
     }
 
     /**
@@ -186,5 +189,9 @@ public final class Guilds extends JavaPlugin {
      */
     public GuildsAPI getApi() {
         return api;
+    }
+
+    public BukkitCommandManager getManager() {
+        return manager;
     }
 }

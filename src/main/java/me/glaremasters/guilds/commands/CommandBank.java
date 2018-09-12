@@ -19,7 +19,7 @@ public class CommandBank extends BaseCommand {
     @Dependency private Guilds guilds;
 
     @Subcommand("bank balance")
-    @Description("{@@test}")
+    @Description("{@@descriptions.bank-balance}")
     @CommandPermission("guilds.command.bank")
     public void onBalance(Player player, Guild guild) {
         Double balance = guild.getBalance();

@@ -1,5 +1,6 @@
 package me.glaremasters.guilds.commands;
 
+import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.CommandHelp;
 import co.aikar.commands.annotation.*;
@@ -10,15 +11,13 @@ import me.glaremasters.guilds.api.events.GuildRemoveEvent;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildMember;
 import me.glaremasters.guilds.guild.GuildRole;
-import me.glaremasters.guilds.messages.Message;
+import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.updater.SpigotUpdater;
 import me.glaremasters.guilds.utils.ConfirmAction;
 import me.glaremasters.guilds.utils.Serialization;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
@@ -39,22 +38,22 @@ public class CommandGuilds extends BaseCommand {
     @Dependency private Guilds guilds;
 
     @Subcommand("create")
-    @Description("Create a Guild")
+    @Description("{@@descriptions.create}")
     @CommandPermission("guilds.command.create")
     @Syntax("<name>")
     public void onCreate(Player player, String name) {
         if (Guild.getGuild(player.getUniqueId()) != null) {
-            Message.sendMessage(player, Message.COMMAND_ERROR_ALREADY_IN_GUILD);
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ALREADY_IN_GUILD);
             return;
         }
 
         for (String guildName : guilds.getGuildHandler().getGuilds().keySet()) {
             if (guildName.equalsIgnoreCase(name)) {
-                Message.sendMessage(player, Message.COMMAND_CREATE_GUILD_NAME_TAKEN);
+                getCurrentCommandIssuer().sendInfo(Messages.CREATE__GUILD_NAME_TAKEN);
                 return;
             }
         }
-        Message.sendMessage(player, Message.COMMAND_CREATE_WARNING);
+        getCurrentCommandIssuer().sendInfo(Messages.CREATE__WARNING);
 
         guilds.getActionHandler().addAction(player, new ConfirmAction() {
             @Override
@@ -63,20 +62,20 @@ public class CommandGuilds extends BaseCommand {
                 GuildCreateEvent event = new GuildCreateEvent(player, guild);
                 if (event.isCancelled()) return;
                 guilds.getDatabase().createGuild(guild);
-                Message.sendMessage(player, Message.COMMAND_CREATE_SUCCESSFUL.replace("{guild}", name));
+                getCurrentCommandIssuer().sendInfo(Messages.CREATE__SUCCESSFUL, "{guild}", guild.getName());
                 guilds.getActionHandler().removeAction(player);
             }
 
             @Override
             public void decline() {
-                Message.sendMessage(player, Message.COMMAND_CREATE_CANCELLED);
+                getCurrentCommandIssuer().sendInfo(Messages.CREATE__CANCELLED);
                 guilds.getActionHandler().removeAction(player);
             }
         });
     }
 
     @Subcommand("confirm")
-    @Description("Confirm an action")
+    @Description("{@@descriptions.confirm}")
     @CommandPermission("guilds.command.confirm")
     public void onConfirm(Player player) {
         ConfirmAction action = guilds.getActionHandler().getActions().get(player);
@@ -84,7 +83,7 @@ public class CommandGuilds extends BaseCommand {
     }
 
     @Subcommand("cancel")
-    @Description("Cancel an action")
+    @Description("{@@descriptions.cancel}")
     @CommandPermission("guilds.command.cancel")
     public void onCancel(Player player) {
         ConfirmAction action = guilds.getActionHandler().getActions().get(player);
@@ -92,7 +91,7 @@ public class CommandGuilds extends BaseCommand {
     }
 
     @Subcommand("reload")
-    @Description("Reloads the plugin's configuration file")
+    @Description("{@@descriptions.reload}")
     @CommandPermission("guilds.command.reload")
     public void onReload(CommandSender sender) {
         sender.sendMessage("Reloading config");
@@ -100,38 +99,22 @@ public class CommandGuilds extends BaseCommand {
     }
 
     @Subcommand("sethome")
-    @Description("Set your Guild's home")
+    @Description("{@@descriptions.sethome}")
     @CommandPermission("guilds.command.sethome")
     public void onSetHome(Player player, Guild guild) {
-
-        String world = player.getWorld().getName();
-        double xloc = player.getLocation().getX();
-        double yloc = player.getLocation().getY();
-        double zloc = player.getLocation().getZ();
-        float yaw = player.getLocation().getYaw();
-        float pitch = player.getLocation().getPitch();
-        guild.updateHome(world + ":" + xloc + ":" + yloc + ":" + zloc + ":" + yaw + ":" + pitch);
+        guild.updateHome(ACFBukkitUtil.fullLocationToString(player.getLocation()));
     }
 
     @Subcommand("home")
-    @Description("Go to your Guild home")
+    @Description("{@@descriptions.home}")
     @CommandPermission("guilds.command.home")
     public void onHome(Player player, Guild guild) {
         if (guild.getHome().equals("")) return;
-        String[] data = guild.getHome().split(":");
-        World w = Bukkit.getWorld(data[0]);
-        double x = Double.parseDouble(data[1]);
-        double y = Double.parseDouble(data[2]);
-        double z = Double.parseDouble(data[3]);
-
-        Location guildhome = new Location(w, x, y, z);
-        guildhome.setYaw(Float.parseFloat(data[4]));
-        guildhome.setPitch(Float.parseFloat(data[5]));
-        player.teleport(guildhome);
+        player.teleport(ACFBukkitUtil.stringToLocation(guild.getHome()));
     }
 
     @Subcommand("rename")
-    @Description("Change the name of your Guild")
+    @Description("{@@descriptions.rename}")
     @CommandPermission("guilds.command.rename")
     @Syntax("<name>")
     public void onRename(Player player, Guild guild, String name) {
@@ -141,7 +124,7 @@ public class CommandGuilds extends BaseCommand {
     }
 
     @Subcommand("status")
-    @Description("Change the status of your Guild")
+    @Description("{@@descriptions.status}")
     @CommandPermission("guilds.command.status")
     @Syntax("<private/public>")
     public void onStatus(Player player, Guild guild, String status) {
@@ -152,7 +135,7 @@ public class CommandGuilds extends BaseCommand {
     }
 
     @Subcommand("prefix")
-    @Description("Change the prefix of your Guild")
+    @Description("{@@descriptions.prefix}")
     @CommandPermission("guilds.command.prefix")
     @Syntax("<prefix>")
     public void onPrefix(Player player, Guild guild, String prefix) {
@@ -160,7 +143,7 @@ public class CommandGuilds extends BaseCommand {
     }
 
     @Subcommand("version|v|ver")
-    @Description("Information about the plugin")
+    @Description("{@@descriptions.version}")
     public void onVersion(CommandSender sender) {
         SpigotUpdater updater = new SpigotUpdater(guilds, 48920);
         PluginDescriptionFile pdf = guilds.getDescription();
@@ -184,7 +167,7 @@ public class CommandGuilds extends BaseCommand {
     }
 
     @Subcommand("upgrade")
-    @Description("Upgrade your Guild tier!")
+    @Description("{@@descriptions.upgrade}")
     @CommandPermission("guilds.command.upgrade")
     public void onUpgrade(Player player, Guild guild) {
         int tier = guild.getTier();
@@ -210,7 +193,7 @@ public class CommandGuilds extends BaseCommand {
     }
 
     @Subcommand("transfer")
-    @Description("Transfer your Guild to another user")
+    @Description("{@@descriptions.transfer}")
     @CommandPermission("guilds.command.transfer")
     @Syntax("<player>")
     public void onTransfer(Player player, Guild guild, String target) {
@@ -238,7 +221,7 @@ public class CommandGuilds extends BaseCommand {
     }
 
     @Subcommand("leave|exit")
-    @Description("Leave your Guild")
+    @Description("{@@descriptions.transfer}")
     @CommandPermission("guilds.command.leave")
     public void onLeave(Player player, Guild guild) {
 
@@ -269,7 +252,7 @@ public class CommandGuilds extends BaseCommand {
     }
 
     @Subcommand("delete")
-    @Description("Delete your guild")
+    @Description("{@@descriptions.transfer}")
     @CommandPermission("guilds.command.delete")
     public void onDelete(Player player, Guild guild) {
         guilds.getActionHandler().addAction(player, new ConfirmAction() {
@@ -291,7 +274,7 @@ public class CommandGuilds extends BaseCommand {
     }
 
     @Subcommand("decline")
-    @Description("Decline a Guild invite")
+    @Description("{@@descriptions.decline}")
     @CommandPermission("guilds.command.decline")
     @Syntax("<guild name>")
     public void onDecline(Player player, String name) {
@@ -324,7 +307,7 @@ public class CommandGuilds extends BaseCommand {
     }
 
     @Subcommand("vault")
-    @Description("Opens the Guild vault")
+    @Description("{@@descriptions.vault}")
     @CommandPermission("guilds.command.vault")
     public void onVault(Player player, Guild guild) {
         if (guild.getInventory().equalsIgnoreCase("")) {
@@ -342,7 +325,7 @@ public class CommandGuilds extends BaseCommand {
     @HelpCommand
     @CommandPermission("guilds.command.help")
     @Syntax("")
-    @Description("Show this help menu")
+    @Description("{@@descriptions.help}")
     public static void onHelp(CommandHelp help) {
         help.showHelp();
     }
