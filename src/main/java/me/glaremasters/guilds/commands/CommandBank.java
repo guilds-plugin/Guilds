@@ -27,7 +27,7 @@ public class CommandBank extends BaseCommand {
     }
 
     @Subcommand("bank deposit")
-    @Description("Put money in your Guild bank")
+    @Description("{@@descriptions.bank-deposit}")
     @CommandPermission("guilds.command.bank")
     @Syntax("<amount>")
     public void onDeposit(Player player, Guild guild, Double amount) {
@@ -36,7 +36,7 @@ public class CommandBank extends BaseCommand {
     }
 
     @Subcommand("bank withdraw")
-    @Description("Take money from your Guild bank")
+    @Description("{@@descriptions.bank-withdraw}")
     @CommandPermission("guilds.command.bank")
     @Syntax("<amount>")
     public void onWithdraw(Player player, Guild guild, Double amount) {

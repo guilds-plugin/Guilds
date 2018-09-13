@@ -17,6 +17,14 @@ descriptions:
   kick: "Kick someone from your Guild"
   vault: "Opens the Guild vault"
   help: "Show this help menu"
+  bank-balance: "Show the bank balance of your guild"
+  bank-deposit: "Put money in your Guild bank"
+  bank-withdraw: "Take money from your Guild bank"
+  ally-list: "List all the allies of your Guild"
+  ally-accept: "Accept an ally invite from another guild"
+  ally-decline: "Decline an ally invite from another Guild"
+  ally-add: "Add a Guild as an ally"
+  ally-remove: "Remove a Guild as an ally"
 
 create:
   guild-name-taken: "&cThis name is already taken!"

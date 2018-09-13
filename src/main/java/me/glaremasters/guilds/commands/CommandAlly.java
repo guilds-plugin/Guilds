@@ -20,7 +20,7 @@ public class CommandAlly extends BaseCommand {
     @Dependency private Guilds guilds;
 
     @Subcommand("ally list")
-    @Description("List all the allies of your Guild")
+    @Description("{@@descriptions.ally-list}")
     @CommandPermission("guilds.command.ally")
     public void onAllyList(Player player, Guild guild) {
         if (guild.getAllies().size() < 1) {
@@ -34,7 +34,7 @@ public class CommandAlly extends BaseCommand {
     }
 
     @Subcommand("ally accept")
-    @Description("Accept an ally invite from another guild")
+    @Description("{@@descriptions.ally-accept}")
     @CommandPermission("guilds.command.ally")
     @Syntax("<guild name>")
     public void onAllyAccept(Player player, Guild guild, String name) {
@@ -48,7 +48,7 @@ public class CommandAlly extends BaseCommand {
     }
 
     @Subcommand("ally decline")
-    @Description("Decline an ally invite from another Guild")
+    @Description("{@@descriptions.ally-decline}")
     @CommandPermission("guilds.command.ally")
     @Syntax("<guild name>")
     public void onAllyDeclince(Player player, Guild guild, String name) {
@@ -61,7 +61,7 @@ public class CommandAlly extends BaseCommand {
     }
 
     @Subcommand("ally add")
-    @Description("Add a Guild as an ally")
+    @Description("{@@descriptions.ally-add}")
     @CommandPermission("guilds.command.ally")
     @Syntax("<guild name>")
     public void onAllyAdd(Player player, Guild guild, String name) {
@@ -82,7 +82,7 @@ public class CommandAlly extends BaseCommand {
     }
 
     @Subcommand("ally remove")
-    @Description("Add a Guild as an ally")
+    @Description("{@@descriptions.ally-remove}")
     @CommandPermission("guilds.command.ally")
     @Syntax("<guild name>")
     public void onAllyRemove(Player player, Guild guild, String name) {
