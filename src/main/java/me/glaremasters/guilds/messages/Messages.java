@@ -22,7 +22,9 @@ public enum Messages implements MessageKeyProvider {
 
     DECLINE__SUCCESS,
 
-    DELETE__SUCCESS, DELETE__CANCELLED, DELETE__WARNING;
+    DELETE__SUCCESS, DELETE__CANCELLED, DELETE__WARNING,
+
+    LEAVE__CANCELLED, LEAVE__PLAYER_LEFT, LEAVE__SUCCESSFUL, LEAVE__WARNING_GUILDMASTER, LEAVE__WARNING, LEAVE__GUILDMASTER_LEFT;
 
     private final MessageKey key = MessageKey.of(this.name().toLowerCase().replace("__", ".").replace("_", "-"));
 

@@ -248,6 +248,12 @@ public class CommandGuilds extends BaseCommand {
     @CommandPermission("guilds.command.leave")
     public void onLeave(Player player, Guild guild) {
 
+        if (guild.getGuildMaster().getUniqueId().equals(player.getUniqueId())) {
+            getCurrentCommandIssuer().sendInfo(Messages.LEAVE__WARNING_GUILDMASTER);
+        } else {
+            getCurrentCommandIssuer().sendInfo(Messages.LEAVE__WARNING);
+        }
+
         guilds.getActionHandler().addAction(player, new ConfirmAction() {
             @Override
             public void accept() {
@@ -261,6 +267,7 @@ public class CommandGuilds extends BaseCommand {
                     if (removeEvent.isCancelled()) return;
                     guilds.getDatabase().removeGuild(guild);
                     guild.removeMember(player.getUniqueId());
+                    getCurrentCommandIssuer().sendInfo(Messages.LEAVE__SUCCESSFUL);
                     guilds.getActionHandler().removeAction(player);
                 } else {
                     // Send message player left guild
@@ -269,6 +276,7 @@ public class CommandGuilds extends BaseCommand {
 
             @Override
             public void decline() {
+                getCurrentCommandIssuer().sendInfo(Messages.LEAVE__CANCELLED);
                 guilds.getActionHandler().removeAction(player);
             }
         });

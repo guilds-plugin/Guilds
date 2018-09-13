@@ -51,3 +51,10 @@ delete:
   successful: "&aDeleted '{guild}&r&a' successfully!"
   cancelled: "&cGuild deletion cancelled!"
   warning: "&cType /guilds confirm to delete your guild, type /guilds cancel to cancel."
+leave:
+  cancelled: "&cLeaving guild cancelled!"
+  successful: "&aYou've successfully left your guild!"
+  player-left: "&cPlayer '{player}' left your guild!"
+  guildmaster-left: "&cThe Guild Master, '{player}' has left the guild. The guild will now be disbanded."
+  warning: "&cType /guilds confirm to leave your guild, type /guilds cancel to cancel."
+  warning-guildmaster: "&cYou're the Guild Master of this guild, leaving the guild will mean that the guild is deleted. Type /guilds confirm to leave and delete your guild, type /guilds cancel to cancel."
