@@ -3,7 +3,6 @@ package me.glaremasters.guilds.commands;
 import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.CommandHelp;
-import co.aikar.commands.CommandIssuer;
 import co.aikar.commands.annotation.*;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.api.events.GuildCreateEvent;
@@ -283,6 +282,7 @@ public class CommandGuilds extends BaseCommand {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
             return;
         }
+        getCurrentCommandIssuer().sendInfo(Messages.DELETE__WARNING);
         guilds.getActionHandler().addAction(player, new ConfirmAction() {
             @Override
             public void accept() {
@@ -290,12 +290,15 @@ public class CommandGuilds extends BaseCommand {
                 guilds.getServer().getPluginManager().callEvent(event);
                 if (event.isCancelled()) return;
 
+                getCurrentCommandIssuer().sendInfo(Messages.DELETE__SUCCESS, "{guild}", guild.getName());
+                // Todo - Something about perms
                 guilds.getDatabase().removeGuild(guild);
                 guilds.getActionHandler().removeAction(player);
             }
 
             @Override
             public void decline() {
+                getCurrentCommandIssuer().sendInfo(Messages.DELETE__CANCELLED);
                 guilds.getActionHandler().removeAction(player);
             }
         });
@@ -310,6 +313,7 @@ public class CommandGuilds extends BaseCommand {
         if (Guild.getGuild(player.getUniqueId()) != null) return;
         if (guild == null) return;
         if (!guild.getInvitedMembers().contains(player.getUniqueId())) return;
+        getCurrentCommandIssuer().sendInfo(Messages.DECLINE__SUCCESS);
         guild.removeInvitedPlayer(player.getUniqueId());
     }
 

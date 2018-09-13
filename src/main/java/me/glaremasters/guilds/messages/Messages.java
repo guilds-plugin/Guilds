@@ -18,7 +18,11 @@ public enum Messages implements MessageKeyProvider {
 
     ADMIN__DELETE_WARNING, ADMIN__DELETE_SUCCESSFUL,
 
-    BOOT__PLAYER_KICKED, BOOT__SUCCESSFUL, BOOT__KICKED;
+    BOOT__PLAYER_KICKED, BOOT__SUCCESSFUL, BOOT__KICKED,
+
+    DECLINE__SUCCESS,
+
+    DELETE__SUCCESS, DELETE__CANCELLED, DELETE__WARNING;
 
     private final MessageKey key = MessageKey.of(this.name().toLowerCase().replace("__", ".").replace("_", "-"));
 

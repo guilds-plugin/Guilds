@@ -45,3 +45,9 @@ boot:
   player-kicked: "&cPlayer '{player}' has been kicked from the guild by {kicker}!"
   successful: "&aSuccessfully kicked {player} from your guild!"
   kicked: "&cYou have been kicked from your guild by {kicker}!"
+decline:
+  success: "&aGuild Invite Declined!"
+delete:
+  successful: "&aDeleted '{guild}&r&a' successfully!"
+  cancelled: "&cGuild deletion cancelled!"
+  warning: "&cType /guilds confirm to delete your guild, type /guilds cancel to cancel."
