@@ -191,15 +191,29 @@ public class CommandGuilds extends BaseCommand {
             return;
         }
         int tier = guild.getTier();
-        if (tier >= getInt("max-number-of-tiers")) return;
-        if (guild.getMembersToRankup() != 0 && guild.getMembers().size() < guild.getMembersToRankup()) return;
+        if (tier >= getInt("max-number-of-tiers")) {
+            getCurrentCommandIssuer().sendInfo(Messages.UPGRADE__TIER_MAX);
+            return;
+        }
+        if (guild.getMembersToRankup() != 0 && guild.getMembers().size() < guild.getMembersToRankup()) {
+            getCurrentCommandIssuer().sendInfo(Messages.UPGRADE__NOT_ENOUGH_MEMBERS, "{amount}", String.valueOf(guild.getMembersToRankup()));
+            return;
+        }
         double balance = guild.getBalance();
         double upgradeCost = guild.getTierCost();
-        if (balance < upgradeCost) return;
+        if (balance < upgradeCost) {
+            getCurrentCommandIssuer().sendInfo(Messages.UPGRADE__NOT_ENOUGH_MONEY, "{needed}", String.valueOf(upgradeCost - balance));
+            return;
+        }
+        getCurrentCommandIssuer().sendInfo(Messages.UPGRADE__MONEY_WARNING, "{amount}", String.valueOf(upgradeCost));
         guilds.getActionHandler().addAction(player, new ConfirmAction() {
             @Override
             public void accept() {
-                if (balance < upgradeCost) return;
+                if (balance < upgradeCost) {
+                    getCurrentCommandIssuer().sendInfo(Messages.UPGRADE__NOT_ENOUGH_MONEY, "{needed}", String.valueOf(upgradeCost - balance));
+                    return;
+                }
+                getCurrentCommandIssuer().sendInfo(Messages.UPGRADE__SUCCESS);
                 // Carry over perms check
                 guild.updateTier(tier + 1);
                 // Add new perms
@@ -207,6 +221,7 @@ public class CommandGuilds extends BaseCommand {
 
             @Override
             public void decline() {
+                getCurrentCommandIssuer().sendInfo(Messages.UPGRADE__CANCEL);
                 guilds.getActionHandler().removeAction(player);
             }
         });
@@ -222,13 +237,22 @@ public class CommandGuilds extends BaseCommand {
             return;
         }
         Player transferPlayer = Bukkit.getPlayerExact(target);
-        if (transferPlayer == null) return;
+        if (transferPlayer == null) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__PLAYER_NOT_FOUND);
+            return;
+        }
 
         GuildMember oldMaster = guild.getMember(player.getUniqueId());
         GuildMember newMaster = guild.getMember(transferPlayer.getUniqueId());
 
-        if (newMaster == null) return;
-        if (newMaster.getRole() != 1) return;
+        if (newMaster == null) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__PLAYER_NOT_IN_GUILD);
+            return;
+        }
+        if (newMaster.getRole() != 1) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__NOT_OFFICER);
+            return;
+        }
 
         GuildRole newRole, oldRole;
         int currentLevel = newMaster.getRole();
@@ -239,12 +263,13 @@ public class CommandGuilds extends BaseCommand {
             oldMaster.setRole(oldRole);
             newMaster.setRole(newRole);
             guild.updateGuild("", guild.getName(), Guild.getGuild(guild.getName()).getName());
+
         }
 
     }
 
     @Subcommand("leave|exit")
-    @Description("{@@descriptions.transfer}")
+    @Description("{@@descriptions.leave}")
     @CommandPermission("guilds.command.leave")
     public void onLeave(Player player, Guild guild) {
 
@@ -283,7 +308,7 @@ public class CommandGuilds extends BaseCommand {
     }
 
     @Subcommand("delete")
-    @Description("{@@descriptions.transfer}")
+    @Description("{@@descriptions.delete}")
     @CommandPermission("guilds.command.delete")
     public void onDelete(Player player, Guild guild, GuildRole role) {
         if (!role.canRemoveGuild()) {

@@ -36,6 +36,8 @@ error:
   role-no-permission: "&cYour role is not high enough to do that!"
   guild-no-exist: "&cThat Guild does does exist!"
   player-not-found: "&cPlayer '{player}&r&c' does not exist"
+  player-not-in-guild: "&c{player} is not in your Guild!"
+  not-officer: "&cUser must be an Officer in your Guild!"
 bank:
   balance: "&aYour guild's bank has a balance of {amount}."
 admin:
@@ -58,3 +60,13 @@ leave:
   guildmaster-left: "&cThe Guild Master, '{player}' has left the guild. The guild will now be disbanded."
   warning: "&cType /guilds confirm to leave your guild, type /guilds cancel to cancel."
   warning-guildmaster: "&cYou're the Guild Master of this guild, leaving the guild will mean that the guild is deleted. Type /guilds confirm to leave and delete your guild, type /guilds cancel to cancel."
+transfer:
+  newmaster: "&aYou are the new Guild Master of your Guild!"
+  success: "&aGuild has been transferred!"
+upgrade:
+  tier-max: "&cCannot upgrade again! You're already maxed!"
+  money-warning: "&cYou are about to spend {amount} to set upgrade your guild. (Type /guilds confirm to continue)"
+  cancel: "&cUpgrade cancelled!"
+  success: "&aYou've successfully upgraded your guild!"
+  not-enough-money: "&cSorry! You don't have enough money to upgrade your Guild! You still need {needed}!"
+  not-enough-members: "&cSorry! You need at least {amount} members to rank up your Guild Tier!"
