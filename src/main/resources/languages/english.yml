@@ -25,7 +25,6 @@ descriptions:
   ally-decline: "Decline an ally invite from another Guild"
   ally-add: "Add a Guild as an ally"
   ally-remove: "Remove a Guild as an ally"
-
 create:
   guild-name-taken: "&cThis name is already taken!"
   warning: "&cType /guilds confirm to create your guild, type /guilds cancel to cancel."
@@ -36,8 +35,13 @@ error:
   no-guild: "&cYou're not in a guild!"
   role-no-permission: "&cYour role is not high enough to do that!"
   guild-no-exist: "&cThat Guild does does exist!"
+  player-not-found: "&cPlayer '{player}&r&c' does not exist"
 bank:
   balance: "&aYour guild's bank has a balance of {amount}."
 admin:
   delete-warning: "&cYou are about to delete the guild {guild}. Type /guilds confirm to remove this guild, type /guilds cancel to cancel."
   delete-success: "&aYou have successfully removed {guild}."
+boot:
+  player-kicked: "&cPlayer '{player}' has been kicked from the guild by {kicker}!"
+  successful: "&aSuccessfully kicked {player} from your guild!"
+  kicked: "&cYou have been kicked from your guild by {kicker}!"

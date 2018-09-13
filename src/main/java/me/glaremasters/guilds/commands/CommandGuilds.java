@@ -3,6 +3,7 @@ package me.glaremasters.guilds.commands;
 import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.CommandHelp;
+import co.aikar.commands.CommandIssuer;
 import co.aikar.commands.annotation.*;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.api.events.GuildCreateEvent;
@@ -326,14 +327,23 @@ public class CommandGuilds extends BaseCommand {
         if (bootedPlayer.getUniqueId() == null) return;
 
         GuildMember kickedPlayer = guild.getMember(bootedPlayer.getUniqueId());
-        if (kickedPlayer == null) return;
+        if (kickedPlayer == null) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__PLAYER_NOT_FOUND, "{player}", name);
+            return;
+        }
 
         Guild targetGuild = Guild.getGuild(kickedPlayer.getUniqueId());
         if (targetGuild == null) return;
         if (!guild.getName().equals(targetGuild.getName())) return;
 
-        if (kickedPlayer.equals(guild.getGuildMaster())) return;
+        if (kickedPlayer.equals(guild.getGuildMaster())) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
+            return;
+        }
         guild.removeMember(kickedPlayer.getUniqueId());
+        getCurrentCommandIssuer().sendInfo(Messages.BOOT__SUCCESSFUL, "{player}", bootedPlayer.getName());
+        // Todo - Send message to all online members saying <user> was kicked.
+        // Todo - Send message to user if they are online that they were kicked by <user>
     }
 
     @Subcommand("vault")
