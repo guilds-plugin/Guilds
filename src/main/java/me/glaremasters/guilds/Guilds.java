@@ -1,7 +1,6 @@
 package me.glaremasters.guilds;
 
 import co.aikar.commands.*;
-import co.aikar.locales.MessageKey;
 import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
@@ -19,12 +18,10 @@ import me.glaremasters.guilds.listeners.Players;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.updater.SpigotUpdater;
 import me.glaremasters.guilds.utils.ActionHandler;
-import me.glaremasters.guilds.utils.LoggerUtils;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -32,6 +29,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.stream.Stream;
+
+import static me.glaremasters.guilds.utils.ConfigUtils.color;
 
 public final class Guilds extends JavaPlugin {
 
@@ -42,34 +41,45 @@ public final class Guilds extends JavaPlugin {
     private BukkitCommandManager manager;
     private static TaskChainFactory taskChainFactory;
     private GuildsAPI api;
+    private String logPrefix = "&f[&aGuilds&f]&r ";
 
     @Override
     public void onEnable() {
+        long start = System.currentTimeMillis();
+        logo();
         guilds = this;
+        info("Enabling the Guilds API...");
         api = new GuildsAPI();
+        info("API Enabled!");
+        info("Hooking into Vault...");
         setupEconomy();
         setupPermissions();
+        info("Hooked into Economy and Permissions!");
         saveData();
+
 
         taskChainFactory = BukkitTaskChainFactory.create(this);
 
         database = new JSON(this);
         database.initialize();
 
+        info("Loading Guilds...");
         guildHandler = new GuildHandler();
         guildHandler.enable();
+        info("The Guilds have been loaded!");
 
         actionHandler = new ActionHandler();
         actionHandler.enable();
 
+        info("Loading Commands and Language Data...");
         manager = new BukkitCommandManager(this);
         try {
             File languageFolder = new File(getDataFolder(), "languages");
             manager.getLocales().loadYamlLanguageFile(new File(languageFolder, getConfig().getString("lang") + ".yml"), Locale.ENGLISH);
-            LoggerUtils.info("Loaded successfully");
+            info("Loaded successfully!");
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
-            LoggerUtils.info("Failed to load");
+            info("Failed to load!");
         }
         manager.enableUnstableAPI("help");
 
@@ -84,11 +94,12 @@ public final class Guilds extends JavaPlugin {
         Stream.of(new CommandGuilds(), new CommandBank(), new CommandAdmin(), new CommandAlly()).forEach(manager::registerCommand);
 
 
-
+        info("Checking for updates...");
         SpigotUpdater updater = new SpigotUpdater(this, 48920);
         updateCheck(updater);
 
         Stream.of(new GuildPerks(), new Players(this)).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
+        info("Ready to go! That only took " + (System.currentTimeMillis() - start) + "ms");
     }
 
 
@@ -131,6 +142,7 @@ public final class Guilds extends JavaPlugin {
      * Save and handle new files if needed
      */
     private void saveData() {
+        saveDefaultConfig();
         File languageFolder = new File(getDataFolder(), "languages");
         if (!languageFolder.exists()) languageFolder.mkdirs();
         File language = new File(languageFolder, getConfig().getString("lang") + ".yml");
@@ -193,7 +205,25 @@ public final class Guilds extends JavaPlugin {
         return api;
     }
 
+    /**
+     * Get the CommandManager
+     * @return command manager
+     */
     public BukkitCommandManager getManager() {
         return manager;
+    }
+
+    private void info(String msg) {
+        Bukkit.getServer().getConsoleSender().sendMessage(color(logPrefix + msg));
+    }
+
+    private void logo() {
+        info("  _______  __    __   __   __       _______       _______.    ___        ___   ");
+        info(" /  _____||  |  |  | |  | |  |     |       \\     /       |   |__ \\      / _ \\  ");
+        info("|  |  __  |  |  |  | |  | |  |     |  .--.  |   |   (----`      ) |    | | | | ");
+        info("|  | |_ | |  |  |  | |  | |  |     |  |  |  |    \\   \\         / /     | | | | ");
+        info("|  |__| | |  `--'  | |  | |  `----.|  '--'  |.----)   |       / /_   __| |_| | ");
+        info(" \\______|  \\______/  |__| |_______||_______/ |_______/       |____| (__)\\___/  ");
+        info("");
     }
 }

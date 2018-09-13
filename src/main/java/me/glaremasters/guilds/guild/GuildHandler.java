@@ -1,16 +1,14 @@
 package me.glaremasters.guilds.guild;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.logging.Level;
-
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.utils.IHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 
-import static me.glaremasters.guilds.utils.ConfigUtils.getSection;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.logging.Level;
 
 /**
  * Created by GlareMasters on 6/28/2018.
@@ -58,7 +56,7 @@ public class GuildHandler implements IHandler {
 
             guilds.values().forEach(this::addGuild);
 
-            ConfigurationSection section = getSection("roles");
+            ConfigurationSection section = Guilds.getGuilds().getConfig().getConfigurationSection("roles");
 
             for (String s : section.getKeys(false)) {
                 String path = s + ".permissions.";
