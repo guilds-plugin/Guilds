@@ -5,6 +5,7 @@ import co.aikar.commands.annotation.*;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
+import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.ConfirmAction;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -28,15 +29,17 @@ public class CommandAdmin extends BaseCommand {
     @Syntax("<guild name>")
     public void onGuildRemove(Player player, String name) {
         Guild guild = Guild.getGuild(name);
-        if (guild == null) return;
-        // send message warning about deleting guild
+        if (guild == null) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__GUILD_NO_EXIST);
+            return;
+        }
+        getCurrentCommandIssuer().sendInfo(Messages.ADMIN__DELETE_WARNING, "{guild}", name);
         guilds.getActionHandler().addAction(player, new ConfirmAction() {
             @Override
             public void accept() {
-
                 guilds.getDatabase().removeGuild(guild);
                 guilds.getActionHandler().removeAction(player);
-                // send message saying guild has been deleted
+                getCurrentCommandIssuer().sendInfo(Messages.ADMIN__DELETE_SUCCESSFUL, "{guild}", name);
             }
 
             @Override

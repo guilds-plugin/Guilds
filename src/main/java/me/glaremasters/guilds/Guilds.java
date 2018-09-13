@@ -16,6 +16,7 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.listeners.GuildPerks;
 import me.glaremasters.guilds.listeners.Players;
+import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.updater.SpigotUpdater;
 import me.glaremasters.guilds.utils.ActionHandler;
 import me.glaremasters.guilds.utils.LoggerUtils;
@@ -75,7 +76,8 @@ public final class Guilds extends JavaPlugin {
         manager.getCommandContexts().registerIssuerOnlyContext(Guild.class, c-> {
             Guild guild = Guild.getGuild(c.getPlayer().getUniqueId());
             if (guild == null) {
-                throw new InvalidCommandArgument("No guild");
+                c.getIssuer().sendInfo(Messages.ERROR__NO_GUILD);
+                return null;
             }
             return guild;
         });

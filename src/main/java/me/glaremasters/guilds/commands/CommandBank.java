@@ -4,9 +4,9 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.guild.Guild;
+import me.glaremasters.guilds.guild.GuildRole;
+import me.glaremasters.guilds.messages.Messages;
 import org.bukkit.entity.Player;
-
-import static me.glaremasters.guilds.utils.ConfigUtils.color;
 
 /**
  * Created by GlareMasters
@@ -22,8 +22,7 @@ public class CommandBank extends BaseCommand {
     @Description("{@@descriptions.bank-balance}")
     @CommandPermission("guilds.command.bank")
     public void onBalance(Player player, Guild guild) {
-        Double balance = guild.getBalance();
-        player.sendMessage(color(String.valueOf(balance)));
+        getCurrentCommandIssuer().sendInfo(Messages.BANK__BALANCE, "{amount}", String.valueOf(guild.getBalance()));
     }
 
     @Subcommand("bank deposit")
@@ -33,6 +32,12 @@ public class CommandBank extends BaseCommand {
     public void onDeposit(Player player, Guild guild, Double amount) {
         Double balance = guild.getBalance();
         guild.updateBalance(balance + amount);
+
+        GuildRole role = GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole());
+        if (!role.canDepositMoney()) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
+            return;
+        }
     }
 
     @Subcommand("bank withdraw")

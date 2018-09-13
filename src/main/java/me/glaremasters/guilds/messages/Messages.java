@@ -12,7 +12,11 @@ public enum Messages implements MessageKeyProvider {
 
     CREATE__SUCCESSFUL, CREATE__WARNING, CREATE__GUILD_NAME_TAKEN, CREATE__CANCELLED,
 
-    ERROR__ALREADY_IN_GUILD;
+    ERROR__ALREADY_IN_GUILD, ERROR__NO_GUILD, ERROR__ROLE_NO_PERMISSION, ERROR__GUILD_NO_EXIST,
+
+    BANK__BALANCE,
+
+    ADMIN__DELETE_WARNING, ADMIN__DELETE_SUCCESSFUL;
 
     private final MessageKey key = MessageKey.of(this.name().toLowerCase().replace("__", ".").replace("_", "-"));
 

@@ -35,3 +35,9 @@ error:
   already-in-guild: "&cYou're already in a guild!"
   no-guild: "&cYou're not in a guild!"
   role-no-permission: "&cYour role is not high enough to do that!"
+  guild-no-exist: "&cThat Guild does does exist!"
+bank:
+  balance: "&aYour guild's bank has a balance of {amount}."
+admin:
+  delete-warning: "&cYou are about to delete the guild {guild}. Type /guilds confirm to remove this guild, type /guilds cancel to cancel."
+  delete-success: "&aYou have successfully removed {guild}."
