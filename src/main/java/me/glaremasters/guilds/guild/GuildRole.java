@@ -12,12 +12,12 @@ public class GuildRole {
 
     private int level;
 
-    private boolean chat, invite, kick, promote, demote, changePrefix, changeHome, removeGuild, addAlly,
+    private boolean chat, invite, kick, promote, demote, changePrefix, changeName, changeHome, removeGuild, addAlly,
             removeAlly, allyChat, openVault, transferGuild, changeStatus, activateBuff, upgradeGuild, depositMoney,
             withdrawMoney, claimLand, unclaimLand, destroy, place, interact;
 
     public GuildRole(String name, String node, int level, boolean chat, boolean invite, boolean kick,
-            boolean promote, boolean demote, boolean changePrefix, boolean changeHome,
+            boolean promote, boolean demote, boolean changePrefix, boolean changeName, boolean changeHome,
             boolean removeGuild, boolean addAlly, boolean removeAlly, boolean allyChat,
             boolean openVault, boolean transferGuild, boolean changeStatus, boolean activateBuff,
             boolean upgradeGuild, boolean depositMoney, boolean withdrawMoney, boolean claimLand,
@@ -31,6 +31,7 @@ public class GuildRole {
         this.promote = promote;
         this.demote = demote;
         this.changePrefix = changePrefix;
+        this.changeName = changeName;
         this.changeHome = changeHome;
         this.removeGuild = removeGuild;
         this.addAlly = addAlly;
@@ -107,6 +108,8 @@ public class GuildRole {
     public boolean canChangePrefix() {
         return changePrefix;
     }
+
+    public boolean canChangeName() { return changeName; }
 
     public boolean canChangeHome() {
         return changeHome;

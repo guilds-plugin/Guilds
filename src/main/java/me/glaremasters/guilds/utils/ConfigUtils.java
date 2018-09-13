@@ -80,8 +80,7 @@ public class ConfigUtils {
      * Get the prefix of the plugin
      * @return prefix of plugin
      */
-    public static String getPrefix() {
-        return color(guilds.getConfig().getString("plugin-prefix"));
+    public static String getPrefix() { return color(guilds.getConfig().getString("plugin-prefix"));
     }
 
 

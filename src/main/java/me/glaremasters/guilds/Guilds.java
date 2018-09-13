@@ -13,6 +13,7 @@ import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.database.databases.json.JSON;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
+import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.listeners.GuildPerks;
 import me.glaremasters.guilds.listeners.Players;
 import me.glaremasters.guilds.messages.Messages;
@@ -86,10 +87,17 @@ public final class Guilds extends JavaPlugin {
         manager.getCommandContexts().registerIssuerOnlyContext(Guild.class, c-> {
             Guild guild = Guild.getGuild(c.getPlayer().getUniqueId());
             if (guild == null) {
-                c.getIssuer().sendInfo(Messages.ERROR__NO_GUILD);
-                return null;
+                throw new InvalidCommandArgument(Messages.ERROR__NO_GUILD);
             }
             return guild;
+        });
+
+        manager.getCommandContexts().registerIssuerOnlyContext(GuildRole.class, c-> {
+            Guild guild = Guild.getGuild(c.getPlayer().getUniqueId());
+            if (guild == null) {
+                return null;
+            }
+            return GuildRole.getRole(guild.getMember(c.getPlayer().getUniqueId()).getRole());
         });
         Stream.of(new CommandGuilds(), new CommandBank(), new CommandAdmin(), new CommandAlly()).forEach(manager::registerCommand);
 

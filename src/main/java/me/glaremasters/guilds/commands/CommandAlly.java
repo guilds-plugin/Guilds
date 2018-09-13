@@ -6,6 +6,8 @@ import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.api.events.GuildAddAllyEvent;
 import me.glaremasters.guilds.api.events.GuildRemoveAllyEvent;
 import me.glaremasters.guilds.guild.Guild;
+import me.glaremasters.guilds.guild.GuildRole;
+import me.glaremasters.guilds.messages.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -37,7 +39,11 @@ public class CommandAlly extends BaseCommand {
     @Description("{@@descriptions.ally-accept}")
     @CommandPermission("guilds.command.ally")
     @Syntax("<guild name>")
-    public void onAllyAccept(Player player, Guild guild, String name) {
+    public void onAllyAccept(Player player, Guild guild, GuildRole role, String name) {
+        if (!role.canAddAlly()) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
+            return;
+        }
         Guild targetGuild = Guild.getGuild(name);
         if (targetGuild == null) return;
         if (!guild.getPendingAllies().contains(targetGuild.getName())) return;
@@ -51,7 +57,11 @@ public class CommandAlly extends BaseCommand {
     @Description("{@@descriptions.ally-decline}")
     @CommandPermission("guilds.command.ally")
     @Syntax("<guild name>")
-    public void onAllyDeclince(Player player, Guild guild, String name) {
+    public void onAllyDeclince(Player player, Guild guild, GuildRole role, String name) {
+        if (!role.canRemoveAlly()) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
+            return;
+        }
         Guild targetGuild = Guild.getGuild(name);
         if (targetGuild == null) return;
 
@@ -64,7 +74,11 @@ public class CommandAlly extends BaseCommand {
     @Description("{@@descriptions.ally-add}")
     @CommandPermission("guilds.command.ally")
     @Syntax("<guild name>")
-    public void onAllyAdd(Player player, Guild guild, String name) {
+    public void onAllyAdd(Player player, Guild guild, GuildRole role, String name) {
+        if (!role.canAddAlly()) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
+            return;
+        }
         Guild targetGuild = Guild.getGuild(name);
         if (targetGuild == null) return;
 
@@ -85,7 +99,11 @@ public class CommandAlly extends BaseCommand {
     @Description("{@@descriptions.ally-remove}")
     @CommandPermission("guilds.command.ally")
     @Syntax("<guild name>")
-    public void onAllyRemove(Player player, Guild guild, String name) {
+    public void onAllyRemove(Player player, Guild guild, GuildRole role, String name) {
+        if (!role.canRemoveAlly()) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
+            return;
+        }
         Guild targetGuild = Guild.getGuild(name);
         if (targetGuild == null) return;
 

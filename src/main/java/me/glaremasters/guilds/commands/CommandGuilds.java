@@ -101,7 +101,11 @@ public class CommandGuilds extends BaseCommand {
     @Subcommand("sethome")
     @Description("{@@descriptions.sethome}")
     @CommandPermission("guilds.command.sethome")
-    public void onSetHome(Player player, Guild guild) {
+    public void onSetHome(Player player, Guild guild, GuildRole role) {
+        if (!role.canChangeHome()) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
+            return;
+        }
         guild.updateHome(ACFBukkitUtil.fullLocationToString(player.getLocation()));
     }
 
@@ -117,7 +121,11 @@ public class CommandGuilds extends BaseCommand {
     @Description("{@@descriptions.rename}")
     @CommandPermission("guilds.command.rename")
     @Syntax("<name>")
-    public void onRename(Player player, Guild guild, String name) {
+    public void onRename(Player player, Guild guild, GuildRole role, String name) {
+        if (!role.canChangeName()) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
+            return;
+        }
         String oldName = guild.getName();
         guilds.getDatabase().removeGuild(Guild.getGuild(oldName));
         guild.updateName(color(name));
@@ -127,7 +135,11 @@ public class CommandGuilds extends BaseCommand {
     @Description("{@@descriptions.status}")
     @CommandPermission("guilds.command.status")
     @Syntax("<private/public>")
-    public void onStatus(Player player, Guild guild, String status) {
+    public void onStatus(Player player, Guild guild, GuildRole role, String status) {
+        if (!role.canChangeStatus()) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
+            return;
+        }
         boolean argCheck = !status.equalsIgnoreCase("private") && !status.equalsIgnoreCase("public");
         if (argCheck) return;
         String updatedStatus = StringUtils.capitalize(status);
@@ -138,7 +150,11 @@ public class CommandGuilds extends BaseCommand {
     @Description("{@@descriptions.prefix}")
     @CommandPermission("guilds.command.prefix")
     @Syntax("<prefix>")
-    public void onPrefix(Player player, Guild guild, String prefix) {
+    public void onPrefix(Player player, Guild guild, GuildRole role, String prefix) {
+        if (!role.canChangePrefix()) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
+            return;
+        }
         guild.updatePrefix(color(prefix));
     }
 
@@ -169,7 +185,11 @@ public class CommandGuilds extends BaseCommand {
     @Subcommand("upgrade")
     @Description("{@@descriptions.upgrade}")
     @CommandPermission("guilds.command.upgrade")
-    public void onUpgrade(Player player, Guild guild) {
+    public void onUpgrade(Player player, Guild guild, GuildRole role) {
+        if (!role.canUpgradeGuild()) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
+            return;
+        }
         int tier = guild.getTier();
         if (tier >= getInt("max-number-of-tiers")) return;
         if (guild.getMembersToRankup() != 0 && guild.getMembers().size() < guild.getMembersToRankup()) return;
@@ -196,8 +216,11 @@ public class CommandGuilds extends BaseCommand {
     @Description("{@@descriptions.transfer}")
     @CommandPermission("guilds.command.transfer")
     @Syntax("<player>")
-    public void onTransfer(Player player, Guild guild, String target) {
-
+    public void onTransfer(Player player, Guild guild, GuildRole role, String target) {
+        if (!role.canTransfer()) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
+            return;
+        }
         Player transferPlayer = Bukkit.getPlayerExact(target);
         if (transferPlayer == null) return;
 
@@ -254,7 +277,11 @@ public class CommandGuilds extends BaseCommand {
     @Subcommand("delete")
     @Description("{@@descriptions.transfer}")
     @CommandPermission("guilds.command.delete")
-    public void onDelete(Player player, Guild guild) {
+    public void onDelete(Player player, Guild guild, GuildRole role) {
+        if (!role.canRemoveGuild()) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
+            return;
+        }
         guilds.getActionHandler().addAction(player, new ConfirmAction() {
             @Override
             public void accept() {
@@ -289,8 +316,11 @@ public class CommandGuilds extends BaseCommand {
     @Description("Kick someone from your Guild")
     @CommandPermission("guilds.command.boot")
     @Syntax("<name>")
-    public void onKick(Player player, Guild guild, String name) {
-
+    public void onKick(Player player, Guild guild, GuildRole role, String name) {
+        if (!role.canKick()) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
+            return;
+        }
         OfflinePlayer bootedPlayer = Bukkit.getOfflinePlayer(name);
         if (bootedPlayer == null) return;
         if (bootedPlayer.getUniqueId() == null) return;
@@ -309,7 +339,11 @@ public class CommandGuilds extends BaseCommand {
     @Subcommand("vault")
     @Description("{@@descriptions.vault}")
     @CommandPermission("guilds.command.vault")
-    public void onVault(Player player, Guild guild) {
+    public void onVault(Player player, Guild guild, GuildRole role) {
+        if (!role.canOpenVault()) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
+            return;
+        }
         if (guild.getInventory().equalsIgnoreCase("")) {
             Inventory inv = Bukkit.createInventory(null, 54, guild.getName() + "'s Guild Vault");
             player.openInventory(inv);

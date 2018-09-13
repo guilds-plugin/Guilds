@@ -29,22 +29,24 @@ public class CommandBank extends BaseCommand {
     @Description("{@@descriptions.bank-deposit}")
     @CommandPermission("guilds.command.bank")
     @Syntax("<amount>")
-    public void onDeposit(Player player, Guild guild, Double amount) {
-        Double balance = guild.getBalance();
-        guild.updateBalance(balance + amount);
-
-        GuildRole role = GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole());
+    public void onDeposit(Player player, Guild guild, GuildRole role, Double amount) {
         if (!role.canDepositMoney()) {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
             return;
         }
+        Double balance = guild.getBalance();
+        guild.updateBalance(balance + amount);
     }
 
     @Subcommand("bank withdraw")
     @Description("{@@descriptions.bank-withdraw}")
     @CommandPermission("guilds.command.bank")
     @Syntax("<amount>")
-    public void onWithdraw(Player player, Guild guild, Double amount) {
+    public void onWithdraw(Player player, Guild guild, GuildRole role, Double amount) {
+        if (!role.canWithdrawMoney()) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
+            return;
+        }
         Double balance = guild.getBalance();
         if ((guild.getBalance() < amount)) return;
         guild.updateBalance(Math.min(balance, amount));
