@@ -80,3 +80,13 @@ rename:
 home:
   no-home-set: "&cNo home set! Use &a/guild sethome &cto set a home!"
   teleported: "&aYou've teleported to your guild home!"
+sethome:
+  successful: "&aYou've set your guild home!"
+reload:
+  reloaded: "&aConfiguration file reloaded!"
+cancel:
+  error: "&cYou have no actions to cancel!"
+  success: "&aAction cancelled!"
+confirm:
+  error: "&cYou have no actions to confirm!"
+  success: "&aAction confirmed!"

@@ -79,7 +79,13 @@ public class CommandGuilds extends BaseCommand {
     @CommandPermission("guilds.command.confirm")
     public void onConfirm(Player player) {
         ConfirmAction action = guilds.getActionHandler().getActions().get(player);
-        if (action != null) action.accept();
+        if (action == null) {
+            getCurrentCommandIssuer().sendInfo(Messages.CONFIRM__ERROR);
+        }
+        else {
+            getCurrentCommandIssuer().sendInfo(Messages.CONFIRM__SUCCESS);
+            action.accept();
+        }
     }
 
     @Subcommand("cancel")
@@ -87,15 +93,21 @@ public class CommandGuilds extends BaseCommand {
     @CommandPermission("guilds.command.cancel")
     public void onCancel(Player player) {
         ConfirmAction action = guilds.getActionHandler().getActions().get(player);
-        if (action != null) action.decline();
+        if (action == null) {
+            getCurrentCommandIssuer().sendInfo(Messages.CANCEL__ERROR);
+        }
+        else {
+            getCurrentCommandIssuer().sendInfo(Messages.CANCEL__SUCCESS);
+            action.decline();
+        }
     }
 
     @Subcommand("reload")
     @Description("{@@descriptions.reload}")
     @CommandPermission("guilds.command.reload")
     public void onReload(CommandSender sender) {
-        sender.sendMessage("Reloading config");
         guilds.reloadConfig();
+        getCurrentCommandIssuer().sendInfo(Messages.RELOAD__RELOADED);
     }
 
     @Subcommand("sethome")
@@ -107,6 +119,7 @@ public class CommandGuilds extends BaseCommand {
             return;
         }
         guild.updateHome(ACFBukkitUtil.fullLocationToString(player.getLocation()));
+        getCurrentCommandIssuer().sendInfo(Messages.SETHOME__SUCCESSFUL);
     }
 
     @Subcommand("home")

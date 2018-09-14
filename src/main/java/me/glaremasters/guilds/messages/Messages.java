@@ -36,7 +36,15 @@ public enum Messages implements MessageKeyProvider {
 
     RENAME__SUCCESSFUL,
 
-    HOME__TELEPORTED, HOME__NO_HOME_SET;
+    HOME__TELEPORTED, HOME__NO_HOME_SET,
+
+    SETHOME__SUCCESSFUL,
+
+    RELOAD__RELOADED,
+
+    CANCEL__ERROR, CANCEL__SUCCESS,
+
+    CONFIRM__ERROR, CONFIRM__SUCCESS;
 
     private final MessageKey key = MessageKey.of(this.name().toLowerCase().replace("__", ".").replace("_", "-"));
 
