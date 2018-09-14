@@ -113,8 +113,12 @@ public class CommandGuilds extends BaseCommand {
     @Description("{@@descriptions.home}")
     @CommandPermission("guilds.command.home")
     public void onHome(Player player, Guild guild) {
-        if (guild.getHome().equals("")) return;
+        if (guild.getHome().equals("")) {
+            getCurrentCommandIssuer().sendInfo(Messages.HOME__NO_HOME_SET);
+            return;
+        }
         player.teleport(ACFBukkitUtil.stringToLocation(guild.getHome()));
+        getCurrentCommandIssuer().sendInfo(Messages.HOME__TELEPORTED);
     }
 
     @Subcommand("rename")
@@ -128,6 +132,7 @@ public class CommandGuilds extends BaseCommand {
         }
         String oldName = guild.getName();
         guilds.getDatabase().removeGuild(Guild.getGuild(oldName));
+        getCurrentCommandIssuer().sendInfo(Messages.RENAME__SUCCESSFUL, "{name}", name);
         guild.updateName(color(name));
     }
 
@@ -141,8 +146,12 @@ public class CommandGuilds extends BaseCommand {
             return;
         }
         boolean argCheck = !status.equalsIgnoreCase("private") && !status.equalsIgnoreCase("public");
-        if (argCheck) return;
+        if (argCheck) {
+            getCurrentCommandIssuer().sendInfo(Messages.STATUS__ERROR);
+            return;
+        }
         String updatedStatus = StringUtils.capitalize(status);
+        getCurrentCommandIssuer().sendInfo(Messages.STATUS__SUCCESSFUL, "{status}", status);
         guild.updateStatus(updatedStatus);
     }
 
@@ -155,6 +164,7 @@ public class CommandGuilds extends BaseCommand {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
             return;
         }
+        getCurrentCommandIssuer().sendInfo(Messages.PREFIX__SUCCESSFUL);
         guild.updatePrefix(color(prefix));
     }
 
@@ -263,7 +273,8 @@ public class CommandGuilds extends BaseCommand {
             oldMaster.setRole(oldRole);
             newMaster.setRole(newRole);
             guild.updateGuild("", guild.getName(), Guild.getGuild(guild.getName()).getName());
-
+            getCurrentCommandIssuer().sendInfo(Messages.TRANSFER__SUCCESS);
+            guilds.getManager().getCommandIssuer(transferPlayer).sendInfo(Messages.TRANSFER__NEWMASTER);
         }
 
     }
@@ -380,7 +391,7 @@ public class CommandGuilds extends BaseCommand {
         guild.removeMember(kickedPlayer.getUniqueId());
         getCurrentCommandIssuer().sendInfo(Messages.BOOT__SUCCESSFUL, "{player}", bootedPlayer.getName());
         // Todo - Send message to all online members saying <user> was kicked.
-        // Todo - Send message to user if they are online that they were kicked by <user>
+        guilds.getManager().getCommandIssuer(bootedPlayer).sendInfo(Messages.BOOT__KICKED);
     }
 
     @Subcommand("vault")

@@ -70,3 +70,13 @@ upgrade:
   success: "&aYou've successfully upgraded your guild!"
   not-enough-money: "&cSorry! You don't have enough money to upgrade your Guild! You still need {needed}!"
   not-enough-members: "&cSorry! You need at least {amount} members to rank up your Guild Tier!"
+prefix:
+  successful: "&aGuild's prefix changed successfully!"
+status:
+  error: "&cGuild status must be public or private!"
+  successful: "&aGuild status set to {status}!"
+rename:
+  successful: "&aGuild name changed to {name}!"
+home:
+  no-home-set: "&cNo home set! Use &a/guild sethome &cto set a home!"
+  teleported: "&aYou've teleported to your guild home!"
