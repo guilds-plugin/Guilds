@@ -25,6 +25,12 @@ descriptions:
   ally-decline: "Decline an ally invite from another Guild"
   ally-add: "Add a Guild as an ally"
   ally-remove: "Remove a Guild as an ally"
+  admin-remove: "Admin command to remove a Guild from the server"
+  admin-addplayer: "Admin command to add a player to a Guild"
+  admin-removeplayer: "Admin command to remove a player from a Guild"
+  admin-upgrade: "Admin command to upgrade a Guild's tier"
+  admin-status: "Admin command to change a Guild's status"
+  admin-prefix: "Admin command to change a Guild's prefix"
 create:
   guild-name-taken: "&cThis name is already taken!"
   warning: "&cType /guilds confirm to create your guild, type /guilds cancel to cancel."

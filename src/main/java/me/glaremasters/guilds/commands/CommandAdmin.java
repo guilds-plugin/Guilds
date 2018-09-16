@@ -24,7 +24,7 @@ public class CommandAdmin extends BaseCommand {
     @Dependency private Guilds guilds;
 
     @Subcommand("admin remove")
-    @Description("Admin command to remove a Guild from the server.")
+    @Description("{@@descriptions.admin-remove}")
     @CommandPermission("guilds.command.admin")
     @Syntax("<guild name>")
     public void onGuildRemove(Player player, String name) {
@@ -51,7 +51,7 @@ public class CommandAdmin extends BaseCommand {
     }
 
     @Subcommand("admin addplayer")
-    @Description("Admin command to add a player to a Guild")
+    @Description("{@@descriptions.admin-addplayer}")
     @CommandPermission("guilds.command.admin")
     @Syntax("<player> <guild>")
     public void onAdminAddPlayer(Player player, String target, String guild) {
@@ -66,7 +66,7 @@ public class CommandAdmin extends BaseCommand {
     }
 
     @Subcommand("admin removeplayer")
-    @Description("Admin command to remove a player from a Guild")
+    @Description("{@@descriptions.admin-removeplayer}")
     @CommandPermission("guilds.command.admin")
     @Syntax("<name>")
     public void onAdminRemovePlayer(Player player, String target) {
@@ -80,7 +80,7 @@ public class CommandAdmin extends BaseCommand {
     }
 
     @Subcommand("admin upgrade")
-    @Description("Admin command to upgrade a Guild's tier")
+    @Description("{@@descriptions.admin-upgrade}")
     @CommandPermission("guilds.command.admin")
     @Syntax("<guild name>")
     public void onAdminUpgradeGuild(Player player, String name) {
@@ -93,7 +93,7 @@ public class CommandAdmin extends BaseCommand {
     }
 
     @Subcommand("admin status")
-    @Description("Admin command to change a Guild's status")
+    @Description("{@@descriptions.admin-status}")
     @CommandPermission("guilds.command.admin")
     @Syntax("<name> <private/public>")
     public void onAdminGuildStatus(Player player, String name, String status) {
@@ -108,7 +108,7 @@ public class CommandAdmin extends BaseCommand {
     }
 
     @Subcommand("admin prefix")
-    @Description("Admin command to change a Guild's prefix")
+    @Description("{@@descriptions.admin-prefix}")
     @CommandPermission("guilds.command.admin")
     @Syntax("<name> <prefix>")
     public void onAdminGuildPrefix(Player player, String name, String prefix) {
