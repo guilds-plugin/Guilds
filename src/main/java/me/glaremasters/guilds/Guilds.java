@@ -74,31 +74,10 @@ public final class Guilds extends JavaPlugin {
 
         info("Loading Commands and Language Data...");
         manager = new BukkitCommandManager(this);
-        try {
-            File languageFolder = new File(getDataFolder(), "languages");
-            manager.getLocales().loadYamlLanguageFile(new File(languageFolder, getConfig().getString("lang") + ".yml"), Locale.ENGLISH);
-            info("Loaded successfully!");
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
-            info("Failed to load!");
-        }
+        loadLanguages(manager);
         manager.enableUnstableAPI("help");
+        loadContexts(manager);
 
-        manager.getCommandContexts().registerIssuerOnlyContext(Guild.class, c-> {
-            Guild guild = Guild.getGuild(c.getPlayer().getUniqueId());
-            if (guild == null) {
-                throw new InvalidCommandArgument(Messages.ERROR__NO_GUILD);
-            }
-            return guild;
-        });
-
-        manager.getCommandContexts().registerIssuerOnlyContext(GuildRole.class, c-> {
-            Guild guild = Guild.getGuild(c.getPlayer().getUniqueId());
-            if (guild == null) {
-                return null;
-            }
-            return GuildRole.getRole(guild.getMember(c.getPlayer().getUniqueId()).getRole());
-        });
         Stream.of(new CommandGuilds(), new CommandBank(), new CommandAdmin(), new CommandAlly()).forEach(manager::registerCommand);
 
 
@@ -114,6 +93,7 @@ public final class Guilds extends JavaPlugin {
     @Override
     public void onDisable() {
         guildHandler.disable();
+        actionHandler.disable();
     }
 
     /**
@@ -221,10 +201,17 @@ public final class Guilds extends JavaPlugin {
         return manager;
     }
 
+    /**
+     * Useful tool for colorful texts to console
+     * @param msg the msg you want to log
+     */
     private void info(String msg) {
         Bukkit.getServer().getConsoleSender().sendMessage(color(logPrefix + msg));
     }
 
+    /**
+     * Guilds logo in console
+     */
     private void logo() {
         info("  _______  __    __   __   __       _______       _______.    ___        ___   ");
         info(" /  _____||  |  |  | |  | |  |     |       \\     /       |   |__ \\      / _ \\  ");
@@ -233,5 +220,42 @@ public final class Guilds extends JavaPlugin {
         info("|  |__| | |  `--'  | |  | |  `----.|  '--'  |.----)   |       / /_   __| |_| | ");
         info(" \\______|  \\______/  |__| |_______||_______/ |_______/       |____| (__)\\___/  ");
         info("");
+    }
+
+    /**
+     * Load the languages for the server from ACF BCM
+     * @param manager ACF BCM
+     */
+    private void loadLanguages(BukkitCommandManager manager) {
+        try {
+            File languageFolder = new File(getDataFolder(), "languages");
+            manager.getLocales().loadYamlLanguageFile(new File(languageFolder, getConfig().getString("lang") + ".yml"), Locale.ENGLISH);
+            info("Loaded successfully!");
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+            info("Failed to load!");
+        }
+    }
+
+    /**
+     * Load the contexts for the server from ACF BCM
+     * @param manager ACF BCM
+     */
+    private void loadContexts(BukkitCommandManager manager) {
+        manager.getCommandContexts().registerIssuerOnlyContext(Guild.class, c-> {
+            Guild guild = Guild.getGuild(c.getPlayer().getUniqueId());
+            if (guild == null) {
+                throw new InvalidCommandArgument(Messages.ERROR__NO_GUILD);
+            }
+            return guild;
+        });
+
+        manager.getCommandContexts().registerIssuerOnlyContext(GuildRole.class, c-> {
+            Guild guild = Guild.getGuild(c.getPlayer().getUniqueId());
+            if (guild == null) {
+                return null;
+            }
+            return GuildRole.getRole(guild.getMember(c.getPlayer().getUniqueId()).getRole());
+        });
     }
 }
