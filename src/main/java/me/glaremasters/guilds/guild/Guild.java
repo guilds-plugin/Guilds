@@ -3,7 +3,6 @@ package me.glaremasters.guilds.guild;
 import com.google.gson.annotations.Expose;
 import me.glaremasters.guilds.Guilds;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 
 import java.util.*;
 
@@ -49,10 +48,10 @@ public class Guild {
         this.invitedMembers = new ArrayList<>();
     }
 
-    public Guild(String name, UUID master) {
+    public Guild(String name, String prefix, String status, UUID master) {
         this.name = name;
-        this.prefix = "";
-        this.status = "";
+        this.prefix = prefix;
+        this.status = status;
         this.home = "";
         this.inventory = "";
         this.tier = 1;

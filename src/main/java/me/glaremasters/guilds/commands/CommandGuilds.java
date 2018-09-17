@@ -9,6 +9,7 @@ import me.glaremasters.guilds.api.events.GuildCreateEvent;
 import me.glaremasters.guilds.api.events.GuildLeaveEvent;
 import me.glaremasters.guilds.api.events.GuildRemoveEvent;
 import me.glaremasters.guilds.guild.Guild;
+import me.glaremasters.guilds.guild.GuildBuilder;
 import me.glaremasters.guilds.guild.GuildMember;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.messages.Messages;
@@ -58,7 +59,12 @@ public class CommandGuilds extends BaseCommand {
         guilds.getActionHandler().addAction(player, new ConfirmAction() {
             @Override
             public void accept() {
-                Guild guild = new Guild(color(name), player.getUniqueId());
+                Guild guild = new GuildBuilder()
+                        .setName(color(name))
+                        .setPrefix(color(name))
+                        .setStatus("Private")
+                        .setMaster(player.getUniqueId())
+                        .createGuild();
                 GuildCreateEvent event = new GuildCreateEvent(player, guild);
                 if (event.isCancelled()) return;
                 guilds.getDatabase().createGuild(guild);
