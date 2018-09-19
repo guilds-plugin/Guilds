@@ -1,5 +1,6 @@
 package me.glaremasters.guilds;
 
+import be.maximvdw.placeholderapi.PlaceholderAPI;
 import co.aikar.commands.BukkitCommandManager;
 import co.aikar.commands.InvalidCommandArgument;
 import co.aikar.taskchain.BukkitTaskChainFactory;
@@ -62,6 +63,7 @@ public final class Guilds extends JavaPlugin {
         setupEconomy();
         setupPermissions();
         info("Hooked into Economy and Permissions!");
+        initializePlaceholder();
         saveData();
 
 
@@ -298,8 +300,31 @@ public final class Guilds extends JavaPlugin {
             info("Hey, it appears you aren't using Paper! Paper is a faster, more active version of Spigot that all your plugins will still work on, learn more at https://whypaper.emc.gs/");
         }
         else {
-            info("Thanks for using this plugin on PaperSpigot! It will work a lot better!");
+            info("Thanks for using this plugin on Paper! It will work a lot better!");
         }
+    }
+
+    private boolean checkMVDW() {
+        return Bukkit.getPluginManager().isPluginEnabled("MVdWPlaceholderAPI");
+    }
+
+    private void initializePlaceholder() {
+
+        if (checkMVDW()) {
+            info("Hooking into MVdWPlacholderAPI...");
+            PlaceholderAPI.registerPlaceholder(this, "guild_name", e -> api.getGuild(e.getPlayer()));
+            PlaceholderAPI.registerPlaceholder(this, "guild_master", e -> api.getGuildMaster(e.getPlayer()));
+            PlaceholderAPI.registerPlaceholder(this, "guild_member_count", e -> api.getGuildMemberCount(e.getPlayer()));
+            PlaceholderAPI.registerPlaceholder(this, "guild_status", e -> api.getGuildStatus(e.getPlayer()));
+            PlaceholderAPI.registerPlaceholder(this, "guild_role", e -> api.getGuildRole(e.getPlayer()));
+            PlaceholderAPI.registerPlaceholder(this, "guild_prefix", e -> api.getGuildPrefix(e.getPlayer()));
+            PlaceholderAPI.registerPlaceholder(this, "guild_members_online", e -> api.getGuildMembersOnline(e.getPlayer()));
+            PlaceholderAPI.registerPlaceholder(this, "guild_tier", e -> String.valueOf(api.getGuildTier(e.getPlayer())));
+            PlaceholderAPI.registerPlaceholder(this, "guild_balance", e -> String.valueOf(api.getBankBalance(e.getPlayer())));
+            PlaceholderAPI.registerPlaceholder(this, "guild_tier_name", e -> api.getTierName(e.getPlayer()));
+            info("Hooked!");
+        }
+
     }
 
 }
