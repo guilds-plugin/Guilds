@@ -82,8 +82,14 @@ public final class Guilds extends JavaPlugin {
 
 
         info("Checking for updates...");
-        SpigotUpdater updater = new SpigotUpdater(this, 48920);
-        updateCheck(updater);
+        getServer().getScheduler().runTaskAsynchronously(this, new Runnable() {
+            SpigotUpdater updater = new SpigotUpdater(Guilds.getGuilds(), 48920);
+            @Override
+            public void run() {
+                updateCheck(updater);
+            }
+        });
+
 
         Stream.of(new GuildPerks(), new Players(this)).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
         info("Ready to go! That only took " + (System.currentTimeMillis() - start) + "ms");
@@ -177,10 +183,10 @@ public final class Guilds extends JavaPlugin {
     private void updateCheck(SpigotUpdater updater) {
         try {
             if (updater.checkForUpdates()) {
-                getLogger().info("You appear to be running a version other than our latest stable release." + " You can download our newest version at: " + updater.getResourceURL());
+                info("You appear to be running a version other than our latest stable release." + " You can download our newest version at: " + updater.getResourceURL());
             }
         } catch (Exception ex) {
-            getLogger().info("Could not check for updates! Stacktrace:");
+            info("Could not check for updates! Stacktrace:");
             ex.printStackTrace();
         }
     }
