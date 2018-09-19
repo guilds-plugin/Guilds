@@ -3,11 +3,17 @@ package me.glaremasters.guilds.listeners;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.utils.Serialization;
+import me.rayzr522.jsonmessage.JSONMessage;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 import static me.glaremasters.guilds.utils.ConfigUtils.getBoolean;
 
@@ -19,6 +25,8 @@ import static me.glaremasters.guilds.utils.ConfigUtils.getBoolean;
 public class Players implements Listener {
 
     private Guilds guilds;
+
+    private Set<UUID> ALREADY_INFORMED = new HashSet<>();
 
     public Players(Guilds guilds) {
         this.guilds = guilds;
@@ -47,5 +55,18 @@ public class Players implements Listener {
         if (guild == null) return;
         if (!event.getInventory().getName().equalsIgnoreCase(guild.getName() + "'s Guild Vault")) return;
         guild.updateInventory(Serialization.serializeInventory(event.getInventory()));
+    }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+        guilds.getServer().getScheduler().scheduleSyncDelayedTask(guilds, () -> {
+            if (player.isOnline()) {
+                if (!ALREADY_INFORMED.contains(player.getUniqueId())) {
+                    JSONMessage.create("Announcements").tooltip(guilds.getAnnouncements()).openURL(guilds.getDescription().getWebsite()).send(player);
+                    ALREADY_INFORMED.add(player.getUniqueId());
+                }
+            }
+        }, 70L);
     }
 }
