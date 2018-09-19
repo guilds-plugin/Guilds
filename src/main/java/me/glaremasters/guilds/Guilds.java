@@ -1,6 +1,7 @@
 package me.glaremasters.guilds;
 
-import co.aikar.commands.*;
+import co.aikar.commands.BukkitCommandManager;
+import co.aikar.commands.InvalidCommandArgument;
 import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
@@ -21,6 +22,7 @@ import me.glaremasters.guilds.updater.SpigotUpdater;
 import me.glaremasters.guilds.utils.ActionHandler;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
+import org.apache.commons.io.IOUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -28,9 +30,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Locale;
 import java.util.stream.Stream;
 
+import static me.glaremasters.guilds.utils.AnnouncementUtil.unescape_perl_string;
 import static me.glaremasters.guilds.utils.ConfigUtils.color;
 
 public final class Guilds extends JavaPlugin {
@@ -87,12 +93,14 @@ public final class Guilds extends JavaPlugin {
             @Override
             public void run() {
                 updateCheck(updater);
+                info(getAnnouncements());
             }
         });
 
 
         Stream.of(new GuildPerks(), new Players(this)).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
         info("Ready to go! That only took " + (System.currentTimeMillis() - start) + "ms");
+        checkPaper();
     }
 
 
@@ -264,4 +272,34 @@ public final class Guilds extends JavaPlugin {
             return GuildRole.getRole(guild.getMember(c.getPlayer().getUniqueId()).getRole());
         });
     }
+
+    public String getAnnouncements() {
+        String announcement;
+        try {
+            URL url = new URL("https://glaremasters.me/guilds/announcements/?id=" + getDescription()
+                    .getVersion());
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestProperty("User-Agent",
+                    "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
+            try (InputStream in = con.getInputStream()) {
+                String encoding = con.getContentEncoding();
+                encoding = encoding == null ? "UTF-8" : encoding;
+                announcement = unescape_perl_string(IOUtils.toString(in, encoding));
+                con.disconnect();
+            }
+        } catch (Exception exception) {
+            announcement = "Could not fetch announcements!";
+        }
+        return announcement;
+    }
+
+    private void checkPaper() {
+        if (!Bukkit.getName().equalsIgnoreCase("Paper")) {
+            info("Hey, it appears you aren't using Paper! Paper is a faster, more active version of Spigot that all your plugins will still work on, learn more at https://whypaper.emc.gs/");
+        }
+        else {
+            info("Thanks for using this plugin on PaperSpigot! It will work a lot better!");
+        }
+    }
+
 }
