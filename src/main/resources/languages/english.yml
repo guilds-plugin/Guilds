@@ -96,3 +96,6 @@ cancel:
 confirm:
   error: "&cYou have no actions to confirm!"
   success: "&aAction confirmed!"
+ally:
+  none: "You have no allies!"
+  list: "Your Guild has the following allies: {ally-list}"

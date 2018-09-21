@@ -26,13 +26,14 @@ public class CommandAlly extends BaseCommand {
     @CommandPermission("guilds.command.ally")
     public void onAllyList(Player player, Guild guild) {
         if (guild.getAllies().size() < 1) {
-            // send message saying no allies
+            getCurrentCommandIssuer().sendInfo(Messages.ALLY__NONE);
             return;
         }
-        // send ally message heading
-        for (String allies : guild.getAllies()) {
-            player.sendMessage(allies);
+        StringBuilder sb = new StringBuilder();
+        for (String allies: guild.getAllies()) {
+            sb.append(allies + ",");
         }
+        getCurrentCommandIssuer().sendInfo(Messages.ALLY__LIST, "{ally-list}", sb.toString());
     }
 
     @Subcommand("ally accept")

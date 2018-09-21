@@ -221,7 +221,7 @@ public final class Guilds extends JavaPlugin {
      * Useful tool for colorful texts to console
      * @param msg the msg you want to log
      */
-    private void info(String msg) {
+     public void info(String msg) {
         Bukkit.getServer().getConsoleSender().sendMessage(color(logPrefix + msg));
     }
 
