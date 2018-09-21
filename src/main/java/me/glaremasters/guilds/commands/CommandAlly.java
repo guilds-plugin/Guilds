@@ -29,11 +29,7 @@ public class CommandAlly extends BaseCommand {
             getCurrentCommandIssuer().sendInfo(Messages.ALLY__NONE);
             return;
         }
-        StringBuilder sb = new StringBuilder();
-        for (String allies: guild.getAllies()) {
-            sb.append(allies + ",");
-        }
-        getCurrentCommandIssuer().sendInfo(Messages.ALLY__LIST, "{ally-list}", sb.toString());
+        getCurrentCommandIssuer().sendInfo(Messages.ALLY__LIST, "{ally-list}", String.join(",", guild.getAllies()));
     }
 
     @Subcommand("ally accept")
