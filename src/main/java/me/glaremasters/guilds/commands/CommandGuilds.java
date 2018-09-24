@@ -26,6 +26,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.PluginDescriptionFile;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static me.glaremasters.guilds.utils.ConfigUtils.color;
 import static me.glaremasters.guilds.utils.ConfigUtils.getInt;
 
@@ -494,6 +497,27 @@ public class CommandGuilds extends BaseCommand {
         guild.addMember(player.getUniqueId(), GuildRole.getLowestRole());
         guild.removeInvitedPlayer(player.getUniqueId());
         getCurrentCommandIssuer().sendInfo(Messages.ACCEPT__GUILD_SUCCESSFUL, "{guild}", guild.getName());
+    }
+
+    @Subcommand("check")
+    @Description("{@@descriptions.check}")
+    @CommandPermission("guilds.command.check")
+    public void onCheck(Player player) {
+        Guild guild2 = Guild.getGuild(player.getUniqueId());
+        if (!(guild2 == null)) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ALREADY_IN_GUILD);
+            return;
+        }
+        List<String> guildList = new ArrayList<>();
+        for (Guild guild : guilds.getGuildHandler().getGuilds().values()) {
+            if (!guild.getInvitedMembers().contains(player.getUniqueId())) {
+                continue;
+            }
+            guildList.add(guild.getName());
+        }
+        if (guildList.size() > 0) {
+            getCurrentCommandIssuer().sendInfo(Messages.PENDING__INVITES, "{number}", String.valueOf(guildList.size()), "{guild}", String.join(",", guildList));
+        }
     }
 
     @HelpCommand

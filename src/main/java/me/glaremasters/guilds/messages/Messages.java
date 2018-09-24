@@ -50,7 +50,9 @@ public enum Messages implements MessageKeyProvider {
 
     ALLY__NONE, ALLY__LIST, ALLY__DECLINED, ALLY__ACCEPTED,
 
-    ACCEPT__GUILD_FULL, ACCEPT__NOT_INVITED, ACCEPT__PLAYER_JOINED, ACCEPT__GUILD_SUCCESSFUL;
+    ACCEPT__GUILD_FULL, ACCEPT__NOT_INVITED, ACCEPT__PLAYER_JOINED, ACCEPT__GUILD_SUCCESSFUL,
+
+    PENDING__INVITES;
 
     private final MessageKey key = MessageKey.of(this.name().toLowerCase().replace("__", ".").replace("_", "-"));
 
