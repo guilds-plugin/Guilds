@@ -6,6 +6,7 @@ import co.aikar.commands.CommandHelp;
 import co.aikar.commands.annotation.*;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.api.events.GuildCreateEvent;
+import me.glaremasters.guilds.api.events.GuildJoinEvent;
 import me.glaremasters.guilds.api.events.GuildLeaveEvent;
 import me.glaremasters.guilds.api.events.GuildRemoveEvent;
 import me.glaremasters.guilds.guild.Guild;
@@ -36,7 +37,8 @@ import static me.glaremasters.guilds.utils.ConfigUtils.getInt;
 @CommandAlias("guild|guilds")
 public class CommandGuilds extends BaseCommand {
 
-    @Dependency private Guilds guilds;
+    @Dependency
+    private Guilds guilds;
 
     @Subcommand("create")
     @Description("{@@descriptions.create}")
@@ -66,6 +68,7 @@ public class CommandGuilds extends BaseCommand {
                         .setMaster(player.getUniqueId())
                         .createGuild();
                 GuildCreateEvent event = new GuildCreateEvent(player, guild);
+                guilds.getServer().getPluginManager().callEvent(event);
                 if (event.isCancelled()) return;
                 guilds.getDatabase().createGuild(guild);
                 getCurrentCommandIssuer().sendInfo(Messages.CREATE__SUCCESSFUL, "{guild}", guild.getName());
@@ -87,8 +90,7 @@ public class CommandGuilds extends BaseCommand {
         ConfirmAction action = guilds.getActionHandler().getActions().get(player);
         if (action == null) {
             getCurrentCommandIssuer().sendInfo(Messages.CONFIRM__ERROR);
-        }
-        else {
+        } else {
             getCurrentCommandIssuer().sendInfo(Messages.CONFIRM__SUCCESS);
             action.accept();
         }
@@ -101,8 +103,7 @@ public class CommandGuilds extends BaseCommand {
         ConfirmAction action = guilds.getActionHandler().getActions().get(player);
         if (action == null) {
             getCurrentCommandIssuer().sendInfo(Messages.CANCEL__ERROR);
-        }
-        else {
+        } else {
             getCurrentCommandIssuer().sendInfo(Messages.CANCEL__SUCCESS);
             action.decline();
         }
@@ -431,6 +432,68 @@ public class CommandGuilds extends BaseCommand {
         } catch (InvalidConfigurationException e) {
             e.printStackTrace();
         }
+    }
+
+    @Subcommand("accept")
+    @Description("{@@descriptions.accept}")
+    @CommandPermission("guilds.command.accept")
+    @CommandAlias("join")
+    @Syntax("<guild name>")
+    public void onAccept(Player player, String name) {
+        if (Guild.getGuild(player.getUniqueId()) != null) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ALREADY_IN_GUILD);
+            return;
+        }
+        Guild guild = (Guild) guilds.getGuildHandler().getGuilds().values().toArray()[0];
+        try {
+            if (name == null) {
+                int invites = 0;
+                int indexes = 0;
+                for (int i = 0; i < guilds.getGuildHandler().getGuilds().values().size(); i++) {
+                    Guild guildtmp = (Guild) guilds.getGuildHandler().getGuilds().values().toArray()[i];
+                    if (guildtmp.getInvitedMembers().contains(player.getUniqueId())) {
+                        invites++;
+                        indexes = i;
+                    }
+                }
+                if (invites == 1) {
+                    guild = (Guild) guilds.getGuildHandler().getGuilds().values().toArray()[indexes];
+                } else {
+                    getCurrentCommandIssuer().sendInfo(Messages.ACCEPT__NOT_INVITED);
+                    return;
+                }
+            } else {
+                guild = Guild.getGuild(name);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        if (guild == null) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__GUILD_NO_EXIST);
+            return;
+        }
+
+        if (guild.getStatus().equalsIgnoreCase("private")) {
+            if (!guild.getInvitedMembers().contains(player.getUniqueId())) {
+                getCurrentCommandIssuer().sendInfo(Messages.ACCEPT__NOT_INVITED);
+                return;
+            }
+        }
+
+        if (guild.getMembers().size() >= guild.getMaxMembers()) {
+            getCurrentCommandIssuer().sendInfo(Messages.ACCEPT__GUILD_FULL);
+            return;
+        }
+
+        GuildJoinEvent event = new GuildJoinEvent(player, guild);
+        guilds.getServer().getPluginManager().callEvent(event);
+        if (event.isCancelled()) return;
+
+        guild.sendMessage(Messages.ACCEPT__PLAYER_JOINED);
+        guild.addMember(player.getUniqueId(), GuildRole.getLowestRole());
+        guild.removeInvitedPlayer(player.getUniqueId());
+        getCurrentCommandIssuer().sendInfo(Messages.ACCEPT__GUILD_SUCCESSFUL, "{guild}", guild.getName());
     }
 
     @HelpCommand

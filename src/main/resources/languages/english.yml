@@ -101,3 +101,8 @@ ally:
   list: "Your Guild has the following allies: {ally-list}"
   declined: "A Guild Ally request has been denied!"
   accepted: "You have a new ally! Do /ally list to check it out!"
+accept:
+  not-invited: "&cThis guild is private / you haven't received an invite from the guild."
+  guild-full: "&cThis guild is full!"
+  player-joined: "A player has joined your guild!"
+  successful: "&aYou joined guild '{guild}&r&a' successfully"
