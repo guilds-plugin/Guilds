@@ -99,3 +99,5 @@ confirm:
 ally:
   none: "You have no allies!"
   list: "Your Guild has the following allies: {ally-list}"
+  declined: "A Guild Ally request has been denied!"
+  accepted: "You have a new ally! Do /ally list to check it out!"

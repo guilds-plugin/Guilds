@@ -48,7 +48,7 @@ public enum Messages implements MessageKeyProvider {
 
     CHAT__GUILD_ENABLED, CHAT__GUILD_DISABLED, CHAT__ALLY_ENABLED, CHAT__ALLY_DISABLED,
 
-    ALLY__NONE, ALLY__LIST;
+    ALLY__NONE, ALLY__LIST, ALLY__DECLINED, ALLY__ACCEPTED;
 
     private final MessageKey key = MessageKey.of(this.name().toLowerCase().replace("__", ".").replace("_", "-"));
 

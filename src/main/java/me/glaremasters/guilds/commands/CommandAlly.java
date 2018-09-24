@@ -47,7 +47,8 @@ public class CommandAlly extends BaseCommand {
         guild.removePendingAlly(targetGuild);
         guild.addAlly(targetGuild);
         targetGuild.addAlly(guild);
-        // send message to both guilds saying they are now allies
+        guild.sendMessage(Messages.ALLY__ACCEPTED);
+        targetGuild.sendMessage(Messages.ALLY__ACCEPTED);
     }
 
     @Subcommand("ally decline")
@@ -64,7 +65,8 @@ public class CommandAlly extends BaseCommand {
 
         if (!guild.getPendingAllies().contains(targetGuild.getName())) return;
         guild.removePendingAlly(targetGuild);
-        // send message to both guilds saying the ally invite was declined
+        guild.sendMessage(Messages.ALLY__DECLINED);
+        targetGuild.sendMessage(Messages.ALLY__DECLINED);
     }
 
     @Subcommand("ally add")

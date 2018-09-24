@@ -2,6 +2,7 @@ package me.glaremasters.guilds.guild;
 
 import com.google.gson.annotations.Expose;
 import me.glaremasters.guilds.Guilds;
+import me.glaremasters.guilds.messages.Messages;
 import org.bukkit.Bukkit;
 
 import java.util.*;
@@ -254,8 +255,8 @@ public class Guild {
         updateGuild("An error occurred while removing an invited member member with the UUID of '%s' to guild '%s'", uuid.toString(), this.name);
     }
 
-    public void sendMessage(String message) {
-        members.stream().map(m -> Bukkit.getPlayer(m.getUniqueId())).filter(Objects::nonNull).forEach(p -> p.sendMessage(color(message)));
+    public void sendMessage(Messages key) {
+        members.stream().map(m -> Bukkit.getPlayer(m.getUniqueId())).filter(Objects::nonNull).forEach(p -> guilds.getManager().getCommandIssuer(p).sendInfo(key));
     }
 
     public void sendTitle(String title, String subtitle, int fadeIn, int stay, int fadeOut) {
