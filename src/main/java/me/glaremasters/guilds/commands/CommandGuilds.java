@@ -15,22 +15,25 @@ import me.glaremasters.guilds.guild.GuildMember;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.updater.SpigotUpdater;
+import me.glaremasters.guilds.utils.ConfigUtils;
 import me.glaremasters.guilds.utils.ConfirmAction;
 import me.glaremasters.guilds.utils.Serialization;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.PluginDescriptionFile;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static me.glaremasters.guilds.utils.ConfigUtils.color;
-import static me.glaremasters.guilds.utils.ConfigUtils.getInt;
+import static me.glaremasters.guilds.utils.ConfigUtils.*;
 
 /**
  * Created by GlareMasters
@@ -520,12 +523,47 @@ public class CommandGuilds extends BaseCommand {
         }
     }
 
+    @Subcommand("buff")
+    @Description("{@@descriptions.buff}")
+    @CommandPermission("guilds.command.buff")
+    public void onBuff(Player player, Guild guild, GuildRole role) {
+        if (!role.canActivateBuff()) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
+            return;
+        }
+
+        Inventory buff = Bukkit.createInventory(null, 9, "Guild Buffs");
+
+        List<String> haste = new ArrayList<>();
+        guilds.getConfig().getStringList("buff.description.haste").stream().map(ConfigUtils::color).forEach(haste::add);
+        haste.add("");
+        haste.add(color(getString("buff.description.price") + getInt("buff.price.haste")));
+        haste.add(color(getString("buff.description.length") + getInt("buff.time.haste")));
+        if (getBoolean("buff.display.haste")) {
+            buff.setItem(0, createItemStack(Material.getMaterial(getString("buff.icon.haste")), getString("buff.name.haste"), haste));
+        }
+
+        player.openInventory(buff);
+
+    }
+
     @HelpCommand
     @CommandPermission("guilds.command.help")
     @Syntax("")
     @Description("{@@descriptions.help}")
     public static void onHelp(CommandHelp help) {
         help.showHelp();
+    }
+
+    public ItemStack createItemStack(Material mat, String name, List<String> lore) {
+        ItemStack paper = new ItemStack(mat);
+
+        ItemMeta meta = paper.getItemMeta();
+        meta.setDisplayName(name);
+        meta.setLore(lore);
+
+        paper.setItemMeta(meta);
+        return paper;
     }
 
 

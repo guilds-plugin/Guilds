@@ -2,19 +2,30 @@ package me.glaremasters.guilds.listeners;
 
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.guild.Guild;
+import me.glaremasters.guilds.guild.GuildRole;
+import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.Serialization;
 import me.rayzr522.jsonmessage.JSONMessage;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.material.Sign;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import static me.glaremasters.guilds.utils.ConfigUtils.color;
 import static me.glaremasters.guilds.utils.ConfigUtils.getBoolean;
 
 /**
@@ -68,5 +79,48 @@ public class Players implements Listener {
                 }
             }
         }, 70L);
+    }
+
+    @EventHandler
+    public void onSignPlace(SignChangeEvent event) {
+        Sign sign = (Sign) event.getBlock().getState().getData();
+        Block attached = event.getBlock().getRelative(sign.getAttachedFace());
+        // Check if the sign is attached to a chest
+        if (attached.getType() != Material.CHEST) return;
+        // Check if it's a Guild Vault sign
+        if (!event.getLine(0).equalsIgnoreCase("[Guild Vault]")) return;
+        // Check if player has permission
+        if (!event.getPlayer().hasPermission("guilds.command.admin")) {
+            event.setCancelled(true);
+            return;
+        }
+        // Send the message to the player saying it's been created
+        guilds.getManager().getCommandIssuer(event.getPlayer()).sendInfo(Messages.ADMIN__GUILD_VAULT_SIGN);
+    }
+
+    @EventHandler
+    public void onGlobalVault(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
+        Block block = event.getClickedBlock();
+        if (block.getType() != Material.WALL_SIGN) return;
+        org.bukkit.block.Sign sign = (org.bukkit.block.Sign) block.getState();
+        if (!sign.getLine(0).equalsIgnoreCase("[Guild Vault]")) return;
+        Guild guild = Guild.getGuild(player.getUniqueId());
+        if (guild == null) return;
+        GuildRole role = GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole());
+        if (!role.canOpenVault()) {
+            guilds.getManager().getCommandIssuer(player).sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
+            return;
+        }
+        if (guild.getInventory().equalsIgnoreCase("")) {
+            Inventory inv = Bukkit.createInventory(null, 54, guild.getName() + "'s Guild Vault");
+            player.openInventory(inv);
+            return;
+        }
+        try {
+            player.openInventory(Serialization.deserializeInventory(guild.getInventory()));
+        } catch (InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
     }
 }
