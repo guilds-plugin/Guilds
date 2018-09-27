@@ -48,6 +48,8 @@ public final class Guilds extends JavaPlugin {
     private ActionHandler actionHandler;
     private BukkitCommandManager manager;
     private static TaskChainFactory taskChainFactory;
+    public static boolean vaultEconomy;
+    private static Economy economy = null;
     private GuildsAPI api;
     private String logPrefix = "&f[&aGuilds&f]&r ";
 
@@ -60,7 +62,7 @@ public final class Guilds extends JavaPlugin {
         api = new GuildsAPI();
         info("API Enabled!");
         info("Hooking into Vault...");
-        setupEconomy();
+        vaultEconomy = setupEconomy();
         setupPermissions();
         info("Hooked into Economy and Permissions!");
         initializePlaceholder();
@@ -125,11 +127,9 @@ public final class Guilds extends JavaPlugin {
      * @return the value of the method
      */
     private boolean setupEconomy() {
-        if (getServer().getPluginManager().getPlugin("Vault") == null) return false;
-        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-        if (rsp == null) return false;
-        Economy econ = rsp.getProvider();
-        return econ != null;
+        RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
+        if (economyProvider != null) economy = economyProvider.getProvider();
+        return (economy != null);
     }
 
     /**
@@ -327,6 +327,10 @@ public final class Guilds extends JavaPlugin {
             info("Hooked!");
         }
 
+    }
+
+    public Economy getEconomy() {
+        return economy;
     }
 
 }

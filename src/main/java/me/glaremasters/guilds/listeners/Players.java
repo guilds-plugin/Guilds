@@ -8,6 +8,7 @@ import me.glaremasters.guilds.utils.Serialization;
 import me.rayzr522.jsonmessage.JSONMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
@@ -15,15 +16,19 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.material.Sign;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 /**
  * Created by GlareMasters
@@ -119,5 +124,65 @@ public class Players implements Listener {
         } catch (InvalidConfigurationException e) {
             e.printStackTrace();
         }
+    }
+
+    @EventHandler
+    public void onBuffBuy(InventoryClickEvent event) {
+        Player player = (Player) event.getWhoClicked();
+        Guild guild = Guild.getGuild(player.getUniqueId());
+        if (event.getInventory().getTitle().equals("Guild Buffs")) event.setCancelled(true);
+        if (event.getCurrentItem() == null) return;
+        GuildBuff buff = GuildBuff.get(event.getCurrentItem().getType());
+        double balance = guild.getBalance();
+        if (buff == null) return;
+        if (balance < buff.cost) {
+            // Fix this message
+            guilds.getManager().getCommandIssuer(player).sendInfo(Messages.BANK__BALANCE);
+            return;
+        }
+        if (guilds.getConfig().getBoolean("disable-buff-stacking") && !player.getActivePotionEffects().isEmpty()) return;
+
+        guild.getMembers()
+                .stream()
+                .map(member -> Bukkit.getOfflinePlayer(member.getUniqueId()))
+                .filter(OfflinePlayer::isOnline)
+                .forEach(member -> ((Player) member).addPotionEffect(new PotionEffect(buff.potion, buff.time, buff.amplifier)));
+        guild.updateBalance(balance - buff.cost);
+    }
+
+    public enum GuildBuff {
+
+        HASTE(PotionEffectType.FAST_DIGGING, Material.FEATHER, "haste"),
+        SPEED(PotionEffectType.SPEED, Material.SUGAR, "speed"),
+        FIRE_RESISTANCE(PotionEffectType.FIRE_RESISTANCE, Material.BLAZE_POWDER, "fire-resistance"),
+        NIGHT_VISION(PotionEffectType.NIGHT_VISION, Material.REDSTONE_TORCH_ON, "night-vision"),
+        INVISIBILITY(PotionEffectType.INVISIBILITY, Material.EYE_OF_ENDER, "invisibility"),
+        STRENGTH(PotionEffectType.INCREASE_DAMAGE, Material.DIAMOND_SWORD, "strength"),
+        JUMP(PotionEffectType.JUMP, Material.DIAMOND_BOOTS, "jump"),
+        WATER_BREATHING(PotionEffectType.WATER_BREATHING, Material.BUCKET, "water-breathing"),
+        REGENERATION(PotionEffectType.REGENERATION, Material.EMERALD, "regeneration");
+
+
+        public final PotionEffectType potion;
+        public final Material itemType;
+        public final int time;
+        public final double cost;
+        public final String name;
+        public final int amplifier;
+
+        GuildBuff(PotionEffectType potion, Material itemType, String configValueName) {
+            this.time = Guilds.getGuilds().getConfig().getInt("buff.time." + configValueName) * 20;
+            this.cost = Guilds.getGuilds().getConfig().getDouble("buff.price." + configValueName);
+            this.itemType = itemType;
+            this.potion = potion;
+            this.name = Guilds.getGuilds().getConfig().getString("buff.name." + configValueName);
+            this.amplifier = Guilds.getGuilds().getConfig().getInt("buff.amplifier." + configValueName);
+        }
+
+        public static GuildBuff get(Material itemType) {
+
+            return Stream.of(values()).filter(it -> it.itemType == itemType).findAny().orElse(null);
+        }
+
     }
 }
