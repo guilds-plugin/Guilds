@@ -33,7 +33,7 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import java.util.ArrayList;
 import java.util.List;
 
-import static me.glaremasters.guilds.utils.ConfigUtils.*;
+import static me.glaremasters.guilds.utils.ConfigUtils.color;
 
 /**
  * Created by GlareMasters
@@ -227,7 +227,7 @@ public class CommandGuilds extends BaseCommand {
             return;
         }
         int tier = guild.getTier();
-        if (tier >= getInt("max-number-of-tiers")) {
+        if (tier >= guilds.getConfig().getInt("max-number-of-tiers")) {
             getCurrentCommandIssuer().sendInfo(Messages.UPGRADE__TIER_MAX);
             return;
         }
@@ -531,20 +531,18 @@ public class CommandGuilds extends BaseCommand {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
             return;
         }
-
         Inventory buff = Bukkit.createInventory(null, 9, "Guild Buffs");
-
-        List<String> haste = new ArrayList<>();
-        guilds.getConfig().getStringList("buff.description.haste").stream().map(ConfigUtils::color).forEach(haste::add);
-        haste.add("");
-        haste.add(color(getString("buff.description.price") + getInt("buff.price.haste")));
-        haste.add(color(getString("buff.description.length") + getInt("buff.time.haste")));
-        if (getBoolean("buff.display.haste")) {
-            buff.setItem(0, createItemStack(Material.getMaterial(getString("buff.icon.haste")), getString("buff.name.haste"), haste));
-        }
-
+        List<String> lore = new ArrayList<>();
+        createBuffItem("haste", lore, buff, 0);
+        createBuffItem("speed", lore, buff, 1);
+        createBuffItem("fire-resistance", lore, buff, 2);
+        createBuffItem("night-vision", lore, buff, 3);
+        createBuffItem("invisibility", lore, buff, 4);
+        createBuffItem("strength", lore, buff, 5);
+        createBuffItem("jump", lore, buff, 6);
+        createBuffItem("water-breathing", lore, buff, 7);
+        createBuffItem("regeneration", lore, buff, 8);
         player.openInventory(buff);
-
     }
 
     @HelpCommand
@@ -555,7 +553,7 @@ public class CommandGuilds extends BaseCommand {
         help.showHelp();
     }
 
-    public ItemStack createItemStack(Material mat, String name, List<String> lore) {
+    private ItemStack createItemStack(Material mat, String name, List<String> lore) {
         ItemStack paper = new ItemStack(mat);
 
         ItemMeta meta = paper.getItemMeta();
@@ -564,6 +562,17 @@ public class CommandGuilds extends BaseCommand {
 
         paper.setItemMeta(meta);
         return paper;
+    }
+
+    private void createBuffItem(String buffName, List<String> name, Inventory buff, int slot) {
+        guilds.getConfig().getStringList("buff.description." + buffName).stream().map(ConfigUtils::color).forEach(name::add);
+        name.add("");
+        name.add(color(guilds.getConfig().getString("buff.description.price") + guilds.getConfig().getInt("buff.price." + buffName)));
+        name.add(color(guilds.getConfig().getString("buff.description.length") + guilds.getConfig().getInt("buff.time." + buffName)));
+        if (guilds.getConfig().getBoolean("buff.display." + buffName)) {
+            buff.setItem(slot, createItemStack(Material.getMaterial(guilds.getConfig().getString("buff.icon." + buffName)), guilds.getConfig().getString("buff.name." + buffName), name));
+        }
+        name.clear();
     }
 
 

@@ -7,8 +7,6 @@ import org.bukkit.Bukkit;
 
 import java.util.*;
 
-import static me.glaremasters.guilds.utils.ConfigUtils.*;
-
 /**
  * Created by GlareMasters on 6/28/2018.
  */
@@ -189,41 +187,41 @@ public class Guild {
     }
 
     public String getTierName() {
-        return getString("tier" + getTier() + ".name");
+        return guilds.getConfig().getString("tier" + getTier() + ".name");
     }
 
     public int getTierCost() {
-        if (getTier() >= getInt("max-number-of-tiers")) return 0;
+        if (getTier() >= guilds.getConfig().getInt("max-number-of-tiers")) return 0;
         int newTier = getTier() + 1;
-        return getInt("tier" + newTier + ".cost");
+        return guilds.getConfig().getInt("tier" + newTier + ".cost");
     }
 
     public int getMaxMembers() {
-        return getInt("tier" + getTier() + ".max-members");
+        return guilds.getConfig().getInt("tier" + getTier() + ".max-members");
     }
 
     public int getMembersToRankup() {
-        return getInt("tier" + tier + ".members-to-rankup");
+        return guilds.getConfig().getInt("tier" + tier + ".members-to-rankup");
     }
 
     public double getExpMultiplier() {
-        return getDouble("tier" + getTier() + ".mob-xp-multiplier");
+        return guilds.getConfig().getDouble("tier" + getTier() + ".mob-xp-multiplier");
     }
 
     public List<String> getGuildPerms() {
-        return getStringList("tier" + getTier() + ".permissions");
+        return guilds.getConfig().getStringList("tier" + getTier() + ".permissions");
     }
 
     public double getDamageMultiplier() {
-        return getDouble("tier" + getTier() + ".damage-multiplier");
+        return guilds.getConfig().getDouble("tier" + getTier() + ".damage-multiplier");
     }
 
     public double getMaxBankBalance() {
-        return getDouble("tier" + getTier() + ".max-bank-balance");
+        return guilds.getConfig().getDouble("tier" + getTier() + ".max-bank-balance");
     }
 
     public int getMaxTier() {
-        return getInt("max-number-of-tiers");
+        return guilds.getConfig().getInt("max-number-of-tiers");
     }
 
     public void addMember(UUID uuid, GuildRole role) {

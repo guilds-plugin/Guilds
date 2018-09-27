@@ -25,9 +25,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import static me.glaremasters.guilds.utils.ConfigUtils.color;
-import static me.glaremasters.guilds.utils.ConfigUtils.getBoolean;
-
 /**
  * Created by GlareMasters
  * Date: 7/19/2018
@@ -55,8 +52,8 @@ public class Players implements Listener {
         Guild playerGuild = Guild.getGuild(player.getUniqueId());
         Guild damagerGuild = Guild.getGuild(damager.getUniqueId());
         if (playerGuild == null || damagerGuild == null) return;
-        if (playerGuild.equals(damagerGuild)) event.setCancelled(!getBoolean("allow-guild-damage"));
-        if (Guild.areAllies(player.getUniqueId(), damager.getUniqueId())) event.setCancelled(!getBoolean("allow-ally-damage"));
+        if (playerGuild.equals(damagerGuild)) event.setCancelled(!guilds.getConfig().getBoolean("allow-guild-damage"));
+        if (Guild.areAllies(player.getUniqueId(), damager.getUniqueId())) event.setCancelled(!guilds.getConfig().getBoolean("allow-ally-damage"));
     }
 
     @EventHandler
