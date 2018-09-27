@@ -7,6 +7,7 @@ import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
 import me.glaremasters.guilds.api.GuildsAPI;
+import me.glaremasters.guilds.api.Metrics;
 import me.glaremasters.guilds.commands.CommandAdmin;
 import me.glaremasters.guilds.commands.CommandAlly;
 import me.glaremasters.guilds.commands.CommandBank;
@@ -66,6 +67,9 @@ public final class Guilds extends JavaPlugin {
         setupPermissions();
         info("Hooked into Economy and Permissions!");
         initializePlaceholder();
+        info("Enabling Metrics...");
+        Metrics metrics = new Metrics(this);
+        metrics.addCustomChart(new Metrics.SingleLineChart("guilds", () -> getGuildHandler().getGuilds().values().size()));
         saveData();
 
 
