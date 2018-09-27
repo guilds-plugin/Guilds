@@ -166,16 +166,16 @@ public final class Guilds extends JavaPlugin {
     }
 
     /**
-     * Get the guild handler in the plugin
-     * @return the guild handler being used
+     * Get the guild handlers in the plugin
+     * @return the guild handlers being used
      */
     public GuildHandler getGuildHandler() {
         return guildHandler;
     }
 
     /**
-     * Get the action handler in the plugin
-     * @return the action handler being used
+     * Get the action handlers in the plugin
+     * @return the action handlers being used
      */
     public ActionHandler getActionHandler() {
         return actionHandler;

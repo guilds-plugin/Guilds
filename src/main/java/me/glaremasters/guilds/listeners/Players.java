@@ -3,6 +3,7 @@ package me.glaremasters.guilds.listeners;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
+import me.glaremasters.guilds.handlers.Tablist;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.Serialization;
 import me.rayzr522.jsonmessage.JSONMessage;
@@ -46,7 +47,7 @@ public class Players implements Listener {
     }
 
     /**
-     * Guild / Ally damage handler
+     * Guild / Ally damage handlers
      * @param event handles when damage is done between two players that might be in the same guild or are allies
      */
     @EventHandler
@@ -148,6 +149,14 @@ public class Players implements Listener {
                 .filter(OfflinePlayer::isOnline)
                 .forEach(member -> ((Player) member).addPotionEffect(new PotionEffect(buff.potion, buff.time, buff.amplifier)));
         guild.updateBalance(balance - buff.cost);
+    }
+
+    @EventHandler
+    public void onTablist(PlayerJoinEvent event) {
+        Tablist tablist = new Tablist(guilds);
+        Player player = event.getPlayer();
+        Guild guild = Guild.getGuild(player.getUniqueId());
+        if (guild != null) guilds.getServer().getScheduler().scheduleAsyncDelayedTask(guilds, () -> tablist.add(player), 30L);
     }
 
     public enum GuildBuff {
