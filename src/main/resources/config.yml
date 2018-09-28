@@ -70,7 +70,6 @@ lang: english
 # Console will be able to run the /guild give on a player to give different items.
 # This may throw errors if you are on 1.8
 
-rewards-enabled: true
 upgrade-ticket:
   name: "&bGuild Upgrade Ticket"
   lore: "&dRight click this ticket to upgrade your guild tier!"

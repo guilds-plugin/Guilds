@@ -19,6 +19,7 @@ import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.listeners.GuildPerks;
 import me.glaremasters.guilds.listeners.Players;
+import me.glaremasters.guilds.listeners.Tickets;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.updater.SpigotUpdater;
 import me.glaremasters.guilds.utils.ActionHandler;
@@ -106,7 +107,7 @@ public final class Guilds extends JavaPlugin {
         });
 
 
-        Stream.of(new GuildPerks(), new Players(this)).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
+        Stream.of(new GuildPerks(), new Players(this), new Tickets(this)).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
         info("Ready to go! That only took " + (System.currentTimeMillis() - start) + "ms");
         checkPaper();
     }
