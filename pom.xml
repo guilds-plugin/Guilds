@@ -67,6 +67,10 @@
                   <pattern>io.papermc.lib</pattern>
                   <shadedPattern>me.glaremasters.paperlib</shadedPattern>
                 </relocation>
+                <relocation>
+                  <pattern>com.github.stefvanschie.inventoryframework</pattern>
+                  <shadedPattern>me.glaremasters.inventoryframework</shadedPattern>
+                </relocation>
               </relocations>
             </configuration>
           </execution>
@@ -180,6 +184,12 @@
       <groupId>io.papermc</groupId>
       <artifactId>paperlib</artifactId>
       <version>1.0.1</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.github.stefvanschie.inventoryframework</groupId>
+      <artifactId>IF</artifactId>
+      <version>0.2.3</version>
       <scope>compile</scope>
     </dependency>
   </dependencies>

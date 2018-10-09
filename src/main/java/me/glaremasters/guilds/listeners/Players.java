@@ -131,6 +131,7 @@ public class Players implements Listener {
     public void onBuffBuy(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
         Guild guild = Guild.getGuild(player.getUniqueId());
+        if (!event.getInventory().getTitle().equals("Guild Buffs")) return;
         if (event.getInventory().getTitle().equals("Guild Buffs")) event.setCancelled(true);
         if (event.getCurrentItem() == null) return;
         GuildBuff buff = GuildBuff.get(event.getCurrentItem().getType());
