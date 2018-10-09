@@ -6,6 +6,7 @@ import co.aikar.commands.InvalidCommandArgument;
 import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
+import io.papermc.lib.PaperLib;
 import me.glaremasters.guilds.api.GuildsAPI;
 import me.glaremasters.guilds.api.Metrics;
 import me.glaremasters.guilds.commands.CommandAdmin;
@@ -109,7 +110,7 @@ public final class Guilds extends JavaPlugin {
 
         Stream.of(new GuildPerks(), new Players(this), new Tickets(this)).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
         info("Ready to go! That only took " + (System.currentTimeMillis() - start) + "ms");
-        checkPaper();
+        PaperLib.suggestPaper(this);
     }
 
 
@@ -300,15 +301,6 @@ public final class Guilds extends JavaPlugin {
             announcement = "Could not fetch announcements!";
         }
         return announcement;
-    }
-
-    private void checkPaper() {
-        if (!Bukkit.getName().equalsIgnoreCase("Paper")) {
-            info("Hey, it appears you aren't using Paper! Paper is a faster, more active version of Spigot that all your plugins will still work on, learn more at https://whypaper.emc.gs/");
-        }
-        else {
-            info("Thanks for using this plugin on Paper! It will work a lot better!");
-        }
     }
 
     private boolean checkMVDW() {
