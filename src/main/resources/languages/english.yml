@@ -20,6 +20,7 @@ descriptions:
   create: "Create a Guild"
   decline: "Decline a Guild invite"
   delete: "Delete your guild"
+  delhome: "Unset your Guild home"
   help: "Show this help menu"
   home: "Go to your Guild home"
   kick: "Kick someone from your Guild"

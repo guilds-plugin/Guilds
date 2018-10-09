@@ -135,6 +135,18 @@ public class CommandGuilds extends BaseCommand {
         getCurrentCommandIssuer().sendInfo(Messages.SETHOME__SUCCESSFUL);
     }
 
+    @Subcommand("delhome")
+    @Description("{@@descriptions.delhome}")
+    @CommandPermission("guilds.command.delhome")
+    public void onDelHome(Player player, Guild guild, GuildRole role) {
+        if (!role.canChangeHome()) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
+            return;
+        }
+        guild.updateHome("");
+        getCurrentCommandIssuer().sendInfo(Messages.SETHOME__SUCCESSFUL);
+    }
+
     @Subcommand("home")
     @Description("{@@descriptions.home}")
     @CommandPermission("guilds.command.home")
