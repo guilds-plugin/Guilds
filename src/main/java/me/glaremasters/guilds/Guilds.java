@@ -283,6 +283,10 @@ public final class Guilds extends JavaPlugin {
         });
     }
 
+    /**
+     * Grab the announcements for the plugins
+     * @return the announcements string
+     */
     public String getAnnouncements() {
         String announcement;
         try {
@@ -303,10 +307,17 @@ public final class Guilds extends JavaPlugin {
         return announcement;
     }
 
+    /**
+     * Check if MVdWPlaceholderAPI is running
+     * @return true or false
+     */
     private boolean checkMVDW() {
         return Bukkit.getPluginManager().isPluginEnabled("MVdWPlaceholderAPI");
     }
 
+    /**
+     * Load all the placeholders for MVDW
+     */
     private void initializePlaceholder() {
 
         if (checkMVDW()) {
@@ -326,6 +337,10 @@ public final class Guilds extends JavaPlugin {
 
     }
 
+    /**
+     * Get the economy
+     * @return economy
+     */
     public Economy getEconomy() {
         return economy;
     }
