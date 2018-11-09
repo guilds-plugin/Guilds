@@ -5,8 +5,14 @@ package me.glaremasters.guilds.utils;
  */
 public interface ConfirmAction {
 
+    /**
+     * Confirm an action
+     */
     void accept();
 
+    /**
+     * Decline an action
+     */
     void decline();
 
 }

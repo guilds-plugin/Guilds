@@ -5,8 +5,14 @@ package me.glaremasters.guilds.utils;
  */
 public interface IHandler {
 
+    /**
+     * Enable the IHandler
+     */
     void enable();
 
+    /**
+     * Disable the IHandler
+     */
     void disable();
 
 }

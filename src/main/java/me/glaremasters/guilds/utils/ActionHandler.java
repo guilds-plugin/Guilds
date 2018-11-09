@@ -13,26 +13,46 @@ public class ActionHandler implements IHandler {
 
     private HashMap<CommandSender, ConfirmAction> actions;
 
+    /**
+     * Enable the Actionhandler
+     */
     @Override
     public void enable() {
         actions = new HashMap<>();
     }
 
+    /**
+     * Disable the ActionHandler
+     */
     @Override
     public void disable() {
         actions.clear();
         actions = null;
     }
 
+    /**
+     * Get all the current actions
+     * @return current actions
+     */
     public HashMap<CommandSender, ConfirmAction> getActions() {
         return actions;
     }
 
+    /**
+     * Adds an action to the action list
+     * @param sender user
+     * @param action action
+     * @return action added
+     */
     public ConfirmAction addAction(CommandSender sender, ConfirmAction action) {
         actions.put(sender, action);
         return action;
     }
 
+    /**
+     * Removes an action from the action list
+     * @param sender user
+     */
     public void removeAction(CommandSender sender) {
         actions.remove(sender);
     }

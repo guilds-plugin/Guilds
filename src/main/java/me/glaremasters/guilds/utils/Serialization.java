@@ -22,6 +22,13 @@ public class Serialization {
         return serializeInventory(inventory.getTitle(), inventory.getSize(), inventory.getStorageContents());
     }
 
+    /**
+     * Serialize the inventory to JSON
+     * @param title name of inventory
+     * @param size size of inventory
+     * @param items the items to be serialized
+     * @return serialized inventory
+     */
     public static String serializeInventory(String title, int size, ItemStack[] items) {
         JsonConfiguration json = new JsonConfiguration();
         json.set("size", size);
@@ -40,6 +47,13 @@ public class Serialization {
         return deserializeInventory(jsons, null);
     }
 
+    /**
+     * Deserialize the inventory from JSON
+     * @param jsons the JSON string
+     * @param title the name of the inventory
+     * @return the deserialized string
+     * @throws InvalidConfigurationException
+     */
     public static Inventory deserializeInventory(String jsons, String title) throws InvalidConfigurationException {
         try {
             JsonConfiguration json = new JsonConfiguration();
