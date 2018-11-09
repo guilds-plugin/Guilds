@@ -20,6 +20,11 @@ public class SpigotUpdater {
     private String newVersion;
     private JavaPlugin plugin;
 
+    /**
+     * The main part of the SpigotUpdater
+     * @param plugin instance of plugin
+     * @param projectID the ID of the spigot project
+     */
     public SpigotUpdater(JavaPlugin plugin, int projectID) {
         this.plugin = plugin;
         this.newVersion = plugin.getDescription().getVersion();
@@ -32,6 +37,10 @@ public class SpigotUpdater {
         }
     }
 
+    /**
+     * Get a copy of the plugin instance
+     * @return plugin instance
+     */
     public JavaPlugin getPlugin() {
         return plugin;
     }
