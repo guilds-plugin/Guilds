@@ -87,41 +87,41 @@ upgrade-ticket:
   # The "list" section allows you to choose how the /guild list is styled.
   # You can change the colors, and the language of all parts of the guild list GUI.
   # The item is what is used to display all the guilds.
-  list:
-    name: "&cGuild Name: "
-    prefix: "&aGuild Prefix: "
-    master: "&8Guild Master: "
-    guildstatus: "&3Guild Status: "
-    guildtier: "&fGuild Tier: "
-    guildbalance: "&dGuild Balance: "
-    member-count: "&6Member Count: "
-    members: "&5Members: "
-    page-item: "DIAMOND_BLOCK"
+list:
+  name: "&cGuild Name: "
+  prefix: "&aGuild Prefix: "
+  master: "&8Guild Master: "
+  guildstatus: "&3Guild Status: "
+  guildtier: "&fGuild Tier: "
+  guildbalance: "&dGuild Balance: "
+  member-count: "&6Member Count: "
+  members: "&5Members: "
+  page-item: "DIAMOND_BLOCK"
 
-  guild-list:
-    gui-name: "Guild List"
-    item-name: "{player}'s Guild"
-    next-page-item: "EMPTY_MAP"
-    next-page-item-name: "Next Page"
-    previous-page-item: "EMPTY_MAP"
-    previous-page-item-name: "Previous Page"
-    page-number-item: "DIAMOND_BLOCK"
-    page-number-item-name: "Page: {page}"
-    head-lore:
-    - "Guild Name: {guild-name}"
-    - "Guild Prefix: {guild-prefix}"
-    - "Guild Master: {guild-master}"
-    - "Guild Status: {guild-status}"
-    - "Guild Tier: {guild-tier}"
-    - "Guild Balance: {guild-balance}"
-    - "Guild Memeber Count: {guild-member-count}"
+guild-list:
+  gui-name: "Guild List"
+  item-name: "{player}'s Guild"
+  next-page-item: "EMPTY_MAP"
+  next-page-item-name: "Next Page"
+  previous-page-item: "EMPTY_MAP"
+  previous-page-item-name: "Previous Page"
+  page-number-item: "DIAMOND_BLOCK"
+  page-number-item-name: "Page: {page}"
+  head-lore:
+  - "Guild Name: {guild-name}"
+  - "Guild Prefix: {guild-prefix}"
+  - "Guild Master: {guild-master}"
+  - "Guild Status: {guild-status}"
+  - "Guild Tier: {guild-tier}"
+  - "Guild Balance: {guild-balance}"
+  - "Guild Memeber Count: {guild-member-count}"
 
-  # You can choose what random items are used to display Guilds in the Guild List
-  random-items:
-  - "STICK"
-  - "DIAMOND_SPADE"
-  - "REDSTONE_TORCH_ON"
-  - "DIAMOND_BLOCK"
+# You can choose what random items are used to display Guilds in the Guild List
+random-items:
+- "STICK"
+- "DIAMOND_SPADE"
+- "REDSTONE_TORCH_ON"
+- "DIAMOND_BLOCK"
 
 # The "info" section allows you to choose how information in /guild info is displayed to users.
 # You can change the colors, and the language of all parts of the guild info GUI.

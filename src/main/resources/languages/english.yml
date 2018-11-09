@@ -25,6 +25,7 @@ descriptions:
   home: "Go to your Guild home"
   kick: "Kick someone from your Guild"
   leave: "Leave your Guild"
+  list: "List all Guilds"
   prefix: "Change the prefix of your Guild"
   reload: "Reloads the plugin's configuration file"
   rename: "Change the name of your Guild"

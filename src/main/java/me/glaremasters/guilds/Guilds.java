@@ -19,6 +19,7 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.listeners.GuildPerks;
+import me.glaremasters.guilds.listeners.InventoryListener;
 import me.glaremasters.guilds.listeners.Players;
 import me.glaremasters.guilds.listeners.Tickets;
 import me.glaremasters.guilds.messages.Messages;
@@ -41,11 +42,11 @@ import java.util.Locale;
 import java.util.stream.Stream;
 
 import static me.glaremasters.guilds.utils.AnnouncementUtil.unescape_perl_string;
-import static me.glaremasters.guilds.utils.ConfigUtils.color;
+import static co.aikar.commands.ACFBukkitUtil.color;
 
 public final class Guilds extends JavaPlugin {
 
-    private static Guilds guilds;
+    public static Guilds guilds;
     private DatabaseProvider database;
     private GuildHandler guildHandler;
     private ActionHandler actionHandler;
@@ -108,7 +109,7 @@ public final class Guilds extends JavaPlugin {
         });
 
 
-        Stream.of(new GuildPerks(), new Players(this), new Tickets(this)).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
+        Stream.of(new GuildPerks(), new Players(this), new Tickets(this), new InventoryListener(this)).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
         info("Ready to go! That only took " + (System.currentTimeMillis() - start) + "ms");
         PaperLib.suggestPaper(this);
     }

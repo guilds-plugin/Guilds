@@ -4,7 +4,7 @@ import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.guild.Guild;
 import org.bukkit.entity.Player;
 
-import static me.glaremasters.guilds.utils.ConfigUtils.color;
+import static co.aikar.commands.ACFBukkitUtil.color;
 
 /**
  * Created by GlareMasters

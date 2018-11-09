@@ -11,7 +11,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import static me.glaremasters.guilds.utils.ConfigUtils.color;
+import static co.aikar.commands.ACFBukkitUtil.color;
 
 /**
  * Created by GlareMasters

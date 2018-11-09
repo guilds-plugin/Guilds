@@ -11,7 +11,7 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import static me.glaremasters.guilds.utils.ConfigUtils.color;
+import static co.aikar.commands.ACFBukkitUtil.color;
 
 /**
  * Created by GlareMasters
