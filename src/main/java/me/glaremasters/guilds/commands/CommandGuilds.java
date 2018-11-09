@@ -5,10 +5,7 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.CommandHelp;
 import co.aikar.commands.annotation.*;
 import me.glaremasters.guilds.Guilds;
-import me.glaremasters.guilds.api.events.GuildCreateEvent;
-import me.glaremasters.guilds.api.events.GuildJoinEvent;
-import me.glaremasters.guilds.api.events.GuildLeaveEvent;
-import me.glaremasters.guilds.api.events.GuildRemoveEvent;
+import me.glaremasters.guilds.api.events.*;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildBuilder;
 import me.glaremasters.guilds.guild.GuildMember;
@@ -271,6 +268,43 @@ public class CommandGuilds extends BaseCommand {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    @Subcommand("invite")
+    @Description("{@@descriptions.invite}")
+    @CommandPermission("guilds.command.invite")
+    @Syntax("<name>")
+    public void onInvite(Player player, Player targetPlayer, Guild guild, GuildRole role) {
+
+        if (!role.canUpgradeGuild()) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
+            return;
+        }
+
+        if (targetPlayer == null || !targetPlayer.isOnline()) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__PLAYER_NOT_FOUND);
+            return;
+        }
+        Guild invitedPlayerGuild = Guild.getGuild(targetPlayer.getUniqueId());
+
+        if (invitedPlayerGuild != null) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ALREADY_IN_GUILD);
+            return;
+        }
+
+        if (guild.getInvitedMembers().contains(targetPlayer.getUniqueId())) {
+            getCurrentCommandIssuer().sendInfo(Messages.INVITE__ALREADY_INVITED);
+            return;
+        }
+
+        GuildInviteEvent event = new GuildInviteEvent(player, guild, targetPlayer);
+        guilds.getServer().getPluginManager().callEvent(event);
+        if (event.isCancelled()) return;
+
+        guild.inviteMember(targetPlayer.getUniqueId());
+        guilds.getManager().getCommandIssuer(targetPlayer).sendInfo(Messages.INVITE__MESSAGE, "{player}", player.getName(), "{guild}", guild.getName());
+        getCurrentCommandIssuer().sendInfo(Messages.INVITE__SUCCESSFUL, "{player}", targetPlayer.getName());
+
     }
 
     @Subcommand("upgrade")

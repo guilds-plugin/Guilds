@@ -78,6 +78,10 @@ leave:
 transfer:
   newmaster: "&aYou are the new Guild Master of your Guild!"
   success: "&aGuild has been transferred!"
+invite:
+  already-invited: "User is already invited to your guild"
+  message: "&a{player} has invited you to his/her guild, '{guild}'"
+  successful: "&aYou've successfully invited {player} to your guild!"
 upgrade:
   tier-max: "&cCannot upgrade again! You're already maxed!"
   money-warning: "&cYou are about to spend {amount} to set upgrade your guild. (Type /guilds confirm to continue)"
