@@ -150,7 +150,8 @@ public class CommandGuilds extends BaseCommand {
     @Subcommand("give")
     @Description("{@@descriptions.give}")
     @CommandPermission("guilds.command.give")
-    public void onGive(Player player, Integer amount) {
+    @Syntax("<player> <amount>")
+    public void onGive(CommandSender sender, Player player, Integer amount) {
         if (player == null) return;
 
         String ticketName = color(guilds.getConfig().getString("upgrade-ticket.name"));
