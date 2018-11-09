@@ -55,7 +55,7 @@ public class CommandAlly extends BaseCommand {
     @Description("{@@descriptions.ally-decline}")
     @CommandPermission("guilds.command.ally")
     @Syntax("<guild name>")
-    public void onAllyDeclince(Player player, Guild guild, GuildRole role, String name) {
+    public void onAllyDecline(Player player, Guild guild, GuildRole role, String name) {
         if (!role.canRemoveAlly()) {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
             return;
