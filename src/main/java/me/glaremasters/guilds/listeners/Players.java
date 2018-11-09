@@ -65,6 +65,10 @@ public class Players implements Listener {
         if (Guild.areAllies(player.getUniqueId(), damager.getUniqueId())) event.setCancelled(!guilds.getConfig().getBoolean("allow-ally-damage"));
     }
 
+    /**
+     * This handles the checking of an inventory to see if it's a Guild Vault
+     * @param event
+     */
     @EventHandler
     public void onInvClose(InventoryCloseEvent event) {
         Player player = (Player) event.getPlayer();
@@ -74,6 +78,10 @@ public class Players implements Listener {
         guild.updateInventory(Serialization.serializeInventory(event.getInventory()));
     }
 
+    /**
+     * This will check if a user is OP and will inform them of any important announcements from the Guild's Developer
+     * @param event
+     */
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
@@ -87,6 +95,10 @@ public class Players implements Listener {
         }, 70L);
     }
 
+    /**
+     * Check if the sign being placed is to be turned into a Guild Sign
+     * @param event
+     */
     @EventHandler
     public void onSignPlace(SignChangeEvent event) {
         Sign sign = (Sign) event.getBlock().getState().getData();
@@ -104,6 +116,10 @@ public class Players implements Listener {
         guilds.getManager().getCommandIssuer(event.getPlayer()).sendInfo(Messages.ADMIN__GUILD_VAULT_SIGN);
     }
 
+    /**
+     * Check if the sign that's being interacted with is a Guild Sign
+     * @param event
+     */
     @EventHandler
     public void onGlobalVault(PlayerInteractEvent event) {
         Player player = event.getPlayer();
@@ -130,6 +146,10 @@ public class Players implements Listener {
         }
     }
 
+    /**
+     * Check if the inventory being clicked on is part of the Guild Buff system
+     * @param event
+     */
     @EventHandler
     public void onBuffBuy(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
@@ -155,6 +175,11 @@ public class Players implements Listener {
         guild.updateBalance(balance - buff.cost);
     }
 
+    /**
+     * This will check if the server uses Guild's Tablist and will add a prefix to their name
+     * @param event
+     */
+    // todo Check config to enable or not
     @EventHandler
     public void onTablist(PlayerJoinEvent event) {
         Tablist tablist = new Tablist(guilds);
@@ -163,6 +188,10 @@ public class Players implements Listener {
         if (guild != null) guilds.getServer().getScheduler().scheduleAsyncDelayedTask(guilds, () -> tablist.add(player), 30L);
     }
 
+    /**
+     * This event handles Guild Chat and how it's received by other members of the Guild
+     * @param event
+     */
     @EventHandler(priority = EventPriority.HIGH)
     public void onChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
@@ -182,6 +211,9 @@ public class Players implements Listener {
         }
     }
 
+    /**
+     * This is just an enum of all the buff types to choose from
+     */
     public enum GuildBuff {
 
         HASTE(PotionEffectType.FAST_DIGGING, Material.FEATHER, "haste"),
