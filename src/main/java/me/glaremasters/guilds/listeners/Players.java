@@ -14,11 +14,13 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
@@ -41,6 +43,7 @@ public class Players implements Listener {
     private Guilds guilds;
 
     private Set<UUID> ALREADY_INFORMED = new HashSet<>();
+    public static final Set<UUID> GUILD_CHAT_PLAYERS = new HashSet<>();
 
     public Players(Guilds guilds) {
         this.guilds = guilds;
@@ -158,6 +161,25 @@ public class Players implements Listener {
         Player player = event.getPlayer();
         Guild guild = Guild.getGuild(player.getUniqueId());
         if (guild != null) guilds.getServer().getScheduler().scheduleAsyncDelayedTask(guilds, () -> tablist.add(player), 30L);
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onChat(AsyncPlayerChatEvent event) {
+        Player player = event.getPlayer();
+        Guild guild = Guild.getGuild(player.getUniqueId());
+
+        if (guild == null) {
+            return;
+        }
+
+        if (GUILD_CHAT_PLAYERS.contains(player.getUniqueId())) {
+            event.getRecipients().removeIf(r -> guild.getMember(r.getUniqueId()) == null);
+            for (Player recipient : event.getRecipients()) {
+                recipient.sendMessage((guilds.getConfig().getString("guild-chat-format")).replace("{role}", GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole())
+                        .getName()).replace("{player}", player.getName()).replace("{message}", event.getMessage()));
+            }
+            event.setCancelled(true);
+        }
     }
 
     public enum GuildBuff {

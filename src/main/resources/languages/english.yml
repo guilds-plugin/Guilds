@@ -40,6 +40,9 @@ create:
   warning: "&cType /guilds confirm to create your guild, type /guilds cancel to cancel."
   successful: "&aGuild '{guild}&r&a' created successfully!"
   cancelled: "&cGuild creation cancelled!"
+chat:
+  disabled: "Guild Chat Disabled"
+  enabled: "Guild Chat Enabled"
 error:
   already-in-guild: "&cYou're already in a guild!"
   no-guild: "&cYou're not in a guild!"

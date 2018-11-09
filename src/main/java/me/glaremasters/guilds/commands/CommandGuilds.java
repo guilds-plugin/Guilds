@@ -33,6 +33,8 @@ import org.bukkit.plugin.PluginDescriptionFile;
 
 import java.util.*;
 
+import static me.glaremasters.guilds.listeners.Players.GUILD_CHAT_PLAYERS;
+
 /**
  * Created by GlareMasters
  * Date: 9/9/2018
@@ -173,6 +175,26 @@ public class CommandGuilds extends BaseCommand {
         guilds.getDatabase().removeGuild(Guild.getGuild(oldName));
         getCurrentCommandIssuer().sendInfo(Messages.RENAME__SUCCESSFUL, "{name}", name);
         guild.updateName(color(name));
+    }
+
+    @Subcommand("chat")
+    @Description("{@@descriptions.chat}")
+    @CommandPermission("guilds.command.chat")
+    public void onGuildChat(Player player, Guild guild, GuildRole role) {
+
+        if (!role.canChat()) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
+            return;
+        }
+
+        if (GUILD_CHAT_PLAYERS.contains(player.getUniqueId())) {
+            GUILD_CHAT_PLAYERS.remove(player.getUniqueId());
+            getCurrentCommandIssuer().sendInfo(Messages.CHAT__DISABLED);
+        } else {
+            GUILD_CHAT_PLAYERS.add(player.getUniqueId());
+            getCurrentCommandIssuer().sendInfo(Messages.CHAT__ENABLED);
+        }
+
     }
 
     @Subcommand("status")
