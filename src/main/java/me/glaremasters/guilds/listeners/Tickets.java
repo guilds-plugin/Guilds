@@ -26,6 +26,10 @@ public class Tickets implements Listener {
         this.guilds = guilds;
     }
 
+    /**
+     * This even handles Guild Tickets and how they are used by the player
+     * @param event
+     */
     @EventHandler
     public void upgradeTicket(PlayerInteractEvent event) {
         ItemStack item = event.getItem();
