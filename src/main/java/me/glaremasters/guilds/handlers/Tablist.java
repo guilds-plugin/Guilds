@@ -19,6 +19,10 @@ public class Tablist {
         this.guilds = guilds;
     }
 
+    /**
+     * Handles adding a prefix to the player's tablist
+     * @param player the player being modified
+     */
     public void add(Player player) {
         Guild guild = Guild.getGuild(player.getUniqueId());
         if (guilds.getConfig().getBoolean("tablist-guilds")) {
@@ -29,6 +33,10 @@ public class Tablist {
         }
     }
 
+    /**
+     * Handles removing a prefix from the player's tablist
+     * @param player the player being modified
+     */
     public void remove(Player player) {
         if (guilds.getConfig().getBoolean("tablist-guilds")) {
             String name = guilds.getConfig().getBoolean("tablist-use-display-name") ? player.getDisplayName() : player.getName();
