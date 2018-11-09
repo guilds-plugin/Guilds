@@ -56,9 +56,16 @@ public enum Messages implements MessageKeyProvider {
 
     INVITE__ALREADY_INVITED, INVITE__MESSAGE, INVITE__SUCCESSFUL;
 
+    /**
+     * Message keys that grab from the config to send messages
+     */
     private final MessageKey key = MessageKey.of(this.name().toLowerCase().replace("__", ".").replace("_", "-"));
 
 
+    /**
+     * Get the message get from the config
+     * @return message key
+     */
     public MessageKey getMessageKey() {
         return key;
     }
