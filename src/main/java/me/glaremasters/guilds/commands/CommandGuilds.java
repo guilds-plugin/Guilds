@@ -17,15 +17,19 @@ import me.glaremasters.guilds.utils.ConfirmAction;
 import me.glaremasters.guilds.utils.Serialization;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.ChatColor;
+import org.bukkit.SkullType;
+import org.bukkit.Statistic;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.PluginDescriptionFile;
 
 import java.util.*;
@@ -443,6 +447,37 @@ public class CommandGuilds extends BaseCommand {
         player.openInventory(guildList);
     }
 
+    @Subcommand("info")
+    @Description("{@@descriptions.info}")
+    @CommandPermission("guilds.command.info")
+    public void onGuildInfo(Player player, Guild guild) {
+
+        Inventory heads = Bukkit.createInventory(null, InventoryType.HOPPER, guilds.getConfig().getString("gui-name.info"));
+
+        heads.setItem(1, createSkull(player));
+
+        // Item 1: Paper
+        ArrayList<String> paperlore = new ArrayList<String>();
+        paperlore.add(color(guilds.getConfig().getString("info.guildname").replace("{guild-name}", guild.getName())));
+        paperlore.add(color(guilds.getConfig().getString("info.prefix").replace("{guild-prefix}", guild.getPrefix())));
+        paperlore.add(color(guilds.getConfig().getString("info.role").replace("{guild-role}", GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole()).getName())));
+        paperlore.add(color(guilds.getConfig().getString("info.master").replace("{guild-master}", Bukkit.getOfflinePlayer(guild.getGuildMaster().getUniqueId()).getName())));
+        paperlore.add(color(guilds.getConfig().getString("info.member-count").replace("{member-count}", Integer.toString(guild.getMembers().size()))));
+        paperlore.add(color(guilds.getConfig().getString("info.guildstatus").replace("{guild-status}", guild.getStatus())));
+        paperlore.add(color(guilds.getConfig().getString("info.guildtier").replace("{guild-tier}", Integer.toString(guild.getTier()))));
+        heads.setItem(2, createItemStack(Material.PAPER, guilds.getConfig().getString("info.info"), paperlore));
+
+        // Item 2: Diamond
+        ArrayList<String> diamondlore = new ArrayList<String>();
+        diamondlore.add(color(guilds.getConfig().getString("info.balance").replace("{guild-balance}", Double.toString(guild.getBalance()))));
+        diamondlore.add(color(guilds.getConfig().getString("info.max-balance").replace("{guild-max-balance}", Double.toString(guild.getMaxBankBalance()))));
+        heads.setItem(3, createItemStack(Material.DIAMOND, guilds.getConfig().getString("info.money"), diamondlore));
+
+        // Open inventory
+        player.openInventory(heads);
+
+    }
+
     @Subcommand("delete")
     @Description("{@@descriptions.delete}")
     @CommandPermission("guilds.command.delete")
@@ -744,6 +779,24 @@ public class CommandGuilds extends BaseCommand {
 
     public static String color(String msg) {
         return ChatColor.translateAlternateColorCodes('&', msg);
+    }
+
+    public ItemStack createSkull(Player player) {
+        Guild guild = Guild.getGuild(player.getUniqueId());
+        ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short) SkullType.PLAYER.ordinal());
+
+        SkullMeta meta = (SkullMeta) skull.getItemMeta();
+        meta.setOwner(player.getName());
+        final Guilds instance = Guilds.getGuilds();
+        meta.setDisplayName(color(guilds.getConfig().getString("info.playername").replace("{player-name}", player.getName())));
+
+        ArrayList<String> info = new ArrayList<String>();
+        info.add(color(guilds.getConfig().getString("info.kills").replace("{kills}", Integer.toString(player.getStatistic(Statistic.PLAYER_KILLS)))));
+        info.add(color(guilds.getConfig().getString("info.deaths").replace("{deaths}", Integer.toString(player.getStatistic(Statistic.DEATHS)))));
+        meta.setLore(info);
+
+        skull.setItemMeta(meta);
+        return skull;
     }
 
 }

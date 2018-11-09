@@ -24,6 +24,7 @@ descriptions:
   give: "Give a user a upgrade ticket"
   help: "Show this help menu"
   home: "Go to your Guild home"
+  info: "Open Guild Info GUI"
   kick: "Kick someone from your Guild"
   leave: "Leave your Guild"
   list: "List all Guilds"
