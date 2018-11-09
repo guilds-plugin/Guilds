@@ -28,6 +28,10 @@ public class InventoryListener implements Listener {
         this.guilds = guilds;
     }
 
+    /**
+     * This event just checks if a player is clicking on the next or back page and making sure you can't dupe from the GUIs
+     * @param event
+     */
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
@@ -67,6 +71,10 @@ public class InventoryListener implements Listener {
         }
     }
 
+    /**
+     * This event is a double check to make sure you can't dupe from the GUIs
+     * @param event
+     */
     @EventHandler
     public void onInventoryInteract(InventoryInteractEvent event) {
         String title = event.getInventory().getTitle();
