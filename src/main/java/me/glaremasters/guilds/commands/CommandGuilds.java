@@ -150,6 +150,26 @@ public class CommandGuilds extends BaseCommand {
         getCurrentCommandIssuer().sendInfo(Messages.SETHOME__SUCCESSFUL);
     }
 
+    @Subcommand("give")
+    @Description("{@@descriptions.give}")
+    @CommandPermission("guilds.command.give")
+    public void onGive(Player player, Integer amount) {
+        if (player == null) return;
+
+        String ticketName = color(guilds.getConfig().getString("upgrade-ticket.name"));
+        String ticketMaterial = guilds.getConfig().getString("upgrade-ticket.material");
+        String ticketLore = color(guilds.getConfig().getString("upgrade-ticket.lore"));
+
+        ItemStack upgradeTicket = new ItemStack(Material.getMaterial(ticketMaterial), amount);
+        ItemMeta meta = upgradeTicket.getItemMeta();
+        List<String> lores = new ArrayList<>();
+        lores.add(ticketLore);
+        meta.setDisplayName(ticketName);
+        meta.setLore(lores);
+        upgradeTicket.setItemMeta(meta);
+        player.getInventory().addItem(upgradeTicket);
+    }
+
     @Subcommand("home")
     @Description("{@@descriptions.home}")
     @CommandPermission("guilds.command.home")

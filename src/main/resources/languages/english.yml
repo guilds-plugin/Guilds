@@ -21,6 +21,7 @@ descriptions:
   decline: "Decline a Guild invite"
   delete: "Delete your guild"
   delhome: "Unset your Guild home"
+  give: "Give a user a upgrade ticket"
   help: "Show this help menu"
   home: "Go to your Guild home"
   kick: "Kick someone from your Guild"
