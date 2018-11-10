@@ -152,6 +152,12 @@ public class CommandAdmin extends BaseCommand {
         getCurrentCommandIssuer().sendInfo(Messages.PREFIX__SUCCESSFUL);
     }
 
+    /**
+     * Admin command to rename a guild
+     * @param player the admin running the command
+     * @param name the name of the guild
+     * @param newName the new name of the guild
+     */
     @Subcommand("admin rename")
     @Description("{@@descriptions.admin-prefix}")
     @CommandPermission("guilds.command.admin")

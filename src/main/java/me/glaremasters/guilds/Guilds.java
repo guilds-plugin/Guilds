@@ -100,15 +100,17 @@ public final class Guilds extends JavaPlugin {
         Stream.of(new CommandGuilds(), new CommandBank(), new CommandAdmin(), new CommandAlly()).forEach(manager::registerCommand);
 
 
-        info("Checking for updates...");
-        getServer().getScheduler().runTaskAsynchronously(this, new Runnable() {
-            SpigotUpdater updater = new SpigotUpdater(Guilds.getGuilds(), 48920);
-            @Override
-            public void run() {
-                updateCheck(updater);
-                info(getAnnouncements());
-            }
-        });
+        if (getConfig().getBoolean("announcements.console")) {
+            info("Checking for updates...");
+            getServer().getScheduler().runTaskAsynchronously(this, new Runnable() {
+                SpigotUpdater updater = new SpigotUpdater(Guilds.getGuilds(), 48920);
+                @Override
+                public void run() {
+                    updateCheck(updater);
+                    info(getAnnouncements());
+                }
+            });
+        }
 
 
         Stream.of(new GuildPerks(), new Players(this), new Tickets(this), new InventoryListener(this)).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));

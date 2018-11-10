@@ -87,14 +87,16 @@ public class Players implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        guilds.getServer().getScheduler().scheduleSyncDelayedTask(guilds, () -> {
-            if (player.isOnline()) {
-                if (!ALREADY_INFORMED.contains(player.getUniqueId())) {
-                    JSONMessage.create("Announcements").tooltip(guilds.getAnnouncements()).openURL(guilds.getDescription().getWebsite()).send(player);
-                    ALREADY_INFORMED.add(player.getUniqueId());
+        if (guilds.getConfig().getBoolean("announcements.in-game")) {
+            guilds.getServer().getScheduler().scheduleSyncDelayedTask(guilds, () -> {
+                if (player.isOnline()) {
+                    if (!ALREADY_INFORMED.contains(player.getUniqueId())) {
+                        JSONMessage.create("Announcements").tooltip(guilds.getAnnouncements()).openURL(guilds.getDescription().getWebsite()).send(player);
+                        ALREADY_INFORMED.add(player.getUniqueId());
+                    }
                 }
-            }
-        }, 70L);
+            }, 70L);
+        }
     }
 
     /**
