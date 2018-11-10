@@ -77,7 +77,17 @@ public class CommandGuilds extends BaseCommand {
             }
         }
 
-        if (check(name)) return;
+        if (guilds.getConfig().getBoolean("enable-blacklist")) {
+            List<String> blacklist = guilds.getConfig().getStringList("blacklist");
+
+            System.out.println(blacklist);
+            for (String censor : blacklist) {
+                if (name.toLowerCase().contains(censor)) {
+                    getCurrentCommandIssuer().sendInfo(Messages.ERROR__BLACKLIST);
+                    return;
+                }
+            }
+        }
         getCurrentCommandIssuer().sendInfo(Messages.CREATE__WARNING);
 
         guilds.getActionHandler().addAction(player, new ConfirmAction() {
@@ -209,6 +219,7 @@ public class CommandGuilds extends BaseCommand {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
             return;
         }
+
         int minLength = guilds.getConfig().getInt("name.min-length");
         int maxLength = guilds.getConfig().getInt("name.max-length");
         String regex = guilds.getConfig().getString("name.regex");
@@ -225,7 +236,18 @@ public class CommandGuilds extends BaseCommand {
             }
         }
 
-        if (check(name)) return;
+        if (guilds.getConfig().getBoolean("enable-blacklist")) {
+            List<String> blacklist = guilds.getConfig().getStringList("blacklist");
+
+            System.out.println(blacklist);
+            for (String censor : blacklist) {
+                if (name.toLowerCase().contains(censor)) {
+                    getCurrentCommandIssuer().sendInfo(Messages.ERROR__BLACKLIST);
+                    return;
+                }
+            }
+        }
+
         String oldName = guild.getName();
         guilds.getDatabase().removeGuild(Guild.getGuild(oldName));
         getCurrentCommandIssuer().sendInfo(Messages.RENAME__SUCCESSFUL, "{name}", name);
@@ -830,20 +852,6 @@ public class CommandGuilds extends BaseCommand {
 
         skull.setItemMeta(meta);
         return skull;
-    }
-
-    private boolean check(String name) {
-        if (guilds.getConfig().getBoolean("enabled-blacklist")) {
-            List<String> blacklist = guilds.getConfig().getStringList("blacklist");
-
-            for (String censor : blacklist) {
-                if (name.toLowerCase().contains(censor)) {
-                    getCurrentCommandIssuer().sendInfo(Messages.ERROR__BLACKLIST);
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 
 }
