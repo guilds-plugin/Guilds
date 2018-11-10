@@ -4,6 +4,7 @@ import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.CommandHelp;
 import co.aikar.commands.annotation.*;
+import co.aikar.commands.annotation.Optional;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.api.events.*;
 import me.glaremasters.guilds.guild.Guild;
@@ -53,8 +54,8 @@ public class CommandGuilds extends BaseCommand {
     @Subcommand("create")
     @Description("{@@descriptions.create}")
     @CommandPermission("guilds.command.create")
-    @Syntax("<name>")
-    public void onCreate(Player player, String name) {
+    @Syntax("<name> (optional) <prefix>")
+    public void onCreate(Player player, String name, @Optional String prefix) {
         if (Guild.getGuild(player.getUniqueId()) != null) {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ALREADY_IN_GUILD);
             return;
@@ -71,12 +72,16 @@ public class CommandGuilds extends BaseCommand {
         guilds.getActionHandler().addAction(player, new ConfirmAction() {
             @Override
             public void accept() {
-                Guild guild = new GuildBuilder()
-                        .setName(color(name))
-                        .setPrefix(color(name))
-                        .setStatus("Private")
-                        .setMaster(player.getUniqueId())
-                        .createGuild();
+                GuildBuilder gb = new GuildBuilder();
+                gb.setName(color(name));
+                if (prefix == null) {
+                    gb.setPrefix(color(name));
+                } else {
+                    gb.setPrefix(color(prefix));
+                }
+                gb.setStatus("Private");
+                gb.setMaster(player.getUniqueId());
+                Guild guild = gb.createGuild();
                 GuildCreateEvent event = new GuildCreateEvent(player, guild);
                 guilds.getServer().getPluginManager().callEvent(event);
                 if (event.isCancelled()) return;
