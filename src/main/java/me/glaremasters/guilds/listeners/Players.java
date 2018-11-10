@@ -211,6 +211,17 @@ public class Players implements Listener {
         }
     }
 
+    @EventHandler
+    public void rolePerm(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+        Guild guild = Guild.getGuild(player.getUniqueId());
+        if (guild == null) return;
+        String node = GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole()).getNode();
+        if (!player.hasPermission(node)) {
+            Bukkit.getScheduler().runTaskLater(guilds, () -> guilds.getPermissions().playerAdd(player, node), 20);
+        }
+    }
+
     /**
      * This is just an enum of all the buff types to choose from
      */

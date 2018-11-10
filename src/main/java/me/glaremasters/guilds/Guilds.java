@@ -41,8 +41,8 @@ import java.net.URL;
 import java.util.Locale;
 import java.util.stream.Stream;
 
-import static me.glaremasters.guilds.utils.AnnouncementUtil.unescape_perl_string;
 import static co.aikar.commands.ACFBukkitUtil.color;
+import static me.glaremasters.guilds.utils.AnnouncementUtil.unescape_perl_string;
 
 public final class Guilds extends JavaPlugin {
 
@@ -53,7 +53,9 @@ public final class Guilds extends JavaPlugin {
     private BukkitCommandManager manager;
     private static TaskChainFactory taskChainFactory;
     public static boolean vaultEconomy;
+    public static boolean vaultPermissions;
     private static Economy economy = null;
+    private static Permission permissions = null;
     private GuildsAPI api;
     private String logPrefix = "&f[&aGuilds&f]&r ";
 
@@ -67,7 +69,7 @@ public final class Guilds extends JavaPlugin {
         info("API Enabled!");
         info("Hooking into Vault...");
         vaultEconomy = setupEconomy();
-        setupPermissions();
+        vaultPermissions = setupPermissions();
         info("Hooked into Economy and Permissions!");
         initializePlaceholder();
         info("Enabling Metrics...");
@@ -145,8 +147,8 @@ public final class Guilds extends JavaPlugin {
      */
     private boolean setupPermissions() {
         RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
-        Permission perms = rsp.getProvider();
-        return perms != null;
+        if (rsp != null) permissions = rsp.getProvider();
+        return (permissions != null);
     }
 
     /**
@@ -344,6 +346,14 @@ public final class Guilds extends JavaPlugin {
      */
     public Economy getEconomy() {
         return economy;
+    }
+
+    /**
+     * Get the permissions from vault
+     * @return the permissions from vault
+     */
+    public Permission getPermissions() {
+        return permissions;
     }
 
 }
