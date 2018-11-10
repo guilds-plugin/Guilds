@@ -500,7 +500,7 @@ public class CommandGuilds extends BaseCommand {
                 guilds.getServer().getPluginManager().callEvent(event);
                 if (event.isCancelled()) return;
 
-                getCurrentCommandIssuer().sendInfo(Messages.DELETE__SUCCESS, "{guild}", guild.getName());
+                getCurrentCommandIssuer().sendInfo(Messages.DELETE__SUCCESSFUL, "{guild}", guild.getName());
                 // Todo - Something about perms
                 guilds.getDatabase().removeGuild(guild);
                 guilds.getActionHandler().removeAction(player);
