@@ -224,7 +224,6 @@ public class CommandGuilds extends BaseCommand {
 
     }
 
-    //todo Make this a toggle
     @Subcommand("status")
     @Description("{@@descriptions.status}")
     @CommandPermission("guilds.command.status")

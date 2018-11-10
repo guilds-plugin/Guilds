@@ -23,6 +23,11 @@ public class CommandAdmin extends BaseCommand {
 
     @Dependency private Guilds guilds;
 
+    /**
+     * Admin command to remove a guild from the server
+     * @param player the admin running the command
+     * @param name the name of the guild being removed
+     */
     @Subcommand("admin remove")
     @Description("{@@descriptions.admin-remove}")
     @CommandPermission("guilds.command.admin")
@@ -50,6 +55,12 @@ public class CommandAdmin extends BaseCommand {
         });
     }
 
+    /**
+     * Admin command to add a player to a guild
+     * @param player the admin running the command
+     * @param target the player being added to the guild
+     * @param guild the guild the player is being added to
+     */
     @Subcommand("admin addplayer")
     @Description("{@@descriptions.admin-addplayer}")
     @CommandPermission("guilds.command.admin")
@@ -65,6 +76,11 @@ public class CommandAdmin extends BaseCommand {
         // send message to admin saying player has been added to guild
     }
 
+    /**
+     * Admin command to remove a player from a guild
+     * @param player the admin running the command
+     * @param target the guild the player is being removed from
+     */
     @Subcommand("admin removeplayer")
     @Description("{@@descriptions.admin-removeplayer}")
     @CommandPermission("guilds.command.admin")
@@ -79,6 +95,11 @@ public class CommandAdmin extends BaseCommand {
         // send message to admin saying player has been removed from the guild
     }
 
+    /**
+     * Admin command to upgrade a guild's tier
+     * @param player the admin running the command
+     * @param name the name of the guild being upgraded
+     */
     @Subcommand("admin upgrade")
     @Description("{@@descriptions.admin-upgrade}")
     @CommandPermission("guilds.command.admin")
@@ -92,21 +113,34 @@ public class CommandAdmin extends BaseCommand {
         // send message to admin saying guild was upgraded
     }
 
+    /**
+     * Admin command to change a guild's status
+     * @param player the admin running the command
+     * @param name the guild to change the status of
+     */
     @Subcommand("admin status")
     @Description("{@@descriptions.admin-status}")
     @CommandPermission("guilds.command.admin")
     @Syntax("<name> <private/public>")
-    public void onAdminGuildStatus(Player player, String name, String status) {
+    public void onAdminGuildStatus(Player player, String name) {
         Guild guild = Guild.getGuild(name);
         if (guild == null) return;
-        if (!status.equalsIgnoreCase("private") && !status.equalsIgnoreCase("public")) {
-            // send message saying choose one or other
-            return;
+        String status = guild.getStatus();
+        if (status.equalsIgnoreCase("private")) {
+            status = "Public";
+        } else {
+            status = "Private";
         }
         guild.updateStatus(StringUtils.capitalize(status));
-        // send message to admin saying the status has been changed
+        getCurrentCommandIssuer().sendInfo(Messages.STATUS__SUCCESSFUL, "{status}", status);
     }
 
+    /**
+     * Admin command to change the prefix of a guild
+     * @param player the admin running the command
+     * @param name the name of a guild
+     * @param prefix the new prefix of the guild
+     */
     @Subcommand("admin prefix")
     @Description("{@@descriptions.admin-prefix}")
     @CommandPermission("guilds.command.admin")
@@ -115,7 +149,20 @@ public class CommandAdmin extends BaseCommand {
         Guild guild = Guild.getGuild(name);
         if (guild == null) return;
         guild.updatePrefix(color(prefix));
-        // send message to admin saying the prefix has been changed
+        getCurrentCommandIssuer().sendInfo(Messages.PREFIX__SUCCESSFUL);
+    }
+
+    @Subcommand("admin rename")
+    @Description("{@@descriptions.admin-prefix}")
+    @CommandPermission("guilds.command.admin")
+    @Syntax("<name> <new name>")
+    public void onAdminGuildRename(Player player, String name, String newName) {
+        Guild guild = Guild.getGuild(name);
+        if (guild == null) return;
+        String oldName = guild.getName();
+        guilds.getDatabase().removeGuild(Guild.getGuild(oldName));
+        getCurrentCommandIssuer().sendInfo(Messages.RENAME__SUCCESSFUL, "{name}", newName);
+        guild.updateName(color(name));
     }
 
 }
