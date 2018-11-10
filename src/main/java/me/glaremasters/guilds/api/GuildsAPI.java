@@ -6,6 +6,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
+import static me.glaremasters.guilds.utils.ConfigUtils.color;
+
 /**
  * Created by GlareMasters on 6/28/2018.
  */
@@ -18,7 +20,7 @@ public class GuildsAPI {
      */
     public String getGuild(Player player) {
         Guild guild = Guild.getGuild(player.getUniqueId());
-        return (guild == null) ? "" : guild.getName();
+        return (guild == null) ? "" : color(guild.getName());
     }
 
     /**
@@ -68,7 +70,7 @@ public class GuildsAPI {
      */
     public String getGuildPrefix(Player player) {
         Guild guild = Guild.getGuild(player.getUniqueId());
-        return (guild == null) ? "" : guild.getPrefix();
+        return (guild == null) ? "" : color(guild.getPrefix());
     }
 
     /**
@@ -78,7 +80,7 @@ public class GuildsAPI {
      */
     public String getGuildRole(Player player) {
         Guild guild = Guild.getGuild(player.getUniqueId());
-        return (guild == null) ? "" : GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole()).getName();
+        return (guild == null) ? "" : color(GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole()).getName());
     }
 
     /**
@@ -109,6 +111,16 @@ public class GuildsAPI {
     public double getBankBalance(Player player) {
         Guild guild = Guild.getGuild(player.getUniqueId());
         return (guild == null) ? 0 : guild.getBalance();
+    }
+
+    /**
+     * Get the permission node of a role
+     * @param player the player with the role
+     * @return the permission node
+     */
+    public String getRolePermission(Player player) {
+        Guild guild = Guild.getGuild(player.getUniqueId());
+        return (guild == null) ? "" : GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole()).getNode();
     }
 
 }
