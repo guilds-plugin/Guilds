@@ -54,6 +54,7 @@ error:
   player-not-found: "&cPlayer '{player}&r&c' does not exist"
   player-not-in-guild: "&c{player} is not in your Guild!"
   not-officer: "&cUser must be an Officer in your Guild!"
+  blacklist: "&cOne or more of the words in your guild name / guild prefix is on the blacklist!"
 bank:
   balance: "&aYour guild's bank has a balance of {amount}."
 admin:

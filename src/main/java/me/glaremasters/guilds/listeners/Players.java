@@ -18,6 +18,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -214,6 +215,10 @@ public class Players implements Listener {
         }
     }
 
+    /**
+     * Make sure the player has their tier role
+     * @param event
+     */
     @EventHandler
     public void rolePerm(PlayerJoinEvent event) {
         Player player = event.getPlayer();
@@ -222,6 +227,23 @@ public class Players implements Listener {
         String node = GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole()).getNode();
         if (!player.hasPermission(node)) {
             Bukkit.getScheduler().runTaskLater(guilds, () -> guilds.getPermissions().playerAdd(player, node), 20);
+        }
+    }
+
+    /**
+     * Handle giving player perms for all tiers
+     * @param event
+     */
+    @EventHandler
+    public void tierPerms(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+        Guild guild = Guild.getGuild(player.getUniqueId());
+        if (guild == null) return;
+        for (String perms : guild.getGuildPerms()) {
+            if (player.hasPermission(perms)) {
+                return;
+            }
+            guilds.getPermissions().playerAdd(null, player, perms);
         }
     }
 

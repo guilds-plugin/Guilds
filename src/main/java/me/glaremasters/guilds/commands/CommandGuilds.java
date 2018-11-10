@@ -67,6 +67,17 @@ public class CommandGuilds extends BaseCommand {
                 return;
             }
         }
+
+        if (guilds.getConfig().getBoolean("enabled-blacklist")) {
+            List<String> blacklist = guilds.getConfig().getStringList("blacklist");
+
+            for (String censor : blacklist) {
+                if (name.toLowerCase().contains(censor)) {
+                    getCurrentCommandIssuer().sendInfo(Messages.ERROR__BLACKLIST);
+                    return;
+                }
+            }
+        }
         getCurrentCommandIssuer().sendInfo(Messages.CREATE__WARNING);
 
         guilds.getActionHandler().addAction(player, new ConfirmAction() {

@@ -274,13 +274,6 @@ cost:
   creation: 0
   sethome: 0
 
-# This section allows you to reward players for killing others!
-# Players will only get money from players they kill in OTHER guilds (to help prevent abuse).
-reward-on-kill:
-  enabled: false
-  reward: 10
-  take-from-killed-player: 10
-
 #-----------------------------------------------------------#
 #                     Title Configuration                   #
 #-----------------------------------------------------------#
