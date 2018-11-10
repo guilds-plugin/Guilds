@@ -33,6 +33,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Stream;
 
+import static me.glaremasters.guilds.utils.ConfigUtils.color;
+
 /**
  * Created by GlareMasters
  * Date: 7/19/2018
@@ -204,8 +206,8 @@ public class Players implements Listener {
         if (GUILD_CHAT_PLAYERS.contains(player.getUniqueId())) {
             event.getRecipients().removeIf(r -> guild.getMember(r.getUniqueId()) == null);
             for (Player recipient : event.getRecipients()) {
-                recipient.sendMessage((guilds.getConfig().getString("guild-chat-format")).replace("{role}", GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole())
-                        .getName()).replace("{player}", player.getName()).replace("{message}", event.getMessage()));
+                recipient.sendMessage(color((guilds.getConfig().getString("guild-chat-format")).replace("{role}", GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole())
+                        .getName()).replace("{player}", player.getName()).replace("{message}", event.getMessage())));
             }
             event.setCancelled(true);
         }
