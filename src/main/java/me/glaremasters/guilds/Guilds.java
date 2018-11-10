@@ -93,6 +93,7 @@ public final class Guilds extends JavaPlugin {
 
         info("Loading Commands and Language Data...");
         manager = new BukkitCommandManager(this);
+        manager.usePerIssuerLocale(true);
         loadLanguages(manager);
         manager.enableUnstableAPI("help");
         loadContexts(manager);
@@ -160,8 +161,30 @@ public final class Guilds extends JavaPlugin {
         saveDefaultConfig();
         File languageFolder = new File(getDataFolder(), "languages");
         if (!languageFolder.exists()) languageFolder.mkdirs();
-        File language = new File(languageFolder, getConfig().getString("lang") + ".yml");
-        if (!language.exists()) Stream.of("english").forEach(l -> this.saveResource("languages/" + l + ".yml", false));
+        for (String language : getConfig().getStringList("supported-languages")) {
+            File langFile = new File(languageFolder, language + ".yml");
+            if (!langFile.exists()) {
+                this.saveResource("languages/" + language + ".yml", false);
+            }
+        }
+    }
+
+    /**
+     * Load the languages for the server from ACF BCM
+     * @param manager ACF BCM
+     */
+    private void loadLanguages(BukkitCommandManager manager) {
+        try {
+            File languageFolder = new File(getDataFolder(), "languages");
+            manager.getLocales().setDefaultLocale(Locale.forLanguageTag(getConfig().getString("lang")));
+            for (String language : getConfig().getStringList("supported-languages")) {
+               manager.getLocales().loadYamlLanguageFile(new File(languageFolder, language + ".yml"), Locale.forLanguageTag(language));
+            }
+            info("Loaded successfully!");
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+            info("Failed to load!");
+        }
     }
 
     /**
@@ -249,21 +272,6 @@ public final class Guilds extends JavaPlugin {
         info("`88.    .88'   888   888   888   888  888   888  o.  )88b       888   888   888  ");
         info(" `Y8bood8P'    `V88V\"V8P' o888o o888o `Y8bod88P\" 8\"\"888P'      o888o o888o o888o");
         info("");
-    }
-
-    /**
-     * Load the languages for the server from ACF BCM
-     * @param manager ACF BCM
-     */
-    private void loadLanguages(BukkitCommandManager manager) {
-        try {
-            File languageFolder = new File(getDataFolder(), "languages");
-            manager.getLocales().loadYamlLanguageFile(new File(languageFolder, getConfig().getString("lang") + ".yml"), Locale.ENGLISH);
-            info("Loaded successfully!");
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
-            info("Failed to load!");
-        }
     }
 
     /**

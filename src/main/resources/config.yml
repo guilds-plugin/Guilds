@@ -39,27 +39,13 @@ announcements:
 # NOTE: If you change your language please ONLY use from the list above and use them EXACTLY as they are spelled in the list above.
 # Example: If I am a french server, I would change lang: english to lang: french
 # If you try and use a different language than any in the list above, the plugin will not function in a normal manner.
-lang: english
-# The plugin also supports the following other languages:
-# - chinese
-# - dutch
-# - danish
-# - english
-# - french
-# - hungarian
-# - japanese
-# - polish
-# - romanian
-# - russian
-# - simplifiedchinese
-# - slovak
-# - spanish
-# - swedish
-# - portuguese
-# - german
-# - vietnamese
-# - norwegian
-# - italian
+lang: en-US
+
+
+# DO NOT TOUCH THIS PLEASE
+
+supported-languages:
+- en-US
 
 #-----------------------------------------------------------#
 #              Rewards / Tickets Configuration              #
@@ -269,54 +255,10 @@ buff:
 #-----------------------------------------------------------#
 #                     Vault Configuration                   #
 #-----------------------------------------------------------#
-
+# Currently not working in the latest release, working on a fix
 cost:
   creation: 0
   sethome: 0
-
-#-----------------------------------------------------------#
-#                     Title Configuration                   #
-#-----------------------------------------------------------#
-
-# This section of the config will walk you through making and configuring custom titles for different events in the plugin.
-# NOTE: When configuring times, keep in mind that 1 = 1 second, and so on.
-
-# CUSTOM TITLE PLACEHOLDERS: {guild} {prefix} {username} {tier}
-
-# NOTE: There is a current bug which only allows Color Codes to work on creation, upgrade, and prefix.
-titles:
-  enabled: false
-  events:
-    guild-creation:
-      title: "Congrats"
-      sub-title: "{guild} has been created!"
-      fade-in: 3
-      stay: 3
-      fade-out: 3
-    player-joins-guild:
-      title: ""
-      sub-title: "{username} has just joined the guild."
-      fade-in: 3
-      stay: 3
-      fade-out: 3
-    player-leaves-guild:
-      title: ""
-      sub-title: "{username} has just left the guild."
-      fade-in: 3
-      stay: 3
-      fade-out: 3
-    guild-prefix-change:
-      title: "Congrats"
-      sub-title: "Your new prefix is {prefix}"
-      fade-in: 3
-      stay: 3
-      fade-out: 3
-    guild-tier-upgrade:
-      title: "Success!"
-      sub-title: "Your guild is now Tier {tier}"
-      fade-in: 3
-      stay: 3
-      fade-out: 3
 
 #-----------------------------------------------------------#
 #                     Guild Upgrade Configuration           #
