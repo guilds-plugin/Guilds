@@ -43,6 +43,7 @@ create:
   warning: "&cType /guilds confirm to create your guild, type /guilds cancel to cancel."
   successful: "&aGuild '{guild}&r&a' created successfully!"
   cancelled: "&cGuild creation cancelled!"
+  requirements: "&cYour guild's name does not match the requirements! You can only use alphanumeric characters and the length of the name cannot exceed 64"
 chat:
   disabled: "Guild Chat Disabled"
   enabled: "Guild Chat Enabled"

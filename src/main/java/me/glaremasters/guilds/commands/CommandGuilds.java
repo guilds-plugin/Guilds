@@ -61,6 +61,15 @@ public class CommandGuilds extends BaseCommand {
             return;
         }
 
+        int minLength = guilds.getConfig().getInt("name.min-length");
+        int maxLength = guilds.getConfig().getInt("name.max-length");
+        String regex = guilds.getConfig().getString("name.regex");
+
+        if (name.length() < minLength || name.length() > maxLength || !name.matches(regex)) {
+            getCurrentCommandIssuer().sendInfo(Messages.CREATE__REQUIREMENTS);
+            return;
+        }
+
         for (String guildName : guilds.getGuildHandler().getGuilds().keySet()) {
             if (guildName.equalsIgnoreCase(name)) {
                 getCurrentCommandIssuer().sendInfo(Messages.CREATE__GUILD_NAME_TAKEN);
