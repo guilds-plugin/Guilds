@@ -228,16 +228,16 @@ public class CommandGuilds extends BaseCommand {
     @Subcommand("status")
     @Description("{@@descriptions.status}")
     @CommandPermission("guilds.command.status")
-    @Syntax("<private/public>")
-    public void onStatus(Player player, Guild guild, GuildRole role, String status) {
+    public void onStatus(Player player, Guild guild, GuildRole role) {
+        String status = guild.getStatus();
         if (!role.canChangeStatus()) {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
             return;
         }
-        boolean argCheck = !status.equalsIgnoreCase("private") && !status.equalsIgnoreCase("public");
-        if (argCheck) {
-            getCurrentCommandIssuer().sendInfo(Messages.STATUS__ERROR);
-            return;
+        if (status.equalsIgnoreCase("private")) {
+            status = "Public";
+        } else {
+            status = "Private";
         }
         String updatedStatus = StringUtils.capitalize(status);
         getCurrentCommandIssuer().sendInfo(Messages.STATUS__SUCCESSFUL, "{status}", status);
