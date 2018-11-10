@@ -404,7 +404,7 @@ tablist-use-display-name: false
 tablist: "&7[&b{guild}&7]&r"
 
 # Here you can modify how the /guild chat message style works.
-guild-chat-format: "&7&l[Guild Chat]&r &b[{role}] {player}: {message}"
+guild-chat-format: "&7&l[Guild Chat]&r &b[{role}&b]&r &b {player}: {message}"
 
 # Change this to true if you want to allow players in the same guild / guild's that are allies with each other to damage each other.
 allow-guild-damage: false
