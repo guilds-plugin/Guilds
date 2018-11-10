@@ -279,13 +279,33 @@ public class GuildRole {
         return withdrawMoney;
     }
 
+    /**
+     * Check if user can claim land
+     * @return
+     */
     public boolean canClaimLand() { return claimLand; }
 
+    /**
+     * Check if user can unclaim land
+     * @return
+     */
     public boolean canUnclaimLand() { return unclaimLand; }
 
+    /**
+     * Check if user can destroy land in claim
+     * @return
+     */
     public boolean canDestroy() { return destroy; }
 
+    /**
+     * Check if user can place blocks in claim
+     * @return
+     */
     public boolean canPlace() { return place; }
 
+    /**
+     * Check if user can interest with items in a claim
+     * @return
+     */
     public boolean canInteract() { return interact; }
 }
