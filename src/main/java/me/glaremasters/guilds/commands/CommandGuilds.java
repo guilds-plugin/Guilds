@@ -1119,12 +1119,10 @@ public class CommandGuilds extends BaseCommand {
      * @return
      */
     public ItemStack createSkull(Player player) {
-        Guild guild = Guild.getGuild(player.getUniqueId());
         ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short) SkullType.PLAYER.ordinal());
 
         SkullMeta meta = (SkullMeta) skull.getItemMeta();
         meta.setOwner(player.getName());
-        final Guilds instance = Guilds.getGuilds();
         meta.setDisplayName(color(guilds.getConfig().getString("info.playername").replace("{player-name}", player.getName())));
 
         ArrayList<String> info = new ArrayList<String>();
