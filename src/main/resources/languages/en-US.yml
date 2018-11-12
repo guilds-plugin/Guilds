@@ -37,6 +37,7 @@ descriptions:
   promote: "Promote a user in your Guild"
   reload: "Reloads the plugin's configuration file"
   rename: "Change the name of your Guild"
+  request: "Request to join a Guild"
   sethome: "Set your Guild's home"
   status: "Change the status of your Guild"
   transfer: "Transfer your Guild to another user"
@@ -52,6 +53,9 @@ create:
 chat:
   disabled: "Guild Chat Disabled"
   enabled: "Guild Chat Enabled"
+request:
+  success: "&aYou've successfully requested an invite from {guild}"
+  incoming-request: "&a{player} is requesting to join the guild. Send them an invite by doing /guild invite {player}!"
 error:
   already-in-guild: "&cYou're already in a guild!"
   no-guild: "&cYou're not in a guild!"
@@ -106,7 +110,7 @@ transfer:
   success: "&aGuild has been transferred!"
 invite:
   already-invited: "User is already invited to your guild"
-  message: "&a{player} has invited you to his/her guild, '{guild}'"
+  message: "&a{player} has invited you to his/her guild, '{guild}' Type /guild join {guild} to join!"
   successful: "&aYou've successfully invited {player} to your guild!"
 upgrade:
   tier-max: "&cCannot upgrade again! You're already maxed!"

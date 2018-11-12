@@ -951,6 +951,34 @@ public class CommandGuilds extends BaseCommand {
         }
     }
 
+    @Subcommand("request")
+    @Description("{@@descriptions.request}")
+    @CommandPermission("guilds.command.request")
+    @Syntax("<guild name>")
+    public void onRequest(Player player, String name) {
+        Guild guild = Guild.getGuild(player.getUniqueId());
+        if (guild != null) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ALREADY_IN_GUILD);
+            return;
+        }
+        Guild targetGuild = Guild.getGuild(name);
+        if (targetGuild == null) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__GUILD_NO_EXIST);
+            return;
+        }
+
+        for (GuildMember member : targetGuild.getMembers()) {
+            GuildRole role = GuildRole.getRole(member.getRole());
+            if (role.canInvite()) {
+                OfflinePlayer guildPlayer = Bukkit.getOfflinePlayer(member.getUniqueId());
+                if (guildPlayer.isOnline()) {
+                    guilds.getManager().getCommandIssuer(guildPlayer).sendInfo(Messages.REQUEST__INCOMING_REQUEST, "{player}", player.getName());
+                }
+            }
+        }
+        getCurrentCommandIssuer().sendInfo(Messages.REQUEST__SUCCESS, "{guild}", targetGuild.getName());
+    }
+
     /**
      * Open the guild buff menu
      * @param player
