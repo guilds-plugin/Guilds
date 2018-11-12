@@ -68,6 +68,9 @@ admin:
   delete-warning: "&cYou are about to delete the guild {guild}. Type /guilds confirm to remove this guild, type /guilds cancel to cancel."
   delete-success: "&aYou have successfully removed {guild}."
   guild-vault-sign: "Global Guild Vault created!"
+  player-added: "&aYou have been added to {guild} by an Admin!"
+  admin-player-added: "&aYou have added {player} to {guild}!"
+  admin-guild-add: "&a{player} has been added to your guild by an Admin!"
 boot:
   player-kicked: "&cPlayer '{player}' has been kicked from the guild by {kicker}!"
   successful: "&aSuccessfully kicked {player} from your guild!"

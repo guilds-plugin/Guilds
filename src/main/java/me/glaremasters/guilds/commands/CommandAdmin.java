@@ -9,6 +9,7 @@ import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.ConfirmAction;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import static co.aikar.commands.ACFBukkitUtil.color;
@@ -50,7 +51,6 @@ public class CommandAdmin extends BaseCommand {
             @Override
             public void decline() {
                 guilds.getActionHandler().removeAction(player);
-                // send message saying guild has not been removed
             }
         });
     }
@@ -66,14 +66,17 @@ public class CommandAdmin extends BaseCommand {
     @CommandPermission("guilds.command.admin")
     @Syntax("<player> <guild>")
     public void onAdminAddPlayer(Player player, String target, String guild) {
-        Player playerToAdd = Bukkit.getPlayerExact(target);
+        OfflinePlayer playerToAdd = Bukkit.getOfflinePlayer(target);
         if (player == null || !player.isOnline()) return;
         if (Guild.getGuild(playerToAdd.getUniqueId()) != null) return;
         Guild targetGuild = Guild.getGuild(guild);
         if (targetGuild == null) return;
         targetGuild.addMember(playerToAdd.getUniqueId(), GuildRole.getLowestRole());
-        // send message to player saying they've been added to guild
-        // send message to admin saying player has been added to guild
+        if (playerToAdd.isOnline()) {
+            guilds.getManager().getCommandIssuer(playerToAdd).sendInfo(Messages.ADMIN__PLAYER_ADDED, "{guild}", targetGuild.getName());
+        }
+        getCurrentCommandIssuer().sendInfo(Messages.ADMIN__ADMIN_PLAYER_ADDED, "{player}", playerToAdd.getName(), "{guild}", targetGuild.getName());
+        targetGuild.sendMessage(Messages.ADMIN__ADMIN_GUILD_ADD, "{player}", playerToAdd.getName());
     }
 
     /**
