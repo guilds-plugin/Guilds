@@ -35,7 +35,7 @@ public class CommandBank extends BaseCommand {
             return;
         }
         if (guilds.getEconomy().getBalance(player) < amount) {
-            // Send message saying not enough money
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__NOT_ENOUGH_MONEY);
             return;
         }
         guilds.getEconomy().withdrawPlayer(player, amount);
