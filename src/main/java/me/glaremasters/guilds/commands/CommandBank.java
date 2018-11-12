@@ -1,128 +1,79 @@
 package me.glaremasters.guilds.commands;
 
+import co.aikar.commands.BaseCommand;
+import co.aikar.commands.annotation.*;
 import me.glaremasters.guilds.Guilds;
-import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
-import me.glaremasters.guilds.message.Message;
-import net.milkbowl.vault.economy.EconomyResponse;
+import me.glaremasters.guilds.messages.Messages;
 import org.bukkit.entity.Player;
 
 /**
- * Created by GlareMasters on 8/19/2017.
+ * Created by GlareMasters
+ * Date: 9/10/2018
+ * Time: 6:43 PM
  */
-public class CommandBank extends CommandBase {
+@CommandAlias("guild|guilds")
+public class CommandBank extends BaseCommand {
 
+    @Dependency private Guilds guilds;
 
-    public CommandBank() {
-        super("bank", Guilds.getInstance().getConfig().getString("commands.description.bank"),
-                "guilds.command.bank", false,
-                null, "deposit <amount> | withdraw <amount> | balance", 1, 2);
+    /**
+     * Check the bank balance of a Guild
+     * @param player the player to check
+     * @param guild the guild they are in
+     */
+    @Subcommand("bank balance")
+    @Description("{@@descriptions.bank-balance}")
+    @CommandPermission("guilds.command.bank")
+    public void onBalance(Player player, Guild guild) {
+        getCurrentCommandIssuer().sendInfo(Messages.BANK__BALANCE, "{amount}", String.valueOf(guild.getBalance()));
     }
 
-    public void execute(Player player, String[] args) {
-        Guild guild = Guild.getGuild(player.getUniqueId());
-        if (guild == null) {
-            Message.sendMessage(player, Message.COMMAND_ERROR_NO_GUILD);
+    /**
+     * Deposit money into the bank
+     * @param player the player to check
+     * @param guild the guild they are in
+     * @param role the role of the player
+     * @param amount the amount being put into the bank
+     */
+    @Subcommand("bank deposit")
+    @Description("{@@descriptions.bank-deposit}")
+    @CommandPermission("guilds.command.bank")
+    @Syntax("<amount>")
+    public void onDeposit(Player player, Guild guild, GuildRole role, Double amount) {
+        if (!role.canDepositMoney()) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
             return;
         }
-
-        double balance = guild.getBankBalance();
-
-        if (args[0].equalsIgnoreCase("balance")) {
-            Message.sendMessage(player,
-                    Message.COMMAND_BANK_BALANCE.replace("{amount}", Double.toString(balance)));
+        if (guilds.getEconomy().getBalance(player) < amount) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__NOT_ENOUGH_MONEY);
+            return;
         }
+        guilds.getEconomy().withdrawPlayer(player, amount);
+        Double balance = guild.getBalance();
+        guild.updateBalance(balance + amount);
+    }
 
-        if (args[0].equalsIgnoreCase("deposit")) {
-            GuildRole role = GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole());
-            if (!role.canDepositMoney()) {
-                Message.sendMessage(player, Message.COMMAND_ERROR_ROLE_NO_PERMISSION);
-                return;
-            }
-            if (args.length != 2) {
-                Message.sendMessage(player, Message.COMMAND_ERROR_ARGS);
-                return;
-            }
-
-            try {
-                Double.parseDouble(args[1]);
-            } catch (NumberFormatException exception) {
-                Message.sendMessage(player, Message.COMMAND_ERROR_ARGS);
-                return;
-            }
-
-            if (balance + Double.valueOf(args[1]) > guild.getMaxBankBalance()) {
-                Message.sendMessage(player, Message.COMMAND_BANK_BANK_BALANCE_LIMIT);
-                return;
-            }
-            if (Guilds.getInstance().getEconomy().getBalance(player.getName()) < Double
-                    .valueOf(args[1])) {
-                Message.sendMessage(player, Message.COMMAND_BANK_DEPOSIT_FAILURE);
-                return;
-            }
-
-            EconomyResponse response =
-                    Guilds.getInstance().getEconomy().withdrawPlayer(player, Double.valueOf(args[1]));
-            if (!response.transactionSuccess()) {
-                Message.sendMessage(player, Message.COMMAND_BANK_DEPOSIT_FAILURE);
-                return;
-            }
-
-            Guilds.getInstance().guildBanksConfig
-                    .set(guild.getName(), balance + Double.valueOf(args[1]));
-            Message.sendMessage(player, Message.COMMAND_BANK_DEPOSIT_SUCCESS
-                    .replace("{amount}", String.valueOf(Double.valueOf(args[1])), "{balance}",
-                            String.valueOf(balance + Double.valueOf(args[1]))));
-
-            Guilds.getInstance().saveGuildData();
-            guild.updateGuild("");
-
+    /**
+     * Take money from the bank
+     * @param player the player to check
+     * @param guild the guild they are in
+     * @param role the role of the player
+     * @param amount the amount being taken out
+     */
+    @Subcommand("bank withdraw")
+    @Description("{@@descriptions.bank-withdraw}")
+    @CommandPermission("guilds.command.bank")
+    @Syntax("<amount>")
+    public void onWithdraw(Player player, Guild guild, GuildRole role, Double amount) {
+        if (!role.canWithdrawMoney()) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
+            return;
         }
-
-        if (args[0].equalsIgnoreCase("withdraw")) {
-            GuildRole role = GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole());
-            if (!role.canWithdrawMoney()) {
-                Message.sendMessage(player, Message.COMMAND_ERROR_ROLE_NO_PERMISSION);
-                return;
-            }
-            if (args.length != 2) {
-                Message.sendMessage(player, Message.COMMAND_ERROR_ARGS);
-                return;
-            }
-
-            try {
-                Double.parseDouble(args[1]);
-            } catch (NumberFormatException exception) {
-                Message.sendMessage(player, Message.COMMAND_ERROR_ARGS);
-                return;
-            }
-
-            if (balance < Double.valueOf(args[1])) {
-                Message.sendMessage(player, Message.COMMAND_BANK_WITHDRAW_FAILURE);
-                return;
-            }
-
-            Message.sendMessage(player, Message.COMMAND_BANK_WITHDRAW_SUCCESS
-                    .replace("{amount}", String.valueOf(Double.valueOf(args[1])), "{balance}",
-                            String.valueOf(balance - Double.valueOf(args[1]))));
-
-            EconomyResponse response =
-                    Guilds.getInstance().getEconomy().depositPlayer(player, Double.valueOf(args[1]));
-            if (!response.transactionSuccess()) {
-                Message.sendMessage(player, Message.COMMAND_BANK_WITHDRAW_FAILURE);
-                return;
-            }
-
-            Guilds.getInstance().guildBanksConfig
-                    .set(guild.getName(), balance - Double.valueOf(args[1]));
-            Guilds.getInstance().saveGuildData();
-            guild.updateGuild("");
-        }
-
-
+        Double balance = guild.getBalance();
+        if ((guild.getBalance() < amount)) return;
+        guild.updateBalance(balance - amount);
     }
 
 }
-
-

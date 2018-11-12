@@ -15,7 +15,7 @@
 
 # This is used to determine what version of the config you are using.
 # Please do not change this as it may cause issues with your config.
-version: 25
+version: 1
 
 # This will automatically move your current config to "config-old.yml" and replace with a new, updated, "config.yml".
 # If you ever get tired of your config being moved, just change this to "false".
@@ -30,30 +30,6 @@ announcements:
   in-game: true
 
 #-----------------------------------------------------------#
-#                     Hooks Configuration                   #
-#-----------------------------------------------------------#
-
-# Hooks will control what the plugin can hook into.
-# For Guild Claims to work, you MUST have WorldGuard installed & the WorldGuard Hook enabled.
-# If you change a hook to true and don't actually have the plugin, it may throw errors.
-# Note on the NameTagEdit Hook: They may not all look the best if someone has a long guild name / username.
-# It will allow 16 characters before the user's Username.
-hooks:
-  worldguard: false
-  nametagedit: false
-  serverlistplus: false
-
-# This allows you to configure how nametags will work in game with NameTagEdit.
-# You can also display a guild's prefix by using {prefix} instead of {guild}.
-nametagedit:
-  prefix:
-    enabled: true
-    prefix: "&7[&b{guild}&7]&r "
-  suffix:
-    enabled: false
-    suffix: "&7[&b{guild}&7]&r "
-
-#-----------------------------------------------------------#
 #                     CHOOSE YOUR LANGUAGE                  #
 #-----------------------------------------------------------#
 
@@ -63,69 +39,19 @@ nametagedit:
 # NOTE: If you change your language please ONLY use from the list above and use them EXACTLY as they are spelled in the list above.
 # Example: If I am a french server, I would change lang: english to lang: french
 # If you try and use a different language than any in the list above, the plugin will not function in a normal manner.
-lang: english
-# The plugin also supports the following other languages:
-# - chinese
-# - dutch
-# - danish
-# - english
-# - french
-# - hungarian
-# - japanese
-# - polish
-# - romanian
-# - russian
-# - simplifiedchinese
-# - slovak
-# - spanish
-# - swedish
-# - portuguese
-# - german
-# - vietnamese
-# - norwegian
-# - italian
+lang: en-US
 
-#-----------------------------------------------------------#
-#                     Command Descriptions                  #
-#-----------------------------------------------------------#
 
-# This allows you to modify how /guild help look in-game.
-# This is mainly towards those who aren't English speaking servers.
-# This allows you to fully translate commands to your own language.
-commands:
-  description:
-    accept: "Accept a guild invite"
-    admin: "Admin command for managing guilds"
-    ally: "Ally commands"
-    boot: "Kick a player from your guild"
-    bank: "Use your guild bank"
-    buff: "Buy buffs for your guild"
-    cancel: "Cancel an action"
-    chat: "Send a message to your guild members"
-    check: "Check pending guild invites"
-    claim: "Claim land for your guild"
-    confirm: "Confirm an action"
-    create: "Create a guild"
-    decline: "Decline a guild invite"
-    delete: "Delete your current guild"
-    demote: "Demote a member of your guild"
-    give: "Give a player different rewards inside the plugin"
-    help: "View all commands"
-    home: "Teleport to your guild home"
-    info: "View your guild's info"
-    invite: "Invite a player to your guild"
-    leave: "Leave your current guild"
-    list: "List all guilds on the server"
-    prefix: "Change your guild's prefix"
-    promote: "Promote a member of your guild"
-    reload: "Reload guild's configuration file"
-    sethome: "Set your guild's home"
-    status: "Toggle your guild public / private"
-    transfer: "Transfer your guild to another user"
-    unclaim: "Remove your guild claim!"
-    upgrade: "Upgrade your guild to a higher level"
-    vault: "Open your guild vault"
-    version: "Plugin info / version"
+# DO NOT TOUCH THIS PLEASE
+
+supported-languages:
+- en-US
+
+# This section is for event handler that I feel should be optional for you guys.
+main-hooks:
+  essentials-chat: false
+  tablist-guilds: false
+
 
 #-----------------------------------------------------------#
 #              Rewards / Tickets Configuration              #
@@ -136,23 +62,23 @@ commands:
 # Console will be able to run the /guild give on a player to give different items.
 # This may throw errors if you are on 1.8
 
-rewards-enabled: true
 upgrade-ticket:
   name: "&bGuild Upgrade Ticket"
   lore: "&dRight click this ticket to upgrade your guild tier!"
   material: "PAPER"
 
-#-----------------------------------------------------------#
-#                     GUI CONFIGURATION                     #
-#-----------------------------------------------------------#
 
-# In this section of the config you can choose if you would look a GUI for various commands. The ones displayed below are the only ones that have implemented GUIs on them.
-# As stated above, the name here such as list and info will modify data inside that commands GUI.
-# If your server's language is not english, you will need to manually modify these to your server's language and they will display in the GUI as your new input.
+  #-----------------------------------------------------------#
+  #                     GUI CONFIGURATION                     #
+  #-----------------------------------------------------------#
 
-# The "list" section allows you to choose how the /guild list is styled.
-# You can change the colors, and the language of all parts of the guild list GUI.
-# The item is what is used to display all the guilds.
+  # In this section of the config you can choose if you would look a GUI for various commands. The ones displayed below are the only ones that have implemented GUIs on them.
+  # As stated above, the name here such as list and info will modify data inside that commands GUI.
+  # If your server's language is not english, you will need to manually modify these to your server's language and they will display in the GUI as your new input.
+
+  # The "list" section allows you to choose how the /guild list is styled.
+  # You can change the colors, and the language of all parts of the guild list GUI.
+  # The item is what is used to display all the guilds.
 list:
   name: "&cGuild Name: "
   prefix: "&aGuild Prefix: "
@@ -331,118 +257,14 @@ buff:
     water-breathing: true
     regeneration: true
 
+
 #-----------------------------------------------------------#
 #                     Vault Configuration                   #
 #-----------------------------------------------------------#
-
-# This section of the config will display options for your server based upon if you are using the Vault plugin or not.
-# This option only matters if you have an economy plugin on your server AND you have Vault installed.
-# The plugin will work without Vault but ONLY if you don't have an economy plugin also.
-require-money: false
-
-# Uncomment the lines below if you have Vault + an economy plugin and have change the option above to true.
-# You can define how much it costs for users to create a guild, the cost option, and you can define how much it costs for users to set a guild home.
-Requirement:
-  cost: 0
-  sethome-cost: 0
-
-# This section allows you to reward players for killing others!
-# Players will only get money from players they kill in OTHER guilds (to help prevent abuse).
-reward-on-kill:
-  enabled: true
-  reward: 10
-  take-from-killed-player: 10
-
-#-----------------------------------------------------------#
-#                  Guild Claims Configuration               #
-#-----------------------------------------------------------#
-# This section of the config will allow you to handle guild land claiming.
-# Remember that the enable / disable for this is the WorldGuard Hook at the TOP of the config.
-# There are multiple options when it comes to guild claims. For the time being, all guilds will only get one claim.
-# As a server owner, you will have a few options here.
-# First off, you will have the ability to have a standard set claim size.
-# There is an option you can modify if you want players to be able to set their own claim size.
-# Don't worry, you will be able to modify the max claim size to prevent abuse.
-# Prices for guilds will be based up each section of blocks they claim with the region.
-# For example: If I want a 25x25 claim, I'd do /guild claim 25 and I'd be charged 25 * price you set.
-show-outline: true
-
-# Supports {player} and {guild}
-claim-commands:
-- ""
-
-# Supports {player} and {guild}
-create-commands:
-- ""
-
-# Customize the entrance and exit message of joining claims
-# Supports {prefix} for guild prefix and {guild} for guild name
-# Also supports color codes!
-claim-enter-message: "&aNow entering &d{guild}'s &aclaim!"
-claim-exit-message: "&aNow leaving &d{guild}'s &aclaim!"
-
-# Would you like to disable guild claiming in specific worlds?
-disabled-worlds:
--
-
-# Would you like to allow players to set their own claim size?
-custom-claim-size: false
-
-# You can set the max size for the claim size, so players can't take some absurd amount
-custom-max-claim-size: 100
-
-# Here you can set the custom price for claiming with custom regions (read above to see how it works)
-custom-claim-price: 10.00
-
-# Here you can set the regular max claim size when you aren't allowing custom claims
-regular-claim-size: 100
-
-# Here you can set the price for regular claims when you aren't allowing custom claims
-regular-claim-price: 100.00
-
-#-----------------------------------------------------------#
-#                     Title Configuration                   #
-#-----------------------------------------------------------#
-
-# This section of the config will walk you through making and configuring custom titles for different events in the plugin.
-# NOTE: When configuring times, keep in mind that 1 = 1 second, and so on.
-
-# CUSTOM TITLE PLACEHOLDERS: {guild} {prefix} {username} {tier}
-
-# NOTE: There is a current bug which only allows Color Codes to work on creation, upgrade, and prefix.
-titles:
-  enabled: false
-  events:
-    guild-creation:
-      title: "Congrats"
-      sub-title: "{guild} has been created!"
-      fade-in: 3
-      stay: 3
-      fade-out: 3
-    player-joins-guild:
-      title: ""
-      sub-title: "{username} has just joined the guild."
-      fade-in: 3
-      stay: 3
-      fade-out: 3
-    player-leaves-guild:
-      title: ""
-      sub-title: "{username} has just left the guild."
-      fade-in: 3
-      stay: 3
-      fade-out: 3
-    guild-prefix-change:
-      title: "Congrats"
-      sub-title: "Your new prefix is {prefix}"
-      fade-in: 3
-      stay: 3
-      fade-out: 3
-    guild-tier-upgrade:
-      title: "Success!"
-      sub-title: "Your guild is now Tier {tier}"
-      fade-in: 3
-      stay: 3
-      fade-out: 3
+# Currently not working in the latest release, working on a fix
+cost:
+  creation: 0
+  sethome: 0
 
 #-----------------------------------------------------------#
 #                     Guild Upgrade Configuration           #
@@ -482,7 +304,7 @@ tier1:
   max-bank-balance: 10000
   members-to-rankup: 0
   permissions:
-    -
+  -
 tier2:
   name: "Silver"
   cost: 200
@@ -492,7 +314,7 @@ tier2:
   max-bank-balance: 20000
   members-to-rankup: 0
   permissions:
-    -
+  -
 tier3:
   name: "Gold"
   cost: 300
@@ -502,7 +324,7 @@ tier3:
   max-bank-balance: 30000
   members-to-rankup: 0
   permissions:
-    -
+  -
 
 #-----------------------------------------------------------#
 #                     Guild Configuration                   #
@@ -511,11 +333,7 @@ tier3:
 # This section of the config will talk about various parts of making a guild and options as server owner you can set.
 
 # The prefix of all messages send by this plugin to a player for all messages and commands
-plugin-prefix: "&a[Guilds]"
-
-# Disable this to remove guild names showing next to a player in "TabList"
-tablist-guilds: false
-
+plugin-prefix: "[&b&lGuilds] "
 # Would you like to display a user's displayname instead of their MC username?
 tablist-use-display-name: false
 
@@ -524,11 +342,8 @@ tablist-use-display-name: false
 # You can use {prefix} to show the Guild Prefix instead if you would like.
 tablist: "&7[&b{guild}&7]&r"
 
-# Disable this if you don't want to allow Guild Signs to be made.
-guild-signs: false
-
 # Here you can modify how the /guild chat message style works.
-guild-chat-format: "&7&l[Guild Chat]&r &b[{role}] {player}: {message}"
+guild-chat-format: "&7&l[Guild Chat]&r &b[{role}&b]&r &b {player}: {message}"
 
 # Change this to true if you want to allow players in the same guild / guild's that are allies with each other to damage each other.
 allow-guild-damage: false
@@ -538,28 +353,18 @@ allow-ally-damage: false
 updater:
   check: true
 
-# This part pertains to the /guild home command
-home:
 # Define how long they must wait to use the command
-  cool-down: 60
-# Define how long they must stand still before being teleported
-  teleport-delay: 5
-# Keep this TRUE unless you really don't want it. It could mess up how teleport-delay works.
-  freeze-player: true
-# Freezing a player will make them not able to move while teleporting.
-# Change the teleport-delay if you want them to wait longer to teleport after running the command.
-
-# Define how long they must wait to use the command
-sethome:
-  cool-down: 60
+cool-down:
+  home: 60
+  sethome: 60
 
 name:
-# Minimum length of guild names
+  # Minimum length of guild names
   min-length: 1
-# Maximum length of guild names
+  # Maximum length of guild names
   max-length: 64
-# RegEx (https://en.wikipedia.org/wiki/Regular_expression) used to only allow certain characters (default only allows alphanumeric characters)
-# To turn off the ability for colored names change the regex to "^[a-zA-Z0-9]*$"
+  # RegEx (https://en.wikipedia.org/wiki/Regular_expression) used to only allow certain characters (default only allows alphanumeric characters)
+  # To turn off the ability for colored names change the regex to "^[a-zA-Z0-9]*$"
   regex: "^[a-zA-Z0-9&]*$"
 
 # This will automatically prevent players from making a guild if it contains anything in the list below.
@@ -568,29 +373,30 @@ name:
 enable-blacklist: true
 
 blacklist:
-  - "crap"
-  - "ass"
-  - "stupid"
+- "crap"
+- "ass"
+- "stupid"
 
 prefix:
-# With the default Regex currently set, the minimum length of the prefix is 1 and the maximum is 20.
-# To change this, adjust the numbers and maybe have a look at the link above (RegEx).
-# To turn off the ability for colored prefixes change the regex to "[a-zA-Z0-9]{1,20}"
+  # With the default Regex currently set, the minimum length of the prefix is 1 and the maximum is 20.
+  # To change this, adjust the numbers and maybe have a look at the link above (RegEx).
+  # To turn off the ability for colored prefixes change the regex to "[a-zA-Z0-9]{1,20}"
   regex: "[a-zA-Z0-9&]{1,20}"
-
-
-# There are lots of options when it comes to configuring the roles. We have NOT (yet) experience with adding new ranks, so if it breaks, do not be surprised.
-# You can change individual perms for each rank but please DO NOT modify the order in which they go along with the numbers such as 0, 1 ,2, 3, etc.
+#-----------------------------------------------------------#
+#                        Role Configuration                 #
+#-----------------------------------------------------------#
 
 roles:
   0:
     name: "GuildMaster"
+    permission-node: "guilds.role.master"
     permissions:
       activate-buff: true
       add-ally: true
       ally-chat: true
       change-home: true
       change-prefix: true
+      rename: true
       chat: true
       demote: true
       deposit-money: true
@@ -612,12 +418,14 @@ roles:
 
   1:
     name: "Officer"
+    permission-node: "guilds.role.officer"
     permissions:
       activate-buff: false
       add-ally: true
       ally-chat: true
       change-home: true
       change-prefix: false
+      rename: false
       chat: true
       demote: true
       deposit-money: true
@@ -639,11 +447,13 @@ roles:
 
   2:
     name: "Veteran"
+    permission-node: "guilds.role.veteran"
     permissions:
       activate-buff: false
       add-ally: false
       ally-chat: true
       change-prefix: false
+      rename: false
       chat: true
       demote: false
       deposit-money: true
@@ -664,11 +474,13 @@ roles:
       interact: true
   3:
     name: "Member"
+    permission-node: "guilds.role.member"
     permissions:
       activate-buff: false
       add-ally: false
       ally-chat: true
       change-prefix: false
+      rename: false
       chat: true
       demote: false
       deposit-money: true
@@ -687,24 +499,3 @@ roles:
       destroy: true
       place: true
       interact: true
-
-#-----------------------------------------------------------#
-#                     Storage Configuration                 #
-#-----------------------------------------------------------#
-
-# In this part of the config, we will discuss data saving for the plugin.
-
-# As of Guilds-1.8.3 MySQL has been remade, but it is EXPERIMENTAL, please report any and all bugs using MySQL to us before commenting poorly
-# on the Spigot plugin page.
-
-database:
-# Set the type of the database (Either JSON or MySQL)
-  type: JSON
-# Uncomment when using MySQL
-#  host: "127.0.0.1"
-#  port: 3306
-#  username: "root"
-#  password: "password"
-## Note: Database needs to be created manually
-#  database: "guilds"
-#  pool-size: 10

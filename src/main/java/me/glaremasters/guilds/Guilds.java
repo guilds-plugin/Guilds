@@ -1,362 +1,305 @@
 package me.glaremasters.guilds;
 
-import static me.glaremasters.guilds.util.AnnouncementUtil.unescape_perl_string;
 import be.maximvdw.placeholderapi.PlaceholderAPI;
+import co.aikar.commands.BukkitCommandManager;
+import co.aikar.commands.InvalidCommandArgument;
 import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
+import io.papermc.lib.PaperLib;
+import me.glaremasters.guilds.api.GuildsAPI;
+import me.glaremasters.guilds.api.Metrics;
+import me.glaremasters.guilds.commands.CommandAdmin;
+import me.glaremasters.guilds.commands.CommandAlly;
+import me.glaremasters.guilds.commands.CommandBank;
+import me.glaremasters.guilds.commands.CommandGuilds;
+import me.glaremasters.guilds.database.DatabaseProvider;
+import me.glaremasters.guilds.database.databases.json.JSON;
+import me.glaremasters.guilds.guild.Guild;
+import me.glaremasters.guilds.guild.GuildHandler;
+import me.glaremasters.guilds.guild.GuildRole;
+import me.glaremasters.guilds.listeners.*;
+import me.glaremasters.guilds.messages.Messages;
+import me.glaremasters.guilds.updater.SpigotUpdater;
+import me.glaremasters.guilds.utils.ActionHandler;
+import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.permission.Permission;
+import org.apache.commons.io.IOUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.logging.Level;
+import java.util.Locale;
 import java.util.stream.Stream;
-import me.glaremasters.guilds.api.Metrics;
-import me.glaremasters.guilds.commands.*;
-import me.glaremasters.guilds.commands.base.CommandHandler;
-import me.glaremasters.guilds.database.DatabaseProvider;
-import me.glaremasters.guilds.database.databases.json.Json;
-import me.glaremasters.guilds.database.databases.mysql.MySql;
-import me.glaremasters.guilds.guild.GuildHandler;
-import me.glaremasters.guilds.listeners.*;
-import me.glaremasters.guilds.placeholders.PlaceholdersSRV;
-import me.glaremasters.guilds.updater.SpigotUpdater;
-import me.glaremasters.guilds.util.SLPUtil;
-import net.milkbowl.vault.economy.Economy;
-import net.milkbowl.vault.permission.Permission;
-import org.apache.commons.io.IOUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.plugin.java.JavaPlugin;
 
-public class Guilds extends JavaPlugin {
+import static co.aikar.commands.ACFBukkitUtil.color;
+import static me.glaremasters.guilds.utils.AnnouncementUtil.unescape_perl_string;
 
-    public static String PREFIX;
-    public static boolean vaultEconomy;
-    public static boolean vaultPermissions;
-    private static Guilds instance;
-    private static Permission permission = null;
-    private static Economy economy = null;
-    private static TaskChainFactory taskChainFactory;
-    public File languageYamlFile;
-    public YamlConfiguration yaml;
-    public File guildhomes = new File(this.getDataFolder(), "data/guild-homes.yml");
-    public YamlConfiguration guildHomesConfig =
-            YamlConfiguration.loadConfiguration(this.guildhomes);
-    public File guildstatus = new File(this.getDataFolder(), "data/guild-status.yml");
-    public YamlConfiguration guildStatusConfig =
-            YamlConfiguration.loadConfiguration(this.guildstatus);
-    public File guildtiers = new File(this.getDataFolder(), "data/guild-tiers.yml");
-    public YamlConfiguration guildTiersConfig =
-            YamlConfiguration.loadConfiguration(this.guildtiers);
-    public File guildbanks = new File(this.getDataFolder(), "data/guild-banks.yml");
-    public YamlConfiguration guildBanksConfig =
-            YamlConfiguration.loadConfiguration(this.guildbanks);
+public final class Guilds extends JavaPlugin {
+
+    public static Guilds guilds;
     private DatabaseProvider database;
     private GuildHandler guildHandler;
-    private CommandHandler commandHandler;
+    private ActionHandler actionHandler;
+    private BukkitCommandManager manager;
+    private static TaskChainFactory taskChainFactory;
+    public static boolean vaultEconomy;
+    public static boolean vaultPermissions;
+    private static Economy economy = null;
+    private static Permission permissions = null;
+    private GuildsAPI api;
+    private String logPrefix = "&f[&aGuilds&f]&r ";
 
-    public static <T> TaskChain<T> newChain() {
-        return taskChainFactory.newChain();
-    }
-
-    public static Guilds getInstance() {
-        return instance;
-    }
-
-    @SuppressWarnings("deprecation")
     @Override
     public void onEnable() {
-        instance = this;
-        if (getConfig().getBoolean("announcements.console")) {
-            Bukkit.getConsoleSender().sendMessage(getAnnouncements());
-        }
+        long start = System.currentTimeMillis();
+        logo();
+        guilds = this;
+        info("Enabling the Guilds API...");
+        api = new GuildsAPI();
+        info("API Enabled!");
+        info("Hooking into Vault...");
+        vaultEconomy = setupEconomy();
+        vaultPermissions = setupPermissions();
+        info("Hooked into Economy and Permissions!");
+        initializePlaceholder();
+        info("Enabling Metrics...");
+        Metrics metrics = new Metrics(this);
+        metrics.addCustomChart(new Metrics.SingleLineChart("guilds", () -> getGuildHandler().getGuilds().values().size()));
+        saveData();
 
-        // TODO: Change each language to their own variable or something to that affect so that new languages can be added without needs to delete the config folder.
-
-        File languageFolder = new File(getDataFolder(), "languages");
-        if (!languageFolder.exists()) {
-            languageFolder.mkdirs();
-        }
-
-        this.languageYamlFile = new File(languageFolder, getConfig().getString("lang") + ".yml");
-        this.yaml = YamlConfiguration.loadConfiguration(languageYamlFile);
-
-        PREFIX =
-                ChatColor.translateAlternateColorCodes('&',
-                        this.getConfig().getString("plugin-prefix"))
-                        + ChatColor.RESET + " ";
 
         taskChainFactory = BukkitTaskChainFactory.create(this);
 
-        setDatabaseType();
+        database = new JSON(this);
+        database.initialize();
 
-        // TODO: Clean this up and make it function easier.
-
-        if (!getConfig().isSet("version") || getConfig().getInt("version") != 25) {
-            if (getConfig().getBoolean("auto-update-config")) {
-                File oldfile = new File(this.getDataFolder(), "config.yml");
-                File newfile = new File(this.getDataFolder(), "config-old.yml");
-                File dir = new File(this.getDataFolder(), "languages");
-                File olddir = new File(this.getDataFolder(), "old-languages");
-                dir.renameTo(olddir);
-                oldfile.renameTo(newfile);
-                getLogger()
-                        .info("Your config has been auto updated. You can disable this in the config.");
-            } else {
-                getLogger().info("Your config is out of date!");
-            }
-
-        }
-        this.saveDefaultConfig();
-        getConfig().options().copyDefaults(true);
-
+        info("Loading Guilds...");
         guildHandler = new GuildHandler();
         guildHandler.enable();
+        info("The Guilds have been loaded!");
 
-        commandHandler = new CommandHandler();
-        commandHandler.enable();
+        actionHandler = new ActionHandler();
+        actionHandler.enable();
 
-        initializePlaceholder();
+        info("Loading Commands and Language Data...");
+        manager = new BukkitCommandManager(this);
+        manager.usePerIssuerLocale(true);
+        loadLanguages(manager);
+        manager.enableUnstableAPI("help");
+        loadContexts(manager);
 
-        getCommand("guild").setExecutor(commandHandler);
+        Stream.of(new CommandGuilds(), new CommandBank(), new CommandAdmin(), new CommandAlly()).forEach(manager::registerCommand);
 
-        Stream.of(
-                new CommandAccept(), new CommandAlly(), new CommandBoot(),
-                new CommandBuff(), new CommandCancel(), new CommandChat(), new CommandCheck(),
-                new CommandConfirm(),
-                new CommandCreate(), new CommandDecline(), new CommandDelete(), new CommandDemote(),
-                new CommandHelp(),
-                new CommandHome(), new CommandInfo(), new CommandInvite(),
-                new CommandLeave(),
-                new CommandList(), new CommandPrefix(), new CommandPromote(), new CommandReload(),
-                new CommandSetHome(),
-                new CommandStatus(), new CommandTransfer(), new CommandVault(),
-                new CommandVersion(),
-                new CommandUpgrade(), new CommandBank(), new CommandGive(), new CommandClaim(),
-                new CommandUnclaim(), new CommandAdmin()
-        ).forEach(commandHandler::register);
 
-        Stream.of(
-                new JoinListener(this), new ChatListener(), new ClickListener(this),
-                new GuildVaultListener(this),
-                new GuildBuffListener(this), new GuildChatListener(this), new MobDeathListener(),
-                new PlayerDamageListener(this),
-                new DamageMultiplierListener(), new AnnouncementListener(this),
-                new TierJoinListener(), new WorldGuardListener(this)
-        ).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
-
-        // TODO: Possibly change these all to a switch statement?
-
-        if (getConfig().getBoolean("guild-signs")) {
-            getServer().getPluginManager().registerEvents(new SignListener(), this);
-        }
-        if (getConfig().getBoolean("tablist-guilds")) {
-            getServer().getPluginManager().registerEvents(new TablistListener(this), this);
-        }
-
-        if (getConfig().getBoolean("reward-on-kill.enabled")) {
-            getServer().getPluginManager().registerEvents(new PlayerDeathListener(this, economy), this);
-        }
-
-        if (getConfig().getBoolean("hooks.nametagedit")) {
-            getServer().getPluginManager().registerEvents(new NameTagListener(), this);
-        }
-        if (getConfig().getBoolean("rewards-enabled")) {
-            getServer().getPluginManager().registerEvents(new TicketListener(this), this);
-        }
-
-        vaultEconomy = setupEconomy();
-        vaultPermissions = setupPermissions();
-
-        Metrics metrics = new Metrics(this);
-        metrics.addCustomChart(new Metrics.SingleLineChart("guilds",
-                () -> Guilds.getInstance().getGuildHandler().getGuilds().values().size()));
-
-        this.saveGuildData();
-        if (getConfig().getBoolean("updater.check")) {
-            // Check to see if there's any updates for the plugin
-            SpigotUpdater updater = new SpigotUpdater(this, 48920);
-            try {
-                // If there's an update, tell the user that they can update
-                if (updater.checkForUpdates()) {
-                    getLogger()
-                            .info("You appear to be running a version other than our latest stable release."
-                                    + " You can download our newest version at: " + updater
-                                    .getResourceURL());
+        if (getConfig().getBoolean("announcements.console")) {
+            info("Checking for updates...");
+            getServer().getScheduler().runTaskAsynchronously(this, new Runnable() {
+                SpigotUpdater updater = new SpigotUpdater(Guilds.getGuilds(), 48920);
+                @Override
+                public void run() {
+                    updateCheck(updater);
+                    info(getAnnouncements());
                 }
-            } catch (Exception e) {
-                // If it can't check for an update, tell the user and throw an error.
-                getLogger().info("Could not check for updates! Stacktrace:");
-                e.printStackTrace();
-            }
+            });
         }
 
-        // TODO: Clean this section up with a switch statement or something.
 
-        if (languageYamlFile.exists()) {
-            return;
-        } else {
-            Stream.of(
-                    "english", "chinese", "french", "dutch", "japanese", "swedish", "hungarian",
-                    "romanian", "slovak",
-                    "russian", "simplifiedchinese", "polish", "portuguese", "german", "vietnamese",
-                    "norwegian",
-                    "spanish", "italian", "danish"
-            ).forEach(l -> this.saveResource("languages/" + l + ".yml", false));
-        }
-
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "guild reload");
-
+        Stream.of(new GuildPerks(), new Players(this), new Tickets(this), new InventoryListener(this)).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
+        optionalListeners();
+        info("Ready to go! That only took " + (System.currentTimeMillis() - start) + "ms");
+        PaperLib.suggestPaper(this);
     }
 
-    // TODO: Possibly make these into something like saveGuildData()?
-
-    public void saveGuildData() {
-        try {
-            guildHomesConfig.save(guildhomes);
-            guildStatusConfig.save(guildstatus);
-            guildBanksConfig.save(guildbanks);
-            guildTiersConfig.save(guildtiers);
-        } catch (IOException e) {
-            getLogger().log(Level.WARNING, "Could not save Guild Data");
-            e.printStackTrace();
-        }
-    }
 
     @Override
     public void onDisable() {
         guildHandler.disable();
-        commandHandler.disable();
-        saveGuildData();
+        actionHandler.disable();
     }
-
-
-    public GuildHandler getGuildHandler() {
-        return guildHandler;
-    }
-
-    public CommandHandler getCommandHandler() {
-        return commandHandler;
-    }
-
-    public DatabaseProvider getDatabaseProvider() {
-        return database;
-    }
-
-
-    public Economy getEconomy() {
-        return economy;
-    }
-
-    public void setDatabaseType() {
-        switch (getConfig().getString("database.type").toLowerCase()) {
-            case "json":
-                database = new Json();
-                break;
-            case "mysql":
-                database = new MySql();
-                break;
-            default:
-                database = new Json();
-                break;
-        }
-
-        database.initialize();
-    }
-
-    // TODO: Find a way to organize these.
 
     /**
-     * Register MVdWPlaceholderAPI placeholders
+     * Grabs an instance of the plugin
+     * @return instance of plugin
      */
-    private void initializePlaceholder() {
-        if (Bukkit.getPluginManager().isPluginEnabled("MVdWPlaceholderAPI")) {
-            PlaceholderAPI.registerPlaceholder(this, "guild_name",
-                    event -> PlaceholdersSRV.getGuild(event.getPlayer()));
-            PlaceholderAPI.registerPlaceholder(this, "guild_master",
-                    event -> PlaceholdersSRV.getGuildMaster(event.getPlayer()));
-            PlaceholderAPI.registerPlaceholder(this, "guild_member_count",
-                    event -> PlaceholdersSRV.getGuildMemberCount(event.getPlayer()));
-            PlaceholderAPI.registerPlaceholder(this, "guild_prefix",
-                    event -> PlaceholdersSRV.getGuildPrefix(event.getPlayer()));
-            PlaceholderAPI.registerPlaceholder(this, "guild_members_online",
-                    event -> PlaceholdersSRV.getGuildMembersOnline(event.getPlayer()));
-            PlaceholderAPI.registerPlaceholder(this, "guild_status",
-                    event -> PlaceholdersSRV.getGuildStatus(event.getPlayer()));
-            PlaceholderAPI.registerPlaceholder(this, "guild_role",
-                    event -> PlaceholdersSRV.getGuildRole(event.getPlayer()));
-            PlaceholderAPI.registerPlaceholder(this, "guild_tier",
-                    event -> Integer.toString(PlaceholdersSRV.getGuildTier(event.getPlayer())));
-            PlaceholderAPI.registerPlaceholder(this, "guild_balance",
-                    event -> Double.toString(PlaceholdersSRV.getBankBalance(event.getPlayer())));
-            PlaceholderAPI.registerPlaceholder(this, "guild_upgrade_cost",
-                    event -> Double.toString(PlaceholdersSRV.getUpgradeCost(event.getPlayer())));
-            PlaceholderAPI.registerPlaceholder(this, "guild_tier_name",
-                    event -> PlaceholdersSRV.getTierName(event.getPlayer()));
-        }
-
+    public static Guilds getGuilds() {
+        return guilds;
     }
 
     /**
-     * Sets up the boolean for initializing Guilds to hook into Vault's economy system.
-     *
-     * @return Vault's economy setup
+     * Implement Vault's Economy API
+     * @return the value of the method
      */
     private boolean setupEconomy() {
-        RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager()
-                .getRegistration(net.milkbowl.vault.economy.Economy.class);
-        if (economyProvider != null) {
-            economy = economyProvider.getProvider();
-        }
+        RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
+        if (economyProvider != null) economy = economyProvider.getProvider();
         return (economy != null);
     }
 
     /**
-     * Sets up the boolean for initializing Guilds to hook into Vault's permission system.
-     *
-     * @return Vault's permission setup
+     * Implement Vault's Permission API
+     * @return the value of the method
      */
     private boolean setupPermissions() {
-        RegisteredServiceProvider<Permission> permissionProvider = getServer().getServicesManager()
-                .getRegistration(net.milkbowl.vault.permission.Permission.class);
-        if (permissionProvider != null) {
-            permission = permissionProvider.getProvider();
-        }
-        return (permission != null);
+        RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
+        if (rsp != null) permissions = rsp.getProvider();
+        return (permissions != null);
     }
 
     /**
-     * Setup easy way to get Vault Permissions
-     *
-     * @return permissions
+     * Save and handle new files if needed
      */
-    public static Permission getPermissions() {
-        return permission;
-    }
-
-
-    /**
-     * Sets up the usage of the ServerListPlus addon
-     */
-    @Override
-    public void onLoad() {
-        if (getConfig().getBoolean("hooks.serverlistplus")) {
-            SLPUtil slp = new SLPUtil();
-            slp.registerSLP();
+    private void saveData() {
+        saveDefaultConfig();
+        File languageFolder = new File(getDataFolder(), "languages");
+        if (!languageFolder.exists()) languageFolder.mkdirs();
+        for (String language : getConfig().getStringList("supported-languages")) {
+            File langFile = new File(languageFolder, language + ".yml");
+            if (!langFile.exists()) {
+                this.saveResource("languages/" + language + ".yml", false);
+            }
         }
     }
 
     /**
-     * Grab the announcement from the API
-     *
-     * @return announcement in string text form
+     * Load the languages for the server from ACF BCM
+     * @param manager ACF BCM
+     */
+    private void loadLanguages(BukkitCommandManager manager) {
+        try {
+            File languageFolder = new File(getDataFolder(), "languages");
+            manager.getLocales().setDefaultLocale(Locale.forLanguageTag(getConfig().getString("lang")));
+            for (String language : getConfig().getStringList("supported-languages")) {
+               manager.getLocales().loadYamlLanguageFile(new File(languageFolder, language + ".yml"), Locale.forLanguageTag(language));
+            }
+            info("Loaded successfully!");
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+            info("Failed to load!");
+        }
+    }
+
+    /**
+     * Get the database we are using to store data
+     * @return the database currently being used
+     */
+    public DatabaseProvider getDatabase() {
+        return database;
+    }
+
+    /**
+     * Get the guild handlers in the plugin
+     * @return the guild handlers being used
+     */
+    public GuildHandler getGuildHandler() {
+        return guildHandler;
+    }
+
+    /**
+     * Get the action handlers in the plugin
+     * @return the action handlers being used
+     */
+    public ActionHandler getActionHandler() {
+        return actionHandler;
+    }
+
+    /**
+     * Create a new chain for async
+     * @param <T> taskchain
+     * @return the new chain created for data modification
+     */
+    public static <T> TaskChain<T> newChain() {
+        return taskChainFactory.newChain();
+    }
+
+    /**
+     * Execute the update checker
+     * @param updater the SpigotUpdater
+     */
+    private void updateCheck(SpigotUpdater updater) {
+        try {
+            if (updater.checkForUpdates()) {
+                info("You appear to be running a version other than our latest stable release." + " You can download our newest version at: " + updater.getResourceURL());
+            }
+        } catch (Exception ex) {
+            info("Could not check for updates! Stacktrace:");
+            ex.printStackTrace();
+        }
+    }
+
+    /**
+     * Get a holder of the API
+     * @return API holder
+     */
+    public GuildsAPI getApi() {
+        return api;
+    }
+
+    /**
+     * Get the CommandManager
+     * @return command manager
+     */
+    public BukkitCommandManager getManager() {
+        return manager;
+    }
+
+    /**
+     * Useful tool for colorful texts to console
+     * @param msg the msg you want to log
+     */
+     public void info(String msg) {
+        Bukkit.getServer().getConsoleSender().sendMessage(color(logPrefix + msg));
+    }
+
+    /**
+     * Guilds logo in console
+     */
+    private void logo() {
+        info("");
+        info("  .oooooo.                 o8o  oooo        .o8                ooooo ooooo ooooo ");
+        info(" d8P'  `Y8b                `\"'  `888       \"888                `888' `888' `888' ");
+        info("888           oooo  oooo  oooo   888   .oooo888   .oooo.o       888   888   888  ");
+        info("888           `888  `888  `888   888  d88' `888  d88(  \"8       888   888   888  ");
+        info("888     ooooo  888   888   888   888  888   888  `\"Y88b.        888   888   888  ");
+        info("`88.    .88'   888   888   888   888  888   888  o.  )88b       888   888   888  ");
+        info(" `Y8bood8P'    `V88V\"V8P' o888o o888o `Y8bod88P\" 8\"\"888P'      o888o o888o o888o");
+        info("");
+    }
+
+    /**
+     * Load the contexts for the server from ACF BCM
+     * @param manager ACF BCM
+     */
+    private void loadContexts(BukkitCommandManager manager) {
+        manager.getCommandContexts().registerIssuerOnlyContext(Guild.class, c-> {
+            Guild guild = Guild.getGuild(c.getPlayer().getUniqueId());
+            if (guild == null) {
+                throw new InvalidCommandArgument(Messages.ERROR__NO_GUILD);
+            }
+            return guild;
+        });
+
+        manager.getCommandContexts().registerIssuerOnlyContext(GuildRole.class, c-> {
+            Guild guild = Guild.getGuild(c.getPlayer().getUniqueId());
+            if (guild == null) {
+                return null;
+            }
+            return GuildRole.getRole(guild.getMember(c.getPlayer().getUniqueId()).getRole());
+        });
+    }
+
+    /**
+     * Grab the announcements for the plugins
+     * @return the announcements string
      */
     public String getAnnouncements() {
-        String announcement = "";
+        String announcement;
         try {
             URL url = new URL("https://glaremasters.me/guilds/announcements/?id=" + getDescription()
                     .getVersion());
@@ -375,5 +318,60 @@ public class Guilds extends JavaPlugin {
         return announcement;
     }
 
+    /**
+     * Check if MVdWPlaceholderAPI is running
+     * @return true or false
+     */
+    private boolean checkMVDW() {
+        return Bukkit.getPluginManager().isPluginEnabled("MVdWPlaceholderAPI");
+    }
+
+    /**
+     * Load all the placeholders for MVDW
+     */
+    private void initializePlaceholder() {
+
+        if (checkMVDW()) {
+            info("Hooking into MVdWPlacholderAPI...");
+            PlaceholderAPI.registerPlaceholder(this, "guild_name", e -> api.getGuild(e.getPlayer()));
+            PlaceholderAPI.registerPlaceholder(this, "guild_master", e -> api.getGuildMaster(e.getPlayer()));
+            PlaceholderAPI.registerPlaceholder(this, "guild_member_count", e -> api.getGuildMemberCount(e.getPlayer()));
+            PlaceholderAPI.registerPlaceholder(this, "guild_status", e -> api.getGuildStatus(e.getPlayer()));
+            PlaceholderAPI.registerPlaceholder(this, "guild_role", e -> api.getGuildRole(e.getPlayer()));
+            PlaceholderAPI.registerPlaceholder(this, "guild_prefix", e -> api.getGuildPrefix(e.getPlayer()));
+            PlaceholderAPI.registerPlaceholder(this, "guild_members_online", e -> api.getGuildMembersOnline(e.getPlayer()));
+            PlaceholderAPI.registerPlaceholder(this, "guild_tier", e -> String.valueOf(api.getGuildTier(e.getPlayer())));
+            PlaceholderAPI.registerPlaceholder(this, "guild_balance", e -> String.valueOf(api.getBankBalance(e.getPlayer())));
+            PlaceholderAPI.registerPlaceholder(this, "guild_tier_name", e -> api.getTierName(e.getPlayer()));
+            info("Hooked!");
+        }
+
+    }
+
+    /**
+     * Get the economy
+     * @return economy
+     */
+    public Economy getEconomy() {
+        return economy;
+    }
+
+    /**
+     * Get the permissions from vault
+     * @return the permissions from vault
+     */
+    public Permission getPermissions() {
+        return permissions;
+    }
+
+    public void optionalListeners() {
+        if (getConfig().getBoolean("main-hooks.essentials-chat")) {
+            getServer().getPluginManager().registerEvents(new EssentialsChat(this), this);
+        }
+
+        if (getConfig().getBoolean("main-hooks.tablist-guilds")) {
+            getServer().getPluginManager().registerEvents(new Tablist(this), this);
+        }
+    }
 
 }

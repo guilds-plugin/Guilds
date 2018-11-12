@@ -1,147 +1,181 @@
 package me.glaremasters.guilds.commands;
 
-import static me.glaremasters.guilds.util.ColorUtil.color;
+import co.aikar.commands.BaseCommand;
+import co.aikar.commands.annotation.*;
 import me.glaremasters.guilds.Guilds;
-import me.glaremasters.guilds.commands.base.CommandBase;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
-import me.glaremasters.guilds.message.Message;
-import me.glaremasters.guilds.util.ConfirmAction;
+import me.glaremasters.guilds.messages.Messages;
+import me.glaremasters.guilds.utils.ConfirmAction;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-@SuppressWarnings("deprecation")
-public class CommandAdmin extends CommandBase {
+import static co.aikar.commands.ACFBukkitUtil.color;
 
+/**
+ * Created by GlareMasters
+ * Date: 9/10/2018
+ * Time: 6:45 PM
+ */
+@CommandAlias("guild|guilds")
+public class CommandAdmin extends BaseCommand {
 
-    public CommandAdmin() {
-        super("admin", Guilds.getInstance().getConfig().getString("commands.description.admin"),
-                "guilds.command.admin", true, null,
-                "<addplayer | removeplayer> <guild name> <player name>, "
-                        + "or <claim> <guildname>,"
-                        + "or <create> <guildname> <playername>"
-                        + "or <upgrade> <guild name>, or <status> <guild name> <Public | Private>, "
-                        + "or <prefix> <guild name> <new prefix>",
-                1, 3);
-    }
+    @Dependency private Guilds guilds;
 
-
-    @Override
-    public void execute(CommandSender sender, String[] args) {
-
-        if (args.length < 2) {
-            Message.sendMessage(sender, Message.COMMAND_ERROR_ARGS);
-            return;
-        }
-
-        Guild guild = Guild.getGuild(args[1]);
-
+    /**
+     * Admin command to remove a guild from the server
+     * @param player the admin running the command
+     * @param name the name of the guild being removed
+     */
+    @Subcommand("admin remove")
+    @Description("{@@descriptions.admin-remove}")
+    @CommandPermission("guilds.command.admin")
+    @Syntax("<guild name>")
+    public void onGuildRemove(Player player, String name) {
+        Guild guild = Guild.getGuild(name);
         if (guild == null) {
-            Message.sendMessage(sender, Message.COMMAND_ERROR_NO_GUILD);
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__GUILD_NO_EXIST);
             return;
-        } else if (args[0].equalsIgnoreCase("delete") || args[0].equalsIgnoreCase("remove")) {
-            Message.sendMessage(sender,
-                    Message.COMMAND_ADMIN_DELETE_WARNING.replace("{guild}", args[1]));
-
-            Guilds.getInstance().getCommandHandler().addAction(sender, new ConfirmAction() {
-                @Override
-                public void accept() {
-                    Guilds.getInstance().getCommandHandler().removeAction(sender);
-                }
-
-                @Override
-                public void decline() {
-                    Message.sendMessage(sender, Message.COMMAND_ADMIN_DELETE_CANCELLED);
-                    Guilds.getInstance().getCommandHandler().removeAction(sender);
-                }
-            });
-        } else if (args[0].equalsIgnoreCase("addplayer")) {
-            if (args.length != 3) {
-                Message.sendMessage(sender, Message.COMMAND_ERROR_ARGS);
-                return;
-            }
-
-            Player player = Bukkit.getPlayer(args[2]);
-            if (player == null || !player.isOnline()) {
-                Message.sendMessage(sender, Message.COMMAND_ERROR_PLAYER_NOT_FOUND);
-                return;
-            }
-
-            if (Guild.getGuild(player.getUniqueId()) != null) {
-                Message.sendMessage(sender, Message.COMMAND_ADMIN_PLAYER_ALREADY_IN_GUILD);
-                return;
-            }
-
-            guild.addMember(player.getUniqueId(), GuildRole.getLowestRole());
-
-            Message.sendMessage(player,
-                    Message.COMMAND_ACCEPT_SUCCESSFUL.replace("{guild}", guild.getName()));
-            Message.sendMessage(sender, Message.COMMAND_ADMIN_ADDED_PLAYER);
-        } else if (args[0].equalsIgnoreCase("removeplayer")) {
-            if (args.length != 3) {
-                Message.sendMessage(sender, Message.COMMAND_ERROR_ARGS);
-                return;
-            }
-
-            Player player = Bukkit.getPlayer(args[2]);
-            if (player == null || !player.isOnline()) {
-                Message.sendMessage(sender, Message.COMMAND_ERROR_PLAYER_NOT_FOUND);
-                return;
-            }
-
-            if (Guild.getGuild(player.getUniqueId()) == null) {
-                Message.sendMessage(sender, Message.COMMAND_ADMIN_PLAYER_NOT_IN_GUILD);
-                return;
-            }
-
-            guild.removeMember(player.getUniqueId());
-
-            Message.sendMessage(player, Message.COMMAND_LEAVE_SUCCESSFUL);
-            Message.sendMessage(sender, Message.COMMAND_ADMIN_REMOVED_PLAYER);
-        } else if (args[0].equalsIgnoreCase("upgrade")) {
-            FileConfiguration config = Guilds.getInstance().getConfig();
-            int tier = guild.getTier();
-            if (guild.getTier() >= Guilds.getInstance().getConfig().getInt("max-number-of-tiers")) {
-                Message.sendMessage(sender, Message.COMMAND_UPGRADE_TIER_MAX);
-                return;
-            }
-            Message.sendMessage(sender, Message.COMMAND_UPGRADE_SUCCESS);
-            Guilds.getInstance().guildTiersConfig.set(guild.getName(), tier + 1);
-            Guilds.getInstance().saveGuildData();
-
-            guild.updateGuild("");
-        } else if (args[0].equalsIgnoreCase("status")) {
-            if (args.length != 3) {
-                Message.sendMessage(sender, Message.COMMAND_ERROR_ARGS);
-                return;
-            }
-            if (!(args[2].equalsIgnoreCase("private") || args[2].equalsIgnoreCase("public"))) {
-                Message.sendMessage(sender, Message.COMMAND_STATUS_ERROR);
-            } else {
-                String status = args[2];
-                Guilds.getInstance().guildStatusConfig
-                        .set(args[1],
-                                status);
-                Guild.getGuild(args[1]).updateGuild("");
-
-                Message.sendMessage(sender,
-                        Message.COMMAND_STATUS_SUCCESSFUL.replace("{status}", status));
-                Guilds.getInstance().saveGuildData();
-            }
-        } else if (args[0].equalsIgnoreCase("prefix")) {
-            FileConfiguration config = Guilds.getInstance().getConfig();
-            if (args.length != 3) {
-                Message.sendMessage(sender, Message.COMMAND_ERROR_ARGS);
-                return;
-            }
-            if (!args[2].matches(Guilds.getInstance().getConfig().getString("prefix.regex"))) {
-                Message.sendMessage(sender, Message.COMMAND_PREFIX_REQUIREMENTS);
-                return;
-            }
-            Message.sendMessage(sender, Message.COMMAND_PREFIX_SUCCESSFUL);
-            guild.updatePrefix(color(args[2]));
         }
+        getCurrentCommandIssuer().sendInfo(Messages.ADMIN__DELETE_WARNING, "{guild}", name);
+        guilds.getActionHandler().addAction(player, new ConfirmAction() {
+            @Override
+            public void accept() {
+                guilds.getDatabase().removeGuild(guild);
+                guilds.getActionHandler().removeAction(player);
+                getCurrentCommandIssuer().sendInfo(Messages.ADMIN__DELETE_SUCCESSFUL, "{guild}", name);
+            }
+
+            @Override
+            public void decline() {
+                guilds.getActionHandler().removeAction(player);
+            }
+        });
     }
+
+    /**
+     * Admin command to add a player to a guild
+     * @param player the admin running the command
+     * @param target the player being added to the guild
+     * @param guild the guild the player is being added to
+     */
+    @Subcommand("admin addplayer")
+    @Description("{@@descriptions.admin-addplayer}")
+    @CommandPermission("guilds.command.admin")
+    @Syntax("<player> <guild>")
+    public void onAdminAddPlayer(Player player, String target, String guild) {
+        OfflinePlayer playerToAdd = Bukkit.getOfflinePlayer(target);
+        if (player == null || !player.isOnline()) return;
+        if (Guild.getGuild(playerToAdd.getUniqueId()) != null) return;
+        Guild targetGuild = Guild.getGuild(guild);
+        if (targetGuild == null) return;
+        targetGuild.addMember(playerToAdd.getUniqueId(), GuildRole.getLowestRole());
+        if (playerToAdd.isOnline()) {
+            guilds.getManager().getCommandIssuer(playerToAdd).sendInfo(Messages.ADMIN__PLAYER_ADDED, "{guild}", targetGuild.getName());
+        }
+        getCurrentCommandIssuer().sendInfo(Messages.ADMIN__ADMIN_PLAYER_ADDED, "{player}", playerToAdd.getName(), "{guild}", targetGuild.getName());
+        targetGuild.sendMessage(Messages.ADMIN__ADMIN_GUILD_ADD, "{player}", playerToAdd.getName());
+    }
+
+    /**
+     * Admin command to remove a player from a guild
+     * @param player the admin running the command
+     * @param target the guild the player is being removed from
+     */
+    @Subcommand("admin removeplayer")
+    @Description("{@@descriptions.admin-removeplayer}")
+    @CommandPermission("guilds.command.admin")
+    @Syntax("<name>")
+    public void onAdminRemovePlayer(Player player, String target) {
+        Player playerToRemove = Bukkit.getPlayerExact(target);
+        if (player == null || !player.isOnline()) return;
+        if (Guild.getGuild(playerToRemove.getUniqueId()) == null) return;
+        Guild guild = Guild.getGuild(playerToRemove.getUniqueId());
+        guild.removeMember(playerToRemove.getUniqueId());
+        if (playerToRemove.isOnline()) {
+            guilds.getManager().getCommandIssuer(playerToRemove).sendInfo(Messages.ADMIN__PLAYER_REMOVED, "{guild}", guild.getName());
+        }
+        getCurrentCommandIssuer().sendInfo(Messages.ADMIN__ADMIN_PLAYER_REMOVED, "{player}", playerToRemove.getName(), "{guild}", guild.getName());
+        guild.sendMessage(Messages.ADMIN__ADMIN_GUILD_REMOVE, "{player}", playerToRemove.getName());
+    }
+
+    /**
+     * Admin command to upgrade a guild's tier
+     * @param player the admin running the command
+     * @param name the name of the guild being upgraded
+     */
+    @Subcommand("admin upgrade")
+    @Description("{@@descriptions.admin-upgrade}")
+    @CommandPermission("guilds.command.admin")
+    @Syntax("<guild name>")
+    public void onAdminUpgradeGuild(Player player, String name) {
+        Guild guild = Guild.getGuild(name);
+        if (guild == null) return;
+        int tier = guild.getTier();
+        if (tier >= guild.getMaxTier()) return;
+        guild.updateTier(tier + 1);
+        getCurrentCommandIssuer().sendInfo(Messages.ADMIN__ADMIN_UPGRADE, "{guild}", guild.getName());
+        guild.sendMessage(Messages.ADMIN__ADMIN_GUILD_UPGRADE);
+    }
+
+    /**
+     * Admin command to change a guild's status
+     * @param player the admin running the command
+     * @param name the guild to change the status of
+     */
+    @Subcommand("admin status")
+    @Description("{@@descriptions.admin-status}")
+    @CommandPermission("guilds.command.admin")
+    @Syntax("<name> <private/public>")
+    public void onAdminGuildStatus(Player player, String name) {
+        Guild guild = Guild.getGuild(name);
+        if (guild == null) return;
+        String status = guild.getStatus();
+        if (status.equalsIgnoreCase("private")) {
+            status = "Public";
+        } else {
+            status = "Private";
+        }
+        guild.updateStatus(StringUtils.capitalize(status));
+        getCurrentCommandIssuer().sendInfo(Messages.STATUS__SUCCESSFUL, "{status}", status);
+    }
+
+    /**
+     * Admin command to change the prefix of a guild
+     * @param player the admin running the command
+     * @param name the name of a guild
+     * @param prefix the new prefix of the guild
+     */
+    @Subcommand("admin prefix")
+    @Description("{@@descriptions.admin-prefix}")
+    @CommandPermission("guilds.command.admin")
+    @Syntax("<name> <prefix>")
+    public void onAdminGuildPrefix(Player player, String name, String prefix) {
+        Guild guild = Guild.getGuild(name);
+        if (guild == null) return;
+        guild.updatePrefix(color(prefix));
+        getCurrentCommandIssuer().sendInfo(Messages.PREFIX__SUCCESSFUL);
+    }
+
+    /**
+     * Admin command to rename a guild
+     * @param player the admin running the command
+     * @param name the name of the guild
+     * @param newName the new name of the guild
+     */
+    @Subcommand("admin rename")
+    @Description("{@@descriptions.admin-prefix}")
+    @CommandPermission("guilds.command.admin")
+    @Syntax("<name> <new name>")
+    public void onAdminGuildRename(Player player, String name, String newName) {
+        Guild guild = Guild.getGuild(name);
+        if (guild == null) return;
+        String oldName = guild.getName();
+        guilds.getDatabase().removeGuild(Guild.getGuild(oldName));
+        getCurrentCommandIssuer().sendInfo(Messages.RENAME__SUCCESSFUL, "{name}", newName);
+        guild.updateName(color(name));
+    }
+
 }

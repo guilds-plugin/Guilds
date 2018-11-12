@@ -1,24 +1,58 @@
 package me.glaremasters.guilds.database;
 
-import java.util.HashMap;
 import me.glaremasters.guilds.guild.Guild;
 
+import java.util.HashMap;
+
+/**
+ * Created by GlareMasters
+ * Date: 7/18/2018
+ * Time: 1:47 AM
+ */
 public interface DatabaseProvider {
 
+    /**
+     * Start the database
+     */
     void initialize();
 
-    void createGuild(Guild guild, Callback<Boolean, Exception> callback);
+    /**
+     * Create a guild
+     * @param guild
+     */
+    void createGuild(Guild guild);
 
-    void removeGuild(Guild guild, Callback<Boolean, Exception> callback);
-
+    /**
+     * Get all the guilds that are on the server
+     * @param callback
+     */
     void getGuilds(Callback<HashMap<String, Guild>, Exception> callback);
 
-    void updateGuild(Guild guild, Callback<Boolean, Exception> callback);
+    /**
+     * Update a guild in the database
+     * @param guild
+     */
+    void updateGuild(Guild guild);
 
-    void updatePrefix(Guild guild, Callback<Boolean, Exception> callback);
+    /**
+     * Remove a guild from the database
+     * @param guild
+     */
+    void removeGuild(Guild guild);
 
-    void addAlly(Guild guild, Guild targetGuild, Callback<Boolean, Exception> callback);
+    /**
+     * Add an ally to another guild
+     * @param guild
+     * @param targetGuild
+     */
+    void addAlly(Guild guild, Guild targetGuild);
 
-    void removeAlly(Guild guild, Guild targetguild, Callback<Boolean, Exception> callback);
+    /**
+     * Remove an ally from a guild
+     * @param guild
+     * @param targetGuild
+     */
+    void removeAlly(Guild guild, Guild targetGuild);
+
 
 }
