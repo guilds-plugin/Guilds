@@ -483,7 +483,9 @@ public class CommandGuilds extends BaseCommand {
                     getCurrentCommandIssuer().sendInfo(Messages.LEAVE__SUCCESSFUL);
                     guilds.getActionHandler().removeAction(player);
                 } else {
-                    // Send message player left guild
+                    guild.removeMember(player.getUniqueId());
+                    getCurrentCommandIssuer().sendInfo(Messages.LEAVE__SUCCESSFUL);
+                    guilds.getActionHandler().removeAction(player);
                 }
             }
 
@@ -778,7 +780,7 @@ public class CommandGuilds extends BaseCommand {
         guilds.getServer().getPluginManager().callEvent(event);
         if (event.isCancelled()) return;
 
-        guild.sendMessage(Messages.ACCEPT__PLAYER_JOINED);
+        guild.sendMessage(Messages.ACCEPT__PLAYER_JOINED, "{player}", player.getName());
         guild.addMember(player.getUniqueId(), GuildRole.getLowestRole());
         guild.removeInvitedPlayer(player.getUniqueId());
         getCurrentCommandIssuer().sendInfo(Messages.ACCEPT__SUCCESSFUL, "{guild}", guild.getName());

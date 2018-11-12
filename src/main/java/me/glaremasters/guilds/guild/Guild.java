@@ -1,5 +1,6 @@
 package me.glaremasters.guilds.guild;
 
+import co.aikar.locales.MessageKeyProvider;
 import com.google.gson.annotations.Expose;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.messages.Messages;
@@ -425,9 +426,10 @@ public class Guild {
      * Send a message to the guild
      * @param key the message key
      */
-    public void sendMessage(Messages key) {
-        members.stream().map(m -> Bukkit.getPlayer(m.getUniqueId())).filter(Objects::nonNull).forEach(p -> guilds.getManager().getCommandIssuer(p).sendInfo(key));
+    public void sendMessage(Messages key, String... replacements) {
+        members.stream().map(m -> Bukkit.getPlayer(m.getUniqueId())).filter(Objects::nonNull).forEach(p -> guilds.getManager().getCommandIssuer(p).sendInfo(key, replacements));
     }
+
 
     /**
      * Send a title to the guild

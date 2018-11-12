@@ -134,7 +134,7 @@ ally:
 accept:
   not-invited: "&cThis guild is private / you haven't received an invite from the guild."
   guild-full: "&cThis guild is full!"
-  player-joined: "A player has joined your guild!"
+  player-joined: "&a{player} has joined your guild!"
   successful: "&aYou joined guild '{guild}&r&a' successfully"
 pending:
   invites: "&aYou have {number} pending invite(s) from the guild(s): &e{guilds}&r&a . Use /guild accept <name> or /guild deny <name> to join or deny an invite!"
