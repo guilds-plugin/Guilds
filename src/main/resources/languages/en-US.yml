@@ -127,10 +127,17 @@ confirm:
   error: "&cYou have no actions to confirm!"
   success: "&aAction confirmed!"
 ally:
-  none: "You have no allies!"
+  none: "&cYou have no allies!"
   list: "Your Guild has the following allies: {ally-list}"
-  declined: "A Guild Ally request has been denied!"
-  accepted: "You have a new ally! Do /ally list to check it out!"
+  current-declined: "&a{guild}'s ally request has been denied!"
+  target-declined: "&cYour ally request to {guild} has been denied!"
+  current-accepted: "&aYou've accepted an ally request from {guild}"
+  target-accepted: "&aYour ally request to {guild} has been accepted!"
+  invite-sent: "&aYou've successfully sent an ally invite to {guild}!"
+  incoming-invite: "&aYou have an incoming ally request from {guild}!"
+  current-remove: "&aYou have removed {guild} from your ally list!"
+  target-remove: "&c{guild} has removed you from their ally list!"
+
 accept:
   not-invited: "&cThis guild is private / you haven't received an invite from the guild."
   guild-full: "&cThis guild is full!"

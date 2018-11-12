@@ -47,8 +47,8 @@ public class CommandAlly extends BaseCommand {
         guild.removePendingAlly(targetGuild);
         guild.addAlly(targetGuild);
         targetGuild.addAlly(guild);
-        guild.sendMessage(Messages.ALLY__ACCEPTED);
-        targetGuild.sendMessage(Messages.ALLY__ACCEPTED);
+        guild.sendMessage(Messages.ALLY__CURRENT_ACCEPTED, "{guild}", targetGuild.getName());
+        targetGuild.sendMessage(Messages.ALLY__TARGET_ACCEPTED, "{guild}", guild.getName());
     }
 
     @Subcommand("ally decline")
@@ -65,8 +65,8 @@ public class CommandAlly extends BaseCommand {
 
         if (!guild.getPendingAllies().contains(targetGuild.getName())) return;
         guild.removePendingAlly(targetGuild);
-        guild.sendMessage(Messages.ALLY__DECLINED);
-        targetGuild.sendMessage(Messages.ALLY__DECLINED);
+        guild.sendMessage(Messages.ALLY__CURRENT_DECLINED, "{guild}", targetGuild.getName());
+        targetGuild.sendMessage(Messages.ALLY__TARGET_DECLINED, "{guild}", guild.getName());
     }
 
     @Subcommand("ally add")
@@ -87,10 +87,8 @@ public class CommandAlly extends BaseCommand {
         Bukkit.getServer().getPluginManager().callEvent(event);
         if (event.isCancelled()) return;
 
-        // send message to user saying their request was sent
-
-        // send message to target guild saying they've been sent a request
-
+        getCurrentCommandIssuer().sendInfo(Messages.ALLY__INVITE_SENT, "{guild}", targetGuild.getName());
+        targetGuild.sendMessage(Messages.ALLY__INCOMING_INVITE, "{guild}", guild.getName());
         targetGuild.addPendingAlly(guild);
     }
 
@@ -115,7 +113,8 @@ public class CommandAlly extends BaseCommand {
         guild.removeAlly(targetGuild);
         targetGuild.removeAlly(guild);
 
-        // send message to both guilds saying they have been removed from allies
+        guild.sendMessage(Messages.ALLY__CURRENT_REMOVE, "{guild}", targetGuild.getName());
+        targetGuild.sendMessage(Messages.ALLY__TARGET_REMOVE, "{guild}", guild.getName());
     }
 
 }
