@@ -94,8 +94,11 @@ public class CommandAdmin extends BaseCommand {
         if (Guild.getGuild(playerToRemove.getUniqueId()) == null) return;
         Guild guild = Guild.getGuild(playerToRemove.getUniqueId());
         guild.removeMember(playerToRemove.getUniqueId());
-        // send message to player saying they've been removed from the guild
-        // send message to admin saying player has been removed from the guild
+        if (playerToRemove.isOnline()) {
+            guilds.getManager().getCommandIssuer(playerToRemove).sendInfo(Messages.ADMIN__PLAYER_REMOVED, "{guild}", guild.getName());
+        }
+        getCurrentCommandIssuer().sendInfo(Messages.ADMIN__ADMIN_PLAYER_REMOVED, "{player}", playerToRemove.getName(), "{guild}", guild.getName());
+        guild.sendMessage(Messages.ADMIN__ADMIN_GUILD_REMOVE, "{player}", playerToRemove.getName());
     }
 
     /**
