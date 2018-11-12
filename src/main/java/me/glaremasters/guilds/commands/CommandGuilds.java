@@ -724,10 +724,9 @@ public class CommandGuilds extends BaseCommand {
         }
     }
 
-    @Subcommand("accept")
+    @Subcommand("accept|join")
     @Description("{@@descriptions.accept}")
     @CommandPermission("guilds.command.accept")
-    @CommandAlias("join")
     @Syntax("<guild name>")
     public void onAccept(Player player, String name) {
         if (Guild.getGuild(player.getUniqueId()) != null) {
