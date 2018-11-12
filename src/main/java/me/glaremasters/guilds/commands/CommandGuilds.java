@@ -334,36 +334,38 @@ public class CommandGuilds extends BaseCommand {
     @Description("{@@descriptions.invite}")
     @CommandPermission("guilds.command.invite")
     @Syntax("<name>")
-    public void onInvite(Player player, Player targetPlayer, Guild guild, GuildRole role) {
+    public void onInvite(Player player, String targetPlayer, Guild guild, GuildRole role) {
 
-        if (!role.canUpgradeGuild()) {
+        if (!role.canInvite()) {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
             return;
         }
 
-        if (targetPlayer == null || !targetPlayer.isOnline()) {
-            getCurrentCommandIssuer().sendInfo(Messages.ERROR__PLAYER_NOT_FOUND);
+        Player target = Bukkit.getPlayerExact(targetPlayer);
+
+        if (target == null || !target.isOnline()) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__PLAYER_NOT_FOUND, "{player}", targetPlayer);
             return;
         }
-        Guild invitedPlayerGuild = Guild.getGuild(targetPlayer.getUniqueId());
+        Guild invitedPlayerGuild = Guild.getGuild(target.getUniqueId());
 
         if (invitedPlayerGuild != null) {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ALREADY_IN_GUILD);
             return;
         }
 
-        if (guild.getInvitedMembers().contains(targetPlayer.getUniqueId())) {
+        if (guild.getInvitedMembers().contains(target.getUniqueId())) {
             getCurrentCommandIssuer().sendInfo(Messages.INVITE__ALREADY_INVITED);
             return;
         }
 
-        GuildInviteEvent event = new GuildInviteEvent(player, guild, targetPlayer);
+        GuildInviteEvent event = new GuildInviteEvent(player, guild, target);
         guilds.getServer().getPluginManager().callEvent(event);
         if (event.isCancelled()) return;
 
-        guild.inviteMember(targetPlayer.getUniqueId());
-        guilds.getManager().getCommandIssuer(targetPlayer).sendInfo(Messages.INVITE__MESSAGE, "{player}", player.getName(), "{guild}", guild.getName());
-        getCurrentCommandIssuer().sendInfo(Messages.INVITE__SUCCESSFUL, "{player}", targetPlayer.getName());
+        guild.inviteMember(target.getUniqueId());
+        guilds.getManager().getCommandIssuer(target).sendInfo(Messages.INVITE__MESSAGE, "{player}", player.getName(), "{guild}", guild.getName());
+        getCurrentCommandIssuer().sendInfo(Messages.INVITE__SUCCESSFUL, "{player}", target.getName());
 
     }
 
@@ -688,7 +690,7 @@ public class CommandGuilds extends BaseCommand {
         guild.sendMessage(Messages.ACCEPT__PLAYER_JOINED);
         guild.addMember(player.getUniqueId(), GuildRole.getLowestRole());
         guild.removeInvitedPlayer(player.getUniqueId());
-        getCurrentCommandIssuer().sendInfo(Messages.ACCEPT__GUILD_SUCCESSFUL, "{guild}", guild.getName());
+        getCurrentCommandIssuer().sendInfo(Messages.ACCEPT__SUCCESSFUL, "{guild}", guild.getName());
     }
 
     @Subcommand("check")
