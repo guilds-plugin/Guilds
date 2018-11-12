@@ -21,6 +21,11 @@ public class CommandAlly extends BaseCommand {
 
     @Dependency private Guilds guilds;
 
+    /**
+     * List all the allies of your guild
+     * @param player the player to check
+     * @param guild the guild they are in
+     */
     @Subcommand("ally list")
     @Description("{@@descriptions.ally-list}")
     @CommandPermission("guilds.command.ally")
@@ -32,6 +37,13 @@ public class CommandAlly extends BaseCommand {
         getCurrentCommandIssuer().sendInfo(Messages.ALLY__LIST, "{ally-list}", String.join(",", guild.getAllies()));
     }
 
+    /**
+     * Accept a guild ally request
+     * @param player the player to check
+     * @param guild the guild they are in
+     * @param role the role of the player
+     * @param name the guild name they are accepting
+     */
     @Subcommand("ally accept")
     @Description("{@@descriptions.ally-accept}")
     @CommandPermission("guilds.command.ally")
@@ -51,6 +63,13 @@ public class CommandAlly extends BaseCommand {
         targetGuild.sendMessage(Messages.ALLY__TARGET_ACCEPTED, "{guild}", guild.getName());
     }
 
+    /**
+     * Decline a guild ally request
+     * @param player the player to check
+     * @param guild the guild they are in
+     * @param role the role of the player
+     * @param name the guild name they are declining
+     */
     @Subcommand("ally decline")
     @Description("{@@descriptions.ally-decline}")
     @CommandPermission("guilds.command.ally")
@@ -69,6 +88,13 @@ public class CommandAlly extends BaseCommand {
         targetGuild.sendMessage(Messages.ALLY__TARGET_DECLINED, "{guild}", guild.getName());
     }
 
+    /**
+     * Send a guild ally request
+     * @param player the player to check
+     * @param guild the guild they are in
+     * @param role the role of the player
+     * @param name the guild the request is being sent to
+     */
     @Subcommand("ally add")
     @Description("{@@descriptions.ally-add}")
     @CommandPermission("guilds.command.ally")
@@ -92,6 +118,13 @@ public class CommandAlly extends BaseCommand {
         targetGuild.addPendingAlly(guild);
     }
 
+    /**
+     * Remove an ally from your list
+     * @param player the player to check
+     * @param guild the guild they are in
+     * @param role the role of the player
+     * @param name the guild you are removing from your list
+     */
     @Subcommand("ally remove")
     @Description("{@@descriptions.ally-remove}")
     @CommandPermission("guilds.command.ally")
