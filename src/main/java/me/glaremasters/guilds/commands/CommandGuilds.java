@@ -51,6 +51,12 @@ public class CommandGuilds extends BaseCommand {
     public static Inventory guildList = null;
     public static Map<UUID, Integer> playerPages = new HashMap<>();
 
+    /**
+     * Create a guild
+     * @param player
+     * @param name name of guild
+     * @param prefix prefix of guild
+     */
     @Subcommand("create")
     @Description("{@@descriptions.create}")
     @CommandPermission("guilds.command.create")
@@ -119,6 +125,10 @@ public class CommandGuilds extends BaseCommand {
         });
     }
 
+    /**
+     * Confirm an action
+     * @param player
+     */
     @Subcommand("confirm")
     @Description("{@@descriptions.confirm}")
     @CommandPermission("guilds.command.confirm")
@@ -132,6 +142,10 @@ public class CommandGuilds extends BaseCommand {
         }
     }
 
+    /**
+     * Cancel an action
+     * @param player
+     */
     @Subcommand("cancel")
     @Description("{@@descriptions.cancel}")
     @CommandPermission("guilds.command.cancel")
@@ -145,6 +159,10 @@ public class CommandGuilds extends BaseCommand {
         }
     }
 
+    /**
+     * Reload the config
+     * @param sender
+     */
     @Subcommand("reload")
     @Description("{@@descriptions.reload}")
     @CommandPermission("guilds.command.reload")
@@ -153,6 +171,12 @@ public class CommandGuilds extends BaseCommand {
         getCurrentCommandIssuer().sendInfo(Messages.RELOAD__RELOADED);
     }
 
+    /**
+     * Set a guild home
+     * @param player
+     * @param guild the guild that home is being set
+     * @param role role of player
+     */
     @Subcommand("sethome")
     @Description("{@@descriptions.sethome}")
     @CommandPermission("guilds.command.sethome")
@@ -165,6 +189,12 @@ public class CommandGuilds extends BaseCommand {
         getCurrentCommandIssuer().sendInfo(Messages.SETHOME__SUCCESSFUL);
     }
 
+    /**
+     * Remove a guild home
+     * @param player
+     * @param guild the guild that the home is being removed
+     * @param role role of player
+     */
     @Subcommand("delhome")
     @Description("{@@descriptions.delhome}")
     @CommandPermission("guilds.command.delhome")
@@ -177,6 +207,12 @@ public class CommandGuilds extends BaseCommand {
         getCurrentCommandIssuer().sendInfo(Messages.SETHOME__SUCCESSFUL);
     }
 
+    /**
+     * Give a player upgrade tickets
+     * @param sender
+     * @param player
+     * @param amount amount of tickets
+     */
     @Subcommand("give")
     @Description("{@@descriptions.give}")
     @CommandPermission("guilds.command.give")
@@ -198,6 +234,11 @@ public class CommandGuilds extends BaseCommand {
         player.getInventory().addItem(upgradeTicket);
     }
 
+    /**
+     * Go to guild home
+     * @param player
+     * @param guild
+     */
     @Subcommand("home")
     @Description("{@@descriptions.home}")
     @CommandPermission("guilds.command.home")
@@ -210,6 +251,13 @@ public class CommandGuilds extends BaseCommand {
         getCurrentCommandIssuer().sendInfo(Messages.HOME__TELEPORTED);
     }
 
+    /**
+     * Rename a guild
+     * @param player
+     * @param guild
+     * @param role
+     * @param name new name of guild
+     */
     @Subcommand("rename")
     @Description("{@@descriptions.rename}")
     @CommandPermission("guilds.command.rename")
@@ -254,6 +302,12 @@ public class CommandGuilds extends BaseCommand {
         guild.updateName(color(name));
     }
 
+    /**
+     * Toggles Guild Chat
+     * @param player
+     * @param guild
+     * @param role
+     */
     @Subcommand("chat")
     @Description("{@@descriptions.chat}")
     @CommandPermission("guilds.command.chat")
@@ -274,6 +328,12 @@ public class CommandGuilds extends BaseCommand {
 
     }
 
+    /**
+     * Toggles Guild Status
+     * @param player
+     * @param guild
+     * @param role
+     */
     @Subcommand("status")
     @Description("{@@descriptions.status}")
     @CommandPermission("guilds.command.status")
@@ -293,6 +353,13 @@ public class CommandGuilds extends BaseCommand {
         guild.updateStatus(updatedStatus);
     }
 
+    /**
+     * Change guild prefix
+     * @param player
+     * @param guild
+     * @param role
+     * @param prefix new prefix
+     */
     @Subcommand("prefix")
     @Description("{@@descriptions.prefix}")
     @CommandPermission("guilds.command.prefix")
@@ -306,6 +373,10 @@ public class CommandGuilds extends BaseCommand {
         guild.updatePrefix(color(prefix));
     }
 
+    /**
+     * Check version of plugin
+     * @param sender
+     */
     @Subcommand("version|v|ver")
     @Description("{@@descriptions.version}")
     public void onVersion(CommandSender sender) {
@@ -330,6 +401,13 @@ public class CommandGuilds extends BaseCommand {
         }
     }
 
+    /**
+     * Invite player to guild
+     * @param player current player
+     * @param targetPlayer player being invited
+     * @param guild
+     * @param role
+     */
     @Subcommand("invite")
     @Description("{@@descriptions.invite}")
     @CommandPermission("guilds.command.invite")
@@ -369,6 +447,12 @@ public class CommandGuilds extends BaseCommand {
 
     }
 
+    /**
+     * Upgrade a guild
+     * @param player
+     * @param guild
+     * @param role
+     */
     @Subcommand("upgrade")
     @Description("{@@descriptions.upgrade}")
     @CommandPermission("guilds.command.upgrade")
@@ -414,6 +498,13 @@ public class CommandGuilds extends BaseCommand {
         });
     }
 
+    /**
+     * Transfer a guild to a new user
+     * @param player
+     * @param guild
+     * @param role
+     * @param target new guild master
+     */
     @Subcommand("transfer")
     @Description("{@@descriptions.transfer}")
     @CommandPermission("guilds.command.transfer")
@@ -456,6 +547,11 @@ public class CommandGuilds extends BaseCommand {
 
     }
 
+    /**
+     * Leave a guild
+     * @param player
+     * @param guild
+     */
     @Subcommand("leave|exit")
     @Description("{@@descriptions.leave}")
     @CommandPermission("guilds.command.leave")
@@ -497,6 +593,10 @@ public class CommandGuilds extends BaseCommand {
         });
     }
 
+    /**
+     * List all the guilds on the server
+     * @param player
+     */
     @Subcommand("list")
     @Description("{@@descriptions.list}")
     @CommandPermission("guilds.command.list")
@@ -506,6 +606,11 @@ public class CommandGuilds extends BaseCommand {
         player.openInventory(guildList);
     }
 
+    /**
+     * List the info for you guild
+     * @param player
+     * @param guild
+     */
     @Subcommand("info")
     @Description("{@@descriptions.info}")
     @CommandPermission("guilds.command.info")
@@ -537,6 +642,12 @@ public class CommandGuilds extends BaseCommand {
 
     }
 
+    /**
+     * Delete your guild
+     * @param player
+     * @param guild
+     * @param role
+     */
     @Subcommand("delete")
     @Description("{@@descriptions.delete}")
     @CommandPermission("guilds.command.delete")
@@ -567,6 +678,11 @@ public class CommandGuilds extends BaseCommand {
         });
     }
 
+    /**
+     * Decline a guild invite
+     * @param player
+     * @param name
+     */
     @Subcommand("decline")
     @Description("{@@descriptions.decline}")
     @CommandPermission("guilds.command.decline")
@@ -580,6 +696,13 @@ public class CommandGuilds extends BaseCommand {
         guild.removeInvitedPlayer(player.getUniqueId());
     }
 
+    /**
+     * Kick a player from the guild
+     * @param player
+     * @param guild
+     * @param role
+     * @param name
+     */
     @Subcommand("boot|kick")
     @Description("Kick someone from your Guild")
     @CommandPermission("guilds.command.boot")
@@ -613,6 +736,12 @@ public class CommandGuilds extends BaseCommand {
         guilds.getManager().getCommandIssuer(bootedPlayer).sendInfo(Messages.BOOT__KICKED);
     }
 
+    /**
+     * Opens the guild vault
+     * @param player
+     * @param guild
+     * @param role
+     */
     @Subcommand("vault")
     @Description("{@@descriptions.vault}")
     @CommandPermission("guilds.command.vault")
@@ -682,6 +811,13 @@ public class CommandGuilds extends BaseCommand {
         }
     }
 
+    /**
+     * Promote a player in the guild
+     * @param player
+     * @param target
+     * @param guild
+     * @param role
+     */
     @Subcommand("promote")
     @Description("{@@descriptions.promote}")
     @CommandPermission("guilds.command.promote")
@@ -724,6 +860,11 @@ public class CommandGuilds extends BaseCommand {
         }
     }
 
+    /**
+     * Accept a guild invite
+     * @param player
+     * @param name
+     */
     @Subcommand("accept|join")
     @Description("{@@descriptions.accept}")
     @CommandPermission("guilds.command.accept")
@@ -785,6 +926,10 @@ public class CommandGuilds extends BaseCommand {
         getCurrentCommandIssuer().sendInfo(Messages.ACCEPT__SUCCESSFUL, "{guild}", guild.getName());
     }
 
+    /**
+     * Check if you have any guild invites
+     * @param player
+     */
     @Subcommand("check")
     @Description("{@@descriptions.check}")
     @CommandPermission("guilds.command.check")
@@ -806,6 +951,12 @@ public class CommandGuilds extends BaseCommand {
         }
     }
 
+    /**
+     * Open the guild buff menu
+     * @param player
+     * @param guild
+     * @param role
+     */
     @Subcommand("buff")
     @Description("{@@descriptions.buff}")
     @CommandPermission("guilds.command.buff")
@@ -828,6 +979,10 @@ public class CommandGuilds extends BaseCommand {
         player.openInventory(buff);
     }
 
+    /**
+     * Help command for the plugin
+     * @param help
+     */
     @HelpCommand
     @CommandPermission("guilds.command.help")
     @Syntax("")
@@ -836,6 +991,13 @@ public class CommandGuilds extends BaseCommand {
         help.showHelp();
     }
 
+    /**
+     * Create an item stack for the list
+     * @param mat
+     * @param name
+     * @param lore
+     * @return
+     */
     private ItemStack createItemStack(Material mat, String name, List<String> lore) {
         ItemStack paper = new ItemStack(mat);
 
@@ -847,6 +1009,13 @@ public class CommandGuilds extends BaseCommand {
         return paper;
     }
 
+    /**
+     * Create an item for buff
+     * @param buffName
+     * @param name
+     * @param buff
+     * @param slot
+     */
     private void createBuffItem(String buffName, List<String> name, Inventory buff, int slot) {
         guilds.getConfig().getStringList("buff.description." + buffName).stream().map(ConfigUtils::color).forEach(name::add);
         name.add("");
@@ -858,6 +1027,11 @@ public class CommandGuilds extends BaseCommand {
         name.clear();
     }
 
+    /**
+     * Handling for the list page
+     * @param page
+     * @return
+     */
     public static Inventory getSkullsPage(int page) {
         HashMap<UUID, ItemStack> skulls = new HashMap<>();
         Inventory inv = Bukkit.createInventory(null, 54, color(Guilds.getGuilds().getConfig().getString("guild-list.gui-name")));
@@ -917,6 +1091,10 @@ public class CommandGuilds extends BaseCommand {
         return inv;
     }
 
+    /**
+     * Get a random item from config
+     * @return
+     */
     public static String randomItem() {
 
         List<String> items = Guilds.getGuilds().getConfig().getStringList("random-items");
@@ -926,10 +1104,20 @@ public class CommandGuilds extends BaseCommand {
         return mat_name;
     }
 
+    /**
+     * Color messages (will remove later)
+     * @param msg
+     * @return
+     */
     public static String color(String msg) {
         return ChatColor.translateAlternateColorCodes('&', msg);
     }
 
+    /**
+     * Create player skull
+     * @param player
+     * @return
+     */
     public ItemStack createSkull(Player player) {
         Guild guild = Guild.getGuild(player.getUniqueId());
         ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short) SkullType.PLAYER.ordinal());
