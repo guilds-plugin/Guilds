@@ -74,6 +74,8 @@ admin:
   player-removed: "&cYou have been removed from {guild} by an Admin!"
   admin-player-removed: "&aYou have removed {player} from {guild}!"
   admin-guild-remove: "&a{player} has been removed from your guild by an Admin!"
+  admin-upgrade: "&aYou have upgraded {guild}'s tier!"
+  admin-guild-upgrade: "&aYour guild tier has been upgraded by an Admin!"
 boot:
   player-kicked: "&cPlayer '{player}' has been kicked from the guild by {kicker}!"
   successful: "&aSuccessfully kicked {player} from your guild!"

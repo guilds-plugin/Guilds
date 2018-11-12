@@ -117,6 +117,8 @@ public class CommandAdmin extends BaseCommand {
         if (tier >= guild.getMaxTier()) return;
         guild.updateTier(tier + 1);
         // send message to admin saying guild was upgraded
+        getCurrentCommandIssuer().sendInfo(Messages.ADMIN__ADMIN_UPGRADE, "{guild}", guild.getName());
+        guild.sendMessage(Messages.ADMIN__ADMIN_GUILD_UPGRADE);
     }
 
     /**
