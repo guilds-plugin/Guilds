@@ -678,7 +678,48 @@ public class CommandGuilds extends BaseCommand {
         if (demotedPlayer.isOnline()) {
             guilds.getManager().getCommandIssuer(demotedPlayer).sendInfo(Messages.DEMOTE__YOU_WERE_DEMOTED, "{old}", oldRank, "{new}", newRank);
         }
+    }
 
+    @Subcommand("promote")
+    @Description("{@@descriptions.promote}")
+    @CommandPermission("guilds.command.promote")
+    @Syntax("<player>")
+    public void onPromote(Player player, String target, Guild guild, GuildRole role) {
+        if (!role.canPromote()) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
+            return;
+        }
+
+        OfflinePlayer promotedPlayer = Bukkit.getOfflinePlayer(target);
+
+        if (promotedPlayer == null) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__PLAYER_NOT_FOUND, "{player}", target);
+            return;
+        }
+
+        GuildMember promotedMember = guild.getMember(promotedPlayer.getUniqueId());
+
+        if (promotedMember == null) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__PLAYER_NOT_IN_GUILD, "{player}", target);
+            return;
+        }
+
+        if (promotedMember.getRole() <= 1) {
+            getCurrentCommandIssuer().sendInfo(Messages.PROMOTE__CANT_PROMOTE);
+            return;
+        }
+
+        GuildRole promotedRole = GuildRole.getRole(promotedMember.getRole() - 1);
+        String oldRank = GuildRole.getRole(promotedMember.getRole()).getName();
+        String newRank = promotedRole.getName();
+
+        promotedMember.setRole(promotedRole);
+        guild.updateGuild("");
+
+        getCurrentCommandIssuer().sendInfo(Messages.PROMOTE__PROMOTE_SUCCESSFUL, "{player}", promotedPlayer.getName(), "{old}", oldRank, "{new}", newRank);
+        if (promotedPlayer.isOnline()) {
+            guilds.getManager().getCommandIssuer(promotedPlayer).sendInfo(Messages.PROMOTE__YOU_WERE_PROMOTED, "{old}", oldRank, "{new}", newRank);
+        }
     }
 
     @Subcommand("accept")

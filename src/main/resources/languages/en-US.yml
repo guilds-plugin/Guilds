@@ -24,6 +24,7 @@ descriptions:
   decline: "Decline a Guild invite"
   delete: "Delete your guild"
   delhome: "Unset your Guild home"
+  demote: "Demote a user in your Guild"
   give: "Give a user a upgrade ticket"
   help: "Show this help menu"
   home: "Go to your Guild home"
@@ -33,6 +34,7 @@ descriptions:
   leave: "Leave your Guild"
   list: "List all Guilds"
   prefix: "Change the prefix of your Guild"
+  promote: "Promote a user in your Guild"
   reload: "Reloads the plugin's configuration file"
   rename: "Change the name of your Guild"
   sethome: "Set your Guild's home"
@@ -75,6 +77,10 @@ demote:
   cant-demote: "&cThat player can not be demoted!"
   demote-successful: "&aYou've successfully demoted {player} from {old} to {new}"
   you-were-demoted: "&cYou've been demoted from {old} to {new}"
+promote:
+  cant-promote: "&cThat player can not be promoted!"
+  promote-successful: "&aYou've successfully promoted {player} from {old} to {new}"
+  you-were-promoted: "&aYou've been promoted from {old} to {new}"
 delete:
   successful: "&aDeleted '{guild}&r&a' successfully!"
   cancelled: "&cGuild deletion cancelled!"
