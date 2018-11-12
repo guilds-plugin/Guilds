@@ -18,6 +18,11 @@ public class CommandBank extends BaseCommand {
 
     @Dependency private Guilds guilds;
 
+    /**
+     * Check the bank balance of a Guild
+     * @param player the player to check
+     * @param guild the guild they are in
+     */
     @Subcommand("bank balance")
     @Description("{@@descriptions.bank-balance}")
     @CommandPermission("guilds.command.bank")
@@ -25,6 +30,13 @@ public class CommandBank extends BaseCommand {
         getCurrentCommandIssuer().sendInfo(Messages.BANK__BALANCE, "{amount}", String.valueOf(guild.getBalance()));
     }
 
+    /**
+     * Deposit money into the bank
+     * @param player the player to check
+     * @param guild the guild they are in
+     * @param role the role of the player
+     * @param amount the amount being put into the bank
+     */
     @Subcommand("bank deposit")
     @Description("{@@descriptions.bank-deposit}")
     @CommandPermission("guilds.command.bank")
@@ -43,6 +55,13 @@ public class CommandBank extends BaseCommand {
         guild.updateBalance(balance + amount);
     }
 
+    /**
+     * Take money from the bank
+     * @param player the player to check
+     * @param guild the guild they are in
+     * @param role the role of the player
+     * @param amount the amount being taken out
+     */
     @Subcommand("bank withdraw")
     @Description("{@@descriptions.bank-withdraw}")
     @CommandPermission("guilds.command.bank")
