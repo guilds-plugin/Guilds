@@ -631,6 +631,56 @@ public class CommandGuilds extends BaseCommand {
         }
     }
 
+    /**
+     * Demote a player in a guild
+     * @param player the person running the command
+     * @param target the player you want to demote
+     * @param guild check player is in a guild
+     * @param role check player can demote another player
+     */
+    @Subcommand("demote")
+    @Description("{@@descriptions.demote}")
+    @CommandPermission("guilds.command.demote")
+    @Syntax("<player>")
+    public void onDemote(Player player, String target, Guild guild, GuildRole role) {
+        if (!role.canDemote()) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
+            return;
+        }
+
+        OfflinePlayer demotedPlayer = Bukkit.getOfflinePlayer(target);
+
+        if (demotedPlayer == null) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__PLAYER_NOT_FOUND, "{player}", target);
+            return;
+        }
+
+        GuildMember demotedMember = guild.getMember(demotedPlayer.getUniqueId());
+
+        if (demotedMember == null) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__PLAYER_NOT_IN_GUILD, "{player}", target);
+            return;
+        }
+
+        if (demotedMember.getRole() == 3 || demotedMember.getRole() == 0) {
+            getCurrentCommandIssuer().sendInfo(Messages.DEMOTE__CANT_DEMOTE);
+            return;
+        }
+
+        GuildRole demotedRole = GuildRole.getRole(demotedMember.getRole() + 1);
+        String oldRank = GuildRole.getRole(demotedMember.getRole()).getName();
+        String newRank = demotedRole.getName();
+
+        demotedMember.setRole(demotedRole);
+        guild.updateGuild("");
+
+        getCurrentCommandIssuer().sendInfo(Messages.DEMOTE__DEMOTE_SUCCESSFUL, "{player}", demotedPlayer.getName(), "{old}", oldRank, "{new}", newRank);
+        if (demotedPlayer.isOnline()) {
+            guilds.getManager().getCommandIssuer(demotedPlayer).sendInfo(Messages.DEMOTE__YOU_WERE_DEMOTED, "{old}", oldRank, "{new}", newRank);
+        }
+
+    }
+
     @Subcommand("accept")
     @Description("{@@descriptions.accept}")
     @CommandPermission("guilds.command.accept")

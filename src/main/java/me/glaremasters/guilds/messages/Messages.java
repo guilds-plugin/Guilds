@@ -54,7 +54,9 @@ public enum Messages implements MessageKeyProvider {
 
     PENDING__INVITES,
 
-    INVITE__ALREADY_INVITED, INVITE__MESSAGE, INVITE__SUCCESSFUL;
+    INVITE__ALREADY_INVITED, INVITE__MESSAGE, INVITE__SUCCESSFUL,
+
+    DEMOTE__CANT_DEMOTE, DEMOTE__DEMOTE_SUCCESSFUL, DEMOTE__YOU_WERE_DEMOTED;
 
     /**
      * Message keys that grab from the config to send messages

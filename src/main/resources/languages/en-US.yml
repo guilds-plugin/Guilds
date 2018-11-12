@@ -71,6 +71,10 @@ boot:
   kicked: "&cYou have been kicked from your guild by {kicker}!"
 decline:
   success: "&aGuild Invite Declined!"
+demote:
+  cant-demote: "&cThat player can not be demoted!"
+  demote-successful: "&aYou've successfully demoted {player} from {old} to {new}"
+  you-were-demoted: "&cYou've been demoted from {old} to {new}"
 delete:
   successful: "&aDeleted '{guild}&r&a' successfully!"
   cancelled: "&cGuild deletion cancelled!"
