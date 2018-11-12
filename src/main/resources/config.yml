@@ -47,6 +47,12 @@ lang: en-US
 supported-languages:
 - en-US
 
+# This section is for event handler that I feel should be optional for you guys.
+main-hooks:
+  essentials-chat: false
+  tablist-guilds: false
+
+
 #-----------------------------------------------------------#
 #              Rewards / Tickets Configuration              #
 #-----------------------------------------------------------#
@@ -328,8 +334,6 @@ tier3:
 
 # The prefix of all messages send by this plugin to a player for all messages and commands
 plugin-prefix: "[&b&lGuilds] "
-# Disable this to remove guild names showing next to a player in "TabList"
-tablist-guilds: false
 # Would you like to display a user's displayname instead of their MC username?
 tablist-use-display-name: false
 

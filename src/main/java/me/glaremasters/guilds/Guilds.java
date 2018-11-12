@@ -18,10 +18,7 @@ import me.glaremasters.guilds.database.databases.json.JSON;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
-import me.glaremasters.guilds.listeners.GuildPerks;
-import me.glaremasters.guilds.listeners.InventoryListener;
-import me.glaremasters.guilds.listeners.Players;
-import me.glaremasters.guilds.listeners.Tickets;
+import me.glaremasters.guilds.listeners.*;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.updater.SpigotUpdater;
 import me.glaremasters.guilds.utils.ActionHandler;
@@ -115,6 +112,7 @@ public final class Guilds extends JavaPlugin {
 
 
         Stream.of(new GuildPerks(), new Players(this), new Tickets(this), new InventoryListener(this)).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
+        optionalListeners();
         info("Ready to go! That only took " + (System.currentTimeMillis() - start) + "ms");
         PaperLib.suggestPaper(this);
     }
@@ -364,6 +362,16 @@ public final class Guilds extends JavaPlugin {
      */
     public Permission getPermissions() {
         return permissions;
+    }
+
+    public void optionalListeners() {
+        if (getConfig().getBoolean("main-hooks.essentials-chat")) {
+            getServer().getPluginManager().registerEvents(new EssentialsChat(this), this);
+        }
+
+        if (getConfig().getBoolean("main-hooks.tablist-guilds")) {
+            getServer().getPluginManager().registerEvents(new Tablist(this), this);
+        }
     }
 
 }

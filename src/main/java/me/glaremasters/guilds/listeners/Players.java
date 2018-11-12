@@ -180,19 +180,6 @@ public class Players implements Listener {
     }
 
     /**
-     * This will check if the server uses Guild's Tablist and will add a prefix to their name
-     * @param event
-     */
-    // todo Check config to enable or not
-    @EventHandler
-    public void onTablist(PlayerJoinEvent event) {
-        Tablist tablist = new Tablist(guilds);
-        Player player = event.getPlayer();
-        Guild guild = Guild.getGuild(player.getUniqueId());
-        if (guild != null) guilds.getServer().getScheduler().scheduleAsyncDelayedTask(guilds, () -> tablist.add(player), 30L);
-    }
-
-    /**
      * This event handles Guild Chat and how it's received by other members of the Guild
      * @param event
      */
