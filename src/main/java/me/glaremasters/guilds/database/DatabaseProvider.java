@@ -54,5 +54,7 @@ public interface DatabaseProvider {
      */
     void removeAlly(Guild guild, Guild targetGuild);
 
+    void updateGuild();
+
 
 }

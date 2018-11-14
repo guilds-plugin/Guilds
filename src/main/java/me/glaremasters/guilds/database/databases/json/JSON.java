@@ -124,6 +124,12 @@ public class JSON implements DatabaseProvider {
         write(guildsFile, guilds, guildsType);
     }
 
+    @Override
+    public void updateGuild() {
+        HashMap<String, Guild> guilds = getGuilds();
+        write(guildsFile, guilds, guildsType);
+    }
+
     /**
      * This method will write new data
      * @param file the file being written to
