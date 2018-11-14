@@ -26,6 +26,6 @@ public class GuildRemoveEvent extends GuildEvent {
     }
 
     public enum RemoveCause {
-        MASTER_LEFT, REMOVED,
+        MASTER_LEFT, DELETED, ADMIN_DELETED
     }
 }

@@ -3,6 +3,7 @@ package me.glaremasters.guilds.commands;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import me.glaremasters.guilds.Guilds;
+import me.glaremasters.guilds.api.events.GuildRemoveEvent;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.messages.Messages;
@@ -43,6 +44,9 @@ public class CommandAdmin extends BaseCommand {
         guilds.getActionHandler().addAction(player, new ConfirmAction() {
             @Override
             public void accept() {
+                GuildRemoveEvent event = new GuildRemoveEvent(player, guild, GuildRemoveEvent.RemoveCause.ADMIN_DELETED);
+                guilds.getServer().getPluginManager().callEvent(event);
+                if (event.isCancelled()) return;
                 guilds.getDatabase().removeGuild(guild);
                 guilds.getActionHandler().removeAction(player);
                 getCurrentCommandIssuer().sendInfo(Messages.ADMIN__DELETE_SUCCESSFUL, "{guild}", name);

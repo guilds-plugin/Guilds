@@ -571,7 +571,7 @@ public class CommandGuilds extends BaseCommand {
                 if (event.isCancelled()) return;
                 // If guild master remove perms from all members
                 if (guild.getGuildMaster().getUniqueId().equals(player.getUniqueId())) {
-                    GuildRemoveEvent removeEvent = new GuildRemoveEvent(player, guild, GuildRemoveEvent.RemoveCause.REMOVED);
+                    GuildRemoveEvent removeEvent = new GuildRemoveEvent(player, guild, GuildRemoveEvent.RemoveCause.MASTER_LEFT);
                     guilds.getServer().getPluginManager().callEvent(removeEvent);
                     if (removeEvent.isCancelled()) return;
                     guilds.getDatabase().removeGuild(guild);
@@ -660,7 +660,7 @@ public class CommandGuilds extends BaseCommand {
         guilds.getActionHandler().addAction(player, new ConfirmAction() {
             @Override
             public void accept() {
-                GuildRemoveEvent event = new GuildRemoveEvent(player, guild, GuildRemoveEvent.RemoveCause.REMOVED);
+                GuildRemoveEvent event = new GuildRemoveEvent(player, guild, GuildRemoveEvent.RemoveCause.DELETED);
                 guilds.getServer().getPluginManager().callEvent(event);
                 if (event.isCancelled()) return;
 
