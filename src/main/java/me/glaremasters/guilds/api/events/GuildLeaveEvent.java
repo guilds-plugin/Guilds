@@ -9,6 +9,11 @@ import org.bukkit.entity.Player;
  */
 public class GuildLeaveEvent extends GuildEvent {
 
+    /**
+     * Called a when a player leaves the guild
+     * @param player the player leaving the guild
+     * @param guild the guild the player was leaving
+     */
     public GuildLeaveEvent(Player player, Guild guild) {
         super(player, guild);
     }

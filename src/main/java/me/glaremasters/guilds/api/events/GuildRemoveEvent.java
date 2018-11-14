@@ -11,6 +11,12 @@ public class GuildRemoveEvent extends GuildEvent {
 
     private RemoveCause cause;
 
+    /**
+     * Called when a guild is removed
+     * @param player the player removing the guild
+     * @param guild the guild getting removed
+     * @param cause the reason for the guild being removed
+     */
     public GuildRemoveEvent(Player player, Guild guild, RemoveCause cause) {
         super(player, guild);
     }
@@ -20,6 +26,6 @@ public class GuildRemoveEvent extends GuildEvent {
     }
 
     public enum RemoveCause {
-        MASTER_LEFT, REMOVED
+        MASTER_LEFT, REMOVED,
     }
 }

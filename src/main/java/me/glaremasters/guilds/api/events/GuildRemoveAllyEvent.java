@@ -11,6 +11,12 @@ public class GuildRemoveAllyEvent extends GuildEvent {
 
     private Guild ally;
 
+    /**
+     * Called when a guild removes an ally
+     * @param player the player calling the removal
+     * @param guild the guild calling the removal
+     * @param ally the guild being removed
+     */
     public GuildRemoveAllyEvent(Player player, Guild guild, Guild ally) {
         super(player, guild);
 

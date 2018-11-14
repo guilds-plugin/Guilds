@@ -16,6 +16,11 @@ public class GuildEvent extends PlayerEvent implements Cancellable {
     private Guild guild;
     private boolean cancelled;
 
+    /**
+     * Base guild event
+     * @param player player in event
+     * @param guild guild in the event
+     */
     public GuildEvent(Player player, Guild guild) {
         super(player);
         this.guild = guild;

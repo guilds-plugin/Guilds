@@ -9,6 +9,11 @@ import org.bukkit.entity.Player;
  */
 public class GuildCreateEvent extends GuildEvent {
 
+    /**
+     * Called when people create a guild
+     * @param player player creating the guild
+     * @param guild the guild being created
+     */
     public GuildCreateEvent(Player player, Guild guild) {
         super(player, guild);
     }

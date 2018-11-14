@@ -11,6 +11,12 @@ public class GuildAddAllyEvent extends GuildEvent {
 
     private Guild ally;
 
+    /**
+     * This event takes place when two guilds ally each other
+     * @param player player who accepted
+     * @param guild guild one
+     * @param ally guild two
+     */
     public GuildAddAllyEvent(Player player, Guild guild, Guild ally) {
         super(player, guild);
 

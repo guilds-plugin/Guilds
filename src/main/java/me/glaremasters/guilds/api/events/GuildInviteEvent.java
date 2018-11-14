@@ -11,6 +11,12 @@ public class GuildInviteEvent extends GuildEvent {
 
     private Player invitedPlayer;
 
+    /**
+     * Called when a player gets invited to a guild
+     * @param player the player inviting other to guild
+     * @param guild the guild player will be joining
+     * @param invitedPlayer the player being invited
+     */
     public GuildInviteEvent(Player player, Guild guild, Player invitedPlayer) {
         super(player, guild);
 
