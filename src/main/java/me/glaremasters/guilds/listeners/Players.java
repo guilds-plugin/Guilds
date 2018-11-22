@@ -121,36 +121,6 @@ public class Players implements Listener {
     }
 
     /**
-     * Check if the sign that's being interacted with is a Guild Sign
-     * @param event
-     */
-    @EventHandler
-    public void onGlobalVault(PlayerInteractEvent event) {
-        Player player = event.getPlayer();
-        Block block = event.getClickedBlock();
-        if (block.getType() != Material.WALL_SIGN) return;
-        org.bukkit.block.Sign sign = (org.bukkit.block.Sign) block.getState();
-        if (!sign.getLine(0).equalsIgnoreCase("[Guild Vault]")) return;
-        Guild guild = Guild.getGuild(player.getUniqueId());
-        if (guild == null) return;
-        GuildRole role = GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole());
-        if (!role.canOpenVault()) {
-            guilds.getManager().getCommandIssuer(player).sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
-            return;
-        }
-        if (guild.getInventory().equalsIgnoreCase("")) {
-            Inventory inv = Bukkit.createInventory(null, 54, guild.getName() + "'s Guild Vault");
-            player.openInventory(inv);
-            return;
-        }
-        try {
-            player.openInventory(Serialization.deserializeInventory(guild.getInventory()));
-        } catch (InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
      * Check if the inventory being clicked on is part of the Guild Buff system
      * @param event
      */
