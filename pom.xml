@@ -193,7 +193,7 @@
     <dependency>
       <groupId>org.codemc.worldguardwrapper</groupId>
       <artifactId>worldguardwrapper</artifactId>
-      <version>1.0.3-SNAPSHOT</version>
+      <version>1.0.4-SNAPSHOT</version>
     </dependency>
   </dependencies>
 </project>
