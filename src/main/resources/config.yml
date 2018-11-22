@@ -268,6 +268,34 @@ cost:
   sethome: 0
 
 #-----------------------------------------------------------#
+#                  Guild Claims Configuration               #
+#-----------------------------------------------------------#
+# This section of the config will allow you to handle guild land claiming.
+# Remember that the enable / disable for this is the WorldGuard Hook at the TOP of the config.
+# There are multiple options when it comes to guild claims. For the time being, all guilds will only get one claim.
+# As a server owner, you will have a few options here.
+# First off, you will have the ability to have a standard set claim size.
+# There is an option you can modify if you want players to be able to set their own claim size.
+# Don't worry, you will be able to modify the max claim size to prevent abuse.
+
+# This is the number of blocks around the player it will try to create the region
+# Keep in mind this is the RADIUS, it will go this many blocks in both directions
+# For example, if you take the default 15, it'll do 30 total as it will go
+# 15 blocks in both directions
+# This is a CUBOID region, not SPHERE
+claim-radius: 15
+
+# Customize the entrance and exit message of joining claims
+# Supports {prefix} for guild prefix and {guild} for guild name
+# Also supports color codes!
+claim-enter-message: "&aNow entering &d{guild}'s &aclaim!"
+claim-exit-message: "&aNow leaving &d{guild}'s &aclaim!"
+
+# Would you like to disable guild claiming in specific worlds?
+disabled-worlds:
+  -
+
+#-----------------------------------------------------------#
 #                     Guild Upgrade Configuration           #
 #-----------------------------------------------------------#
 

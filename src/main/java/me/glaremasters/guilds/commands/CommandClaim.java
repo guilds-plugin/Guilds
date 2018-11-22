@@ -1,5 +1,6 @@
 package me.glaremasters.guilds.commands;
 
+import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import me.glaremasters.guilds.Guilds;
@@ -12,7 +13,6 @@ import org.codemc.worldguardwrapper.WorldGuardWrapper;
 import org.codemc.worldguardwrapper.region.PlayerDomain;
 import org.codemc.worldguardwrapper.region.WrappedRegion;
 
-import java.util.Optional;
 import java.util.Set;
 
 @CommandAlias("guild|guilds")
@@ -26,6 +26,8 @@ public class CommandClaim extends BaseCommand {
     @CommandPermission("guilds.command.claim")
     public void onClaim(Player player, Guild guild, GuildRole role) {
 
+        int radius = guilds.getConfig().getInt("claim-radius");
+
         if (!guilds.getConfig().getBoolean("main-hooks.worldguard-claims")) {
             getCurrentCommandIssuer().sendInfo(Messages.CLAIM__HOOK_DISABLED);
             return;
@@ -36,8 +38,8 @@ public class CommandClaim extends BaseCommand {
             return;
         }
 
-        Location min = player.getLocation().subtract(25, 0, 25);
-        Location max = player.getLocation().add(25, 0, 25);
+        Location min = player.getLocation().subtract(radius, 0, radius);
+        Location max = player.getLocation().add(radius, 0, radius);
 
         if (wrapper.getRegion(player.getWorld(), guild.getName()).isPresent()) {
             getCurrentCommandIssuer().sendInfo(Messages.CLAIM__ALREADY_EXISTS);
@@ -50,17 +52,18 @@ public class CommandClaim extends BaseCommand {
             getCurrentCommandIssuer().sendInfo(Messages.CLAIM__OVERLAP);
             return;
         }
+
         wrapper.addCuboidRegion(guild.getName(), min, max);
 
-        Optional<WrappedRegion> guildRegion = wrapper.getRegion(player.getWorld(), guild.getName());
+        wrapper.getRegion(player.getWorld(), guild.getName()).ifPresent(region -> {
+            region.getOwners().addPlayer(player.getUniqueId());
 
-        guildRegion.get().getOwners().addPlayer(player.getUniqueId());
+            PlayerDomain domain = region.getMembers();
 
-        PlayerDomain domain = guildRegion.get().getMembers();
+            guild.getMembers().forEach(member -> domain.addPlayer(member.getUniqueId()));
+        });
 
-        guild.getMembers().forEach(member -> domain.addPlayer(member.getUniqueId()));
-
-        getCurrentCommandIssuer().sendInfo(Messages.CLAIM__SUCCESS);
+        getCurrentCommandIssuer().sendInfo(Messages.CLAIM__SUCCESS, "{loc1}", ACFBukkitUtil.formatLocation(min), "{loc2}", ACFBukkitUtil.formatLocation(max));
     }
 
 }
