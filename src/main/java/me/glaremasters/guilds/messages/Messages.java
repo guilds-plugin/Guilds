@@ -60,7 +60,9 @@ public enum Messages implements MessageKeyProvider {
 
     PROMOTE__CANT_PROMOTE, PROMOTE__PROMOTE_SUCCESSFUL, PROMOTE__YOU_WERE_PROMOTED,
 
-    REQUEST__SUCCESS, REQUEST__INCOMING_REQUEST;
+    REQUEST__SUCCESS, REQUEST__INCOMING_REQUEST,
+
+    CLAIM__ALREADY_EXISTS, CLAIM__OVERLAP, CLAIM__SUCCESS;
 
     /**
      * Message keys that grab from the config to send messages

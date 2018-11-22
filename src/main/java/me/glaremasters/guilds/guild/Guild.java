@@ -30,7 +30,6 @@ public class Guild {
     @Expose
     private List<GuildMember> members;
 
-
     @Expose
     private List<String> allies;
 

@@ -9,10 +9,7 @@ import co.aikar.taskchain.TaskChainFactory;
 import io.papermc.lib.PaperLib;
 import me.glaremasters.guilds.api.GuildsAPI;
 import me.glaremasters.guilds.api.Metrics;
-import me.glaremasters.guilds.commands.CommandAdmin;
-import me.glaremasters.guilds.commands.CommandAlly;
-import me.glaremasters.guilds.commands.CommandBank;
-import me.glaremasters.guilds.commands.CommandGuilds;
+import me.glaremasters.guilds.commands.*;
 import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.database.databases.json.JSON;
 import me.glaremasters.guilds.guild.Guild;
@@ -95,7 +92,7 @@ public final class Guilds extends JavaPlugin {
         manager.enableUnstableAPI("help");
         loadContexts(manager);
 
-        Stream.of(new CommandGuilds(), new CommandBank(), new CommandAdmin(), new CommandAlly()).forEach(manager::registerCommand);
+        Stream.of(new CommandGuilds(), new CommandBank(), new CommandAdmin(), new CommandAlly(), new CommandClaim()).forEach(manager::registerCommand);
 
 
         if (getConfig().getBoolean("announcements.console")) {

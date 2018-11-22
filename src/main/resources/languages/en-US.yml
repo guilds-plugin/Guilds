@@ -19,6 +19,7 @@ descriptions:
   cancel: "Cancel an action"
   chat: "Toggles guild chat"
   check: "Check pending guild invites"
+  claim: "Claim land for your Guild"
   confirm: "Confirm an action"
   create: "Create a Guild"
   decline: "Decline a Guild invite"
@@ -150,11 +151,14 @@ ally:
   incoming-invite: "&aYou have an incoming ally request from {guild}!"
   current-remove: "&aYou have removed {guild} from your ally list!"
   target-remove: "&c{guild} has removed you from their ally list!"
-
 accept:
   not-invited: "&cThis guild is private / you haven't received an invite from the guild."
   guild-full: "&cThis guild is full!"
   player-joined: "&a{player} has joined your guild!"
   successful: "&aYou joined guild '{guild}&r&a' successfully"
+claim:
+  already-exists: "&cYou already have a claim. Please remove your previous claim to create a new one"
+  overlap: "&cYour claim could not be created because there is another claim nearby"
+  success: "&aNew claim created! It goes from {loc1} to {loc2}!"
 pending:
   invites: "&aYou have {number} pending invite(s) from the guild(s): &e{guilds}&r&a . Use /guild accept <name> or /guild deny <name> to join or deny an invite!"
