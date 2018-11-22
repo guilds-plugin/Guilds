@@ -26,6 +26,11 @@ public class CommandClaim extends BaseCommand {
     @CommandPermission("guilds.command.claim")
     public void onClaim(Player player, Guild guild, GuildRole role) {
 
+        if (!guilds.getConfig().getBoolean("main-hooks.worldguard-claims")) {
+            getCurrentCommandIssuer().sendInfo(Messages.CLAIM__HOOK_DISABLED);
+            return;
+        }
+
         if (!role.canClaimLand()) {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
             return;

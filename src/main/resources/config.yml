@@ -51,6 +51,7 @@ supported-languages:
 main-hooks:
   essentials-chat: false
   tablist-guilds: false
+  worldguard-claims: false
 
 
 #-----------------------------------------------------------#
