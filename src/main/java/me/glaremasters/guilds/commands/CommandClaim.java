@@ -6,10 +6,10 @@ import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.messages.Messages;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.codemc.worldguardwrapper.WorldGuardWrapper;
+import org.codemc.worldguardwrapper.region.PlayerDomain;
 import org.codemc.worldguardwrapper.region.WrappedRegion;
 
 import java.util.Optional;
@@ -56,9 +56,9 @@ public class CommandClaim extends BaseCommand {
 
         guildRegion.get().getOwners().addPlayer(player.getUniqueId());
 
-        guild.getMembers()
-                .stream().map(member -> Bukkit.getOfflinePlayer(member.getUniqueId()))
-                .forEach(member -> guildRegion.get().getMembers().addPlayer(member.getUniqueId()));
+        PlayerDomain domain = guildRegion.get().getMembers();
+
+        guild.getMembers().forEach(member -> domain.addPlayer(member.getUniqueId()));
 
         getCurrentCommandIssuer().sendInfo(Messages.CLAIM__SUCCESS);
     }
