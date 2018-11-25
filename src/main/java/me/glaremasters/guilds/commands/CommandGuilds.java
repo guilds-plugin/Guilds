@@ -86,7 +86,6 @@ public class CommandGuilds extends BaseCommand {
         if (guilds.getConfig().getBoolean("enable-blacklist")) {
             List<String> blacklist = guilds.getConfig().getStringList("blacklist");
 
-            System.out.println(blacklist);
             for (String censor : blacklist) {
                 if (name.toLowerCase().contains(censor)) {
                     getCurrentCommandIssuer().sendInfo(Messages.ERROR__BLACKLIST);
@@ -287,7 +286,6 @@ public class CommandGuilds extends BaseCommand {
         if (guilds.getConfig().getBoolean("enable-blacklist")) {
             List<String> blacklist = guilds.getConfig().getStringList("blacklist");
 
-            System.out.println(blacklist);
             for (String censor : blacklist) {
                 if (name.toLowerCase().contains(censor)) {
                     getCurrentCommandIssuer().sendInfo(Messages.ERROR__BLACKLIST);
