@@ -121,7 +121,7 @@ upgrade:
   not-enough-money: "&cSorry! You don't have enough money to upgrade your Guild! You still need {needed}!"
   not-enough-members: "&cSorry! You need at least {amount} members to rank up your Guild Tier!"
 prefix:
-  successful: "&aGuild's prefix changed successfully!"
+  successful: "&aGuild's prefix changed successfully to {prefix}!"
 status:
   error: "&cGuild status must be public or private!"
   successful: "&aGuild status set to {status}!"

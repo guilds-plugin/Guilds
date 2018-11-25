@@ -369,7 +369,7 @@ public class CommandGuilds extends BaseCommand {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
             return;
         }
-        getCurrentCommandIssuer().sendInfo(Messages.PREFIX__SUCCESSFUL);
+        getCurrentCommandIssuer().sendInfo(Messages.PREFIX__SUCCESSFUL, "{prefix}", guild.getPrefix());
         guild.updatePrefix(color(prefix));
     }
 
