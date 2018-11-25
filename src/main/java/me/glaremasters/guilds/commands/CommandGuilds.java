@@ -67,32 +67,7 @@ public class CommandGuilds extends BaseCommand {
             return;
         }
 
-        int minLength = guilds.getConfig().getInt("name.min-length");
-        int maxLength = guilds.getConfig().getInt("name.max-length");
-        String regex = guilds.getConfig().getString("name.regex");
-
-        if (name.length() < minLength || name.length() > maxLength || !name.matches(regex)) {
-            getCurrentCommandIssuer().sendInfo(Messages.CREATE__REQUIREMENTS);
-            return;
-        }
-
-        for (String guildName : guilds.getGuildHandler().getGuilds().keySet()) {
-            if (guildName.equalsIgnoreCase(name)) {
-                getCurrentCommandIssuer().sendInfo(Messages.CREATE__GUILD_NAME_TAKEN);
-                return;
-            }
-        }
-
-        if (guilds.getConfig().getBoolean("enable-blacklist")) {
-            List<String> blacklist = guilds.getConfig().getStringList("blacklist");
-
-            for (String censor : blacklist) {
-                if (name.toLowerCase().contains(censor)) {
-                    getCurrentCommandIssuer().sendInfo(Messages.ERROR__BLACKLIST);
-                    return;
-                }
-            }
-        }
+        if (checkRequirements(name)) return;
         getCurrentCommandIssuer().sendInfo(Messages.CREATE__WARNING);
 
         guilds.getActionHandler().addAction(player, new ConfirmAction() {
@@ -267,32 +242,7 @@ public class CommandGuilds extends BaseCommand {
             return;
         }
 
-        int minLength = guilds.getConfig().getInt("name.min-length");
-        int maxLength = guilds.getConfig().getInt("name.max-length");
-        String regex = guilds.getConfig().getString("name.regex");
-
-        if (name.length() < minLength || name.length() > maxLength || !name.matches(regex)) {
-            getCurrentCommandIssuer().sendInfo(Messages.CREATE__REQUIREMENTS);
-            return;
-        }
-
-        for (String guildName : guilds.getGuildHandler().getGuilds().keySet()) {
-            if (guildName.equalsIgnoreCase(name)) {
-                getCurrentCommandIssuer().sendInfo(Messages.CREATE__GUILD_NAME_TAKEN);
-                return;
-            }
-        }
-
-        if (guilds.getConfig().getBoolean("enable-blacklist")) {
-            List<String> blacklist = guilds.getConfig().getStringList("blacklist");
-
-            for (String censor : blacklist) {
-                if (name.toLowerCase().contains(censor)) {
-                    getCurrentCommandIssuer().sendInfo(Messages.ERROR__BLACKLIST);
-                    return;
-                }
-            }
-        }
+        if (checkRequirements(name)) return;
 
         String oldName = guild.getName();
         guilds.getDatabase().removeGuild(Guild.getGuild(oldName));
@@ -1158,6 +1108,36 @@ public class CommandGuilds extends BaseCommand {
 
         skull.setItemMeta(meta);
         return skull;
+    }
+
+    private boolean checkRequirements(String name) {
+        int minLength = guilds.getConfig().getInt("name.min-length");
+        int maxLength = guilds.getConfig().getInt("name.max-length");
+        String regex = guilds.getConfig().getString("name.regex");
+
+        if (name.length() < minLength || name.length() > maxLength || !name.matches(regex)) {
+            getCurrentCommandIssuer().sendInfo(Messages.CREATE__REQUIREMENTS);
+            return true;
+        }
+
+        for (String guildName : guilds.getGuildHandler().getGuilds().keySet()) {
+            if (guildName.equalsIgnoreCase(name)) {
+                getCurrentCommandIssuer().sendInfo(Messages.CREATE__GUILD_NAME_TAKEN);
+                return true;
+            }
+        }
+
+        if (guilds.getConfig().getBoolean("enable-blacklist")) {
+            List<String> blacklist = guilds.getConfig().getStringList("blacklist");
+
+            for (String censor : blacklist) {
+                if (name.toLowerCase().contains(censor)) {
+                    getCurrentCommandIssuer().sendInfo(Messages.ERROR__BLACKLIST);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 }
