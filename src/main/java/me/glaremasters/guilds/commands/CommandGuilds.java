@@ -616,7 +616,7 @@ public class CommandGuilds extends BaseCommand {
     @CommandPermission("guilds.command.info")
     public void onGuildInfo(Player player, Guild guild) {
 
-        Inventory heads = Bukkit.createInventory(null, InventoryType.HOPPER, guilds.getConfig().getString("gui-name.info"));
+        Inventory heads = Bukkit.createInventory(null, InventoryType.HOPPER, color(guilds.getConfig().getString("gui-name.info")));
 
         heads.setItem(1, createSkull(player));
 
@@ -993,7 +993,7 @@ public class CommandGuilds extends BaseCommand {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
             return;
         }
-        Inventory buff = Bukkit.createInventory(null, 9, "Guild Buffs");
+        Inventory buff = Bukkit.createInventory(null, 9, color(guilds.getConfig().getString("gui-name.buff")));
         List<String> lore = new ArrayList<>();
         createBuffItem("haste", lore, buff, 0);
         createBuffItem("speed", lore, buff, 1);

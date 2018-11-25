@@ -103,6 +103,8 @@ public class GuildMapDeserializer implements JsonDeserializer<Map<String, Guild>
                 Files.delete(tiers.toPath());
                 Files.delete(banks.toPath());
                 FileUtils.deleteDirectory(new File(Guilds.getGuilds().getDataFolder(), "data/vaults/"));
+                FileUtils.deleteDirectory(new File(Guilds.getGuilds().getDataFolder(), "languages"));
+                FileUtils.deleteDirectory(new File(Guilds.getGuilds().getDataFolder(), "old-languages"));
             } catch (IOException e) {
                 e.printStackTrace();
             }

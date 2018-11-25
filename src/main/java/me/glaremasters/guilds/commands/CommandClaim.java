@@ -19,7 +19,6 @@ import java.util.Set;
 public class CommandClaim extends BaseCommand {
 
     @Dependency private Guilds guilds;
-    private WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();
 
     @Subcommand("claim")
     @Description("{@@descriptions.claim}")
@@ -32,6 +31,8 @@ public class CommandClaim extends BaseCommand {
             getCurrentCommandIssuer().sendInfo(Messages.CLAIM__HOOK_DISABLED);
             return;
         }
+
+        WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();
 
         if (!role.canClaimLand()) {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
