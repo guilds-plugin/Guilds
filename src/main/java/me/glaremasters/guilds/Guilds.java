@@ -19,12 +19,14 @@ import me.glaremasters.guilds.listeners.*;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.updater.SpigotUpdater;
 import me.glaremasters.guilds.utils.ActionHandler;
+import me.glaremasters.guilds.utils.HeadUtils;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.apache.commons.io.IOUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.codemc.worldguardwrapper.WorldGuardWrapper;
@@ -124,6 +126,7 @@ public final class Guilds extends JavaPlugin {
         optionalListeners();
         info("Ready to go! That only took " + (System.currentTimeMillis() - start) + "ms");
         PaperLib.suggestPaper(this);
+        loadSkulls();
     }
 
 
@@ -180,6 +183,20 @@ public final class Guilds extends JavaPlugin {
                 this.saveResource("languages/" + language + ".yml", false);
             }
         }
+    }
+
+    /**
+     * Preload skulls on the server to prevent lag
+     */
+    private void loadSkulls() {
+        getServer().getScheduler().runTaskLaterAsynchronously(this, () -> getGuildHandler().getGuilds().values().forEach(guild -> {
+            if (guild.getTexture().equalsIgnoreCase("")) {
+                guild.updateTexture(HeadUtils.getTextureUrl(guild.getGuildMaster().getUniqueId()));
+                ItemStack skull = HeadUtils.getSkull(HeadUtils.getTextureUrl(guild.getGuildMaster().getUniqueId()));
+            } else {
+                HeadUtils.textures.put(guild.getGuildMaster().getUniqueId(), guild.getTexture());
+            }
+        }), 100L);
     }
 
     /**

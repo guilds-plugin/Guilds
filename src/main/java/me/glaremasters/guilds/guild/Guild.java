@@ -1,13 +1,16 @@
 package me.glaremasters.guilds.guild;
 
-import co.aikar.locales.MessageKeyProvider;
 import com.google.gson.annotations.Expose;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.messages.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Created by GlareMasters on 6/28/2018.
@@ -20,7 +23,7 @@ public class Guild {
     private String name;
 
     @Expose
-    private String prefix, home, status, inventory;
+    private String prefix, home, status, inventory, texture;
 
     @Expose
     private Integer tier;
@@ -52,6 +55,7 @@ public class Guild {
         this.status = status;
         this.home = "";
         this.inventory = "";
+        this.texture = "";
         this.tier = 1;
         this.balance = 0.0;
         this.members = new ArrayList<>();
@@ -210,6 +214,31 @@ public class Guild {
     public void updateInventory(String inventory) {
         setInventory(inventory);
         updateGuild("", inventory, this.name);
+    }
+
+    /**
+     * Get the texture of a guild
+     * @return
+     */
+    public String getTexture() {
+        return texture;
+    }
+
+    /**
+     * Set the texture of a guild
+     * @param texture
+     */
+    public void setTexture(String texture) {
+        this.texture = texture;
+    }
+
+    /**
+     * Update the texture of a guild
+     * @param texture
+     */
+    public void updateTexture(String texture) {
+        setTexture(texture);
+        updateGuild("", texture, this.name);
     }
 
     /**

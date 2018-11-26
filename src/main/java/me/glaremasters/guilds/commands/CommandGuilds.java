@@ -15,6 +15,7 @@ import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.updater.SpigotUpdater;
 import me.glaremasters.guilds.utils.ConfigUtils;
 import me.glaremasters.guilds.utils.ConfirmAction;
+import me.glaremasters.guilds.utils.HeadUtils;
 import me.glaremasters.guilds.utils.Serialization;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
@@ -1024,8 +1025,8 @@ public class CommandGuilds extends BaseCommand {
         int endIndex = 0;
 
         Guilds.getGuilds().getGuildHandler().getGuilds().values().forEach(guild -> {
-            ItemStack item = new ItemStack(Material.getMaterial(randomItem()));
-            ItemMeta itemMeta = item.getItemMeta();
+            ItemStack skull = HeadUtils.getSkull(HeadUtils.getTextureUrl(guild.getGuildMaster().getUniqueId()));
+            SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
             List<String> lore = new ArrayList<>();
 
             Guilds.getGuilds().getConfig().getStringList("guild-list.head-lore").forEach(line -> lore.add(color(line)
@@ -1036,11 +1037,13 @@ public class CommandGuilds extends BaseCommand {
                     .replace("{guild-tier}", String.valueOf(guild.getTier()))
                     .replace("{guild-balance}", String.valueOf(guild.getBalance()))
                     .replace("{guild-member-count}", String.valueOf(guild.getMembers().size()))));
-            itemMeta.setLore(lore);
+
+            skullMeta.setLore(lore);
+
             String name = Bukkit.getOfflinePlayer(guild.getGuildMaster().getUniqueId()).getName();
-            itemMeta.setDisplayName(color(Guilds.getGuilds().getConfig().getString("guild-list.item-name").replace("{player}", name)));
-            item.setItemMeta(itemMeta);
-            skulls.put(guild.getGuildMaster().getUniqueId(), item);
+            skullMeta.setDisplayName(color(Guilds.getGuilds().getConfig().getString("guild-list.item-name").replace("{player}", name)));
+            skull.setItemMeta(skullMeta);
+            skulls.put(guild.getGuildMaster().getUniqueId(), skull);
         });
 
         ItemStack previous = new ItemStack(Material.getMaterial(Guilds.getGuilds().getConfig().getString("guild-list.previous-page-item")), 1);
@@ -1073,19 +1076,6 @@ public class CommandGuilds extends BaseCommand {
         }
 
         return inv;
-    }
-
-    /**
-     * Get a random item from config
-     * @return
-     */
-    public static String randomItem() {
-
-        List<String> items = Guilds.getGuilds().getConfig().getStringList("random-items");
-
-        int random = new Random().nextInt(items.size());
-        String mat_name = items.get(random);
-        return mat_name;
     }
 
     /**

@@ -131,6 +131,10 @@ public class GuildMapDeserializer implements JsonDeserializer<Map<String, Guild>
             }
         }
 
+        if (!object.has("texture")) {
+            object.addProperty("texture", "");
+        }
+
         if (!object.has("status")) {
             if (statusC != null) {
                 object.addProperty("status", statusC.getString(guildName));
