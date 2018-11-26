@@ -89,7 +89,7 @@ public class Players implements Listener {
         Player player = event.getPlayer();
         if (guilds.getConfig().getBoolean("announcements.in-game")) {
             guilds.getServer().getScheduler().scheduleSyncDelayedTask(guilds, () -> {
-                if (player.isOnline()) {
+                if (player.isOp()) {
                     if (!ALREADY_INFORMED.contains(player.getUniqueId())) {
                         JSONMessage.create("Announcements").tooltip(guilds.getAnnouncements()).openURL(guilds.getDescription().getWebsite()).send(player);
                         ALREADY_INFORMED.add(player.getUniqueId());
