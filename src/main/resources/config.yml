@@ -46,6 +46,7 @@ lang: en-US
 
 supported-languages:
 - en-US
+- fr-FR
 
 # This section is for event handler that I feel should be optional for you guys.
 main-hooks:

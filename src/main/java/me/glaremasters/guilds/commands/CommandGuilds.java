@@ -317,7 +317,7 @@ public class CommandGuilds extends BaseCommand {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
             return;
         }
-        getCurrentCommandIssuer().sendInfo(Messages.PREFIX__SUCCESSFUL, "{prefix}", guild.getPrefix());
+        getCurrentCommandIssuer().sendInfo(Messages.PREFIX__SUCCESSFUL, "{prefix}", prefix);
         guild.updatePrefix(color(prefix));
     }
 
@@ -1110,6 +1110,11 @@ public class CommandGuilds extends BaseCommand {
         return skull;
     }
 
+    /**
+     * Check if the guild name wanting to be used meets the requirements
+     * @param name the guild name being checked
+     * @return true or false
+     */
     private boolean checkRequirements(String name) {
         int minLength = guilds.getConfig().getInt("name.min-length");
         int maxLength = guilds.getConfig().getInt("name.max-length");

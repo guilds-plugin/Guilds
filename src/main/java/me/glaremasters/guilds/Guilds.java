@@ -170,6 +170,8 @@ public final class Guilds extends JavaPlugin {
      */
     private void loadLanguages(BukkitCommandManager manager) {
         try {
+            manager.addSupportedLanguage(Locale.FRANCE);
+            manager.addSupportedLanguage(Locale.US);
             File languageFolder = new File(getDataFolder(), "languages");
             manager.getLocales().setDefaultLocale(Locale.forLanguageTag(getConfig().getString("lang")));
             for (String language : getConfig().getStringList("supported-languages")) {
