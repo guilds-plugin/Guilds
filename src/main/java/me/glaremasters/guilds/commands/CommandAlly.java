@@ -104,10 +104,20 @@ public class CommandAlly extends BaseCommand {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
             return;
         }
+
         Guild targetGuild = Guild.getGuild(name);
+
         if (targetGuild == null) return;
 
-        if (guild.getAllies().contains(targetGuild.getName()) || guild.getName().equalsIgnoreCase(targetGuild.getName())) return;
+        if (guild.getAllies().contains(targetGuild.getName())) {
+            getCurrentCommandIssuer().sendInfo(Messages.ALLY__ALREADY_ALLY);
+            return;
+        }
+
+        if (guild.getName().equalsIgnoreCase(targetGuild.getName())) {
+            getCurrentCommandIssuer().sendInfo(Messages.ALLY__SAME_GUILD);
+            return;
+        }
 
         GuildAddAllyEvent event = new GuildAddAllyEvent(player, guild, targetGuild);
         Bukkit.getServer().getPluginManager().callEvent(event);
@@ -137,7 +147,10 @@ public class CommandAlly extends BaseCommand {
         Guild targetGuild = Guild.getGuild(name);
         if (targetGuild == null) return;
 
-        if (!guild.getAllies().contains(targetGuild.getName())) return;
+        if (!guild.getAllies().contains(targetGuild.getName())) {
+            getCurrentCommandIssuer().sendInfo(Messages.ALLY_NOT_ALLIED);
+            return;
+        }
 
         GuildRemoveAllyEvent event = new GuildRemoveAllyEvent(player, guild, targetGuild);
         Bukkit.getServer().getPluginManager().callEvent(event);

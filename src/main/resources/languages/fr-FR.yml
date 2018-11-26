@@ -151,6 +151,9 @@ ally:
   incoming-invite: "&aVous avez une nouvelle demande d'alliance de {guild}!"
   current-remove: "&aVous avez enlevé {guild} de votre liste d'allié !"
   target-remove: "&c{guild} vous a retiré de sa liste d'alliés !"
+  already-ally: "&cThat guild is already your ally!"
+  same-guild: "&cYou can't send an ally invite to yourself!"
+  not-allied: "&cYou can't remove a guild that isn't on your ally list!"
 accept:
   not-invited: "&cCette guilde est privée / vous n'avez pas reçu d'invitation de la guilde."
   guild-full: "&cCette guilde est pleine"
