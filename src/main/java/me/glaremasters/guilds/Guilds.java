@@ -27,6 +27,7 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.codemc.worldguardwrapper.WorldGuardWrapper;
 
 import java.io.File;
 import java.io.IOException;
@@ -424,5 +425,18 @@ public final class Guilds extends JavaPlugin {
      */
     public List<Player> getSpy() {
         return spy;
+    }
+
+    /**
+     * Check if a guild has a claim
+     *
+     * @param player
+     * @param guild
+     */
+    public static void checkForClaim(Player player, Guild guild, Guilds guilds) {
+        if (guilds.getConfig().getBoolean("main-hooks.worldguard-claims")) {
+            WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();
+            wrapper.getRegion(player.getWorld(), guild.getName()).ifPresent(region -> wrapper.removeRegion(player.getWorld(), guild.getName()));
+        }
     }
 }

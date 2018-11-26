@@ -522,6 +522,7 @@ public class CommandGuilds extends BaseCommand {
                     GuildRemoveEvent removeEvent = new GuildRemoveEvent(player, guild, GuildRemoveEvent.RemoveCause.MASTER_LEFT);
                     guilds.getServer().getPluginManager().callEvent(removeEvent);
                     if (removeEvent.isCancelled()) return;
+                    Guilds.checkForClaim(player, guild, guilds);
                     guild.sendMessage(Messages.LEAVE__GUILDMASTER_LEFT, "{player}", player.getName());
                     guild.removeGuildPerms(guild);
                     guilds.getDatabase().removeGuild(guild);
@@ -615,7 +616,7 @@ public class CommandGuilds extends BaseCommand {
                 GuildRemoveEvent event = new GuildRemoveEvent(player, guild, GuildRemoveEvent.RemoveCause.DELETED);
                 guilds.getServer().getPluginManager().callEvent(event);
                 if (event.isCancelled()) return;
-
+                Guilds.checkForClaim(player, guild, guilds);
                 getCurrentCommandIssuer().sendInfo(Messages.DELETE__SUCCESSFUL, "{guild}", guild.getName());
                 guild.removeGuildPerms(guild);
                 guilds.getDatabase().removeGuild(guild);

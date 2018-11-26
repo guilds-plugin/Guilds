@@ -6,7 +6,7 @@ descriptions:
   admin-remove: "Commande admin pour supprimer une guilde du serveur"
   admin-removeplayer: "Commande admin pour supprimer un joueur de la guilde"
   admin-status: "Commande admin pour changer le statut d'une guilde"
-  admin-spy: "Admin command to enable guild chat spy"
+  admin-spy: "Commande admin pour activé l'espionnage du chat"
   admin-upgrade: "Commande admin pour augmenter le tier d'une guilde"
   ally-accept: "Accepter une invitation d'alliance d'une autre guilde"
   ally-add: "Ajoute une guilde en alliée"
@@ -32,7 +32,7 @@ descriptions:
   home: "Téléporte au home de guilde"
   info: "Ouvre le GUI d'info"
   invite: "Invite un joueur dans votre guilde"
-  kick: "Kick someone from your Guild"
+  kick: "Kick un joueur de la guilde"
   leave: "Quitte votre guilde"
   list: "Liste des Guildes"
   prefix: "Change le prefix de votre guilde"
@@ -70,9 +70,9 @@ error:
   not-enough-money: "&cDésolé, vous n'avez pas assez de money pour faire ça !"
 bank:
   balance: "&aVotre guilde possède : {amount}."
-  deposit-success: "&aYou have deposited {amount} into your Guild Bank. Your Guild Bank total is now {total}!"
-  withdrawl-success: "&aYou have withdrawn {amount} from your Guild Bank. Your Guild Bank total is now {total}!"
-  not-enough-bank: "&cThere isn't enough in the Guild Bank to do that"
+  deposit-success: "&aVous avez déposé {amount} dans le coffre de guilde. Le total en banque est de {total} !"
+  withdrawl-success: "&aVous avez retiré {amount} de votre banque de guilde. Le total en banque est de {total} !"
+  not-enough-bank: "&cIl ni à pas assez en banque pour faire ça"
 admin:
   delete-warning: "&cVous êtes sur le point de supprimer la guilde {guild}. Ecrivez /guilds confirm pour supprimer cette guilde, ecrivez /guilds cancel pour annuler."
   delete-success: "&aVous avez supprimé avec succès la guilde {guild}."
@@ -85,8 +85,8 @@ admin:
   admin-guild-remove: "&a{player} a été retiré de votre guilde par un administrateur !"
   admin-upgrade: "&aVous avez upgradé le tier de la guilde {guild}'!"
   admin-guild-upgrade: "&aVotre tier de guilde a été mis à niveau par un administrateur. !"
-  spy-on: "&aGuild Chat Spy has been enabled!"
-  spy-off: "&cGuild Chat Spy has been disabled!"
+  spy-on: "&aEspionnage de chat de guilde activé !"
+  spy-off: "&cEspionnage de chat de guilde  désactivé !"
 boot:
   player-kicked: "&cLe joueur '{player}' a été exclu de la guilde par {kicker}!"
   successful: "&aLe joueur {player} a été kick avec succès de la guilde !"
@@ -138,7 +138,7 @@ home:
 sethome:
   successful: "&aHome de guilde défini !"
 reload:
-  reloaded: "&aFichier config rechargés avec succès !"
+  reloaded: "&aFichiers config rechargés avec succès !"
 cancel:
   error: "&cAucune action à annuler !"
   success: "&aAction annulée !"
@@ -156,9 +156,9 @@ ally:
   incoming-invite: "&aVous avez une nouvelle demande d'alliance de {guild}!"
   current-remove: "&aVous avez enlevé {guild} de votre liste d'allié !"
   target-remove: "&c{guild} vous a retiré de sa liste d'alliés !"
-  already-ally: "&cThat guild is already your ally!"
-  same-guild: "&cYou can't send an ally invite to yourself!"
-  not-allied: "&cYou can't remove a guild that isn't on your ally list!"
+  already-ally: "&cCette guilde est déjà votre alliée !"
+  same-guild: "&cVous ne pouvez pas envoyer une invitation d'alliance à vous même ! "
+  not-allied: "&cVous ne pouvez pas supprrimer cette guilde, elle n'est pas votre alliée !"
 accept:
   not-invited: "&cCette guilde est privée / vous n'avez pas reçu d'invitation de la guilde."
   guild-full: "&cCette guilde est pleine"
