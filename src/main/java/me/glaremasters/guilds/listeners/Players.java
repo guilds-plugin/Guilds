@@ -23,6 +23,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.material.Sign;
 import org.bukkit.potion.PotionEffect;
@@ -186,7 +187,7 @@ public class Players implements Listener {
         if (guild == null) return;
         String node = GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole()).getNode();
         if (!player.hasPermission(node)) {
-            Bukkit.getScheduler().runTaskLater(guilds, () -> guilds.getPermissions().playerAdd(player, node), 20);
+            Bukkit.getScheduler().runTaskLater(guilds, () -> guilds.getPermissions().playerAdd(player, node), 60L);
         }
     }
 
@@ -199,6 +200,7 @@ public class Players implements Listener {
         Player player = event.getPlayer();
         Guild guild = Guild.getGuild(player.getUniqueId());
         if (guild == null) return;
+        guild.addGuildPerms(guild, player);
     }
 
     /**

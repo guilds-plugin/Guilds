@@ -381,13 +381,7 @@ allow-guild-damage: false
 allow-ally-damage: false
 
 # Check for update on startup (SUGGESTED YOU KEEP THIS ENABLED)
-updater:
-  check: true
-
-# Define how long they must wait to use the command
-cool-down:
-  home: 60
-  sethome: 60
+check-for-updates: true
 
 name:
   # Minimum length of guild names

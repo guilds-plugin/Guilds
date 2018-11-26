@@ -70,6 +70,9 @@ error:
   not-enough-money: "&cSorry, you do not have enough money to do that"
 bank:
   balance: "&aYour guild's bank has a balance of {amount}."
+  deposit-success: "&aYou have deposited {amount} into your Guild Bank. Your Guild Bank total is now {total}!"
+  withdrawl-success: "&aYou have withdrawn {amount} from your Guild Bank. Your Guild Bank total is now {total}!"
+  not-enough-bank: "&cThere isn't enough in the Guild Bank to do that"
 admin:
   delete-warning: "&cYou are about to delete the guild {guild}. Type /guilds confirm to remove this guild, type /guilds cancel to cancel."
   delete-success: "&aYou have successfully removed {guild}."

@@ -53,6 +53,7 @@ public class CommandBank extends BaseCommand {
         guilds.getEconomy().withdrawPlayer(player, amount);
         Double balance = guild.getBalance();
         guild.updateBalance(balance + amount);
+        getCurrentCommandIssuer().sendInfo(Messages.BANK__DEPOSIT_SUCCESS, "{amount}", String.valueOf(amount), "{total}", String.valueOf(guild.getBalance()));
     }
 
     /**
@@ -72,8 +73,12 @@ public class CommandBank extends BaseCommand {
             return;
         }
         Double balance = guild.getBalance();
-        if ((guild.getBalance() < amount)) return;
+        if ((balance < amount)) {
+            getCurrentCommandIssuer().sendInfo(Messages.BANK__NOT_ENOUGH_BANK);
+            return;
+        }
         guild.updateBalance(balance - amount);
+        getCurrentCommandIssuer().sendInfo(Messages.BANK__WITHDRAWL_SUCCESS, "{amount}", String.valueOf(amount), "{total}", String.valueOf(guild.getBalance()));
     }
 
 }

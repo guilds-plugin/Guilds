@@ -246,8 +246,10 @@ public final class Guilds extends JavaPlugin {
      */
     private void updateCheck(SpigotUpdater updater) {
         try {
-            if (updater.checkForUpdates()) {
-                info("You appear to be running a version other than our latest stable release." + " You can download our newest version at: " + updater.getResourceURL());
+            if (getConfig().getBoolean("check-for-updates")) {
+                if (updater.checkForUpdates()) {
+                    info("You appear to be running a version other than our latest stable release." + " You can download our newest version at: " + updater.getResourceURL());
+                }
             }
         } catch (Exception ex) {
             info("Could not check for updates! Stacktrace:");

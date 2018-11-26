@@ -432,10 +432,16 @@ public class CommandGuilds extends BaseCommand {
                     getCurrentCommandIssuer().sendInfo(Messages.UPGRADE__NOT_ENOUGH_MONEY, "{needed}", String.valueOf(upgradeCost - balance));
                     return;
                 }
+                guild.updateBalance(balance - upgradeCost);
                 getCurrentCommandIssuer().sendInfo(Messages.UPGRADE__SUCCESS);
-                // Carry over perms check
-                guild.updateTier(tier + 1);
-                // Add new perms
+                if (guilds.getConfig().getBoolean("carry-over-perms")) {
+                    guild.updateTier(tier + 1);
+                    Bukkit.getScheduler().scheduleSyncDelayedTask(guilds, () -> guild.addGuildPerms(guild), 60L);
+                } else {
+                    guild.removeGuildPerms(guild);
+                    guild.updateTier(tier + 1);
+                    Bukkit.getScheduler().scheduleSyncDelayedTask(guilds, () -> guild.addGuildPerms(guild), 60L);
+                }
             }
 
             @Override
