@@ -191,6 +191,8 @@ public final class Guilds extends JavaPlugin {
         try {
             manager.addSupportedLanguage(Locale.FRANCE);
             manager.addSupportedLanguage(Locale.US);
+            manager.addSupportedLanguage(Locale.forLanguageTag("ro-RO"));
+            manager.addSupportedLanguage(Locale.forLanguageTag("ru-RU"));
             File languageFolder = new File(getDataFolder(), "languages");
             manager.getLocales().setDefaultLocale(Locale.forLanguageTag(getConfig().getString("lang")));
             for (String language : getConfig().getStringList("supported-languages")) {
