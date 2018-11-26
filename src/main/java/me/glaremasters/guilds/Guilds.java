@@ -55,6 +55,11 @@ public final class Guilds extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        if (!checkVault()) {
+            info("It looks like you don't have Vault on your server! You need this to use Guilds!");
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
         long start = System.currentTimeMillis();
         logo();
         guilds = this;
@@ -99,6 +104,7 @@ public final class Guilds extends JavaPlugin {
             info("Checking for updates...");
             getServer().getScheduler().runTaskAsynchronously(this, new Runnable() {
                 SpigotUpdater updater = new SpigotUpdater(Guilds.getGuilds(), 48920);
+
                 @Override
                 public void run() {
                     updateCheck(updater);
@@ -117,12 +123,15 @@ public final class Guilds extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        guildHandler.disable();
-        actionHandler.disable();
+        if (checkVault()) {
+            guildHandler.disable();
+            actionHandler.disable();
+        }
     }
 
     /**
      * Grabs an instance of the plugin
+     *
      * @return instance of plugin
      */
     public static Guilds getGuilds() {
@@ -131,6 +140,7 @@ public final class Guilds extends JavaPlugin {
 
     /**
      * Implement Vault's Economy API
+     *
      * @return the value of the method
      */
     private boolean setupEconomy() {
@@ -141,6 +151,7 @@ public final class Guilds extends JavaPlugin {
 
     /**
      * Implement Vault's Permission API
+     *
      * @return the value of the method
      */
     private boolean setupPermissions() {
@@ -166,6 +177,7 @@ public final class Guilds extends JavaPlugin {
 
     /**
      * Load the languages for the server from ACF BCM
+     *
      * @param manager ACF BCM
      */
     private void loadLanguages(BukkitCommandManager manager) {
@@ -175,7 +187,7 @@ public final class Guilds extends JavaPlugin {
             File languageFolder = new File(getDataFolder(), "languages");
             manager.getLocales().setDefaultLocale(Locale.forLanguageTag(getConfig().getString("lang")));
             for (String language : getConfig().getStringList("supported-languages")) {
-               manager.getLocales().loadYamlLanguageFile(new File(languageFolder, language + ".yml"), Locale.forLanguageTag(language));
+                manager.getLocales().loadYamlLanguageFile(new File(languageFolder, language + ".yml"), Locale.forLanguageTag(language));
             }
             info("Loaded successfully!");
         } catch (IOException | InvalidConfigurationException e) {
@@ -186,6 +198,7 @@ public final class Guilds extends JavaPlugin {
 
     /**
      * Get the database we are using to store data
+     *
      * @return the database currently being used
      */
     public DatabaseProvider getDatabase() {
@@ -194,6 +207,7 @@ public final class Guilds extends JavaPlugin {
 
     /**
      * Get the guild handlers in the plugin
+     *
      * @return the guild handlers being used
      */
     public GuildHandler getGuildHandler() {
@@ -202,6 +216,7 @@ public final class Guilds extends JavaPlugin {
 
     /**
      * Get the action handlers in the plugin
+     *
      * @return the action handlers being used
      */
     public ActionHandler getActionHandler() {
@@ -210,6 +225,7 @@ public final class Guilds extends JavaPlugin {
 
     /**
      * Create a new chain for async
+     *
      * @param <T> taskchain
      * @return the new chain created for data modification
      */
@@ -219,6 +235,7 @@ public final class Guilds extends JavaPlugin {
 
     /**
      * Execute the update checker
+     *
      * @param updater the SpigotUpdater
      */
     private void updateCheck(SpigotUpdater updater) {
@@ -234,6 +251,7 @@ public final class Guilds extends JavaPlugin {
 
     /**
      * Get a holder of the API
+     *
      * @return API holder
      */
     public GuildsAPI getApi() {
@@ -242,6 +260,7 @@ public final class Guilds extends JavaPlugin {
 
     /**
      * Get the CommandManager
+     *
      * @return command manager
      */
     public BukkitCommandManager getManager() {
@@ -250,9 +269,10 @@ public final class Guilds extends JavaPlugin {
 
     /**
      * Useful tool for colorful texts to console
+     *
      * @param msg the msg you want to log
      */
-     public void info(String msg) {
+    public void info(String msg) {
         Bukkit.getServer().getConsoleSender().sendMessage(color(logPrefix + msg));
     }
 
@@ -273,10 +293,11 @@ public final class Guilds extends JavaPlugin {
 
     /**
      * Load the contexts for the server from ACF BCM
+     *
      * @param manager ACF BCM
      */
     private void loadContexts(BukkitCommandManager manager) {
-        manager.getCommandContexts().registerIssuerOnlyContext(Guild.class, c-> {
+        manager.getCommandContexts().registerIssuerOnlyContext(Guild.class, c -> {
             Guild guild = Guild.getGuild(c.getPlayer().getUniqueId());
             if (guild == null) {
                 throw new InvalidCommandArgument(Messages.ERROR__NO_GUILD);
@@ -284,7 +305,7 @@ public final class Guilds extends JavaPlugin {
             return guild;
         });
 
-        manager.getCommandContexts().registerIssuerOnlyContext(GuildRole.class, c-> {
+        manager.getCommandContexts().registerIssuerOnlyContext(GuildRole.class, c -> {
             Guild guild = Guild.getGuild(c.getPlayer().getUniqueId());
             if (guild == null) {
                 return null;
@@ -295,6 +316,7 @@ public final class Guilds extends JavaPlugin {
 
     /**
      * Grab the announcements for the plugins
+     *
      * @return the announcements string
      */
     public String getAnnouncements() {
@@ -319,10 +341,20 @@ public final class Guilds extends JavaPlugin {
 
     /**
      * Check if MVdWPlaceholderAPI is running
+     *
      * @return true or false
      */
     private boolean checkMVDW() {
         return Bukkit.getPluginManager().isPluginEnabled("MVdWPlaceholderAPI");
+    }
+
+    /**
+     * Check if Vault is running
+     *
+     * @return true or false
+     */
+    private boolean checkVault() {
+        return Bukkit.getPluginManager().isPluginEnabled("Vault");
     }
 
     /**
@@ -349,6 +381,7 @@ public final class Guilds extends JavaPlugin {
 
     /**
      * Get the economy
+     *
      * @return economy
      */
     public Economy getEconomy() {
@@ -357,6 +390,7 @@ public final class Guilds extends JavaPlugin {
 
     /**
      * Get the permissions from vault
+     *
      * @return the permissions from vault
      */
     public Permission getPermissions() {

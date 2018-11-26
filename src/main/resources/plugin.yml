@@ -2,7 +2,6 @@ name: Guilds
 version: ${project.version}
 main: me.glaremasters.guilds.Guilds
 authors: [blockslayer22]
-depend: [Vault]
-softdepend: [MVdWPlaceholderAPI, WorldGuard]
+softdepend: [Vault, MVdWPlaceholderAPI, WorldGuard]
 description: Guilds
 website: https://glaremasters.me/discord

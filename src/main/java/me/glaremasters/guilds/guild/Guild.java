@@ -432,7 +432,6 @@ public class Guild {
         guild.getMembers().forEach(member ->  {
             OfflinePlayer op = Bukkit.getOfflinePlayer(member.getUniqueId());
             guild.getGuildPerms().forEach(perm -> guilds.getPermissions().playerAdd(null, op, perm));
-
         });
     }
 
