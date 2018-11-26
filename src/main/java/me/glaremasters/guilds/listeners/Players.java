@@ -195,12 +195,6 @@ public class Players implements Listener {
         Player player = event.getPlayer();
         Guild guild = Guild.getGuild(player.getUniqueId());
         if (guild == null) return;
-        for (String perms : guild.getGuildPerms()) {
-            if (player.hasPermission(perms)) {
-                return;
-            }
-            guilds.getPermissions().playerAdd(null, player, perms);
-        }
     }
 
     /**

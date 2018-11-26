@@ -32,7 +32,7 @@ public enum Messages implements MessageKeyProvider {
 
     PREFIX__SUCCESSFUL,
 
-    STATUS__ERROR, STATUS__SUCCESSFUL,
+    STATUS__SUCCESSFUL,
 
     RENAME__SUCCESSFUL,
 

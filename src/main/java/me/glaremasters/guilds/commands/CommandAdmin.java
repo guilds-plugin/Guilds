@@ -47,6 +47,7 @@ public class CommandAdmin extends BaseCommand {
                 GuildRemoveEvent event = new GuildRemoveEvent(player, guild, GuildRemoveEvent.RemoveCause.ADMIN_DELETED);
                 guilds.getServer().getPluginManager().callEvent(event);
                 if (event.isCancelled()) return;
+                guild.removeGuildPerms(guild);
                 guilds.getDatabase().removeGuild(guild);
                 guilds.getActionHandler().removeAction(player);
                 getCurrentCommandIssuer().sendInfo(Messages.ADMIN__DELETE_SUCCESSFUL, "{guild}", name);
@@ -76,6 +77,7 @@ public class CommandAdmin extends BaseCommand {
         Guild targetGuild = Guild.getGuild(guild);
         if (targetGuild == null) return;
         targetGuild.addMember(playerToAdd.getUniqueId(), GuildRole.getLowestRole());
+        targetGuild.addGuildPerms(targetGuild, playerToAdd);
         if (playerToAdd.isOnline()) {
             guilds.getManager().getCommandIssuer(playerToAdd).sendInfo(Messages.ADMIN__PLAYER_ADDED, "{guild}", targetGuild.getName());
         }
@@ -97,6 +99,7 @@ public class CommandAdmin extends BaseCommand {
         if (player == null || !player.isOnline()) return;
         if (Guild.getGuild(playerToRemove.getUniqueId()) == null) return;
         Guild guild = Guild.getGuild(playerToRemove.getUniqueId());
+        guild.removeGuildPerms(guild, playerToRemove);
         guild.removeMember(playerToRemove.getUniqueId());
         if (playerToRemove.isOnline()) {
             guilds.getManager().getCommandIssuer(playerToRemove).sendInfo(Messages.ADMIN__PLAYER_REMOVED, "{guild}", guild.getName());

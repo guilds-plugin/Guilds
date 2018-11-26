@@ -5,6 +5,7 @@ import com.google.gson.annotations.Expose;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.messages.Messages;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 
 import java.util.*;
 
@@ -401,6 +402,47 @@ public class Guild {
         }
         this.members.remove(member);
         updateGuild("", uuid.toString(), this.name);
+    }
+
+    /**
+     * Removes all tier perms for all users in a guild
+     * @param guild
+     */
+    public void removeGuildPerms(Guild guild) {
+        guild.getMembers().forEach(member ->  {
+            OfflinePlayer op = Bukkit.getOfflinePlayer(member.getUniqueId());
+            guild.getGuildPerms().forEach(perm -> guilds.getPermissions().playerRemove(null, op, perm));
+        });
+    }
+
+    /**
+     * Removes all tier perms from a specific user
+     * @param guild
+     * @param player
+     */
+    public void removeGuildPerms(Guild guild, OfflinePlayer player) {
+        guild.getGuildPerms().forEach(perm -> guilds.getPermissions().playerRemove(null, player, perm));
+    }
+
+    /**
+     * Adds all tier perms for all users in a guild
+     * @param guild
+     */
+    public void addGuildPerms(Guild guild) {
+        guild.getMembers().forEach(member ->  {
+            OfflinePlayer op = Bukkit.getOfflinePlayer(member.getUniqueId());
+            guild.getGuildPerms().forEach(perm -> guilds.getPermissions().playerAdd(null, op, perm));
+
+        });
+    }
+
+    /**
+     * Adds all tier perms to a specific user
+     * @param guild
+     * @param player
+     */
+    public void addGuildPerms(Guild guild, OfflinePlayer player) {
+        guild.getGuildPerms().forEach(perm -> guilds.getPermissions().playerAdd(null, player, perm));
     }
 
     /**

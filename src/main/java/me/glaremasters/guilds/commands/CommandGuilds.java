@@ -517,11 +517,12 @@ public class CommandGuilds extends BaseCommand {
                 GuildLeaveEvent event = new GuildLeaveEvent(player, guild);
                 guilds.getServer().getPluginManager().callEvent(event);
                 if (event.isCancelled()) return;
-                // If guild master remove perms from all members
                 if (guild.getGuildMaster().getUniqueId().equals(player.getUniqueId())) {
                     GuildRemoveEvent removeEvent = new GuildRemoveEvent(player, guild, GuildRemoveEvent.RemoveCause.MASTER_LEFT);
                     guilds.getServer().getPluginManager().callEvent(removeEvent);
                     if (removeEvent.isCancelled()) return;
+                    guild.sendMessage(Messages.LEAVE__GUILDMASTER_LEFT, "{player}", player.getName());
+                    guild.removeGuildPerms(guild);
                     guilds.getDatabase().removeGuild(guild);
                     guild.removeMember(player.getUniqueId());
                     getCurrentCommandIssuer().sendInfo(Messages.LEAVE__SUCCESSFUL);
@@ -529,6 +530,8 @@ public class CommandGuilds extends BaseCommand {
                 } else {
                     guild.removeMember(player.getUniqueId());
                     getCurrentCommandIssuer().sendInfo(Messages.LEAVE__SUCCESSFUL);
+                    guild.sendMessage(Messages.LEAVE__PLAYER_LEFT, "{player}", player.getName());
+                    guild.removeGuildPerms(guild, player);
                     guilds.getActionHandler().removeAction(player);
                 }
             }
@@ -613,7 +616,7 @@ public class CommandGuilds extends BaseCommand {
                 if (event.isCancelled()) return;
 
                 getCurrentCommandIssuer().sendInfo(Messages.DELETE__SUCCESSFUL, "{guild}", guild.getName());
-                // Todo - Something about perms
+                guild.removeGuildPerms(guild);
                 guilds.getDatabase().removeGuild(guild);
                 guilds.getActionHandler().removeAction(player);
             }
@@ -678,10 +681,13 @@ public class CommandGuilds extends BaseCommand {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
             return;
         }
+        guild.removeGuildPerms(guild, bootedPlayer);
         guild.removeMember(kickedPlayer.getUniqueId());
         getCurrentCommandIssuer().sendInfo(Messages.BOOT__SUCCESSFUL, "{player}", bootedPlayer.getName());
-        // Todo - Send message to all online members saying <user> was kicked.
-        guilds.getManager().getCommandIssuer(bootedPlayer).sendInfo(Messages.BOOT__KICKED);
+        guild.sendMessage(Messages.BOOT__PLAYER_KICKED, "{player}", bootedPlayer.getName(), "{kicker}", player.getName());
+        if (bootedPlayer.isOnline()) {
+            guilds.getManager().getCommandIssuer(bootedPlayer).sendInfo(Messages.BOOT__KICKED, "{kicker}", player.getName());
+        }
     }
 
     /**

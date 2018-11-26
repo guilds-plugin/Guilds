@@ -123,7 +123,6 @@ upgrade:
 prefix:
   successful: "&aGuild's prefix changed successfully to {prefix}!"
 status:
-  error: "&cGuild status must be public or private!"
   successful: "&aGuild status set to {status}!"
 rename:
   successful: "&aGuild name changed to {name}!"
