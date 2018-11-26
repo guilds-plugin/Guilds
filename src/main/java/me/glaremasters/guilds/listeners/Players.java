@@ -163,7 +163,13 @@ public class Players implements Listener {
         }
 
         if (GUILD_CHAT_PLAYERS.contains(player.getUniqueId())) {
-            event.getRecipients().removeIf(r -> guild.getMember(r.getUniqueId()) == null);
+
+            event.getRecipients().forEach(r -> {
+                if (guilds.getSpy().contains(r)) {
+                    r.sendMessage(color((guilds.getConfig().getString("spy-chat-format")).replace("{role}", GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole()).getName()).replace("{player}", player.getName()).replace("{message}", event.getMessage()).replace("{guild}", guild.getName())));
+                }
+            });
+            event.getRecipients().removeIf(r -> (guild.getMember(r.getUniqueId()) == null));
             event.getRecipients().forEach(recipient -> recipient.sendMessage(color((guilds.getConfig().getString("guild-chat-format")).replace("{role}", GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole()).getName()).replace("{player}", player.getName()).replace("{message}", event.getMessage()))));
             event.setCancelled(true);
         }

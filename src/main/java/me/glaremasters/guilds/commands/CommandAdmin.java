@@ -185,4 +185,21 @@ public class CommandAdmin extends BaseCommand {
         guild.updateName(color(name));
     }
 
+    /**
+     * Admin command to turn on Guild Chat Spy
+     * @param player
+     */
+    @Subcommand("admin spy")
+    @Description("{@@descriptions.admin-spy}")
+    @CommandPermission("guilds.command.admin")
+    public void onAdminSpy(Player player) {
+        if (guilds.getSpy().contains(player)) {
+            guilds.getSpy().remove(player);
+            getCurrentCommandIssuer().sendInfo(Messages.ADMIN__SPY_OFF);
+        } else {
+            guilds.getSpy().add(player);
+            getCurrentCommandIssuer().sendInfo(Messages.ADMIN__SPY_ON);
+        }
+    }
+
 }

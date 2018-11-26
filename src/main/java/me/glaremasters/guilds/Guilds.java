@@ -24,6 +24,7 @@ import net.milkbowl.vault.permission.Permission;
 import org.apache.commons.io.IOUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -32,6 +33,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.stream.Stream;
 
@@ -52,6 +55,7 @@ public final class Guilds extends JavaPlugin {
     private static Permission permissions = null;
     private GuildsAPI api;
     private String logPrefix = "&f[&aGuilds&f]&r ";
+    private List<Player> spy;
 
     @Override
     public void onEnable() {
@@ -65,6 +69,7 @@ public final class Guilds extends JavaPlugin {
         guilds = this;
         info("Enabling the Guilds API...");
         api = new GuildsAPI();
+        spy = new ArrayList<>();
         info("API Enabled!");
         info("Hooking into Vault...");
         vaultEconomy = setupEconomy();
@@ -126,6 +131,7 @@ public final class Guilds extends JavaPlugin {
         if (checkVault()) {
             guildHandler.disable();
             actionHandler.disable();
+            spy.clear();
         }
     }
 
@@ -397,6 +403,9 @@ public final class Guilds extends JavaPlugin {
         return permissions;
     }
 
+    /**
+     * Register optional listeners based off values in the config
+     */
     public void optionalListeners() {
         if (getConfig().getBoolean("main-hooks.essentials-chat")) {
             getServer().getPluginManager().registerEvents(new EssentialsChat(this), this);
@@ -407,4 +416,11 @@ public final class Guilds extends JavaPlugin {
         }
     }
 
+    /**
+     * Get a list of all users that have spy mode enabled
+     * @return
+     */
+    public List<Player> getSpy() {
+        return spy;
+    }
 }

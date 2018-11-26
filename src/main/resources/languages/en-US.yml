@@ -6,6 +6,7 @@ descriptions:
   admin-remove: "Admin command to remove a Guild from the server"
   admin-removeplayer: "Admin command to remove a player from a Guild"
   admin-status: "Admin command to change a Guild's status"
+  admin-spy: "Admin command to enable guild chat spy"
   admin-upgrade: "Admin command to upgrade a Guild's tier"
   ally-accept: "Accept an ally invite from another guild"
   ally-add: "Add a Guild as an ally"
@@ -81,6 +82,8 @@ admin:
   admin-guild-remove: "&a{player} has been removed from your guild by an Admin!"
   admin-upgrade: "&aYou have upgraded {guild}'s tier!"
   admin-guild-upgrade: "&aYour guild tier has been upgraded by an Admin!"
+  spy-on: "&aGuild Chat Spy has been enabled!"
+  spy-off: "&cGuild Chat Spy has been disabled!"
 boot:
   player-kicked: "&cPlayer '{player}' has been kicked from the guild by {kicker}!"
   successful: "&aSuccessfully kicked {player} from your guild!"
