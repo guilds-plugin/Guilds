@@ -102,10 +102,7 @@ guild-list:
 
 # You can choose what random items are used to display Guilds in the Guild List
 random-items:
-- "STICK"
-- "DIAMOND_SPADE"
-- "REDSTONE_TORCH_ON"
-- "DIAMOND_BLOCK"
+- "EMPTY_MAP"
 
 # The "info" section allows you to choose how information in /guild info is displayed to users.
 # You can change the colors, and the language of all parts of the guild info GUI.

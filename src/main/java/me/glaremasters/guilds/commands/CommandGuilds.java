@@ -3,8 +3,8 @@ package me.glaremasters.guilds.commands;
 import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.CommandHelp;
-import co.aikar.commands.annotation.*;
 import co.aikar.commands.annotation.Optional;
+import co.aikar.commands.annotation.*;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.api.events.*;
 import me.glaremasters.guilds.guild.Guild;
@@ -17,12 +17,7 @@ import me.glaremasters.guilds.utils.ConfigUtils;
 import me.glaremasters.guilds.utils.ConfirmAction;
 import me.glaremasters.guilds.utils.Serialization;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.ChatColor;
-import org.bukkit.SkullType;
-import org.bukkit.Statistic;
+import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
@@ -1021,33 +1016,31 @@ public class CommandGuilds extends BaseCommand {
      * @return
      */
     public static Inventory getSkullsPage(int page) {
-        HashMap<UUID, ItemStack> skulls = new HashMap<>();
+        Map<UUID, ItemStack> skulls = new HashMap<>();
         Inventory inv = Bukkit.createInventory(null, 54, color(Guilds.getGuilds().getConfig().getString("guild-list.gui-name")));
 
         int startIndex = 0;
         int endIndex = 0;
 
-        for (int i = 0; i < Guilds.getGuilds().getGuildHandler().getGuilds().values().size(); i++) {
-            Guild guild = (Guild) Guilds.getGuilds().getGuildHandler().getGuilds().values().toArray()[i];
+        Guilds.getGuilds().getGuildHandler().getGuilds().values().forEach(guild -> {
             ItemStack item = new ItemStack(Material.getMaterial(randomItem()));
             ItemMeta itemMeta = item.getItemMeta();
-            ArrayList<String> lore = new ArrayList<String>();
-            for (String text : Guilds.getGuilds().getConfig().getStringList("guild-list.head-lore")) {
-                lore.add(color(text).
-                        replace("{guild-name}", guild.getName())
-                        .replace("{guild-prefix}", guild.getPrefix())
-                        .replace("{guild-master}", Bukkit.getOfflinePlayer(guild.getGuildMaster().getUniqueId()).getName())
-                        .replace("{guild-status}", guild.getStatus())
-                        .replace("{guild-tier}", String.valueOf(guild.getTier()))
-                        .replace("{guild-balance}", String.valueOf(guild.getBalance()))
-                        .replace("{guild-member-count}", String.valueOf(guild.getMembers().size())));
-            }
+            List<String> lore = new ArrayList<>();
+
+            Guilds.getGuilds().getConfig().getStringList("guild-list.head-lore").forEach(line -> lore.add(color(line)
+                    .replace("{guild-name}", guild.getName())
+                    .replace("{guild-prefix}", guild.getPrefix())
+                    .replace("{guild-master}", Bukkit.getOfflinePlayer(guild.getGuildMaster().getUniqueId()).getName())
+                    .replace("{guild-status}", guild.getStatus())
+                    .replace("{guild-tier}", String.valueOf(guild.getTier()))
+                    .replace("{guild-balance}", String.valueOf(guild.getBalance()))
+                    .replace("{guild-member-count}", String.valueOf(guild.getMembers().size()))));
             itemMeta.setLore(lore);
             String name = Bukkit.getOfflinePlayer(guild.getGuildMaster().getUniqueId()).getName();
             itemMeta.setDisplayName(color(Guilds.getGuilds().getConfig().getString("guild-list.item-name").replace("{player}", name)));
             item.setItemMeta(itemMeta);
             skulls.put(guild.getGuildMaster().getUniqueId(), item);
-        }
+        });
 
         ItemStack previous = new ItemStack(Material.getMaterial(Guilds.getGuilds().getConfig().getString("guild-list.previous-page-item")), 1);
         ItemMeta previousMeta = previous.getItemMeta();
@@ -1068,7 +1061,9 @@ public class CommandGuilds extends BaseCommand {
         startIndex = (page - 1) * 45;
         endIndex = startIndex + 45;
 
-        if (endIndex > skulls.values().size()) { endIndex = skulls.values().size(); }
+        if (endIndex > skulls.values().size()) {
+            endIndex = skulls.values().size();
+        }
 
         int iCount = 0;
         for (int i1 = startIndex; i1 < endIndex; i1++) {
