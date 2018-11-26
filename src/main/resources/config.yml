@@ -93,6 +93,7 @@ guild-list:
   previous-page-item-name: "Previous Page"
   page-number-item: "DIAMOND_BLOCK"
   page-number-item-name: "Page: {page}"
+  head-default-url: "http://textures.minecraft.net/texture/1a1654ce1fd5deea16c151586f21c63d130f1a5a122eef098133b4f92f6f55"
   head-lore:
   - "Name: {guild-name}"
   - "Prefix: {guild-prefix}"
