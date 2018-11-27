@@ -48,7 +48,7 @@ public class HeadUtils {
 
             return texture;
 
-        } catch (IOException e) {
+        } catch (IOException | IllegalStateException e) {
             return Guilds.getGuilds().getConfig().getString("guild-list.head-default-url");
         }
     }
