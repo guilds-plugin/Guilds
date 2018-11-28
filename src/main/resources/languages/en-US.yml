@@ -63,7 +63,7 @@ error:
   already-in-guild: "&cYou're already in a guild!"
   no-guild: "&cYou're not in a guild!"
   role-no-permission: "&cYour role is not high enough to do that!"
-  guild-no-exist: "&cThat Guild does does exist!"
+  guild-no-exist: "&cThat Guild does not exist!"
   player-not-found: "&cPlayer '{player}&r&c' is not online!"
   player-not-in-guild: "&c{player} is not in your Guild!"
   not-officer: "&cUser must be an Officer in your Guild!"

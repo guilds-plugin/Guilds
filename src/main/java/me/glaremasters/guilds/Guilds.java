@@ -136,6 +136,7 @@ public final class Guilds extends JavaPlugin {
             guildHandler.disable();
             actionHandler.disable();
             spy.clear();
+            HeadUtils.textures.clear();
         }
     }
 
