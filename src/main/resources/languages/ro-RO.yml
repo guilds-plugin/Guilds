@@ -160,6 +160,7 @@ ally:
   already-ally: "&cThat guild is already your ally!"
   same-guild: "&cYou can't send an ally invite to yourself!"
   not-allied: "&cYou can't remove a guild that isn't on your ally list!"
+  already-requested: "&cYou currently already have a pending ally request to this guild!"
 accept:
   not-invited: "&cThis guild is private / you haven't received an invite from the guild."
   guild-full: "&cThis guild is full!"

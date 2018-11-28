@@ -160,6 +160,7 @@ ally:
   already-ally: "&cCette guilde est déjà votre alliée !"
   same-guild: "&cVous ne pouvez pas envoyer une invitation d'alliance à vous même ! "
   not-allied: "&cVous ne pouvez pas supprrimer cette guilde, elle n'est pas votre alliée !"
+  already-requested: "&cYou currently already have a pending ally request to this guild!"
 accept:
   not-invited: "&cCette guilde est privée / vous n'avez pas reçu d'invitation de la guilde."
   guild-full: "&cCette guilde est pleine"

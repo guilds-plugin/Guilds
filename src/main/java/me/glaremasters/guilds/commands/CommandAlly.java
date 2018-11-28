@@ -1,7 +1,12 @@
 package me.glaremasters.guilds.commands;
 
 import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.*;
+import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Dependency;
+import co.aikar.commands.annotation.Description;
+import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.annotation.Syntax;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.api.events.GuildAddAllyEvent;
 import me.glaremasters.guilds.api.events.GuildRemoveAllyEvent;
@@ -109,6 +114,11 @@ public class CommandAlly extends BaseCommand {
 
         if (targetGuild == null) return;
 
+        if (targetGuild.getPendingAllies().contains(guild.getName())) {
+            getCurrentCommandIssuer().sendInfo(Messages.ALLY__ALREADY_REQUESTED);
+            return;
+        }
+
         if (guild.getAllies().contains(targetGuild.getName())) {
             getCurrentCommandIssuer().sendInfo(Messages.ALLY__ALREADY_ALLY);
             return;
@@ -148,7 +158,7 @@ public class CommandAlly extends BaseCommand {
         if (targetGuild == null) return;
 
         if (!guild.getAllies().contains(targetGuild.getName())) {
-            getCurrentCommandIssuer().sendInfo(Messages.ALLY_NOT_ALLIED);
+            getCurrentCommandIssuer().sendInfo(Messages.ALLY__NOT_ALLIED);
             return;
         }
 
