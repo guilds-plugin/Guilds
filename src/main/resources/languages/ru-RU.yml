@@ -43,6 +43,7 @@ descriptions:
   sethome: "Установить дом Гильдии"
   status: "Изменить статус Гильдии"
   transfer: "Передать Гильдию другому игроку"
+  unclaim: "Unclaim your guild land"
   upgrade: "Повысить уровень Гильдии!"
   vault: "Открыть хранилище Гильдии"
   version: "Информация о плагине"
@@ -169,5 +170,8 @@ claim:
   overlap: "&cYour claim could not be created because there is another claim nearby"
   success: "&aNew claim created! It goes from {loc1} to {loc2}!"
   hook-disabled: "&cPlease enable claims in the config to utilize this feature"
+unclaim:
+  success: "&aYou've successfully remove your guild claim!"
+  not-found: "&cYou can't unclaim land that you don't have!"
 pending:
   invites: "&aУ Вас {number} действующих приглашений от следующих гильдий: &e{guilds}&r&a . Введите /guild accept <гильдия> для принятия или /guild deny <гильдия> для отклонения приглашения на вступление!"

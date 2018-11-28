@@ -43,6 +43,7 @@ descriptions:
   sethome: "Défini le home de guilde"
   status: "Change le statut de votre guilde"
   transfer: "Donne le lead de la guilde à un autre joueur"
+  unclaim: "Unclaim your guild land"
   upgrade: "Upgrade votre tier de Guilde!"
   vault: "Ouvre le coffre de guilde"
   version: "Informations à propos du plugin"
@@ -169,5 +170,8 @@ claim:
   overlap: "&cVotre demande n'a pas pu être créée car une autre zone claim est à proximité"
   success: "&aNouvelle zone claim ! Ça va de {loc1}  {loc2}!"
   hook-disabled: "&cVeuillez activer le claim de zone dans la configuration pour utiliser cette fonctionnalité"
+unclaim:
+  success: "&aYou've successfully remove your guild claim!"
+  not-found: "&cYou can't unclaim land that you don't have!"
 pending:
   invites: "&aVous avez {number} invitation(s) en attente de la guilde: &e{guilds}&r&a . Ecrivez /guild accept <name> or /guild deny <name> pour accepter ou refuser une invitation!"

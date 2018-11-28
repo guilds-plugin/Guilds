@@ -66,7 +66,9 @@ public enum Messages implements MessageKeyProvider {
 
     REQUEST__SUCCESS, REQUEST__INCOMING_REQUEST,
 
-    CLAIM__ALREADY_EXISTS, CLAIM__OVERLAP, CLAIM__SUCCESS, CLAIM__HOOK_DISABLED;
+    CLAIM__ALREADY_EXISTS, CLAIM__OVERLAP, CLAIM__SUCCESS, CLAIM__HOOK_DISABLED,
+
+    UNCLAIM__SUCCESS, UNCLAIM__NOT_FOUND;
 
     /**
      * Message keys that grab from the config to send messages
