@@ -20,7 +20,7 @@ descriptions:
   cancel: "Anulati o actiune"
   chat: "Comutati catre chat-ul Breslei"
   check: "Verificati invitatiile Breslelor in asteptare"
-  claim: "Claim land for your Guild"
+  claim: "Revendicati teren pentru Breasla dumneavoastra"
   confirm: "Confirmati o actiune"
   create: "Creati o Breasla"
   decline: "Respingeti invitatia unei Bresle"
@@ -57,8 +57,8 @@ chat:
   disabled: "Chat-ul Breslei dezactivat"
   enabled: "Chat-ul Breslei activat"
 request:
-  success: "&aYou've successfully requested an invite from {guild}"
-  incoming-request: "&a{player} is requesting to join the guild. Send them an invite by doing /guild invite {player}!"
+  success: "&aAti solocitati cu succest o invitatie de la {guild}"
+  incoming-request: "&a{player} cere sa se alature Breslei. Trimite-ti o ivitatie folosind /guild invite {player}!"
 error:
   already-in-guild: "&cDeja apartii unei Bresle!"
   no-guild: "&cNu faci parte de nici o Breasla!"
@@ -71,9 +71,9 @@ error:
   not-enough-money: "&cNe pare rau, nu ai destui bani pentru a face asta."
 bank:
   balance: "&aBanca Breslei tale are o balanta de {amount}."
-  deposit-success: "&aYou have deposited {amount} into your Guild Bank. Your Guild Bank total is now {total}!"
-  withdrawl-success: "&aYou have withdrawn {amount} from your Guild Bank. Your Guild Bank total is now {total}!"
-  not-enough-bank: "&cThere isn't enough in the Guild Bank to do that"
+  deposit-success: "&aAti depozitat {amount} in banca Breslei. Balanta totala a bancii este acum de {total}!"
+  withdrawl-success: "&aAti retras {amount} din banca Breslei. Balanta totala a bancii este acum de {total}!"
+  not-enough-bank: "&cNu exista suficiente fonduri in banca Breslei pentru a face asta"
 admin:
   delete-warning: "&cSunteti pe cale sa stergeti breasla {guild}. Tastati /guilds confirm pentru a confirma stergerea, tastati /guilds cancel pentru a o anula."
   delete-success: "&aAti sters cu succes Breasla {guild}."
@@ -86,8 +86,8 @@ admin:
   admin-guild-remove: "&a{player} a fost data afara din Breasla ta de catre un Admin!"
   admin-upgrade: "&aAti upgradat nivelul Breslei {guild}!"
   admin-guild-upgrade: "&aBreasla ta a fost upgradata de catre un Admin!"
-  spy-on: "&aGuild Chat Spy has been enabled!"
-  spy-off: "&cGuild Chat Spy has been disabled!"
+  spy-on: "&aSpy chat-ul Breslei a fost activat!"
+  spy-off: "&cSpy chat-ul Breslei a fost dezactivat!"
 boot:
   player-kicked: "&cJucatorul '{player}' a fost data afara din Breasla de catre {kicker}!"
   successful: "&aL-ati dat afara pe din Breasla pe {player} cu succes!"
@@ -128,7 +128,7 @@ upgrade:
   not-enough-money: "&cNe pare rau! Nu aveti destui bani pentru a va upgrada Breasla! Mai aveti nevoie de {needed}!"
   not-enough-members: "&cNe pareu rau! Aveti nevoie de cel putin {amount} membrii pentru a trece la urmatorul nivel al Breslei!"
 prefix:
-  successful: "&aGuild's prefix changed successfully to {prefix}!"
+  successful: "&aPrefixul Breslei a fost modificat cu succes in {prefix}!"
 status:
   successful: "&aStatutul Breslei a fost setat la {status}!"
 rename:
@@ -156,23 +156,23 @@ ally:
   invite-sent: "&aAti trimis cu succes o cererea de alianta catre Breasla {guild}!"
   incoming-invite: "&aAveti o cererea de alianta de la Breasla {guild}!"
   current-remove: "&aAti sters pe {guild} din lista de aliati!"
-  target-remove: "&cBreasla {guild} v-a stera din lista ei de aliati!"
-  already-ally: "&cThat guild is already your ally!"
-  same-guild: "&cYou can't send an ally invite to yourself!"
-  not-allied: "&cYou can't remove a guild that isn't on your ally list!"
+  target-remove: "&cBreasla {guild} v-a stearsa din lista ei de aliati!"
+  already-ally: "&cAceasta Breasla este deja aliatul tau!"
+  same-guild: "&cNu iti poti trimite o cerere de alianta tie insati!"
+  not-allied: "&cNu poti elimina o Breasla care nu se afla pe lista de aliati!"
   already-requested: "&cYou currently already have a pending ally request to this guild!"
 accept:
-  not-invited: "&cThis guild is private / you haven't received an invite from the guild."
-  guild-full: "&cThis guild is full!"
-  player-joined: "&a{player} has joined your guild!"
-  successful: "&aYou joined guild '{guild}&r&a' successfully"
+  not-invited: "&cAceasta Breasla este privata / nu ai primit o invitatie."
+  guild-full: "&cAceasta Breasla este plina!"
+  player-joined: "&a{player} s-a alaturat Breslei!"
+  successful: "&aTe-ai alaturat cu succest Breslei '{guild}&r&a'!"
 claim:
-  already-exists: "&cYou already have a claim. Please remove your previous claim to create a new one"
-  overlap: "&cYour claim could not be created because there is another claim nearby"
-  success: "&aNew claim created! It goes from {loc1} to {loc2}!"
-  hook-disabled: "&cPlease enable claims in the config to utilize this feature"
+  already-exists: "&cAveti deja un claim. Va rugam sa il stergeti pe cel curent pentru a creat unul nou"
+  overlap: "&cClaim-ul dumneavoastra nu a putut fi creat deoarece se afla un alt claim in apropiere"
+  success: "&aClaim nou creat! De la {loc1} la {loc2}!"
+  hook-disabled: "&cActivati claim-urile din config pentru a utiliza aceasta caracteristica"
 unclaim:
   success: "&aYou've successfully remove your guild claim!"
   not-found: "&cYou can't unclaim land that you don't have!"
 pending:
-  invites: "&aYou have {number} pending invite(s) from the guild(s): &e{guilds}&r&a . Use /guild accept <name> or /guild deny <name> to join or deny an invite!"
+  invites: "&aAveti {number} invitatii in asteptare de la Brezlele: &e{guilds}&r&a.Folositi /guild accept <name> sau /guild deny <name> pentru a accepta sau respinge o invitatie!"
