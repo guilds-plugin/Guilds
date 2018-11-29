@@ -12,6 +12,7 @@ import org.bukkit.inventory.Inventory;
 
 import java.util.UUID;
 
+import static co.aikar.commands.ACFBukkitUtil.color;
 import static me.glaremasters.guilds.commands.CommandGuilds.getSkullsPage;
 import static me.glaremasters.guilds.commands.CommandGuilds.playerPages;
 
@@ -37,14 +38,14 @@ public class InventoryListener implements Listener {
         Player player = (Player) event.getWhoClicked();
         UUID uuid = player.getUniqueId();
         String title = event.getInventory().getTitle();
-        if (title.equalsIgnoreCase(guilds.getConfig().getString("gui-name.info"))) {
+        if (title.equalsIgnoreCase(color(guilds.getConfig().getString("gui-name.info")))) {
             event.setCancelled(true);
             event.setResult(Event.Result.DENY);
             return;
         }
-        if (title.equalsIgnoreCase(guilds.getConfig().getString("guild-list.gui-name"))) {
+        if (title.equalsIgnoreCase(color(guilds.getConfig().getString("guild-list.gui-name")))) {
             if (event.getAction().equals(InventoryAction.PICKUP_ALL)) {
-                if (event.getCurrentItem().getItemMeta().getDisplayName().equals(guilds.getConfig().getString("guild-list.previous-page-item-name"))) {
+                if (event.getCurrentItem().getItemMeta().getDisplayName().equals(color(guilds.getConfig().getString("guild-list.previous-page-item-name")))) {
                     if (!(playerPages.get(uuid) == 1)) {
                         int newPage = playerPages.get(uuid) - 1;
                         playerPages.remove(uuid);
@@ -58,7 +59,7 @@ public class InventoryListener implements Listener {
                     event.setResult(Event.Result.DENY);
                     return;
                 }
-                if (event.getCurrentItem().getItemMeta().getDisplayName().equals(guilds.getConfig().getString("guild-list.next-page-item-name"))) {
+                if (event.getCurrentItem().getItemMeta().getDisplayName().equals(color(guilds.getConfig().getString("guild-list.next-page-item-name")))) {
                     int newPage = playerPages.get(uuid) + 1;
                     playerPages.remove(uuid);
                     playerPages.put(uuid, newPage);
@@ -78,11 +79,11 @@ public class InventoryListener implements Listener {
     @EventHandler
     public void onInventoryInteract(InventoryInteractEvent event) {
         String title = event.getInventory().getTitle();
-        if (title.equals(guilds.getConfig().getString("guild-list.gui-name"))) {
+        if (title.equals(color(guilds.getConfig().getString("guild-list.gui-name")))) {
             event.setCancelled(true);
             event.setResult(Event.Result.DENY);
         }
-        if (title.equals(guilds.getConfig().getString("gui-name.info"))) {
+        if (title.equals(color(guilds.getConfig().getString("gui-name.info")))) {
             event.setCancelled(true);
             event.setResult(Event.Result.DENY);
         }

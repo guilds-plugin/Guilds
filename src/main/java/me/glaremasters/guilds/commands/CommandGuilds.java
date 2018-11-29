@@ -1041,7 +1041,7 @@ public class CommandGuilds extends BaseCommand {
             skullMeta.setLore(lore);
 
             String name = Bukkit.getOfflinePlayer(guild.getGuildMaster().getUniqueId()).getName();
-            skullMeta.setDisplayName(color(Guilds.getGuilds().getConfig().getString("guild-list.item-name").replace("{player}", name)));
+            skullMeta.setDisplayName(color(Guilds.getGuilds().getConfig().getString("guild-list.item-name").replace("{player}", name).replace("{guild-name}", guild.getName())));
             skull.setItemMeta(skullMeta);
             skulls.put(guild.getGuildMaster().getUniqueId(), skull);
         });
