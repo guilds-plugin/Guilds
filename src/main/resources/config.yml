@@ -49,6 +49,7 @@ supported-languages:
 - fr-FR
 - ro-RO
 - ru-RU
+- it-IT
 
 # This section is for event handler that I feel should be optional for you guys.
 main-hooks:
