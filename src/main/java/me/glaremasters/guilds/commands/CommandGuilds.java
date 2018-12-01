@@ -904,7 +904,7 @@ public class CommandGuilds extends BaseCommand {
             guildList.add(guild.getName());
         }
         if (guildList.size() > 0) {
-            getCurrentCommandIssuer().sendInfo(Messages.PENDING__INVITES, "{number}", String.valueOf(guildList.size()), "{guild}", String.join(",", guildList));
+            getCurrentCommandIssuer().sendInfo(Messages.PENDING__INVITES, "{number}", String.valueOf(guildList.size()), "{guilds}", String.join(",", guildList));
         }
     }
 
