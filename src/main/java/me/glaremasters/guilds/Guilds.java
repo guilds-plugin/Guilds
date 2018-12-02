@@ -35,10 +35,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.JarURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 import java.util.stream.Stream;
 
 import static co.aikar.commands.ACFBukkitUtil.color;
@@ -178,12 +179,26 @@ public final class Guilds extends JavaPlugin {
         saveDefaultConfig();
         File languageFolder = new File(getDataFolder(), "languages");
         if (!languageFolder.exists()) languageFolder.mkdirs();
-        for (String language : getConfig().getStringList("supported-languages")) {
-            File langFile = new File(languageFolder, language + ".yml");
-            if (!langFile.exists()) {
-                this.saveResource("languages/" + language + ".yml", false);
+        try {
+            final JarURLConnection connection = (JarURLConnection) getClassLoader().getResource("languages").openConnection();
+            final JarFile thisJar = connection.getJarFile();
+            final Enumeration<JarEntry> entries = thisJar.entries();
+            while (entries.hasMoreElements()) {
+                final JarEntry current = entries.nextElement();
+                if (!current.getName().startsWith("languages/") || current.getName().length() == "languages/".length()) {
+                    continue;
+                }
+                final String name = current.getName().substring("languages/".length());
+                File langFile = new File(languageFolder, name);
+                if (!langFile.exists()) {
+                    this.saveResource("languages/" + name, false);
+                }
             }
+
+        } catch (final IOException ex) {
+            ex.printStackTrace();
         }
+
     }
 
     /**
@@ -207,17 +222,15 @@ public final class Guilds extends JavaPlugin {
      */
     private void loadLanguages(BukkitCommandManager manager) {
         try {
-            manager.addSupportedLanguage(Locale.FRANCE);
-            manager.addSupportedLanguage(Locale.US);
-            manager.addSupportedLanguage(Locale.ITALY);
-            manager.addSupportedLanguage(Locale.forLanguageTag("ro-RO"));
-            manager.addSupportedLanguage(Locale.forLanguageTag("ru-RU"));
-            manager.addSupportedLanguage(Locale.forLanguageTag("zh-TW"));
             File languageFolder = new File(getDataFolder(), "languages");
-            manager.getLocales().setDefaultLocale(Locale.forLanguageTag(getConfig().getString("lang")));
-            for (String language : getConfig().getStringList("supported-languages")) {
-                manager.getLocales().loadYamlLanguageFile(new File(languageFolder, language + ".yml"), Locale.forLanguageTag(language));
+            for (File file : Objects.requireNonNull(languageFolder.listFiles())) {
+                if (file.isFile()) {
+                    String updatedName = file.getName().replace(".yml", "");
+                    manager.addSupportedLanguage(Locale.forLanguageTag(updatedName));
+                    manager.getLocales().loadYamlLanguageFile(new File(languageFolder, file.getName()), Locale.forLanguageTag(updatedName));
+                }
             }
+            manager.getLocales().setDefaultLocale(Locale.forLanguageTag(getConfig().getString("lang")));
             info("Loaded successfully!");
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();

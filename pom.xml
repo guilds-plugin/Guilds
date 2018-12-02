@@ -44,6 +44,7 @@
         <configuration>
           <source>1.8</source>
           <target>1.8</target>
+          <encoding>UTF-8</encoding>
           <compilerArgs>
             <arg>-parameters</arg>
           </compilerArgs>
@@ -97,10 +98,6 @@
     <repository>
       <id>vault-repo</id>
       <url>http://nexus.hc.to/content/repositories/pub_releases</url>
-    </repository>
-    <repository>
-      <id>Aikari</id>
-      <url>http://ci.emc.gs/nexus/content/groups/aikar/</url>
     </repository>
     <repository>
       <id>aikar</id>

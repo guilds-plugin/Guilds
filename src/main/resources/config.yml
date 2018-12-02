@@ -37,20 +37,10 @@ announcements:
 # Not an english server? No worries, you can choose from the following list of languages that we currently support.
 # If you speak another language but don't see it here, feel free to submit it via one of the links above to have it added to the plugin.
 # NOTE: If you change your language please ONLY use from the list above and use them EXACTLY as they are spelled in the list above.
-# Example: If I am a french server, I would change lang: english to lang: french
 # If you try and use a different language than any in the list above, the plugin will not function in a normal manner.
+# As you can see this is currently en-US, and there is a en-US.yml file in the language folder.
+# If I wanted to switch to french, I would use fr-FR as the language instead.
 lang: en-US
-
-
-# DO NOT TOUCH THIS PLEASE
-
-supported-languages:
-- en-US
-- fr-FR
-- ro-RO
-- ru-RU
-- it-IT
-- zh-TW
 
 # This section is for event handler that I feel should be optional for you guys.
 main-hooks:
