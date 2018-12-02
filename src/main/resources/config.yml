@@ -50,6 +50,7 @@ supported-languages:
 - ro-RO
 - ru-RU
 - it-IT
+- zh-TW
 
 # This section is for event handler that I feel should be optional for you guys.
 main-hooks:
@@ -125,7 +126,6 @@ info:
 
 # This part controls what is shown as the inventory name for things such as Guild List and Guild Vaults.
 gui-name:
-  vault: "Guild Vault"
   info: "Guild Info"
   buff: "Guild Buffs"
 # head-name is what show's when you hover over a head in the Guild List. For example, the default will show Username's Guild
@@ -391,10 +391,14 @@ blacklist:
 - "stupid"
 
 prefix:
+  # Minimum length of guild names
+  min-length: 1
+  # Maximum length of guild names
+  max-length: 10
   # With the default Regex currently set, the minimum length of the prefix is 1 and the maximum is 20.
   # To change this, adjust the numbers and maybe have a look at the link above (RegEx).
   # To turn off the ability for colored prefixes change the regex to "[a-zA-Z0-9]{1,20}"
-  regex: "[a-zA-Z0-9&]{1,20}"
+  regex: "[a-zA-Z0-9&]"
 #-----------------------------------------------------------#
 #                        Role Configuration                 #
 #-----------------------------------------------------------#

@@ -63,7 +63,7 @@ public class CommandGuilds extends BaseCommand {
             return;
         }
 
-        if (checkRequirements(name)) return;
+        if (checkRequirements(name, "name")) return;
         getCurrentCommandIssuer().sendInfo(Messages.CREATE__WARNING);
 
         guilds.getActionHandler().addAction(player, new ConfirmAction() {
@@ -74,6 +74,7 @@ public class CommandGuilds extends BaseCommand {
                 if (prefix == null) {
                     gb.setPrefix(color(name));
                 } else {
+                    if (checkRequirements(name, "prefix")) return;
                     gb.setPrefix(color(prefix));
                 }
                 gb.setStatus("Private");
@@ -238,7 +239,7 @@ public class CommandGuilds extends BaseCommand {
             return;
         }
 
-        if (checkRequirements(name)) return;
+        if (checkRequirements(name, "name")) return;
 
         String oldName = guild.getName();
         guilds.getDatabase().removeGuild(Guild.getGuild(oldName));
@@ -313,6 +314,7 @@ public class CommandGuilds extends BaseCommand {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
             return;
         }
+        if (checkRequirements(prefix, "prefix")) return;
         getCurrentCommandIssuer().sendInfo(Messages.PREFIX__SUCCESSFUL, "{prefix}", prefix);
         guild.updatePrefix(color(prefix));
     }
@@ -1113,10 +1115,10 @@ public class CommandGuilds extends BaseCommand {
      * @param name the guild name being checked
      * @return true or false
      */
-    private boolean checkRequirements(String name) {
-        int minLength = guilds.getConfig().getInt("name.min-length");
-        int maxLength = guilds.getConfig().getInt("name.max-length");
-        String regex = guilds.getConfig().getString("name.regex");
+    private boolean checkRequirements(String name, String type) {
+        int minLength = guilds.getConfig().getInt(type + ".min-length");
+        int maxLength = guilds.getConfig().getInt(type + ".max-length");
+        String regex = guilds.getConfig().getString(type + ".regex");
 
         if (name.length() < minLength || name.length() > maxLength || !name.matches(regex)) {
             getCurrentCommandIssuer().sendInfo(Messages.CREATE__REQUIREMENTS);
