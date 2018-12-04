@@ -41,6 +41,9 @@ import static me.glaremasters.guilds.listeners.Players.GUILD_CHAT_PLAYERS;
 @CommandAlias("guild|guilds")
 public class CommandGuilds extends BaseCommand {
 
+    public List<Player> home = new ArrayList<>();
+    public List<Player> setHome = new ArrayList<>();
+
     @Dependency
     private Guilds guilds;
 
@@ -156,8 +159,14 @@ public class CommandGuilds extends BaseCommand {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
             return;
         }
+        if (setHome.contains(player)) {
+            getCurrentCommandIssuer().sendInfo(Messages.SETHOME__COOLDOWN, "{amount}", String.valueOf(guilds.getConfig().getInt("cooldowns.sethome")));
+            return;
+        }
         guild.updateHome(ACFBukkitUtil.fullLocationToString(player.getLocation()));
         getCurrentCommandIssuer().sendInfo(Messages.SETHOME__SUCCESSFUL);
+        setHome.add(player);
+        Bukkit.getServer().getScheduler().runTaskLaterAsynchronously(guilds, () -> setHome.remove(player), (20 * guilds.getConfig().getInt("cooldowns.sethome")));
     }
 
     /**
@@ -218,8 +227,14 @@ public class CommandGuilds extends BaseCommand {
             getCurrentCommandIssuer().sendInfo(Messages.HOME__NO_HOME_SET);
             return;
         }
+        if (home.contains(player)) {
+            getCurrentCommandIssuer().sendInfo(Messages.HOME__COOLDOWN, "{amount}", String.valueOf(guilds.getConfig().getInt("cooldowns.home")));
+            return;
+        }
         player.teleport(ACFBukkitUtil.stringToLocation(guild.getHome()));
         getCurrentCommandIssuer().sendInfo(Messages.HOME__TELEPORTED);
+        home.add(player);
+        Bukkit.getServer().getScheduler().runTaskLaterAsynchronously(guilds, () -> home.remove(player), (20 * guilds.getConfig().getInt("cooldowns.home")));
     }
 
     /**

@@ -136,8 +136,10 @@ rename:
 home:
   no-home-set: "&cNo home set! Use &a/guild sethome &cto set a home!"
   teleported: "&aYou've teleported to your guild home!"
+  cooldown: "&cYou must wait at least {amount} seconds before doing this again"
 sethome:
   successful: "&aYou've set your guild home!"
+  cooldown: "&cYou must wait at least {amount} seconds before doing this again"
 reload:
   reloaded: "&aConfiguration file reloaded!"
 cancel:

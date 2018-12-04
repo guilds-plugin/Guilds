@@ -136,8 +136,10 @@ rename:
 home:
   no-home-set: "&c找不到公會領地傳送傳送點! 使用 &a/guild sethome &c來設定!"
   teleported: "&a您已傳送至公會領地!"
+  cooldown: "&cYou must wait at least {amount} seconds before doing this again"
 sethome:
   successful: "&a您已設置公會領地傳送點!"
+  cooldown: "&cYou must wait at least {amount} seconds before doing this again"
 reload:
   reloaded: "&a已完成重讀文件檔!"
 cancel:

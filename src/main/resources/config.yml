@@ -247,6 +247,14 @@ cost:
   sethome: 0
 
 #-----------------------------------------------------------#
+#                    Cooldown Configuration                 #
+#-----------------------------------------------------------#
+# Time is in seconds
+cooldowns:
+  sethome: 60
+  home: 60
+
+#-----------------------------------------------------------#
 #                  Guild Claims Configuration               #
 #-----------------------------------------------------------#
 # This section of the config will allow you to handle guild land claiming.
