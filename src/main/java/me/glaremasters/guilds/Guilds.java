@@ -452,6 +452,10 @@ public final class Guilds extends JavaPlugin {
         if (getConfig().getBoolean("main-hooks.tablist-guilds")) {
             getServer().getPluginManager().registerEvents(new Tablist(this), this);
         }
+
+        if (getConfig().getBoolean("main-hooks.worldguard-claims")) {
+            getServer().getPluginManager().registerEvents(new WorldGuard(this), this);
+        }
     }
 
     /**
