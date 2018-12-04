@@ -43,8 +43,8 @@ public class CommandClaim extends BaseCommand {
             return;
         }
 
-        Location min = player.getLocation().subtract(radius, 0, radius);
-        Location max = player.getLocation().add(radius, 0, radius);
+        Location min = player.getLocation().subtract(radius, 255, radius);
+        Location max = player.getLocation().add(radius, 255, radius);
 
         if (wrapper.getRegion(player.getWorld(), guild.getName()).isPresent()) {
             getCurrentCommandIssuer().sendInfo(Messages.CLAIM__ALREADY_EXISTS);
