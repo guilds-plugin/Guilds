@@ -137,6 +137,8 @@ home:
   no-home-set: "&cДом Гильдии не установлен! Используйте &a/guilds sethome &cдля установки!"
   teleported: "&aВы телепортировались в дом Гильдии!"
   cooldown: "&cYou must wait at least {amount} seconds before doing this again"
+  warmup: "&aYou will be teleported in {amount} seconds. Don't move!"
+  cancelled: "&cYou moved! Teleportation cancelled!"
 sethome:
   successful: "&aВы установили дом своей Гильдии!"
   cooldown: "&cYou must wait at least {amount} seconds before doing this again"

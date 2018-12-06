@@ -43,6 +43,7 @@ public class CommandGuilds extends BaseCommand {
 
     public List<Player> home = new ArrayList<>();
     public List<Player> setHome = new ArrayList<>();
+    public Map<Player, Location> warmUp = new HashMap<>();
 
     @Dependency
     private Guilds guilds;
@@ -231,10 +232,23 @@ public class CommandGuilds extends BaseCommand {
             getCurrentCommandIssuer().sendInfo(Messages.HOME__COOLDOWN, "{amount}", String.valueOf(guilds.getConfig().getInt("cooldowns.home")));
             return;
         }
-        player.teleport(ACFBukkitUtil.stringToLocation(guild.getHome()));
-        getCurrentCommandIssuer().sendInfo(Messages.HOME__TELEPORTED);
-        home.add(player);
-        Bukkit.getServer().getScheduler().runTaskLaterAsynchronously(guilds, () -> home.remove(player), (20 * guilds.getConfig().getInt("cooldowns.home")));
+
+        warmUp.put(player, player.getLocation());
+
+        getCurrentCommandIssuer().sendInfo(Messages.HOME__WARMUP, "{amount}", String.valueOf(guilds.getConfig().getInt("warmup.home")));
+
+        Bukkit.getServer().getScheduler().runTaskLater(guilds, () -> {
+            if (warmUp.get(player).distance(player.getLocation()) > 1) {
+                getCurrentCommandIssuer().sendInfo(Messages.HOME__CANCELLED);
+                warmUp.remove(player);
+            } else {
+                player.teleport(ACFBukkitUtil.stringToLocation(guild.getHome()));
+                warmUp.remove(player);
+                getCurrentCommandIssuer().sendInfo(Messages.HOME__TELEPORTED);
+            }
+            home.add(player);
+            Bukkit.getServer().getScheduler().runTaskLaterAsynchronously(guilds, () -> home.remove(player), (20 * guilds.getConfig().getInt("cooldowns.home")));
+        }, (20 * guilds.getConfig().getInt("warmup.home")));
     }
 
     /**

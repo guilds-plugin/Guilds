@@ -137,6 +137,8 @@ home:
   no-home-set: "&cNessuna home impostata! Scrivi &a/guild sethome &cper impostare una home!"
   teleported: "&aSei stato teletrasportato alla home della tua gilda!"
   cooldown: "&cYou must wait at least {amount} seconds before doing this again"
+  warmup: "&aYou will be teleported in {amount} seconds. Don't move!"
+  cancelled: "&cYou moved! Teleportation cancelled!"
 sethome:
   successful: "&aHai impostato il nome della tua gilda!"
   cooldown: "&cYou must wait at least {amount} seconds before doing this again"

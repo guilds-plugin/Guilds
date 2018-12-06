@@ -255,6 +255,14 @@ cooldowns:
   home: 60
 
 #-----------------------------------------------------------#
+#                      Warmup Configuration                 #
+#-----------------------------------------------------------#
+# Time is in seconds
+# The time they must be still for before teleporting
+warmup:
+  home: 3
+
+#-----------------------------------------------------------#
 #                  Guild Claims Configuration               #
 #-----------------------------------------------------------#
 # This section of the config will allow you to handle guild land claiming.

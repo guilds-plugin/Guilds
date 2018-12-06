@@ -137,6 +137,8 @@ home:
   no-home-set: "&cAucun home défini ! Utilisez &a/guild sethome &cpour définir un home !"
   teleported: "&aVous avez été téléporté au home de votre guilde !"
   cooldown: "&cYou must wait at least {amount} seconds before doing this again"
+  warmup: "&aYou will be teleported in {amount} seconds. Don't move!"
+  cancelled: "&cYou moved! Teleportation cancelled!"
 sethome:
   successful: "&aHome de guilde défini !"
   cooldown: "&cYou must wait at least {amount} seconds before doing this again"

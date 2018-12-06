@@ -137,6 +137,8 @@ home:
   no-home-set: "&cNicio casa setata! Folositi &a/guild sethome &cpentru a o seta!"
   teleported: "&aAti fost teleportat la casa Breslei dumneavoastra!"
   cooldown: "&cYou must wait at least {amount} seconds before doing this again"
+  warmup: "&aYou will be teleported in {amount} seconds. Don't move!"
+  cancelled: "&cYou moved! Teleportation cancelled!"
 sethome:
   successful: "&aAti setat casa Breslei dumneavoastra!"
   cooldown: "&cYou must wait at least {amount} seconds before doing this again"
