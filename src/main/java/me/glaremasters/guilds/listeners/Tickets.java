@@ -12,6 +12,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import static co.aikar.commands.ACFBukkitUtil.color;
+import static me.glaremasters.guilds.utils.ConfigUtils.getInt;
+import static me.glaremasters.guilds.utils.ConfigUtils.getString;
 
 /**
  * Created by GlareMasters
@@ -33,17 +35,17 @@ public class Tickets implements Listener {
     @EventHandler
     public void upgradeTicket(PlayerInteractEvent event) {
         ItemStack item = event.getItem();
-        if (item == null || !item.getType().toString().equals(color(guilds.getConfig().getString("upgrade-ticket.material")))) return;
+        if (item == null || !item.getType().toString().equals(getString("upgrade-ticket.material"))) return;
         if (!item.hasItemMeta()) return;
         ItemMeta meta = item.getItemMeta();
         if (!meta.hasDisplayName()) return;
-        if (!meta.getDisplayName().equals(color(guilds.getConfig().getString("upgrade-ticket.name")))) return;
+        if (!meta.getDisplayName().equals(getString("upgrade-ticket.name"))) return;
         if (!meta.hasLore()) return;
-        if (!meta.getLore().get(0).equals(color(guilds.getConfig().getString("upgrade-ticket.lore")))) return;
+        if (!meta.getLore().get(0).equals(getString("upgrade-ticket.lore"))) return;
         Player player = event.getPlayer();
         Guild guild = Guild.getGuild(player.getUniqueId());
         if (guild == null) return;
-        if (guild.getTier() >= guilds.getConfig().getInt("max-number-of-tiers")) {
+        if (guild.getTier() >= getInt("max-number-of-tiers")) {
             guilds.getManager().getCommandIssuer(player).sendInfo(Messages.UPGRADE__TIER_MAX);
             return;
         }

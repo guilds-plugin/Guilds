@@ -3,10 +3,20 @@ package me.glaremasters.guilds.commands;
 import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.CommandHelp;
+import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Dependency;
+import co.aikar.commands.annotation.Description;
+import co.aikar.commands.annotation.HelpCommand;
 import co.aikar.commands.annotation.Optional;
-import co.aikar.commands.annotation.*;
+import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.annotation.Syntax;
 import me.glaremasters.guilds.Guilds;
-import me.glaremasters.guilds.api.events.*;
+import me.glaremasters.guilds.api.events.GuildCreateEvent;
+import me.glaremasters.guilds.api.events.GuildInviteEvent;
+import me.glaremasters.guilds.api.events.GuildJoinEvent;
+import me.glaremasters.guilds.api.events.GuildLeaveEvent;
+import me.glaremasters.guilds.api.events.GuildRemoveEvent;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildBuilder;
 import me.glaremasters.guilds.guild.GuildMember;
@@ -18,7 +28,13 @@ import me.glaremasters.guilds.utils.ConfirmAction;
 import me.glaremasters.guilds.utils.HeadUtils;
 import me.glaremasters.guilds.utils.Serialization;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.SkullType;
+import org.bukkit.Statistic;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
@@ -29,9 +45,15 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.PluginDescriptionFile;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
+import static javax.swing.UIManager.getInt;
 import static me.glaremasters.guilds.listeners.Players.GUILD_CHAT_PLAYERS;
+import static me.glaremasters.guilds.utils.ConfigUtils.*;
 
 /**
  * Created by GlareMasters
@@ -161,13 +183,13 @@ public class CommandGuilds extends BaseCommand {
             return;
         }
         if (setHome.contains(player)) {
-            getCurrentCommandIssuer().sendInfo(Messages.SETHOME__COOLDOWN, "{amount}", String.valueOf(guilds.getConfig().getInt("cooldowns.sethome")));
+            getCurrentCommandIssuer().sendInfo(Messages.SETHOME__COOLDOWN, "{amount}", String.valueOf(getInt("cooldowns.sethome")));
             return;
         }
         guild.updateHome(ACFBukkitUtil.fullLocationToString(player.getLocation()));
         getCurrentCommandIssuer().sendInfo(Messages.SETHOME__SUCCESSFUL);
         setHome.add(player);
-        Bukkit.getServer().getScheduler().runTaskLaterAsynchronously(guilds, () -> setHome.remove(player), (20 * guilds.getConfig().getInt("cooldowns.sethome")));
+        Bukkit.getServer().getScheduler().runTaskLaterAsynchronously(guilds, () -> setHome.remove(player), (20 * getInt("cooldowns.sethome")));
     }
 
     /**
@@ -201,9 +223,9 @@ public class CommandGuilds extends BaseCommand {
     public void onGive(CommandSender sender, Player player, Integer amount) {
         if (player == null) return;
 
-        String ticketName = color(guilds.getConfig().getString("upgrade-ticket.name"));
-        String ticketMaterial = guilds.getConfig().getString("upgrade-ticket.material");
-        String ticketLore = color(guilds.getConfig().getString("upgrade-ticket.lore"));
+        String ticketName = getString("upgrade-ticket.name");
+        String ticketMaterial = getString("upgrade-ticket.material");
+        String ticketLore = getString("upgrade-ticket.lore");
 
         ItemStack upgradeTicket = new ItemStack(Material.getMaterial(ticketMaterial), amount);
         ItemMeta meta = upgradeTicket.getItemMeta();
@@ -229,13 +251,13 @@ public class CommandGuilds extends BaseCommand {
             return;
         }
         if (home.contains(player)) {
-            getCurrentCommandIssuer().sendInfo(Messages.HOME__COOLDOWN, "{amount}", String.valueOf(guilds.getConfig().getInt("cooldowns.home")));
+            getCurrentCommandIssuer().sendInfo(Messages.HOME__COOLDOWN, "{amount}", String.valueOf(getInt("cooldowns.home")));
             return;
         }
 
         warmUp.put(player, player.getLocation());
 
-        getCurrentCommandIssuer().sendInfo(Messages.HOME__WARMUP, "{amount}", String.valueOf(guilds.getConfig().getInt("warmup.home")));
+        getCurrentCommandIssuer().sendInfo(Messages.HOME__WARMUP, "{amount}", String.valueOf(getInt("warmup.home")));
 
         Bukkit.getServer().getScheduler().runTaskLater(guilds, () -> {
             if (warmUp.get(player).distance(player.getLocation()) > 1) {
@@ -247,8 +269,8 @@ public class CommandGuilds extends BaseCommand {
                 getCurrentCommandIssuer().sendInfo(Messages.HOME__TELEPORTED);
             }
             home.add(player);
-            Bukkit.getServer().getScheduler().runTaskLaterAsynchronously(guilds, () -> home.remove(player), (20 * guilds.getConfig().getInt("cooldowns.home")));
-        }, (20 * guilds.getConfig().getInt("warmup.home")));
+            Bukkit.getServer().getScheduler().runTaskLaterAsynchronously(guilds, () -> home.remove(player), (20 * getInt("cooldowns.home")));
+        }, (20 * getInt("warmup.home")));
     }
 
     /**
@@ -601,26 +623,26 @@ public class CommandGuilds extends BaseCommand {
     @CommandPermission("guilds.command.info")
     public void onGuildInfo(Player player, Guild guild) {
 
-        Inventory heads = Bukkit.createInventory(null, InventoryType.HOPPER, color(guilds.getConfig().getString("gui-name.info")));
+        Inventory heads = Bukkit.createInventory(null, InventoryType.HOPPER, getString("gui-name.info"));
 
         heads.setItem(1, createSkull(player));
 
         // Item 1: Paper
-        ArrayList<String> paperlore = new ArrayList<String>();
-        paperlore.add(color(guilds.getConfig().getString("info.guildname").replace("{guild-name}", guild.getName())));
-        paperlore.add(color(guilds.getConfig().getString("info.prefix").replace("{guild-prefix}", guild.getPrefix())));
-        paperlore.add(color(guilds.getConfig().getString("info.role").replace("{guild-role}", GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole()).getName())));
-        paperlore.add(color(guilds.getConfig().getString("info.master").replace("{guild-master}", Bukkit.getOfflinePlayer(guild.getGuildMaster().getUniqueId()).getName())));
-        paperlore.add(color(guilds.getConfig().getString("info.member-count").replace("{member-count}", Integer.toString(guild.getMembers().size()))));
-        paperlore.add(color(guilds.getConfig().getString("info.guildstatus").replace("{guild-status}", guild.getStatus())));
-        paperlore.add(color(guilds.getConfig().getString("info.guildtier").replace("{guild-tier}", Integer.toString(guild.getTier()))));
-        heads.setItem(2, createItemStack(Material.PAPER, guilds.getConfig().getString("info.info"), paperlore));
+        List<String> paperlore = new ArrayList<>();
+        paperlore.add(getString("info.guildname").replace("{guild-name}", guild.getName()));
+        paperlore.add(getString("info.prefix").replace("{guild-prefix}", guild.getPrefix()));
+        paperlore.add(getString("info.role").replace("{guild-role}", GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole()).getName()));
+        paperlore.add(getString("info.master").replace("{guild-master}", Bukkit.getOfflinePlayer(guild.getGuildMaster().getUniqueId()).getName()));
+        paperlore.add(getString("info.member-count").replace("{member-count}", String.valueOf(guild.getMembers().size())));
+        paperlore.add(getString("info.guildstatus").replace("{guild-status}", guild.getStatus()));
+        paperlore.add(getString("info.guildtier").replace("{guild-tier}", Integer.toString(guild.getTier())));
+        heads.setItem(2, createItemStack(Material.PAPER, getString("info.info"), paperlore));
 
         // Item 2: Diamond
-        ArrayList<String> diamondlore = new ArrayList<String>();
-        diamondlore.add(color(guilds.getConfig().getString("info.balance").replace("{guild-balance}", Double.toString(guild.getBalance()))));
-        diamondlore.add(color(guilds.getConfig().getString("info.max-balance").replace("{guild-max-balance}", Double.toString(guild.getMaxBankBalance()))));
-        heads.setItem(3, createItemStack(Material.DIAMOND, guilds.getConfig().getString("info.money"), diamondlore));
+        List<String> diamondlore = new ArrayList<>();
+        diamondlore.add(getString("info.balance").replace("{guild-balance}", String.valueOf(guild.getBalance())));
+        diamondlore.add(getString("info.max-balance").replace("{guild-max-balance}", String.valueOf(guild.getMaxBankBalance())));
+        heads.setItem(3, createItemStack(Material.DIAMOND, getString("info.money"), diamondlore));
 
         // Open inventory
         player.openInventory(heads);
@@ -981,7 +1003,7 @@ public class CommandGuilds extends BaseCommand {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
             return;
         }
-        Inventory buff = Bukkit.createInventory(null, 9, color(guilds.getConfig().getString("gui-name.buff")));
+        Inventory buff = Bukkit.createInventory(null, 9, getString("gui-name.buff"));
         List<String> lore = new ArrayList<>();
         createBuffItem("haste", lore, buff, 0);
         createBuffItem("speed", lore, buff, 1);
@@ -1033,12 +1055,12 @@ public class CommandGuilds extends BaseCommand {
      * @param slot
      */
     private void createBuffItem(String buffName, List<String> name, Inventory buff, int slot) {
-        guilds.getConfig().getStringList("buff.description." + buffName).stream().map(ConfigUtils::color).forEach(name::add);
+        getStringList("buff.description." + buffName).stream().map(ConfigUtils::color).forEach(name::add);
         name.add("");
-        name.add(color(guilds.getConfig().getString("buff.description.price") + guilds.getConfig().getInt("buff.price." + buffName)));
-        name.add(color(guilds.getConfig().getString("buff.description.length") + guilds.getConfig().getInt("buff.time." + buffName)));
-        if (guilds.getConfig().getBoolean("buff.display." + buffName)) {
-            buff.setItem(slot, createItemStack(Material.getMaterial(guilds.getConfig().getString("buff.icon." + buffName)), guilds.getConfig().getString("buff.name." + buffName), name));
+        name.add(getString("buff.description.price") + getInt("buff.price." + buffName));
+        name.add(getString("buff.description.length") + getInt("buff.time." + buffName));
+        if (getBoolean("buff.display." + buffName)) {
+            buff.setItem(slot, createItemStack(Material.getMaterial(getString("buff.icon." + buffName)), getString("buff.name." + buffName), name));
         }
         name.clear();
     }
@@ -1050,7 +1072,7 @@ public class CommandGuilds extends BaseCommand {
      */
     public static Inventory getSkullsPage(int page) {
         Map<UUID, ItemStack> skulls = new HashMap<>();
-        Inventory inv = Bukkit.createInventory(null, 54, color(Guilds.getGuilds().getConfig().getString("guild-list.gui-name")));
+        Inventory inv = Bukkit.createInventory(null, 54, getString("guild-list.gui-name"));
 
         int startIndex = 0;
         int endIndex = 0;
@@ -1060,7 +1082,7 @@ public class CommandGuilds extends BaseCommand {
             SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
             List<String> lore = new ArrayList<>();
 
-            Guilds.getGuilds().getConfig().getStringList("guild-list.head-lore").forEach(line -> lore.add(color(line)
+            getStringList("guild-list.head-lore").forEach(line -> lore.add(color(line)
                     .replace("{guild-name}", guild.getName())
                     .replace("{guild-prefix}", guild.getPrefix())
                     .replace("{guild-master}", Bukkit.getOfflinePlayer(guild.getGuildMaster().getUniqueId()).getName())
@@ -1072,22 +1094,22 @@ public class CommandGuilds extends BaseCommand {
             skullMeta.setLore(lore);
 
             String name = Bukkit.getOfflinePlayer(guild.getGuildMaster().getUniqueId()).getName();
-            skullMeta.setDisplayName(color(Guilds.getGuilds().getConfig().getString("guild-list.item-name").replace("{player}", name).replace("{guild-name}", guild.getName())));
+            skullMeta.setDisplayName(getString("guild-list.item-name").replace("{player}", name).replace("{guild-name}", guild.getName()));
             skull.setItemMeta(skullMeta);
             skulls.put(guild.getGuildMaster().getUniqueId(), skull);
         });
 
-        ItemStack previous = new ItemStack(Material.getMaterial(Guilds.getGuilds().getConfig().getString("guild-list.previous-page-item")), 1);
+        ItemStack previous = new ItemStack(Material.getMaterial(getString("guild-list.previous-page-item")), 1);
         ItemMeta previousMeta = previous.getItemMeta();
-        previousMeta.setDisplayName(color(Guilds.getGuilds().getConfig().getString("guild-list.previous-page-item-name")));
+        previousMeta.setDisplayName(getString("guild-list.previous-page-item-name"));
         previous.setItemMeta(previousMeta);
-        ItemStack next = new ItemStack(Material.getMaterial(Guilds.getGuilds().getConfig().getString("guild-list.next-page-item")), 1);
+        ItemStack next = new ItemStack(Material.getMaterial(getString("guild-list.next-page-item")), 1);
         ItemMeta nextMeta = next.getItemMeta();
-        nextMeta.setDisplayName(color(Guilds.getGuilds().getConfig().getString("guild-list.next-page-item-name")));
+        nextMeta.setDisplayName(getString("guild-list.next-page-item-name"));
         next.setItemMeta(nextMeta);
-        ItemStack barrier = new ItemStack(Material.getMaterial(Guilds.getGuilds().getConfig().getString("guild-list.page-number-item")), 1);
+        ItemStack barrier = new ItemStack(Material.getMaterial(getString("guild-list.page-number-item")), 1);
         ItemMeta barrierMeta = barrier.getItemMeta();
-        barrierMeta.setDisplayName(color(Guilds.getGuilds().getConfig().getString("guild-list.page-number-item-name").replace("{page}", String.valueOf(page))));
+        barrierMeta.setDisplayName(getString("guild-list.page-number-item-name").replace("{page}", String.valueOf(page)));
         barrier.setItemMeta(barrierMeta);
         inv.setItem(53, next);
         inv.setItem(49, barrier);
@@ -1110,15 +1132,6 @@ public class CommandGuilds extends BaseCommand {
     }
 
     /**
-     * Color messages (will remove later)
-     * @param msg
-     * @return
-     */
-    public static String color(String msg) {
-        return ChatColor.translateAlternateColorCodes('&', msg);
-    }
-
-    /**
      * Create player skull
      * @param player
      * @return
@@ -1128,11 +1141,11 @@ public class CommandGuilds extends BaseCommand {
 
         SkullMeta meta = (SkullMeta) skull.getItemMeta();
         meta.setOwner(player.getName());
-        meta.setDisplayName(color(guilds.getConfig().getString("info.playername").replace("{player-name}", player.getName())));
+        meta.setDisplayName(getString("info.playername").replace("{player-name}", player.getName()));
 
-        ArrayList<String> info = new ArrayList<String>();
-        info.add(color(guilds.getConfig().getString("info.kills").replace("{kills}", Integer.toString(player.getStatistic(Statistic.PLAYER_KILLS)))));
-        info.add(color(guilds.getConfig().getString("info.deaths").replace("{deaths}", Integer.toString(player.getStatistic(Statistic.DEATHS)))));
+        List<String> info = new ArrayList<>();
+        info.add(getString("info.kills").replace("{kills}", String.valueOf(player.getStatistic(Statistic.PLAYER_KILLS))));
+        info.add(getString("info.deaths").replace("{deaths}", String.valueOf(player.getStatistic(Statistic.DEATHS))));
         meta.setLore(info);
 
         skull.setItemMeta(meta);
@@ -1145,9 +1158,9 @@ public class CommandGuilds extends BaseCommand {
      * @return true or false
      */
     private boolean checkRequirements(String name, String type) {
-        int minLength = guilds.getConfig().getInt(type + ".min-length");
-        int maxLength = guilds.getConfig().getInt(type + ".max-length");
-        String regex = guilds.getConfig().getString(type + ".regex");
+        int minLength = getInt(type + ".min-length");
+        int maxLength = getInt(type + ".max-length");
+        String regex = getString(type + ".regex");
 
         if (name.length() < minLength || name.length() > maxLength || !name.matches(regex)) {
             getCurrentCommandIssuer().sendInfo(Messages.CREATE__REQUIREMENTS);
@@ -1161,8 +1174,8 @@ public class CommandGuilds extends BaseCommand {
             }
         }
 
-        if (guilds.getConfig().getBoolean("enable-blacklist")) {
-            List<String> blacklist = guilds.getConfig().getStringList("blacklist");
+        if (getBoolean("enable-blacklist")) {
+            List<String> blacklist = getStringList("blacklist");
 
             for (String censor : blacklist) {
                 if (name.toLowerCase().contains(censor)) {

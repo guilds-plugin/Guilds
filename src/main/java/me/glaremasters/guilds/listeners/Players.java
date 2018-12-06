@@ -3,7 +3,6 @@ package me.glaremasters.guilds.listeners;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
-import me.glaremasters.guilds.handlers.Tablist;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.Serialization;
 import me.rayzr522.jsonmessage.JSONMessage;
@@ -11,7 +10,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -21,10 +19,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.material.Sign;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -34,7 +29,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-import static me.glaremasters.guilds.utils.ConfigUtils.color;
+import static me.glaremasters.guilds.utils.ConfigUtils.*;
 
 /**
  * Created by GlareMasters
@@ -64,8 +59,8 @@ public class Players implements Listener {
         Guild playerGuild = Guild.getGuild(player.getUniqueId());
         Guild damagerGuild = Guild.getGuild(damager.getUniqueId());
         if (playerGuild == null || damagerGuild == null) return;
-        if (playerGuild.equals(damagerGuild)) event.setCancelled(!guilds.getConfig().getBoolean("allow-guild-damage"));
-        if (Guild.areAllies(player.getUniqueId(), damager.getUniqueId())) event.setCancelled(!guilds.getConfig().getBoolean("allow-ally-damage"));
+        if (playerGuild.equals(damagerGuild)) event.setCancelled(!getBoolean("allow-guild-damage"));
+        if (Guild.areAllies(player.getUniqueId(), damager.getUniqueId())) event.setCancelled(!getBoolean("allow-ally-damage"));
     }
 
     /**
@@ -92,7 +87,7 @@ public class Players implements Listener {
             guilds.getServer().getScheduler().scheduleSyncDelayedTask(guilds, () -> {
                 if (player.isOp()) {
                     if (!ALREADY_INFORMED.contains(player.getUniqueId())) {
-                        JSONMessage.create("Announcements").tooltip(guilds.getAnnouncements()).openURL(guilds.getDescription().getWebsite()).send(player);
+                        JSONMessage.create(color("&f[&aGuilds&f]&r Announcements")).tooltip(guilds.getAnnouncements()).openURL(guilds.getDescription().getWebsite()).send(player);
                         ALREADY_INFORMED.add(player.getUniqueId());
                     }
                 }
@@ -129,18 +124,17 @@ public class Players implements Listener {
     public void onBuffBuy(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
         Guild guild = Guild.getGuild(player.getUniqueId());
-        if (!event.getInventory().getTitle().equals("Guild Buffs")) return;
-        if (event.getInventory().getTitle().equals("Guild Buffs")) event.setCancelled(true);
+        if (!event.getInventory().getTitle().equals(getString("gui-name.buff"))) return;
+        if (event.getInventory().getTitle().equals(getString("gui-name.buff"))) event.setCancelled(true);
         if (event.getCurrentItem() == null) return;
         GuildBuff buff = GuildBuff.get(event.getCurrentItem().getType());
         double balance = guild.getBalance();
         if (buff == null) return;
         if (balance < buff.cost) {
-            // Fix this message
-            guilds.getManager().getCommandIssuer(player).sendInfo(Messages.BANK__BALANCE);
+            guilds.getManager().getCommandIssuer(player).sendInfo(Messages.BANK__NOT_ENOUGH_BANK);
             return;
         }
-        if (guilds.getConfig().getBoolean("disable-buff-stacking") && !player.getActivePotionEffects().isEmpty()) return;
+        if (getBoolean("disable-buff-stacking") && !player.getActivePotionEffects().isEmpty()) return;
 
         guild.getMembers()
                 .stream()
@@ -167,11 +161,11 @@ public class Players implements Listener {
 
             event.getRecipients().forEach(r -> {
                 if (guilds.getSpy().contains(r)) {
-                    r.sendMessage(color((guilds.getConfig().getString("spy-chat-format")).replace("{role}", GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole()).getName()).replace("{player}", player.getName()).replace("{message}", event.getMessage()).replace("{guild}", guild.getName())));
+                    r.sendMessage(getString("spy-chat-format").replace("{role}", GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole()).getName()).replace("{player}", player.getName()).replace("{message}", event.getMessage()).replace("{guild}", guild.getName()));
                 }
             });
             event.getRecipients().removeIf(r -> (guild.getMember(r.getUniqueId()) == null));
-            event.getRecipients().forEach(recipient -> recipient.sendMessage(color((guilds.getConfig().getString("guild-chat-format")).replace("{role}", GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole()).getName()).replace("{player}", player.getName()).replace("{message}", event.getMessage()))));
+            event.getRecipients().forEach(recipient -> recipient.sendMessage(getString("guild-chat-format").replace("{role}", GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole()).getName()).replace("{player}", player.getName()).replace("{message}", event.getMessage())));
             event.setCancelled(true);
         }
     }
@@ -227,12 +221,12 @@ public class Players implements Listener {
         public final int amplifier;
 
         GuildBuff(PotionEffectType potion, Material itemType, String configValueName) {
-            this.time = Guilds.getGuilds().getConfig().getInt("buff.time." + configValueName) * 20;
-            this.cost = Guilds.getGuilds().getConfig().getDouble("buff.price." + configValueName);
+            this.time = getInt("buff.time." + configValueName) * 20;
+            this.cost = getDouble("buff.price." + configValueName);
             this.itemType = itemType;
             this.potion = potion;
-            this.name = Guilds.getGuilds().getConfig().getString("buff.name." + configValueName);
-            this.amplifier = Guilds.getGuilds().getConfig().getInt("buff.amplifier." + configValueName);
+            this.name = getString("buff.name." + configValueName);
+            this.amplifier =getInt("buff.amplifier." + configValueName);
         }
 
         public static GuildBuff get(Material itemType) {

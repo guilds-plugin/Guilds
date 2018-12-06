@@ -19,6 +19,9 @@ import org.codemc.worldguardwrapper.region.IWrappedRegion;
 
 import java.util.Set;
 
+import static me.glaremasters.guilds.utils.ConfigUtils.getBoolean;
+import static me.glaremasters.guilds.utils.ConfigUtils.getInt;
+
 @CommandAlias("guild|guilds")
 public class CommandClaim extends BaseCommand {
 
@@ -29,9 +32,9 @@ public class CommandClaim extends BaseCommand {
     @CommandPermission("guilds.command.claim")
     public void onClaim(Player player, Guild guild, GuildRole role) {
 
-        int radius = guilds.getConfig().getInt("claim-radius");
+        int radius = getInt("claim-radius");
 
-        if (!guilds.getConfig().getBoolean("main-hooks.worldguard-claims")) {
+        if (!getBoolean("main-hooks.worldguard-claims")) {
             getCurrentCommandIssuer().sendInfo(Messages.CLAIM__HOOK_DISABLED);
             return;
         }
@@ -76,7 +79,7 @@ public class CommandClaim extends BaseCommand {
     @CommandPermission("guilds.command.unclaim")
     public void onUnClaim(Player player, Guild guild, GuildRole role) {
 
-        if (!guilds.getConfig().getBoolean("main-hooks.worldguard-claims")) {
+        if (!getBoolean("main-hooks.worldguard-claims")) {
             getCurrentCommandIssuer().sendInfo(Messages.CLAIM__HOOK_DISABLED);
             return;
         }
