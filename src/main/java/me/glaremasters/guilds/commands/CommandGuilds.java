@@ -89,7 +89,30 @@ public class CommandGuilds extends BaseCommand {
             return;
         }
 
-        if (checkRequirements(name, "name")) return;
+        int minLength = guilds.getConfig().getInt("name.min-length");
+        int maxLength = guilds.getConfig().getInt("name.max-length");
+        String regex = guilds.getConfig().getString("name.regex");
+        if (name.length() < minLength || name.length() > maxLength || !name.matches(regex)) {
+            getCurrentCommandIssuer().sendInfo(Messages.CREATE__REQUIREMENTS);
+            return;
+        }
+        for (String guildName : guilds.getGuildHandler().getGuilds().keySet()) {
+            if (guildName.equalsIgnoreCase(name)) {
+                getCurrentCommandIssuer().sendInfo(Messages.CREATE__GUILD_NAME_TAKEN);
+                return;
+            }
+        }
+
+        if (guilds.getConfig().getBoolean("enable-blacklist")) {
+            List<String> blacklist = guilds.getConfig().getStringList("blacklist");
+            for (String censor : blacklist) {
+                if (name.toLowerCase().contains(censor)) {
+                    getCurrentCommandIssuer().sendInfo(Messages.ERROR__BLACKLIST);
+                    return;
+                }
+            }
+        }
+
         getCurrentCommandIssuer().sendInfo(Messages.CREATE__WARNING);
 
         guilds.getActionHandler().addAction(player, new ConfirmAction() {
@@ -100,7 +123,7 @@ public class CommandGuilds extends BaseCommand {
                 if (prefix == null) {
                     gb.setPrefix(color(name));
                 } else {
-                    if (checkRequirements(name, "prefix")) return;
+                    if (!prefix.matches(getString("prefix.regex"))) return;
                     gb.setPrefix(color(prefix));
                 }
                 gb.setStatus("Private");
@@ -290,7 +313,30 @@ public class CommandGuilds extends BaseCommand {
             return;
         }
 
-        if (checkRequirements(name, "name")) return;
+        int minLength = guilds.getConfig().getInt("name.min-length");
+        int maxLength = guilds.getConfig().getInt("name.max-length");
+        String regex = guilds.getConfig().getString("name.regex");
+
+        if (name.length() < minLength || name.length() > maxLength || !name.matches(regex)) {
+            getCurrentCommandIssuer().sendInfo(Messages.CREATE__REQUIREMENTS);
+            return;
+        }
+        for (String guildName : guilds.getGuildHandler().getGuilds().keySet()) {
+            if (guildName.equalsIgnoreCase(name)) {
+                getCurrentCommandIssuer().sendInfo(Messages.CREATE__GUILD_NAME_TAKEN);
+                return;
+            }
+        }
+
+        if (guilds.getConfig().getBoolean("enable-blacklist")) {
+            List<String> blacklist = guilds.getConfig().getStringList("blacklist");
+            for (String censor : blacklist) {
+                if (name.toLowerCase().contains(censor)) {
+                    getCurrentCommandIssuer().sendInfo(Messages.ERROR__BLACKLIST);
+                    return;
+                }
+            }
+        }
 
         String oldName = guild.getName();
         guilds.getDatabase().removeGuild(Guild.getGuild(oldName));
@@ -365,7 +411,10 @@ public class CommandGuilds extends BaseCommand {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
             return;
         }
-        if (checkRequirements(prefix, "prefix")) return;
+        if (!prefix.matches(getString("prefix.regex"))) {
+            getCurrentCommandIssuer().sendInfo(Messages.CREATE__REQUIREMENTS);
+            return;
+        }
         getCurrentCommandIssuer().sendInfo(Messages.PREFIX__SUCCESSFUL, "{prefix}", prefix);
         guild.updatePrefix(color(prefix));
     }
@@ -1150,41 +1199,6 @@ public class CommandGuilds extends BaseCommand {
 
         skull.setItemMeta(meta);
         return skull;
-    }
-
-    /**
-     * Check if the guild name wanting to be used meets the requirements
-     * @param name the guild name being checked
-     * @return true or false
-     */
-    private boolean checkRequirements(String name, String type) {
-        int minLength = getInt(type + ".min-length");
-        int maxLength = getInt(type + ".max-length");
-        String regex = getString(type + ".regex");
-
-        if (name.length() < minLength || name.length() > maxLength || !name.matches(regex)) {
-            getCurrentCommandIssuer().sendInfo(Messages.CREATE__REQUIREMENTS);
-            return true;
-        }
-
-        for (String guildName : guilds.getGuildHandler().getGuilds().keySet()) {
-            if (guildName.equalsIgnoreCase(name)) {
-                getCurrentCommandIssuer().sendInfo(Messages.CREATE__GUILD_NAME_TAKEN);
-                return true;
-            }
-        }
-
-        if (getBoolean("enable-blacklist")) {
-            List<String> blacklist = getStringList("blacklist");
-
-            for (String censor : blacklist) {
-                if (name.toLowerCase().contains(censor)) {
-                    getCurrentCommandIssuer().sendInfo(Messages.ERROR__BLACKLIST);
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 
 }

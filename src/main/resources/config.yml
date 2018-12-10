@@ -130,9 +130,6 @@ gui-name:
 # Do you want disable the ability to buy multiple buffs at once?
 disable-buff-stacking: true
 
-# Do you want to use a guild's bank balance for buying the buffs?
-use-guild-bank: false
-
 # In this section you can modify the name of all the buffs, allowing you to have cool, custom names!
 # The price is all in a dollar amount.
 # The time is in seconds, so , haste: 60 is seconds.
@@ -397,14 +394,10 @@ blacklist:
 - "stupid"
 
 prefix:
-  # Minimum length of guild names
-  min-length: 1
-  # Maximum length of guild names
-  max-length: 10
   # With the default Regex currently set, the minimum length of the prefix is 1 and the maximum is 20.
   # To change this, adjust the numbers and maybe have a look at the link above (RegEx).
   # To turn off the ability for colored prefixes change the regex to "[a-zA-Z0-9]{1,20}"
-  regex: "[a-zA-Z0-9&]"
+  regex: "[a-zA-Z0-9&]{1,20}"
 #-----------------------------------------------------------#
 #                        Role Configuration                 #
 #-----------------------------------------------------------#
