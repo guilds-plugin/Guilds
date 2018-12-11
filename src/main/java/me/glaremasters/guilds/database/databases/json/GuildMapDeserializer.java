@@ -144,8 +144,13 @@ public class GuildMapDeserializer implements JsonDeserializer<Map<String, Guild>
         }
         if (!object.has("home")) {
             if (homeC != null) {
-                Location oldHome = ACFBukkitUtil.stringToLocation(homeC.getString(guildName));
-                object.addProperty("home", ACFBukkitUtil.fullLocationToString(oldHome));
+                try {
+                    Location oldHome = ACFBukkitUtil.stringToLocation(homeC.getString(guildName));
+                    object.addProperty("home", ACFBukkitUtil.fullLocationToString(oldHome));
+                }
+                catch (Exception ex) {
+                    object.addProperty("home","");
+                }
             } else {
                 object.addProperty("home", "");
             }
