@@ -83,6 +83,7 @@ public final class Guilds extends JavaPlugin {
         info("Enabling Metrics...");
         Metrics metrics = new Metrics(this);
         metrics.addCustomChart(new Metrics.SingleLineChart("guilds", () -> getGuildHandler().getGuilds().values().size()));
+        checkConfig();
         saveData();
 
 
@@ -476,6 +477,19 @@ public final class Guilds extends JavaPlugin {
         if (guilds.getConfig().getBoolean("main-hooks.worldguard-claims")) {
             WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();
             wrapper.getRegion(player.getWorld(), guild.getName()).ifPresent(region -> wrapper.removeRegion(player.getWorld(), guild.getName()));
+        }
+    }
+
+    private void checkConfig() {
+        if (!getConfig().isSet("version") || getConfig().getInt("version") != 1) {
+            if (getConfig().getBoolean("auto-update-config")) {
+                File oF = new File(getDataFolder(), "config.yml");
+                File nF = new File(getDataFolder(), "config-old.yml");
+                oF.renameTo(nF);
+                info("Your config has been auto updated. You can disabled this in the config");
+            } else {
+                info("Your config is out of date!");
+            }
         }
     }
 }
