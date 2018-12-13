@@ -100,8 +100,8 @@
       <url>http://nexus.hc.to/content/repositories/pub_releases</url>
     </repository>
     <repository>
-      <id>aikar</id>
-      <url>https://repo.aikar.co/content/groups/aikar/</url>
+      <id>glares-repo</id>
+      <url>https://ci.glaremasters.me/plugin/repository/everything/</url>
     </repository>
     <repository>
       <id>onarandombox</id>
