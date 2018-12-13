@@ -108,11 +108,6 @@
       <url>http://repo.onarandombox.com/content/groups/public</url>
     </repository>
     <repository>
-      <id>mvdw-software</id>
-      <name>MVdW Public Repositories</name>
-      <url>http://repo.mvdw-software.be/content/groups/public/</url>
-    </repository>
-    <repository>
       <id>rayzr-repo</id>
       <url>https://cdn.rawgit.com/Rayzr522/maven-repo/master/</url>
     </repository>
