@@ -79,8 +79,8 @@ public class GuildMapDeserializer implements JsonDeserializer<Map<String, Guild>
                 byte[] buffer = new byte[1024];
                 FileOutputStream fos = new FileOutputStream(zipFile);
                 ZipOutputStream zos = new ZipOutputStream(fos);
-                for (int i = 0; i < srcFiles.length; i++) {
-                    File srcFile = new File(Guilds.getGuilds().getDataFolder(), srcFiles[i]);
+                for (String srcFile1 : srcFiles) {
+                    File srcFile = new File(Guilds.getGuilds().getDataFolder(), srcFile1);
                     FileInputStream fis = new FileInputStream(srcFile);
                     zos.putNextEntry(new ZipEntry(srcFile.getName()));
                     int length;
@@ -113,22 +113,29 @@ public class GuildMapDeserializer implements JsonDeserializer<Map<String, Guild>
         return guilds;
     }
 
-    public void convertOldData(JsonObject object) {
+    private void convertOldData(JsonObject object) {
 
         String guildName = object.get("name").getAsString();
 
         File vault = new File(Guilds.getGuilds().getDataFolder(), "data/vaults/" + guildName + ".yml");
         if (vault.exists()) {
-            YamlConfiguration vaultConfig = YamlConfiguration.loadConfiguration(vault);
-            Inventory inv = Bukkit.createInventory(null, 54, guildName + "'s Guild Vault");
-            for (int i = 0; i < inv.getSize(); i++) {
-                if (vaultConfig.isSet("items.slot" + i)) {
-                    inv.setItem(i, vaultConfig.getItemStack("items.slot" + i));
+            try {
+                YamlConfiguration vaultConfig = YamlConfiguration.loadConfiguration(vault);
+                Inventory inv = Bukkit.createInventory(null, 54, guildName + "'s Guild Vault");
+                for (int i = 0; i < inv.getSize(); i++) {
+                    if (vaultConfig.isSet("items.slot" + i)) {
+                        inv.setItem(i, vaultConfig.getItemStack("items.slot" + i));
+                    }
+                }
+                if (!object.has("inventory")) {
+                    object.addProperty("inventory", Serialization.serializeInventory(inv));
+                }
+            } catch (Exception ex) {
+                if (!object.has("inventory")) {
+                    object.addProperty("inventory", "");
                 }
             }
-            if (!object.has("inventory")) {
-                object.addProperty("inventory", Serialization.serializeInventory(inv));
-            }
+
         }
 
         if (!object.has("texture")) {
