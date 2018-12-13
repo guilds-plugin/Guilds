@@ -6,7 +6,7 @@
 
   <groupId>me.glaremasters</groupId>
   <artifactId>Guilds</artifactId>
-  <version>3.1-BETA</version>
+  <version>3.1-RELEASE</version>
   <packaging>jar</packaging>
 
   <name>Guilds</name>
