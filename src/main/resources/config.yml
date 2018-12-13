@@ -381,7 +381,7 @@ name:
   max-length: 64
   # RegEx (https://en.wikipedia.org/wiki/Regular_expression) used to only allow certain characters (default only allows alphanumeric characters)
   # To turn off the ability for colored names change the regex to "^[a-zA-Z0-9]*$"
-  regex: "^[a-zA-Z0-9]*$"
+  regex: "^[a-zA-Z0-9&]*$"
 
 # This will automatically prevent players from making a guild if it contains anything in the list below.
 # Note: Capitalization doesn't matter. I can put "crap" and Crap cRaP, etc, will be blocked.
