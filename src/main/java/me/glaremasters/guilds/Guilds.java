@@ -403,6 +403,14 @@ public final class Guilds extends JavaPlugin {
     }
 
     /**
+     * Check if PAPI is running
+     * @return
+     */
+    private boolean checkPAPI() {
+        return Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI");
+    }
+
+    /**
      * Load all the placeholders for MVDW
      */
     private void initializePlaceholder() {
@@ -419,6 +427,12 @@ public final class Guilds extends JavaPlugin {
             PlaceholderAPI.registerPlaceholder(this, "guild_tier", e -> String.valueOf(api.getGuildTier(e.getPlayer())));
             PlaceholderAPI.registerPlaceholder(this, "guild_balance", e -> String.valueOf(api.getBankBalance(e.getPlayer())));
             PlaceholderAPI.registerPlaceholder(this, "guild_tier_name", e -> api.getTierName(e.getPlayer()));
+            info("Hooked!");
+        }
+
+        if (checkPAPI()) {
+            info("Hooking into PlaceholderAPI...");
+            new me.glaremasters.guilds.utils.PlaceholderAPI().register();
             info("Hooked!");
         }
 
@@ -480,6 +494,9 @@ public final class Guilds extends JavaPlugin {
         }
     }
 
+    /**
+     * Check the version of the config
+     */
     private void checkConfig() {
         if (!getConfig().isSet("version") || getConfig().getInt("version") != 1) {
             if (getConfig().getBoolean("auto-update-config")) {
