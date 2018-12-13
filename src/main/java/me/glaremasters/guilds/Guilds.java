@@ -446,7 +446,7 @@ public final class Guilds extends JavaPlugin {
 
         if (checkPAPI()) {
             info("Hooking into PlaceholderAPI...");
-            new me.glaremasters.guilds.utils.PlaceholderAPI().register();
+            new me.glaremasters.guilds.utils.PlaceholderAPI(guilds).register();
             info("Hooked!");
         }
 

@@ -14,6 +14,10 @@ public class PlaceholderAPI extends PlaceholderExpansion {
 
     private Guilds guilds;
 
+    public PlaceholderAPI(Guilds guilds) {
+        this.guilds = guilds;
+    }
+
     @Override
     public String getIdentifier() {
         return "guilds";
