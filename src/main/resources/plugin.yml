@@ -7,7 +7,7 @@ description: Guilds
 website: https://glaremasters.me/discord
 
 permissions:
-  groups.group.member:
+  guilds.group.member:
     children:
       guilds.command.create: true
       guilds.command.confirm: true
@@ -40,4 +40,10 @@ permissions:
       guilds.command.bank: true
       guilds.command.ally: true
     default: true
+  guilds.group.admin:
+    children:
+      guilds.command.admin: true
+      guilds.command.reload: true
+      guilds.group.member: true
+    default: op
 
