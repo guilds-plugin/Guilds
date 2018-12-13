@@ -933,6 +933,7 @@ public class CommandGuilds extends BaseCommand {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ALREADY_IN_GUILD);
             return;
         }
+        if (guilds.getGuildHandler().getGuilds().values().size() == 0) return;
         Guild guild = (Guild) guilds.getGuildHandler().getGuilds().values().toArray()[0];
         try {
             if (name == null) {
@@ -952,7 +953,12 @@ public class CommandGuilds extends BaseCommand {
                     return;
                 }
             } else {
-                guild = Guild.getGuild(name);
+                    OfflinePlayer tempPlayer = Bukkit.getOfflinePlayer(name);
+                    if (tempPlayer != null) {
+                        guild = Guild.getGuild(tempPlayer.getUniqueId());
+                    } else {
+                        guild = Guild.getGuild(name);
+                    }
             }
         } catch (Exception ex) {
             ex.printStackTrace();
