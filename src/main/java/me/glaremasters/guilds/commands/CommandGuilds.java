@@ -774,7 +774,7 @@ public class CommandGuilds extends BaseCommand {
 
         GuildMember kickedPlayer = guild.getMember(bootedPlayer.getUniqueId());
         if (kickedPlayer == null) {
-            getCurrentCommandIssuer().sendInfo(Messages.ERROR__PLAYER_NOT_FOUND, "{player}", name);
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__PLAYER_NOT_IN_GUILD, "{player}", name);
             return;
         }
 
