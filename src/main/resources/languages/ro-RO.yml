@@ -49,7 +49,7 @@ descriptions:
   version: "Informatii despre plugin"
 create:
   guild-name-taken: "&cAcest nume este deja luat!"
-  warning: "&cTastati /guilds confirm pentru crearea breslei, tastati /guilds cancel pentru a anula."
+  warning: "&cThe creation of a Guild cost {amount}. Type /guilds confirm to create your guild, type /guilds cancel to cancel."
   successful: "&aBreasla '{guild}&r&a' a fost creata cu succes!"
   cancelled: "&cCrearea Breslei a fost anulata!"
   requirements: "&cNumele Breslei tale nu corespunde cerintelor! Puteti utiliza doar caractere alfanumerice, iar lungimea numelui nu poate depasii 64 de caractere"

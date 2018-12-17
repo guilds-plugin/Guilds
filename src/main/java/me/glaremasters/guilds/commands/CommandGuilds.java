@@ -29,7 +29,6 @@ import me.glaremasters.guilds.utils.HeadUtils;
 import me.glaremasters.guilds.utils.Serialization;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -113,11 +112,15 @@ public class CommandGuilds extends BaseCommand {
             }
         }
 
-        getCurrentCommandIssuer().sendInfo(Messages.CREATE__WARNING);
+        if (meetsCost(player, "cost.creation")) return;
+
+        getCurrentCommandIssuer().sendInfo(Messages.CREATE__WARNING, "{amount}", String.valueOf(getDouble("cost.creation")));
 
         guilds.getActionHandler().addAction(player, new ConfirmAction() {
             @Override
             public void accept() {
+                if (meetsCost(player, "cost.creation")) return;
+                guilds.getEconomy().withdrawPlayer(player, getDouble("cost.creation"));
                 GuildBuilder gb = new GuildBuilder();
                 gb.setName(color(name));
                 if (prefix == null) {
@@ -205,6 +208,7 @@ public class CommandGuilds extends BaseCommand {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
             return;
         }
+        if (meetsCost(player, "cost.sethome")) return;
         if (setHome.contains(player)) {
             getCurrentCommandIssuer().sendInfo(Messages.SETHOME__COOLDOWN, "{amount}", String.valueOf(getInt("cooldowns.sethome")));
             return;
@@ -1207,6 +1211,16 @@ public class CommandGuilds extends BaseCommand {
 
         skull.setItemMeta(meta);
         return skull;
+    }
+
+    private boolean meetsCost(Player player, String type) {
+        if (getDouble(type) > 0) {
+            if (guilds.getEconomy().getBalance(player) < getDouble(type)) {
+                getCurrentCommandIssuer().sendInfo(Messages.ERROR__NOT_ENOUGH_MONEY);
+                return true;
+            }
+        }
+        return false;
     }
 
 }

@@ -49,7 +49,7 @@ descriptions:
   version: "Informazioni sul plugin"
 create:
   guild-name-taken: "&cQuesto nome è già stato scelto!"
-  warning: "&cScrivi /guilds confirm per creare la tua gilda, scrivi /guilds cancel per annullare."
+  warning: "&cThe creation of a Guild cost {amount}. Type /guilds confirm to create your guild, type /guilds cancel to cancel."
   successful: "&aLa gilda '{guild}&r&a' è stata creata con successo!"
   cancelled: "&cCreazione della gilda annullata!"
   requirements: "&cIl nome della tua gilda non corrisponde ai requisiti! È possibile utilizzare solo caratteri alfanumerici e la lunghezza del nome non può superare 64"

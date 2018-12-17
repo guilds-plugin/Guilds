@@ -49,7 +49,7 @@ descriptions:
   version: "Information about the plugin"
 create:
   guild-name-taken: "&cThis name is already taken!"
-  warning: "&cType /guilds confirm to create your guild, type /guilds cancel to cancel."
+  warning: "&cThe creation of a Guild cost {amount}. Type /guilds confirm to create your guild, type /guilds cancel to cancel."
   successful: "&aGuild '{guild}&r&a' created successfully!"
   cancelled: "&cGuild creation cancelled!"
   requirements: "&cYour guild's name does not match the requirements! You can only use alphanumeric characters and the length of the name cannot exceed 64"

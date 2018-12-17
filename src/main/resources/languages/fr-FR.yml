@@ -49,7 +49,7 @@ descriptions:
   version: "Informations à propos du plugin"
 create:
   guild-name-taken: "&cCe nom est déjà pris !"
-  warning: "&cEcrivez /guilds confirm pour créer votre guilde, ecrivez /guilds cancel pour annuler."
+  warning: "&cThe creation of a Guild cost {amount}. Type /guilds confirm to create your guild, type /guilds cancel to cancel."
   successful: "&aLa Guilde '{guild}&r&a' est créée avec succès !"
   cancelled: "&cCréation de guilde annulée !"
   requirements: "&Votre nom de guilde ne correspond pas aux critères ! Vous devez utiliser seulement des caractères alphanumérique et d'un maximum de 64 lettres"

@@ -49,7 +49,7 @@ descriptions:
   version: "開啟插件資訊"
 create:
   guild-name-taken: "&c此名稱已經有人使用了!"
-  warning: "&c輸入 /guilds confirm 來創建公會，輸入 /guilds cancel 取消創建"
+  warning: "&cThe creation of a Guild cost {amount}. Type /guilds confirm to create your guild, type /guilds cancel to cancel."
   successful: "&a公會 '{guild}&r&a' 成功創建!"
   cancelled: "&c公會創建已取消!"
   requirements: "&c公會名有無效字符 字符請設定在64位元內"
