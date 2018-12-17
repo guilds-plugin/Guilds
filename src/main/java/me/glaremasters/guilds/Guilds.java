@@ -30,13 +30,14 @@ import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.updater.SpigotUpdater;
 import me.glaremasters.guilds.utils.ActionHandler;
 import me.glaremasters.guilds.utils.HeadUtils;
+import me.glaremasters.guilds.utils.Serialization;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.apache.commons.io.IOUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -50,8 +51,10 @@ import java.net.JarURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -75,6 +78,7 @@ public final class Guilds extends JavaPlugin {
     private GuildsAPI api;
     private String logPrefix = "&f[&aGuilds&f]&r ";
     private List<Player> spy;
+    private Map<Guild, Inventory> vaults;
 
     @Override
     public void onEnable() {
@@ -89,6 +93,7 @@ public final class Guilds extends JavaPlugin {
         info("Enabling the Guilds API...");
         api = new GuildsAPI();
         spy = new ArrayList<>();
+        vaults = new HashMap<>();
         info("API Enabled!");
         info("Hooking into Vault...");
         vaultEconomy = setupEconomy();
@@ -144,16 +149,20 @@ public final class Guilds extends JavaPlugin {
         info("Ready to go! That only took " + (System.currentTimeMillis() - start) + "ms");
         PaperLib.suggestPaper(this);
         loadSkulls();
+        createVaultCaches();
+        getServer().getScheduler().scheduleSyncRepeatingTask(this, this::saveVaultCaches, 500L, 2400L);
     }
 
 
     @Override
     public void onDisable() {
         if (checkVault()) {
+            saveVaultCaches();
             guildHandler.disable();
             actionHandler.disable();
             spy.clear();
             HeadUtils.textures.clear();
+            vaults.clear();
         }
     }
 
@@ -229,6 +238,50 @@ public final class Guilds extends JavaPlugin {
                 HeadUtils.textures.put(guild.getGuildMaster().getUniqueId(), guild.getTexture());
             }
         }), 100L);
+    }
+
+    private void createVaultCaches() {
+        String vaultName;
+        try {
+            vaultName = color(getConfig().getString("gui-name.vault"));
+        } catch (Exception ex) {
+            vaultName = color("Guild Vault");
+        }
+        String finalVaultName = vaultName;
+        getServer().getScheduler().runTaskLater(this, () -> getGuildHandler().getGuilds().values().forEach(guild -> {
+            if (guild.getInventory().equalsIgnoreCase("")) {
+                Inventory inv = Bukkit.createInventory(null, 54, finalVaultName);
+                vaults.put(guild, inv);
+            } else {
+                try {
+                    vaults.put(guild, Serialization.deserializeInventory(guild.getInventory()));
+                } catch (InvalidConfigurationException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }), 100L);
+    }
+
+    /**
+     * Create a new Vault when a guild is created while server is running
+     * @param guild
+     */
+    public void createNewVault(Guild guild) {
+        String vaultName;
+        try {
+            vaultName = color(getConfig().getString("gui-name.vault"));
+        } catch (Exception ex) {
+            vaultName = color("Guild Vault");
+        }
+        String finalVaultName = vaultName;
+        Inventory inv = Bukkit.createInventory(null, 54, finalVaultName);
+        vaults.put(guild, inv);
+    }
+
+    private void saveVaultCaches() {
+        getGuildHandler().getGuilds().values().forEach(guild -> {
+            guild.updateInventory(Serialization.serializeInventory(getVaults().get(guild)));
+        });
     }
 
     /**
@@ -523,5 +576,13 @@ public final class Guilds extends JavaPlugin {
                 info("Your config is out of date!");
             }
         }
+    }
+
+    /**
+     * Get a list of all the Guild Vaults on the Server
+     * @return
+     */
+    public Map<Guild, Inventory> getVaults() {
+        return vaults;
     }
 }

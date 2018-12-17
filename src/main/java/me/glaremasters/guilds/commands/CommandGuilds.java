@@ -65,6 +65,7 @@ public class CommandGuilds extends BaseCommand {
     public List<Player> home = new ArrayList<>();
     public List<Player> setHome = new ArrayList<>();
     public Map<Player, Location> warmUp = new HashMap<>();
+    public static List<Inventory> vaults = new ArrayList<>();
 
     @Dependency
     private Guilds guilds;
@@ -138,6 +139,7 @@ public class CommandGuilds extends BaseCommand {
                 guilds.getDatabase().createGuild(guild);
                 getCurrentCommandIssuer().sendInfo(Messages.CREATE__SUCCESSFUL, "{guild}", guild.getName());
                 guilds.getActionHandler().removeAction(player);
+                guilds.createNewVault(guild);
             }
 
             @Override
@@ -629,6 +631,7 @@ public class CommandGuilds extends BaseCommand {
                     GuildRemoveEvent removeEvent = new GuildRemoveEvent(player, guild, GuildRemoveEvent.RemoveCause.MASTER_LEFT);
                     guilds.getServer().getPluginManager().callEvent(removeEvent);
                     if (removeEvent.isCancelled()) return;
+                    guilds.getVaults().remove(guild);
                     Guilds.checkForClaim(player, guild, guilds);
                     guild.sendMessage(Messages.LEAVE__GUILDMASTER_LEFT, "{player}", player.getName());
                     guild.removeGuildPerms(guild);
@@ -723,6 +726,7 @@ public class CommandGuilds extends BaseCommand {
                 GuildRemoveEvent event = new GuildRemoveEvent(player, guild, GuildRemoveEvent.RemoveCause.DELETED);
                 guilds.getServer().getPluginManager().callEvent(event);
                 if (event.isCancelled()) return;
+                guilds.getVaults().remove(guild);
                 Guilds.checkForClaim(player, guild, guilds);
                 getCurrentCommandIssuer().sendInfo(Messages.DELETE__SUCCESSFUL, "{guild}", guild.getName());
                 guild.removeGuildPerms(guild);
@@ -813,16 +817,7 @@ public class CommandGuilds extends BaseCommand {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
             return;
         }
-        if (guild.getInventory().equalsIgnoreCase("")) {
-            Inventory inv = Bukkit.createInventory(null, 54, guild.getName() + "'s Guild Vault");
-            player.openInventory(inv);
-            return;
-        }
-        try {
-            player.openInventory(Serialization.deserializeInventory(guild.getInventory()));
-        } catch (InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
+        player.openInventory(guilds.getVaults().get(guild));
     }
 
     /**

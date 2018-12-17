@@ -52,6 +52,7 @@ public class CommandAdmin extends BaseCommand {
                 GuildRemoveEvent event = new GuildRemoveEvent(player, guild, GuildRemoveEvent.RemoveCause.ADMIN_DELETED);
                 guilds.getServer().getPluginManager().callEvent(event);
                 if (event.isCancelled()) return;
+                guilds.getVaults().remove(guild);
                 Guilds.checkForClaim(player, guild, guilds);
                 guild.removeGuildPerms(guild);
                 guilds.getDatabase().removeGuild(guild);

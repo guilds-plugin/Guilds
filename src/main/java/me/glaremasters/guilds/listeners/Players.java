@@ -29,6 +29,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Stream;
 
+import static me.glaremasters.guilds.commands.CommandGuilds.vaults;
 import static me.glaremasters.guilds.utils.ConfigUtils.*;
 
 /**
@@ -61,19 +62,6 @@ public class Players implements Listener {
         if (playerGuild == null || damagerGuild == null) return;
         if (playerGuild.equals(damagerGuild)) event.setCancelled(!getBoolean("allow-guild-damage"));
         if (Guild.areAllies(player.getUniqueId(), damager.getUniqueId())) event.setCancelled(!getBoolean("allow-ally-damage"));
-    }
-
-    /**
-     * This handles the checking of an inventory to see if it's a Guild Vault
-     * @param event
-     */
-    @EventHandler
-    public void onInvClose(InventoryCloseEvent event) {
-        Player player = (Player) event.getPlayer();
-        Guild guild = Guild.getGuild(player.getUniqueId());
-        if (guild == null) return;
-        if (!event.getInventory().getName().equalsIgnoreCase(guild.getName() + "'s Guild Vault")) return;
-        guild.updateInventory(Serialization.serializeInventory(event.getInventory()));
     }
 
     /**
