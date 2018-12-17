@@ -953,12 +953,14 @@ public class CommandGuilds extends BaseCommand {
                     return;
                 }
             } else {
+                if (Guild.getGuild(name) != null) {
+                    guild = Guild.getGuild(name);
+                } else {
                     OfflinePlayer tempPlayer = Bukkit.getOfflinePlayer(name);
                     if (tempPlayer != null) {
                         guild = Guild.getGuild(tempPlayer.getUniqueId());
-                    } else {
-                        guild = Guild.getGuild(name);
                     }
+                }
             }
         } catch (Exception ex) {
             ex.printStackTrace();
