@@ -6,6 +6,7 @@ import co.aikar.commands.InvalidCommandArgument;
 import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
+import com.google.common.collect.ImmutableList;
 import io.papermc.lib.PaperLib;
 import me.glaremasters.guilds.api.GuildsAPI;
 import me.glaremasters.guilds.api.Metrics;
@@ -35,6 +36,7 @@ import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.apache.commons.io.IOUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -50,6 +52,9 @@ import java.net.HttpURLConnection;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -58,6 +63,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static co.aikar.commands.ACFBukkitUtil.color;
@@ -126,6 +132,7 @@ public final class Guilds extends JavaPlugin {
         loadLanguages(manager);
         manager.enableUnstableAPI("help");
         loadContexts(manager);
+        loadCompletions(manager);
 
         Stream.of(new CommandGuilds(), new CommandBank(), new CommandAdmin(), new CommandAlly(), new CommandClaim()).forEach(manager::registerCommand);
 
@@ -424,6 +431,21 @@ public final class Guilds extends JavaPlugin {
                 return null;
             }
             return GuildRole.getRole(guild.getMember(c.getPlayer().getUniqueId()).getRole());
+        });
+    }
+
+    private void loadCompletions(BukkitCommandManager manager) {
+        manager.getCommandCompletions().registerCompletion("members", c -> {
+            Guild guild = Guild.getGuild(c.getPlayer().getUniqueId());
+            return guild.getMembers().stream().map(member -> Bukkit.getOfflinePlayer(member.getUniqueId()).getName()).collect(Collectors.toList());
+        });
+
+        manager.getCommandCompletions().registerCompletion("online", c -> {
+            return Bukkit.getOnlinePlayers().stream().map(member -> Bukkit.getPlayer(member.getUniqueId()).getName()).collect(Collectors.toList());
+        });
+
+        manager.getCommandCompletions().registerCompletion("invitedTo", c -> {
+            return guilds.getGuildHandler().getGuilds().values().stream().filter(guild -> guild.getInvitedMembers().contains(c.getPlayer().getUniqueId())).map(Guild::getName).collect(Collectors.toList());
         });
     }
 

@@ -4,13 +4,16 @@ import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.CommandHelp;
 import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.HelpCommand;
 import co.aikar.commands.annotation.Optional;
+import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
+import co.aikar.commands.annotation.Values;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.api.events.GuildCreateEvent;
 import me.glaremasters.guilds.api.events.GuildInviteEvent;
@@ -26,7 +29,6 @@ import me.glaremasters.guilds.updater.SpigotUpdater;
 import me.glaremasters.guilds.utils.ConfigUtils;
 import me.glaremasters.guilds.utils.ConfirmAction;
 import me.glaremasters.guilds.utils.HeadUtils;
-import me.glaremasters.guilds.utils.Serialization;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -35,7 +37,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.SkullType;
 import org.bukkit.Statistic;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
@@ -464,8 +465,9 @@ public class CommandGuilds extends BaseCommand {
     @Subcommand("invite")
     @Description("{@@descriptions.invite}")
     @CommandPermission("guilds.command.invite")
+    @CommandCompletion("@online")
     @Syntax("<name>")
-    public void onInvite(Player player, String targetPlayer, Guild guild, GuildRole role) {
+    public void onInvite(Player player, Guild guild, GuildRole role, @Values("@online") @Single String targetPlayer) {
 
         if (!role.canInvite()) {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
@@ -567,8 +569,9 @@ public class CommandGuilds extends BaseCommand {
     @Subcommand("transfer")
     @Description("{@@descriptions.transfer}")
     @CommandPermission("guilds.command.transfer")
+    @CommandCompletion("@members")
     @Syntax("<player>")
-    public void onTransfer(Player player, Guild guild, GuildRole role, String target) {
+    public void onTransfer(Player player, Guild guild, GuildRole role, @Values("@members") @Single String target) {
         if (!role.canTransfer()) {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
             return;
@@ -751,8 +754,9 @@ public class CommandGuilds extends BaseCommand {
     @Subcommand("decline")
     @Description("{@@descriptions.decline}")
     @CommandPermission("guilds.command.decline")
+    @CommandCompletion("@invitedTo")
     @Syntax("<guild name>")
-    public void onDecline(Player player, String name) {
+    public void onDecline(Player player, @Values("@invitedTo") @Single String name) {
         Guild guild = Guild.getGuild(name);
         if (Guild.getGuild(player.getUniqueId()) != null) return;
         if (guild == null) return;
@@ -771,8 +775,9 @@ public class CommandGuilds extends BaseCommand {
     @Subcommand("boot|kick")
     @Description("Kick someone from your Guild")
     @CommandPermission("guilds.command.boot")
+    @CommandCompletion("@members")
     @Syntax("<name>")
-    public void onKick(Player player, Guild guild, GuildRole role, String name) {
+    public void onKick(Player player, Guild guild, GuildRole role, @Values("@members") @Single String name) {
         if (!role.canKick()) {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
             return;
@@ -831,8 +836,9 @@ public class CommandGuilds extends BaseCommand {
     @Subcommand("demote")
     @Description("{@@descriptions.demote}")
     @CommandPermission("guilds.command.demote")
+    @CommandCompletion("@members")
     @Syntax("<player>")
-    public void onDemote(Player player, String target, Guild guild, GuildRole role) {
+    public void onDemote(Player player, @Values("@members") @Single String target, Guild guild, GuildRole role) {
         if (!role.canDemote()) {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
             return;
@@ -880,12 +886,14 @@ public class CommandGuilds extends BaseCommand {
     @Subcommand("promote")
     @Description("{@@descriptions.promote}")
     @CommandPermission("guilds.command.promote")
+    @CommandCompletion("@members")
     @Syntax("<player>")
-    public void onPromote(Player player, String target, Guild guild, GuildRole role) {
+    public void onPromote(Player player, @Values("@members") @Single String target, Guild guild, GuildRole role) {
         if (!role.canPromote()) {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
             return;
         }
+
 
         OfflinePlayer promotedPlayer = Bukkit.getOfflinePlayer(target);
 
