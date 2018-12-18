@@ -1,5 +1,6 @@
 package me.glaremasters.guilds.guild;
 
+import co.aikar.commands.ACFBukkitUtil;
 import com.google.gson.annotations.Expose;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.messages.Messages;
@@ -78,6 +79,10 @@ public class Guild {
         return Guilds.getGuilds().getGuildHandler().getGuilds().values().stream().filter(guild -> guild.getName().equalsIgnoreCase(name)).findAny().orElse(null);
     }
 
+    public static Guild getGuild2(String name) {
+        return Guilds.getGuilds().getGuildHandler().getGuilds().values().stream().filter(guild -> guild.getNameColorless().equalsIgnoreCase(name)).findAny().orElse(null);
+    }
+
     /**
      * Check if guilds are allies
      * @param uuid1
@@ -97,6 +102,10 @@ public class Guild {
      */
     public String getName() {
         return name;
+    }
+
+    public String getNameColorless() {
+        return ACFBukkitUtil.removeColors(name);
     }
 
     /**

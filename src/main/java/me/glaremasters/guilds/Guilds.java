@@ -1,12 +1,12 @@
 package me.glaremasters.guilds;
 
 import be.maximvdw.placeholderapi.PlaceholderAPI;
+import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.BukkitCommandManager;
 import co.aikar.commands.InvalidCommandArgument;
 import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
-import com.google.common.collect.ImmutableList;
 import io.papermc.lib.PaperLib;
 import me.glaremasters.guilds.api.GuildsAPI;
 import me.glaremasters.guilds.api.Metrics;
@@ -36,7 +36,6 @@ import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.apache.commons.io.IOUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -52,9 +51,6 @@ import java.net.HttpURLConnection;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -445,7 +441,11 @@ public final class Guilds extends JavaPlugin {
         });
 
         manager.getCommandCompletions().registerCompletion("invitedTo", c -> {
-            return guilds.getGuildHandler().getGuilds().values().stream().filter(guild -> guild.getInvitedMembers().contains(c.getPlayer().getUniqueId())).map(Guild::getName).collect(Collectors.toList());
+            return guilds.getGuildHandler().getGuilds().values().stream().filter(guild -> guild.getInvitedMembers().contains(c.getPlayer().getUniqueId())).map(guild -> ACFBukkitUtil.removeColors(guild.getName())).collect(Collectors.toList());
+        });
+
+        manager.getCommandCompletions().registerCompletion("guilds", c -> {
+           return guilds.getGuildHandler().getGuilds().values().stream().map(guild -> ACFBukkitUtil.removeColors(guild.getName())).collect(Collectors.toList());
         });
     }
 

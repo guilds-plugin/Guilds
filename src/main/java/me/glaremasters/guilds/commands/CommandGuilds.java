@@ -6,6 +6,7 @@ import co.aikar.commands.CommandHelp;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.HelpCommand;
@@ -251,7 +252,7 @@ public class CommandGuilds extends BaseCommand {
     @Description("{@@descriptions.give}")
     @CommandPermission("guilds.command.give")
     @Syntax("<player> <amount>")
-    public void onGive(CommandSender sender, Player player, Integer amount) {
+    public void onGive(CommandSender sender, Player player, @Default("1") Integer amount) {
         if (player == null) return;
 
         String ticketName = getString("upgrade-ticket.name");
@@ -757,7 +758,7 @@ public class CommandGuilds extends BaseCommand {
     @CommandCompletion("@invitedTo")
     @Syntax("<guild name>")
     public void onDecline(Player player, @Values("@invitedTo") @Single String name) {
-        Guild guild = Guild.getGuild(name);
+        Guild guild = Guild.getGuild2(name);
         if (Guild.getGuild(player.getUniqueId()) != null) return;
         if (guild == null) return;
         if (!guild.getInvitedMembers().contains(player.getUniqueId())) return;
@@ -935,8 +936,9 @@ public class CommandGuilds extends BaseCommand {
     @Subcommand("accept|join")
     @Description("{@@descriptions.accept}")
     @CommandPermission("guilds.command.accept")
+    @CommandCompletion("@invitedTo")
     @Syntax("<guild name>")
-    public void onAccept(Player player, String name) {
+    public void onAccept(Player player, @Values("@invitedTo") @Single String name) {
         if (Guild.getGuild(player.getUniqueId()) != null) {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ALREADY_IN_GUILD);
             return;
@@ -961,8 +963,8 @@ public class CommandGuilds extends BaseCommand {
                     return;
                 }
             } else {
-                if (Guild.getGuild(name) != null) {
-                    guild = Guild.getGuild(name);
+                if (Guild.getGuild2(name) != null) {
+                    guild = Guild.getGuild2(name);
                 } else {
                     OfflinePlayer tempPlayer = Bukkit.getOfflinePlayer(name);
                     if (tempPlayer != null) {
@@ -1029,14 +1031,15 @@ public class CommandGuilds extends BaseCommand {
     @Subcommand("request")
     @Description("{@@descriptions.request}")
     @CommandPermission("guilds.command.request")
+    @CommandCompletion("@guilds")
     @Syntax("<guild name>")
-    public void onRequest(Player player, String name) {
+    public void onRequest(Player player, @Values("@guilds") @Single String name) {
         Guild guild = Guild.getGuild(player.getUniqueId());
         if (guild != null) {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ALREADY_IN_GUILD);
             return;
         }
-        Guild targetGuild = Guild.getGuild(name);
+        Guild targetGuild = Guild.getGuild2(name);
         if (targetGuild == null) {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__GUILD_NO_EXIST);
             return;
