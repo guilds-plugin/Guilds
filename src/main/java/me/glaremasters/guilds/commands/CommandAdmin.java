@@ -2,11 +2,14 @@ package me.glaremasters.guilds.commands;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
+import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
+import co.aikar.commands.annotation.Values;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.api.events.GuildRemoveEvent;
 import me.glaremasters.guilds.guild.Guild;
@@ -38,8 +41,9 @@ public class CommandAdmin extends BaseCommand {
     @Subcommand("admin remove")
     @Description("{@@descriptions.admin-remove}")
     @CommandPermission("guilds.command.admin")
+    @CommandCompletion("@guilds")
     @Syntax("<guild name>")
-    public void onGuildRemove(Player player, String name) {
+    public void onGuildRemove(Player player, @Values("@guilds") @Single String name) {
         Guild guild = Guild.getGuild(name);
         if (guild == null) {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__GUILD_NO_EXIST);
@@ -76,8 +80,9 @@ public class CommandAdmin extends BaseCommand {
     @Subcommand("admin addplayer")
     @Description("{@@descriptions.admin-addplayer}")
     @CommandPermission("guilds.command.admin")
+    @CommandCompletion("@online @guilds")
     @Syntax("<player> <guild>")
-    public void onAdminAddPlayer(Player player, String target, String guild) {
+    public void onAdminAddPlayer(Player player, @Values("@online") @Single String target, @Values("@guilds") @Single String guild) {
         OfflinePlayer playerToAdd = Bukkit.getOfflinePlayer(target);
         if (player == null || !player.isOnline()) return;
         if (Guild.getGuild(playerToAdd.getUniqueId()) != null) return;
@@ -102,8 +107,8 @@ public class CommandAdmin extends BaseCommand {
     @CommandPermission("guilds.command.admin")
     @Syntax("<name>")
     public void onAdminRemovePlayer(Player player, String target) {
-        Player playerToRemove = Bukkit.getPlayerExact(target);
-        if (player == null || !player.isOnline()) return;
+        OfflinePlayer playerToRemove = Bukkit.getPlayerExact(target);
+        if (player == null) return;
         if (Guild.getGuild(playerToRemove.getUniqueId()) == null) return;
         Guild guild = Guild.getGuild(playerToRemove.getUniqueId());
         guild.removeGuildPerms(guild, playerToRemove);
@@ -123,8 +128,9 @@ public class CommandAdmin extends BaseCommand {
     @Subcommand("admin upgrade")
     @Description("{@@descriptions.admin-upgrade}")
     @CommandPermission("guilds.command.admin")
+    @CommandCompletion("@guilds")
     @Syntax("<guild name>")
-    public void onAdminUpgradeGuild(Player player, String name) {
+    public void onAdminUpgradeGuild(Player player, @Values("@guilds") @Single String name) {
         Guild guild = Guild.getGuild(name);
         if (guild == null) return;
         int tier = guild.getTier();
@@ -142,8 +148,9 @@ public class CommandAdmin extends BaseCommand {
     @Subcommand("admin status")
     @Description("{@@descriptions.admin-status}")
     @CommandPermission("guilds.command.admin")
+    @CommandCompletion("@guilds")
     @Syntax("<name> <private/public>")
-    public void onAdminGuildStatus(Player player, String name) {
+    public void onAdminGuildStatus(Player player, @Values("@guilds") @Single String name) {
         Guild guild = Guild.getGuild(name);
         if (guild == null) return;
         String status = guild.getStatus();
@@ -165,8 +172,9 @@ public class CommandAdmin extends BaseCommand {
     @Subcommand("admin prefix")
     @Description("{@@descriptions.admin-prefix}")
     @CommandPermission("guilds.command.admin")
+    @CommandCompletion("@guilds")
     @Syntax("<name> <prefix>")
-    public void onAdminGuildPrefix(Player player, String name, String prefix) {
+    public void onAdminGuildPrefix(Player player, @Values("@guilds") @Single String name, String prefix) {
         Guild guild = Guild.getGuild(name);
         if (guild == null) return;
         guild.updatePrefix(color(prefix));
@@ -182,8 +190,9 @@ public class CommandAdmin extends BaseCommand {
     @Subcommand("admin rename")
     @Description("{@@descriptions.admin-prefix}")
     @CommandPermission("guilds.command.admin")
+    @CommandCompletion("@guilds")
     @Syntax("<name> <new name>")
-    public void onAdminGuildRename(Player player, String name, String newName) {
+    public void onAdminGuildRename(Player player, @Values("@guilds") @Single String name, String newName) {
         Guild guild = Guild.getGuild(name);
         if (guild == null) return;
         String oldName = guild.getName();
