@@ -216,6 +216,7 @@ public class CommandGuilds extends BaseCommand {
             return;
         }
         guild.updateHome(ACFBukkitUtil.fullLocationToString(player.getLocation()));
+        guilds.getEconomy().withdrawPlayer(player, getDouble("cost.sethome"));
         getCurrentCommandIssuer().sendInfo(Messages.SETHOME__SUCCESSFUL);
         setHome.add(player);
         Bukkit.getServer().getScheduler().runTaskLaterAsynchronously(guilds, () -> setHome.remove(player), (20 * getInt("cooldowns.sethome")));
