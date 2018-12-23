@@ -1125,8 +1125,8 @@ public class CommandGuilds extends BaseCommand {
     private void createBuffItem(String buffName, List<String> name, Inventory buff, int slot) {
         getStringList("buff.description." + buffName).stream().map(ConfigUtils::color).forEach(name::add);
         name.add("");
-        name.add(getString("buff.description.price") + getInt("buff.price." + buffName));
-        name.add(getString("buff.description.length") + getInt("buff.time." + buffName));
+        name.add(getString("buff.description.price") + getString("buff.price." + buffName));
+        name.add(getString("buff.description.length") + getString("buff.time." + buffName));
         if (getBoolean("buff.display." + buffName)) {
             buff.setItem(slot, createItemStack(Material.getMaterial(getString("buff.icon." + buffName)), getString("buff.name." + buffName), name));
         }
