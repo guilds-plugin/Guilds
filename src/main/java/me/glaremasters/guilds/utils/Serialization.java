@@ -19,7 +19,7 @@ public class Serialization {
     private Serialization() {}
 
     public static String serializeInventory(Inventory inventory) {
-        return serializeInventory(inventory.getTitle(), inventory.getSize(), inventory.getStorageContents());
+        return serializeInventory(inventory.getTitle(), inventory.getSize(), inventory.getContents());
     }
 
     /**

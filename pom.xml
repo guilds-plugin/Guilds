@@ -72,6 +72,10 @@
                   <pattern>org.codemc.worldguardwrapper</pattern>
                   <shadedPattern>me.glaremasters.libs.worldguardwrapper</shadedPattern>
                 </relocation>
+                <relocation>
+                  <pattern>com.google.gson</pattern>
+                  <shadedPattern>me.glaremasters.libs.gson</shadedPattern>
+                </relocation>
               </relocations>
             </configuration>
           </execution>
@@ -161,7 +165,6 @@
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
       <version>2.8.5</version>
-      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>co.aikar</groupId>
