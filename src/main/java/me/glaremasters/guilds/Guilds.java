@@ -165,7 +165,12 @@ public final class Guilds extends JavaPlugin {
             actionHandler.disable();
             spy.clear();
             HeadUtils.textures.clear();
-            vaults.clear();
+            try {
+                vaults.clear();
+            } catch (Exception ex) {
+                info("There was an issue saving Guilds Vaults.");
+            }
+
         }
     }
 
