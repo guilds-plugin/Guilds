@@ -51,6 +51,9 @@ public class CommandBank extends BaseCommand {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
             return;
         }
+
+        if (amount < 0) return;
+
         if (guilds.getEconomy().getBalance(player) < amount) {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__NOT_ENOUGH_MONEY);
             return;
@@ -77,6 +80,9 @@ public class CommandBank extends BaseCommand {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
             return;
         }
+
+        if (amount < 0) return;
+
         Double balance = guild.getBalance();
         if ((balance < amount)) {
             getCurrentCommandIssuer().sendInfo(Messages.BANK__NOT_ENOUGH_BANK);

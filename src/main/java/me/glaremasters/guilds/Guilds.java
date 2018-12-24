@@ -549,7 +549,7 @@ public final class Guilds extends JavaPlugin {
     /**
      * Register optional listeners based off values in the config
      */
-    public void optionalListeners() {
+    private void optionalListeners() {
         if (getConfig().getBoolean("main-hooks.essentials-chat")) {
             getServer().getPluginManager().registerEvents(new EssentialsChat(this), this);
         }
