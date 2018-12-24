@@ -160,16 +160,14 @@ public final class Guilds extends JavaPlugin {
     @Override
     public void onDisable() {
         if (checkVault()) {
-            saveVaultCaches();
+            if (!getVaults().isEmpty()) {
+                saveVaultCaches();
+            }
             guildHandler.disable();
             actionHandler.disable();
             spy.clear();
             HeadUtils.textures.clear();
-            try {
-                vaults.clear();
-            } catch (Exception ex) {
-                info("There was an issue saving Guilds Vaults.");
-            }
+            vaults.clear();
 
         }
     }
