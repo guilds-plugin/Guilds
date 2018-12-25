@@ -39,6 +39,7 @@ permissions:
       guilds.command.unclaim: true
       guilds.command.bank: true
       guilds.command.ally: true
+      guilds.command.vault: true
     default: true
   guilds.group.admin:
     children:
