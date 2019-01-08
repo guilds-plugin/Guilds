@@ -174,10 +174,10 @@ accept:
 claim:
   already-exists: "&cVocê já tem uma terra reinvidicada. Por favor remova sua reclamação anterior para criar uma nova"
   overlap: "&cSua terra não pode ser reinvidicada pois há outra terra reinvidicada por perto"
-  success: "&aNew claim created! It goes from {loc1} to {loc2}!"
-  hook-disabled: "&cPlease enable claims in the config to utilize this feature"
+  success: "&aNova terra reinvidicada com sucesso! ela vai de {loc1} para {loc2}!"
+  hook-disabled: "&cPor favor ative reinvidicações na configuração para utilizar este recurso"
 unclaim:
-  success: "&aYou've successfully remove your guild claim!"
-  not-found: "&cYou can't unclaim land that you don't have!"
+  success: "&aVocê removeu a reinvidicação de sua guild!"
+  not-found: "&cVocê não pode remover terra que você não possui!"
 pending:
-  invites: "&aYou have {number} pending invite(s) from the guild(s): &e{guilds}&r&a . Use /guild accept <name> or /guild deny <name> to join or deny an invite!"
+  invites: "&aVocê tem {number} convite(s) pendente(s) da(s) guild(s): &e{guilds}&r&a . Use /guild accept <name> ou /guild deny <name> para aceitar ou rejeitar um convite!"
