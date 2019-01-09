@@ -50,7 +50,7 @@ descriptions:
   version: "Информация о плагине"
 create:
   guild-name-taken: "&cЭто название уже занято!"
-  warning: "&cThe creation of a Guild cost {amount}. Type /guilds confirm to create your guild, type /guilds cancel to cancel."
+  warning: "&cСтоимость создания Гильдии составляет {amount}. Введите /guilds confirm для подтверждения, или /guilds cancel для отмены создания гильдии."
   successful: "&aГильдия {guild}&r&a успешно создана!"
   cancelled: "&cСоздание Гильдии отменено!"
   requirements: "&cНазвание вашей гильдии не соответствует требованиям! Вы можете использовать лишь буквы и цифры, а длина не должна превышать 64 символов"
