@@ -1,9 +1,9 @@
 ---
 descriptions:
-  accept: "Accept a guild invite"
-  admin-addplayer: "Admin command to add a player to a Guild"
-  admin-prefix: "Admin command to change a Guild's prefix"
-  admin-rename: "Admin command to rename a Guild"
+  accept: "Aceptar una invitación de gremio"
+  admin-addplayer: "Comando de administración para agregar un jugador a un gremio"
+  admin-prefix: "Comando de administrador para cambiar el prefijo de un gremio"
+  admin-rename: "Comando de administrador para cambiar el nombre de un gremio"
   admin-remove: "Admin command to remove a Guild from the server"
   admin-removeplayer: "Admin command to remove a player from a Guild"
   admin-status: "Admin command to change a Guild's status"
