@@ -33,7 +33,7 @@ descriptions:
   home: "Hazamenetel a céh otthonába"
   info: "Céh Info GUI megnyitása"
   invite: "Egy másik játékos meghívása a céhbe"
-  kick: "Kick someone from your Guild"
+  kick: "Valaki kirúgása a Céhből"
   leave: "Céh elhagyása"
   list: "Az összes céh kilistázása"
   prefix: "A céh előtagjának megváltoztatása"
