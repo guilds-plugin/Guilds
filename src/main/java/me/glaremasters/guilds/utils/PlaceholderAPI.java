@@ -67,9 +67,9 @@ public class PlaceholderAPI extends PlaceholderExpansion {
             case "role":
                 return api.getGuildRole(p);
             case "tier":
-                return Integer.toString(api.getGuildTier(p));
+                return String.valueOf(api.getGuildTier(p));
             case "balance":
-                return Double.toString(api.getBankBalance(p));
+                return String.valueOf(api.getBankBalance(p));
             case "tier_name":
                 return api.getTierName(p);
             case "role_node":
