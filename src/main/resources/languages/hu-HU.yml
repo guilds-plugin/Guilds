@@ -61,7 +61,7 @@ request:
   success: "&aTe sikeresen kérvényeztél egy meghívást az alábbi céhbe: {guild}"
   incoming-request: "&a{player} kérvényezi a csatlakozást a céhhez. Ahhoz hgy csatlakozhasson, írd be az alábbi parancsot /guild invite {player}"
 error:
-  already-in-guild: "&cNem vagy benne a céhben."
+  already-in-guild: "&cTe már benne vagy egy céhben!"
   no-guild: "&cNem vagy benne semmilyen céhben."
   role-no-permission: "&cA céh rangod nem elég magas ahhoz hogy ezt megtegyed!"
   guild-no-exist: "&cEz a céh nem létezik! (Ha ezt az egyéni színű nevű céhhez való csatlakozás miatt kapja meg, próbálja meg a /join guild <játékos, aki meghívott, hogy csatlakozzon hozzánk is)"
