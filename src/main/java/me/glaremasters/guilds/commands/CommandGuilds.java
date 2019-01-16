@@ -53,7 +53,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import static javax.swing.UIManager.getInt;
-import static me.glaremasters.guilds.listeners.Players.GUILD_CHAT_PLAYERS;
+import static me.glaremasters.guilds.listeners.PlayerListener.GUILD_CHAT_PLAYERS;
 import static me.glaremasters.guilds.utils.ConfigUtils.*;
 
 /**

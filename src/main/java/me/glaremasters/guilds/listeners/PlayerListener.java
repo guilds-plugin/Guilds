@@ -35,7 +35,7 @@ import static me.glaremasters.guilds.utils.ConfigUtils.*;
  * Date: 7/19/2018
  * Time: 5:31 PM
  */
-public class Players implements Listener {
+public class PlayerListener implements Listener {
 
     private Guilds guilds;
     private GuildUtils utils;
@@ -43,7 +43,7 @@ public class Players implements Listener {
     private Set<UUID> ALREADY_INFORMED = new HashSet<>();
     public static final Set<UUID> GUILD_CHAT_PLAYERS = new HashSet<>();
 
-    public Players(Guilds guilds, GuildUtils utils) {
+    public PlayerListener(Guilds guilds, GuildUtils utils) {
         this.guilds = guilds;
         this.utils = utils;
     }

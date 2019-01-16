@@ -19,13 +19,8 @@ import me.glaremasters.guilds.database.databases.json.JSON;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
-import me.glaremasters.guilds.listeners.EssentialsChat;
-import me.glaremasters.guilds.listeners.GuildPerks;
-import me.glaremasters.guilds.listeners.InventoryListener;
-import me.glaremasters.guilds.listeners.Players;
-import me.glaremasters.guilds.listeners.TablistListener;
-import me.glaremasters.guilds.listeners.Tickets;
-import me.glaremasters.guilds.listeners.WorldGuard;
+import me.glaremasters.guilds.listeners.*;
+import me.glaremasters.guilds.listeners.WorldGuardListener;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.updater.SpigotUpdater;
 import me.glaremasters.guilds.utils.ActionHandler;
@@ -149,7 +144,7 @@ public final class Guilds extends JavaPlugin {
         }
 
 
-        Stream.of(new GuildPerks(guilds), new Players(this, utils), new Tickets(this, utils), new InventoryListener(this)).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
+        Stream.of(new EntityListener(guilds), new PlayerListener(this, utils), new TicketListener(this, utils), new InventoryListener(this)).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
         optionalListeners();
         info("Ready to go! That only took " + (System.currentTimeMillis() - start) + "ms");
         loadSkulls();
@@ -555,7 +550,7 @@ public final class Guilds extends JavaPlugin {
      */
     private void optionalListeners() {
         if (getConfig().getBoolean("main-hooks.essentials-chat")) {
-            getServer().getPluginManager().registerEvents(new EssentialsChat(this, utils), this);
+            getServer().getPluginManager().registerEvents(new EssentialsChatListener(this, utils), this);
         }
 
         if (getConfig().getBoolean("main-hooks.tablist-guilds")) {
@@ -563,7 +558,7 @@ public final class Guilds extends JavaPlugin {
         }
 
         if (getConfig().getBoolean("main-hooks.worldguard-claims")) {
-            getServer().getPluginManager().registerEvents(new WorldGuard(this, utils), this);
+            getServer().getPluginManager().registerEvents(new WorldGuardListener(this, utils), this);
         }
     }
 

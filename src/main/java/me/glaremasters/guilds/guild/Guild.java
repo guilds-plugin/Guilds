@@ -15,19 +15,12 @@ import java.util.UUID;
 public class Guild {
 
     private transient String name;
-
     private String prefix, home = "", status , inventory = "", texture;
-
     private int tier = 1;
-
     private double balance = 0D;
-
     private List<GuildMember> members = new ArrayList<>();
-
     private List<String> allies = new ArrayList<>();
-
     private List<UUID> invitedMembers = new ArrayList<>();
-
     private List<String> pendingAllies = new ArrayList<>();
 
     public Guild(String name) {

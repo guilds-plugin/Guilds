@@ -14,13 +14,13 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.codemc.worldguardwrapper.WorldGuardWrapper;
 import org.codemc.worldguardwrapper.region.IWrappedRegion;
 
-public class WorldGuard implements Listener {
+public class WorldGuardListener implements Listener {
 
     private Guilds guilds;
     private GuildUtils utils;
     private WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();
 
-    public WorldGuard(Guilds guilds, GuildUtils utils) {
+    public WorldGuardListener(Guilds guilds, GuildUtils utils) {
         this.guilds = guilds;
         this.utils = utils;
     }
