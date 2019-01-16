@@ -8,6 +8,7 @@ import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.database.Callback;
 import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.guild.Guild;
+import me.glaremasters.guilds.guild.GuildHandler;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -22,13 +23,15 @@ import java.util.Map;
 public class JSON implements DatabaseProvider {
 
     private Gson gson;
-    private File guildsFile, folder;
+    private File guildsFile;
     private Type guildsType;
 
-    private Guilds guilds;
+    private GuildHandler guildHandler;
+    private File dataFolder;
 
-    public JSON(Guilds guilds) {
-        this.guilds = guilds;
+    public JSON(GuildHandler guildHandler, File dataFolder) {
+        this.guildHandler = guildHandler;
+        this.dataFolder = dataFolder;
     }
 
 
@@ -38,14 +41,15 @@ public class JSON implements DatabaseProvider {
     @Override
     public void initialize() {
 
-        folder = new File(guilds.getDataFolder(), "data/");
+        File folder = new File(dataFolder, "data/");
         guildsFile = new File(folder, "guilds.json");
         guildsType = new TypeToken<Map<String, Guild>>() {
         }.getType();
 
         gson = new GsonBuilder().registerTypeAdapter(guildsType, new GuildMapDeserializer()).setPrettyPrinting().create();
 
-        if (!folder.exists()) folder.mkdirs();
+        //noinspection ResultOfMethodCallIgnored
+        folder.mkdirs();
 
         if (!guildsFile.exists()) {
             try {
@@ -77,7 +81,7 @@ public class JSON implements DatabaseProvider {
      */
     @Override
     public void removeGuild(Guild guild) {
-        HashMap<String, Guild> guilds = getGuilds();
+        Map<String, Guild> guilds = getGuilds();
         if (guilds == null || !guilds.keySet().contains(guild.getName())) return;
         guilds.remove(guild.getName());
         write(guildsFile, guilds, guildsType);
@@ -98,7 +102,6 @@ public class JSON implements DatabaseProvider {
      * @param callback all the guilds currently loaded on the server
      */
     @Override
-    @SuppressWarnings("unchecked")
     public void getGuilds(Callback<HashMap<String, Guild>, Exception> callback) {
         Guilds.newChain().asyncFirst(() -> {
             JsonReader reader;
@@ -110,7 +113,7 @@ public class JSON implements DatabaseProvider {
             }
 
             return gson.fromJson(reader, guildsType);
-        }).syncLast(guilds -> callback.call((HashMap<String, Guild>) guilds, null)).execute();
+        }).syncLast(guilds -> callback.call((Map<String, Guild>) guilds, null)).execute();
     }
 
     /**
@@ -119,14 +122,14 @@ public class JSON implements DatabaseProvider {
      */
     @Override
     public void updateGuild(Guild guild) {
-        HashMap<String, Guild> guilds = getGuilds();
+        Map<String, Guild> guilds = getGuilds();
         guilds.put(guild.getName(), guild);
         write(guildsFile, guilds, guildsType);
     }
 
     @Override
     public void updateGuild() {
-        HashMap<String, Guild> guilds = getGuilds();
+        Map<String, Guild> guilds = getGuilds();
         write(guildsFile, guilds, guildsType);
     }
 
@@ -135,15 +138,12 @@ public class JSON implements DatabaseProvider {
      * @param file the file being written to
      * @param toWrite the content being updated
      * @param typeOfSrc the GSON type that is being used
-     * @return true or false if it can write
      */
-    private boolean write(File file, Object toWrite, Type typeOfSrc) {
+    private void write(File file, Object toWrite, Type typeOfSrc) {
         try (Writer writer = new FileWriter(file)) {
             gson.toJson(toWrite, typeOfSrc, writer);
-            return true;
         } catch (IOException e) {
             e.printStackTrace();
-            return false;
         }
     }
 
@@ -151,8 +151,8 @@ public class JSON implements DatabaseProvider {
      * The Map of all guilds on the server
      * @return hashmap of all guilds
      */
-    private HashMap<String, Guild> getGuilds() {
-        return guilds.getGuildHandler().getGuilds();
+    private Map<String, Guild> getGuilds() {
+        return guildHandler.getGuilds();
     }
 
 }
