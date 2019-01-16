@@ -1,7 +1,7 @@
 package me.glaremasters.guilds.guild;
 
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ import java.util.UUID;
 /**
  * Created by GlareMasters on 6/28/2018.
  */
-@Getter @Setter @NoArgsConstructor
+@Getter @Setter
 public class Guild {
 
     private transient String name;
@@ -34,6 +34,7 @@ public class Guild {
         this.name = name;
     }
 
+    @Builder
     public Guild(String name, String prefix, String status, String texture, UUID master) {
         this.name = name;
         this.prefix = prefix;
@@ -54,5 +55,5 @@ public class Guild {
     public GuildMember getMember(UUID uuid) {
         return members.stream().filter(m -> m.getUniqueId().equals(uuid)).findFirst().orElse(null);
     }
-
 }
+

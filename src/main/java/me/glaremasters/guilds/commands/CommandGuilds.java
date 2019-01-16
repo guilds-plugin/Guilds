@@ -22,7 +22,6 @@ import me.glaremasters.guilds.api.events.GuildJoinEvent;
 import me.glaremasters.guilds.api.events.GuildLeaveEvent;
 import me.glaremasters.guilds.api.events.GuildRemoveEvent;
 import me.glaremasters.guilds.guild.Guild;
-import me.glaremasters.guilds.guild.GuildBuilder;
 import me.glaremasters.guilds.guild.GuildMember;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.messages.Messages;
@@ -131,7 +130,7 @@ public class CommandGuilds extends BaseCommand {
             public void accept() {
                 if (meetsCost(player, "cost.creation")) return;
                 guilds.getEconomy().withdrawPlayer(player, getDouble("cost.creation"));
-                GuildBuilder.GuildBuilderBuilder gb = GuildBuilder.builder();
+                Guild.GuildBuilder gb = Guild.builder();
                 gb.name(color(name));
                 if (prefix == null) {
                     gb.prefix(color(name));
@@ -142,7 +141,7 @@ public class CommandGuilds extends BaseCommand {
                 gb.status("Private");
                 gb.texture(HeadUtils.getTextureUrl(player.getUniqueId()));
                 gb.master(player.getUniqueId());
-                Guild guild = gb.build().createGuild();
+                Guild guild = gb.build();
                 GuildCreateEvent event = new GuildCreateEvent(player, guild);
                 guilds.getServer().getPluginManager().callEvent(event);
                 if (event.isCancelled()) return;
