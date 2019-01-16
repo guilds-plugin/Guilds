@@ -43,7 +43,7 @@ public class JSON implements DatabaseProvider {
         guildsType = new TypeToken<Map<String, Guild>>() {
         }.getType();
 
-        gson = new GsonBuilder().registerTypeAdapter(guildsType, new GuildMapDeserializer()).excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().create();
+        gson = new GsonBuilder().registerTypeAdapter(guildsType, new GuildMapDeserializer()).setPrettyPrinting().create();
 
         if (!folder.exists()) folder.mkdirs();
 

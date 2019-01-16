@@ -25,7 +25,7 @@ public class Tablist {
      * @param player the player being modified
      */
     public void add(Player player) {
-        Guild guild = Guild.getGuild(player.getUniqueId());
+        Guild guild = guilds.getGuildUtils().getGuild(player.getUniqueId());
         String name = guilds.getConfig().getBoolean("tablist-use-display-name") ? player.getDisplayName() : player.getName();
         player.setPlayerListName(color(guilds.getConfig().getString("tablist")
                 .replace("{guild}", guild.getName())

@@ -29,6 +29,7 @@ import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.updater.SpigotUpdater;
 import me.glaremasters.guilds.utils.ConfigUtils;
 import me.glaremasters.guilds.utils.ConfirmAction;
+import me.glaremasters.guilds.utils.GuildUtils;
 import me.glaremasters.guilds.utils.HeadUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -72,8 +73,14 @@ public class CommandGuilds extends BaseCommand {
     @Dependency
     private Guilds guilds;
 
+    private GuildUtils utils;
+
     public static Inventory guildList = null;
     public static Map<UUID, Integer> playerPages = new HashMap<>();
+
+    public CommandGuilds(GuildUtils utils) {
+        this.utils = utils;
+    }
 
     /**
      * Create a guild
@@ -86,7 +93,7 @@ public class CommandGuilds extends BaseCommand {
     @CommandPermission("guilds.command.create")
     @Syntax("<name> (optional) <prefix>")
     public void onCreate(Player player, String name, @Optional String prefix) {
-        if (Guild.getGuild(player.getUniqueId()) != null) {
+        if (utils.getGuild(player.getUniqueId()) != null) {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ALREADY_IN_GUILD);
             return;
         }
@@ -124,17 +131,18 @@ public class CommandGuilds extends BaseCommand {
             public void accept() {
                 if (meetsCost(player, "cost.creation")) return;
                 guilds.getEconomy().withdrawPlayer(player, getDouble("cost.creation"));
-                GuildBuilder gb = new GuildBuilder();
-                gb.setName(color(name));
+                GuildBuilder.GuildBuilderBuilder gb = GuildBuilder.builder();
+                gb.name(color(name));
                 if (prefix == null) {
-                    gb.setPrefix(color(name));
+                    gb.prefix(color(name));
                 } else {
                     if (!prefix.matches(getString("prefix.regex"))) return;
-                    gb.setPrefix(color(prefix));
+                    gb.prefix(color(prefix));
                 }
-                gb.setStatus("Private");
-                gb.setMaster(player.getUniqueId());
-                Guild guild = gb.createGuild();
+                gb.status("Private");
+                gb.texture(HeadUtils.getTextureUrl(player.getUniqueId()));
+                gb.master(player.getUniqueId());
+                Guild guild = gb.build().createGuild();
                 GuildCreateEvent event = new GuildCreateEvent(player, guild);
                 guilds.getServer().getPluginManager().callEvent(event);
                 if (event.isCancelled()) return;
@@ -217,7 +225,7 @@ public class CommandGuilds extends BaseCommand {
             getCurrentCommandIssuer().sendInfo(Messages.SETHOME__COOLDOWN, "{amount}", String.valueOf(getInt("cooldowns.sethome")));
             return;
         }
-        guild.updateHome(ACFBukkitUtil.fullLocationToString(player.getLocation()));
+        guild.setHome(ACFBukkitUtil.fullLocationToString(player.getLocation()));
         guilds.getEconomy().withdrawPlayer(player, getDouble("cost.sethome"));
         getCurrentCommandIssuer().sendInfo(Messages.SETHOME__SUCCESSFUL);
         setHome.add(player);
@@ -238,7 +246,7 @@ public class CommandGuilds extends BaseCommand {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
             return;
         }
-        guild.updateHome("");
+        guild.setHome("");
         getCurrentCommandIssuer().sendInfo(Messages.SETHOME__SUCCESSFUL);
     }
 
@@ -348,9 +356,9 @@ public class CommandGuilds extends BaseCommand {
         }
 
         String oldName = guild.getName();
-        guilds.getDatabase().removeGuild(Guild.getGuild(oldName));
+        guilds.getDatabase().removeGuild(utils.getGuild(oldName));
         getCurrentCommandIssuer().sendInfo(Messages.RENAME__SUCCESSFUL, "{name}", name);
-        guild.updateName(color(name));
+        guild.setName(color(name));
     }
 
     /**
@@ -401,7 +409,7 @@ public class CommandGuilds extends BaseCommand {
         }
         String updatedStatus = StringUtils.capitalize(status);
         getCurrentCommandIssuer().sendInfo(Messages.STATUS__SUCCESSFUL, "{status}", status);
-        guild.updateStatus(updatedStatus);
+        guild.setStatus(updatedStatus);
     }
 
     /**
@@ -425,7 +433,7 @@ public class CommandGuilds extends BaseCommand {
             return;
         }
         getCurrentCommandIssuer().sendInfo(Messages.PREFIX__SUCCESSFUL, "{prefix}", prefix);
-        guild.updatePrefix(color(prefix));
+        guild.setPrefix(color(prefix));
     }
 
     /**
@@ -481,7 +489,7 @@ public class CommandGuilds extends BaseCommand {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__PLAYER_NOT_FOUND, "{player}", targetPlayer);
             return;
         }
-        Guild invitedPlayerGuild = Guild.getGuild(target.getUniqueId());
+        Guild invitedPlayerGuild = utils.getGuild(target.getUniqueId());
 
         if (invitedPlayerGuild != null) {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ALREADY_IN_GUILD);
@@ -497,7 +505,7 @@ public class CommandGuilds extends BaseCommand {
         guilds.getServer().getPluginManager().callEvent(event);
         if (event.isCancelled()) return;
 
-        guild.inviteMember(target.getUniqueId());
+        utils.inviteMember(guild, target.getUniqueId());
         guilds.getManager().getCommandIssuer(target).sendInfo(Messages.INVITE__MESSAGE, "{player}", player.getName(), "{guild}", guild.getName());
         getCurrentCommandIssuer().sendInfo(Messages.INVITE__SUCCESSFUL, "{player}", target.getName());
 
@@ -522,12 +530,12 @@ public class CommandGuilds extends BaseCommand {
             getCurrentCommandIssuer().sendInfo(Messages.UPGRADE__TIER_MAX);
             return;
         }
-        if (guild.getMembersToRankup() != 0 && guild.getMembers().size() < guild.getMembersToRankup()) {
-            getCurrentCommandIssuer().sendInfo(Messages.UPGRADE__NOT_ENOUGH_MEMBERS, "{amount}", String.valueOf(guild.getMembersToRankup()));
+        if (utils.getMembersToRankup(guild) != 0 && guild.getMembers().size() < utils.getMembersToRankup(guild)) {
+            getCurrentCommandIssuer().sendInfo(Messages.UPGRADE__NOT_ENOUGH_MEMBERS, "{amount}", String.valueOf(utils.getMembersToRankup(guild)));
             return;
         }
         double balance = guild.getBalance();
-        double upgradeCost = guild.getTierCost();
+        double upgradeCost = utils.getTierCost(guild);
         if (balance < upgradeCost) {
             getCurrentCommandIssuer().sendInfo(Messages.UPGRADE__NOT_ENOUGH_MONEY, "{needed}", String.valueOf(upgradeCost - balance));
             return;
@@ -540,15 +548,15 @@ public class CommandGuilds extends BaseCommand {
                     getCurrentCommandIssuer().sendInfo(Messages.UPGRADE__NOT_ENOUGH_MONEY, "{needed}", String.valueOf(upgradeCost - balance));
                     return;
                 }
-                guild.updateBalance(balance - upgradeCost);
+                guild.setBalance(balance - upgradeCost);
                 getCurrentCommandIssuer().sendInfo(Messages.UPGRADE__SUCCESS);
                 if (guilds.getConfig().getBoolean("carry-over-perms")) {
-                    guild.updateTier(tier + 1);
-                    Bukkit.getScheduler().scheduleSyncDelayedTask(guilds, () -> guild.addGuildPerms(guild), 60L);
+                    guild.setTier(tier + 1);
+                    Bukkit.getScheduler().scheduleSyncDelayedTask(guilds, () -> utils.addGuildPerms(guild), 60L);
                 } else {
-                    guild.removeGuildPerms(guild);
-                    guild.updateTier(tier + 1);
-                    Bukkit.getScheduler().scheduleSyncDelayedTask(guilds, () -> guild.addGuildPerms(guild), 60L);
+                    utils.removeGuildPerms(guild);
+                    guild.setTier(tier + 1);
+                    Bukkit.getScheduler().scheduleSyncDelayedTask(guilds, () -> utils.addGuildPerms(guild), 60L);
                 }
             }
 
@@ -603,7 +611,7 @@ public class CommandGuilds extends BaseCommand {
         if (oldMaster.getRole() == 0) {
             oldMaster.setRole(oldRole);
             newMaster.setRole(newRole);
-            guild.updateGuild("", guild.getName(), Guild.getGuild(guild.getName()).getName());
+            utils.updateGuilds();
             getCurrentCommandIssuer().sendInfo(Messages.TRANSFER__SUCCESS);
             guilds.getManager().getCommandIssuer(transferPlayer).sendInfo(Messages.TRANSFER__NEWMASTER);
         }
@@ -638,17 +646,17 @@ public class CommandGuilds extends BaseCommand {
                     if (removeEvent.isCancelled()) return;
                     guilds.getVaults().remove(guild);
                     Guilds.checkForClaim(player, guild, guilds);
-                    guild.sendMessage(Messages.LEAVE__GUILDMASTER_LEFT, "{player}", player.getName());
-                    guild.removeGuildPerms(guild);
+                    utils.sendMessage(guild, Messages.LEAVE__GUILDMASTER_LEFT, "{player}", player.getName());
+                    utils.removeGuildPerms(guild);
                     guilds.getDatabase().removeGuild(guild);
-                    guild.removeMember(player.getUniqueId());
+                    utils.removeMember(guild, player.getUniqueId());
                     getCurrentCommandIssuer().sendInfo(Messages.LEAVE__SUCCESSFUL);
                     guilds.getActionHandler().removeAction(player);
                 } else {
-                    guild.removeMember(player.getUniqueId());
+                    utils.removeMember(guild, player.getUniqueId());
                     getCurrentCommandIssuer().sendInfo(Messages.LEAVE__SUCCESSFUL);
-                    guild.sendMessage(Messages.LEAVE__PLAYER_LEFT, "{player}", player.getName());
-                    guild.removeGuildPerms(guild, player);
+                    utils.sendMessage(guild, Messages.LEAVE__PLAYER_LEFT, "{player}", player.getName());
+                    utils.removeGuildPerms(guild, player);
                     guilds.getActionHandler().removeAction(player);
                 }
             }
@@ -702,7 +710,7 @@ public class CommandGuilds extends BaseCommand {
         // Item 2: Diamond
         List<String> diamondlore = new ArrayList<>();
         diamondlore.add(getString("info.balance").replace("{guild-balance}", String.valueOf(guild.getBalance())));
-        diamondlore.add(getString("info.max-balance").replace("{guild-max-balance}", String.valueOf(guild.getMaxBankBalance())));
+        diamondlore.add(getString("info.max-balance").replace("{guild-max-balance}", String.valueOf(utils.getMaxBankBalance(guild))));
         heads.setItem(3, createItemStack(Material.DIAMOND, getString("info.money"), diamondlore));
 
         // Open inventory
@@ -734,7 +742,7 @@ public class CommandGuilds extends BaseCommand {
                 guilds.getVaults().remove(guild);
                 Guilds.checkForClaim(player, guild, guilds);
                 getCurrentCommandIssuer().sendInfo(Messages.DELETE__SUCCESSFUL, "{guild}", guild.getName());
-                guild.removeGuildPerms(guild);
+                utils.removeGuildPerms(guild);
                 guilds.getDatabase().removeGuild(guild);
                 guilds.getActionHandler().removeAction(player);
             }
@@ -758,12 +766,12 @@ public class CommandGuilds extends BaseCommand {
     @CommandCompletion("@invitedTo")
     @Syntax("<guild name>")
     public void onDecline(Player player, @Values("@invitedTo") @Single String name) {
-        Guild guild = Guild.getGuild2(name);
-        if (Guild.getGuild(player.getUniqueId()) != null) return;
+        Guild guild = utils.getGuild2(name);
+        if (utils.getGuild(player.getUniqueId()) != null) return;
         if (guild == null) return;
         if (!guild.getInvitedMembers().contains(player.getUniqueId())) return;
         getCurrentCommandIssuer().sendInfo(Messages.DECLINE__SUCCESS);
-        guild.removeInvitedPlayer(player.getUniqueId());
+        utils.removeInvitedPlayer(guild, player.getUniqueId());
     }
 
     /**
@@ -793,7 +801,7 @@ public class CommandGuilds extends BaseCommand {
             return;
         }
 
-        Guild targetGuild = Guild.getGuild(kickedPlayer.getUniqueId());
+        Guild targetGuild = utils.getGuild(kickedPlayer.getUniqueId());
         if (targetGuild == null) return;
         if (!guild.getName().equals(targetGuild.getName())) return;
 
@@ -801,10 +809,10 @@ public class CommandGuilds extends BaseCommand {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
             return;
         }
-        guild.removeGuildPerms(guild, bootedPlayer);
-        guild.removeMember(kickedPlayer.getUniqueId());
+        utils.removeGuildPerms(guild, bootedPlayer);
+        utils.removeMember(guild, kickedPlayer.getUniqueId());
         getCurrentCommandIssuer().sendInfo(Messages.BOOT__SUCCESSFUL, "{player}", bootedPlayer.getName());
-        guild.sendMessage(Messages.BOOT__PLAYER_KICKED, "{player}", bootedPlayer.getName(), "{kicker}", player.getName());
+        utils.sendMessage(guild, Messages.BOOT__PLAYER_KICKED, "{player}", bootedPlayer.getName(), "{kicker}", player.getName());
         if (bootedPlayer.isOnline()) {
             guilds.getManager().getCommandIssuer(bootedPlayer).sendInfo(Messages.BOOT__KICKED, "{kicker}", player.getName());
         }
@@ -869,7 +877,7 @@ public class CommandGuilds extends BaseCommand {
         String newRank = demotedRole.getName();
 
         demotedMember.setRole(demotedRole);
-        guild.updateGuild("");
+        utils.updateGuilds();
 
         getCurrentCommandIssuer().sendInfo(Messages.DEMOTE__DEMOTE_SUCCESSFUL, "{player}", demotedPlayer.getName(), "{old}", oldRank, "{new}", newRank);
         if (demotedPlayer.isOnline()) {
@@ -920,7 +928,7 @@ public class CommandGuilds extends BaseCommand {
         String newRank = promotedRole.getName();
 
         promotedMember.setRole(promotedRole);
-        guild.updateGuild("");
+        utils.updateGuilds();
 
         getCurrentCommandIssuer().sendInfo(Messages.PROMOTE__PROMOTE_SUCCESSFUL, "{player}", promotedPlayer.getName(), "{old}", oldRank, "{new}", newRank);
         if (promotedPlayer.isOnline()) {
@@ -939,7 +947,7 @@ public class CommandGuilds extends BaseCommand {
     @CommandCompletion("@invitedTo")
     @Syntax("<guild name>")
     public void onAccept(Player player, @Values("@invitedTo") @Single String name) {
-        if (Guild.getGuild(player.getUniqueId()) != null) {
+        if (utils.getGuild(player.getUniqueId()) != null) {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ALREADY_IN_GUILD);
             return;
         }
@@ -963,12 +971,12 @@ public class CommandGuilds extends BaseCommand {
                     return;
                 }
             } else {
-                if (Guild.getGuild2(name) != null) {
-                    guild = Guild.getGuild2(name);
+                if (utils.getGuild2(name) != null) {
+                    guild = utils.getGuild2(name);
                 } else {
                     OfflinePlayer tempPlayer = Bukkit.getOfflinePlayer(name);
                     if (tempPlayer != null) {
-                        guild = Guild.getGuild(tempPlayer.getUniqueId());
+                        guild = utils.getGuild(tempPlayer.getUniqueId());
                     }
                 }
             }
@@ -988,7 +996,7 @@ public class CommandGuilds extends BaseCommand {
             }
         }
 
-        if (guild.getMembers().size() >= guild.getMaxMembers()) {
+        if (guild.getMembers().size() >= utils.getMaxMembers(guild)) {
             getCurrentCommandIssuer().sendInfo(Messages.ACCEPT__GUILD_FULL);
             return;
         }
@@ -997,9 +1005,9 @@ public class CommandGuilds extends BaseCommand {
         guilds.getServer().getPluginManager().callEvent(event);
         if (event.isCancelled()) return;
 
-        guild.sendMessage(Messages.ACCEPT__PLAYER_JOINED, "{player}", player.getName());
-        guild.addMember(player.getUniqueId(), GuildRole.getLowestRole());
-        guild.removeInvitedPlayer(player.getUniqueId());
+        utils.sendMessage(guild, Messages.ACCEPT__PLAYER_JOINED, "{player}", player.getName());
+        utils.addMember(guild, player.getUniqueId(), GuildRole.getLowestRole());
+        utils.removeInvitedPlayer(guild, player.getUniqueId());
         getCurrentCommandIssuer().sendInfo(Messages.ACCEPT__SUCCESSFUL, "{guild}", guild.getName());
     }
 
@@ -1011,7 +1019,7 @@ public class CommandGuilds extends BaseCommand {
     @Description("{@@descriptions.check}")
     @CommandPermission("guilds.command.check")
     public void onCheck(Player player) {
-        Guild guild2 = Guild.getGuild(player.getUniqueId());
+        Guild guild2 = utils.getGuild(player.getUniqueId());
         if (!(guild2 == null)) {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ALREADY_IN_GUILD);
             return;
@@ -1034,12 +1042,12 @@ public class CommandGuilds extends BaseCommand {
     @CommandCompletion("@guilds")
     @Syntax("<guild name>")
     public void onRequest(Player player, @Values("@guilds") @Single String name) {
-        Guild guild = Guild.getGuild(player.getUniqueId());
+        Guild guild = utils.getGuild(player.getUniqueId());
         if (guild != null) {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ALREADY_IN_GUILD);
             return;
         }
-        Guild targetGuild = Guild.getGuild2(name);
+        Guild targetGuild = utils.getGuild2(name);
         if (targetGuild == null) {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__GUILD_NO_EXIST);
             return;

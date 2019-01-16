@@ -4,7 +4,7 @@ import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.messages.Messages;
-import me.glaremasters.guilds.utils.Serialization;
+import me.glaremasters.guilds.utils.GuildUtils;
 import me.rayzr522.jsonmessage.JSONMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -17,7 +17,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.material.Sign;
@@ -29,7 +28,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-import static me.glaremasters.guilds.commands.CommandGuilds.vaults;
 import static me.glaremasters.guilds.utils.ConfigUtils.*;
 
 /**
@@ -40,12 +38,14 @@ import static me.glaremasters.guilds.utils.ConfigUtils.*;
 public class Players implements Listener {
 
     private Guilds guilds;
+    private GuildUtils utils;
 
     private Set<UUID> ALREADY_INFORMED = new HashSet<>();
     public static final Set<UUID> GUILD_CHAT_PLAYERS = new HashSet<>();
 
-    public Players(Guilds guilds) {
+    public Players(Guilds guilds, GuildUtils utils) {
         this.guilds = guilds;
+        this.utils = utils;
     }
 
     /**
@@ -57,11 +57,11 @@ public class Players implements Listener {
         if (!(event.getEntity() instanceof Player) || !(event.getDamager() instanceof Player)) return;
         Player player = (Player) event.getEntity();
         Player damager = (Player) event.getDamager();
-        Guild playerGuild = Guild.getGuild(player.getUniqueId());
-        Guild damagerGuild = Guild.getGuild(damager.getUniqueId());
+        Guild playerGuild = utils.getGuild(player.getUniqueId());
+        Guild damagerGuild = utils.getGuild(damager.getUniqueId());
         if (playerGuild == null || damagerGuild == null) return;
         if (playerGuild.equals(damagerGuild)) event.setCancelled(!getBoolean("allow-guild-damage"));
-        if (Guild.areAllies(player.getUniqueId(), damager.getUniqueId())) event.setCancelled(!getBoolean("allow-ally-damage"));
+        if (guilds.getGuildUtils().areAllies(player.getUniqueId(), damager.getUniqueId())) event.setCancelled(!getBoolean("allow-ally-damage"));
     }
 
     /**
@@ -111,7 +111,7 @@ public class Players implements Listener {
     @EventHandler
     public void onBuffBuy(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
-        Guild guild = Guild.getGuild(player.getUniqueId());
+        Guild guild = utils.getGuild(player.getUniqueId());
         if (!event.getInventory().getTitle().equals(getString("gui-name.buff"))) return;
         if (event.getInventory().getTitle().equals(getString("gui-name.buff"))) event.setCancelled(true);
         if (event.getCurrentItem() == null) return;
@@ -129,7 +129,7 @@ public class Players implements Listener {
                 .map(member -> Bukkit.getOfflinePlayer(member.getUniqueId()))
                 .filter(OfflinePlayer::isOnline)
                 .forEach(member -> ((Player) member).addPotionEffect(new PotionEffect(buff.potion, buff.time, buff.amplifier)));
-        guild.updateBalance(balance - buff.cost);
+        guild.setBalance(balance - buff.cost);
     }
 
     /**
@@ -139,7 +139,7 @@ public class Players implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
-        Guild guild = Guild.getGuild(player.getUniqueId());
+        Guild guild = utils.getGuild(player.getUniqueId());
 
         if (guild == null) {
             return;
@@ -165,7 +165,7 @@ public class Players implements Listener {
     @EventHandler
     public void rolePerm(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        Guild guild = Guild.getGuild(player.getUniqueId());
+        Guild guild = utils.getGuild(player.getUniqueId());
         if (guild == null) return;
         String node = GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole()).getNode();
         if (!player.hasPermission(node)) {
@@ -180,9 +180,9 @@ public class Players implements Listener {
     @EventHandler
     public void tierPerms(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        Guild guild = Guild.getGuild(player.getUniqueId());
+        Guild guild = utils.getGuild(player.getUniqueId());
         if (guild == null) return;
-        guild.addGuildPerms(guild, player);
+        utils.addGuildPerms(guild, player);
     }
 
     /**

@@ -12,7 +12,6 @@ import org.bukkit.inventory.Inventory;
 
 import java.util.UUID;
 
-import static co.aikar.commands.ACFBukkitUtil.color;
 import static me.glaremasters.guilds.commands.CommandGuilds.getSkullsPage;
 import static me.glaremasters.guilds.commands.CommandGuilds.playerPages;
 import static me.glaremasters.guilds.utils.ConfigUtils.getString;

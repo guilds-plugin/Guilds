@@ -1,5 +1,6 @@
 package me.glaremasters.guilds.listeners;
 
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.guild.Guild;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
@@ -15,6 +16,12 @@ import org.bukkit.event.entity.EntityDeathEvent;
  */
 public class GuildPerks implements Listener {
 
+    private Guilds guilds;
+
+    public GuildPerks(Guilds guilds) {
+        this.guilds = guilds;
+    }
+
     /**
      * Damage Multiplier Handler
      * @param event this event handles the boost that a Guild gets if they have a damage multiplier
@@ -23,8 +30,8 @@ public class GuildPerks implements Listener {
     public void onDamage(EntityDamageByEntityEvent event) {
         if (event.getDamager() instanceof Player) {
             Player player = (Player) event.getDamager();
-            Guild guild = Guild.getGuild(player.getUniqueId());
-            if (guild != null) event.setDamage((int) (event.getDamage() * guild.getDamageMultiplier()));
+            Guild guild = guilds.getGuildUtils().getGuild((player.getUniqueId()));
+            if (guild != null) event.setDamage((int) (event.getDamage() * guilds.getGuildUtils().getDamageMultiplier(guild)));
         }
     }
 
@@ -38,8 +45,8 @@ public class GuildPerks implements Listener {
         Monster monster = (Monster) event.getEntity();
         Player killer = monster.getKiller();
         if (killer == null) return;
-        Guild guild = Guild.getGuild(killer.getUniqueId());
-        if (guild != null) event.setDroppedExp((int) (event.getDroppedExp() * guild.getExpMultiplier()));
+        Guild guild = guilds.getGuildUtils().getGuild((killer.getUniqueId()));
+        if (guild != null) event.setDroppedExp((int) (event.getDroppedExp() * guilds.getGuildUtils().getDamageMultiplier(guild)));
     }
 
 

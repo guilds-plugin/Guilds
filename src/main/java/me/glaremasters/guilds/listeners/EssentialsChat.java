@@ -2,6 +2,7 @@ package me.glaremasters.guilds.listeners;
 
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.guild.Guild;
+import me.glaremasters.guilds.utils.GuildUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,15 +17,17 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 public class EssentialsChat implements Listener {
 
     private Guilds guilds;
+    private GuildUtils utils;
 
-    public EssentialsChat(Guilds guilds) {
+    public EssentialsChat(Guilds guilds, GuildUtils utils) {
         this.guilds = guilds;
+        this.utils = utils;
     }
 
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
-        Guild guild = Guild.getGuild(player.getUniqueId());
+        Guild guild = utils.getGuild((player.getUniqueId()));
 
         String message = event.getFormat();
 

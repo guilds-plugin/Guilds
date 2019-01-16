@@ -3,6 +3,7 @@ package me.glaremasters.guilds.listeners;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
+import me.glaremasters.guilds.utils.GuildUtils;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,10 +17,12 @@ import org.codemc.worldguardwrapper.region.IWrappedRegion;
 public class WorldGuard implements Listener {
 
     private Guilds guilds;
+    private GuildUtils utils;
     private WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();
 
-    public WorldGuard(Guilds guilds) {
+    public WorldGuard(Guilds guilds, GuildUtils utils) {
         this.guilds = guilds;
+        this.utils = utils;
     }
 
     @EventHandler
@@ -27,7 +30,7 @@ public class WorldGuard implements Listener {
         Player player = event.getPlayer();
         Location location = event.getBlockPlaced().getLocation();
 
-        Guild guild = Guild.getGuild(player.getUniqueId());
+        Guild guild = utils.getGuild(player.getUniqueId());
         if (guild == null) return;
 
         GuildRole role = GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole());
@@ -44,7 +47,7 @@ public class WorldGuard implements Listener {
         Player player = event.getPlayer();
         Location location = event.getBlock().getLocation();
 
-        Guild guild = Guild.getGuild(player.getUniqueId());
+        Guild guild = utils.getGuild(player.getUniqueId());
         if (guild == null) return;
 
         GuildRole role = GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole());
@@ -61,7 +64,7 @@ public class WorldGuard implements Listener {
         Player player = event.getPlayer();
         Location location = event.getPlayer().getLocation();
 
-        Guild guild = Guild.getGuild(player.getUniqueId());
+        Guild guild = utils.getGuild(player.getUniqueId());
         if (guild == null) return;
 
         GuildRole role = GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole());

@@ -3,6 +3,7 @@ package me.glaremasters.guilds.listeners;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.handlers.Tablist;
+import me.glaremasters.guilds.utils.GuildUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,9 +17,11 @@ import org.bukkit.event.player.PlayerJoinEvent;
 public class TablistListener implements Listener {
 
     private Guilds guilds;
+    private GuildUtils utils;
 
-    public TablistListener(Guilds guilds) {
+    public TablistListener(Guilds guilds, GuildUtils utils) {
         this.guilds = guilds;
+        this.utils = utils;
     }
 
     /**
@@ -29,7 +32,7 @@ public class TablistListener implements Listener {
     public void onTablist(PlayerJoinEvent event) {
         Tablist tablist = new Tablist(guilds);
         Player player = event.getPlayer();
-        Guild guild = Guild.getGuild(player.getUniqueId());
+        Guild guild = utils.getGuild(player.getUniqueId());
         if (guild != null) guilds.getServer().getScheduler().scheduleAsyncDelayedTask(guilds, () -> tablist.add(player), 30L);
     }
 

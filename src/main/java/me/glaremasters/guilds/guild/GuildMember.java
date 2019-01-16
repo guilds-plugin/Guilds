@@ -1,7 +1,5 @@
 package me.glaremasters.guilds.guild;
 
-import com.google.gson.annotations.Expose;
-
 import java.util.UUID;
 
 /**
@@ -9,10 +7,8 @@ import java.util.UUID;
  */
 public class GuildMember {
 
-    @Expose
     private UUID uuid;
 
-    @Expose
     private int role;
 
     /**

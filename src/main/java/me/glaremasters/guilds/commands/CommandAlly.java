@@ -13,6 +13,7 @@ import me.glaremasters.guilds.api.events.GuildRemoveAllyEvent;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.messages.Messages;
+import me.glaremasters.guilds.utils.GuildUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -25,6 +26,11 @@ import org.bukkit.entity.Player;
 public class CommandAlly extends BaseCommand {
 
     @Dependency private Guilds guilds;
+    private GuildUtils utils;
+
+    public CommandAlly(GuildUtils utils) {
+        this.utils = utils;
+    }
 
     /**
      * List all the allies of your guild
@@ -58,14 +64,14 @@ public class CommandAlly extends BaseCommand {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
             return;
         }
-        Guild targetGuild = Guild.getGuild(name);
+        Guild targetGuild = utils.getGuild(name);
         if (targetGuild == null) return;
         if (!guild.getPendingAllies().contains(targetGuild.getName())) return;
-        guild.removePendingAlly(targetGuild);
-        guild.addAlly(targetGuild);
-        targetGuild.addAlly(guild);
-        guild.sendMessage(Messages.ALLY__CURRENT_ACCEPTED, "{guild}", targetGuild.getName());
-        targetGuild.sendMessage(Messages.ALLY__TARGET_ACCEPTED, "{guild}", guild.getName());
+        utils.removePendingAlly(guild, targetGuild);
+        utils.addAlly(guild, targetGuild);
+        utils.addAlly(targetGuild, guild);
+        utils.sendMessage(guild, Messages.ALLY__CURRENT_ACCEPTED, "{guild}", targetGuild.getName());
+        utils.sendMessage(targetGuild, Messages.ALLY__TARGET_ACCEPTED, "{guild}", guild.getName());
     }
 
     /**
@@ -84,13 +90,13 @@ public class CommandAlly extends BaseCommand {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
             return;
         }
-        Guild targetGuild = Guild.getGuild(name);
+        Guild targetGuild = utils.getGuild(name);
         if (targetGuild == null) return;
 
         if (!guild.getPendingAllies().contains(targetGuild.getName())) return;
-        guild.removePendingAlly(targetGuild);
-        guild.sendMessage(Messages.ALLY__CURRENT_DECLINED, "{guild}", targetGuild.getName());
-        targetGuild.sendMessage(Messages.ALLY__TARGET_DECLINED, "{guild}", guild.getName());
+        utils.removePendingAlly(guild, targetGuild);
+        utils.sendMessage(guild, Messages.ALLY__CURRENT_DECLINED, "{guild}", targetGuild.getName());
+        utils.sendMessage(targetGuild, Messages.ALLY__TARGET_DECLINED, "{guild}", guild.getName());
     }
 
     /**
@@ -110,7 +116,7 @@ public class CommandAlly extends BaseCommand {
             return;
         }
 
-        Guild targetGuild = Guild.getGuild(name);
+        Guild targetGuild = utils.getGuild(name);
 
         if (targetGuild == null) return;
 
@@ -134,8 +140,8 @@ public class CommandAlly extends BaseCommand {
         if (event.isCancelled()) return;
 
         getCurrentCommandIssuer().sendInfo(Messages.ALLY__INVITE_SENT, "{guild}", targetGuild.getName());
-        targetGuild.sendMessage(Messages.ALLY__INCOMING_INVITE, "{guild}", guild.getName());
-        targetGuild.addPendingAlly(guild);
+        utils.sendMessage(targetGuild, Messages.ALLY__INCOMING_INVITE, "{guild}", guild.getName());
+        utils.addPendingAlly(targetGuild, guild);
     }
 
     /**
@@ -154,7 +160,7 @@ public class CommandAlly extends BaseCommand {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
             return;
         }
-        Guild targetGuild = Guild.getGuild(name);
+        Guild targetGuild = utils.getGuild(name);
         if (targetGuild == null) return;
 
         if (!guild.getAllies().contains(targetGuild.getName())) {
@@ -166,11 +172,11 @@ public class CommandAlly extends BaseCommand {
         Bukkit.getServer().getPluginManager().callEvent(event);
         if (event.isCancelled()) return;
 
-        guild.removeAlly(targetGuild);
-        targetGuild.removeAlly(guild);
+        utils.removeAlly(guild, targetGuild);
+        utils.removeAlly(targetGuild, guild);
 
-        guild.sendMessage(Messages.ALLY__CURRENT_REMOVE, "{guild}", targetGuild.getName());
-        targetGuild.sendMessage(Messages.ALLY__TARGET_REMOVE, "{guild}", guild.getName());
+        utils.sendMessage(guild, Messages.ALLY__CURRENT_REMOVE, "{guild}", targetGuild.getName());
+        utils.sendMessage(targetGuild, Messages.ALLY__TARGET_REMOVE, "{guild}", guild.getName());
     }
 
 }

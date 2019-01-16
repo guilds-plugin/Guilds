@@ -3,6 +3,7 @@ package me.glaremasters.guilds.listeners;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.messages.Messages;
+import me.glaremasters.guilds.utils.GuildUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,7 +12,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import static co.aikar.commands.ACFBukkitUtil.color;
 import static me.glaremasters.guilds.utils.ConfigUtils.getInt;
 import static me.glaremasters.guilds.utils.ConfigUtils.getString;
 
@@ -23,9 +23,11 @@ import static me.glaremasters.guilds.utils.ConfigUtils.getString;
 public class Tickets implements Listener {
 
     private Guilds guilds;
+    private GuildUtils utils;
 
-    public Tickets(Guilds guilds) {
+    public Tickets(Guilds guilds, GuildUtils utils) {
         this.guilds = guilds;
+        this.utils = utils;
     }
 
     /**
@@ -43,7 +45,7 @@ public class Tickets implements Listener {
         if (!meta.hasLore()) return;
         if (!meta.getLore().get(0).equals(getString("upgrade-ticket.lore"))) return;
         Player player = event.getPlayer();
-        Guild guild = Guild.getGuild(player.getUniqueId());
+        Guild guild = utils.getGuild(player.getUniqueId());
         if (guild == null) return;
         if (guild.getTier() >= getInt("max-number-of-tiers")) {
             guilds.getManager().getCommandIssuer(player).sendInfo(Messages.UPGRADE__TIER_MAX);
@@ -57,7 +59,7 @@ public class Tickets implements Listener {
         }
         event.setCancelled(true);
         guilds.getManager().getCommandIssuer(player).sendInfo(Messages.UPGRADE__SUCCESS);
-        guild.updateTier((guild.getTier() + 1));
+        guild.setTier((guild.getTier() + 1));
 
     }
 }
