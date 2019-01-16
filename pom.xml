@@ -122,15 +122,10 @@
       <url>http://nexus.hc.to/content/repositories/pub_releases</url>
     </repository>
 
-    <!-- Placeholder API's -->
+    <!-- Placeholder API -->
     <repository>
       <id>placeholderapi</id>
       <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
-    </repository>
-    <repository>
-      <id>mvdw-software</id>
-      <name>MVdW Public Repositories</name>
-      <url>http://repo.mvdw-software.be/content/groups/public/</url>
     </repository>
 
     <!-- No clue what this repo is for we'll see later lmao -->
@@ -226,13 +221,7 @@
       <scope>provided</scope>
     </dependency>
 
-    <!-- Placeholder API's -->
-    <dependency>
-      <groupId>be.maximvdw</groupId>
-      <artifactId>MVdWPlaceholderAPI</artifactId>
-      <version>1.0.2-SNAPSHOT</version>
-      <scope>provided</scope>
-    </dependency>
+    <!-- Placeholder API -->
     <dependency>
       <groupId>me.clip</groupId>
       <artifactId>placeholderapi</artifactId>

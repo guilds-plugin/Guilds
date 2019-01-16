@@ -7,7 +7,7 @@ package me.glaremasters.guilds.utils;
  */
 public class AnnouncementUtil {
 
-    public final static String unescape_perl_string(String oldstr) {
+    public static String unescape_perl_string(String oldstr) {
 
 
         oldstr = oldstr.replaceAll("&", "§");

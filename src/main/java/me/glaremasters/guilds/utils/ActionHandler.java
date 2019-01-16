@@ -3,6 +3,7 @@ package me.glaremasters.guilds.utils;
 import org.bukkit.command.CommandSender;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by GlareMasters
@@ -11,7 +12,7 @@ import java.util.HashMap;
  */
 public class ActionHandler implements IHandler {
 
-    private HashMap<CommandSender, ConfirmAction> actions;
+    private Map<CommandSender, ConfirmAction> actions;
 
     /**
      * Enable the Actionhandler
@@ -34,7 +35,7 @@ public class ActionHandler implements IHandler {
      * Get all the current actions
      * @return current actions
      */
-    public HashMap<CommandSender, ConfirmAction> getActions() {
+    public Map<CommandSender, ConfirmAction> getActions() {
         return actions;
     }
 
