@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>me.glaremasters</groupId>
-  <artifactId>Guilds</artifactId>
+  <artifactId>guilds</artifactId>
   <version>3.4-BETA</version>
   <packaging>jar</packaging>
 
@@ -64,16 +64,12 @@
               <createDependencyReducedPom>false</createDependencyReducedPom>
               <relocations>
                 <relocation>
-                  <pattern>io.papermc.lib</pattern>
-                  <shadedPattern>me.glaremasters.libs.paperlib</shadedPattern>
-                </relocation>
-                <relocation>
                   <pattern>org.codemc.worldguardwrapper</pattern>
-                  <shadedPattern>me.glaremasters.libs.worldguardwrapper</shadedPattern>
+                  <shadedPattern>me.glaremasters.guilds.libs.worldguardwrapper</shadedPattern>
                 </relocation>
                 <relocation>
                   <pattern>com.google.gson</pattern>
-                  <shadedPattern>me.glaremasters.libs.gson</shadedPattern>
+                  <shadedPattern>me.glaremasters.guilds.libs.gson</shadedPattern>
                 </relocation>
               </relocations>
             </configuration>
@@ -90,66 +86,86 @@
   </build>
 
   <repositories>
+    <!-- Platform -->
     <repository>
       <id>spigotmc-repo</id>
       <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
     </repository>
+
+    <!-- MC-->
     <repository>
-      <id>sonatype</id>
-      <url>https://oss.sonatype.org/content/groups/public/</url>
+      <id>mojang</id>
+      <url>https://libraries.minecraft.net/</url>
     </repository>
+
+    <!-- Repo for commands and taskchain -->
+    <repository>
+      <id>aikar</id>
+      <url>https://repo.aikar.co/content/groups/aikar/</url>
+    </repository>
+
+    <!-- Json messages for chat-->
+    <repository>
+      <id>rayzr-repo</id>
+      <url>https://cdn.rawgit.com/Rayzr522/maven-repo/master/</url>
+    </repository>
+
+    <!-- World guard wrapper -->
+    <repository>
+      <id>codemc-repo</id>
+      <url>https://repo.codemc.org/repository/maven-public/</url>
+    </repository>
+
+    <!-- Vault API for Economy and more-->
     <repository>
       <id>vault-repo</id>
       <url>http://nexus.hc.to/content/repositories/pub_releases</url>
     </repository>
+
+    <!-- Placeholder API's -->
     <repository>
-      <id>glares-repo</id>
-      <url>https://ci.glaremasters.me/plugin/repository/everything/</url>
-    </repository>
-    <repository>
-      <id>onarandombox</id>
-      <url>http://repo.onarandombox.com/content/groups/public</url>
+      <id>placeholderapi</id>
+      <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
     </repository>
     <repository>
       <id>mvdw-software</id>
       <name>MVdW Public Repositories</name>
       <url>http://repo.mvdw-software.be/content/groups/public/</url>
     </repository>
-    <repository>
-      <id>rayzr-repo</id>
-      <url>https://cdn.rawgit.com/Rayzr522/maven-repo/master/</url>
-    </repository>
-    <repository>
-      <id>papermc</id>
-      <url>https://papermc.io/repo/repository/maven-public/</url>
-    </repository>
-    <repository>
-      <id>codemc-repo</id>
-      <url>https://repo.codemc.org/repository/maven-public/</url>
-    </repository>
-    <repository>
-      <id>mojang</id>
-      <url>https://libraries.minecraft.net/</url>
-    </repository>
-    <repository>
-      <id>placeholderapi</id>
-      <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
-    </repository>
+
+    <!-- No clue what this repo is for we'll see later lmao -->
+    <!--<repository>-->
+    <!--<id>onarandombox</id>-->
+    <!--<url>http://repo.onarandombox.com/content/groups/public</url>-->
+    <!--</repository>-->
   </repositories>
 
   <dependencies>
+    <!-- Platform -->
     <dependency>
-      <groupId>org.spigotmc</groupId>
-      <artifactId>spigot-api</artifactId>
+      <groupId>org.bukkit</groupId>
+      <artifactId>bukkit</artifactId>
       <version>1.12.2-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
+
+    <!-- MC authentication -->
     <dependency>
-      <groupId>net.milkbowl.vault</groupId>
-      <artifactId>VaultAPI</artifactId>
-      <version>1.6</version>
+      <groupId>com.mojang</groupId>
+      <artifactId>authlib</artifactId>
+      <version>1.5.25</version>
       <scope>provided</scope>
     </dependency>
+
+    <!-- Lombok -->
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.18.4</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- Taskchain -->
     <dependency>
       <groupId>co.aikar</groupId>
       <artifactId>taskchain-core</artifactId>
@@ -160,26 +176,57 @@
       <artifactId>taskchain-bukkit</artifactId>
       <version>3.7.3-SNAPSHOT</version>
     </dependency>
-    <dependency>
-      <groupId>com.google.code.gson</groupId>
-      <artifactId>gson</artifactId>
-      <version>2.8.5</version>
-    </dependency>
+
+    <!-- Command framework using annotations -->
     <dependency>
       <groupId>co.aikar</groupId>
       <artifactId>acf-bukkit</artifactId>
       <version>0.5.0-SNAPSHOT</version>
     </dependency>
+
+    <!-- Json stuff -->
+    <!-- For easier deserialising and serialising inventories -->
     <dependency>
       <groupId>com.dumptruckman.minecraft</groupId>
       <artifactId>JsonConfiguration</artifactId>
       <version>1.1</version>
     </dependency>
+    <!-- JSON messages in chat -->
     <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-io</artifactId>
-      <version>1.3.2</version>
+      <groupId>me.rayzr522</groupId>
+      <artifactId>jsonmessage</artifactId>
+      <version>1.0.0</version>
     </dependency>
+    <!-- GSON for serialising and deserialising -->
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>2.8.5</version>
+    </dependency>
+
+    <!--<dependency>-->
+      <!--<groupId>org.apache.commons</groupId>-->
+      <!--<artifactId>commons-io</artifactId>-->
+      <!--<version>1.3.2</version>-->
+    <!--</dependency>-->
+
+
+    <!-- A worldguard api wrapper for v7 and v6 -->
+    <dependency>
+      <groupId>org.codemc.worldguardwrapper</groupId>
+      <artifactId>worldguardwrapper</artifactId>
+      <version>1.1.1-SNAPSHOT</version>
+    </dependency>
+
+    <!-- Vault API for Economy and more -->
+    <dependency>
+      <groupId>net.milkbowl.vault</groupId>
+      <artifactId>VaultAPI</artifactId>
+      <version>1.6</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- Placeholder API's -->
     <dependency>
       <groupId>be.maximvdw</groupId>
       <artifactId>MVdWPlaceholderAPI</artifactId>
@@ -187,37 +234,9 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>me.rayzr522</groupId>
-      <artifactId>jsonmessage</artifactId>
-      <version>1.0.0</version>
-    </dependency>
-    <dependency>
-      <groupId>io.papermc</groupId>
-      <artifactId>paperlib</artifactId>
-      <version>1.0.1</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.codemc.worldguardwrapper</groupId>
-      <artifactId>worldguardwrapper</artifactId>
-      <version>1.1.1-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>com.mojang</groupId>
-      <artifactId>authlib</artifactId>
-      <version>1.5.25</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
       <groupId>me.clip</groupId>
       <artifactId>placeholderapi</artifactId>
       <version>2.9.2</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <version>1.18.4</version>
       <scope>provided</scope>
     </dependency>
   </dependencies>

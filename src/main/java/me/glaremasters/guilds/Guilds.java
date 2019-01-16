@@ -7,7 +7,6 @@ import co.aikar.commands.InvalidCommandArgument;
 import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
-import io.papermc.lib.PaperLib;
 import me.glaremasters.guilds.api.GuildsAPI;
 import me.glaremasters.guilds.api.Metrics;
 import me.glaremasters.guilds.commands.CommandAdmin;
@@ -153,7 +152,6 @@ public final class Guilds extends JavaPlugin {
         Stream.of(new GuildPerks(guilds), new Players(this, utils), new Tickets(this, utils), new InventoryListener(this)).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
         optionalListeners();
         info("Ready to go! That only took " + (System.currentTimeMillis() - start) + "ms");
-        PaperLib.suggestPaper(this);
         loadSkulls();
         createVaultCaches();
         getServer().getScheduler().scheduleSyncRepeatingTask(this, this::saveVaultCaches, 500L, 2400L);
