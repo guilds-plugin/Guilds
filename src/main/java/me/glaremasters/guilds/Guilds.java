@@ -184,24 +184,18 @@ public final class Guilds extends JavaPlugin {
 
     /**
      * Implement Vault's Economy API
-     *
-     * @return the value of the method
      */
-    private boolean setupEconomy() {
+    private void setupEconomy() {
         RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
         if (economyProvider != null) economy = economyProvider.getProvider();
-        return (economy != null);
     }
 
     /**
      * Implement Vault's Permission API
-     *
-     * @return the value of the method
      */
-    private boolean setupPermissions() {
+    private void setupPermissions() {
         RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
         if (rsp != null) permissions = rsp.getProvider();
-        return (permissions != null);
     }
 
     /**
@@ -210,9 +204,10 @@ public final class Guilds extends JavaPlugin {
     private void saveData() {
         saveDefaultConfig();
         File languageFolder = new File(getDataFolder(), "languages");
-        if (!languageFolder.exists()) languageFolder.mkdirs();
+        if (!languageFolder.exists()) //noinspection ResultOfMethodCallIgnored
+            languageFolder.mkdirs();
         try {
-            final JarURLConnection connection = (JarURLConnection) getClassLoader().getResource("languages").openConnection();
+            final JarURLConnection connection = (JarURLConnection) Objects.requireNonNull(getClassLoader().getResource("languages")).openConnection();
             final JarFile thisJar = connection.getJarFile();
             final Enumeration<JarEntry> entries = thisJar.entries();
             while (entries.hasMoreElements()) {
@@ -240,7 +235,8 @@ public final class Guilds extends JavaPlugin {
         getServer().getScheduler().runTaskLaterAsynchronously(this, () -> getGuildHandler().getGuilds().values().forEach(guild -> {
             if (guild.getTexture().equalsIgnoreCase("")) {
                 guild.setTexture(HeadUtils.getTextureUrl(guild.getGuildMaster().getUniqueId()));
-                ItemStack skull = HeadUtils.getSkull(HeadUtils.getTextureUrl(guild.getGuildMaster().getUniqueId()));
+                //todo is this necessary?
+                HeadUtils.getSkull(HeadUtils.getTextureUrl(guild.getGuildMaster().getUniqueId()));
             } else {
                 HeadUtils.textures.put(guild.getGuildMaster().getUniqueId(), guild.getTexture());
             }
@@ -248,16 +244,9 @@ public final class Guilds extends JavaPlugin {
     }
 
     private void createVaultCaches() {
-        String vaultName;
-        try {
-            vaultName = color(getConfig().getString("gui-name.vault"));
-        } catch (Exception ex) {
-            vaultName = color("Guild Vault");
-        }
-        String finalVaultName = vaultName;
         getServer().getScheduler().runTaskLater(this, () -> getGuildHandler().getGuilds().values().forEach(guild -> {
             if (guild.getInventory().equalsIgnoreCase("")) {
-                Inventory inv = Bukkit.createInventory(null, 54, finalVaultName);
+                Inventory inv = Bukkit.createInventory(null, 54, getVaultName());
                 vaults.put(guild, inv);
             } else {
                 try {
@@ -269,26 +258,26 @@ public final class Guilds extends JavaPlugin {
         }), 100L);
     }
 
+    private String getVaultName() {
+        try {
+            return color(getConfig().getString("gui-name.vault"));
+        } catch (Exception ex) {
+            return color("Guild Vault");
+        }
+    }
+
     /**
      * Create a new Vault when a guild is created while server is running
-     * @param guild
+     * @param guild the guild of which's vault needs to be created
      */
     public void createNewVault(Guild guild) {
-        String vaultName;
-        try {
-            vaultName = color(getConfig().getString("gui-name.vault"));
-        } catch (Exception ex) {
-            vaultName = color("Guild Vault");
-        }
-        String finalVaultName = vaultName;
-        Inventory inv = Bukkit.createInventory(null, 54, finalVaultName);
+        getVaultName();
+        Inventory inv = Bukkit.createInventory(null, 54, getVaultName());
         vaults.put(guild, inv);
     }
 
     private void saveVaultCaches() {
-        getGuildHandler().getGuilds().values().forEach(guild -> {
-            guild.setInventory(Serialization.serializeInventory(getVaults().get(guild)));
-        });
+        getGuildHandler().getGuilds().values().forEach(guild -> guild.setInventory(Serialization.serializeInventory(getVaults().get(guild))));
     }
 
     /**

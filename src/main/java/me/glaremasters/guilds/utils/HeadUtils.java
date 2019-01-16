@@ -13,10 +13,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.net.URL;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by GlareMasters
@@ -71,7 +68,9 @@ public class HeadUtils {
         } catch (NoSuchFieldException | SecurityException e) {
             e.printStackTrace();
         }
-        profileField.setAccessible(true);
+
+        Objects.requireNonNull(profileField).setAccessible(true);
+
         try {
             profileField.set(headMeta, profile);
         } catch (IllegalArgumentException | IllegalAccessException e) {
