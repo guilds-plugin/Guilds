@@ -493,7 +493,7 @@ public final class Guilds extends JavaPlugin {
 
     /**
      * Check if PAPI is running
-     * @return
+     * @return boolean if papi is enabled
      */
     private boolean checkPAPI() {
         return Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI");
@@ -503,28 +503,11 @@ public final class Guilds extends JavaPlugin {
      * Load all the placeholders for MVDW
      */
     private void initializePlaceholder() {
-
-        if (checkMVDW()) {
-            info("Hooking into MVdWPlacholderAPI...");
-            PlaceholderAPI.registerPlaceholder(this, "guild_name", e -> api.getGuild(e.getPlayer()));
-            PlaceholderAPI.registerPlaceholder(this, "guild_master", e -> api.getGuildMaster(e.getPlayer()));
-            PlaceholderAPI.registerPlaceholder(this, "guild_member_count", e -> api.getGuildMemberCount(e.getPlayer()));
-            PlaceholderAPI.registerPlaceholder(this, "guild_status", e -> api.getGuildStatus(e.getPlayer()));
-            PlaceholderAPI.registerPlaceholder(this, "guild_role", e -> api.getGuildRole(e.getPlayer()));
-            PlaceholderAPI.registerPlaceholder(this, "guild_prefix", e -> api.getGuildPrefix(e.getPlayer()));
-            PlaceholderAPI.registerPlaceholder(this, "guild_members_online", e -> api.getGuildMembersOnline(e.getPlayer()));
-            PlaceholderAPI.registerPlaceholder(this, "guild_tier", e -> String.valueOf(api.getGuildTier(e.getPlayer())));
-            PlaceholderAPI.registerPlaceholder(this, "guild_balance", e -> String.valueOf(api.getBankBalance(e.getPlayer())));
-            PlaceholderAPI.registerPlaceholder(this, "guild_tier_name", e -> api.getTierName(e.getPlayer()));
-            info("Hooked!");
-        }
-
         if (checkPAPI()) {
             info("Hooking into PlaceholderAPI...");
             new me.glaremasters.guilds.utils.PlaceholderAPI(guilds).register();
             info("Hooked!");
         }
-
     }
 
     /**
@@ -601,7 +584,7 @@ public final class Guilds extends JavaPlugin {
 
     /**
      * Get a list of all the Guild Vaults on the Server
-     * @return
+     * @return map of guild to inventory
      */
     public Map<Guild, Inventory> getVaults() {
         return vaults;
