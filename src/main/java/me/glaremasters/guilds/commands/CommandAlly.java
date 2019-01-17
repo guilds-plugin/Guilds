@@ -7,10 +7,12 @@ import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
+import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.api.events.GuildAddAllyEvent;
 import me.glaremasters.guilds.api.events.GuildRemoveAllyEvent;
 import me.glaremasters.guilds.guild.Guild;
+import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.messages.Messages;
 import org.bukkit.Bukkit;
@@ -21,15 +23,11 @@ import org.bukkit.entity.Player;
  * Date: 9/10/2018
  * Time: 6:49 PM
  */
+@AllArgsConstructor
 @CommandAlias("guild|guilds")
 public class CommandAlly extends BaseCommand {
 
-    @Dependency private Guilds guilds;
-    private GuildUtils utils;
-
-    public CommandAlly(GuildUtils utils) {
-        this.utils = utils;
-    }
+    private GuildHandler guildHandler;
 
     /**
      * List all the allies of your guild

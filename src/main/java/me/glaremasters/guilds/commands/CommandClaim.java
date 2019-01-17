@@ -7,8 +7,10 @@ import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
+import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.guild.Guild;
+import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.messages.Messages;
 import org.bukkit.Location;
@@ -22,10 +24,11 @@ import java.util.Set;
 import static me.glaremasters.guilds.utils.ConfigUtils.getBoolean;
 import static me.glaremasters.guilds.utils.ConfigUtils.getInt;
 
+@AllArgsConstructor
 @CommandAlias("guild|guilds")
 public class CommandClaim extends BaseCommand {
 
-    @Dependency private Guilds guilds;
+    private GuildHandler guildHandler;
 
     @Subcommand("claim")
     @Description("{@@descriptions.claim}")

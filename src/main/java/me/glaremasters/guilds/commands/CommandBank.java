@@ -7,8 +7,10 @@ import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
+import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.guild.Guild;
+import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.messages.Messages;
 import org.bukkit.entity.Player;
@@ -18,10 +20,11 @@ import org.bukkit.entity.Player;
  * Date: 9/10/2018
  * Time: 6:43 PM
  */
+@AllArgsConstructor
 @CommandAlias("guild|guilds")
 public class CommandBank extends BaseCommand {
 
-    @Dependency private Guilds guilds;
+    private GuildHandler guildHandler;
 
     /**
      * Check the bank balance of a Guild
