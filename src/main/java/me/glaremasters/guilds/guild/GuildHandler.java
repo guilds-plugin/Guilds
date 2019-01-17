@@ -13,6 +13,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 /**
@@ -76,9 +78,18 @@ public class GuildHandler {
         }
 
         //GuildTier objects
-        for (String key : config.getKeys(false)){
-            if (!key.startsWith("tier")) continue;
-
+        ConfigurationSection tierSection = config.getConfigurationSection("tiers");
+        for (String key : tierSection.getKeys(false)){
+            tiers.add(GuildTier.builder()
+                    .name(tierSection.getString(key + ".name"))
+                    .cost(tierSection.getDouble(key + ".cost"))
+                    .maxMembers(tierSection.getInt(key + ".max-members"))
+                    .mobXpMultiplier(tierSection.getInt(key + ".mob-xp-multiplier"))
+                    .damageMultiplier(tierSection.getInt(key + ".damage-multiplier"))
+                    .maxBankBalance(tierSection.getDouble(key + ".max-bank-balance"))
+                    .membersToRankup(tierSection.getInt(key + ".members-to-rankup"))
+                    .permissions(tierSection.getStringList(key + ".permissions"))
+                    .build());
         }
     }
 
@@ -202,12 +213,14 @@ public class GuildHandler {
 //    }
 
     public void sendMessage(Guild guild, Messages key, String... replacements) {
-        guild.getMembers().stream().map(m -> Bukkit.getPlayer(m.getUniqueId())).filter(Objects::nonNull).forEach(p -> commandManager.getCommandIssuer(p).sendInfo(key, replacements));
+        guild.getMembers().stream().map(m -> Bukkit.getPlayer(m.getUuid())).filter(Objects::nonNull).forEach(p -> commandManager.getCommandIssuer(p).sendInfo(key, replacements));
     }
 
     public void addAlly(Guild guild, Guild targetGuild) {
         guild.addAlly(targetGuild);
         targetGuild.addAlly(guild);
+        guild.removePendingAlly(targetGuild);
+        targetGuild.removePendingAlly(guild);
     }
 
 

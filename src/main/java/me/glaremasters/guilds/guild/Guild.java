@@ -18,7 +18,7 @@ public class Guild {
     //guilds are identified by their name, this is their unique id.
     private final transient String name;
     private String prefix, home = "", status , inventory = "", texture;
-    private int tier = 1;
+    private GuildTier tier;
     private double balance = 0;
     private List<GuildMember> members = new ArrayList<>();
     private List<String> allies = new ArrayList<>();
