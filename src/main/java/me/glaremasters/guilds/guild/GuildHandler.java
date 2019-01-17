@@ -39,7 +39,6 @@ public class GuildHandler {
 
         roles = new ArrayList<>();
         tiers = new ArrayList<>();
-        guilds = databaseProvider.loadGuilds();
 
         //GuildRoles objects
         ConfigurationSection roleSection = config.getConfigurationSection("roles");
@@ -92,6 +91,9 @@ public class GuildHandler {
                     .permissions(tierSection.getStringList(key + ".permissions"))
                     .build());
         }
+
+        guilds = databaseProvider.loadGuilds();
+
     }
 
     public void saveData(){
