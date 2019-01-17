@@ -3,28 +3,25 @@ package me.glaremasters.guilds.utils;
 import org.bukkit.command.CommandSender;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by GlareMasters
  * Date: 9/9/2018
  * Time: 6:16 PM
  */
-public class ActionHandler implements IHandler {
+//todo hmm?
+public class ActionHandler {
 
-    private HashMap<CommandSender, ConfirmAction> actions;
+    private Map<CommandSender, ConfirmAction> actions;
 
-    /**
-     * Enable the Actionhandler
-     */
-    @Override
-    public void enable() {
+    public ActionHandler() {
         actions = new HashMap<>();
     }
 
     /**
      * Disable the ActionHandler
      */
-    @Override
     public void disable() {
         actions.clear();
         actions = null;
@@ -34,7 +31,7 @@ public class ActionHandler implements IHandler {
      * Get all the current actions
      * @return current actions
      */
-    public HashMap<CommandSender, ConfirmAction> getActions() {
+    public Map<CommandSender, ConfirmAction> getActions() {
         return actions;
     }
 
@@ -42,11 +39,9 @@ public class ActionHandler implements IHandler {
      * Adds an action to the action list
      * @param sender user
      * @param action action
-     * @return action added
      */
-    public ConfirmAction addAction(CommandSender sender, ConfirmAction action) {
+    public void addAction(CommandSender sender, ConfirmAction action) {
         actions.put(sender, action);
-        return action;
     }
 
     /**

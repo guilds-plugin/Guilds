@@ -1,8 +1,8 @@
 package me.glaremasters.guilds.api;
 
 import me.glaremasters.guilds.guild.Guild;
+import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
-import me.glaremasters.guilds.utils.GuildUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -14,10 +14,11 @@ import static me.glaremasters.guilds.utils.ConfigUtils.color;
  */
 public class GuildsAPI {
 
-    private GuildUtils utils;
+    //todo
+    private GuildHandler guildHandler;
 
-    public GuildsAPI(GuildUtils utils) {
-        this.utils = utils;
+    public GuildsAPI(GuildHandler guildHandler) {
+        this.guildHandler = guildHandler;
     }
 
     /**

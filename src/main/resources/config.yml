@@ -50,7 +50,7 @@ main-hooks:
 
 
 #-----------------------------------------------------------#
-#              Rewards / Tickets Configuration              #
+#              Rewards / TicketListener Configuration              #
 #-----------------------------------------------------------#
 
 # This part of the config will allow you to configure what different rewards will look like inside the plugin.
@@ -264,7 +264,7 @@ warmup:
 #                  Guild Claims Configuration               #
 #-----------------------------------------------------------#
 # This section of the config will allow you to handle guild land claiming.
-# Remember that the enable / disable for this is the WorldGuard Hook at the TOP of the config.
+# Remember that the enable / disable for this is the WorldGuardListener Hook at the TOP of the config.
 # There are multiple options when it comes to guild claims. For the time being, all guilds will only get one claim.
 # As a server owner, you will have a few options here.
 # First off, you will have the ability to have a standard set claim size.

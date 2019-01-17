@@ -22,14 +22,12 @@ import me.glaremasters.guilds.api.events.GuildJoinEvent;
 import me.glaremasters.guilds.api.events.GuildLeaveEvent;
 import me.glaremasters.guilds.api.events.GuildRemoveEvent;
 import me.glaremasters.guilds.guild.Guild;
-import me.glaremasters.guilds.guild.GuildBuilder;
 import me.glaremasters.guilds.guild.GuildMember;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.updater.SpigotUpdater;
 import me.glaremasters.guilds.utils.ConfigUtils;
 import me.glaremasters.guilds.utils.ConfirmAction;
-import me.glaremasters.guilds.utils.GuildUtils;
 import me.glaremasters.guilds.utils.HeadUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -54,7 +52,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import static javax.swing.UIManager.getInt;
-import static me.glaremasters.guilds.listeners.Players.GUILD_CHAT_PLAYERS;
+import static me.glaremasters.guilds.listeners.PlayerListener.GUILD_CHAT_PLAYERS;
 import static me.glaremasters.guilds.utils.ConfigUtils.*;
 
 /**
@@ -131,7 +129,7 @@ public class CommandGuilds extends BaseCommand {
             public void accept() {
                 if (meetsCost(player, "cost.creation")) return;
                 guilds.getEconomy().withdrawPlayer(player, getDouble("cost.creation"));
-                GuildBuilder.GuildBuilderBuilder gb = GuildBuilder.builder();
+                Guild.GuildBuilder gb = Guild.builder();
                 gb.name(color(name));
                 if (prefix == null) {
                     gb.prefix(color(name));
@@ -142,7 +140,7 @@ public class CommandGuilds extends BaseCommand {
                 gb.status("Private");
                 gb.texture(HeadUtils.getTextureUrl(player.getUniqueId()));
                 gb.master(player.getUniqueId());
-                Guild guild = gb.build().createGuild();
+                Guild guild = gb.build();
                 GuildCreateEvent event = new GuildCreateEvent(player, guild);
                 guilds.getServer().getPluginManager().callEvent(event);
                 if (event.isCancelled()) return;
@@ -645,7 +643,7 @@ public class CommandGuilds extends BaseCommand {
                     guilds.getServer().getPluginManager().callEvent(removeEvent);
                     if (removeEvent.isCancelled()) return;
                     guilds.getVaults().remove(guild);
-                    Guilds.checkForClaim(player, guild, guilds);
+                    Guilds.checkForClaim(player.getWorld(), guild, guilds);
                     utils.sendMessage(guild, Messages.LEAVE__GUILDMASTER_LEFT, "{player}", player.getName());
                     utils.removeGuildPerms(guild);
                     guilds.getDatabase().removeGuild(guild);
@@ -740,7 +738,7 @@ public class CommandGuilds extends BaseCommand {
                 guilds.getServer().getPluginManager().callEvent(event);
                 if (event.isCancelled()) return;
                 guilds.getVaults().remove(guild);
-                Guilds.checkForClaim(player, guild, guilds);
+                Guilds.checkForClaim(player.getWorld(), guild, guilds);
                 getCurrentCommandIssuer().sendInfo(Messages.DELETE__SUCCESSFUL, "{guild}", guild.getName());
                 utils.removeGuildPerms(guild);
                 guilds.getDatabase().removeGuild(guild);

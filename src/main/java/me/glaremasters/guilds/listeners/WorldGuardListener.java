@@ -3,7 +3,6 @@ package me.glaremasters.guilds.listeners;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
-import me.glaremasters.guilds.utils.GuildUtils;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,13 +13,13 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.codemc.worldguardwrapper.WorldGuardWrapper;
 import org.codemc.worldguardwrapper.region.IWrappedRegion;
 
-public class WorldGuard implements Listener {
+public class WorldGuardListener implements Listener {
 
     private Guilds guilds;
     private GuildUtils utils;
     private WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();
 
-    public WorldGuard(Guilds guilds, GuildUtils utils) {
+    public WorldGuardListener(Guilds guilds, GuildUtils utils) {
         this.guilds = guilds;
         this.utils = utils;
     }

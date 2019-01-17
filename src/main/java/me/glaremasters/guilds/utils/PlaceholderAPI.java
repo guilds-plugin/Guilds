@@ -24,11 +24,6 @@ public class PlaceholderAPI extends PlaceholderExpansion {
     }
 
     @Override
-    public String getPlugin() {
-        return null;
-    }
-
-    @Override
     public boolean persist() {
         return true;
     }

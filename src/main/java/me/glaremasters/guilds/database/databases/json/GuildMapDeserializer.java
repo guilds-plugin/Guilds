@@ -14,7 +14,9 @@ import org.bukkit.inventory.Inventory;
 import java.io.*;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -24,16 +26,16 @@ import java.util.zip.ZipOutputStream;
  * Date: 7/18/2018
  * Time: 11:44 AM
  */
-public class GuildMapDeserializer implements JsonDeserializer<Map<String, Guild>> {
+public class GuildMapDeserializer implements JsonDeserializer<List<Guild>> {
 
-    File homes, status, tiers, banks;
-    YamlConfiguration homeC = null;
-    YamlConfiguration statusC = null;
-    YamlConfiguration tiersC = null;
-    YamlConfiguration banksC = null;
+    private File homes, status, tiers, banks;
+    private YamlConfiguration homeC = null;
+    private YamlConfiguration statusC = null;
+    private YamlConfiguration tiersC = null;
+    private YamlConfiguration banksC = null;
 
     @Override
-    public Map<String, Guild> deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException {
+    public List<Guild> deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException {
         JsonObject obj = json.getAsJsonObject();
 
         status = new File(Guilds.getGuilds().getDataFolder(), "data/guild-status.yml");
@@ -54,14 +56,14 @@ public class GuildMapDeserializer implements JsonDeserializer<Map<String, Guild>
             banksC = YamlConfiguration.loadConfiguration(banks);
         }
 
-        Map<String, Guild> guilds = new HashMap<>();
+        List<Guild> guilds = new ArrayList<>();
         obj.entrySet().forEach(entry -> {
             JsonObject guild = entry.getValue().getAsJsonObject();
             guild.addProperty("name", entry.getKey());
             if (status.exists() && homes.exists() && tiers.exists() && banks.exists()) {
                 convertOldData(guild);
             }
-            guilds.put(entry.getKey(), context.deserialize(guild, Guild.class));
+            guilds.add(context.deserialize(guild, Guild.class));
         });
         Bukkit.getServer().getScheduler().runTaskLater(Guilds.getGuilds(), () -> Guilds.getGuilds().getDatabase().updateGuild(), 120L);
         if (status.exists() && homes.exists() && tiers.exists() && banks.exists()) {

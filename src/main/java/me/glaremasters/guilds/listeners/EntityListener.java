@@ -14,11 +14,11 @@ import org.bukkit.event.entity.EntityDeathEvent;
  * Date: 7/19/2018
  * Time: 5:21 PM
  */
-public class GuildPerks implements Listener {
+public class EntityListener implements Listener {
 
     private Guilds guilds;
 
-    public GuildPerks(Guilds guilds) {
+    public EntityListener(Guilds guilds) {
         this.guilds = guilds;
     }
 

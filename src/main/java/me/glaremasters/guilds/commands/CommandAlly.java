@@ -13,7 +13,6 @@ import me.glaremasters.guilds.api.events.GuildRemoveAllyEvent;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.messages.Messages;
-import me.glaremasters.guilds.utils.GuildUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 

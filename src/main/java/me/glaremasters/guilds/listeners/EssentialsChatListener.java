@@ -2,7 +2,6 @@ package me.glaremasters.guilds.listeners;
 
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.guild.Guild;
-import me.glaremasters.guilds.utils.GuildUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,12 +13,12 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
  * Date: 11/12/2018
  * Time: 12:27 AM
  */
-public class EssentialsChat implements Listener {
+public class EssentialsChatListener implements Listener {
 
     private Guilds guilds;
     private GuildUtils utils;
 
-    public EssentialsChat(Guilds guilds, GuildUtils utils) {
+    public EssentialsChatListener(Guilds guilds, GuildUtils utils) {
         this.guilds = guilds;
         this.utils = utils;
     }

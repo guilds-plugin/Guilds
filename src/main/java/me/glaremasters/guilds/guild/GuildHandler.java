@@ -1,152 +1,220 @@
 package me.glaremasters.guilds.guild;
 
+import co.aikar.commands.ACFBukkitUtil;
+import co.aikar.commands.CommandManager;
 import me.glaremasters.guilds.Guilds;
-import me.glaremasters.guilds.utils.IHandler;
+import me.glaremasters.guilds.database.DatabaseProvider;
+import me.glaremasters.guilds.messages.Messages;
+import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.logging.Level;
+import java.util.*;
 
 /**
  * Created by GlareMasters on 6/28/2018.
  */
-public class GuildHandler implements IHandler {
+public class GuildHandler {
 
-    private static final Guilds guild = Guilds.getGuilds();
 
-    private HashMap<String, Guild> guilds;
+    private List<Guild> guilds;
     private List<GuildRole> roles;
+    private List<GuildTier> tiers;
 
-    /**
-     * This method enables the GuildHandler and creates the maps needed
-     */
-    @Override
-    public void enable() {
-        guilds = new HashMap<>();
+    private final DatabaseProvider databaseProvider;
+    private final CommandManager commandManager;
+    private final Permission permission;
+
+    //todo taskchain
+    public GuildHandler(DatabaseProvider databaseProvider, CommandManager commandManager, Permission permission, YamlConfiguration config){
+        this.databaseProvider = databaseProvider;
+        this.commandManager = commandManager;
+        this.permission = permission;
+
         roles = new ArrayList<>();
+        tiers = new ArrayList<>();
+        guilds = databaseProvider.loadGuilds();
 
-        initialize();
+        //GuildRoles objects
+        ConfigurationSection roleSection = config.getConfigurationSection("roles");
+
+        for (String s : roleSection.getKeys(false)) {
+            String path = s + ".permissions.";
+
+            roles.add(GuildRole.builder().name(roleSection.getString(s + ".name"))
+                    .node(roleSection.getString(s + ".permission-node"))
+                    .level(Integer.parseInt(s))
+                    .chat(roleSection.getBoolean(path + "chat"))
+                    .allyChat(roleSection.getBoolean(path + "ally-chat"))
+                    .invite(roleSection.getBoolean(path + "invite"))
+                    .kick(roleSection.getBoolean(path + "kick"))
+                    .promote(roleSection.getBoolean(path + "promote"))
+                    .demote(roleSection.getBoolean(path + "demote"))
+                    .addAlly(roleSection.getBoolean(path + "add-ally"))
+                    .removeAlly(roleSection.getBoolean(path + "remove-ally"))
+                    .changePrefix(roleSection.getBoolean(path + "change-prefix"))
+                    .changeName(roleSection.getBoolean(path + "rename"))
+                    .changeHome(roleSection.getBoolean(path + "change-home"))
+                    .removeGuild(roleSection.getBoolean(path + "remove-guild"))
+                    .changeStatus(roleSection.getBoolean(path + "toggle-guild"))
+                    .openVault(roleSection.getBoolean(path + "open-vault"))
+                    .transferGuild(roleSection.getBoolean(path + "transfer-guild"))
+                    .activateBuff(roleSection.getBoolean(path + "activate-buff"))
+                    .upgradeGuild(roleSection.getBoolean(path + "upgrade-guild"))
+                    .depositMoney(roleSection.getBoolean(path + "deposit-money"))
+                    .withdrawMoney(roleSection.getBoolean(path + "withdraw-money"))
+                    .claimLand(roleSection.getBoolean(path + "claim-land"))
+                    .unclaimLand(roleSection.getBoolean(path + "unclaim-land"))
+                    .destroy(roleSection.getBoolean(path + "destroy"))
+                    .place(roleSection.getBoolean(path + "place"))
+                    .interact(roleSection.getBoolean(path + "interact"))
+                    .build());
+        }
+
+        //GuildTier objects
+        ConfigurationSection tierSection = config.getConfigurationSection("");
     }
 
-    /**
-     * This method disables the GuildHandler and clears all the data
-     */
-    @Override
-    public void disable() {
-        guilds.clear();
-        guilds = null;
-
-        roles.clear();
-        roles = null;
-    }
-
-    /**
-     * This method is called in the enable method to load all the values for the guilds
-     */
-    private void initialize() {
-        guild.getDatabase().getGuilds(((result, exception) ->  {
-            if (result == null && exception != null) {
-                Bukkit.getLogger().log(Level.SEVERE, "An error occurred while loading Guilds.");
-                return;
-            }
-            if (result != null) guilds = result;
-
-            guilds.values().forEach(this::addGuild);
-
-            ConfigurationSection section = Guilds.getGuilds().getConfig().getConfigurationSection("roles");
-
-            for (String s : section.getKeys(false)) {
-                String path = s + ".permissions.";
-                String name = section.getString(s + ".name");
-                String node = section.getString(s + ".permission-node");
-
-                int level = Integer.parseInt(s);
-                boolean chat = section.getBoolean(path + "chat");
-                boolean allyChat = section.getBoolean(path + "ally-chat");
-                boolean invite = section.getBoolean(path + "invite");
-                boolean kick = section.getBoolean(path + "kick");
-                boolean promote = section.getBoolean(path + "promote");
-                boolean demote = section.getBoolean(path + "demote");
-                boolean addAlly = section.getBoolean(path + "add-ally");
-                boolean removeAlly = section.getBoolean(path + "remove-ally");
-                boolean changePrefix = section.getBoolean(path + "change-prefix");
-                boolean changeName = section.getBoolean(path + "rename");
-                boolean changeHome = section.getBoolean(path + "change-home");
-                boolean removeGuild = section.getBoolean(path + "remove-guild");
-                boolean changeStatus = section.getBoolean(path + "toggle-guild");
-                boolean openVault = section.getBoolean(path + "open-vault");
-                boolean transferGuild = section.getBoolean(path + "transfer-guild");
-                boolean activateBuff = section.getBoolean(path + "activate-buff");
-                boolean upgradeGuild = section.getBoolean(path + "upgrade-guild");
-                boolean depositMoney = section.getBoolean(path + "deposit-money");
-                boolean withdrawMoney = section.getBoolean(path + "withdraw-money");
-                boolean claimLand = section.getBoolean(path + "claim-land");
-                boolean unclaimLand = section.getBoolean(path + "unclaim-land");
-                boolean canDestroy = section.getBoolean(path + "destroy");
-                boolean canPlace = section.getBoolean(path + "place");
-                boolean canInteract = section.getBoolean(path + "interact");
-
-                GuildRole role =
-                        new GuildRole(name, node, level, chat, allyChat, invite, kick, promote, demote,
-                                addAlly, removeAlly, changePrefix, changeName, changeHome, removeGuild,
-                                openVault, transferGuild, changeStatus, activateBuff, upgradeGuild, depositMoney,
-                                withdrawMoney, claimLand, unclaimLand, canDestroy, canPlace, canInteract);
-                roles.add(role);
-            }
-
-        }));
+    public void saveData(){
+        databaseProvider.saveGuilds(guilds);
     }
 
 
     /**
-     * This method is used to add a Guild to the map
+     * This method is used to add a Guild to the list
      * @param guild the guild being added
      */
-    public void addGuild(Guild guild) {
-        guilds.put(guild.getName(), guild);
+    public void addGuild(@NotNull Guild guild) {
+        guilds.add(guild);
     }
 
     /**
-     * This method is used to remove a Guild from the map
+     * This method is used to remove a Guild from the list
      * @param guild the guild being removed
      */
-    public void removeGuild(Guild guild) {
-        guilds.remove(guild.getName());
+    public void removeGuild(@NotNull Guild guild) {
+        guilds.remove(guild);
     }
 
     /**
-     * This method  gets a list of all the current guilds
-     * @return a list of all currently loaded guilds
+     * Retrieve a guild by it's name
+     * @return the guild object with given name
      */
-    public HashMap<String, Guild> getGuilds() {
-        return guilds;
+    public Guild getGuild(@NotNull String name) {
+        return guilds.stream().filter(guild -> guild.getName().equals(name)).findFirst().orElse(null);
     }
 
     /**
-     * This method is used to set all the guilds in the map
-     * @param guilds the guilds being added to the map
+     * Retrieve a guild by a player
+     * @return the guild object by player
      */
-    public void setGuilds(HashMap<String, Guild> guilds) {
-        this.guilds = guilds;
+    public Guild getGuild(@NotNull Player p){
+        return guilds.stream().filter(guild -> guild.getMember(p.getUniqueId()) != null).findFirst().orElse(null);
     }
 
-    /**
-     * The method adds new roles to the guild map
-     * @param role the role being added
-     */
-    public void addRole(GuildRole role) {
-        roles.add(role);
+
+    //todo just added need to change it up and fix shit V
+
+    //what is this used for?
+    @Deprecated
+    public Guild getGuild2(String name) {
+        return Guilds.getGuilds().getGuildHandler().getGuilds().values().stream().filter(guild -> getNameColorless(guild).equalsIgnoreCase(guild.getName())).findAny().orElse(null);
+    }
+    @Deprecated
+    public String getNameColorless(Guild guild) {
+        return ACFBukkitUtil.removeColors(guild.getName());
     }
 
-    /**
-     * THis method gets all the roles in the guild map
-     * @return the list of roles
-     */
-    public List<GuildRole> getRoles() {
-        return roles;
+
+//    READ PLEASE GLARE.
+//    todo change this, guilds should not be grabbing the config constantly but rather know this information on startup.
+//    public String getTierName(Guild guild) {
+//        return guilds.getConfig().getString("tier" + guild.getTier() + ".name");
+//    }
+//
+//    public int getTierCost(Guild guild) {
+//        if (guild.getTier() >= guilds.getConfig().getInt("max-number-of-tiers")) return 0;
+//        int newTier = guild.getTier() + 1;
+//        return guilds.getConfig().getInt("tier" + newTier + ".cost");
+//    }
+//
+//    public int getMaxMembers(Guild guild) {
+//        return guilds.getConfig().getInt("tier" + guild.getTier() + ".max-members");
+//    }
+//
+//    public int getMembersToRankup(Guild guild) {
+//        return guilds.getConfig().getInt("tier" + guild.getTier() + ".members-to-rankup");
+//    }
+//
+//    public double getExpMultiplier(Guild guild) {
+//        return guilds.getConfig().getDouble("tier" + guild.getTier() + ".mob-xp-multiplier");
+//    }
+//
+//    public List<String> getGuildPerms(Guild guild) {
+//        return guilds.getConfig().getStringList("tier" + guild.getTier() + ".permissions");
+//    }
+//
+//    public double getDamageMultiplier(Guild guild) {
+//        return guilds.getConfig().getDouble("tier" + guild.getTier() + ".damage-multiplier");
+//    }
+//
+//    public double getMaxBankBalance(Guild guild) {
+//        return guilds.getConfig().getDouble("tier" + guild.getTier() + ".max-bank-balance");
+//    }
+//
+//    public int getMaxTier() {
+//        return guilds.getConfig().getInt("max-number-of-tiers");
+//    }
+//
+//
+//
+//    public void removeGuildPerms(Guild guild) {
+//        guild.getMembers().forEach(member ->  {
+//            OfflinePlayer op = Bukkit.getOfflinePlayer(member.getUniqueId());
+//            getGuildPerms(guild).forEach(perm -> permission.playerRemove(null, op, perm));
+//        });
+//    }
+//
+//    public void removeGuildPerms(Guild guild, OfflinePlayer player) {
+//        getGuildPerms(guild).forEach(perm -> permission.playerRemove(player, perm));
+//    }
+//
+//    private List<String> getGuildPerms(Guild guild) {
+//        return guilds.getConfig().getStringList("tier" + guild.getTier() + ".permissions");
+//    }
+//
+//    public void addGuildPerms(Guild guild) {
+//        guild.getMembers().forEach(member ->  {
+//            OfflinePlayer op = Bukkit.getOfflinePlayer(member.getUniqueId());
+//            getGuildPerms(guild).forEach(perm -> permission.playerAdd(op, perm));
+//        });
+//    }
+//
+//    public void addGuildPerms(Guild guild, OfflinePlayer player) {
+//        getGuildPerms(guild).forEach(perm -> permission.playerAdd(player, perm));
+//    }
+
+    public void sendMessage(Guild guild, Messages key, String... replacements) {
+        guild.getMembers().stream().map(m -> Bukkit.getPlayer(m.getUniqueId())).filter(Objects::nonNull).forEach(p -> commandManager.getCommandIssuer(p).sendInfo(key, replacements));
+    }
+
+    public void addAlly(Guild guild, Guild targetGuild) {
+        guild.addAlly(targetGuild);
+        targetGuild.addAlly(guild);
+    }
+
+
+    public void removeAlly(Guild guild, Guild targetGuild) {
+        guild.removeAlly(targetGuild);
+        targetGuild.removeAlly(guild);
+    }
+
+    public int getGuildsSize(){
+        return guilds.size();
     }
 
 }

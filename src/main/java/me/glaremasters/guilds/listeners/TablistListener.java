@@ -3,7 +3,6 @@ package me.glaremasters.guilds.listeners;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.handlers.Tablist;
-import me.glaremasters.guilds.utils.GuildUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

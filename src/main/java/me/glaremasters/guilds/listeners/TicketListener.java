@@ -3,7 +3,6 @@ package me.glaremasters.guilds.listeners;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.messages.Messages;
-import me.glaremasters.guilds.utils.GuildUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,18 +19,18 @@ import static me.glaremasters.guilds.utils.ConfigUtils.getString;
  * Date: 9/27/2018
  * Time: 7:08 PM
  */
-public class Tickets implements Listener {
+public class TicketListener implements Listener {
 
     private Guilds guilds;
     private GuildUtils utils;
 
-    public Tickets(Guilds guilds, GuildUtils utils) {
+    public TicketListener(Guilds guilds, GuildUtils utils) {
         this.guilds = guilds;
         this.utils = utils;
     }
 
     /**
-     * This even handles Guild Tickets and how they are used by the player
+     * This even handles Guild TicketListener and how they are used by the player
      * @param event
      */
     @EventHandler
