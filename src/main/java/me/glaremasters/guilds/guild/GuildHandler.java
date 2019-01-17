@@ -76,7 +76,10 @@ public class GuildHandler {
         }
 
         //GuildTier objects
-        ConfigurationSection tierSection = config.getConfigurationSection("");
+        for (String key : config.getKeys(false)){
+            if (!key.startsWith("tier")) continue;
+
+        }
     }
 
     public void saveData(){
