@@ -76,7 +76,7 @@ public class GuildHandler {
         }
 
         //GuildTier objects
-        ConfigurationSection tierSection = config.getConfigurationSection("")
+        ConfigurationSection tierSection = config.getConfigurationSection("");
     }
 
     public void saveData(){
