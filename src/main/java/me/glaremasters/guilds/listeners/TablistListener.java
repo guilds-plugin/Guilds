@@ -15,6 +15,9 @@ import org.bukkit.event.player.PlayerJoinEvent;
  */
 public class TablistListener implements Listener {
 
+    //todo
+
+
     private Guilds guilds;
     private GuildUtils utils;
 

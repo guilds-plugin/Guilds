@@ -9,17 +9,18 @@ import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.annotation.Values;
+import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.api.events.GuildRemoveEvent;
-import me.glaremasters.guilds.guild.Guild;
-import me.glaremasters.guilds.guild.GuildHandler;
-import me.glaremasters.guilds.guild.GuildRole;
+import me.glaremasters.guilds.guild.*;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.ConfirmAction;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+
+import java.util.List;
 
 import static co.aikar.commands.ACFBukkitUtil.color;
 
@@ -30,16 +31,12 @@ import static co.aikar.commands.ACFBukkitUtil.color;
  */
 
 @SuppressWarnings("unused")
+@AllArgsConstructor
 @CommandAlias("guild|guilds")
 public class CommandAdmin extends BaseCommand {
 
-    private Guilds guilds;
     private GuildHandler guildHandler;
-    private GuildUtils utils;
-
-    public CommandAdmin(GuildUtils utils) {
-        this.utils = utils;
-    }
+    private List<Player> spies;
 
     /**
      * Admin command to remove a guild from the server
@@ -83,26 +80,29 @@ public class CommandAdmin extends BaseCommand {
      * Admin command to add a player to a guild
      * @param player the admin running the command
      * @param target the player being added to the guild
-     * @param guild the guild the player is being added to
+     * @param name the guild the player is being added to
      */
     @Subcommand("admin addplayer")
     @Description("{@@descriptions.admin-addplayer}")
     @CommandPermission("guilds.command.admin")
     @CommandCompletion("@online @guilds")
     @Syntax("<player> <guild>")
-    public void onAdminAddPlayer(Player player, @Values("@online") @Single String target, @Values("@guilds") @Single String guild) {
+    public void onAdminAddPlayer(Player player, @Values("@online") @Single String target, @Values("@guilds") @Single String name) {
         OfflinePlayer playerToAdd = Bukkit.getOfflinePlayer(target);
-        if (player == null || !player.isOnline()) return;
-        if (utils.getGuild(playerToAdd.getUniqueId()) != null) return;
-        Guild targetGuild = utils.getGuild(guild);
-        if (targetGuild == null) return;
-        utils.addMember(targetGuild, playerToAdd.getUniqueId(), GuildRole.getLowestRole());
-        utils.addGuildPerms(targetGuild, playerToAdd);
+        if (player == null) return;
+
+        Guild guild = guildHandler.getGuild(name);
+        if (guild == null) return;
+
+        guild.addMember(new GuildMember(playerToAdd.getUniqueId(), guildHandler.getLowestGuildRole()));
+        //todo
+        guildHandler.addGuildPerms(guild, playerToAdd);
+
         if (playerToAdd.isOnline()) {
-            guilds.getManager().getCommandIssuer(playerToAdd).sendInfo(Messages.ADMIN__PLAYER_ADDED, "{guild}", targetGuild.getName());
+            getCurrentCommandManager().getCommandIssuer(playerToAdd).sendInfo(Messages.ADMIN__PLAYER_ADDED, "{guild}", guild.getName());
         }
-        getCurrentCommandIssuer().sendInfo(Messages.ADMIN__ADMIN_PLAYER_ADDED, "{player}", playerToAdd.getName(), "{guild}", targetGuild.getName());
-        utils.sendMessage(targetGuild, Messages.ADMIN__ADMIN_GUILD_ADD, "{player}", playerToAdd.getName());
+        getCurrentCommandIssuer().sendInfo(Messages.ADMIN__ADMIN_PLAYER_ADDED, "{player}", playerToAdd.getName(), "{guild}", guild.getName());
+        guildHandler.sendMessage(guild, Messages.ADMIN__ADMIN_GUILD_ADD, "{player}", playerToAdd.getName());
     }
 
     /**
@@ -117,15 +117,18 @@ public class CommandAdmin extends BaseCommand {
     public void onAdminRemovePlayer(Player player, String target) {
         OfflinePlayer playerToRemove = Bukkit.getPlayerExact(target);
         if (player == null) return;
-        if (utils.getGuild(playerToRemove.getUniqueId()) == null) return;
-        Guild guild = utils.getGuild(playerToRemove.getUniqueId());
-        utils.removeGuildPerms(guild, playerToRemove);
-        utils.removeMember(guild, playerToRemove.getUniqueId());
-        if (playerToRemove.isOnline()) {
-            guilds.getManager().getCommandIssuer(playerToRemove).sendInfo(Messages.ADMIN__PLAYER_REMOVED, "{guild}", guild.getName());
-        }
+
+        Guild guild = guildHandler.getGuild(playerToRemove);
+        if (guild == null) return;
+
+        guild.removeMember(playerToRemove);
+
+        //todo
+        guildHandler.removeGuildPerms(guild, playerToRemove);
+
+        if (playerToRemove.isOnline()) getCurrentCommandManager().getCommandIssuer(playerToRemove).sendInfo(Messages.ADMIN__PLAYER_REMOVED, "{guild}", guild.getName());
         getCurrentCommandIssuer().sendInfo(Messages.ADMIN__ADMIN_PLAYER_REMOVED, "{player}", playerToRemove.getName(), "{guild}", guild.getName());
-        utils.sendMessage(guild, Messages.ADMIN__ADMIN_GUILD_REMOVE, "{player}", playerToRemove.getName());
+        guildHandler.sendMessage(guild, Messages.ADMIN__ADMIN_GUILD_REMOVE, "{player}", playerToRemove.getName());
     }
 
     /**
@@ -139,13 +142,16 @@ public class CommandAdmin extends BaseCommand {
     @CommandCompletion("@guilds")
     @Syntax("<guild name>")
     public void onAdminUpgradeGuild(Player player, @Values("@guilds") @Single String name) {
-        Guild guild = utils.getGuild(name);
+        Guild guild = guildHandler.getGuild(name);
         if (guild == null) return;
-        int tier = guild.getTier();
-        if (tier >= utils.getMaxTier()) return;
-        guild.setTier(tier + 1);
+
+        GuildTier tier = guild.getTier();
+        if (tier.getLevel() >= guildHandler.getMaxTierLevel()) return;
+
+        guild.setTier(guildHandler.getGuildTier(guild.getTier().getLevel() + 1));
+
         getCurrentCommandIssuer().sendInfo(Messages.ADMIN__ADMIN_UPGRADE, "{guild}", guild.getName());
-        utils.sendMessage(guild, Messages.ADMIN__ADMIN_GUILD_UPGRADE);
+        guildHandler.sendMessage(guild, Messages.ADMIN__ADMIN_GUILD_UPGRADE);
     }
 
     /**
@@ -159,16 +165,14 @@ public class CommandAdmin extends BaseCommand {
     @CommandCompletion("@guilds")
     @Syntax("<name> <private/public>")
     public void onAdminGuildStatus(Player player, @Values("@guilds") @Single String name) {
-        Guild guild = utils.getGuild(name);
+        Guild guild = guildHandler.getGuild(name);
         if (guild == null) return;
-        String status = guild.getStatus();
-        if (status.equalsIgnoreCase("private")) {
-            status = "Public";
-        } else {
-            status = "Private";
-        }
-        guild.setStatus(StringUtils.capitalize(status));
-        getCurrentCommandIssuer().sendInfo(Messages.STATUS__SUCCESSFUL, "{status}", status);
+
+        Guild.Status status = guild.getStatus();
+        if (status == Guild.Status.Private) guild.setStatus(Guild.Status.Public);
+        else guild.setStatus(Guild.Status.Private);
+
+        getCurrentCommandIssuer().sendInfo(Messages.STATUS__SUCCESSFUL, "{status}", status.name());
     }
 
     /**
@@ -183,9 +187,11 @@ public class CommandAdmin extends BaseCommand {
     @CommandCompletion("@guilds")
     @Syntax("<name> <prefix>")
     public void onAdminGuildPrefix(Player player, @Values("@guilds") @Single String name, String prefix) {
-        Guild guild = utils.getGuild(name);
+        Guild guild = guildHandler.getGuild(name);
         if (guild == null) return;
+
         guild.setPrefix(color(prefix));
+
         getCurrentCommandIssuer().sendInfo(Messages.PREFIX__SUCCESSFUL);
     }
 
@@ -201,12 +207,12 @@ public class CommandAdmin extends BaseCommand {
     @CommandCompletion("@guilds")
     @Syntax("<name> <new name>")
     public void onAdminGuildRename(Player player, @Values("@guilds") @Single String name, String newName) {
-        Guild guild = utils.getGuild(name);
+        Guild guild = guildHandler.getGuild(name);
         if (guild == null) return;
-        String oldName = guild.getName();
-        guilds.getDatabase().removeGuild(utils.getGuild(oldName));
+
+        guild.setName(color(newName));
+
         getCurrentCommandIssuer().sendInfo(Messages.RENAME__SUCCESSFUL, "{name}", newName);
-        guild.setName(color(name));
     }
 
     /**
@@ -217,11 +223,11 @@ public class CommandAdmin extends BaseCommand {
     @Description("{@@descriptions.admin-spy}")
     @CommandPermission("guilds.command.admin")
     public void onAdminSpy(Player player) {
-        if (guilds.getSpy().contains(player)) {
-            guilds.getSpy().remove(player);
+        if (spies.contains(player)) {
+            spies.remove(player);
             getCurrentCommandIssuer().sendInfo(Messages.ADMIN__SPY_OFF);
         } else {
-            guilds.getSpy().add(player);
+            spies.add(player);
             getCurrentCommandIssuer().sendInfo(Messages.ADMIN__SPY_ON);
         }
     }

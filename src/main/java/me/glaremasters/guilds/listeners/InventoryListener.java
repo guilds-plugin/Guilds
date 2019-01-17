@@ -23,6 +23,8 @@ import static me.glaremasters.guilds.utils.ConfigUtils.getString;
  */
 public class InventoryListener implements Listener {
 
+    //todo
+
     private Guilds guilds;
 
     public InventoryListener(Guilds guilds) {

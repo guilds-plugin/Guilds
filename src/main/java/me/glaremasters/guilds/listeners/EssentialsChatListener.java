@@ -15,6 +15,8 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
  */
 public class EssentialsChatListener implements Listener {
 
+    //todo
+
     private Guilds guilds;
     private GuildUtils utils;
 

@@ -1,9 +1,12 @@
 package me.glaremasters.guilds.guild;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.inventory.Inventory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,12 +15,18 @@ import java.util.UUID;
 /**
  * Created by GlareMasters on 6/28/2018.
  */
-@Getter @Setter
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
 public class Guild {
 
     public enum Status {
-        Public,
-        Private
+        Public("Public"),
+        Private("Private");
+
+        Status(String s) {
+        }
     }
 
     private final UUID id;
@@ -25,7 +34,8 @@ public class Guild {
     private GuildMember guildMaster;
 
     private Location home;
-    private String home = "",  inventory = "", texture;
+    private Inventory inventory;
+    private String textureUrl;
     private Status status;
     private GuildTier tier;
     private double balance = 0;
@@ -35,17 +45,6 @@ public class Guild {
 
     private List<String> allies = new ArrayList<>();
     private List<String> pendingAllies = new ArrayList<>();
-
-    @Builder
-    public Guild(UUID id, String name, String prefix, Status status, String texture, GuildMember guildMaster) {
-        this.id = id;
-        this.name = name;
-        this.prefix = prefix;
-        this.status = status;
-        this.texture = texture;
-        this.guildMaster = guildMaster;
-        addMember(guildMaster);
-    }
 
     /**
      * Get a member in the guild
@@ -63,6 +62,10 @@ public class Guild {
 
     public void removeMember(GuildMember guildMember){
         members.remove(guildMember);
+    }
+
+    public void removeMember(OfflinePlayer player){
+        removeMember(getMember(player.getUniqueId()));
     }
 
     public void removeAlly(Guild guild){

@@ -13,6 +13,8 @@ import static co.aikar.commands.ACFBukkitUtil.color;
  */
 public class Tablist {
 
+    //todo
+
     private Guilds guilds;
 
     public Tablist(Guilds guilds) {

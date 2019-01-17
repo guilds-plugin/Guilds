@@ -21,6 +21,9 @@ import static me.glaremasters.guilds.utils.ConfigUtils.getString;
  */
 public class TicketListener implements Listener {
 
+    //todo
+
+
     private Guilds guilds;
     private GuildUtils utils;
 

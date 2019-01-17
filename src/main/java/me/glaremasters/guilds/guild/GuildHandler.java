@@ -5,6 +5,7 @@ import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.messages.Messages;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -22,6 +23,8 @@ public class GuildHandler {
     private final DatabaseProvider databaseProvider;
     private final CommandManager commandManager;
     private final Permission permission;
+
+    private final int maxTierLevel;
 
     //todo taskchain
     public GuildHandler(DatabaseProvider databaseProvider, CommandManager commandManager, Permission permission, YamlConfiguration config){
@@ -68,6 +71,8 @@ public class GuildHandler {
                     .build());
         }
 
+
+        maxTierLevel = config.getInt("max-tier-level");
         //GuildTier objects
         ConfigurationSection tierSection = config.getConfigurationSection("tiers");
         for (String key : tierSection.getKeys(false)){
@@ -124,7 +129,7 @@ public class GuildHandler {
      * Retrieve a guild by a player
      * @return the guild object by player
      */
-    public Guild getGuild(@NotNull Player p){
+    public Guild getGuild(@NotNull OfflinePlayer p){
         return guilds.stream().filter(guild -> guild.getMember(p.getUniqueId()) != null).findFirst().orElse(null);
     }
 
@@ -135,6 +140,24 @@ public class GuildHandler {
      */
     public GuildTier getGuildTier(String name){
         return tiers.stream().filter(tier -> tier.getName().equals(name)).findFirst().orElse(null);
+    }
+
+    /**
+     * Retrieve a guild tier by level
+     * @param level the level of the tier
+     * @return the tier object if found
+     */
+    public GuildTier getGuildTier(int level){
+        return tiers.stream().filter(tier -> tier.getLevel() == level).findFirst().orElse(null);
+    }
+
+    /**
+     * Retrieve a guild role by level
+     * @param level the level of the role
+     * @return the role object if found
+     */
+    public GuildRole getGuildRole(int level){
+        return roles.stream().filter(guildRole -> guildRole.getLevel() == level).findFirst().orElse(null);
     }
 
     /**
@@ -178,4 +201,15 @@ public class GuildHandler {
         return guilds.size();
     }
 
+    /**
+     * Returns the max tier level
+     * @return the max tier level
+     */
+    public int getMaxTierLevel() {
+        return maxTierLevel;
+    }
+
+    public GuildRole getLowestGuildRole() {
+        return roles.get(roles.size() - 1);
+    }
 }

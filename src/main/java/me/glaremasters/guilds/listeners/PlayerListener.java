@@ -36,6 +36,9 @@ import static me.glaremasters.guilds.utils.ConfigUtils.*;
  */
 public class PlayerListener implements Listener {
 
+    //todo
+
+
     private Guilds guilds;
     private GuildUtils utils;
 

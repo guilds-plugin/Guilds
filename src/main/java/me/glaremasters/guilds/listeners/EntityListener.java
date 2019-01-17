@@ -16,6 +16,8 @@ import org.bukkit.event.entity.EntityDeathEvent;
  */
 public class EntityListener implements Listener {
 
+    //todo
+
     private Guilds guilds;
 
     public EntityListener(Guilds guilds) {
