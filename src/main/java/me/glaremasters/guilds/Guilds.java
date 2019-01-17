@@ -19,8 +19,12 @@ import me.glaremasters.guilds.database.databases.json.JSON;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
-import me.glaremasters.guilds.guild.GuildTier;
-import me.glaremasters.guilds.listeners.*;
+import me.glaremasters.guilds.listeners.EntityListener;
+import me.glaremasters.guilds.listeners.EssentialsChatListener;
+import me.glaremasters.guilds.listeners.InventoryListener;
+import me.glaremasters.guilds.listeners.PlayerListener;
+import me.glaremasters.guilds.listeners.TablistListener;
+import me.glaremasters.guilds.listeners.TicketListener;
 import me.glaremasters.guilds.listeners.WorldGuardListener;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.updater.SpigotUpdater;
@@ -45,7 +49,13 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.JarURLConnection;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.stream.Collectors;
@@ -57,7 +67,6 @@ import static me.glaremasters.guilds.utils.AnnouncementUtil.unescape_perl_string
 public final class Guilds extends JavaPlugin {
 
     //todo remove this
-    public static Guilds guilds;
     private static TaskChainFactory taskChainFactory;
 
     @Getter private DatabaseProvider database;
@@ -84,18 +93,10 @@ public final class Guilds extends JavaPlugin {
 
         logo();
 
-        guilds = this;
-
         info("Hooking into Vault...");
         setupEconomy();
         setupPermissions();
         info("Hooked into Economy and Permissions!");
-
-        info("Enabling the Guilds API...");
-        api = new GuildsAPI();
-        spy = new ArrayList<>();
-        vaults = new HashMap<>();
-        info("API Enabled!");
 
         initializePlaceholder();
 
@@ -114,6 +115,12 @@ public final class Guilds extends JavaPlugin {
         guildHandler = new GuildHandler(database, getCommandManager());
         info("The Guilds have been loaded!");
 
+        info("Enabling the Guilds API...");
+        api = new GuildsAPI(guildHandler);
+        spy = new ArrayList<>();
+        vaults = new HashMap<>();
+        info("API Enabled!");
+
         actionHandler = new ActionHandler();
 
         info("Loading Commands and Language Data...");
@@ -127,7 +134,7 @@ public final class Guilds extends JavaPlugin {
         loadCompletions(commandManager);
 
         //todo
-        Stream.of(new CommandGuilds(guildUtils), new CommandBank(), new CommandAdmin(guildUtils), new CommandAlly(guildUtils), new CommandClaim()).forEach(commandManager::registerCommand);
+        Stream.of(new CommandGuilds(guildHandler), new CommandBank(guildHandler), new CommandAdmin(guildHandler), new CommandAlly(guildHandler), new CommandClaim(guildHandler)).forEach(commandManager::registerCommand);
 
 
         if (getConfig().getBoolean("announcements.console")) {
@@ -144,7 +151,7 @@ public final class Guilds extends JavaPlugin {
         }
 
 
-        Stream.of(new EntityListener(guilds), new PlayerListener(this, guildUtils), new TicketListener(this, guildUtils), new InventoryListener(this)).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
+        Stream.of(new EntityListener(guildHandler), new PlayerListener(this, guildHandler), new TicketListener(this, guildHandler), new InventoryListener(guildHandler)).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
         optionalListeners();
         info("Ready to go! That only took " + (System.currentTimeMillis() - start) + "ms");
         loadSkulls();
@@ -166,15 +173,6 @@ public final class Guilds extends JavaPlugin {
             vaults.clear();
 
         }
-    }
-
-    /**
-     * Grabs an instance of the plugin
-     *
-     * @return instance of plugin
-     */
-    public static Guilds getGuilds() {
-        return guilds;
     }
 
     /**
@@ -227,17 +225,18 @@ public final class Guilds extends JavaPlugin {
      * Preload skulls on the server to prevent lag
      */
     private void loadSkulls() {
-        getServer().getScheduler().runTaskLaterAsynchronously(this, () -> getGuildHandler().getGuilds().values().forEach(guild -> {
-            if (guild.getTexture().equalsIgnoreCase("")) {
-                guild.setTexture(HeadUtils.getTextureUrl(guild.getGuildMaster().getUniqueId()));
+        getServer().getScheduler().runTaskLaterAsynchronously(this, () -> getGuildHandler().getGuilds().forEach(guild -> {
+            if (guild.getTextureUrl().equalsIgnoreCase("")) {
+                guild.setTextureUrl(HeadUtils.getTextureUrl(guild.getGuildMaster().getUuid()));
                 //todo is this necessary?
-                HeadUtils.getSkull(HeadUtils.getTextureUrl(guild.getGuildMaster().getUniqueId()));
+                HeadUtils.getSkull(HeadUtils.getTextureUrl(guild.getGuildMaster().getUuid()));
             } else {
-                HeadUtils.textures.put(guild.getGuildMaster().getUniqueId(), guild.getTexture());
+                HeadUtils.textures.put(guild.getGuildMaster().getUuid(), guild.getTextureUrl());
             }
         }), 100L);
     }
 
+    // todo Make a new way to cache the inventories that we need (if we need to)
     private void createVaultCaches() {
         getServer().getScheduler().runTaskLater(this, () -> getGuildHandler().getGuilds().values().forEach(guild -> {
             if (guild.getInventory().equalsIgnoreCase("")) {
@@ -271,6 +270,7 @@ public final class Guilds extends JavaPlugin {
         vaults.put(guild, inv);
     }
 
+    // todo fix this random shit up too now that we have proper data handling
     private void saveVaultCaches() {
         getGuildHandler().getGuilds().values().forEach(guild -> guild.setInventory(Serialization.serializeInventory(getVaults().get(guild))));
     }
@@ -357,7 +357,7 @@ public final class Guilds extends JavaPlugin {
      */
     private void loadContexts(BukkitCommandManager manager) {
         manager.getCommandContexts().registerIssuerOnlyContext(Guild.class, c -> {
-            Guild guild = guildUtils.getGuild(c.getPlayer().getUniqueId());
+            Guild guild = guildHandler.getGuild(c.getPlayer());
             if (guild == null) {
                 throw new InvalidCommandArgument(Messages.ERROR__NO_GUILD);
             }
@@ -365,29 +365,30 @@ public final class Guilds extends JavaPlugin {
         });
 
         manager.getCommandContexts().registerIssuerOnlyContext(GuildRole.class, c -> {
-            Guild guild = guildUtils.getGuild(c.getPlayer().getUniqueId());
+            Guild guild = guildHandler.getGuild(c.getPlayer());
             if (guild == null) {
                 return null;
             }
-            return GuildRole.getRole(guild.getMember(c.getPlayer().getUniqueId()).getRole());
+
+            return guildHandler.getGuildRole(guild.getMember(c.getPlayer().getUniqueId()).getRole().getLevel());
         });
     }
 
     private void loadCompletions(BukkitCommandManager manager) {
         manager.getCommandCompletions().registerCompletion("members", c -> {
-            Guild guild = guildUtils.getGuild(c.getPlayer().getUniqueId());
-            return guild.getMembers().stream().map(member -> Bukkit.getOfflinePlayer(member.getUniqueId()).getName()).collect(Collectors.toList());
+            Guild guild = guildHandler.getGuild(c.getPlayer());
+            return guild.getMembers().stream().map(member -> Bukkit.getOfflinePlayer(member.getUuid()).getName()).collect(Collectors.toList());
         });
 
         manager.getCommandCompletions().registerCompletion("online", c -> Bukkit.getOnlinePlayers().stream()
                 .map(member -> Bukkit.getPlayer(member.getUniqueId()).getName()).collect(Collectors.toList()));
 
-        manager.getCommandCompletions().registerCompletion("invitedTo", c -> guilds.getGuildHandler()
-                .getGuilds().values().stream().filter(guild -> guild.getInvitedMembers().contains(c.getPlayer().getUniqueId()))
+        manager.getCommandCompletions().registerCompletion("invitedTo", c -> guildHandler
+                .getGuilds().stream().filter(guild -> guild.getInvitedMembers().contains(c.getPlayer().getUniqueId()))
                 .map(guild -> ACFBukkitUtil.removeColors(guild.getName())).collect(Collectors.toList()));
 
-        manager.getCommandCompletions().registerCompletion("guilds", c -> guilds.getGuildHandler()
-                .getGuilds().values().stream()
+        manager.getCommandCompletions().registerCompletion("guilds", c -> guildHandler
+                .getGuilds().stream()
                 .map(guild -> ACFBukkitUtil.removeColors(guild.getName())).collect(Collectors.toList()));
     }
 
@@ -439,7 +440,7 @@ public final class Guilds extends JavaPlugin {
     private void initializePlaceholder() {
         if (checkPAPI()) {
             info("Hooking into PlaceholderAPI...");
-            new me.glaremasters.guilds.utils.PlaceholderAPI(guilds).register();
+            new me.glaremasters.guilds.utils.PlaceholderAPI(this).register();
             info("Hooked!");
         }
     }
@@ -449,15 +450,15 @@ public final class Guilds extends JavaPlugin {
      */
     private void optionalListeners() {
         if (getConfig().getBoolean("main-hooks.essentials-chat")) {
-            getServer().getPluginManager().registerEvents(new EssentialsChatListener(this, guildUtils), this);
+            getServer().getPluginManager().registerEvents(new EssentialsChatListener(guildHandler, api), this);
         }
 
         if (getConfig().getBoolean("main-hooks.tablist-guilds")) {
-            getServer().getPluginManager().registerEvents(new TablistListener(this, guildUtils), this);
+            getServer().getPluginManager().registerEvents(new TablistListener(this, guildHandler), this);
         }
 
         if (getConfig().getBoolean("main-hooks.worldguard-claims")) {
-            getServer().getPluginManager().registerEvents(new WorldGuardListener(this, guildUtils), this);
+            getServer().getPluginManager().registerEvents(new WorldGuardListener(this, guildHandler), this);
         }
     }
 

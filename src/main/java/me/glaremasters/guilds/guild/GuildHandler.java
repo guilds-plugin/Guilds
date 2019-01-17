@@ -8,10 +8,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class GuildHandler {
 
@@ -211,5 +212,9 @@ public class GuildHandler {
 
     public GuildRole getLowestGuildRole() {
         return roles.get(roles.size() - 1);
+    }
+
+    public List<Guild> getGuilds() {
+        return guilds;
     }
 }

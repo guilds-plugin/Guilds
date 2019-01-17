@@ -1,7 +1,9 @@
 package me.glaremasters.guilds.listeners;
 
+import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.guild.Guild;
+import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.messages.Messages;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -19,18 +21,14 @@ import static me.glaremasters.guilds.utils.ConfigUtils.getString;
  * Date: 9/27/2018
  * Time: 7:08 PM
  */
+@AllArgsConstructor
 public class TicketListener implements Listener {
 
     //todo
 
 
     private Guilds guilds;
-    private GuildUtils utils;
-
-    public TicketListener(Guilds guilds, GuildUtils utils) {
-        this.guilds = guilds;
-        this.utils = utils;
-    }
+    private GuildHandler guildHandler;
 
     /**
      * This even handles Guild TicketListener and how they are used by the player
@@ -47,9 +45,9 @@ public class TicketListener implements Listener {
         if (!meta.hasLore()) return;
         if (!meta.getLore().get(0).equals(getString("upgrade-ticket.lore"))) return;
         Player player = event.getPlayer();
-        Guild guild = utils.getGuild(player.getUniqueId());
+        Guild guild = guildHandler.getGuild(player);
         if (guild == null) return;
-        if (guild.getTier() >= getInt("max-number-of-tiers")) {
+        if (guild.getTier().getLevel() >= getInt("max-number-of-tiers")) {
             guilds.getManager().getCommandIssuer(player).sendInfo(Messages.UPGRADE__TIER_MAX);
             return;
         }

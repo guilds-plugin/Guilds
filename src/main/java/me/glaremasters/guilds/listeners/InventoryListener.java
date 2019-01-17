@@ -1,6 +1,7 @@
 package me.glaremasters.guilds.listeners;
 
-import me.glaremasters.guilds.Guilds;
+import lombok.AllArgsConstructor;
+import me.glaremasters.guilds.guild.GuildHandler;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
@@ -21,15 +22,12 @@ import static me.glaremasters.guilds.utils.ConfigUtils.getString;
  * Date: 11/8/2018
  * Time: 11:51 PM
  */
+@AllArgsConstructor
 public class InventoryListener implements Listener {
 
     //todo
 
-    private Guilds guilds;
-
-    public InventoryListener(Guilds guilds) {
-        this.guilds = guilds;
-    }
+    private GuildHandler guildHandler;
 
     /**
      * This event just checks if a player is clicking on the next or back page and making sure you can't dupe from the GUIs
@@ -56,7 +54,7 @@ public class InventoryListener implements Listener {
                         player.openInventory(guildList);
                     }
                 }
-                if (guilds.getGuildHandler().getGuilds().values().size() < 45) {
+                if (guildHandler.getGuildsSize() < 45) {
                     event.setCancelled(true);
                     event.setResult(Event.Result.DENY);
                     return;

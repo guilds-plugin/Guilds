@@ -1,7 +1,9 @@
 package me.glaremasters.guilds.listeners;
 
+import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.guild.Guild;
+import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.messages.Messages;
 import me.rayzr522.jsonmessage.JSONMessage;
@@ -34,21 +36,17 @@ import static me.glaremasters.guilds.utils.ConfigUtils.*;
  * Date: 7/19/2018
  * Time: 5:31 PM
  */
+@AllArgsConstructor
 public class PlayerListener implements Listener {
 
     //todo
 
 
     private Guilds guilds;
-    private GuildUtils utils;
+    private GuildHandler guildHandler;
 
     private Set<UUID> ALREADY_INFORMED = new HashSet<>();
     public static final Set<UUID> GUILD_CHAT_PLAYERS = new HashSet<>();
-
-    public PlayerListener(Guilds guilds, GuildUtils utils) {
-        this.guilds = guilds;
-        this.utils = utils;
-    }
 
     /**
      * Guild / Ally damage handlers
@@ -59,8 +57,8 @@ public class PlayerListener implements Listener {
         if (!(event.getEntity() instanceof Player) || !(event.getDamager() instanceof Player)) return;
         Player player = (Player) event.getEntity();
         Player damager = (Player) event.getDamager();
-        Guild playerGuild = utils.getGuild(player.getUniqueId());
-        Guild damagerGuild = utils.getGuild(damager.getUniqueId());
+        Guild playerGuild = guildHandler.getGuild(player);
+        Guild damagerGuild = guildHandler.getGuild(damager);
         if (playerGuild == null || damagerGuild == null) return;
         if (playerGuild.equals(damagerGuild)) event.setCancelled(!getBoolean("allow-guild-damage"));
         if (guilds.getGuildUtils().areAllies(player.getUniqueId(), damager.getUniqueId())) event.setCancelled(!getBoolean("allow-ally-damage"));
