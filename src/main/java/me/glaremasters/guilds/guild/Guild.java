@@ -15,11 +15,11 @@ import java.util.UUID;
 @Getter @Setter
 public class Guild {
 
+    //guilds are identified by their name, this is their unique id.
     private final transient String name;
     private String prefix, home = "", status , inventory = "", texture;
     private int tier = 1;
     private double balance = 0;
-    private GuildMember guildMaster;
     private List<GuildMember> members = new ArrayList<>();
     private List<String> allies = new ArrayList<>();
     private List<UUID> invitedMembers = new ArrayList<>();
@@ -32,7 +32,6 @@ public class Guild {
         this.status = status;
         this.texture = texture;
         this.members.add(guildMaster);
-        this.guildMaster = guildMaster;
     }
 
     /**
@@ -42,6 +41,31 @@ public class Guild {
      */
     public GuildMember getMember(UUID uuid) {
         return members.stream().filter(m -> m.getUniqueId().equals(uuid)).findFirst().orElse(null);
+    }
+
+    public void addMember(GuildMember guildMember){
+        if (members.contains(guildMember)) return;
+        members.add(guildMember);
+    }
+
+    public void removeMember(GuildMember guildMember){
+        members.remove(guildMember);
+    }
+
+    public void removeAlly(Guild guild){
+        allies.remove(guild.getName());
+    }
+
+    public void addAlly(Guild guild) {
+        allies.add(guild.getName());
+    }
+
+    public void addPendingAlly(Guild guild){
+        pendingAllies.add(guild.getName());
+    }
+
+    public void removePendingAlly(Guild guild){
+        pendingAllies.remove(guild.getName());
     }
 }
 

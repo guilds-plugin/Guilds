@@ -25,11 +25,9 @@ public class JSON implements DatabaseProvider {
     private File guildsFile;
     private Type guildsType;
 
-    private GuildHandler guildHandler;
+    //todo
 
-    public JSON(GuildHandler guildHandler, File dataFolder) {
-        this.guildHandler = guildHandler;
-
+    public JSON(File dataFolder) {
         File folder = new File(dataFolder, "data/");
         guildsFile = new File(folder, "guilds.json");
         guildsType = new TypeToken<List<Guild>>() {
@@ -154,14 +152,6 @@ public class JSON implements DatabaseProvider {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * The Map of all guilds on the server
-     * @return hashmap of all guilds
-     */
-    private Map<String, Guild> getGuilds() {
-        return guildHandler.getGuilds();
     }
 
 }

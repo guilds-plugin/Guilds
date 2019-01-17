@@ -19,12 +19,12 @@ import me.glaremasters.guilds.database.databases.json.JSON;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
+import me.glaremasters.guilds.guild.GuildTier;
 import me.glaremasters.guilds.listeners.*;
 import me.glaremasters.guilds.listeners.WorldGuardListener;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.updater.SpigotUpdater;
 import me.glaremasters.guilds.utils.ActionHandler;
-import me.glaremasters.guilds.utils.GuildUtils;
 import me.glaremasters.guilds.utils.HeadUtils;
 import me.glaremasters.guilds.utils.Serialization;
 import net.milkbowl.vault.economy.Economy;
@@ -63,15 +63,14 @@ public final class Guilds extends JavaPlugin {
     @Getter private DatabaseProvider database;
     @Getter private GuildHandler guildHandler;
     @Getter private ActionHandler actionHandler;
-    @Getter private BukkitCommandManager manager;
-    @Getter private GuildUtils guildUtils;
-    @Getter private static Economy economy = null;
-    @Getter private static Permission permissions = null;
+    @Getter private BukkitCommandManager commandManager;
+    @Getter private Economy economy = null;
+    @Getter private Permission permissions = null;
     @Getter private GuildsAPI api;
     @Getter private List<Player> spy;
     @Getter private Map<Guild, Inventory> vaults;
 
-    private final static String LOGPREFIX = "&f[&aGuilds&f]&r ";
+    private final static String LOG_PREFIX = "&f[&aGuilds&f]&r ";
 
     @Override
     public void onEnable() {
@@ -90,11 +89,10 @@ public final class Guilds extends JavaPlugin {
         info("Hooking into Vault...");
         setupEconomy();
         setupPermissions();
-        guildUtils = new GuildUtils(this);
         info("Hooked into Economy and Permissions!");
 
         info("Enabling the Guilds API...");
-        api = new GuildsAPI(guildUtils);
+        api = new GuildsAPI();
         spy = new ArrayList<>();
         vaults = new HashMap<>();
         info("API Enabled!");
@@ -103,7 +101,7 @@ public final class Guilds extends JavaPlugin {
 
         info("Enabling Metrics...");
         Metrics metrics = new Metrics(this);
-        metrics.addCustomChart(new Metrics.SingleLineChart("guilds", () -> getGuildHandler().getGuilds().values().size()));
+        metrics.addCustomChart(new Metrics.SingleLineChart("guilds", () -> getGuildHandler().getGuildsSize()));
 
         checkConfig();
         saveData();
@@ -112,26 +110,24 @@ public final class Guilds extends JavaPlugin {
 
 
         info("Loading Guilds...");
-        guildHandler = new GuildHandler();
-        database = new JSON(getGuildHandler(), getDataFolder());
-        database.initialize();
-        guildHandler.enable();
+        database = new JSON(getDataFolder());
+        guildHandler = new GuildHandler(database, getCommandManager());
         info("The Guilds have been loaded!");
 
         actionHandler = new ActionHandler();
-        actionHandler.enable();
 
         info("Loading Commands and Language Data...");
-        manager = new BukkitCommandManager(this);
-        manager.usePerIssuerLocale(true);
-        loadLanguages(manager);
+        commandManager = new BukkitCommandManager(this);
+        commandManager.usePerIssuerLocale(true);
+        loadLanguages(commandManager);
         //deprecated due to being unstable
         //noinspection deprecation
-        manager.enableUnstableAPI("help");
-        loadContexts(manager);
-        loadCompletions(manager);
+        commandManager.enableUnstableAPI("help");
+        loadContexts(commandManager);
+        loadCompletions(commandManager);
 
-        Stream.of(new CommandGuilds(guildUtils), new CommandBank(), new CommandAdmin(guildUtils), new CommandAlly(guildUtils), new CommandClaim()).forEach(manager::registerCommand);
+        //todo
+        Stream.of(new CommandGuilds(guildUtils), new CommandBank(), new CommandAdmin(guildUtils), new CommandAlly(guildUtils), new CommandClaim()).forEach(commandManager::registerCommand);
 
 
         if (getConfig().getBoolean("announcements.console")) {
@@ -163,7 +159,7 @@ public final class Guilds extends JavaPlugin {
             if (!getVaults().isEmpty()) {
                 saveVaultCaches();
             }
-            guildHandler.disable();
+            guildHandler.saveData();
             actionHandler.disable();
             spy.clear();
             HeadUtils.textures.clear();
@@ -336,7 +332,7 @@ public final class Guilds extends JavaPlugin {
      * @param msg the msg you want to log
      */
     public void info(String msg) {
-        Bukkit.getServer().getConsoleSender().sendMessage(color(LOGPREFIX + msg));
+        Bukkit.getServer().getConsoleSender().sendMessage(color(LOG_PREFIX + msg));
     }
 
     /**

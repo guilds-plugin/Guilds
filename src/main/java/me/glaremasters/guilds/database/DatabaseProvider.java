@@ -12,6 +12,8 @@ import java.util.Map;
  */
 public interface DatabaseProvider {
 
+    //todo
+
     /**
      * Create a guild
      * @param guild
