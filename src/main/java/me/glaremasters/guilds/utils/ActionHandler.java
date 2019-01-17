@@ -10,22 +10,18 @@ import java.util.Map;
  * Date: 9/9/2018
  * Time: 6:16 PM
  */
-public class ActionHandler implements IHandler {
+//todo hmm?
+public class ActionHandler {
 
     private Map<CommandSender, ConfirmAction> actions;
 
-    /**
-     * Enable the Actionhandler
-     */
-    @Override
-    public void enable() {
+    public ActionHandler() {
         actions = new HashMap<>();
     }
 
     /**
      * Disable the ActionHandler
      */
-    @Override
     public void disable() {
         actions.clear();
         actions = null;
@@ -43,11 +39,9 @@ public class ActionHandler implements IHandler {
      * Adds an action to the action list
      * @param sender user
      * @param action action
-     * @return action added
      */
-    public ConfirmAction addAction(CommandSender sender, ConfirmAction action) {
+    public void addAction(CommandSender sender, ConfirmAction action) {
         actions.put(sender, action);
-        return action;
     }
 
     /**

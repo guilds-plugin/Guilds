@@ -9,16 +9,16 @@ import me.glaremasters.guilds.messages.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by GlareMasters
  * Date: 1/16/2019
  * Time: 2:05 AM
  */
+
+//todo move to guildhandler
+//this is not a utiliy class, it has a  constructor and uses instance methods smh.
 public class GuildUtils {
 
     private Guilds guilds;
@@ -155,7 +155,7 @@ public class GuildUtils {
         if (member == null) return;
         if (member == guild.getGuildMaster()) {
             guilds.getDatabase().removeGuild(guild);
-            HashMap<String, Guild> guildList = guilds.getGuildHandler().getGuilds();
+            Map<String, Guild> guildList = guilds.getGuildHandler().getGuilds();
             guildList.remove(guild.getName());
             guilds.getGuildHandler().setGuilds(guildList);
             return;

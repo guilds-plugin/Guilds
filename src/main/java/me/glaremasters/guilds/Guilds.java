@@ -64,7 +64,7 @@ public final class Guilds extends JavaPlugin {
     @Getter private GuildHandler guildHandler;
     @Getter private ActionHandler actionHandler;
     @Getter private BukkitCommandManager manager;
-    @Getter private GuildUtils utils;
+    @Getter private GuildUtils guildUtils;
     @Getter private static Economy economy = null;
     @Getter private static Permission permissions = null;
     @Getter private GuildsAPI api;
@@ -87,17 +87,17 @@ public final class Guilds extends JavaPlugin {
 
         guilds = this;
 
-        info("Enabling the Guilds API...");
-        api = new GuildsAPI(utils);
-        spy = new ArrayList<>();
-        vaults = new HashMap<>();
-        info("API Enabled!");
-
         info("Hooking into Vault...");
         setupEconomy();
         setupPermissions();
-        utils = new GuildUtils(this);
+        guildUtils = new GuildUtils(this);
         info("Hooked into Economy and Permissions!");
+
+        info("Enabling the Guilds API...");
+        api = new GuildsAPI(guildUtils);
+        spy = new ArrayList<>();
+        vaults = new HashMap<>();
+        info("API Enabled!");
 
         initializePlaceholder();
 
@@ -110,11 +110,11 @@ public final class Guilds extends JavaPlugin {
 
         taskChainFactory = BukkitTaskChainFactory.create(this);
 
-        database = new JSON(this);
-        database.initialize();
 
         info("Loading Guilds...");
         guildHandler = new GuildHandler();
+        database = new JSON(getGuildHandler(), getDataFolder());
+        database.initialize();
         guildHandler.enable();
         info("The Guilds have been loaded!");
 
@@ -131,7 +131,7 @@ public final class Guilds extends JavaPlugin {
         loadContexts(manager);
         loadCompletions(manager);
 
-        Stream.of(new CommandGuilds(utils), new CommandBank(), new CommandAdmin(utils), new CommandAlly(utils), new CommandClaim()).forEach(manager::registerCommand);
+        Stream.of(new CommandGuilds(guildUtils), new CommandBank(), new CommandAdmin(guildUtils), new CommandAlly(guildUtils), new CommandClaim()).forEach(manager::registerCommand);
 
 
         if (getConfig().getBoolean("announcements.console")) {
@@ -148,7 +148,7 @@ public final class Guilds extends JavaPlugin {
         }
 
 
-        Stream.of(new EntityListener(guilds), new PlayerListener(this, utils), new TicketListener(this, utils), new InventoryListener(this)).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
+        Stream.of(new EntityListener(guilds), new PlayerListener(this, guildUtils), new TicketListener(this, guildUtils), new InventoryListener(this)).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
         optionalListeners();
         info("Ready to go! That only took " + (System.currentTimeMillis() - start) + "ms");
         loadSkulls();
@@ -361,7 +361,7 @@ public final class Guilds extends JavaPlugin {
      */
     private void loadContexts(BukkitCommandManager manager) {
         manager.getCommandContexts().registerIssuerOnlyContext(Guild.class, c -> {
-            Guild guild = utils.getGuild(c.getPlayer().getUniqueId());
+            Guild guild = guildUtils.getGuild(c.getPlayer().getUniqueId());
             if (guild == null) {
                 throw new InvalidCommandArgument(Messages.ERROR__NO_GUILD);
             }
@@ -369,7 +369,7 @@ public final class Guilds extends JavaPlugin {
         });
 
         manager.getCommandContexts().registerIssuerOnlyContext(GuildRole.class, c -> {
-            Guild guild = utils.getGuild(c.getPlayer().getUniqueId());
+            Guild guild = guildUtils.getGuild(c.getPlayer().getUniqueId());
             if (guild == null) {
                 return null;
             }
@@ -379,7 +379,7 @@ public final class Guilds extends JavaPlugin {
 
     private void loadCompletions(BukkitCommandManager manager) {
         manager.getCommandCompletions().registerCompletion("members", c -> {
-            Guild guild = utils.getGuild(c.getPlayer().getUniqueId());
+            Guild guild = guildUtils.getGuild(c.getPlayer().getUniqueId());
             return guild.getMembers().stream().map(member -> Bukkit.getOfflinePlayer(member.getUniqueId()).getName()).collect(Collectors.toList());
         });
 
@@ -453,15 +453,15 @@ public final class Guilds extends JavaPlugin {
      */
     private void optionalListeners() {
         if (getConfig().getBoolean("main-hooks.essentials-chat")) {
-            getServer().getPluginManager().registerEvents(new EssentialsChatListener(this, utils), this);
+            getServer().getPluginManager().registerEvents(new EssentialsChatListener(this, guildUtils), this);
         }
 
         if (getConfig().getBoolean("main-hooks.tablist-guilds")) {
-            getServer().getPluginManager().registerEvents(new TablistListener(this, utils), this);
+            getServer().getPluginManager().registerEvents(new TablistListener(this, guildUtils), this);
         }
 
         if (getConfig().getBoolean("main-hooks.worldguard-claims")) {
-            getServer().getPluginManager().registerEvents(new WorldGuardListener(this, utils), this);
+            getServer().getPluginManager().registerEvents(new WorldGuardListener(this, guildUtils), this);
         }
     }
 

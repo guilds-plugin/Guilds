@@ -8,15 +8,14 @@ import java.util.UUID;
 public class GuildMember {
 
     private UUID uuid;
-
-    private int role;
+    private GuildRole role;
 
     /**
-     * Public object for the class
-     * @param uuid
-     * @param role
+     * GuildMember object this is a player in a guild
+     * @param uuid the player's uuid
+     * @param role the player's role in this guild
      */
-    public GuildMember(UUID uuid, int role) {
+    public GuildMember(UUID uuid, GuildRole role) {
         this.uuid = uuid;
         this.role = role;
     }
@@ -33,7 +32,7 @@ public class GuildMember {
      * This method gets the Role of a GuildMember
      * @return the Role of the GuildMember
      */
-    public int getRole() {
+    public GuildRole getRole() {
         return role;
     }
 
@@ -42,6 +41,6 @@ public class GuildMember {
      * @param role the Role to set the GuildMember
      */
     public void setRole(GuildRole role) {
-        this.role = role.getLevel();
+        this.role = role;
     }
 }

@@ -128,11 +128,11 @@
       <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
     </repository>
 
-    <!-- No clue what this repo is for we'll see later lmao -->
-    <!--<repository>-->
-    <!--<id>onarandombox</id>-->
-    <!--<url>http://repo.onarandombox.com/content/groups/public</url>-->
-    <!--</repository>-->
+    <!-- Repo for JsonConfiguration -->
+    <repository>
+    <id>onarandombox</id>
+    <url>http://repo.onarandombox.com/content/groups/public</url>
+    </repository>
   </repositories>
 
   <dependencies>

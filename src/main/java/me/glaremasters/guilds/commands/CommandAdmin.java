@@ -13,6 +13,7 @@ import co.aikar.commands.annotation.Values;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.api.events.GuildRemoveEvent;
 import me.glaremasters.guilds.guild.Guild;
+import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.ConfirmAction;
@@ -29,10 +30,13 @@ import static co.aikar.commands.ACFBukkitUtil.color;
  * Date: 9/10/2018
  * Time: 6:45 PM
  */
+
+@SuppressWarnings("unused")
 @CommandAlias("guild|guilds")
 public class CommandAdmin extends BaseCommand {
 
-    @Dependency private Guilds guilds;
+    private Guilds guilds;
+    private GuildHandler guildHandler;
     private GuildUtils utils;
 
     public CommandAdmin(GuildUtils utils) {
@@ -63,7 +67,7 @@ public class CommandAdmin extends BaseCommand {
                 guilds.getServer().getPluginManager().callEvent(event);
                 if (event.isCancelled()) return;
                 guilds.getVaults().remove(guild);
-                Guilds.checkForClaim(player, guild, guilds);
+                Guilds.checkForClaim(player.getWorld(), guild, guilds);
                 utils.removeGuildPerms(guild);
                 guilds.getDatabase().removeGuild(guild);
                 guilds.getActionHandler().removeAction(player);
@@ -209,7 +213,7 @@ public class CommandAdmin extends BaseCommand {
 
     /**
      * Admin command to turn on Guild Chat Spy
-     * @param player
+     * @param player the player executing the command
      */
     @Subcommand("admin spy")
     @Description("{@@descriptions.admin-spy}")

@@ -644,7 +644,7 @@ public class CommandGuilds extends BaseCommand {
                     guilds.getServer().getPluginManager().callEvent(removeEvent);
                     if (removeEvent.isCancelled()) return;
                     guilds.getVaults().remove(guild);
-                    Guilds.checkForClaim(player, guild, guilds);
+                    Guilds.checkForClaim(player.getWorld(), guild, guilds);
                     utils.sendMessage(guild, Messages.LEAVE__GUILDMASTER_LEFT, "{player}", player.getName());
                     utils.removeGuildPerms(guild);
                     guilds.getDatabase().removeGuild(guild);
@@ -739,7 +739,7 @@ public class CommandGuilds extends BaseCommand {
                 guilds.getServer().getPluginManager().callEvent(event);
                 if (event.isCancelled()) return;
                 guilds.getVaults().remove(guild);
-                Guilds.checkForClaim(player, guild, guilds);
+                Guilds.checkForClaim(player.getWorld(), guild, guilds);
                 getCurrentCommandIssuer().sendInfo(Messages.DELETE__SUCCESSFUL, "{guild}", guild.getName());
                 utils.removeGuildPerms(guild);
                 guilds.getDatabase().removeGuild(guild);

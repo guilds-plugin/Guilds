@@ -12,8 +12,7 @@ import me.glaremasters.guilds.guild.GuildHandler;
 
 import java.io.*;
 import java.lang.reflect.Type;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by GlareMasters
@@ -27,23 +26,13 @@ public class JSON implements DatabaseProvider {
     private Type guildsType;
 
     private GuildHandler guildHandler;
-    private File dataFolder;
 
     public JSON(GuildHandler guildHandler, File dataFolder) {
         this.guildHandler = guildHandler;
-        this.dataFolder = dataFolder;
-    }
-
-
-    /**
-     * Initializing the JSON data storage system will allow the plugin to work and update as needed
-     */
-    @Override
-    public void initialize() {
 
         File folder = new File(dataFolder, "data/");
         guildsFile = new File(folder, "guilds.json");
-        guildsType = new TypeToken<Map<String, Guild>>() {
+        guildsType = new TypeToken<List<Guild>>() {
         }.getType();
 
         gson = new GsonBuilder().registerTypeAdapter(guildsType, new GuildMapDeserializer()).setPrettyPrinting().create();
@@ -60,7 +49,6 @@ public class JSON implements DatabaseProvider {
                 ex.printStackTrace();
             }
         }
-
     }
 
     /**
@@ -69,7 +57,7 @@ public class JSON implements DatabaseProvider {
      */
     @Override
     public void createGuild(Guild guild) {
-        HashMap<String, Guild> guilds = getGuilds() == null ? new HashMap<>() : getGuilds();
+        Map<String, Guild> guilds = getGuilds() == null ? new HashMap<>() : getGuilds();
         guilds.put(guild.getName(), guild);
         write(guildsFile, guilds, guildsType);
         Guilds.getGuilds().getGuildHandler().addGuild(guild);
@@ -102,7 +90,7 @@ public class JSON implements DatabaseProvider {
      * @param callback all the guilds currently loaded on the server
      */
     @Override
-    public void getGuilds(Callback<HashMap<String, Guild>, Exception> callback) {
+    public void getGuilds(Callback<Map<String, Guild>, Exception> callback) {
         Guilds.newChain().asyncFirst(() -> {
             JsonReader reader;
             try {
@@ -114,6 +102,27 @@ public class JSON implements DatabaseProvider {
 
             return gson.fromJson(reader, guildsType);
         }).syncLast(guilds -> callback.call((Map<String, Guild>) guilds, null)).execute();
+    }
+
+    @Override
+    public List<Guild> loadGuilds() {
+        List<Guild> guilds = new ArrayList<>();
+        Guilds.newChain().asyncFirst(() -> {
+            JsonReader reader;
+            try {
+                reader = new JsonReader(new FileReader(guildsFile));
+            } catch (FileNotFoundException ex) {
+                ex.printStackTrace();
+                return null;
+            }
+
+            return gson.fromJson(reader, guildsType);
+        }).syncLast()
+    }
+
+    @Override
+    public void saveGuilds(List<Guild> guilds) {
+
     }
 
     /**
