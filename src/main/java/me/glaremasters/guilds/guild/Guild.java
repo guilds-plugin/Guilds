@@ -3,7 +3,7 @@ package me.glaremasters.guilds.guild;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.experimental.FieldNameConstants;
+import org.bukkit.Location;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,23 +15,36 @@ import java.util.UUID;
 @Getter @Setter
 public class Guild {
 
-    //guilds are identified by their name, this is their unique id.
-    private final transient String name;
-    private String prefix, home = "", status , inventory = "", texture;
-    private GuildTier tier
+    public enum Status {
+        Public,
+        Private
+    }
+
+    private final UUID id;
+    private String name, prefix;
+    private GuildMember guildMaster;
+
+    private Location home;
+    private String home = "",  inventory = "", texture;
+    private Status status;
+    private GuildTier tier;
     private double balance = 0;
+
     private List<GuildMember> members = new ArrayList<>();
-    private List<String> allies = new ArrayList<>();
     private List<UUID> invitedMembers = new ArrayList<>();
+
+    private List<String> allies = new ArrayList<>();
     private List<String> pendingAllies = new ArrayList<>();
 
     @Builder
-    public Guild(String name, String prefix, String status, String texture, GuildMember guildMaster) {
+    public Guild(UUID id, String name, String prefix, Status status, String texture, GuildMember guildMaster) {
+        this.id = id;
         this.name = name;
         this.prefix = prefix;
         this.status = status;
         this.texture = texture;
-        this.members.add(guildMaster);
+        this.guildMaster = guildMaster;
+        addMember(guildMaster);
     }
 
     /**
@@ -40,7 +53,7 @@ public class Guild {
      * @return the member which was found
      */
     public GuildMember getMember(UUID uuid) {
-        return members.stream().filter(m -> m.getUniqueId().equals(uuid)).findFirst().orElse(null);
+        return members.stream().filter(m -> m.getUuid().equals(uuid)).findFirst().orElse(null);
     }
 
     public void addMember(GuildMember guildMember){
@@ -66,6 +79,10 @@ public class Guild {
 
     public void removePendingAlly(Guild guild){
         pendingAllies.remove(guild.getName());
+    }
+
+    public int getSize() {
+        return members.size();
     }
 }
 
