@@ -1,31 +1,23 @@
 package me.glaremasters.guilds.guild;
 
-import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.CommandManager;
-import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.messages.Messages;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
-/**
- * Created by GlareMasters on 6/28/2018.
- */
 public class GuildHandler {
 
 
     private List<Guild> guilds;
-    private List<GuildRole> roles;
-    private List<GuildTier> tiers;
+    private final List<GuildRole> roles;
+    private final List<GuildTier> tiers;
 
     private final DatabaseProvider databaseProvider;
     private final CommandManager commandManager;
@@ -96,6 +88,9 @@ public class GuildHandler {
 
     }
 
+    /**
+     * Saves the data of guilds
+     */
     public void saveData(){
         databaseProvider.saveGuilds(guilds);
     }
@@ -133,92 +128,30 @@ public class GuildHandler {
         return guilds.stream().filter(guild -> guild.getMember(p.getUniqueId()) != null).findFirst().orElse(null);
     }
 
-
-    //todo just added need to change it up and fix shit V
-
-    //what is this used for?
-    @Deprecated
-    public Guild getGuild2(String name) {
-        return Guilds.getGuilds().getGuildHandler().getGuilds().values().stream().filter(guild -> getNameColorless(guild).equalsIgnoreCase(guild.getName())).findAny().orElse(null);
-    }
-    @Deprecated
-    public String getNameColorless(Guild guild) {
-        return ACFBukkitUtil.removeColors(guild.getName());
+    /**
+     * Retrieve a guild tier by name
+     * @param name the name of the tier
+     * @return the tier object if found
+     */
+    public GuildTier getGuildTier(String name){
+        return tiers.stream().filter(tier -> tier.getName().equals(name)).findFirst().orElse(null);
     }
 
-
-//    READ PLEASE GLARE.
-//    todo change this, guilds should not be grabbing the config constantly but rather know this information on startup.
-//    public String getTierName(Guild guild) {
-//        return guilds.getConfig().getString("tier" + guild.getTier() + ".name");
-//    }
-//
-//    public int getTierCost(Guild guild) {
-//        if (guild.getTier() >= guilds.getConfig().getInt("max-number-of-tiers")) return 0;
-//        int newTier = guild.getTier() + 1;
-//        return guilds.getConfig().getInt("tier" + newTier + ".cost");
-//    }
-//
-//    public int getMaxMembers(Guild guild) {
-//        return guilds.getConfig().getInt("tier" + guild.getTier() + ".max-members");
-//    }
-//
-//    public int getMembersToRankup(Guild guild) {
-//        return guilds.getConfig().getInt("tier" + guild.getTier() + ".members-to-rankup");
-//    }
-//
-//    public double getExpMultiplier(Guild guild) {
-//        return guilds.getConfig().getDouble("tier" + guild.getTier() + ".mob-xp-multiplier");
-//    }
-//
-//    public List<String> getGuildPerms(Guild guild) {
-//        return guilds.getConfig().getStringList("tier" + guild.getTier() + ".permissions");
-//    }
-//
-//    public double getDamageMultiplier(Guild guild) {
-//        return guilds.getConfig().getDouble("tier" + guild.getTier() + ".damage-multiplier");
-//    }
-//
-//    public double getMaxBankBalance(Guild guild) {
-//        return guilds.getConfig().getDouble("tier" + guild.getTier() + ".max-bank-balance");
-//    }
-//
-//    public int getMaxTier() {
-//        return guilds.getConfig().getInt("max-number-of-tiers");
-//    }
-//
-//
-//
-//    public void removeGuildPerms(Guild guild) {
-//        guild.getMembers().forEach(member ->  {
-//            OfflinePlayer op = Bukkit.getOfflinePlayer(member.getUniqueId());
-//            getGuildPerms(guild).forEach(perm -> permission.playerRemove(null, op, perm));
-//        });
-//    }
-//
-//    public void removeGuildPerms(Guild guild, OfflinePlayer player) {
-//        getGuildPerms(guild).forEach(perm -> permission.playerRemove(player, perm));
-//    }
-//
-//    private List<String> getGuildPerms(Guild guild) {
-//        return guilds.getConfig().getStringList("tier" + guild.getTier() + ".permissions");
-//    }
-//
-//    public void addGuildPerms(Guild guild) {
-//        guild.getMembers().forEach(member ->  {
-//            OfflinePlayer op = Bukkit.getOfflinePlayer(member.getUniqueId());
-//            getGuildPerms(guild).forEach(perm -> permission.playerAdd(op, perm));
-//        });
-//    }
-//
-//    public void addGuildPerms(Guild guild, OfflinePlayer player) {
-//        getGuildPerms(guild).forEach(perm -> permission.playerAdd(player, perm));
-//    }
-
+    /**
+     * Sends a message to all online members in a guild
+     * @param guild the guild from which members to send it to
+     * @param key the message key to send
+     * @param replacements any replacements
+     */
     public void sendMessage(Guild guild, Messages key, String... replacements) {
         guild.getMembers().stream().map(m -> Bukkit.getPlayer(m.getUuid())).filter(Objects::nonNull).forEach(p -> commandManager.getCommandIssuer(p).sendInfo(key, replacements));
     }
 
+    /**
+     * Adds an ally to both guilds
+     * @param guild the guild to ally
+     * @param targetGuild the other guild to ally
+     */
     public void addAlly(Guild guild, Guild targetGuild) {
         guild.addAlly(targetGuild);
         targetGuild.addAlly(guild);
@@ -227,11 +160,20 @@ public class GuildHandler {
     }
 
 
+    /**
+     * Removes an ally.
+     * @param guild the guild to remove as ally
+     * @param targetGuild the guild to remove as ally
+     */
     public void removeAlly(Guild guild, Guild targetGuild) {
         guild.removeAlly(targetGuild);
         targetGuild.removeAlly(guild);
     }
 
+    /**
+     * Returns the amount of guilds existing
+     * @return an integer of size.
+     */
     public int getGuildsSize(){
         return guilds.size();
     }
