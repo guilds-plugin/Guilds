@@ -11,6 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 public class GuildTier {
 
+    private final int level;
     private final String name;
     private final double cost;
     private final int maxMembers;

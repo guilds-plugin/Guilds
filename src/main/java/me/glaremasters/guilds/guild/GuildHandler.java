@@ -81,6 +81,7 @@ public class GuildHandler {
         ConfigurationSection tierSection = config.getConfigurationSection("tiers");
         for (String key : tierSection.getKeys(false)){
             tiers.add(GuildTier.builder()
+                    .level(tierSection.getInt(key + ".level"))
                     .name(tierSection.getString(key + ".name"))
                     .cost(tierSection.getDouble(key + ".cost"))
                     .maxMembers(tierSection.getInt(key + ".max-members"))
