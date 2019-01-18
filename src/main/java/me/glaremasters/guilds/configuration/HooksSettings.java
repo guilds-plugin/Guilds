@@ -9,7 +9,7 @@ import static ch.jalu.configme.properties.PropertyInitializer.newProperty;
 /**
  * Created by GlareMasters
  * Date: 1/17/2019
- * Time: 1:03 PM
+ * Time: 2:29 PM
  */
 public class HooksSettings implements SettingsHolder {
 
@@ -24,3 +24,4 @@ public class HooksSettings implements SettingsHolder {
     private HooksSettings() {
     }
 }
+
