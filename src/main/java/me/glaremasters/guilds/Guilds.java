@@ -24,6 +24,10 @@
 
 package me.glaremasters.guilds;
 
+import ch.jalu.configme.SettingsManager;
+import ch.jalu.configme.SettingsManagerBuilder;
+import ch.jalu.configme.migration.MigrationService;
+import ch.jalu.configme.migration.PlainMigrationService;
 import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.BukkitCommandManager;
 import co.aikar.commands.InvalidCommandArgument;
@@ -35,6 +39,7 @@ import me.glaremasters.guilds.commands.CommandAlly;
 import me.glaremasters.guilds.commands.CommandBank;
 import me.glaremasters.guilds.commands.CommandClaim;
 import me.glaremasters.guilds.commands.CommandGuilds;
+import me.glaremasters.guilds.configuration.GuildsSettingsRetriever;
 import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.database.providers.JsonProvider;
 import me.glaremasters.guilds.guild.Guild;
@@ -95,6 +100,7 @@ public final class Guilds extends JavaPlugin {
     @Getter private GuildsAPI api;
     @Getter private List<Player> spy;
     @Getter private Map<Guild, Inventory> vaults;
+    @Getter private SettingsManager settingsManager;
 
     private final static String LOG_PREFIX = "&f[&aGuilds&f]&r ";
 
@@ -111,6 +117,8 @@ public final class Guilds extends JavaPlugin {
         }
 
         long start = System.currentTimeMillis();
+        saveDefaultConfig();
+        settingsManager = initSetting();
 
         logo();
 
@@ -125,7 +133,6 @@ public final class Guilds extends JavaPlugin {
         Metrics metrics = new Metrics(this);
         metrics.addCustomChart(new Metrics.SingleLineChart("guilds", () -> getGuildHandler().getGuildsSize()));
 
-        checkConfig();
         saveData();
 
         info("Loading Data...");
@@ -485,20 +492,11 @@ public final class Guilds extends JavaPlugin {
         }
     }
 
-    /**
-     * Check the version of the config
-     */
-    private void checkConfig() {
-        if (!getConfig().isSet("version") || getConfig().getInt("version") != 1) {
-            if (getConfig().getBoolean("auto-update-config")) {
-                File oF = new File(getDataFolder(), "config.yml");
-                File nF = new File(getDataFolder(), "config-old.yml");
-                //noinspection ResultOfMethodCallIgnored
-                oF.renameTo(nF);
-                info("Your config has been auto updated. You can disabled this in the config");
-            } else {
-                info("Your config is out of date!");
-            }
-        }
+    private SettingsManager initSetting() {
+        File config = new File(getDataFolder(), "config.yml");
+        MigrationService migrationService = new PlainMigrationService();
+        return SettingsManagerBuilder.withYamlFile(config).migrationService(migrationService).configurationData(GuildsSettingsRetriever.buildConfigurationData()).create();
     }
+
+
 }
