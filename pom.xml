@@ -1,240 +1,241 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-  <groupId>me.glaremasters</groupId>
-  <artifactId>guilds</artifactId>
-  <version>3.4-BETA</version>
-  <packaging>jar</packaging>
+    <groupId>me.glaremasters</groupId>
+    <artifactId>guilds</artifactId>
+    <version>3.4-BETA</version>
+    <packaging>jar</packaging>
 
-  <name>Guilds</name>
-  <url>https://www.spigotmc.org/resources/48920/</url>
+    <name>Guilds</name>
+    <url>https://www.spigotmc.org/resources/48920/</url>
 
-  <issueManagement>
-    <system>GitHub</system>
-    <url>https://github.com/darbyjack/Guilds-Plugin/issues</url>
-  </issueManagement>
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/darbyjack/Guilds-Plugin/issues</url>
+    </issueManagement>
 
-  <scm>
-    <connection>https://github.com/darbyjack/Guilds-Plugin.git</connection>
-    <url>https://github.com/darbyjack/Guilds-Plugin</url>
-  </scm>
+    <scm>
+        <connection>https://github.com/darbyjack/Guilds-Plugin.git</connection>
+        <url>https://github.com/darbyjack/Guilds-Plugin</url>
+    </scm>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
-  <build>
-    <defaultGoal>clean package</defaultGoal>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>2.3.2</version>
-        <configuration>
-          <finalName>${project.name}-${project.version}</finalName>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.7.0</version>
-        <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
-          <encoding>UTF-8</encoding>
-          <compilerArgs>
-            <arg>-parameters</arg>
-          </compilerArgs>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-shade-plugin</artifactId>
-        <version>3.2.0</version>
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>shade</goal>
-            </goals>
-            <configuration>
-              <createDependencyReducedPom>false</createDependencyReducedPom>
-              <relocations>
-                <relocation>
-                  <pattern>org.codemc.worldguardwrapper</pattern>
-                  <shadedPattern>me.glaremasters.guilds.libs.worldguardwrapper</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>com.google.gson</pattern>
-                  <shadedPattern>me.glaremasters.guilds.libs.gson</shadedPattern>
-                </relocation>
-              </relocations>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-    <resources>
-      <resource>
-        <directory>src/main/resources</directory>
-        <filtering>true</filtering>
-      </resource>
-    </resources>
-  </build>
+    <build>
+        <defaultGoal>clean package</defaultGoal>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <finalName>${project.name}-${project.version}</finalName>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.7.0</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>UTF-8</encoding>
+                    <compilerArgs>
+                        <arg>-parameters</arg>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <relocations>
+                                <relocation>
+                                    <pattern>org.codemc.worldguardwrapper</pattern>
+                                    <shadedPattern>me.glaremasters.guilds.libs.worldguardwrapper</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com.google.gson</pattern>
+                                    <shadedPattern>me.glaremasters.guilds.libs.gson</shadedPattern>
+                                </relocation>
+                            </relocations>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
 
-  <repositories>
-    <!-- Platform -->
-    <repository>
-      <id>spigotmc-repo</id>
-      <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
-    </repository>
+    <repositories>
+        <!-- Platform -->
+        <repository>
+            <id>spigotmc-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
+        </repository>
 
-    <!-- MC-->
-    <repository>
-      <id>mojang</id>
-      <url>https://libraries.minecraft.net/</url>
-    </repository>
+        <!-- MC-->
+        <repository>
+            <id>mojang</id>
+            <url>https://libraries.minecraft.net/</url>
+        </repository>
 
-    <!-- Repo for commands and taskchain -->
-    <repository>
-      <id>aikar</id>
-      <url>https://repo.aikar.co/content/groups/aikar/</url>
-    </repository>
+        <!-- Repo for commands and taskchain -->
+        <repository>
+            <id>aikar</id>
+            <url>https://repo.aikar.co/content/groups/aikar/</url>
+        </repository>
 
-    <!-- Json messages for chat-->
-    <repository>
-      <id>rayzr-repo</id>
-      <url>https://cdn.rawgit.com/Rayzr522/maven-repo/master/</url>
-    </repository>
+        <!-- Json messages for chat-->
+        <repository>
+            <id>rayzr-repo</id>
+            <url>https://cdn.rawgit.com/Rayzr522/maven-repo/master/</url>
+        </repository>
+        <!-- Repo for JsonConfiguration -->
+        <repository>
+            <id>onarandombox</id>
+            <url>http://repo.onarandombox.com/content/groups/public</url>
+        </repository>
+        <!-- jitpack for simpljson wrapper for gson -->
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
 
-    <!-- World guard wrapper -->
-    <repository>
-      <id>codemc-repo</id>
-      <url>https://repo.codemc.org/repository/maven-public/</url>
-    </repository>
+        <!-- World guard wrapper -->
+        <repository>
+            <id>codemc-repo</id>
+            <url>https://repo.codemc.org/repository/maven-public/</url>
+        </repository>
 
-    <!-- Vault API for Economy and more-->
-    <repository>
-      <id>vault-repo</id>
-      <url>http://nexus.hc.to/content/repositories/pub_releases</url>
-    </repository>
+        <!-- Vault API for Economy and more-->
+        <repository>
+            <id>vault-repo</id>
+            <url>http://nexus.hc.to/content/repositories/pub_releases</url>
+        </repository>
 
-    <!-- Placeholder API -->
-    <repository>
-      <id>placeholderapi</id>
-      <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
-    </repository>
+        <!-- Placeholder API -->
+        <repository>
+            <id>placeholderapi</id>
+            <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+        </repository>
+    </repositories>
 
-    <!-- Repo for JsonConfiguration -->
-    <repository>
-    <id>onarandombox</id>
-    <url>http://repo.onarandombox.com/content/groups/public</url>
-    </repository>
-  </repositories>
+    <dependencies>
+        <!-- Platform -->
+        <dependency>
+            <groupId>org.bukkit</groupId>
+            <artifactId>bukkit</artifactId>
+            <version>1.12.2-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
 
-  <dependencies>
-    <!-- Platform -->
-    <dependency>
-      <groupId>org.bukkit</groupId>
-      <artifactId>bukkit</artifactId>
-      <version>1.12.2-R0.1-SNAPSHOT</version>
-      <scope>provided</scope>
-    </dependency>
+        <!-- MC authentication -->
+        <dependency>
+            <groupId>com.mojang</groupId>
+            <artifactId>authlib</artifactId>
+            <version>1.5.25</version>
+            <scope>provided</scope>
+        </dependency>
 
-    <!-- MC authentication -->
-    <dependency>
-      <groupId>com.mojang</groupId>
-      <artifactId>authlib</artifactId>
-      <version>1.5.25</version>
-      <scope>provided</scope>
-    </dependency>
+        <!-- Lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.4</version>
+            <scope>provided</scope>
+        </dependency>
 
-    <!-- Lombok -->
-    <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <version>1.18.4</version>
-      <scope>provided</scope>
-    </dependency>
+        <!-- Taskchain -->
+        <dependency>
+            <groupId>co.aikar</groupId>
+            <artifactId>taskchain-core</artifactId>
+            <version>3.7.2</version>
+        </dependency>
+        <dependency>
+            <groupId>co.aikar</groupId>
+            <artifactId>taskchain-bukkit</artifactId>
+            <version>3.7.2</version>
+        </dependency>
 
-    <!-- Taskchain -->
-    <dependency>
-      <groupId>co.aikar</groupId>
-      <artifactId>taskchain-core</artifactId>
-      <version>3.7.2</version>
-    </dependency>
-    <dependency>
-      <groupId>co.aikar</groupId>
-      <artifactId>taskchain-bukkit</artifactId>
-      <version>3.7.2</version>
-    </dependency>
+        <!-- Command framework using annotations -->
+        <dependency>
+            <groupId>co.aikar</groupId>
+            <artifactId>acf-bukkit</artifactId>
+            <version>0.5.0-SNAPSHOT</version>
+        </dependency>
 
-    <!-- Command framework using annotations -->
-    <dependency>
-      <groupId>co.aikar</groupId>
-      <artifactId>acf-bukkit</artifactId>
-      <version>0.5.0-SNAPSHOT</version>
-    </dependency>
+        <!-- Json stuff -->
+        <!-- For easier deserialising and serialising inventories -->
+        <dependency>
+            <groupId>com.dumptruckman.minecraft</groupId>
+            <artifactId>JsonConfiguration</artifactId>
+            <version>1.1</version>
+        </dependency>
+        <!-- JsonProvider messages in chat -->
+        <dependency>
+            <groupId>me.rayzr522</groupId>
+            <artifactId>jsonmessage</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <!-- GSON for serialising and deserialising -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.8.5</version>
+        </dependency>
+        <!-- Wrapper for simple gson -->
+        <dependency>
+            <groupId>com.github.ReflxctionDev</groupId>
+            <artifactId>SimpleJSON</artifactId>
+        </dependency>
 
-    <!-- Json stuff -->
-    <!-- For easier deserialising and serialising inventories -->
-    <dependency>
-      <groupId>com.dumptruckman.minecraft</groupId>
-      <artifactId>JsonConfiguration</artifactId>
-      <version>1.1</version>
-    </dependency>
-    <!-- JsonProvider messages in chat -->
-    <dependency>
-      <groupId>me.rayzr522</groupId>
-      <artifactId>jsonmessage</artifactId>
-      <version>1.0.0</version>
-    </dependency>
-    <!-- GSON for serialising and deserialising -->
-    <dependency>
-      <groupId>com.google.code.gson</groupId>
-      <artifactId>gson</artifactId>
-      <version>2.8.5</version>
-    </dependency>
+        <!-- A worldguard api wrapper for v7 and v6 -->
+        <dependency>
+            <groupId>org.codemc.worldguardwrapper</groupId>
+            <artifactId>worldguardwrapper</artifactId>
+            <version>1.1.1-SNAPSHOT</version>
+        </dependency>
 
-    <!-- For scanning and auto registering -->
-    <dependency>
-      <groupId>org.reflections</groupId>
-      <artifactId>reflections</artifactId>
-      <version>0.9.11</version>
-    </dependency>
+        <!-- Vault API for Economy and more -->
+        <dependency>
+            <groupId>net.milkbowl.vault</groupId>
+            <artifactId>VaultAPI</artifactId>
+            <version>1.6</version>
+            <scope>provided</scope>
+        </dependency>
 
+        <!-- Placeholder API -->
+        <dependency>
+            <groupId>me.clip</groupId>
+            <artifactId>placeholderapi</artifactId>
+            <version>2.9.2</version>
+            <scope>provided</scope>
+        </dependency>
 
-    <!-- A worldguard api wrapper for v7 and v6 -->
-    <dependency>
-      <groupId>org.codemc.worldguardwrapper</groupId>
-      <artifactId>worldguardwrapper</artifactId>
-      <version>1.1.1-SNAPSHOT</version>
-    </dependency>
-
-    <!-- Vault API for Economy and more -->
-    <dependency>
-      <groupId>net.milkbowl.vault</groupId>
-      <artifactId>VaultAPI</artifactId>
-      <version>1.6</version>
-      <scope>provided</scope>
-    </dependency>
-
-    <!-- Placeholder API -->
-    <dependency>
-      <groupId>me.clip</groupId>
-      <artifactId>placeholderapi</artifactId>
-      <version>2.9.2</version>
-      <scope>provided</scope>
-    </dependency>
-
-    <!-- ConfigMe API (handles the config) -->
-    <dependency>
-      <groupId>ch.jalu</groupId>
-      <artifactId>configme</artifactId>
-      <version>1.0.1</version>
-    </dependency>
-  </dependencies>
+        <!-- ConfigMe API (handles the config) -->
+        <dependency>
+            <groupId>ch.jalu</groupId>
+            <artifactId>configme</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+    </dependencies>
 </project>
