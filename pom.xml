@@ -206,6 +206,7 @@
         <dependency>
             <groupId>com.github.ReflxctionDev</groupId>
             <artifactId>SimpleJSON</artifactId>
+            <version>1.9-SNAPSHOT</version>
         </dependency>
 
         <!-- A worldguard api wrapper for v7 and v6 -->

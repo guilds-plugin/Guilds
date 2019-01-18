@@ -205,7 +205,7 @@ public class GuildHandler {
      * @return the max tier level
      */
     public int getMaxTierLevel() {
-        return maxTierLevel;
+        return tiers.size();
     }
 
     /**
