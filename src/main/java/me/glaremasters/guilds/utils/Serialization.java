@@ -23,7 +23,7 @@ public class Serialization {
     }
 
     /**
-     * Serialize the inventory to JSON
+     * Serialize the inventory to JsonProvider
      * @param title name of inventory
      * @param size size of inventory
      * @param items the items to be serialized
@@ -48,8 +48,8 @@ public class Serialization {
     }
 
     /**
-     * Deserialize the inventory from JSON
-     * @param jsons the JSON string
+     * Deserialize the inventory from JsonProvider
+     * @param jsons the JsonProvider string
      * @param title the name of the inventory
      * @return the deserialized string
      * @throws InvalidConfigurationException

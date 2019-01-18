@@ -15,7 +15,7 @@ import me.glaremasters.guilds.commands.CommandBank;
 import me.glaremasters.guilds.commands.CommandClaim;
 import me.glaremasters.guilds.commands.CommandGuilds;
 import me.glaremasters.guilds.database.DatabaseProvider;
-import me.glaremasters.guilds.database.databases.json.JSON;
+import me.glaremasters.guilds.database.providers.JsonProvider;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
@@ -41,6 +41,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.codemc.worldguardwrapper.WorldGuardWrapper;
 
 import java.io.File;
@@ -81,6 +82,10 @@ public final class Guilds extends JavaPlugin {
 
     private final static String LOG_PREFIX = "&f[&aGuilds&f]&r ";
 
+    //todo rewrite
+    //order is very important here as stuff depends on each other.
+    //use logical order.
+    //incorrect order will result in a NPE
     @Override
     public void onEnable() {
         if (!checkVault()) {
@@ -110,9 +115,9 @@ public final class Guilds extends JavaPlugin {
         taskChainFactory = BukkitTaskChainFactory.create(this);
 
 
-        info("Loading Guilds...");
-        database = new JSON(getDataFolder());
-        guildHandler = new GuildHandler(database, getCommandManager());
+        info("Loading Data...");
+        database = new JsonProvider(getDataFolder());
+        guildHandler = new GuildHandler(database, getCommandManager(), getPermissions(), getConfig());
         info("The Guilds have been loaded!");
 
         info("Enabling the Guilds API...");
@@ -141,7 +146,7 @@ public final class Guilds extends JavaPlugin {
         if (getConfig().getBoolean("announcements.console")) {
             info("Checking for updates...");
             getServer().getScheduler().runTaskAsynchronously(this, new Runnable() {
-                SpigotUpdater updater = new SpigotUpdater(Guilds.getGuilds(), 48920);
+                SpigotUpdater updater = new SpigotUpdater(, 48920);
 
                 @Override
                 public void run() {
@@ -149,6 +154,8 @@ public final class Guilds extends JavaPlugin {
                     info(getAnnouncements());
                 }
             });
+
+
         }
 
 

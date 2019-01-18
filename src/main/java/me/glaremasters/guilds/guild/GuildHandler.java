@@ -8,7 +8,7 @@ import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -26,10 +26,8 @@ public class GuildHandler {
     private final CommandManager commandManager;
     private final Permission permission;
 
-    private final int maxTierLevel;
-
     //todo taskchain
-    public GuildHandler(DatabaseProvider databaseProvider, CommandManager commandManager, Permission permission, YamlConfiguration config){
+    public GuildHandler(DatabaseProvider databaseProvider, CommandManager commandManager, Permission permission, FileConfiguration config){
         this.databaseProvider = databaseProvider;
         this.commandManager = commandManager;
         this.permission = permission;
@@ -74,9 +72,8 @@ public class GuildHandler {
         }
 
 
-        maxTierLevel = config.getInt("max-tier-level");
         //GuildTier objects
-        ConfigurationSection tierSection = config.getConfigurationSection("tiers");
+        ConfigurationSection tierSection = config.getConfigurationSection("tiers.list");
         for (String key : tierSection.getKeys(false)){
             tiers.add(GuildTier.builder()
                     .level(tierSection.getInt(key + ".level"))

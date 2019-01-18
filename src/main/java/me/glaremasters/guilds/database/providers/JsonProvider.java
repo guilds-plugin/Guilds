@@ -1,4 +1,4 @@
-package me.glaremasters.guilds.database.databases.json;
+package me.glaremasters.guilds.database.providers;
 
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.Gson;
@@ -7,8 +7,8 @@ import com.google.gson.stream.JsonReader;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.database.Callback;
 import me.glaremasters.guilds.database.DatabaseProvider;
+import me.glaremasters.guilds.database.GuildMapDeserializer;
 import me.glaremasters.guilds.guild.Guild;
-import me.glaremasters.guilds.guild.GuildHandler;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -19,7 +19,7 @@ import java.util.*;
  * Date: 7/18/2018
  * Time: 11:38 AM
  */
-public class JSON implements DatabaseProvider {
+public class JsonProvider implements DatabaseProvider {
 
     private Gson gson;
     private File guildsFile;
@@ -27,7 +27,7 @@ public class JSON implements DatabaseProvider {
 
     //todo
 
-    public JSON(File dataFolder) {
+    public JsonProvider(File dataFolder) {
         File folder = new File(dataFolder, "data/");
         guildsFile = new File(folder, "guilds.json");
         guildsType = new TypeToken<List<Guild>>() {
@@ -50,7 +50,7 @@ public class JSON implements DatabaseProvider {
     }
 
     /**
-     * This method creates a guild into the JSON file
+     * This method creates a guild into the JsonProvider file
      * @param guild the guild being created
      */
     @Override
@@ -62,7 +62,7 @@ public class JSON implements DatabaseProvider {
     }
 
     /**
-     * This method removes a guild from the JSON file
+     * This method removes a guild from the JsonProvider file
      * @param guild the guild being removed
      */
     @Override

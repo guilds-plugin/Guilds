@@ -1,7 +1,5 @@
 package me.glaremasters.guilds.updater;
 
-import org.bukkit.plugin.java.JavaPlugin;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
@@ -15,19 +13,19 @@ import java.net.URLConnection;
  */
 public class SpigotUpdater {
 
+    //todo rewrite
+    //this is done so oddly, you have unused methods, conflicting variables etc unnecessary method calls etc
+
     private int project;
     private URL checkURL;
-    private String newVersion;
-    private JavaPlugin plugin;
+    private String version;
 
     /**
      * The main part of the SpigotUpdater
-     * @param plugin instance of plugin
      * @param projectID the ID of the spigot project
      */
-    public SpigotUpdater(JavaPlugin plugin, int projectID) {
-        this.plugin = plugin;
-        this.newVersion = plugin.getDescription().getVersion();
+    public SpigotUpdater(String version, int projectID) {
+        this.version = version;
         this.project = projectID;
 
         try {
@@ -38,22 +36,14 @@ public class SpigotUpdater {
     }
 
     /**
-     * Get a copy of the plugin instance
-     * @return plugin instance
-     */
-    public JavaPlugin getPlugin() {
-        return plugin;
-    }
-
-    /**
      * Check for the latest version of the plugin
      * @return the latest version of the plugin
      * @throws Exception the exception
      */
     public String getLatestVersion() throws Exception {
         URLConnection con = checkURL.openConnection();
-        this.newVersion = new BufferedReader(new InputStreamReader(con.getInputStream())).readLine();
-        return newVersion;
+        this.version = new BufferedReader(new InputStreamReader(con.getInputStream())).readLine();
+        return version;
     }
 
     /**
@@ -71,8 +61,8 @@ public class SpigotUpdater {
      */
     public boolean checkForUpdates() throws Exception {
         URLConnection con = checkURL.openConnection();
-        this.newVersion = new BufferedReader(new InputStreamReader(con.getInputStream())).readLine();
-        return !plugin.getDescription().getVersion().equals(newVersion);
+        this.version = new BufferedReader(new InputStreamReader(con.getInputStream())).readLine();
+        return !version.equals(version);
     }
 
 }

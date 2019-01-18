@@ -15,8 +15,8 @@ public class GuildTier {
     private final String name;
     private final double cost;
     private final int maxMembers;
-    private final int mobXpMultiplier;
-    private final int damageMultiplier;
+    private final double mobXpMultiplier;
+    private final double damageMultiplier;
     private final double maxBankBalance;
     private final int membersToRankup;
     private final List<String> permissions;

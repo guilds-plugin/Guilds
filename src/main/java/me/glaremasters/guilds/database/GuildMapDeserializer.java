@@ -1,4 +1,4 @@
-package me.glaremasters.guilds.database.databases.json;
+package me.glaremasters.guilds.database;
 
 import co.aikar.commands.ACFBukkitUtil;
 import com.google.gson.*;
