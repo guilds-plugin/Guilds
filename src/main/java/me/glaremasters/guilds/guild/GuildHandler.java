@@ -1,6 +1,7 @@
 package me.glaremasters.guilds.guild;
 
 import co.aikar.commands.CommandManager;
+import me.glaremasters.guilds.configuration.PluginSettings;
 import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.messages.Messages;
 import net.milkbowl.vault.permission.Permission;
@@ -210,11 +211,11 @@ public class GuildHandler {
         return maxTierLevel;
     }
 
+    /**
+     * Returns the lowest guild role
+     * @return guild role
+     */
     public GuildRole getLowestGuildRole() {
         return roles.get(roles.size() - 1);
-    }
-
-    public List<Guild> getGuilds() {
-        return guilds;
     }
 }

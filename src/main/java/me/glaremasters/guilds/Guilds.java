@@ -134,6 +134,7 @@ public final class Guilds extends JavaPlugin {
         loadCompletions(commandManager);
 
         //todo
+
         Stream.of(new CommandGuilds(guildHandler), new CommandBank(guildHandler), new CommandAdmin(guildHandler), new CommandAlly(guildHandler), new CommandClaim(guildHandler)).forEach(commandManager::registerCommand);
 
 
@@ -179,7 +180,7 @@ public final class Guilds extends JavaPlugin {
      * Implement Vault's Economy API
      */
     private void setupEconomy() {
-        RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
+        RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(Economy.class);
         if (economyProvider != null) economy = economyProvider.getProvider();
     }
 
