@@ -1,16 +1,31 @@
 package me.glaremasters.guilds.utils;
 
-/**
- * Created by GlareMasters
- * Date: 9/19/2018
- * Time: 1:11 PM
- */
-public class AnnouncementUtil {
+import lombok.experimental.UtilityClass;
+import org.bukkit.ChatColor;
 
-    public static String unescape_perl_string(String oldstr) {
+@UtilityClass
+public final class StringUtils {
+
+    /**
+     * Color a message
+     * @param msg the message to color
+     * @return a copy of the message with color
+     */
+    public static String color(String msg) {
+        return ChatColor.translateAlternateColorCodes('&', msg);
+    }
+
+    /**
+     * Converts HTML
+     * @param html the html string
+     * @return a new converted string
+     * Side note: No clue who made this
+     * This might be prone for removal or be changed to a library / different function.
+     */
+    public static String convert_html(String html) {
 
 
-        oldstr = oldstr.replaceAll("&", "§");
+        html = html.replaceAll("&", "§");
 
         /*
          * In contrast to fixing Java's broken regex charclasses,
@@ -18,13 +33,13 @@ public class AnnouncementUtil {
          * here, where in the other one, it grows it.
          */
 
-        StringBuffer newstr = new StringBuffer(oldstr.length());
+        StringBuffer newstr = new StringBuffer(html.length());
 
         boolean saw_backslash = false;
 
-        for (int i = 0; i < oldstr.length(); i++) {
-            int cp = oldstr.codePointAt(i);
-            if (oldstr.codePointAt(i) > Character.MAX_VALUE) {
+        for (int i = 0; i < html.length(); i++) {
+            int cp = html.codePointAt(i);
+            if (html.codePointAt(i) > Character.MAX_VALUE) {
                 i++; /****WE HATES UTF-16! WE HATES IT FOREVERSES!!!****/
             }
 
@@ -83,10 +98,10 @@ public class AnnouncementUtil {
                  * Strange but true: "\c{" is ";", "\c}" is "=", etc.
                  */
                 case 'c': {
-                    if (++i == oldstr.length()) {
+                    if (++i == html.length()) {
                         return "trailing \\c";
                     }
-                    cp = oldstr.codePointAt(i);
+                    cp = html.codePointAt(i);
                     /*
                      * don't need to grok surrogates, as next line blows them up
                      */
@@ -123,7 +138,7 @@ public class AnnouncementUtil {
                      * octal 777.
                      */
                 case '0': {
-                    if (i + 1 == oldstr.length()) {
+                    if (i + 1 == html.length()) {
                         /* found \0 at end of string */
                         newstr.append(Character.toChars(0));
                         break; /* switch */
@@ -132,11 +147,11 @@ public class AnnouncementUtil {
                     int digits = 0;
                     int j;
                     for (j = 0; j <= 2; j++) {
-                        if (i + j == oldstr.length()) {
+                        if (i + j == html.length()) {
                             break; /* for */
                         }
                         /* safe because will unread surrogate */
-                        int ch = oldstr.charAt(i + j);
+                        int ch = html.charAt(i + j);
                         if (ch < '0' || ch > '7') {
                             break; /* for */
                         }
@@ -150,7 +165,7 @@ public class AnnouncementUtil {
                     int value = 0;
                     try {
                         value = Integer.parseInt(
-                                oldstr.substring(i, i + digits), 8);
+                                html.substring(i, i + digits), 8);
                     } catch (NumberFormatException nfe) {
                         return "invalid octal value for \\0 escape";
                     }
@@ -160,12 +175,12 @@ public class AnnouncementUtil {
                 } /* end case '0' */
 
                 case 'x': {
-                    if (i + 2 > oldstr.length()) {
+                    if (i + 2 > html.length()) {
                         return "string too short for \\x escape";
                     }
                     i++;
                     boolean saw_brace = false;
-                    if (oldstr.charAt(i) == '{') {
+                    if (html.charAt(i) == '{') {
                         /* ^^^^^^ ok to ignore surrogates here */
                         i++;
                         saw_brace = true;
@@ -180,7 +195,7 @@ public class AnnouncementUtil {
                         /*
                          * ASCII test also catches surrogates
                          */
-                        int ch = oldstr.charAt(i + j);
+                        int ch = html.charAt(i + j);
                         if (ch > 127) {
                             return "illegal non-ASCII hex digit in \\x escape";
                         }
@@ -206,7 +221,7 @@ public class AnnouncementUtil {
                     }
                     int value = 0;
                     try {
-                        value = Integer.parseInt(oldstr.substring(i, i + j), 16);
+                        value = Integer.parseInt(html.substring(i, i + j), 16);
                     } catch (NumberFormatException nfe) {
                         return "invalid hex value for \\x escape";
                     }
@@ -219,20 +234,20 @@ public class AnnouncementUtil {
                 }
 
                 case 'u': {
-                    if (i + 4 > oldstr.length()) {
+                    if (i + 4 > html.length()) {
                         return "string too short for \\u escape";
                     }
                     i++;
                     int j;
                     for (j = 0; j < 4; j++) {
                         /* this also handles the surrogate issue */
-                        if (oldstr.charAt(i + j) > 127) {
+                        if (html.charAt(i + j) > 127) {
                             return "illegal non-ASCII hex digit in \\u escape";
                         }
                     }
                     int value = 0;
                     try {
-                        value = Integer.parseInt(oldstr.substring(i, i + j), 16);
+                        value = Integer.parseInt(html.substring(i, i + j), 16);
                     } catch (NumberFormatException nfe) {
                         return "invalid hex value for \\u escape";
                     }
@@ -242,20 +257,20 @@ public class AnnouncementUtil {
                 }
 
                 case 'U': {
-                    if (i + 8 > oldstr.length()) {
+                    if (i + 8 > html.length()) {
                         return "string too short for \\U escape";
                     }
                     i++;
                     int j;
                     for (j = 0; j < 8; j++) {
                         /* this also handles the surrogate issue */
-                        if (oldstr.charAt(i + j) > 127) {
+                        if (html.charAt(i + j) > 127) {
                             return"illegal non-ASCII hex digit in \\U escape";
                         }
                     }
                     int value = 0;
                     try {
-                        value = Integer.parseInt(oldstr.substring(i, i + j), 16);
+                        value = Integer.parseInt(html.substring(i, i + j), 16);
                     } catch (NumberFormatException nfe) {
                         return "invalid hex value for \\U escape";
                     }
