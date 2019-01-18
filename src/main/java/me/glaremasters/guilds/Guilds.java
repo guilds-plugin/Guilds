@@ -39,6 +39,7 @@ import me.glaremasters.guilds.commands.CommandAlly;
 import me.glaremasters.guilds.commands.CommandBank;
 import me.glaremasters.guilds.commands.CommandClaim;
 import me.glaremasters.guilds.commands.CommandGuilds;
+import me.glaremasters.guilds.configuration.GuiSettings;
 import me.glaremasters.guilds.configuration.GuildsSettingsRetriever;
 import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.database.providers.JsonProvider;
@@ -79,7 +80,6 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -99,7 +99,6 @@ public final class Guilds extends JavaPlugin {
     @Getter private Permission permissions = null;
     @Getter private GuildsAPI api;
     @Getter private List<Player> spy;
-    @Getter private Map<Guild, Inventory> vaults;
     @Getter private SettingsManager settingsManager;
 
     private final static String LOG_PREFIX = "&f[&aGuilds&f]&r ";
@@ -110,59 +109,74 @@ public final class Guilds extends JavaPlugin {
     //incorrect order will result in a NPE
     @Override
     public void onEnable() {
+        // Check if the server is running Vault
         if (!checkVault()) {
             info("It looks like you don't have Vault on your server! You need this to use Guilds!");
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
-
+        // This is really just for shits and giggles
         long start = System.currentTimeMillis();
+        // Create a blank config.yml to be generated
         saveDefaultConfig();
+        // Load the plugin settings
         settingsManager = initSetting();
-
+        // Flex teh guild logo
         logo();
 
         info("Hooking into Vault...");
+        // Setup Vaults Economy Hook
         setupEconomy();
+        // Setup Vaults Permission Hook
         setupPermissions();
         info("Hooked into Economy and Permissions!");
-
+        // If they have placeholderapi, enable it.
         initializePlaceholder();
 
         info("Enabling Metrics...");
+        // start bstats
         Metrics metrics = new Metrics(this);
         metrics.addCustomChart(new Metrics.SingleLineChart("guilds", () -> getGuildHandler().getGuildsSize()));
 
+        // Creates / loads the languages files (can be renamed to something that makes more sense)
         saveData();
 
         info("Loading Data...");
+        // Load the json database
         database = new JsonProvider(getDataFolder());
+        // Load all the data
         guildHandler = new GuildHandler(database, getCommandManager(), getPermissions(), getConfig());
         info("The Guilds have been loaded!");
 
         info("Enabling the Guilds API...");
+        // Initialize the API (probably be placed in different spot?)
         api = new GuildsAPI(guildHandler);
+        // Create a new list for the spies
         spy = new ArrayList<>();
-        vaults = new HashMap<>();
         info("API Enabled!");
 
+        // Initialize the action handler for actions in the plugin
         actionHandler = new ActionHandler();
-
         info("Loading Commands and Language Data...");
+        // Load the ACF command manager
         commandManager = new BukkitCommandManager(this);
         commandManager.usePerIssuerLocale(true);
+        // Load the languages
         loadLanguages(commandManager);
         //deprecated due to being unstable
         //noinspection deprecation
         commandManager.enableUnstableAPI("help");
+        // load the custom command contexts
         loadContexts(commandManager);
+        // load the custom command completions
         loadCompletions(commandManager);
 
-        //todo
-
+        // Register all the commands
         Stream.of(new CommandGuilds(guildHandler), new CommandBank(guildHandler), new CommandAdmin(guildHandler), new CommandAlly(guildHandler), new CommandClaim(guildHandler)).forEach(commandManager::registerCommand);
 
 
+        // This can probably be moved into it's own method
+        // This checks for updates
         if (getConfig().getBoolean("announcements.console")) {
             info("Checking for updates...");
             getServer().getScheduler().runTaskAsynchronously(this, new Runnable() {
@@ -178,12 +192,16 @@ public final class Guilds extends JavaPlugin {
 
         }
 
-
+        // Load all the listeners
         Stream.of(new EntityListener(guildHandler), new PlayerListener(this, guildHandler), new TicketListener(this, guildHandler), new InventoryListener(guildHandler)).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
+        // Load the optional listeners
         optionalListeners();
         info("Ready to go! That only took " + (System.currentTimeMillis() - start) + "ms");
+        // Cache all the skulls (might be able to get rid of this)
         loadSkulls();
+        // Creates a cache of all the vaults (might be able to get rid of this)
         createVaultCaches();
+        // Saves the vault cache (can probably get rid of)
         getServer().getScheduler().scheduleSyncRepeatingTask(this, this::saveVaultCaches, 500L, 2400L);
     }
 
