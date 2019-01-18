@@ -2,6 +2,7 @@ package me.glaremasters.guilds.configuration;
 
 import ch.jalu.configme.Comment;
 import ch.jalu.configme.SettingsHolder;
+import ch.jalu.configme.configurationdata.CommentsConfiguration;
 import ch.jalu.configme.properties.Property;
 
 import static ch.jalu.configme.properties.PropertyInitializer.newProperty;
@@ -9,7 +10,7 @@ import static ch.jalu.configme.properties.PropertyInitializer.newProperty;
 /**
  * Created by GlareMasters
  * Date: 1/17/2019
- * Time: 12:51 PM
+ * Time: 2:29 PM
  */
 public final class PluginSettings implements SettingsHolder {
 
@@ -32,6 +33,25 @@ public final class PluginSettings implements SettingsHolder {
     public static final Property<String> MESSAGES_LANGUAGE =
             newProperty("settings.messagesLanguage", "en-US");
 
+    @Comment("Would you like to check for plugin updates on startup? It's highly suggested you keep this enabled!")
+    public static final Property<Boolean> UPDATE_CHECK =
+            newProperty("settings.update-check", true);
+
     private PluginSettings() {
+    }
+
+    @Override
+    public void registerComments(CommentsConfiguration conf) {
+        String[] pluginHeader = {
+                "Guilds",
+                "Version: ${project.version}",
+                "Creator: Glare",
+                "Contributors: https://github.com/darbyjack/Guilds-Plugin/graphs/contributors",
+                "Issues: https://github.com/darbyjack/Guilds-Plugin/issues",
+                "Spigot: https://www.spigotmc.org/resources/guilds.48920/",
+                "Wiki: https://glaremasters.me/wiki/",
+                "Discord: https://glaremasters.me/discord"
+        };
+        conf.setComment("settings", pluginHeader);
     }
 }
