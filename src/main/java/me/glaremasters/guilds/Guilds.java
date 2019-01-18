@@ -3,9 +3,6 @@ package me.glaremasters.guilds;
 import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.BukkitCommandManager;
 import co.aikar.commands.InvalidCommandArgument;
-import co.aikar.taskchain.BukkitTaskChainFactory;
-import co.aikar.taskchain.TaskChain;
-import co.aikar.taskchain.TaskChainFactory;
 import lombok.Getter;
 import me.glaremasters.guilds.api.GuildsAPI;
 import me.glaremasters.guilds.api.Metrics;
@@ -41,7 +38,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.codemc.worldguardwrapper.WorldGuardWrapper;
 
 import java.io.File;
@@ -66,9 +62,6 @@ import static co.aikar.commands.ACFBukkitUtil.color;
 import static me.glaremasters.guilds.utils.AnnouncementUtil.unescape_perl_string;
 
 public final class Guilds extends JavaPlugin {
-
-    //todo remove this
-    private static TaskChainFactory taskChainFactory;
 
     @Getter private DatabaseProvider database;
     @Getter private GuildHandler guildHandler;
@@ -111,9 +104,6 @@ public final class Guilds extends JavaPlugin {
 
         checkConfig();
         saveData();
-
-        taskChainFactory = BukkitTaskChainFactory.create(this);
-
 
         info("Loading Data...");
         database = new JsonProvider(getDataFolder());
@@ -304,16 +294,6 @@ public final class Guilds extends JavaPlugin {
             e.printStackTrace();
             info("Failed to load!");
         }
-    }
-
-    /**
-     * Create a new chain for async
-     *
-     * @param <T> taskchain
-     * @return the new chain created for data modification
-     */
-    public static <T> TaskChain<T> newChain() {
-        return taskChainFactory.newChain();
     }
 
     /**

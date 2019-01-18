@@ -12,9 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * Created by GlareMasters on 6/28/2018.
- */
 @Getter
 @Setter
 @Builder

@@ -165,16 +165,18 @@
         </dependency>
 
         <!-- Taskchain -->
-        <dependency>
-            <groupId>co.aikar</groupId>
-            <artifactId>taskchain-core</artifactId>
-            <version>3.7.2</version>
-        </dependency>
-        <dependency>
-            <groupId>co.aikar</groupId>
-            <artifactId>taskchain-bukkit</artifactId>
-            <version>3.7.2</version>
-        </dependency>
+        <!-- Unused as of 18-1-2018 -->
+        <!-- Might be reused when MySql is implemented -->
+        <!--<dependency>-->
+            <!--<groupId>co.aikar</groupId>-->
+            <!--<artifactId>taskchain-core</artifactId>-->
+            <!--<version>3.7.2</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>co.aikar</groupId>-->
+            <!--<artifactId>taskchain-bukkit</artifactId>-->
+            <!--<version>3.7.2</version>-->
+        <!--</dependency>-->
 
         <!-- Command framework using annotations -->
         <dependency>
