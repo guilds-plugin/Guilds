@@ -109,12 +109,7 @@
             <id>rayzr-repo</id>
             <url>https://cdn.rawgit.com/Rayzr522/maven-repo/master/</url>
         </repository>
-        <!-- Repo for JsonConfiguration -->
-        <repository>
-            <id>onarandombox</id>
-            <url>http://repo.onarandombox.com/content/groups/public</url>
-        </repository>
-        <!-- jitpack for simpljson wrapper for gson -->
+        <!-- jitpack for simplejson wrapper for gson -->
         <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
@@ -186,12 +181,6 @@
         </dependency>
 
         <!-- Json stuff -->
-        <!-- For easier deserialising and serialising inventories -->
-        <dependency>
-            <groupId>com.dumptruckman.minecraft</groupId>
-            <artifactId>JsonConfiguration</artifactId>
-            <version>1.1</version>
-        </dependency>
         <!-- JsonProvider messages in chat -->
         <dependency>
             <groupId>me.rayzr522</groupId>
@@ -208,7 +197,7 @@
         <dependency>
             <groupId>com.github.ReflxctionDev</groupId>
             <artifactId>SimpleJSON</artifactId>
-            <version>1.9-SNAPSHOT</version>
+            <version>RELEASE</version>
         </dependency>
 
         <!-- A worldguard api wrapper for v7 and v6 -->

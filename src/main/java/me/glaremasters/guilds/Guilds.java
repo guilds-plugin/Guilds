@@ -27,7 +27,6 @@ import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.updater.SpigotUpdater;
 import me.glaremasters.guilds.utils.ActionHandler;
 import me.glaremasters.guilds.utils.HeadUtils;
-import me.glaremasters.guilds.utils.Serialization;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.apache.commons.io.IOUtils;
@@ -242,7 +241,7 @@ public final class Guilds extends JavaPlugin {
                 vaults.put(guild, inv);
             } else {
                 try {
-                    vaults.put(guild, Serialization.deserializeInventory(guild.getInventory()));
+                    vaults.put(guild, SerialisationUtil.deserializeInventory(guild.getInventory()));
                 } catch (InvalidConfigurationException ex) {
                     ex.printStackTrace();
                 }
@@ -270,7 +269,7 @@ public final class Guilds extends JavaPlugin {
 
     // todo fix this random shit up too now that we have proper data handling
     private void saveVaultCaches() {
-        getGuildHandler().getGuilds().values().forEach(guild -> guild.setInventory(Serialization.serializeInventory(getVaults().get(guild))));
+        getGuildHandler().getGuilds().values().forEach(guild -> guild.setInventory(SerialisationUtil.serializeInventory(getVaults().get(guild))));
     }
 
     /**
