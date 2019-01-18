@@ -19,7 +19,7 @@ public class JsonProvider implements DatabaseProvider {
 
     private File dataFolder;
 
-    //todo
+    //todo asyncify? xD this.
 
     public JsonProvider(File dataFolder) {
         this.dataFolder = new File(dataFolder, "data");

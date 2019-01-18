@@ -26,7 +26,9 @@ public class GuildHandler {
     private final CommandManager commandManager;
     private final Permission permission;
 
-    //todo taskchain
+    //todo asyncify? xD this.
+    //as well as handling exceptions accordingly
+
     public GuildHandler(DatabaseProvider databaseProvider, CommandManager commandManager, Permission permission, FileConfiguration config){
         this.databaseProvider = databaseProvider;
         this.commandManager = commandManager;
