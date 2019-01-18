@@ -25,7 +25,6 @@
 package me.glaremasters.guilds.guild;
 
 import co.aikar.commands.CommandManager;
-import me.glaremasters.guilds.configuration.PluginSettings;
 import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.messages.Messages;
 import net.milkbowl.vault.permission.Permission;
@@ -50,8 +49,8 @@ public class GuildHandler {
     private final CommandManager commandManager;
     private final Permission permission;
 
-    //todo asyncify? xD this.
-    //as well as handling exceptions accordingly
+    //todo handling exceptions accordingly
+    //as well as guild permissions from tiers using permission field and tiers list.
 
     public GuildHandler(DatabaseProvider databaseProvider, CommandManager commandManager, Permission permission, FileConfiguration config){
         this.databaseProvider = databaseProvider;

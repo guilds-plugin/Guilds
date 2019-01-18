@@ -26,13 +26,15 @@ package me.glaremasters.guilds.database.providers;
 
 import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.guild.Guild;
-import net.reflxction.simplejson.configuration.DirectConfiguration;
 import net.reflxction.simplejson.json.JsonFile;
 import net.reflxction.simplejson.json.JsonReader;
 import net.reflxction.simplejson.json.JsonWriter;
 
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by GlareMasters
@@ -42,8 +44,6 @@ import java.util.*;
 public class JsonProvider implements DatabaseProvider {
 
     private File dataFolder;
-
-    //todo asyncify? xD this.
 
     public JsonProvider(File dataFolder) {
         this.dataFolder = new File(dataFolder, "data");
