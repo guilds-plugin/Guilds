@@ -34,6 +34,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -52,7 +53,7 @@ public class GuildHandler {
     //todo handling exceptions accordingly
     //as well as guild permissions from tiers using permission field and tiers list.
 
-    public GuildHandler(DatabaseProvider databaseProvider, CommandManager commandManager, Permission permission, FileConfiguration config){
+    public GuildHandler(DatabaseProvider databaseProvider, CommandManager commandManager, Permission permission, FileConfiguration config) throws IOException {
         this.databaseProvider = databaseProvider;
         this.commandManager = commandManager;
         this.permission = permission;
@@ -120,7 +121,7 @@ public class GuildHandler {
     /**
      * Saves the data of guilds
      */
-    public void saveData(){
+    public void saveData() throws IOException {
         databaseProvider.saveGuilds(guilds);
     }
 

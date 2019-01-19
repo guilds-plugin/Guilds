@@ -56,9 +56,17 @@ public class JsonProvider implements DatabaseProvider {
     public List<Guild> loadGuilds() throws IOException {
         List<Guild> loadedGuilds = new ArrayList<>();
 
+        JsonReader reader = null;
         for (File file : Objects.requireNonNull(dataFolder.listFiles())){
-            JsonReader reader = new JsonReader(new JsonFile(file));
+            JsonFile jsonFile = new JsonFile(file);
+
+            if (reader == null) reader = new JsonReader(jsonFile);
+            else reader.setFile(jsonFile);
+
             loadedGuilds.add(reader.deserializeAs(Guild.class));
+        }
+
+        if (reader != null) {
             reader.close();
         }
 
@@ -67,10 +75,19 @@ public class JsonProvider implements DatabaseProvider {
 
     @Override
     public void saveGuilds(List<Guild> guilds) throws IOException {
+        JsonWriter writer = null;
+
         for (Guild guild : guilds){
-            JsonWriter writer = new JsonWriter(new JsonFile(new File(dataFolder, guild.getId() + ".json")));
+            JsonFile jsonFile = new JsonFile(new File(dataFolder, guild.getId() + ".json"));
+
+            if (writer == null) writer = new JsonWriter(jsonFile);
+            else writer.setFile(jsonFile);
+
             writer.writeAndOverride(guild, true);
         }
+
+        // Note JsonWriter (writer) does not need to be closed this should only be done if it was instantiated using the BufferedWriter.
+        // See JsonWriter#close() for more info.
     }
 
 }

@@ -26,36 +26,26 @@ package me.glaremasters.guilds;
 
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.SettingsManagerBuilder;
-import ch.jalu.configme.migration.MigrationService;
 import ch.jalu.configme.migration.PlainMigrationService;
 import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.BukkitCommandManager;
 import co.aikar.commands.InvalidCommandArgument;
 import lombok.Getter;
+import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.api.GuildsAPI;
 import me.glaremasters.guilds.api.Metrics;
-import me.glaremasters.guilds.commands.CommandAdmin;
-import me.glaremasters.guilds.commands.CommandAlly;
-import me.glaremasters.guilds.commands.CommandBank;
-import me.glaremasters.guilds.commands.CommandClaim;
-import me.glaremasters.guilds.commands.CommandGuilds;
+import me.glaremasters.guilds.commands.*;
 import me.glaremasters.guilds.configuration.GuildsSettingsRetriever;
+import me.glaremasters.guilds.configuration.PluginSettings;
 import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.database.providers.JsonProvider;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
-import me.glaremasters.guilds.listeners.EntityListener;
-import me.glaremasters.guilds.listeners.EssentialsChatListener;
-import me.glaremasters.guilds.listeners.InventoryListener;
-import me.glaremasters.guilds.listeners.PlayerListener;
-import me.glaremasters.guilds.listeners.TablistListener;
-import me.glaremasters.guilds.listeners.TicketListener;
-import me.glaremasters.guilds.listeners.WorldGuardListener;
+import me.glaremasters.guilds.listeners.*;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.placeholderapi.PlaceholderAPI;
 import me.glaremasters.guilds.updater.SpigotUpdater;
-import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.utils.HeadUtils;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -75,88 +65,90 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.JarURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
+import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static co.aikar.commands.ACFBukkitUtil.color;
-import static me.glaremasters.guilds.utils.AnnouncementUtil.unescape_perl_string;
-
+@Getter
 public final class Guilds extends JavaPlugin {
-
-    @Getter private DatabaseProvider database;
-    @Getter private GuildHandler guildHandler;
-    @Getter private ActionHandler actionHandler;
-    @Getter private BukkitCommandManager commandManager;
-    @Getter private Economy economy = null;
-    @Getter private Permission permissions = null;
-    @Getter private GuildsAPI api;
-    @Getter private List<Player> spy;
-    @Getter private SettingsManager settingsManager;
-
-    private final static String LOG_PREFIX = "&f[&aGuilds&f]&r ";
 
     //todo rewrite
     //order is very important here as stuff depends on each other.
     //use logical order.
     //incorrect order will result in a NPE
+
+    private static GuildsAPI api;
+    private GuildHandler guildHandler;
+    private DatabaseProvider database;
+    private SettingsManager settingsManager;
+    private BukkitCommandManager commandManager;
+    private ActionHandler actionHandler;
+    private Economy economy;
+    private Permission permissions;
+    private List<Player> spy;
+
     @Override
     public void onEnable() {
         // Check if the server is running Vault
-        if (!checkVault()) {
-            info("It looks like you don't have Vault on your server! You need this to use Guilds!");
+        if (!Bukkit.getPluginManager().isPluginEnabled("Vault")) {
+            warn("It looks like you don't have Vault on your server! Stopping plugin..");
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
-        // This is really just for shits and giggles
-        long start = System.currentTimeMillis();
-        // Create a blank config.yml to be generated
-        saveDefaultConfig();
-        // Load the plugin settings
-        settingsManager = initSetting();
-        // Flex teh guild logo
-        logo();
 
-        info("Hooking into Vault...");
+        // This is really just for shits and giggles
+        // A variable for checking how long startup took.
+        long startingTime = System.currentTimeMillis();
+
+        // Flex teh guild logLogo
+        logLogo();
+
+        // Load the config
+        info("Loading config..");
+        settingsManager = SettingsManagerBuilder.withYamlFile(new File(getDataFolder(), "config.yml")).migrationService(new PlainMigrationService()).configurationData(GuildsSettingsRetriever.buildConfigurationData()).create();
+        info("Loaded config!");
+
+        // Creates / loads the languages files (can be renamed to something that makes more sense) todo
+        saveData();
+
+        // Load data here.
+        try {
+            info("Loading Data..");
+            // This will soon be changed to an automatic storage chooser from the config
+            // Load the json provider
+            database = new JsonProvider(getDataFolder());
+            // Load guildhandler with provider
+            guildHandler = new GuildHandler(database, getCommandManager(), getPermissions(), getConfig());
+            info("Loaded data!");
+        } catch (IOException e) {
+            severe("An error occured loading data! Stopping plugin..");
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
+
+        // Load Vault
+        info("Hooking into Vault..");
         // Setup Vaults Economy Hook
         setupEconomy();
         // Setup Vaults Permission Hook
         setupPermissions();
-        info("Hooked into Economy and Permissions!");
+        info("Hooked into Vault!");
+
         // If they have placeholderapi, enable it.
         initializePlaceholder();
 
-        info("Enabling Metrics...");
+        info("Enabling Metrics..");
         // start bstats
         Metrics metrics = new Metrics(this);
         metrics.addCustomChart(new Metrics.SingleLineChart("guilds", () -> getGuildHandler().getGuildsSize()));
-
-        // Creates / loads the languages files (can be renamed to something that makes more sense)
-        saveData();
-
-        info("Loading Data...");
-        // Load the json database
-        database = new JsonProvider(getDataFolder());
-        // Load all the data
-        guildHandler = new GuildHandler(database, getCommandManager(), getPermissions(), getConfig());
-        info("The Guilds have been loaded!");
-
-        info("Enabling the Guilds API...");
-        // Initialize the API (probably be placed in different spot?)
-        api = new GuildsAPI(guildHandler);
-        // Create a new list for the spies
-        spy = new ArrayList<>();
-        info("API Enabled!");
+        info("Enabled Metrics!");
 
         // Initialize the action handler for actions in the plugin
         actionHandler = new ActionHandler();
-        info("Loading Commands and Language Data...");
+        info("Loading Commands and Language Data..");
         // Load the ACF command manager
         commandManager = new BukkitCommandManager(this);
         commandManager.usePerIssuerLocale(true);
@@ -176,8 +168,8 @@ public final class Guilds extends JavaPlugin {
 
         // This can probably be moved into it's own method
         // This checks for updates
-        if (getConfig().getBoolean("announcements.console")) {
-            info("Checking for updates...");
+        if (settingsManager.getProperty(PluginSettings.ANNOUNCEMENTS_CONSOLE)) {
+            info("Checking for updates..");
             getServer().getScheduler().runTaskAsynchronously(this, new Runnable() {
                 SpigotUpdater updater = new SpigotUpdater(, 48920);
 
@@ -195,13 +187,21 @@ public final class Guilds extends JavaPlugin {
         Stream.of(new EntityListener(guildHandler), new PlayerListener(this, guildHandler), new TicketListener(this, guildHandler), new InventoryListener(guildHandler)).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
         // Load the optional listeners
         optionalListeners();
-        info("Ready to go! That only took " + (System.currentTimeMillis() - start) + "ms");
         // Cache all the skulls (might be able to get rid of this)
         loadSkulls();
         // Creates a cache of all the vaults (might be able to get rid of this)
         createVaultCaches();
         // Saves the vault cache (can probably get rid of)
         getServer().getScheduler().scheduleSyncRepeatingTask(this, this::saveVaultCaches, 500L, 2400L);
+
+        info("Enabling the Guilds API..");
+        // Initialize the API (probably be placed in different spot?)
+        api = new GuildsAPI(getGuildHandler());
+        // Create a new list for the spies
+        spy = new ArrayList<>();
+        info("Enabled API!");
+
+        info("Ready to go! That only took " + (System.currentTimeMillis() - startingTime) + "ms");
     }
 
 
@@ -362,18 +362,45 @@ public final class Guilds extends JavaPlugin {
     }
 
     /**
-     * Useful tool for colorful texts to console
+     * Log any message to console with any level.
      *
-     * @param msg the msg you want to log
+     * @param level the log level to log on.
+     * @param msg   the message to log.
      */
-    public void info(String msg) {
-        Bukkit.getServer().getConsoleSender().sendMessage(color(LOG_PREFIX + msg));
+    public void log(Level level, String msg) {
+        getLogger().log(level, msg);
     }
 
     /**
-     * Guilds logo in console
+     * Log a message to console on INFO level.
+     * @param msg the msg you want to log.
      */
-    private void logo() {
+    public void info(String msg) {
+        log(Level.INFO, msg);
+    }
+
+    /**
+     * Log a message to console on WARNING level.
+     *
+     * @param msg the msg you want to log.
+     */
+    public void warn(String msg) {
+        log(Level.WARNING, msg);
+    }
+
+    /**
+     * Log a message to console on SEVERE level.
+     *
+     * @param msg the msg you want to log.
+     */
+    public void severe(String msg) {
+        log(Level.SEVERE, msg);
+    }
+
+    /**
+     * Guilds logLogo in console
+     */
+    private void logLogo() {
         info("");
         info("  .oooooo.                 o8o  oooo        .o8                ooooo ooooo ooooo ");
         info(" d8P'  `Y8b                `\"'  `888       \"888                `888' `888' `888' ");
@@ -474,7 +501,7 @@ public final class Guilds extends JavaPlugin {
      */
     private void initializePlaceholder() {
         if (checkPAPI()) {
-            info("Hooking into PlaceholderAPI...");
+            info("Hooking into PlaceholderAPI..");
             new PlaceholderAPI(this).register();
             info("Hooked!");
         }
@@ -509,10 +536,8 @@ public final class Guilds extends JavaPlugin {
         }
     }
 
-    private SettingsManager initSetting() {
-        File config = new File(getDataFolder(), "config.yml");
-        MigrationService migrationService = new PlainMigrationService();
-        return SettingsManagerBuilder.withYamlFile(config).migrationService(migrationService).configurationData(GuildsSettingsRetriever.buildConfigurationData()).create();
+    private SettingsManager loadConfig() {
+        return SettingsManagerBuilder.withYamlFile(new File(getDataFolder(), "config.yml")).migrationService(new PlainMigrationService()).configurationData(GuildsSettingsRetriever.buildConfigurationData()).create();
     }
 
 
