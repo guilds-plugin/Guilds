@@ -25,68 +25,61 @@
 package me.glaremasters.guilds.updater;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
-/**
- * Created by GlareMasters
- * Date: 7/19/2018
- * Time: 1:19 PM
- */
 public class SpigotUpdater {
 
-    //todo rewrite
-    //this is done so oddly, you have unused methods, conflicting variables etc unnecessary method calls etc
-
-    private int project;
-    private URL checkURL;
-    private String version;
+    private int projectId;
+    private URL spigotUrl;
+    private String currentVersion;
 
     /**
-     * The main part of the SpigotUpdater
-     * @param projectID the ID of the spigot project
+     * SpigotUpdate constructor. Creates a new URL for future usage
+     * @see SpigotUpdater#getLatestVersion() for usage
+     * @param currentVersion the current plugin version
+     * @param projectId the spigot project id
+     * @throws MalformedURLException if url was malformed
+     * @see URL
      */
-    public SpigotUpdater(String version, int projectID) {
-        this.version = version;
-        this.project = projectID;
+    public SpigotUpdater(String currentVersion, int projectId) throws MalformedURLException {
+        this.currentVersion = currentVersion;
+        this.projectId = projectId;
 
-        try {
-            this.checkURL = new URL("https://api.spigotmc.org/legacy/update.php?resource=" + projectID);
-        } catch (MalformedURLException ex) {
-            System.out.println("Could not check for plugin update.");
-        }
+        spigotUrl = new URL("https://api.spigotmc.org/legacy/update.php?resource=" + projectId);
     }
 
     /**
-     * Check for the latest version of the plugin
+     * Returns the latest version.
      * @return the latest version of the plugin
-     * @throws Exception the exception
+     * @throws IOException if an I/O Exception occurs
+     * @see URL#openConnection()
+     * @see URLConnection#getInputStream()
      */
-    public String getLatestVersion() throws Exception {
-        URLConnection con = checkURL.openConnection();
-        this.version = new BufferedReader(new InputStreamReader(con.getInputStream())).readLine();
-        return version;
+    public String getLatestVersion() throws IOException {
+        URLConnection con = spigotUrl.openConnection();
+        return new BufferedReader(new InputStreamReader(con.getInputStream())).readLine();
     }
 
     /**
-     * Get the URL of the plugin
-     * @return URL of plugin
+     * Get the resource link of the plugin
+     * @return resource link of plugin
      */
-    public String getResourceURL() {
-        return "https://www.spigotmc.org/resources/" + project;
+    public String getResourceLink() {
+        return "https://www.spigotmc.org/resources/" + projectId;
     }
 
     /**
      * Check for updates
      * @return if plugin version is the latest plugin version
-     * @throws Exception I/O Exception
+     * @throws IOException if an I/O Exception occurs
+     * @see SpigotUpdater#getLatestVersion()
      */
-    public boolean checkForUpdates() throws Exception {
-        URLConnection con = checkURL.openConnection();
-        this.version = new BufferedReader(new InputStreamReader(con.getInputStream())).readLine();
-        return !version.equals(version);
+    public boolean checkForUpdates() throws IOException {
+        return !currentVersion.equals(getLatestVersion());
     }
 
 }

@@ -30,6 +30,7 @@ import co.aikar.commands.CommandHelp;
 import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.annotation.*;
 import me.glaremasters.guilds.Guilds;
+import me.glaremasters.guilds.actions.ConfirmAction;
 import me.glaremasters.guilds.api.events.*;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
@@ -37,7 +38,6 @@ import me.glaremasters.guilds.guild.GuildMember;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.updater.SpigotUpdater;
-import me.glaremasters.guilds.actions.ConfirmAction;
 import me.glaremasters.guilds.utils.HeadUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
@@ -449,7 +449,7 @@ public class CommandGuilds extends BaseCommand {
             if (updater.getLatestVersion().equalsIgnoreCase(pdf.getVersion())) {
                 message = "";
             } else {
-                message = "\n&8» &7An update has been found! &f- " + updater.getResourceURL();
+                message = "\n&8» &7An update has been found! &f- " + updater.getResourceLink();
             }
             sender.sendMessage(
                     color("&8&m--------------------------------------------------"

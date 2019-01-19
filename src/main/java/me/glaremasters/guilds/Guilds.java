@@ -352,7 +352,7 @@ public final class Guilds extends JavaPlugin {
         try {
             if (getConfig().getBoolean("check-for-updates")) {
                 if (updater.checkForUpdates()) {
-                    info("You appear to be running a version other than our latest stable release." + " You can download our newest version at: " + updater.getResourceURL());
+                    info("You appear to be running a version other than our latest stable release." + " You can download our newest version at: " + updater.getResourceLink());
                 }
             }
         } catch (Exception ex) {
