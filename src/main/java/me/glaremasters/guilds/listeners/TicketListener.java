@@ -26,9 +26,9 @@ package me.glaremasters.guilds.listeners;
 
 import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Guilds;
+import me.glaremasters.guilds.Messages;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
-import me.glaremasters.guilds.messages.Messages;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

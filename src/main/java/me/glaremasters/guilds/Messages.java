@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.messages;
+package me.glaremasters.guilds;
 
 import co.aikar.locales.MessageKey;
 import co.aikar.locales.MessageKeyProvider;

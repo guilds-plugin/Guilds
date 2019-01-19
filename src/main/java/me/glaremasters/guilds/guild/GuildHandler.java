@@ -25,8 +25,8 @@
 package me.glaremasters.guilds.guild;
 
 import co.aikar.commands.CommandManager;
+import me.glaremasters.guilds.Messages;
 import me.glaremasters.guilds.database.DatabaseProvider;
-import me.glaremasters.guilds.messages.Messages;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;

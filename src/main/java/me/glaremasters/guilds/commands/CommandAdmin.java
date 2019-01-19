@@ -25,20 +25,16 @@
 package me.glaremasters.guilds.commands;
 
 import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.CommandCompletion;
-import co.aikar.commands.annotation.CommandPermission;
-import co.aikar.commands.annotation.Description;
-import co.aikar.commands.annotation.Single;
-import co.aikar.commands.annotation.Subcommand;
-import co.aikar.commands.annotation.Syntax;
-import co.aikar.commands.annotation.Values;
+import co.aikar.commands.annotation.*;
 import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Guilds;
-import me.glaremasters.guilds.api.events.GuildRemoveEvent;
-import me.glaremasters.guilds.guild.*;
-import me.glaremasters.guilds.messages.Messages;
+import me.glaremasters.guilds.Messages;
 import me.glaremasters.guilds.actions.ConfirmAction;
+import me.glaremasters.guilds.api.events.GuildRemoveEvent;
+import me.glaremasters.guilds.guild.Guild;
+import me.glaremasters.guilds.guild.GuildHandler;
+import me.glaremasters.guilds.guild.GuildMember;
+import me.glaremasters.guilds.guild.GuildTier;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;

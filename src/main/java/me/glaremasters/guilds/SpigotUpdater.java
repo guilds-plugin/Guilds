@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.updater;
+package me.glaremasters.guilds;
 
 import java.io.BufferedReader;
 import java.io.IOException;

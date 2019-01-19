@@ -26,10 +26,10 @@ package me.glaremasters.guilds.listeners;
 
 import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Guilds;
+import me.glaremasters.guilds.Messages;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
-import me.glaremasters.guilds.messages.Messages;
 import me.rayzr522.jsonmessage.JSONMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

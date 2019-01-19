@@ -25,18 +25,12 @@
 package me.glaremasters.guilds.commands;
 
 import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.CommandPermission;
-import co.aikar.commands.annotation.Dependency;
-import co.aikar.commands.annotation.Description;
-import co.aikar.commands.annotation.Subcommand;
-import co.aikar.commands.annotation.Syntax;
+import co.aikar.commands.annotation.*;
 import lombok.AllArgsConstructor;
-import me.glaremasters.guilds.Guilds;
+import me.glaremasters.guilds.Messages;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
-import me.glaremasters.guilds.messages.Messages;
 import org.bukkit.entity.Player;
 
 /**
