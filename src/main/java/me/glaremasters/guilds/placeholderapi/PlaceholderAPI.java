@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.utils;
+package me.glaremasters.guilds.placeholderapi;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import me.glaremasters.guilds.Guilds;

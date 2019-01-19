@@ -22,57 +22,21 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.utils;
-
-import org.bukkit.command.CommandSender;
-
-import java.util.HashMap;
-import java.util.Map;
+package me.glaremasters.guilds.actions;
 
 /**
- * Created by GlareMasters
- * Date: 9/9/2018
- * Time: 6:16 PM
+ * Created by GlareMasters on 6/28/2018.
  */
-//todo hmm?
-public class ActionHandler {
-
-    private Map<CommandSender, ConfirmAction> actions;
-
-    public ActionHandler() {
-        actions = new HashMap<>();
-    }
+public interface ConfirmAction {
 
     /**
-     * Disable the ActionHandler
+     * Confirm an action
      */
-    public void disable() {
-        actions.clear();
-        actions = null;
-    }
+    void accept();
 
     /**
-     * Get all the current actions
-     * @return current actions
+     * Decline an action
      */
-    public Map<CommandSender, ConfirmAction> getActions() {
-        return actions;
-    }
+    void decline();
 
-    /**
-     * Adds an action to the action list
-     * @param sender user
-     * @param action action
-     */
-    public void addAction(CommandSender sender, ConfirmAction action) {
-        actions.put(sender, action);
-    }
-
-    /**
-     * Removes an action from the action list
-     * @param sender user
-     */
-    public void removeAction(CommandSender sender) {
-        actions.remove(sender);
-    }
 }

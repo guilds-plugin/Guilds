@@ -37,7 +37,7 @@ import me.glaremasters.guilds.guild.GuildMember;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.updater.SpigotUpdater;
-import me.glaremasters.guilds.utils.ConfirmAction;
+import me.glaremasters.guilds.actions.ConfirmAction;
 import me.glaremasters.guilds.utils.HeadUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;

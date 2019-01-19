@@ -39,7 +39,6 @@ import me.glaremasters.guilds.commands.CommandAlly;
 import me.glaremasters.guilds.commands.CommandBank;
 import me.glaremasters.guilds.commands.CommandClaim;
 import me.glaremasters.guilds.commands.CommandGuilds;
-import me.glaremasters.guilds.configuration.GuiSettings;
 import me.glaremasters.guilds.configuration.GuildsSettingsRetriever;
 import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.database.providers.JsonProvider;
@@ -54,8 +53,9 @@ import me.glaremasters.guilds.listeners.TablistListener;
 import me.glaremasters.guilds.listeners.TicketListener;
 import me.glaremasters.guilds.listeners.WorldGuardListener;
 import me.glaremasters.guilds.messages.Messages;
+import me.glaremasters.guilds.placeholderapi.PlaceholderAPI;
 import me.glaremasters.guilds.updater.SpigotUpdater;
-import me.glaremasters.guilds.utils.ActionHandler;
+import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.utils.HeadUtils;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -77,7 +77,6 @@ import java.net.JarURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -476,7 +475,7 @@ public final class Guilds extends JavaPlugin {
     private void initializePlaceholder() {
         if (checkPAPI()) {
             info("Hooking into PlaceholderAPI...");
-            new me.glaremasters.guilds.utils.PlaceholderAPI(this).register();
+            new PlaceholderAPI(this).register();
             info("Hooked!");
         }
     }
