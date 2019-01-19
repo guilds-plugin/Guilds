@@ -25,7 +25,6 @@
 package me.glaremasters.guilds.listeners;
 
 import lombok.AllArgsConstructor;
-import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.handlers.Tablist;
@@ -44,8 +43,6 @@ public class TablistListener implements Listener {
 
     //todo
 
-
-    private Guilds guilds;
     private GuildHandler guildHandler;
 
     /**
@@ -59,5 +56,29 @@ public class TablistListener implements Listener {
         Guild guild = guildHandler.getGuild(player);
         if (guild != null) guilds.getServer().getScheduler().scheduleAsyncDelayedTask(guilds, () -> tablist.add(player), 30L);
     }
+
+    // This was the old TabList class's methods.
+//    /**
+//     * Handles adding a prefix to the player's tablist
+//     *
+//     * @param player the player being modified
+//     */
+//    public void add(Player player) {
+//        Guild guild = guildHandler.getGuild(player);
+//        String name = guilds.getConfig().getBoolean("tablist-use-display-name") ? player.getDisplayName() : player.getName();
+//        player.setPlayerListName(color(guilds.getConfig().getString("tablist")
+//                .replace("{guild}", guild.getName())
+//                .replace("{prefix}", guild.getPrefix()) + name));
+//    }
+//
+//    /**
+//     * Handles removing a prefix from the player's tablist
+//     *
+//     * @param player the player being modified
+//     */
+//    public void remove(Player player) {
+//        String name = guilds.getConfig().getBoolean("tablist-use-display-name") ? player.getDisplayName() : player.getName();
+//        player.setPlayerListName(color(name));
+//    }
 
 }

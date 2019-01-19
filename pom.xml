@@ -88,6 +88,10 @@
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <relocations>
                                 <relocation>
+                                    <pattern>org.bstats</pattern>
+                                    <shadedPattern>me.glaremasters.guilds.libs.bstats</shadedPattern>
+                                </relocation>
+                                <relocation>
                                     <pattern>org.codemc.worldguardwrapper</pattern>
                                     <shadedPattern>me.glaremasters.guilds.libs.worldguardwrapper</shadedPattern>
                                 </relocation>
@@ -140,6 +144,7 @@
         </repository>
 
         <!-- World guard wrapper -->
+        <!-- Bstats repo too -->
         <repository>
             <id>codemc-repo</id>
             <url>https://repo.codemc.org/repository/maven-public/</url>
@@ -184,7 +189,7 @@
         </dependency>
 
         <!-- Taskchain -->
-        <!-- Unused as of 18-1-2018 -->
+        <!-- Unused as of 18-1-2019 -->
         <!-- Might be reused when MySql is implemented -->
         <!--<dependency>-->
             <!--<groupId>co.aikar</groupId>-->
@@ -222,6 +227,13 @@
             <groupId>com.github.ReflxctionDev</groupId>
             <artifactId>SimpleJSON</artifactId>
             <version>RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.bstats</groupId>
+            <artifactId>bstats-bukkit</artifactId>
+            <version>RELEASE</version>
+            <scope>compile</scope>
         </dependency>
 
         <!-- A worldguard api wrapper for v7 and v6 -->
