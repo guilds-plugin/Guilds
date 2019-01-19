@@ -504,6 +504,7 @@ public final class Guilds extends JavaPlugin {
         }
     }
 
+    //todo what about a hook package with a hook manager for these 3 listeners and PlaceholderAPI?
     /**
      * Register optional listeners based off values in the config
      */
@@ -517,7 +518,7 @@ public final class Guilds extends JavaPlugin {
         }
 
         if (getConfig().getBoolean("main-hooks.worldguard-claims")) {
-            getServer().getPluginManager().registerEvents(new WorldGuardListener(this, guildHandler), this);
+            getServer().getPluginManager().registerEvents(new WorldGuardListener(guildHandler), this);
         }
     }
 

@@ -25,7 +25,6 @@
 package me.glaremasters.guilds.listeners;
 
 import lombok.AllArgsConstructor;
-import me.glaremasters.guilds.api.GuildsAPI;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import org.bukkit.Bukkit;
@@ -42,10 +41,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 @AllArgsConstructor
 public class EssentialsChatListener implements Listener {
 
-    //todo
-
     private GuildHandler guildHandler;
-    private GuildsAPI guildsAPI;
 
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
@@ -66,9 +62,9 @@ public class EssentialsChatListener implements Listener {
                 .replace("{ESSENTIALS_GUILD_PREFIX}", guild.getPrefix())
                 .replace("{ESSENTIALS_GUILD_MASTER}", Bukkit.getOfflinePlayer(guild.getGuildMaster().getUuid()).getName()
                 .replace("{ESSENTIALS_GUILD_MEMBER_COUNT}",  String.valueOf(guild.getSize())))
-                .replace("{ESSENTIALS_GUILD_MEMBERS_ONLINE}", String.valueOf(guildsAPI.getGuildMembersOnline(player))
+                .replace("{ESSENTIALS_GUILD_MEMBERS_ONLINE}", String.valueOf(guildHandler. (player))
                 .replace("{ESSENTIALS_GUILD_STATUS}", guild.getStatus().name())
-                .replace("{ESSENTIALS_GUILD_ROLE}", guildsAPI.getGuildRole(player).getName()));
+                .replace("{ESSENTIALS_GUILD_ROLE}", guild.getMember(player.getUniqueId()).getRole().getName()))
 
         event.setFormat(message);
     }

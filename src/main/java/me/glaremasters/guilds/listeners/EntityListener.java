@@ -42,14 +42,8 @@ import org.bukkit.event.entity.EntityDeathEvent;
 @AllArgsConstructor
 public class EntityListener implements Listener {
 
-    //todo
-
     private GuildHandler guildHandler;
 
-    /**
-     * Damage Multiplier Handler
-     * @param event this event handles the boost that a Guild gets if they have a damage multiplier
-     */
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent event) {
         if (event.getDamager() instanceof Player) {
@@ -59,10 +53,6 @@ public class EntityListener implements Listener {
         }
     }
 
-    /**
-     * Exp Multiplier Handler
-     * @param event this event handles the boost that a Guild gets if they have an exp multiplier
-     */
     @EventHandler
     public void onMobDeath(EntityDeathEvent event) {
         if (!(event.getEntity() instanceof Monster)) return;
@@ -70,7 +60,7 @@ public class EntityListener implements Listener {
         Player killer = monster.getKiller();
         if (killer == null) return;
         Guild guild = guildHandler.getGuild(killer);
-        if (guild != null) event.setDroppedExp((event.getDroppedExp() * guild.getTier().getDamageMultiplier()));
+        if (guild != null) event.setDroppedExp((int) (event.getDroppedExp() * guild.getTier().getDamageMultiplier()));
     }
 
 
