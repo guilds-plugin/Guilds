@@ -24,7 +24,10 @@
 
 package me.glaremasters.guilds.api;
 
-import me.glaremasters.guilds.guild.*;
+import me.glaremasters.guilds.guild.Guild;
+import me.glaremasters.guilds.guild.GuildHandler;
+import me.glaremasters.guilds.guild.GuildRole;
+import me.glaremasters.guilds.guild.GuildTier;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -71,7 +74,7 @@ public class GuildsAPI {
      * @return amount of members online
      */
     public int getGuildMembersOnline(@NotNull Player player) {
-        return (int) getGuild(player).getMembers().stream().filter(GuildMember::isOnline).count();
+        return guildHandler.getGuild(player).getOnlineMembers().size();
     }
 
     /**

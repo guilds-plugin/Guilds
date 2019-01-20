@@ -62,9 +62,9 @@ public class EssentialsChatListener implements Listener {
                 .replace("{ESSENTIALS_GUILD_PREFIX}", guild.getPrefix())
                 .replace("{ESSENTIALS_GUILD_MASTER}", Bukkit.getOfflinePlayer(guild.getGuildMaster().getUuid()).getName()
                 .replace("{ESSENTIALS_GUILD_MEMBER_COUNT}",  String.valueOf(guild.getSize())))
-                .replace("{ESSENTIALS_GUILD_MEMBERS_ONLINE}", String.valueOf(guildHandler. (player))
+                .replace("{ESSENTIALS_GUILD_MEMBERS_ONLINE}", String.valueOf(guild.getOnlineMembers().size()))
                 .replace("{ESSENTIALS_GUILD_STATUS}", guild.getStatus().name())
-                .replace("{ESSENTIALS_GUILD_ROLE}", guild.getMember(player.getUniqueId()).getRole().getName()))
+                .replace("{ESSENTIALS_GUILD_ROLE}", guild.getMember(player.getUniqueId()).getRole().getName());
 
         event.setFormat(message);
     }

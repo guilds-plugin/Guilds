@@ -35,6 +35,7 @@ import org.bukkit.inventory.Inventory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -73,7 +74,7 @@ public class Guild {
      * @return the member which was found
      */
     public GuildMember getMember(UUID uuid) {
-        return members.stream().filter(m -> m.getUuid().equals(uuid)).findFirst().orElse(null);
+        return getMembers().stream().filter(m -> m.getUuid().equals(uuid)).findFirst().orElse(null);
     }
 
     /**
@@ -82,9 +83,9 @@ public class Guild {
      * @param guildMember the member to add
      */
     public void addMember(GuildMember guildMember){
-        if (members.contains(guildMember)) return;
-        if (invitedMembers.contains(guildMember.getUuid())) removeInvitedMember(guildMember.getUuid());
-        members.add(guildMember);
+        if (getMembers().contains(guildMember)) return;
+        removeInvitedMember(guildMember.getUuid());
+        getMembers().add(guildMember);
     }
 
     /**
@@ -92,7 +93,7 @@ public class Guild {
      * @param guildMember the guildmember to remove
      */
     public void removeMember(GuildMember guildMember){
-        members.remove(guildMember);
+        getMembers().remove(guildMember);
     }
 
     /**
@@ -109,7 +110,7 @@ public class Guild {
      * @param guild the guild to remove
      */
     public void removeAlly(Guild guild) {
-        allies.remove(guild.getId());
+        getAllies().remove(guild.getId());
     }
 
     /**
@@ -117,7 +118,7 @@ public class Guild {
      * @param guild the guild to add
      */
     public void addAlly(Guild guild) {
-        allies.add(guild.getId());
+        getAllies().add(guild.getId());
     }
 
     /**
@@ -125,7 +126,7 @@ public class Guild {
      * @param guild the guild to add
      */
     public void addPendingAlly(Guild guild) {
-        pendingAllies.add(guild.getId());
+        getPendingAllies().add(guild.getId());
     }
 
     /**
@@ -133,7 +134,7 @@ public class Guild {
      * @param guild the guild to remove
      */
     public void removePendingAlly(Guild guild) {
-        pendingAllies.remove(guild.getId());
+        getPendingAllies().remove(guild.getId());
     }
 
     /**
@@ -142,8 +143,8 @@ public class Guild {
      * @param uuid the UUID of the player.
      */
     public void inviteMember(UUID uuid) {
-        if (invitedMembers.contains(uuid)) return;
-        invitedMembers.add(uuid);
+        if (getInvitedMembers().contains(uuid)) return;
+        getInvitedMembers().add(uuid);
     }
 
     /**
@@ -152,7 +153,7 @@ public class Guild {
      * @param uuid the member to remove from the invites.
      */
     public void removeInvitedMember(UUID uuid) {
-        invitedMembers.remove(uuid);
+        getInvitedMembers().remove(uuid);
     }
 
     /**
@@ -160,7 +161,16 @@ public class Guild {
      * @return size of members list.
      */
     public int getSize() {
-        return members.size();
+        return getMembers().size();
+    }
+
+    /**
+     * Returns amount of online members
+     *
+     * @return a List of online members
+     */
+    public List<GuildMember> getOnlineMembers() {
+        return getMembers().stream().filter(GuildMember::isOnline).collect(Collectors.toList());
     }
 }
 
