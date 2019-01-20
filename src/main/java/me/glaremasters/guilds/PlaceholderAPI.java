@@ -26,20 +26,10 @@ package me.glaremasters.guilds;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import me.glaremasters.guilds.api.GuildsAPI;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-/**
- * Created by GlareMasters
- * Date: 12/12/2018
- * Time: 8:36 PM
- */
 public class PlaceholderAPI extends PlaceholderExpansion {
-
-    private Guilds guilds;
-
-    public PlaceholderAPI(Guilds guilds) {
-        this.guilds = guilds;
-    }
 
     @Override
     public String getIdentifier() {
@@ -64,34 +54,35 @@ public class PlaceholderAPI extends PlaceholderExpansion {
     public String onPlaceholderRequest(Player p, String arg) {
 
         if (p == null) {
-            return "";
+            return null;
         }
 
-        GuildsAPI api = guilds.getApi();
+        GuildsAPI api = Guilds.getApi();
+        if (api == null) return null;
 
         switch (arg) {
             case "name":
-                return api.getGuild(p);
+                return api.getGuild(p).getName();
             case "master":
-                return api.getGuildMaster(p);
+                return Bukkit.getOfflinePlayer(api.getGuild(p).getGuildMaster().getUuid()).getName();
             case "member_count":
-                return api.getGuildMemberCount(p);
+                return String.valueOf(api.getGuildMemberCount(p));
             case "prefix":
                 return api.getGuildPrefix(p);
             case "members_online":
-                return api.getGuildMembersOnline(p);
+                return String.valueOf(api.getGuildMembersOnline(p));
             case "status":
-                return api.getGuildStatus(p);
+                return String.valueOf(api.getGuildStatus(p));
             case "role":
-                return api.getGuildRole(p);
+                return api.getGuildRole(p).getName();
             case "tier":
                 return String.valueOf(api.getGuildTier(p));
             case "balance":
                 return String.valueOf(api.getBankBalance(p));
             case "tier_name":
-                return api.getTierName(p);
+                return api.getGuildTier(p).getName();
             case "role_node":
-                return api.getRolePermission(p);
+                return api.getGuildRole(p).getNode();
         }
         return null;
     }

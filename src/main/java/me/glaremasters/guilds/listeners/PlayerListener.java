@@ -25,7 +25,6 @@
 package me.glaremasters.guilds.listeners;
 
 import lombok.AllArgsConstructor;
-import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.Messages;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
@@ -65,8 +64,6 @@ public class PlayerListener implements Listener {
 
     //todo
 
-
-    private Guilds guilds;
     private GuildHandler guildHandler;
 
     private Set<UUID> ALREADY_INFORMED = new HashSet<>();

@@ -36,11 +36,10 @@ import me.glaremasters.guilds.guild.GuildRole;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-/**
- * Created by GlareMasters
- * Date: 9/10/2018
- * Time: 6:49 PM
- */
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+@SuppressWarnings("unused")
 @AllArgsConstructor
 @CommandAlias("guild|guilds")
 public class CommandAlly extends BaseCommand {
@@ -60,7 +59,7 @@ public class CommandAlly extends BaseCommand {
             getCurrentCommandIssuer().sendInfo(Messages.ALLY__NONE);
             return;
         }
-        getCurrentCommandIssuer().sendInfo(Messages.ALLY__LIST, "{ally-list}", String.join(",", guild.getAllies()));
+        getCurrentCommandIssuer().sendInfo(Messages.ALLY__LIST, "{ally-list}", guild.getAllies().stream().map(UUID::toString).collect(Collectors.joining(",")));
     }
 
     /**
@@ -75,18 +74,17 @@ public class CommandAlly extends BaseCommand {
     @CommandPermission("guilds.command.ally")
     @Syntax("<guild name>")
     public void onAllyAccept(Player player, Guild guild, GuildRole role, String name) {
-        if (!role.canAddAlly()) {
-            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
-            return;
-        }
-        Guild targetGuild = utils.getGuild(name);
+        if (checkPermission(role.isAddAlly())) return;
+
+        Guild targetGuild = guildHandler.getGuild(name);
         if (targetGuild == null) return;
-        if (!guild.getPendingAllies().contains(targetGuild.getName())) return;
-        utils.removePendingAlly(guild, targetGuild);
-        utils.addAlly(guild, targetGuild);
-        utils.addAlly(targetGuild, guild);
-        utils.sendMessage(guild, Messages.ALLY__CURRENT_ACCEPTED, "{guild}", targetGuild.getName());
-        utils.sendMessage(targetGuild, Messages.ALLY__TARGET_ACCEPTED, "{guild}", guild.getName());
+
+        if (!guild.getPendingAllies().contains(targetGuild.getId())) return;
+
+        guildHandler.addAlly(guild, targetGuild);
+
+        guildHandler.sendMessage(guild, Messages.ALLY__CURRENT_ACCEPTED, "{guild}", targetGuild.getName());
+        guildHandler.sendMessage(targetGuild, Messages.ALLY__TARGET_ACCEPTED, "{guild}", guild.getName());
     }
 
     /**
@@ -101,17 +99,16 @@ public class CommandAlly extends BaseCommand {
     @CommandPermission("guilds.command.ally")
     @Syntax("<guild name>")
     public void onAllyDecline(Player player, Guild guild, GuildRole role, String name) {
-        if (!role.canRemoveAlly()) {
-            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
-            return;
-        }
-        Guild targetGuild = utils.getGuild(name);
+        if (checkPermission(role.isRemoveAlly())) return;
+
+        Guild targetGuild = guildHandler.getGuild(name);
         if (targetGuild == null) return;
 
-        if (!guild.getPendingAllies().contains(targetGuild.getName())) return;
-        utils.removePendingAlly(guild, targetGuild);
-        utils.sendMessage(guild, Messages.ALLY__CURRENT_DECLINED, "{guild}", targetGuild.getName());
-        utils.sendMessage(targetGuild, Messages.ALLY__TARGET_DECLINED, "{guild}", guild.getName());
+        if (!guild.getPendingAllies().contains(targetGuild.getId())) return;
+
+        guildHandler.removePendingAlly(guild, targetGuild);
+        guildHandler.sendMessage(guild, Messages.ALLY__CURRENT_DECLINED, "{guild}", targetGuild.getName());
+        guildHandler.sendMessage(targetGuild, Messages.ALLY__TARGET_DECLINED, "{guild}", guild.getName());
     }
 
     /**
@@ -126,21 +123,18 @@ public class CommandAlly extends BaseCommand {
     @CommandPermission("guilds.command.ally")
     @Syntax("<guild name>")
     public void onAllyAdd(Player player, Guild guild, GuildRole role, String name) {
-        if (!role.canAddAlly()) {
-            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
-            return;
-        }
+        if (checkPermission(role.isAddAlly())) return;
 
-        Guild targetGuild = utils.getGuild(name);
+        Guild targetGuild = guildHandler.getGuild(name);
 
         if (targetGuild == null) return;
 
-        if (targetGuild.getPendingAllies().contains(guild.getName())) {
+        if (targetGuild.getPendingAllies().contains(guild.getId())) {
             getCurrentCommandIssuer().sendInfo(Messages.ALLY__ALREADY_REQUESTED);
             return;
         }
 
-        if (guild.getAllies().contains(targetGuild.getName())) {
+        if (guild.getAllies().contains(targetGuild.getId())) {
             getCurrentCommandIssuer().sendInfo(Messages.ALLY__ALREADY_ALLY);
             return;
         }
@@ -155,8 +149,8 @@ public class CommandAlly extends BaseCommand {
         if (event.isCancelled()) return;
 
         getCurrentCommandIssuer().sendInfo(Messages.ALLY__INVITE_SENT, "{guild}", targetGuild.getName());
-        utils.sendMessage(targetGuild, Messages.ALLY__INCOMING_INVITE, "{guild}", guild.getName());
-        utils.addPendingAlly(targetGuild, guild);
+        guildHandler.sendMessage(targetGuild, Messages.ALLY__INCOMING_INVITE, "{guild}", guild.getName());
+        guildHandler.addPendingAlly(targetGuild, guild);
     }
 
     /**
@@ -171,14 +165,13 @@ public class CommandAlly extends BaseCommand {
     @CommandPermission("guilds.command.ally")
     @Syntax("<guild name>")
     public void onAllyRemove(Player player, Guild guild, GuildRole role, String name) {
-        if (!role.canRemoveAlly()) {
-            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
-            return;
-        }
-        Guild targetGuild = utils.getGuild(name);
+        if (checkPermission(role.isRemoveAlly())) return;
+
+
+        Guild targetGuild = guildHandler.getGuild(name);
         if (targetGuild == null) return;
 
-        if (!guild.getAllies().contains(targetGuild.getName())) {
+        if (!guild.getAllies().contains(targetGuild.getId())) {
             getCurrentCommandIssuer().sendInfo(Messages.ALLY__NOT_ALLIED);
             return;
         }
@@ -187,11 +180,23 @@ public class CommandAlly extends BaseCommand {
         Bukkit.getServer().getPluginManager().callEvent(event);
         if (event.isCancelled()) return;
 
-        utils.removeAlly(guild, targetGuild);
-        utils.removeAlly(targetGuild, guild);
+        guildHandler.removeAlly(guild, targetGuild);
 
-        utils.sendMessage(guild, Messages.ALLY__CURRENT_REMOVE, "{guild}", targetGuild.getName());
-        utils.sendMessage(targetGuild, Messages.ALLY__TARGET_REMOVE, "{guild}", guild.getName());
+        guildHandler.sendMessage(guild, Messages.ALLY__CURRENT_REMOVE, "{guild}", targetGuild.getName());
+        guildHandler.sendMessage(targetGuild, Messages.ALLY__TARGET_REMOVE, "{guild}", guild.getName());
+    }
+
+    /**
+     * Checks a permission
+     * Sends a no permission message if he has no permission
+     *
+     * @param hasPermission the boolean if role has permission
+     * @return true if message was sent
+     */
+    private boolean checkPermission(boolean hasPermission) {
+        if (hasPermission) return false;
+        getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
+        return true;
     }
 
 }

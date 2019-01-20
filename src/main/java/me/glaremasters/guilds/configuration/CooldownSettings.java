@@ -35,7 +35,7 @@ import static ch.jalu.configme.properties.PropertyInitializer.newProperty;
  * Date: 1/17/2019
  * Time: 2:29 PM
  */
-public class TimerSettings implements SettingsHolder {
+public class CooldownSettings implements SettingsHolder {
 
     @Comment("How often (in seconds) can a player set their guild home?")
     public static final Property<Integer> SETHOME =
@@ -49,6 +49,6 @@ public class TimerSettings implements SettingsHolder {
     public static final Property<Integer> WU_HOME =
             newProperty("timers.warpups.home", 3);
 
-    private TimerSettings() {
+    private CooldownSettings() {
     }
 }

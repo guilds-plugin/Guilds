@@ -33,7 +33,7 @@ import org.bukkit.entity.Player;
  */
 public class GuildRemoveEvent extends GuildEvent {
 
-    private RemoveCause cause;
+    private Cause cause;
 
     /**
      * Called when a guild is removed
@@ -41,15 +41,17 @@ public class GuildRemoveEvent extends GuildEvent {
      * @param guild the guild getting removed
      * @param cause the reason for the guild being removed
      */
-    public GuildRemoveEvent(Player player, Guild guild, RemoveCause cause) {
+    public GuildRemoveEvent(Player player, Guild guild, Cause cause) {
         super(player, guild);
     }
 
-    public RemoveCause getCause() {
+    public Cause getCause() {
         return cause;
     }
 
-    public enum RemoveCause {
-        MASTER_LEFT, DELETED, ADMIN_DELETED
+    public enum Cause {
+        MASTER_LEFT,
+        PLAYER_DELETED,
+        ADMIN_DELETED
     }
 }

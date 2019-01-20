@@ -62,6 +62,7 @@ public class InventoryListener implements Listener {
         Player player = (Player) event.getWhoClicked();
         UUID uuid = player.getUniqueId();
         String title = event.getInventory().getTitle();
+        //todo you should not be comparing using names but rather using InventoryHolders.
         if (title.equalsIgnoreCase(getString("gui-name.info"))) {
             event.setCancelled(true);
             event.setResult(Event.Result.DENY);

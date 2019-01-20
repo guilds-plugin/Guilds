@@ -24,6 +24,7 @@
 
 package me.glaremasters.guilds.commands;
 
+import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
@@ -32,8 +33,9 @@ import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
 import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Messages;
+import me.glaremasters.guilds.configuration.ClaimSettings;
+import me.glaremasters.guilds.configuration.HooksSettings;
 import me.glaremasters.guilds.guild.Guild;
-import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -43,30 +45,28 @@ import org.codemc.worldguardwrapper.region.IWrappedRegion;
 
 import java.util.Set;
 
-import static me.glaremasters.guilds.utils.ConfigUtils.getBoolean;
-import static me.glaremasters.guilds.utils.ConfigUtils.getInt;
-
+@SuppressWarnings("unused")
 @AllArgsConstructor
 @CommandAlias("guild|guilds")
 public class CommandClaim extends BaseCommand {
 
-    private GuildHandler guildHandler;
+    private SettingsManager settingsManager;
 
     @Subcommand("claim")
     @Description("{@@descriptions.claim}")
     @CommandPermission("guilds.command.claim")
     public void onClaim(Player player, Guild guild, GuildRole role) {
 
-        int radius = getInt("claim-radius");
+        int radius = settingsManager.getProperty(ClaimSettings.RADIUS);
 
-        if (!getBoolean("main-hooks.worldguard-claims")) {
+        if (!settingsManager.getProperty(HooksSettings.WORLDGUARD)) {
             getCurrentCommandIssuer().sendInfo(Messages.CLAIM__HOOK_DISABLED);
             return;
         }
 
         WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();
 
-        if (!role.canClaimLand()) {
+        if (!role.isClaimLand()) {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
             return;
         }
@@ -74,7 +74,7 @@ public class CommandClaim extends BaseCommand {
         Location min = player.getLocation().subtract(radius, (player.getLocation().getY()), radius);
         Location max = player.getLocation().add(radius, (player.getWorld().getMaxHeight() - player.getLocation().getY()), radius);
 
-        if (wrapper.getRegion(player.getWorld(), guild.getName()).isPresent()) {
+        if (wrapper.getRegion(player.getWorld(), guild.getId().toString()).isPresent()) {
             getCurrentCommandIssuer().sendInfo(Messages.CLAIM__ALREADY_EXISTS);
             return;
         }
@@ -86,14 +86,14 @@ public class CommandClaim extends BaseCommand {
             return;
         }
 
-        wrapper.addCuboidRegion(guild.getName(), min, max);
+        wrapper.addCuboidRegion(guild.getId().toString(), min, max);
 
-        wrapper.getRegion(player.getWorld(), guild.getName()).ifPresent(region -> {
+        wrapper.getRegion(player.getWorld(), guild.getId().toString()).ifPresent(region -> {
             region.getOwners().addPlayer(player.getUniqueId());
 
             IWrappedDomain domain = region.getMembers();
 
-            guild.getMembers().forEach(member -> domain.addPlayer(member.getUniqueId()));
+            guild.getMembers().forEach(member -> domain.addPlayer(member.getUuid()));
         });
 
         getCurrentCommandIssuer().sendInfo(Messages.CLAIM__SUCCESS, "{loc1}", ACFBukkitUtil.formatLocation(min), "{loc2}", ACFBukkitUtil.formatLocation(max));
@@ -104,20 +104,20 @@ public class CommandClaim extends BaseCommand {
     @CommandPermission("guilds.command.unclaim")
     public void onUnClaim(Player player, Guild guild, GuildRole role) {
 
-        if (!getBoolean("main-hooks.worldguard-claims")) {
+        if (!settingsManager.getProperty(HooksSettings.WORLDGUARD)) {
             getCurrentCommandIssuer().sendInfo(Messages.CLAIM__HOOK_DISABLED);
             return;
         }
 
         WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();
 
-        if (!role.canUnclaimLand()) {
+        if (!role.isUnclaimLand()) {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
             return;
         }
 
-        if (wrapper.getRegion(player.getWorld(), guild.getName()).isPresent()) {
-            wrapper.removeRegion(player.getWorld(), guild.getName());
+        if (wrapper.getRegion(player.getWorld(), guild.getId().toString()).isPresent()) {
+            wrapper.removeRegion(player.getWorld(), guild.getId().toString());
             getCurrentCommandIssuer().sendInfo(Messages.UNCLAIM__SUCCESS);
         } else {
             getCurrentCommandIssuer().sendInfo(Messages.UNCLAIM__NOT_FOUND);

@@ -36,10 +36,11 @@ import java.util.UUID;
  */
 @AllArgsConstructor
 @Getter
+@Setter
 public class GuildMember {
 
-    private UUID uuid;
-    @Setter private GuildRole role;
+    private final UUID uuid;
+    private GuildRole role;
 
     public boolean isOnline() {
         return Bukkit.getOfflinePlayer(uuid).isOnline();

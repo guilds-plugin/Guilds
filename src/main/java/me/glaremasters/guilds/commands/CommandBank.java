@@ -29,20 +29,16 @@ import co.aikar.commands.annotation.*;
 import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Messages;
 import me.glaremasters.guilds.guild.Guild;
-import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.entity.Player;
 
-/**
- * Created by GlareMasters
- * Date: 9/10/2018
- * Time: 6:43 PM
- */
+@SuppressWarnings("unused")
 @AllArgsConstructor
 @CommandAlias("guild|guilds")
 public class CommandBank extends BaseCommand {
 
-    private GuildHandler guildHandler;
+    private Economy economy;
 
     /**
      * Check the bank balance of a Guild
@@ -68,18 +64,18 @@ public class CommandBank extends BaseCommand {
     @CommandPermission("guilds.command.bank")
     @Syntax("<amount>")
     public void onDeposit(Player player, Guild guild, GuildRole role, Double amount) {
-        if (!role.canDepositMoney()) {
+        if (!role.isDepositMoney()) {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
             return;
         }
 
         if (amount < 0) return;
 
-        if (guilds.getEconomy().getBalance(player) < amount) {
+        if (economy.getBalance(player) < amount) {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__NOT_ENOUGH_MONEY);
             return;
         }
-        guilds.getEconomy().withdrawPlayer(player, amount);
+        economy.withdrawPlayer(player, amount);
         Double balance = guild.getBalance();
         guild.setBalance(balance + amount);
         getCurrentCommandIssuer().sendInfo(Messages.BANK__DEPOSIT_SUCCESS, "{amount}", String.valueOf(amount), "{total}", String.valueOf(guild.getBalance()));
@@ -97,7 +93,7 @@ public class CommandBank extends BaseCommand {
     @CommandPermission("guilds.command.bank")
     @Syntax("<amount>")
     public void onWithdraw(Player player, Guild guild, GuildRole role, Double amount) {
-        if (!role.canWithdrawMoney()) {
+        if (!role.isWithdrawMoney()) {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
             return;
         }

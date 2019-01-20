@@ -27,27 +27,26 @@ package me.glaremasters.guilds.commands;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import lombok.AllArgsConstructor;
-import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.Messages;
+import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.actions.ConfirmAction;
 import me.glaremasters.guilds.api.events.GuildRemoveEvent;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildMember;
 import me.glaremasters.guilds.guild.GuildTier;
+import me.glaremasters.guilds.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.List;
 
-import static co.aikar.commands.ACFBukkitUtil.color;
-
-/**
- * Created by GlareMasters
- * Date: 9/10/2018
- * Time: 6:45 PM
- */
+//todo this todo is for all command classes.
+//I have noticed that you only send certain messages on certain commands however these messages should also be sent in other places.
+//Example I have seen is that you sent a ERROR__GUILD_NO_EXIST message in this admin command but not in the ally commands (haven't checked all commands classes)
+//I've also noticed a lot of differences between Bukkit.getOfflinePlayer(String) and Bukkit.getPlayerExact(String) and Bukkit.getPlayer(String)
+//You should really only be using the first one or the last 2 ones.
 
 @SuppressWarnings("unused")
 @AllArgsConstructor
@@ -55,6 +54,7 @@ import static co.aikar.commands.ACFBukkitUtil.color;
 public class CommandAdmin extends BaseCommand {
 
     private GuildHandler guildHandler;
+    private ActionHandler actionHandler;
     private List<Player> spies;
 
     /**
@@ -68,29 +68,34 @@ public class CommandAdmin extends BaseCommand {
     @CommandCompletion("@guilds")
     @Syntax("<guild name>")
     public void onGuildRemove(Player player, @Values("@guilds") @Single String name) {
-        Guild guild = utils.getGuild(name);
+        Guild guild = guildHandler.getGuild(name);
         if (guild == null) {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__GUILD_NO_EXIST);
             return;
         }
         getCurrentCommandIssuer().sendInfo(Messages.ADMIN__DELETE_WARNING, "{guild}", name);
-        guilds.getActionHandler().addAction(player, new ConfirmAction() {
+        actionHandler.addAction(player, new ConfirmAction() {
             @Override
             public void accept() {
-                GuildRemoveEvent event = new GuildRemoveEvent(player, guild, GuildRemoveEvent.RemoveCause.ADMIN_DELETED);
-                guilds.getServer().getPluginManager().callEvent(event);
+                GuildRemoveEvent event = new GuildRemoveEvent(player, guild, GuildRemoveEvent.Cause.ADMIN_DELETED);
+                Bukkit.getPluginManager().callEvent(event);
                 if (event.isCancelled()) return;
+
+                /*
+                todo
                 guilds.getVaults().remove(guild);
                 Guilds.checkForClaim(player.getWorld(), guild, guilds);
-                utils.removeGuildPerms(guild);
-                guilds.getDatabase().removeGuild(guild);
-                guilds.getActionHandler().removeAction(player);
+                */
+                guildHandler.removeGuild(guild);
+
                 getCurrentCommandIssuer().sendInfo(Messages.ADMIN__DELETE_SUCCESSFUL, "{guild}", name);
+
+                actionHandler.removeAction(player);
             }
 
             @Override
             public void decline() {
-                guilds.getActionHandler().removeAction(player);
+                actionHandler.removeAction(player);
             }
         });
     }
@@ -114,8 +119,8 @@ public class CommandAdmin extends BaseCommand {
         if (guild == null) return;
 
         guild.addMember(new GuildMember(playerToAdd.getUniqueId(), guildHandler.getLowestGuildRole()));
-        //todo
-        guildHandler.addGuildPerms(guild, playerToAdd);
+
+        //todo guildHandler.addGuildPerms(guild, playerToAdd);
 
         if (playerToAdd.isOnline()) {
             getCurrentCommandManager().getCommandIssuer(playerToAdd).sendInfo(Messages.ADMIN__PLAYER_ADDED, "{guild}", guild.getName());
@@ -142,8 +147,7 @@ public class CommandAdmin extends BaseCommand {
 
         guild.removeMember(playerToRemove);
 
-        //todo
-        guildHandler.removeGuildPerms(guild, playerToRemove);
+        //todo guildHandler.removeGuildPerms(guild, playerToRemove);
 
         if (playerToRemove.isOnline()) getCurrentCommandManager().getCommandIssuer(playerToRemove).sendInfo(Messages.ADMIN__PLAYER_REMOVED, "{guild}", guild.getName());
         getCurrentCommandIssuer().sendInfo(Messages.ADMIN__ADMIN_PLAYER_REMOVED, "{player}", playerToRemove.getName(), "{guild}", guild.getName());
@@ -209,7 +213,7 @@ public class CommandAdmin extends BaseCommand {
         Guild guild = guildHandler.getGuild(name);
         if (guild == null) return;
 
-        guild.setPrefix(color(prefix));
+        guild.setPrefix(StringUtils.color(prefix));
 
         getCurrentCommandIssuer().sendInfo(Messages.PREFIX__SUCCESSFUL);
     }
@@ -229,7 +233,7 @@ public class CommandAdmin extends BaseCommand {
         Guild guild = guildHandler.getGuild(name);
         if (guild == null) return;
 
-        guild.setName(color(newName));
+        guild.setName(StringUtils.color(newName));
 
         getCurrentCommandIssuer().sendInfo(Messages.RENAME__SUCCESSFUL, "{name}", newName);
     }

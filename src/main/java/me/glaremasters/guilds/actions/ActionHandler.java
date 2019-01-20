@@ -24,40 +24,18 @@
 
 package me.glaremasters.guilds.actions;
 
+import lombok.Getter;
 import org.bukkit.command.CommandSender;
 
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by GlareMasters
- * Date: 9/9/2018
- * Time: 6:16 PM
- */
+
 //todo hmm?
 public class ActionHandler {
 
-    private Map<CommandSender, ConfirmAction> actions;
-
-    public ActionHandler() {
-        actions = new HashMap<>();
-    }
-
-    /**
-     * Disable the ActionHandler
-     */
-    public void disable() {
-        actions.clear();
-        actions = null;
-    }
-
-    /**
-     * Get all the current actions
-     * @return current actions
-     */
-    public Map<CommandSender, ConfirmAction> getActions() {
-        return actions;
-    }
+    @Getter
+    private Map<CommandSender, ConfirmAction> actions = new HashMap<>();
 
     /**
      * Adds an action to the action list
@@ -74,5 +52,19 @@ public class ActionHandler {
      */
     public void removeAction(CommandSender sender) {
         actions.remove(sender);
+    }
+
+    /**
+     * Retrieve an action via a CommandSender instance.
+     *
+     * @param sender the commandSender
+     * @return an instance of
+     * @see ConfirmAction
+     * Used to decline or confirm a command request
+     * @see ConfirmAction#accept()
+     * @see ConfirmAction#decline()
+     */
+    public ConfirmAction getAction(CommandSender sender) {
+        return actions.get(sender);
     }
 }

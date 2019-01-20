@@ -38,6 +38,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class GuildHandler {
 
@@ -140,6 +142,7 @@ public class GuildHandler {
      */
     public void removeGuild(@NotNull Guild guild) {
         guilds.remove(guild);
+        //todo removeGuildPermissions();
     }
 
     /**
@@ -203,8 +206,7 @@ public class GuildHandler {
     public void addAlly(Guild guild, Guild targetGuild) {
         guild.addAlly(targetGuild);
         targetGuild.addAlly(guild);
-        guild.removePendingAlly(targetGuild);
-        targetGuild.removePendingAlly(guild);
+        removePendingAlly(guild, targetGuild);
     }
 
 
@@ -216,6 +218,28 @@ public class GuildHandler {
     public void removeAlly(Guild guild, Guild targetGuild) {
         guild.removeAlly(targetGuild);
         targetGuild.removeAlly(guild);
+    }
+
+    /**
+     * Adds a pending ally
+     *
+     * @param guild       the first pending guild
+     * @param targetGuild the second pending guild
+     */
+    public void addPendingAlly(Guild guild, Guild targetGuild) {
+        guild.addPendingAlly(targetGuild);
+        targetGuild.addPendingAlly(guild);
+    }
+
+    /**
+     * Removes a pending ally
+     *
+     * @param guild       the first pending guild
+     * @param targetGuild the second pending guild
+     */
+    public void removePendingAlly(Guild guild, Guild targetGuild) {
+        guild.removePendingAlly(targetGuild);
+        targetGuild.removePendingAlly(guild);
     }
 
     /**
@@ -240,5 +264,18 @@ public class GuildHandler {
      */
     public GuildRole getLowestGuildRole() {
         return roles.get(roles.size() - 1);
+    }
+
+    /**
+     * Upgrades the tier of a guild
+     *
+     * @param guild the guild upgrading
+     */
+    public void upgradeTier(Guild guild) {
+        guild.setTier(getGuildTier(guild.getTier().getLevel() + 1));
+    }
+
+    public List<String> getInvitedGuilds(UUID uuid) {
+        return guilds.stream().filter(guild -> guild.getInvitedMembers().contains(uuid)).map(Guild::getName).collect(Collectors.toList());
     }
 }

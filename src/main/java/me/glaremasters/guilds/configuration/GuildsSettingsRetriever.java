@@ -40,7 +40,7 @@ public class GuildsSettingsRetriever {
     public static ConfigurationData buildConfigurationData() {
         return ConfigurationDataBuilder.createConfiguration(
                 PluginSettings.class, HooksSettings.class, GuiSettings.class,
-                GuildSettings.class, TimerSettings.class, CostSettings.class,
+                GuildSettings.class, CooldownSettings.class, CostSettings.class,
                 ClaimSettings.class, TablistSettings.class, TierSettings.class,
                 RoleSettings.class
         );
