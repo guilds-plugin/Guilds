@@ -24,16 +24,15 @@
 
 package me.glaremasters.guilds.api.events;
 
+import lombok.Getter;
 import me.glaremasters.guilds.api.events.base.GuildEvent;
 import me.glaremasters.guilds.guild.Guild;
 import org.bukkit.entity.Player;
 
-/**
- * Created by GlareMasters on 6/28/2018.
- */
+@Getter
 public class GuildRemoveEvent extends GuildEvent {
 
-    private Cause cause;
+    private final Cause cause;
 
     /**
      * Called when a guild is removed
@@ -43,10 +42,7 @@ public class GuildRemoveEvent extends GuildEvent {
      */
     public GuildRemoveEvent(Player player, Guild guild, Cause cause) {
         super(player, guild);
-    }
-
-    public Cause getCause() {
-        return cause;
+        this.cause = cause;
     }
 
     public enum Cause {
