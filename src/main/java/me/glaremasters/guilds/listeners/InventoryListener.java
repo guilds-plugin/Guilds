@@ -37,10 +37,6 @@ import org.bukkit.inventory.Inventory;
 
 import java.util.UUID;
 
-import static me.glaremasters.guilds.commands.CommandGuilds.getSkullsPage;
-import static me.glaremasters.guilds.commands.CommandGuilds.playerPages;
-import static me.glaremasters.guilds.utils.ConfigUtils.getString;
-
 /**
  * Created by GlareMasters
  * Date: 11/8/2018

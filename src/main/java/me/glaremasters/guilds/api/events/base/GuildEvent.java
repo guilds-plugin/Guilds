@@ -37,7 +37,7 @@ public class GuildEvent extends PlayerEvent implements Cancellable {
 
     private static final HandlerList handlers = new HandlerList();
 
-    private Guild guild;
+    private final Guild guild;
     private boolean cancelled;
 
     /**

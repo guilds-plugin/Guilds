@@ -41,7 +41,7 @@ import static ch.jalu.configme.properties.PropertyInitializer.newProperty;
  */
 public class TierSettings implements SettingsHolder {
 
-    private static String listPath = "tiers.list.";
+    private static final String LIST_PATH = "tiers.list.";
 
     @Comment("Should permissions carry over between tiers?")
     public static final Property<Boolean> CARRY_OVER =
@@ -49,111 +49,111 @@ public class TierSettings implements SettingsHolder {
 
     @Comment("Which level tier is this? 1 is the default.")
     public static final Property<Integer> ONE_LEVEL =
-            newProperty(listPath + "1.level", 1);
+            newProperty(LIST_PATH + "1.level", 1);
 
     @Comment("What is the name of this tier?")
     public static final Property<String> ONE_NAME =
-            newProperty(listPath + "1.name", "Bronze");
+            newProperty(LIST_PATH + "1.name", "Bronze");
 
     @Comment("How much is this tier? (If first tier, keep as same price as cost creation)")
     public static final Property<Double> ONE_COST =
-            newProperty(listPath + "1.cost", 0.0);
+            newProperty(LIST_PATH + "1.cost", 0.0);
 
     @Comment("How many members can be in a guild of this tier?")
     public static final Property<Integer> ONE_MAX_MEMBERS =
-            newProperty(listPath + "1.max-members", 15);
+            newProperty(LIST_PATH + "1.max-members", 15);
 
     @Comment("How much extra XP should drop from mobs?")
     public static final Property<Double> ONE_MOB =
-            newProperty(listPath + "1.mob-xp-multiplier", 1.0);
+            newProperty(LIST_PATH + "1.mob-xp-multiplier", 1.0);
 
     @Comment("How much extra damage should be done?")
     public static final Property<Double> ONE_DAMAGE =
-            newProperty(listPath + "1.damage-multiplier", 1.0);
+            newProperty(LIST_PATH + "1.damage-multiplier", 1.0);
 
     @Comment("How much can this tier hold in the bank?")
     public static final Property<Double> ONE_MAX_BANK =
-            newProperty(listPath + "1.max-bank-balance", 10000.0);
+            newProperty(LIST_PATH + "1.max-bank-balance", 10000.0);
 
     @Comment("How many members should be in a guild for it to be able to rankup?")
     public static final Property<Integer> ONE_MEMBERS_REQUIRE =
-            newProperty(listPath + "1.members-to-rankup", 0);
+            newProperty(LIST_PATH + "1.members-to-rankup", 0);
 
     @Comment("If you wish to give this tier extra permissions, put them here.")
     public static final Property<List<String>> ONE_PERMS =
-            newListProperty(listPath + "1.permissions", "");
+            newListProperty(LIST_PATH + "1.permissions", "");
 
     @Comment("Which level tier is this? 1 is the default.")
     public static final Property<Integer> TWO_LEVEL =
-            newProperty(listPath + "2.level", 2);
+            newProperty(LIST_PATH + "2.level", 2);
 
     @Comment("What is the name of this tier?")
     public static final Property<String> TWO_NAME =
-            newProperty(listPath + "2.name", "Silver");
+            newProperty(LIST_PATH + "2.name", "Silver");
 
     @Comment("How much is this tier? (If first tier, keep as same price as cost creation)")
     public static final Property<Double> TWO_COST =
-            newProperty(listPath + "2.cost", 200.0);
+            newProperty(LIST_PATH + "2.cost", 200.0);
 
     @Comment("How many members can be in a guild of this tier?")
     public static final Property<Integer> TWO_MAX_MEMBERS =
-            newProperty(listPath + "2.max-members", 30);
+            newProperty(LIST_PATH + "2.max-members", 30);
 
     @Comment("How much extra XP should drop from mobs?")
     public static final Property<Double> TWO_MOB =
-            newProperty(listPath + "2.mob-xp-multiplier", 2.0);
+            newProperty(LIST_PATH + "2.mob-xp-multiplier", 2.0);
 
     @Comment("How much extra damage should be done?")
     public static final Property<Double> TWO_DAMAGE =
-            newProperty(listPath + "2.damage-multiplier", 1.0);
+            newProperty(LIST_PATH + "2.damage-multiplier", 1.0);
 
     @Comment("How much can this tier hold in the bank?")
     public static final Property<Double> TWO_MAX_BANK =
-            newProperty(listPath + "2.max-bank-balance", 20000.0);
+            newProperty(LIST_PATH + "2.max-bank-balance", 20000.0);
 
     @Comment("How many members should be in a guild for it to be able to rankup?")
     public static final Property<Integer> TWO_MEMBERS_REQUIRE =
-            newProperty(listPath + "2.members-to-rankup", 0);
+            newProperty(LIST_PATH + "2.members-to-rankup", 0);
 
     @Comment("If you wish to give this tier extra permissions, put them here.")
     public static final Property<List<String>> TWO_PERMS =
-            newListProperty(listPath + "2.permissions", "");
+            newListProperty(LIST_PATH + "2.permissions", "");
 
     @Comment("Which level tier is this? 1 is the default.")
     public static final Property<Integer> THREE_LEVEL =
-            newProperty(listPath + "3.level", 3);
+            newProperty(LIST_PATH + "3.level", 3);
 
     @Comment("What is the name of this tier?")
     public static final Property<String> THREE_NAME =
-            newProperty(listPath + "3.name", "Gold");
+            newProperty(LIST_PATH + "3.name", "Gold");
 
     @Comment("How much is this tier? (If first tier, keep as same price as cost creation)")
     public static final Property<Double> THREE_COST =
-            newProperty(listPath + "3.cost", 300.0);
+            newProperty(LIST_PATH + "3.cost", 300.0);
 
     @Comment("How many members can be in a guild of this tier?")
     public static final Property<Integer> THREE_MAX_MEMBERS =
-            newProperty(listPath + "3.max-members", 50);
+            newProperty(LIST_PATH + "3.max-members", 50);
 
     @Comment("How much extra XP should drop from mobs?")
     public static final Property<Double> THREE_MOB =
-            newProperty(listPath + "3.mob-xp-multiplier", 3.0);
+            newProperty(LIST_PATH + "3.mob-xp-multiplier", 3.0);
 
     @Comment("How much extra damage should be done?")
     public static final Property<Double> THREE_DAMAGE =
-            newProperty(listPath + "3.damage-multiplier", 1.0);
+            newProperty(LIST_PATH + "3.damage-multiplier", 1.0);
 
     @Comment("How much can this tier hold in the bank?")
     public static final Property<Double> THREE_MAX_BANK =
-            newProperty(listPath + "3.max-bank-balance", 30000.0);
+            newProperty(LIST_PATH + "3.max-bank-balance", 30000.0);
 
     @Comment("How many members should be in a guild for it to be able to rankup?")
     public static final Property<Integer> THREE_MEMBERS_REQUIRE =
-            newProperty(listPath + "3.members-to-rankup", 0);
+            newProperty(LIST_PATH + "3.members-to-rankup", 0);
 
     @Comment("If you wish to give this tier extra permissions, put them here.")
     public static final Property<List<String>> THREE_PERMS =
-            newListProperty(listPath + "3.permissions", "");
+            newListProperty(LIST_PATH + "3.permissions", "");
 
     private TierSettings() {
     }

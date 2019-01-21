@@ -37,9 +37,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import static me.glaremasters.guilds.utils.ConfigUtils.getInt;
-import static me.glaremasters.guilds.utils.ConfigUtils.getString;
-
 /**
  * Created by GlareMasters
  * Date: 9/27/2018

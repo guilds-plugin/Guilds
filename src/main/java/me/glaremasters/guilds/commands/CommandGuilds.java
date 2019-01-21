@@ -57,6 +57,7 @@ import java.util.*;
 //todo rewrite lol -> this has been rewritten mostly there are still quite a lot of todos due to things being unclear
 // or not being added yet, make sure to fix these todos and commented out code and then we can start cleaning the warnings.
 // xx lemmo.
+@SuppressWarnings("unused")
 @AllArgsConstructor
 @CommandAlias("guild|guilds")
 public class CommandGuilds extends BaseCommand {
@@ -91,10 +92,13 @@ public class CommandGuilds extends BaseCommand {
 
         if (nameMeetsRequirements(name)) return;
 
-        //todo  create this in config creation cost.
+        final String newPrefix;
+        if (prefix == null || !prefix.matches(settingsManager.getProperty(GuildSettings.PREFIX_REQUIREMENTS))) {
+            newPrefix = StringUtils.color(name);
+        } else newPrefix = StringUtils.color(prefix);
+
         double creationCost = settingsManager.getProperty(CostSettings.CREATION);
 
-        //todo
         if (meetsCost(player, "cost.creation")) return;
 
         getCurrentCommandIssuer().sendInfo(Messages.CREATE__WARNING, "{amount}", String.valueOf(creationCost);
@@ -102,7 +106,6 @@ public class CommandGuilds extends BaseCommand {
         actionHandler.addAction(player, new ConfirmAction() {
             @Override
             public void accept() {
-                //todo
                 if (meetsCost(player, "cost.creation")) return;
 
                 economy.withdrawPlayer(player, creationCost);
@@ -110,14 +113,7 @@ public class CommandGuilds extends BaseCommand {
                 Guild.GuildBuilder gb = Guild.builder();
                 gb.id(UUID.randomUUID());
                 gb.name(StringUtils.color(name));
-
-                //todo move outside of this ConfirmAction and put it next to the 'name requirements'.
-                if (prefix == null) {
-                    gb.prefix(StringUtils.color(name));
-                } else {
-                    if (!prefix.matches(settingsManager.getProperty(GuildSettings.PREFIX_REQUIREMENTS))) return;
-                    gb.prefix(StringUtils.color(prefix));
-                }
+                gb.prefix(newPrefix);
 
                 gb.status(Guild.Status.Private);
 
@@ -134,6 +130,8 @@ public class CommandGuilds extends BaseCommand {
                 //todo what is the lowest tier level?
                 gb.tier(guildHandler.getGuildTier(0));
 
+                //todo gb.inventory(Bukkit.createInventory()) (vault)
+
                 Guild guild = gb.build();
 
                 GuildCreateEvent event = new GuildCreateEvent(player, guild);
@@ -146,8 +144,6 @@ public class CommandGuilds extends BaseCommand {
                 getCurrentCommandIssuer().sendInfo(Messages.CREATE__SUCCESSFUL, "{guild}", guild.getName());
 
                 actionHandler.removeAction(player);
-
-                //todo guildHandler.createNewVault(guild);
             }
 
             @Override
@@ -160,7 +156,7 @@ public class CommandGuilds extends BaseCommand {
 
     /**
      * Confirm an action
-     * @param player
+     * @param player the player confirming this
      */
     @Subcommand("confirm")
     @Description("{@@descriptions.confirm}")
@@ -177,7 +173,7 @@ public class CommandGuilds extends BaseCommand {
 
     /**
      * Cancel an action
-     * @param player
+     * @param player the player cancelling this
      */
     @Subcommand("cancel")
     @Description("{@@descriptions.cancel}")
@@ -218,7 +214,6 @@ public class CommandGuilds extends BaseCommand {
             return;
         }
 
-        //todo
         if (meetsCost(player, "cost.sethome")) return;
 
         //todo
@@ -269,7 +264,7 @@ public class CommandGuilds extends BaseCommand {
     public void onTicketGive(CommandSender sender, Player player, @Default("1") Integer amount) {
         if (player == null) return;
 
-        /* todo add back in the config
+        /* todo add back in the config @Glare
         String ticketName = getString("upgrade-ticket.name");
         String ticketMaterial = getString("upgrade-ticket.material");
         String ticketLore = getString("upgrade-ticket.lore");
@@ -325,7 +320,7 @@ public class CommandGuilds extends BaseCommand {
 
             home.add(player);
             //todo Bukkit.getServer().getScheduler().runTaskLaterAsynchronously(guilds, () -> home.remove(player), (20 * getInt("cooldowns.home")));
-        }, (20 * getInt("warmup.home")));
+        }, (20 * settingsManager.getProperty(CooldownSettings.WU_HOME)));
     }
 
     /**
@@ -368,6 +363,7 @@ public class CommandGuilds extends BaseCommand {
         }
 
         //todo rewrite.
+        /*
         if (GUILD_CHAT_PLAYERS.contains(player.getUniqueId())) {
             GUILD_CHAT_PLAYERS.remove(player.getUniqueId());
             getCurrentCommandIssuer().sendInfo(Messages.CHAT__DISABLED);
@@ -375,6 +371,7 @@ public class CommandGuilds extends BaseCommand {
             GUILD_CHAT_PLAYERS.add(player.getUniqueId());
             getCurrentCommandIssuer().sendInfo(Messages.CHAT__ENABLED);
         }
+         */
 
     }
 
@@ -673,7 +670,7 @@ public class CommandGuilds extends BaseCommand {
     @Description("{@@descriptions.list}")
     @CommandPermission("guilds.command.list")
     public void onGuildList(Player player) {
-        //todo after explanation
+        //todo after explanation waiting for @Glare
         playerPages.put(player.getUniqueId(), 1);
         guildList = getSkullsPage(1);
         player.openInventory(guildList);
@@ -854,7 +851,7 @@ public class CommandGuilds extends BaseCommand {
             return;
         }
 
-        //todo
+        //todo duplicate
 
         OfflinePlayer demotedPlayer = Bukkit.getOfflinePlayer(target);
 
@@ -1207,7 +1204,7 @@ public class CommandGuilds extends BaseCommand {
 //        return skull;
 //    }
 //
-//    //todo rewrite
+//
 //    //I don't understand this ;P
 //    private boolean meetsCost(Player player, String type) {
 //        if (getDouble(type) > 0) {
@@ -1225,12 +1222,9 @@ public class CommandGuilds extends BaseCommand {
      * @return a boolean if the name is wrong
      */
     private boolean nameMeetsRequirements(String name) {
-        //todo add back in config.
-        int minLength = settingsManager.getProperty(GuildSettings);
-        int maxLength = settingsManager.getProperty(GuildSettings);
         String regex = settingsManager.getProperty(GuildSettings.NAME_REQUIREMENTS);
 
-        if (name.length() < minLength || name.length() > maxLength || !name.matches(regex)) {
+        if (!name.matches(regex)) {
             getCurrentCommandIssuer().sendInfo(Messages.CREATE__REQUIREMENTS);
             return true;
         }

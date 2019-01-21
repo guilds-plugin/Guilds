@@ -43,7 +43,7 @@ import java.util.Objects;
  */
 public class JsonProvider implements DatabaseProvider {
 
-    private File dataFolder;
+    private final File dataFolder;
 
     public JsonProvider(File dataFolder) {
         this.dataFolder = new File(dataFolder, "data");

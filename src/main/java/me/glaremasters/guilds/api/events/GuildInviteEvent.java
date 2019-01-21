@@ -33,7 +33,7 @@ import org.bukkit.entity.Player;
  */
 public class GuildInviteEvent extends GuildEvent {
 
-    private Player invitedPlayer;
+    private final Player invitedPlayer;
 
     /**
      * Called when a player gets invited to a guild

@@ -28,7 +28,6 @@ import me.glaremasters.guilds.guild.Guild;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by GlareMasters

@@ -35,7 +35,7 @@ import java.util.UUID;
 
 public class GuildsAPI {
 
-    private GuildHandler guildHandler;
+    private final GuildHandler guildHandler;
 
     public GuildsAPI(GuildHandler guildHandler) {
         this.guildHandler = guildHandler;

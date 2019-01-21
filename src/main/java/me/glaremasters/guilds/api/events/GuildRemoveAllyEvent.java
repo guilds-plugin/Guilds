@@ -33,7 +33,7 @@ import org.bukkit.entity.Player;
  */
 public class GuildRemoveAllyEvent extends GuildEvent {
 
-    private Guild ally;
+    private final Guild ally;
 
     /**
      * Called when a guild removes an ally

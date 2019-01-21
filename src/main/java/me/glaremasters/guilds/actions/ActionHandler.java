@@ -35,7 +35,7 @@ import java.util.Map;
 public class ActionHandler {
 
     @Getter
-    private Map<CommandSender, ConfirmAction> actions = new HashMap<>();
+    private final Map<CommandSender, ConfirmAction> actions = new HashMap<>();
 
     /**
      * Adds an action to the action list

@@ -33,7 +33,7 @@ import org.bukkit.entity.Player;
  */
 public class GuildAddAllyEvent extends GuildEvent {
 
-    private Guild ally;
+    private final Guild ally;
 
     /**
      * This event takes place when two guilds ally each other

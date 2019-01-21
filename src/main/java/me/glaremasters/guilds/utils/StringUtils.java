@@ -186,7 +186,7 @@ public final class StringUtils {
                         newstr.append('\0');
                         break; /* switch */
                     }
-                    int value = 0;
+                    int value;
                     try {
                         value = Integer.parseInt(
                                 html.substring(i, i + digits), 8);
@@ -243,7 +243,7 @@ public final class StringUtils {
                     if (j == 0) {
                         return "empty braces in \\x{} escape";
                     }
-                    int value = 0;
+                    int value;
                     try {
                         value = Integer.parseInt(html.substring(i, i + j), 16);
                     } catch (NumberFormatException nfe) {
@@ -269,7 +269,7 @@ public final class StringUtils {
                             return "illegal non-ASCII hex digit in \\u escape";
                         }
                     }
-                    int value = 0;
+                    int value;
                     try {
                         value = Integer.parseInt(html.substring(i, i + j), 16);
                     } catch (NumberFormatException nfe) {
@@ -292,7 +292,7 @@ public final class StringUtils {
                             return"illegal non-ASCII hex digit in \\U escape";
                         }
                     }
-                    int value = 0;
+                    int value;
                     try {
                         value = Integer.parseInt(html.substring(i, i + j), 16);
                     } catch (NumberFormatException nfe) {

@@ -33,9 +33,9 @@ import java.net.URLConnection;
 
 public class SpigotUpdater {
 
-    private int projectId;
+    private final int projectId;
     private URL spigotUrl;
-    private String currentVersion;
+    private final String currentVersion;
 
     /**
      * SpigotUpdate constructor. Creates a new URL for future usage

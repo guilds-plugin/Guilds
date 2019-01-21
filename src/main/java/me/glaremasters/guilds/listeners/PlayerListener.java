@@ -52,8 +52,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-import static me.glaremasters.guilds.utils.ConfigUtils.*;
-
 /**
  * Created by GlareMasters
  * Date: 7/19/2018
@@ -198,12 +196,18 @@ public class PlayerListener implements Listener {
      * Handle giving player perms for all tiers
      * @param event
      */
+    //todo this is done on multiple stages.
+    //we need to make sure that these are logical
+    //it's not on so many places, guild creation, member join, player join server etc
+    //need to make sure we are not wasting resources by assigning it multiple times.
+    //so I think this probably can go.
     @EventHandler
     public void tierPerms(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         Guild guild = utils.getGuild(player.getUniqueId());
         if (guild == null) return;
         utils.addGuildPerms(guild, player);
+
     }
 
     /**
