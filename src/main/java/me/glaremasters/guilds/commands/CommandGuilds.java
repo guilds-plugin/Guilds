@@ -51,6 +51,7 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.*;
 
@@ -116,7 +117,12 @@ public class CommandGuilds extends BaseCommand {
 
                 gb.status(Guild.Status.Private);
 
-                //todo gb.texture(HeadUtils.getTextureUrl(player.getUniqueId()));
+                ItemStack masterHead = new ItemStack(Material.SKULL_ITEM, 1);
+                SkullMeta masterHeadMeta = (SkullMeta) masterHead.getItemMeta();
+                masterHeadMeta.setOwningPlayer(player);
+                masterHeadMeta.setDisplayName(StringUtils.color(name));
+                masterHead.setItemMeta(masterHeadMeta);
+                gb.masterHead(masterHead);
 
                 //todo what is the highest guildrole for guildmaster?
                 GuildMember guildMaster = new GuildMember(player.getUniqueId(), guildHandler.getGuildRole(0));

@@ -275,6 +275,12 @@ public class GuildHandler {
         guild.setTier(getGuildTier(guild.getTier().getLevel() + 1));
     }
 
+    /**
+     * Returns a string list of all the guilds that a member is invited to
+     *
+     * @param uuid the uuid of the member
+     * @return a string list of guilds's names.
+     */
     public List<String> getInvitedGuilds(UUID uuid) {
         return guilds.stream().filter(guild -> guild.getInvitedMembers().contains(uuid)).map(Guild::getName).collect(Collectors.toList());
     }

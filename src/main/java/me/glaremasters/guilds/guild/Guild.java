@@ -31,6 +31,7 @@ import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +58,7 @@ public class Guild {
 
     private Location home = null;
     private Inventory inventory = null;
-    private String textureUrl;
+    private ItemStack masterHead;
     private Status status;
     private GuildTier tier;
     private double balance = 0;
