@@ -283,4 +283,12 @@ public class GuildHandler {
     public List<String> getInvitedGuilds(UUID uuid) {
         return guilds.stream().filter(guild -> guild.getInvitedMembers().contains(uuid)).map(Guild::getName).collect(Collectors.toList());
     }
+
+    /**
+     * Returns a string list of the name of all guilds on the server
+     * @return a string list of guild names
+     */
+    public List<String> getGuildNames() {
+        return guilds.stream().map(Guild::getName).collect(Collectors.toList());
+    }
 }

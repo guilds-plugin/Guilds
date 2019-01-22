@@ -391,16 +391,11 @@ public final class Guilds extends JavaPlugin {
             return guild.getMembers().stream().map(member -> Bukkit.getOfflinePlayer(member.getUuid()).getName()).collect(Collectors.toList());
         });
 
-        manager.getCommandCompletions().registerCompletion("online", c -> Bukkit.getOnlinePlayers().stream()
-                .map(member -> Bukkit.getPlayer(member.getUniqueId()).getName()).collect(Collectors.toList()));
+        manager.getCommandCompletions().registerCompletion("online", c -> Bukkit.getOnlinePlayers().stream().map(member -> Bukkit.getPlayer(member.getUniqueId()).getName()).collect(Collectors.toList()));
 
-        manager.getCommandCompletions().registerCompletion("invitedTo", c -> guildHandler
-                .getGuilds().stream().filter(guild -> guild.getInvitedMembers().contains(c.getPlayer().getUniqueId()))
-                .map(guild -> ACFBukkitUtil.removeColors(guild.getName())).collect(Collectors.toList()));
+        manager.getCommandCompletions().registerCompletion("invitedTo", c -> guildHandler.getInvitedGuilds(c.getPlayer().getUniqueId());
 
-        manager.getCommandCompletions().registerCompletion("guilds", c -> guildHandler
-                .getGuilds().stream()
-                .map(guild -> ACFBukkitUtil.removeColors(guild.getName())).collect(Collectors.toList()));
+        manager.getCommandCompletions().registerCompletion("guilds", c -> guildHandler.getGuildNames());
     }
 
     /**
