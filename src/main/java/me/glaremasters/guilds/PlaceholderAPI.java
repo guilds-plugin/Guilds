@@ -64,7 +64,7 @@ public class PlaceholderAPI extends PlaceholderExpansion {
             case "name":
                 return api.getGuild(p).getName();
             case "master":
-                return Bukkit.getOfflinePlayer(api.getGuild(p).getGuildMaster().getUuid()).getName();
+                return Bukkit.getOfflinePlayer(api.getGuildMaster(p)).getName();
             case "member_count":
                 return String.valueOf(api.getGuildMemberCount(p));
             case "prefix":
