@@ -81,11 +81,8 @@ public class CommandAdmin extends BaseCommand {
                 Bukkit.getPluginManager().callEvent(event);
                 if (event.isCancelled()) return;
 
-                /*
-                todo
-                guilds.getVaults().remove(guild);
-                Guilds.checkForClaim(player.getWorld(), guild, guilds);
-                */
+                // check if they have a claim
+
                 guildHandler.removeGuild(guild);
 
                 getCurrentCommandIssuer().sendInfo(Messages.ADMIN__DELETE_SUCCESSFUL, "{guild}", name);
@@ -139,11 +136,17 @@ public class CommandAdmin extends BaseCommand {
     @CommandPermission("guilds.command.admin")
     @Syntax("<name>")
     public void onAdminRemovePlayer(Player player, String target) {
-        OfflinePlayer playerToRemove = Bukkit.getPlayerExact(target);
-        if (player == null) return;
+        OfflinePlayer playerToRemove = Bukkit.getOfflinePlayer(target);
+        if (player == null) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__PLAYER_NOT_FOUND);
+            return;
+        }
 
         Guild guild = guildHandler.getGuild(playerToRemove);
-        if (guild == null) return;
+        if (guild == null) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__GUILD_NO_EXIST);
+            return;
+        }
 
         guild.removeMember(playerToRemove);
 
@@ -166,7 +169,10 @@ public class CommandAdmin extends BaseCommand {
     @Syntax("<guild name>")
     public void onAdminUpgradeGuild(Player player, @Values("@guilds") @Single String name) {
         Guild guild = guildHandler.getGuild(name);
-        if (guild == null) return;
+        if (guild == null) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__GUILD_NO_EXIST);
+            return;
+        }
 
         GuildTier tier = guild.getTier();
         if (tier.getLevel() >= guildHandler.getMaxTierLevel()) return;
@@ -189,7 +195,10 @@ public class CommandAdmin extends BaseCommand {
     @Syntax("<name> <private/public>")
     public void onAdminGuildStatus(Player player, @Values("@guilds") @Single String name) {
         Guild guild = guildHandler.getGuild(name);
-        if (guild == null) return;
+        if (guild == null) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__GUILD_NO_EXIST);
+            return;
+        }
 
         Guild.Status status = guild.getStatus();
         if (status == Guild.Status.Private) guild.setStatus(Guild.Status.Public);
@@ -211,7 +220,10 @@ public class CommandAdmin extends BaseCommand {
     @Syntax("<name> <prefix>")
     public void onAdminGuildPrefix(Player player, @Values("@guilds") @Single String name, String prefix) {
         Guild guild = guildHandler.getGuild(name);
-        if (guild == null) return;
+        if (guild == null) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__GUILD_NO_EXIST);
+            return;
+        }
 
         guild.setPrefix(StringUtils.color(prefix));
 
@@ -231,7 +243,10 @@ public class CommandAdmin extends BaseCommand {
     @Syntax("<name> <new name>")
     public void onAdminGuildRename(Player player, @Values("@guilds") @Single String name, String newName) {
         Guild guild = guildHandler.getGuild(name);
-        if (guild == null) return;
+        if (guild == null) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__GUILD_NO_EXIST);
+            return;
+        }
 
         guild.setName(StringUtils.color(newName));
 
