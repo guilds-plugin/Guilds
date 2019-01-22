@@ -19,7 +19,7 @@ descriptions:
   bank-withdraw: "Haal geld uit jouw Guild's bank"
   buff: "Opent de Guild Buff GUI"
   cancel: "Stop een handeling"
-  chat: "Toggles guild chat"
+  chat: "Toggle de Guild chat"
   check: "Bekijk guild invites in afwachting"
   claim: "Claim land voor jouw Guild"
   confirm: "Bevestig een handeling"
