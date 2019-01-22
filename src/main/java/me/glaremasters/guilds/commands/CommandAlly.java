@@ -77,7 +77,10 @@ public class CommandAlly extends BaseCommand {
         if (checkPermission(role.isAddAlly())) return;
 
         Guild targetGuild = guildHandler.getGuild(name);
-        if (targetGuild == null) return;
+        if (targetGuild== null) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__GUILD_NO_EXIST);
+            return;
+        }
 
         if (!guild.getPendingAllies().contains(targetGuild.getId())) return;
 
@@ -102,7 +105,10 @@ public class CommandAlly extends BaseCommand {
         if (checkPermission(role.isRemoveAlly())) return;
 
         Guild targetGuild = guildHandler.getGuild(name);
-        if (targetGuild == null) return;
+        if (targetGuild == null) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__GUILD_NO_EXIST);
+            return;
+        }
 
         if (!guild.getPendingAllies().contains(targetGuild.getId())) return;
 
@@ -127,7 +133,10 @@ public class CommandAlly extends BaseCommand {
 
         Guild targetGuild = guildHandler.getGuild(name);
 
-        if (targetGuild == null) return;
+        if (targetGuild == null) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__GUILD_NO_EXIST);
+            return;
+        }
 
         if (targetGuild.getPendingAllies().contains(guild.getId())) {
             getCurrentCommandIssuer().sendInfo(Messages.ALLY__ALREADY_REQUESTED);
@@ -169,7 +178,10 @@ public class CommandAlly extends BaseCommand {
 
 
         Guild targetGuild = guildHandler.getGuild(name);
-        if (targetGuild == null) return;
+        if (targetGuild == null) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__GUILD_NO_EXIST);
+            return;
+        }
 
         if (!guild.getAllies().contains(targetGuild.getId())) {
             getCurrentCommandIssuer().sendInfo(Messages.ALLY__NOT_ALLIED);
