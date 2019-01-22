@@ -69,7 +69,6 @@ public class CommandGuilds extends BaseCommand {
     public final List<Player> home = new ArrayList<>();
     public final List<Player> setHome = new ArrayList<>();
     public final Map<Player, Location> warmUp = new HashMap<>();
-    public List<Inventory> vaults = new ArrayList<>();
     private SettingsManager settingsManager;
     private ActionHandler actionHandler;
     private Economy economy;

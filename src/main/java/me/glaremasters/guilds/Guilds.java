@@ -42,7 +42,6 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.listeners.*;
-import me.glaremasters.guilds.utils.HeadUtils;
 import me.glaremasters.guilds.utils.StringUtils;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -52,7 +51,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.codemc.worldguardwrapper.WorldGuardWrapper;
@@ -106,15 +104,8 @@ public final class Guilds extends JavaPlugin {
     @Override
     public void onDisable() {
         if (checkVault()) {
-            if (!getVaults().isEmpty()) {
-                saveVaultCaches();
-            }
             guildHandler.saveData();
-            actionHandler.disable();
             spy.clear();
-            HeadUtils.textures.clear();
-            vaults.clear();
-
         }
     }
 
@@ -162,60 +153,6 @@ public final class Guilds extends JavaPlugin {
             ex.printStackTrace();
         }
 
-    }
-
-    /**
-     * Preload skulls on the server to prevent lag
-     */
-    private void loadSkulls() {
-        getServer().getScheduler().runTaskLaterAsynchronously(this, () -> getGuildHandler().getGuilds().forEach(guild -> {
-            if (guild.getTextureUrl().equalsIgnoreCase("")) {
-                guild.setTextureUrl(HeadUtils.getTextureUrl(guild.getGuildMaster().getUuid()));
-                //todo is this necessary?
-                HeadUtils.getSkull(HeadUtils.getTextureUrl(guild.getGuildMaster().getUuid()));
-            } else {
-                HeadUtils.textures.put(guild.getGuildMaster().getUuid(), guild.getTextureUrl());
-            }
-        }), 100L);
-    }
-
-    // todo Make a new way to cache the inventories that we need (if we need to)
-    private void createVaultCaches() {
-        getServer().getScheduler().runTaskLater(this, () -> getGuildHandler().getGuilds().values().forEach(guild -> {
-            if (guild.getInventory().equalsIgnoreCase("")) {
-                Inventory inv = Bukkit.createInventory(null, 54, getVaultName());
-                vaults.put(guild, inv);
-            } else {
-                try {
-                    vaults.put(guild, SerialisationUtil.deserializeInventory(guild.getInventory()));
-                } catch (InvalidConfigurationException ex) {
-                    ex.printStackTrace();
-                }
-            }
-        }), 100L);
-    }
-
-    private String getVaultName() {
-        try {
-            return color(getConfig().getString("gui-name.vault"));
-        } catch (Exception ex) {
-            return color("Guild Vault");
-        }
-    }
-
-    /**
-     * Create a new Vault when a guild is created while server is running
-     * @param guild the guild of which's vault needs to be created
-     */
-    public void createNewVault(Guild guild) {
-        getVaultName();
-        Inventory inv = Bukkit.createInventory(null, 54, getVaultName());
-        vaults.put(guild, inv);
-    }
-
-    // todo fix this random shit up too now that we have proper data handling
-    private void saveVaultCaches() {
-        getGuildHandler().getGuilds().values().forEach(guild -> guild.setInventory(SerialisationUtil.serializeInventory(getVaults().get(guild))));
     }
 
     /**
@@ -363,7 +300,7 @@ public final class Guilds extends JavaPlugin {
 
         // If they have placeholderapi, enable it.
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            new PlaceholderAPI(this).register();
+            new PlaceholderAPI().register();
         }
 
         info("Enabling Metrics..");
@@ -413,12 +350,6 @@ public final class Guilds extends JavaPlugin {
         Stream.of(new EntityListener(guildHandler), new PlayerListener(this, guildHandler), new TicketListener(this, guildHandler), new InventoryListener(guildHandler)).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
         // Load the optional listeners
         optionalListeners();
-        // Cache all the skulls (might be able to get rid of this)
-        loadSkulls();
-        // Creates a cache of all the vaults (might be able to get rid of this)
-        createVaultCaches();
-        // Saves the vault cache (can probably get rid of)
-        getServer().getScheduler().scheduleSyncRepeatingTask(this, this::saveVaultCaches, 500L, 2400L);
 
         info("Enabling the Guilds API..");
         // Initialize the API (probably be placed in different spot?)
