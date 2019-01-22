@@ -52,7 +52,6 @@ public class GuildHandler {
     private final CommandManager commandManager;
     private final Permission permission;
 
-    //todo handling exceptions accordingly
     //as well as guild permissions from tiers using permission field and tiers list.
 
     public GuildHandler(DatabaseProvider databaseProvider, CommandManager commandManager, Permission permission, FileConfiguration config) throws IOException {

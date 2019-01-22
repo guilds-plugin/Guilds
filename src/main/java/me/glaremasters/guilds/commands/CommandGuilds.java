@@ -38,6 +38,7 @@ import me.glaremasters.guilds.configuration.CooldownSettings;
 import me.glaremasters.guilds.configuration.CostSettings;
 import me.glaremasters.guilds.configuration.GuiSettings;
 import me.glaremasters.guilds.configuration.GuildSettings;
+import me.glaremasters.guilds.configuration.TierSettings;
 import me.glaremasters.guilds.guild.*;
 import me.glaremasters.guilds.utils.StringUtils;
 import net.milkbowl.vault.economy.Economy;
@@ -124,7 +125,6 @@ public class CommandGuilds extends BaseCommand {
                 masterHead.setItemMeta(masterHeadMeta);
                 gb.masterHead(masterHead);
 
-                //todo what is the highest guildrole for guildmaster?
                 GuildMember guildMaster = new GuildMember(player.getUniqueId(), guildHandler.getGuildRole(0));
                 gb.guildMaster(guildMaster);
 
@@ -132,8 +132,7 @@ public class CommandGuilds extends BaseCommand {
                 members.add(guildMaster);
                 gb.members(members);
 
-                //todo what is the lowest tier level?
-                gb.tier(guildHandler.getGuildTier(0));
+                gb.tier(guildHandler.getGuildTier(1));
 
                 //todo gb.inventory(Bukkit.createInventory()) (vault)
 
@@ -682,44 +681,6 @@ public class CommandGuilds extends BaseCommand {
     }
 
     /**
-     * List the info for you guild
-     * @param player
-     * @param guild
-     */
-    @Subcommand("info")
-    @Description("{@@descriptions.info}")
-    @CommandPermission("guilds.command.info")
-    public void onGuildInfo(Player player, Guild guild) {
-
-        Inventory heads = Bukkit.createInventory(null, InventoryType.HOPPER, settingsManager.getProperty(GuiSettings.GUILD_LIST_NAME);
-
-        heads.setItem(1, createSkull(player));
-
-        // Item 1: Paper
-        List<String> paperlore = new ArrayList<>();
-        /* todo no clue what properties to use @Glare
-        paperlore.add(settingsManager.getProperty(GuiSettings.GUILD).replace("{guild-name}", guild.getName()));
-        paperlore.add(getString("info.prefix").replace("{guild-prefix}", guild.getPrefix()));
-        paperlore.add(getString("info.role").replace("{guild-role}", GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole()).getName()));
-        paperlore.add(getString("info.master").replace("{guild-master}", Bukkit.getOfflinePlayer(guild.getGuildMaster().getUniqueId()).getName()));
-        paperlore.add(getString("info.member-count").replace("{member-count}", String.valueOf(guild.getMembers().size())));
-        paperlore.add(getString("info.guildstatus").replace("{guild-status}", guild.getStatus()));
-        paperlore.add(getString("info.guildtier").replace("{guild-tier}", Integer.toString(guild.getTier())));
-        heads.setItem(2, createItemStack(Material.PAPER, settingsManager.getProperty(GuiSettings.GUILD_LIST_ITEM_NAME), paperlore));
-
-        // Item 2: Diamond
-        List<String> diamondlore = new ArrayList<>();
-        diamondlore.add(getString("info.balance").replace("{guild-balance}", String.valueOf(guild.getBalance())));
-        diamondlore.add(getString("info.max-balance").replace("{guild-max-balance}", String.valueOf(guildHandler.getMaxBankBalance(guild))));
-        heads.setItem(3, createItemStack(Material.DIAMOND, getString("info.money"), diamondlore));
-
-        // Open inventory
-        player.openInventory(heads);
-        */
-
-    }
-
-    /**
      * Delete your guild
      * @param player the player deleting the guild
      * @param guild the guild being deleted
@@ -967,8 +928,7 @@ public class CommandGuilds extends BaseCommand {
             return;
         }
 
-        //todo add max members in config. @Glare
-        if (guild.getSize() >= settingsManager.getProperty()) {
+        if (guild.getSize() >= guild.getTier().getMaxMembers()) {
             getCurrentCommandIssuer().sendInfo(Messages.ACCEPT__GUILD_FULL);
             return;
         }
