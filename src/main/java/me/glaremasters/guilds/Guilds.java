@@ -104,7 +104,11 @@ public final class Guilds extends JavaPlugin {
     @Override
     public void onDisable() {
         if (checkVault()) {
-            guildHandler.saveData();
+            try {
+                guildHandler.saveData();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             spy.clear();
         }
     }
@@ -326,7 +330,7 @@ public final class Guilds extends JavaPlugin {
         loadCompletions(commandManager);
 
         // Register all the commands
-        Stream.of(new CommandGuilds(guildHandler), new CommandBank(guildHandler), new CommandAdmin(guildHandler), new CommandAlly(guildHandler), new CommandClaim(guildHandler)).forEach(commandManager::registerCommand);
+        Stream.of(new CommandGuilds(guildHandler, settingsManager, actionHandler, economy), new CommandBank(economy), new CommandAdmin(guildHandler, actionHandler), new CommandAlly(guildHandler), new CommandClaim(settingsManager)).forEach(commandManager::registerCommand);
 
 
         // This can probably be moved into it's own method
@@ -334,7 +338,7 @@ public final class Guilds extends JavaPlugin {
         if (settingsManager.getProperty(PluginSettings.ANNOUNCEMENTS_CONSOLE)) {
             info("Checking for updates..");
             getServer().getScheduler().runTaskAsynchronously(this, new Runnable() {
-                SpigotUpdater updater = new SpigotUpdater(, 48920);
+                SpigotUpdater updater = new SpigotUpdater(this, 48920);
 
                 @Override
                 public void run() {
