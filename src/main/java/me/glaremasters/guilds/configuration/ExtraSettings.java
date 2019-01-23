@@ -24,26 +24,36 @@
 
 package me.glaremasters.guilds.configuration;
 
-import ch.jalu.configme.configurationdata.ConfigurationData;
-import ch.jalu.configme.configurationdata.ConfigurationDataBuilder;
+import ch.jalu.configme.Comment;
+import ch.jalu.configme.SettingsHolder;
+import ch.jalu.configme.properties.Property;
+
+import java.util.List;
+
+import static ch.jalu.configme.properties.PropertyInitializer.newListProperty;
+import static ch.jalu.configme.properties.PropertyInitializer.newProperty;
 
 /**
  * Created by GlareMasters
  * Date: 1/17/2019
- * Time: 12:45 PM
+ * Time: 2:29 PM
  */
-public class GuildsSettingsRetriever {
+public class ExtraSettings implements SettingsHolder {
 
-    private GuildsSettingsRetriever() {
+    @Comment("What do you want the name of the upgrade ticket to be?")
+    public static final Property<String> TICKET_NAME =
+            newProperty("extras.ticket.name", "&bGuild Upgrade Ticket");
+
+    @Comment("What do you want the lore of the ticket to be?")
+    public static final Property<List<String>> TICKET_LORE =
+            newListProperty("extras.ticket.lore", "&dRight click this ticket to upgrade your guild tier!");
+
+    @Comment("What do you want the material of the ticket to be?")
+    public static final Property<String> TICKET_MATERIAL =
+            newProperty("extras.ticket.material", "PAPER");
+
+
+
+    private ExtraSettings() {
     }
-
-    public static ConfigurationData buildConfigurationData() {
-        return ConfigurationDataBuilder.createConfiguration(
-                PluginSettings.class, HooksSettings.class, GuiSettings.class,
-                GuildSettings.class, CooldownSettings.class, CostSettings.class,
-                ClaimSettings.class, TablistSettings.class, ExtraSettings.class,
-                TierSettings.class, RoleSettings.class
-        );
-    }
-
 }
