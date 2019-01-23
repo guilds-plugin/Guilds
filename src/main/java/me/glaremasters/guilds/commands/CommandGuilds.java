@@ -100,14 +100,20 @@ public class CommandGuilds extends BaseCommand {
 
         double creationCost = settingsManager.getProperty(CostSettings.CREATION);
 
-        if (meetsCost(player, "cost.creation")) return;
+        if (economy.getBalance(player) < creationCost) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__NOT_ENOUGH_MONEY);
+            return;
+        }
 
-        getCurrentCommandIssuer().sendInfo(Messages.CREATE__WARNING, "{amount}", String.valueOf(creationCost);
+        getCurrentCommandIssuer().sendInfo(Messages.CREATE__WARNING, "{amount}", String.valueOf(creationCost));
 
         actionHandler.addAction(player, new ConfirmAction() {
             @Override
             public void accept() {
-                if (meetsCost(player, "cost.creation")) return;
+                if (economy.getBalance(player) < creationCost) {
+                    getCurrentCommandIssuer().sendInfo(Messages.ERROR__NOT_ENOUGH_MONEY);
+                    return;
+                }
 
                 economy.withdrawPlayer(player, creationCost);
 
@@ -218,7 +224,10 @@ public class CommandGuilds extends BaseCommand {
             return;
         }
 
-        if (meetsCost(player, "cost.sethome")) return;
+        if (economy.getBalance(player) < settingsManager.getProperty(CostSettings.SETHOME)) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__NOT_ENOUGH_MONEY);
+            return;
+        }
 
         //todo
         if (setHome.contains(player)) {
@@ -306,7 +315,7 @@ public class CommandGuilds extends BaseCommand {
 
         warmUp.put(player, player.getLocation());
 
-        getCurrentCommandIssuer().sendInfo(Messages.HOME__WARMUP, "{amount}", String.valueOf(getInt("warmup.home")));
+        getCurrentCommandIssuer().sendInfo(Messages.HOME__WARMUP, "{amount}", String.valueOf(settingsManager.getProperty(CooldownSettings.WU_HOME)));
 
         //todo
         Bukkit.getServer().getScheduler().runTaskLater(null, () -> {
@@ -676,7 +685,7 @@ public class CommandGuilds extends BaseCommand {
     public void onGuildList(Player player) {
         //todo after explanation waiting for @Glare
         playerPages.put(player.getUniqueId(), 1);
-        guildList = getSkullsPage(1);
+        // guildList = getSkullsPage(1);
         player.openInventory(guildList);
     }
 
@@ -1020,7 +1029,7 @@ public class CommandGuilds extends BaseCommand {
         }
         Inventory buff = Bukkit.createInventory(null, 9, settingsManager.getProperty(GuiSettings.GUILD_BUFF_NAME));
         List<String> lore = new ArrayList<>();
-        createBuffItem("haste", lore, buff, 0);
+/*        createBuffItem("haste", lore, buff, 0);
         createBuffItem("speed", lore, buff, 1);
         createBuffItem("fire-resistance", lore, buff, 2);
         createBuffItem("night-vision", lore, buff, 3);
@@ -1028,7 +1037,7 @@ public class CommandGuilds extends BaseCommand {
         createBuffItem("strength", lore, buff, 5);
         createBuffItem("jump", lore, buff, 6);
         createBuffItem("water-breathing", lore, buff, 7);
-        createBuffItem("regeneration", lore, buff, 8);
+        createBuffItem("regeneration", lore, buff, 8);*/
         player.openInventory(buff);
     }
 
@@ -1170,17 +1179,6 @@ public class CommandGuilds extends BaseCommand {
 //    }
 //
 //
-//    //I don't understand this ;P
-//    private boolean meetsCost(Player player, String type) {
-//        if (getDouble(type) > 0) {
-//            if (guilds.getEconomy().getBalance(player) < getDouble(type)) {
-//                getCurrentCommandIssuer().sendInfo(Messages.ERROR__NOT_ENOUGH_MONEY);
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
-
     /**
      * Checks the name requirements from the config.
      * @param name the name to check
