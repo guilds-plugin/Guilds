@@ -24,7 +24,9 @@
 
 package me.glaremasters.guilds.listeners;
 
+import ch.jalu.configme.SettingsManager;
 import lombok.AllArgsConstructor;
+import me.glaremasters.guilds.configuration.GuiSettings;
 import me.glaremasters.guilds.guild.GuildHandler;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -48,6 +50,7 @@ public class InventoryListener implements Listener {
     //todo
 
     private GuildHandler guildHandler;
+    private SettingsManager settingsManager;
 
     /**
      * This event just checks if a player is clicking on the next or back page and making sure you can't dupe from the GUIs
@@ -59,33 +62,28 @@ public class InventoryListener implements Listener {
         UUID uuid = player.getUniqueId();
         String title = event.getInventory().getTitle();
         //todo you should not be comparing using names but rather using InventoryHolders.
-        if (title.equalsIgnoreCase(getString("gui-name.info"))) {
-            event.setCancelled(true);
-            event.setResult(Event.Result.DENY);
-            return;
-        }
-        if (title.equalsIgnoreCase(getString("guild-list.gui-name"))) {
+        if (title.equalsIgnoreCase(settingsManager.getProperty(GuiSettings.GUILD_LIST_NAME))) {
             if (event.getAction().equals(InventoryAction.PICKUP_ALL)) {
-                if (event.getCurrentItem().getItemMeta().getDisplayName().equals(getString("guild-list.previous-page-item-name"))) {
-                    if (!(playerPages.get(uuid) == 1)) {
+                if (event.getCurrentItem().getItemMeta().getDisplayName().equals(settingsManager.getProperty(GuiSettings.GUILD_LIST_PREVIOUS_PAGE_ITEM_NAME))) {
+/*                    if (!(playerPages.get(uuid) == 1)) {
                         int newPage = playerPages.get(uuid) - 1;
                         playerPages.remove(uuid);
                         playerPages.put(uuid, newPage);
                         Inventory guildList = getSkullsPage(newPage);
                         player.openInventory(guildList);
-                    }
+                    }*/
                 }
                 if (guildHandler.getGuildsSize() < 45) {
                     event.setCancelled(true);
                     event.setResult(Event.Result.DENY);
                     return;
                 }
-                if (event.getCurrentItem().getItemMeta().getDisplayName().equals(getString("guild-list.next-page-item-name"))) {
-                    int newPage = playerPages.get(uuid) + 1;
+                if (event.getCurrentItem().getItemMeta().getDisplayName().equals(settingsManager.getProperty(GuiSettings.GUILD_LIST_NEXT_PAGE_ITEM_NAME))) {
+/*                    int newPage = playerPages.get(uuid) + 1;
                     playerPages.remove(uuid);
                     playerPages.put(uuid, newPage);
                     Inventory guildList = getSkullsPage(newPage);
-                    player.openInventory(guildList);
+                    player.openInventory(guildList);*/
                 }
             }
             event.setCancelled(true);
@@ -100,11 +98,7 @@ public class InventoryListener implements Listener {
     @EventHandler
     public void onInventoryInteract(InventoryInteractEvent event) {
         String title = event.getInventory().getTitle();
-        if (title.equals(getString("guild-list.gui-name"))) {
-            event.setCancelled(true);
-            event.setResult(Event.Result.DENY);
-        }
-        if (title.equals(getString("gui-name.info"))) {
+        if (title.equals(settingsManager.getProperty(GuiSettings.GUILD_LIST_NAME))) {
             event.setCancelled(true);
             event.setResult(Event.Result.DENY);
         }

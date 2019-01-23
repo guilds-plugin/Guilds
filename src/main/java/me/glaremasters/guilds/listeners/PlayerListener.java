@@ -24,8 +24,14 @@
 
 package me.glaremasters.guilds.listeners;
 
+import ch.jalu.configme.SettingsManager;
+import co.aikar.commands.BukkitCommandManager;
 import lombok.AllArgsConstructor;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.Messages;
+import me.glaremasters.guilds.configuration.GuiSettings;
+import me.glaremasters.guilds.configuration.GuildSettings;
+import me.glaremasters.guilds.configuration.PluginSettings;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
@@ -52,6 +58,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Stream;
 
+import static me.glaremasters.guilds.utils.StringUtils.color;
+
 /**
  * Created by GlareMasters
  * Date: 7/19/2018
@@ -63,6 +71,9 @@ public class PlayerListener implements Listener {
     //todo
 
     private GuildHandler guildHandler;
+    private SettingsManager settingsManager;
+    private Guilds guilds;
+    private BukkitCommandManager bukkitCommandManager;
 
     private Set<UUID> ALREADY_INFORMED = new HashSet<>();
     public static final Set<UUID> GUILD_CHAT_PLAYERS = new HashSet<>();
@@ -79,8 +90,8 @@ public class PlayerListener implements Listener {
         Guild playerGuild = guildHandler.getGuild(player);
         Guild damagerGuild = guildHandler.getGuild(damager);
         if (playerGuild == null || damagerGuild == null) return;
-        if (playerGuild.equals(damagerGuild)) event.setCancelled(!getBoolean("allow-guild-damage"));
-        if (guilds.getGuildUtils().areAllies(player.getUniqueId(), damager.getUniqueId())) event.setCancelled(!getBoolean("allow-ally-damage"));
+        if (playerGuild.equals(damagerGuild)) event.setCancelled(!settingsManager.getProperty(GuildSettings.GUILD_DAMAGE));
+        if (guildHandler.areAllies(player.getUniqueId(), damager.getUniqueId())) event.setCancelled(!settingsManager.getProperty(GuildSettings.ALLY_DAMAGE));
     }
 
     /**
@@ -90,7 +101,7 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        if (guilds.getConfig().getBoolean("announcements.in-game")) {
+        if (settingsManager.getProperty(PluginSettings.ANNOUNCEMENTS_IN_GAME)) {
             guilds.getServer().getScheduler().scheduleAsyncDelayedTask(guilds, () -> {
                 if (player.isOp()) {
                     if (!ALREADY_INFORMED.contains(player.getUniqueId())) {
@@ -120,7 +131,7 @@ public class PlayerListener implements Listener {
             return;
         }
         // Send the message to the player saying it's been created
-        guilds.getManager().getCommandIssuer(event.getPlayer()).sendInfo(Messages.ADMIN__GUILD_VAULT_SIGN);
+        bukkitCommandManager.getCommandIssuer(event.getPlayer()).sendInfo(Messages.ADMIN__GUILD_VAULT_SIGN);
     }
 
     /**
@@ -130,25 +141,22 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onBuffBuy(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
-        Guild guild = utils.getGuild(player.getUniqueId());
-        if (!event.getInventory().getTitle().equals(getString("gui-name.buff"))) return;
-        if (event.getInventory().getTitle().equals(getString("gui-name.buff"))) event.setCancelled(true);
+        Guild guild = guildHandler.getGuild(player);
+        if (!event.getInventory().getTitle().equals(settingsManager.getProperty(GuiSettings.GUILD_BUFF_NAME))) return;
+        if (event.getInventory().getTitle().equals(settingsManager.getProperty(GuiSettings.GUILD_BUFF_NAME))) event.setCancelled(true);
         if (event.getCurrentItem() == null) return;
         GuildBuff buff = GuildBuff.get(event.getCurrentItem().getType());
         double balance = guild.getBalance();
         if (buff == null) return;
         if (balance < buff.cost) {
-            guilds.getManager().getCommandIssuer(player).sendInfo(Messages.BANK__NOT_ENOUGH_BANK);
+            bukkitCommandManager.getCommandIssuer(player).sendInfo(Messages.BANK__NOT_ENOUGH_BANK);
             return;
         }
-        if (getBoolean("disable-buff-stacking") && !player.getActivePotionEffects().isEmpty()) return;
+        if (settingsManager.getProperty(GuiSettings.BUFF_STACKING) && !player.getActivePotionEffects().isEmpty()) return;
 
-        guild.getMembers()
-                .stream()
-                .map(member -> Bukkit.getOfflinePlayer(member.getUniqueId()))
-                .filter(OfflinePlayer::isOnline)
-                .forEach(member -> ((Player) member).addPotionEffect(new PotionEffect(buff.potion, buff.time, buff.amplifier)));
+        guild.getOnlineMembers().forEach(guildMember -> ((Player) guildMember).addPotionEffect(new PotionEffect(buff.potion, buff.time, buff.amplifier)));
         guild.setBalance(balance - buff.cost);
+
     }
 
     /**
@@ -158,7 +166,7 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
-        Guild guild = utils.getGuild(player.getUniqueId());
+        Guild guild = guildHandler.getGuild(player);
 
         if (guild == null) {
             return;
@@ -168,11 +176,11 @@ public class PlayerListener implements Listener {
 
             event.getRecipients().forEach(r -> {
                 if (guilds.getSpy().contains(r)) {
-                    r.sendMessage(getString("spy-chat-format").replace("{role}", GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole()).getName()).replace("{player}", player.getName()).replace("{message}", event.getMessage()).replace("{guild}", guild.getName()));
+                    r.sendMessage(settingsManager.getProperty(GuildSettings.SPY_CHAT_FORMAT).replace("{role}", guildHandler.getGuildRole(guild.getMember(player.getUniqueId()).getRole().getLevel()).getName()).replace("{player}", player.getName()).replace("{message}", event.getMessage()).replace("{guild}", guild.getName()));
                 }
             });
             event.getRecipients().removeIf(r -> (guild.getMember(r.getUniqueId()) == null));
-            event.getRecipients().forEach(recipient -> recipient.sendMessage(getString("guild-chat-format").replace("{role}", GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole()).getName()).replace("{player}", player.getName()).replace("{message}", event.getMessage())));
+            event.getRecipients().forEach(recipient -> recipient.sendMessage(settingsManager.getProperty(GuildSettings.GUILD_CHAT_FORMAT).replace("{role}", guildHandler.getGuildRole(guild.getMember(player.getUniqueId()).getRole().getLevel()).getName()).replace("{player}", player.getName()).replace("{message}", event.getMessage())));
             event.setCancelled(true);
         }
     }
@@ -184,9 +192,9 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void rolePerm(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        Guild guild = utils.getGuild(player.getUniqueId());
+        Guild guild = guildHandler.getGuild(player);
         if (guild == null) return;
-        String node = GuildRole.getRole(guild.getMember(player.getUniqueId()).getRole()).getNode();
+        String node = guildHandler.getGuildRole(guild.getMember(player.getUniqueId()).getRole().getLevel()).getNode();
         if (!player.hasPermission(node)) {
             Bukkit.getScheduler().runTaskLater(guilds, () -> guilds.getPermissions().playerAdd(player, node), 60L);
         }
@@ -204,7 +212,7 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void tierPerms(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        Guild guild = utils.getGuild(player.getUniqueId());
+        Guild guild = guildHandler.getGuild(player);
         if (guild == null) return;
         utils.addGuildPerms(guild, player);
 
