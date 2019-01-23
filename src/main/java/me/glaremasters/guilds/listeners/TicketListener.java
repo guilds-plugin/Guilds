@@ -55,7 +55,8 @@ public class TicketListener implements Listener {
      * This even handles Guild TicketListener and how they are used by the player
      * @param event
      */
-    @EventHandler
+    // We're redoing this anyways
+/*    @EventHandler
     public void upgradeTicket(PlayerInteractEvent event) {
         ItemStack item = event.getItem();
         if (item == null || !item.getType().toString().equals(getString("upgrade-ticket.material"))) return;
@@ -82,5 +83,5 @@ public class TicketListener implements Listener {
         guilds.getManager().getCommandIssuer(player).sendInfo(Messages.UPGRADE__SUCCESS);
         guild.setTier((guild.getTier() + 1));
 
-    }
+    }*/
 }
