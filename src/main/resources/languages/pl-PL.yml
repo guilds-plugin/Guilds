@@ -91,27 +91,27 @@ admin:
   spy-off: "&cPodgląd Chatu gildii wyłączony!"
 boot:
   player-kicked: "&cGracz '{player}' został wyrzucony z gildii przez {kicker}!"
-  successful: "&aSuccessfully kicked {player} from your guild!"
-  kicked: "&cYou have been kicked from your guild by {kicker}!"
+  successful: "&aPomyślnie wyrzuciłeś gracza {player} z twojej gildii!"
+  kicked: "&cZostałeś wyrzucony z gildii przez {kicker}!"
 decline:
-  success: "&aGuild Invite Declined!"
+  success: "&aAnulowano zaproszenie gildii!"
 demote:
-  cant-demote: "&cThat player can not be demoted!"
-  demote-successful: "&aYou've successfully demoted {player} from {old} to {new}"
-  you-were-demoted: "&cYou've been demoted from {old} to {new}"
+  cant-demote: "&cGracz nie może zostać zdegradowany!"
+  demote-successful: "&aGracz {player} został zdegradowany z {old} do {new}"
+  you-were-demoted: "&cZostałeś zdegradowany z {old} do {new}"
 promote:
-  cant-promote: "&cThat player can not be promoted!"
-  promote-successful: "&aYou've successfully promoted {player} from {old} to {new}"
-  you-were-promoted: "&aYou've been promoted from {old} to {new}"
+  cant-promote: "&cTen gracz nie może zostać awansowany!"
+  promote-successful: "&aGracz {player} został awansowany z {old} do {new}"
+  you-were-promoted: "&aZostałeś awansowany z {old} do {new}"
 delete:
-  successful: "&aDeleted '{guild}&r&a' successfully!"
-  cancelled: "&cGuild deletion cancelled!"
-  warning: "&cType /guilds confirm to delete your guild, type /guilds cancel to cancel."
+  successful: "&aUsunięto gildie '{guild}&r&a' pomyślnie!"
+  cancelled: "&cAnulowano usuwanie gildii!"
+  warning: "&cWpisz /guilds confirm aby usunąć gildie lub /guilds cancel aby anulować."
 leave:
-  cancelled: "&cLeaving guild cancelled!"
-  successful: "&aYou've successfully left your guild!"
-  player-left: "&cPlayer '{player}' left your guild!"
-  guildmaster-left: "&cThe Guild Master, '{player}' has left the guild. The guild will now be disbanded."
+  cancelled: "&cAnulowano opuszczanie gildii!"
+  successful: "&aWyszedłeś z gildii!"
+  player-left: "&cGracz '{player}' wyszedł z gildii!"
+  guildmaster-left: "&cMistrz Gildii, '{player}' opuścił gildię. Gildia została rozwiązana."
   warning: "&cType /guilds confirm to leave your guild, type /guilds cancel to cancel."
   warning-guildmaster: "&cYou're the Guild Master of this guild, leaving the guild will mean that the guild is deleted. Type /guilds confirm to leave and delete your guild, type /guilds cancel to cancel."
 transfer:
@@ -177,7 +177,7 @@ claim:
   success: "&aNew claim created! It goes from {loc1} to {loc2}!"
   hook-disabled: "&cPlease enable claims in the config to utilize this feature"
 unclaim:
-  success: "&aYou've successfully remove your guild claim!"
-  not-found: "&cYou can't unclaim land that you don't have!"
+  success: "&aUsunąłeś zajęty teren gildii!"
+  not-found: "&cNie możesz usunąć terenu, który nie jest twój!"
 pending:
-  invites: "&aYou have {number} pending invite(s) from the guild(s): &e{guilds}&r&a . Use /guild accept <name> or /guild deny <name> to join or deny an invite!"
+  invites: "&aMasz {number} zaproszeń do gildii: &e{guilds}&r&a . Użyj /guild accept <name> albo /guild deny <name> aby dołączyć albo odrzucić!"
