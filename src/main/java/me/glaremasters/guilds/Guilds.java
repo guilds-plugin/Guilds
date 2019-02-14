@@ -35,6 +35,7 @@ import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.api.GuildsAPI;
 import me.glaremasters.guilds.commands.*;
 import me.glaremasters.guilds.configuration.GuildsSettingsRetriever;
+import me.glaremasters.guilds.configuration.HooksSettings;
 import me.glaremasters.guilds.configuration.PluginSettings;
 import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.database.providers.JsonProvider;
@@ -337,7 +338,7 @@ public final class Guilds extends JavaPlugin {
         // This checks for updates
         if (settingsManager.getProperty(PluginSettings.ANNOUNCEMENTS_CONSOLE)) {
             info("Checking for updates..");
-            getServer().getScheduler().runTaskAsynchronously(this, new Runnable() {
+/*            getServer().getScheduler().runTaskAsynchronously(this, new Runnable() {
                 SpigotUpdater updater = new SpigotUpdater(this, 48920);
 
                 @Override
@@ -345,13 +346,13 @@ public final class Guilds extends JavaPlugin {
                     updateCheck(updater);
                     info(getAnnouncements());
                 }
-            });
+            });*/
 
 
         }
 
         // Load all the listeners
-        Stream.of(new EntityListener(guildHandler), new PlayerListener(this, guildHandler), new TicketListener(this, guildHandler), new InventoryListener(guildHandler)).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
+        Stream.of(new EntityListener(guildHandler), new PlayerListener(guildHandler, settingsManager, this, commandManager), new TicketListener(this, guildHandler), new InventoryListener(guildHandler, settingsManager)).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
         // Load the optional listeners
         optionalListeners();
 
@@ -417,15 +418,11 @@ public final class Guilds extends JavaPlugin {
      * Register optional listeners based off values in the config
      */
     private void optionalListeners() {
-        if (getConfig().getBoolean("main-hooks.essentials-chat")) {
-            getServer().getPluginManager().registerEvents(new EssentialsChatListener(guildHandler, api), this);
+        if (settingsManager.getProperty(HooksSettings.ESSENTIALS)) {
+            getServer().getPluginManager().registerEvents(new EssentialsChatListener(guildHandler), this);
         }
 
-        if (getConfig().getBoolean("main-hooks.tablist-guilds")) {
-            getServer().getPluginManager().registerEvents(new TablistListener(this, guildHandler), this);
-        }
-
-        if (getConfig().getBoolean("main-hooks.worldguard-claims")) {
+        if (settingsManager.getProperty(HooksSettings.WORLDGUARD)) {
             getServer().getPluginManager().registerEvents(new WorldGuardListener(guildHandler), this);
         }
     }

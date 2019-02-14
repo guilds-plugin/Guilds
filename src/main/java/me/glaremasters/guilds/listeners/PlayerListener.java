@@ -75,7 +75,7 @@ public class PlayerListener implements Listener {
     private Guilds guilds;
     private BukkitCommandManager bukkitCommandManager;
 
-    private Set<UUID> ALREADY_INFORMED = new HashSet<>();
+    private final Set<UUID> ALREADY_INFORMED = new HashSet<>();
     public static final Set<UUID> GUILD_CHAT_PLAYERS = new HashSet<>();
 
     /**
@@ -91,7 +91,7 @@ public class PlayerListener implements Listener {
         Guild damagerGuild = guildHandler.getGuild(damager);
         if (playerGuild == null || damagerGuild == null) return;
         if (playerGuild.equals(damagerGuild)) event.setCancelled(!settingsManager.getProperty(GuildSettings.GUILD_DAMAGE));
-        if (guildHandler.areAllies(player.getUniqueId(), damager.getUniqueId())) event.setCancelled(!settingsManager.getProperty(GuildSettings.ALLY_DAMAGE));
+        /*if (guildHandler.areAllies(player.getUniqueId(), damager.getUniqueId())) event.setCancelled(!settingsManager.getProperty(GuildSettings.ALLY_DAMAGE));*/
     }
 
     /**
@@ -145,17 +145,17 @@ public class PlayerListener implements Listener {
         if (!event.getInventory().getTitle().equals(settingsManager.getProperty(GuiSettings.GUILD_BUFF_NAME))) return;
         if (event.getInventory().getTitle().equals(settingsManager.getProperty(GuiSettings.GUILD_BUFF_NAME))) event.setCancelled(true);
         if (event.getCurrentItem() == null) return;
-        GuildBuff buff = GuildBuff.get(event.getCurrentItem().getType());
+        /*GuildBuff buff = GuildBuff.get(event.getCurrentItem().getType());*/
         double balance = guild.getBalance();
-        if (buff == null) return;
-        if (balance < buff.cost) {
+        /*if (buff == null) return;*/
+/*        if (balance < buff.cost) {
             bukkitCommandManager.getCommandIssuer(player).sendInfo(Messages.BANK__NOT_ENOUGH_BANK);
             return;
-        }
+        }*/
         if (settingsManager.getProperty(GuiSettings.BUFF_STACKING) && !player.getActivePotionEffects().isEmpty()) return;
 
-        guild.getOnlineMembers().forEach(guildMember -> ((Player) guildMember).addPotionEffect(new PotionEffect(buff.potion, buff.time, buff.amplifier)));
-        guild.setBalance(balance - buff.cost);
+        /*guild.getOnlineMembers().forEach(guildMember -> ((Player) guildMember).addPotionEffect(new PotionEffect(buff.potion, buff.time, buff.amplifier)));*/
+        /*guild.setBalance(balance - buff.cost);*/
 
     }
 
@@ -214,7 +214,8 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
         Guild guild = guildHandler.getGuild(player);
         if (guild == null) return;
-        utils.addGuildPerms(guild, player);
+        /*utils.addGuildPerms(guild, player);*/
+
 
     }
 
@@ -234,26 +235,28 @@ public class PlayerListener implements Listener {
         REGENERATION(PotionEffectType.REGENERATION, Material.EMERALD, "regeneration");
 
 
-        public final PotionEffectType potion;
+/*        public final PotionEffectType potion;
         public final Material itemType;
         public final int time;
         public final double cost;
         public final String name;
-        public final int amplifier;
+        public final int amplifier;*/
 
         GuildBuff(PotionEffectType potion, Material itemType, String configValueName) {
-            this.time = getInt("buff.time." + configValueName) * 20;
+/*            this.time = getInt("buff.time." + configValueName) * 20;
             this.cost = getDouble("buff.price." + configValueName);
             this.itemType = itemType;
             this.potion = potion;
             this.name = getString("buff.name." + configValueName);
-            this.amplifier =getInt("buff.amplifier." + configValueName);
+            this.amplifier =getInt("buff.amplifier." + configValueName);*/
         }
 
+/*
         public static GuildBuff get(Material itemType) {
 
             return Stream.of(values()).filter(it -> it.itemType == itemType).findAny().orElse(null);
         }
+*/
 
     }
 }

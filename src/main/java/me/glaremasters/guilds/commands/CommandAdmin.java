@@ -40,6 +40,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 //todo this todo is for all command classes.
@@ -55,7 +56,7 @@ public class CommandAdmin extends BaseCommand {
 
     private GuildHandler guildHandler;
     private ActionHandler actionHandler;
-    private List<Player> spies;
+    private final List<Player> spies = new ArrayList<>();
 
     /**
      * Admin command to remove a guild from the server
