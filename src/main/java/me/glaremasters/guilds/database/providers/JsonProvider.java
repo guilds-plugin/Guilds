@@ -57,7 +57,7 @@ public class JsonProvider implements DatabaseProvider {
         List<Guild> loadedGuilds = new ArrayList<>();
 
         JsonReader reader = null;
-        for (File file : Objects.requireNonNull(dataFolder.listFiles())){
+        for (File file : Objects.requireNonNull(dataFolder.listFiles())) {
             JsonFile jsonFile = new JsonFile(file);
 
             if (reader == null) reader = new JsonReader(jsonFile);
@@ -77,7 +77,7 @@ public class JsonProvider implements DatabaseProvider {
     public void saveGuilds(List<Guild> guilds) throws IOException {
         JsonWriter writer = null;
 
-        for (Guild guild : guilds){
+        for (Guild guild : guilds) {
             JsonFile jsonFile = new JsonFile(new File(dataFolder, guild.getId() + ".json"));
 
             if (writer == null) writer = new JsonWriter(jsonFile);
