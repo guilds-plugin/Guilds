@@ -25,24 +25,26 @@
 package me.glaremasters.guilds.guild;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 
-import java.util.List;
-
-@Getter
-@Builder
+/**
+ * Created by GlareMasters
+ * Date: 2/14/2019
+ * Time: 9:33 AM
+ */
 @AllArgsConstructor
-public class GuildTier {
+public class GuildHome {
 
-    private final int level;
-    private final transient String name;
-    private final transient double cost;
-    private final transient int maxMembers;
-    private final transient double mobXpMultiplier;
-    private final transient double damageMultiplier;
-    private final transient double maxBankBalance;
-    private final transient int membersToRankup;
-    private final transient List<String> permissions;
+    private String world;
+    private double x;
+    private double y;
+    private double z;
+    private float yaw;
+    private float pitch;
+
+    public Location getAsLocation() {
+        return new Location(Bukkit.getWorld(world), x, y, z, yaw, pitch);
+    }
 
 }

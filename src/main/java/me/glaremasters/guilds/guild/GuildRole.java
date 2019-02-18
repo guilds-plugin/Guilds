@@ -36,12 +36,12 @@ import lombok.Getter;
 @AllArgsConstructor
 public class GuildRole {
 
-    private String name;
-    private String node;
+    private transient String name;
+    private transient String node;
 
     private int level;
 
-    private boolean chat, invite, kick, promote, demote, changePrefix, changeName, changeHome, removeGuild, addAlly,
+    private transient boolean chat, invite, kick, promote, demote, changePrefix, changeName, changeHome, removeGuild, addAlly,
             removeAlly, allyChat, openVault, transferGuild, changeStatus, activateBuff, upgradeGuild, depositMoney,
             withdrawMoney, claimLand, unclaimLand, destroy, place, interact;
 }

@@ -39,6 +39,7 @@ import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.annotation.Values;
 import lombok.AllArgsConstructor;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.Messages;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.actions.ConfirmAction;
@@ -53,8 +54,10 @@ import me.glaremasters.guilds.configuration.GuiSettings;
 import me.glaremasters.guilds.configuration.GuildSettings;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
+import me.glaremasters.guilds.guild.GuildHome;
 import me.glaremasters.guilds.guild.GuildMember;
 import me.glaremasters.guilds.guild.GuildRole;
+import me.glaremasters.guilds.guild.GuildSkull;
 import me.glaremasters.guilds.guild.GuildTier;
 import me.glaremasters.guilds.utils.StringUtils;
 import net.milkbowl.vault.economy.Economy;
@@ -67,7 +70,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -83,6 +85,7 @@ import java.util.UUID;
 @CommandAlias("guild|guilds")
 public class CommandGuilds extends BaseCommand {
 
+    private Guilds guilds;
     private GuildHandler guildHandler;
     public final static Inventory guildList = null;
     public final static Map<UUID, Integer> playerPages = new HashMap<>();
@@ -143,12 +146,6 @@ public class CommandGuilds extends BaseCommand {
 
                 gb.status(Guild.Status.Private);
 
-                ItemStack masterHead = new ItemStack(Material.SKULL_ITEM, 1);
-                SkullMeta masterHeadMeta = (SkullMeta) masterHead.getItemMeta();
-                masterHeadMeta.setOwningPlayer(player);
-                masterHeadMeta.setDisplayName(StringUtils.color(name));
-                masterHead.setItemMeta(masterHeadMeta);
-                gb.masterHead(masterHead);
 
                 GuildMember guildMaster = new GuildMember(player.getUniqueId(), guildHandler.getGuildRole(0));
                 gb.guildMaster(guildMaster);
@@ -159,7 +156,7 @@ public class CommandGuilds extends BaseCommand {
 
                 gb.tier(guildHandler.getGuildTier(1));
 
-                //todo gb.inventory(Bukkit.createInventory()) (vault)
+                /*gb.inventory(Bukkit.createInventory(null, 9));*/
 
                 Guild guild = gb.build();
 
@@ -173,6 +170,8 @@ public class CommandGuilds extends BaseCommand {
                 getCurrentCommandIssuer().sendInfo(Messages.CREATE__SUCCESSFUL, "{guild}", guild.getName());
 
                 actionHandler.removeAction(player);
+
+                Bukkit.getServer().getScheduler().runTaskAsynchronously(guilds, () -> guild.setGuildSkull(new GuildSkull(player)));
             }
 
             @Override
@@ -254,7 +253,8 @@ public class CommandGuilds extends BaseCommand {
             return;
         }
 
-        guild.setHome(player.getLocation());
+        Location loc = player.getLocation();
+        guild.setHome(new GuildHome(loc.getWorld().getName(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch()));
 
         economy.withdrawPlayer(player, settingsManager.getProperty(CostSettings.SETHOME));
         getCurrentCommandIssuer().sendInfo(Messages.SETHOME__SUCCESSFUL);
@@ -337,7 +337,7 @@ public class CommandGuilds extends BaseCommand {
         getCurrentCommandIssuer().sendInfo(Messages.HOME__WARMUP, "{amount}", String.valueOf(settingsManager.getProperty(CooldownSettings.WU_HOME)));
 
         //todo
-        Bukkit.getServer().getScheduler().runTaskLater(null, () -> {
+        Bukkit.getServer().getScheduler().runTaskLater(guilds, () -> {
 
             if (warmUp.get(player).distance(player.getLocation()) > 1) {
                 getCurrentCommandIssuer().sendInfo(Messages.HOME__CANCELLED);
@@ -345,7 +345,7 @@ public class CommandGuilds extends BaseCommand {
                 return;
             }
 
-            player.teleport(guild.getHome());
+            player.teleport(guild.getHome().getAsLocation());
             warmUp.remove(player);
 
             getCurrentCommandIssuer().sendInfo(Messages.HOME__TELEPORTED);
@@ -824,7 +824,7 @@ public class CommandGuilds extends BaseCommand {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
             return;
         }
-        player.openInventory(guild.getInventory());
+        /*player.openInventory(guild.getInventory());*/
     }
 
     /**

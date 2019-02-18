@@ -28,9 +28,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -56,9 +54,9 @@ public class Guild {
     private String name, prefix;
     private GuildMember guildMaster;
 
-    private Location home = null;
-    private Inventory inventory = null;
-    private ItemStack masterHead;
+    private GuildHome home = null;
+    // Guild Vault
+    private GuildSkull guildSkull;
     private Status status;
     private GuildTier tier;
     private double balance = 0;
@@ -76,6 +74,14 @@ public class Guild {
      */
     public GuildMember getMember(UUID uuid) {
         return getMembers().stream().filter(m -> m.getUuid().equals(uuid)).findFirst().orElse(null);
+    }
+
+    /**
+     * Get the itemstack of the guild skull
+     * @return itemstack of skull
+     */
+    public ItemStack getSkull() {
+        return guildSkull.getSkull(guildSkull.getSerialized());
     }
 
     /**
