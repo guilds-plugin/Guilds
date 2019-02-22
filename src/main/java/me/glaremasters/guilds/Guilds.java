@@ -331,7 +331,7 @@ public final class Guilds extends JavaPlugin {
         info("Loading Commands and Language Data..");
         // Load the ACF command manager
         commandManager = new BukkitCommandManager(this);
-        commandManager.usePerIssuerLocale(true);
+        commandManager.usePerIssuerLocale(true, false);
         // Load the languages
         loadLanguages(commandManager);
         //deprecated due to being unstable
