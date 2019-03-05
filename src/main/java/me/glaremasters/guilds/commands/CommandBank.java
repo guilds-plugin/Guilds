@@ -106,6 +106,7 @@ public class CommandBank extends BaseCommand {
             return;
         }
         guild.setBalance(balance - amount);
+        economy.depositPlayer(player, amount);
         getCurrentCommandIssuer().sendInfo(Messages.BANK__WITHDRAWL_SUCCESS, "{amount}", String.valueOf(amount), "{total}", String.valueOf(guild.getBalance()));
     }
 

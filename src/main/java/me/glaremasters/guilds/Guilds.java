@@ -350,15 +350,15 @@ public final class Guilds extends JavaPlugin {
         // This checks for updates
         if (settingsManager.getProperty(PluginSettings.ANNOUNCEMENTS_CONSOLE)) {
             info("Checking for updates..");
-/*            getServer().getScheduler().runTaskAsynchronously(this, new Runnable() {
-                SpigotUpdater updater = new SpigotUpdater(this, 48920);
+            getServer().getScheduler().runTaskAsynchronously(this, new Runnable() {
+               /* SpigotUpdater updater = new SpigotUpdater(this, 48920);*/
 
                 @Override
                 public void run() {
-                    updateCheck(updater);
+                    /*updateCheck(updater);*/
                     info(getAnnouncements());
                 }
-            });*/
+            });
 
 
         }
