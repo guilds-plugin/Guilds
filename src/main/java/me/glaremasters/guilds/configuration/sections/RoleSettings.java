@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.configuration;
+package me.glaremasters.guilds.configuration.sections;
 
 import ch.jalu.configme.SettingsHolder;
 import ch.jalu.configme.properties.Property;

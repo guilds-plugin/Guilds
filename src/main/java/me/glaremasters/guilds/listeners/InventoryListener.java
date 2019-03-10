@@ -26,7 +26,7 @@ package me.glaremasters.guilds.listeners;
 
 import ch.jalu.configme.SettingsManager;
 import lombok.AllArgsConstructor;
-import me.glaremasters.guilds.configuration.GuiSettings;
+import me.glaremasters.guilds.configuration.sections.GuiSettings;
 import me.glaremasters.guilds.guild.GuildHandler;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -35,7 +35,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryInteractEvent;
-import org.bukkit.inventory.Inventory;
 
 import java.util.UUID;
 

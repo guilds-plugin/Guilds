@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.configuration;
+package me.glaremasters.guilds.configuration.sections;
 
 import ch.jalu.configme.Comment;
 import ch.jalu.configme.SettingsHolder;
@@ -35,17 +35,20 @@ import static ch.jalu.configme.properties.PropertyInitializer.newProperty;
  * Date: 1/17/2019
  * Time: 2:29 PM
  */
-public class HooksSettings implements SettingsHolder {
+public class CooldownSettings implements SettingsHolder {
 
-    @Comment("Do we want to hook into Essentials-Chat format to handle guild placeholders?")
-    public static final Property<Boolean> ESSENTIALS =
-            newProperty("hooks.essentials-chat", false);
+    @Comment("How often (in seconds) can a player set their guild home?")
+    public static final Property<Integer> SETHOME =
+            newProperty("timers.cooldowns.sethome", 60);
 
-    @Comment("Do we want to hook into WorldGuard to allow claiming land?")
-    public static final Property<Boolean> WORLDGUARD =
-            newProperty("hooks.worldguard-claims", false);
+    @Comment("How often (in seconds) can a player go to their guild home?")
+    public static final Property<Integer> HOME =
+            newProperty("timers.cooldowns.home", 60);
 
-    private HooksSettings() {
+    @Comment("How long should a user have to stand still before teleporting?")
+    public static final Property<Integer> WU_HOME =
+            newProperty("timers.warpups.home", 3);
+
+    private CooldownSettings() {
     }
 }
-
