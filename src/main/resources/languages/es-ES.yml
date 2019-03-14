@@ -78,8 +78,8 @@ bank:
 admin:
   delete-warning: "&cEstás a punto de eliminar la guild {guild}. Escribe /guilds confirm para remover esta guild, escribe /guilds cancel para cancelar."
   delete-success: "&aHas eliminado la guild {guild} exitosamente."
-  guild-vault-sign: "Global Guild Vault created!"
-  player-added: "&aYou have been added to {guild} by an Admin!"
+  guild-vault-sign: "¡Cofre global de gremio creado!"
+  player-added: "&aHas sido añadido a {guild} por un Administrador!"
   admin-player-added: "&aYou have added {player} to {guild}!"
   admin-guild-add: "&a{player} has been added to your guild by an Admin!"
   player-removed: "&cYou have been removed from {guild} by an Admin!"
