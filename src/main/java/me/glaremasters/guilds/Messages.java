@@ -92,7 +92,9 @@ public enum Messages implements MessageKeyProvider {
 
     CLAIM__ALREADY_EXISTS, CLAIM__OVERLAP, CLAIM__SUCCESS, CLAIM__HOOK_DISABLED,
 
-    UNCLAIM__SUCCESS, UNCLAIM__NOT_FOUND;
+    UNCLAIM__SUCCESS, UNCLAIM__NOT_FOUND,
+
+    CODES__CREATED;
 
     /**
      * Message keys that grab from the config to send messages

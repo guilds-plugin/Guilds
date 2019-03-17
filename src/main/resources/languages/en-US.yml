@@ -184,3 +184,5 @@ unclaim:
   not-found: "&cYou can't unclaim land that you don't have!"
 pending:
   invites: "&aYou have {number} pending invite(s) from the guild(s): &e{guilds}&r&a . Use /guild accept <name> or /guild deny <name> to join or deny an invite!"
+codes:
+  created: "&aYou've created a new invite code: &6{code} &awith &6{amount} &auses!"
