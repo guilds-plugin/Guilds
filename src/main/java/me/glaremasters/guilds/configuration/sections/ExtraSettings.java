@@ -52,6 +52,10 @@ public class ExtraSettings implements SettingsHolder {
     public static final Property<String> TICKET_MATERIAL =
             newProperty("extras.ticket.material", "PAPER");
 
+    @Comment("How long do you want the default length of guild codes to be?")
+    public static final Property<Integer> CODE_LENGTH =
+            newProperty("extras.code.length", 7);
+
 
 
     private ExtraSettings() {

@@ -24,13 +24,18 @@
 
 package me.glaremasters.guilds.commands;
 
+import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Description;
+import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.annotation.Syntax;
 import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Messages;
+import me.glaremasters.guilds.configuration.sections.ExtraSettings;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildCode;
 import me.glaremasters.guilds.guild.GuildHandler;
@@ -40,7 +45,6 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 
 /**
  * Created by GlareMasters
@@ -52,6 +56,7 @@ import java.util.HashMap;
 public class CommandCodes extends BaseCommand {
 
     private GuildHandler guildHandler;
+    private SettingsManager settingsManager;
 
     /**
      * Create an invite code for your guild
@@ -61,20 +66,24 @@ public class CommandCodes extends BaseCommand {
      */
     @Subcommand("code create")
     @Description("{@@descriptions.code-create}")
+    @Syntax("<uses>")
     @CommandPermission("guilds.command.codecreate")
-    public void onCreate(Player player, Guild guild, GuildRole role, Integer uses) {
+    public void onCreate(Player player, Guild guild, GuildRole role, @Optional @Default("1") Integer uses) {
 
         if (!role.isCreateCode()) {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
             return;
         }
 
-        //todo Cleanup and make config values for size and maybe check for existing amount
+        String code = RandomStringUtils.randomAlphabetic(settingsManager.getProperty(ExtraSettings.CODE_LENGTH));
+
         if (guild.getCodes() == null) {
-            guild.setCodes(new ArrayList<>(Collections.singletonList(new GuildCode(RandomStringUtils.randomAlphabetic(10), uses))));
+            guild.setCodes(new ArrayList<>(Collections.singletonList(new GuildCode(code, uses))));
         } else {
-            guild.getCodes().add(new GuildCode(RandomStringUtils.randomAlphabetic(10), uses));
+            guild.getCodes().add(new GuildCode(code, uses));
         }
+
+        getCurrentCommandIssuer().sendInfo(Messages.CODES__CREATED, "{code}", code, "{amount}", String.valueOf(uses));
 
     }
 
@@ -88,6 +97,11 @@ public class CommandCodes extends BaseCommand {
     @Description("{@@descriptions.code-delete}")
     @CommandPermission("guilds.command.codedelete")
     public void onDelete(Player player, Guild guild, GuildRole role) {
+
+        if (!role.isDeleteCode()) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
+            return;
+        }
 
     }
 
@@ -109,7 +123,7 @@ public class CommandCodes extends BaseCommand {
      * @param code the code being redeemed
      */
     @Subcommand("code redeem")
-    @Description("{@@descriptions.code-redeem")
+    @Description("{@@descriptions.code-redeem}")
     @CommandPermission("guilds.command.coderedeem")
     public void onRedeem(Player player, String code) {
 

@@ -330,7 +330,7 @@ public final class Guilds extends JavaPlugin {
         loadCompletions(commandManager);
 
         // Register all the commands
-        Stream.of(new CommandGuilds(this, guildHandler, settingsManager, actionHandler, economy), new CommandBank(economy), new CommandAdmin(guildHandler, actionHandler), new CommandAlly(guildHandler), new CommandClaim(settingsManager), new CommandCodes(guildHandler)).forEach(commandManager::registerCommand);
+        Stream.of(new CommandGuilds(this, guildHandler, settingsManager, actionHandler, economy), new CommandBank(economy), new CommandAdmin(guildHandler, actionHandler), new CommandAlly(guildHandler), new CommandClaim(settingsManager), new CommandCodes(guildHandler, settingsManager)).forEach(commandManager::registerCommand);
 
 
         // This can probably be moved into it's own method
