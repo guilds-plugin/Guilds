@@ -27,12 +27,15 @@ package me.glaremasters.guilds.commands;
 import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Optional;
+import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
+import co.aikar.commands.annotation.Values;
 import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Messages;
 import me.glaremasters.guilds.configuration.sections.ExtraSettings;
@@ -96,12 +99,17 @@ public class CommandCodes extends BaseCommand {
     @Subcommand("code delete")
     @Description("{@@descriptions.code-delete}")
     @CommandPermission("guilds.command.codedelete")
-    public void onDelete(Player player, Guild guild, GuildRole role) {
+    @CommandCompletion("@activeCodes")
+    public void onDelete(Player player, Guild guild, GuildRole role, @Values("@activeCodes") @Single String code) {
 
         if (!role.isDeleteCode()) {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
             return;
         }
+
+        guild.getCodes().removeIf(s -> s.getId().equals(code));
+
+        getCurrentCommandIssuer().sendInfo(Messages.CODES__DELETED);
 
     }
 

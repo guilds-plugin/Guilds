@@ -39,6 +39,7 @@ import me.glaremasters.guilds.configuration.sections.PluginSettings;
 import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.database.providers.JsonProvider;
 import me.glaremasters.guilds.guild.Guild;
+import me.glaremasters.guilds.guild.GuildCode;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.listeners.*;
@@ -400,6 +401,11 @@ public final class Guilds extends JavaPlugin {
         manager.getCommandCompletions().registerCompletion("invitedTo", c -> guildHandler.getInvitedGuilds(c.getPlayer().getUniqueId()));
 
         manager.getCommandCompletions().registerCompletion("guilds", c -> guildHandler.getGuildNames());
+
+        manager.getCommandCompletions().registerCompletion("activeCodes", c -> {
+           Guild guild = guildHandler.getGuild(c.getPlayer());
+           return guild.getCodes().stream().map(GuildCode::getId).collect(Collectors.toList());
+        });
     }
 
     /**

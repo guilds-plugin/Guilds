@@ -189,3 +189,4 @@ codes:
   empty: "&cOh no! I have no codes, try making one first!"
   list-header: "&aHere are the following active invite codes for your guild:"
   list-item: "&aID: &6{code} &f| &aUses Remaining: &6{amount}"
+  deleted: "&aThat invite code has been removed from your guild!"
