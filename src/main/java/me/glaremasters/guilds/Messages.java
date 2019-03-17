@@ -94,7 +94,7 @@ public enum Messages implements MessageKeyProvider {
 
     UNCLAIM__SUCCESS, UNCLAIM__NOT_FOUND,
 
-    CODES__CREATED;
+    CODES__CREATED, CODES__EMPTY, CODES__LIST_HEADER, CODES__LIST_ITEM;
 
     /**
      * Message keys that grab from the config to send messages

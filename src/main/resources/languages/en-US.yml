@@ -186,3 +186,6 @@ pending:
   invites: "&aYou have {number} pending invite(s) from the guild(s): &e{guilds}&r&a . Use /guild accept <name> or /guild deny <name> to join or deny an invite!"
 codes:
   created: "&aYou've created a new invite code: &6{code} &awith &6{amount} &auses!"
+  empty: "&cOh no! I have no codes, try making one first!"
+  list-header: "&aHere are the following active invite codes for your guild:"
+  list-item: "&aID: &6{code} &f| &aUses Remaining: &6{amount}"

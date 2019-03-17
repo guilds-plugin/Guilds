@@ -115,6 +115,14 @@ public class CommandCodes extends BaseCommand {
     @CommandPermission("guilds.command.codelist")
     public void onList(Player player, Guild guild) {
 
+        if (guild.getCodes() == null) {
+            getCurrentCommandIssuer().sendInfo(Messages.CODES__EMPTY);
+            return;
+        }
+
+        getCurrentCommandIssuer().sendInfo(Messages.CODES__LIST_HEADER);
+        guild.getCodes().forEach(c -> getCurrentCommandIssuer().sendInfo(Messages.CODES__LIST_ITEM, "{code}", c.getId(), "{amount}", String.valueOf(c.getUses())));
+
     }
 
     /**

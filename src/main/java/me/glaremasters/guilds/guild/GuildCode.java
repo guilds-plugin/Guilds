@@ -25,6 +25,7 @@
 package me.glaremasters.guilds.guild;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 /**
  * Created by GlareMasters
@@ -32,6 +33,7 @@ import lombok.AllArgsConstructor;
  * Time: 7:28 PM
  */
 @AllArgsConstructor
+@Getter
 public class GuildCode {
 
     private String id;
