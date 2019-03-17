@@ -114,6 +114,12 @@ public class RoleSettings implements SettingsHolder {
     public static final Property<Boolean> ZERO_IN =
             newProperty("roles.0.permissions.interact", true);
 
+    public static final Property<Boolean> ZERO_CM =
+            newProperty("roles.0.permissions.create-code", true);
+
+    public static final Property<Boolean> ZERO_CD =
+            newProperty("roles.0.permissions.delete-code", true);
+
     public static final Property<String> ONE_NAME =
             newProperty("roles.1.name", "Officer");
 
@@ -191,6 +197,12 @@ public class RoleSettings implements SettingsHolder {
 
     public static final Property<Boolean> ONE_IN =
             newProperty("roles.1.permissions.interact", true);
+
+    public static final Property<Boolean> ONE_CM =
+            newProperty("roles.1.permissions.create-code", true);
+
+    public static final Property<Boolean> ONE_CD =
+            newProperty("roles.1.permissions.delete-code", true);
 
     public static final Property<String> TWO_NAME =
             newProperty("roles.2.name", "Veteran");
@@ -270,6 +282,12 @@ public class RoleSettings implements SettingsHolder {
     public static final Property<Boolean> TWO_IN =
             newProperty("roles.2.permissions.interact", true);
 
+    public static final Property<Boolean> TWO_CM =
+            newProperty("roles.2.permissions.create-code", false);
+
+    public static final Property<Boolean> TWO_CD =
+            newProperty("roles.2.permissions.delete-code", false);
+
     public static final Property<String> THREE_NAME =
             newProperty("roles.3.name", "Member");
 
@@ -347,6 +365,12 @@ public class RoleSettings implements SettingsHolder {
 
     public static final Property<Boolean> THREE_IN =
             newProperty("roles.3.permissions.interact", true);
+
+    public static final Property<Boolean> THREE_CM =
+            newProperty("roles.3.permissions.create-code", false);
+
+    public static final Property<Boolean> THREE_CD =
+            newProperty("roles.3.permissions.delete-code", false);
 
     private RoleSettings() {
     }

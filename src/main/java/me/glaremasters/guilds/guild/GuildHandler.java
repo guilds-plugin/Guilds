@@ -95,6 +95,8 @@ public class GuildHandler {
                     .destroy(roleSection.getBoolean(path + "destroy"))
                     .place(roleSection.getBoolean(path + "place"))
                     .interact(roleSection.getBoolean(path + "interact"))
+                    .createCode(roleSection.getBoolean(path + "create-code"))
+                    .deleteCode(roleSection.getBoolean(path + "delete-code"))
                     .build());
         }
 
