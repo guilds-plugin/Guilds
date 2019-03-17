@@ -25,23 +25,16 @@
 package me.glaremasters.guilds.guild;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
 
 /**
- * Created by GlareMasters on 6/28/2018.
+ * Created by GlareMasters
+ * Date: 3/15/2019
+ * Time: 7:28 PM
  */
-@Getter
-@Builder
 @AllArgsConstructor
-public class GuildRole {
+public class GuildCode {
 
-    private transient String name;
-    private transient String node;
+    private String id;
+    private int uses;
 
-    private int level;
-
-    private transient boolean chat, invite, kick, promote, demote, changePrefix, changeName, changeHome, removeGuild, addAlly,
-            removeAlly, allyChat, openVault, transferGuild, changeStatus, activateBuff, upgradeGuild, depositMoney,
-            withdrawMoney, claimLand, unclaimLand, destroy, place, interact, createCode, deleteCode;
 }
