@@ -190,3 +190,5 @@ codes:
   list-header: "&aHere are the following active invite codes for your guild:"
   list-item: "&aID: &6{code} &f| &aUses Remaining: &6{amount}"
   deleted: "&aThat invite code has been removed from your guild!"
+  invalid-code: "&cThat invite code does not seem to exist. Please try again!"
+  joined: "&aYou've successfully joined &6{guild} &ausing an invite code!"

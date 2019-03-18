@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class GuildHandler {
 
@@ -160,6 +161,15 @@ public class GuildHandler {
      */
     public Guild getGuild(@NotNull OfflinePlayer p){
         return guilds.stream().filter(guild -> guild.getMember(p.getUniqueId()) != null).findFirst().orElse(null);
+    }
+
+    /**
+     * Check the guild based on the invite code
+     * @param code the invite code being used
+     * @return the guild who the code belong to
+     */
+    public Guild getGuildByCode(@NotNull String code) {
+        return guilds.stream().filter(guild -> guild.hasInviteCode(code)).findFirst().orElse(null);
     }
 
     /**

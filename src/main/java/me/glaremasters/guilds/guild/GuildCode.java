@@ -26,6 +26,7 @@ package me.glaremasters.guilds.guild;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Created by GlareMasters
@@ -34,6 +35,7 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 @Getter
+@Setter
 public class GuildCode {
 
     private String id;

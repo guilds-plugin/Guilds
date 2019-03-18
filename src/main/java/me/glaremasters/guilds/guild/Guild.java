@@ -99,6 +99,14 @@ public class Guild {
     }
 
     /**
+     * Invite a member by guild code
+     * @param guildMember
+     */
+    public void addMemberByCode(GuildMember guildMember) {
+        getMembers().add(guildMember);
+    }
+
+    /**
      * Remove a member by their GuildMember object
      * @param guildMember the guildmember to remove
      */
@@ -181,6 +189,24 @@ public class Guild {
      */
     public List<GuildMember> getOnlineMembers() {
         return getMembers().stream().filter(GuildMember::isOnline).collect(Collectors.toList());
+    }
+
+    /**
+     * Check if a guild has a code
+     * @param code the code being checked
+     * @return if the guild has it or not
+     */
+    public boolean hasInviteCode(String code) {
+        return getCodes().stream().anyMatch(c -> c.getId().equals(code));
+    }
+
+    /**
+     * Get a guild code object by the id
+     * @param code the code looking for
+     * @return the guild code object
+     */
+    public GuildCode getCode(String code) {
+        return getCodes().stream().filter(c -> c.getId().equals(code)).findFirst().orElse(null);
     }
 }
 

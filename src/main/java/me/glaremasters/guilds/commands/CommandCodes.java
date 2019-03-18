@@ -42,6 +42,7 @@ import me.glaremasters.guilds.configuration.sections.ExtraSettings;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildCode;
 import me.glaremasters.guilds.guild.GuildHandler;
+import me.glaremasters.guilds.guild.GuildMember;
 import me.glaremasters.guilds.guild.GuildRole;
 import org.apache.commons.lang.RandomStringUtils;
 import org.bukkit.entity.Player;
@@ -142,6 +143,27 @@ public class CommandCodes extends BaseCommand {
     @Description("{@@descriptions.code-redeem}")
     @CommandPermission("guilds.command.coderedeem")
     public void onRedeem(Player player, String code) {
+
+        if (guildHandler.getGuild(player) != null) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ALREADY_IN_GUILD);
+            return;
+        }
+
+        Guild guild = guildHandler.getGuildByCode(code);
+
+        if (guild == null) {
+            getCurrentCommandIssuer().sendInfo(Messages.CODES__INVALID_CODE);
+            return;
+        }
+
+        GuildCode gc = guild.getCode(code);
+
+        gc.setUses(gc.getUses() - 1);
+
+        if (gc.getUses() <= 0) guild.getCodes().removeIf(s -> s.getId().equals(code));
+
+        guild.addMemberByCode(new GuildMember(player.getUniqueId(), guildHandler.getLowestGuildRole()));
+        getCurrentCommandIssuer().sendInfo(Messages.CODES__JOINED, "{guild}", guild.getName());
 
     }
 
