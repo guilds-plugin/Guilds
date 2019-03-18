@@ -60,6 +60,9 @@ public class ExtraSettings implements SettingsHolder {
     public static final Property<Boolean> LIST_INACTIVE_CODES =
             newProperty("extras.code.list-inactive-codes", true);
 
+    public static final Property<Integer> ACTIVE_CODE_AMOUNT =
+            newProperty("extras.code.amount", 10);
+
 
 
     private ExtraSettings() {

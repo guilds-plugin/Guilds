@@ -80,6 +80,11 @@ public class CommandCodes extends BaseCommand {
             return;
         }
 
+        if (guild.getActiveCodes().size() >= settingsManager.getProperty(ExtraSettings.ACTIVE_CODE_AMOUNT)) {
+            getCurrentCommandIssuer().sendInfo(Messages.CODES__MAX);
+            return;
+        }
+
         String code = RandomStringUtils.randomAlphabetic(settingsManager.getProperty(ExtraSettings.CODE_LENGTH));
 
         if (guild.getCodes() == null) {

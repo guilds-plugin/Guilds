@@ -195,3 +195,4 @@ codes:
   joined: "&aYou've successfully joined &6{guild} &ausing an invite code!"
   out: "&cThat invite code is all out of uses! Please try another one!"
   info: "&aInvite Code Information:\n&aID: &6{code}\n&aUses: &6{amount}\n&aCreator: &6{creator}\n&aRedeemers: &6{redeemers}"
+  max: "&cYou already have too many active invite codes in your guild!"
