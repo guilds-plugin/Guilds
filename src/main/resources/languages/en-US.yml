@@ -192,3 +192,4 @@ codes:
   deleted: "&aThat invite code has been removed from your guild!"
   invalid-code: "&cThat invite code does not seem to exist. Please try again!"
   joined: "&aYou've successfully joined &6{guild} &ausing an invite code!"
+  out: "&cThat invite code is all out of uses! Please try another one!"

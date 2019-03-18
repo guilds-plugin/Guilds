@@ -83,9 +83,9 @@ public class CommandCodes extends BaseCommand {
         String code = RandomStringUtils.randomAlphabetic(settingsManager.getProperty(ExtraSettings.CODE_LENGTH));
 
         if (guild.getCodes() == null) {
-            guild.setCodes(new ArrayList<>(Collections.singletonList(new GuildCode(code, uses, player.getUniqueId()))));
+            guild.setCodes(new ArrayList<>(Collections.singletonList(new GuildCode(code, uses, player.getUniqueId(), new ArrayList<>()))));
         } else {
-            guild.getCodes().add(new GuildCode(code, uses, player.getUniqueId()));
+            guild.getCodes().add(new GuildCode(code, uses, player.getUniqueId(), new ArrayList<>()));
         }
 
         getCurrentCommandIssuer().sendInfo(Messages.CODES__CREATED, "{code}", code, "{amount}", String.valueOf(uses));
@@ -159,9 +159,13 @@ public class CommandCodes extends BaseCommand {
 
         GuildCode gc = guild.getCode(code);
 
-        gc.setUses(gc.getUses() - 1);
+        if (gc.getUses() <= 0) {
+            getCurrentCommandIssuer().sendInfo(Messages.CODES__OUT);
+            return;
+        }
 
-        if (gc.getUses() <= 0) guild.getCodes().removeIf(s -> s.getId().equals(code));
+        gc.setUses(gc.getUses() - 1);
+        gc.getRedeemers().add(player.getUniqueId());
 
         guild.addMemberByCode(new GuildMember(player.getUniqueId(), guildHandler.getLowestGuildRole()));
         getCurrentCommandIssuer().sendInfo(Messages.CODES__JOINED, "{guild}", guild.getName());
