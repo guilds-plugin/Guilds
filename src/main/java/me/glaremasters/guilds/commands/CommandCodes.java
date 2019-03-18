@@ -172,4 +172,24 @@ public class CommandCodes extends BaseCommand {
 
     }
 
+    @Subcommand("code info")
+    @Description("{@@descriptions.code-info")
+    @CommandPermission("guilds.command.codeinfo")
+    @Syntax("<code>")
+    @CommandCompletion("@activeCodes")
+    public void onInfo(Player player, Guild guild, GuildRole role, @Values("@activeCodes") @Single String code) {
+
+        if (code == null) return;
+
+        if (!role.isSeeCodeRedeemers()) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
+            return;
+        }
+
+        GuildCode gc = guild.getCode(code);
+
+        getCurrentCommandIssuer().sendInfo(Messages.CODES__INFO, "{code}", gc.getId(), "{amount}", String.valueOf(gc.getUses()), "{creator}", Bukkit.getOfflinePlayer(gc.getCreator()).getName(), "{redeemers}", guild.getRedeemers(code));
+
+    }
+
 }

@@ -120,6 +120,9 @@ public class RoleSettings implements SettingsHolder {
     public static final Property<Boolean> ZERO_CD =
             newProperty("roles.0.permissions.delete-code", true);
 
+    public static final Property<Boolean> ZERO_SCR =
+            newProperty("roles.0.permissions.see-code-redeemers", true);
+
     public static final Property<String> ONE_NAME =
             newProperty("roles.1.name", "Officer");
 
@@ -203,6 +206,9 @@ public class RoleSettings implements SettingsHolder {
 
     public static final Property<Boolean> ONE_CD =
             newProperty("roles.1.permissions.delete-code", true);
+
+    public static final Property<Boolean> ONE_SCR =
+            newProperty("roles.1.permissions.see-code-redeemers", true);
 
     public static final Property<String> TWO_NAME =
             newProperty("roles.2.name", "Veteran");
@@ -288,6 +294,9 @@ public class RoleSettings implements SettingsHolder {
     public static final Property<Boolean> TWO_CD =
             newProperty("roles.2.permissions.delete-code", false);
 
+    public static final Property<Boolean> TWO_SCR =
+            newProperty("roles.2.permissions.see-code-redeemers", false);
+
     public static final Property<String> THREE_NAME =
             newProperty("roles.3.name", "Member");
 
@@ -372,6 +381,8 @@ public class RoleSettings implements SettingsHolder {
     public static final Property<Boolean> THREE_CD =
             newProperty("roles.3.permissions.delete-code", false);
 
+    public static final Property<Boolean> THREE_SCR =
+            newProperty("roles.3.permissions.see-code-redeemers", false);
     private RoleSettings() {
     }
 }

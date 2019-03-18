@@ -23,6 +23,7 @@ descriptions:
   claim: "Claim land for your Guild"
   code-create: "Create an invite code for your guild"
   code-delete: "Delete an invite code from the guild"
+  code-info: "Get the information about an invite code"
   code-list: "List all the current invite codes in your guild"
   code-redeem: "Redeem an invite code to join a guild"
   confirm: "Confirm an action"
@@ -193,3 +194,4 @@ codes:
   invalid-code: "&cThat invite code does not seem to exist. Please try again!"
   joined: "&aYou've successfully joined &6{guild} &ausing an invite code!"
   out: "&cThat invite code is all out of uses! Please try another one!"
+  info: "&aInvite Code Information:\n&aID: &6{code}\n&aUses: &6{amount}\n&aCreator: &6{creator}\n&aRedeemers: &6{redeemers}"

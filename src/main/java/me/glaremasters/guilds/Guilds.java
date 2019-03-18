@@ -404,6 +404,8 @@ public final class Guilds extends JavaPlugin {
 
         manager.getCommandCompletions().registerCompletion("activeCodes", c -> {
            Guild guild = guildHandler.getGuild(c.getPlayer());
+           if (guild == null) return null;
+           if (guild.getCodes() == null) return null;
            return guild.getCodes().stream().map(GuildCode::getId).collect(Collectors.toList());
         });
     }

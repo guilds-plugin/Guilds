@@ -98,6 +98,7 @@ public class GuildHandler {
                     .interact(roleSection.getBoolean(path + "interact"))
                     .createCode(roleSection.getBoolean(path + "create-code"))
                     .deleteCode(roleSection.getBoolean(path + "delete-code"))
+                    .seeCodeRedeemers(roleSection.getBoolean(path + "see-code-redeemers"))
                     .build());
         }
 

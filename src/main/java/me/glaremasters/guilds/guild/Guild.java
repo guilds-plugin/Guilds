@@ -28,6 +28,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.ItemStack;
 
@@ -207,6 +208,19 @@ public class Guild {
      */
     public GuildCode getCode(String code) {
         return getCodes().stream().filter(c -> c.getId().equals(code)).findFirst().orElse(null);
+    }
+
+    /**
+     * Get all the redeemers of a code
+     * @param code the code being checked
+     * @return a list of all redeemers for a code
+     */
+    public String getRedeemers(String code) {
+        GuildCode gc = getCode(code);
+        StringBuilder builder = new StringBuilder();
+        gc.getRedeemers().forEach(r -> builder.append(Bukkit.getOfflinePlayer(r).getName() + ", "));
+        builder.setLength(builder.length() - 2);
+        return builder.toString();
     }
 }
 

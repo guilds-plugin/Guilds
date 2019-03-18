@@ -43,5 +43,5 @@ public class GuildRole {
 
     private transient boolean chat, invite, kick, promote, demote, changePrefix, changeName, changeHome, removeGuild, addAlly,
             removeAlly, allyChat, openVault, transferGuild, changeStatus, activateBuff, upgradeGuild, depositMoney,
-            withdrawMoney, claimLand, unclaimLand, destroy, place, interact, createCode, deleteCode;
+            withdrawMoney, claimLand, unclaimLand, destroy, place, interact, createCode, deleteCode, seeCodeRedeemers;
 }
