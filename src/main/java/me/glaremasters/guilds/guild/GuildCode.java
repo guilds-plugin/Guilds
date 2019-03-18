@@ -28,6 +28,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.UUID;
+
 /**
  * Created by GlareMasters
  * Date: 3/15/2019
@@ -40,5 +42,6 @@ public class GuildCode {
 
     private String id;
     private int uses;
+    private UUID creator;
 
 }

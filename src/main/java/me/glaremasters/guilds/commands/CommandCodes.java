@@ -45,6 +45,7 @@ import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildMember;
 import me.glaremasters.guilds.guild.GuildRole;
 import org.apache.commons.lang.RandomStringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -82,9 +83,9 @@ public class CommandCodes extends BaseCommand {
         String code = RandomStringUtils.randomAlphabetic(settingsManager.getProperty(ExtraSettings.CODE_LENGTH));
 
         if (guild.getCodes() == null) {
-            guild.setCodes(new ArrayList<>(Collections.singletonList(new GuildCode(code, uses))));
+            guild.setCodes(new ArrayList<>(Collections.singletonList(new GuildCode(code, uses, player.getUniqueId()))));
         } else {
-            guild.getCodes().add(new GuildCode(code, uses));
+            guild.getCodes().add(new GuildCode(code, uses, player.getUniqueId()));
         }
 
         getCurrentCommandIssuer().sendInfo(Messages.CODES__CREATED, "{code}", code, "{amount}", String.valueOf(uses));
@@ -130,7 +131,7 @@ public class CommandCodes extends BaseCommand {
         }
 
         getCurrentCommandIssuer().sendInfo(Messages.CODES__LIST_HEADER);
-        guild.getCodes().forEach(c -> getCurrentCommandIssuer().sendInfo(Messages.CODES__LIST_ITEM, "{code}", c.getId(), "{amount}", String.valueOf(c.getUses())));
+        guild.getCodes().forEach(c -> getCurrentCommandIssuer().sendInfo(Messages.CODES__LIST_ITEM, "{code}", c.getId(), "{amount}", String.valueOf(c.getUses()), "{creator}", Bukkit.getOfflinePlayer(c.getCreator()).getName()));
 
     }
 
