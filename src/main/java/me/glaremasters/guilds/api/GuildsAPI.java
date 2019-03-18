@@ -24,13 +24,11 @@
 
 package me.glaremasters.guilds.api;
 
-import me.glaremasters.guilds.guild.Guild;
-import me.glaremasters.guilds.guild.GuildHandler;
-import me.glaremasters.guilds.guild.GuildRole;
-import me.glaremasters.guilds.guild.GuildTier;
+import me.glaremasters.guilds.guild.*;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.UUID;
 
 public class GuildsAPI {
@@ -120,6 +118,15 @@ public class GuildsAPI {
      */
     public double getBankBalance(@NotNull Player player) {
         return getGuild(player).getBalance();
+    }
+
+    /**
+     * Get the guild codes of a guild
+     * @param player the player the guild is in
+     * @return the list of guild codes
+     */
+    public List<GuildCode> getGuildCodes(@NotNull Player player) {
+        return getGuild(player).getCodes();
     }
 
 }
