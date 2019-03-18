@@ -131,7 +131,11 @@ public class CommandCodes extends BaseCommand {
         }
 
         getCurrentCommandIssuer().sendInfo(Messages.CODES__LIST_HEADER);
-        guild.getCodes().forEach(c -> getCurrentCommandIssuer().sendInfo(Messages.CODES__LIST_ITEM, "{code}", c.getId(), "{amount}", String.valueOf(c.getUses()), "{creator}", Bukkit.getOfflinePlayer(c.getCreator()).getName()));
+        if (settingsManager.getProperty(ExtraSettings.LIST_INACTIVE_CODES)) {
+            guild.getCodes().forEach(c -> getCurrentCommandIssuer().sendInfo(Messages.CODES__LIST_ITEM, "{code}", c.getId(), "{amount}", String.valueOf(c.getUses()), "{creator}", Bukkit.getOfflinePlayer(c.getCreator()).getName()));
+        } else {
+            guild.getActiveCodes().forEach(c -> getCurrentCommandIssuer().sendInfo(Messages.CODES__LIST_ITEM, "{code}", c.getId(), "{amount}", String.valueOf(c.getUses()), "{creator}", Bukkit.getOfflinePlayer(c.getCreator()).getName()));
+        }
 
     }
 

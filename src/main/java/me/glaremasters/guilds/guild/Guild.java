@@ -211,6 +211,14 @@ public class Guild {
     }
 
     /**
+     * Get a list of active codes
+     * @return list of active codes
+     */
+    public List<GuildCode> getActiveCodes() {
+        return getCodes().stream().filter(c -> c.getUses() > 0).collect(Collectors.toList());
+    }
+
+    /**
      * Get all the redeemers of a code
      * @param code the code being checked
      * @return a list of all redeemers for a code

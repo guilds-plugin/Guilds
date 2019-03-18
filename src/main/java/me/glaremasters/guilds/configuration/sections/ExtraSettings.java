@@ -56,6 +56,10 @@ public class ExtraSettings implements SettingsHolder {
     public static final Property<Integer> CODE_LENGTH =
             newProperty("extras.code.length", 7);
 
+    @Comment("Do you want inactive codes (no uses left) to display on the /guild code list?")
+    public static final Property<Boolean> LIST_INACTIVE_CODES =
+            newProperty("extras.code.list-inactive-codes", true);
+
 
 
     private ExtraSettings() {
