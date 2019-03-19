@@ -94,17 +94,17 @@ boot:
   successful: "&aSuccessfully kicked {player} from your guild!"
   kicked: "&cYou have been kicked from your guild by {kicker}!"
 decline:
-  success: "&aGuild Invite Declined!"
+  success: "&aLời mời tham gia Guild đã bị từ chối!"
 demote:
   cant-demote: "&cThat player can not be demoted!"
   demote-successful: "&aYou've successfully demoted {player} from {old} to {new}"
   you-were-demoted: "&cYou've been demoted from {old} to {new}"
 promote:
-  cant-promote: "&cThat player can not be promoted!"
+  cant-promote: "&cNgười chơi này không thể được thăng chức!"
   promote-successful: "&aYou've successfully promoted {player} from {old} to {new}"
   you-were-promoted: "&aYou've been promoted from {old} to {new}"
 delete:
-  successful: "&aDeleted '{guild}&r&a' successfully!"
+  successful: "&aĐã xoá '{guild}&r&a' thành công!"
   cancelled: "&cGuild deletion cancelled!"
   warning: "Bấm /guilds confirm để xoá guild của bạn, bấm /guilds cancel để huỷ bỏ."
 leave:
@@ -116,7 +116,7 @@ leave:
   warning-guildmaster: "&cYou're the Guild Master of this guild, leaving the guild will mean that the guild is deleted. Type /guilds confirm to leave and delete your guild, type /guilds cancel to cancel."
 transfer:
   newmaster: "&aBạn là Guild Master mới trong Guild của bạn!"
-  success: "&aGuild has been transferred!"
+  success: "&aGuild đã được chuyển nhượng!"
 invite:
   already-invited: "User is already invited to your guild"
   message: "&a{player} has invited you to his/her guild, '{guild}' Type /guild join {guild} to join!"
@@ -131,9 +131,9 @@ upgrade:
 prefix:
   successful: "&aGuild's prefix changed successfully to {prefix}!"
 status:
-  successful: "&aGuild status set to {status}!"
+  successful: "&aTrạng thái của Guild đã được đặt thành {status}!"
 rename:
-  successful: "&aGuild name changed to {name}!"
+  successful: "&aTên của Guild đã được chuyển thành {name}!"
 home:
   no-home-set: "&cNo home set! Use &a/guild sethome &cto set a home!"
   teleported: "&aYou've teleported to your guild home!"
