@@ -101,8 +101,8 @@ demote:
   you-were-demoted: "&cYou've been demoted from {old} to {new}"
 promote:
   cant-promote: "&cNgười chơi này không thể được thăng chức!"
-  promote-successful: "&aYou've successfully promoted {player} from {old} to {new}"
-  you-were-promoted: "&aYou've been promoted from {old} to {new}"
+  promote-successful: "&aBạn đã thăng chức thành công {player} từ {old} thành {new}"
+  you-were-promoted: "&aBạn đã được thăng chức từ {old} thành {new}"
 delete:
   successful: "&aĐã xoá '{guild}&r&a' thành công!"
   cancelled: "&cGuild deletion cancelled!"
@@ -112,8 +112,8 @@ leave:
   successful: "&cBạn đã rời khỏi guild thành công!"
   player-left: "&cNgười chơi '{player}' đã rời khỏi guild của bạn!"
   guildmaster-left: "&cThe Guild Master, '{player}' has left the guild. The guild will now be disbanded."
-  warning: "&cType /guilds confirm to leave your guild, type /guilds cancel to cancel."
-  warning-guildmaster: "&cYou're the Guild Master of this guild, leaving the guild will mean that the guild is deleted. Type /guilds confirm to leave and delete your guild, type /guilds cancel to cancel."
+  warning: "&cBấm /guilds confirm để rời khỏi guild của bạn, bấm /guilds cancel để huỷ bỏ."
+  warning-guildmaster: "&cBạn là Guild Master của guild này, rời khỏi guild có nghĩa là guild sẽ bị xoá. Bấm /guilds confirm để rời khỏi và xoá guild của bạn, bấm /guilds cancel để huỷ bỏ."
 transfer:
   newmaster: "&aBạn là Guild Master mới trong Guild của bạn!"
   success: "&aGuild đã được chuyển nhượng!"
