@@ -27,8 +27,8 @@ package me.glaremasters.guilds;
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.SettingsManagerBuilder;
 import ch.jalu.configme.migration.PlainMigrationService;
-import co.aikar.commands.BukkitCommandManager;
 import co.aikar.commands.InvalidCommandArgument;
+import co.aikar.commands.PaperCommandManager;
 import lombok.Getter;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.api.GuildsAPI;
@@ -82,7 +82,7 @@ public final class Guilds extends JavaPlugin {
     private GuildHandler guildHandler;
     private DatabaseProvider database;
     private SettingsManager settingsManager;
-    private BukkitCommandManager commandManager;
+    private PaperCommandManager commandManager;
     private ActionHandler actionHandler;
     private Economy economy;
     private Permission permissions;
@@ -131,6 +131,7 @@ public final class Guilds extends JavaPlugin {
     }
 
     //todo rewrite
+
     /**
      * Save and handle new files if needed
      */
@@ -165,7 +166,7 @@ public final class Guilds extends JavaPlugin {
      *
      * @param manager ACF BCM
      */
-    private void loadLanguages(BukkitCommandManager manager) {
+    private void loadLanguages(PaperCommandManager manager) {
         try {
             File languageFolder = new File(getDataFolder(), "languages");
             for (File file : Objects.requireNonNull(languageFolder.listFiles())) {
@@ -213,6 +214,7 @@ public final class Guilds extends JavaPlugin {
 
     /**
      * Log a message to console on INFO level.
+     *
      * @param msg the msg you want to log.
      */
     public void info(String msg) {
@@ -318,7 +320,7 @@ public final class Guilds extends JavaPlugin {
         actionHandler = new ActionHandler();
         info("Loading Commands and Language Data..");
         // Load the ACF command manager
-        commandManager = new BukkitCommandManager(this);
+        commandManager = new PaperCommandManager(this);
         commandManager.usePerIssuerLocale(true, false);
         // Load the languages
         loadLanguages(commandManager);
@@ -339,7 +341,7 @@ public final class Guilds extends JavaPlugin {
         if (settingsManager.getProperty(PluginSettings.ANNOUNCEMENTS_CONSOLE)) {
             info("Checking for updates..");
             getServer().getScheduler().runTaskAsynchronously(this, new Runnable() {
-               /* SpigotUpdater updater = new SpigotUpdater(this, 48920);*/
+                /* SpigotUpdater updater = new SpigotUpdater(this, 48920);*/
 
                 @Override
                 public void run() {
@@ -371,7 +373,7 @@ public final class Guilds extends JavaPlugin {
      *
      * @param manager ACF BCM
      */
-    private void loadContexts(BukkitCommandManager manager) {
+    private void loadContexts(PaperCommandManager manager) {
         manager.getCommandContexts().registerIssuerOnlyContext(Guild.class, c -> {
             Guild guild = getGuildHandler().getGuild(c.getPlayer());
             if (guild == null) {
@@ -390,7 +392,7 @@ public final class Guilds extends JavaPlugin {
         });
     }
 
-    private void loadCompletions(BukkitCommandManager manager) {
+    private void loadCompletions(PaperCommandManager manager) {
         manager.getCommandCompletions().registerCompletion("members", c -> {
             Guild guild = getGuildHandler().getGuild(c.getPlayer());
             return guild.getMembers().stream().map(member -> Bukkit.getOfflinePlayer(member.getUuid()).getName()).collect(Collectors.toList());
@@ -402,11 +404,11 @@ public final class Guilds extends JavaPlugin {
 
         manager.getCommandCompletions().registerCompletion("guilds", c -> guildHandler.getGuildNames());
 
-        manager.getCommandCompletions().registerCompletion("activeCodes", c -> {
-           Guild guild = guildHandler.getGuild(c.getPlayer());
-           if (guild == null) return null;
-           if (guild.getCodes() == null) return null;
-           return guild.getCodes().stream().map(GuildCode::getId).collect(Collectors.toList());
+        manager.getCommandCompletions().registerAsyncCompletion("activeCodes", c -> {
+            Guild guild = guildHandler.getGuild(c.getPlayer());
+            if (guild == null) return null;
+            if (guild.getCodes() == null) return null;
+            return guild.getCodes().stream().map(GuildCode::getId).collect(Collectors.toList());
         });
     }
 

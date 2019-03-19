@@ -25,7 +25,7 @@
 package me.glaremasters.guilds.listeners;
 
 import ch.jalu.configme.SettingsManager;
-import co.aikar.commands.BukkitCommandManager;
+import co.aikar.commands.PaperCommandManager;
 import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.Messages;
@@ -69,7 +69,7 @@ public class PlayerListener implements Listener {
     private GuildHandler guildHandler;
     private SettingsManager settingsManager;
     private Guilds guilds;
-    private BukkitCommandManager bukkitCommandManager;
+    private PaperCommandManager commandManager;
 
     private final Set<UUID> ALREADY_INFORMED = new HashSet<>();
     public static final Set<UUID> GUILD_CHAT_PLAYERS = new HashSet<>();
@@ -127,7 +127,7 @@ public class PlayerListener implements Listener {
             return;
         }
         // Send the message to the player saying it's been created
-        bukkitCommandManager.getCommandIssuer(event.getPlayer()).sendInfo(Messages.ADMIN__GUILD_VAULT_SIGN);
+        commandManager.getCommandIssuer(event.getPlayer()).sendInfo(Messages.ADMIN__GUILD_VAULT_SIGN);
     }
 
     /**
@@ -145,7 +145,7 @@ public class PlayerListener implements Listener {
         double balance = guild.getBalance();
         /*if (buff == null) return;*/
 /*        if (balance < buff.cost) {
-            bukkitCommandManager.getCommandIssuer(player).sendInfo(Messages.BANK__NOT_ENOUGH_BANK);
+            commandManager.getCommandIssuer(player).sendInfo(Messages.BANK__NOT_ENOUGH_BANK);
             return;
         }*/
         if (settingsManager.getProperty(GuiSettings.BUFF_STACKING) && !player.getActivePotionEffects().isEmpty()) return;
