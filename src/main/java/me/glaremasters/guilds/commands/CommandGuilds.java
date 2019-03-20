@@ -828,6 +828,13 @@ public class CommandGuilds extends BaseCommand {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
             return;
         }
+
+        try {
+            guildHandler.getGuildVault(guild, vault);
+        } catch (Exception ex) {
+            guildHandler.getCachedVaults().get(guild).add(Bukkit.createInventory(null, 54, "PlaceholderText"));
+        }
+
         player.openInventory(guildHandler.getGuildVault(guild, vault));
     }
 

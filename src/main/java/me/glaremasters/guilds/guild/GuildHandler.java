@@ -25,6 +25,7 @@
 package me.glaremasters.guilds.guild;
 
 import co.aikar.commands.CommandManager;
+import lombok.Getter;
 import me.glaremasters.guilds.Messages;
 import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.utils.Serialization;
@@ -53,7 +54,7 @@ public class GuildHandler {
     private final List<GuildRole> roles;
     private final List<GuildTier> tiers;
 
-    private Map<Guild, List<Inventory>> cachedVaults;
+    @Getter private Map<Guild, List<Inventory>> cachedVaults;
 
     private final DatabaseProvider databaseProvider;
     private final CommandManager commandManager;
