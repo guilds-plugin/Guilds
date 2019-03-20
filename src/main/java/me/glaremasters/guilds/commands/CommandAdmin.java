@@ -271,4 +271,27 @@ public class CommandAdmin extends BaseCommand {
         }
     }
 
+    @Subcommand("admin vault")
+    @Description("{@@descriptions.admin-vault}")
+    @CommandPermission("guilds.command.admin")
+    @CommandCompletion("@guilds")
+    @Syntax("<guild> <vault #>")
+    public void onAdminVault(Player player, @Values("@guilds") @Single String name, Integer vault) {
+        Guild guild = guildHandler.getGuild(name);
+        if (guild == null) {
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__GUILD_NO_EXIST);
+            return;
+        }
+
+        try {
+            guildHandler.getGuildVault(guild, vault);
+        } catch (Exception ex) {
+            // send message saying the vault probably doesn't exist
+            return;
+        }
+
+        player.openInventory(guildHandler.getGuildVault(guild, vault));
+
+    }
+
 }

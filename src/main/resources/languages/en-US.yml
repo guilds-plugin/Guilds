@@ -8,6 +8,7 @@ descriptions:
   admin-status: "Admin command to change a Guild's status"
   admin-spy: "Admin command to enable guild chat spy"
   admin-upgrade: "Admin command to upgrade a Guild's tier"
+  admin-vault: "Admin command to view a guild's vault"
   ally-accept: "Accept an ally invite from another guild"
   ally-add: "Add a Guild as an ally"
   ally-decline: "Decline an ally invite from another Guild"
