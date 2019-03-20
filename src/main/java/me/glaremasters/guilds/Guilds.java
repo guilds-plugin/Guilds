@@ -53,6 +53,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.codemc.worldguardwrapper.WorldGuardWrapper;
@@ -418,9 +419,9 @@ public final class Guilds extends JavaPlugin {
             Guild guild = guildHandler.getGuild(c.getPlayer());
             if (guild == null) return null;
             if (guild.getVaults() == null) return null;
-            if (guildHandler.getCachedVaults().get(guild) == null) return null;
-            List<Integer> ints = IntStream.rangeClosed(1, guildHandler.getCachedVaults().get(guild).size()).boxed().collect(Collectors.toList());
-            return ints.stream().map(Objects::toString).collect(Collectors.toList());
+            List<Inventory> list = guildHandler.getCachedVaults().get(guild);
+            if (list == null) return null;
+            return IntStream.rangeClosed(1, list.size()).mapToObj(Objects::toString).collect(Collectors.toList());
         });
     }
 
