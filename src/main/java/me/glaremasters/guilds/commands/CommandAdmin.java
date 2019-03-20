@@ -283,13 +283,6 @@ public class CommandAdmin extends BaseCommand {
             return;
         }
 
-        try {
-            guildHandler.getGuildVault(guild, vault);
-        } catch (Exception ex) {
-            // send message saying the vault probably doesn't exist
-            return;
-        }
-
         player.openInventory(guildHandler.getGuildVault(guild, vault));
 
     }

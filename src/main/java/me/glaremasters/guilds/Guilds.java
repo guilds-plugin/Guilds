@@ -36,6 +36,7 @@ import me.glaremasters.guilds.commands.*;
 import me.glaremasters.guilds.configuration.GuildConfigurationBuilder;
 import me.glaremasters.guilds.configuration.sections.HooksSettings;
 import me.glaremasters.guilds.configuration.sections.PluginSettings;
+import me.glaremasters.guilds.contexts.GuildTarget;
 import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.database.providers.JsonProvider;
 import me.glaremasters.guilds.guild.Guild;
@@ -67,6 +68,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 @Getter
@@ -375,26 +377,27 @@ public final class Guilds extends JavaPlugin {
      */
     private void loadContexts(PaperCommandManager manager) {
         manager.getCommandContexts().registerIssuerOnlyContext(Guild.class, c -> {
-            Guild guild = getGuildHandler().getGuild(c.getPlayer());
-            if (guild == null) {
-                throw new InvalidCommandArgument(Messages.ERROR__NO_GUILD);
-            }
+            Guild guild = guildHandler.getGuild(c.getPlayer());
+            if (guild == null)  throw new InvalidCommandArgument(Messages.ERROR__NO_GUILD);
             return guild;
         });
 
         manager.getCommandContexts().registerIssuerOnlyContext(GuildRole.class, c -> {
-            Guild guild = getGuildHandler().getGuild(c.getPlayer());
-            if (guild == null) {
-                return null;
-            }
-
+            Guild guild = guildHandler.getGuild(c.getPlayer());
+            if (guild == null) return null;
             return getGuildHandler().getGuildRole(guild.getMember(c.getPlayer().getUniqueId()).getRole().getLevel());
+        });
+
+        manager.getCommandContexts().registerContext(GuildTarget.class, c-> {
+            Guild guild = guildHandler.getGuild(c.popFirstArg());
+            if (guild == null) throw new InvalidCommandArgument(Messages.ERROR__NO_GUILD);
+            return new GuildTarget(guild);
         });
     }
 
     private void loadCompletions(PaperCommandManager manager) {
         manager.getCommandCompletions().registerCompletion("members", c -> {
-            Guild guild = getGuildHandler().getGuild(c.getPlayer());
+            Guild guild = guildHandler.getGuild(c.getPlayer());
             return guild.getMembers().stream().map(member -> Bukkit.getOfflinePlayer(member.getUuid()).getName()).collect(Collectors.toList());
         });
 
@@ -409,6 +412,15 @@ public final class Guilds extends JavaPlugin {
             if (guild == null) return null;
             if (guild.getCodes() == null) return null;
             return guild.getCodes().stream().map(GuildCode::getId).collect(Collectors.toList());
+        });
+
+        manager.getCommandCompletions().registerAsyncCompletion("vaultAmount", c -> {
+            Guild guild = guildHandler.getGuild(c.getPlayer());
+            if (guild == null) return null;
+            if (guild.getVaults() == null) return null;
+            if (guildHandler.getCachedVaults().get(guild) == null) return null;
+            List<Integer> ints = IntStream.rangeClosed(1, guildHandler.getCachedVaults().get(guild).size()).boxed().collect(Collectors.toList());
+            return ints.stream().map(Objects::toString).collect(Collectors.toList());
         });
     }
 
