@@ -229,5 +229,19 @@
             <version>1.1.0</version>
             <scope>compile</scope>
         </dependency>
+
+        <!-- JsonConfiguaration (used for serializing the vaults to strings) -->
+        <dependency>
+            <groupId>com.dumptruckman.minecraft</groupId>
+            <artifactId>JsonConfiguration</artifactId>
+            <version>1.1</version>
+        </dependency>
+
+        <!-- Required json dependency because no other json lib can handle numbers appropriately. (Part of JsonConfiguration) -->
+        <dependency>
+            <groupId>net.minidev</groupId>
+            <artifactId>json-smart</artifactId>
+            <version>1.1.1</version>
+        </dependency>
     </dependencies>
 </project>

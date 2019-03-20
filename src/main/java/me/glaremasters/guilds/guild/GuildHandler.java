@@ -27,20 +27,24 @@ package me.glaremasters.guilds.guild;
 import co.aikar.commands.CommandManager;
 import me.glaremasters.guilds.Messages;
 import me.glaremasters.guilds.database.DatabaseProvider;
+import me.glaremasters.guilds.utils.Serialization;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class GuildHandler {
 
@@ -48,6 +52,8 @@ public class GuildHandler {
     private List<Guild> guilds;
     private final List<GuildRole> roles;
     private final List<GuildTier> tiers;
+
+    private Map<Guild, List<Inventory>> cachedVaults;
 
     private final DatabaseProvider databaseProvider;
     private final CommandManager commandManager;
@@ -62,6 +68,7 @@ public class GuildHandler {
 
         roles = new ArrayList<>();
         tiers = new ArrayList<>();
+        cachedVaults = new HashMap<>();
 
         //GuildRoles objects
         ConfigurationSection roleSection = config.getConfigurationSection("roles");
@@ -121,12 +128,16 @@ public class GuildHandler {
 
         guilds = databaseProvider.loadGuilds();
 
+
+        guilds.forEach(this::createVaultCache);
+
     }
 
     /**
      * Saves the data of guilds
      */
     public void saveData() throws IOException {
+        guilds.forEach(this::saveVaultCache);
         databaseProvider.saveGuilds(guilds);
     }
 
@@ -137,6 +148,7 @@ public class GuildHandler {
      */
     public void addGuild(@NotNull Guild guild) {
         guilds.add(guild);
+        createVaultCache(guild);
     }
 
     /**
@@ -144,8 +156,8 @@ public class GuildHandler {
      * @param guild the guild being removed
      */
     public void removeGuild(@NotNull Guild guild) {
+        cachedVaults.remove(guild);
         guilds.remove(guild);
-        //todo removeGuildPermissions();
     }
 
     /**
@@ -303,5 +315,41 @@ public class GuildHandler {
      */
     public List<String> getGuildNames() {
         return guilds.stream().map(Guild::getName).collect(Collectors.toList());
+    }
+
+    /**
+     * Create the cache of a vault for the guild
+     * @param guild the guild being cached
+     */
+    private void createVaultCache(Guild guild) {
+        List<Inventory> vaults = new ArrayList<>();
+        guild.getVaults().forEach(v -> {
+            try {
+                vaults.add(Serialization.deserializeInventory(v));
+            } catch (InvalidConfigurationException e) {
+                e.printStackTrace();
+            }
+        });
+        cachedVaults.put(guild, vaults);
+    }
+
+    /**
+     * Save the vaults of a guild
+     * @param guild the guild being saved
+     */
+    private void saveVaultCache(Guild guild) {
+        List<String> vaults = new ArrayList<>();
+        cachedVaults.get(guild).forEach(v -> vaults.add(Serialization.serializeInventory(v)));
+        guild.setVaults(vaults);
+    }
+
+    /**
+     * Open a guild vault
+     * @param guild the owner of the vault
+     * @param vault which vault to open
+     * @return the inventory to open
+     */
+    public Inventory getGuildVault(Guild guild, int vault) {
+        return cachedVaults.get(guild).get(vault - 1);
     }
 }

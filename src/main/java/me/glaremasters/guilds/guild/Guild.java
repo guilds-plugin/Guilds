@@ -33,9 +33,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -58,18 +56,20 @@ public class Guild {
     private GuildMember guildMaster;
 
     private GuildHome home = null;
-    // Guild Vault
     private GuildSkull guildSkull;
     private Status status;
     private GuildTier tier;
     private double balance = 0;
 
     private List<GuildMember> members = new ArrayList<>();
-    private List<UUID> invitedMembers = new ArrayList<>();
 
+    private List<UUID> invitedMembers = new ArrayList<>();
     private List<UUID> allies = new ArrayList<>();
     private List<UUID> pendingAllies = new ArrayList<>();
+
     private List<GuildCode> codes = new ArrayList<>();
+
+    private List<String> vaults = new ArrayList<>();
 
     /**
      * Get a member in the guild

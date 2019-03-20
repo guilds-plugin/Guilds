@@ -27,19 +27,39 @@ package me.glaremasters.guilds.commands;
 import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.CommandHelp;
+import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.CommandCompletion;
+import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Default;
+import co.aikar.commands.annotation.Description;
+import co.aikar.commands.annotation.HelpCommand;
 import co.aikar.commands.annotation.Optional;
-import co.aikar.commands.annotation.*;
+import co.aikar.commands.annotation.Single;
+import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.annotation.Syntax;
+import co.aikar.commands.annotation.Values;
 import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.Messages;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.actions.ConfirmAction;
-import me.glaremasters.guilds.api.events.*;
+import me.glaremasters.guilds.api.events.GuildCreateEvent;
+import me.glaremasters.guilds.api.events.GuildInviteEvent;
+import me.glaremasters.guilds.api.events.GuildJoinEvent;
+import me.glaremasters.guilds.api.events.GuildLeaveEvent;
+import me.glaremasters.guilds.api.events.GuildRemoveEvent;
 import me.glaremasters.guilds.configuration.sections.CooldownSettings;
 import me.glaremasters.guilds.configuration.sections.CostSettings;
 import me.glaremasters.guilds.configuration.sections.GuiSettings;
 import me.glaremasters.guilds.configuration.sections.GuildSettings;
-import me.glaremasters.guilds.guild.*;
+import me.glaremasters.guilds.guild.Guild;
+import me.glaremasters.guilds.guild.GuildHandler;
+import me.glaremasters.guilds.guild.GuildHome;
+import me.glaremasters.guilds.guild.GuildMember;
+import me.glaremasters.guilds.guild.GuildRole;
+import me.glaremasters.guilds.guild.GuildSkull;
+import me.glaremasters.guilds.guild.GuildTier;
+import me.glaremasters.guilds.utils.Serialization;
 import me.glaremasters.guilds.utils.StringUtils;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -52,7 +72,11 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 //todo rewrite lol -> this has been rewritten mostly there are still quite a lot of todos due to things being unclear
 // or not being added yet, make sure to fix these todos and commented out code and then we can start cleaning the warnings.
@@ -133,7 +157,10 @@ public class CommandGuilds extends BaseCommand {
 
                 gb.tier(guildHandler.getGuildTier(1));
 
-                /*gb.inventory(Bukkit.createInventory(null, 9));*/
+                List<String> vaults = new ArrayList<>();
+                Inventory inv = Bukkit.createInventory(null, 54, "PlaceholderText");
+                vaults.add(Serialization.serializeInventory(inv));
+                gb.vaults(vaults);
 
                 Guild guild = gb.build();
 
@@ -796,12 +823,12 @@ public class CommandGuilds extends BaseCommand {
     @Subcommand("vault")
     @Description("{@@descriptions.vault}")
     @CommandPermission("guilds.command.vault")
-    public void onVault(Player player, Guild guild, GuildRole role) {
+    public void onVault(Player player, Guild guild, GuildRole role, @Default("1") Integer vault) {
         if (!role.isOpenVault()) {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
             return;
         }
-        /*player.openInventory(guild.getInventory());*/
+        player.openInventory(guildHandler.getGuildVault(guild, vault));
     }
 
     /**
