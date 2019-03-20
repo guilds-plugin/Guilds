@@ -157,10 +157,7 @@ public class CommandGuilds extends BaseCommand {
 
                 gb.tier(guildHandler.getGuildTier(1));
 
-                List<String> vaults = new ArrayList<>();
-                Inventory inv = Bukkit.createInventory(null, 54, "PlaceholderText");
-                vaults.add(Serialization.serializeInventory(inv));
-                gb.vaults(vaults);
+                gb.vaults(new ArrayList<>());
 
                 Guild guild = gb.build();
 
