@@ -39,6 +39,7 @@ import me.glaremasters.guilds.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -282,8 +283,8 @@ public class CommandAdmin extends BaseCommand {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__GUILD_NO_EXIST);
             return;
         }
-
-        player.openInventory(guildHandler.getGuildVault(guild, vault));
+        Inventory inv = guildHandler.getGuildVault(guild, vault);
+        if (inv != null) player.openInventory(inv);
 
     }
 
