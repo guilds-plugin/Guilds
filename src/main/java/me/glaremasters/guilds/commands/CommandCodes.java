@@ -38,7 +38,7 @@ import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.annotation.Values;
 import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Messages;
-import me.glaremasters.guilds.configuration.sections.ExtraSettings;
+import me.glaremasters.guilds.configuration.sections.CodeSettings;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildCode;
 import me.glaremasters.guilds.guild.GuildHandler;
@@ -80,12 +80,12 @@ public class CommandCodes extends BaseCommand {
             return;
         }
 
-        if (guild.getActiveCodes().size() >= settingsManager.getProperty(ExtraSettings.ACTIVE_CODE_AMOUNT)) {
+        if (guild.getActiveCodes().size() >= settingsManager.getProperty(CodeSettings.ACTIVE_CODE_AMOUNT)) {
             getCurrentCommandIssuer().sendInfo(Messages.CODES__MAX);
             return;
         }
 
-        String code = RandomStringUtils.randomAlphabetic(settingsManager.getProperty(ExtraSettings.CODE_LENGTH));
+        String code = RandomStringUtils.randomAlphabetic(settingsManager.getProperty(CodeSettings.CODE_LENGTH));
 
         if (guild.getCodes() == null) {
             guild.setCodes(new ArrayList<>(Collections.singletonList(new GuildCode(code, uses, player.getUniqueId(), new ArrayList<>()))));
@@ -136,7 +136,7 @@ public class CommandCodes extends BaseCommand {
         }
 
         getCurrentCommandIssuer().sendInfo(Messages.CODES__LIST_HEADER);
-        if (settingsManager.getProperty(ExtraSettings.LIST_INACTIVE_CODES)) {
+        if (settingsManager.getProperty(CodeSettings.LIST_INACTIVE_CODES)) {
             guild.getCodes().forEach(c -> getCurrentCommandIssuer().sendInfo(Messages.CODES__LIST_ITEM, "{code}", c.getId(), "{amount}", String.valueOf(c.getUses()), "{creator}", Bukkit.getOfflinePlayer(c.getCreator()).getName()));
         } else {
             guild.getActiveCodes().forEach(c -> getCurrentCommandIssuer().sendInfo(Messages.CODES__LIST_ITEM, "{code}", c.getId(), "{amount}", String.valueOf(c.getUses()), "{creator}", Bukkit.getOfflinePlayer(c.getCreator()).getName()));

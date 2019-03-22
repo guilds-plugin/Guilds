@@ -22,29 +22,35 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.configuration;
+package me.glaremasters.guilds.configuration.sections;
 
-import ch.jalu.configme.configurationdata.ConfigurationData;
-import ch.jalu.configme.configurationdata.ConfigurationDataBuilder;
-import me.glaremasters.guilds.configuration.sections.*;
+import ch.jalu.configme.Comment;
+import ch.jalu.configme.SettingsHolder;
+import ch.jalu.configme.properties.Property;
+
+import static ch.jalu.configme.properties.PropertyInitializer.newProperty;
 
 /**
  * Created by GlareMasters
- * Date: 1/17/2019
- * Time: 12:45 PM
+ * Date: 3/22/2019
+ * Time: 12:49 AM
  */
-public class GuildConfigurationBuilder {
+public class CodeSettings  implements SettingsHolder {
 
-    private GuildConfigurationBuilder() {
-    }
+    @Comment("How long do you want the default length of guild codes to be?")
+    public static final Property<Integer> CODE_LENGTH =
+            newProperty("codes.length", 7);
 
-    public static ConfigurationData buildConfigurationData() {
-        return ConfigurationDataBuilder.createConfiguration(
-                PluginSettings.class, HooksSettings.class, GuiSettings.class,
-                GuildSettings.class, CooldownSettings.class, CostSettings.class,
-                ClaimSettings.class, TablistSettings.class, TicketSettings.class, CodeSettings.class,
-                TierSettings.class, RoleSettings.class
-        );
+    @Comment("Do you want inactive codes (no uses left) to display on the /guild code list?")
+    public static final Property<Boolean> LIST_INACTIVE_CODES =
+            newProperty("codes.list-inactive-codes", true);
+
+    @Comment("What is the max amount of active codes you would like to allow per guild?")
+    public static final Property<Integer> ACTIVE_CODE_AMOUNT =
+            newProperty("codes.amount", 10);
+
+    private CodeSettings () {
+
     }
 
 }

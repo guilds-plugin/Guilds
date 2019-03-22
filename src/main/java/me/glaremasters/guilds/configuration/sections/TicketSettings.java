@@ -38,33 +38,24 @@ import static ch.jalu.configme.properties.PropertyInitializer.newProperty;
  * Date: 1/17/2019
  * Time: 2:29 PM
  */
-public class ExtraSettings implements SettingsHolder {
+public class TicketSettings implements SettingsHolder {
 
     @Comment("What do you want the name of the upgrade ticket to be?")
     public static final Property<String> TICKET_NAME =
-            newProperty("extras.ticket.name", "&bGuild Upgrade Ticket");
+            newProperty("tickets.name", "&bGuild Upgrade Ticket");
 
     @Comment("What do you want the lore of the ticket to be?")
     public static final Property<List<String>> TICKET_LORE =
-            newListProperty("extras.ticket.lore", "&dRight click this ticket to upgrade your guild tier!");
+            newListProperty("tickets.lore", "&dRight click this ticket to upgrade your guild tier!");
 
     @Comment("What do you want the material of the ticket to be?")
     public static final Property<String> TICKET_MATERIAL =
-            newProperty("extras.ticket.material", "PAPER");
-
-    @Comment("How long do you want the default length of guild codes to be?")
-    public static final Property<Integer> CODE_LENGTH =
-            newProperty("extras.code.length", 7);
-
-    @Comment("Do you want inactive codes (no uses left) to display on the /guild code list?")
-    public static final Property<Boolean> LIST_INACTIVE_CODES =
-            newProperty("extras.code.list-inactive-codes", true);
-
-    public static final Property<Integer> ACTIVE_CODE_AMOUNT =
-            newProperty("extras.code.amount", 10);
+            newProperty("tickets.material", "PAPER");
 
 
 
-    private ExtraSettings() {
+
+
+    private TicketSettings() {
     }
 }
