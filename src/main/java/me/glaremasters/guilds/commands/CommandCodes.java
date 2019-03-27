@@ -72,7 +72,7 @@ public class CommandCodes extends BaseCommand {
     @Subcommand("code create")
     @Description("{@@descriptions.code-create}")
     @Syntax("<uses>")
-    @CommandPermission("guilds.command.codecreate")
+    @CommandPermission("guilds.command.code.create")
     public void onCreate(Player player, Guild guild, GuildRole role, @Optional @Default("1") Integer uses) {
 
         if (!role.isCreateCode()) {
@@ -105,7 +105,7 @@ public class CommandCodes extends BaseCommand {
      */
     @Subcommand("code delete")
     @Description("{@@descriptions.code-delete}")
-    @CommandPermission("guilds.command.codedelete")
+    @CommandPermission("guilds.command.code.delete")
     @CommandCompletion("@activeCodes")
     public void onDelete(Player player, Guild guild, GuildRole role, @Values("@activeCodes") @Single String code) {
 
@@ -127,7 +127,7 @@ public class CommandCodes extends BaseCommand {
      */
     @Subcommand("code list")
     @Description("{@@descriptions.code-list}")
-    @CommandPermission("guilds.command.codelist")
+    @CommandPermission("guilds.command.code.list")
     public void onList(Player player, Guild guild) {
 
         if (guild.getCodes() == null) {
@@ -151,7 +151,7 @@ public class CommandCodes extends BaseCommand {
      */
     @Subcommand("code redeem")
     @Description("{@@descriptions.code-redeem}")
-    @CommandPermission("guilds.command.coderedeem")
+    @CommandPermission("guilds.command.code.redeem")
     public void onRedeem(Player player, String code) {
 
         if (guildHandler.getGuild(player) != null) {
@@ -183,7 +183,7 @@ public class CommandCodes extends BaseCommand {
 
     @Subcommand("code info")
     @Description("{@@descriptions.code-info")
-    @CommandPermission("guilds.command.codeinfo")
+    @CommandPermission("guilds.command.code.info")
     @Syntax("<code>")
     @CommandCompletion("@activeCodes")
     public void onInfo(Player player, Guild guild, GuildRole role, @Values("@activeCodes") @Single String code) {

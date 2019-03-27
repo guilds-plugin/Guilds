@@ -53,7 +53,7 @@ public class CommandAlly extends BaseCommand {
      */
     @Subcommand("ally list")
     @Description("{@@descriptions.ally-list}")
-    @CommandPermission("guilds.command.ally")
+    @CommandPermission("guilds.command.ally.list")
     public void onAllyList(Player player, Guild guild) {
         if (guild.getAllies().size() < 1) {
             getCurrentCommandIssuer().sendInfo(Messages.ALLY__NONE);
@@ -71,7 +71,7 @@ public class CommandAlly extends BaseCommand {
      */
     @Subcommand("ally accept")
     @Description("{@@descriptions.ally-accept}")
-    @CommandPermission("guilds.command.ally")
+    @CommandPermission("guilds.command.ally.accept")
     @Syntax("<guild name>")
     public void onAllyAccept(Player player, Guild guild, GuildRole role, String name) {
         if (checkPermission(role.isAddAlly())) return;
@@ -99,7 +99,7 @@ public class CommandAlly extends BaseCommand {
      */
     @Subcommand("ally decline")
     @Description("{@@descriptions.ally-decline}")
-    @CommandPermission("guilds.command.ally")
+    @CommandPermission("guilds.command.ally.decline")
     @Syntax("<guild name>")
     public void onAllyDecline(Player player, Guild guild, GuildRole role, String name) {
         if (checkPermission(role.isRemoveAlly())) return;
@@ -126,7 +126,7 @@ public class CommandAlly extends BaseCommand {
      */
     @Subcommand("ally add")
     @Description("{@@descriptions.ally-add}")
-    @CommandPermission("guilds.command.ally")
+    @CommandPermission("guilds.command.ally.add")
     @Syntax("<guild name>")
     public void onAllyAdd(Player player, Guild guild, GuildRole role, String name) {
         if (checkPermission(role.isAddAlly())) return;
@@ -171,7 +171,7 @@ public class CommandAlly extends BaseCommand {
      */
     @Subcommand("ally remove")
     @Description("{@@descriptions.ally-remove}")
-    @CommandPermission("guilds.command.ally")
+    @CommandPermission("guilds.command.ally.remove")
     @Syntax("<guild name>")
     public void onAllyRemove(Player player, Guild guild, GuildRole role, String name) {
         if (checkPermission(role.isRemoveAlly())) return;
