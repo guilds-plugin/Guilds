@@ -50,7 +50,9 @@ permissions:
       guilds.command.unclaim: true
       guilds.command.upgrade: true
       guilds.command.vault: true
+    default: true
   guilds.group.admin:
     children:
       guilds.command.admin: true
       guilds.group.member: true
+    default: op
