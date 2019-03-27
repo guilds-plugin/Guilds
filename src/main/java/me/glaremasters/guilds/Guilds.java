@@ -32,7 +32,12 @@ import co.aikar.commands.PaperCommandManager;
 import lombok.Getter;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.api.GuildsAPI;
-import me.glaremasters.guilds.commands.*;
+import me.glaremasters.guilds.commands.CommandAdmin;
+import me.glaremasters.guilds.commands.CommandAlly;
+import me.glaremasters.guilds.commands.CommandBank;
+import me.glaremasters.guilds.commands.CommandClaim;
+import me.glaremasters.guilds.commands.CommandCodes;
+import me.glaremasters.guilds.commands.CommandGuilds;
 import me.glaremasters.guilds.configuration.GuildConfigurationBuilder;
 import me.glaremasters.guilds.configuration.sections.HooksSettings;
 import me.glaremasters.guilds.configuration.sections.PluginSettings;
@@ -43,7 +48,12 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildCode;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
-import me.glaremasters.guilds.listeners.*;
+import me.glaremasters.guilds.listeners.EntityListener;
+import me.glaremasters.guilds.listeners.EssentialsChatListener;
+import me.glaremasters.guilds.listeners.InventoryListener;
+import me.glaremasters.guilds.listeners.PlayerListener;
+import me.glaremasters.guilds.listeners.TicketListener;
+import me.glaremasters.guilds.listeners.WorldGuardListener;
 import me.glaremasters.guilds.utils.StringUtils;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -64,7 +74,11 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.JarURLConnection;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.logging.Level;
@@ -336,7 +350,7 @@ public final class Guilds extends JavaPlugin {
         loadCompletions(commandManager);
 
         // Register all the commands
-        Stream.of(new CommandGuilds(this, guildHandler, settingsManager, actionHandler, economy), new CommandBank(economy), new CommandAdmin(guildHandler, actionHandler), new CommandAlly(guildHandler), new CommandClaim(settingsManager), new CommandCodes(guildHandler, settingsManager)).forEach(commandManager::registerCommand);
+        Stream.of(new CommandGuilds(this, guildHandler, settingsManager, actionHandler, economy), new CommandBank(economy), new CommandAdmin(guildHandler, actionHandler, settingsManager), new CommandAlly(guildHandler), new CommandClaim(settingsManager), new CommandCodes(guildHandler, settingsManager)).forEach(commandManager::registerCommand);
 
 
         // This can probably be moved into it's own method
