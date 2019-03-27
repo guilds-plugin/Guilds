@@ -68,12 +68,11 @@ public final class PluginSettings implements SettingsHolder {
     public void registerComments(CommentsConfiguration conf) {
         String[] pluginHeader = {
                 "Guilds",
-                "Version: ${project.version}",
                 "Creator: Glare",
-                "Contributors: https://github.com/darbyjack/Guilds-Plugin/graphs/contributors",
-                "Issues: https://github.com/darbyjack/Guilds-Plugin/issues",
+                "Contributors: https://github.com/guilds-plugin/Guilds/graphs/contributors",
+                "Issues: https://github.com/guilds-plugin/Guilds/issues",
                 "Spigot: https://www.spigotmc.org/resources/guilds.48920/",
-                "Wiki: https://glaremasters.me/wiki/",
+                "Wiki: https://wiki.glaremasters.me/",
                 "Discord: https://glaremasters.me/discord"
         };
         conf.setComment("settings", pluginHeader);
