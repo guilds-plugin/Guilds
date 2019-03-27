@@ -24,6 +24,7 @@
 
 package me.glaremasters.guilds.commands;
 
+import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import lombok.AllArgsConstructor;
@@ -38,6 +39,7 @@ import me.glaremasters.guilds.guild.GuildTier;
 import me.glaremasters.guilds.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
@@ -57,6 +59,7 @@ public class CommandAdmin extends BaseCommand {
 
     private GuildHandler guildHandler;
     private ActionHandler actionHandler;
+    private SettingsManager settingsManager;
     private final List<Player> spies = new ArrayList<>();
 
     /**
@@ -286,6 +289,46 @@ public class CommandAdmin extends BaseCommand {
         Inventory inv = guildHandler.getGuildVault(guild, vault);
         if (inv != null) player.openInventory(inv);
 
+    }
+
+    /**
+     * Give a player upgrade tickets
+     * @param sender the executor of this command
+     * @param player the player receiving the tickets
+     * @param amount amount of tickets
+     */
+    @Subcommand("give")
+    @Description("{@@descriptions.give}")
+    @CommandPermission("guilds.command.admin")
+    @Syntax("<player> <amount>")
+    public void onTicketGive(CommandSender sender, Player player, @Default("1") Integer amount) {
+        if (player == null) return;
+
+        /* todo add back in the config @Glare
+        String ticketName = getString("upgrade-ticket.name");
+        String ticketMaterial = getString("upgrade-ticket.material");
+        String ticketLore = getString("upgrade-ticket.lore");
+
+        ItemStack upgradeTicket = new ItemStack(Material.matchMaterial(settingsManager.getProperty()), amount);
+        ItemMeta meta = upgradeTicket.getItemMeta();
+        List<String> lores = new ArrayList<>();
+        lores.add(ticketLore);
+        meta.setDisplayName(ticketName);
+        meta.setLore(lores);
+        upgradeTicket.setItemMeta(meta);
+        player.getInventory().addItem(upgradeTicket);
+        */
+    }
+
+    /**
+     * Reload the config
+     */
+    @Subcommand("reload")
+    @Description("{@@descriptions.reload}")
+    @CommandPermission("guilds.command.admin")
+    public void onReload() {
+        settingsManager.reload();
+        getCurrentCommandIssuer().sendInfo(Messages.RELOAD__RELOADED);
     }
 
 }

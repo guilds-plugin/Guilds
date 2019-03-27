@@ -218,17 +218,6 @@ public class CommandGuilds extends BaseCommand {
     }
 
     /**
-     * Reload the config
-     */
-    @Subcommand("reload")
-    @Description("{@@descriptions.reload}")
-    @CommandPermission("guilds.command.reload")
-    public void onReload() {
-        settingsManager.reload();
-        getCurrentCommandIssuer().sendInfo(Messages.RELOAD__RELOADED);
-    }
-
-    /**
      * Set a guild home
      * @param player the player setting the home
      * @param guild the guild that home is being set
@@ -282,35 +271,6 @@ public class CommandGuilds extends BaseCommand {
         }
         guild.setHome(null);
         getCurrentCommandIssuer().sendInfo(Messages.SETHOME__SUCCESSFUL);
-    }
-
-    /**
-     * Give a player upgrade tickets
-     * @param sender the executor of this command
-     * @param player the player receiving the tickets
-     * @param amount amount of tickets
-     */
-    @Subcommand("give")
-    @Description("{@@descriptions.give}")
-    @CommandPermission("guilds.command.give")
-    @Syntax("<player> <amount>")
-    public void onTicketGive(CommandSender sender, Player player, @Default("1") Integer amount) {
-        if (player == null) return;
-
-        /* todo add back in the config @Glare
-        String ticketName = getString("upgrade-ticket.name");
-        String ticketMaterial = getString("upgrade-ticket.material");
-        String ticketLore = getString("upgrade-ticket.lore");
-
-        ItemStack upgradeTicket = new ItemStack(Material.matchMaterial(settingsManager.getProperty()), amount);
-        ItemMeta meta = upgradeTicket.getItemMeta();
-        List<String> lores = new ArrayList<>();
-        lores.add(ticketLore);
-        meta.setDisplayName(ticketName);
-        meta.setLore(lores);
-        upgradeTicket.setItemMeta(meta);
-        player.getInventory().addItem(upgradeTicket);
-        */
     }
 
     /**
