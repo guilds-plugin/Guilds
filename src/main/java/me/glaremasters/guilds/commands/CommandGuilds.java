@@ -59,6 +59,7 @@ import me.glaremasters.guilds.guild.GuildMember;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.guild.GuildSkull;
 import me.glaremasters.guilds.guild.GuildTier;
+import me.glaremasters.guilds.utils.Constants;
 import me.glaremasters.guilds.utils.Serialization;
 import me.glaremasters.guilds.utils.StringUtils;
 import net.milkbowl.vault.economy.Economy;
@@ -106,7 +107,7 @@ public class CommandGuilds extends BaseCommand {
      */
     @Subcommand("create")
     @Description("{@@descriptions.create}")
-    @CommandPermission("guilds.command.create")
+    @CommandPermission(Constants.BASE_PERM + "create")
     @Syntax("<name> (optional) <prefix>")
     public void onCreate(Player player, String name, @Optional String prefix) {
         if (guildHandler.getGuild(player) != null) {
@@ -189,7 +190,7 @@ public class CommandGuilds extends BaseCommand {
      */
     @Subcommand("confirm")
     @Description("{@@descriptions.confirm}")
-    @CommandPermission("guilds.command.confirm")
+    @CommandPermission(Constants.BASE_PERM + "confirm")
     public void onConfirm(Player player) {
         ConfirmAction action = actionHandler.getAction(player);
         if (action == null) {
@@ -206,7 +207,7 @@ public class CommandGuilds extends BaseCommand {
      */
     @Subcommand("cancel")
     @Description("{@@descriptions.cancel}")
-    @CommandPermission("guilds.command.cancel")
+    @CommandPermission(Constants.BASE_PERM + "cancel")
     public void onCancel(Player player) {
         ConfirmAction action = actionHandler.getAction(player);
         if (action == null) {
@@ -225,7 +226,7 @@ public class CommandGuilds extends BaseCommand {
      */
     @Subcommand("sethome")
     @Description("{@@descriptions.sethome}")
-    @CommandPermission("guilds.command.sethome")
+    @CommandPermission(Constants.BASE_PERM + "sethome")
     public void onSetHome(Player player, Guild guild, GuildRole role) {
         if (!role.isChangeHome()) {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
@@ -263,7 +264,7 @@ public class CommandGuilds extends BaseCommand {
      */
     @Subcommand("delhome")
     @Description("{@@descriptions.delhome}")
-    @CommandPermission("guilds.command.delhome")
+    @CommandPermission(Constants.BASE_PERM + "delhome")
     public void onDelHome(Player player, Guild guild, GuildRole role) {
         if (!role.isChangeHome()) {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
@@ -280,7 +281,7 @@ public class CommandGuilds extends BaseCommand {
      */
     @Subcommand("home")
     @Description("{@@descriptions.home}")
-    @CommandPermission("guilds.command.home")
+    @CommandPermission(Constants.BASE_PERM + "home")
     public void onHome(Player player, Guild guild) {
         if (guild.getHome() == null) {
             getCurrentCommandIssuer().sendInfo(Messages.HOME__NO_HOME_SET);
@@ -325,7 +326,7 @@ public class CommandGuilds extends BaseCommand {
      */
     @Subcommand("rename")
     @Description("{@@descriptions.rename}")
-    @CommandPermission("guilds.command.rename")
+    @CommandPermission(Constants.BASE_PERM + "rename")
     @Syntax("<name>")
     public void onRename(Player player, Guild guild, GuildRole role, String name) {
         if (!role.isChangeName()) {
@@ -347,7 +348,7 @@ public class CommandGuilds extends BaseCommand {
      */
     @Subcommand("chat")
     @Description("{@@descriptions.chat}")
-    @CommandPermission("guilds.command.chat")
+    @CommandPermission(Constants.BASE_PERM + "chat")
     public void onGuildChat(Player player, Guild guild, GuildRole role) {
 
         if (!role.isChat()) {
@@ -376,7 +377,7 @@ public class CommandGuilds extends BaseCommand {
      */
     @Subcommand("status")
     @Description("{@@descriptions.status}")
-    @CommandPermission("guilds.command.status")
+    @CommandPermission(Constants.BASE_PERM + "status")
     public void onStatus(Player player, Guild guild, GuildRole role) {
         if (!role.isChangeStatus()) {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
@@ -399,7 +400,7 @@ public class CommandGuilds extends BaseCommand {
      */
     @Subcommand("prefix")
     @Description("{@@descriptions.prefix}")
-    @CommandPermission("guilds.command.prefix")
+    @CommandPermission(Constants.BASE_PERM + "prefix")
     @Syntax("<prefix>")
     public void onPrefix(Player player, Guild guild, GuildRole role, String prefix) {
         if (!role.isChangePrefix()) {
@@ -454,7 +455,7 @@ public class CommandGuilds extends BaseCommand {
      */
     @Subcommand("invite")
     @Description("{@@descriptions.invite}")
-    @CommandPermission("guilds.command.invite")
+    @CommandPermission(Constants.BASE_PERM + "invite")
     @CommandCompletion("@online")
     @Syntax("<name>")
     public void onInvite(Player player, Guild guild, GuildRole role, @Values("@online") @Single String targetPlayer) {
@@ -500,7 +501,7 @@ public class CommandGuilds extends BaseCommand {
      */
     @Subcommand("upgrade")
     @Description("{@@descriptions.upgrade}")
-    @CommandPermission("guilds.command.upgrade")
+    @CommandPermission(Constants.BASE_PERM + "upgrade")
     public void onUpgrade(Player player, Guild guild, GuildRole role) {
         if (!role.isUpgradeGuild()) {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
@@ -567,7 +568,7 @@ public class CommandGuilds extends BaseCommand {
      */
     @Subcommand("transfer")
     @Description("{@@descriptions.transfer}")
-    @CommandPermission("guilds.command.transfer")
+    @CommandPermission(Constants.BASE_PERM + "transfer")
     @CommandCompletion("@members")
     @Syntax("<player>")
     public void onTransfer(Player player, Guild guild, GuildRole role, @Values("@members") @Single String target) {
@@ -610,7 +611,7 @@ public class CommandGuilds extends BaseCommand {
      */
     @Subcommand("leave|exit")
     @Description("{@@descriptions.leave}")
-    @CommandPermission("guilds.command.leave")
+    @CommandPermission(Constants.BASE_PERM + "leave")
     public void onLeave(Player player, Guild guild) {
 
         if (guild.getGuildMaster().getUuid().equals(player.getUniqueId())) {
@@ -661,7 +662,7 @@ public class CommandGuilds extends BaseCommand {
      */
     @Subcommand("list")
     @Description("{@@descriptions.list}")
-    @CommandPermission("guilds.command.list")
+    @CommandPermission(Constants.BASE_PERM + "list")
     public void onGuildList(Player player) {
         //todo after explanation waiting for @Glare
         playerPages.put(player.getUniqueId(), 1);
@@ -677,7 +678,7 @@ public class CommandGuilds extends BaseCommand {
      */
     @Subcommand("delete")
     @Description("{@@descriptions.delete}")
-    @CommandPermission("guilds.command.delete")
+    @CommandPermission(Constants.BASE_PERM + "delete")
     public void onDelete(Player player, Guild guild, GuildRole role) {
         if (!role.isRemoveGuild()) {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
@@ -713,7 +714,7 @@ public class CommandGuilds extends BaseCommand {
      */
     @Subcommand("decline")
     @Description("{@@descriptions.decline}")
-    @CommandPermission("guilds.command.decline")
+    @CommandPermission(Constants.BASE_PERM + "decline")
     @CommandCompletion("@invitedTo")
     @Syntax("<guild name>")
     public void onDecline(Player player, @Values("@invitedTo") @Single String name) {
@@ -740,7 +741,7 @@ public class CommandGuilds extends BaseCommand {
      */
     @Subcommand("boot|kick")
     @Description("Kick someone from your Guild")
-    @CommandPermission("guilds.command.boot")
+    @CommandPermission(Constants.BASE_PERM + "boot")
     @CommandCompletion("@members")
     @Syntax("<name>")
     public void onKick(Player player, Guild guild, GuildRole role, @Values("@members") @Single String name) {
@@ -779,7 +780,7 @@ public class CommandGuilds extends BaseCommand {
      */
     @Subcommand("vault")
     @Description("{@@descriptions.vault}")
-    @CommandPermission("guilds.command.vault")
+    @CommandPermission(Constants.BASE_PERM + "vault")
     public void onVault(Player player, Guild guild, GuildRole role, @Default("1") Integer vault) {
         if (!role.isOpenVault()) {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
@@ -804,7 +805,7 @@ public class CommandGuilds extends BaseCommand {
      */
     @Subcommand("demote")
     @Description("{@@descriptions.demote}")
-    @CommandPermission("guilds.command.demote")
+    @CommandPermission(Constants.BASE_PERM + "demote")
     @CommandCompletion("@members")
     @Syntax("<player>")
     public void onDemote(Player player, @Values("@members") @Single String target, Guild guild, GuildRole role) {
@@ -855,7 +856,7 @@ public class CommandGuilds extends BaseCommand {
      */
     @Subcommand("promote")
     @Description("{@@descriptions.promote}")
-    @CommandPermission("guilds.command.promote")
+    @CommandPermission(Constants.BASE_PERM + "promote")
     @CommandCompletion("@members")
     @Syntax("<player>")
     public void onPromote(Player player, @Values("@members") @Single String target, Guild guild, GuildRole role) {
@@ -902,7 +903,7 @@ public class CommandGuilds extends BaseCommand {
      */
     @Subcommand("accept|join")
     @Description("{@@descriptions.accept}")
-    @CommandPermission("guilds.command.accept")
+    @CommandPermission(Constants.BASE_PERM + "accept")
     @CommandCompletion("@invitedTo")
     @Syntax("<guild name>")
     public void onAccept(Player player, @Values("@invitedTo") @Single String name) {
@@ -945,7 +946,7 @@ public class CommandGuilds extends BaseCommand {
      */
     @Subcommand("check")
     @Description("{@@descriptions.check}")
-    @CommandPermission("guilds.command.check")
+    @CommandPermission(Constants.BASE_PERM + "check")
     public void onCheck(Player player) {
         Guild guild = guildHandler.getGuild(player);
 
@@ -972,7 +973,7 @@ public class CommandGuilds extends BaseCommand {
      */
     @Subcommand("request")
     @Description("{@@descriptions.request}")
-    @CommandPermission("guilds.command.request")
+    @CommandPermission(Constants.BASE_PERM + "request")
     @CommandCompletion("@guilds")
     @Syntax("<guild name>")
     public void onRequest(Player player, @Values("@guilds") @Single String name) {
@@ -1008,7 +1009,7 @@ public class CommandGuilds extends BaseCommand {
      */
     @Subcommand("buff")
     @Description("{@@descriptions.buff}")
-    @CommandPermission("guilds.command.buff")
+    @CommandPermission(Constants.BASE_PERM + "buff")
     public void onBuff(Player player, Guild guild, GuildRole role) {
         if (!role.isActivateBuff()) {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
@@ -1034,7 +1035,7 @@ public class CommandGuilds extends BaseCommand {
      * @see CommandHelp
      */
     @HelpCommand
-    @CommandPermission("guilds.command.help")
+    @CommandPermission(Constants.BASE_PERM + "help")
     @Syntax("")
     @Description("{@@descriptions.help}")
     public void onHelp(CommandHelp help) {
