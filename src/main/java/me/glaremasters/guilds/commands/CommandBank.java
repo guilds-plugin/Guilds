@@ -30,6 +30,7 @@ import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Messages;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
+import me.glaremasters.guilds.utils.Constants;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.entity.Player;
 
@@ -47,7 +48,7 @@ public class CommandBank extends BaseCommand {
      */
     @Subcommand("bank balance")
     @Description("{@@descriptions.bank-balance}")
-    @CommandPermission("guilds.command.bank.balance")
+    @CommandPermission(Constants.BANK_PERM + "balance")
     public void onBalance(Player player, Guild guild) {
         getCurrentCommandIssuer().sendInfo(Messages.BANK__BALANCE, "{amount}", String.valueOf(guild.getBalance()));
     }
@@ -61,7 +62,7 @@ public class CommandBank extends BaseCommand {
      */
     @Subcommand("bank deposit")
     @Description("{@@descriptions.bank-deposit}")
-    @CommandPermission("guilds.command.bank.deposit")
+    @CommandPermission(Constants.BANK_PERM + "deposit")
     @Syntax("<amount>")
     public void onDeposit(Player player, Guild guild, GuildRole role, Double amount) {
         if (!role.isDepositMoney()) {
@@ -90,7 +91,7 @@ public class CommandBank extends BaseCommand {
      */
     @Subcommand("bank withdraw")
     @Description("{@@descriptions.bank-withdraw}")
-    @CommandPermission("guilds.command.bank.withdraw")
+    @CommandPermission(Constants.BANK_PERM + "withdraw")
     @Syntax("<amount>")
     public void onWithdraw(Player player, Guild guild, GuildRole role, Double amount) {
         if (!role.isWithdrawMoney()) {

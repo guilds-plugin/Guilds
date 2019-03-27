@@ -44,6 +44,7 @@ import me.glaremasters.guilds.guild.GuildCode;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildMember;
 import me.glaremasters.guilds.guild.GuildRole;
+import me.glaremasters.guilds.utils.Constants;
 import org.apache.commons.lang.RandomStringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -72,7 +73,7 @@ public class CommandCodes extends BaseCommand {
     @Subcommand("code create")
     @Description("{@@descriptions.code-create}")
     @Syntax("<uses>")
-    @CommandPermission("guilds.command.code.create")
+    @CommandPermission(Constants.CODE_PERM + "create")
     public void onCreate(Player player, Guild guild, GuildRole role, @Optional @Default("1") Integer uses) {
 
         if (!role.isCreateCode()) {
@@ -105,7 +106,7 @@ public class CommandCodes extends BaseCommand {
      */
     @Subcommand("code delete")
     @Description("{@@descriptions.code-delete}")
-    @CommandPermission("guilds.command.code.delete")
+    @CommandPermission(Constants.CODE_PERM + "delete")
     @CommandCompletion("@activeCodes")
     public void onDelete(Player player, Guild guild, GuildRole role, @Values("@activeCodes") @Single String code) {
 
@@ -127,7 +128,7 @@ public class CommandCodes extends BaseCommand {
      */
     @Subcommand("code list")
     @Description("{@@descriptions.code-list}")
-    @CommandPermission("guilds.command.code.list")
+    @CommandPermission(Constants.CODE_PERM + "list")
     public void onList(Player player, Guild guild) {
 
         if (guild.getCodes() == null) {
@@ -151,7 +152,7 @@ public class CommandCodes extends BaseCommand {
      */
     @Subcommand("code redeem")
     @Description("{@@descriptions.code-redeem}")
-    @CommandPermission("guilds.command.code.redeem")
+    @CommandPermission(Constants.CODE_PERM + "redeem")
     public void onRedeem(Player player, String code) {
 
         if (guildHandler.getGuild(player) != null) {
@@ -183,7 +184,7 @@ public class CommandCodes extends BaseCommand {
 
     @Subcommand("code info")
     @Description("{@@descriptions.code-info")
-    @CommandPermission("guilds.command.code.info")
+    @CommandPermission(Constants.CODE_PERM + "info")
     @Syntax("<code>")
     @CommandCompletion("@activeCodes")
     public void onInfo(Player player, Guild guild, GuildRole role, @Values("@activeCodes") @Single String code) {

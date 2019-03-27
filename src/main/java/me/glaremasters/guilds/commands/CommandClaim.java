@@ -37,6 +37,7 @@ import me.glaremasters.guilds.configuration.sections.ClaimSettings;
 import me.glaremasters.guilds.configuration.sections.HooksSettings;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
+import me.glaremasters.guilds.utils.Constants;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.codemc.worldguardwrapper.WorldGuardWrapper;
@@ -54,7 +55,7 @@ public class CommandClaim extends BaseCommand {
 
     @Subcommand("claim")
     @Description("{@@descriptions.claim}")
-    @CommandPermission("guilds.command.claim")
+    @CommandPermission(Constants.BASE_PERM + "claim")
     public void onClaim(Player player, Guild guild, GuildRole role) {
 
         int radius = settingsManager.getProperty(ClaimSettings.RADIUS);
@@ -101,7 +102,7 @@ public class CommandClaim extends BaseCommand {
 
     @Subcommand("unclaim")
     @Description("{@@descriptions.unclaim}")
-    @CommandPermission("guilds.command.unclaim")
+    @CommandPermission(Constants.BASE_PERM + "unclaim")
     public void onUnClaim(Player player, Guild guild, GuildRole role) {
 
         if (!settingsManager.getProperty(HooksSettings.WORLDGUARD)) {
