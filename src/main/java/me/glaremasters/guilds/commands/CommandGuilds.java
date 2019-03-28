@@ -545,7 +545,6 @@ public class CommandGuilds extends BaseCommand {
 
                 guildHandler.upgradeTier(guild);
 
-                //todo why is this delayed? @Glare
                 //Bukkit.getScheduler().scheduleSyncDelayedTask(guilds, () -> guildHandler.addGuildPerms(guild), 60L);
 
                 getCurrentCommandIssuer().sendInfo(Messages.UPGRADE__SUCCESS);
