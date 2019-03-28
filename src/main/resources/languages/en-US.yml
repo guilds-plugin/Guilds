@@ -80,6 +80,7 @@ bank:
   deposit-success: "&aYou have deposited {amount} into your Guild Bank. Your Guild Bank total is now {total}!"
   withdrawl-success: "&aYou have withdrawn {amount} from your Guild Bank. Your Guild Bank total is now {total}!"
   not-enough-bank: "&cThere isn't enough in the Guild Bank to do that"
+  over-max: "&cSorry, you can't deposit that much as you would go over your max bank balance!
 admin:
   delete-warning: "&cYou are about to delete the guild {guild}. Type /guilds confirm to remove this guild, type /guilds cancel to cancel."
   delete-success: "&aYou have successfully removed {guild}."

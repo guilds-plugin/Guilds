@@ -30,6 +30,7 @@ import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Messages;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
+import me.glaremasters.guilds.guild.GuildTier;
 import me.glaremasters.guilds.utils.Constants;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.entity.Player;
@@ -76,8 +77,16 @@ public class CommandBank extends BaseCommand {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__NOT_ENOUGH_MONEY);
             return;
         }
-        economy.withdrawPlayer(player, amount);
+
         Double balance = guild.getBalance();
+        GuildTier tier = guild.getTier();
+
+        if ((amount + balance) > tier.getMaxBankBalance()) {
+            getCurrentCommandIssuer().sendInfo(Messages.BANK__OVER_MAX);
+            return;
+        }
+
+        economy.withdrawPlayer(player, amount);
         guild.setBalance(balance + amount);
         getCurrentCommandIssuer().sendInfo(Messages.BANK__DEPOSIT_SUCCESS, "{amount}", String.valueOf(amount), "{total}", String.valueOf(guild.getBalance()));
     }
