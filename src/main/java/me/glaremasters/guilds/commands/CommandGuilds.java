@@ -786,6 +786,13 @@ public class CommandGuilds extends BaseCommand {
             return;
         }
 
+        GuildTier tier = guild.getTier();
+
+        if (vault > tier.getVaultAmount()) {
+            getCurrentCommandIssuer().sendInfo(Messages.VAULTS__MAXED);
+            return;
+        }
+
         try {
             guildHandler.getGuildVault(guild, vault);
         } catch (Exception ex) {

@@ -63,6 +63,10 @@ public class TierSettings implements SettingsHolder {
     public static final Property<Integer> ONE_MAX_MEMBERS =
             newProperty(LIST_PATH + "1.max-members", 15);
 
+    @Comment("How many Vaults would you like the Guild to be able to use?")
+    public static final Property<Integer> ONE_VAULT_AMOUNT =
+            newProperty(LIST_PATH + "1.vault-amount", 1);
+
     @Comment("How much extra XP should drop from mobs?")
     public static final Property<Double> ONE_MOB =
             newProperty(LIST_PATH + "1.mob-xp-multiplier", 1.0);
@@ -99,6 +103,10 @@ public class TierSettings implements SettingsHolder {
     public static final Property<Integer> TWO_MAX_MEMBERS =
             newProperty(LIST_PATH + "2.max-members", 30);
 
+    @Comment("How many Vaults would you like the Guild to be able to use?")
+    public static final Property<Integer> TWO_VAULT_AMOUNT =
+            newProperty(LIST_PATH + "2.vault-amount", 2);
+
     @Comment("How much extra XP should drop from mobs?")
     public static final Property<Double> TWO_MOB =
             newProperty(LIST_PATH + "2.mob-xp-multiplier", 2.0);
@@ -134,6 +142,10 @@ public class TierSettings implements SettingsHolder {
     @Comment("How many members can be in a guild of this tier?")
     public static final Property<Integer> THREE_MAX_MEMBERS =
             newProperty(LIST_PATH + "3.max-members", 50);
+
+    @Comment("How many Vaults would you like the Guild to be able to use?")
+    public static final Property<Integer> THREE_VAULT_AMOUNT =
+            newProperty(LIST_PATH + "3.vault-amount", 3);
 
     @Comment("How much extra XP should drop from mobs?")
     public static final Property<Double> THREE_MOB =

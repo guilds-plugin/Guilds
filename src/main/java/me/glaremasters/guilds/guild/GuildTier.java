@@ -39,6 +39,7 @@ public class GuildTier {
     private final transient String name;
     private final transient double cost;
     private final transient int maxMembers;
+    private final transient int vaultAmount;
     private final transient double mobXpMultiplier;
     private final transient double damageMultiplier;
     private final transient double maxBankBalance;
