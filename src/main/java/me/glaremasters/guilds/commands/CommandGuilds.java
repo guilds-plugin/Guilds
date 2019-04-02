@@ -66,6 +66,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -1031,6 +1032,11 @@ public class CommandGuilds extends BaseCommand {
         createBuffItem("water-breathing", lore, buff, 7);
         createBuffItem("regeneration", lore, buff, 8);*/
         player.openInventory(buff);
+    }
+
+    @Subcommand("debug")
+    public void onDebug(CommandSender sender) {
+        sender.sendMessage(guilds.sendDebug(guilds.createDebug()));
     }
 
     /**

@@ -493,8 +493,32 @@ public final class Guilds extends JavaPlugin {
 
     }
 
+    public String createDebug() {
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("Guilds Debug Output\n\n");
+
+        sb.append("[Plugin Information]\n\n");
+
+        sb.append("Version: " + getDescription().getVersion() + "\n");
+        sb.append("Config: " + getConfig().saveToString() + "\n\n");
+
+        sb.append("[Guilds Data]\n");
+        sb.append(guildHandler.getGuildNames().toString() + "\n\n");
+
+        sb.append("[Server Information]\n\n");
+        sb.append("Type: " + getServer().getName() + "\n");
+        sb.append("Version: " + getServer().getVersion() + "\n");
+        sb.append("Players Online: " + Bukkit.getOnlinePlayers().size() + "\n");
+        sb.append("Players: ");
+        Bukkit.getOnlinePlayers().forEach(p -> sb.append(p.getName() + ","));
+
+        return sb.toString();
+    }
+
     public String sendDebug(String data) {
-        String url = "https://paste.glaremasters.me/documents";
+        String url = "https://hastebin.com/documents";
 
         HttpClient client = HttpClientBuilder.create().build();
         HttpPost post = new HttpPost(url);
@@ -505,7 +529,7 @@ public final class Guilds extends JavaPlugin {
             post.setEntity(new StringEntity(data));
             HttpResponse response = client.execute(post);
             String result = EntityUtils.toString(response.getEntity());
-            return "https://paste.glaremasters.me/" + new JsonParser().parse(result).getAsJsonObject().get("key").getAsString();
+            return "https://hastebin.com/raw/" + new JsonParser().parse(result).getAsJsonObject().get("key").getAsString();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
