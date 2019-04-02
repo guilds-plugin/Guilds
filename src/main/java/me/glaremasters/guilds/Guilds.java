@@ -29,6 +29,7 @@ import ch.jalu.configme.SettingsManagerBuilder;
 import ch.jalu.configme.migration.PlainMigrationService;
 import co.aikar.commands.InvalidCommandArgument;
 import co.aikar.commands.PaperCommandManager;
+import com.google.gson.JsonParser;
 import lombok.Getter;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.api.GuildsAPI;
@@ -58,6 +59,13 @@ import me.glaremasters.guilds.utils.StringUtils;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -71,9 +79,7 @@ import org.codemc.worldguardwrapper.WorldGuardWrapper;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.JarURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -363,7 +369,11 @@ public final class Guilds extends JavaPlugin {
                 @Override
                 public void run() {
                     /*updateCheck(updater);*/
-                    info(getAnnouncements());
+                    try {
+                        info(getAnnouncements());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
 
@@ -463,30 +473,46 @@ public final class Guilds extends JavaPlugin {
         }
     }
 
+
     /**
-     * Grab the announcements for the plugins
-     *
-     * @return the announcements string
+     * Get the current plugin announcements
+     * @return the announcements
+     * @throws IOException
      */
-    public String getAnnouncements() {
-        String announcement;
-        try {
-            URL url = new URL("https://glaremasters.me/guilds/announcements/?id=" + getDescription()
-                    .getVersion());
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            con.setRequestProperty("User-Agent",
-                    "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
-            try (InputStream in = con.getInputStream()) {
-                String encoding = con.getContentEncoding();
-                encoding = encoding == null ? "UTF-8" : encoding;
-                announcement = StringUtils.convert_html(IOUtils.toString(in, encoding));
-                con.disconnect();
-            }
-        } catch (Exception exception) {
-            announcement = "Could not fetch announcements!";
-        }
-        return announcement;
+    public String getAnnouncements() throws IOException {
+        String url = "https://glaremasters.me/guilds/announcements/?id=" + getDescription().getVersion();
+
+        HttpClient client = HttpClientBuilder.create().build();
+        HttpGet request = new HttpGet(url);
+
+        request.addHeader("User-Agent", "Mozilla/5.0 (iPhone; CPU iPhone OS 5_1_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9B206 Safari/7534.48.3");
+        HttpResponse response = client.execute(request);
+
+        InputStream is = response.getEntity().getContent();
+        return StringUtils.convert_html(IOUtils.toString(is, "UTF-8"));
+
     }
+
+    public String sendDebug(String data) {
+        String url = "https://paste.glaremasters.me/documents";
+
+        HttpClient client = HttpClientBuilder.create().build();
+        HttpPost post = new HttpPost(url);
+
+        post.addHeader("User-Agent", "Mozilla/5.0 (iPhone; CPU iPhone OS 5_1_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9B206 Safari/7534.48.3");
+
+        try {
+            post.setEntity(new StringEntity(data));
+            HttpResponse response = client.execute(post);
+            String result = EntityUtils.toString(response.getEntity());
+            return "https://paste.glaremasters.me/" + new JsonParser().parse(result).getAsJsonObject().get("key").getAsString();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return "Issues posting data";
+    }
+
+
 
 
 }

@@ -50,6 +50,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.material.Sign;
 import org.bukkit.potion.PotionEffectType;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -101,7 +102,11 @@ public class PlayerListener implements Listener {
             guilds.getServer().getScheduler().scheduleAsyncDelayedTask(guilds, () -> {
                 if (player.isOp()) {
                     if (!ALREADY_INFORMED.contains(player.getUniqueId())) {
-                        JSONMessage.create(color("&f[&aGuilds&f]&r Announcements (Hover over me for more information)")).tooltip(guilds.getAnnouncements()).openURL(guilds.getDescription().getWebsite()).send(player);
+                        try {
+                            JSONMessage.create(color("&f[&aGuilds&f]&r Announcements (Hover over me for more information)")).tooltip(guilds.getAnnouncements()).openURL(guilds.getDescription().getWebsite()).send(player);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         ALREADY_INFORMED.add(player.getUniqueId());
                     }
                 }
