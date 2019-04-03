@@ -99,6 +99,10 @@
                                     <pattern>com.google.gson</pattern>
                                     <shadedPattern>me.glaremasters.guilds.libs.gson</shadedPattern>
                                 </relocation>
+                                <relocation>
+                                    <pattern>co.aikar.commands</pattern>
+                                    <shadedPattern>me.glaremasters.guilds.libs.acf</shadedPattern>
+                                </relocation>
                             </relocations>
                         </configuration>
                     </execution>
