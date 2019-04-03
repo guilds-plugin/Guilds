@@ -157,6 +157,10 @@ public class CommandGuilds extends BaseCommand {
 
                 gb.tier(guildHandler.getGuildTier(1));
 
+                gb.invitedMembers(new ArrayList<>());
+                gb.allies(new ArrayList<>());
+                gb.pendingAllies(new ArrayList<>());
+
                 gb.vaults(new ArrayList<>());
                 gb.codes(new ArrayList<>());
 
