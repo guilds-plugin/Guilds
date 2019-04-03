@@ -83,7 +83,7 @@ import java.util.UUID;
 // xx lemmo.
 @SuppressWarnings("unused")
 @AllArgsConstructor
-@CommandAlias("guild|guilds")
+@CommandAlias("guild|guilds|g")
 public class CommandGuilds extends BaseCommand {
 
     private Guilds guilds;
@@ -158,6 +158,7 @@ public class CommandGuilds extends BaseCommand {
                 gb.tier(guildHandler.getGuildTier(1));
 
                 gb.vaults(new ArrayList<>());
+                gb.codes(new ArrayList<>());
 
                 Guild guild = gb.build();
 

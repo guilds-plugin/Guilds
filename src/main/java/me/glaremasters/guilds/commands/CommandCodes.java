@@ -58,7 +58,7 @@ import java.util.Collections;
  * Time: 2:17 PM
  */
 @AllArgsConstructor
-@CommandAlias("guild|guilds")
+@CommandAlias("guild|guilds|g")
 public class CommandCodes extends BaseCommand {
 
     private GuildHandler guildHandler;

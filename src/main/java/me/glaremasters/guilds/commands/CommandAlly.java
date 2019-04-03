@@ -42,7 +42,7 @@ import java.util.stream.Collectors;
 
 @SuppressWarnings("unused")
 @AllArgsConstructor
-@CommandAlias("guild|guilds")
+@CommandAlias("guild|guilds|g")
 public class CommandAlly extends BaseCommand {
 
     private GuildHandler guildHandler;

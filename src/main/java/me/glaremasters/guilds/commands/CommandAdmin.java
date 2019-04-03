@@ -54,7 +54,7 @@ import java.util.List;
 
 @SuppressWarnings("unused")
 @AllArgsConstructor
-@CommandAlias("guild|guilds")
+@CommandAlias("guild|guilds|g")
 public class CommandAdmin extends BaseCommand {
 
     private GuildHandler guildHandler;

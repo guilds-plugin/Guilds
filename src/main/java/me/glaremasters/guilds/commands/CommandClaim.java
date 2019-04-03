@@ -48,7 +48,7 @@ import java.util.Set;
 
 @SuppressWarnings("unused")
 @AllArgsConstructor
-@CommandAlias("guild|guilds")
+@CommandAlias("guild|guilds|g")
 public class CommandClaim extends BaseCommand {
 
     private SettingsManager settingsManager;

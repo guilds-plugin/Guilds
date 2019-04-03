@@ -37,7 +37,7 @@ import org.bukkit.entity.Player;
 
 @SuppressWarnings("unused")
 @AllArgsConstructor
-@CommandAlias("guild|guilds")
+@CommandAlias("guild|guilds|g")
 public class CommandBank extends BaseCommand {
 
     private Economy economy;
