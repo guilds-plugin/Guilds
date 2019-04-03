@@ -168,14 +168,6 @@
             <scope>compile</scope>
         </dependency>
 
-        <!-- Json stuff -->
-        <!-- JsonProvider messages in chat -->
-        <dependency>
-            <groupId>me.rayzr522</groupId>
-            <artifactId>jsonmessage</artifactId>
-            <version>1.0.0</version>
-            <scope>compile</scope>
-        </dependency>
         <!-- GSON for serialising and deserialising -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
