@@ -235,12 +235,5 @@
             <artifactId>JsonConfiguration</artifactId>
             <version>1.1</version>
         </dependency>
-
-        <!-- Used for announcements and debugs -->
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>4.5.8</version>
-        </dependency>
     </dependencies>
 </project>

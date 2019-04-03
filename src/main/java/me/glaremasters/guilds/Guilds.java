@@ -55,17 +55,11 @@ import me.glaremasters.guilds.listeners.InventoryListener;
 import me.glaremasters.guilds.listeners.PlayerListener;
 import me.glaremasters.guilds.listeners.TicketListener;
 import me.glaremasters.guilds.listeners.WorldGuardListener;
+import me.glaremasters.guilds.utils.Constants;
 import me.glaremasters.guilds.utils.StringUtils;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.util.EntityUtils;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -79,7 +73,9 @@ import org.codemc.worldguardwrapper.WorldGuardWrapper;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.JarURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -473,67 +469,25 @@ public final class Guilds extends JavaPlugin {
         }
     }
 
-
     /**
-     * Get the current plugin announcements
-     * @return the announcements
+     * Get the announcements for the plugin
+     * @return announcements
      * @throws IOException
      */
     public String getAnnouncements() throws IOException {
-        String url = "https://glaremasters.me/guilds/announcements/?id=" + getDescription().getVersion();
-
-        HttpClient client = HttpClientBuilder.create().build();
-        HttpGet request = new HttpGet(url);
-
-        request.addHeader("User-Agent", "Mozilla/5.0 (iPhone; CPU iPhone OS 5_1_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9B206 Safari/7534.48.3");
-        HttpResponse response = client.execute(request);
-
-        InputStream is = response.getEntity().getContent();
-        return StringUtils.convert_html(IOUtils.toString(is, "UTF-8"));
-
-    }
-
-    public String createDebug() {
-
-        StringBuilder sb = new StringBuilder();
-
-        sb.append("Guilds Debug Output\n\n");
-
-        sb.append("[Plugin Information]\n\n");
-
-        sb.append("Version: " + getDescription().getVersion() + "\n");
-        sb.append("Config: " + getConfig().saveToString() + "\n\n");
-
-        sb.append("[Guilds Data]\n");
-        sb.append(guildHandler.getGuildNames().toString() + "\n\n");
-
-        sb.append("[Server Information]\n\n");
-        sb.append("Type: " + getServer().getName() + "\n");
-        sb.append("Version: " + getServer().getVersion() + "\n");
-        sb.append("Players Online: " + Bukkit.getOnlinePlayers().size() + "\n");
-        sb.append("Players: ");
-        Bukkit.getOnlinePlayers().forEach(p -> sb.append(p.getName() + ","));
-
-        return sb.toString();
-    }
-
-    public String sendDebug(String data) {
-        String url = "https://hastebin.com/documents";
-
-        HttpClient client = HttpClientBuilder.create().build();
-        HttpPost post = new HttpPost(url);
-
-        post.addHeader("User-Agent", "Mozilla/5.0 (iPhone; CPU iPhone OS 5_1_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9B206 Safari/7534.48.3");
-
-        try {
-            post.setEntity(new StringEntity(data));
-            HttpResponse response = client.execute(post);
-            String result = EntityUtils.toString(response.getEntity());
-            return "https://hastebin.com/raw/" + new JsonParser().parse(result).getAsJsonObject().get("key").getAsString();
-        } catch (IOException ex) {
-            ex.printStackTrace();
+        String announcement;
+        URL url = new URL("https://glaremasters.me/guilds/announcements/?id=" + getDescription().getVersion());
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestProperty("User-Agent", Constants.USER_AGENT);
+        try (InputStream in = con.getInputStream()) {
+            String encoding = con.getContentEncoding();
+            encoding = encoding == null ? "UTF-8" : encoding;
+            announcement = StringUtils.convert_html(IOUtils.toString(in, encoding));
+            con.disconnect();
+        } catch (Exception ex) {
+            announcement = "Could not fetch announcements!";
         }
-        return "Issues posting data";
+        return announcement;
     }
 
 
