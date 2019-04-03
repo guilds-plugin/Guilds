@@ -90,7 +90,7 @@ public class CommandAdmin extends BaseCommand {
 
                 guildHandler.removeGuild(guild);
 
-                getCurrentCommandIssuer().sendInfo(Messages.ADMIN__DELETE_SUCCESSFUL, "{guild}", name);
+                getCurrentCommandIssuer().sendInfo(Messages.ADMIN__DELETE_SUCCESS, "{guild}", name);
 
                 actionHandler.removeAction(player);
             }
