@@ -53,14 +53,16 @@ public class PlaceholderAPI extends PlaceholderExpansion {
 
     public String onPlaceholderRequest(Player p, String arg) {
 
-        if (p == null) {
-            return null;
-        }
+        if (p == null)  return null;
 
         GuildsAPI api = Guilds.getApi();
         if (api == null) return null;
 
-        switch (arg) {
+        String lowerArg = arg.toLowerCase();
+
+        if (api.getGuild(p) == null) return "";
+
+        switch (lowerArg) {
             case "name":
                 return api.getGuild(p).getName();
             case "master":
@@ -84,7 +86,7 @@ public class PlaceholderAPI extends PlaceholderExpansion {
             case "role_node":
                 return api.getGuildRole(p).getNode();
         }
-        return null;
+        return "";
     }
 
 }
