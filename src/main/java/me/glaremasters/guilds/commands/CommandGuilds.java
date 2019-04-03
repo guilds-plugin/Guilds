@@ -155,6 +155,9 @@ public class CommandGuilds extends BaseCommand {
                 members.add(guildMaster);
                 gb.members(members);
 
+                gb.home(null);
+                gb.balance(0);
+
                 gb.tier(guildHandler.getGuildTier(1));
 
                 gb.invitedMembers(new ArrayList<>());
@@ -163,6 +166,7 @@ public class CommandGuilds extends BaseCommand {
 
                 gb.vaults(new ArrayList<>());
                 gb.codes(new ArrayList<>());
+
 
                 Guild guild = gb.build();
 
@@ -637,14 +641,14 @@ public class CommandGuilds extends BaseCommand {
 
                     guildHandler.removeGuild(guild);
 
-                    guildHandler.sendMessage(guild, Messages.LEAVE__GUILDMASTER_LEFT, "{player}", player.getName());
+                    guild.sendMessage(getCurrentCommandManager(), Messages.LEAVE__GUILDMASTER_LEFT, "{player}", player.getName());
                     getCurrentCommandIssuer().sendInfo(Messages.LEAVE__SUCCESSFUL);
 
                 } else {
                     guild.removeMember(player);
 
                     getCurrentCommandIssuer().sendInfo(Messages.LEAVE__SUCCESSFUL);
-                    guildHandler.sendMessage(guild, Messages.LEAVE__PLAYER_LEFT, "{player}", player.getName());
+                    guild.sendMessage(getCurrentCommandManager(), Messages.LEAVE__PLAYER_LEFT, "{player}", player.getName());
                 }
 
                 getCurrentCommandIssuer().sendInfo(Messages.LEAVE__SUCCESSFUL);
@@ -769,7 +773,7 @@ public class CommandGuilds extends BaseCommand {
         guild.removeMember(kickedPlayer);
 
         getCurrentCommandIssuer().sendInfo(Messages.BOOT__SUCCESSFUL, "{player}", bootedPlayer.getName());
-        guildHandler.sendMessage(guild, Messages.BOOT__PLAYER_KICKED, "{player}", bootedPlayer.getName(), "{kicker}", player.getName());
+        guild.sendMessage(getCurrentCommandManager(), Messages.BOOT__PLAYER_KICKED, "{player}", bootedPlayer.getName(), "{kicker}", player.getName());
         if (bootedPlayer.isOnline()) {
             getCurrentCommandManager().getCommandIssuer(bootedPlayer).sendInfo(Messages.BOOT__KICKED, "{kicker}", player.getName());
         }
@@ -946,7 +950,7 @@ public class CommandGuilds extends BaseCommand {
 
         guild.addMember(new GuildMember(player.getUniqueId(), guildHandler.getLowestGuildRole()));
 
-        guildHandler.sendMessage(guild, Messages.ACCEPT__PLAYER_JOINED, "{player}", player.getName());
+        guild.sendMessage(getCurrentCommandManager(), Messages.ACCEPT__PLAYER_JOINED, "{player}", player.getName());
         getCurrentCommandIssuer().sendInfo(Messages.ACCEPT__SUCCESSFUL, "{guild}", guild.getName());
     }
 

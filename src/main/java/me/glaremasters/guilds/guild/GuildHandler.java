@@ -213,17 +213,6 @@ public class GuildHandler {
     public GuildRole getGuildRole(int level){
         return roles.stream().filter(guildRole -> guildRole.getLevel() == level).findFirst().orElse(null);
     }
-
-    /**
-     * Sends a message to all online members in a guild
-     * @param guild the guild from which members to send it to
-     * @param key the message key to send
-     * @param replacements any replacements
-     */
-    public void sendMessage(Guild guild, Messages key, String... replacements) {
-        guild.getMembers().stream().map(m -> Bukkit.getPlayer(m.getUuid())).filter(Objects::nonNull).forEach(p -> commandManager.getCommandIssuer(p).sendInfo(key, replacements));
-    }
-
     /**
      * Adds an ally to both guilds
      * @param guild the guild to ally

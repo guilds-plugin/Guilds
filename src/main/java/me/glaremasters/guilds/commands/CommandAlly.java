@@ -87,8 +87,8 @@ public class CommandAlly extends BaseCommand {
 
         guildHandler.addAlly(guild, targetGuild);
 
-        guildHandler.sendMessage(guild, Messages.ALLY__CURRENT_ACCEPTED, "{guild}", targetGuild.getName());
-        guildHandler.sendMessage(targetGuild, Messages.ALLY__TARGET_ACCEPTED, "{guild}", guild.getName());
+        guild.sendMessage(getCurrentCommandManager(), Messages.ALLY__CURRENT_ACCEPTED, "{guild}", targetGuild.getName());
+        targetGuild.sendMessage(getCurrentCommandManager(), Messages.ALLY__TARGET_ACCEPTED, "{guild}", guild.getName());
     }
 
     /**
@@ -114,8 +114,8 @@ public class CommandAlly extends BaseCommand {
         if (!guild.getPendingAllies().contains(targetGuild.getId())) return;
 
         guildHandler.removePendingAlly(guild, targetGuild);
-        guildHandler.sendMessage(guild, Messages.ALLY__CURRENT_DECLINED, "{guild}", targetGuild.getName());
-        guildHandler.sendMessage(targetGuild, Messages.ALLY__TARGET_DECLINED, "{guild}", guild.getName());
+        guild.sendMessage(getCurrentCommandManager(), Messages.ALLY__CURRENT_DECLINED, "{guild}", targetGuild.getName());
+        targetGuild.sendMessage(getCurrentCommandManager(), Messages.ALLY__TARGET_DECLINED, "{guild}", guild.getName());
     }
 
     /**
@@ -159,7 +159,7 @@ public class CommandAlly extends BaseCommand {
         if (event.isCancelled()) return;
 
         getCurrentCommandIssuer().sendInfo(Messages.ALLY__INVITE_SENT, "{guild}", targetGuild.getName());
-        guildHandler.sendMessage(targetGuild, Messages.ALLY__INCOMING_INVITE, "{guild}", guild.getName());
+        targetGuild.sendMessage(getCurrentCommandManager(), Messages.ALLY__INCOMING_INVITE, "{guild}", guild.getName());
         guildHandler.addPendingAlly(targetGuild, guild);
     }
 
@@ -195,8 +195,8 @@ public class CommandAlly extends BaseCommand {
 
         guildHandler.removeAlly(guild, targetGuild);
 
-        guildHandler.sendMessage(guild, Messages.ALLY__CURRENT_REMOVE, "{guild}", targetGuild.getName());
-        guildHandler.sendMessage(targetGuild, Messages.ALLY__TARGET_REMOVE, "{guild}", guild.getName());
+        guild.sendMessage(getCurrentCommandManager(), Messages.ALLY__CURRENT_REMOVE, "{guild}", targetGuild.getName());
+        targetGuild.sendMessage(getCurrentCommandManager(), Messages.ALLY__TARGET_REMOVE, "{guild}", guild.getName());
     }
 
     /**

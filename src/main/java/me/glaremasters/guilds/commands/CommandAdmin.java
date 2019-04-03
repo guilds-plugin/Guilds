@@ -128,7 +128,7 @@ public class CommandAdmin extends BaseCommand {
             getCurrentCommandManager().getCommandIssuer(playerToAdd).sendInfo(Messages.ADMIN__PLAYER_ADDED, "{guild}", guild.getName());
         }
         getCurrentCommandIssuer().sendInfo(Messages.ADMIN__ADMIN_PLAYER_ADDED, "{player}", playerToAdd.getName(), "{guild}", guild.getName());
-        guildHandler.sendMessage(guild, Messages.ADMIN__ADMIN_GUILD_ADD, "{player}", playerToAdd.getName());
+        guild.sendMessage(getCurrentCommandManager(), Messages.ADMIN__ADMIN_GUILD_ADD, "{player}", playerToAdd.getName());
     }
 
     /**
@@ -159,7 +159,7 @@ public class CommandAdmin extends BaseCommand {
 
         if (playerToRemove.isOnline()) getCurrentCommandManager().getCommandIssuer(playerToRemove).sendInfo(Messages.ADMIN__PLAYER_REMOVED, "{guild}", guild.getName());
         getCurrentCommandIssuer().sendInfo(Messages.ADMIN__ADMIN_PLAYER_REMOVED, "{player}", playerToRemove.getName(), "{guild}", guild.getName());
-        guildHandler.sendMessage(guild, Messages.ADMIN__ADMIN_GUILD_REMOVE, "{player}", playerToRemove.getName());
+        guild.sendMessage(getCurrentCommandManager(), Messages.ADMIN__ADMIN_GUILD_REMOVE, "{player}", playerToRemove.getName());
     }
 
     /**
@@ -185,7 +185,7 @@ public class CommandAdmin extends BaseCommand {
         guild.setTier(guildHandler.getGuildTier(guild.getTier().getLevel() + 1));
 
         getCurrentCommandIssuer().sendInfo(Messages.ADMIN__ADMIN_UPGRADE, "{guild}", guild.getName());
-        guildHandler.sendMessage(guild, Messages.ADMIN__ADMIN_GUILD_UPGRADE);
+        guild.sendMessage(getCurrentCommandManager(), Messages.ADMIN__ADMIN_GUILD_UPGRADE);
     }
 
     /**

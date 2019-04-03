@@ -24,15 +24,16 @@
 
 package me.glaremasters.guilds.guild;
 
+import co.aikar.commands.CommandManager;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import me.glaremasters.guilds.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -55,21 +56,21 @@ public class Guild {
     private String name, prefix;
     private GuildMember guildMaster;
 
-    private GuildHome home = null;
+    private GuildHome home;
     private GuildSkull guildSkull;
     private Status status;
     private GuildTier tier;
-    private double balance = 0;
+    private double balance;
 
-    private List<GuildMember> members = new ArrayList<>();
+    private List<GuildMember> members;
 
-    private List<UUID> invitedMembers = new ArrayList<>();
-    private List<UUID> allies = new ArrayList<>();
-    private List<UUID> pendingAllies = new ArrayList<>();
+    private List<UUID> invitedMembers;
+    private List<UUID> allies;
+    private List<UUID> pendingAllies;
 
-    private List<GuildCode> codes = new ArrayList<>();
+    private List<GuildCode> codes;
 
-    private List<String> vaults = new ArrayList<>();
+    private List<String> vaults;
 
     /**
      * Get a member in the guild
@@ -229,6 +230,16 @@ public class Guild {
         gc.getRedeemers().forEach(r -> builder.append(Bukkit.getOfflinePlayer(r).getName() + ", "));
         builder.setLength(builder.length() - 2);
         return builder.toString();
+    }
+
+    /**
+     * Send a message to the guild
+     * @param manager get the manager to send custom messages
+     * @param key the message to send
+     * @param replacements any args we need to handle
+     */
+    public void sendMessage(CommandManager manager, Messages key, String... replacements) {
+        getOnlineMembers().forEach(m -> manager.getCommandIssuer(Bukkit.getPlayer(m.getUuid())).sendInfo(key, replacements));
     }
 }
 
