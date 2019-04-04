@@ -48,50 +48,6 @@ public class CommandAlly extends BaseCommand {
     private GuildHandler guildHandler;
 
     /**
-     * List all the allies of your guild
-     * @param player the player to check
-     * @param guild the guild they are in
-     */
-    @Subcommand("ally list")
-    @Description("{@@descriptions.ally-list}")
-    @CommandPermission(Constants.ALLY_PERM + "list")
-    public void onAllyList(Player player, Guild guild) {
-        if (guild.getAllies().size() < 1) {
-            getCurrentCommandIssuer().sendInfo(Messages.ALLY__NONE);
-            return;
-        }
-        getCurrentCommandIssuer().sendInfo(Messages.ALLY__LIST, "{ally-list}", guild.getAllies().stream().map(UUID::toString).collect(Collectors.joining(",")));
-    }
-
-    /**
-     * Accept a guild ally request
-     * @param player the player to check
-     * @param guild the guild they are in
-     * @param role the role of the player
-     * @param name the guild name they are accepting
-     */
-    @Subcommand("ally accept")
-    @Description("{@@descriptions.ally-accept}")
-    @CommandPermission(Constants.ALLY_PERM + "accept")
-    @Syntax("<guild name>")
-    public void onAllyAccept(Player player, Guild guild, GuildRole role, String name) {
-        if (checkPermission(role.isAddAlly())) return;
-
-        Guild targetGuild = guildHandler.getGuild(name);
-        if (targetGuild== null) {
-            getCurrentCommandIssuer().sendInfo(Messages.ERROR__GUILD_NO_EXIST);
-            return;
-        }
-
-        if (!guild.getPendingAllies().contains(targetGuild.getId())) return;
-
-        guildHandler.addAlly(guild, targetGuild);
-
-        guild.sendMessage(getCurrentCommandManager(), Messages.ALLY__CURRENT_ACCEPTED, "{guild}", targetGuild.getName());
-        targetGuild.sendMessage(getCurrentCommandManager(), Messages.ALLY__TARGET_ACCEPTED, "{guild}", guild.getName());
-    }
-
-    /**
      * Decline a guild ally request
      * @param player the player to check
      * @param guild the guild they are in

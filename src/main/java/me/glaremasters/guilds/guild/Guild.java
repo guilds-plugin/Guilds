@@ -144,11 +144,28 @@ public class Guild {
     }
 
     /**
+     * Simple method to check if a guild has allies
+     * @return if they have allies or not
+     */
+    public boolean hasAllies() {
+        return getAllies().size() > 0;
+    }
+
+    /**
      * Adds a pending ally's id to the list
      * @param guild the guild to add
      */
     public void addPendingAlly(Guild guild) {
         getPendingAllies().add(guild.getId());
+    }
+
+    /**
+     * Check if an ally request is pending from another guild
+     * @param guild the guild to check
+     * @return if they have a pending invite
+     */
+    public boolean isPending(Guild guild) {
+        return getPendingAllies().contains(guild.getId());
     }
 
     /**

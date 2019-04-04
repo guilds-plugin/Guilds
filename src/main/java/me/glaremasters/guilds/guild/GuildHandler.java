@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -186,6 +187,15 @@ public class GuildHandler {
     }
 
     /**
+     * Gets a guild by it's uuid
+     * @param uuid the input
+     * @return the output
+     */
+    public Guild getGuild(@NotNull UUID uuid) {
+        return guilds.stream().filter(guild -> guild.getId().equals(uuid)).findFirst().orElse(null);
+    }
+
+    /**
      * Check the guild based on the invite code
      *
      * @param code the invite code being used
@@ -193,6 +203,15 @@ public class GuildHandler {
      */
     public Guild getGuildByCode(@NotNull String code) {
         return guilds.stream().filter(guild -> guild.hasInviteCode(code)).findFirst().orElse(null);
+    }
+
+    /**
+     * Get a guild's name by it's ID
+     * @param uuid the input ID
+     * @return the output guild
+     */
+    public String getNameById(@NotNull UUID uuid) {
+        return getGuild(uuid).getName();
     }
 
     /**

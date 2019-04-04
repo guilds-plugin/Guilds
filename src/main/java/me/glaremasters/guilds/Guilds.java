@@ -36,6 +36,7 @@ import me.glaremasters.guilds.commands.CommandAdmin;
 import me.glaremasters.guilds.commands.CommandAlly;
 import me.glaremasters.guilds.commands.CommandClaim;
 import me.glaremasters.guilds.commands.CommandGuilds;
+import me.glaremasters.guilds.commands.ally.CommandAllyList;
 import me.glaremasters.guilds.commands.bank.CommandBankBalance;
 import me.glaremasters.guilds.commands.bank.CommandBankDeposit;
 import me.glaremasters.guilds.commands.bank.CommandBankWithdraw;
@@ -367,7 +368,8 @@ public final class Guilds extends JavaPlugin {
                 new CommandCodeRedeem(guildHandler),
                 new CommandBankBalance(),
                 new CommandBankDeposit(economy),
-                new CommandBankWithdraw(economy)).forEach(commandManager::registerCommand);
+                new CommandBankWithdraw(economy),
+                new CommandAllyList()).forEach(commandManager::registerCommand);
 
 
         // This can probably be moved into it's own method
@@ -442,6 +444,12 @@ public final class Guilds extends JavaPlugin {
         manager.getCommandCompletions().registerCompletion("invitedTo", c -> guildHandler.getInvitedGuilds(c.getPlayer().getUniqueId()));
 
         manager.getCommandCompletions().registerCompletion("guilds", c -> guildHandler.getGuildNames());
+
+        manager.getCommandCompletions().registerAsyncCompletion("allyInvites", c -> {
+           Guild guild = guildHandler.getGuild(c.getPlayer());
+           if (!guild.hasAllies()) return null;
+           return guild.getPendingAllies().stream().map(g -> guildHandler.getNameById(g)).collect(Collectors.toList());
+        });
 
         manager.getCommandCompletions().registerAsyncCompletion("activeCodes", c -> {
             Guild guild = guildHandler.getGuild(c.getPlayer());
