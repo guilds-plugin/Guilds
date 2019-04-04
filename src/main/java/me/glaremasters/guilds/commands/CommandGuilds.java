@@ -897,7 +897,7 @@ public class CommandGuilds extends BaseCommand {
             return;
         }
 
-        if (guild.getSize() >= guild.getTier().getMaxMembers()) {
+        if (guild.checkIfFull()) {
             getCurrentCommandIssuer().sendInfo(Messages.ACCEPT__GUILD_FULL);
             return;
         }
@@ -926,15 +926,7 @@ public class CommandGuilds extends BaseCommand {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ALREADY_IN_GUILD);
             return;
         }
-
-        List<String> guildList = guildHandler.getInvitedGuilds(player.getUniqueId());
-
-        if (guildList.size() > 0) {
-            getCurrentCommandIssuer().sendInfo(Messages.PENDING__INVITES, "{number}", String.valueOf(guildList.size()), "{guilds}", String.join(",", guildList));
-            return;
-        }
-
-        getCurrentCommandIssuer().sendInfo(Messages.ERROR__NO_GUILD);
+        guildHandler.checkInvites(getCurrentCommandManager(), player);
     }
 
     /**

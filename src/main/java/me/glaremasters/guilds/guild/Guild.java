@@ -306,5 +306,13 @@ public class Guild {
             setStatus(Status.Private);
         }
     }
+
+    /**
+     * Simple method to check if a guild is full or not
+     * @return full or not
+     */
+    public boolean checkIfFull() {
+        return getSize() >= getTier().getMaxMembers();
+    }
 }
 

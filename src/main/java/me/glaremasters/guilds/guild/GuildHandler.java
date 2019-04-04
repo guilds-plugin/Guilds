@@ -459,4 +459,20 @@ public class GuildHandler {
         spies.remove(player);
         guildChat.remove(player);
     }
+
+    /**
+     * Simple method to check a player has any invites
+     * @param manager the command manager
+     * @param player the player being checked
+     */
+    public void checkInvites(CommandManager manager, Player player) {
+        List<String> list = getInvitedGuilds(player.getUniqueId());
+
+        if (list.isEmpty()) {
+            manager.getCommandIssuer(player).sendInfo(Messages.ERROR__NO_GUILD);
+            return;
+        }
+
+        manager.getCommandIssuer(player).sendInfo(Messages.PENDING__INVITES, "{number}", String.valueOf(list.size()), "{guilds}", String.join(",", list));
+    }
 }
