@@ -124,7 +124,7 @@ public class CommandCodes extends BaseCommand {
     @CommandPermission(Constants.CODE_PERM + "list")
     public void onList(Player player, Guild guild) {
 
-        if (guild.getCodes() == null) {
+        if (guild.getCodes().isEmpty()) {
             getCurrentCommandIssuer().sendInfo(Messages.CODES__EMPTY);
             return;
         }
