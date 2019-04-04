@@ -116,7 +116,7 @@ public class GuildHandler {
 
         //GuildTier objects
         ConfigurationSection tierSection = config.getConfigurationSection("tiers.list");
-        for (String key : tierSection.getKeys(false)){
+        for (String key : tierSection.getKeys(false)) {
             tiers.add(GuildTier.builder()
                     .level(tierSection.getInt(key + ".level"))
                     .name(tierSection.getString(key + ".name"))
@@ -149,6 +149,7 @@ public class GuildHandler {
 
     /**
      * This method is used to add a Guild to the list
+     *
      * @param guild the guild being added
      */
     public void addGuild(@NotNull Guild guild) {
@@ -158,6 +159,7 @@ public class GuildHandler {
 
     /**
      * This method is used to remove a Guild from the list
+     *
      * @param guild the guild being removed
      */
     public void removeGuild(@NotNull Guild guild) {
@@ -167,6 +169,7 @@ public class GuildHandler {
 
     /**
      * Retrieve a guild by it's name
+     *
      * @return the guild object with given name
      */
     public Guild getGuild(@NotNull String name) {
@@ -175,14 +178,16 @@ public class GuildHandler {
 
     /**
      * Retrieve a guild by a player
+     *
      * @return the guild object by player
      */
-    public Guild getGuild(@NotNull OfflinePlayer p){
+    public Guild getGuild(@NotNull OfflinePlayer p) {
         return guilds.stream().filter(guild -> guild.getMember(p.getUniqueId()) != null).findFirst().orElse(null);
     }
 
     /**
      * Check the guild based on the invite code
+     *
      * @param code the invite code being used
      * @return the guild who the code belong to
      */
@@ -192,33 +197,38 @@ public class GuildHandler {
 
     /**
      * Retrieve a guild tier by name
+     *
      * @param name the name of the tier
      * @return the tier object if found
      */
-    public GuildTier getGuildTier(String name){
+    public GuildTier getGuildTier(String name) {
         return tiers.stream().filter(tier -> tier.getName().equals(name)).findFirst().orElse(null);
     }
 
     /**
      * Retrieve a guild tier by level
+     *
      * @param level the level of the tier
      * @return the tier object if found
      */
-    public GuildTier getGuildTier(int level){
+    public GuildTier getGuildTier(int level) {
         return tiers.stream().filter(tier -> tier.getLevel() == level).findFirst().orElse(null);
     }
 
     /**
      * Retrieve a guild role by level
+     *
      * @param level the level of the role
      * @return the role object if found
      */
-    public GuildRole getGuildRole(int level){
+    public GuildRole getGuildRole(int level) {
         return roles.stream().filter(guildRole -> guildRole.getLevel() == level).findFirst().orElse(null);
     }
+
     /**
      * Adds an ally to both guilds
-     * @param guild the guild to ally
+     *
+     * @param guild       the guild to ally
      * @param targetGuild the other guild to ally
      */
     public void addAlly(Guild guild, Guild targetGuild) {
@@ -230,7 +240,8 @@ public class GuildHandler {
 
     /**
      * Removes an ally.
-     * @param guild the guild to remove as ally
+     *
+     * @param guild       the guild to remove as ally
      * @param targetGuild the guild to remove as ally
      */
     public void removeAlly(Guild guild, Guild targetGuild) {
@@ -262,14 +273,16 @@ public class GuildHandler {
 
     /**
      * Returns the amount of guilds existing
+     *
      * @return an integer of size.
      */
-    public int getGuildsSize(){
+    public int getGuildsSize() {
         return guilds.size();
     }
 
     /**
      * Returns the max tier level
+     *
      * @return the max tier level
      */
     public int getMaxTierLevel() {
@@ -278,6 +291,7 @@ public class GuildHandler {
 
     /**
      * Returns the lowest guild role
+     *
      * @return guild role
      */
     public GuildRole getLowestGuildRole() {
@@ -305,6 +319,7 @@ public class GuildHandler {
 
     /**
      * Returns a string list of the name of all guilds on the server
+     *
      * @return a string list of guild names
      */
     public List<String> getGuildNames() {
@@ -313,6 +328,7 @@ public class GuildHandler {
 
     /**
      * Create the cache of a vault for the guild
+     *
      * @param guild the guild being cached
      */
     private void createVaultCache(Guild guild) {
@@ -329,6 +345,7 @@ public class GuildHandler {
 
     /**
      * Save the vaults of a guild
+     *
      * @param guild the guild being saved
      */
     private void saveVaultCache(Guild guild) {
@@ -339,6 +356,7 @@ public class GuildHandler {
 
     /**
      * Open a guild vault
+     *
      * @param guild the owner of the vault
      * @param vault which vault to open
      * @return the inventory to open
@@ -349,6 +367,7 @@ public class GuildHandler {
 
     /**
      * Check if player is a spy
+     *
      * @param player the player being checked
      * @return if they are a spy
      */
@@ -358,36 +377,40 @@ public class GuildHandler {
 
     /**
      * Add a player to the list of spies
+     *
      * @param player player being added
      */
-    private void addSpy(Player player) {
+    private void addSpy(CommandManager manager, Player player) {
         spies.add(player);
-        commandManager.getCommandIssuer(player).sendInfo(Messages.ADMIN__SPY_ON);
+        manager.getCommandIssuer(player).sendInfo(Messages.ADMIN__SPY_ON);
     }
 
     /**
      * Remove a player from the list of spies
+     *
      * @param player player being removed
      */
-    private void removeSpy(Player player) {
+    public void removeSpy(CommandManager manager, Player player) {
         spies.remove(player);
-        commandManager.getCommandIssuer(player).sendInfo(Messages.ADMIN__SPY_OFF);
+        manager.getCommandIssuer(player).sendInfo(Messages.ADMIN__SPY_OFF);
     }
 
     /**
      * This method handles combining all the spy methods together to make a simple, clean method.
+     *
      * @param player the player being modified
      */
-    public void toggleSpy(Player player) {
+    public void toggleSpy(CommandManager manager, Player player) {
         if (isSpy(player)) {
-            removeSpy(player);
+            removeSpy(manager, player);
         } else {
-            addSpy(player);
+            addSpy(manager, player);
         }
     }
 
     /**
      * Check if a player is in guild chat mode or not
+     *
      * @param player the player being checked
      * @return if they are in the mode or not
      */
@@ -397,31 +420,34 @@ public class GuildHandler {
 
     /**
      * Add a player to guild chat mode
+     *
      * @param player the player being checked
      */
-    private void addGuildChat(Player player) {
+    private void addGuildChat(CommandManager manager, Player player) {
         guildChat.add(player);
-        commandManager.getCommandIssuer(player).sendInfo(Messages.CHAT__ENABLED);
+        manager.getCommandIssuer(player).sendInfo(Messages.CHAT__ENABLED);
     }
 
     /**
      * Remove a player from guild chat mode
+     *
      * @param player the player being checked
      */
-    private void removeGuildChat(Player player) {
+    public void removeGuildChat(CommandManager manager, Player player) {
         guildChat.remove(player);
-        commandManager.getCommandIssuer(player).sendInfo(Messages.CHAT__DISABLED);
+        manager.getCommandIssuer(player).sendInfo(Messages.CHAT__DISABLED);
     }
 
     /**
      * Handler for taking players in and out of guild chat
+     *
      * @param player the player being toggled
      */
-    public void toggleGuildChat(Player player) {
+    public void toggleGuildChat(CommandManager manager, Player player) {
         if (checkGuildChat(player)) {
-            removeGuildChat(player);
+            removeGuildChat(manager, player);
         } else {
-            addGuildChat(player);
+            addGuildChat(manager, player);
         }
     }
 }

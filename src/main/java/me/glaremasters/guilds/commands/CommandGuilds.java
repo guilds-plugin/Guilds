@@ -363,7 +363,7 @@ public class CommandGuilds extends BaseCommand {
             return;
         }
 
-        guildHandler.toggleGuildChat(player);
+        guildHandler.toggleGuildChat(getCurrentCommandManager(), player);
     }
 
     /**

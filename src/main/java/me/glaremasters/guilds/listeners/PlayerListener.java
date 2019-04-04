@@ -25,6 +25,7 @@
 package me.glaremasters.guilds.listeners;
 
 import ch.jalu.configme.SettingsManager;
+import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.PaperCommandManager;
 import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Guilds;
@@ -159,42 +160,22 @@ public class PlayerListener implements Listener {
 
     }
 
-/*    *//**
-     * This event handles Guild Chat and how it's received by other members of the Guild
+    /**
+     * Handles guild chat
      * @param event
-     *//*
+     */
     @EventHandler(priority = EventPriority.HIGH)
-    public void onChat(AsyncPlayerChatEvent event) {
-        Player player = event.getPlayer();
-        Guild guild = guildHandler.getGuild(player);
-
-        if (guild == null) {
-            return;
-        }
-
-        if (GUILD_CHAT_PLAYERS.contains(player.getUniqueId())) {
-
-            event.getRecipients().forEach(r -> {
-                if (guilds.getSpy().contains(r)) {
-                    r.sendMessage(settingsManager.getProperty(GuildSettings.SPY_CHAT_FORMAT).replace("{role}", guildHandler.getGuildRole(guild.getMember(player.getUniqueId()).getRole().getLevel()).getName()).replace("{player}", player.getName()).replace("{message}", event.getMessage()).replace("{guild}", guild.getName()));
-                }
-            });
-            event.getRecipients().removeIf(r -> (guild.getMember(r.getUniqueId()) == null));
-            event.getRecipients().forEach(recipient -> recipient.sendMessage(settingsManager.getProperty(GuildSettings.GUILD_CHAT_FORMAT).replace("{role}", guildHandler.getGuildRole(guild.getMember(player.getUniqueId()).getRole().getLevel()).getName()).replace("{player}", player.getName()).replace("{message}", event.getMessage())));
-            event.setCancelled(true);
-        }
-    }*/
-
     public void chatRevamp(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
         Guild guild = guildHandler.getGuild(player);
 
-        if (guildHandler.checkGuildChat(player)) {
-            // Send to the guild
-            // cancel event
-        }
+        if (guild == null) return;
 
-        // send the message to spies too
+        if (guildHandler.checkGuildChat(player)) {
+            guild.sendMessage(ACFBukkitUtil.color(settingsManager.getProperty(GuildSettings.GUILD_CHAT_FORMAT).replace("{role}", guildHandler.getGuildRole(guild.getMember(player.getUniqueId()).getRole().getLevel()).getName()).replace("{player}", player.getName()).replace("{message}", event.getMessage())));
+            guildHandler.getSpies().forEach(s -> s.sendMessage(ACFBukkitUtil.color(settingsManager.getProperty(GuildSettings.SPY_CHAT_FORMAT).replace("{role}", guildHandler.getGuildRole(guild.getMember(player.getUniqueId()).getRole().getLevel()).getName()).replace("{player}", player.getName()).replace("{message}", event.getMessage()).replace("{guild}", guild.getName()))));
+            event.setCancelled(true);
+        }
     }
 
     /**

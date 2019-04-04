@@ -265,7 +265,7 @@ public class CommandAdmin extends BaseCommand {
     @Description("{@@descriptions.admin-spy}")
     @CommandPermission("guilds.command.admin")
     public void onAdminSpy(Player player) {
-        guildHandler.toggleSpy(player);
+        guildHandler.toggleSpy(getCurrentCommandManager(), player);
     }
 
     @Subcommand("admin vault")

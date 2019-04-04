@@ -196,6 +196,14 @@ public class Guild {
     }
 
     /**
+     * Get all online members as players
+     * @return list of players
+     */
+    public List<Player> getOnlineAsPlayers() {
+        return getOnlineMembers().stream().map(m -> Bukkit.getPlayer(m.getUuid())).collect(Collectors.toList());
+    }
+
+    /**
      * Check if a guild has a code
      * @param code the code being checked
      * @return if the guild has it or not
@@ -269,6 +277,14 @@ public class Guild {
      */
     public void sendMessage(CommandManager manager, Messages key, String... replacements) {
         getOnlineMembers().forEach(m -> manager.getCommandIssuer(Bukkit.getPlayer(m.getUuid())).sendInfo(key, replacements));
+    }
+
+    /**
+     * Send a message to the guild
+     * @param message the message to send
+     */
+    public void sendMessage(String message) {
+        getOnlineAsPlayers().forEach(m -> m.sendMessage(message));
     }
 }
 
