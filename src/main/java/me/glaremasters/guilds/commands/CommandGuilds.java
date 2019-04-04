@@ -25,6 +25,7 @@
 package me.glaremasters.guilds.commands;
 
 import ch.jalu.configme.SettingsManager;
+import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.CommandHelp;
 import co.aikar.commands.annotation.CommandAlias;
@@ -52,6 +53,7 @@ import me.glaremasters.guilds.configuration.sections.CooldownSettings;
 import me.glaremasters.guilds.configuration.sections.CostSettings;
 import me.glaremasters.guilds.configuration.sections.GuiSettings;
 import me.glaremasters.guilds.configuration.sections.GuildSettings;
+import me.glaremasters.guilds.exceptions.InvalidPermissionException;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildHome;
@@ -376,14 +378,11 @@ public class CommandGuilds extends BaseCommand {
     @Description("{@@descriptions.status}")
     @CommandPermission(Constants.BASE_PERM + "status")
     public void onStatus(Player player, Guild guild, GuildRole role) {
-        if (!role.isChangeStatus()) {
-            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
-            return;
-        }
-
+        if (!role.isChangeStatus())
+            ACFUtil.sneaky(new InvalidPermissionException());
         guild.toggleStatus();
-
-        getCurrentCommandIssuer().sendInfo(Messages.STATUS__SUCCESSFUL, "{status}", guild.getStatus().name());
+        getCurrentCommandIssuer().sendInfo(Messages.STATUS__SUCCESSFUL,
+                "{status}", guild.getStatus().name());
     }
 
     /**
@@ -398,10 +397,8 @@ public class CommandGuilds extends BaseCommand {
     @CommandPermission(Constants.BASE_PERM + "prefix")
     @Syntax("<prefix>")
     public void onPrefix(Player player, Guild guild, GuildRole role, String prefix) {
-        if (!role.isChangePrefix()) {
-            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
-            return;
-        }
+        if (!role.isChangePrefix())
+            ACFUtil.sneaky(new InvalidPermissionException());
 
         if (!prefix.matches(settingsManager.getProperty(GuildSettings.PREFIX_REQUIREMENTS))) {
             getCurrentCommandIssuer().sendInfo(Messages.CREATE__REQUIREMENTS);

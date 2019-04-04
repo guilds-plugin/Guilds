@@ -22,20 +22,20 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.utils;
+package me.glaremasters.guilds.exceptions;
+
+import co.aikar.commands.InvalidCommandArgument;
+import me.glaremasters.guilds.Messages;
 
 /**
  * Created by GlareMasters
- * Date: 3/27/2019
- * Time: 3:13 PM
+ * Date: 4/4/2019
+ * Time: 4:42 PM
  */
-public class Constants {
+public class InvalidPermissionException extends InvalidCommandArgument {
 
-    public static final String BASE_PERM = "guilds.command.";
-    public static final String CODE_PERM = BASE_PERM + "code.";
-    public static final String BANK_PERM = BASE_PERM + "bank.";
-    public static final String ALLY_PERM = BANK_PERM + "ally.";
-    public static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11";
-    public static final String ROOT_ALIAS = "guild|guilds|g";
+    public InvalidPermissionException() {
+        super(Messages.ERROR__ROLE_NO_PERMISSION, false);
+    }
 
 }

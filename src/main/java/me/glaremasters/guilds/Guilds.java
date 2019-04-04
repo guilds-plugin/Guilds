@@ -36,8 +36,12 @@ import me.glaremasters.guilds.commands.CommandAdmin;
 import me.glaremasters.guilds.commands.CommandAlly;
 import me.glaremasters.guilds.commands.CommandBank;
 import me.glaremasters.guilds.commands.CommandClaim;
-import me.glaremasters.guilds.commands.CommandCodes;
 import me.glaremasters.guilds.commands.CommandGuilds;
+import me.glaremasters.guilds.commands.codes.CommandCodeCreate;
+import me.glaremasters.guilds.commands.codes.CommandCodeDelete;
+import me.glaremasters.guilds.commands.codes.CommandCodeInfo;
+import me.glaremasters.guilds.commands.codes.CommandCodeList;
+import me.glaremasters.guilds.commands.codes.CommandCodeRedeem;
 import me.glaremasters.guilds.configuration.GuildConfigurationBuilder;
 import me.glaremasters.guilds.configuration.sections.HooksSettings;
 import me.glaremasters.guilds.configuration.sections.PluginSettings;
@@ -351,7 +355,15 @@ public final class Guilds extends JavaPlugin {
         loadCompletions(commandManager);
 
         // Register all the commands
-        Stream.of(new CommandGuilds(this, guildHandler, settingsManager, actionHandler, economy), new CommandBank(economy), new CommandAdmin(guildHandler, actionHandler, settingsManager), new CommandAlly(guildHandler), new CommandClaim(settingsManager), new CommandCodes(guildHandler, settingsManager)).forEach(commandManager::registerCommand);
+        Stream.of(new CommandGuilds(this, guildHandler, settingsManager, actionHandler, economy),
+                new CommandBank(economy),
+                new CommandAdmin(guildHandler, actionHandler, settingsManager),
+                new CommandAlly(guildHandler), new CommandClaim(settingsManager),
+                new CommandCodeCreate(settingsManager),
+                new CommandCodeDelete(),
+                new CommandCodeInfo(),
+                new CommandCodeList(settingsManager),
+                new CommandCodeRedeem(guildHandler)).forEach(commandManager::registerCommand);
 
 
         // This can probably be moved into it's own method
