@@ -34,9 +34,11 @@ import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.api.GuildsAPI;
 import me.glaremasters.guilds.commands.CommandAdmin;
 import me.glaremasters.guilds.commands.CommandAlly;
-import me.glaremasters.guilds.commands.CommandBank;
 import me.glaremasters.guilds.commands.CommandClaim;
 import me.glaremasters.guilds.commands.CommandGuilds;
+import me.glaremasters.guilds.commands.bank.CommandBankBalance;
+import me.glaremasters.guilds.commands.bank.CommandBankDeposit;
+import me.glaremasters.guilds.commands.bank.CommandBankWithdraw;
 import me.glaremasters.guilds.commands.codes.CommandCodeCreate;
 import me.glaremasters.guilds.commands.codes.CommandCodeDelete;
 import me.glaremasters.guilds.commands.codes.CommandCodeInfo;
@@ -356,14 +358,16 @@ public final class Guilds extends JavaPlugin {
 
         // Register all the commands
         Stream.of(new CommandGuilds(this, guildHandler, settingsManager, actionHandler, economy),
-                new CommandBank(economy),
                 new CommandAdmin(guildHandler, actionHandler, settingsManager),
                 new CommandAlly(guildHandler), new CommandClaim(settingsManager),
                 new CommandCodeCreate(settingsManager),
                 new CommandCodeDelete(),
                 new CommandCodeInfo(),
                 new CommandCodeList(settingsManager),
-                new CommandCodeRedeem(guildHandler)).forEach(commandManager::registerCommand);
+                new CommandCodeRedeem(guildHandler),
+                new CommandBankBalance(),
+                new CommandBankDeposit(economy),
+                new CommandBankWithdraw(economy)).forEach(commandManager::registerCommand);
 
 
         // This can probably be moved into it's own method
