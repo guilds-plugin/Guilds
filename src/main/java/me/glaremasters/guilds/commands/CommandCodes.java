@@ -108,7 +108,7 @@ public class CommandCodes extends BaseCommand {
             return;
         }
 
-        guild.getCodes().removeIf(s -> s.getId().equals(code));
+        guild.removeCode(code);
 
         getCurrentCommandIssuer().sendInfo(Messages.CODES__DELETED);
 

@@ -232,6 +232,14 @@ public class Guild {
     }
 
     /**
+     * Remove a code from a Guild if it exists
+     * @param code the code being checked
+     */
+    public void removeCode(String code) {
+        getCodes().removeIf(s -> s.getId().equals(code));
+    }
+
+    /**
      * Checks if they can make another code
      * @param amount the max amount
      * @return if they can make it or not
