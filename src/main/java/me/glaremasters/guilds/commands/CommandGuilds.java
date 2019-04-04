@@ -381,9 +381,7 @@ public class CommandGuilds extends BaseCommand {
             return;
         }
 
-
-        if (guild.getStatus() == Guild.Status.Private) guild.setStatus(Guild.Status.Public);
-        else guild.setStatus(Guild.Status.Private);
+        guild.toggleStatus();
 
         getCurrentCommandIssuer().sendInfo(Messages.STATUS__SUCCESSFUL, "{status}", guild.getStatus().name());
     }

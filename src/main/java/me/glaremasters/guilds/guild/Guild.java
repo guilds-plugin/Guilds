@@ -286,5 +286,16 @@ public class Guild {
     public void sendMessage(String message) {
         getOnlineAsPlayers().forEach(m -> m.sendMessage(message));
     }
+
+    /**
+     * Toggle the status of a guild
+     */
+    public void toggleStatus() {
+        if (getStatus() == Status.Private) {
+            setStatus(Status.Public);
+        } else {
+            setStatus(Status.Private);
+        }
+    }
 }
 
