@@ -13,6 +13,7 @@ deploy:
   github_token: $GITHUB_TOKEN
   keep_history: true
   target-branch: master
-  all_branches: true
   local_dir: "./target/site/apidocs"
   repo: "guilds-plugin/javadocs"
+  on:
+    all_branches: true
