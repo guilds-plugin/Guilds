@@ -450,4 +450,13 @@ public class GuildHandler {
             addGuildChat(manager, player);
         }
     }
+
+    /**
+     * This method is ran when a player logs out to ensure they aren't in the list.
+     * @param player player being removed
+     */
+    public void chatLogout(Player player) {
+        spies.remove(player);
+        guildChat.remove(player);
+    }
 }

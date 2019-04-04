@@ -48,6 +48,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.material.Sign;
 import org.bukkit.potion.PotionEffectType;
 
@@ -165,7 +166,7 @@ public class PlayerListener implements Listener {
      * @param event
      */
     @EventHandler(priority = EventPriority.HIGH)
-    public void chatRevamp(AsyncPlayerChatEvent event) {
+    public void onChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
         Guild guild = guildHandler.getGuild(player);
 
@@ -176,6 +177,11 @@ public class PlayerListener implements Listener {
             guildHandler.getSpies().forEach(s -> s.sendMessage(ACFBukkitUtil.color(settingsManager.getProperty(GuildSettings.SPY_CHAT_FORMAT).replace("{role}", guildHandler.getGuildRole(guild.getMember(player.getUniqueId()).getRole().getLevel()).getName()).replace("{player}", player.getName()).replace("{message}", event.getMessage()).replace("{guild}", guild.getName()))));
             event.setCancelled(true);
         }
+    }
+
+    @EventHandler
+    public void chatLeave(PlayerQuitEvent event) {
+        guildHandler.chatLogout(event.getPlayer());
     }
 
     /**
