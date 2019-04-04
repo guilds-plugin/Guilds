@@ -49,9 +49,6 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.Collections;
-
 /**
  * Created by GlareMasters
  * Date: 3/15/2019
@@ -81,7 +78,7 @@ public class CommandCodes extends BaseCommand {
             return;
         }
 
-        if (guild.getActiveCodes().size() >= settingsManager.getProperty(CodeSettings.ACTIVE_CODE_AMOUNT)) {
+        if (guild.getActiveCheck(settingsManager.getProperty(CodeSettings.ACTIVE_CODE_AMOUNT))) {
             getCurrentCommandIssuer().sendInfo(Messages.CODES__MAX);
             return;
         }

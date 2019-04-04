@@ -232,6 +232,15 @@ public class Guild {
     }
 
     /**
+     * Checks if they can make another code
+     * @param amount the max amount
+     * @return if they can make it or not
+     */
+    public boolean getActiveCheck(int amount) {
+        return (getActiveCodes().size() >= amount);
+    }
+
+    /**
      * Get all the redeemers of a code
      * @param code the code being checked
      * @return a list of all redeemers for a code
