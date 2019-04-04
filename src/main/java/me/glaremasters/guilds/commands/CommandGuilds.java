@@ -412,35 +412,6 @@ public class CommandGuilds extends BaseCommand {
         guild.setPrefix(StringUtils.color(prefix));
     }
 
-    // todo I feel like this is not very necessary, if we decide to keep this in we'll need to pass on the spigot updater instance.
-//    /**
-//     * Check for an update
-//     * @param sender the executor of this command
-//     */
-//    @Subcommand("version|v|ver")
-//    @Description("{@@descriptions.version}")
-//    public void onVersion(CommandSender sender) {
-//        SpigotUpdater updater = new SpigotUpdater(guilds, 48920);
-//        PluginDescriptionFile pdf = guilds.getDescription();
-//        try {
-//            String message;
-//            if (updater.getLatestVersion().equalsIgnoreCase(pdf.getVersion())) {
-//                message = "";
-//            } else {
-//                message = "\n&8» &7An update has been found! &f- " + updater.getResourceLink();
-//            }
-//            sender.sendMessage(
-//                    StringUtils.color("&8&m--------------------------------------------------"
-//                            + "\n&8» &7Name - &a"
-//                            + pdf.getName() + "\n&8» &7Version - &a" + pdf.getVersion()
-//                            + "\n&8» &7Author - &a" + pdf.getAuthors() + "\n&8» &7Support - &a"
-//                            + pdf.getWebsite() + message
-//                            + "\n&8&m--------------------------------------------------"));
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//        }
-//    }
-
     /**
      * Invite player to guild
      * @param player current player
