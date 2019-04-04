@@ -170,6 +170,15 @@ public class Guild {
     }
 
     /**
+     * Create a simple method to check if invited
+     * @param player the player being checked
+     * @return invited or not
+     */
+    public boolean checkIfInvited(Player player) {
+        return getInvitedMembers().contains(player.getUniqueId());
+    }
+
+    /**
      * Removes an invited member
      *
      * @param uuid the member to remove from the invites.

@@ -690,7 +690,7 @@ public class CommandGuilds extends BaseCommand {
         }
 
         if (guildHandler.getGuild(player) != null) return;
-        if (guild.getInvitedMembers().contains(player.getUniqueId())) return;
+        if (!guild.checkIfInvited(player)) return;
 
         guild.removeInvitedMember(player.getUniqueId());
 
