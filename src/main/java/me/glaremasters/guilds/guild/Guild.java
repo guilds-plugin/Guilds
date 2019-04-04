@@ -32,8 +32,10 @@ import lombok.Setter;
 import me.glaremasters.guilds.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -217,6 +219,16 @@ public class Guild {
      */
     public List<GuildCode> getActiveCodes() {
         return getCodes().stream().filter(c -> c.getUses() > 0).collect(Collectors.toList());
+    }
+
+    /**
+     * Add a new code to a guild
+     * @param code the code being added
+     * @param uses the amount of uses it has
+     * @param creator the creator of the code
+     */
+    public void addCode(String code, int uses, Player creator) {
+        getCodes().add(new GuildCode(code, uses, creator.getUniqueId(), new ArrayList<>()));
     }
 
     /**
