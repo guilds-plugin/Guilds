@@ -30,7 +30,6 @@ import me.glaremasters.guilds.Messages;
 import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.utils.Serialization;
 import net.milkbowl.vault.permission.Permission;
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -44,7 +43,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -55,6 +53,7 @@ public class GuildHandler {
     private final List<GuildRole> roles;
     private final List<GuildTier> tiers;
     @Getter private final List<Player> spies;
+    @Getter private final List<Player> guildChat;
 
     @Getter private Map<Guild, List<Inventory>> cachedVaults;
 
@@ -72,6 +71,7 @@ public class GuildHandler {
         roles = new ArrayList<>();
         tiers = new ArrayList<>();
         spies = new ArrayList<>();
+        guildChat = new ArrayList<>();
         cachedVaults = new HashMap<>();
 
         //GuildRoles objects
@@ -352,7 +352,7 @@ public class GuildHandler {
      * @param player the player being checked
      * @return if they are a spy
      */
-    public boolean isSpy(Player player) {
+    private boolean isSpy(Player player) {
         return spies.contains(player);
     }
 
@@ -360,7 +360,7 @@ public class GuildHandler {
      * Add a player to the list of spies
      * @param player player being added
      */
-    public void addSpy(Player player) {
+    private void addSpy(Player player) {
         spies.add(player);
         commandManager.getCommandIssuer(player).sendInfo(Messages.ADMIN__SPY_ON);
     }
@@ -369,7 +369,7 @@ public class GuildHandler {
      * Remove a player from the list of spies
      * @param player player being removed
      */
-    public void removeSpy(Player player) {
+    private void removeSpy(Player player) {
         spies.remove(player);
         commandManager.getCommandIssuer(player).sendInfo(Messages.ADMIN__SPY_OFF);
     }
@@ -383,6 +383,45 @@ public class GuildHandler {
             removeSpy(player);
         } else {
             addSpy(player);
+        }
+    }
+
+    /**
+     * Check if a player is in guild chat mode or not
+     * @param player the player being checked
+     * @return if they are in the mode or not
+     */
+    public boolean checkGuildChat(Player player) {
+        return guildChat.contains(player);
+    }
+
+    /**
+     * Add a player to guild chat mode
+     * @param player the player being checked
+     */
+    private void addGuildChat(Player player) {
+        guildChat.add(player);
+        commandManager.getCommandIssuer(player).sendInfo(Messages.CHAT__ENABLED);
+    }
+
+    /**
+     * Remove a player from guild chat mode
+     * @param player the player being checked
+     */
+    private void removeGuildChat(Player player) {
+        guildChat.remove(player);
+        commandManager.getCommandIssuer(player).sendInfo(Messages.CHAT__DISABLED);
+    }
+
+    /**
+     * Handler for taking players in and out of guild chat
+     * @param player the player being toggled
+     */
+    public void toggleGuildChat(Player player) {
+        if (checkGuildChat(player)) {
+            removeGuildChat(player);
+        } else {
+            addGuildChat(player);
         }
     }
 }

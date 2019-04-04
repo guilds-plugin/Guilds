@@ -363,17 +363,7 @@ public class CommandGuilds extends BaseCommand {
             return;
         }
 
-        //todo rewrite.
-        /*
-        if (GUILD_CHAT_PLAYERS.contains(player.getUniqueId())) {
-            GUILD_CHAT_PLAYERS.remove(player.getUniqueId());
-            getCurrentCommandIssuer().sendInfo(Messages.CHAT__DISABLED);
-        } else {
-            GUILD_CHAT_PLAYERS.add(player.getUniqueId());
-            getCurrentCommandIssuer().sendInfo(Messages.CHAT__ENABLED);
-        }
-         */
-
+        guildHandler.toggleGuildChat(player);
     }
 
     /**

@@ -73,7 +73,6 @@ public class PlayerListener implements Listener {
     private PaperCommandManager commandManager;
 
     private final Set<UUID> ALREADY_INFORMED = new HashSet<>();
-    public static final Set<UUID> GUILD_CHAT_PLAYERS = new HashSet<>();
 
     /**
      * Guild / Ally damage handlers
@@ -160,10 +159,10 @@ public class PlayerListener implements Listener {
 
     }
 
-    /**
+/*    *//**
      * This event handles Guild Chat and how it's received by other members of the Guild
      * @param event
-     */
+     *//*
     @EventHandler(priority = EventPriority.HIGH)
     public void onChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
@@ -184,6 +183,18 @@ public class PlayerListener implements Listener {
             event.getRecipients().forEach(recipient -> recipient.sendMessage(settingsManager.getProperty(GuildSettings.GUILD_CHAT_FORMAT).replace("{role}", guildHandler.getGuildRole(guild.getMember(player.getUniqueId()).getRole().getLevel()).getName()).replace("{player}", player.getName()).replace("{message}", event.getMessage())));
             event.setCancelled(true);
         }
+    }*/
+
+    public void chatRevamp(AsyncPlayerChatEvent event) {
+        Player player = event.getPlayer();
+        Guild guild = guildHandler.getGuild(player);
+
+        if (guildHandler.checkGuildChat(player)) {
+            // Send to the guild
+            // cancel event
+        }
+
+        // send the message to spies too
     }
 
     /**
