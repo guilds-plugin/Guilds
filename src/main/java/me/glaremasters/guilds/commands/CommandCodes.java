@@ -174,8 +174,7 @@ public class CommandCodes extends BaseCommand {
             return;
         }
 
-        gc.setUses(gc.getUses() - 1);
-        gc.getRedeemers().add(player.getUniqueId());
+        gc.addRedeemer(player);
 
         guild.addMemberByCode(new GuildMember(player.getUniqueId(), guildHandler.getLowestGuildRole()));
         getCurrentCommandIssuer().sendInfo(Messages.CODES__JOINED, "{guild}", guild.getName());

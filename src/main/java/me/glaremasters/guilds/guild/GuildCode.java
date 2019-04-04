@@ -27,6 +27,7 @@ package me.glaremasters.guilds.guild;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.UUID;
@@ -45,5 +46,14 @@ public class GuildCode {
     private int uses;
     private UUID creator;
     private List<UUID> redeemers;
+
+    /**
+     * Add a redeemer to a code
+     * @param player the player being added
+     */
+    public void addRedeemer(Player player) {
+        setUses(getUses() - 1);
+        getRedeemers().add(player.getUniqueId());
+    }
 
 }
