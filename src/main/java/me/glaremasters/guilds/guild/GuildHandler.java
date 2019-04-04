@@ -35,6 +35,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 
@@ -53,6 +54,7 @@ public class GuildHandler {
     private List<Guild> guilds;
     private final List<GuildRole> roles;
     private final List<GuildTier> tiers;
+    @Getter private final List<Player> spies;
 
     @Getter private Map<Guild, List<Inventory>> cachedVaults;
 
@@ -69,6 +71,7 @@ public class GuildHandler {
 
         roles = new ArrayList<>();
         tiers = new ArrayList<>();
+        spies = new ArrayList<>();
         cachedVaults = new HashMap<>();
 
         //GuildRoles objects
@@ -342,5 +345,44 @@ public class GuildHandler {
      */
     public Inventory getGuildVault(Guild guild, int vault) {
         return cachedVaults.get(guild).get(vault - 1);
+    }
+
+    /**
+     * Check if player is a spy
+     * @param player the player being checked
+     * @return if they are a spy
+     */
+    public boolean isSpy(Player player) {
+        return spies.contains(player);
+    }
+
+    /**
+     * Add a player to the list of spies
+     * @param player player being added
+     */
+    public void addSpy(Player player) {
+        spies.add(player);
+        commandManager.getCommandIssuer(player).sendInfo(Messages.ADMIN__SPY_ON);
+    }
+
+    /**
+     * Remove a player from the list of spies
+     * @param player player being removed
+     */
+    public void removeSpy(Player player) {
+        spies.remove(player);
+        commandManager.getCommandIssuer(player).sendInfo(Messages.ADMIN__SPY_OFF);
+    }
+
+    /**
+     * This method handles combining all the spy methods together to make a simple, clean method.
+     * @param player the player being modified
+     */
+    public void toggleSpy(Player player) {
+        if (isSpy(player)) {
+            removeSpy(player);
+        } else {
+            addSpy(player);
+        }
     }
 }

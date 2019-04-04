@@ -60,7 +60,6 @@ public class CommandAdmin extends BaseCommand {
     private GuildHandler guildHandler;
     private ActionHandler actionHandler;
     private SettingsManager settingsManager;
-    private final List<Player> spies = new ArrayList<>();
 
     /**
      * Admin command to remove a guild from the server
@@ -266,13 +265,7 @@ public class CommandAdmin extends BaseCommand {
     @Description("{@@descriptions.admin-spy}")
     @CommandPermission("guilds.command.admin")
     public void onAdminSpy(Player player) {
-        if (spies.contains(player)) {
-            spies.remove(player);
-            getCurrentCommandIssuer().sendInfo(Messages.ADMIN__SPY_OFF);
-        } else {
-            spies.add(player);
-            getCurrentCommandIssuer().sendInfo(Messages.ADMIN__SPY_ON);
-        }
+        guildHandler.toggleSpy(player);
     }
 
     @Subcommand("admin vault")
