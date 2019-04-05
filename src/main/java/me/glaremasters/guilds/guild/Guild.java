@@ -31,6 +31,7 @@ import lombok.Getter;
 import lombok.Setter;
 import me.glaremasters.guilds.Messages;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -330,6 +331,22 @@ public class Guild {
      */
     public boolean checkIfFull() {
         return getSize() >= getTier().getMaxMembers();
+    }
+
+    /**
+     * Super simple method to set a home's location to null
+     */
+    public void delHome() {
+        setHome(null);
+    }
+
+    /**
+     * Simple method to create a new guild home
+     * @param player the player running the command
+     */
+    public void setNewHome(Player player) {
+        Location l = player.getLocation();
+        setHome(new GuildHome(l.getWorld().getName(), l.getX(), l.getY(), l.getZ(), l.getYaw(), l.getPitch()));
     }
 }
 

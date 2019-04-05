@@ -228,62 +228,6 @@ public class CommandGuilds extends BaseCommand {
     }
 
     /**
-     * Set a guild home
-     * @param player the player setting the home
-     * @param guild the guild that home is being set
-     * @param role role of player
-     */
-    @Subcommand("sethome")
-    @Description("{@@descriptions.sethome}")
-    @CommandPermission(Constants.BASE_PERM + "sethome")
-    public void onSetHome(Player player, Guild guild, GuildRole role) {
-        if (!role.isChangeHome()) {
-            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
-            return;
-        }
-
-        if (economy.getBalance(player) < settingsManager.getProperty(CostSettings.SETHOME)) {
-            getCurrentCommandIssuer().sendInfo(Messages.ERROR__NOT_ENOUGH_MONEY);
-            return;
-        }
-
-        //todo
-        if (setHome.contains(player)) {
-            getCurrentCommandIssuer().sendInfo(Messages.SETHOME__COOLDOWN, "{amount}", String.valueOf(CooldownSettings.SETHOME));
-            return;
-        }
-
-        Location loc = player.getLocation();
-        guild.setHome(new GuildHome(loc.getWorld().getName(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch()));
-
-        economy.withdrawPlayer(player, settingsManager.getProperty(CostSettings.SETHOME));
-        getCurrentCommandIssuer().sendInfo(Messages.SETHOME__SUCCESSFUL);
-
-        /* todo
-        setHome.add(player);
-        Bukkit.getServer().getScheduler().runTaskLaterAsynchronously(guilds, () -> setHome.remove(player), (20 * getInt("cooldowns.sethome")));
-        */
-    }
-
-    /**
-     * Remove a guild home
-     * @param player the player removing the guild home
-     * @param guild the guild that the home is being removed
-     * @param role role of player
-     */
-    @Subcommand("delhome")
-    @Description("{@@descriptions.delhome}")
-    @CommandPermission(Constants.BASE_PERM + "delhome")
-    public void onDelHome(Player player, Guild guild, GuildRole role) {
-        if (!role.isChangeHome()) {
-            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
-            return;
-        }
-        guild.setHome(null);
-        getCurrentCommandIssuer().sendInfo(Messages.SETHOME__SUCCESSFUL);
-    }
-
-    /**
      * Go to guild home
      * @param player the player teleporting
      * @param guild the guild to teleport to
