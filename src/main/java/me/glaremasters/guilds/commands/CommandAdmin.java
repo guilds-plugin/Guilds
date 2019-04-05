@@ -67,56 +67,6 @@ public class CommandAdmin extends BaseCommand {
     private SettingsManager settingsManager;
 
     /**
-     * Admin command to upgrade a guild's tier
-     * @param player the admin running the command
-     * @param name the name of the guild being upgraded
-     */
-    @Subcommand("admin upgrade")
-    @Description("{@@descriptions.admin-upgrade}")
-    @CommandPermission("guilds.command.admin")
-    @CommandCompletion("@guilds")
-    @Syntax("<guild name>")
-    public void onAdminUpgradeGuild(Player player, @Values("@guilds") @Single String name) {
-        Guild guild = guildHandler.getGuild(name);
-        if (guild == null) {
-            getCurrentCommandIssuer().sendInfo(Messages.ERROR__GUILD_NO_EXIST);
-            return;
-        }
-
-        GuildTier tier = guild.getTier();
-        if (tier.getLevel() >= guildHandler.getMaxTierLevel()) return;
-
-        guild.setTier(guildHandler.getGuildTier(guild.getTier().getLevel() + 1));
-
-        getCurrentCommandIssuer().sendInfo(Messages.ADMIN__ADMIN_UPGRADE, "{guild}", guild.getName());
-        guild.sendMessage(getCurrentCommandManager(), Messages.ADMIN__ADMIN_GUILD_UPGRADE);
-    }
-
-    /**
-     * Admin command to change a guild's status
-     * @param player the admin running the command
-     * @param name the guild to change the status of
-     */
-    @Subcommand("admin status")
-    @Description("{@@descriptions.admin-status}")
-    @CommandPermission("guilds.command.admin")
-    @CommandCompletion("@guilds")
-    @Syntax("<name> <private/public>")
-    public void onAdminGuildStatus(Player player, @Values("@guilds") @Single String name) {
-        Guild guild = guildHandler.getGuild(name);
-        if (guild == null) {
-            getCurrentCommandIssuer().sendInfo(Messages.ERROR__GUILD_NO_EXIST);
-            return;
-        }
-
-        Guild.Status status = guild.getStatus();
-        if (status == Guild.Status.Private) guild.setStatus(Guild.Status.Public);
-        else guild.setStatus(Guild.Status.Private);
-
-        getCurrentCommandIssuer().sendInfo(Messages.STATUS__SUCCESSFUL, "{status}", status.name());
-    }
-
-    /**
      * Admin command to change the prefix of a guild
      * @param player the admin running the command
      * @param name the name of a guild
