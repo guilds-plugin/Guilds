@@ -63,7 +63,7 @@ public class CommandCodeCreate extends BaseCommand {
     @Description("{@@descriptions.code-create}")
     @Syntax("<uses>")
     @CommandPermission(Constants.CODE_PERM + "create")
-    public void onCreate(Player player, Guild guild, GuildRole role, @Default("1") Integer uses) {
+    public void execute(Player player, Guild guild, GuildRole role, @Default("1") Integer uses) {
         if (!role.isCreateCode())
             ACFUtil.sneaky(new InvalidPermissionException());
 

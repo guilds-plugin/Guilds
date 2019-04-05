@@ -56,7 +56,7 @@ public class CommandCodeList extends BaseCommand {
     @Subcommand("code list")
     @Description("{@@descriptions.code-list}")
     @CommandPermission(Constants.CODE_PERM + "list")
-    public void onList(Player player, Guild guild) {
+    public void execute(Player player, Guild guild) {
 
         if (guild.getCodes().isEmpty()) {
             getCurrentCommandIssuer().sendInfo(Messages.CODES__EMPTY);

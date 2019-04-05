@@ -55,7 +55,7 @@ public class CommandCodeInfo extends BaseCommand {
     @CommandPermission(Constants.CODE_PERM + "info")
     @Syntax("<code>")
     @CommandCompletion("@activeCodes")
-    public void onInfo(Player player, Guild guild, GuildRole role, @Values("@activeCodes") @Single String code) {
+    public void execute(Player player, Guild guild, GuildRole role, @Values("@activeCodes") @Single String code) {
 
         if (code == null) return;
 

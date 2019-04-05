@@ -56,7 +56,7 @@ public class CommandCodeRedeem extends BaseCommand {
     @Subcommand("code redeem")
     @Description("{@@descriptions.code-redeem}")
     @CommandPermission(Constants.CODE_PERM + "redeem")
-    public void onRedeem(Player player, String code) {
+    public void execute(Player player, String code) {
 
         if (guildHandler.getGuild(player) != null) {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__ALREADY_IN_GUILD);
