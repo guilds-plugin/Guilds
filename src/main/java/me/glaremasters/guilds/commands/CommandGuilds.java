@@ -228,49 +228,6 @@ public class CommandGuilds extends BaseCommand {
     }
 
     /**
-     * Go to guild home
-     * @param player the player teleporting
-     * @param guild the guild to teleport to
-     */
-    @Subcommand("home")
-    @Description("{@@descriptions.home}")
-    @CommandPermission(Constants.BASE_PERM + "home")
-    public void onHome(Player player, Guild guild) {
-        if (guild.getHome() == null) {
-            getCurrentCommandIssuer().sendInfo(Messages.HOME__NO_HOME_SET);
-            return;
-        }
-
-        //todo
-        if (home.contains(player)) {
-            getCurrentCommandIssuer().sendInfo(Messages.HOME__COOLDOWN, "{amount}", String.valueOf(settingsManager.getProperty(CooldownSettings.HOME)));
-            return;
-        }
-
-        warmUp.put(player, player.getLocation());
-
-        getCurrentCommandIssuer().sendInfo(Messages.HOME__WARMUP, "{amount}", String.valueOf(settingsManager.getProperty(CooldownSettings.WU_HOME)));
-
-        //todo
-        Bukkit.getServer().getScheduler().runTaskLater(guilds, () -> {
-
-            if (warmUp.get(player).distance(player.getLocation()) > 1) {
-                getCurrentCommandIssuer().sendInfo(Messages.HOME__CANCELLED);
-                warmUp.remove(player);
-                return;
-            }
-
-            player.teleport(guild.getHome().getAsLocation());
-            warmUp.remove(player);
-
-            getCurrentCommandIssuer().sendInfo(Messages.HOME__TELEPORTED);
-
-            home.add(player);
-            //todo Bukkit.getServer().getScheduler().runTaskLaterAsynchronously(guilds, () -> home.remove(player), (20 * getInt("cooldowns.home")));
-        }, (20 * settingsManager.getProperty(CooldownSettings.WU_HOME)));
-    }
-
-    /**
      * Rename a guild
      * @param player the player renaming this guild
      * @param guild the guild being renamed

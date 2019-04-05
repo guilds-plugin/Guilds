@@ -56,7 +56,7 @@ public class CommandDelHome extends BaseCommand {
     @Subcommand("delhome")
     @Description("{@@descriptions.delhome}")
     @CommandPermission(Constants.BASE_PERM + "delhome")
-    public void onDelHome(Player player, Guild guild, GuildRole role) {
+    public void execute(Player player, Guild guild, GuildRole role) {
         if (!role.isChangeHome())
             ACFUtil.sneaky(new InvalidPermissionException());
 

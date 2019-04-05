@@ -63,7 +63,7 @@ public class CommandSetHome extends BaseCommand {
     @Subcommand("sethome")
     @Description("{@@descriptions.sethome}")
     @CommandPermission(Constants.BASE_PERM + "sethome")
-    public void onSetHome(Player player, Guild guild, GuildRole role) {
+    public void execute(Player player, Guild guild, GuildRole role) {
         double cost = settingsManager.getProperty(CostSettings.SETHOME);
 
         if (!role.isChangeHome())

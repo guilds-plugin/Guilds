@@ -24,10 +24,18 @@
 
 package me.glaremasters.guilds.commands.homes;
 
+import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Description;
+import co.aikar.commands.annotation.Subcommand;
 import lombok.AllArgsConstructor;
+import me.glaremasters.guilds.Messages;
+import me.glaremasters.guilds.exceptions.ExpectationNotMet;
+import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.utils.Constants;
+import org.bukkit.entity.Player;
 
 /**
  * Created by Glare
@@ -36,4 +44,27 @@ import me.glaremasters.guilds.utils.Constants;
  */
 @AllArgsConstructor @CommandAlias(Constants.ROOT_ALIAS)
 public class CommandHome extends BaseCommand {
+
+    /**
+     * Go to guild home
+     * @param player the player teleporting
+     * @param guild the guild to teleport to
+     */
+    @Subcommand("home")
+    @Description("{@@descriptions.home}")
+    @CommandPermission(Constants.BASE_PERM + "home")
+    public void execute(Player player, Guild guild) {
+        if (guild.getHome() == null)
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.HOME__NO_HOME_SET));
+
+        // Handle cooldown settings
+
+        // Handle warmup if enabled
+
+        player.teleport(guild.getHome().getAsLocation());
+
+        getCurrentCommandIssuer().sendInfo(Messages.HOME__TELEPORTED);
+
+    }
+
 }
