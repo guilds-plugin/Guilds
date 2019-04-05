@@ -51,6 +51,7 @@ import me.glaremasters.guilds.commands.bank.CommandBankBalance;
 import me.glaremasters.guilds.commands.bank.CommandBankDeposit;
 import me.glaremasters.guilds.commands.bank.CommandBankWithdraw;
 import me.glaremasters.guilds.commands.claims.CommandClaim;
+import me.glaremasters.guilds.commands.claims.CommandUnclaim;
 import me.glaremasters.guilds.commands.codes.CommandCodeCreate;
 import me.glaremasters.guilds.commands.codes.CommandCodeDelete;
 import me.glaremasters.guilds.commands.codes.CommandCodeInfo;
@@ -392,6 +393,7 @@ public final class Guilds extends JavaPlugin {
                 new CommandBankWithdraw(economy),
                 // Claim Commands
                 new CommandClaim(WorldGuardWrapper.getInstance(), settingsManager),
+                new CommandUnclaim(WorldGuardWrapper.getInstance(), settingsManager),
                 // Code Commands
                 new CommandCodeCreate(settingsManager),
                 new CommandCodeDelete(),
