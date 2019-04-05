@@ -66,22 +66,6 @@ public class CommandAdmin extends BaseCommand {
     private ActionHandler actionHandler;
     private SettingsManager settingsManager;
 
-    @Subcommand("admin vault")
-    @Description("{@@descriptions.admin-vault}")
-    @CommandPermission("guilds.command.admin")
-    @CommandCompletion("@guilds")
-    @Syntax("<guild> <vault #>")
-    public void onAdminVault(Player player, @Values("@guilds") @Single String name, Integer vault) {
-        Guild guild = guildHandler.getGuild(name);
-        if (guild == null) {
-            getCurrentCommandIssuer().sendInfo(Messages.ERROR__GUILD_NO_EXIST);
-            return;
-        }
-        Inventory inv = guildHandler.getGuildVault(guild, vault);
-        if (inv != null) player.openInventory(inv);
-
-    }
-
     /**
      * Give a player upgrade tickets
      * @param sender the executor of this command
