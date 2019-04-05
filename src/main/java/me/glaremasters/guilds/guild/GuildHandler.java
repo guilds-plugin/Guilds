@@ -256,6 +256,16 @@ public class GuildHandler {
         removePendingAlly(guild, targetGuild);
     }
 
+    /**
+     * Simple method to check if two guilds are allies
+     * @param guild the first guild
+     * @param target the second guild
+     * @return allies or not
+     */
+    public boolean isAlly(Guild guild, Guild target) {
+        return guild.getAllies().contains(target.getId());
+    }
+
 
     /**
      * Removes an ally.
