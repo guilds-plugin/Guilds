@@ -24,10 +24,30 @@
 
 package me.glaremasters.guilds.commands.roles;
 
+import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.CommandCompletion;
+import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Description;
+import co.aikar.commands.annotation.Single;
+import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.annotation.Syntax;
+import co.aikar.commands.annotation.Values;
 import lombok.AllArgsConstructor;
+import me.glaremasters.guilds.Messages;
+import me.glaremasters.guilds.exceptions.ExpectationNotMet;
+import me.glaremasters.guilds.exceptions.InvalidPermissionException;
+import me.glaremasters.guilds.guild.Guild;
+import me.glaremasters.guilds.guild.GuildHandler;
+import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.utils.Constants;
+import me.glaremasters.guilds.utils.PlayerUtils;
+import me.glaremasters.guilds.utils.RoleUtils;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
+
+import javax.management.relation.Role;
 
 /**
  * Created by Glare
@@ -36,4 +56,58 @@ import me.glaremasters.guilds.utils.Constants;
  */
 @AllArgsConstructor @CommandAlias(Constants.ROOT_ALIAS)
 public class CommandDemote extends BaseCommand {
+
+    private GuildHandler guildHandler;
+
+    /**
+     * Demote a player in a guild
+     * @param player the person running the command
+     * @param target the player you want to demote
+     * @param guild check player is in a guild
+     * @param role check player can demote another player
+     */
+    @Subcommand("demote")
+    @Description("{@@descriptions.demote}")
+    @CommandPermission(Constants.BASE_PERM + "demote")
+    @CommandCompletion("@members")
+    @Syntax("<player>")
+    public void onDemote(Player player, Guild guild, GuildRole role, @Values("@members") @Single String target) {
+        if (!role.isDemote())
+            ACFUtil.sneaky(new InvalidPermissionException());
+
+        OfflinePlayer user = PlayerUtils.getPlayer(target);
+
+        if (user == null)
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__PLAYER_NOT_FOUND,
+                    "{player}", target));
+
+        if (user.getName().equals(player.getName()))
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.DEMOTE__CANT_DEMOTE));
+
+        if (!RoleUtils.inGuild(guild, user))
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__PLAYER_NOT_IN_GUILD,
+                    "{player}", target));
+
+        if (RoleUtils.isLowest(guildHandler, guild.getMember(user.getUniqueId())) ||
+                (RoleUtils.isLower(guild.getMember(user.getUniqueId()), guild.getMember(player.getUniqueId()))))
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.DEMOTE__CANT_DEMOTE));
+
+        RoleUtils.demote(guildHandler, guild, user);
+
+        String oldRole = RoleUtils.getPreDemotedRoleName(guildHandler, guild.getMember(user.getUniqueId()));
+        String newRole = RoleUtils.getCurrentRoleName(guild.getMember(user.getUniqueId()));
+
+        getCurrentCommandIssuer().sendInfo(Messages.DEMOTE__DEMOTE_SUCCESSFUL,
+                "{player}", target,
+                "{old}", oldRole,
+                "{new}", newRole);
+
+        if (user.isOnline())
+            getCurrentCommandManager().getCommandIssuer(user).sendInfo(Messages.DEMOTE__YOU_WERE_DEMOTED,
+                    "{old}", oldRole,
+                    "{new}", newRole);
+
+
+    }
+
 }

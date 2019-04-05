@@ -412,10 +412,11 @@ public final class Guilds extends JavaPlugin {
                 // Home Commands
                 new CommandDelHome(),
                 new CommandHome(),
-                new CommandSetHome(economy, settingsManager),
+                new CommandSetHome(economy, settingsManager)
                 // Role Commands
-                new CommandDemote(),
-                new CommandPromote(guildHandler)).forEach(commandManager::registerCommand);
+/*                new CommandDemote(guildHandler),
+                new CommandPromote(guildHandler)*/
+        ).forEach(commandManager::registerCommand);
 
         if (settingsManager.getProperty(HooksSettings.WORLDGUARD)) {
             // Claim Commands

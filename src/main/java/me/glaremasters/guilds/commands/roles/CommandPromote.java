@@ -79,7 +79,10 @@ public class CommandPromote extends BaseCommand {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__PLAYER_NOT_FOUND,
                     "{player}", target));
 
-        if (!RoleUtils.inGuild(guild, user))
+        if (user.getName().equals(player.getName()))
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.PROMOTE__CANT_PROMOTE));
+
+        if ((!RoleUtils.inGuild(guild, user)) && !RoleUtils.checkPromote(guild, user, player))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__PLAYER_NOT_IN_GUILD,
                     "{player}", target));
 
@@ -88,10 +91,18 @@ public class CommandPromote extends BaseCommand {
 
         RoleUtils.promote(guildHandler, guild, user);
 
+        String oldRole = RoleUtils.getPrePromotedRoleName(guildHandler, guild.getMember(user.getUniqueId()));
+        String newRole = RoleUtils.getCurrentRoleName(guild.getMember(user.getUniqueId()));
+
         getCurrentCommandIssuer().sendInfo(Messages.PROMOTE__PROMOTE_SUCCESSFUL,
                 "{player}", target,
-                "{old}", RoleUtils.getPrePromotedRoleName(guildHandler, guild.getMember(user.getUniqueId())),
-                "{new}", RoleUtils.getCurrentRoleName(guild.getMember(user.getUniqueId())));
+                "{old}", oldRole,
+                "{new}", newRole);
+
+        if (user.isOnline())
+            getCurrentCommandManager().getCommandIssuer(user).sendInfo(Messages.PROMOTE__YOU_WERE_PROMOTED,
+                    "{old}", oldRole,
+                    "{new}", newRole);
 
 
     }

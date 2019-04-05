@@ -53,7 +53,11 @@ public class RoleUtils {
      * @return can be promoted or not
      */
     public static boolean canPromote(Guild guild, OfflinePlayer player) {
-        return guild.getMember(player.getUniqueId()).getRole().getLevel() <= 1;
+        return guild.getMember(player.getUniqueId()).getRole().getLevel() >= 1;
+    }
+
+    public static boolean checkPromote(Guild guild, OfflinePlayer target, OfflinePlayer player) {
+        return (guild.getMember(target.getUniqueId()).getRole().getLevel() - 1) == guild.getMember(player.getUniqueId()).getRole().getLevel();
     }
 
     /**
@@ -65,6 +69,17 @@ public class RoleUtils {
     public static void promote(GuildHandler guildHandler, Guild guild, OfflinePlayer player) {
         GuildMember member = guild.getMember(player.getUniqueId());
         member.setRole(guildHandler.getGuildRole(member.getRole().getLevel() - 1));
+    }
+
+    /**
+     * Demote a player
+     * @param guildHandler guild handler
+     * @param guild the guild they are in
+     * @param player the player being demoted
+     */
+    public static void demote(GuildHandler guildHandler, Guild guild, OfflinePlayer player) {
+        GuildMember member = guild.getMember(player.getUniqueId());
+        member.setRole(guildHandler.getGuildRole(member.getRole().getLevel() + 1));
     }
 
     /**
@@ -94,6 +109,26 @@ public class RoleUtils {
      */
     public static String getPreDemotedRoleName(GuildHandler guildHandler, GuildMember member) {
         return guildHandler.getGuildRole(member.getRole().getLevel() - 1).getName();
+    }
+
+    /**
+     * Check if role is lowest role
+     * @param guildHandler guild handler
+     * @param member member being checked
+     * @return if user is lowest role
+     */
+    public static boolean isLowest(GuildHandler guildHandler, GuildMember member) {
+        return guildHandler.getLowestGuildRole().getLevel() == member.getRole().getLevel();
+    }
+
+    /**
+     * Check if a players role is higher than another
+     * @param target the player checking against
+     * @param member player being checked
+     * @return if their role is lower
+     */
+    public static boolean isLower(GuildMember target, GuildMember member) {
+        return target.getRole().getLevel() < member.getRole().getLevel();
     }
 
 }
