@@ -62,7 +62,7 @@ public class CommandUnclaim extends BaseCommand {
     @Subcommand("unclaim")
     @Description("{@@descriptions.unclaim}")
     @CommandPermission(Constants.BASE_PERM + "unclaim")
-    public void onUnclaim(Player player, Guild guild, GuildRole role) {
+    public void execute(Player player, Guild guild, GuildRole role) {
         if (!role.isUnclaimLand())
             ACFUtil.sneaky(new InvalidPermissionException());
 

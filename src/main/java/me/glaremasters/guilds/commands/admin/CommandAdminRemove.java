@@ -67,7 +67,7 @@ public class CommandAdminRemove extends BaseCommand {
     @CommandPermission("guilds.command.admin")
     @CommandCompletion("@guilds")
     @Syntax("<guild name>")
-    public void onGuildRemove(Player player, @Values("@guilds") @Single String name) {
+    public void execute(Player player, @Values("@guilds") @Single String name) {
         Guild guild = guildHandler.getGuild(name);
 
         if (guild == null)

@@ -62,7 +62,7 @@ public class CommandAdminStatus extends BaseCommand {
     @CommandPermission("guilds.command.admin")
     @CommandCompletion("@guilds")
     @Syntax("<name>")
-    public void onAdminGuildStatus(Player player, @Values("@guilds") @Single String name) {
+    public void execute(Player player, @Values("@guilds") @Single String name) {
         Guild guild = guildHandler.getGuild(name);
 
         if (guild == null)

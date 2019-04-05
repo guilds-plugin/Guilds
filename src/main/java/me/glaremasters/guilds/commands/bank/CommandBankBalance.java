@@ -51,7 +51,7 @@ public class CommandBankBalance extends BaseCommand {
     @Subcommand("bank balance")
     @Description("{@@descriptions.bank-balance}")
     @CommandPermission(Constants.BANK_PERM + "balance")
-    public void onBalance(Player player, Guild guild) {
+    public void execute(Player player, Guild guild) {
         getCurrentCommandIssuer().sendInfo(Messages.BANK__BALANCE,
                 "{amount}", String.valueOf(guild.getBalance()));
     }

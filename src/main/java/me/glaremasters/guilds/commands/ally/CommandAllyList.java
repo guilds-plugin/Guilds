@@ -55,7 +55,7 @@ public class CommandAllyList extends BaseCommand {
     @Subcommand("ally list")
     @Description("{@@descriptions.ally-list}")
     @CommandPermission(Constants.ALLY_PERM + "list")
-    public void onAllyList(Player player, Guild guild) {
+    public void execute(Player player, Guild guild) {
         if (!guild.hasAllies())
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ALLY__NONE));
 

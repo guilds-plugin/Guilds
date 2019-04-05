@@ -64,7 +64,7 @@ public class CommandAdminRename extends BaseCommand {
     @CommandPermission("guilds.command.admin")
     @CommandCompletion("@guilds")
     @Syntax("<name> <new name>")
-    public void onAdminGuildRename(Player player, @Values("@guilds") @Single String name, String newName) {
+    public void execute(Player player, @Values("@guilds") @Single String name, String newName) {
         Guild guild = guildHandler.getGuild(name);
 
         if (guild == null)

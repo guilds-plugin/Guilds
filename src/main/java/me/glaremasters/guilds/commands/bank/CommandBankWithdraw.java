@@ -62,7 +62,7 @@ public class CommandBankWithdraw extends BaseCommand {
     @Description("{@@descriptions.bank-withdraw}")
     @CommandPermission(Constants.BANK_PERM + "withdraw")
     @Syntax("<amount>")
-    public void onWithdraw(Player player, Guild guild, GuildRole role, double amount) {
+    public void execute(Player player, Guild guild, GuildRole role, double amount) {
 
         double balance = guild.getBalance();
 

@@ -60,7 +60,7 @@ public class CommandAdminRemovePlayer extends BaseCommand {
     @Description("{@@descriptions.admin-removeplayer}")
     @CommandPermission("guilds.command.admin")
     @Syntax("<name>")
-    public void onAdminRemovePlayer(Player player, String target) {
+    public void execute(Player player, String target) {
         OfflinePlayer removing = Bukkit.getOfflinePlayer(target);
 
         if (removing == null)

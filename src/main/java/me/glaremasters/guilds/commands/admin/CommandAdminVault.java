@@ -64,7 +64,7 @@ public class CommandAdminVault extends BaseCommand {
     @CommandPermission("guilds.command.admin")
     @CommandCompletion("@guilds")
     @Syntax("<guild> <vault #>")
-    public void onAdminVault(Player player, @Values("@guilds") @Single String name, int vault) {
+    public void execute(Player player, @Values("@guilds") @Single String name, int vault) {
         Guild guild = guildHandler.getGuild(name);
 
         if (guild == null)

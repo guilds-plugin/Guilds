@@ -64,7 +64,7 @@ public class CommandAdminPrefix extends BaseCommand {
     @CommandPermission("guilds.command.admin")
     @CommandCompletion("@guilds")
     @Syntax("<name> <prefix>")
-    public void onAdminGuildPrefix(Player player, @Values("@guilds") @Single String name, String prefix) {
+    public void execute(Player player, @Values("@guilds") @Single String name, String prefix) {
         Guild guild = guildHandler.getGuild(name);
 
         if (guild == null)

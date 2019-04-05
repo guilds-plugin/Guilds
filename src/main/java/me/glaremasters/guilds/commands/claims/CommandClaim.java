@@ -63,7 +63,7 @@ public class CommandClaim extends BaseCommand {
     @Subcommand("claim")
     @Description("{@@descriptions.claim}")
     @CommandPermission(Constants.BASE_PERM + "claim")
-    public void onClaim(Player player, Guild guild, GuildRole role) {
+    public void execute(Player player, Guild guild, GuildRole role) {
         if (!role.isClaimLand())
             ACFUtil.sneaky(new InvalidPermissionException());
 

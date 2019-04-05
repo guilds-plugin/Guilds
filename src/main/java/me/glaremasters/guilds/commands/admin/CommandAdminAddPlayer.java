@@ -66,7 +66,7 @@ public class CommandAdminAddPlayer extends BaseCommand {
     @CommandPermission("guilds.command.admin")
     @CommandCompletion("@online @guilds")
     @Syntax("<player> <guild>")
-    public void onAdminAddPlayer(Player player, @Values("@online") @Single String target, @Values("@guilds") @Single String name) {
+    public void execute(Player player, @Values("@online") @Single String target, @Values("@guilds") @Single String name) {
         OfflinePlayer adding = Bukkit.getOfflinePlayer(target);
 
         if (adding == null)

@@ -370,8 +370,7 @@ public final class Guilds extends JavaPlugin {
         loadCompletions(commandManager);
 
         // Register all the commands
-        Stream.of(
-                // Admin Commands
+        Stream.of(// Admin Commands
                 new CommandAdminAddPlayer(guildHandler),
                 new CommandAdminPrefix(guildHandler),
                 new CommandAdminRemove(guildHandler, actionHandler),
@@ -381,6 +380,8 @@ public final class Guilds extends JavaPlugin {
                 new CommandAdminStatus(guildHandler),
                 new CommandAdminUpgrade(guildHandler),
                 new CommandAdminVault(guildHandler),
+                // General For Now
+                new CommandGuilds(this, guildHandler, settingsManager, actionHandler, economy),
                 // Ally Commands
                 new CommandAllyAccept(guildHandler),
                 new CommandAllyAdd(guildHandler),
@@ -391,15 +392,18 @@ public final class Guilds extends JavaPlugin {
                 new CommandBankBalance(),
                 new CommandBankDeposit(economy),
                 new CommandBankWithdraw(economy),
-                // Claim Commands
-                new CommandClaim(WorldGuardWrapper.getInstance(), settingsManager),
-                new CommandUnclaim(WorldGuardWrapper.getInstance(), settingsManager),
                 // Code Commands
                 new CommandCodeCreate(settingsManager),
                 new CommandCodeDelete(),
                 new CommandCodeInfo(),
                 new CommandCodeList(settingsManager),
                 new CommandCodeRedeem(guildHandler)).forEach(commandManager::registerCommand);
+
+        if (settingsManager.getProperty(HooksSettings.WORLDGUARD)) {
+            // Claim Commands
+            commandManager.registerCommand(new CommandClaim(WorldGuardWrapper.getInstance(), settingsManager));
+            commandManager.registerCommand(new CommandUnclaim(WorldGuardWrapper.getInstance(), settingsManager));
+        }
 
 
         // This can probably be moved into it's own method

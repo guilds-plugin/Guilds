@@ -63,7 +63,7 @@ public class CommandBankDeposit extends BaseCommand {
     @Description("{@@descriptions.bank-deposit}")
     @CommandPermission(Constants.BANK_PERM + "deposit")
     @Syntax("<amount>")
-    public void onDeposit(Player player, Guild guild, GuildRole role, double amount) {
+    public void execute(Player player, Guild guild, GuildRole role, double amount) {
 
         double balance = guild.getBalance();
         double total = amount + balance;
