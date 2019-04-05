@@ -96,7 +96,7 @@ public class Guild {
      *
      * @param guildMember the member to add
      */
-    public void addMember(GuildMember guildMember){
+    public void addMember(GuildMember guildMember) {
         if (getMembers().contains(guildMember)) return;
         removeInvitedMember(guildMember.getUuid());
         getMembers().add(guildMember);

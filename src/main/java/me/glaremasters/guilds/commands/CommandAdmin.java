@@ -26,7 +26,15 @@ package me.glaremasters.guilds.commands;
 
 import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.*;
+import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.CommandCompletion;
+import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Default;
+import co.aikar.commands.annotation.Description;
+import co.aikar.commands.annotation.Single;
+import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.annotation.Syntax;
+import co.aikar.commands.annotation.Values;
 import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Messages;
 import me.glaremasters.guilds.actions.ActionHandler;
@@ -43,9 +51,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
-import java.util.ArrayList;
-import java.util.List;
-
 //todo this todo is for all command classes.
 //I have noticed that you only send certain messages on certain commands however these messages should also be sent in other places.
 //Example I have seen is that you sent a ERROR__GUILD_NO_EXIST message in this admin command but not in the ally commands (haven't checked all commands classes)
@@ -60,106 +65,6 @@ public class CommandAdmin extends BaseCommand {
     private GuildHandler guildHandler;
     private ActionHandler actionHandler;
     private SettingsManager settingsManager;
-
-    /**
-     * Admin command to remove a guild from the server
-     * @param player the admin running the command
-     * @param name the name of the guild being removed
-     */
-    @Subcommand("admin remove")
-    @Description("{@@descriptions.admin-remove}")
-    @CommandPermission("guilds.command.admin")
-    @CommandCompletion("@guilds")
-    @Syntax("<guild name>")
-    public void onGuildRemove(Player player, @Values("@guilds") @Single String name) {
-        Guild guild = guildHandler.getGuild(name);
-        if (guild == null) {
-            getCurrentCommandIssuer().sendInfo(Messages.ERROR__GUILD_NO_EXIST);
-            return;
-        }
-        getCurrentCommandIssuer().sendInfo(Messages.ADMIN__DELETE_WARNING, "{guild}", name);
-        actionHandler.addAction(player, new ConfirmAction() {
-            @Override
-            public void accept() {
-                GuildRemoveEvent event = new GuildRemoveEvent(player, guild, GuildRemoveEvent.Cause.ADMIN_DELETED);
-                Bukkit.getPluginManager().callEvent(event);
-                if (event.isCancelled()) return;
-
-                // check if they have a claim
-
-                guildHandler.removeGuild(guild);
-
-                getCurrentCommandIssuer().sendInfo(Messages.ADMIN__DELETE_SUCCESS, "{guild}", name);
-
-                actionHandler.removeAction(player);
-            }
-
-            @Override
-            public void decline() {
-                actionHandler.removeAction(player);
-            }
-        });
-    }
-
-    /**
-     * Admin command to add a player to a guild
-     * @param player the admin running the command
-     * @param target the player being added to the guild
-     * @param name the guild the player is being added to
-     */
-    @Subcommand("admin addplayer")
-    @Description("{@@descriptions.admin-addplayer}")
-    @CommandPermission("guilds.command.admin")
-    @CommandCompletion("@online @guilds")
-    @Syntax("<player> <guild>")
-    public void onAdminAddPlayer(Player player, @Values("@online") @Single String target, @Values("@guilds") @Single String name) {
-        OfflinePlayer playerToAdd = Bukkit.getOfflinePlayer(target);
-        if (player == null) return;
-
-        Guild guild = guildHandler.getGuild(name);
-        if (guild == null) return;
-
-        guild.addMember(new GuildMember(playerToAdd.getUniqueId(), guildHandler.getLowestGuildRole()));
-
-        //todo guildHandler.addGuildPerms(guild, playerToAdd);
-
-        if (playerToAdd.isOnline()) {
-            getCurrentCommandManager().getCommandIssuer(playerToAdd).sendInfo(Messages.ADMIN__PLAYER_ADDED, "{guild}", guild.getName());
-        }
-        getCurrentCommandIssuer().sendInfo(Messages.ADMIN__ADMIN_PLAYER_ADDED, "{player}", playerToAdd.getName(), "{guild}", guild.getName());
-        guild.sendMessage(getCurrentCommandManager(), Messages.ADMIN__ADMIN_GUILD_ADD, "{player}", playerToAdd.getName());
-    }
-
-    /**
-     * Admin command to remove a player from a guild
-     * @param player the admin running the command
-     * @param target the guild the player is being removed from
-     */
-    @Subcommand("admin removeplayer")
-    @Description("{@@descriptions.admin-removeplayer}")
-    @CommandPermission("guilds.command.admin")
-    @Syntax("<name>")
-    public void onAdminRemovePlayer(Player player, String target) {
-        OfflinePlayer playerToRemove = Bukkit.getOfflinePlayer(target);
-        if (player == null) {
-            getCurrentCommandIssuer().sendInfo(Messages.ERROR__PLAYER_NOT_FOUND);
-            return;
-        }
-
-        Guild guild = guildHandler.getGuild(playerToRemove);
-        if (guild == null) {
-            getCurrentCommandIssuer().sendInfo(Messages.ERROR__GUILD_NO_EXIST);
-            return;
-        }
-
-        guild.removeMember(playerToRemove);
-
-        //todo guildHandler.removeGuildPerms(guild, playerToRemove);
-
-        if (playerToRemove.isOnline()) getCurrentCommandManager().getCommandIssuer(playerToRemove).sendInfo(Messages.ADMIN__PLAYER_REMOVED, "{guild}", guild.getName());
-        getCurrentCommandIssuer().sendInfo(Messages.ADMIN__ADMIN_PLAYER_REMOVED, "{player}", playerToRemove.getName(), "{guild}", guild.getName());
-        guild.sendMessage(getCurrentCommandManager(), Messages.ADMIN__ADMIN_GUILD_REMOVE, "{player}", playerToRemove.getName());
-    }
 
     /**
      * Admin command to upgrade a guild's tier
