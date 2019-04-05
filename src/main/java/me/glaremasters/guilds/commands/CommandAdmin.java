@@ -66,17 +66,6 @@ public class CommandAdmin extends BaseCommand {
     private ActionHandler actionHandler;
     private SettingsManager settingsManager;
 
-    /**
-     * Admin command to turn on Guild Chat Spy
-     * @param player the player executing the command
-     */
-    @Subcommand("admin spy")
-    @Description("{@@descriptions.admin-spy}")
-    @CommandPermission("guilds.command.admin")
-    public void onAdminSpy(Player player) {
-        guildHandler.toggleSpy(getCurrentCommandManager(), player);
-    }
-
     @Subcommand("admin vault")
     @Description("{@@descriptions.admin-vault}")
     @CommandPermission("guilds.command.admin")
