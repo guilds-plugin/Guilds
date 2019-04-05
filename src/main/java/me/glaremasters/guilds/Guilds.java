@@ -32,7 +32,6 @@ import co.aikar.commands.PaperCommandManager;
 import lombok.Getter;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.api.GuildsAPI;
-import me.glaremasters.guilds.commands.CommandClaim;
 import me.glaremasters.guilds.commands.CommandGuilds;
 import me.glaremasters.guilds.commands.admin.CommandAdminAddPlayer;
 import me.glaremasters.guilds.commands.admin.CommandAdminPrefix;
@@ -51,6 +50,7 @@ import me.glaremasters.guilds.commands.ally.CommandAllyRemove;
 import me.glaremasters.guilds.commands.bank.CommandBankBalance;
 import me.glaremasters.guilds.commands.bank.CommandBankDeposit;
 import me.glaremasters.guilds.commands.bank.CommandBankWithdraw;
+import me.glaremasters.guilds.commands.claims.CommandClaim;
 import me.glaremasters.guilds.commands.codes.CommandCodeCreate;
 import me.glaremasters.guilds.commands.codes.CommandCodeDelete;
 import me.glaremasters.guilds.commands.codes.CommandCodeInfo;
@@ -369,7 +369,9 @@ public final class Guilds extends JavaPlugin {
         loadCompletions(commandManager);
 
         // Register all the commands
-        Stream.of(new CommandAdminAddPlayer(guildHandler),
+        Stream.of(
+                // Admin Commands
+                new CommandAdminAddPlayer(guildHandler),
                 new CommandAdminPrefix(guildHandler),
                 new CommandAdminRemove(guildHandler, actionHandler),
                 new CommandAdminRemovePlayer(guildHandler),
@@ -378,21 +380,24 @@ public final class Guilds extends JavaPlugin {
                 new CommandAdminStatus(guildHandler),
                 new CommandAdminUpgrade(guildHandler),
                 new CommandAdminVault(guildHandler),
+                // Ally Commands
                 new CommandAllyAccept(guildHandler),
                 new CommandAllyAdd(guildHandler),
                 new CommandAllyDecline(guildHandler),
                 new CommandAllyList(),
                 new CommandAllyRemove(guildHandler),
-                new CommandGuilds(this, guildHandler, settingsManager, actionHandler, economy),
-                new CommandClaim(settingsManager),
+                // Bank Commands
+                new CommandBankBalance(),
+                new CommandBankDeposit(economy),
+                new CommandBankWithdraw(economy),
+                // Claim Commands
+                new CommandClaim(WorldGuardWrapper.getInstance(), settingsManager),
+                // Code Commands
                 new CommandCodeCreate(settingsManager),
                 new CommandCodeDelete(),
                 new CommandCodeInfo(),
                 new CommandCodeList(settingsManager),
-                new CommandCodeRedeem(guildHandler),
-                new CommandBankBalance(),
-                new CommandBankDeposit(economy),
-                new CommandBankWithdraw(economy)).forEach(commandManager::registerCommand);
+                new CommandCodeRedeem(guildHandler)).forEach(commandManager::registerCommand);
 
 
         // This can probably be moved into it's own method

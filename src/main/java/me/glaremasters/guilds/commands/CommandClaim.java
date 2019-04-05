@@ -53,53 +53,6 @@ public class CommandClaim extends BaseCommand {
 
     private SettingsManager settingsManager;
 
-    @Subcommand("claim")
-    @Description("{@@descriptions.claim}")
-    @CommandPermission(Constants.BASE_PERM + "claim")
-    public void onClaim(Player player, Guild guild, GuildRole role) {
-
-        int radius = settingsManager.getProperty(ClaimSettings.RADIUS);
-
-        if (!settingsManager.getProperty(HooksSettings.WORLDGUARD)) {
-            getCurrentCommandIssuer().sendInfo(Messages.CLAIM__HOOK_DISABLED);
-            return;
-        }
-
-        WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();
-
-        if (!role.isClaimLand()) {
-            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
-            return;
-        }
-
-        Location min = player.getLocation().subtract(radius, (player.getLocation().getY()), radius);
-        Location max = player.getLocation().add(radius, (player.getWorld().getMaxHeight() - player.getLocation().getY()), radius);
-
-        if (wrapper.getRegion(player.getWorld(), guild.getId().toString()).isPresent()) {
-            getCurrentCommandIssuer().sendInfo(Messages.CLAIM__ALREADY_EXISTS);
-            return;
-        }
-
-        Set<IWrappedRegion> regions = wrapper.getRegions(min, max);
-
-        if (regions.size() > 0) {
-            getCurrentCommandIssuer().sendInfo(Messages.CLAIM__OVERLAP);
-            return;
-        }
-
-        wrapper.addCuboidRegion(guild.getId().toString(), min, max);
-
-        wrapper.getRegion(player.getWorld(), guild.getId().toString()).ifPresent(region -> {
-            region.getOwners().addPlayer(player.getUniqueId());
-
-            IWrappedDomain domain = region.getMembers();
-
-            guild.getMembers().forEach(member -> domain.addPlayer(member.getUuid()));
-        });
-
-        getCurrentCommandIssuer().sendInfo(Messages.CLAIM__SUCCESS, "{loc1}", ACFBukkitUtil.formatLocation(min), "{loc2}", ACFBukkitUtil.formatLocation(max));
-    }
-
     @Subcommand("unclaim")
     @Description("{@@descriptions.unclaim}")
     @CommandPermission(Constants.BASE_PERM + "unclaim")

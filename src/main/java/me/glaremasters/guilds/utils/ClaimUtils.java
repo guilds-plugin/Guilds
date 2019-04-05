@@ -25,13 +25,13 @@
 package me.glaremasters.guilds.utils;
 
 import ch.jalu.configme.SettingsManager;
-import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.configuration.sections.ClaimSettings;
 import me.glaremasters.guilds.configuration.sections.HooksSettings;
 import me.glaremasters.guilds.guild.Guild;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.codemc.worldguardwrapper.WorldGuardWrapper;
+import org.codemc.worldguardwrapper.region.IWrappedDomain;
 import org.codemc.worldguardwrapper.region.IWrappedRegion;
 
 import java.util.Optional;
@@ -42,17 +42,13 @@ import java.util.Set;
  * Date: 4/4/2019
  * Time: 9:44 PM
  */
-@AllArgsConstructor
 public class ClaimUtils {
-
-    private static SettingsManager settingsManager;
-    private static WorldGuardWrapper wrapper;
 
     /**
      * Check if worldguard claims are enabled or not
      * @return valid or not
      */
-    public static boolean isEnable() {
+    public static boolean isEnable(SettingsManager settingsManager) {
         return settingsManager.getProperty(HooksSettings.WORLDGUARD);
     }
 
@@ -60,7 +56,7 @@ public class ClaimUtils {
      * Get the radius of a claim
      * @return the radius of a claim
      */
-    public static int getRaidus() {
+    public static int getRaidus(SettingsManager settingsManager) {
         return settingsManager.getProperty(ClaimSettings.RADIUS);
     }
 
@@ -69,8 +65,8 @@ public class ClaimUtils {
      * @param player the player running the command
      * @return smaller location
      */
-    public static Location claimPointOne(Player player) {
-        return player.getLocation().subtract(getRaidus(), player.getLocation().getY(), getRaidus());
+    public static Location claimPointOne(Player player, SettingsManager settingsManager) {
+        return player.getLocation().subtract(getRaidus(settingsManager), player.getLocation().getY(), getRaidus(settingsManager));
     }
 
     /**
@@ -78,8 +74,8 @@ public class ClaimUtils {
      * @param player the player running the command
      * @return bigger location
      */
-    public static Location claimPointTwo(Player player) {
-        return player.getLocation().add(getRaidus(), (player.getWorld().getMaxHeight() - player.getLocation().getY()), getRaidus());
+    public static Location claimPointTwo(Player player, SettingsManager settingsManager) {
+        return player.getLocation().add(getRaidus(settingsManager), (player.getWorld().getMaxHeight() - player.getLocation().getY()), getRaidus(settingsManager));
     }
 
     /**
@@ -97,7 +93,7 @@ public class ClaimUtils {
      * @param guild the guild of the player
      * @return if a claim already exists
      */
-    public static boolean checkAlreadyExist(Player player, Guild guild) {
+    public static boolean checkAlreadyExist(WorldGuardWrapper wrapper, Player player, Guild guild) {
         return wrapper.getRegion(player.getWorld(), getClaimName(guild)).isPresent();
     }
 
@@ -106,8 +102,8 @@ public class ClaimUtils {
      * @param player the player being checked
      * @return the list of surrounding regions
      */
-    public static Set<IWrappedRegion> regions(Player player) {
-        return wrapper.getRegions(claimPointOne(player), claimPointTwo(player));
+    public static Set<IWrappedRegion> regions(WorldGuardWrapper wrapper, Player player, SettingsManager settingsManager) {
+        return wrapper.getRegions(claimPointOne(player, settingsManager), claimPointTwo(player, settingsManager));
     }
 
     /**
@@ -115,8 +111,8 @@ public class ClaimUtils {
      * @param player the player checking
      * @return if there is an overlap
      */
-    public static boolean checkOverlap(Player player) {
-        return regions(player).size() > 0;
+    public static boolean checkOverlap(WorldGuardWrapper wrapper, Player player, SettingsManager settingsManager) {
+        return regions(wrapper, player, settingsManager).size() > 0;
     }
 
     /**
@@ -124,8 +120,8 @@ public class ClaimUtils {
      * @param guild the guild making the claim
      * @param player the player running the command
      */
-    public static void createClaim(Guild guild, Player player) {
-        wrapper.addCuboidRegion(getClaimName(guild), claimPointOne(player), claimPointTwo(player));
+    public static void createClaim(WorldGuardWrapper wrapper, Guild guild, Player player, SettingsManager settingsManager) {
+        wrapper.addCuboidRegion(getClaimName(guild), claimPointOne(player, settingsManager), claimPointTwo(player, settingsManager));
     }
 
     /**
@@ -134,7 +130,7 @@ public class ClaimUtils {
      * @param guild get the guild the player is in
      * @return the guild claim
      */
-    public static Optional<IWrappedRegion> getGuildClaim(Player player, Guild guild) {
+    public static Optional<IWrappedRegion> getGuildClaim(WorldGuardWrapper wrapper, Player player, Guild guild) {
         return wrapper.getRegion(player.getWorld(), getClaimName(guild));
     }
 
@@ -145,6 +141,24 @@ public class ClaimUtils {
      */
     public static void addOwner(IWrappedRegion claim, Guild guild) {
         claim.getOwners().addPlayer(guild.getGuildMaster().getUuid());
+    }
+
+    /**
+     * Get the members of a guild claim
+     * @param claim the claim being checked
+     * @return the domain of members
+     */
+    public static IWrappedDomain getMembers(IWrappedRegion claim) {
+        return claim.getMembers();
+    }
+
+    /**
+     * Add all the guild members to a guild claim
+     * @param claim the claim they are being added to
+     * @param guild the guild they are in
+     */
+    public static void addMembers(IWrappedRegion claim, Guild guild) {
+        guild.getMembers().forEach(m -> getMembers(claim).addPlayer(m.getUuid()));
     }
 
 }
