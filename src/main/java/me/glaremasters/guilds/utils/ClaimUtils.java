@@ -125,6 +125,16 @@ public class ClaimUtils {
     }
 
     /**
+     * Remove a guild claim
+     * @param wrapper worldguard wrapper
+     * @param guild the guild of the player
+     * @param player the player running the command
+     */
+    public static void removeClaim(WorldGuardWrapper wrapper, Guild guild, Player player) {
+        wrapper.removeRegion(player.getWorld(), getClaimName(guild));
+    }
+
+    /**
      * Get a guild claim
      * @param player the player running the command
      * @param guild get the guild the player is in
