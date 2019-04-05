@@ -67,29 +67,6 @@ public class CommandAdmin extends BaseCommand {
     private SettingsManager settingsManager;
 
     /**
-     * Admin command to change the prefix of a guild
-     * @param player the admin running the command
-     * @param name the name of a guild
-     * @param prefix the new prefix of the guild
-     */
-    @Subcommand("admin prefix")
-    @Description("{@@descriptions.admin-prefix}")
-    @CommandPermission("guilds.command.admin")
-    @CommandCompletion("@guilds")
-    @Syntax("<name> <prefix>")
-    public void onAdminGuildPrefix(Player player, @Values("@guilds") @Single String name, String prefix) {
-        Guild guild = guildHandler.getGuild(name);
-        if (guild == null) {
-            getCurrentCommandIssuer().sendInfo(Messages.ERROR__GUILD_NO_EXIST);
-            return;
-        }
-
-        guild.setPrefix(StringUtils.color(prefix));
-
-        getCurrentCommandIssuer().sendInfo(Messages.PREFIX__SUCCESSFUL);
-    }
-
-    /**
      * Admin command to rename a guild
      * @param player the admin running the command
      * @param name the name of the guild
