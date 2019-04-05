@@ -33,10 +33,13 @@ import lombok.Getter;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.api.GuildsAPI;
 import me.glaremasters.guilds.commands.CommandAdmin;
-import me.glaremasters.guilds.commands.CommandAlly;
 import me.glaremasters.guilds.commands.CommandClaim;
 import me.glaremasters.guilds.commands.CommandGuilds;
+import me.glaremasters.guilds.commands.ally.CommandAllyAccept;
+import me.glaremasters.guilds.commands.ally.CommandAllyAdd;
+import me.glaremasters.guilds.commands.ally.CommandAllyDecline;
 import me.glaremasters.guilds.commands.ally.CommandAllyList;
+import me.glaremasters.guilds.commands.ally.CommandAllyRemove;
 import me.glaremasters.guilds.commands.bank.CommandBankBalance;
 import me.glaremasters.guilds.commands.bank.CommandBankDeposit;
 import me.glaremasters.guilds.commands.bank.CommandBankWithdraw;
@@ -358,9 +361,14 @@ public final class Guilds extends JavaPlugin {
         loadCompletions(commandManager);
 
         // Register all the commands
-        Stream.of(new CommandGuilds(this, guildHandler, settingsManager, actionHandler, economy),
+        Stream.of(new CommandAllyAccept(guildHandler),
+                new CommandAllyAdd(guildHandler),
+                new CommandAllyDecline(guildHandler),
+                new CommandAllyList(),
+                new CommandAllyRemove(guildHandler),
+                new CommandGuilds(this, guildHandler, settingsManager, actionHandler, economy),
                 new CommandAdmin(guildHandler, actionHandler, settingsManager),
-                new CommandAlly(guildHandler), new CommandClaim(settingsManager),
+                new CommandClaim(settingsManager),
                 new CommandCodeCreate(settingsManager),
                 new CommandCodeDelete(),
                 new CommandCodeInfo(),
@@ -368,8 +376,7 @@ public final class Guilds extends JavaPlugin {
                 new CommandCodeRedeem(guildHandler),
                 new CommandBankBalance(),
                 new CommandBankDeposit(economy),
-                new CommandBankWithdraw(economy),
-                new CommandAllyList()).forEach(commandManager::registerCommand);
+                new CommandBankWithdraw(economy)).forEach(commandManager::registerCommand);
 
 
         // This can probably be moved into it's own method

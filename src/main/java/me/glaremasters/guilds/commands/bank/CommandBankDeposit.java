@@ -33,7 +33,7 @@ import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
 import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Messages;
-import me.glaremasters.guilds.exceptions.InvalidExpectationException;
+import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.exceptions.InvalidPermissionException;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
@@ -81,10 +81,10 @@ public class CommandBankDeposit extends BaseCommand {
         }
 
         if (economy.getBalance(player) < amount)
-            ACFUtil.sneaky(new InvalidExpectationException(Messages.ERROR__NOT_ENOUGH_MONEY));
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__NOT_ENOUGH_MONEY));
 
         if (total > tier.getMaxBankBalance())
-            ACFUtil.sneaky(new InvalidExpectationException(Messages.BANK__OVER_MAX));
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.BANK__OVER_MAX));
 
         economy.withdrawPlayer(player, amount);
         guild.setBalance(total);

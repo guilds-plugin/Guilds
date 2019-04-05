@@ -30,9 +30,8 @@ import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
-import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Messages;
-import me.glaremasters.guilds.exceptions.InvalidExpectationException;
+import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.utils.Constants;
 import org.bukkit.entity.Player;
@@ -58,7 +57,7 @@ public class CommandAllyList extends BaseCommand {
     @CommandPermission(Constants.ALLY_PERM + "list")
     public void onAllyList(Player player, Guild guild) {
         if (!guild.hasAllies())
-            ACFUtil.sneaky(new InvalidExpectationException(Messages.ALLY__NONE));
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.ALLY__NONE));
 
         getCurrentCommandIssuer().sendInfo(Messages.ALLY__LIST,
                 "{ally-list}", guild.getAllies().stream().map(UUID::toString).collect(Collectors.joining(",")));

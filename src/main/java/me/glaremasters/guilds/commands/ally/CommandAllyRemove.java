@@ -22,14 +22,23 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.commands;
+package me.glaremasters.guilds.commands.ally;
 
+import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.*;
+import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.CommandCompletion;
+import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Description;
+import co.aikar.commands.annotation.Single;
+import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.annotation.Syntax;
+import co.aikar.commands.annotation.Values;
 import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Messages;
-import me.glaremasters.guilds.api.events.GuildAddAllyEvent;
 import me.glaremasters.guilds.api.events.GuildRemoveAllyEvent;
+import me.glaremasters.guilds.exceptions.ExpectationNotMet;
+import me.glaremasters.guilds.exceptions.InvalidPermissionException;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
@@ -37,13 +46,13 @@ import me.glaremasters.guilds.utils.Constants;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.UUID;
-import java.util.stream.Collectors;
-
-@SuppressWarnings("unused")
-@AllArgsConstructor
-@CommandAlias("guild|guilds|g")
-public class CommandAlly extends BaseCommand {
+/**
+ * Created by Glare
+ * Date: 4/4/2019
+ * Time: 8:37 PM
+ */
+@AllArgsConstructor @CommandAlias(Constants.ROOT_ALIAS)
+public class CommandAllyRemove extends BaseCommand {
 
     private GuildHandler guildHandler;
 
@@ -57,43 +66,33 @@ public class CommandAlly extends BaseCommand {
     @Subcommand("ally remove")
     @Description("{@@descriptions.ally-remove}")
     @CommandPermission(Constants.ALLY_PERM + "remove")
+    @CommandCompletion("@allies")
     @Syntax("<guild name>")
-    public void onAllyRemove(Player player, Guild guild, GuildRole role, String name) {
-        if (checkPermission(role.isRemoveAlly())) return;
+    public void onAllyRemove(Player player, Guild guild, GuildRole role, @Values("@allies") @Single String name) {
+        if (!role.isRemoveAlly())
+            ACFUtil.sneaky(new InvalidPermissionException());
 
+        Guild target = guildHandler.getGuild(name);
 
-        Guild targetGuild = guildHandler.getGuild(name);
-        if (targetGuild == null) {
-            getCurrentCommandIssuer().sendInfo(Messages.ERROR__GUILD_NO_EXIST);
-            return;
-        }
+        if (target == null)
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
 
-        if (!guild.getAllies().contains(targetGuild.getId())) {
-            getCurrentCommandIssuer().sendInfo(Messages.ALLY__NOT_ALLIED);
-            return;
-        }
+        if (!guildHandler.isAlly(guild, target))
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.ALLY__NOT_ALLIED));
 
-        GuildRemoveAllyEvent event = new GuildRemoveAllyEvent(player, guild, targetGuild);
+        GuildRemoveAllyEvent event = new GuildRemoveAllyEvent(player, guild, target);
         Bukkit.getServer().getPluginManager().callEvent(event);
-        if (event.isCancelled()) return;
 
-        guildHandler.removeAlly(guild, targetGuild);
+        if (event.isCancelled())
+            return;
 
-        guild.sendMessage(getCurrentCommandManager(), Messages.ALLY__CURRENT_REMOVE, "{guild}", targetGuild.getName());
-        targetGuild.sendMessage(getCurrentCommandManager(), Messages.ALLY__TARGET_REMOVE, "{guild}", guild.getName());
-    }
+        guildHandler.removeAlly(guild, target);
 
-    /**
-     * Checks a permission
-     * Sends a no permission message if he has no permission
-     *
-     * @param hasPermission the boolean if role has permission
-     * @return true if message was sent
-     */
-    private boolean checkPermission(boolean hasPermission) {
-        if (hasPermission) return false;
-        getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
-        return true;
+        guild.sendMessage(getCurrentCommandManager(), Messages.ALLY__CURRENT_REMOVE,
+                "{guild}", target.getName());
+
+        target.sendMessage(getCurrentCommandManager(), Messages.ALLY__TARGET_REMOVE,
+                "{guild}", guild.getName());
     }
 
 }

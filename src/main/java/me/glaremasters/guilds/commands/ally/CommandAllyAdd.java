@@ -37,7 +37,7 @@ import co.aikar.commands.annotation.Values;
 import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Messages;
 import me.glaremasters.guilds.api.events.GuildAddAllyEvent;
-import me.glaremasters.guilds.exceptions.InvalidExpectationException;
+import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.exceptions.InvalidPermissionException;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
@@ -75,16 +75,16 @@ public class CommandAllyAdd extends BaseCommand {
         Guild target = guildHandler.getGuild(name);
 
         if (target == null)
-            ACFUtil.sneaky(new InvalidExpectationException(Messages.ERROR__GUILD_NO_EXIST));
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
 
         if (guild.isPending(target))
-            ACFUtil.sneaky(new InvalidExpectationException(Messages.ALLY__ALREADY_REQUESTED));
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.ALLY__ALREADY_REQUESTED));
 
         if (guildHandler.isAlly(guild, target))
-            ACFUtil.sneaky(new InvalidExpectationException(Messages.ALLY__ALREADY_ALLY));
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.ALLY__ALREADY_ALLY));
 
         if (guild.getId().equals(target.getId()))
-            ACFUtil.sneaky(new InvalidExpectationException(Messages.ALLY__SAME_GUILD));
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.ALLY__SAME_GUILD));
 
         GuildAddAllyEvent event = new GuildAddAllyEvent(player, guild, target);
         Bukkit.getServer().getPluginManager().callEvent(event);

@@ -34,9 +34,9 @@ import me.glaremasters.guilds.Messages;
  * Date: 4/4/2019
  * Time: 5:36 PM
  */
-public class InvalidExpectationException extends InvalidCommandArgument {
+public class ExpectationNotMet extends InvalidCommandArgument {
 
-    public InvalidExpectationException(MessageKeyProvider message) {
+    public ExpectationNotMet(MessageKeyProvider message) {
         super(message.getMessageKey(), false);
     }
 

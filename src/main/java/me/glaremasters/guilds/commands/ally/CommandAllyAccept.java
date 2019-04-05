@@ -36,7 +36,7 @@ import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.annotation.Values;
 import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Messages;
-import me.glaremasters.guilds.exceptions.InvalidExpectationException;
+import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.exceptions.InvalidPermissionException;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
@@ -73,7 +73,7 @@ public class CommandAllyAccept extends BaseCommand {
         Guild target = guildHandler.getGuild(name);
 
         if (target == null)
-            ACFUtil.sneaky(new InvalidExpectationException(Messages.ERROR__GUILD_NO_EXIST));
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
 
         if (guild.isPending(target))
             return;
