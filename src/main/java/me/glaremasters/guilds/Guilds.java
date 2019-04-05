@@ -441,8 +441,10 @@ public final class Guilds extends JavaPlugin {
     }
 
     private void loadCompletions(PaperCommandManager manager) {
+
         manager.getCommandCompletions().registerCompletion("members", c -> {
             Guild guild = guildHandler.getGuild(c.getPlayer());
+            if (guild == null) return null;
             return guild.getMembers().stream().map(member -> Bukkit.getOfflinePlayer(member.getUuid()).getName()).collect(Collectors.toList());
         });
 
@@ -454,8 +456,16 @@ public final class Guilds extends JavaPlugin {
 
         manager.getCommandCompletions().registerAsyncCompletion("allyInvites", c -> {
            Guild guild = guildHandler.getGuild(c.getPlayer());
+            if (guild == null) return null;
            if (!guild.hasAllies()) return null;
            return guild.getPendingAllies().stream().map(g -> guildHandler.getNameById(g)).collect(Collectors.toList());
+        });
+
+        manager.getCommandCompletions().registerAsyncCompletion("allies", c -> {
+            Guild guild = guildHandler.getGuild(c.getPlayer());
+            if (guild == null) return null;
+            if (!guild.hasAllies()) return null;
+            return guild.getAllies().stream().map(g -> guildHandler.getNameById(g)).collect(Collectors.toList());
         });
 
         manager.getCommandCompletions().registerAsyncCompletion("activeCodes", c -> {
