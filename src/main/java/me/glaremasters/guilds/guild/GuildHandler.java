@@ -24,10 +24,14 @@
 
 package me.glaremasters.guilds.guild;
 
+import ch.jalu.configme.SettingsManager;
+import co.aikar.commands.ACFUtil;
 import co.aikar.commands.CommandManager;
 import lombok.Getter;
 import me.glaremasters.guilds.Messages;
+import me.glaremasters.guilds.configuration.sections.GuildSettings;
 import me.glaremasters.guilds.database.DatabaseProvider;
+import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.utils.Serialization;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.OfflinePlayer;
@@ -520,5 +524,32 @@ public class GuildHandler {
         }
 
         manager.getCommandIssuer(player).sendInfo(Messages.PENDING__INVITES, "{number}", String.valueOf(list.size()), "{guilds}", String.join(",", list));
+    }
+
+    /**
+     * Check if an input meets requirements
+     * @param player player running command
+     * @param commandManager the command manager
+     * @param settingsManager the settings manager
+     * @param name the name being tried
+     * @return if it passes or not
+     */
+    public boolean hasRequirements(Player player, CommandManager commandManager, SettingsManager settingsManager, String name) {
+        String regex = settingsManager.getProperty(GuildSettings.NAME_REQUIREMENTS);
+
+        if (!name.matches(regex)) {
+            commandManager.getCommandIssuer(player).sendInfo(Messages.CREATE__REQUIREMENTS);
+            return true;
+        }
+
+        if (settingsManager.getProperty(GuildSettings.BLACKLIST_TOGGLE)) {
+            for (String word : settingsManager.getProperty(GuildSettings.BLACKLIST_WORDS)) {
+                if (name.toLowerCase().contains(word)) {
+                    commandManager.getCommandIssuer(player).sendInfo(Messages.ERROR__BLACKLIST);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
