@@ -194,40 +194,6 @@ public class CommandGuilds extends BaseCommand {
     }
 
     /**
-     * Confirm an action
-     * @param player the player confirming this
-     */
-    @Subcommand("confirm")
-    @Description("{@@descriptions.confirm}")
-    @CommandPermission(Constants.BASE_PERM + "confirm")
-    public void onConfirm(Player player) {
-        ConfirmAction action = actionHandler.getAction(player);
-        if (action == null) {
-            getCurrentCommandIssuer().sendInfo(Messages.CONFIRM__ERROR);
-            return;
-        }
-        getCurrentCommandIssuer().sendInfo(Messages.CONFIRM__SUCCESS);
-        action.accept();
-    }
-
-    /**
-     * Cancel an action
-     * @param player the player cancelling this
-     */
-    @Subcommand("cancel")
-    @Description("{@@descriptions.cancel}")
-    @CommandPermission(Constants.BASE_PERM + "cancel")
-    public void onCancel(Player player) {
-        ConfirmAction action = actionHandler.getAction(player);
-        if (action == null) {
-            getCurrentCommandIssuer().sendInfo(Messages.CANCEL__ERROR);
-        } else {
-            getCurrentCommandIssuer().sendInfo(Messages.CANCEL__SUCCESS);
-            action.decline();
-        }
-    }
-
-    /**
      * Rename a guild
      * @param player the player renaming this guild
      * @param guild the guild being renamed

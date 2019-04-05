@@ -33,6 +33,8 @@ import lombok.Getter;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.api.GuildsAPI;
 import me.glaremasters.guilds.commands.CommandGuilds;
+import me.glaremasters.guilds.commands.actions.CommandCancel;
+import me.glaremasters.guilds.commands.actions.CommandConfirm;
 import me.glaremasters.guilds.commands.admin.CommandAdminAddPlayer;
 import me.glaremasters.guilds.commands.admin.CommandAdminPrefix;
 import me.glaremasters.guilds.commands.admin.CommandAdminRemove;
@@ -373,7 +375,11 @@ public final class Guilds extends JavaPlugin {
         loadCompletions(commandManager);
 
         // Register all the commands
-        Stream.of(// Admin Commands
+
+        Stream.of(// Action Commands
+                new CommandCancel(actionHandler),
+                new CommandConfirm(actionHandler),
+                // Admin Commands
                 new CommandAdminAddPlayer(guildHandler),
                 new CommandAdminPrefix(guildHandler),
                 new CommandAdminRemove(guildHandler, actionHandler),
