@@ -217,42 +217,6 @@ public class CommandGuilds extends BaseCommand {
     }
 
     /**
-     * Toggles Guild Chat
-     * @param player the player toggling chat
-     * @param guild the guild the player is from
-     * @param role the role the player has
-     */
-    @Subcommand("chat")
-    @Description("{@@descriptions.chat}")
-    @CommandPermission(Constants.BASE_PERM + "chat")
-    public void onGuildChat(Player player, Guild guild, GuildRole role) {
-
-        if (!role.isChat()) {
-            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
-            return;
-        }
-
-        guildHandler.toggleGuildChat(getCurrentCommandManager(), player);
-    }
-
-    /**
-     * Toggles Guild Status
-     * @param player the player toggling guild status
-     * @param guild the guild that is getting toggled
-     * @param role the player's role
-     */
-    @Subcommand("status")
-    @Description("{@@descriptions.status}")
-    @CommandPermission(Constants.BASE_PERM + "status")
-    public void onStatus(Player player, Guild guild, GuildRole role) {
-        if (!role.isChangeStatus())
-            ACFUtil.sneaky(new InvalidPermissionException());
-        guild.toggleStatus();
-        getCurrentCommandIssuer().sendInfo(Messages.STATUS__SUCCESSFUL,
-                "{status}", guild.getStatus().name());
-    }
-
-    /**
      * Change guild prefix
      * @param player the player changing the guild prefix
      * @param guild the guild which's prefix is getting changed
@@ -755,19 +719,6 @@ public class CommandGuilds extends BaseCommand {
         createBuffItem("water-breathing", lore, buff, 7);
         createBuffItem("regeneration", lore, buff, 8);*/
         player.openInventory(buff);
-    }
-
-    /**
-     * Help command for the plugin
-     * @param help an instance of
-     * @see CommandHelp
-     */
-    @HelpCommand
-    @CommandPermission(Constants.BASE_PERM + "help")
-    @Syntax("")
-    @Description("{@@descriptions.help}")
-    public void onHelp(CommandHelp help) {
-        help.showHelp();
     }
 
     /**

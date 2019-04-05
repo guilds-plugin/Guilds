@@ -71,7 +71,7 @@ public class CommandDemote extends BaseCommand {
     @CommandPermission(Constants.BASE_PERM + "demote")
     @CommandCompletion("@members")
     @Syntax("<player>")
-    public void onDemote(Player player, Guild guild, GuildRole role, @Values("@members") @Single String target) {
+    public void execute(Player player, Guild guild, GuildRole role, @Values("@members") @Single String target) {
         if (!role.isDemote())
             ACFUtil.sneaky(new InvalidPermissionException());
 
