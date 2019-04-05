@@ -319,6 +319,23 @@ public class GuildHandler {
     }
 
     /**
+     * Simple method to check if guild is max tier
+     * @param guild the guild to check
+     * @return if they are max or not
+     */
+    public boolean isMaxTier(Guild guild) {
+        return guild.getTier().getLevel() >= getMaxTierLevel();
+    }
+
+    /**
+     * Simple method to increment a guild's tier
+     * @param guild the tier being upgraded
+     */
+    public void incrementTier(Guild guild) {
+        guild.setTier(getGuildTier(guild.getTier().getLevel() + 1));
+    }
+
+    /**
      * Returns the lowest guild role
      *
      * @return guild role
