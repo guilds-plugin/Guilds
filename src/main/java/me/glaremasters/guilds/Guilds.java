@@ -32,9 +32,17 @@ import co.aikar.commands.PaperCommandManager;
 import lombok.Getter;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.api.GuildsAPI;
-import me.glaremasters.guilds.commands.CommandAdmin;
 import me.glaremasters.guilds.commands.CommandClaim;
 import me.glaremasters.guilds.commands.CommandGuilds;
+import me.glaremasters.guilds.commands.admin.CommandAdminAddPlayer;
+import me.glaremasters.guilds.commands.admin.CommandAdminPrefix;
+import me.glaremasters.guilds.commands.admin.CommandAdminRemove;
+import me.glaremasters.guilds.commands.admin.CommandAdminRemovePlayer;
+import me.glaremasters.guilds.commands.admin.CommandAdminRename;
+import me.glaremasters.guilds.commands.admin.CommandAdminSpy;
+import me.glaremasters.guilds.commands.admin.CommandAdminStatus;
+import me.glaremasters.guilds.commands.admin.CommandAdminUpgrade;
+import me.glaremasters.guilds.commands.admin.CommandAdminVault;
 import me.glaremasters.guilds.commands.ally.CommandAllyAccept;
 import me.glaremasters.guilds.commands.ally.CommandAllyAdd;
 import me.glaremasters.guilds.commands.ally.CommandAllyDecline;
@@ -361,13 +369,21 @@ public final class Guilds extends JavaPlugin {
         loadCompletions(commandManager);
 
         // Register all the commands
-        Stream.of(new CommandAllyAccept(guildHandler),
+        Stream.of(new CommandAdminAddPlayer(guildHandler),
+                new CommandAdminPrefix(guildHandler),
+                new CommandAdminRemove(guildHandler, actionHandler),
+                new CommandAdminRemovePlayer(guildHandler),
+                new CommandAdminRename(guildHandler),
+                new CommandAdminSpy(guildHandler),
+                new CommandAdminStatus(guildHandler),
+                new CommandAdminUpgrade(guildHandler),
+                new CommandAdminVault(guildHandler),
+                new CommandAllyAccept(guildHandler),
                 new CommandAllyAdd(guildHandler),
                 new CommandAllyDecline(guildHandler),
                 new CommandAllyList(),
                 new CommandAllyRemove(guildHandler),
                 new CommandGuilds(this, guildHandler, settingsManager, actionHandler, economy),
-                new CommandAdmin(guildHandler, actionHandler, settingsManager),
                 new CommandClaim(settingsManager),
                 new CommandCodeCreate(settingsManager),
                 new CommandCodeDelete(),
