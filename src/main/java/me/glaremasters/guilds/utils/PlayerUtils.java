@@ -22,26 +22,34 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.exceptions;
+package me.glaremasters.guilds.utils;
 
-import co.aikar.commands.InvalidCommandArgument;
-import co.aikar.locales.MessageKey;
-import co.aikar.locales.MessageKeyProvider;
-import me.glaremasters.guilds.Messages;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 
 /**
  * Created by Glare
  * Date: 4/4/2019
- * Time: 5:36 PM
+ * Time: 11:38 PM
  */
-public class ExpectationNotMet extends InvalidCommandArgument {
+public class PlayerUtils {
 
-    public ExpectationNotMet(MessageKeyProvider message) {
-        super(message.getMessageKey(), false);
+    /**
+     * Check if a player exists
+     * @param target the player to check
+     * @return if they exist or not
+     */
+    public static boolean doesExist(String target) {
+        return Bukkit.getOfflinePlayer(target) != null;
     }
 
-    public ExpectationNotMet(MessageKeyProvider key, String... replacements) {
-        super (key.getMessageKey(), replacements);
+    /**
+     * Simple object from string
+     * @param target the name of the player
+     * @return player object
+     */
+    public static OfflinePlayer getPlayer(String target) {
+        return Bukkit.getOfflinePlayer(target);
     }
 
 }

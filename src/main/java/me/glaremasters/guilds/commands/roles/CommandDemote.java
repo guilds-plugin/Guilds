@@ -22,26 +22,18 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.exceptions;
+package me.glaremasters.guilds.commands.roles;
 
-import co.aikar.commands.InvalidCommandArgument;
-import co.aikar.locales.MessageKey;
-import co.aikar.locales.MessageKeyProvider;
-import me.glaremasters.guilds.Messages;
+import co.aikar.commands.BaseCommand;
+import co.aikar.commands.annotation.CommandAlias;
+import lombok.AllArgsConstructor;
+import me.glaremasters.guilds.utils.Constants;
 
 /**
  * Created by Glare
  * Date: 4/4/2019
- * Time: 5:36 PM
+ * Time: 11:31 PM
  */
-public class ExpectationNotMet extends InvalidCommandArgument {
-
-    public ExpectationNotMet(MessageKeyProvider message) {
-        super(message.getMessageKey(), false);
-    }
-
-    public ExpectationNotMet(MessageKeyProvider key, String... replacements) {
-        super (key.getMessageKey(), replacements);
-    }
-
+@AllArgsConstructor @CommandAlias(Constants.ROOT_ALIAS)
+public class CommandDemote extends BaseCommand {
 }

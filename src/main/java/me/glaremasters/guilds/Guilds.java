@@ -62,6 +62,8 @@ import me.glaremasters.guilds.commands.codes.CommandCodeRedeem;
 import me.glaremasters.guilds.commands.homes.CommandDelHome;
 import me.glaremasters.guilds.commands.homes.CommandHome;
 import me.glaremasters.guilds.commands.homes.CommandSetHome;
+import me.glaremasters.guilds.commands.roles.CommandDemote;
+import me.glaremasters.guilds.commands.roles.CommandPromote;
 import me.glaremasters.guilds.configuration.GuildConfigurationBuilder;
 import me.glaremasters.guilds.configuration.sections.HooksSettings;
 import me.glaremasters.guilds.configuration.sections.PluginSettings;
@@ -410,7 +412,10 @@ public final class Guilds extends JavaPlugin {
                 // Home Commands
                 new CommandDelHome(),
                 new CommandHome(),
-                new CommandSetHome(economy, settingsManager)).forEach(commandManager::registerCommand);
+                new CommandSetHome(economy, settingsManager),
+                // Role Commands
+                new CommandDemote(),
+                new CommandPromote(guildHandler)).forEach(commandManager::registerCommand);
 
         if (settingsManager.getProperty(HooksSettings.WORLDGUARD)) {
             // Claim Commands
