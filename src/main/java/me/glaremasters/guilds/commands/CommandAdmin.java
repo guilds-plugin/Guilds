@@ -67,29 +67,6 @@ public class CommandAdmin extends BaseCommand {
     private SettingsManager settingsManager;
 
     /**
-     * Admin command to rename a guild
-     * @param player the admin running the command
-     * @param name the name of the guild
-     * @param newName the new name of the guild
-     */
-    @Subcommand("admin rename")
-    @Description("{@@descriptions.admin-prefix}")
-    @CommandPermission("guilds.command.admin")
-    @CommandCompletion("@guilds")
-    @Syntax("<name> <new name>")
-    public void onAdminGuildRename(Player player, @Values("@guilds") @Single String name, String newName) {
-        Guild guild = guildHandler.getGuild(name);
-        if (guild == null) {
-            getCurrentCommandIssuer().sendInfo(Messages.ERROR__GUILD_NO_EXIST);
-            return;
-        }
-
-        guild.setName(StringUtils.color(newName));
-
-        getCurrentCommandIssuer().sendInfo(Messages.RENAME__SUCCESSFUL, "{name}", newName);
-    }
-
-    /**
      * Admin command to turn on Guild Chat Spy
      * @param player the player executing the command
      */
