@@ -526,6 +526,16 @@ public class GuildHandler {
     }
 
     /**
+     * Basically check if they can upgrade with the member check
+     * @param guild the guild being checked
+     * @return if they pass the check or not
+     */
+    public boolean memberCheck(Guild guild) {
+        GuildTier tier = guild.getTier();
+        return tier.getMembersToRankup() != 0 && guild.getMembers().size() < tier.getMembersToRankup();
+    }
+
+    /**
      * Check if an input meets requirements
      * @param player player running command
      * @param commandManager the command manager

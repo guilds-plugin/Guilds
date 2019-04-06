@@ -45,4 +45,14 @@ public class EconomyUtils {
         return economy.getBalance(player) > amount;
     }
 
+    /**
+     * Check if an amount is greater than another
+     * @param val1 the first variable
+     * @param val2 the second variable
+     * @return if it's greater or not
+     */
+    public static boolean hasEnough(double val1, double val2) {
+        return val1 > val2;
+    }
+
 }
