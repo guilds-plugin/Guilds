@@ -360,31 +360,6 @@ public class CommandGuilds extends BaseCommand {
     }
 
     /**
-     * Decline a guild invite
-     * @param player the player declining the invite
-     * @param name the name of the guild
-     */
-    @Subcommand("decline")
-    @Description("{@@descriptions.decline}")
-    @CommandPermission(Constants.BASE_PERM + "decline")
-    @CommandCompletion("@invitedTo")
-    @Syntax("<guild name>")
-    public void onDecline(Player player, @Values("@invitedTo") @Single String name) {
-        Guild guild = guildHandler.getGuild(name);
-        if (guild == null) {
-            getCurrentCommandIssuer().sendInfo(Messages.ERROR__GUILD_NO_EXIST);
-            return;
-        }
-
-        if (guildHandler.getGuild(player) != null) return;
-        if (!guild.checkIfInvited(player)) return;
-
-        guild.removeInvitedMember(player.getUniqueId());
-
-        getCurrentCommandIssuer().sendInfo(Messages.DECLINE__SUCCESS);
-    }
-
-    /**
      * Kick a player from the guild
      * @param player the player executing the command
      * @param guild the guild the targetPlayer is being kicked from
@@ -453,50 +428,6 @@ public class CommandGuilds extends BaseCommand {
         }
 
         player.openInventory(guildHandler.getGuildVault(guild, vault));
-    }
-
-    /**
-     * Accept a guild invite
-     * @param player the player accepting the invite
-     * @param name the name of the guild being accepted
-     */
-    @Subcommand("accept|join")
-    @Description("{@@descriptions.accept}")
-    @CommandPermission(Constants.BASE_PERM + "accept")
-    @CommandCompletion("@invitedTo")
-    @Syntax("<guild name>")
-    public void onAccept(Player player, @Values("@invitedTo") @Single String name) {
-        if (guildHandler.getGuild(player) != null) {
-            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ALREADY_IN_GUILD);
-            return;
-        }
-
-        // what the fuck did he do. he wayyy too high lol.
-
-        Guild guild = guildHandler.getGuild(name);
-        if (guild == null) {
-            getCurrentCommandIssuer().sendInfo(Messages.ERROR__GUILD_NO_EXIST);
-            return;
-        }
-
-        if (!guild.getInvitedMembers().contains(player.getUniqueId()) && guild.getStatus() == Guild.Status.Private) {
-            getCurrentCommandIssuer().sendInfo(Messages.ACCEPT__NOT_INVITED);
-            return;
-        }
-
-        if (guild.checkIfFull()) {
-            getCurrentCommandIssuer().sendInfo(Messages.ACCEPT__GUILD_FULL);
-            return;
-        }
-
-        GuildJoinEvent event = new GuildJoinEvent(player, guild);
-        Bukkit.getPluginManager().callEvent(event);
-        if (event.isCancelled()) return;
-
-        guild.addMember(new GuildMember(player.getUniqueId(), guildHandler.getLowestGuildRole()));
-
-        guild.sendMessage(getCurrentCommandManager(), Messages.ACCEPT__PLAYER_JOINED, "{player}", player.getName());
-        getCurrentCommandIssuer().sendInfo(Messages.ACCEPT__SUCCESSFUL, "{guild}", guild.getName());
     }
 
     /**

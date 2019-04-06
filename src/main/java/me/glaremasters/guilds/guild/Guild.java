@@ -348,5 +348,13 @@ public class Guild {
         Location l = player.getLocation();
         setHome(new GuildHome(l.getWorld().getName(), l.getX(), l.getY(), l.getZ(), l.getYaw(), l.getPitch()));
     }
+
+    /**
+     * Simple method to check if a guild is public or private
+     * @return public or private
+     */
+    public boolean isPrivate() {
+        return getStatus() == Status.Private;
+    }
 }
 
