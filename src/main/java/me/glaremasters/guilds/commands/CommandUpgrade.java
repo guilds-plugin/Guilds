@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds;
+package me.glaremasters.guilds.commands;
 
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
@@ -31,6 +31,7 @@ import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
 import lombok.AllArgsConstructor;
+import me.glaremasters.guilds.Messages;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.actions.ConfirmAction;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;

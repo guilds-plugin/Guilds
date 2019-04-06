@@ -22,61 +22,66 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds;
+package me.glaremasters.guilds.commands;
 
+import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Description;
-import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
-import co.aikar.commands.annotation.Values;
 import lombok.AllArgsConstructor;
+import me.glaremasters.guilds.Messages;
+import me.glaremasters.guilds.configuration.sections.GuildSettings;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.exceptions.InvalidPermissionException;
 import me.glaremasters.guilds.guild.Guild;
-import me.glaremasters.guilds.guild.GuildMember;
+import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.utils.Constants;
-import org.bukkit.Bukkit;
+import me.glaremasters.guilds.utils.StringUtils;
 import org.bukkit.entity.Player;
 
 /**
  * Created by Glare
  * Date: 4/5/2019
- * Time: 10:54 PM
+ * Time: 11:46 PM
  */
 @AllArgsConstructor @CommandAlias(Constants.ROOT_ALIAS)
-public class CommandTransfer extends BaseCommand {
+public class CommandRename extends BaseCommand {
+
+    private GuildHandler guildHandler;
+    private SettingsManager settingsManager;
 
     /**
-     * Transfer a guild to a new user
-     * @param player the player transferring this guild
-     * @param guild the guild being transferred
+     * Rename a guild
+     * @param player the player renaming this guild
+     * @param guild the guild being renamed
      * @param role the role of the player
-     * @param target the new guild master
+     * @param name new name of guild
      */
-    @Subcommand("transfer")
-    @Description("{@@descriptions.transfer}")
-    @CommandPermission(Constants.BASE_PERM + "transfer")
-    @CommandCompletion("@members")
-    @Syntax("<player>")
-    public void execute(Player player, Guild guild, GuildRole role, @Values("@members") @Single String target) {
-        if (!role.isTransferGuild())
+    @Subcommand("rename")
+    @Description("{@@descriptions.rename}")
+    @CommandPermission(Constants.BASE_PERM + "rename")
+    @Syntax("<name>")
+    public void execute(Player player, Guild guild, GuildRole role, String name) {
+        if (!role.isChangeName())
             ACFUtil.sneaky(new InvalidPermissionException());
 
-        Player transfer = Bukkit.getPlayer(target);
+        if (!guildHandler.nameCheck(name, settingsManager))
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.CREATE__REQUIREMENTS));
 
-        if (transfer == null)
-            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__PLAYER_NOT_FOUND));
+        if (settingsManager.getProperty(GuildSettings.BLACKLIST_TOGGLE)) {
+            if (guildHandler.blacklistCheck(name, settingsManager))
+                ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__BLACKLIST));
+        }
 
-        guild.transferGuild(player, transfer);
+        guild.setName(StringUtils.color(name));
 
-        getCurrentCommandIssuer().sendInfo(Messages.TRANSFER__SUCCESS);
-        getCurrentCommandManager().getCommandIssuer(transfer).sendInfo(Messages.TRANSFER__NEWMASTER);
+        getCurrentCommandIssuer().sendInfo(Messages.RENAME__SUCCESSFUL,
+                "{name}", name);
     }
 
 }
