@@ -32,6 +32,7 @@ import co.aikar.commands.PaperCommandManager;
 import lombok.Getter;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.api.GuildsAPI;
+import me.glaremasters.guilds.commands.CommandCreate;
 import me.glaremasters.guilds.commands.CommandGuilds;
 import me.glaremasters.guilds.commands.actions.CommandCancel;
 import me.glaremasters.guilds.commands.actions.CommandConfirm;
@@ -62,13 +63,12 @@ import me.glaremasters.guilds.commands.codes.CommandCodeRedeem;
 import me.glaremasters.guilds.commands.homes.CommandDelHome;
 import me.glaremasters.guilds.commands.homes.CommandHome;
 import me.glaremasters.guilds.commands.homes.CommandSetHome;
-import me.glaremasters.guilds.commands.roles.CommandDemote;
-import me.glaremasters.guilds.commands.roles.CommandPromote;
 import me.glaremasters.guilds.configuration.GuildConfigurationBuilder;
 import me.glaremasters.guilds.configuration.sections.HooksSettings;
 import me.glaremasters.guilds.configuration.sections.PluginSettings;
 import me.glaremasters.guilds.contexts.GuildTarget;
 import me.glaremasters.guilds.database.DatabaseProvider;
+import me.glaremasters.guilds.database.migration.MigrationManager;
 import me.glaremasters.guilds.database.providers.JsonProvider;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildCode;
@@ -87,9 +87,7 @@ import net.milkbowl.vault.permission.Permission;
 import org.apache.commons.io.IOUtils;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
-import org.bukkit.World;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -130,21 +128,8 @@ public final class Guilds extends JavaPlugin {
     private ActionHandler actionHandler;
     private Economy economy;
     private Permission permissions;
-    private List<Player> spy;
-
-    /**
-     * Check if a guild has a claim
-     *
-     * @param world the world to check in
-     * @param guild the guild to check
-     */
-    public static void checkForClaim(World world, Guild guild, Guilds guilds) {
-        if (guilds.getConfig().getBoolean("main-hooks.worldguard-claims")) {
-            WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();
-            wrapper.getRegion(world, guild.getName()).ifPresent(region -> wrapper.removeRegion(world, guild.getName()));
-        }
-    }
-
+    @Getter
+    private List<Guild> oldGuilds = new ArrayList<>();
 
     @Override
     public void onDisable() {
@@ -154,7 +139,8 @@ public final class Guilds extends JavaPlugin {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            spy.clear();
+            guildHandler.getSpies().clear();
+            guildHandler.getGuildChat().clear();
         }
     }
 
@@ -300,6 +286,13 @@ public final class Guilds extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        try {
+            info("Checking for old Guild Data....");
+            MigrationManager manager = new MigrationManager(this);
+            manager.checkOld(oldGuilds);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         // Check if the server is running Vault
         if (!Bukkit.getPluginManager().isPluginEnabled("Vault")) {
             warn("It looks like you don't have Vault on your server! Stopping plugin..");
@@ -331,7 +324,7 @@ public final class Guilds extends JavaPlugin {
             info("Loading Data..");
             // This will soon be changed to an automatic storage chooser from the config
             // Load the json provider
-            database = new JsonProvider(getDataFolder());
+            database = new JsonProvider(getDataFolder(), this);
             // Load guildhandler with provider
             guildHandler = new GuildHandler(database, getCommandManager(), getPermissions(), getConfig());
             info("Loaded data!");
@@ -412,7 +405,8 @@ public final class Guilds extends JavaPlugin {
                 // Home Commands
                 new CommandDelHome(),
                 new CommandHome(),
-                new CommandSetHome(economy, settingsManager)
+                new CommandSetHome(economy, settingsManager),
+                new CommandCreate(guildHandler,settingsManager,actionHandler,economy)
                 // Role Commands
 /*                new CommandDemote(guildHandler),
                 new CommandPromote(guildHandler)*/
@@ -454,8 +448,6 @@ public final class Guilds extends JavaPlugin {
         info("Enabling the Guilds API..");
         // Initialize the API (probably be placed in different spot?)
         api = new GuildsAPI(getGuildHandler());
-        // Create a new list for the spies
-        spy = new ArrayList<>();
         info("Enabled API!");
 
         info("Ready to go! That only took " + (System.currentTimeMillis() - startingTime) + "ms");
@@ -575,8 +567,5 @@ public final class Guilds extends JavaPlugin {
         }
         return announcement;
     }
-
-
-
 
 }

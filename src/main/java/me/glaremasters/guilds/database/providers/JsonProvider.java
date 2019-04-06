@@ -24,6 +24,7 @@
 
 package me.glaremasters.guilds.database.providers;
 
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.guild.Guild;
 import net.reflxction.simplejson.json.JsonFile;
@@ -44,9 +45,11 @@ import java.util.Objects;
 public class JsonProvider implements DatabaseProvider {
 
     private final File dataFolder;
+    private Guilds guilds;
 
-    public JsonProvider(File dataFolder) {
+    public JsonProvider(File dataFolder, Guilds guilds) {
         this.dataFolder = new File(dataFolder, "data");
+        this.guilds = guilds;
         //noinspection ResultOfMethodCallIgnored
         this.dataFolder.mkdir();
 
@@ -54,7 +57,7 @@ public class JsonProvider implements DatabaseProvider {
 
     @Override
     public List<Guild> loadGuilds() throws IOException {
-        List<Guild> loadedGuilds = new ArrayList<>();
+        List<Guild> loadedGuilds = new ArrayList<>(guilds.getOldGuilds());
 
         JsonReader reader = null;
         for (File file : Objects.requireNonNull(dataFolder.listFiles())) {

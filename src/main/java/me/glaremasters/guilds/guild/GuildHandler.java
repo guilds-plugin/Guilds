@@ -25,13 +25,11 @@
 package me.glaremasters.guilds.guild;
 
 import ch.jalu.configme.SettingsManager;
-import co.aikar.commands.ACFUtil;
 import co.aikar.commands.CommandManager;
 import lombok.Getter;
 import me.glaremasters.guilds.Messages;
 import me.glaremasters.guilds.configuration.sections.GuildSettings;
 import me.glaremasters.guilds.database.DatabaseProvider;
-import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.utils.Serialization;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.OfflinePlayer;
@@ -47,7 +45,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -383,6 +380,7 @@ public class GuildHandler {
      */
     private void createVaultCache(Guild guild) {
         List<Inventory> vaults = new ArrayList<>();
+        if (guild.getVaults() == null) return;
         guild.getVaults().forEach(v -> {
             try {
                 vaults.add(Serialization.deserializeInventory(v));
@@ -400,6 +398,7 @@ public class GuildHandler {
      */
     private void saveVaultCache(Guild guild) {
         List<String> vaults = new ArrayList<>();
+        if (guild.getVaults() == null) return;
         cachedVaults.get(guild).forEach(v -> vaults.add(Serialization.serializeInventory(v)));
         guild.setVaults(vaults);
     }
