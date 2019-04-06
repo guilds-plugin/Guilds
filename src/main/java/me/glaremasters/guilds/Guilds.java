@@ -66,7 +66,6 @@ import me.glaremasters.guilds.commands.homes.CommandSetHome;
 import me.glaremasters.guilds.configuration.GuildConfigurationBuilder;
 import me.glaremasters.guilds.configuration.sections.HooksSettings;
 import me.glaremasters.guilds.configuration.sections.PluginSettings;
-import me.glaremasters.guilds.contexts.GuildTarget;
 import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.database.migration.MigrationManager;
 import me.glaremasters.guilds.database.providers.JsonProvider;
@@ -469,12 +468,6 @@ public final class Guilds extends JavaPlugin {
             Guild guild = guildHandler.getGuild(c.getPlayer());
             if (guild == null) return null;
             return getGuildHandler().getGuildRole(guild.getMember(c.getPlayer().getUniqueId()).getRole().getLevel());
-        });
-
-        manager.getCommandContexts().registerContext(GuildTarget.class, c-> {
-            Guild guild = guildHandler.getGuild(c.popFirstArg());
-            if (guild == null) throw new InvalidCommandArgument(Messages.ERROR__NO_GUILD);
-            return new GuildTarget(guild);
         });
     }
 
