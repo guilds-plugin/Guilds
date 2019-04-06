@@ -547,6 +547,17 @@ public class GuildHandler {
     }
 
     /**
+     * Simple method to check in a prefix is valid or not
+     * @param name the prefix
+     * @param settingsManager setting manager
+     * @return valid or not
+     */
+    public boolean prefixCheck(String name, SettingsManager settingsManager) {
+        String regex = settingsManager.getProperty(GuildSettings.PREFIX_REQUIREMENTS);
+        return name.matches(regex);
+    }
+
+    /**
      * Check if a word is in the blacklist or not
      * @param name name to check
      * @param settingsManager settings manager

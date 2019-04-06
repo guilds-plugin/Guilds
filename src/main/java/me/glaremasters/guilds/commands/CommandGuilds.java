@@ -100,29 +100,6 @@ public class CommandGuilds extends BaseCommand {
     private Economy economy;
 
     /**
-     * Rename a guild
-     * @param player the player renaming this guild
-     * @param guild the guild being renamed
-     * @param role the role of the player
-     * @param name new name of guild
-     */
-    @Subcommand("rename")
-    @Description("{@@descriptions.rename}")
-    @CommandPermission(Constants.BASE_PERM + "rename")
-    @Syntax("<name>")
-    public void onRename(Player player, Guild guild, GuildRole role, String name) {
-        if (!role.isChangeName()) {
-            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
-            return;
-        }
-
-        if (nameMeetsRequirements(name)) return;
-
-        guild.setName(StringUtils.color(name));
-        getCurrentCommandIssuer().sendInfo(Messages.RENAME__SUCCESSFUL, "{name}", name);
-    }
-
-    /**
      * Change guild prefix
      * @param player the player changing the guild prefix
      * @param guild the guild which's prefix is getting changed
