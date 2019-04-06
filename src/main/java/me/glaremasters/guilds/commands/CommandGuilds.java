@@ -100,30 +100,6 @@ public class CommandGuilds extends BaseCommand {
     private Economy economy;
 
     /**
-     * Change guild prefix
-     * @param player the player changing the guild prefix
-     * @param guild the guild which's prefix is getting changed
-     * @param role the role of the player
-     * @param prefix the new prefix
-     */
-    @Subcommand("prefix")
-    @Description("{@@descriptions.prefix}")
-    @CommandPermission(Constants.BASE_PERM + "prefix")
-    @Syntax("<prefix>")
-    public void onPrefix(Player player, Guild guild, GuildRole role, String prefix) {
-        if (!role.isChangePrefix())
-            ACFUtil.sneaky(new InvalidPermissionException());
-
-        if (!prefix.matches(settingsManager.getProperty(GuildSettings.PREFIX_REQUIREMENTS))) {
-            getCurrentCommandIssuer().sendInfo(Messages.CREATE__REQUIREMENTS);
-            return;
-        }
-
-        getCurrentCommandIssuer().sendInfo(Messages.PREFIX__SUCCESSFUL, "{prefix}", prefix);
-        guild.setPrefix(StringUtils.color(prefix));
-    }
-
-    /**
      * List all the guilds on the server
      * @param player the player executing this command
      */
@@ -135,46 +111,6 @@ public class CommandGuilds extends BaseCommand {
         playerPages.put(player.getUniqueId(), 1);
         // guildList = getSkullsPage(1);
         player.openInventory(guildList);
-    }
-
-    /**
-     * Kick a player from the guild
-     * @param player the player executing the command
-     * @param guild the guild the targetPlayer is being kicked from
-     * @param role the role of the player
-     * @param name the name of the targetPlayer
-     */
-    @Subcommand("boot|kick")
-    @Description("Kick someone from your Guild")
-    @CommandPermission(Constants.BASE_PERM + "boot")
-    @CommandCompletion("@members")
-    @Syntax("<name>")
-    public void onKick(Player player, Guild guild, GuildRole role, @Values("@members") @Single String name) {
-        if (!role.isKick()) {
-            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
-            return;
-        }
-
-        OfflinePlayer bootedPlayer = Bukkit.getOfflinePlayer(name);
-        if (bootedPlayer == null) return;
-
-        GuildMember kickedPlayer = guild.getMember(bootedPlayer.getUniqueId());
-        if (kickedPlayer == null) {
-            getCurrentCommandIssuer().sendInfo(Messages.ERROR__PLAYER_NOT_IN_GUILD, "{player}", name);
-            return;
-        }
-
-        if (kickedPlayer.getUuid().equals(guild.getGuildMaster().getUuid())) {
-            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
-            return;
-        }
-        guild.removeMember(kickedPlayer);
-
-        getCurrentCommandIssuer().sendInfo(Messages.BOOT__SUCCESSFUL, "{player}", bootedPlayer.getName());
-        guild.sendMessage(getCurrentCommandManager(), Messages.BOOT__PLAYER_KICKED, "{player}", bootedPlayer.getName(), "{kicker}", player.getName());
-        if (bootedPlayer.isOnline()) {
-            getCurrentCommandManager().getCommandIssuer(bootedPlayer).sendInfo(Messages.BOOT__KICKED, "{kicker}", player.getName());
-        }
     }
 
     /**

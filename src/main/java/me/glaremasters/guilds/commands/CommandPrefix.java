@@ -65,7 +65,7 @@ public class CommandPrefix extends BaseCommand {
     @Description("{@@descriptions.prefix}")
     @CommandPermission(Constants.BASE_PERM + "prefix")
     @Syntax("<prefix>")
-    public void onPrefix(Player player, Guild guild, GuildRole role, String prefix) {
+    public void execute(Player player, Guild guild, GuildRole role, String prefix) {
         if (!role.isChangePrefix())
             ACFUtil.sneaky(new InvalidPermissionException());
 

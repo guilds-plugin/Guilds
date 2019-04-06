@@ -60,7 +60,7 @@ public class CommandLeave extends BaseCommand {
     @Subcommand("leave|exit")
     @Description("{@@descriptions.leave}")
     @CommandPermission(Constants.BASE_PERM + "leave")
-    public void onLeave(Player player, Guild guild) {
+    public void execute(Player player, Guild guild) {
         if (guild.isMaster(player))
             getCurrentCommandIssuer().sendInfo(Messages.LEAVE__WARNING_GUILDMASTER);
         else

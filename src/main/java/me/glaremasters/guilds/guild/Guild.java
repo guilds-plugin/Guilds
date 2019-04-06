@@ -364,7 +364,7 @@ public class Guild {
      * @param player the player in question
      * @return master or not
      */
-    public boolean isMaster(Player player) {
+    public boolean isMaster(OfflinePlayer player) {
         return getGuildMaster().getUuid().equals(player.getUniqueId());
     }
 
