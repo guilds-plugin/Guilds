@@ -536,6 +536,27 @@ public class GuildHandler {
     }
 
     /**
+     * Check in a input name for the guild is proper
+     * @param name the name input
+     * @param settingsManager setting manager
+     * @return valid or not
+     */
+    public boolean nameCheck(String name, SettingsManager settingsManager) {
+        String regex = settingsManager.getProperty(GuildSettings.NAME_REQUIREMENTS);
+        return name.matches(regex);
+    }
+
+    /**
+     * Check if a word is in the blacklist or not
+     * @param name name to check
+     * @param settingsManager settings manager
+     * @return blacklisted or not
+     */
+    public boolean blacklistCheck(String name, SettingsManager settingsManager) {
+        return settingsManager.getProperty(GuildSettings.BLACKLIST_WORDS).stream().anyMatch(s -> s.toLowerCase().contains(name));
+    }
+
+    /**
      * Check if an input meets requirements
      * @param player player running command
      * @param commandManager the command manager
