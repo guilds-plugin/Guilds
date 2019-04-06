@@ -24,12 +24,14 @@
 
 package me.glaremasters.guilds.guild;
 
+import co.aikar.commands.ACFUtil;
 import co.aikar.commands.CommandManager;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import me.glaremasters.guilds.Messages;
+import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
@@ -355,6 +357,23 @@ public class Guild {
      */
     public boolean isPrivate() {
         return getStatus() == Status.Private;
+    }
+
+    /**
+     * Transfer a guild from one player to another
+     * @param oldPlayer old player
+     * @param newPlayer new player
+     */
+    public void transferGuild(Player oldPlayer, Player newPlayer) {
+
+        GuildMember oldMaster = getMember(oldPlayer.getUniqueId());
+        GuildMember newMaster = getMember(newPlayer.getUniqueId());
+
+        if (newMaster.getRole().getLevel() != 1)
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__NOT_OFFICER));
+
+        oldMaster.setRole(newMaster.getRole());
+        setGuildMaster(newMaster);
     }
 }
 
