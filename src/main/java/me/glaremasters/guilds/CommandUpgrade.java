@@ -96,6 +96,7 @@ public class CommandUpgrade extends BaseCommand {
                 guildHandler.upgradeTier(guild);
 
                 getCurrentCommandIssuer().sendInfo(Messages.UPGRADE__SUCCESS);
+                actionHandler.removeAction(player);
             }
 
             @Override

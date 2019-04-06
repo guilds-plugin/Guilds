@@ -360,6 +360,15 @@ public class Guild {
     }
 
     /**
+     * Simple method to check if the player in question is the guild master
+     * @param player the player in question
+     * @return master or not
+     */
+    public boolean isMaster(Player player) {
+        return getGuildMaster().getUuid().equals(player.getUniqueId());
+    }
+
+    /**
      * Transfer a guild from one player to another
      * @param oldPlayer old player
      * @param newPlayer new player

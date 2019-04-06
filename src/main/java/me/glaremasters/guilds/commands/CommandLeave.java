@@ -24,7 +24,6 @@
 
 package me.glaremasters.guilds.commands;
 
-import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
@@ -34,11 +33,10 @@ import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Messages;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.actions.ConfirmAction;
+import me.glaremasters.guilds.api.events.GuildLeaveEvent;
 import me.glaremasters.guilds.api.events.GuildRemoveEvent;
-import me.glaremasters.guilds.exceptions.InvalidPermissionException;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
-import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.utils.Constants;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -46,54 +44,70 @@ import org.bukkit.entity.Player;
 /**
  * Created by Glare
  * Date: 4/5/2019
- * Time: 11:12 PM
+ * Time: 11:25 PM
  */
 @AllArgsConstructor @CommandAlias(Constants.ROOT_ALIAS)
-public class CommandDelete extends BaseCommand {
+public class CommandLeave extends BaseCommand {
 
     private GuildHandler guildHandler;
     private ActionHandler actionHandler;
 
     /**
-     * Delete your guild
-     * @param player the player deleting the guild
-     * @param guild the guild being deleted
-     * @param role the role of the player
+     * Leave a guild
+     * @param player the player leaving the guild
+     * @param guild the guild being left
      */
-    @Subcommand("delete")
-    @Description("{@@descriptions.delete}")
-    @CommandPermission(Constants.BASE_PERM + "delete")
-    public void execute(Player player, Guild guild, GuildRole role) {
-        if (!role.isRemoveGuild())
-            ACFUtil.sneaky(new InvalidPermissionException());
-
-        getCurrentCommandIssuer().sendInfo(Messages.DELETE__WARNING);
+    @Subcommand("leave|exit")
+    @Description("{@@descriptions.leave}")
+    @CommandPermission(Constants.BASE_PERM + "leave")
+    public void onLeave(Player player, Guild guild) {
+        if (guild.isMaster(player))
+            getCurrentCommandIssuer().sendInfo(Messages.LEAVE__WARNING_GUILDMASTER);
+        else
+            getCurrentCommandIssuer().sendInfo(Messages.LEAVE__WARNING);
 
         actionHandler.addAction(player, new ConfirmAction() {
             @Override
             public void accept() {
-                GuildRemoveEvent event = new GuildRemoveEvent(player, guild, GuildRemoveEvent.Cause.PLAYER_DELETED);
+                GuildLeaveEvent event = new GuildLeaveEvent(player, guild);
                 Bukkit.getPluginManager().callEvent(event);
 
                 if (event.isCancelled())
                     return;
 
-                guildHandler.removeGuild(guild);
+                if (guild.isMaster(player)) {
+                    GuildRemoveEvent removeEvent = new GuildRemoveEvent(player, guild, GuildRemoveEvent.Cause.MASTER_LEFT);
+                    Bukkit.getPluginManager().callEvent(removeEvent);
 
-                getCurrentCommandIssuer().sendInfo(Messages.DELETE__SUCCESSFUL,
-                        "{guild}", guild.getName());
+                    if (removeEvent.isCancelled())
+                        return;
 
+                    guild.sendMessage(getCurrentCommandManager(), Messages.LEAVE__GUILDMASTER_LEFT,
+                            "{player}", player.getName());
+
+                    getCurrentCommandIssuer().sendInfo(Messages.LEAVE__SUCCESSFUL);
+
+                    guildHandler.removeGuild(guild);
+
+                } else {
+                    guild.removeMember(player);
+
+                    getCurrentCommandIssuer().sendInfo(Messages.LEAVE__SUCCESSFUL);
+
+                    guild.sendMessage(getCurrentCommandManager(), Messages.LEAVE__PLAYER_LEFT,
+                            "{player}", player.getName());
+                }
+
+                getCurrentCommandIssuer().sendInfo(Messages.LEAVE__SUCCESSFUL);
                 actionHandler.removeAction(player);
             }
 
             @Override
             public void decline() {
-                getCurrentCommandIssuer().sendInfo(Messages.DELETE__CANCELLED);
+                getCurrentCommandIssuer().sendInfo(Messages.LEAVE__CANCELLED);
                 actionHandler.removeAction(player);
             }
         });
-
-
     }
 
 }

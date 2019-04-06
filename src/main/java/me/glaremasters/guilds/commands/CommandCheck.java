@@ -55,7 +55,7 @@ public class CommandCheck extends BaseCommand {
     @Subcommand("check")
     @Description("{@@descriptions.check}")
     @CommandPermission(Constants.BASE_PERM + "check")
-    public void onCheck(Player player) {
+    public void execute(Player player) {
         Guild guild = guildHandler.getGuild(player);
 
         if (guild != null)

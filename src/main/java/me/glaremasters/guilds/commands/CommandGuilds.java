@@ -147,58 +147,6 @@ public class CommandGuilds extends BaseCommand {
     }
 
     /**
-     * Leave a guild
-     * @param player the player leaving the guild
-     * @param guild the guild being left
-     */
-    @Subcommand("leave|exit")
-    @Description("{@@descriptions.leave}")
-    @CommandPermission(Constants.BASE_PERM + "leave")
-    public void onLeave(Player player, Guild guild) {
-
-        if (guild.getGuildMaster().getUuid().equals(player.getUniqueId())) {
-            getCurrentCommandIssuer().sendInfo(Messages.LEAVE__WARNING_GUILDMASTER);
-        } else {
-            getCurrentCommandIssuer().sendInfo(Messages.LEAVE__WARNING);
-        }
-
-        actionHandler.addAction(player, new ConfirmAction() {
-            @Override
-            public void accept() {
-                GuildLeaveEvent event = new GuildLeaveEvent(player, guild);
-                Bukkit.getPluginManager().callEvent(event);
-                if (event.isCancelled()) return;
-
-                if (guild.getGuildMaster().getUuid().equals(player.getUniqueId())) {
-                    GuildRemoveEvent removeEvent = new GuildRemoveEvent(player, guild, GuildRemoveEvent.Cause.MASTER_LEFT);
-                    Bukkit.getPluginManager().callEvent(removeEvent);
-                    if (removeEvent.isCancelled()) return;
-
-                    guildHandler.removeGuild(guild);
-
-                    guild.sendMessage(getCurrentCommandManager(), Messages.LEAVE__GUILDMASTER_LEFT, "{player}", player.getName());
-                    getCurrentCommandIssuer().sendInfo(Messages.LEAVE__SUCCESSFUL);
-
-                } else {
-                    guild.removeMember(player);
-
-                    getCurrentCommandIssuer().sendInfo(Messages.LEAVE__SUCCESSFUL);
-                    guild.sendMessage(getCurrentCommandManager(), Messages.LEAVE__PLAYER_LEFT, "{player}", player.getName());
-                }
-
-                getCurrentCommandIssuer().sendInfo(Messages.LEAVE__SUCCESSFUL);
-                actionHandler.removeAction(player);
-            }
-
-            @Override
-            public void decline() {
-                getCurrentCommandIssuer().sendInfo(Messages.LEAVE__CANCELLED);
-                actionHandler.removeAction(player);
-            }
-        });
-    }
-
-    /**
      * List all the guilds on the server
      * @param player the player executing this command
      */
