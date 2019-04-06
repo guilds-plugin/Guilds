@@ -91,9 +91,6 @@ public class CommandCreate extends BaseCommand {
             if (!guildHandler.prefixCheck(prefix, settingsManager))
                 ACFUtil.sneaky(new ExpectationNotMet(Messages.CREATE__REQUIREMENTS));
 
-
-        //todo Handle prefix
-
         if (!EconomyUtils.hasEnough(economy, player, cost))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__NOT_ENOUGH_MONEY));
 
