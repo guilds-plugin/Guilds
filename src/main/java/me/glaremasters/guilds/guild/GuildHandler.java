@@ -566,31 +566,4 @@ public class GuildHandler {
     public boolean blacklistCheck(String name, SettingsManager settingsManager) {
         return settingsManager.getProperty(GuildSettings.BLACKLIST_WORDS).stream().anyMatch(s -> s.toLowerCase().contains(name));
     }
-
-    /**
-     * Check if an input meets requirements
-     * @param player player running command
-     * @param commandManager the command manager
-     * @param settingsManager the settings manager
-     * @param name the name being tried
-     * @return if it passes or not
-     */
-    public boolean hasRequirements(Player player, CommandManager commandManager, SettingsManager settingsManager, String name) {
-        String regex = settingsManager.getProperty(GuildSettings.NAME_REQUIREMENTS);
-
-        if (!name.matches(regex)) {
-            commandManager.getCommandIssuer(player).sendInfo(Messages.CREATE__REQUIREMENTS);
-            return true;
-        }
-
-        if (settingsManager.getProperty(GuildSettings.BLACKLIST_TOGGLE)) {
-            for (String word : settingsManager.getProperty(GuildSettings.BLACKLIST_WORDS)) {
-                if (name.toLowerCase().contains(word)) {
-                    commandManager.getCommandIssuer(player).sendInfo(Messages.ERROR__BLACKLIST);
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
 }
