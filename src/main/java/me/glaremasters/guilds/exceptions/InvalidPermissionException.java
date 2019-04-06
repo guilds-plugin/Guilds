@@ -25,7 +25,7 @@
 package me.glaremasters.guilds.exceptions;
 
 import co.aikar.commands.InvalidCommandArgument;
-import me.glaremasters.guilds.Messages;
+import me.glaremasters.guilds.messages.Messages;
 
 /**
  * Created by GlareMasters

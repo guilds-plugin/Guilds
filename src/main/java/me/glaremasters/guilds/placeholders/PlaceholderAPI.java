@@ -22,9 +22,10 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds;
+package me.glaremasters.guilds.placeholders;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.api.GuildsAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

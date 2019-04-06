@@ -30,7 +30,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import me.glaremasters.guilds.Messages;
+import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

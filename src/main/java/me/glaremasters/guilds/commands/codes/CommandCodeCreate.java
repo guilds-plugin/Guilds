@@ -34,7 +34,7 @@ import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
 import lombok.AllArgsConstructor;
-import me.glaremasters.guilds.Messages;
+import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.configuration.sections.CodeSettings;
 import me.glaremasters.guilds.exceptions.InvalidPermissionException;
 import me.glaremasters.guilds.guild.Guild;

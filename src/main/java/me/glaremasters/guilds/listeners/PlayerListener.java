@@ -29,7 +29,7 @@ import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.PaperCommandManager;
 import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Guilds;
-import me.glaremasters.guilds.Messages;
+import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.configuration.sections.GuiSettings;
 import me.glaremasters.guilds.configuration.sections.GuildSettings;
 import me.glaremasters.guilds.configuration.sections.PluginSettings;

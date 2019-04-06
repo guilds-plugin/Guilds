@@ -27,7 +27,7 @@ package me.glaremasters.guilds.guild;
 import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.CommandManager;
 import lombok.Getter;
-import me.glaremasters.guilds.Messages;
+import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.configuration.sections.GuildSettings;
 import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.utils.Serialization;

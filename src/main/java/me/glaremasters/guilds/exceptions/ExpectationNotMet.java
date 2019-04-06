@@ -25,9 +25,7 @@
 package me.glaremasters.guilds.exceptions;
 
 import co.aikar.commands.InvalidCommandArgument;
-import co.aikar.locales.MessageKey;
 import co.aikar.locales.MessageKeyProvider;
-import me.glaremasters.guilds.Messages;
 
 /**
  * Created by Glare
