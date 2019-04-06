@@ -431,23 +431,6 @@ public class CommandGuilds extends BaseCommand {
     }
 
     /**
-     * Check if you have any guild invites
-     * @param player the player checking for invites
-     */
-    @Subcommand("check")
-    @Description("{@@descriptions.check}")
-    @CommandPermission(Constants.BASE_PERM + "check")
-    public void onCheck(Player player) {
-        Guild guild = guildHandler.getGuild(player);
-
-        if (guild != null) {
-            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ALREADY_IN_GUILD);
-            return;
-        }
-        guildHandler.checkInvites(getCurrentCommandManager(), player);
-    }
-
-    /**
      * Request an invite
      *
      * @param player the player requesting
