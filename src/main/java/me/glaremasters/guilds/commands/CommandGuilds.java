@@ -147,51 +147,6 @@ public class CommandGuilds extends BaseCommand {
     }
 
     /**
-     * Transfer a guild to a new user
-     * @param player the player transferring this guild
-     * @param guild the guild being transferred
-     * @param role the role of the player
-     * @param target the new guild master
-     */
-    @Subcommand("transfer")
-    @Description("{@@descriptions.transfer}")
-    @CommandPermission(Constants.BASE_PERM + "transfer")
-    @CommandCompletion("@members")
-    @Syntax("<player>")
-    public void onTransfer(Player player, Guild guild, GuildRole role, @Values("@members") @Single String target) {
-        if (!role.isTransferGuild()) {
-            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
-            return;
-        }
-
-        Player transferPlayer = Bukkit.getPlayerExact(target);
-        if (transferPlayer == null) {
-            getCurrentCommandIssuer().sendInfo(Messages.ERROR__PLAYER_NOT_FOUND);
-            return;
-        }
-
-        GuildMember oldMaster = guild.getGuildMaster();
-        GuildMember newMaster = guild.getMember(transferPlayer.getUniqueId());
-
-        if (newMaster == null) {
-            getCurrentCommandIssuer().sendInfo(Messages.ERROR__PLAYER_NOT_IN_GUILD);
-            return;
-        }
-        if (newMaster.getRole().getLevel() != 1) {
-            getCurrentCommandIssuer().sendInfo(Messages.ERROR__NOT_OFFICER);
-            return;
-        }
-
-        guild.setGuildMaster(newMaster);
-        GuildRole oldRole = oldMaster.getRole();
-        oldMaster.setRole(newMaster.getRole());
-        newMaster.setRole(oldRole);
-
-        getCurrentCommandIssuer().sendInfo(Messages.TRANSFER__SUCCESS);
-        getCurrentCommandManager().getCommandIssuer(transferPlayer).sendInfo(Messages.TRANSFER__NEWMASTER);
-    }
-
-    /**
      * Leave a guild
      * @param player the player leaving the guild
      * @param guild the guild being left
@@ -255,43 +210,6 @@ public class CommandGuilds extends BaseCommand {
         playerPages.put(player.getUniqueId(), 1);
         // guildList = getSkullsPage(1);
         player.openInventory(guildList);
-    }
-
-    /**
-     * Delete your guild
-     * @param player the player deleting the guild
-     * @param guild the guild being deleted
-     * @param role the role of the player
-     */
-    @Subcommand("delete")
-    @Description("{@@descriptions.delete}")
-    @CommandPermission(Constants.BASE_PERM + "delete")
-    public void onDelete(Player player, Guild guild, GuildRole role) {
-        if (!role.isRemoveGuild()) {
-            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
-            return;
-        }
-
-        getCurrentCommandIssuer().sendInfo(Messages.DELETE__WARNING);
-
-        actionHandler.addAction(player, new ConfirmAction() {
-            @Override
-            public void accept() {
-                GuildRemoveEvent event = new GuildRemoveEvent(player, guild, GuildRemoveEvent.Cause.PLAYER_DELETED);
-                Bukkit.getPluginManager().callEvent(event);
-                if (event.isCancelled()) return;
-
-                guildHandler.removeGuild(guild);
-
-                getCurrentCommandIssuer().sendInfo(Messages.DELETE__SUCCESSFUL, "{guild}", guild.getName());
-            }
-
-            @Override
-            public void decline() {
-                getCurrentCommandIssuer().sendInfo(Messages.DELETE__CANCELLED);
-                actionHandler.removeAction(player);
-            }
-        });
     }
 
     /**

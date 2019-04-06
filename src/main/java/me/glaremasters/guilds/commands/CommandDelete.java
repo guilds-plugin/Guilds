@@ -22,23 +22,22 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds;
+package me.glaremasters.guilds.commands;
 
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Description;
-import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
-import co.aikar.commands.annotation.Syntax;
-import co.aikar.commands.annotation.Values;
 import lombok.AllArgsConstructor;
-import me.glaremasters.guilds.exceptions.ExpectationNotMet;
+import me.glaremasters.guilds.Messages;
+import me.glaremasters.guilds.actions.ActionHandler;
+import me.glaremasters.guilds.actions.ConfirmAction;
+import me.glaremasters.guilds.api.events.GuildRemoveEvent;
 import me.glaremasters.guilds.exceptions.InvalidPermissionException;
 import me.glaremasters.guilds.guild.Guild;
-import me.glaremasters.guilds.guild.GuildMember;
+import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.utils.Constants;
 import org.bukkit.Bukkit;
@@ -47,36 +46,52 @@ import org.bukkit.entity.Player;
 /**
  * Created by Glare
  * Date: 4/5/2019
- * Time: 10:54 PM
+ * Time: 11:12 PM
  */
 @AllArgsConstructor @CommandAlias(Constants.ROOT_ALIAS)
-public class CommandTransfer extends BaseCommand {
+public class CommandDelete extends BaseCommand {
+
+    private GuildHandler guildHandler;
+    private ActionHandler actionHandler;
 
     /**
-     * Transfer a guild to a new user
-     * @param player the player transferring this guild
-     * @param guild the guild being transferred
+     * Delete your guild
+     * @param player the player deleting the guild
+     * @param guild the guild being deleted
      * @param role the role of the player
-     * @param target the new guild master
      */
-    @Subcommand("transfer")
-    @Description("{@@descriptions.transfer}")
-    @CommandPermission(Constants.BASE_PERM + "transfer")
-    @CommandCompletion("@members")
-    @Syntax("<player>")
-    public void execute(Player player, Guild guild, GuildRole role, @Values("@members") @Single String target) {
-        if (!role.isTransferGuild())
+    @Subcommand("delete")
+    @Description("{@@descriptions.delete}")
+    @CommandPermission(Constants.BASE_PERM + "delete")
+    public void execute(Player player, Guild guild, GuildRole role) {
+        if (!role.isRemoveGuild())
             ACFUtil.sneaky(new InvalidPermissionException());
 
-        Player transfer = Bukkit.getPlayer(target);
+        getCurrentCommandIssuer().sendInfo(Messages.DELETE__WARNING);
 
-        if (transfer == null)
-            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__PLAYER_NOT_FOUND));
+        actionHandler.addAction(player, new ConfirmAction() {
+            @Override
+            public void accept() {
+                GuildRemoveEvent event = new GuildRemoveEvent(player, guild, GuildRemoveEvent.Cause.PLAYER_DELETED);
+                Bukkit.getPluginManager().callEvent(event);
 
-        guild.transferGuild(player, transfer);
+                if (event.isCancelled())
+                    return;
 
-        getCurrentCommandIssuer().sendInfo(Messages.TRANSFER__SUCCESS);
-        getCurrentCommandManager().getCommandIssuer(transfer).sendInfo(Messages.TRANSFER__NEWMASTER);
+                guildHandler.removeGuild(guild);
+
+                getCurrentCommandIssuer().sendInfo(Messages.DELETE__SUCCESSFUL,
+                        "{guild}", guild.getName());
+            }
+
+            @Override
+            public void decline() {
+                getCurrentCommandIssuer().sendInfo(Messages.DELETE__CANCELLED);
+                actionHandler.removeAction(player);
+            }
+        });
+
+
     }
 
 }
