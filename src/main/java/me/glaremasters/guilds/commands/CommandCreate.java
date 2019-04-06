@@ -44,7 +44,6 @@ import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildMember;
-import me.glaremasters.guilds.guild.GuildSkull;
 import me.glaremasters.guilds.utils.Constants;
 import me.glaremasters.guilds.utils.EconomyUtils;
 import net.milkbowl.vault.economy.Economy;
@@ -78,15 +77,20 @@ public class CommandCreate extends BaseCommand {
     @Description("{@@descriptions.create}")
     @CommandPermission(Constants.BASE_PERM + "create")
     @Syntax("<name> (optional) <prefix>")
-    public void onCreate(Player player, String name, @Optional String prefix) {
+    public void execute(Player player, String name, @Optional String prefix) {
 
         double cost = settingsManager.getProperty(CostSettings.CREATION);
 
         if (guildHandler.getGuild(player) != null)
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__ALREADY_IN_GUILD));
 
-        if (!guildHandler.hasRequirements(player, getCurrentCommandManager(), settingsManager, name))
+        if (!guildHandler.nameCheck(name, settingsManager))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.CREATE__REQUIREMENTS));
+
+        if (prefix != null)
+            if (!guildHandler.prefixCheck(prefix, settingsManager))
+                ACFUtil.sneaky(new ExpectationNotMet(Messages.CREATE__REQUIREMENTS));
+
 
         //todo Handle prefix
 
@@ -106,7 +110,10 @@ public class CommandCreate extends BaseCommand {
                 Guild.GuildBuilder gb = Guild.builder();
                 gb.id(UUID.randomUUID());
                 gb.name(ACFBukkitUtil.color(name));
-                gb.prefix(prefix);
+                if (prefix == null)
+                    gb.prefix(name);
+                else
+                    gb.prefix(prefix);
                 gb.status(Guild.Status.Private);
                 GuildMember master = new GuildMember(player.getUniqueId(), guildHandler.getGuildRole(0));
                 gb.guildMaster(master);
