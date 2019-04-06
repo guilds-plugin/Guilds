@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.commands.ally;
+package me.glaremasters.guilds.commands;
 
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
@@ -36,7 +36,7 @@ import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.annotation.Values;
 import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Messages;
-import me.glaremasters.guilds.api.events.GuildAddAllyEvent;
+import me.glaremasters.guilds.api.events.GuildInviteEvent;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.exceptions.InvalidPermissionException;
 import me.glaremasters.guilds.guild.Guild;
@@ -48,58 +48,58 @@ import org.bukkit.entity.Player;
 
 /**
  * Created by Glare
- * Date: 4/4/2019
- * Time: 7:13 PM
+ * Date: 4/5/2019
+ * Time: 10:15 PM
  */
 @AllArgsConstructor @CommandAlias(Constants.ROOT_ALIAS)
-public class CommandAllyAdd extends BaseCommand {
+public class CommandInvite extends BaseCommand {
 
     private GuildHandler guildHandler;
 
     /**
-     * Send a guild ally request
-     * @param player the player to check
-     * @param guild the guild they are in
+     * Invite player to guild
+     * @param player current player
+     * @param target player being invited
+     * @param guild the guild that the targetPlayer is being invited to
      * @param role the role of the player
-     * @param name the guild the request is being sent to
      */
-    @Subcommand("ally add")
-    @Description("{@@descriptions.ally-add}")
-    @CommandPermission(Constants.ALLY_PERM + "add")
-    @CommandCompletion("@guilds")
-    @Syntax("<guild name>")
-    public void execute(Player player, Guild guild, GuildRole role, @Values("@guilds") @Single String name) {
-        if (!role.isAddAlly())
+    @Subcommand("invite")
+    @Description("{@@descriptions.invite}")
+    @CommandPermission(Constants.BASE_PERM + "invite")
+    @CommandCompletion("@online")
+    @Syntax("<name>")
+    public void execute(Player player, Guild guild, GuildRole role, @Values("@onlines") @Single String target) {
+        if (!role.isInvite())
             ACFUtil.sneaky(new InvalidPermissionException());
 
-        Guild target = guildHandler.getGuild(name);
+        Player pl = Bukkit.getPlayer(target);
 
-        if (target == null)
-            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
+        if (pl == null || !pl.isOnline())
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__PLAYER_NOT_FOUND, "{player}", target));
 
-        if (guild.isAllyPending(target))
-            ACFUtil.sneaky(new ExpectationNotMet(Messages.ALLY__ALREADY_REQUESTED));
+        if (guildHandler.getGuild(pl) != null)
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__ALREADY_IN_GUILD));
 
-        if (guildHandler.isAlly(guild, target))
-            ACFUtil.sneaky(new ExpectationNotMet(Messages.ALLY__ALREADY_ALLY));
+        if (guild.checkIfInvited(pl))
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.INVITE__ALREADY_INVITED));
 
-        if (guild.getId().equals(target.getId()))
-            ACFUtil.sneaky(new ExpectationNotMet(Messages.ALLY__SAME_GUILD));
-
-        GuildAddAllyEvent event = new GuildAddAllyEvent(player, guild, target);
-        Bukkit.getServer().getPluginManager().callEvent(event);
+        GuildInviteEvent event =  new GuildInviteEvent(player, guild, pl);
+        Bukkit.getPluginManager().callEvent(event);
 
         if (event.isCancelled())
             return;
 
-        getCurrentCommandIssuer().sendInfo(Messages.ALLY__INVITE_SENT,
-                "{guild}", target.getName());
+        guild.inviteMember(pl.getUniqueId());
 
-        target.sendMessage(getCurrentCommandManager(), Messages.ALLY__INCOMING_INVITE,
+        getCurrentCommandManager().getCommandIssuer(target).sendInfo(Messages.INVITE__MESSAGE,
+                        "{player}", player.getName(),
                 "{guild}", guild.getName());
 
-        guildHandler.addPendingAlly(target, guild);
-    }
+        getCurrentCommandIssuer().sendInfo(Messages.INVITE__SUCCESSFUL,
+                "{player}", pl.getName());
 
+
+
+    }
 
 }

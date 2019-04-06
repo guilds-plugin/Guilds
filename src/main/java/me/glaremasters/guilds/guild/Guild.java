@@ -165,7 +165,7 @@ public class Guild {
      * @param guild the guild to check
      * @return if they have a pending invite
      */
-    public boolean isPending(Guild guild) {
+    public boolean isAllyPending(Guild guild) {
         return getPendingAllies().contains(guild.getId());
     }
 

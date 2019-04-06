@@ -147,53 +147,6 @@ public class CommandGuilds extends BaseCommand {
     }
 
     /**
-     * Invite player to guild
-     * @param player current player
-     * @param targetPlayer player being invited
-     * @param guild the guild that the targetPlayer is being invited to
-     * @param role the role of the player
-     */
-    @Subcommand("invite")
-    @Description("{@@descriptions.invite}")
-    @CommandPermission(Constants.BASE_PERM + "invite")
-    @CommandCompletion("@online")
-    @Syntax("<name>")
-    public void onInvite(Player player, Guild guild, GuildRole role, @Values("@online") @Single String targetPlayer) {
-
-        if (!role.isInvite()) {
-            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
-            return;
-        }
-
-        Player target = Bukkit.getPlayerExact(targetPlayer);
-
-        if (target == null || !target.isOnline()) {
-            getCurrentCommandIssuer().sendInfo(Messages.ERROR__PLAYER_NOT_FOUND, "{player}", targetPlayer);
-            return;
-        }
-
-        if (guildHandler.getGuild(target) != null) {
-            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ALREADY_IN_GUILD);
-            return;
-        }
-
-        if (guild.getInvitedMembers().contains(target.getUniqueId())) {
-            getCurrentCommandIssuer().sendInfo(Messages.INVITE__ALREADY_INVITED);
-            return;
-        }
-
-        GuildInviteEvent event = new GuildInviteEvent(player, guild, target);
-        Bukkit.getPluginManager().callEvent(event);
-        if (event.isCancelled()) return;
-
-        guild.inviteMember(target.getUniqueId());
-
-        getCurrentCommandManager().getCommandIssuer(target).sendInfo(Messages.INVITE__MESSAGE, "{player}", player.getName(), "{guild}", guild.getName());
-        getCurrentCommandIssuer().sendInfo(Messages.INVITE__SUCCESSFUL, "{player}", target.getName());
-
-    }
-
-    /**
      * Upgrade a guild
      * @param player the command executor
      * @param guild the guild being upgraded

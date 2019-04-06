@@ -75,7 +75,7 @@ public class CommandAllyDecline extends BaseCommand {
         if (target == null)
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
 
-        if (guild.isPending(target))
+        if (guild.isAllyPending(target))
             return;
 
         guildHandler.removePendingAlly(guild, target);
