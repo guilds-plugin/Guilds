@@ -61,7 +61,7 @@ public class CommandAdminPrefix extends BaseCommand {
      */
     @Subcommand("admin prefix")
     @Description("{@@descriptions.admin-prefix}")
-    @CommandPermission("guilds.command.admin")
+    @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
     @Syntax("<name> <prefix>")
     public void execute(Player player, @Values("@guilds") @Single String name, String prefix) {

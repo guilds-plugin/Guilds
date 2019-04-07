@@ -61,7 +61,7 @@ public class CommandAdminRename extends BaseCommand {
      */
     @Subcommand("admin rename")
     @Description("{@@descriptions.admin-prefix}")
-    @CommandPermission("guilds.command.admin")
+    @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
     @Syntax("<name> <new name>")
     public void execute(Player player, @Values("@guilds") @Single String name, String newName) {

@@ -32,6 +32,7 @@ package me.glaremasters.guilds.utils;
 public class Constants {
 
     public static final String BASE_PERM = "guilds.command.";
+    public static final String ADMIN_PERM = BASE_PERM + "admin";
     public static final String CODE_PERM = BASE_PERM + "code.";
     public static final String BANK_PERM = BASE_PERM + "bank.";
     public static final String ALLY_PERM = BANK_PERM + "ally.";

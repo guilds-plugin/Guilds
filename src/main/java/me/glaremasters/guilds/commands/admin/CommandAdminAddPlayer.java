@@ -63,7 +63,7 @@ public class CommandAdminAddPlayer extends BaseCommand {
      */
     @Subcommand("admin addplayer")
     @Description("{@@descriptions.admin-addplayer}")
-    @CommandPermission("guilds.command.admin")
+    @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@online @guilds")
     @Syntax("<player> <guild>")
     public void execute(Player player, @Values("@online") @Single String target, @Values("@guilds") @Single String name) {

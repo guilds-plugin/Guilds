@@ -59,7 +59,7 @@ public class CommandAdminStatus extends BaseCommand {
      */
     @Subcommand("admin status")
     @Description("{@@descriptions.admin-status}")
-    @CommandPermission("guilds.command.admin")
+    @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
     @Syntax("<name>")
     public void execute(Player player, @Values("@guilds") @Single String name) {

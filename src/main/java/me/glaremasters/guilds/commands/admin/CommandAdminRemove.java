@@ -64,7 +64,7 @@ public class CommandAdminRemove extends BaseCommand {
      */
     @Subcommand("admin remove")
     @Description("{@@descriptions.admin-remove}")
-    @CommandPermission("guilds.command.admin")
+    @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
     @Syntax("<guild name>")
     public void execute(Player player, @Values("@guilds") @Single String name) {

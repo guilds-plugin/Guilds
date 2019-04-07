@@ -61,7 +61,7 @@ public class CommandAdminVault extends BaseCommand {
      */
     @Subcommand("admin vault")
     @Description("{@@descriptions.admin-vault}")
-    @CommandPermission("guilds.command.admin")
+    @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
     @Syntax("<guild> <vault #>")
     public void execute(Player player, @Values("@guilds") @Single String name, int vault) {

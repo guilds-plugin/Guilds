@@ -59,7 +59,7 @@ public class CommandAdminUpgrade extends BaseCommand {
      */
     @Subcommand("admin upgrade")
     @Description("{@@descriptions.admin-upgrade}")
-    @CommandPermission("guilds.command.admin")
+    @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
     @Syntax("<guild name>")
     public void execute(Player player, @Values("@guilds") @Single String name) {
