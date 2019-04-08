@@ -180,7 +180,7 @@ accept:
   successful: "&aУспешно влязохте в гилдията '{guild}&r&a'"
 claim:
   already-exists: "&cВече имате регион. Премахнете предишния си регион, за да създадете нов"
-  overlap: "&cYour claim could not be created because there is another claim nearby"
+  overlap: "&cВашият регион не може да бъде създаден, защото има друг регион наблизо"
   success: "&aNew claim created! It goes from {loc1} to {loc2}!"
   hook-disabled: "&cPlease enable claims in the config to utilize this feature"
 unclaim:
