@@ -98,37 +98,6 @@ public class CommandGuilds extends BaseCommand {
     }
 
     /**
-     * Opens the guild vault
-     * @param player the player opening the vault
-     * @param guild the guild's vault which's being opened
-     * @param role the role of the player
-     */
-    @Subcommand("vault")
-    @Description("{@@descriptions.vault}")
-    @CommandPermission(Constants.BASE_PERM + "vault")
-    public void onVault(Player player, Guild guild, GuildRole role, @Default("1") Integer vault) {
-        if (!role.isOpenVault()) {
-            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
-            return;
-        }
-
-        GuildTier tier = guild.getTier();
-
-        if (vault > tier.getVaultAmount()) {
-            getCurrentCommandIssuer().sendInfo(Messages.VAULTS__MAXED);
-            return;
-        }
-
-        try {
-            guildHandler.getGuildVault(guild, vault);
-        } catch (Exception ex) {
-            guildHandler.getCachedVaults().get(guild).add(Bukkit.createInventory(null, 54, "PlaceholderText"));
-        }
-
-        player.openInventory(guildHandler.getGuildVault(guild, vault));
-    }
-
-    /**
      * Request an invite
      *
      * @param player the player requesting

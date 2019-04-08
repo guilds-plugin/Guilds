@@ -566,4 +566,14 @@ public class GuildHandler {
     public boolean blacklistCheck(String name, SettingsManager settingsManager) {
         return settingsManager.getProperty(GuildSettings.BLACKLIST_WORDS).stream().anyMatch(s -> s.toLowerCase().contains(name));
     }
+
+    /**
+     * Check if a guild has a specific vault unlocked
+     * @param vault the vault being opened
+     * @param guild the guild opening the vault
+     * @return if they can open it or not
+     */
+    public boolean hasVaultUnlocked(Integer vault, Guild guild) {
+        return vault > guild.getTier().getVaultAmount();
+    }
 }
