@@ -22,61 +22,34 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.commands;
+package me.glaremasters.guilds.commands.gui;
 
-import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
-import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
 import lombok.AllArgsConstructor;
-import me.glaremasters.guilds.exceptions.ExpectationNotMet;
-import me.glaremasters.guilds.exceptions.InvalidPermissionException;
-import me.glaremasters.guilds.guild.Guild;
-import me.glaremasters.guilds.guild.GuildHandler;
-import me.glaremasters.guilds.guild.GuildRole;
-import me.glaremasters.guilds.guild.GuildTier;
-import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.Constants;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 /**
  * Created by Glare
  * Date: 4/8/2019
- * Time: 9:09 AM
+ * Time: 10:49 AM
  */
 @AllArgsConstructor @CommandAlias(Constants.ROOT_ALIAS)
-public class CommandVault extends BaseCommand {
-
-    private GuildHandler guildHandler;
+public class CommandList extends BaseCommand {
 
     /**
-     * Opens the guild vault
-     * @param player the player opening the vault
-     * @param guild the guild's vault which's being opened
-     * @param role the role of the player
+     * List all the guilds on the server
+     * @param player the player executing this command
      */
-    @Subcommand("vault")
-    @Description("{@@descriptions.vault}")
-    @CommandPermission(Constants.BASE_PERM + "vault")
-    public void onVault(Player player, Guild guild, GuildRole role, @Default("1") Integer vault) {
-        if (!role.isOpenVault())
-            ACFUtil.sneaky(new InvalidPermissionException());
-
-        if (!guildHandler.hasVaultUnlocked(vault, guild))
-            ACFUtil.sneaky(new ExpectationNotMet(Messages.VAULTS__MAXED));
-
-        try {
-            guildHandler.getGuildVault(guild, vault);
-        } catch (Exception ex) {
-            // todo rewrite
-            guildHandler.getCachedVaults().get(guild).add(Bukkit.createInventory(null, 54, "PlaceholderText"));
-        }
-
-        player.openInventory(guildHandler.getGuildVault(guild, vault));
+    @Subcommand("list")
+    @Description("{@@descriptions.list}")
+    @CommandPermission(Constants.BASE_PERM + "list")
+    public void onGuildList(Player player) {
+        // Handle the GUI
     }
 
 }
