@@ -181,15 +181,15 @@ accept:
 claim:
   already-exists: "&cВече имате регион. Премахнете предишния си регион, за да създадете нов"
   overlap: "&cВашият регион не може да бъде създаден, защото има друг регион наблизо"
-  success: "&aNew claim created! It goes from {loc1} to {loc2}!"
-  hook-disabled: "&cPlease enable claims in the config to utilize this feature"
+  success: "&aНовият регион е създаден! Започва от {loc1} и приключва на {loc2}!"
+  hook-disabled: "&cВключете регионите в конфига за да използвате тази функция"
 unclaim:
-  success: "&aYou've successfully remove your guild claim!"
+  success: "&aУспешно премахнахте региона на гилдията ви!"
   not-found: "&cYou can't unclaim land that you don't have!"
 pending:
-  invites: "&aYou have {number} pending invite(s) from the guild(s): &e{guilds}&r&a . Use /guild accept <name> or /guild deny <name> to join or deny an invite!"
+  invites: "&aИмате {number} покана/и от гилдия/ите: &e{guilds}&r&a . Използвайте /guild accept <име> или /guild deny <име>, за да приемете или откажете покана!"
 codes:
-  created: "&aYou've created a new invite code: &6{code} &awith &6{amount} &auses!"
+  created: "&aСъздадохте нов код за покана: &6{code} &aс &6{amount} &aизползвания!"
   empty: "&cО, не! Нямате никакви кодове, опитайте първо да направите един!"
   list-header: "&aАктивните кодове на вашата гилдия:"
   list-item: "&aКод: &6{code} &f| &aОставащи използвания: &6{amount} &f| &aСъздател: &6{creator}"
