@@ -33,7 +33,6 @@ import lombok.Getter;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.api.GuildsAPI;
 import me.glaremasters.guilds.commands.management.CommandCreate;
-import me.glaremasters.guilds.commands.CommandGuilds;
 import me.glaremasters.guilds.commands.actions.CommandCancel;
 import me.glaremasters.guilds.commands.actions.CommandConfirm;
 import me.glaremasters.guilds.commands.admin.CommandAdminAddPlayer;
@@ -387,7 +386,6 @@ public final class Guilds extends JavaPlugin {
                 new CommandAdminUpgrade(guildHandler),
                 new CommandAdminVault(guildHandler),
                 // General For Now
-                new CommandGuilds(this, guildHandler, settingsManager, actionHandler, economy),
                 // Ally Commands
                 new CommandAllyAccept(guildHandler),
                 new CommandAllyAdd(guildHandler),
