@@ -408,7 +408,7 @@ public final class Guilds extends JavaPlugin {
                 new CommandDelHome(),
                 new CommandHome(),
                 new CommandSetHome(economy, settingsManager),
-                new CommandCreate(guildHandler,settingsManager,actionHandler,economy)
+                new CommandCreate(this, guildHandler, settingsManager, actionHandler, economy)
                 // Role Commands
 /*                new CommandDemote(guildHandler),
                 new CommandPromote(guildHandler)*/

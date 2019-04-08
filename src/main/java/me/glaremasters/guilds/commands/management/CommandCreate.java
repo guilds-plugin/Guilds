@@ -35,6 +35,8 @@ import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
 import lombok.AllArgsConstructor;
+import me.glaremasters.guilds.Guilds;
+import me.glaremasters.guilds.guild.GuildSkull;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.actions.ConfirmAction;
@@ -62,6 +64,7 @@ import java.util.UUID;
 @AllArgsConstructor @CommandAlias(Constants.ROOT_ALIAS)
 public class CommandCreate extends BaseCommand {
 
+    private Guilds guilds;
     private GuildHandler guildHandler;
     private SettingsManager settingsManager;
     private ActionHandler actionHandler;
@@ -142,7 +145,7 @@ public class CommandCreate extends BaseCommand {
 
                 actionHandler.removeAction(player);
 
-                /*Bukkit.getServer().getScheduler().runTaskAsynchronously(this, () -> guild.setGuildSkull(new GuildSkull(player)));*/
+                Bukkit.getServer().getScheduler().runTaskAsynchronously(guilds, () -> guild.setGuildSkull(new GuildSkull(player)));
             }
 
             @Override
