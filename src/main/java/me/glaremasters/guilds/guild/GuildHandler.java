@@ -32,6 +32,7 @@ import me.glaremasters.guilds.configuration.sections.GuildSettings;
 import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.utils.Serialization;
 import net.milkbowl.vault.permission.Permission;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -575,5 +576,25 @@ public class GuildHandler {
      */
     public boolean hasVaultUnlocked(Integer vault, Guild guild) {
         return vault > guild.getTier().getVaultAmount();
+    }
+
+    /**
+     * Get a list of the online members that can invite people
+     * @param guild the guild to check
+     * @return list of online members
+     */
+    public List<Player> getOnlineInviters(Guild guild) {
+        List<GuildMember> members = guild.getOnlineMembers().stream().filter(m -> m.getRole().isInvite()).collect(Collectors.toList());
+        return members.stream().map(m -> Bukkit.getPlayer(m.getUuid())).collect(Collectors.toList());
+    }
+
+    /**
+     * Simple method to inform all online inviters that someone wants to join
+     * @param guild guild to be requested
+     * @param commandManager command manager
+     * @param player player requesting
+     */
+    public void pingOnlineInviters(Guild guild, CommandManager commandManager, Player player) {
+        getOnlineInviters(guild).forEach(m -> commandManager.getCommandIssuer(m).sendInfo(Messages.REQUEST__INCOMING_REQUEST, "{player}", player.getName()));
     }
 }

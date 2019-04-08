@@ -24,63 +24,64 @@
 
 package me.glaremasters.guilds.commands;
 
-import ch.jalu.configme.SettingsManager;
+import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
-import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.annotation.Values;
 import lombok.AllArgsConstructor;
-import me.glaremasters.guilds.Guilds;
-import me.glaremasters.guilds.messages.Messages;
-import me.glaremasters.guilds.actions.ActionHandler;
-import me.glaremasters.guilds.configuration.sections.GuiSettings;
-import me.glaremasters.guilds.configuration.sections.GuildSettings;
+import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildMember;
 import me.glaremasters.guilds.guild.GuildRole;
-import me.glaremasters.guilds.guild.GuildTier;
+import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.Constants;
-import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+/**
+ * Created by Glare
+ * Date: 4/8/2019
+ * Time: 10:50 AM
+ */
+@AllArgsConstructor @CommandAlias(Constants.ROOT_ALIAS)
+public class CommandRequest extends BaseCommand {
 
-//todo rewrite lol -> this has been rewritten mostly there are still quite a lot of todos due to things being unclear
-// or not being added yet, make sure to fix these todos and commented out code and then we can start cleaning the warnings.
-// xx lemmo.
-@SuppressWarnings("unused")
-@AllArgsConstructor
-@CommandAlias("guild|guilds|g")
-public class CommandGuilds extends BaseCommand {
-
-    private Guilds guilds;
     private GuildHandler guildHandler;
-    public final static Inventory guildList = null;
-    public final static Map<UUID, Integer> playerPages = new HashMap<>();
-    //todo give me explanation pls @Glare
-    public final List<Player> home = new ArrayList<>();
-    public final List<Player> setHome = new ArrayList<>();
-    public final Map<Player, Location> warmUp = new HashMap<>();
-    private SettingsManager settingsManager;
-    private ActionHandler actionHandler;
-    private Economy economy;
+
+    /**
+     * Request an invite
+     *
+     * @param player the player requesting
+     * @param name   the name of the guild
+     */
+    @Subcommand("request")
+    @Description("{@@descriptions.request}")
+    @CommandPermission(Constants.BASE_PERM + "request")
+    @CommandCompletion("@guilds")
+    @Syntax("<guild name>")
+    public void onRequest(Player player, @Values("@guilds") @Single String name) {
+        Guild guild = guildHandler.getGuild(player);
+
+        if (guild != null)
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__ALREADY_IN_GUILD));
+
+        Guild target = guildHandler.getGuild(name);
+
+        if (target == null)
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
+
+        guildHandler.pingOnlineInviters(target, getCurrentCommandManager(), player);
+
+        getCurrentCommandIssuer().sendInfo(Messages.REQUEST__SUCCESS,
+                "{guild}", target.getName());
+    }
 
 }
