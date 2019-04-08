@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.commands;
+package me.glaremasters.guilds.commands.management;
 
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
@@ -32,36 +32,68 @@ import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
 import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.messages.Messages;
+import me.glaremasters.guilds.actions.ActionHandler;
+import me.glaremasters.guilds.actions.ConfirmAction;
+import me.glaremasters.guilds.api.events.GuildRemoveEvent;
 import me.glaremasters.guilds.exceptions.InvalidPermissionException;
 import me.glaremasters.guilds.guild.Guild;
+import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.utils.Constants;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 /**
  * Created by Glare
  * Date: 4/5/2019
- * Time: 12:57 AM
+ * Time: 11:12 PM
  */
-@AllArgsConstructor
-@CommandAlias(Constants.ROOT_ALIAS)
-public class CommandStatus extends BaseCommand {
+@AllArgsConstructor @CommandAlias(Constants.ROOT_ALIAS)
+public class CommandDelete extends BaseCommand {
+
+    private GuildHandler guildHandler;
+    private ActionHandler actionHandler;
 
     /**
-     * Toggles Guild Status
-     * @param player the player toggling guild status
-     * @param guild the guild that is getting toggled
-     * @param role the player's role
+     * Delete your guild
+     * @param player the player deleting the guild
+     * @param guild the guild being deleted
+     * @param role the role of the player
      */
-    @Subcommand("status")
-    @Description("{@@descriptions.status}")
-    @CommandPermission(Constants.BASE_PERM + "status")
-    public void onStatus(Player player, Guild guild, GuildRole role) {
-        if (!role.isChangeStatus())
+    @Subcommand("delete")
+    @Description("{@@descriptions.delete}")
+    @CommandPermission(Constants.BASE_PERM + "delete")
+    public void execute(Player player, Guild guild, GuildRole role) {
+        if (!role.isRemoveGuild())
             ACFUtil.sneaky(new InvalidPermissionException());
-        guild.toggleStatus();
-        getCurrentCommandIssuer().sendInfo(Messages.STATUS__SUCCESSFUL,
-                "{status}", guild.getStatus().name());
+
+        getCurrentCommandIssuer().sendInfo(Messages.DELETE__WARNING);
+
+        actionHandler.addAction(player, new ConfirmAction() {
+            @Override
+            public void accept() {
+                GuildRemoveEvent event = new GuildRemoveEvent(player, guild, GuildRemoveEvent.Cause.PLAYER_DELETED);
+                Bukkit.getPluginManager().callEvent(event);
+
+                if (event.isCancelled())
+                    return;
+
+                guildHandler.removeGuild(guild);
+
+                getCurrentCommandIssuer().sendInfo(Messages.DELETE__SUCCESSFUL,
+                        "{guild}", guild.getName());
+
+                actionHandler.removeAction(player);
+            }
+
+            @Override
+            public void decline() {
+                getCurrentCommandIssuer().sendInfo(Messages.DELETE__CANCELLED);
+                actionHandler.removeAction(player);
+            }
+        });
+
+
     }
 
 }

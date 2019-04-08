@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.commands.roles;
+package me.glaremasters.guilds.commands.management;
 
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
@@ -39,73 +39,63 @@ import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.exceptions.InvalidPermissionException;
 import me.glaremasters.guilds.guild.Guild;
-import me.glaremasters.guilds.guild.GuildHandler;
+import me.glaremasters.guilds.guild.GuildMember;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.utils.Constants;
-import me.glaremasters.guilds.utils.PlayerUtils;
-import me.glaremasters.guilds.utils.RoleUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 /**
  * Created by Glare
- * Date: 4/4/2019
- * Time: 11:31 PM
+ * Date: 4/5/2019
+ * Time: 11:59 PM
  */
 @AllArgsConstructor @CommandAlias(Constants.ROOT_ALIAS)
-public class CommandDemote extends BaseCommand {
-
-    private GuildHandler guildHandler;
+public class CommandKick extends BaseCommand {
 
     /**
-     * Demote a player in a guild
-     * @param player the person running the command
-     * @param target the player you want to demote
-     * @param guild check player is in a guild
-     * @param role check player can demote another player
+     * Kick a player from the guild
+     * @param player the player executing the command
+     * @param guild the guild the targetPlayer is being kicked from
+     * @param role the role of the player
+     * @param name the name of the targetPlayer
      */
-    @Subcommand("demote")
-    @Description("{@@descriptions.demote}")
-    @CommandPermission(Constants.BASE_PERM + "demote")
+    @Subcommand("boot|kick")
+    @Description("Kick someone from your Guild")
+    @CommandPermission(Constants.BASE_PERM + "boot")
     @CommandCompletion("@members")
-    @Syntax("<player>")
-    public void execute(Player player, Guild guild, GuildRole role, @Values("@members") @Single String target) {
-        if (!role.isDemote())
+    @Syntax("<name>")
+    public void execute(Player player, Guild guild, GuildRole role, @Values("@members") @Single String name) {
+        if (!role.isKick())
             ACFUtil.sneaky(new InvalidPermissionException());
 
-        OfflinePlayer user = PlayerUtils.getPlayer(target);
+        OfflinePlayer boot = Bukkit.getOfflinePlayer(name);
 
-        if (user == null)
-            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__PLAYER_NOT_FOUND,
-                    "{player}", target));
+        if (boot == null)
+            return;
 
-        if (user.getName().equals(player.getName()))
-            ACFUtil.sneaky(new ExpectationNotMet(Messages.DEMOTE__CANT_DEMOTE));
+        GuildMember kick = guild.getMember(boot.getUniqueId());
 
-        if (!RoleUtils.inGuild(guild, user))
+        if (kick == null)
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__PLAYER_NOT_IN_GUILD,
-                    "{player}", target));
+                    "{player}", name));
 
-        if (RoleUtils.isLowest(guildHandler, guild.getMember(user.getUniqueId())) ||
-                (RoleUtils.isLower(guild.getMember(user.getUniqueId()), guild.getMember(player.getUniqueId()))))
-            ACFUtil.sneaky(new ExpectationNotMet(Messages.DEMOTE__CANT_DEMOTE));
+        if (guild.isMaster(boot))
+            ACFUtil.sneaky(new InvalidPermissionException());
 
-        RoleUtils.demote(guildHandler, guild, user);
+        guild.removeMember(kick);
 
-        String oldRole = RoleUtils.getPreDemotedRoleName(guildHandler, guild.getMember(user.getUniqueId()));
-        String newRole = RoleUtils.getCurrentRoleName(guild.getMember(user.getUniqueId()));
+        getCurrentCommandIssuer().sendInfo(Messages.BOOT__SUCCESSFUL,
+                "{player}", boot.getName());
 
-        getCurrentCommandIssuer().sendInfo(Messages.DEMOTE__DEMOTE_SUCCESSFUL,
-                "{player}", target,
-                "{old}", oldRole,
-                "{new}", newRole);
+        guild.sendMessage(getCurrentCommandManager(), Messages.BOOT__PLAYER_KICKED,
+                "{player}", boot.getName(),
+                "{kicker}", player.getName());
 
-        if (user.isOnline())
-            getCurrentCommandManager().getCommandIssuer(user).sendInfo(Messages.DEMOTE__YOU_WERE_DEMOTED,
-                    "{old}", oldRole,
-                    "{new}", newRole);
-
-
+        if (boot.isOnline())
+            getCurrentCommandManager().getCommandIssuer(boot).sendInfo(Messages.BOOT__KICKED,
+                    "{kicker}", player.getName());
     }
 
 }

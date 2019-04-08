@@ -22,61 +22,61 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.commands;
+package me.glaremasters.guilds.commands.management;
 
-import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Description;
+import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
+import co.aikar.commands.annotation.Values;
 import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.exceptions.InvalidPermissionException;
 import me.glaremasters.guilds.guild.Guild;
-import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.utils.Constants;
-import me.glaremasters.guilds.utils.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 /**
  * Created by Glare
  * Date: 4/5/2019
- * Time: 11:55 PM
+ * Time: 10:54 PM
  */
 @AllArgsConstructor @CommandAlias(Constants.ROOT_ALIAS)
-public class CommandPrefix extends BaseCommand {
-
-    private GuildHandler guildHandler;
-    private SettingsManager settingsManager;
+public class CommandTransfer extends BaseCommand {
 
     /**
-     * Change guild prefix
-     * @param player the player changing the guild prefix
-     * @param guild the guild which's prefix is getting changed
+     * Transfer a guild to a new user
+     * @param player the player transferring this guild
+     * @param guild the guild being transferred
      * @param role the role of the player
-     * @param prefix the new prefix
+     * @param target the new guild master
      */
-    @Subcommand("prefix")
-    @Description("{@@descriptions.prefix}")
-    @CommandPermission(Constants.BASE_PERM + "prefix")
-    @Syntax("<prefix>")
-    public void execute(Player player, Guild guild, GuildRole role, String prefix) {
-        if (!role.isChangePrefix())
+    @Subcommand("transfer")
+    @Description("{@@descriptions.transfer}")
+    @CommandPermission(Constants.BASE_PERM + "transfer")
+    @CommandCompletion("@members")
+    @Syntax("<player>")
+    public void execute(Player player, Guild guild, GuildRole role, @Values("@members") @Single String target) {
+        if (!role.isTransferGuild())
             ACFUtil.sneaky(new InvalidPermissionException());
 
-        if (!guildHandler.prefixCheck(prefix, settingsManager))
-            ACFUtil.sneaky(new ExpectationNotMet(Messages.CREATE__REQUIREMENTS));
+        Player transfer = Bukkit.getPlayer(target);
 
-        getCurrentCommandIssuer().sendInfo(Messages.PREFIX__SUCCESSFUL,
-                "{prefix}", prefix);
+        if (transfer == null)
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__PLAYER_NOT_FOUND));
 
-        guild.setPrefix(StringUtils.color(prefix));
+        guild.transferGuild(player, transfer);
 
+        getCurrentCommandIssuer().sendInfo(Messages.TRANSFER__SUCCESS);
+        getCurrentCommandManager().getCommandIssuer(transfer).sendInfo(Messages.TRANSFER__NEWMASTER);
     }
 
 }

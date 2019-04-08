@@ -22,80 +22,61 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.commands;
+package me.glaremasters.guilds.commands.management;
 
+import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Description;
-import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
-import co.aikar.commands.annotation.Values;
 import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.exceptions.InvalidPermissionException;
 import me.glaremasters.guilds.guild.Guild;
-import me.glaremasters.guilds.guild.GuildMember;
+import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.utils.Constants;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
+import me.glaremasters.guilds.utils.StringUtils;
 import org.bukkit.entity.Player;
 
 /**
  * Created by Glare
  * Date: 4/5/2019
- * Time: 11:59 PM
+ * Time: 11:55 PM
  */
 @AllArgsConstructor @CommandAlias(Constants.ROOT_ALIAS)
-public class CommandKick extends BaseCommand {
+public class CommandPrefix extends BaseCommand {
+
+    private GuildHandler guildHandler;
+    private SettingsManager settingsManager;
 
     /**
-     * Kick a player from the guild
-     * @param player the player executing the command
-     * @param guild the guild the targetPlayer is being kicked from
+     * Change guild prefix
+     * @param player the player changing the guild prefix
+     * @param guild the guild which's prefix is getting changed
      * @param role the role of the player
-     * @param name the name of the targetPlayer
+     * @param prefix the new prefix
      */
-    @Subcommand("boot|kick")
-    @Description("Kick someone from your Guild")
-    @CommandPermission(Constants.BASE_PERM + "boot")
-    @CommandCompletion("@members")
-    @Syntax("<name>")
-    public void execute(Player player, Guild guild, GuildRole role, @Values("@members") @Single String name) {
-        if (!role.isKick())
+    @Subcommand("prefix")
+    @Description("{@@descriptions.prefix}")
+    @CommandPermission(Constants.BASE_PERM + "prefix")
+    @Syntax("<prefix>")
+    public void execute(Player player, Guild guild, GuildRole role, String prefix) {
+        if (!role.isChangePrefix())
             ACFUtil.sneaky(new InvalidPermissionException());
 
-        OfflinePlayer boot = Bukkit.getOfflinePlayer(name);
+        if (!guildHandler.prefixCheck(prefix, settingsManager))
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.CREATE__REQUIREMENTS));
 
-        if (boot == null)
-            return;
+        getCurrentCommandIssuer().sendInfo(Messages.PREFIX__SUCCESSFUL,
+                "{prefix}", prefix);
 
-        GuildMember kick = guild.getMember(boot.getUniqueId());
+        guild.setPrefix(StringUtils.color(prefix));
 
-        if (kick == null)
-            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__PLAYER_NOT_IN_GUILD,
-                    "{player}", name));
-
-        if (guild.isMaster(boot))
-            ACFUtil.sneaky(new InvalidPermissionException());
-
-        guild.removeMember(kick);
-
-        getCurrentCommandIssuer().sendInfo(Messages.BOOT__SUCCESSFUL,
-                "{player}", boot.getName());
-
-        guild.sendMessage(getCurrentCommandManager(), Messages.BOOT__PLAYER_KICKED,
-                "{player}", boot.getName(),
-                "{kicker}", player.getName());
-
-        if (boot.isOnline())
-            getCurrentCommandManager().getCommandIssuer(boot).sendInfo(Messages.BOOT__KICKED,
-                    "{kicker}", player.getName());
     }
 
 }

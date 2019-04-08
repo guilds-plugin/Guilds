@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.commands;
+package me.glaremasters.guilds.commands.member;
 
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
@@ -36,10 +36,11 @@ import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.annotation.Values;
 import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.messages.Messages;
+import me.glaremasters.guilds.api.events.GuildJoinEvent;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
-import me.glaremasters.guilds.exceptions.InvalidPermissionException;
 import me.glaremasters.guilds.guild.Guild;
-import me.glaremasters.guilds.guild.GuildRole;
+import me.glaremasters.guilds.guild.GuildHandler;
+import me.glaremasters.guilds.guild.GuildMember;
 import me.glaremasters.guilds.utils.Constants;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -47,36 +48,51 @@ import org.bukkit.entity.Player;
 /**
  * Created by Glare
  * Date: 4/5/2019
- * Time: 10:54 PM
+ * Time: 10:29 PM
  */
 @AllArgsConstructor @CommandAlias(Constants.ROOT_ALIAS)
-public class CommandTransfer extends BaseCommand {
+public class CommandAccept extends BaseCommand {
+
+    private GuildHandler guildHandler;
 
     /**
-     * Transfer a guild to a new user
-     * @param player the player transferring this guild
-     * @param guild the guild being transferred
-     * @param role the role of the player
-     * @param target the new guild master
+     * Accept a guild invite
+     * @param player the player accepting the invite
+     * @param name the name of the guild being accepted
      */
-    @Subcommand("transfer")
-    @Description("{@@descriptions.transfer}")
-    @CommandPermission(Constants.BASE_PERM + "transfer")
-    @CommandCompletion("@members")
-    @Syntax("<player>")
-    public void execute(Player player, Guild guild, GuildRole role, @Values("@members") @Single String target) {
-        if (!role.isTransferGuild())
-            ACFUtil.sneaky(new InvalidPermissionException());
+    @Subcommand("accept|join")
+    @Description("{@@descriptions.accept}")
+    @CommandPermission(Constants.BASE_PERM + "accept")
+    @CommandCompletion("@invitedTo")
+    @Syntax("<guild name>")
+    public void execute(Player player, @Values("@invitedTo") @Single String name) {
+        if (guildHandler.getGuild(name) != null)
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__ALREADY_IN_GUILD));
 
-        Player transfer = Bukkit.getPlayer(target);
+        Guild guild = guildHandler.getGuild(name);
 
-        if (transfer == null)
-            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__PLAYER_NOT_FOUND));
+        if (guild == null)
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
 
-        guild.transferGuild(player, transfer);
+        if (!guild.checkIfInvited(player) && guild.isPrivate())
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.ACCEPT__NOT_INVITED));
 
-        getCurrentCommandIssuer().sendInfo(Messages.TRANSFER__SUCCESS);
-        getCurrentCommandManager().getCommandIssuer(transfer).sendInfo(Messages.TRANSFER__NEWMASTER);
+        if (guild.checkIfFull())
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.ACCEPT__GUILD_FULL));
+
+        GuildJoinEvent event = new GuildJoinEvent(player, guild);
+        Bukkit.getPluginManager().callEvent(event);
+
+        if (event.isCancelled())
+            return;
+
+        guild.addMember(new GuildMember(player.getUniqueId(), guildHandler.getLowestGuildRole()));
+
+        guild.sendMessage(getCurrentCommandManager(), Messages.ACCEPT__PLAYER_JOINED,
+                "{player}", player.getName());
+
+        getCurrentCommandIssuer().sendInfo(Messages.ACCEPT__SUCCESSFUL,
+                "{guild}", guild.getName());
     }
 
 }

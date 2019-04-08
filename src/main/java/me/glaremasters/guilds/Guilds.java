@@ -32,7 +32,7 @@ import co.aikar.commands.PaperCommandManager;
 import lombok.Getter;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.api.GuildsAPI;
-import me.glaremasters.guilds.commands.CommandCreate;
+import me.glaremasters.guilds.commands.management.CommandCreate;
 import me.glaremasters.guilds.commands.CommandGuilds;
 import me.glaremasters.guilds.commands.actions.CommandCancel;
 import me.glaremasters.guilds.commands.actions.CommandConfirm;

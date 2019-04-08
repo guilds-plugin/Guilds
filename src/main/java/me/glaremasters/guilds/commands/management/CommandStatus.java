@@ -22,66 +22,46 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.commands;
+package me.glaremasters.guilds.commands.management;
 
-import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
-import co.aikar.commands.annotation.Syntax;
 import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.messages.Messages;
-import me.glaremasters.guilds.configuration.sections.GuildSettings;
-import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.exceptions.InvalidPermissionException;
 import me.glaremasters.guilds.guild.Guild;
-import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.utils.Constants;
-import me.glaremasters.guilds.utils.StringUtils;
 import org.bukkit.entity.Player;
 
 /**
  * Created by Glare
  * Date: 4/5/2019
- * Time: 11:46 PM
+ * Time: 12:57 AM
  */
-@AllArgsConstructor @CommandAlias(Constants.ROOT_ALIAS)
-public class CommandRename extends BaseCommand {
-
-    private GuildHandler guildHandler;
-    private SettingsManager settingsManager;
+@AllArgsConstructor
+@CommandAlias(Constants.ROOT_ALIAS)
+public class CommandStatus extends BaseCommand {
 
     /**
-     * Rename a guild
-     * @param player the player renaming this guild
-     * @param guild the guild being renamed
-     * @param role the role of the player
-     * @param name new name of guild
+     * Toggles Guild Status
+     * @param player the player toggling guild status
+     * @param guild the guild that is getting toggled
+     * @param role the player's role
      */
-    @Subcommand("rename")
-    @Description("{@@descriptions.rename}")
-    @CommandPermission(Constants.BASE_PERM + "rename")
-    @Syntax("<name>")
-    public void execute(Player player, Guild guild, GuildRole role, String name) {
-        if (!role.isChangeName())
+    @Subcommand("status")
+    @Description("{@@descriptions.status}")
+    @CommandPermission(Constants.BASE_PERM + "status")
+    public void onStatus(Player player, Guild guild, GuildRole role) {
+        if (!role.isChangeStatus())
             ACFUtil.sneaky(new InvalidPermissionException());
-
-        if (!guildHandler.nameCheck(name, settingsManager))
-            ACFUtil.sneaky(new ExpectationNotMet(Messages.CREATE__REQUIREMENTS));
-
-        if (settingsManager.getProperty(GuildSettings.BLACKLIST_TOGGLE)) {
-            if (guildHandler.blacklistCheck(name, settingsManager))
-                ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__BLACKLIST));
-        }
-
-        guild.setName(StringUtils.color(name));
-
-        getCurrentCommandIssuer().sendInfo(Messages.RENAME__SUCCESSFUL,
-                "{name}", name);
+        guild.toggleStatus();
+        getCurrentCommandIssuer().sendInfo(Messages.STATUS__SUCCESSFUL,
+                "{status}", guild.getStatus().name());
     }
 
 }

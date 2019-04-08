@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.commands;
+package me.glaremasters.guilds.commands.management;
 
 import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFBukkitUtil;

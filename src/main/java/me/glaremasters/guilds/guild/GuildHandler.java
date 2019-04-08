@@ -77,7 +77,7 @@ public class GuildHandler {
         cachedVaults = new HashMap<>();
 
         //GuildRoles objects
-        ConfigurationSection roleSection = config.getConfigurationSection("roles");
+        ConfigurationSection roleSection = config.getConfigurationSection("member");
 
         for (String s : roleSection.getKeys(false)) {
             String path = s + ".permissions.";

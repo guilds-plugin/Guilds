@@ -22,61 +22,66 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.commands;
+package me.glaremasters.guilds.commands.management;
 
+import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Description;
-import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
-import co.aikar.commands.annotation.Values;
 import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.messages.Messages;
+import me.glaremasters.guilds.configuration.sections.GuildSettings;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
+import me.glaremasters.guilds.exceptions.InvalidPermissionException;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
+import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.utils.Constants;
+import me.glaremasters.guilds.utils.StringUtils;
 import org.bukkit.entity.Player;
 
 /**
  * Created by Glare
  * Date: 4/5/2019
- * Time: 10:25 PM
+ * Time: 11:46 PM
  */
 @AllArgsConstructor @CommandAlias(Constants.ROOT_ALIAS)
-public class CommandDecline extends BaseCommand {
+public class CommandRename extends BaseCommand {
 
     private GuildHandler guildHandler;
+    private SettingsManager settingsManager;
 
     /**
-     * Decline a guild invite
-     * @param player the player declining the invite
-     * @param name the name of the guild
+     * Rename a guild
+     * @param player the player renaming this guild
+     * @param guild the guild being renamed
+     * @param role the role of the player
+     * @param name new name of guild
      */
-    @Subcommand("decline")
-    @Description("{@@descriptions.decline}")
-    @CommandPermission(Constants.BASE_PERM + "decline")
-    @CommandCompletion("@invitedTo")
-    @Syntax("<guild name>")
-    public void execute(Player player, @Values("@invitedTo") @Single String name) {
-        Guild guild = guildHandler.getGuild(name);
+    @Subcommand("rename")
+    @Description("{@@descriptions.rename}")
+    @CommandPermission(Constants.BASE_PERM + "rename")
+    @Syntax("<name>")
+    public void execute(Player player, Guild guild, GuildRole role, String name) {
+        if (!role.isChangeName())
+            ACFUtil.sneaky(new InvalidPermissionException());
 
-        if (guild == null)
-            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
+        if (!guildHandler.nameCheck(name, settingsManager))
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.CREATE__REQUIREMENTS));
 
-        if (guildHandler.getGuild(player) != null)
-            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__ALREADY_IN_GUILD));
+        if (settingsManager.getProperty(GuildSettings.BLACKLIST_TOGGLE)) {
+            if (guildHandler.blacklistCheck(name, settingsManager))
+                ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__BLACKLIST));
+        }
 
-        if (!guild.checkIfInvited(player))
-            ACFUtil.sneaky(new ExpectationNotMet(Messages.ACCEPT__NOT_INVITED));
+        guild.setName(StringUtils.color(name));
 
-        guild.removeInvitedMember(player.getUniqueId());
-
-        getCurrentCommandIssuer().sendInfo(Messages.DECLINE__SUCCESS);
+        getCurrentCommandIssuer().sendInfo(Messages.RENAME__SUCCESSFUL,
+                "{name}", name);
     }
 
 }
