@@ -179,7 +179,7 @@ accept:
   player-joined: "&a{player} влезе в гилдията ви!"
   successful: "&aУспешно влязохте в гилдията '{guild}&r&a'"
 claim:
-  already-exists: "&cYou already have a claim. Please remove your previous claim to create a new one"
+  already-exists: "&cВече имате регион. Премахнете предишния си регион, за да създадете нов"
   overlap: "&cYour claim could not be created because there is another claim nearby"
   success: "&aNew claim created! It goes from {loc1} to {loc2}!"
   hook-disabled: "&cPlease enable claims in the config to utilize this feature"
@@ -191,13 +191,13 @@ pending:
 codes:
   created: "&aYou've created a new invite code: &6{code} &awith &6{amount} &auses!"
   empty: "&cО, не! Нямате никакви кодове, опитайте първо да направите един!"
-  list-header: "&aHere are the following active invite codes for your guild:"
+  list-header: "&aАктивните кодове на вашата гилдия:"
   list-item: "&aКод: &6{code} &f| &aОставащи използвания: &6{amount} &f| &aСъздател: &6{creator}"
   deleted: "&aТози код за покана беше премахнат от вашата гилдия!"
   invalid-code: "&cТози код за покана не изглежда, че съществува. Моля опитайте отново!"
-  joined: "&aYou've successfully joined &6{guild} &ausing an invite code!"
-  out: "&cThat invite code is all out of uses! Please try another one!"
-  info: "&aInvite Code Information:\n&aID: &6{code}\n&aUses: &6{amount}\n&aCreator: &6{creator}\n&aRedeemers: &6{redeemers}"
-  max: "&cYou already have too many active invite codes in your guild!"
+  joined: "&aУспешно влязохте в гилдията &6{guild}&a, използвайки код за покана!"
+  out: "&cТози код за покана е напълно използван! Моля опитайте друг!"
+  info: "&aИнформация за код:\n&aКод: &6{code}\n&aИзползвания: &6{amount}\n&aСъздател: &6{creator}\n&aИзползвали: &6{redeemers}"
+  max: "&cИмате твърде много активни кодове за покани във вашата гилдия!"
 vaults:
-  maxed: "&cYou can't open this vault because you already have the max amount of vaults for your Guild Tier!"
+  maxed: "&cНе можете да отворите този трезор, защото вече имате максималният брой трезори за вашето ниво на гилдия!"
