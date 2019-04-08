@@ -27,18 +27,22 @@ package me.glaremasters.guilds.guild;
 import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.CommandManager;
 import lombok.Getter;
+import me.glaremasters.guilds.configuration.sections.TicketSettings;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.configuration.sections.GuildSettings;
 import me.glaremasters.guilds.database.DatabaseProvider;
+import me.glaremasters.guilds.utils.ItemBuilder;
 import me.glaremasters.guilds.utils.Serialization;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -596,5 +600,19 @@ public class GuildHandler {
      */
     public void pingOnlineInviters(Guild guild, CommandManager commandManager, Player player) {
         getOnlineInviters(guild).forEach(m -> commandManager.getCommandIssuer(m).sendInfo(Messages.REQUEST__INCOMING_REQUEST, "{player}", player.getName()));
+    }
+
+    /**
+     * Create a guild upgrade ticket
+     * @param settingsManager the settings manager
+     * @param amount the amount of tickets to give
+     * @return the guild upgrade ticket
+     */
+    public ItemStack getUpgradeTicket(SettingsManager settingsManager, int amount) {
+        ItemBuilder builder = new ItemBuilder(Material.valueOf(settingsManager.getProperty(TicketSettings.TICKET_MATERIAL)));
+        builder.setAmount(amount);
+        builder.setName(settingsManager.getProperty(TicketSettings.TICKET_NAME));
+        builder.setLore(settingsManager.getProperty(TicketSettings.TICKET_LORE));
+        return builder.build();
     }
 }

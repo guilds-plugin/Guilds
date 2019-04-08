@@ -32,6 +32,7 @@ import co.aikar.commands.PaperCommandManager;
 import lombok.Getter;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.api.GuildsAPI;
+import me.glaremasters.guilds.commands.admin.CommandAdminGive;
 import me.glaremasters.guilds.commands.management.CommandCreate;
 import me.glaremasters.guilds.commands.actions.CommandCancel;
 import me.glaremasters.guilds.commands.actions.CommandConfirm;
@@ -377,6 +378,7 @@ public final class Guilds extends JavaPlugin {
                 new CommandConfirm(actionHandler),
                 // Admin Commands
                 new CommandAdminAddPlayer(guildHandler),
+                new CommandAdminGive(guildHandler, settingsManager),
                 new CommandAdminPrefix(guildHandler),
                 new CommandAdminRemove(guildHandler, actionHandler),
                 new CommandAdminRemovePlayer(guildHandler),
