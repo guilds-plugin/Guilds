@@ -144,11 +144,11 @@ rename:
 home:
   no-home-set: "&cKein Zuhause gesetzt! Verwende &a/guild sethome &cum ein Zuhause zu setzen!"
   teleported: "&aDu wurdest zu deinem Gildenzuhause teleportiert!"
-  cooldown: "&cYou must wait at least {amount} seconds before doing this again"
-  warmup: "&aYou will be teleported in {amount} seconds. Don't move!"
-  cancelled: "&cYou moved! Teleportation cancelled!"
+  cooldown: "&cDu musst mindestens {amount} Sekunden warten bevor du das erneut tun kannst"
+  warmup: "&aDu wirst in {amount} Sekunden teleportiert. Beweg dich nicht!"
+  cancelled: "&cDu hast dich bewegt! Teleportation abgebrochen!"
 sethome:
-  successful: "&aYou've set your guild home!"
+  successful: "&aDu hast dein Gildenzuhause gesetzt!"
   cooldown: "&cYou must wait at least {amount} seconds before doing this again"
 reload:
   reloaded: "&aConfiguration file reloaded!"
