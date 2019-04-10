@@ -98,21 +98,21 @@ admin:
   spy-off: "&cGilden Chatspion wurde deaktiviert!"
 boot:
   player-kicked: "&cSpieler '{player}' wurde von {kicker} aus der Gilde gekickt!"
-  successful: "&aSuccessfully kicked {player} from your guild!"
-  kicked: "&cYou have been kicked from your guild by {kicker}!"
+  successful: "&a{player} erfolgreich aus deiner Gilde gekickt!"
+  kicked: "&cDu wurdest von {kicker} aus deiner Gilde gekickt!"
 decline:
-  success: "&aGuild Invite Declined!"
+  success: "&aGildeneinladung abgelehnt!"
 demote:
-  cant-demote: "&cThat player can not be demoted!"
-  demote-successful: "&aYou've successfully demoted {player} from {old} to {new}"
-  you-were-demoted: "&cYou've been demoted from {old} to {new}"
+  cant-demote: "&cDieser Spieler kann nicht degradiert werden!"
+  demote-successful: "&aDu hast {player} erfolgreich von {old} zu {new} degradiert"
+  you-were-demoted: "&cDu wurdest von {old} zu {new} degradiert"
 promote:
-  cant-promote: "&cThat player can not be promoted!"
-  promote-successful: "&aYou've successfully promoted {player} from {old} to {new}"
-  you-were-promoted: "&aYou've been promoted from {old} to {new}"
+  cant-promote: "&cDieser Spieler kann nicht befördert werden!"
+  promote-successful: "&a Du hast {player} erfolgreich von {old} zu {new} befördert"
+  you-were-promoted: "&aDu wurdest von {old} zu {new} befördert"
 delete:
-  successful: "&aDeleted '{guild}&r&a' successfully!"
-  cancelled: "&cGuild deletion cancelled!"
+  successful: "&a'{guild}&r&a' erfolgreich gelöscht!"
+  cancelled: "&cLöschen der Gilde abgebrochen!"
   warning: "&cType /guilds confirm to delete your guild, type /guilds cancel to cancel."
 leave:
   cancelled: "&cLeaving guild cancelled!"
