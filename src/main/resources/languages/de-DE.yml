@@ -127,23 +127,23 @@ transfer:
 invite:
   already-invited: "Benutzer ist bereits zu deiner Gilde eingeladen"
   message: "&a{player} hat dich zu ihrer/seiner Gilde '{guild}' eingeladen. Schreibe /guild join {guild} zum beitreten!"
-  successful: "&aYou've successfully invited {player} to your guild!"
+  successful: "&aDu hast {player} erfolgreich zu deiner Gilde eingeladen!"
 upgrade:
-  tier-max: "&cCannot upgrade again! You're already maxed!"
-  money-warning: "&cYou are about to spend {amount} to set upgrade your guild. (Type /guilds confirm to continue)"
-  cancel: "&cUpgrade cancelled!"
-  success: "&aYou've successfully upgraded your guild!"
-  not-enough-money: "&cSorry! You don't have enough money to upgrade your Guild! You still need {needed}!"
-  not-enough-members: "&cSorry! You need at least {amount} members to rank up your Guild Tier!"
+  tier-max: "&cKann nicht erneut verbessern! Du bist bereits maximum!"
+  money-warning: "&cDu bist dabei {amount} auszugeben um deine Gilde zu verbessern. (Schreibe /guilds confirm zum fortfahrn)"
+  cancel: "&cVerbesserung abgebrochen!"
+  success: "&aDu hast erfolgreich deine Gilde verbessert!"
+  not-enough-money: "&cSorry! Du hast nicht genug Geld zum verbessern deiner Gilde! Du brauchst noch {needed}!"
+  not-enough-members: "&cSorry! Du brauchst mindestens {amount} Mitglieder um deine Gildenstufe zu verbessern!"
 prefix:
-  successful: "&aGuild's prefix changed successfully to {prefix}!"
+  successful: "&aGildenpräfix erfolgreich geändert zu {prefix}!"
 status:
-  successful: "&aGuild status set to {status}!"
+  successful: "&aGildenstatus geändert zu {status}!"
 rename:
-  successful: "&aGuild name changed to {name}!"
+  successful: "&aGildenname geändert zu {name}!"
 home:
-  no-home-set: "&cNo home set! Use &a/guild sethome &cto set a home!"
-  teleported: "&aYou've teleported to your guild home!"
+  no-home-set: "&cKein Zuhause gesetzt! Verwende &a/guild sethome &cum ein Zuhause zu setzen!"
+  teleported: "&aDu wurdest zu deinem Gildenzuhause teleportiert!"
   cooldown: "&cYou must wait at least {amount} seconds before doing this again"
   warmup: "&aYou will be teleported in {amount} seconds. Don't move!"
   cancelled: "&cYou moved! Teleportation cancelled!"
