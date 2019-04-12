@@ -141,8 +141,7 @@ public final class Guilds extends JavaPlugin {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            guildHandler.getSpies().clear();
-            guildHandler.getGuildChat().clear();
+            guildHandler.chatLogout();
         }
     }
 

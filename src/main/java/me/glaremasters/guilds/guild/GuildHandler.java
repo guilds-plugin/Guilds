@@ -515,6 +515,14 @@ public class GuildHandler {
     }
 
     /**
+     * Clear both lists
+     */
+    public void chatLogout() {
+        spies.clear();
+        guildChat.clear();
+    }
+
+    /**
      * Simple method to check a player has any invites
      * @param manager the command manager
      * @param player the player being checked
