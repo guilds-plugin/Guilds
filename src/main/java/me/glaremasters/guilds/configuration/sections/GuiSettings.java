@@ -40,6 +40,7 @@ import static ch.jalu.configme.properties.PropertyInitializer.newProperty;
  */
 public class GuiSettings implements SettingsHolder {
 
+/*
     private static final String LIST_PATH = "guis.guild-list.";
     @Comment("What should the name of the inventory be?")
     public static final Property<String> GUILD_LIST_NAME =
@@ -332,6 +333,11 @@ public class GuiSettings implements SettingsHolder {
     @Comment("Do you want this buff to show in-game?")
     public static final Property<Boolean> REGENERATION_DISPLAY =
             newProperty(BUFF_PATH + "regeneration.display", true);
+*/
+
+    @Comment("What do you want the name of the Vault to be?")
+    public static final Property<String> VAULT_NAME =
+            newProperty("guis.vault.name", "Guild Vault");
 
     private GuiSettings() {
     }

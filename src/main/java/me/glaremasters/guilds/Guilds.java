@@ -35,14 +35,10 @@ import me.glaremasters.guilds.api.GuildsAPI;
 import me.glaremasters.guilds.commands.CommandChat;
 import me.glaremasters.guilds.commands.CommandHelp;
 import me.glaremasters.guilds.commands.CommandRequest;
-import me.glaremasters.guilds.commands.admin.CommandAdminGive;
-import me.glaremasters.guilds.commands.admin.CommandReload;
-import me.glaremasters.guilds.commands.gui.CommandList;
-import me.glaremasters.guilds.commands.gui.CommandVault;
-import me.glaremasters.guilds.commands.management.CommandCreate;
 import me.glaremasters.guilds.commands.actions.CommandCancel;
 import me.glaremasters.guilds.commands.actions.CommandConfirm;
 import me.glaremasters.guilds.commands.admin.CommandAdminAddPlayer;
+import me.glaremasters.guilds.commands.admin.CommandAdminGive;
 import me.glaremasters.guilds.commands.admin.CommandAdminPrefix;
 import me.glaremasters.guilds.commands.admin.CommandAdminRemove;
 import me.glaremasters.guilds.commands.admin.CommandAdminRemovePlayer;
@@ -51,6 +47,7 @@ import me.glaremasters.guilds.commands.admin.CommandAdminSpy;
 import me.glaremasters.guilds.commands.admin.CommandAdminStatus;
 import me.glaremasters.guilds.commands.admin.CommandAdminUpgrade;
 import me.glaremasters.guilds.commands.admin.CommandAdminVault;
+import me.glaremasters.guilds.commands.admin.CommandReload;
 import me.glaremasters.guilds.commands.ally.CommandAllyAccept;
 import me.glaremasters.guilds.commands.ally.CommandAllyAdd;
 import me.glaremasters.guilds.commands.ally.CommandAllyDecline;
@@ -66,9 +63,11 @@ import me.glaremasters.guilds.commands.codes.CommandCodeDelete;
 import me.glaremasters.guilds.commands.codes.CommandCodeInfo;
 import me.glaremasters.guilds.commands.codes.CommandCodeList;
 import me.glaremasters.guilds.commands.codes.CommandCodeRedeem;
+import me.glaremasters.guilds.commands.gui.CommandVault;
 import me.glaremasters.guilds.commands.homes.CommandDelHome;
 import me.glaremasters.guilds.commands.homes.CommandHome;
 import me.glaremasters.guilds.commands.homes.CommandSetHome;
+import me.glaremasters.guilds.commands.management.CommandCreate;
 import me.glaremasters.guilds.commands.management.CommandDelete;
 import me.glaremasters.guilds.commands.management.CommandKick;
 import me.glaremasters.guilds.commands.management.CommandPrefix;
@@ -101,7 +100,7 @@ import me.glaremasters.guilds.listeners.TicketListener;
 import me.glaremasters.guilds.listeners.WorldGuardListener;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.placeholders.PlaceholderAPI;
-import me.glaremasters.guilds.updater.SpigotUpdater;
+import me.glaremasters.guilds.updater.UpdateCheck;
 import me.glaremasters.guilds.utils.Constants;
 import me.glaremasters.guilds.utils.StringUtils;
 import net.milkbowl.vault.economy.Economy;
@@ -227,24 +226,6 @@ public final class Guilds extends JavaPlugin {
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
             info("Failed to load!");
-        }
-    }
-
-    /**
-     * Execute the update checker
-     *
-     * @param updater the SpigotUpdater
-     */
-    private void updateCheck(SpigotUpdater updater) {
-        try {
-            if (getConfig().getBoolean("check-for-updates")) {
-                if (updater.checkForUpdates()) {
-                    info("You appear to be running a version other than our latest stable release." + " You can download our newest version at: " + updater.getResourceLink());
-                }
-            }
-        } catch (Exception ex) {
-            info("Could not check for updates! Stacktrace:");
-            ex.printStackTrace();
         }
     }
 
@@ -413,9 +394,6 @@ public final class Guilds extends JavaPlugin {
                 new CommandBankBalance(),
                 new CommandBankDeposit(economy),
                 new CommandBankWithdraw(economy),
-                // Claim Commands
-                new CommandClaim(WorldGuardWrapper.getInstance(), settingsManager),
-                new CommandUnclaim(WorldGuardWrapper.getInstance(), settingsManager),
                 // Code Commands
                 new CommandCodeCreate(settingsManager),
                 new CommandCodeDelete(),
@@ -424,7 +402,7 @@ public final class Guilds extends JavaPlugin {
                 new CommandCodeRedeem(guildHandler),
                 // GUI Commands
                 /*new CommandList(),*/
-                new CommandVault(guildHandler),
+                new CommandVault(guildHandler, settingsManager),
                 // Home Commands
                 new CommandDelHome(),
                 new CommandHome(),
@@ -462,22 +440,18 @@ public final class Guilds extends JavaPlugin {
         // This can probably be moved into it's own method
         // This checks for updates
         if (settingsManager.getProperty(PluginSettings.ANNOUNCEMENTS_CONSOLE)) {
-            info("Checking for updates..");
-            getServer().getScheduler().runTaskAsynchronously(this, new Runnable() {
-                /* SpigotUpdater updater = new SpigotUpdater(this, 48920);*/
-
-                @Override
-                public void run() {
-                    /*updateCheck(updater);*/
-                    try {
-                        info(getAnnouncements());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+            UpdateCheck.of(this).resourceId(48920).handleResponse((versionResponse, s) -> {
+                switch (versionResponse) {
+                    case FOUND_NEW:
+                        log(Level.INFO, "New version of the plugin was found: " + s);
+                        break;
+                    case LATEST:
+                        log(Level.INFO, "You are on the latest version of the plugin.");
+                        break;
+                    case UNAVAILABLE:
+                        log(Level.INFO, "Unable to check for an update.");
                 }
             });
-
-
         }
 
         // Load all the listeners

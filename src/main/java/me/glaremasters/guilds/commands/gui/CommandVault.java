@@ -24,6 +24,7 @@
 
 package me.glaremasters.guilds.commands.gui;
 
+import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
@@ -52,6 +53,7 @@ import org.bukkit.entity.Player;
 public class CommandVault extends BaseCommand {
 
     private GuildHandler guildHandler;
+    private SettingsManager settingsManager;
 
     /**
      * Opens the guild vault
@@ -72,8 +74,7 @@ public class CommandVault extends BaseCommand {
         try {
             guildHandler.getGuildVault(guild, vault);
         } catch (Exception ex) {
-            // todo rewrite
-            guildHandler.getCachedVaults().get(guild).add(Bukkit.createInventory(null, 54, "PlaceholderText"));
+            guildHandler.getCachedVaults().get(guild).add(guildHandler.createNewVault(settingsManager));
         }
 
         player.openInventory(guildHandler.getGuildVault(guild, vault));

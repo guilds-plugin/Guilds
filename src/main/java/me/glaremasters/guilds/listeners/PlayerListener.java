@@ -136,10 +136,10 @@ public class PlayerListener implements Listener {
         commandManager.getCommandIssuer(event.getPlayer()).sendInfo(Messages.ADMIN__GUILD_VAULT_SIGN);
     }
 
-    /**
+/*    *//**
      * Check if the inventory being clicked on is part of the Guild Buff system
      * @param event
-     */
+     *//*
     @EventHandler
     public void onBuffBuy(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
@@ -147,19 +147,19 @@ public class PlayerListener implements Listener {
         if (!event.getInventory().getTitle().equals(settingsManager.getProperty(GuiSettings.GUILD_BUFF_NAME))) return;
         if (event.getInventory().getTitle().equals(settingsManager.getProperty(GuiSettings.GUILD_BUFF_NAME))) event.setCancelled(true);
         if (event.getCurrentItem() == null) return;
-        /*GuildBuff buff = GuildBuff.get(event.getCurrentItem().getType());*/
+        *//*GuildBuff buff = GuildBuff.get(event.getCurrentItem().getType());*//*
         double balance = guild.getBalance();
-        /*if (buff == null) return;*/
-/*        if (balance < buff.cost) {
+        *//*if (buff == null) return;*//*
+*//*        if (balance < buff.cost) {
             commandManager.getCommandIssuer(player).sendInfo(Messages.BANK__NOT_ENOUGH_BANK);
             return;
-        }*/
+        }*//*
         if (settingsManager.getProperty(GuiSettings.BUFF_STACKING) && !player.getActivePotionEffects().isEmpty()) return;
 
-        /*guild.getOnlineMembers().forEach(guildMember -> ((Player) guildMember).addPotionEffect(new PotionEffect(buff.potion, buff.time, buff.amplifier)));*/
-        /*guild.setBalance(balance - buff.cost);*/
+        *//*guild.getOnlineMembers().forEach(guildMember -> ((Player) guildMember).addPotionEffect(new PotionEffect(buff.potion, buff.time, buff.amplifier)));*//*
+        *//*guild.setBalance(balance - buff.cost);*//*
 
-    }
+    }*/
 
     /**
      * Handles guild chat

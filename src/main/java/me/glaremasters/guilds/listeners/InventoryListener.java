@@ -51,10 +51,10 @@ public class InventoryListener implements Listener {
     private GuildHandler guildHandler;
     private SettingsManager settingsManager;
 
-    /**
+/*    *//**
      * This event just checks if a player is clicking on the next or back page and making sure you can't dupe from the GUIs
      * @param event
-     */
+     *//*
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
@@ -64,13 +64,13 @@ public class InventoryListener implements Listener {
         if (title.equalsIgnoreCase(settingsManager.getProperty(GuiSettings.GUILD_LIST_NAME))) {
             if (event.getAction().equals(InventoryAction.PICKUP_ALL)) {
                 if (event.getCurrentItem().getItemMeta().getDisplayName().equals(settingsManager.getProperty(GuiSettings.GUILD_LIST_PREVIOUS_PAGE_ITEM_NAME))) {
-/*                    if (!(playerPages.get(uuid) == 1)) {
+*//*                    if (!(playerPages.get(uuid) == 1)) {
                         int newPage = playerPages.get(uuid) - 1;
                         playerPages.remove(uuid);
                         playerPages.put(uuid, newPage);
                         Inventory guildList = getSkullsPage(newPage);
                         player.openInventory(guildList);
-                    }*/
+                    }*//*
                 }
                 if (guildHandler.getGuildsSize() < 45) {
                     event.setCancelled(true);
@@ -78,22 +78,22 @@ public class InventoryListener implements Listener {
                     return;
                 }
                 if (event.getCurrentItem().getItemMeta().getDisplayName().equals(settingsManager.getProperty(GuiSettings.GUILD_LIST_NEXT_PAGE_ITEM_NAME))) {
-/*                    int newPage = playerPages.get(uuid) + 1;
+*//*                    int newPage = playerPages.get(uuid) + 1;
                     playerPages.remove(uuid);
                     playerPages.put(uuid, newPage);
                     Inventory guildList = getSkullsPage(newPage);
-                    player.openInventory(guildList);*/
+                    player.openInventory(guildList);*//*
                 }
             }
             event.setCancelled(true);
             event.setResult(Event.Result.DENY);
         }
-    }
+    }*/
 
-    /**
+/*    *//**
      * This event is a double check to make sure you can't dupe from the GUIs
      * @param event
-     */
+     *//*
     @EventHandler
     public void onInventoryInteract(InventoryInteractEvent event) {
         String title = event.getInventory().getTitle();
@@ -101,5 +101,5 @@ public class InventoryListener implements Listener {
             event.setCancelled(true);
             event.setResult(Event.Result.DENY);
         }
-    }
+    }*/
 }
