@@ -32,7 +32,14 @@ import co.aikar.commands.PaperCommandManager;
 import lombok.Getter;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.api.GuildsAPI;
+import me.glaremasters.guilds.commands.CommandChat;
+import me.glaremasters.guilds.commands.CommandHelp;
+import me.glaremasters.guilds.commands.CommandRequest;
 import me.glaremasters.guilds.commands.admin.CommandAdminGive;
+import me.glaremasters.guilds.commands.admin.CommandReload;
+import me.glaremasters.guilds.commands.gui.CommandBuff;
+import me.glaremasters.guilds.commands.gui.CommandList;
+import me.glaremasters.guilds.commands.gui.CommandVault;
 import me.glaremasters.guilds.commands.management.CommandCreate;
 import me.glaremasters.guilds.commands.actions.CommandCancel;
 import me.glaremasters.guilds.commands.actions.CommandConfirm;
@@ -63,6 +70,20 @@ import me.glaremasters.guilds.commands.codes.CommandCodeRedeem;
 import me.glaremasters.guilds.commands.homes.CommandDelHome;
 import me.glaremasters.guilds.commands.homes.CommandHome;
 import me.glaremasters.guilds.commands.homes.CommandSetHome;
+import me.glaremasters.guilds.commands.management.CommandDelete;
+import me.glaremasters.guilds.commands.management.CommandKick;
+import me.glaremasters.guilds.commands.management.CommandPrefix;
+import me.glaremasters.guilds.commands.management.CommandRename;
+import me.glaremasters.guilds.commands.management.CommandStatus;
+import me.glaremasters.guilds.commands.management.CommandTransfer;
+import me.glaremasters.guilds.commands.management.CommandUpgrade;
+import me.glaremasters.guilds.commands.member.CommandAccept;
+import me.glaremasters.guilds.commands.member.CommandCheck;
+import me.glaremasters.guilds.commands.member.CommandDecline;
+import me.glaremasters.guilds.commands.member.CommandDemote;
+import me.glaremasters.guilds.commands.member.CommandInvite;
+import me.glaremasters.guilds.commands.member.CommandLeave;
+import me.glaremasters.guilds.commands.member.CommandPromote;
 import me.glaremasters.guilds.configuration.GuildConfigurationBuilder;
 import me.glaremasters.guilds.configuration.sections.HooksSettings;
 import me.glaremasters.guilds.configuration.sections.PluginSettings;
@@ -115,11 +136,6 @@ import java.util.stream.Stream;
 
 @Getter
 public final class Guilds extends JavaPlugin {
-
-    //todo rewrite
-    //order is very important here as stuff depends on each other.
-    //use logical order.
-    //incorrect order will result in a NPE
 
     @Getter
     private static GuildsAPI api;
@@ -372,7 +388,8 @@ public final class Guilds extends JavaPlugin {
 
         // Register all the commands
 
-        Stream.of(// Action Commands
+        Stream.of(
+                // Action Commands
                 new CommandCancel(actionHandler),
                 new CommandConfirm(actionHandler),
                 // Admin Commands
@@ -386,7 +403,7 @@ public final class Guilds extends JavaPlugin {
                 new CommandAdminStatus(guildHandler),
                 new CommandAdminUpgrade(guildHandler),
                 new CommandAdminVault(guildHandler),
-                // General For Now
+                new CommandReload(settingsManager),
                 // Ally Commands
                 new CommandAllyAccept(guildHandler),
                 new CommandAllyAdd(guildHandler),
@@ -397,20 +414,44 @@ public final class Guilds extends JavaPlugin {
                 new CommandBankBalance(),
                 new CommandBankDeposit(economy),
                 new CommandBankWithdraw(economy),
+                // Claim Commands
+                new CommandClaim(WorldGuardWrapper.getInstance(), settingsManager),
+                new CommandUnclaim(WorldGuardWrapper.getInstance(), settingsManager),
                 // Code Commands
                 new CommandCodeCreate(settingsManager),
                 new CommandCodeDelete(),
                 new CommandCodeInfo(),
                 new CommandCodeList(settingsManager),
                 new CommandCodeRedeem(guildHandler),
+                // GUI Commands
+                new CommandBuff(),
+                new CommandList(),
+                new CommandVault(guildHandler),
                 // Home Commands
                 new CommandDelHome(),
                 new CommandHome(),
                 new CommandSetHome(economy, settingsManager),
-                new CommandCreate(this, guildHandler, settingsManager, actionHandler, economy)
-                // Role Commands
-/*                new CommandDemote(guildHandler),
-                new CommandPromote(guildHandler)*/
+                // Management Commands
+                new CommandCreate(this, guildHandler, settingsManager, actionHandler, economy),
+                new CommandDelete(guildHandler, actionHandler),
+                new CommandKick(),
+                new CommandPrefix(guildHandler, settingsManager),
+                new CommandRename(guildHandler, settingsManager),
+                new CommandStatus(),
+                new CommandTransfer(),
+                new CommandUpgrade(guildHandler, actionHandler),
+                // Member Commands
+                new CommandAccept(guildHandler),
+                new CommandCheck(guildHandler),
+                new CommandDecline(guildHandler),
+                new CommandDemote(guildHandler),
+                new CommandInvite(guildHandler),
+                new CommandLeave(guildHandler, actionHandler),
+                new CommandPromote(guildHandler),
+                // Misc Commands
+                new CommandChat(guildHandler),
+                new CommandHelp(),
+                new CommandRequest(guildHandler)
         ).forEach(commandManager::registerCommand);
 
         if (settingsManager.getProperty(HooksSettings.WORLDGUARD)) {
