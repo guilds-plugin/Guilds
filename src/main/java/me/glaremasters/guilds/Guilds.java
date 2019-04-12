@@ -423,7 +423,7 @@ public final class Guilds extends JavaPlugin {
                 new CommandCodeList(settingsManager),
                 new CommandCodeRedeem(guildHandler),
                 // GUI Commands
-                new CommandList(),
+                /*new CommandList(),*/
                 new CommandVault(guildHandler),
                 // Home Commands
                 new CommandDelHome(),
