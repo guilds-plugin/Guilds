@@ -37,7 +37,6 @@ import me.glaremasters.guilds.commands.CommandHelp;
 import me.glaremasters.guilds.commands.CommandRequest;
 import me.glaremasters.guilds.commands.admin.CommandAdminGive;
 import me.glaremasters.guilds.commands.admin.CommandReload;
-import me.glaremasters.guilds.commands.gui.CommandBuff;
 import me.glaremasters.guilds.commands.gui.CommandList;
 import me.glaremasters.guilds.commands.gui.CommandVault;
 import me.glaremasters.guilds.commands.management.CommandCreate;
@@ -424,7 +423,6 @@ public final class Guilds extends JavaPlugin {
                 new CommandCodeList(settingsManager),
                 new CommandCodeRedeem(guildHandler),
                 // GUI Commands
-                new CommandBuff(),
                 new CommandList(),
                 new CommandVault(guildHandler),
                 // Home Commands
