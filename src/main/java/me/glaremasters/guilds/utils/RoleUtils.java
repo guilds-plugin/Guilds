@@ -56,6 +56,16 @@ public class RoleUtils {
         return guild.getMember(player.getUniqueId()).getRole().getLevel() >= 1;
     }
 
+    /**
+     * Check if player is officer or not
+     * @param guild the guild the check
+     * @param player the player being checked
+     * @return if officer or not
+     */
+    public static boolean isOfficer(Guild guild, OfflinePlayer player) {
+        return guild.getMember(player.getUniqueId()).getRole().getLevel() == 1;
+    }
+
     public static boolean checkPromote(Guild guild, OfflinePlayer target, OfflinePlayer player) {
         return (guild.getMember(target.getUniqueId()).getRole().getLevel() - 1) == guild.getMember(player.getUniqueId()).getRole().getLevel();
     }

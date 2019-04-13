@@ -86,7 +86,7 @@ public class CommandPromote extends BaseCommand {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__PLAYER_NOT_IN_GUILD,
                     "{player}", target));
 
-        if (!RoleUtils.canPromote(guild, user))
+        if (RoleUtils.isOfficer(guild, user))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.PROMOTE__CANT_PROMOTE));
 
         RoleUtils.promote(guildHandler, guild, user);
