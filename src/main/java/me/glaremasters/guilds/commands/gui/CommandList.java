@@ -30,6 +30,9 @@ import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
 import lombok.AllArgsConstructor;
+import me.glaremasters.guilds.Guilds;
+import me.glaremasters.guilds.guild.Guild;
+import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.utils.Constants;
 import org.bukkit.entity.Player;
 
@@ -41,6 +44,9 @@ import org.bukkit.entity.Player;
 @AllArgsConstructor @CommandAlias(Constants.ROOT_ALIAS)
 public class CommandList extends BaseCommand {
 
+    private Guilds guilds;
+    private GuildHandler guildHandler;
+
     /**
      * List all the guilds on the server
      * @param player the player executing this command
@@ -48,8 +54,8 @@ public class CommandList extends BaseCommand {
     @Subcommand("list")
     @Description("{@@descriptions.list}")
     @CommandPermission(Constants.BASE_PERM + "list")
-    public void onGuildList(Player player) {
-        // Handle the GUI
+    public void onGuildList(Player player, Guild guild) {
+        guilds.getListGUI().getListGUI().show(player);
     }
 
 }

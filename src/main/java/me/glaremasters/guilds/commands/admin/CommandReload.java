@@ -54,7 +54,7 @@ public class CommandReload extends BaseCommand {
     @CommandPermission(Constants.ADMIN_PERM)
     public void onReload() {
         settingsManager.reload();
-        guilds.getBuffGUI().BuffGUI().update();
+        guilds.getBuffGUI().getBuffGUI().update();
         getCurrentCommandIssuer().sendInfo(Messages.RELOAD__RELOADED);
     }
 }

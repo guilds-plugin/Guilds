@@ -64,6 +64,7 @@ import me.glaremasters.guilds.commands.codes.CommandCodeInfo;
 import me.glaremasters.guilds.commands.codes.CommandCodeList;
 import me.glaremasters.guilds.commands.codes.CommandCodeRedeem;
 import me.glaremasters.guilds.commands.gui.CommandBuff;
+import me.glaremasters.guilds.commands.gui.CommandList;
 import me.glaremasters.guilds.commands.gui.CommandVault;
 import me.glaremasters.guilds.commands.homes.CommandDelHome;
 import me.glaremasters.guilds.commands.homes.CommandHome;
@@ -93,6 +94,7 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildCode;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
+import me.glaremasters.guilds.guis.ListGUI;
 import me.glaremasters.guilds.listeners.EntityListener;
 import me.glaremasters.guilds.listeners.EssentialsChatListener;
 import me.glaremasters.guilds.listeners.InventoryListener;
@@ -150,6 +152,8 @@ public final class Guilds extends JavaPlugin {
     private List<Guild> oldGuilds = new ArrayList<>();
     @Getter
     private BuffGUI buffGUI;
+    @Getter
+    private ListGUI listGUI;
 
     @Override
     public void onDisable() {
@@ -405,7 +409,7 @@ public final class Guilds extends JavaPlugin {
                 new CommandCodeList(settingsManager),
                 new CommandCodeRedeem(guildHandler),
                 // GUI Commands
-                /*new CommandList(),*/
+                new CommandList(this, guildHandler),
                 new CommandBuff(this),
                 new CommandVault(guildHandler, settingsManager),
                 // Home Commands
@@ -442,6 +446,7 @@ public final class Guilds extends JavaPlugin {
         }
 
         buffGUI = new BuffGUI(this, settingsManager, guildHandler, getCommandManager());
+        listGUI = new ListGUI(this, settingsManager);
 
 
         if (settingsManager.getProperty(PluginSettings.ANNOUNCEMENTS_CONSOLE)) {

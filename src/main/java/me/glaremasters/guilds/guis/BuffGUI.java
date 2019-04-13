@@ -58,7 +58,7 @@ public class BuffGUI {
     private GuildHandler guildHandler;
     private CommandManager commandManager;
 
-    public Gui BuffGUI() {
+    public Gui getBuffGUI() {
 
 
         Gui gui = new Gui(guilds, 1, ACFBukkitUtil.color(settingsManager.getProperty(GuiSettings.GUILD_BUFF_NAME)));

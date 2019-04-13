@@ -22,46 +22,32 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.commands.gui;
+package me.glaremasters.guilds.guis;
 
-import co.aikar.commands.ACFUtil;
-import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.CommandPermission;
-import co.aikar.commands.annotation.Description;
-import co.aikar.commands.annotation.Subcommand;
+import ch.jalu.configme.SettingsManager;
+import co.aikar.commands.ACFBukkitUtil;
+import com.github.stefvanschie.inventoryframework.Gui;
 import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Guilds;
-import me.glaremasters.guilds.exceptions.InvalidPermissionException;
-import me.glaremasters.guilds.guild.Guild;
-import me.glaremasters.guilds.guild.GuildRole;
-import me.glaremasters.guilds.utils.Constants;
-import org.bukkit.entity.Player;
+import me.glaremasters.guilds.configuration.sections.GuiSettings;
 
 /**
  * Created by Glare
- * Date: 4/8/2019
- * Time: 10:50 AM
+ * Date: 4/13/2019
+ * Time: 3:51 PM
  */
-@AllArgsConstructor @CommandAlias(Constants.ROOT_ALIAS)
-public class CommandBuff extends BaseCommand {
+@AllArgsConstructor
+public class ListGUI {
 
     private Guilds guilds;
+    private SettingsManager settingsManager;
 
-    /**
-     * Open the guild buff menu
-     * @param player the player opening the menu
-     * @param guild the guild which's player is opening the menu
-     * @param role the role of the player
-     */
-    @Subcommand("buff")
-    @Description("{@@descriptions.buff}")
-    @CommandPermission(Constants.BASE_PERM + "buff")
-    public void onBuff(Player player, Guild guild, GuildRole role) {
-        if (!role.isActivateBuff())
-            ACFUtil.sneaky(new InvalidPermissionException());
+    public Gui getListGUI() {
 
-        guilds.getBuffGUI().getBuffGUI().show(player);
+        Gui gui = new Gui(guilds, 6, ACFBukkitUtil.color(settingsManager.getProperty(GuiSettings.GUILD_LIST_NAME)));
+
+
+        return gui;
     }
 
 }
