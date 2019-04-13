@@ -66,7 +66,7 @@ public class CommandAccept extends BaseCommand {
     @CommandCompletion("@invitedTo")
     @Syntax("<guild name>")
     public void execute(Player player, @Values("@invitedTo") @Single String name) {
-        if (guildHandler.getGuild(name) != null)
+        if (guildHandler.getGuild(player) != null)
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__ALREADY_IN_GUILD));
 
         Guild guild = guildHandler.getGuild(name);
@@ -77,7 +77,7 @@ public class CommandAccept extends BaseCommand {
         if (!guild.checkIfInvited(player) && guild.isPrivate())
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ACCEPT__NOT_INVITED));
 
-        if (guild.checkIfFull())
+        if (guildHandler.checkIfFull(guild))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ACCEPT__GUILD_FULL));
 
         GuildJoinEvent event = new GuildJoinEvent(player, guild);

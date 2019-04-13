@@ -633,4 +633,13 @@ public class GuildHandler {
         builder.setLore(settingsManager.getProperty(TicketSettings.TICKET_LORE));
         return builder.build();
     }
+
+
+    /**
+     * Simple method to check if a guild is full or not
+     * @return full or not
+     */
+    public boolean checkIfFull(Guild guild) {
+        return guild.getSize() >= getGuildTier(guild.getTier().getLevel()).getMaxMembers();
+    }
 }

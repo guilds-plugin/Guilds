@@ -330,14 +330,6 @@ public class Guild {
     }
 
     /**
-     * Simple method to check if a guild is full or not
-     * @return full or not
-     */
-    public boolean checkIfFull() {
-        return getSize() >= getTier().getMaxMembers();
-    }
-
-    /**
      * Super simple method to set a home's location to null
      */
     public void delHome() {

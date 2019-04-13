@@ -27,11 +27,13 @@ package me.glaremasters.guilds.guild;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.util.List;
 
 @Getter
 @Builder
+@ToString
 @AllArgsConstructor
 public class GuildTier {
 

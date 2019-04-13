@@ -60,7 +60,6 @@ public class CommandChat extends BaseCommand {
     public void execute(Player player, Guild guild, GuildRole role) {
         if (!role.isChat())
             ACFUtil.sneaky(new InvalidPermissionException());
-
         guildHandler.toggleGuildChat(getCurrentCommandManager(), player);
     }
 
