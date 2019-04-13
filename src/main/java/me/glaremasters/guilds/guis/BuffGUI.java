@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.utils;
+package me.glaremasters.guilds.guis;
 
 import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFBukkitUtil;
@@ -36,6 +36,7 @@ import me.glaremasters.guilds.configuration.sections.GuiSettings;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.messages.Messages;
+import me.glaremasters.guilds.utils.EconomyUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -50,7 +51,7 @@ import java.util.stream.Collectors;
  * Time: 10:01 PM
  */
 @AllArgsConstructor
-public class GuildBuffManager {
+public class BuffGUI {
 
     private Guilds guilds;
     private SettingsManager settingsManager;

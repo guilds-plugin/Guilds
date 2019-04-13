@@ -61,7 +61,7 @@ public class CommandBuff extends BaseCommand {
         if (!role.isActivateBuff())
             ACFUtil.sneaky(new InvalidPermissionException());
 
-        guilds.getGuildBuffManager().BuffGUI().show(player);
+        guilds.getBuffGUI().BuffGUI().show(player);
     }
 
 }

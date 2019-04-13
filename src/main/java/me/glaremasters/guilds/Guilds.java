@@ -103,7 +103,7 @@ import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.placeholders.PlaceholderAPI;
 import me.glaremasters.guilds.updater.UpdateCheck;
 import me.glaremasters.guilds.utils.Constants;
-import me.glaremasters.guilds.utils.GuildBuffManager;
+import me.glaremasters.guilds.guis.BuffGUI;
 import me.glaremasters.guilds.utils.StringUtils;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -149,7 +149,7 @@ public final class Guilds extends JavaPlugin {
     @Getter
     private List<Guild> oldGuilds = new ArrayList<>();
     @Getter
-    private GuildBuffManager guildBuffManager;
+    private BuffGUI buffGUI;
 
     @Override
     public void onDisable() {
@@ -441,7 +441,7 @@ public final class Guilds extends JavaPlugin {
             commandManager.registerCommand(new CommandUnclaim(WorldGuardWrapper.getInstance(), settingsManager));
         }
 
-        guildBuffManager = new GuildBuffManager(this, settingsManager, guildHandler, getCommandManager());
+        buffGUI = new BuffGUI(this, settingsManager, guildHandler, getCommandManager());
 
 
         if (settingsManager.getProperty(PluginSettings.ANNOUNCEMENTS_CONSOLE)) {
