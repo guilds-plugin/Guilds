@@ -1,3 +1,27 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2018 Glare
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package me.glaremasters.guilds.messages;
 
 import co.aikar.locales.MessageKey;
@@ -14,9 +38,9 @@ public enum Messages implements MessageKeyProvider {
 
     ERROR__ALREADY_IN_GUILD, ERROR__BLACKLIST, ERROR__NO_GUILD, ERROR__ROLE_NO_PERMISSION, ERROR__GUILD_NO_EXIST, ERROR__PLAYER_NOT_FOUND, ERROR__PLAYER_NOT_IN_GUILD, ERROR__NOT_OFFICER, ERROR__NOT_ENOUGH_MONEY,
 
-    BANK__BALANCE, BANK__DEPOSIT_SUCCESS, BANK__WITHDRAWL_SUCCESS, BANK__NOT_ENOUGH_BANK,
+    BANK__BALANCE, BANK__DEPOSIT_SUCCESS, BANK__WITHDRAWL_SUCCESS, BANK__NOT_ENOUGH_BANK, BANK__OVER_MAX,
 
-    ADMIN__DELETE_WARNING, ADMIN__DELETE_SUCCESSFUL, ADMIN__GUILD_VAULT_SIGN, ADMIN__PLAYER_ADDED, ADMIN__ADMIN_PLAYER_ADDED, ADMIN__ADMIN_GUILD_ADD, ADMIN__PLAYER_REMOVED, ADMIN__ADMIN_PLAYER_REMOVED,
+    ADMIN__DELETE_WARNING, ADMIN__DELETE_SUCCESS, ADMIN__GUILD_VAULT_SIGN, ADMIN__PLAYER_ADDED, ADMIN__ADMIN_PLAYER_ADDED, ADMIN__ADMIN_GUILD_ADD, ADMIN__PLAYER_REMOVED, ADMIN__ADMIN_PLAYER_REMOVED,
 
     ADMIN__ADMIN_GUILD_REMOVE, ADMIN__ADMIN_UPGRADE, ADMIN__ADMIN_GUILD_UPGRADE, ADMIN__SPY_ON, ADMIN__SPY_OFF,
 
@@ -68,7 +92,11 @@ public enum Messages implements MessageKeyProvider {
 
     CLAIM__ALREADY_EXISTS, CLAIM__OVERLAP, CLAIM__SUCCESS, CLAIM__HOOK_DISABLED,
 
-    UNCLAIM__SUCCESS, UNCLAIM__NOT_FOUND;
+    UNCLAIM__SUCCESS, UNCLAIM__NOT_FOUND,
+
+    CODES__CREATED, CODES__EMPTY, CODES__LIST_HEADER, CODES__LIST_ITEM, CODES__DELETED, CODES__INVALID_CODE, CODES__JOINED, CODES__OUT, CODES__INFO, CODES__MAX,
+
+    VAULTS__MAXED;
 
     /**
      * Message keys that grab from the config to send messages

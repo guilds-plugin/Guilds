@@ -2,49 +2,57 @@ name: Guilds
 version: ${project.version}
 main: me.glaremasters.guilds.Guilds
 authors: [blockslayer22]
-softdepend: [Vault, MVdWPlaceholderAPI, WorldGuard, PlaceholderAPI]
+softdepend: [Vault, MVdWPlaceholderAPI, WorldGuardListener, PlaceholderAPI]
 description: Guilds
 website: https://glaremasters.me/discord
 
 permissions:
   guilds.group.member:
     children:
-      guilds.command.create: true
-      guilds.command.confirm: true
+      guilds.command.accept: true
+      guilds.command.ally.accept: true
+      guilds.command.ally.add: true
+      guilds.command.ally.decline: true
+      guilds.command.ally.list: true
+      guilds.command.ally.remove: true
+      guilds.command.bank.balance: true
+      guilds.command.bank.deposit: true
+      guilds.command.bank.withdraw: true
+      guilds.command.boot: true
+      guilds.command.buff: true
       guilds.command.cancel: true
-      guilds.command.sethome: true
-      guilds.command.delhome: true
-      guilds.command.home: true
-      guilds.command.rename: true
       guilds.command.chat: true
-      guilds.command.status: true
-      guilds.command.prefix: true
+      guilds.command.check: true
+      guilds.command.claim: true
+      guilds.command.code.create: true
+      guilds.command.code.delete: true
+      guilds.command.code.info: true
+      guilds.command.code.list: true
+      guilds.command.code.redeem: true
+      guilds.command.confirm: true
+      guilds.command.create: true
+      guilds.command.decline: true
+      guilds.command.delete: true
+      guilds.command.delhome: true
+      guilds.command.demote: true
+      guilds.command.help: true
+      guilds.command.home: true
       guilds.command.invite: true
-      guilds.command.upgrade: true
-      guilds.command.transfer: true
       guilds.command.leave: true
       guilds.command.list: true
-      guilds.command.info: true
-      guilds.command.delete: true
-      guilds.command.decline: true
-      guilds.command.boot: true
-      guilds.command.demoted: true
+      guilds.command.prefix: true
       guilds.command.promote: true
-      guilds.command.accept: true
-      guilds.command.check: true
+      guilds.command.rename: true
       guilds.command.request: true
-      guilds.command.buff: true
-      guilds.command.help: true
-      guilds.command.claim: true
+      guilds.command.sethome: true
+      guilds.command.status: true
+      guilds.command.transfer: true
       guilds.command.unclaim: true
-      guilds.command.bank: true
-      guilds.command.ally: true
+      guilds.command.upgrade: true
       guilds.command.vault: true
     default: true
   guilds.group.admin:
     children:
       guilds.command.admin: true
-      guilds.command.reload: true
       guilds.group.member: true
     default: op
-

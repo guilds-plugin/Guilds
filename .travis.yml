@@ -1,0 +1,19 @@
+language: java
+jdk: oraclejdk8
+install: true
+cache:
+  directories:
+    - $HOME/.m2
+script:
+  - mvn clean install
+  - mvn javadoc:javadoc
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  keep_history: true
+  target-branch: master
+  local_dir: "./target/site/apidocs"
+  repo: "guilds-plugin/javadocs"
+  on:
+    all_branches: true

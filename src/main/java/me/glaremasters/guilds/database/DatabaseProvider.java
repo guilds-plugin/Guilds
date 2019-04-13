@@ -1,8 +1,33 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2018 Glare
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package me.glaremasters.guilds.database;
 
 import me.glaremasters.guilds.guild.Guild;
 
-import java.util.HashMap;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by GlareMasters
@@ -12,49 +37,16 @@ import java.util.HashMap;
 public interface DatabaseProvider {
 
     /**
-     * Start the database
+     * Loads the guilds from the database
+     * @return a list of the loaded guilds
      */
-    void initialize();
+    List<Guild> loadGuilds() throws IOException;
 
     /**
-     * Create a guild
-     * @param guild
+     * Saves the guild data to the database
+     * @param guilds the list of guilds to save
      */
-    void createGuild(Guild guild);
-
-    /**
-     * Get all the guilds that are on the server
-     * @param callback
-     */
-    void getGuilds(Callback<HashMap<String, Guild>, Exception> callback);
-
-    /**
-     * Update a guild in the database
-     * @param guild
-     */
-    void updateGuild(Guild guild);
-
-    /**
-     * Remove a guild from the database
-     * @param guild
-     */
-    void removeGuild(Guild guild);
-
-    /**
-     * Add an ally to another guild
-     * @param guild
-     * @param targetGuild
-     */
-    void addAlly(Guild guild, Guild targetGuild);
-
-    /**
-     * Remove an ally from a guild
-     * @param guild
-     * @param targetGuild
-     */
-    void removeAlly(Guild guild, Guild targetGuild);
-
-    void updateGuild();
+    void saveGuilds(List<Guild> guilds) throws IOException;
 
 
 }

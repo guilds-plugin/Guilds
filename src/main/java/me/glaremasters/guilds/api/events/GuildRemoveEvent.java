@@ -1,15 +1,38 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2018 Glare
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package me.glaremasters.guilds.api.events;
 
+import lombok.Getter;
 import me.glaremasters.guilds.api.events.base.GuildEvent;
 import me.glaremasters.guilds.guild.Guild;
 import org.bukkit.entity.Player;
 
-/**
- * Created by GlareMasters on 6/28/2018.
- */
+@Getter
 public class GuildRemoveEvent extends GuildEvent {
 
-    private RemoveCause cause;
+    private final Cause cause;
 
     /**
      * Called when a guild is removed
@@ -17,15 +40,14 @@ public class GuildRemoveEvent extends GuildEvent {
      * @param guild the guild getting removed
      * @param cause the reason for the guild being removed
      */
-    public GuildRemoveEvent(Player player, Guild guild, RemoveCause cause) {
+    public GuildRemoveEvent(Player player, Guild guild, Cause cause) {
         super(player, guild);
+        this.cause = cause;
     }
 
-    public RemoveCause getCause() {
-        return cause;
-    }
-
-    public enum RemoveCause {
-        MASTER_LEFT, DELETED, ADMIN_DELETED
+    public enum Cause {
+        MASTER_LEFT,
+        PLAYER_DELETED,
+        ADMIN_DELETED
     }
 }
