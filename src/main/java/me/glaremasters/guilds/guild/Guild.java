@@ -37,6 +37,8 @@ import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -383,6 +385,16 @@ public class Guild {
 
         oldMaster.setRole(newMaster.getRole());
         setGuildMaster(newMaster);
+    }
+
+    /**
+     * Simple method to add a buff to all online members
+     * @param type the potion type
+     * @param length the length of the potion
+     * @param amplifier the strength of the potion
+     */
+    public void addPotion(String type, int length, int amplifier) {
+        getOnlineAsPlayers().forEach(p -> p.addPotionEffect(new PotionEffect(PotionEffectType.getByName(type), length, amplifier)));
     }
 }
 

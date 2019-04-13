@@ -102,6 +102,10 @@ public class GuiSettings implements SettingsHolder {
     public static final Property<String> HASTE_ICON =
             newProperty(BUFF_PATH + "haste.icon", "FEATHER");
 
+    @Comment("What type of potion is this?")
+    public static final Property<String> HASTE_TYPE =
+            newProperty(BUFF_PATH + "haste.type", "HASTE");
+
     @Comment("You can put as much as you want here")
     public static final Property<List<String>> HASTE_LORE =
             newListProperty(BUFF_PATH + "haste.description", "&bThis buff will allow you and your", "&bGuild Members to obtain increased", "&bmining speed for a certain amount of time.");
@@ -129,6 +133,10 @@ public class GuiSettings implements SettingsHolder {
     @Comment("What item do you want to represent the buff?")
     public static final Property<String> SPEED_ICON =
             newProperty(BUFF_PATH + "speed.icon", "SUGAR");
+
+    @Comment("What type of potion is this?")
+    public static final Property<String> SPEED_TYPE =
+            newProperty(BUFF_PATH + "speed.type", "SPEED");
 
     @Comment("You can put as much as you want here")
     public static final Property<List<String>> SPEED_LORE =
@@ -158,6 +166,10 @@ public class GuiSettings implements SettingsHolder {
     public static final Property<String> FR_ICON =
             newProperty(BUFF_PATH + "fire-resistance.icon", "BLAZE_POWDER");
 
+    @Comment("What type of potion is this?")
+    public static final Property<String> FR_TYPE =
+            newProperty(BUFF_PATH + "fire-resistance.type", "FIRE_RESISTANCE");
+
     @Comment("You can put as much as you want here")
     public static final Property<List<String>> FR_LORE =
             newListProperty(BUFF_PATH + "fire-resistance.description", "&bThis buff will allow you and your", "&bGuild Members to obtain increased", "&bfire resistance for a certain amount of time.");
@@ -185,6 +197,10 @@ public class GuiSettings implements SettingsHolder {
     @Comment("What item do you want to represent the buff?")
     public static final Property<String> NV_ICON =
             newProperty(BUFF_PATH + "night-vision.icon", "REDSTONE_TORCH_ON");
+
+    @Comment("What type of potion is this?")
+    public static final Property<String> NV_TYPE =
+            newProperty(BUFF_PATH + "night-vision.type", "NIGHT_VISION");
 
     @Comment("You can put as much as you want here")
     public static final Property<List<String>> NV_LORE =
@@ -214,6 +230,10 @@ public class GuiSettings implements SettingsHolder {
     public static final Property<String> INVISIBILITY_ICON =
             newProperty(BUFF_PATH + "invisibility.icon", "EYE_OF_ENDER");
 
+    @Comment("What type of potion is this?")
+    public static final Property<String> INVISIBILITY_TYPE =
+            newProperty(BUFF_PATH + "invisibility.type", "INVISIBILITY");
+
     @Comment("You can put as much as you want here")
     public static final Property<List<String>> INVISIBILITY_LORE =
             newListProperty(BUFF_PATH + "invisibility.description", "&bThis buff will allow you and your", "&bGuild Members to obtain increased", "&binvisibility for a certain amount of time.");
@@ -241,6 +261,10 @@ public class GuiSettings implements SettingsHolder {
     @Comment("What item do you want to represent the buff?")
     public static final Property<String> STRENGTH_ICON =
             newProperty(BUFF_PATH + "strength.icon", "DIAMOND_SWORD");
+
+    @Comment("What type of potion is this?")
+    public static final Property<String> STRENGTH_TYPE =
+            newProperty(BUFF_PATH + "strength.type", "STRENGTH");
 
     @Comment("You can put as much as you want here")
     public static final Property<List<String>> STRENGTH_LORE =
@@ -270,6 +294,10 @@ public class GuiSettings implements SettingsHolder {
     public static final Property<String> JUMP_ICON =
             newProperty(BUFF_PATH + "jump.icon", "DIAMOND_BOOTS");
 
+    @Comment("What type of potion is this?")
+    public static final Property<String> JUMP_TYPE =
+            newProperty(BUFF_PATH + "jump.type", "JUMP_BOOST");
+
     @Comment("You can put as much as you want here")
     public static final Property<List<String>> JUMP_LORE =
             newListProperty(BUFF_PATH + "jump.description", "&bThis buff will allow you and your", "&bGuild Members to obtain increased", "&bjump for a certain amount of time.");
@@ -298,6 +326,10 @@ public class GuiSettings implements SettingsHolder {
     public static final Property<String> WB_ICON =
             newProperty(BUFF_PATH + "water-breathing.icon", "BUCKET");
 
+    @Comment("What type of potion is this?")
+    public static final Property<String> WB_TYPE =
+            newProperty(BUFF_PATH + "water-breathing.type", "WATER_BREATHING");
+
     @Comment("You can put as much as you want here")
     public static final Property<List<String>> WB_LORE =
             newListProperty(BUFF_PATH + "water-breathing.description", "&bThis buff will allow you and your", "&bGuild Members to obtain increased", "&bwater-breathing for a certain amount of time.");
@@ -325,6 +357,10 @@ public class GuiSettings implements SettingsHolder {
     @Comment("What item do you want to represent the buff?")
     public static final Property<String> REGENERATION_ICON =
             newProperty(BUFF_PATH + "regeneration.icon", "EMERALD");
+
+    @Comment("What type of potion is this?")
+    public static final Property<String> REGENERATION_TYPE =
+            newProperty(BUFF_PATH + "regeneration.type", "REGENERATION");
 
     @Comment("You can put as much as you want here")
     public static final Property<List<String>> REGENERATION_LORE =
