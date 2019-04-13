@@ -91,7 +91,7 @@ public class CommandInvite extends BaseCommand {
 
         guild.inviteMember(pl.getUniqueId());
 
-        getCurrentCommandManager().getCommandIssuer(target).sendInfo(Messages.INVITE__MESSAGE,
+        getCurrentCommandManager().getCommandIssuer(pl).sendInfo(Messages.INVITE__MESSAGE,
                         "{player}", player.getName(),
                 "{guild}", guild.getName());
 
