@@ -98,7 +98,6 @@ public class CommandLeave extends BaseCommand {
                             "{player}", player.getName());
                 }
 
-                getCurrentCommandIssuer().sendInfo(Messages.LEAVE__SUCCESSFUL);
                 actionHandler.removeAction(player);
             }
 
