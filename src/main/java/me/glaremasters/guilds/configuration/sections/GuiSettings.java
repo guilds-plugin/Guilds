@@ -104,7 +104,7 @@ public class GuiSettings implements SettingsHolder {
 
     @Comment("What type of potion is this?")
     public static final Property<String> HASTE_TYPE =
-            newProperty(BUFF_PATH + "haste.type", "HASTE");
+            newProperty(BUFF_PATH + "haste.type", "FAST_DIGGING");
 
     @Comment("You can put as much as you want here")
     public static final Property<List<String>> HASTE_LORE =
@@ -264,7 +264,7 @@ public class GuiSettings implements SettingsHolder {
 
     @Comment("What type of potion is this?")
     public static final Property<String> STRENGTH_TYPE =
-            newProperty(BUFF_PATH + "strength.type", "STRENGTH");
+            newProperty(BUFF_PATH + "strength.type", "INCREASE_DAMAGE");
 
     @Comment("You can put as much as you want here")
     public static final Property<List<String>> STRENGTH_LORE =

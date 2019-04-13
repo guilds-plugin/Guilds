@@ -66,63 +66,63 @@ public class GuildBuffManager {
                 settingsManager.getProperty(GuiSettings.HASTE_AMPLIFIER), settingsManager.getProperty(GuiSettings.HASTE_PRICE),
                 settingsManager.getProperty(GuiSettings.HASTE_ICON), settingsManager.getProperty(GuiSettings.HASTE_NAME),
                 settingsManager.getProperty(GuiSettings.HASTE_LORE), 
-                pane, 0, 0,
+                pane, 0,
                 settingsManager.getProperty(GuiSettings.HASTE_DISPLAY));
         // Speed
         setBuffItem(settingsManager.getProperty(GuiSettings.SPEED_TYPE), settingsManager.getProperty(GuiSettings.SPEED_TIME),
                 settingsManager.getProperty(GuiSettings.SPEED_AMPLIFIER), settingsManager.getProperty(GuiSettings.SPEED_PRICE),
                 settingsManager.getProperty(GuiSettings.SPEED_ICON), settingsManager.getProperty(GuiSettings.SPEED_NAME),
                 settingsManager.getProperty(GuiSettings.SPEED_LORE),
-                pane, 1, 0,
+                pane, 1,
                 settingsManager.getProperty(GuiSettings.SPEED_DISPLAY));
         // Fire
         setBuffItem(settingsManager.getProperty(GuiSettings.FR_TYPE), settingsManager.getProperty(GuiSettings.FR_TIME),
                 settingsManager.getProperty(GuiSettings.FR_AMPLIFIER), settingsManager.getProperty(GuiSettings.FR_PRICE),
                 settingsManager.getProperty(GuiSettings.FR_ICON), settingsManager.getProperty(GuiSettings.FR_NAME),
                 settingsManager.getProperty(GuiSettings.FR_LORE),
-                pane, 2, 0,
+                pane, 2,
                 settingsManager.getProperty(GuiSettings.FR_DISPLAY));
         // Night
         setBuffItem(settingsManager.getProperty(GuiSettings.NV_TYPE), settingsManager.getProperty(GuiSettings.NV_TIME),
                 settingsManager.getProperty(GuiSettings.NV_AMPLIFIER), settingsManager.getProperty(GuiSettings.NV_PRICE),
                 settingsManager.getProperty(GuiSettings.NV_ICON), settingsManager.getProperty(GuiSettings.NV_NAME),
                 settingsManager.getProperty(GuiSettings.NV_LORE),
-                pane, 3, 0,
+                pane, 3,
                 settingsManager.getProperty(GuiSettings.NV_DISPLAY));
         // Invisibility
         setBuffItem(settingsManager.getProperty(GuiSettings.INVISIBILITY_TYPE), settingsManager.getProperty(GuiSettings.INVISIBILITY_TIME),
                 settingsManager.getProperty(GuiSettings.INVISIBILITY_AMPLIFIER), settingsManager.getProperty(GuiSettings.INVISIBILITY_PRICE),
                 settingsManager.getProperty(GuiSettings.INVISIBILITY_ICON), settingsManager.getProperty(GuiSettings.INVISIBILITY_NAME),
                 settingsManager.getProperty(GuiSettings.INVISIBILITY_LORE),
-                pane, 4, 0,
+                pane, 4,
                 settingsManager.getProperty(GuiSettings.INVISIBILITY_DISPLAY));
         // Strength
         setBuffItem(settingsManager.getProperty(GuiSettings.STRENGTH_TYPE), settingsManager.getProperty(GuiSettings.STRENGTH_TIME),
                 settingsManager.getProperty(GuiSettings.STRENGTH_AMPLIFIER), settingsManager.getProperty(GuiSettings.STRENGTH_PRICE),
                 settingsManager.getProperty(GuiSettings.STRENGTH_ICON), settingsManager.getProperty(GuiSettings.STRENGTH_NAME),
                 settingsManager.getProperty(GuiSettings.STRENGTH_LORE),
-                pane, 5, 0,
+                pane, 5,
                 settingsManager.getProperty(GuiSettings.STRENGTH_DISPLAY));
         // Jump
         setBuffItem(settingsManager.getProperty(GuiSettings.JUMP_TYPE), settingsManager.getProperty(GuiSettings.JUMP_TIME),
                 settingsManager.getProperty(GuiSettings.JUMP_AMPLIFIER), settingsManager.getProperty(GuiSettings.JUMP_PRICE),
                 settingsManager.getProperty(GuiSettings.JUMP_ICON), settingsManager.getProperty(GuiSettings.JUMP_NAME),
                 settingsManager.getProperty(GuiSettings.JUMP_LORE),
-                pane, 6, 0,
+                pane, 6,
                 settingsManager.getProperty(GuiSettings.JUMP_DISPLAY));
         // Water
         setBuffItem(settingsManager.getProperty(GuiSettings.WB_TYPE), settingsManager.getProperty(GuiSettings.WB_TIME),
                 settingsManager.getProperty(GuiSettings.WB_AMPLIFIER), settingsManager.getProperty(GuiSettings.WB_PRICE),
                 settingsManager.getProperty(GuiSettings.WB_ICON), settingsManager.getProperty(GuiSettings.WB_NAME),
                 settingsManager.getProperty(GuiSettings.WB_LORE),
-                pane, 7, 0,
+                pane, 7,
                 settingsManager.getProperty(GuiSettings.WB_DISPLAY));
         // Regen
         setBuffItem(settingsManager.getProperty(GuiSettings.REGENERATION_TYPE), settingsManager.getProperty(GuiSettings.REGENERATION_TIME),
                 settingsManager.getProperty(GuiSettings.REGENERATION_AMPLIFIER), settingsManager.getProperty(GuiSettings.REGENERATION_PRICE),
                 settingsManager.getProperty(GuiSettings.REGENERATION_ICON), settingsManager.getProperty(GuiSettings.REGENERATION_NAME),
                 settingsManager.getProperty(GuiSettings.REGENERATION_LORE),
-                pane, 8, 0,
+                pane, 8,
                 settingsManager.getProperty(GuiSettings.REGENERATION_DISPLAY));
 
         gui.addPane(pane);
@@ -130,7 +130,7 @@ public class GuildBuffManager {
         return gui;
     }
 
-    private void setBuffItem(String type, int length, int amplifier, double cost, String icon, String name, List<String> lore, StaticPane pane, int x, int y, boolean check) {
+    private void setBuffItem(String type, int length, int amplifier, double cost, String icon, String name, List<String> lore, StaticPane pane, int x, boolean check) {
         GuiItem buffItem = new GuiItem(new ItemStack(Material.valueOf(icon)), event -> {
             event.setCancelled(true);
             Player player = (Player) event.getWhoClicked();
@@ -146,7 +146,7 @@ public class GuildBuffManager {
         meta.setLore(lore.stream().map(ACFBukkitUtil::color).collect(Collectors.toList()));
         buffItem.getItem().setItemMeta(meta);
         if (check)
-            pane.addItem(buffItem, x, y);
+            pane.addItem(buffItem, x, 0);
     }
 
 
