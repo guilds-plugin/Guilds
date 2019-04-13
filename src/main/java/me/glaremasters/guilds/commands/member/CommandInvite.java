@@ -68,7 +68,7 @@ public class CommandInvite extends BaseCommand {
     @CommandPermission(Constants.BASE_PERM + "invite")
     @CommandCompletion("@online")
     @Syntax("<name>")
-    public void execute(Player player, Guild guild, GuildRole role, @Values("@onlines") @Single String target) {
+    public void execute(Player player, Guild guild, GuildRole role, @Values("@online") @Single String target) {
         if (!role.isInvite())
             ACFUtil.sneaky(new InvalidPermissionException());
 
