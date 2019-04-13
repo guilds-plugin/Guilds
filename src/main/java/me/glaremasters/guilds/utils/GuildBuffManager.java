@@ -145,7 +145,7 @@ public class GuildBuffManager {
             }
             if (settingsManager.getProperty(GuiSettings.BUFF_STACKING) && !player.getActivePotionEffects().isEmpty()) return;
             guild.setBalance(guild.getBalance() - cost);
-            guild.addPotion(type, length, amplifier);
+            guild.addPotion(type, (length * 20), amplifier);
         });
         ItemMeta meta = buffItem.getItem().getItemMeta();
         meta.setDisplayName(ACFBukkitUtil.color(name));
