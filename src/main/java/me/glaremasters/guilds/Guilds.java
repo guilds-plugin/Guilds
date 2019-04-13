@@ -441,7 +441,7 @@ public final class Guilds extends JavaPlugin {
             commandManager.registerCommand(new CommandUnclaim(WorldGuardWrapper.getInstance(), settingsManager));
         }
 
-        guildBuffManager = new GuildBuffManager(this, settingsManager, guildHandler);
+        guildBuffManager = new GuildBuffManager(this, settingsManager, guildHandler, getCommandManager());
 
 
         if (settingsManager.getProperty(PluginSettings.ANNOUNCEMENTS_CONSOLE)) {
