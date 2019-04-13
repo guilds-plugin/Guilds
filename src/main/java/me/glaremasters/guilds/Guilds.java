@@ -445,6 +445,16 @@ public final class Guilds extends JavaPlugin {
 
 
         if (settingsManager.getProperty(PluginSettings.ANNOUNCEMENTS_CONSOLE)) {
+            Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
+                try {
+                    info(getAnnouncements());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+
+        if (settingsManager.getProperty(PluginSettings.UPDATE_CHECK)) {
             UpdateCheck.of(this).resourceId(48920).handleResponse((versionResponse, s) -> {
                 switch (versionResponse) {
                     case FOUND_NEW:
