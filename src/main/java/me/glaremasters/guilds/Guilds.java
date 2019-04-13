@@ -446,7 +446,7 @@ public final class Guilds extends JavaPlugin {
         }
 
         buffGUI = new BuffGUI(this, settingsManager, guildHandler, getCommandManager());
-        listGUI = new ListGUI(this, settingsManager);
+        listGUI = new ListGUI(this, settingsManager, guildHandler);
 
 
         if (settingsManager.getProperty(PluginSettings.ANNOUNCEMENTS_CONSOLE)) {

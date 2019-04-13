@@ -57,7 +57,7 @@ import java.util.stream.Collectors;
 public class GuildHandler {
 
 
-    private List<Guild> guilds;
+    @Getter private List<Guild> guilds;
     private final List<GuildRole> roles;
     private final List<GuildTier> tiers;
     @Getter private final List<Player> spies;
