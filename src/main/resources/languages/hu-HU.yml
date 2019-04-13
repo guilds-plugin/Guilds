@@ -1,3 +1,4 @@
+---
 descriptions:
   accept: "Fogadjon el egy céh meghívást"
   admin-addplayer: "Adminisztrátori parancs egy játékos hozzáadásához a céhhez"
@@ -8,6 +9,7 @@ descriptions:
   admin-status: "Adminisztrátori parancs a céh státuszának megváltoztatásához"
   admin-spy: "Adminisztrátori parancs, amely lehetővé teszi a céhek csevegési kémének engedélyezését"
   admin-upgrade: "Adminisztrátori parancs a céh szintjének frissítésére"
+  admin-vault: "Admin parancs céhszéf megtekintéséhez"
   ally-accept: "Elfogadása egy szövetséges meghívásnak egy másik céhtől"
   ally-add: "Céh hozzáadása szövetségesként"
   ally-decline: "Elutasítása egy szövetséges meghívásnak egy másik céhtől"
@@ -21,6 +23,11 @@ descriptions:
   chat: "Letiltja a céh csevegését"
   check: "Ellenőrizze a függőben lévő céh meghívásokat"
   claim: "Kérjen földterületet a céhnek"
+  code-create: "Meghívókód készítése a Céhednek"
+  code-delete: "Meghívókód törlése a Céhednek"
+  code-info: "Információ a meghívókódról"
+  code-list: "Az összes meghívókód listázása"
+  code-redeem: "Meghívókód felhasználása céhhez való csatlakozáshoz"
   confirm: "Művelet megerősítése"
   create: "Céh kreálása"
   decline: "Céh meghívás visszautasítása"
@@ -32,7 +39,7 @@ descriptions:
   home: "Hazamenetel a céh otthonába"
   info: "Céh Info GUI megnyitása"
   invite: "Egy másik játékos meghívása a céhbe"
-  kick: "Kick someone from your Guild"
+  kick: "Valaki kirúgása a Céhből"
   leave: "Céh elhagyása"
   list: "Az összes céh kilistázása"
   prefix: "A céh előtagjának megváltoztatása"
@@ -60,7 +67,7 @@ request:
   success: "&aTe sikeresen kérvényeztél egy meghívást az alábbi céhbe: {guild}"
   incoming-request: "&a{player} kérvényezi a csatlakozást a céhhez. Ahhoz hgy csatlakozhasson, írd be az alábbi parancsot /guild invite {player}"
 error:
-  already-in-guild: "&cNem vagy benne a céhben."
+  already-in-guild: "&cTe már benne vagy egy céhben!"
   no-guild: "&cNem vagy benne semmilyen céhben."
   role-no-permission: "&cA céh rangod nem elég magas ahhoz hogy ezt megtegyed!"
   guild-no-exist: "&cEz a céh nem létezik! (Ha ezt az egyéni színű nevű céhhez való csatlakozás miatt kapja meg, próbálja meg a /join guild <játékos, aki meghívott, hogy csatlakozzon hozzánk is)"
@@ -74,6 +81,7 @@ bank:
   deposit-success: "&a{amount}-t befizettél a céh bankjába. A céh bank egyenlege jelenleg: {total}!"
   withdrawl-success: "&a{amount}-t kivettél a céh bankjából. A céh bank egyenlege jelenleg: {total}!"
   not-enough-bank: "&cNincs elég pénz a bankban ehhez."
+  over-max: "&cNem tudsz több ennyi pénzt betenni, mivel meghaladná a maximum összeget!"
 admin:
   delete-warning: "&cCéh {guild} törlése. Írd be a /guilds confirm parancsot hogy eltávolítsd a céhet, /guilds cancel parancsot ha vissza szeretnéd vonni ezt a műveletet."
   delete-success: "&aSikeresen eltávolítottad az alábbi céhet: {guild}."
@@ -180,3 +188,16 @@ unclaim:
   not-found: "&cNem tudod eltávolítani azt a területet amelyet nem te birtokolsz."
 pending:
   invites: "&aVan neked {number} függőben lévő meghívásod az alábbi céh(ek)től: &e{guilds}&r&a . Használd a /guild accept <name> vagy a /guild deny <name> parancsot hogy elfogadd vagy elutasítsd a meghívást"
+codes:
+  created: "&aKészítettél egy új meghívókódot: &6{code} &aamely &6{amount} &alkalommal használható!"
+  empty: "&cJaj ne! Nincsenek meghívókódjaid, próbálj meg elkészíteni egyet!"
+  list-header: "&aA meghívókódok ehhez a céhhez:"
+  list-item: "&aID: &6{code} &f| &aHasználható még &6{amount} &aalkalommal &f| &aKészítő: &6{creator}"
+  deleted: "&aSikeresen törölted ezt a meghívókódot a Céhedből!"
+  invalid-code: "&cEz a meghívókód nem létezik. Próbáld meg újra!"
+  joined: "&aSikeresen csatlakoztál a &6{guild} &acéhhez meghívókód használatával!"
+  out: "&cEzt a meghívókódot már elhasználták! Próbálj meg másikat!"
+  info: "&aMeghívókód információ:\n&aID: &6{code}\n&aHátralévő használatok száma: &6{amount}\n&aKészítő: &6{creator}\n&aFelhasználták: &6{redeemers}"
+  max: "&cMár túl sok aktív meghívókódod van ehhez a Céhhez!"
+vaults:
+  maxed: "&cYou can't open this vault because you already have the max amount of vaults for your Guild Tier!"
