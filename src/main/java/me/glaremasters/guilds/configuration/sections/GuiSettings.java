@@ -40,7 +40,6 @@ import static ch.jalu.configme.properties.PropertyInitializer.newProperty;
  */
 public class GuiSettings implements SettingsHolder {
 
-/*
     private static final String LIST_PATH = "guis.guild-list.";
     @Comment("What should the name of the inventory be?")
     public static final Property<String> GUILD_LIST_NAME =
@@ -73,14 +72,15 @@ public class GuiSettings implements SettingsHolder {
     public static final Property<List<String>> GUILD_LIST_HEAD_LORE =
             newListProperty(LIST_PATH + "head-lore", "&cName&8: &a{guild-name}", "&cPrefix&8: &a{guild-prefix}", "&cMaster&8: &a{guild-master}", "&cStatus&8: &a{guild-status}", "&cTier&8: &a{guild-tier}", "&cBalance&8: &a{guild-balance}", "&cMember Count&8: &a{guild-member-count}");
 
-    private static final String BUFF_PATH = "guis.guild-buffs.";
+    private static final String BUFF_PATH = "guis.guild-buffs.buffs.";
+
     @Comment("What should the name of the inventory be?")
     public static final Property<String> GUILD_BUFF_NAME =
-            newProperty(BUFF_PATH + "gui-name", "Guild Buffs");
+            newProperty("guis.guild-buffs.gui-name", "Guild Buffs");
 
     @Comment("Do we want to allow users to have more than one buff at a time?")
     public static final Property<Boolean> BUFF_STACKING =
-            newProperty(BUFF_PATH + "buff-stacking", false);
+            newProperty("guis.guild-buffs.buff-stacking", false);
 
     @Comment("What do you want to name the buff?")
     public static final Property<String> HASTE_NAME =
@@ -280,7 +280,7 @@ public class GuiSettings implements SettingsHolder {
 
     @Comment("What do you want to name the buff?")
     public static final Property<String> WB_NAME =
-            newProperty(BUFF_PATH + "water-breathing.name", "Bounce of the Quick Witted Rabbit");
+            newProperty(BUFF_PATH + "water-breathing.name", "Lungs of the Albino Shark");
 
     @Comment("How much do you want the buff to cost?")
     public static final Property<Double> WB_PRICE =
@@ -296,7 +296,7 @@ public class GuiSettings implements SettingsHolder {
 
     @Comment("What item do you want to represent the buff?")
     public static final Property<String> WB_ICON =
-            newProperty(BUFF_PATH + "water-breathing.icon", "DIAMOND_BOOTS");
+            newProperty(BUFF_PATH + "water-breathing.icon", "BUCKET");
 
     @Comment("You can put as much as you want here")
     public static final Property<List<String>> WB_LORE =
@@ -308,7 +308,7 @@ public class GuiSettings implements SettingsHolder {
 
     @Comment("What do you want to name the buff?")
     public static final Property<String> REGENERATION_NAME =
-            newProperty(BUFF_PATH + "regeneration.name", "Bounce of the Quick Witted Rabbit");
+            newProperty(BUFF_PATH + "regeneration.name", "Integrity of the Mystic Witch");
 
     @Comment("How much do you want the buff to cost?")
     public static final Property<Double> REGENERATION_PRICE =
@@ -324,7 +324,7 @@ public class GuiSettings implements SettingsHolder {
 
     @Comment("What item do you want to represent the buff?")
     public static final Property<String> REGENERATION_ICON =
-            newProperty(BUFF_PATH + "regeneration.icon", "DIAMOND_BOOTS");
+            newProperty(BUFF_PATH + "regeneration.icon", "EMERALD");
 
     @Comment("You can put as much as you want here")
     public static final Property<List<String>> REGENERATION_LORE =
@@ -333,7 +333,6 @@ public class GuiSettings implements SettingsHolder {
     @Comment("Do you want this buff to show in-game?")
     public static final Property<Boolean> REGENERATION_DISPLAY =
             newProperty(BUFF_PATH + "regeneration.display", true);
-*/
 
     @Comment("What do you want the name of the Vault to be?")
     public static final Property<String> VAULT_NAME =

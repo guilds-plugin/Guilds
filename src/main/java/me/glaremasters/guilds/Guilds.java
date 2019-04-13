@@ -63,6 +63,7 @@ import me.glaremasters.guilds.commands.codes.CommandCodeDelete;
 import me.glaremasters.guilds.commands.codes.CommandCodeInfo;
 import me.glaremasters.guilds.commands.codes.CommandCodeList;
 import me.glaremasters.guilds.commands.codes.CommandCodeRedeem;
+import me.glaremasters.guilds.commands.gui.CommandBuff;
 import me.glaremasters.guilds.commands.gui.CommandVault;
 import me.glaremasters.guilds.commands.homes.CommandDelHome;
 import me.glaremasters.guilds.commands.homes.CommandHome;
@@ -102,6 +103,7 @@ import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.placeholders.PlaceholderAPI;
 import me.glaremasters.guilds.updater.UpdateCheck;
 import me.glaremasters.guilds.utils.Constants;
+import me.glaremasters.guilds.utils.GuildBuffManager;
 import me.glaremasters.guilds.utils.StringUtils;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -146,6 +148,8 @@ public final class Guilds extends JavaPlugin {
     private Permission permissions;
     @Getter
     private List<Guild> oldGuilds = new ArrayList<>();
+    @Getter
+    private GuildBuffManager guildBuffManager;
 
     @Override
     public void onDisable() {
@@ -402,6 +406,7 @@ public final class Guilds extends JavaPlugin {
                 new CommandCodeRedeem(guildHandler),
                 // GUI Commands
                 /*new CommandList(),*/
+                new CommandBuff(this),
                 new CommandVault(guildHandler, settingsManager),
                 // Home Commands
                 new CommandDelHome(),
@@ -436,9 +441,9 @@ public final class Guilds extends JavaPlugin {
             commandManager.registerCommand(new CommandUnclaim(WorldGuardWrapper.getInstance(), settingsManager));
         }
 
+        guildBuffManager = new GuildBuffManager(this, settingsManager);
 
-        // This can probably be moved into it's own method
-        // This checks for updates
+
         if (settingsManager.getProperty(PluginSettings.ANNOUNCEMENTS_CONSOLE)) {
             UpdateCheck.of(this).resourceId(48920).handleResponse((versionResponse, s) -> {
                 switch (versionResponse) {
