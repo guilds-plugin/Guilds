@@ -42,7 +42,7 @@ public class EconomyUtils {
      * @return if they have enough
      */
     public static boolean hasEnough(Economy economy, Player player, double amount) {
-        return economy.getBalance(player) > amount;
+        return economy.getBalance(player) >= amount;
     }
 
     /**
@@ -52,7 +52,7 @@ public class EconomyUtils {
      * @return if it's greater or not
      */
     public static boolean hasEnough(double val1, double val2) {
-        return val1 > val2;
+        return val1 >= val2;
     }
 
 }
