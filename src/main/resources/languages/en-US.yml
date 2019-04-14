@@ -203,4 +203,4 @@ codes:
 vaults:
   maxed: "&cYou can't open this vault because you already have the max amount of vaults for your Guild Tier!"
 languages:
-  set: "You've successfully set your language to {language}"
+  set: "&aYou've successfully set your language to {language}"
