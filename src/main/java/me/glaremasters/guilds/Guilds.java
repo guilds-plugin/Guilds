@@ -83,6 +83,7 @@ import me.glaremasters.guilds.commands.member.CommandCheck;
 import me.glaremasters.guilds.commands.member.CommandDecline;
 import me.glaremasters.guilds.commands.member.CommandDemote;
 import me.glaremasters.guilds.commands.member.CommandInvite;
+import me.glaremasters.guilds.commands.member.CommandLanguage;
 import me.glaremasters.guilds.commands.member.CommandLeave;
 import me.glaremasters.guilds.commands.member.CommandPromote;
 import me.glaremasters.guilds.configuration.GuildConfigurationBuilder;
@@ -156,6 +157,7 @@ public final class Guilds extends JavaPlugin {
     private BuffGUI buffGUI;
     @Getter
     private ListGUI listGUI;
+    private List<String> loadedLanguages;
 
     @Override
     public void onDisable() {
@@ -227,6 +229,7 @@ public final class Guilds extends JavaPlugin {
             for (File file : Objects.requireNonNull(languageFolder.listFiles())) {
                 if (file.isFile()) {
                     String updatedName = file.getName().replace(".yml", "");
+                    loadedLanguages.add(updatedName);
                     manager.addSupportedLanguage(Locale.forLanguageTag(updatedName));
                     manager.getLocales().loadYamlLanguageFile(new File(languageFolder, file.getName()), Locale.forLanguageTag(updatedName));
                 }
@@ -303,6 +306,8 @@ public final class Guilds extends JavaPlugin {
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
+
+        loadedLanguages = new ArrayList<>();
 
         // This is really just for shits and giggles
         // A variable for checking how long startup took.
@@ -430,6 +435,7 @@ public final class Guilds extends JavaPlugin {
                 new CommandDecline(guildHandler),
                 new CommandDemote(guildHandler),
                 new CommandInvite(guildHandler),
+                new CommandLanguage(this),
                 new CommandLeave(guildHandler, actionHandler, permissions),
                 new CommandPromote(guildHandler),
                 // Misc Commands
@@ -551,6 +557,8 @@ public final class Guilds extends JavaPlugin {
             if (list == null) return null;
             return IntStream.rangeClosed(1, list.size()).mapToObj(Objects::toString).collect(Collectors.toList());
         });
+
+        manager.getCommandCompletions().registerCompletion("languages", c -> loadedLanguages.stream().sorted().collect(Collectors.toList()));
     }
 
     /**

@@ -96,7 +96,9 @@ public enum Messages implements MessageKeyProvider {
 
     CODES__CREATED, CODES__EMPTY, CODES__LIST_HEADER, CODES__LIST_ITEM, CODES__DELETED, CODES__INVALID_CODE, CODES__JOINED, CODES__OUT, CODES__INFO, CODES__MAX,
 
-    VAULTS__MAXED;
+    VAULTS__MAXED,
+
+    LANGUAGES__SET;
 
     /**
      * Message keys that grab from the config to send messages

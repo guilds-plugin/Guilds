@@ -147,8 +147,6 @@ public class CommandCreate extends BaseCommand {
 
                 actionHandler.removeAction(player);
 
-                guildHandler.addPerms(permission, player);
-
                 Bukkit.getServer().getScheduler().runTaskAsynchronously(guilds, () -> guild.setGuildSkull(new GuildSkull(player)));
             }
 
