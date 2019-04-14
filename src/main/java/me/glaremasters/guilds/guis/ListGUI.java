@@ -32,7 +32,8 @@ import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
 import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
 import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Guilds;
-import me.glaremasters.guilds.configuration.sections.GuiSettings;
+import me.glaremasters.guilds.configuration.sections.GuildBuffSettings;
+import me.glaremasters.guilds.configuration.sections.GuildListSettings;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import org.bukkit.Bukkit;
@@ -61,7 +62,7 @@ public class ListGUI {
 
 
         // Create the base GUI
-        Gui gui = new Gui(guilds, 6, ACFBukkitUtil.color(settingsManager.getProperty(GuiSettings.GUILD_LIST_NAME)));
+        Gui gui = new Gui(guilds, 6, ACFBukkitUtil.color(settingsManager.getProperty(GuildListSettings.GUILD_LIST_NAME)));
 
         // Prepare a paginated pane
         PaginatedPane paginatedPane = new PaginatedPane(0, 0, 9, 5);
@@ -95,8 +96,8 @@ public class ListGUI {
     private void setListItem(OutlinePane pane, Guild guild) {
         GuiItem listItem = new GuiItem(guild.getSkull(), event -> event.setCancelled(true));
         ItemMeta meta = listItem.getItem().getItemMeta();
-        meta.setDisplayName(ACFBukkitUtil.color(settingsManager.getProperty(GuiSettings.GUILD_LIST_ITEM_NAME).replace("{player}", Bukkit.getOfflinePlayer(guild.getGuildMaster().getUuid()).getName())));
-        meta.setLore(updatedLore(guild, settingsManager.getProperty(GuiSettings.GUILD_LIST_HEAD_LORE)));
+        meta.setDisplayName(ACFBukkitUtil.color(settingsManager.getProperty(GuildListSettings.GUILD_LIST_ITEM_NAME).replace("{player}", Bukkit.getOfflinePlayer(guild.getGuildMaster().getUuid()).getName())));
+        meta.setLore(updatedLore(guild, settingsManager.getProperty(GuildListSettings.GUILD_LIST_HEAD_LORE)));
         listItem.getItem().setItemMeta(meta);
         pane.addItem(listItem);
     }

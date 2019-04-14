@@ -30,7 +30,6 @@ import co.aikar.commands.PaperCommandManager;
 import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.messages.Messages;
-import me.glaremasters.guilds.configuration.sections.GuiSettings;
 import me.glaremasters.guilds.configuration.sections.GuildSettings;
 import me.glaremasters.guilds.configuration.sections.PluginSettings;
 import me.glaremasters.guilds.guild.Guild;
@@ -45,7 +44,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -144,8 +142,8 @@ public class PlayerListener implements Listener {
     public void onBuffBuy(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
         Guild guild = guildHandler.getGuild(player);
-        if (!event.getInventory().getTitle().equals(settingsManager.getProperty(GuiSettings.GUILD_BUFF_NAME))) return;
-        if (event.getInventory().getTitle().equals(settingsManager.getProperty(GuiSettings.GUILD_BUFF_NAME))) event.setCancelled(true);
+        if (!event.getInventory().getTitle().equals(settingsManager.getProperty(GuildBuffSettings.GUILD_BUFF_NAME))) return;
+        if (event.getInventory().getTitle().equals(settingsManager.getProperty(GuildBuffSettings.GUILD_BUFF_NAME))) event.setCancelled(true);
         if (event.getCurrentItem() == null) return;
         *//*GuildBuff buff = GuildBuff.get(event.getCurrentItem().getType());*//*
         double balance = guild.getBalance();
@@ -154,7 +152,7 @@ public class PlayerListener implements Listener {
             commandManager.getCommandIssuer(player).sendInfo(Messages.BANK__NOT_ENOUGH_BANK);
             return;
         }*//*
-        if (settingsManager.getProperty(GuiSettings.BUFF_STACKING) && !player.getActivePotionEffects().isEmpty()) return;
+        if (settingsManager.getProperty(GuildBuffSettings.BUFF_STACKING) && !player.getActivePotionEffects().isEmpty()) return;
 
         *//*guild.getOnlineMembers().forEach(guildMember -> ((Player) guildMember).addPotionEffect(new PotionEffect(buff.potion, buff.time, buff.amplifier)));*//*
         *//*guild.setBalance(balance - buff.cost);*//*

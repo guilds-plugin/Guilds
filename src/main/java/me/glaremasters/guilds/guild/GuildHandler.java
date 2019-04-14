@@ -27,7 +27,7 @@ package me.glaremasters.guilds.guild;
 import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.CommandManager;
 import lombok.Getter;
-import me.glaremasters.guilds.configuration.sections.GuiSettings;
+import me.glaremasters.guilds.configuration.sections.GuildBuffSettings;
 import me.glaremasters.guilds.configuration.sections.TicketSettings;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.configuration.sections.GuildSettings;
@@ -597,7 +597,7 @@ public class GuildHandler {
      * @return new vault
      */
     public Inventory createNewVault(SettingsManager settingsManager) {
-        return Bukkit.createInventory(null, 54, settingsManager.getProperty(GuiSettings.VAULT_NAME));
+        return Bukkit.createInventory(null, 54, settingsManager.getProperty(GuildBuffSettings.VAULT_NAME));
     }
 
     /**

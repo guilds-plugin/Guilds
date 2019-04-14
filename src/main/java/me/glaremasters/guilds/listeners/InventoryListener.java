@@ -26,17 +26,8 @@ package me.glaremasters.guilds.listeners;
 
 import ch.jalu.configme.SettingsManager;
 import lombok.AllArgsConstructor;
-import me.glaremasters.guilds.configuration.sections.GuiSettings;
 import me.glaremasters.guilds.guild.GuildHandler;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryAction;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryInteractEvent;
-
-import java.util.UUID;
 
 /**
  * Created by GlareMasters
@@ -61,9 +52,9 @@ public class InventoryListener implements Listener {
         UUID uuid = player.getUniqueId();
         String title = event.getInventory().getTitle();
         //todo you should not be comparing using names but rather using InventoryHolders.
-        if (title.equalsIgnoreCase(settingsManager.getProperty(GuiSettings.GUILD_LIST_NAME))) {
+        if (title.equalsIgnoreCase(settingsManager.getProperty(GuildBuffSettings.GUILD_LIST_NAME))) {
             if (event.getAction().equals(InventoryAction.PICKUP_ALL)) {
-                if (event.getCurrentItem().getItemMeta().getDisplayName().equals(settingsManager.getProperty(GuiSettings.GUILD_LIST_PREVIOUS_PAGE_ITEM_NAME))) {
+                if (event.getCurrentItem().getItemMeta().getDisplayName().equals(settingsManager.getProperty(GuildBuffSettings.GUILD_LIST_PREVIOUS_PAGE_ITEM_NAME))) {
 *//*                    if (!(playerPages.get(uuid) == 1)) {
                         int newPage = playerPages.get(uuid) - 1;
                         playerPages.remove(uuid);
@@ -77,7 +68,7 @@ public class InventoryListener implements Listener {
                     event.setResult(Event.Result.DENY);
                     return;
                 }
-                if (event.getCurrentItem().getItemMeta().getDisplayName().equals(settingsManager.getProperty(GuiSettings.GUILD_LIST_NEXT_PAGE_ITEM_NAME))) {
+                if (event.getCurrentItem().getItemMeta().getDisplayName().equals(settingsManager.getProperty(GuildBuffSettings.GUILD_LIST_NEXT_PAGE_ITEM_NAME))) {
 *//*                    int newPage = playerPages.get(uuid) + 1;
                     playerPages.remove(uuid);
                     playerPages.put(uuid, newPage);
@@ -97,7 +88,7 @@ public class InventoryListener implements Listener {
     @EventHandler
     public void onInventoryInteract(InventoryInteractEvent event) {
         String title = event.getInventory().getTitle();
-        if (title.equals(settingsManager.getProperty(GuiSettings.GUILD_LIST_NAME))) {
+        if (title.equals(settingsManager.getProperty(GuildBuffSettings.GUILD_LIST_NAME))) {
             event.setCancelled(true);
             event.setResult(Event.Result.DENY);
         }
