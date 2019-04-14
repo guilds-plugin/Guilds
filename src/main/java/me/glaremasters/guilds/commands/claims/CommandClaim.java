@@ -81,6 +81,8 @@ public class CommandClaim extends BaseCommand {
         ClaimUtils.getGuildClaim(wrapper, player, guild).ifPresent(region -> {
             ClaimUtils.addOwner(region, guild);
             ClaimUtils.addMembers(region, guild);
+            ClaimUtils.setEnterMessage(wrapper, region, settingsManager, guild);
+            ClaimUtils.setExitMessage(wrapper, region, settingsManager, guild);
         });
 
         getCurrentCommandIssuer().sendInfo(Messages.CLAIM__SUCCESS,

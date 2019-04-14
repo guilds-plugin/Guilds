@@ -25,6 +25,7 @@
 package me.glaremasters.guilds.utils;
 
 import ch.jalu.configme.SettingsManager;
+import co.aikar.commands.ACFBukkitUtil;
 import me.glaremasters.guilds.configuration.sections.ClaimSettings;
 import me.glaremasters.guilds.configuration.sections.HooksSettings;
 import me.glaremasters.guilds.guild.Guild;
@@ -169,6 +170,14 @@ public class ClaimUtils {
      */
     public static void addMembers(IWrappedRegion claim, Guild guild) {
         guild.getMembers().forEach(m -> getMembers(claim).addPlayer(m.getUuid()));
+    }
+
+    public static void setEnterMessage(WorldGuardWrapper wrapper, IWrappedRegion claim, SettingsManager settingsManager, Guild guild) {
+        claim.setFlag(wrapper.getFlag("greeting", String.class).orElse(null), ACFBukkitUtil.color(settingsManager.getProperty(ClaimSettings.ENTER_MESSAGE).replace("{guild}", guild.getName()).replace("{prefix}", guild.getPrefix())));
+    }
+
+    public static void setExitMessage(WorldGuardWrapper wrapper, IWrappedRegion claim, SettingsManager settingsManager, Guild guild) {
+        claim.setFlag(wrapper.getFlag("farewell", String.class).orElse(null), ACFBukkitUtil.color(settingsManager.getProperty(ClaimSettings.EXIT_MESSAGE).replace("{guild}", guild.getName()).replace("{prefix}", guild.getPrefix())));
     }
 
 }
