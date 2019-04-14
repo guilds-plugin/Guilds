@@ -40,6 +40,7 @@ descriptions:
   info: "Céh Info GUI megnyitása"
   invite: "Egy másik játékos meghívása a céhbe"
   kick: "Valaki kirúgása a Céhből"
+  language: "Change the language of the plugin messages for you"
   leave: "Céh elhagyása"
   list: "Az összes céh kilistázása"
   prefix: "A céh előtagjának megváltoztatása"
@@ -201,3 +202,5 @@ codes:
   max: "&cMár túl sok aktív meghívókódod van ehhez a Céhhez!"
 vaults:
   maxed: "&cYou can't open this vault because you already have the max amount of vaults for your Guild Tier!"
+languages:
+  set: "&aYou've successfully set your language to {language}"
