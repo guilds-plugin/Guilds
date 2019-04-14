@@ -26,7 +26,7 @@ public class GuildListSettings implements SettingsHolder {
     public static final Property<String> GUILD_LIST_ITEM_NAME =
             newProperty(LIST_PATH + "item-name", "&f{player}'s Guild");
 
-    @Comment("What item should players click to go to the next page?")
+/*    @Comment("What item should players click to go to the next page?")
     public static final Property<String> GUILD_LIST_NEXT_PAGE_ITEM =
             newProperty(LIST_PATH + "next-page-item", "EMPTY_MAP");
 
@@ -52,7 +52,7 @@ public class GuildListSettings implements SettingsHolder {
 
     @Comment("What should be the default texture url for textures that fail to load in?")
     public static final Property<String> GUILD_LIST_HEAD_DEFAULT_URL =
-            newProperty(LIST_PATH + "head-default-url", "http://textures.minecraft.net/texture/1a1654ce1fd5deea16c151586f21c63d130f1a5a122eef098133b4f92f6f55");
+            newProperty(LIST_PATH + "head-default-url", "http://textures.minecraft.net/texture/1a1654ce1fd5deea16c151586f21c63d130f1a5a122eef098133b4f92f6f55");*/
 
     @Comment({"You are free to design this to your liking", "This is just an example of all the available placeholders that you can use for the lore!"})
     public static final Property<List<String>> GUILD_LIST_HEAD_LORE =
