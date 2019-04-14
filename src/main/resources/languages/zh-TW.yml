@@ -40,6 +40,7 @@ descriptions:
   info: "打開公會資訊 GUI"
   invite: "邀請一名玩家到您的公會"
   kick: "將一個玩家從您的公會踢除"
+  language: "Change the language of the plugin messages for you"
   leave: "離開您的公會"
   list: "所有公會列表"
   prefix: "更改您的公會前綴"
@@ -201,3 +202,5 @@ codes:
   max: "&cYou already have too many active invite codes in your guild!"
 vaults:
   maxed: "&cYou can't open this vault because you already have the max amount of vaults for your Guild Tier!"
+languages:
+  set: "&aYou've successfully set your language to {language}"
