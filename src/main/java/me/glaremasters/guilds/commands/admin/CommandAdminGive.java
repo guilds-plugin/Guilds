@@ -65,7 +65,7 @@ public class CommandAdminGive extends BaseCommand {
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@online")
     @Syntax("<player> <amount>")
-    public void onTicketGive(CommandSender sender, @Values("@online") OnlinePlayer player, @Default("1") Integer amount) {
+    public void execute(CommandSender sender, @Values("@online") OnlinePlayer player, @Default("1") Integer amount) {
         if (player == null)
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__PLAYER_NOT_FOUND));
 

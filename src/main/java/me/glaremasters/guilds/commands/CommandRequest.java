@@ -67,7 +67,7 @@ public class CommandRequest extends BaseCommand {
     @CommandPermission(Constants.BASE_PERM + "request")
     @CommandCompletion("@guilds")
     @Syntax("<guild name>")
-    public void onRequest(Player player, @Values("@guilds") @Single String name) {
+    public void execute(Player player, @Values("@guilds") @Single String name) {
         Guild guild = guildHandler.getGuild(player);
 
         if (guild != null)

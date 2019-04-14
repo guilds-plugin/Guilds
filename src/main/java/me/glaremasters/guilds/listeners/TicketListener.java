@@ -24,10 +24,19 @@
 
 package me.glaremasters.guilds.listeners;
 
+import ch.jalu.configme.SettingsManager;
+import co.aikar.commands.CommandManager;
 import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Guilds;
+import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
+import me.glaremasters.guilds.messages.Messages;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 
 /**
  * Created by GlareMasters
@@ -42,38 +51,39 @@ public class TicketListener implements Listener {
 
     private Guilds guilds;
     private GuildHandler guildHandler;
+    private SettingsManager settingsManager;
 
     /**
      * This even handles Guild TicketListener and how they are used by the player
      * @param event
      */
-    // We're redoing this anyways
-/*    @EventHandler
+    @EventHandler
     public void upgradeTicket(PlayerInteractEvent event) {
         ItemStack item = event.getItem();
-        if (item == null || !item.getType().toString().equals(getString("upgrade-ticket.material"))) return;
-        if (!item.hasItemMeta()) return;
-        ItemMeta meta = item.getItemMeta();
-        if (!meta.hasDisplayName()) return;
-        if (!meta.getDisplayName().equals(getString("upgrade-ticket.name"))) return;
-        if (!meta.hasLore()) return;
-        if (!meta.getLore().get(0).equals(getString("upgrade-ticket.lore"))) return;
+
+        if (item == null)
+            return;
+
         Player player = event.getPlayer();
         Guild guild = guildHandler.getGuild(player);
-        if (guild == null) return;
-        if (guild.getTier().getLevel() >= getInt("max-number-of-tiers")) {
-            guilds.getManager().getCommandIssuer(player).sendInfo(Messages.UPGRADE__TIER_MAX);
-            return;
-        }
-        ItemStack itemInHand = player.getItemInHand();
-        if (itemInHand.getAmount() > 1) {
-            itemInHand.setAmount(itemInHand.getAmount() - 1);
-        } else {
-            player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
-        }
-        event.setCancelled(true);
-        guilds.getManager().getCommandIssuer(player).sendInfo(Messages.UPGRADE__SUCCESS);
-        guild.setTier((guild.getTier() + 1));
 
-    }*/
+        if (guild == null)
+            return;
+
+        if (item.isSimilar(guildHandler.matchTicket(settingsManager))) {
+            if (guildHandler.isMaxTier(guild)) {
+                guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.UPGRADE__TIER_MAX);
+                return;
+            }
+            if (item.getAmount() > 1)
+                item.setAmount(item.getAmount() - 1);
+            else
+                player.getInventory().setItemInHand(new ItemStack(Material.AIR));
+
+            event.setCancelled(true);
+
+            guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.UPGRADE__SUCCESS);
+            guildHandler.upgradeTier(guild);
+        }
+    }
 }

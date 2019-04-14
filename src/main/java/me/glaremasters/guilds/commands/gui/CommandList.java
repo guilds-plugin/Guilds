@@ -54,7 +54,7 @@ public class CommandList extends BaseCommand {
     @Subcommand("list")
     @Description("{@@descriptions.list}")
     @CommandPermission(Constants.BASE_PERM + "list")
-    public void onGuildList(Player player, Guild guild) {
+    public void execute(Player player, Guild guild) {
         guilds.getListGUI().getListGUI().show(player);
     }
 

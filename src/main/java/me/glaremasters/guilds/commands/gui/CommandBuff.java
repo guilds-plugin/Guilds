@@ -57,7 +57,7 @@ public class CommandBuff extends BaseCommand {
     @Subcommand("buff")
     @Description("{@@descriptions.buff}")
     @CommandPermission(Constants.BASE_PERM + "buff")
-    public void onBuff(Player player, Guild guild, GuildRole role) {
+    public void execute(Player player, Guild guild, GuildRole role) {
         if (!role.isActivateBuff())
             ACFUtil.sneaky(new InvalidPermissionException());
 

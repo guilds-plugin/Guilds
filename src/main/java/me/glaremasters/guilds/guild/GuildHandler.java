@@ -634,6 +634,19 @@ public class GuildHandler {
         return builder.build();
     }
 
+    /**
+     * Check the guild ticket itemstack
+     * @param settingsManager settings manager
+     * @return the itemstack
+     */
+    public ItemStack matchTicket(SettingsManager settingsManager) {
+        ItemBuilder builder = new ItemBuilder(Material.valueOf(settingsManager.getProperty(TicketSettings.TICKET_MATERIAL)));
+        builder.setAmount(1);
+        builder.setName(settingsManager.getProperty(TicketSettings.TICKET_NAME));
+        builder.setLore(settingsManager.getProperty(TicketSettings.TICKET_LORE));
+        return builder.build();
+    }
+
 
     /**
      * Simple method to check if a guild is full or not
