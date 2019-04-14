@@ -40,6 +40,7 @@ descriptions:
   info: "Open Guild Info GUI"
   invite: "Nodig een andere speler uit voor jouw Guild"
   kick: "Verwijder iemand uit jouw Guild"
+  language: "Change the language of the plugin messages for you"
   leave: "Verlaat jouw Guild"
   list: "Zie alle Guilds"
   prefix: "Verander de prefix van jouw Guild"
@@ -201,3 +202,5 @@ codes:
   max: "&cJe hebt al teveel actieve invite codes voor jouw Guild!"
 vaults:
   maxed: "&cJe kunt deze kluis niet openen omdat je al het maximale aantal kluizen voor jouw Guild Tier hebt!"
+languages:
+  set: "&aYou've successfully set your language to {language}"
