@@ -28,13 +28,12 @@ import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.CommandManager;
 import lombok.Getter;
 import me.glaremasters.guilds.configuration.sections.GuildBuffSettings;
-import me.glaremasters.guilds.configuration.sections.TicketSettings;
-import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.configuration.sections.GuildSettings;
+import me.glaremasters.guilds.configuration.sections.TicketSettings;
 import me.glaremasters.guilds.database.DatabaseProvider;
+import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.ItemBuilder;
 import me.glaremasters.guilds.utils.Serialization;
-import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -588,8 +587,8 @@ public class GuildHandler {
      * @param guild the guild opening the vault
      * @return if they can open it or not
      */
-    public boolean hasVaultUnlocked(Integer vault, Guild guild) {
-        return vault > guild.getTier().getVaultAmount();
+    public boolean hasVaultUnlocked(int vault, Guild guild) {
+        return vault <= getGuildTier(guild.getTier().getLevel()).getVaultAmount();
     }
 
     /**
