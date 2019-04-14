@@ -24,6 +24,7 @@
 
 package me.glaremasters.guilds.commands.management;
 
+import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
@@ -31,6 +32,7 @@ import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
 import lombok.AllArgsConstructor;
+import me.glaremasters.guilds.configuration.sections.TierSettings;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.actions.ConfirmAction;
@@ -42,6 +44,7 @@ import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.guild.GuildTier;
 import me.glaremasters.guilds.utils.Constants;
 import me.glaremasters.guilds.utils.EconomyUtils;
+import net.milkbowl.vault.permission.Permission;
 import org.bukkit.entity.Player;
 
 /**
@@ -54,6 +57,8 @@ public class CommandUpgrade extends BaseCommand {
 
     private GuildHandler guildHandler;
     private ActionHandler actionHandler;
+    private SettingsManager settingsManager;
+    private Permission permission;
 
     /**
      * Upgrade a guild
@@ -92,9 +97,13 @@ public class CommandUpgrade extends BaseCommand {
 
                 guild.setBalance(balance - upgradeCost);
 
-                // Handle perms
+                if (!settingsManager.getProperty(TierSettings.CARRY_OVER))
+                    guildHandler.removePermsFromAll(permission, guild);
+
 
                 guildHandler.upgradeTier(guild);
+
+                guildHandler.addPermsToAll(permission, guild);
 
                 getCurrentCommandIssuer().sendInfo(Messages.UPGRADE__SUCCESS);
                 actionHandler.removeAction(player);

@@ -35,6 +35,7 @@ import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.annotation.Values;
 import lombok.AllArgsConstructor;
+import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.exceptions.InvalidPermissionException;
@@ -42,6 +43,7 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildMember;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.utils.Constants;
+import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -53,6 +55,9 @@ import org.bukkit.entity.Player;
  */
 @AllArgsConstructor @CommandAlias(Constants.ROOT_ALIAS)
 public class CommandKick extends BaseCommand {
+
+    private GuildHandler guildHandler;
+    private Permission permission;
 
     /**
      * Kick a player from the guild
@@ -83,6 +88,8 @@ public class CommandKick extends BaseCommand {
 
         if (guild.isMaster(boot))
             ACFUtil.sneaky(new InvalidPermissionException());
+
+        guildHandler.removePerms(permission, boot);
 
         guild.removeMember(kick);
 

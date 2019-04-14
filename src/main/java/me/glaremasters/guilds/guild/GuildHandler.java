@@ -34,6 +34,7 @@ import me.glaremasters.guilds.configuration.sections.GuildSettings;
 import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.utils.ItemBuilder;
 import me.glaremasters.guilds.utils.Serialization;
+import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -641,5 +642,59 @@ public class GuildHandler {
      */
     public boolean checkIfFull(Guild guild) {
         return guild.getSize() >= getGuildTier(guild.getTier().getLevel()).getMaxMembers();
+    }
+
+    /**
+     * Remove perms from a single player
+     * @param permission the permission to remove
+     * @param player the player to remove from
+     */
+    public void removePerms(Permission permission, OfflinePlayer player) {
+        Guild guild = getGuild(player);
+        if (guild == null)
+            return;
+        GuildTier tier = getGuildTier(guild.getTier().getLevel());
+        if (tier.getPermissions().isEmpty())
+            return;
+        tier.getPermissions().forEach(perm -> permission.playerRemove(null, player, perm));
+    }
+
+    /**
+     * Add perms to a single player
+     * @param permission the permission to add
+     * @param player the player to add to
+     */
+    public void addPerms(Permission permission, OfflinePlayer player) {
+        Guild guild = getGuild(player);
+        if (guild == null)
+            return;
+        GuildTier tier = getGuildTier(guild.getTier().getLevel());
+        if (tier.getPermissions().isEmpty())
+            return;
+        tier.getPermissions().forEach(perm -> permission.playerAdd(null, player, perm));
+    }
+
+    /**
+     * Add all the perms to a player for the guild
+     * @param permission permission to add
+     * @param guild the guild being modified
+     */
+    public void addPermsToAll(Permission permission, Guild guild) {
+        GuildTier tier = getGuildTier(guild.getTier().getLevel());
+        if (tier.getPermissions().isEmpty())
+            return;
+        guild.getAllAsPlayers().forEach(player -> getGuildTier(guild.getTier().getLevel()).getPermissions().forEach(perm -> permission.playerAdd(null, player, perm)));
+    }
+
+    /**
+     * Remove all perms from a player for the guild
+     * @param permission permission to remove
+     * @param guild the guild being modified
+     */
+    public void removePermsFromAll(Permission permission, Guild guild) {
+        GuildTier tier = getGuildTier(guild.getTier().getLevel());
+        if (tier.getPermissions().isEmpty())
+            return;
+        guild.getAllAsPlayers().forEach(player -> getGuildTier(guild.getTier().getLevel()).getPermissions().forEach(perm -> permission.playerRemove(null, player, perm)));
     }
 }

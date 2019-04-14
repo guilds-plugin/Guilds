@@ -235,6 +235,14 @@ public class Guild {
     }
 
     /**
+     * Get all players as a list
+     * @return list of players
+     */
+    public List<OfflinePlayer> getAllAsPlayers() {
+        return getMembers().stream().map(m -> Bukkit.getOfflinePlayer(m.getUuid())).collect(Collectors.toList());
+    }
+
+    /**
      * Check if a guild has a code
      * @param code the code being checked
      * @return if the guild has it or not

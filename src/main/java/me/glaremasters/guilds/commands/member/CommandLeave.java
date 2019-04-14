@@ -38,6 +38,7 @@ import me.glaremasters.guilds.api.events.GuildRemoveEvent;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.utils.Constants;
+import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -51,6 +52,7 @@ public class CommandLeave extends BaseCommand {
 
     private GuildHandler guildHandler;
     private ActionHandler actionHandler;
+    private Permission permission;
 
     /**
      * Leave a guild
@@ -87,9 +89,14 @@ public class CommandLeave extends BaseCommand {
 
                     getCurrentCommandIssuer().sendInfo(Messages.LEAVE__SUCCESSFUL);
 
+                    guildHandler.removePermsFromAll(permission, guild);
+
                     guildHandler.removeGuild(guild);
 
                 } else {
+
+                    guildHandler.removePerms(permission, player);
+
                     guild.removeMember(player);
 
                     getCurrentCommandIssuer().sendInfo(Messages.LEAVE__SUCCESSFUL);

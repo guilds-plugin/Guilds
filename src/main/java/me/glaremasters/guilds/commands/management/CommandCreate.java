@@ -36,8 +36,6 @@ import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
 import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Guilds;
-import me.glaremasters.guilds.guild.GuildSkull;
-import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.actions.ConfirmAction;
 import me.glaremasters.guilds.api.events.GuildCreateEvent;
@@ -46,9 +44,12 @@ import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildMember;
+import me.glaremasters.guilds.guild.GuildSkull;
+import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.Constants;
 import me.glaremasters.guilds.utils.EconomyUtils;
 import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -69,6 +70,7 @@ public class CommandCreate extends BaseCommand {
     private SettingsManager settingsManager;
     private ActionHandler actionHandler;
     private Economy economy;
+    private Permission permission;
 
     /**
      * Create a guild
@@ -144,6 +146,8 @@ public class CommandCreate extends BaseCommand {
                 getCurrentCommandIssuer().sendInfo(Messages.CREATE__SUCCESSFUL, "{guild}", guild.getName());
 
                 actionHandler.removeAction(player);
+
+                guildHandler.addPerms(permission, player);
 
                 Bukkit.getServer().getScheduler().runTaskAsynchronously(guilds, () -> guild.setGuildSkull(new GuildSkull(player)));
             }

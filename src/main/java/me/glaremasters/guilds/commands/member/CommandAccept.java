@@ -42,6 +42,7 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildMember;
 import me.glaremasters.guilds.utils.Constants;
+import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -54,6 +55,7 @@ import org.bukkit.entity.Player;
 public class CommandAccept extends BaseCommand {
 
     private GuildHandler guildHandler;
+    private Permission permission;
 
     /**
      * Accept a guild invite
@@ -87,6 +89,8 @@ public class CommandAccept extends BaseCommand {
             return;
 
         guild.addMember(new GuildMember(player.getUniqueId(), guildHandler.getLowestGuildRole()));
+
+        guildHandler.addPerms(permission, player);
 
         guild.sendMessage(getCurrentCommandManager(), Messages.ACCEPT__PLAYER_JOINED,
                 "{player}", player.getName());
