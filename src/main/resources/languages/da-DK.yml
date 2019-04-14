@@ -40,6 +40,7 @@ descriptions:
   info: "Åbn Guild Info GUI"
   invite: "Inviter en anden spiller til din Guild"
   kick: "Kick en person fra din Guild"
+  language: "Change the language of the plugin messages for you"
   leave: "Forlad din Guild"
   list: "List alle Guilds"
   prefix: "Ændre prefix på din Guild"
@@ -201,3 +202,5 @@ codes:
   max: "&cYou already have too many active invite codes in your guild!"
 vaults:
   maxed: "&cYou can't open this vault because you already have the max amount of vaults for your Guild Tier!"
+languages:
+  set: "&aYou've successfully set your language to {language}"
