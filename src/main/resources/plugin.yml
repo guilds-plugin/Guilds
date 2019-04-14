@@ -38,6 +38,7 @@ permissions:
       guilds.command.help: true
       guilds.command.home: true
       guilds.command.invite: true
+      guilds.command.language: true
       guilds.command.leave: true
       guilds.command.list: true
       guilds.command.prefix: true

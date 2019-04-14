@@ -172,10 +172,24 @@ public class ClaimUtils {
         guild.getMembers().forEach(m -> getMembers(claim).addPlayer(m.getUuid()));
     }
 
+    /**
+     * Set the enter message for a guild claim
+     * @param wrapper the worldguard wrapper
+     * @param claim the claim to adjust
+     * @param settingsManager the settings manager
+     * @param guild the guild to set it for
+     */
     public static void setEnterMessage(WorldGuardWrapper wrapper, IWrappedRegion claim, SettingsManager settingsManager, Guild guild) {
         claim.setFlag(wrapper.getFlag("greeting", String.class).orElse(null), ACFBukkitUtil.color(settingsManager.getProperty(ClaimSettings.ENTER_MESSAGE).replace("{guild}", guild.getName()).replace("{prefix}", guild.getPrefix())));
     }
 
+    /**
+     * Set the exit message to a claim
+     * @param wrapper the worldguard wrapper
+     * @param claim the claim to adjust
+     * @param settingsManager the settings manager
+     * @param guild the guild to set it for
+     */
     public static void setExitMessage(WorldGuardWrapper wrapper, IWrappedRegion claim, SettingsManager settingsManager, Guild guild) {
         claim.setFlag(wrapper.getFlag("farewell", String.class).orElse(null), ACFBukkitUtil.color(settingsManager.getProperty(ClaimSettings.EXIT_MESSAGE).replace("{guild}", guild.getName()).replace("{prefix}", guild.getPrefix())));
     }
