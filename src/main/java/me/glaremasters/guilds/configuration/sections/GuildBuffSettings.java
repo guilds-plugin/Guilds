@@ -52,7 +52,7 @@ public class GuildBuffSettings implements SettingsHolder {
 
     @Comment("What do you want to name the buff?")
     public static final Property<String> HASTE_NAME =
-            newProperty(BUFF_PATH + "haste.name", "Substance of the Redmod Graff");
+            newProperty(BUFF_PATH + "haste.name", "&a&lSubstance of the Redmod Graff");
 
     @Comment("How much do you want the buff to cost?")
     public static final Property<Double> HASTE_PRICE =
@@ -76,7 +76,7 @@ public class GuildBuffSettings implements SettingsHolder {
 
     @Comment("You can put as much as you want here")
     public static final Property<List<String>> HASTE_LORE =
-            newListProperty(BUFF_PATH + "haste.description", "&bThis buff will allow you and your", "&bGuild Members to obtain increased", "&bmining speed for a certain amount of time.");
+            newListProperty(BUFF_PATH + "haste.description", "&aType » &7Haste", "&aLength » &760 Seconds", "&aCost » &7$60");
 
     @Comment("Do you want this buff to show in-game?")
     public static final Property<Boolean> HASTE_DISPLAY =
@@ -84,7 +84,7 @@ public class GuildBuffSettings implements SettingsHolder {
 
     @Comment("What do you want to name the buff?")
     public static final Property<String> SPEED_NAME =
-            newProperty(BUFF_PATH + "speed.name", "Blessing of the Cheetah");
+            newProperty(BUFF_PATH + "speed.name", "&a&lBlessing of the Cheetah");
 
     @Comment("How much do you want the buff to cost?")
     public static final Property<Double> SPEED_PRICE =
@@ -108,7 +108,7 @@ public class GuildBuffSettings implements SettingsHolder {
 
     @Comment("You can put as much as you want here")
     public static final Property<List<String>> SPEED_LORE =
-            newListProperty(BUFF_PATH + "speed.description", "&bThis buff will allow you and your", "&bGuild Members to obtain increased", "&bmovement speed for a certain amount of time.");
+            newListProperty(BUFF_PATH + "speed.description", "&aType » &7Speed", "&aLength » &760 Seconds", "&aCost » &7$60");
 
     @Comment("Do you want this buff to show in-game?")
     public static final Property<Boolean> SPEED_DISPLAY =
@@ -116,7 +116,7 @@ public class GuildBuffSettings implements SettingsHolder {
 
     @Comment("What do you want to name the buff?")
     public static final Property<String> FR_NAME =
-            newProperty(BUFF_PATH + "fire-resistance.name", "Scales of the Dragon");
+            newProperty(BUFF_PATH + "fire-resistance.name", "&a&lScales of the Dragon");
 
     @Comment("How much do you want the buff to cost?")
     public static final Property<Double> FR_PRICE =
@@ -140,7 +140,7 @@ public class GuildBuffSettings implements SettingsHolder {
 
     @Comment("You can put as much as you want here")
     public static final Property<List<String>> FR_LORE =
-            newListProperty(BUFF_PATH + "fire-resistance.description", "&bThis buff will allow you and your", "&bGuild Members to obtain increased", "&bfire resistance for a certain amount of time.");
+            newListProperty(BUFF_PATH + "fire-resistance.description", "&aType » &7Fire-Resistance", "&aLength » &760 Seconds", "&aCost » &7$60");
 
     @Comment("Do you want this buff to show in-game?")
     public static final Property<Boolean> FR_DISPLAY =
@@ -148,7 +148,7 @@ public class GuildBuffSettings implements SettingsHolder {
 
     @Comment("What do you want to name the buff?")
     public static final Property<String> NV_NAME =
-            newProperty(BUFF_PATH + "night-vision.name", "Eyes of the Lurking Demon");
+            newProperty(BUFF_PATH + "night-vision.name", "&a&lEyes of the Lurking Demon");
 
     @Comment("How much do you want the buff to cost?")
     public static final Property<Double> NV_PRICE =
@@ -172,7 +172,7 @@ public class GuildBuffSettings implements SettingsHolder {
 
     @Comment("You can put as much as you want here")
     public static final Property<List<String>> NV_LORE =
-            newListProperty(BUFF_PATH + "night-vision.description", "&bThis buff will allow you and your", "&bGuild Members to obtain increased", "&bnight vision for a certain amount of time.");
+            newListProperty(BUFF_PATH + "night-vision.description", "&aType » &7Night-Vision", "&aLength » &760 Seconds", "&aCost » &7$60");
 
     @Comment("Do you want this buff to show in-game?")
     public static final Property<Boolean> NV_DISPLAY =
@@ -180,7 +180,7 @@ public class GuildBuffSettings implements SettingsHolder {
 
     @Comment("What do you want to name the buff?")
     public static final Property<String> INVISIBILITY_NAME =
-            newProperty(BUFF_PATH + "invisibility.name", "Feet of the Ghostly Walker");
+            newProperty(BUFF_PATH + "invisibility.name", "&a&lFeet of the Ghostly Walker");
 
     @Comment("How much do you want the buff to cost?")
     public static final Property<Double> INVISIBILITY_PRICE =
@@ -204,7 +204,7 @@ public class GuildBuffSettings implements SettingsHolder {
 
     @Comment("You can put as much as you want here")
     public static final Property<List<String>> INVISIBILITY_LORE =
-            newListProperty(BUFF_PATH + "invisibility.description", "&bThis buff will allow you and your", "&bGuild Members to obtain increased", "&binvisibility for a certain amount of time.");
+            newListProperty(BUFF_PATH + "invisibility.description", "&aType » &7Invisibility", "&aLength » &760 Seconds", "&aCost » &7$60");
 
     @Comment("Do you want this buff to show in-game?")
     public static final Property<Boolean> INVISIBILITY_DISPLAY =
@@ -212,7 +212,7 @@ public class GuildBuffSettings implements SettingsHolder {
 
     @Comment("What do you want to name the buff?")
     public static final Property<String> STRENGTH_NAME =
-            newProperty(BUFF_PATH + "strength.name", "Mighty Strength of the Pouncing Lion");
+            newProperty(BUFF_PATH + "strength.name", "&a&lMighty Strength of the Pouncing Lion");
 
     @Comment("How much do you want the buff to cost?")
     public static final Property<Double> STRENGTH_PRICE =
@@ -236,7 +236,7 @@ public class GuildBuffSettings implements SettingsHolder {
 
     @Comment("You can put as much as you want here")
     public static final Property<List<String>> STRENGTH_LORE =
-            newListProperty(BUFF_PATH + "strength.description", "&bThis buff will allow you and your", "&bGuild Members to obtain increased", "&bstrength for a certain amount of time.");
+            newListProperty(BUFF_PATH + "strength.description", "&aType » &7Strength", "&aLength » &760 Seconds", "&aCost » &7$60");
 
     @Comment("Do you want this buff to show in-game?")
     public static final Property<Boolean> STRENGTH_DISPLAY =
@@ -244,7 +244,7 @@ public class GuildBuffSettings implements SettingsHolder {
 
     @Comment("What do you want to name the buff?")
     public static final Property<String> JUMP_NAME =
-            newProperty(BUFF_PATH + "jump.name", "Bounce of the Quick Witted Rabbit");
+            newProperty(BUFF_PATH + "jump.name", "&a&lBounce of the Quick Witted Rabbit");
 
     @Comment("How much do you want the buff to cost?")
     public static final Property<Double> JUMP_PRICE =
@@ -268,7 +268,7 @@ public class GuildBuffSettings implements SettingsHolder {
 
     @Comment("You can put as much as you want here")
     public static final Property<List<String>> JUMP_LORE =
-            newListProperty(BUFF_PATH + "jump.description", "&bThis buff will allow you and your", "&bGuild Members to obtain increased", "&bjump for a certain amount of time.");
+            newListProperty(BUFF_PATH + "jump.description",  "&aType » &7Jump", "&aLength » &760 Seconds", "&aCost » &7$60");
 
     @Comment("Do you want this buff to show in-game?")
     public static final Property<Boolean> JUMP_DISPLAY =
@@ -276,7 +276,7 @@ public class GuildBuffSettings implements SettingsHolder {
 
     @Comment("What do you want to name the buff?")
     public static final Property<String> WB_NAME =
-            newProperty(BUFF_PATH + "water-breathing.name", "Lungs of the Albino Shark");
+            newProperty(BUFF_PATH + "water-breathing.name", "&a&lLungs of the Albino Shark");
 
     @Comment("How much do you want the buff to cost?")
     public static final Property<Double> WB_PRICE =
@@ -300,7 +300,7 @@ public class GuildBuffSettings implements SettingsHolder {
 
     @Comment("You can put as much as you want here")
     public static final Property<List<String>> WB_LORE =
-            newListProperty(BUFF_PATH + "water-breathing.description", "&bThis buff will allow you and your", "&bGuild Members to obtain increased", "&bwater-breathing for a certain amount of time.");
+            newListProperty(BUFF_PATH + "water-breathing.description", "&aType » &7Water-Breathing", "&aLength » &760 Seconds", "&aCost » &7$60");
 
     @Comment("Do you want this buff to show in-game?")
     public static final Property<Boolean> WB_DISPLAY =
@@ -308,7 +308,7 @@ public class GuildBuffSettings implements SettingsHolder {
 
     @Comment("What do you want to name the buff?")
     public static final Property<String> REGENERATION_NAME =
-            newProperty(BUFF_PATH + "regeneration.name", "Integrity of the Mystic Witch");
+            newProperty(BUFF_PATH + "regeneration.name", "&a&lIntegrity of the Mystic Witch");
 
     @Comment("How much do you want the buff to cost?")
     public static final Property<Double> REGENERATION_PRICE =
@@ -332,7 +332,7 @@ public class GuildBuffSettings implements SettingsHolder {
 
     @Comment("You can put as much as you want here")
     public static final Property<List<String>> REGENERATION_LORE =
-            newListProperty(BUFF_PATH + "regeneration.description", "&bThis buff will allow you and your", "&bGuild Members to obtain increased", "&bregeneration for a certain amount of time.");
+            newListProperty(BUFF_PATH + "regeneration.description", "&aType » &7Regeneration", "&aLength » &760 Seconds", "&aCost » &7$60");
 
     @Comment("Do you want this buff to show in-game?")
     public static final Property<Boolean> REGENERATION_DISPLAY =
