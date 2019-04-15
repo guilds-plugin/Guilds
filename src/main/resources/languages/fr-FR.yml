@@ -40,6 +40,7 @@ descriptions:
   info: "Ouvre le GUI d'info"
   invite: "Invite un joueur dans votre guilde"
   kick: "Kick un joueur de la guilde"
+  language: "Change the language of the plugin messages for you"
   leave: "Quitte votre guilde"
   list: "Liste des Guildes"
   prefix: "Change le prefix de votre guilde"
@@ -201,3 +202,5 @@ codes:
   max: "&cYou already have too many active invite codes in your guild!"
 vaults:
   maxed: "&cYou can't open this vault because you already have the max amount of vaults for your Guild Tier!"
+languages:
+  set: "&aYou've successfully set your language to {language}"

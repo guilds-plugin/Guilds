@@ -40,6 +40,7 @@ descriptions:
   info: "Open Guild Info GUI"
   invite: "Invite another player to your Guild"
   kick: "Kick someone from your Guild"
+  language: "Change the language of the plugin messages for you"
   leave: "Leave your Guild"
   list: "List all Guilds"
   prefix: "Change the prefix of your Guild"
@@ -201,3 +202,5 @@ codes:
   max: "&cИмате твърде много активни кодове за покани във вашата гилдия!"
 vaults:
   maxed: "&cНе можете да отворите този трезор, защото вече имате максималният брой трезори за вашето ниво на гилдия!"
+languages:
+  set: "&aYou've successfully set your language to {language}"

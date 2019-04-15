@@ -40,6 +40,7 @@ descriptions:
   info: "Открыть меню информации Гильдии"
   invite: "Пригласить игрока в Гильдию"
   kick: "Выгнать игрока из Гильдии"
+  language: "Change the language of the plugin messages for you"
   leave: "Покинуть Гильдию"
   list: "Список всех гильдий"
   prefix: "Сменить префикс Гильдии"
@@ -201,3 +202,5 @@ codes:
   max: "&cYou already have too many active invite codes in your guild!"
 vaults:
   maxed: "&cYou can't open this vault because you already have the max amount of vaults for your Guild Tier!"
+languages:
+  set: "&aYou've successfully set your language to {language}"

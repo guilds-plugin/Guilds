@@ -40,6 +40,7 @@ descriptions:
   info: "Open Guild Info GUI"
   invite: "Mời người chơi khác vào Guild của bạn"
   kick: "Kick ai đó trong Guild của bạn"
+  language: "Change the language of the plugin messages for you"
   leave: "Rời khỏi Guild của bạn"
   list: "Danh sách tất cả Guild"
   prefix: "Thay đổi tiền tố Guild của bạn"
@@ -201,3 +202,5 @@ codes:
   max: "&cYou already have too many active invite codes in your guild!"
 vaults:
   maxed: "&cYou can't open this vault because you already have the max amount of vaults for your Guild Tier!"
+languages:
+  set: "&aYou've successfully set your language to {language}"

@@ -40,6 +40,7 @@ descriptions:
   info: "Abre informação de sua guild"
   invite: "Convide outro player para sua guild"
   kick: "Expulse alguém de sua guild"
+  language: "Change the language of the plugin messages for you"
   leave: "Sair da guild"
   list: "Listar todas as guilds"
   prefix: "Alterar prefix de sua guild"
@@ -201,3 +202,5 @@ codes:
   max: "&cVocê já tem muitos códigos de convite ativos em sua guild!"
 vaults:
   maxed: "&cVocê não pode abrir esse cofre, pois já tem a quantidade máxima de cofres disponivel para a camada de sua guild!"
+languages:
+  set: "&aYou've successfully set your language to {language}"
