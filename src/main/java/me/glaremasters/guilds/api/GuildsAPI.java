@@ -24,7 +24,12 @@
 
 package me.glaremasters.guilds.api;
 
-import me.glaremasters.guilds.guild.*;
+import me.glaremasters.guilds.guild.Guild;
+import me.glaremasters.guilds.guild.GuildCode;
+import me.glaremasters.guilds.guild.GuildHandler;
+import me.glaremasters.guilds.guild.GuildRole;
+import me.glaremasters.guilds.guild.GuildTier;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -44,8 +49,26 @@ public class GuildsAPI {
      * @param player the players you're getting the guild of
      * @return the guild that the player is in
      */
-    public Guild getGuild(@NotNull Player player) {
+    public Guild getGuild(@NotNull OfflinePlayer player) {
         return guildHandler.getGuild(player);
+    }
+
+    /**
+     * Get the guild of a player by uuid
+     * @param uuid uuid of the player
+     * @return the guild they are in
+     */
+    public Guild getGuild(@NotNull UUID uuid) {
+        return guildHandler.getGuild(uuid);
+    }
+
+    /**
+     * Get the guild of a player by their name
+     * @param name the name of the player
+     * @return the guild they are in
+     */
+    public Guild getGuild(@NotNull String name) {
+        return guildHandler.getGuild(name);
     }
 
     /**
