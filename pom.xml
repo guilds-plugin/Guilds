@@ -38,12 +38,12 @@
 
     <issueManagement>
         <system>GitHub</system>
-        <url>https://github.com/darbyjack/Guilds-Plugin/issues</url>
+        <url>https://github.com/guilds-plugin/Guilds</url>
     </issueManagement>
 
     <scm>
-        <connection>https://github.com/darbyjack/Guilds-Plugin.git</connection>
-        <url>https://github.com/darbyjack/Guilds-Plugin</url>
+        <connection>https://github.com/guilds-plugin/Guilds.git</connection>
+        <url>https://github.com/guilds-plugin/Guilds</url>
     </scm>
 
     <properties>
