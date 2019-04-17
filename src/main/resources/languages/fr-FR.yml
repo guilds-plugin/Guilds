@@ -201,6 +201,6 @@ codes:
   info: "&aInformation du code d'invitation:\n&aID: &6{code}\n&aUtilisations: &6{amount}\n&aCréateur: &6{creator}\n&aUtilisateur: &6{redeemers}"
   max: "&cVous avez déjà trop de codes d'utilisation actifs dans votre guilde !"
 vaults:
-  maxed: "&cYou can't open this vault because you already have the max amount of vaults for your Guild Tier!"
+  maxed: "&cVous ne pouvez pas ouvrir ce coffre car vous avez déjà le nombre maximum de coffre pour le rang de votre Guilde !"
 languages:
-  set: "&aYou've successfully set your language to {language}"
+  set: "&aVous avez défini avec succès votre langage en {language}"
