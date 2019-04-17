@@ -190,16 +190,16 @@ unclaim:
 pending:
   invites: "&aVous avez {number} invitation(s) en attente de la guilde: &e{guilds}&r&a . Ecrivez /guild accept <name> or /guild deny <name> pour accepter ou refuser une invitation!"
 codes:
-  created: "&aYou've created a new invite code: &6{code} &awith &6{amount} &auses!"
-  empty: "&cOh no! I have no codes, try making one first!"
-  list-header: "&aHere are the following active invite codes for your guild:"
-  list-item: "&aID: &6{code} &f| &aUses Remaining: &6{amount} &f| &aCreator: &6{creator}"
-  deleted: "&aThat invite code has been removed from your guild!"
-  invalid-code: "&cThat invite code does not seem to exist. Please try again!"
-  joined: "&aYou've successfully joined &6{guild} &ausing an invite code!"
-  out: "&cThat invite code is all out of uses! Please try another one!"
-  info: "&aInvite Code Information:\n&aID: &6{code}\n&aUses: &6{amount}\n&aCreator: &6{creator}\n&aRedeemers: &6{redeemers}"
-  max: "&cYou already have too many active invite codes in your guild!"
+  created: "&aVous avez créé un nouveau code d'invitation: &6{code} &aavec &6{amount} &autilisations !"
+  empty: "&cOh non ! Je n\\'ai pas de codes, essaie d\\'en faire un premièrement !"
+  list-header: "&aVoici les codes d'activation actifs pour votre guilde :"
+  list-item: "&aID: &6{code} &f| &aUtilisations Restantes: &6{amount} &f| &aCréateur: &6{creator}"
+  deleted: "&aCe code d'invitation a été retiré de votre guilde !"
+  invalid-code: "&cCe code d'invitation semble ne pas exister. S'il vous plaît essayez encore !"
+  joined: "&aVous avez bien rejoint &6{guild} &aen utilisant un code d'invitation!"
+  out: "&cCe code d'invitation n'a plus d'utilisations restantes ! Veuillez en essayer un autre !"
+  info: "&aInformation du code d'invitation:\n&aID: &6{code}\n&aUtilisations: &6{amount}\n&aCréateur: &6{creator}\n&aUtilisateur: &6{redeemers}"
+  max: "&cVous avez déjà trop de codes d'utilisation actifs dans votre guilde !"
 vaults:
   maxed: "&cYou can't open this vault because you already have the max amount of vaults for your Guild Tier!"
 languages:
