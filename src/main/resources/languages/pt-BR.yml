@@ -197,6 +197,7 @@ codes:
   deleted: "&aO código de convite foi removido de sua guild!"
   invalid-code: "&cEsse código de convite parece não existir. Por favor, tente novamente!"
   joined: "&aVocê entrou para a guild &6{guild} &acom sucesso usando um código de convite!"
+  guild-message: "&6{player} &ahas joined the guild using an invite code from &6{creator}&a!"
   out: "&cEsse código de convite não tem mais nenhum uso restante! Por favor, tente outro!"
   info: "&aInformações sobre o código de convite:\n&aCódigo: &6{code}\n&aUsos: &6{amount}\n&aCriador: &6{creator}\n&aUtilizadores: &6{redeemers}"
   max: "&cVocê já tem muitos códigos de convite ativos em sua guild!"
