@@ -25,12 +25,14 @@
 package me.glaremasters.guilds.guild;
 
 import ch.jalu.configme.SettingsManager;
+import co.aikar.commands.ACFUtil;
 import co.aikar.commands.CommandManager;
 import lombok.Getter;
 import me.glaremasters.guilds.configuration.sections.GuildBuffSettings;
 import me.glaremasters.guilds.configuration.sections.GuildSettings;
 import me.glaremasters.guilds.configuration.sections.TicketSettings;
 import me.glaremasters.guilds.database.DatabaseProvider;
+import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.ItemBuilder;
 import me.glaremasters.guilds.utils.Serialization;
@@ -708,5 +710,24 @@ public class GuildHandler {
         if (tier.getPermissions().isEmpty())
             return;
         guild.getAllAsPlayers().forEach(player -> getGuildTier(guild.getTier().getLevel()).getPermissions().forEach(perm -> permission.playerRemove(null, player, perm)));
+    }
+
+    /**
+     * Handle inviting player when redeeming a code
+     * @param manager command manager
+     * @param player the player redeeming the code
+     * @param guild the guild they are trying to join
+     * @param code the code being redeemed
+     */
+    public void handleInvite(CommandManager manager, Player player, Guild guild, GuildCode code) {
+        if (code.getUses() <= 0)
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.CODES__OUT));
+
+        code.addRedeemer(player);
+
+        guild.addMemberByCode(new GuildMember(player.getUniqueId(), getLowestGuildRole()));
+
+        manager.getCommandIssuer(player).sendInfo(Messages.CODES__JOINED, "{guild}", guild.getName());
+        guild.sendMessage(manager, Messages.CODES__GUILD_MESSAGE, "{player}", player.getName(), "{creator}", Bukkit.getOfflinePlayer(code.getCreator()).getName());
     }
 }
