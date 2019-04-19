@@ -197,6 +197,7 @@ codes:
   deleted: "&aCe code d'invitation a été retiré de votre guilde !"
   invalid-code: "&cCe code d'invitation semble ne pas exister. S'il vous plaît essayez encore !"
   joined: "&aVous avez bien rejoint &6{guild} &aen utilisant un code d'invitation!"
+  guild-message: "&6{player} &ahas joined the guild using an invite code from &6{creator}&a!"
   out: "&cCe code d'invitation n'a plus d'utilisations restantes ! Veuillez en essayer un autre !"
   info: "&aInformation du code d'invitation:\n&aID: &6{code}\n&aUtilisations: &6{amount}\n&aCréateur: &6{creator}\n&aUtilisateur: &6{redeemers}"
   max: "&cVous avez déjà trop de codes d'utilisation actifs dans votre guilde !"
