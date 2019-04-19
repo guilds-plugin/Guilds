@@ -197,6 +197,7 @@ codes:
   deleted: "&aAcel cod de invitatie a fost sters din Breasla ta!"
   invalid-code: "&cAcel cod de invitatie nu pare sa existe. Te rog incearca din nou!"
   joined: "&aTe-ai alaturat cu succes Breslei &6{guild} &afolosind un cod de invitatie!"
+  guild-message: "&6{player} &ahas joined the guild using an invite code from &6{creator}&a!"
   out: "&cAcel cod de invitatie nu mai poate fi utilizat! Te rog incearca altul!"
   info: "&aInformatii pentru Codul de Invitatie\n&aID: &6{code}\n&aUtilizari: &6{amount}\n&aCreator: &6{creator}\n&aActivari: &6{redeemers}"
   max: "&cAi deja mult prea multe coduri de invitatie in Breasla ta!"
