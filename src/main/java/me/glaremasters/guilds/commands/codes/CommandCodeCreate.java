@@ -34,6 +34,7 @@ import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
 import lombok.AllArgsConstructor;
+import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.configuration.sections.CodeSettings;
 import me.glaremasters.guilds.exceptions.InvalidPermissionException;
@@ -67,10 +68,8 @@ public class CommandCodeCreate extends BaseCommand {
         if (!role.isCreateCode())
             ACFUtil.sneaky(new InvalidPermissionException());
 
-        if (guild.getActiveCheck(settingsManager.getProperty(CodeSettings.ACTIVE_CODE_AMOUNT))) {
-            getCurrentCommandIssuer().sendInfo(Messages.CODES__MAX);
-            return;
-        }
+        if (guild.getActiveCheck(settingsManager.getProperty(CodeSettings.ACTIVE_CODE_AMOUNT)))
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.CODES__MAX));
 
         String code = RandomStringUtils.randomAlphabetic(settingsManager.getProperty(CodeSettings.CODE_LENGTH));
 
