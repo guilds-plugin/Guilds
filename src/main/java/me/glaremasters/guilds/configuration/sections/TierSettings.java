@@ -85,7 +85,7 @@ public class TierSettings implements SettingsHolder {
 
     @Comment("If you wish to give this tier extra permissions, put them here.")
     public static final Property<List<String>> ONE_PERMS =
-            newListProperty(LIST_PATH + "1.permissions", "");
+            newListProperty(LIST_PATH + "1.permissions", "example.perm.here");
 
     @Comment("Which level tier is this? 1 is the default.")
     public static final Property<Integer> TWO_LEVEL =
@@ -125,7 +125,7 @@ public class TierSettings implements SettingsHolder {
 
     @Comment("If you wish to give this tier extra permissions, put them here.")
     public static final Property<List<String>> TWO_PERMS =
-            newListProperty(LIST_PATH + "2.permissions", "");
+            newListProperty(LIST_PATH + "2.permissions", "example.perm.here");
 
     @Comment("Which level tier is this? 1 is the default.")
     public static final Property<Integer> THREE_LEVEL =
@@ -165,7 +165,7 @@ public class TierSettings implements SettingsHolder {
 
     @Comment("If you wish to give this tier extra permissions, put them here.")
     public static final Property<List<String>> THREE_PERMS =
-            newListProperty(LIST_PATH + "3.permissions", "");
+            newListProperty(LIST_PATH + "3.permissions", "example.perm.here");
 
     private TierSettings() {
     }

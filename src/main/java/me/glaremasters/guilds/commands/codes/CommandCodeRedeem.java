@@ -24,18 +24,21 @@
 
 package me.glaremasters.guilds.commands.codes;
 
+import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
 import lombok.AllArgsConstructor;
+import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildCode;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildMember;
 import me.glaremasters.guilds.utils.Constants;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 /**
@@ -58,30 +61,18 @@ public class CommandCodeRedeem extends BaseCommand {
     @CommandPermission(Constants.CODE_PERM + "redeem")
     public void execute(Player player, String code) {
 
-        if (guildHandler.getGuild(player) != null) {
-            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ALREADY_IN_GUILD);
-            return;
-        }
+        if (guildHandler.getGuild(player) != null)
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__ALREADY_IN_GUILD));
 
         Guild guild = guildHandler.getGuildByCode(code);
 
-        if (guild == null) {
-            getCurrentCommandIssuer().sendInfo(Messages.CODES__INVALID_CODE);
-            return;
-        }
+        if (guild == null)
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.CODES__INVALID_CODE));
 
-        GuildCode gc = guild.getCode(code);
+        if (guildHandler.checkIfFull(guild))
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.ACCEPT__GUILD_FULL));
 
-        if (gc.getUses() <= 0) {
-            getCurrentCommandIssuer().sendInfo(Messages.CODES__OUT);
-            return;
-        }
-
-        gc.addRedeemer(player);
-
-        guild.addMemberByCode(new GuildMember(player.getUniqueId(), guildHandler.getLowestGuildRole()));
-        getCurrentCommandIssuer().sendInfo(Messages.CODES__JOINED, "{guild}", guild.getName());
-
+        guildHandler.handleInvite(getCurrentCommandManager(), player, guild, guild.getCode(code));
     }
 
 }

@@ -24,6 +24,7 @@
 
 package me.glaremasters.guilds.commands.codes;
 
+import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
@@ -33,6 +34,8 @@ import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.annotation.Values;
+import me.glaremasters.guilds.exceptions.ExpectationNotMet;
+import me.glaremasters.guilds.exceptions.InvalidPermissionException;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildCode;
@@ -56,12 +59,11 @@ public class CommandCodeInfo extends BaseCommand {
     @CommandCompletion("@activeCodes")
     public void execute(Player player, Guild guild, GuildRole role, @Values("@activeCodes") @Single String code) {
 
-        if (code == null) return;
+        if (!role.isSeeCodeRedeemers())
+            ACFUtil.sneaky(new InvalidPermissionException());
 
-        if (!role.isSeeCodeRedeemers()) {
-            getCurrentCommandIssuer().sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
-            return;
-        }
+        if (code == null)
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.CODES__INVALID_CODE));
 
         GuildCode gc = guild.getCode(code);
 
