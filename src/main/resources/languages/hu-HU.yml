@@ -197,6 +197,7 @@ codes:
   deleted: "&aSikeresen törölted ezt a meghívókódot a Céhedből!"
   invalid-code: "&cEz a meghívókód nem létezik. Próbáld meg újra!"
   joined: "&aSikeresen csatlakoztál a &6{guild} &acéhhez meghívókód használatával!"
+  guild-message: "&6{player} &ahas joined the guild using an invite code from &6{creator}&a!"
   out: "&cEzt a meghívókódot már elhasználták! Próbálj meg másikat!"
   info: "&aMeghívókód információ:\n&aID: &6{code}\n&aHátralévő használatok száma: &6{amount}\n&aKészítő: &6{creator}\n&aFelhasználták: &6{redeemers}"
   max: "&cMár túl sok aktív meghívókódod van ehhez a Céhhez!"
