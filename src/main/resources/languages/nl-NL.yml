@@ -197,6 +197,7 @@ codes:
   deleted: "&aDie invite code is verwijderd van jouw Guild!"
   invalid-code: "&cDie invite code lijkt niet te bestaan. Probeer het opnieuw!"
   joined: "&aJe hebt met succes toegetreden tot &6{guild} &adoor een invite code te gebruiken!"
+  guild-message: "&6{player} &ahas joined the guild using an invite code from &6{creator}&a!"
   out: "&cDie invite code kan niet meer gebruikt worden! Probeer een andere!"
   info: "&aInvite Code Informatie:\n&aID: &6{code}\n&aAantal keer gebruikt: &6{amount}\n&aAangemaakt door: &6{creator}\n&aGebruikt door: &6{redeemers}"
   max: "&cJe hebt al teveel actieve invite codes voor jouw Guild!"
