@@ -730,4 +730,17 @@ public class GuildHandler {
         manager.getCommandIssuer(player).sendInfo(Messages.CODES__JOINED, "{guild}", guild.getName());
         guild.sendMessage(manager, Messages.CODES__GUILD_MESSAGE, "{player}", player.getName(), "{creator}", Bukkit.getOfflinePlayer(code.getCreator()).getName());
     }
+
+    /**
+     * Handle sending code list message to prevent DRY
+     * @param commandManager command manager
+     * @param player player to send list to
+     * @param codes list of codes
+     */
+    public void handleCodeList(CommandManager commandManager, Player player, List<GuildCode> codes) {
+        codes.forEach(c -> commandManager.getCommandIssuer(player).sendInfo(Messages.CODES__LIST_ITEM,
+                "{code}", c.getId(),
+                "{amount}", String.valueOf(c.getUses()),
+                "{creator}", Bukkit.getOfflinePlayer(c.getCreator()).getName()));
+    }
 }

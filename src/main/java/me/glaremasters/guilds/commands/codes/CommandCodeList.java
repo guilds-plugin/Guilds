@@ -33,6 +33,7 @@ import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
 import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
+import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.configuration.sections.CodeSettings;
 import me.glaremasters.guilds.guild.Guild;
@@ -49,6 +50,7 @@ import org.bukkit.entity.Player;
 public class CommandCodeList extends BaseCommand {
 
     private SettingsManager settingsManager;
+    private GuildHandler guildHandler;
 
     /**
      * List all the current invite codes in your guild
@@ -65,19 +67,10 @@ public class CommandCodeList extends BaseCommand {
 
         getCurrentCommandIssuer().sendInfo(Messages.CODES__LIST_HEADER);
 
-
-        if (settingsManager.getProperty(CodeSettings.LIST_INACTIVE_CODES)) {
-            guild.getCodes().forEach(c -> getCurrentCommandIssuer().sendInfo(Messages.CODES__LIST_ITEM,
-                    "{code}", c.getId(),
-                    "{amount}", String.valueOf(c.getUses()),
-                    "{creator}", Bukkit.getOfflinePlayer(c.getCreator()).getName()));
-        } else {
-            guild.getActiveCodes().forEach(c -> getCurrentCommandIssuer().sendInfo(Messages.CODES__LIST_ITEM,
-                    "{code}", c.getId(),
-                    "{amount}", String.valueOf(c.getUses()),
-                    "{creator}", Bukkit.getOfflinePlayer(c.getCreator()).getName()));
-        }
-
+        if (settingsManager.getProperty(CodeSettings.LIST_INACTIVE_CODES))
+            guildHandler.handleCodeList(getCurrentCommandManager(), player, guild.getCodes());
+        else
+            guildHandler.handleCodeList(getCurrentCommandManager(), player, guild.getActiveCodes());
     }
 
 }
