@@ -9,7 +9,7 @@ descriptions:
   admin-status: "Админ-команда для смены статуса Гильдии"
   admin-spy: "Админ-команда для слежки за чатами гильдий"
   admin-upgrade: "Админ-команда для повышения уровня Гильдии"
-  admin-vault: "Admin command to view a guild's vault"
+  admin-vault: "Админ-команда для просмотра хранилища Гильдии"
   ally-accept: "Принять предложение на союз от другой Гильдии"
   ally-add: "Предложить Гильдии союз"
   ally-decline: "Отклонить предложение на союз с другой Гильдией"
@@ -23,11 +23,11 @@ descriptions:
   chat: "Переключить режим чата гильдии"
   check: "Посмотреть действующие приглашения в гильдии"
   claim: "Создание региона для своей гильдии"
-  code-create: "Create an invite code for your guild"
-  code-delete: "Delete an invite code from the guild"
-  code-info: "Get the information about an invite code"
-  code-list: "List all the current invite codes in your guild"
-  code-redeem: "Redeem an invite code to join a guild"
+  code-create: "Создать инвайт-код для своей Гильдии"
+  code-delete: "Удалить инвайт-код Гильдии"
+  code-info: "Получить информацию об инвайт-коде"
+  code-list: "Список действующих инвайт-кодов Гильдии"
+  code-redeem: "Активировать инвайт-код для вступления в Гильдию"
   confirm: "Подтвердить действие"
   create: "Создать Гильдию"
   decline: "Отклонить приглашение в Гильдию"
@@ -40,7 +40,7 @@ descriptions:
   info: "Открыть меню информации Гильдии"
   invite: "Пригласить игрока в Гильдию"
   kick: "Выгнать игрока из Гильдии"
-  language: "Change the language of the plugin messages for you"
+  language: "Изменить себе язык сообщений плагина"
   leave: "Покинуть Гильдию"
   list: "Список всех гильдий"
   prefix: "Сменить префикс Гильдии"
@@ -82,7 +82,7 @@ bank:
   deposit-success: "&aВы внесли {amount} в банк своей гильдии. Итого в банке гильдии {total}!"
   withdrawl-success: "&aВы сняли {amount} с вашего банка гильдии. Итого в банке гильдии {total}!"
   not-enough-bank: "&cВ банке гильдии недостаточно денег"
-  over-max: "&cSorry, you can't deposit that much as you would go over your max bank balance!"
+  over-max: "&cИзвините, но вы не можете положить на счет так много денег - банк перейдет максимальный лимит!"
 admin:
   delete-warning: "&cВы собираетесь расформировать Гильдию {guild}. Введите /guilds confirm для подтверждения, или /guilds cancel для отмены расформирования."
   delete-success: "&aВы успешно расформировали Гильдию {guild}."
@@ -190,7 +190,7 @@ unclaim:
 pending:
   invites: "&aУ Вас {number} действующих приглашений от следующих гильдий: &e{guilds}&r&a . Введите /guild accept <гильдия> для принятия или /guild deny <гильдия> для отклонения приглашения на вступление!"
 codes:
-  created: "&aYou've created a new invite code: &6{code} &awith &6{amount} &auses!"
+  created: "&aВы создали инвайт-код: &6{code} &aна &6{amount} &aиспользований!"
   empty: "&cOh no! I have no codes, try making one first!"
   list-header: "&aHere are the following active invite codes for your guild:"
   list-item: "&aID: &6{code} &f| &aUses Remaining: &6{amount} &f| &aCreator: &6{creator}"
@@ -204,4 +204,4 @@ codes:
 vaults:
   maxed: "&cYou can't open this vault because you already have the max amount of vaults for your Guild Tier!"
 languages:
-  set: "&aYou've successfully set your language to {language}"
+  set: "&aВы успешно установили язык Гильдий на {language}"
