@@ -30,3 +30,4 @@ about: Report a bug for Guilds! Only use this if you're 100% sure there's someth
 <!--- Include as many relevant details about the environment you experienced the bug in -->
 * Guilds version
 * MC Version
+* Plugin List
