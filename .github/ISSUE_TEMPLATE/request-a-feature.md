@@ -1,5 +1,5 @@
 ---
-name: Report A Feature
+name: Request A Feature
 about: You ideas matter to us! Suggest something new, and you might just see it in a future update!
 ---
 
