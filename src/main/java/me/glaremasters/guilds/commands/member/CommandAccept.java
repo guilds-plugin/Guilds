@@ -88,7 +88,7 @@ public class CommandAccept extends BaseCommand {
         if (event.isCancelled())
             return;
 
-        guild.addMember(new GuildMember(player.getUniqueId(), guildHandler.getLowestGuildRole()));
+        guild.addMember(player, guildHandler);
 
         guildHandler.addPerms(permission, player);
 

@@ -82,7 +82,7 @@ public class CommandAdminAddPlayer extends BaseCommand {
         if (targetGuild == null)
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
 
-        targetGuild.addMember(new GuildMember(adding.getUniqueId(), guildHandler.getLowestGuildRole()));
+        targetGuild.addMember(adding, guildHandler);
 
         if (adding.isOnline())
             getCurrentCommandManager().getCommandIssuer(adding).sendInfo(Messages.ADMIN__PLAYER_ADDED,

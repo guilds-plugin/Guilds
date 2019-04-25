@@ -101,10 +101,11 @@ public class Guild {
      *
      * @param guildMember the member to add
      */
-    public void addMember(GuildMember guildMember) {
-        if (getMembers().contains(guildMember)) return;
-        removeInvitedMember(guildMember.getUuid());
-        getMembers().add(guildMember);
+    public void addMember(OfflinePlayer player, GuildHandler guildHandler) {
+        GuildMember member = new GuildMember(player.getUniqueId(), guildHandler.getLowestGuildRole());
+        if (getMembers().contains(member)) return;
+        removeInvitedMember(member.getUuid());
+        getMembers().add(member);
     }
 
     /**
