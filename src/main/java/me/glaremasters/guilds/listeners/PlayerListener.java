@@ -29,26 +29,19 @@ import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.PaperCommandManager;
 import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Guilds;
-import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.configuration.sections.GuildSettings;
 import me.glaremasters.guilds.configuration.sections.PluginSettings;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.utils.JSONMessage;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.material.Sign;
-import org.bukkit.potion.PotionEffectType;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -114,52 +107,6 @@ public class PlayerListener implements Listener {
     }
 
     /**
-     * Check if the sign being placed is to be turned into a Guild Sign
-     * @param event
-     */
-    @EventHandler
-    public void onSignPlace(SignChangeEvent event) {
-        Sign sign = (Sign) event.getBlock().getState().getData();
-        Block attached = event.getBlock().getRelative(sign.getAttachedFace());
-        // Check if the sign is attached to a chest
-        if (attached.getType() != Material.CHEST) return;
-        // Check if it's a Guild Vault sign
-        if (!event.getLine(0).equalsIgnoreCase("[Guild Vault]")) return;
-        // Check if player has permission
-        if (!event.getPlayer().hasPermission("guilds.command.admin")) {
-            event.setCancelled(true);
-            return;
-        }
-        // Send the message to the player saying it's been created
-        commandManager.getCommandIssuer(event.getPlayer()).sendInfo(Messages.ADMIN__GUILD_VAULT_SIGN);
-    }
-
-/*    *//**
-     * Check if the inventory being clicked on is part of the Guild Buff system
-     * @param event
-     *//*
-    @EventHandler
-    public void onBuffBuy(InventoryClickEvent event) {
-        Player player = (Player) event.getWhoClicked();
-        Guild guild = guildHandler.getGuild(player);
-        if (!event.getInventory().getTitle().equals(settingsManager.getProperty(GuildBuffSettings.GUILD_BUFF_NAME))) return;
-        if (event.getInventory().getTitle().equals(settingsManager.getProperty(GuildBuffSettings.GUILD_BUFF_NAME))) event.setCancelled(true);
-        if (event.getCurrentItem() == null) return;
-        *//*GuildBuff buff = GuildBuff.get(event.getCurrentItem().getType());*//*
-        double balance = guild.getBalance();
-        *//*if (buff == null) return;*//*
-*//*        if (balance < buff.cost) {
-            commandManager.getCommandIssuer(player).sendInfo(Messages.BANK__NOT_ENOUGH_BANK);
-            return;
-        }*//*
-        if (settingsManager.getProperty(GuildBuffSettings.BUFF_STACKING) && !player.getActivePotionEffects().isEmpty()) return;
-
-        *//*guild.getOnlineMembers().forEach(guildMember -> ((Player) guildMember).addPotionEffect(new PotionEffect(buff.potion, buff.time, buff.amplifier)));*//*
-        *//*guild.setBalance(balance - buff.cost);*//*
-
-    }*/
-
-    /**
      * Handles guild chat
      * @param event
      */
@@ -180,80 +127,5 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void chatLeave(PlayerQuitEvent event) {
         guildHandler.chatLogout(event.getPlayer());
-    }
-
-    /**
-     * Make sure the player has their tier role
-     * @param event
-     */
-    @EventHandler
-    public void rolePerm(PlayerJoinEvent event) {
-        Player player = event.getPlayer();
-        Guild guild = guildHandler.getGuild(player);
-        if (guild == null) return;
-        String node = guildHandler.getGuildRole(guild.getMember(player.getUniqueId()).getRole().getLevel()).getNode();
-        if (!player.hasPermission(node)) {
-            Bukkit.getScheduler().runTaskLater(guilds, () -> guilds.getPermissions().playerAdd(player, node), 60L);
-        }
-    }
-
-    /**
-     * Handle giving player perms for all tiers
-     * @param event
-     */
-    //todo this is done on multiple stages.
-    //we need to make sure that these are logical
-    //it's not on so many places, guild creation, member join, player join server etc
-    //need to make sure we are not wasting resources by assigning it multiple times.
-    //so I think this probably can go.
-    @EventHandler
-    public void tierPerms(PlayerJoinEvent event) {
-        Player player = event.getPlayer();
-        Guild guild = guildHandler.getGuild(player);
-        if (guild == null) return;
-        /*utils.addGuildPerms(guild, player);*/
-
-
-    }
-
-    /**
-     * This is just an enum of all the buff types to choose from
-     */
-    public enum GuildBuff {
-
-        HASTE(PotionEffectType.FAST_DIGGING, Material.FEATHER, "haste"),
-        SPEED(PotionEffectType.SPEED, Material.SUGAR, "speed"),
-        FIRE_RESISTANCE(PotionEffectType.FIRE_RESISTANCE, Material.BLAZE_POWDER, "fire-resistance"),
-        NIGHT_VISION(PotionEffectType.NIGHT_VISION, Material.REDSTONE_TORCH_ON, "night-vision"),
-        INVISIBILITY(PotionEffectType.INVISIBILITY, Material.EYE_OF_ENDER, "invisibility"),
-        STRENGTH(PotionEffectType.INCREASE_DAMAGE, Material.DIAMOND_SWORD, "strength"),
-        JUMP(PotionEffectType.JUMP, Material.DIAMOND_BOOTS, "jump"),
-        WATER_BREATHING(PotionEffectType.WATER_BREATHING, Material.BUCKET, "water-breathing"),
-        REGENERATION(PotionEffectType.REGENERATION, Material.EMERALD, "regeneration");
-
-
-/*        public final PotionEffectType potion;
-        public final Material itemType;
-        public final int time;
-        public final double cost;
-        public final String name;
-        public final int amplifier;*/
-
-        GuildBuff(PotionEffectType potion, Material itemType, String configValueName) {
-/*            this.time = getInt("buff.time." + configValueName) * 20;
-            this.cost = getDouble("buff.price." + configValueName);
-            this.itemType = itemType;
-            this.potion = potion;
-            this.name = getString("buff.name." + configValueName);
-            this.amplifier =getInt("buff.amplifier." + configValueName);*/
-        }
-
-/*
-        public static GuildBuff get(Material itemType) {
-
-            return Stream.of(values()).filter(it -> it.itemType == itemType).findAny().orElse(null);
-        }
-*/
-
     }
 }
