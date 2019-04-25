@@ -30,11 +30,11 @@
 
     <groupId>me.glaremasters</groupId>
     <artifactId>guilds</artifactId>
-    <version>3.4-BETA</version>
+    <version>3.4-RELEASE</version>
     <packaging>jar</packaging>
 
     <name>Guilds</name>
-    <url>https://www.spigotmc.org/resources/48920/</url>
+    <url>https://www.spigotmc.org/resources/66176/</url>
 
     <issueManagement>
         <system>GitHub</system>

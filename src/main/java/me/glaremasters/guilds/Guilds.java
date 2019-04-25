@@ -465,7 +465,7 @@ public final class Guilds extends JavaPlugin {
         }
 
         if (settingsManager.getProperty(PluginSettings.UPDATE_CHECK)) {
-            UpdateChecker.init(this, 48920).requestUpdateCheck().whenComplete((result, exception) -> {
+            UpdateChecker.init(this, 66176).requestUpdateCheck().whenComplete((result, exception) -> {
                 if (result.requiresUpdate()) {
                     this.getLogger().info(String.format("An update is available! Guilds %s may be downloaded on SpigotMC", result.getNewestVersion()));
                     return;
