@@ -24,15 +24,29 @@
 
 package me.glaremasters.guilds.listeners;
 
+import ch.jalu.configme.SettingsManager;
 import lombok.AllArgsConstructor;
+import me.glaremasters.guilds.configuration.sections.GuildSettings;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Arrow;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.ThrownPotion;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityCombustByEntityEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.PotionSplashEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by GlareMasters
@@ -43,9 +57,11 @@ import org.bukkit.event.entity.EntityDeathEvent;
 public class EntityListener implements Listener {
 
     private GuildHandler guildHandler;
+    private SettingsManager settingsManager;
+    private final Set<PotionEffectType> bad = new HashSet<>(Arrays.asList(PotionEffectType.BLINDNESS, PotionEffectType.WITHER, PotionEffectType.SLOW_DIGGING, PotionEffectType.WEAKNESS, PotionEffectType.SLOW, PotionEffectType.POISON));
 
     @EventHandler
-    public void onDamage(EntityDamageByEntityEvent event) {
+    public void onMobDamage(EntityDamageByEntityEvent event) {
         if (event.getDamager() instanceof Player) {
             Player player = (Player) event.getDamager();
             Guild guild = guildHandler.getGuild(player);
@@ -61,6 +77,88 @@ public class EntityListener implements Listener {
         if (killer == null) return;
         Guild guild = guildHandler.getGuild(killer);
         if (guild != null) event.setDroppedExp((int) (event.getDroppedExp() * guild.getTier().getDamageMultiplier()));
+    }
+
+    /**
+     * Guild / Ally damage handlers
+     * @param event handles when damage is done between two players that might be in the same guild or are allies
+     */
+    @EventHandler
+    public void onEntityDamage(EntityDamageByEntityEvent event) {
+        if (!(event.getEntity() instanceof Player) || !(event.getDamager() instanceof Player)) return;
+        Player player = (Player) event.getEntity();
+        Player damager = (Player) event.getDamager();
+        if (guildHandler.isSameGuild(player, damager)) {
+            event.setCancelled(!settingsManager.getProperty(GuildSettings.GUILD_DAMAGE));
+            return;
+        }
+        if (guildHandler.isAlly(player, damager)) {
+            event.setCancelled(!settingsManager.getProperty(GuildSettings.ALLY_DAMAGE));
+        }
+    }
+
+    @EventHandler
+    public void onFlameArrow(EntityCombustByEntityEvent event) {
+
+        if (!(event.getEntity() instanceof Player))
+            return;
+
+        if (!(event.getCombuster() instanceof Arrow))
+            return;
+
+        Arrow arrow = (Arrow) event.getCombuster();
+
+        if (!(arrow.getShooter() instanceof Player))
+            return;
+
+        Player damagee = (Player) event.getEntity();
+        Player damager = (Player) arrow.getShooter();
+
+        if (guildHandler.isSameGuild(damagee, damager)) {
+            arrow.setFireTicks(0);
+            event.setCancelled(!settingsManager.getProperty(GuildSettings.GUILD_DAMAGE));
+            return;
+        }
+
+        if (guildHandler.isAlly(damagee, damager)) {
+            arrow.setFireTicks(0);
+            event.setCancelled(!settingsManager.getProperty(GuildSettings.ALLY_DAMAGE));
+        }
+    }
+
+    @EventHandler
+    public void onSplash(PotionSplashEvent event) {
+        boolean isHarming = false;
+        for (PotionEffect effect : event.getPotion().getEffects()) {
+            if (bad.contains(effect.getType())) {
+                isHarming = true;
+                break;
+            }
+        }
+
+        if (!isHarming)
+            return;
+
+        ThrownPotion potion = event.getPotion();
+
+        if (!(potion.getShooter() instanceof Player))
+            return;
+
+        Player shooter = (Player) potion.getShooter();
+
+        for (LivingEntity entity : event.getAffectedEntities()) {
+            if (entity instanceof Player)  {
+                Player player = (Player) entity;
+                if (guildHandler.isSameGuild(shooter, player)) {
+                    event.setCancelled(!settingsManager.getProperty(GuildSettings.GUILD_DAMAGE));
+                    return;
+                }
+                if (guildHandler.isAlly(shooter, player)) {
+                    event.setCancelled(!settingsManager.getProperty(GuildSettings.ALLY_DAMAGE));
+                }
+            }
+        }
+
     }
 
 

@@ -275,6 +275,34 @@ public class GuildHandler {
         return guild.getAllies().contains(target.getId());
     }
 
+    /**
+     * Check if players are allies
+     * @param player the player
+     * @param target the target
+     * @return allies or not
+     */
+    public boolean isAlly(Player player, Player target) {
+        Guild pGuild = getGuild(player);
+        Guild tGuild = getGuild(target);
+        if (pGuild == null || tGuild == null)
+            return false;
+        return pGuild.getAllies().contains(tGuild.getId());
+    }
+
+    /**
+     * Simple method to check if players are in the same guild
+     * @param player the player being checked
+     * @param target the target being checked
+     * @return if same guild or not
+     */
+    public boolean isSameGuild(Player player, Player target) {
+        Guild pGuild = getGuild(player);
+        Guild tGuild = getGuild(target);
+        if (pGuild == null || tGuild == null)
+            return false;
+        return pGuild.getName().equals(tGuild.getName());
+    }
+
 
     /**
      * Removes an ally.
