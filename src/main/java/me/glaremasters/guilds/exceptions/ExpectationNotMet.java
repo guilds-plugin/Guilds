@@ -34,10 +34,19 @@ import co.aikar.locales.MessageKeyProvider;
  */
 public class ExpectationNotMet extends InvalidCommandArgument {
 
+    /**
+     * Exception used when an expectation in the plugin is not being met
+     * @param message the message to send to the user
+     */
     public ExpectationNotMet(MessageKeyProvider message) {
         super(message.getMessageKey(), false);
     }
 
+    /**
+     * Exception used
+     * @param key
+     * @param replacements
+     */
     public ExpectationNotMet(MessageKeyProvider key, String... replacements) {
         super (key.getMessageKey(), replacements);
     }

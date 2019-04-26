@@ -24,6 +24,7 @@
 
 package me.glaremasters.guilds.api;
 
+import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildCode;
 import me.glaremasters.guilds.guild.GuildHandler;
@@ -36,13 +37,10 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.UUID;
 
+@AllArgsConstructor
 public class GuildsAPI {
 
     private final GuildHandler guildHandler;
-
-    public GuildsAPI(GuildHandler guildHandler) {
-        this.guildHandler = guildHandler;
-    }
 
     /**
      * Get the guild of a player
@@ -150,6 +148,15 @@ public class GuildsAPI {
      */
     public List<GuildCode> getGuildCodes(@NotNull Player player) {
         return getGuild(player).getCodes();
+    }
+
+    /**
+     * Get the ID of a guild
+     * @param player the player to check
+     * @return the id of the guild they are in
+     */
+    public String getGuildId(@NotNull Player player) {
+        return getGuild(player).getId().toString();
     }
 
 }

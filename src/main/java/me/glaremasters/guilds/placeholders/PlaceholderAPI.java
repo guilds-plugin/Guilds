@@ -64,6 +64,8 @@ public class PlaceholderAPI extends PlaceholderExpansion {
         if (api.getGuild(p) == null) return "";
 
         switch (lowerArg) {
+            case "id":
+                return api.getGuildId(p);
             case "name":
                 return api.getGuild(p).getName();
             case "master":
@@ -86,6 +88,8 @@ public class PlaceholderAPI extends PlaceholderExpansion {
                 return api.getGuildTier(p).getName();
             case "role_node":
                 return api.getGuildRole(p).getNode();
+            case "code_amount":
+                return String.valueOf(api.getGuildCodes(p).size());
         }
         return "";
     }

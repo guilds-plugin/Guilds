@@ -30,8 +30,6 @@ import org.bukkit.command.CommandSender;
 import java.util.HashMap;
 import java.util.Map;
 
-
-//todo hmm?
 public class ActionHandler {
 
     @Getter
