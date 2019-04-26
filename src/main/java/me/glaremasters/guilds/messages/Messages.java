@@ -98,7 +98,10 @@ public enum Messages implements MessageKeyProvider {
 
     VAULTS__MAXED,
 
-    LANGUAGES__SET;
+    LANGUAGES__SET,
+
+    HELP__HEADER, HELP__DETAILED_HEADER, HELP__FORMAT, HELP__COMMAND_FORMAT, HELP__PARAMETER_FORMAT,
+    HELP__PAGE_INFO, HELP__SEARCH_HEADER;
 
     /**
      * Message keys that grab from the config to send messages
