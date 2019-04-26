@@ -40,6 +40,7 @@ import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.actions.ConfirmAction;
 import me.glaremasters.guilds.api.events.GuildCreateEvent;
 import me.glaremasters.guilds.configuration.sections.CostSettings;
+import me.glaremasters.guilds.configuration.sections.GuildListSettings;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
@@ -147,7 +148,14 @@ public class CommandCreate extends BaseCommand {
 
                 actionHandler.removeAction(player);
 
-                Bukkit.getServer().getScheduler().runTaskAsynchronously(guilds, () -> guild.setGuildSkull(new GuildSkull(player)));
+
+                Bukkit.getServer().getScheduler().runTaskAsynchronously(guilds, () -> {
+                    try {
+                        guild.setGuildSkull(new GuildSkull(player));
+                    } catch (Exception ex) {
+                        guild.setGuildSkull(new GuildSkull(settingsManager.getProperty(GuildListSettings.GUILD_LIST_HEAD_DEFAULT_URL)));
+                    }
+                });
             }
 
             @Override

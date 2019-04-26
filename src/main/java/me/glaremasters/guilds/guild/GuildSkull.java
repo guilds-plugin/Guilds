@@ -26,18 +26,13 @@ package me.glaremasters.guilds.guild;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
-import org.bukkit.Material;
+import me.glaremasters.guilds.utils.SkullUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.SkullMeta;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Field;
 import java.net.URL;
-import java.util.Base64;
 import java.util.UUID;
 
 /**
@@ -51,8 +46,13 @@ public class GuildSkull {
     private transient ItemStack itemStack;
 
     public GuildSkull(Player player) {
-        serialized = getEncoded(getTextureUrl(player.getUniqueId()));
-        itemStack = getSkull(serialized);
+        serialized = SkullUtils.getEncoded(getTextureUrl(player.getUniqueId()));
+        itemStack = SkullUtils.getSkull(serialized);
+    }
+
+    public GuildSkull(String texture) {
+        serialized = SkullUtils.getEncoded("https://textures.minecraft.net/texture/" + texture);
+        itemStack = SkullUtils.getSkull(serialized);
     }
 
     private String getTextureUrl(UUID uuid) {
@@ -65,35 +65,6 @@ public class GuildSkull {
             e.printStackTrace();
             return "";
         }
-    }
-
-    private String getEncoded(String skinUrl) {
-        byte[] encodedData = Base64.getEncoder().encode(String.format("{textures:{SKIN:{url:\"%s\"}}}", skinUrl).getBytes());
-        return new String(encodedData);
-    }
-
-    public ItemStack getSkull(String skinUrl) {
-        ItemStack head = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
-        if (skinUrl.isEmpty()) return head;
-
-        SkullMeta headMeta = (SkullMeta) head.getItemMeta();
-        GameProfile profile = getGameProfile(skinUrl);
-        Field profileField;
-        try {
-            profileField = headMeta.getClass().getDeclaredField("profile");
-            profileField.setAccessible(true);
-            profileField.set(headMeta, profile);
-        } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e1) {
-            e1.printStackTrace();
-        }
-        head.setItemMeta(headMeta);
-        return head;
-    }
-
-    private GameProfile getGameProfile(String url) {
-        GameProfile profile = new GameProfile(UUID.randomUUID(), null);
-        profile.getProperties().put("textures", new Property("textures", url));
-        return profile;
     }
 
     public ItemStack getItemStack() {

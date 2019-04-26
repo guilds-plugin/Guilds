@@ -32,7 +32,6 @@ import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
 import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
 import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Guilds;
-import me.glaremasters.guilds.configuration.sections.GuildBuffSettings;
 import me.glaremasters.guilds.configuration.sections.GuildListSettings;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
