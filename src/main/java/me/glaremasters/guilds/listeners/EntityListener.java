@@ -61,7 +61,7 @@ public class EntityListener implements Listener {
     private final Set<PotionEffectType> bad = new HashSet<>(Arrays.asList(PotionEffectType.BLINDNESS, PotionEffectType.WITHER, PotionEffectType.SLOW_DIGGING, PotionEffectType.WEAKNESS, PotionEffectType.SLOW, PotionEffectType.POISON));
 
     @EventHandler
-    public void onDamage(EntityDamageByEntityEvent event) {
+    public void onMobDamage(EntityDamageByEntityEvent event) {
         if (event.getDamager() instanceof Player) {
             Player player = (Player) event.getDamager();
             Guild guild = guildHandler.getGuild(player);
@@ -77,6 +77,24 @@ public class EntityListener implements Listener {
         if (killer == null) return;
         Guild guild = guildHandler.getGuild(killer);
         if (guild != null) event.setDroppedExp((int) (event.getDroppedExp() * guild.getTier().getDamageMultiplier()));
+    }
+
+    /**
+     * Guild / Ally damage handlers
+     * @param event handles when damage is done between two players that might be in the same guild or are allies
+     */
+    @EventHandler
+    public void onEntityDamage(EntityDamageByEntityEvent event) {
+        if (!(event.getEntity() instanceof Player) || !(event.getDamager() instanceof Player)) return;
+        Player player = (Player) event.getEntity();
+        Player damager = (Player) event.getDamager();
+        if (guildHandler.isSameGuild(player, damager)) {
+            event.setCancelled(!settingsManager.getProperty(GuildSettings.GUILD_DAMAGE));
+            return;
+        }
+        if (guildHandler.isAlly(player, damager)) {
+            event.setCancelled(!settingsManager.getProperty(GuildSettings.ALLY_DAMAGE));
+        }
     }
 
     @EventHandler
@@ -99,6 +117,12 @@ public class EntityListener implements Listener {
         if (guildHandler.isSameGuild(damagee, damager)) {
             arrow.setFireTicks(0);
             event.setCancelled(!settingsManager.getProperty(GuildSettings.GUILD_DAMAGE));
+            return;
+        }
+
+        if (guildHandler.isAlly(damagee, damager)) {
+            arrow.setFireTicks(0);
+            event.setCancelled(!settingsManager.getProperty(GuildSettings.ALLY_DAMAGE));
         }
     }
 
@@ -127,6 +151,10 @@ public class EntityListener implements Listener {
                 Player player = (Player) entity;
                 if (guildHandler.isSameGuild(shooter, player)) {
                     event.setCancelled(!settingsManager.getProperty(GuildSettings.GUILD_DAMAGE));
+                    return;
+                }
+                if (guildHandler.isAlly(shooter, player)) {
+                    event.setCancelled(!settingsManager.getProperty(GuildSettings.ALLY_DAMAGE));
                 }
             }
         }

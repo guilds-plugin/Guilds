@@ -38,7 +38,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -66,22 +65,6 @@ public class PlayerListener implements Listener {
     private PaperCommandManager commandManager;
 
     private final Set<UUID> ALREADY_INFORMED = new HashSet<>();
-
-    /**
-     * Guild / Ally damage handlers
-     * @param event handles when damage is done between two players that might be in the same guild or are allies
-     */
-    @EventHandler
-    public void onDamage(EntityDamageByEntityEvent event) {
-        if (!(event.getEntity() instanceof Player) || !(event.getDamager() instanceof Player)) return;
-        Player player = (Player) event.getEntity();
-        Player damager = (Player) event.getDamager();
-        Guild playerGuild = guildHandler.getGuild(player);
-        Guild damagerGuild = guildHandler.getGuild(damager);
-        if (playerGuild == null || damagerGuild == null) return;
-        if (playerGuild.equals(damagerGuild)) event.setCancelled(!settingsManager.getProperty(GuildSettings.GUILD_DAMAGE));
-        /*if (guildHandler.areAllies(player.getUniqueId(), damager.getUniqueId())) event.setCancelled(!settingsManager.getProperty(GuildSettings.ALLY_DAMAGE));*/
-    }
 
     /**
      * This will check if a user is OP and will inform them of any important announcements from the Guild's Developer
