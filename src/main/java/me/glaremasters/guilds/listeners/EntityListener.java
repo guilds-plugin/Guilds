@@ -31,13 +31,22 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Arrow;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.ThrownPotion;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityCombustByEntityEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.PotionSplashEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by GlareMasters
@@ -49,6 +58,7 @@ public class EntityListener implements Listener {
 
     private GuildHandler guildHandler;
     private SettingsManager settingsManager;
+    private final Set<PotionEffectType> bad = new HashSet<>(Arrays.asList(PotionEffectType.BLINDNESS, PotionEffectType.WITHER, PotionEffectType.SLOW_DIGGING, PotionEffectType.WEAKNESS, PotionEffectType.SLOW, PotionEffectType.POISON));
 
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent event) {
@@ -90,6 +100,37 @@ public class EntityListener implements Listener {
             arrow.setFireTicks(0);
             event.setCancelled(!settingsManager.getProperty(GuildSettings.GUILD_DAMAGE));
         }
+    }
+
+    @EventHandler
+    public void onSplash(PotionSplashEvent event) {
+        boolean isHarming = false;
+        for (PotionEffect effect : event.getPotion().getEffects()) {
+            if (bad.contains(effect.getType())) {
+                isHarming = true;
+                break;
+            }
+        }
+
+        if (!isHarming)
+            return;
+
+        ThrownPotion potion = event.getPotion();
+
+        if (!(potion.getShooter() instanceof Player))
+            return;
+
+        Player shooter = (Player) potion.getShooter();
+
+        for (LivingEntity entity : event.getAffectedEntities()) {
+            if (entity instanceof Player)  {
+                Player player = (Player) entity;
+                if (guildHandler.isSameGuild(shooter, player)) {
+                    event.setCancelled(!settingsManager.getProperty(GuildSettings.GUILD_DAMAGE));
+                }
+            }
+        }
+
     }
 
 
