@@ -197,6 +197,7 @@ codes:
   deleted: "&aТози код за покана беше премахнат от вашата гилдия!"
   invalid-code: "&cТози код за покана не изглежда, че съществува. Моля опитайте отново!"
   joined: "&aУспешно влязохте в гилдията &6{guild}&a, използвайки код за покана!"
+  guild-message: "&6{player} &ahas joined the guild using an invite code from &6{creator}&a!"
   out: "&cТози код за покана е напълно използван! Моля опитайте друг!"
   info: "&aИнформация за код:\n&aКод: &6{code}\n&aИзползвания: &6{amount}\n&aСъздател: &6{creator}\n&aИзползвали: &6{redeemers}"
   max: "&cИмате твърде много активни кодове за покани във вашата гилдия!"
@@ -204,3 +205,12 @@ vaults:
   maxed: "&cНе можете да отворите този трезор, защото вече имате максималният брой трезори за вашето ниво на гилдия!"
 languages:
   set: "&aYou've successfully set your language to {language}"
+help:
+  header: "<c3>=== </c3><c1>Showing help for </c1><c2>{commandprefix}{command}</c2><c3> ===</c3>"
+  detailed-header: "<c3>=== </c3><c1>Showing detailed help for </c1><c2>{commandprefix}{command}</c2><c3> ===</c3>"
+  format: "<c1>{command}</c1> <c2>{parameters}</c2> <c3>{separator} {description}</c3>"
+  command-format: "<c1>{command}</c1> <c2>{parameters}</c2> <c3>{separator} {description}</c3>"
+  parameter-format: "<c2>{syntaxorname}</c2>: <c3>{description}</c3>"
+  page-info: "Showing page <c2>{page}</c2> of <c2>{totalpages}</c2> (<c3>{results}</c3> results)."
+  search-header: "<c3>=== </c3><c1>Search results for </c1><c2>{commandprefix}{command} {search}</c2><c3> ===</c3>"
+
