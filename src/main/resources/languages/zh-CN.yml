@@ -180,17 +180,17 @@ accept:
   player-joined: "&7[&6公会&7]&f{player} 已加入公会!"
   successful: "&7[&6公会&7]&f你已加入公会 {guild}"
 claim:
-  already-exists: "&cYou already have a claim. Please remove your previous claim to create a new one"
-  overlap: "&cYour claim could not be created because there is another claim nearby"
-  success: "&aNew claim created! It goes from {loc1} to {loc2}!"
-  hook-disabled: "&cPlease enable claims in the config to utilize this feature"
+  already-exists: "&7[&6公会&7]&f你已设置了公会领地,请尝试删除之前的领地后重试\""
+  overlap: "&7[&6公会&7]&f距离其他公会的领地太近了,请尝试换到其他的位置"
+  success: "&7[&6公会&7]&f已设立公会领地! [{loc1} - {loc2}]"
+  hook-disabled: "&7[&6公会&7]&f请在配置中开启领地设置"
 unclaim:
-  success: "&aYou've successfully remove your guild claim!"
-  not-found: "&cYou can't unclaim land that you don't have!"
+  success: "&7[&6公会&7]&f你已成功删除你的公会领地!"
+  not-found: "&7[&6公会&7]&f公会领地不存在!"
 pending:
-  invites: "&aYou have {number} pending invite(s) from the guild(s): &e{guilds}&r&a . Use /guild accept <name> or /guild deny <name> to join or deny an invite!"
+  invites: "&7[&6公会&7]&f你有来自公会的 {number} 个待处理邀请:  {guilds}   使用 /guild accept <name> 或 /guild deny <name> 来处理请求!"
 codes:
-  created: "&aYou've created a new invite code: &6{code} &awith &6{amount} &auses!"
+  created: "&7[&6公会&7]&f你创建了新的邀请码: {code} X {amount} 请及时使用!"
   empty: "&7[&6公会&7]&f你没有邀请码了,请重新创建!"
   list-header: "&7[&6公会&7]&f以下是公会当前的邀请码:"
   list-item: "&7[&6公会&7]&fID: {code} | 剩余数量: {amount} | 创建者: &6{creator}"
