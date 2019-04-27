@@ -53,7 +53,7 @@ import org.bukkit.entity.Player;
 public class CommandCodeInfo extends BaseCommand {
 
     @Subcommand("code info")
-    @Description("{@@descriptions.code-info")
+    @Description("{@@descriptions.code-info}")
     @CommandPermission(Constants.CODE_PERM + "info")
     @Syntax("<code>")
     @CommandCompletion("@activeCodes")
