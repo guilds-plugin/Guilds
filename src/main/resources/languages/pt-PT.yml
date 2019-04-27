@@ -8,7 +8,7 @@ descriptions:
   admin-removeplayer: "Admin command to remove a player from a Guild"
   admin-status: "Admin command to change a Guild's status"
   admin-spy: "Admin command to enable guild chat spy"
-  admin-update-languages: "Admin command to update the langauge files"
+  admin-update-languages: "Admin command to update the language files"
   admin-upgrade: "Admin command to upgrade a Guild's tier"
   admin-vault: "Admin command to view a guild's vault"
   ally-accept: "Accept an ally invite from another guild"
