@@ -8,7 +8,7 @@ descriptions:
   admin-removeplayer: "Администраторска команда, с която да премахнете играч от Гилдия"
   admin-status: "Администраторска команда, с която да промените статуса на Гилдия"
   admin-spy: "Администраторска команда, с която да активирате шпионирането на чата на Гилдия"
-  admin-update-languages: "Admin command to update the langauge files"
+  admin-update-languages: "Admin command to update the language files"
   admin-upgrade: "Администраторска команда, с която да вдигнете нивото на Гилдия"
   admin-vault: "Администраторска команда, с която да видите трезора на Гилдия"
   ally-accept: "Администраторска команда, с която да приемете съюзническа покана от друга Гилдия"
