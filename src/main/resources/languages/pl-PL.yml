@@ -8,7 +8,7 @@ descriptions:
   admin-removeplayer: "Komenda administratora aby usunąć gracza z gildii"
   admin-status: "Komenda administratora aby zmienić status gildi"
   admin-spy: "Komenda administratora aby podglądać chat gildii"
-  admin-update-languages: "Admin command to update the langauge files"
+  admin-update-languages: "Admin command to update the language files"
   admin-upgrade: "Komenda administratora aby ulepszyć tier gildii"
   admin-vault: "Admin command to view a guild's vault"
   ally-accept: "Zaakceptowanie sojuszu od innej gildii"
