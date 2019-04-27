@@ -46,6 +46,7 @@ import me.glaremasters.guilds.commands.admin.CommandAdminRemovePlayer;
 import me.glaremasters.guilds.commands.admin.CommandAdminRename;
 import me.glaremasters.guilds.commands.admin.CommandAdminSpy;
 import me.glaremasters.guilds.commands.admin.CommandAdminStatus;
+import me.glaremasters.guilds.commands.admin.CommandAdminUpdateLanguages;
 import me.glaremasters.guilds.commands.admin.CommandAdminUpgrade;
 import me.glaremasters.guilds.commands.admin.CommandAdminVault;
 import me.glaremasters.guilds.commands.admin.CommandReload;
@@ -223,7 +224,8 @@ public final class Guilds extends JavaPlugin {
      *
      * @param manager ACF BCM
      */
-    private void loadLanguages(PaperCommandManager manager) {
+    public void loadLanguages(PaperCommandManager manager) {
+        loadedLanguages.clear();
         try {
             File languageFolder = new File(getDataFolder(), "languages");
             for (File file : Objects.requireNonNull(languageFolder.listFiles())) {
@@ -392,6 +394,7 @@ public final class Guilds extends JavaPlugin {
                 new CommandAdminRemovePlayer(guildHandler),
                 new CommandAdminRename(guildHandler),
                 new CommandAdminSpy(guildHandler),
+                new CommandAdminUpdateLanguages(actionHandler, settingsManager, this),
                 new CommandAdminStatus(guildHandler),
                 new CommandAdminUpgrade(guildHandler),
                 new CommandAdminVault(guildHandler),
