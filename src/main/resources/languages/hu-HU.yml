@@ -8,7 +8,7 @@ descriptions:
   admin-removeplayer: "Adminisztrátori parancs egy játékos eltávolításához a céhből"
   admin-status: "Adminisztrátori parancs a céh státuszának megváltoztatásához"
   admin-spy: "Adminisztrátori parancs, amely lehetővé teszi a céhek csevegési kémének engedélyezését"
-  admin-update-languages: "Admin command to update the langauge files"
+  admin-update-languages: "Admin command to update the language files"
   admin-upgrade: "Adminisztrátori parancs a céh szintjének frissítésére"
   admin-vault: "Admin parancs céhszéf megtekintéséhez"
   ally-accept: "Elfogadása egy szövetséges meghívásnak egy másik céhtől"
