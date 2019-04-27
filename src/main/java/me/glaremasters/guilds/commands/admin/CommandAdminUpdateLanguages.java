@@ -51,13 +51,15 @@ public class CommandAdminUpdateLanguages extends BaseCommand {
         actionHandler.addAction(issuer.getIssuer(), new ConfirmAction() {
             @Override
             public void accept() {
-                try {
-                    LanguageUpdateUtils.updateLanguages();
-                } catch (ZipException | IOException e) {
-                    e.printStackTrace();
-                } finally {
-                    guilds.loadLanguages(guilds.getCommandManager());
-                }
+                Bukkit.getServer().getScheduler().runTaskAsynchronously(guilds, () -> {
+                    try {
+                        LanguageUpdateUtils.updateLanguages();
+                    } catch (ZipException | IOException e) {
+                        e.printStackTrace();
+                    } finally {
+                        guilds.loadLanguages(guilds.getCommandManager());
+                    }
+                });
                 actionHandler.removeAction(issuer.getIssuer());
             }
 
