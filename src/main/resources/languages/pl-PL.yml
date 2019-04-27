@@ -8,6 +8,7 @@ descriptions:
   admin-removeplayer: "Komenda administratora aby usunąć gracza z gildii"
   admin-status: "Komenda administratora aby zmienić status gildi"
   admin-spy: "Komenda administratora aby podglądać chat gildii"
+  admin-update-languages: "Admin command to update the langauge files"
   admin-upgrade: "Komenda administratora aby ulepszyć tier gildii"
   admin-vault: "Admin command to view a guild's vault"
   ally-accept: "Zaakceptowanie sojuszu od innej gildii"
@@ -205,6 +206,9 @@ vaults:
   maxed: "&cYou can't open this vault because you already have the max amount of vaults for your Guild Tier!"
 languages:
   set: "&aYou've successfully set your language to {language}"
+  warning: "&cYou are about to update all the language files. This will delete all current language files and recreate them. Type /guilds confirm to remove this guild, type /guilds cancel to cancel."
+  updated: "&aLanguage files have been recreated and reloaded!"
+  console-only: "&cSorry, this command can only be ran from console!"
 help:
   header: "<c3>=== </c3><c1>Showing help for </c1><c2>{commandprefix}{command}</c2><c3> ===</c3>"
   detailed-header: "<c3>=== </c3><c1>Showing detailed help for </c1><c2>{commandprefix}{command}</c2><c3> ===</c3>"
