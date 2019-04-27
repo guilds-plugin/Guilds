@@ -57,6 +57,12 @@ public final class PluginSettings implements SettingsHolder {
     public static final Property<String> MESSAGES_LANGUAGE =
             newProperty("settings.messagesLanguage", "en-US");
 
+    @Comment({"Would you like to allow admin players to update the languages via command?",
+    "If yes, set to true, and they will be able to run /guild admin update-languages",
+    "If no, set to false, and the command will only run via console."})
+    public static final Property<Boolean> UPDATE_LANGUAGES =
+            newProperty("settings.player-update-languages", false);
+
     @Comment("Would you like to check for plugin updates on startup? It's highly suggested you keep this enabled!")
     public static final Property<Boolean> UPDATE_CHECK =
             newProperty("settings.update-check", true);
