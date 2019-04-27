@@ -8,7 +8,7 @@ descriptions:
   admin-removeplayer: "Comando de administrador para remover a un jugador de una guild"
   admin-status: "Coomando de administrador para cambiar el estado de una guild"
   admin-spy: "Comando de administrador para activar el chat de espia de las guilds"
-  admin-update-languages: "Admin command to update the langauge files"
+  admin-update-languages: "Admin command to update the language files"
   admin-upgrade: "Comando de administrador para mejorar el nivel de una guild"
   admin-vault: "Comando de administrador para ver la bóveda de un gremio"
   ally-accept: "Aceptar una invitación de alianza de otra guild"
