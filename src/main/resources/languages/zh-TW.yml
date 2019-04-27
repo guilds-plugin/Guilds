@@ -8,7 +8,7 @@ descriptions:
   admin-removeplayer: "管理員從公會中刪除玩家"
   admin-status: "管理員更改公會狀態的"
   admin-spy: "管理員啟用監察公會聊天"
-  admin-update-languages: "Admin command to update the langauge files"
+  admin-update-languages: "Admin command to update the language files"
   admin-upgrade: "管理員提升公會級別"
   admin-vault: "Admin command to view a guild's vault"
   ally-accept: "接受來自另一個公會的盟友邀請"
