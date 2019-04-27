@@ -8,7 +8,7 @@ descriptions:
   admin-removeplayer: "Commande admin pour supprimer un joueur de la guilde"
   admin-status: "Commande admin pour changer le statut d'une guilde"
   admin-spy: "Commande admin pour activé l'espionnage du chat"
-  admin-update-languages: "Admin command to update the langauge files"
+  admin-update-languages: "Admin command to update the language files"
   admin-upgrade: "Commande admin pour augmenter le tier d'une guilde"
   admin-vault: "Commande admin pour voir le coffre d'une guilde"
   ally-accept: "Accepter une invitation d'alliance d'une autre guilde"
