@@ -8,7 +8,7 @@ descriptions:
   admin-removeplayer: "Comando da Admin per rimuovere un giocatore da una gilda"
   admin-status: "Comando da Admin per modificare lo stato di una gilda"
   admin-spy: "Comando da Admin per abilitare la chat spy della gilda"
-  admin-update-languages: "Admin command to update the langauge files"
+  admin-update-languages: "Admin command to update the language files"
   admin-upgrade: "Comando da Admin per alzare il livello di una gilda"
   admin-vault: "Admin command to view a guild's vault"
   ally-accept: "Accetta un invito di alleanza da un'altra gilda"
