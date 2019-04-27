@@ -51,20 +51,19 @@ public class EssentialsChatListener implements Listener {
         String message = event.getFormat();
 
         if (guild == null) {
-            String regex = "(\\{ESSENTIALS_GUILD(?:.+)?})";
+            String regex = "(\\{GUILD(?:.+)?})";
 
             event.setFormat(message.replaceAll(regex, ""));
             return;
         }
 
         message = message
-                .replace("{ESSENTIALS_GUILD}", guild.getName())
-                .replace("{ESSENTIALS_GUILD_PREFIX}", guild.getPrefix())
-                .replace("{ESSENTIALS_GUILD_MASTER}", Bukkit.getOfflinePlayer(guild.getGuildMaster().getUuid()).getName()
-                .replace("{ESSENTIALS_GUILD_MEMBER_COUNT}",  String.valueOf(guild.getSize())))
-                .replace("{ESSENTIALS_GUILD_MEMBERS_ONLINE}", String.valueOf(guild.getOnlineMembers().size()))
-                .replace("{ESSENTIALS_GUILD_STATUS}", guild.getStatus().name())
-                .replace("{ESSENTIALS_GUILD_ROLE}", guild.getMember(player.getUniqueId()).getRole().getName());
+                .replace("{GUILD}", guild.getName())
+                .replace("{GUILD_PREFIX}", guild.getPrefix())
+                .replace("{GUILD_MASTER}", Bukkit.getOfflinePlayer(guild.getGuildMaster().getUuid()).getName())
+                .replace("{GUILD_STATUS}", guild.getStatus().name())
+                .replace("{GUILD_MEMBER_COUNT}",  String.valueOf(guild.getSize()))
+                .replace("{GUILD_MEMBERS_ONLINE}", String.valueOf(guild.getOnlineMembers().size()));
 
         event.setFormat(message);
     }
