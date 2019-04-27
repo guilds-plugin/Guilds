@@ -8,7 +8,7 @@ descriptions:
   admin-removeplayer: "Lệnh Admin để xoá người chơi khỏi một Guild"
   admin-status: "Lệnh Admin để thay đổi trạng thái của một Guild"
   admin-spy: "Lệnh Admin để kích hoạt nghe lén guild chat"
-  admin-update-languages: "Admin command to update the langauge files"
+  admin-update-languages: "Admin command to update the language files"
   admin-upgrade: "Admin command to upgrade a Guild's tier"
   admin-vault: "Admin command to view a guild's vault"
   ally-accept: "Chấp nhận lời mời liên minh từ một guild khác"
