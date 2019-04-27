@@ -8,6 +8,7 @@ descriptions:
   admin-removeplayer: "Comando administrativo para remover um jogador de uma guild"
   admin-status: "Comando administrativo para mudar a status de uma guild"
   admin-spy: "Comando administrativo para ativar espião de chat de guilds"
+  admin-update-languages: "Admin command to update the langauge files"
   admin-upgrade: "Comando administrativo para melhorar uma guild"
   admin-vault: "Comando de administrador para ver o cofre da guild"
   ally-accept: "Aceitar convite de aliança de outra guild"
@@ -205,6 +206,9 @@ vaults:
   maxed: "&cVocê não pode abrir esse cofre, pois já tem a quantidade máxima de cofres disponivel para a camada de sua guild!"
 languages:
   set: "&aYou've successfully set your language to {language}"
+  warning: "&cYou are about to update all the language files. This will delete all current language files and recreate them. Type /guilds confirm to remove this guild, type /guilds cancel to cancel."
+  updated: "&aLanguage files have been recreated and reloaded!"
+  console-only: "&cSorry, this command can only be ran from console!"
 help:
   header: "<c3>=== </c3><c1>Showing help for </c1><c2>{commandprefix}{command}</c2><c3> ===</c3>"
   detailed-header: "<c3>=== </c3><c1>Showing detailed help for </c1><c2>{commandprefix}{command}</c2><c3> ===</c3>"
