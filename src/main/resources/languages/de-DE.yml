@@ -8,7 +8,7 @@ descriptions:
   admin-removeplayer: "Admin-Befehl, um einen Spieler von einer Gilde zu entfernen"
   admin-status: "Admin-Befehl zum ändern des Gild-Status"
   admin-spy: "Admin-Befehl zum aktivieren des Chat Spions der Gilde"
-  admin-update-languages: "Admin command to update the langauge files"
+  admin-update-languages: "Admin command to update the language files"
   admin-upgrade: "Admin-Befehl zum aktualisieren einer Gildenstufe"
   admin-vault: "Admin-Befehl zum Anzeigen des Tresors einer Gilde"
   ally-accept: "Eine Verbündeteneinladung einer anderen Gilde annehmen"
