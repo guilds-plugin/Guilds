@@ -230,10 +230,12 @@ public final class Guilds extends JavaPlugin {
             File languageFolder = new File(getDataFolder(), "languages");
             for (File file : Objects.requireNonNull(languageFolder.listFiles())) {
                 if (file.isFile()) {
-                    String updatedName = file.getName().replace(".yml", "");
-                    loadedLanguages.add(updatedName);
-                    manager.addSupportedLanguage(Locale.forLanguageTag(updatedName));
-                    manager.getLocales().loadYamlLanguageFile(new File(languageFolder, file.getName()), Locale.forLanguageTag(updatedName));
+                    if (file.getName().endsWith(".yml")) {
+                        String updatedName = file.getName().replace(".yml", "");
+                        loadedLanguages.add(updatedName);
+                        manager.addSupportedLanguage(Locale.forLanguageTag(updatedName));
+                        manager.getLocales().loadYamlLanguageFile(new File(languageFolder, file.getName()), Locale.forLanguageTag(updatedName));
+                    }
                 }
             }
             manager.getLocales().setDefaultLocale(Locale.forLanguageTag(settingsManager.getProperty(PluginSettings.MESSAGES_LANGUAGE)));
