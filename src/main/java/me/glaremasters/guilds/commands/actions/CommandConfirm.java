@@ -26,6 +26,7 @@ package me.glaremasters.guilds.commands.actions;
 
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
+import co.aikar.commands.CommandIssuer;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Description;
@@ -55,8 +56,8 @@ public class CommandConfirm extends BaseCommand {
     @Subcommand("confirm")
     @Description("{@@descriptions.confirm}")
     @CommandPermission(Constants.BASE_PERM + "confirm")
-    public void execute(Player player) {
-        ConfirmAction action = actionHandler.getAction(player);
+    public void execute(CommandIssuer player) {
+        ConfirmAction action = actionHandler.getAction(player.getIssuer());
 
         if (action == null)
             ACFUtil.sneaky(new ExpectationNotMet(Messages.CONFIRM__ERROR));
