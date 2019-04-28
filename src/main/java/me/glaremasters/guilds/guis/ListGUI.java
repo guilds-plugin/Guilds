@@ -95,7 +95,7 @@ public class ListGUI {
     private void setListItem(OutlinePane pane, Guild guild) {
         GuiItem listItem = new GuiItem(guild.getSkull(), event -> event.setCancelled(true));
         ItemMeta meta = listItem.getItem().getItemMeta();
-        meta.setDisplayName(ACFBukkitUtil.color(settingsManager.getProperty(GuildListSettings.GUILD_LIST_ITEM_NAME).replace("{player}", Bukkit.getOfflinePlayer(guild.getGuildMaster().getUuid()).getName().replace("{guild}", guild.getName()))));
+        meta.setDisplayName(ACFBukkitUtil.color(settingsManager.getProperty(GuildListSettings.GUILD_LIST_ITEM_NAME).replace("{player}", Bukkit.getOfflinePlayer(guild.getGuildMaster().getUuid()).getName()).replace("{guild}", guild.getName())));
         meta.setLore(updatedLore(guild, settingsManager.getProperty(GuildListSettings.GUILD_LIST_HEAD_LORE)));
         listItem.getItem().setItemMeta(meta);
         pane.addItem(listItem);
