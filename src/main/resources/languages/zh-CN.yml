@@ -8,7 +8,7 @@ descriptions:
   admin-removeplayer: "以管理员身份强制从公会中删除玩家"
   admin-status: "以管理员身份强制更改公会状态"
   admin-spy: "以管理员身份强制监控公会聊天"
-  admin-update-languages: "Admin command to update the language files"
+  admin-update-languages: "以管理员身份强制更改语言预置"
   admin-upgrade: "以管理员身份强制升级公会等级"
   admin-vault: "以管理员身份强制查看公会金库"
   ally-accept: "接受来自另一个公会的结盟邀请"
