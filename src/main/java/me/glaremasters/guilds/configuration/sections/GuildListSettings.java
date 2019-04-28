@@ -22,7 +22,8 @@ public class GuildListSettings implements SettingsHolder {
     public static final Property<String> GUILD_LIST_NAME =
             newProperty(LIST_PATH + "gui-name", "Guild List");
 
-    @Comment("What should the name of the all the items be in the inventory?")
+    @Comment({"What should the name of the all the items be in the inventory?",
+    "Currently supports {player} and {guild}."})
     public static final Property<String> GUILD_LIST_ITEM_NAME =
             newProperty(LIST_PATH + "item-name", "&f{player}'s Guild");
 
