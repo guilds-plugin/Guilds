@@ -38,6 +38,10 @@ public class CommandAdminUpdateLanguages extends BaseCommand {
     private SettingsManager settingsManager;
     private Guilds guilds;
 
+    /**
+     * This command will update all the languages on the server
+     * @param issuer the person running the command
+     */
     @Subcommand("admin update-language")
     @Description("{@@descriptions.admin-update-languages}")
     @CommandPermission(Constants.ADMIN_PERM)

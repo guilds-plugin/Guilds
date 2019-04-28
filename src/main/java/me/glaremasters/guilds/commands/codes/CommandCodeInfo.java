@@ -52,6 +52,13 @@ import org.bukkit.entity.Player;
 @CommandAlias(Constants.ROOT_ALIAS)
 public class CommandCodeInfo extends BaseCommand {
 
+    /**
+     * THis command will display info about a guild's codes
+     * @param player the player running the command
+     * @param guild the guild they are in
+     * @param role the role of the player
+     * @param code the code they are requesting information about
+     */
     @Subcommand("code info")
     @Description("{@@descriptions.code-info}")
     @CommandPermission(Constants.CODE_PERM + "info")

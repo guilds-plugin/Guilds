@@ -3,7 +3,6 @@ package me.glaremasters.guilds.utils;
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 import org.apache.commons.io.FileUtils;
-import org.bukkit.Bukkit;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -53,6 +52,11 @@ public class LanguageUpdateUtils {
         output.flush();
     }
 
+    /**
+     * Unzips the language file and updates the language files
+     * @throws ZipException
+     * @throws IOException
+     */
     public static void upzipLanguages() throws ZipException, IOException {
         String source = "plugins/Guilds/languages.zip";
         String destination = "plugins/Guilds/languages/";
@@ -62,6 +66,11 @@ public class LanguageUpdateUtils {
         FileUtils.forceDelete(file);
     }
 
+    /**
+     * When called, this will download the latest languages and update them on the server
+     * @throws ZipException
+     * @throws IOException
+     */
     public static void updateLanguages() throws ZipException, IOException {
         try {
             downloadLanguages();
