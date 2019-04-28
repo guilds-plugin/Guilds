@@ -67,7 +67,7 @@ public class CommandKick extends BaseCommand {
      * @param name the name of the targetPlayer
      */
     @Subcommand("boot|kick")
-    @Description("Kick someone from your Guild")
+    @Description("{@@descriptions.kick}")
     @CommandPermission(Constants.BASE_PERM + "boot")
     @CommandCompletion("@members")
     @Syntax("<name>")

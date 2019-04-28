@@ -260,12 +260,14 @@
             <version>1.1</version>
         </dependency>
 
+        <!-- Used for the GUIs -->
         <dependency>
             <groupId>com.github.stefvanschie.inventoryframework</groupId>
             <artifactId>IF</artifactId>
             <version>0.3.1</version>
         </dependency>
 
+        <!-- Used to easily update language files -->
         <dependency>
             <groupId>net.lingala.zip4j</groupId>
             <artifactId>zip4j</artifactId>
