@@ -31,7 +31,6 @@ import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
 import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Guilds;
-import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.utils.Constants;
 import org.bukkit.entity.Player;
@@ -54,7 +53,7 @@ public class CommandList extends BaseCommand {
     @Subcommand("list")
     @Description("{@@descriptions.list}")
     @CommandPermission(Constants.BASE_PERM + "list")
-    public void execute(Player player, Guild guild) {
+    public void execute(Player player) {
         guilds.getListGUI().getListGUI().show(player);
     }
 
