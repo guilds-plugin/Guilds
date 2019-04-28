@@ -8,6 +8,7 @@ descriptions:
   admin-removeplayer: "Admin command to remove a player from a Guild"
   admin-status: "Admin command to change a Guild's status"
   admin-spy: "Admin command to enable guild chat spy"
+  admin-update-languages: "Admin command to update the language files"
   admin-upgrade: "Admin command to upgrade a Guild's tier"
   admin-vault: "Admin command to view a guild's vault"
   ally-accept: "Accept an ally invite from another guild"
@@ -205,6 +206,9 @@ vaults:
   maxed: "&cYou can't open this vault because you already have the max amount of vaults for your Guild Tier!"
 languages:
   set: "&aYou've successfully set your language to {language}"
+  warning: "&cYou are about to update all the language files. This will delete all current language files and recreate them. Type /guilds confirm to remove this guild, type /guilds cancel to cancel."
+  updated: "&aLanguage files have been recreated and reloaded!"
+  console-only: "&cSorry, this command can only be ran from console!"
 help:
   header: "<c3>=== </c3><c1>Showing help for </c1><c2>{commandprefix}{command}</c2><c3> ===</c3>"
   detailed-header: "<c3>=== </c3><c1>Showing detailed help for </c1><c2>{commandprefix}{command}</c2><c3> ===</c3>"
