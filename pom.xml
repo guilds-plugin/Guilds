@@ -103,6 +103,58 @@
                                     <pattern>co.aikar.commands</pattern>
                                     <shadedPattern>me.glaremasters.guilds.libs.acf</shadedPattern>
                                 </relocation>
+                                <relocation>
+                                    <pattern>ch.jalu.configme</pattern>
+                                    <shadedPattern>me.glaremasters.guilds.libs.configme</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com.github.stefvanschie.inventoryframework</pattern>
+                                    <shadedPattern>me.glaremasters.guilds.libs.inventoryframework</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com.dumptruckman.bukkit.configuration</pattern>
+                                    <shadedPattern>me.glaremasters.guilds.libs.configuration</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.yaml.snakeyaml</pattern>
+                                    <shadedPattern>me.glaremasters.guilds.libs.snakeyml</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.jetbrains.annotations</pattern>
+                                    <shadedPattern>me.glaremasters.guilds.libs.annotations</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.intellij.lang</pattern>
+                                    <shadedPattern>me.glaremasters.guilds.libs.lang</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>net.reflxction.simplejson</pattern>
+                                    <shadedPattern>me.glaremasters.guilds.libs.simplejson</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>net.minidev.json</pattern>
+                                    <shadedPattern>me.glaremasters.guilds.libs.jsonsimple</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>net.lingala.zip4j</pattern>
+                                    <shadedPattern>me.glaremasters.guilds.libs.zip4j</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>net.jodah.expiringmap</pattern>
+                                    <shadedPattern>me.glaremasters.guilds.libs.expiringmap</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>co.aikar.locales</pattern>
+                                    <shadedPattern>me.glaremasters.guilds.libs.locales</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>co.aikar.timings</pattern>
+                                    <shadedPattern>me.glaremasters.guilds.libs.timings</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>co.aikar.util</pattern>
+                                    <shadedPattern>me.glaremasters.guilds.libs.util</shadedPattern>
+                                </relocation>
                             </relocations>
                         </configuration>
                     </execution>
