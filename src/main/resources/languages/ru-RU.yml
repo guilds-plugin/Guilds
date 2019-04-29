@@ -8,7 +8,7 @@ descriptions:
   admin-removeplayer: "Админ-команда для выкидывания игрока из Гильдии"
   admin-status: "Админ-команда для смены статуса Гильдии"
   admin-spy: "Админ-команда для слежки за чатами гильдий"
-  admin-update-languages: "Admin command to update the language files"
+  admin-update-languages: "Админ-команда для обновления языковых файлов"
   admin-upgrade: "Админ-команда для повышения уровня Гильдии"
   admin-vault: "Админ-команда для просмотра хранилища Гильдии"
   ally-accept: "Принять предложение на союз от другой Гильдии"
@@ -206,7 +206,7 @@ vaults:
   maxed: "&cВы не можете создать это хранилище, потому что уже достигли максимального числа хранилищ для вашего уровня Гильдии!"
 languages:
   set: "&aВы успешно установили язык Гильдий на {language}"
-  warning: "&cYou are about to update all the language files. This will delete all current language files and recreate them. Type /guilds confirm to remove this guild, type /guilds cancel to cancel."
+  warning: "&cВы собираетесь обновить все языковые файлы. Это удалит все текущие языковые файлы и пересоздаст их. Введите /guilds confirm для подтверждения, или /guilds cancel для отмены обновления файлов."
   updated: "&aLanguage files have been recreated and reloaded!"
   console-only: "&cSorry, this command can only be ran from console!"
 help:
@@ -216,5 +216,5 @@ help:
   command-format: "<c1>{command}</c1> <c2>{parameters}</c2> <c3>{separator} {description}</c3>"
   parameter-format: "<c2>{syntaxorname}</c2>: <c3>{description}</c3>"
   page-info: "Showing page <c2>{page}</c2> of <c2>{totalpages}</c2> (<c3>{results}</c3> results)."
-  search-header: "<c3>=== </c3><c1>Search results for </c1><c2>{commandprefix}{command} {search}</c2><c3> ===</c3>"
+  search-header: "<c3>=== </c3><c1>Результаты поиска для </c1><c2>{commandprefix}{command} {search}</c2><c3> ===</c3>"
 
