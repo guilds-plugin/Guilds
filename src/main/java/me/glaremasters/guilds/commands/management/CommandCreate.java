@@ -93,9 +93,15 @@ public class CommandCreate extends BaseCommand {
         if (!guildHandler.nameCheck(name, settingsManager))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.CREATE__REQUIREMENTS));
 
-        if (prefix != null)
-            if (!guildHandler.prefixCheck(prefix, settingsManager))
+        if (prefix != null) {
+            if (!guildHandler.prefixCheck(prefix, settingsManager)) {
                 ACFUtil.sneaky(new ExpectationNotMet(Messages.CREATE__REQUIREMENTS));
+            }
+        } else {
+            if (!guildHandler.prefixCheck(name, settingsManager)) {
+                ACFUtil.sneaky(new ExpectationNotMet(Messages.CREATE__REQUIREMENTS));
+            }
+        }
 
         if (!EconomyUtils.hasEnough(economy, player, cost))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__NOT_ENOUGH_MONEY));
@@ -107,8 +113,6 @@ public class CommandCreate extends BaseCommand {
             public void accept() {
                 if (!EconomyUtils.hasEnough(economy, player, cost))
                     ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__NOT_ENOUGH_MONEY));
-
-                economy.withdrawPlayer(player, cost);
 
                 Guild.GuildBuilder gb = Guild.builder();
                 gb.id(UUID.randomUUID());
@@ -143,6 +147,8 @@ public class CommandCreate extends BaseCommand {
                 if (event.isCancelled()) return;
 
                 guildHandler.addGuild(guild);
+
+                economy.withdrawPlayer(player, cost);
 
                 getCurrentCommandIssuer().sendInfo(Messages.CREATE__SUCCESSFUL, "{guild}", guild.getName());
 
