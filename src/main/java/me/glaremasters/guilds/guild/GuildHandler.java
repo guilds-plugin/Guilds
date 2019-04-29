@@ -300,7 +300,7 @@ public class GuildHandler {
         Guild tGuild = getGuild(target);
         if (pGuild == null || tGuild == null)
             return false;
-        return pGuild.getName().equals(tGuild.getName());
+        return pGuild.getId().toString().equals(tGuild.getId().toString());
     }
 
 
