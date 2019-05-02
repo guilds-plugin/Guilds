@@ -30,6 +30,7 @@ import me.glaremasters.guilds.guild.Guild;
 import net.reflxction.simplejson.json.JsonFile;
 import net.reflxction.simplejson.json.JsonReader;
 import net.reflxction.simplejson.json.JsonWriter;
+import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,6 +47,7 @@ public class JsonProvider implements DatabaseProvider {
 
     private final File dataFolder;
     private Guilds guilds;
+    private final List<String> ids = new ArrayList<>();
 
     public JsonProvider(File dataFolder, Guilds guilds) {
         this.dataFolder = new File(dataFolder, "data");
@@ -87,7 +89,17 @@ public class JsonProvider implements DatabaseProvider {
             else writer.setFile(jsonFile);
 
             writer.writeAndOverride(guild, true);
+            ids.add(guild.getId().toString());
         }
+
+        for (File file : Objects.requireNonNull(dataFolder.listFiles())) {
+            String name = FilenameUtils.removeExtension(file.getName());
+            boolean keep = ids.stream().anyMatch(str -> str.equals(name));
+            if (!keep) {
+                file.delete();
+            }
+        }
+        ids.clear();
 
         // Note JsonWriter (writer) does not need to be closed this should only be done if it was instantiated using the BufferedWriter.
         // See JsonWriter#close() for more info.
