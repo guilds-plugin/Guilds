@@ -30,6 +30,9 @@ import ch.jalu.configme.migration.PlainMigrationService;
 import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.InvalidCommandArgument;
 import co.aikar.commands.PaperCommandManager;
+import co.aikar.taskchain.BukkitTaskChainFactory;
+import co.aikar.taskchain.TaskChain;
+import co.aikar.taskchain.TaskChainFactory;
 import lombok.Getter;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.api.GuildsAPI;
@@ -146,6 +149,7 @@ public final class Guilds extends JavaPlugin {
     @Getter
     private static GuildsAPI api;
     private GuildHandler guildHandler;
+    private static TaskChainFactory taskChainFactory;
     private DatabaseProvider database;
     private SettingsManager settingsManager;
     private PaperCommandManager commandManager;
@@ -492,6 +496,8 @@ public final class Guilds extends JavaPlugin {
         // Load the optional listeners
         optionalListeners();
 
+        taskChainFactory = BukkitTaskChainFactory.create(this);
+
         info("Enabling the Guilds API..");
         // Initialize the API (probably be placed in different spot?)
         api = new GuildsAPI(getGuildHandler());
@@ -609,6 +615,25 @@ public final class Guilds extends JavaPlugin {
             announcement = "Could not fetch announcements!";
         }
         return announcement;
+    }
+
+    /**
+     * Used to create a new chain of commands
+     * @param <T> the type
+     * @return chain
+     */
+    public static <T> TaskChain<T> newChain() {
+        return taskChainFactory.newChain();
+    }
+
+    /**
+     * Used to create new shared chain of commands
+     * @param name the name of the chain
+     * @param <T> the type of chain
+     * @return shared chain
+     */
+    public static <T> TaskChain<T> newSharedChain(String name) {
+        return taskChainFactory.newSharedChain(name);
     }
 
 }

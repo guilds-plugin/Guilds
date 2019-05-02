@@ -202,19 +202,19 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- Taskchain -->
-        <!-- Unused as of 18-1-2019 -->
-        <!-- Might be reused when MySql is implemented -->
-        <!--<dependency>-->
-            <!--<groupId>co.aikar</groupId>-->
-            <!--<artifactId>taskchain-core</artifactId>-->
-            <!--<version>3.7.2</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>co.aikar</groupId>-->
-            <!--<artifactId>taskchain-bukkit</artifactId>-->
-            <!--<version>3.7.2</version>-->
-        <!--</dependency>-->
+        <!-- Used to handle connecting queries together -->
+        <dependency>
+            <groupId>co.aikar</groupId>
+            <artifactId>taskchain-core</artifactId>
+            <version>3.7.2</version>
+        </dependency>
+
+        <!-- Used to make working with bukkit easier -->
+        <dependency>
+            <groupId>co.aikar</groupId>
+            <artifactId>taskchain-bukkit</artifactId>
+            <version>3.7.2</version>
+        </dependency>
 
         <!-- Command framework using annotations -->
         <dependency>

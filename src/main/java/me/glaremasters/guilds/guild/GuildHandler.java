@@ -28,6 +28,7 @@ import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.CommandManager;
 import lombok.Getter;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.configuration.sections.GuildBuffSettings;
 import me.glaremasters.guilds.configuration.sections.GuildSettings;
 import me.glaremasters.guilds.configuration.sections.TicketSettings;
@@ -698,7 +699,7 @@ public class GuildHandler {
         GuildTier tier = getGuildTier(guild.getTier().getLevel());
         if (tier.getPermissions().isEmpty())
             return;
-        tier.getPermissions().forEach(perm -> permission.playerRemove(null, player, perm));
+        Guilds.newChain().async(() -> tier.getPermissions().forEach(perm -> permission.playerRemove(null, player, perm))).execute();
     }
 
     /**
@@ -713,7 +714,7 @@ public class GuildHandler {
         GuildTier tier = getGuildTier(guild.getTier().getLevel());
         if (tier.getPermissions().isEmpty())
             return;
-        tier.getPermissions().forEach(perm -> permission.playerAdd(null, player, perm));
+        Guilds.newChain().async(() -> tier.getPermissions().forEach(perm -> permission.playerAdd(null, player, perm))).execute();
     }
 
     /**
@@ -725,7 +726,7 @@ public class GuildHandler {
         GuildTier tier = getGuildTier(guild.getTier().getLevel());
         if (tier.getPermissions().isEmpty())
             return;
-        guild.getAllAsPlayers().forEach(player -> getGuildTier(guild.getTier().getLevel()).getPermissions().forEach(perm -> permission.playerAdd(null, player, perm)));
+        Guilds.newChain().async(() -> guild.getAllAsPlayers().forEach(player -> getGuildTier(guild.getTier().getLevel()).getPermissions().forEach(perm -> permission.playerAdd(null, player, perm)))).execute();
     }
 
     /**
@@ -737,7 +738,7 @@ public class GuildHandler {
         GuildTier tier = getGuildTier(guild.getTier().getLevel());
         if (tier.getPermissions().isEmpty())
             return;
-        guild.getAllAsPlayers().forEach(player -> getGuildTier(guild.getTier().getLevel()).getPermissions().forEach(perm -> permission.playerRemove(null, player, perm)));
+        Guilds.newChain().async(() -> guild.getAllAsPlayers().forEach(player -> getGuildTier(guild.getTier().getLevel()).getPermissions().forEach(perm -> permission.playerRemove(null, player, perm)))).execute();
     }
 
     /**
