@@ -321,6 +321,9 @@ public final class Guilds extends JavaPlugin {
         // A variable for checking how long startup took.
         long startingTime = System.currentTimeMillis();
 
+        // Load up TaskChain
+        taskChainFactory = BukkitTaskChainFactory.create(this);
+
         // Flex teh guild logLogo
         logLogo(Bukkit.getConsoleSender());
 
@@ -495,8 +498,6 @@ public final class Guilds extends JavaPlugin {
         Stream.of(new EntityListener(guildHandler, settingsManager), new PlayerListener(guildHandler, settingsManager, this, commandManager), new TicketListener(this, guildHandler, settingsManager), new InventoryListener(guildHandler, settingsManager)).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
         // Load the optional listeners
         optionalListeners();
-
-        taskChainFactory = BukkitTaskChainFactory.create(this);
 
         info("Enabling the Guilds API..");
         // Initialize the API (probably be placed in different spot?)

@@ -142,10 +142,14 @@ public class GuildHandler {
                     .build());
         }
 
-        guilds = databaseProvider.loadGuilds();
+        Guilds.newChain().async(() -> {
+            try {
+                guilds = databaseProvider.loadGuilds();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).sync(() -> guilds.forEach(this::createVaultCache)).sync(() -> guilds.forEach(g -> g.setTier(getGuildTier(g.getTier().getLevel())))).execute();
 
-
-        guilds.forEach(this::createVaultCache);
 
     }
 
