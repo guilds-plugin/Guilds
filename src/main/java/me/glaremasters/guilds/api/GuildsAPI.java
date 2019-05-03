@@ -159,4 +159,13 @@ public class GuildsAPI {
         return getGuild(player).getId().toString();
     }
 
+    /**
+     * Get the max members allowed in a guild based on their tier
+     * @param player the player to check
+     * @return the max amount of members in a guild
+     */
+    public int getMaxMembers(@NotNull Player player) {
+        return getGuild(player).getTier().getMaxMembers();
+    }
+
 }
