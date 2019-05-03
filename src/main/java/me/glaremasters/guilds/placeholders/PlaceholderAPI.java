@@ -92,6 +92,8 @@ public class PlaceholderAPI extends PlaceholderExpansion {
                 return String.valueOf(api.getGuildCodes(p).size());
             case "max_members":
                 return String.valueOf(api.getMaxMembers(p));
+            case "max_balance":
+                return String.valueOf(api.getMaxBalance(p));
         }
         return "";
     }

@@ -142,6 +142,15 @@ public class GuildsAPI {
     }
 
     /**
+     * Get the max balance of a guild from its tier
+     * @param player the player that we are checking
+     * @return the max balance
+     */
+    public double getMaxBalance(@NotNull Player player) {
+        return getGuild(player).getTier().getMaxMembers();
+    }
+
+    /**
      * Get the guild codes of a guild
      * @param player the player the guild is in
      * @return the list of guild codes
