@@ -29,6 +29,7 @@ import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.configuration.sections.GuildSettings;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
+import me.glaremasters.guilds.utils.ClaimUtils;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Monster;
@@ -87,6 +88,12 @@ public class EntityListener implements Listener {
         if (!(event.getEntity() instanceof Player) || !(event.getDamager() instanceof Player)) return;
         Player player = (Player) event.getEntity();
         Player damager = (Player) event.getDamager();
+
+        if (settingsManager.getProperty(GuildSettings.RESPECT_WG_PVP_FLAG)) {
+            event.setCancelled(ClaimUtils.checkPvpDisabled(player));
+            return;
+        }
+
         if (guildHandler.isSameGuild(player, damager)) {
             event.setCancelled(!settingsManager.getProperty(GuildSettings.GUILD_DAMAGE));
             return;
@@ -112,6 +119,11 @@ public class EntityListener implements Listener {
 
         Player damagee = (Player) event.getEntity();
         Player damager = (Player) arrow.getShooter();
+
+        if (settingsManager.getProperty(GuildSettings.RESPECT_WG_PVP_FLAG)) {
+            event.setCancelled(ClaimUtils.checkPvpDisabled(damagee));
+            return;
+        }
 
         if (guildHandler.isSameGuild(damagee, damager)) {
             arrow.setFireTicks(0);

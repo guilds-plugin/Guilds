@@ -32,6 +32,8 @@ import me.glaremasters.guilds.guild.Guild;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.codemc.worldguardwrapper.WorldGuardWrapper;
+import org.codemc.worldguardwrapper.flag.IWrappedFlag;
+import org.codemc.worldguardwrapper.flag.WrappedState;
 import org.codemc.worldguardwrapper.region.IWrappedDomain;
 import org.codemc.worldguardwrapper.region.IWrappedRegion;
 
@@ -57,7 +59,7 @@ public class ClaimUtils {
      * Get the radius of a claim
      * @return the radius of a claim
      */
-    public static int getRaidus(SettingsManager settingsManager) {
+    public static int getRadius(SettingsManager settingsManager) {
         return settingsManager.getProperty(ClaimSettings.RADIUS);
     }
 
@@ -67,7 +69,7 @@ public class ClaimUtils {
      * @return smaller location
      */
     public static Location claimPointOne(Player player, SettingsManager settingsManager) {
-        return player.getLocation().subtract(getRaidus(settingsManager), player.getLocation().getY(), getRaidus(settingsManager));
+        return player.getLocation().subtract(getRadius(settingsManager), player.getLocation().getY(), getRadius(settingsManager));
     }
 
     /**
@@ -76,7 +78,7 @@ public class ClaimUtils {
      * @return bigger location
      */
     public static Location claimPointTwo(Player player, SettingsManager settingsManager) {
-        return player.getLocation().add(getRaidus(settingsManager), (player.getWorld().getMaxHeight() - player.getLocation().getY()), getRaidus(settingsManager));
+        return player.getLocation().add(getRadius(settingsManager), (player.getWorld().getMaxHeight() - player.getLocation().getY()), getRadius(settingsManager));
     }
 
     /**
@@ -192,6 +194,21 @@ public class ClaimUtils {
      */
     public static void setExitMessage(WorldGuardWrapper wrapper, IWrappedRegion claim, SettingsManager settingsManager, Guild guild) {
         claim.setFlag(wrapper.getFlag("farewell", String.class).orElse(null), ACFBukkitUtil.color(settingsManager.getProperty(ClaimSettings.EXIT_MESSAGE).replace("{guild}", guild.getName()).replace("{prefix}", guild.getPrefix())));
+    }
+
+    /**
+     * Check if PVP is enabled or not in a specific region
+     * @param player the player to check
+     * @return if pvp is disabled or not
+     */
+    public static boolean checkPvpDisabled(Player player) {
+        WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();
+        Optional<IWrappedFlag<WrappedState>> flag = wrapper.getFlag("pvp", WrappedState.class);
+        if (!flag.isPresent()) {
+            return false;
+        }
+        WrappedState state = flag.map(f -> wrapper.queryFlag(player, player.getLocation(), f).orElse(WrappedState.DENY)).orElse(WrappedState.DENY);
+        return state == WrappedState.DENY;
     }
 
 }
