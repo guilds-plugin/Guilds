@@ -49,7 +49,7 @@ public class PlaceholderAPI extends PlaceholderExpansion {
 
     @Override
     public String getVersion() {
-        return "1.0.8";
+        return "1.1.0";
     }
 
     public String onPlaceholderRequest(Player p, String arg) {
