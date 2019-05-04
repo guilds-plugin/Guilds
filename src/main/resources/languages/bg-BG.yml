@@ -43,7 +43,7 @@ descriptions:
   kick: "Kick someone from your Guild"
   language: "Change the language of the plugin messages for you"
   leave: "Leave your Guild"
-  list: "List all Guilds"
+  list: "Показва всички Гилдии"
   prefix: "Change the prefix of your Guild"
   promote: "Promote a user in your Guild"
   reload: "Reloads the plugin's configuration file"
