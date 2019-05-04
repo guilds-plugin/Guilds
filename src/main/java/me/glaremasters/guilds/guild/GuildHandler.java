@@ -148,7 +148,10 @@ public class GuildHandler {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }).sync(() -> guilds.forEach(this::createVaultCache)).sync(() -> guilds.forEach(g -> g.setTier(getGuildTier(g.getTier().getLevel())))).execute();
+        }).sync(() -> guilds.forEach(this::createVaultCache)).sync(() -> guilds.forEach(g -> {
+            g.setTier(getGuildTier(g.getTier().getLevel()));
+            g.getMembers().forEach(m -> m.setRole(getGuildRole(m.getRole().getLevel())));
+        })).execute();
 
 
     }
