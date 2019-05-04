@@ -154,14 +154,13 @@ public class CommandCreate extends BaseCommand {
 
                 actionHandler.removeAction(player);
 
-
-                Bukkit.getServer().getScheduler().runTaskAsynchronously(guilds, () -> {
+                Guilds.newChain().async(() -> {
                     try {
                         guild.setGuildSkull(new GuildSkull(player));
                     } catch (Exception ex) {
                         guild.setGuildSkull(new GuildSkull(settingsManager.getProperty(GuildListSettings.GUILD_LIST_HEAD_DEFAULT_URL)));
                     }
-                });
+                }).execute();
             }
 
             @Override
