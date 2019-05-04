@@ -115,7 +115,6 @@ import me.glaremasters.guilds.utils.Constants;
 import me.glaremasters.guilds.utils.StringUtils;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
-import org.apache.commons.io.IOUtils;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
@@ -125,9 +124,11 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.codemc.worldguardwrapper.WorldGuardWrapper;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.JarURLConnection;
 import java.net.URL;
@@ -608,9 +609,8 @@ public final class Guilds extends JavaPlugin {
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestProperty("User-Agent", Constants.USER_AGENT);
         try (InputStream in = con.getInputStream()) {
-            String encoding = con.getContentEncoding();
-            encoding = encoding == null ? "UTF-8" : encoding;
-            announcement = StringUtils.convert_html(IOUtils.toString(in, encoding));
+            String result = new BufferedReader(new InputStreamReader(in)).lines().collect(Collectors.joining("\n"));
+            announcement = StringUtils.convert_html(result);
             con.disconnect();
         } catch (Exception ex) {
             announcement = "Could not fetch announcements!";
