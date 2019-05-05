@@ -60,14 +60,14 @@ create:
   guild-name-taken: "&cTên này đã được dùng!"
   warning: "&cViệc thành lập Guild tốn {amount}. Bấm /guilds confirm để tạo guild của bạn, bấm /guilds cancel để huỷ bỏ."
   successful: "&aGuild '{guild}&r&a' đã được tạo thành công!"
-  cancelled: "&cGuild creation cancelled!"
-  requirements: "&cYour guild's name does not match the requirements! You can only use alphanumeric characters and the length of the name cannot exceed 64"
+  cancelled: "&cĐã hủy tạo Guild!"
+  requirements: "&cTên Guild của bạn không phù hợp với yêu cầu! Bạn chỉ có thể dùng chữ cái và số và độ dài tên không vượt quá 64"
 chat:
   disabled: "Vô hiệu hoá Guild chat"
   enabled: "Kích hoạt Guild chat"
 request:
-  success: "&aYou've successfully requested an invite from {guild}"
-  incoming-request: "&a{player} is requesting to join the guild. Send them an invite by doing /guild invite {player}!"
+  success: "&aThành công gửi yêu cầu lời mời từ {guild}"
+  incoming-request: "&a{player} đang yêu cần tham gia Guild. Gửi họ lời mời bằng cách dùng /guild invite {player}!"
 error:
   already-in-guild: "&cBạn đang ở trong một guild!"
   no-guild: "&cBạn không ở trong một guild!"
@@ -75,13 +75,13 @@ error:
   guild-no-exist: "&cGuild đó không tồn tại! (Nếu bạn thấy điều này khi cố gắng tham gia một guild với tên có màu tuỳ chỉnh, bạn có thể thử /join guild <player who invited you> để tham gia!"
   player-not-found: "&cNgười chơi '{player}&r&c' không online!"
   player-not-in-guild: "&c{player} không ở trong Guild của bạn!"
-  not-officer: "&cUser must be an Officer in your Guild!"
-  blacklist: "&cOne or more of the words in your guild name / guild prefix is on the blacklist!"
+  not-officer: "&cNgười dùng phải là Officer trong Guild của bạn!"
+  blacklist: "&cMột hay nhiều phần trong tên guild / tiền tố của bạn đang trong danh sách cấm!"
   not-enough-money: "&cXin lỗi, bạn không đủ tiền để làm điều đó"
 bank:
-  balance: "&aYour guild's bank has a balance of {amount}."
-  deposit-success: "&aYou have deposited {amount} into your Guild Bank. Your Guild Bank total is now {total}!"
-  withdrawl-success: "&aYou have withdrawn {amount} from your Guild Bank. Your Guild Bank total is now {total}!"
+  balance: "&aNgân khố của Guild là {amount}."
+  deposit-success: "&aBạn đã nạp {amount} vào ngân khố của guild. Ngân khố hiện tại là {total}!"
+  withdrawl-success: "&aBạn đã rút {amount} từ ngân khố của guild. Ngân khố hiện tại là {total}!"
   not-enough-bank: "&cGuild Bank không có đủ để làm điều đó"
   over-max: "&cSorry, you can't deposit that much as you would go over your max bank balance!"
 admin:
