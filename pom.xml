@@ -30,7 +30,7 @@
 
     <groupId>me.glaremasters</groupId>
     <artifactId>guilds</artifactId>
-    <version>3.4.4-RELEASE</version>
+    <version>3.4.5-BETA</version>
     <packaging>jar</packaging>
 
     <name>Guilds</name>
@@ -234,10 +234,6 @@
                 <exclusion>
                     <groupId>com.google.guava</groupId>
                     <artifactId>guava</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>commons-io</groupId>
-                    <artifactId>commons-io</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
