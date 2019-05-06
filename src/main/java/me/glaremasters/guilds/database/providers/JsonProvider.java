@@ -61,17 +61,16 @@ public class JsonProvider implements DatabaseProvider {
     public List<Guild> loadGuilds() throws IOException {
         List<Guild> loadedGuilds = new ArrayList<>(guilds.getOldGuilds());
 
-        JsonReader reader = null;
+
         for (File file : Objects.requireNonNull(dataFolder.listFiles())) {
             JsonFile jsonFile = new JsonFile(file);
 
-            if (reader == null) reader = new JsonReader(jsonFile);
-            else reader.setFile(jsonFile);
+            JsonReader reader = new JsonReader(jsonFile);
+
+            reader.setFile(jsonFile);
 
             loadedGuilds.add(reader.deserializeAs(Guild.class));
-        }
 
-        if (reader != null) {
             reader.close();
         }
 
