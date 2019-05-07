@@ -104,9 +104,9 @@ import me.glaremasters.guilds.guis.BuffGUI;
 import me.glaremasters.guilds.guis.ListGUI;
 import me.glaremasters.guilds.listeners.EntityListener;
 import me.glaremasters.guilds.listeners.EssentialsChatListener;
-import me.glaremasters.guilds.listeners.InventoryListener;
 import me.glaremasters.guilds.listeners.PlayerListener;
 import me.glaremasters.guilds.listeners.TicketListener;
+import me.glaremasters.guilds.listeners.VaultBlacklistListener;
 import me.glaremasters.guilds.listeners.WorldGuardListener;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.placeholders.PlaceholderAPI;
@@ -496,7 +496,7 @@ public final class Guilds extends JavaPlugin {
         }
 
         // Load all the listeners
-        Stream.of(new EntityListener(guildHandler, settingsManager), new PlayerListener(guildHandler, settingsManager, this, commandManager), new TicketListener(this, guildHandler, settingsManager), new InventoryListener(guildHandler, settingsManager)).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
+        Stream.of(new EntityListener(guildHandler, settingsManager), new PlayerListener(guildHandler, settingsManager, this, commandManager), new TicketListener(this, guildHandler, settingsManager), new VaultBlacklistListener(guildHandler, settingsManager)).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
         // Load the optional listeners
         optionalListeners();
 

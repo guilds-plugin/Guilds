@@ -1,0 +1,76 @@
+package me.glaremasters.guilds.listeners;
+
+import ch.jalu.configme.SettingsManager;
+import co.aikar.commands.ACFBukkitUtil;
+import lombok.AllArgsConstructor;
+import me.glaremasters.guilds.configuration.sections.GuildVaultSettings;
+import me.glaremasters.guilds.guild.GuildHandler;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.inventory.ItemStack;
+
+/**
+ * Created by Glare
+ * Date: 5/7/2019
+ * Time: 4:50 PM
+ */
+@AllArgsConstructor
+public class VaultBlacklistListener implements Listener {
+
+    private GuildHandler guildHandler;
+    private SettingsManager settingsManager;
+
+    /**
+     * Helps determine if a player has a Guild vault open
+     * @param event the close event
+     */
+    @EventHandler
+    public void onInventoryClose(InventoryCloseEvent event) {
+        if (event.getPlayer() instanceof Player) {
+            Player player = (Player) event.getPlayer();
+            guildHandler.getOpenedVault().remove(player);
+        }
+    }
+
+    /**
+     * Check if their item is on the vault blacklist
+     * @param event the click event
+     */
+    @EventHandler
+    public void onItemClick(InventoryClickEvent event) {
+
+        // get the player who is clicking
+        Player player = (Player) event.getWhoClicked();
+
+        // check if they are in the list of open vaults
+        if (!guildHandler.getOpenedVault().contains(player))
+            return;
+
+        // get the item clicked
+        ItemStack item = event.getCurrentItem();
+
+        // check if null
+        if (item == null)
+            return;
+
+        // set cancelled if it contains material name
+        event.setCancelled(settingsManager.getProperty(GuildVaultSettings.BLACKLIST_MATERIALS).stream().anyMatch(m ->
+                m.equalsIgnoreCase(item.getType().name())));
+
+        // check if event is cancelled, if not, check name
+        if (event.isCancelled())
+            return;
+
+        // Make sure item has item meta
+        if (!item.hasItemMeta())
+            return;
+
+        // set cancelled if contains name
+        event.setCancelled(settingsManager.getProperty(GuildVaultSettings.BLACKLIST_NAMES).stream().anyMatch(m ->
+                m.equalsIgnoreCase(ACFBukkitUtil.color(item.getItemMeta().getDisplayName()))));
+
+    }
+}
