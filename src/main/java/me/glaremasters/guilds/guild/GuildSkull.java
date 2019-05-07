@@ -45,16 +45,29 @@ public class GuildSkull {
     private String serialized;
     private transient ItemStack itemStack;
 
+    /**
+     * Get the Guild Skull of a player
+     * @param player the player you're getting the skull of
+     */
     public GuildSkull(Player player) {
         serialized = SkullUtils.getEncoded(getTextureUrl(player.getUniqueId()));
         itemStack = SkullUtils.getSkull(serialized);
     }
 
+    /**
+     * Get the Guild Skull from a sting
+     * @param texture the texture you want to use
+     */
     public GuildSkull(String texture) {
         serialized = SkullUtils.getEncoded("https://textures.minecraft.net/texture/" + texture);
         itemStack = SkullUtils.getSkull(serialized);
     }
 
+    /**
+     * Get the url of a texture
+     * @param uuid the uuid to get the texture of
+     * @return texture of uuid
+     */
     private String getTextureUrl(UUID uuid) {
         try {
             URL texture = new URL("https://api.minetools.eu/profile/" + uuid.toString().replaceAll("-", ""));
@@ -67,9 +80,18 @@ public class GuildSkull {
         }
     }
 
+    /**
+     * Get the skull as an item stack
+     * @return item stack
+     */
     public ItemStack getItemStack() {
         return itemStack;
     }
+
+    /**
+     * Get the serialized string
+     * @return serialized string
+     */
     public String getSerialized() {
         return serialized;
     }

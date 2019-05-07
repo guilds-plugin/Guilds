@@ -43,6 +43,10 @@ public class GuildHome {
     private float yaw;
     private float pitch;
 
+    /**
+     * Get the guild home object as a location
+     * @return new location
+     */
     public Location getAsLocation() {
         return new Location(Bukkit.getWorld(world), x, y, z, yaw, pitch);
     }

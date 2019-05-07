@@ -42,6 +42,10 @@ public class GuildMember {
     private final UUID uuid;
     private GuildRole role;
 
+    /**
+     * Check and see if a guild member is online
+     * @return true or false
+     */
     public boolean isOnline() {
         return Bukkit.getOfflinePlayer(uuid).isOnline();
     }
