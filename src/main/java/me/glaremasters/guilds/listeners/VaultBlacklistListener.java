@@ -3,8 +3,10 @@ package me.glaremasters.guilds.listeners;
 import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFBukkitUtil;
 import lombok.AllArgsConstructor;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.configuration.sections.GuildVaultSettings;
 import me.glaremasters.guilds.guild.GuildHandler;
+import me.glaremasters.guilds.messages.Messages;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -20,6 +22,7 @@ import org.bukkit.inventory.ItemStack;
 @AllArgsConstructor
 public class VaultBlacklistListener implements Listener {
 
+    private Guilds guilds;
     private GuildHandler guildHandler;
     private SettingsManager settingsManager;
 
@@ -61,8 +64,10 @@ public class VaultBlacklistListener implements Listener {
                 m.equalsIgnoreCase(item.getType().name())));
 
         // check if event is cancelled, if not, check name
-        if (event.isCancelled())
+        if (event.isCancelled()) {
+            guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.VAULTS__BLACKLISTED);
             return;
+        }
 
         // Make sure item has item meta
         if (!item.hasItemMeta())
@@ -71,6 +76,11 @@ public class VaultBlacklistListener implements Listener {
         // set cancelled if contains name
         event.setCancelled(settingsManager.getProperty(GuildVaultSettings.BLACKLIST_NAMES).stream().anyMatch(m ->
                 m.equalsIgnoreCase(ACFBukkitUtil.color(item.getItemMeta().getDisplayName()))));
+
+        // check if event is cancelled
+        if (event.isCancelled()) {
+            guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.VAULTS__BLACKLISTED);
+        }
 
     }
 }
