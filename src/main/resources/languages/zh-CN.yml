@@ -62,6 +62,7 @@ create:
   successful: "&7[&6公会&7]&f公会{guild}&f创建成功"
   cancelled: "&7[&6公会&7]&f已取消创建公会"
   requirements: "&7[&6公会&7]&f非法的公会名称，请重新尝试并限制公会名在64字以内"
+  name-too-long: "&cYou didn't provide a prefix so the name you input was tested against the prefix requirements and that failed. Please try a shorter name or input a prefix on creation."
 chat:
   disabled: "&7[&6公会&7]&f已关闭公会聊天频道"
   enabled: "&7[&6公会&7]&f已开启公会聊天频道"
