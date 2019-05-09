@@ -62,6 +62,7 @@ create:
   successful: "&a公會 '{guild}&r&a' 成功創建!"
   cancelled: "&c公會創建已取消!"
   requirements: "&c公會名有無效字符 字符請設定在64位元內"
+  name-too-long: "&cYou didn't provide a prefix so the name you input was tested against the prefix requirements and that failed. Please try a shorter name or input a prefix on creation."
 chat:
   disabled: "已關閉公會頻道"
   enabled: "已開啟公會頻道"
