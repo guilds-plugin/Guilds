@@ -14,6 +14,9 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * Created by Glare
  * Date: 5/7/2019
@@ -80,7 +83,29 @@ public class VaultBlacklistListener implements Listener {
         // check if event is cancelled
         if (event.isCancelled()) {
             guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.VAULTS__BLACKLISTED);
+            return;
         }
 
+        // check if item has lore
+        if (!item.getItemMeta().hasLore())
+            return;
+
+        // set cancelled if contains lore
+        List<String> lore = item.getItemMeta().getLore().stream().map(String::toLowerCase).map(ACFBukkitUtil::removeColors).collect(Collectors.toList());
+
+        // loop through string list
+        for (String check : settingsManager.getProperty(GuildVaultSettings.BLACKLIST_LORES)) {
+            // check if the lore contains it
+            if (lore.contains(check.toLowerCase())) {
+                // cancel the event
+                event.setCancelled(true);
+                break;
+            }
+        }
+
+        // check if event is cancelled, if not, check name
+        if (event.isCancelled()) {
+            guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.VAULTS__BLACKLISTED);
+        }
     }
 }
