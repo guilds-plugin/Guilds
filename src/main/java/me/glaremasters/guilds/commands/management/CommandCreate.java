@@ -99,7 +99,7 @@ public class CommandCreate extends BaseCommand {
             }
         } else {
             if (!guildHandler.prefixCheck(name, settingsManager)) {
-                ACFUtil.sneaky(new ExpectationNotMet(Messages.CREATE__REQUIREMENTS));
+                ACFUtil.sneaky(new ExpectationNotMet(Messages.CREATE__NAME_TOO_LONG));
             }
         }
 
