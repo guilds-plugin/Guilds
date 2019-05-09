@@ -75,7 +75,7 @@ public class VaultBlacklistListener implements Listener {
 
         // set cancelled if contains name
         event.setCancelled(settingsManager.getProperty(GuildVaultSettings.BLACKLIST_NAMES).stream().anyMatch(m ->
-                m.equalsIgnoreCase(ACFBukkitUtil.color(item.getItemMeta().getDisplayName()))));
+                m.equalsIgnoreCase(ACFBukkitUtil.removeColors(item.getItemMeta().getDisplayName()))));
 
         // check if event is cancelled
         if (event.isCancelled()) {
