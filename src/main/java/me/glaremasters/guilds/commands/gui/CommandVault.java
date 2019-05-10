@@ -68,6 +68,9 @@ public class CommandVault extends BaseCommand {
         if (!role.isOpenVault())
             ACFUtil.sneaky(new InvalidPermissionException());
 
+        if (vault == 0)
+            vault = 1;
+
         if (!guildHandler.hasVaultUnlocked(vault, guild))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.VAULTS__MAXED));
 
