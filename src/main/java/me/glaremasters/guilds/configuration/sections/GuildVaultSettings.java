@@ -30,7 +30,7 @@ public class GuildVaultSettings implements SettingsHolder {
 
     @Comment({"What custom lore do you want to blacklist from being put into the vaults?",
     "Please keep in mind this can be prove to false-positives so please let me know if you have issues.",
-    "This will currently convert the lore to a single string and remove the color to see if it contains whatever you check.",
+    "This will currently loop through your lore to check for any strings you have in the list to check.",
     "Improvements will be made over time. Thanks for your patience and suppport in advanced."})
     public static final Property<List<String>> BLACKLIST_LORES =
             newListProperty("guis.vault.blacklist.lores", "");
