@@ -76,6 +76,10 @@ public class VaultBlacklistListener implements Listener {
         if (!item.hasItemMeta())
             return;
 
+        // Make sure the item has a display name
+        if (!item.getItemMeta().hasDisplayName())
+            return;
+
         // set cancelled if contains name
         event.setCancelled(settingsManager.getProperty(GuildVaultSettings.BLACKLIST_NAMES).stream().anyMatch(m ->
                 m.equalsIgnoreCase(ACFBukkitUtil.removeColors(item.getItemMeta().getDisplayName()))));
