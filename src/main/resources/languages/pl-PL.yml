@@ -62,7 +62,7 @@ create:
   successful: "&aGildia '{guild}&r&a' została stworzona pomyślnie!"
   cancelled: "&cTworzenie gildii anulowane!"
   requirements: "&cTwoja gildia nie spełnia wymagań! Możesz używać tylko znaków alfanumerycznych oraz długość gildii nie może przekraczać 64 znaki"
-  name-too-long: "&cYou didn't provide a prefix so the name you input was tested against the prefix requirements and that failed. Please try a shorter name or input a prefix on creation."
+  name-too-long: "Nie podałeś przedrostka, z tego powodu twoja nazwa nie mogła zostać sprawdzona na podstawie wymagań. Spróbuj użyć krótszej nazwy lub dodaj przedrostek przy kreacji."
 chat:
   disabled: "Chat Gildii wyłączony"
   enabled: "Chat Gildii włączony"
@@ -133,8 +133,8 @@ invite:
   successful: "Pomyślnie zaprosiłeś gracza {player} do swojej gildii!"
 upgrade:
   tier-max: "Nie można znowu ulepszyć! Posiadasz maksymalny poziom!"
-  money-warning: "&cYou are about to spend {amount} to set upgrade your guild. (Type /guilds confirm to continue)"
-  cancel: "&cUpgrade cancelled!"
+  money-warning: "Próbujesz przekazać {amount} aby ulepszyć gildie. (Wpisz /guilds confirm aby kontynuować)"
+  cancel: "Ulepszenie anulowane!"
   success: "&aYou've successfully upgraded your guild!"
   not-enough-money: "&cSorry! You don't have enough money to upgrade your Guild! You still need {needed}!"
   not-enough-members: "&cSorry! You need at least {amount} members to rank up your Guild Tier!"
