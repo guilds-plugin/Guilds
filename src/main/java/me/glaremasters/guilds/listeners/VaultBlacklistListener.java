@@ -31,6 +31,7 @@ public class VaultBlacklistListener implements Listener {
 
     /**
      * Helps determine if a player has a Guild vault open
+     *
      * @param event the close event
      */
     @EventHandler
@@ -43,6 +44,7 @@ public class VaultBlacklistListener implements Listener {
 
     /**
      * Check if their item is on the vault blacklist
+     *
      * @param event the click event
      */
     @EventHandler
@@ -76,13 +78,12 @@ public class VaultBlacklistListener implements Listener {
         if (!item.hasItemMeta())
             return;
 
-        // Make sure the item has a display name
-        if (!item.getItemMeta().hasDisplayName())
-            return;
-
-        // set cancelled if contains name
-        event.setCancelled(settingsManager.getProperty(GuildVaultSettings.BLACKLIST_NAMES).stream().anyMatch(m ->
-                m.equalsIgnoreCase(ACFBukkitUtil.removeColors(item.getItemMeta().getDisplayName()))));
+        // Check if it has a display name
+        if (item.getItemMeta().hasDisplayName()) {
+            // set cancelled if contains name
+            event.setCancelled(settingsManager.getProperty(GuildVaultSettings.BLACKLIST_NAMES).stream().anyMatch(m ->
+                    m.equalsIgnoreCase(ACFBukkitUtil.removeColors(item.getItemMeta().getDisplayName()))));
+        }
 
         // check if event is cancelled
         if (event.isCancelled()) {
