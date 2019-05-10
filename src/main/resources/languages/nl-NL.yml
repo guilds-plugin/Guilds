@@ -62,7 +62,7 @@ create:
   successful: "&aGuild '{guild}&r&a' succesvol aangemaakt!"
   cancelled: "&cGuild creatie gestopt!"
   requirements: "&cDe naam van jouw Guild komt niet overeen met de vereisten! Je kan alleen alfanumerieke karakters gebruiken en de lengte van de naam kan niet langer zijn dan 64"
-  name-too-long: "&cYou didn't provide a prefix so the name you input was tested against the prefix requirements and that failed. Please try a shorter name or input a prefix on creation."
+  name-too-long: "&cJe hebt geen prefix ingevuld en de Guild naam voldoet niet aan de prefix vereisten. Probeer het opnieuw met een kortere naam of vul een prefix in tijdens creatie."
 chat:
   disabled: "Guild Chat Uitgezet"
   enabled: "Guild Chat Aangezet"
