@@ -101,7 +101,7 @@ public class VaultBlacklistListener implements Listener {
         // loop through string list
         for (String check : settingsManager.getProperty(GuildVaultSettings.BLACKLIST_LORES)) {
             // check if the lore contains it
-            if (lore.contains(check)) {
+            if (lore.stream().anyMatch(l -> l.contains(check))) {
                 // cancel the event
                 event.setCancelled(true);
                 break;
