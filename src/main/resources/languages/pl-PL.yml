@@ -135,28 +135,28 @@ upgrade:
   tier-max: "Nie można znowu ulepszyć! Posiadasz maksymalny poziom!"
   money-warning: "Próbujesz przekazać {amount} aby ulepszyć gildie. (Wpisz /guilds confirm aby kontynuować)"
   cancel: "Ulepszenie anulowane!"
-  success: "&aYou've successfully upgraded your guild!"
-  not-enough-money: "&cSorry! You don't have enough money to upgrade your Guild! You still need {needed}!"
-  not-enough-members: "&cSorry! You need at least {amount} members to rank up your Guild Tier!"
+  success: "Pomyślnie ulepszyłeś/-aś gildie!"
+  not-enough-money: "Przykro nam! Nie masz wystarczających środków a y ulepszyć gildie! Potrzebujesz jeszcze {needed}!"
+  not-enough-members: "Przykro nam! Potrzebujesz co najmniej {amount} członków aby zwiększyć poziom gildii!"
 prefix:
-  successful: "&aGuild's prefix changed successfully to {prefix}!"
+  successful: "Przedrostek gildii został pomyślnie zmieniony na {prefix}!"
 status:
-  successful: "&aGuild status set to {status}!"
+  successful: "Status gildii został ustawiony na {status}!"
 rename:
-  successful: "&aGuild name changed to {name}!"
+  successful: "Nazwa gildii została zmieniona na {name}!"
 home:
-  no-home-set: "&cNo home set! Use &a/guild sethome &cto set a home!"
-  teleported: "&aYou've teleported to your guild home!"
-  cooldown: "&cYou must wait at least {amount} seconds before doing this again"
-  warmup: "&aYou will be teleported in {amount} seconds. Don't move!"
-  cancelled: "&cYou moved! Teleportation cancelled!"
+  no-home-set: "Dom nie został ustawiony! Użyj /guild sethome aby ustawić dom!"
+  teleported: "Zostałeś teleportowany do domu gildii!"
+  cooldown: "Musisz poczekać co najmniej {amount} sekund aby zrobić to ponownie"
+  warmup: "Zostaniesz teleportowany za {amount} sekund. Nie ruszaj się!"
+  cancelled: "Poruszyłeś się! Teleportacja anulowana!"
 sethome:
-  successful: "&aYou've set your guild home!"
-  cooldown: "&cYou must wait at least {amount} seconds before doing this again"
+  successful: "Ustawiłeś dom gildii!"
+  cooldown: "Musisz poczekać co najmniej {amount} sekund aby zrobić to ponownie"
 reload:
-  reloaded: "&aConfiguration file reloaded!"
+  reloaded: "Plik konfiguracyjny przeładowany!"
 cancel:
-  error: "&cYou have no actions to cancel!"
+  error: "Nie masz akcji do anulowania!"
   success: "&aAction cancelled!"
 confirm:
   error: "&cYou have no actions to confirm!"
