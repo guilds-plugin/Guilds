@@ -95,12 +95,13 @@ public class VaultBlacklistListener implements Listener {
             return;
 
         // set cancelled if contains lore
-        List<String> lore = item.getItemMeta().getLore().stream().map(String::toLowerCase).map(ACFBukkitUtil::removeColors).collect(Collectors.toList());
+        List<String> lore = item.getItemMeta().getLore().stream()
+                .map(ACFBukkitUtil::removeColors).collect(Collectors.toList());
 
         // loop through string list
         for (String check : settingsManager.getProperty(GuildVaultSettings.BLACKLIST_LORES)) {
             // check if the lore contains it
-            if (lore.contains(check.toLowerCase())) {
+            if (lore.contains(check)) {
                 // cancel the event
                 event.setCancelled(true);
                 break;
