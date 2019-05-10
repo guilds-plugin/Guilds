@@ -506,6 +506,13 @@ public final class Guilds extends JavaPlugin {
         info("Enabled API!");
 
         info("Ready to go! That only took " + (System.currentTimeMillis() - startingTime) + "ms");
+        getServer().getScheduler().scheduleAsyncRepeatingTask(this, () -> {
+            try {
+                guildHandler.saveData();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }, 20 * 60, (20 * 60) * settingsManager.getProperty(PluginSettings.SAVE_INTERVAL));
     }
 
     /**
