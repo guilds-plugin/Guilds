@@ -92,6 +92,7 @@ public class CommandLeave extends BaseCommand {
                     guildHandler.removePermsFromAll(permission, guild);
 
                     guildHandler.removeAlliesOnDelete(guild);
+                    guildHandler.notifyAllies(guild, getCurrentCommandManager());
 
                     guildHandler.removeGuild(guild);
 

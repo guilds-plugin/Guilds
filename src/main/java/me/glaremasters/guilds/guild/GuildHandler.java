@@ -790,4 +790,13 @@ public class GuildHandler {
         getGuilds().forEach(g -> g.getPendingAllies().removeIf(x -> x.equals(guild.getId())));
         getGuilds().forEach(g -> g.getAllies().removeIf(x -> x.equals(guild.getId())));
     }
+
+    /**
+     * Notify all allies of a guild that's being deleted.
+     * @param guild the guild being deleted
+     * @param commandManager the command manager
+     */
+    public void notifyAllies(Guild guild, CommandManager commandManager) {
+        guild.getAllies().forEach(g -> getGuild(g).sendMessage(commandManager, Messages.DELETE__NOTIFY_ALLIES, "{guild}", guild.getName()));
+    }
 }
