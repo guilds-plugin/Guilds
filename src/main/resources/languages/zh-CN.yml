@@ -117,6 +117,7 @@ delete:
   successful: "&7[&6公会&7]&f成功删除公会 {guild}"
   cancelled: "&7[&6公会&7]&f已取消操作"
   warning: "&7[&6公会&7]&f输入/guilds confirm 来删除公会 输入/guilds cancel取消操作"
+  notify-allies: "&c{guild} is no longer your ally because it has been deleted."
 leave:
   cancelled: "&7[&6公会&7]&f已取消操作"
   successful: "&7[&6公会&7]&f你已离开公会"
