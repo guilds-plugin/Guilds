@@ -17,17 +17,32 @@ import java.util.UUID;
  */
 public class SkullUtils {
 
+    /**
+     * Get the encoded skin url
+     * @param skinUrl the url of the skin
+     * @return encoded
+     */
     public static String getEncoded(String skinUrl) {
         byte[] encodedData = Base64.getEncoder().encode(String.format("{textures:{SKIN:{url:\"%s\"}}}", skinUrl).getBytes());
         return new String(encodedData);
     }
 
+    /**
+     * Create a game profile object
+     * @param url the url to use
+     * @return game profile
+     */
     public static GameProfile getGameProfile(String url) {
         GameProfile profile = new GameProfile(UUID.randomUUID(), null);
         profile.getProperties().put("textures", new Property("textures", url));
         return profile;
     }
 
+    /**
+     * Get the skull from a url
+     * @param skinUrl url to use
+     * @return skull
+     */
     public static ItemStack getSkull(String skinUrl) {
         ItemStack head = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
         if (skinUrl.isEmpty()) return head;
