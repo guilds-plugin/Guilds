@@ -117,6 +117,7 @@ delete:
   successful: "&aUsunięto gildie '{guild}&r&a' pomyślnie!"
   cancelled: "&cAnulowano usuwanie gildii!"
   warning: "&cWpisz /guilds confirm aby usunąć gildie lub /guilds cancel aby anulować."
+  notify-allies: "&c{guild} is no longer your ally because it has been deleted."
 leave:
   cancelled: "&cAnulowano opuszczanie gildii!"
   successful: "&aWyszedłeś z gildii!"
