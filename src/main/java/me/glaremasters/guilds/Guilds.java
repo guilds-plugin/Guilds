@@ -551,7 +551,7 @@ public final class Guilds extends JavaPlugin {
         manager.getCommandCompletions().registerAsyncCompletion("allyInvites", c -> {
            Guild guild = guildHandler.getGuild(c.getPlayer());
             if (guild == null) return null;
-           if (!guild.hasAllies()) return null;
+           if (!guild.hasPendingAllies()) return null;
            return guild.getPendingAllies().stream().map(g -> guildHandler.getNameById(g)).collect(Collectors.toList());
         });
 
