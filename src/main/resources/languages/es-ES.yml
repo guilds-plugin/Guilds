@@ -205,6 +205,7 @@ codes:
   max: "&c¡Ya tienes demasiados códigos de invitación activos en tu gremio!"
 vaults:
   maxed: "&c¡No puedes abrir esta bóveda porque ya tienes la cantidad máxima de bóvedas para tu nivel de gremio!"
+  blacklisted: "&cYou can't put that item in your Guild Vault because it is blacklisted!"
 languages:
   set: "Has configurado correctamente tu idioma para {language}"
   warning: "&cYou are about to update all the language files. This will delete all current language files and recreate them. Type /guilds confirm to remove this guild, type /guilds cancel to cancel."
