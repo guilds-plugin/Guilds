@@ -205,6 +205,7 @@ codes:
   max: "&cVous avez déjà trop de codes d'utilisation actifs dans votre guilde !"
 vaults:
   maxed: "&cVous ne pouvez pas ouvrir ce coffre car vous avez déjà le nombre maximum de coffre pour le rang de votre Guilde !"
+  blacklisted: "&cYou can't put that item in your Guild Vault because it is blacklisted!"
 languages:
   set: "&aVous avez défini avec succès votre langage en {language}"
   warning: "&cYou are about to update all the language files. This will delete all current language files and recreate them. Type /guilds confirm to remove this guild, type /guilds cancel to cancel."
