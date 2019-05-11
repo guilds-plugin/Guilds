@@ -117,6 +117,7 @@ delete:
   successful: "&aSuppression de la guilde '{guild}&r&a' réussi !"
   cancelled: "&cSuppression de la guilde annulée !"
   warning: "&cEcrivez /guilds confirm pour supprimer votre guilde, ecrivez /guilds cancel pour annuler."
+  notify-allies: "&c{guild} is no longer your ally because it has been deleted."
 leave:
   cancelled: "&cQuitter la guilde annulée !"
   successful: "&aVous avez quitté votre guilde avec succès !"
