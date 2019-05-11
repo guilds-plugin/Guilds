@@ -205,6 +205,7 @@ codes:
   max: "&8[&6公會&8] &f你公會中的邀請碼已達上限"
 vaults:
   maxed: "&8[&6公會&8] &f你不能打開公會金庫 因為你已擁有目前公會等級的最大金庫數量"
+  blacklisted: "&cYou can't put that item in your Guild Vault because it is blacklisted!"
 languages:
   set: "&8[&6公會&8] &f你已設定語言文件為 {language}"
   warning: "&8[&6公會&8] &f該操作將更新所有語言文件， 這將刪除所有目前語言文件並重新建立，  輸入/guilds confirm 確認刪除，鍵入/guilds cancel取消"
