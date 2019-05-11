@@ -117,6 +117,7 @@ delete:
   successful: "&aEliminaste el gremio '{guild}&r&a' correctamente!"
   cancelled: "&cEliminacion del gremio cancelada!"
   warning: "&cEscribe /guilds confirm para eliminar tu gremio, escribe /guilds cancel para cancelarlo."
+  notify-allies: "&c{guild} is no longer your ally because it has been deleted."
 leave:
   cancelled: "&cLa deserción del gremio ha sido cancelada!"
   successful: "&aHas dejado el gremio!"
