@@ -81,6 +81,7 @@ public class CommandVault extends BaseCommand {
         }
 
         player.openInventory(guildHandler.getGuildVault(guild, vault));
+        guildHandler.getOpenedVault().add(player);
     }
 
 }

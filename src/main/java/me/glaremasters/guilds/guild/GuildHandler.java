@@ -29,8 +29,8 @@ import co.aikar.commands.ACFUtil;
 import co.aikar.commands.CommandManager;
 import lombok.Getter;
 import me.glaremasters.guilds.Guilds;
-import me.glaremasters.guilds.configuration.sections.GuildBuffSettings;
 import me.glaremasters.guilds.configuration.sections.GuildSettings;
+import me.glaremasters.guilds.configuration.sections.GuildVaultSettings;
 import me.glaremasters.guilds.configuration.sections.TicketSettings;
 import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
@@ -67,6 +67,7 @@ public class GuildHandler {
     @Getter private final List<Player> guildChat;
 
     @Getter private Map<Guild, List<Inventory>> cachedVaults;
+    @Getter private List<Player> openedVault;
 
     private final DatabaseProvider databaseProvider;
     private final CommandManager commandManager;
@@ -84,6 +85,7 @@ public class GuildHandler {
         spies = new ArrayList<>();
         guildChat = new ArrayList<>();
         cachedVaults = new HashMap<>();
+        openedVault = new ArrayList<>();
 
         //GuildRoles objects
         ConfigurationSection roleSection = config.getConfigurationSection("roles");
@@ -635,7 +637,7 @@ public class GuildHandler {
      * @return new vault
      */
     public Inventory createNewVault(SettingsManager settingsManager) {
-        return Bukkit.createInventory(null, 54, settingsManager.getProperty(GuildBuffSettings.VAULT_NAME));
+        return Bukkit.createInventory(null, 54, settingsManager.getProperty(GuildVaultSettings.VAULT_NAME));
     }
 
     /**

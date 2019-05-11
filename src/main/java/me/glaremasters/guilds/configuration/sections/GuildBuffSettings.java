@@ -338,10 +338,6 @@ public class GuildBuffSettings implements SettingsHolder {
     public static final Property<Boolean> REGENERATION_DISPLAY =
             newProperty(BUFF_PATH + "regeneration.display", true);
 
-    @Comment("What do you want the name of the Vault to be?")
-    public static final Property<String> VAULT_NAME =
-            newProperty("guis.vault.name", "Guild Vault");
-
     private GuildBuffSettings() {
     }
 
