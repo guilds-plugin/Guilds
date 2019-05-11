@@ -117,6 +117,7 @@ delete:
   successful: "&aA '{guild}&r&a' céh sikeresen törlésre került!"
   cancelled: "&cA céh törlése visszavonásra került!"
   warning: "&cÍrd be a /guilds confirm parancsot a céhed törlésére, /guilds cancel parancsot a törlés visszavonására"
+  notify-allies: "&c{guild} is no longer your ally because it has been deleted."
 leave:
   cancelled: "&cA céh elhagyása visszavonva!"
   successful: "&aSikeresen elhagytad a céhet!"
