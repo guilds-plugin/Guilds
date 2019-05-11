@@ -62,6 +62,7 @@ create:
   successful: "&aGuild '{guild}&r&a' succesvol aangemaakt!"
   cancelled: "&cGuild creatie gestopt!"
   requirements: "&cDe naam van jouw Guild komt niet overeen met de vereisten! Je kan alleen alfanumerieke karakters gebruiken en de lengte van de naam kan niet langer zijn dan 64"
+  name-too-long: "&cJe hebt geen prefix ingevuld en de Guild naam voldoet niet aan de prefix vereisten. Probeer het opnieuw met een kortere naam of vul een prefix in tijdens creatie."
 chat:
   disabled: "Guild Chat Uitgezet"
   enabled: "Guild Chat Aangezet"
@@ -204,6 +205,7 @@ codes:
   max: "&cJe hebt al teveel actieve invite codes voor jouw Guild!"
 vaults:
   maxed: "&cJe kunt deze kluis niet openen omdat je al het maximale aantal kluizen voor jouw Guild Tier hebt!"
+  blacklisted: "&cJe kunt dat item niet in jouw Guild kluis stoppen omdat het op de blacklist staat!"
 languages:
   set: "Je hebt met succes je taal ingesteld op {language}"
   warning: "&cJe staat op het punt om de taalbestanden te updaten. Dit verwijdert alle huidige taalbestanden en maakt ze opnieuw. Typ /guilds confirm om te bevestigen, typ /guilds cancel om te annuleren."

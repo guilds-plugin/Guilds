@@ -62,6 +62,7 @@ create:
   successful: "&aBreasla '{guild}&r&a' a fost creata cu succes!"
   cancelled: "&cCrearea Breslei a fost anulata!"
   requirements: "&cNumele Breslei tale nu corespunde cerintelor! Puteti utiliza doar caractere alfanumerice, iar lungimea numelui nu poate depasii 64 de caractere"
+  name-too-long: "&cYou didn't provide a prefix so the name you input was tested against the prefix requirements and that failed. Please try a shorter name or input a prefix on creation."
 chat:
   disabled: "Chat-ul Breslei dezactivat"
   enabled: "Chat-ul Breslei activat"
@@ -204,6 +205,7 @@ codes:
   max: "&cAi deja mult prea multe coduri de invitatie in Breasla ta!"
 vaults:
   maxed: "&cNu poti deschide acest seif deoarece detii numarul maxim de seifuri pentru nivelul Breslei tale !"
+  blacklisted: "&cYou can't put that item in your Guild Vault because it is blacklisted!"
 languages:
   set: "&aYou've successfully set your language to {language}"
   warning: "&cYou are about to update all the language files. This will delete all current language files and recreate them. Type /guilds confirm to remove this guild, type /guilds cancel to cancel."

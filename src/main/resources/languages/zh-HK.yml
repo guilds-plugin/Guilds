@@ -62,6 +62,7 @@ create:
   successful: "&8[&6公會&8] &f公會《 {guild} 》&f建立成功"
   cancelled: "&8[&6公會&8] &f已取消建立公會"
   requirements: "&8[&6公會&8] &f非法的公會名稱稱，請重新嘗試並限制公會名稱在64字以內"
+  name-too-long: "&cYou didn't provide a prefix so the name you input was tested against the prefix requirements and that failed. Please try a shorter name or input a prefix on creation."
 chat:
   disabled: "&8[&6公會&8] &f已關閉公會聊天頻道"
   enabled: "&8[&6公會&8] &f已開啟公會聊天頻道"
@@ -204,6 +205,7 @@ codes:
   max: "&8[&6公會&8] &f你公會中的邀請碼已達上限"
 vaults:
   maxed: "&8[&6公會&8] &f你不能打開公會金庫 因為你已擁有目前公會等級的最大金庫數量"
+  blacklisted: "&cYou can't put that item in your Guild Vault because it is blacklisted!"
 languages:
   set: "&8[&6公會&8] &f你已設定語言文件為 {language}"
   warning: "&8[&6公會&8] &f該操作將更新所有語言文件， 這將刪除所有目前語言文件並重新建立，  輸入/guilds confirm 確認刪除，鍵入/guilds cancel取消"
