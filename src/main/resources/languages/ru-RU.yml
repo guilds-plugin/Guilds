@@ -117,7 +117,7 @@ delete:
   successful: "&aГильдия {guild}&r&a успешно расформирована!"
   cancelled: "&cРасформирование гильдии отменено!"
   warning: "&cВведите /guilds confirm для подтверждения или /guilds cancel для отмены расформирования."
-  notify-allies: "&c{guild} is no longer your ally because it has been deleted."
+  notify-allies: "&c{guild} больше не является Вашим союзником, поскольку была расформирована."
 leave:
   cancelled: "&cВыход из гильдии отменен!"
   successful: "&aВы успешно покинули гильдию!"
