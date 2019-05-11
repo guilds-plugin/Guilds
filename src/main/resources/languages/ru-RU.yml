@@ -62,7 +62,7 @@ create:
   successful: "&aГильдия {guild}&r&a успешно создана!"
   cancelled: "&cСоздание гильдии отменено!"
   requirements: "&cНазвание Вашей гильдии не соответствует требованиям! Вы можете использовать лишь буквы и цифры, а длина не должна превышать 64 символов"
-  name-too-long: "&cYou didn't provide a prefix so the name you input was tested against the prefix requirements and that failed. Please try a shorter name or input a prefix on creation."
+  name-too-long: "&cПрефикс не был указан, а название не соответствует требованиям к префиксу. Сделайте название короче или укажите префикс."
 chat:
   disabled: "Чат гильдии отключен"
   enabled: "Чат гильдии включен"
