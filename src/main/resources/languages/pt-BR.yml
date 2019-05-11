@@ -117,6 +117,7 @@ delete:
   successful: "&aDeletou '{guild}&r&a' com sucesso!"
   cancelled: "&cCriação de guild cancelada!"
   warning: "&cDigite /guilds confirm para confirmar a exclusão de sua guild, digite /guilds cancel para cancelar."
+  notify-allies: "&c{guild} is no longer your ally because it has been deleted."
 leave:
   cancelled: "&cSaída da guild cancelada!"
   successful: "&aVocê saiu da sua guild com sucesso!"
