@@ -117,6 +117,7 @@ delete:
   successful: "&aĐã xoá '{guild}&r&a' thành công!"
   cancelled: "&cGuild deletion cancelled!"
   warning: "Bấm /guilds confirm để xoá guild của bạn, bấm /guilds cancel để huỷ bỏ."
+  notify-allies: "&c{guild} is no longer your ally because it has been deleted."
 leave:
   cancelled: "&cLeaving guild cancelled!"
   successful: "&cBạn đã rời khỏi guild thành công!"
