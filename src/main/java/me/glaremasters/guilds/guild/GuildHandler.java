@@ -781,4 +781,13 @@ public class GuildHandler {
                 "{amount}", String.valueOf(c.getUses()),
                 "{creator}", Bukkit.getOfflinePlayer(c.getCreator()).getName()));
     }
+
+    /**
+     * Remove a guild from all other guilds allies or pending allies when deleted
+     * @param guild the guild to check
+     */
+    public void removeAlliesOnDelete(Guild guild) {
+        getGuilds().forEach(g -> g.getPendingAllies().removeIf(x -> x.equals(guild.getId())));
+        getGuilds().forEach(g -> g.getAllies().removeIf(x -> x.equals(guild.getId())));
+    }
 }

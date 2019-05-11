@@ -82,6 +82,8 @@ public class CommandDelete extends BaseCommand {
 
                 guildHandler.removePermsFromAll(permission, guild);
 
+                guildHandler.removeAlliesOnDelete(guild);
+
                 guildHandler.removeGuild(guild);
 
                 getCurrentCommandIssuer().sendInfo(Messages.DELETE__SUCCESSFUL,
