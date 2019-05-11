@@ -41,7 +41,7 @@ descriptions:
   info: "Deschideti meniul cu informatiile Breslei"
   invite: "Invitati un alt jucator in Breasla dumneavoastra"
   kick: "Elimina un jucator din breasla"
-  language: "Change the language of the plugin messages for you"
+  language: "Modificati limba pluginului pentru dumneavoastra"
   leave: "Paraseste breasla"
   list: "Listeaza toate breslele"
   prefix: "Schimba prefixul breslei"
