@@ -205,6 +205,7 @@ codes:
   max: "&cJe hebt al teveel actieve invite codes voor jouw Guild!"
 vaults:
   maxed: "&cJe kunt deze kluis niet openen omdat je al het maximale aantal kluizen voor jouw Guild Tier hebt!"
+  blacklisted: "&cYou can't put that item in your Guild Vault because it is blacklisted!"
 languages:
   set: "Je hebt met succes je taal ingesteld op {language}"
   warning: "&cJe staat op het punt om de taalbestanden te updaten. Dit verwijdert alle huidige taalbestanden en maakt ze opnieuw. Typ /guilds confirm om te bevestigen, typ /guilds cancel om te annuleren."
