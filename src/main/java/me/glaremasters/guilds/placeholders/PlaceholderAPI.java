@@ -52,6 +52,7 @@ public class PlaceholderAPI extends PlaceholderExpansion {
         return "1.1.0";
     }
 
+    @Override
     public String onPlaceholderRequest(Player p, String arg) {
 
         if (p == null)  return null;
