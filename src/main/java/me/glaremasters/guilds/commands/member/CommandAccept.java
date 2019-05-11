@@ -88,12 +88,12 @@ public class CommandAccept extends BaseCommand {
         if (event.isCancelled())
             return;
 
+        guild.sendMessage(getCurrentCommandManager(), Messages.ACCEPT__PLAYER_JOINED,
+                "{player}", player.getName());
+
         guild.addMember(player, guildHandler);
 
         guildHandler.addPerms(permission, player);
-
-        guild.sendMessage(getCurrentCommandManager(), Messages.ACCEPT__PLAYER_JOINED,
-                "{player}", player.getName());
 
         getCurrentCommandIssuer().sendInfo(Messages.ACCEPT__SUCCESSFUL,
                 "{guild}", guild.getName());
