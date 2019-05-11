@@ -98,7 +98,7 @@ public class CommandAllyAdd extends BaseCommand {
         target.sendMessage(getCurrentCommandManager(), Messages.ALLY__INCOMING_INVITE,
                 "{guild}", guild.getName());
 
-        guildHandler.addPendingAlly(target, guild);
+        target.addPendingAlly(guild);
     }
 
 
