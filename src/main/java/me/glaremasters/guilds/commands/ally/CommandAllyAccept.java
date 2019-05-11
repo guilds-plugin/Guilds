@@ -75,7 +75,7 @@ public class CommandAllyAccept extends BaseCommand {
         if (target == null)
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
 
-        if (guild.isAllyPending(target))
+        if (!guild.isAllyPending(target))
             return;
 
         guildHandler.addAlly(guild, target);
@@ -83,7 +83,7 @@ public class CommandAllyAccept extends BaseCommand {
         guild.sendMessage(getCurrentCommandManager(), Messages.ALLY__CURRENT_ACCEPTED,
                 "{guild}", target.getName());
 
-        guild.sendMessage(getCurrentCommandManager(), Messages.ALLY__TARGET_ACCEPTED,
+        target.sendMessage(getCurrentCommandManager(), Messages.ALLY__TARGET_ACCEPTED,
                 "{guild}", guild.getName());
     }
 
