@@ -205,6 +205,7 @@ codes:
   max: "&cИмате твърде много активни кодове за покани във вашата гилдия!"
 vaults:
   maxed: "&cНе можете да отворите този трезор, защото вече имате максималният брой трезори за вашето ниво на гилдия!"
+  blacklisted: "&cYou can't put that item in your Guild Vault because it is blacklisted!"
 languages:
   set: "&aYou've successfully set your language to {language}"
   warning: "&cYou are about to update all the language files. This will delete all current language files and recreate them. Type /guilds confirm to remove this guild, type /guilds cancel to cancel."
