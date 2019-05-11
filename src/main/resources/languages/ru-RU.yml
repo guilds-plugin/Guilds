@@ -205,6 +205,7 @@ codes:
   max: "&cВ гильдии слишком много активных кодов приглашения!"
 vaults:
   maxed: "&cУровень гильдии не позволяет открыть хранилище под этим номером!"
+  blacklisted: "&cYou can't put that item in your Guild Vault because it is blacklisted!"
 languages:
   set: "&aВаш язык для гильдий установлен на {language}"
   warning: "&cВы собираетесь обновить все языковые файлы. Это удалит все текущие языковые файлы и пересоздаст их. Введите /guilds confirm для подтверждения или /guilds cancel для отмены обновления файлов."
