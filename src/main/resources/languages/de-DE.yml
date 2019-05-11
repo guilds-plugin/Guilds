@@ -117,6 +117,7 @@ delete:
   successful: "&a'{guild}&r&a' erfolgreich gelöscht!"
   cancelled: "&cLöschen der Gilde abgebrochen!"
   warning: "&cSchreibe /guilds confirm um deine Gilde zu löschen. Schreibe /guilds cancel zum abbrechen."
+  notify-allies: "&c{guild} is no longer your ally because it has been deleted."
 leave:
   cancelled: "&cGilde verlassen abgebrochen!"
   successful: "&aDu hast erfolgreich deine Gilde verlassen!"
