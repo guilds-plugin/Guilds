@@ -30,6 +30,8 @@ import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
+import lombok.AllArgsConstructor;
+import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.guild.Guild;
@@ -44,8 +46,10 @@ import java.util.stream.Collectors;
  * Date: 4/4/2019
  * Time: 5:52 PM
  */
-@CommandAlias(Constants.ROOT_ALIAS)
+@AllArgsConstructor @CommandAlias(Constants.ROOT_ALIAS)
 public class CommandAllyList extends BaseCommand {
+
+    private GuildHandler guildHandler;
 
     /**
      * List all the allies of your guild
@@ -60,7 +64,7 @@ public class CommandAllyList extends BaseCommand {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ALLY__NONE));
 
         getCurrentCommandIssuer().sendInfo(Messages.ALLY__LIST,
-                "{ally-list}", guild.getAllies().stream().map(UUID::toString).collect(Collectors.joining(",")));
+                "{ally-list}", guild.getAllies().stream().map(m -> guildHandler.getGuild(m).getName()).collect(Collectors.joining(",")));
     }
 
 }

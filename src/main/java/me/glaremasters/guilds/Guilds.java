@@ -413,7 +413,7 @@ public final class Guilds extends JavaPlugin {
                 new CommandAllyAccept(guildHandler),
                 new CommandAllyAdd(guildHandler),
                 new CommandAllyDecline(guildHandler),
-                new CommandAllyList(),
+                new CommandAllyList(guildHandler),
                 new CommandAllyRemove(guildHandler),
                 // Bank Commands
                 new CommandBankBalance(),
