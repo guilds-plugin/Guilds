@@ -117,6 +117,7 @@ delete:
   successful: "&aSuccesvol '{guild}&r&a' verwijderd!"
   cancelled: "&cGuild verwijdering gestopt!"
   warning: "&cTyp /guilds confirm om jouw Guild te verwijderen, typ /guilds cancel om te stoppen."
+  notify-allies: "&c{guild} is no longer your ally because it has been deleted."
 leave:
   cancelled: "&cGuild verlaten gestopt!"
   successful: "&aJe hebt jouw Guild verlaten!"
