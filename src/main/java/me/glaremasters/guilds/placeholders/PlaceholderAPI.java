@@ -95,8 +95,9 @@ public class PlaceholderAPI extends PlaceholderExpansion {
                 return String.valueOf(api.getMaxMembers(p));
             case "max_balance":
                 return String.valueOf(api.getMaxBalance(p));
+            default:
+                return "";
         }
-        return "";
     }
 
 }
