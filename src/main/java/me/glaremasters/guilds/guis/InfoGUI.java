@@ -101,6 +101,10 @@ public class InfoGUI {
                 commandManager.getCommandIssuer(player).sendInfo(Messages.HOME__NO_HOME_SET);
             }
         }));
+        // Add the status button to the GUI
+        pane.addItem(new GuiItem(easyItem(settingsManager.getProperty(GuildInfoSettings.STATUS_MATERIAL),
+                settingsManager.getProperty(GuildInfoSettings.STATUS_NAME),
+                settingsManager.getProperty(GuildInfoSettings.STATUS_LORE).stream().map(l -> l.replace("{status}", guild.getStatus().name())).collect(Collectors.toList()))));
     }
 
     /**
