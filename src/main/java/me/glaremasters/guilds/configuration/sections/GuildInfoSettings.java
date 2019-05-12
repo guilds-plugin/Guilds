@@ -22,7 +22,7 @@ public class GuildInfoSettings implements SettingsHolder {
     @Comment({"What would you like the name of the GUI to be?",
     "Currently supports {name} for the name of the guild and {prefix} for the prefix of the guild"})
     public static final Property<String> GUI_NAME =
-            newProperty(INFO_PATH + "name", "{guild}");
+            newProperty(INFO_PATH + "name", "{name}");
 
     @Comment("What material do you want the tier button to be?")
     public static final Property<String> TIER_MATERIAL =
