@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.configuration.sections.GuildInfoSettings;
 import me.glaremasters.guilds.guild.Guild;
+import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.ItemBuilder;
 import org.bukkit.Material;
@@ -30,6 +31,7 @@ public class InfoGUI {
 
     private Guilds guilds;
     private SettingsManager settingsManager;
+    private GuildHandler guildHandler;
 
     public Gui getInfoGUI(Guild guild, Player player, CommandManager commandManager) {
 
@@ -81,7 +83,9 @@ public class InfoGUI {
         // Add the members button to the GUI
         pane.addItem(new GuiItem(easyItem(settingsManager.getProperty(GuildInfoSettings.MEMBERS_MATERIAL),
                 settingsManager.getProperty(GuildInfoSettings.MEMBERS_NAME),
-                settingsManager.getProperty(GuildInfoSettings.MEMBERS_LORE))));
+                settingsManager.getProperty(GuildInfoSettings.MEMBERS_LORE).stream().map(l ->
+                        l.replace("{members}", String.valueOf(guild.getSize()))
+                                .replace("{max}", String.valueOf(guildHandler.getGuildTier(guild.getTier().getLevel()).getMaxMembers()))).collect(Collectors.toList()))));
         // Add the home button to the GUI
         pane.addItem(new GuiItem(easyItem(settingsManager.getProperty(GuildInfoSettings.HOME_MATERIAL),
                 settingsManager.getProperty(GuildInfoSettings.HOME_NAME),

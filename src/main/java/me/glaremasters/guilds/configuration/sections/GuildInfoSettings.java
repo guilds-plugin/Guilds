@@ -33,7 +33,7 @@ public class GuildInfoSettings implements SettingsHolder {
 
     @Comment("What do you want the lore of the members button to be?")
     public static final Property<List<String>> MEMBERS_LORE =
-            newListProperty(INFO_PATH + "members-lore", "&fClick here to view guild member info");
+            newListProperty(INFO_PATH + "members-lore", "&fClick here to view members!", "&fCurrent: {members} / {max}");
 
     @Comment("What material do you want the home button to be?")
     public static final Property<String> HOME_MATERIAL =
