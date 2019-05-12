@@ -5,6 +5,9 @@ import ch.jalu.configme.SettingsHolder;
 import ch.jalu.configme.configurationdata.CommentsConfiguration;
 import ch.jalu.configme.properties.Property;
 
+import java.util.List;
+
+import static ch.jalu.configme.properties.PropertyInitializer.newListProperty;
 import static ch.jalu.configme.properties.PropertyInitializer.newProperty;
 
 /**
@@ -19,6 +22,18 @@ public class GuildInfoSettings implements SettingsHolder {
     @Comment("What would you like the name of the GUI to be?")
     public static final Property<String> GUI_NAME =
             newProperty(INFO_PATH + "name", "Guild Info");
+
+    @Comment("What material do you want the members button to be?")
+    public static final Property<String> MEMBERS_MATERIAL =
+            newProperty(INFO_PATH + "members-material", "DIAMOND_HELMET");
+
+    @Comment("What do you want the name of the members button to be?")
+    public static final Property<String> MEMBERS_NAME =
+            newProperty(INFO_PATH + "members-name", "&fView Guild Members");
+
+    @Comment("What do you want the lore of the members button to be?")
+    public static final Property<List<String>> MEMBERS_LORE =
+            newListProperty(INFO_PATH + "members-lore", "&fClick here to view guild member info");
 
 
 
