@@ -154,6 +154,7 @@ home:
   cancelled: "&cTe moviste! Teletransportacion cancelada!"
 sethome:
   successful: "&aEstableciste la casa del Gremio!"
+  deleted: "&aYou've successfully deleted your guild home!"
   cooldown: "&cDebes esperar {amount} segundos para hacerlo de nuevo"
 reload:
   reloaded: "&aConfiguracion recargada!"
