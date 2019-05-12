@@ -58,7 +58,7 @@ public class GuildInfoSettings implements SettingsHolder {
 
     @Comment("What do you want the lore of the members button to be?")
     public static final Property<List<String >> MEMBERS_LORE =
-            newListProperty(INFO_PATH + "members-lore", "&f• Members: {current} / {max}", "&f• Online: {online} / {total}", "", "&fClick to view members!");
+            newListProperty(INFO_PATH + "members-lore", "&f• Members: {current} / {max}", "&f• Online: {online} / {current}", "", "&fClick to view members!");
 
     @Comment("What material do you want the status button to be?")
     public static final Property<String> STATUS_MATERIAL =
@@ -83,6 +83,10 @@ public class GuildInfoSettings implements SettingsHolder {
     @Comment("What do you want the lore of the home button to be?")
     public static final Property<List<String >> HOME_LORE =
             newListProperty(INFO_PATH + "home-lore", "&f• Home: {coords}");
+
+    @Comment("What do you want it to say when a guild doesn't have a home set?")
+    public static final Property<String> HOME_EMPTY =
+            newProperty(INFO_PATH + "home-empty", "&fNot Set");
 
 
 

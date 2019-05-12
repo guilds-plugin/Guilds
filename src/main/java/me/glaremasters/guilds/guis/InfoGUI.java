@@ -89,15 +89,46 @@ public class InfoGUI {
         // Add the tier button to the GUI
         pane.addItem(new GuiItem(easyItem(settingsManager.getProperty(GuildInfoSettings.TIER_MATERIAL),
                 settingsManager.getProperty(GuildInfoSettings.TIER_NAME),
-                settingsManager.getProperty(GuildInfoSettings.TIER_LORE).stream().map(ACFBukkitUtil::color).map(l ->
+                settingsManager.getProperty(GuildInfoSettings.TIER_LORE).stream().map(l ->
                         l.replace("{tier}", tier.getName())).collect(Collectors.toList())),
                 event -> event.setCancelled(true)));
         // Add the bank button to the GUI
         pane.addItem(new GuiItem(easyItem(settingsManager.getProperty(GuildInfoSettings.BANK_MATERIAL),
                 settingsManager.getProperty(GuildInfoSettings.BANK_NAME),
-                settingsManager.getProperty(GuildInfoSettings.BANK_LORE).stream().map(ACFBukkitUtil::color).map(l ->
+                settingsManager.getProperty(GuildInfoSettings.BANK_LORE).stream().map(l ->
                         l.replace("{current}", String.valueOf(guild.getBalance())).replace("{max}",
                                 String.valueOf(tier.getMaxBankBalance()))).collect(Collectors.toList())),
+                event -> event.setCancelled(true)));
+        // Add the members button to the GUI
+        pane.addItem(new GuiItem(easyItem(settingsManager.getProperty(GuildInfoSettings.MEMBERS_MATERIAL),
+                settingsManager.getProperty(GuildInfoSettings.MEMBERS_NAME),
+                settingsManager.getProperty(GuildInfoSettings.MEMBERS_LORE).stream().map(l ->
+                        l.replace("{current}", String.valueOf(guild.getMembers().size()))
+                                .replace("{max}", String.valueOf(tier.getMaxMembers()))
+                                .replace("{online}", String.valueOf(guild.getOnlineMembers().size()))).collect(Collectors.toList())),
+                //todo Open the member GUI
+                event -> event.setCancelled(true)));
+        // Add the status button to the GUI
+        pane.addItem(new GuiItem(easyItem(settingsManager.getProperty(GuildInfoSettings.STATUS_MATERIAL),
+                settingsManager.getProperty(GuildInfoSettings.STATUS_NAME),
+                settingsManager.getProperty(GuildInfoSettings.STATUS_LORE).stream().map(l ->
+                        l.replace("{status}", guild.getStatus().name())).collect(Collectors.toList())),
+                event -> event.setCancelled(true)));
+        // Create a variable for the home
+        String home;
+        // Check if the home is null or not
+        if (guild.getHome() == null) {
+            // If null, take the empty string
+            home = settingsManager.getProperty(GuildInfoSettings.HOME_EMPTY);
+        } else {
+            // If not, list the location
+            home = ACFBukkitUtil.blockLocationToString(guild.getHome().getAsLocation());
+        }
+        // Add the home button to the GUI
+        pane.addItem(new GuiItem(easyItem(settingsManager.getProperty(GuildInfoSettings.HOME_MATERIAL),
+                settingsManager.getProperty(GuildInfoSettings.HOME_NAME),
+                settingsManager.getProperty(GuildInfoSettings.HOME_LORE).stream().map(l ->
+                        l.replace("{coords}", home)).collect(Collectors.toList())),
                 event -> event.setCancelled(true)));
     }
 
