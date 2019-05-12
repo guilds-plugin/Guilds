@@ -85,7 +85,8 @@ public class InfoGUI {
         pane.addItem(new GuiItem(easyItem(settingsManager.getProperty(GuildInfoSettings.TIER_MATERIAL),
                 settingsManager.getProperty(GuildInfoSettings.TIER_NAME),
                 settingsManager.getProperty(GuildInfoSettings.TIER_LORE).stream().map(ACFBukkitUtil::color).map(l ->
-                        l.replace("{tier}", guildHandler.getGuildTier(guild.getTier().getLevel()).getName())).collect(Collectors.toList()))));
+                        l.replace("{tier}", guildHandler.getGuildTier(guild.getTier().getLevel()).getName())).collect(Collectors.toList())),
+                event -> event.setCancelled(true)));
         // Add the home button to the GUI
     }
 
