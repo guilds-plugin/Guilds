@@ -154,6 +154,7 @@ home:
   cancelled: "Poruszyłeś się! Teleportacja anulowana!"
 sethome:
   successful: "Ustawiłeś dom gildii!"
+  deleted: "&aYou've successfully deleted your guild home!"
   cooldown: "Musisz poczekać co najmniej {amount} sekund aby zrobić to ponownie"
 reload:
   reloaded: "Plik konfiguracyjny przeładowany!"
