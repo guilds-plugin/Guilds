@@ -154,6 +154,7 @@ home:
   cancelled: "&cYou moved! Teleportation cancelled!"
 sethome:
   successful: "&aHai impostato il nome della tua gilda!"
+  deleted: "&aYou've successfully deleted your guild home!"
   cooldown: "&cYou must wait at least {amount} seconds before doing this again"
 reload:
   reloaded: "&aFile di configurazione ricaricato!"
