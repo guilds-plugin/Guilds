@@ -9,19 +9,15 @@ import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
 import com.github.stefvanschie.inventoryframework.pane.Pane;
 import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Guilds;
-import me.glaremasters.guilds.configuration.sections.GuildInfoMemberSettings;
 import me.glaremasters.guilds.configuration.sections.VaultPickerSettings;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
-import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.utils.ItemBuilder;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
