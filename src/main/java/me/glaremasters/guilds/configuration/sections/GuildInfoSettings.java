@@ -19,9 +19,10 @@ public class GuildInfoSettings implements SettingsHolder {
 
     private static final String INFO_PATH = "guis.guild-info.";
 
-    @Comment("What would you like the name of the GUI to be?")
+    @Comment({"What would you like the name of the GUI to be?",
+    "Currently supports {name} for the name of the guild and {prefix} for the prefix of the guild"})
     public static final Property<String> GUI_NAME =
-            newProperty(INFO_PATH + "name", "Guild Info");
+            newProperty(INFO_PATH + "name", "{guild}");
 
     @Comment("What material do you want the members button to be?")
     public static final Property<String> MEMBERS_MATERIAL =
