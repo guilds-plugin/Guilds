@@ -36,7 +36,7 @@ public class InfoGUI {
     public Gui getInfoGUI(Guild guild, Player player, CommandManager commandManager) {
 
         // Create the GUI with the desired name from the config
-        Gui gui = new Gui(guilds, 1, ACFBukkitUtil.color(settingsManager.getProperty(GuildInfoSettings.GUI_NAME).replace("{name}",
+        Gui gui = new Gui(guilds, 3, ACFBukkitUtil.color(settingsManager.getProperty(GuildInfoSettings.GUI_NAME).replace("{name}",
                 guild.getName()).replace("{prefix}", guild.getPrefix())));
 
         // Create the background pane which will just be stained glass
@@ -68,8 +68,8 @@ public class InfoGUI {
     private void createBackgroundItems(OutlinePane pane) {
         // Start the itembuilder with stained glass
         ItemBuilder builder = new ItemBuilder(new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) 7));
-        // Loop through 9 (one row)
-        for (int i = 0; i < 9; i++) {
+        // Loop through 27 (three rows)
+        for (int i = 0; i < 27; i++) {
             // Add the pane item to the GUI and cancel the click event on it
             pane.addItem(new GuiItem(builder.build(), event -> event.setCancelled(true)));
         }
@@ -81,36 +81,12 @@ public class InfoGUI {
      * @param guild the guild of the player
      */
     private void createForegroundItems(OutlinePane pane, Guild guild, Player player, CommandManager commandManager) {
-        // Add the members button to the GUI
-        pane.addItem(new GuiItem(easyItem(settingsManager.getProperty(GuildInfoSettings.MEMBERS_MATERIAL),
-                settingsManager.getProperty(GuildInfoSettings.MEMBERS_NAME),
-                settingsManager.getProperty(GuildInfoSettings.MEMBERS_LORE).stream().map(l ->
-                        l.replace("{members}", String.valueOf(guild.getSize()))
-                                .replace("{max}", String.valueOf(guildHandler.getGuildTier(guild.getTier().getLevel()).getMaxMembers()))).collect(Collectors.toList()))));
+        // Add the tier button to the GUI
+        pane.addItem(new GuiItem(easyItem(settingsManager.getProperty(GuildInfoSettings.TIER_MATERIAL),
+                settingsManager.getProperty(GuildInfoSettings.TIER_NAME),
+                settingsManager.getProperty(GuildInfoSettings.TIER_LORE).stream().map(ACFBukkitUtil::color).map(l ->
+                        l.replace("{tier}", guildHandler.getGuildTier(guild.getTier().getLevel()).getName())).collect(Collectors.toList()))));
         // Add the home button to the GUI
-        pane.addItem(new GuiItem(easyItem(settingsManager.getProperty(GuildInfoSettings.HOME_MATERIAL),
-                settingsManager.getProperty(GuildInfoSettings.HOME_NAME),
-                settingsManager.getProperty(GuildInfoSettings.HOME_LORE)), event -> {
-            // Cancel the event
-            event.setCancelled(true);
-            // Close the GUI
-            event.getWhoClicked().closeInventory();
-            // Check if guild home is null
-            if (guild.getHome() != null) {
-                // Teleport player to guild home
-                player.teleport(guild.getHome().getAsLocation());
-                // Tell them they teleported successfully
-                commandManager.getCommandIssuer(player).sendInfo(Messages.HOME__TELEPORTED);
-            } else {
-                // Tell them that they have no home set
-                commandManager.getCommandIssuer(player).sendInfo(Messages.HOME__NO_HOME_SET);
-            }
-        }));
-        // Add the status button to the GUI
-        pane.addItem(new GuiItem(easyItem(settingsManager.getProperty(GuildInfoSettings.STATUS_MATERIAL),
-                settingsManager.getProperty(GuildInfoSettings.STATUS_NAME),
-                settingsManager.getProperty(GuildInfoSettings.STATUS_LORE).stream().map(l -> l.replace("{status}",
-                        guild.getStatus().name())).collect(Collectors.toList())), event -> event.setCancelled(true)));
     }
 
     /**
