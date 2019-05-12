@@ -29,19 +29,15 @@ import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
-import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
 import lombok.AllArgsConstructor;
-import me.glaremasters.guilds.exceptions.ExpectationNotMet;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.exceptions.InvalidPermissionException;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
-import me.glaremasters.guilds.guild.GuildTier;
-import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.Constants;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 /**
@@ -52,6 +48,7 @@ import org.bukkit.entity.Player;
 @AllArgsConstructor @CommandAlias(Constants.ROOT_ALIAS)
 public class CommandVault extends BaseCommand {
 
+    private Guilds guilds;
     private GuildHandler guildHandler;
     private SettingsManager settingsManager;
 
@@ -64,24 +61,11 @@ public class CommandVault extends BaseCommand {
     @Subcommand("vault")
     @Description("{@@descriptions.vault}")
     @CommandPermission(Constants.BASE_PERM + "vault")
-    public void execute(Player player, Guild guild, GuildRole role, @Default("1") Integer vault) {
+    public void execute(Player player, Guild guild, GuildRole role) {
         if (!role.isOpenVault())
             ACFUtil.sneaky(new InvalidPermissionException());
 
-        if (vault == 0)
-            vault = 1;
-
-        if (!guildHandler.hasVaultUnlocked(vault, guild))
-            ACFUtil.sneaky(new ExpectationNotMet(Messages.VAULTS__MAXED));
-
-        try {
-            guildHandler.getGuildVault(guild, vault);
-        } catch (Exception ex) {
-            guildHandler.getCachedVaults().get(guild).add(guildHandler.createNewVault(settingsManager));
-        }
-
-        player.openInventory(guildHandler.getGuildVault(guild, vault));
-        guildHandler.getOpenedVault().add(player);
+        guilds.getVaultGUI().getVaultGUI(guild, player, getCurrentCommandManager()).show(player);
     }
 
 }

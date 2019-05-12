@@ -69,6 +69,7 @@ import me.glaremasters.guilds.commands.codes.CommandCodeInfo;
 import me.glaremasters.guilds.commands.codes.CommandCodeList;
 import me.glaremasters.guilds.commands.codes.CommandCodeRedeem;
 import me.glaremasters.guilds.commands.gui.CommandBuff;
+import me.glaremasters.guilds.commands.gui.CommandInfo;
 import me.glaremasters.guilds.commands.gui.CommandList;
 import me.glaremasters.guilds.commands.gui.CommandVault;
 import me.glaremasters.guilds.commands.homes.CommandDelHome;
@@ -100,7 +101,10 @@ import me.glaremasters.guilds.guild.GuildCode;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.guis.BuffGUI;
+import me.glaremasters.guilds.guis.InfoGUI;
+import me.glaremasters.guilds.guis.InfoMembersGUI;
 import me.glaremasters.guilds.guis.ListGUI;
+import me.glaremasters.guilds.guis.VaultGUI;
 import me.glaremasters.guilds.listeners.EntityListener;
 import me.glaremasters.guilds.listeners.EssentialsChatListener;
 import me.glaremasters.guilds.listeners.PlayerListener;
@@ -160,6 +164,12 @@ public final class Guilds extends JavaPlugin {
     private BuffGUI buffGUI;
     @Getter
     private ListGUI listGUI;
+    @Getter
+    private InfoGUI infoGUI;
+    @Getter
+    private InfoMembersGUI infoMembersGUI;
+    @Getter
+    private VaultGUI vaultGUI;
     private List<String> loadedLanguages;
 
     @Override
@@ -189,8 +199,6 @@ public final class Guilds extends JavaPlugin {
         RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
         if (rsp != null) permissions = rsp.getProvider();
     }
-
-    //todo rewrite
 
     /**
      * Save and handle new files if needed
@@ -390,7 +398,7 @@ public final class Guilds extends JavaPlugin {
                 new CommandAdminAddPlayer(guildHandler),
                 new CommandAdminGive(guildHandler, settingsManager),
                 new CommandAdminPrefix(guildHandler),
-                new CommandAdminRemove(guildHandler, actionHandler),
+                new CommandAdminRemove(guildHandler, actionHandler, settingsManager),
                 new CommandAdminRemovePlayer(guildHandler),
                 new CommandAdminRename(guildHandler),
                 new CommandAdminSpy(guildHandler),
@@ -418,14 +426,15 @@ public final class Guilds extends JavaPlugin {
                 // GUI Commands
                 new CommandList(this, guildHandler),
                 new CommandBuff(this),
-                new CommandVault(guildHandler, settingsManager),
+                new CommandVault(this, guildHandler, settingsManager),
+                new CommandInfo(this, guildHandler),
                 // Home Commands
                 new CommandDelHome(),
                 new CommandHome(),
                 new CommandSetHome(economy, settingsManager),
                 // Management Commands
                 new CommandCreate(this, guildHandler, settingsManager, actionHandler, economy, permissions),
-                new CommandDelete(guildHandler, actionHandler, permissions),
+                new CommandDelete(guildHandler, actionHandler, permissions, settingsManager),
                 new CommandKick(guildHandler, permissions),
                 new CommandPrefix(guildHandler, settingsManager),
                 new CommandRename(guildHandler, settingsManager),
@@ -439,7 +448,7 @@ public final class Guilds extends JavaPlugin {
                 new CommandDemote(guildHandler),
                 new CommandInvite(guildHandler),
                 new CommandLanguage(this),
-                new CommandLeave(guildHandler, actionHandler, permissions),
+                new CommandLeave(guildHandler, actionHandler, permissions, settingsManager),
                 new CommandPromote(guildHandler),
                 // Misc Commands
                 new CommandChat(guildHandler),
@@ -455,6 +464,9 @@ public final class Guilds extends JavaPlugin {
 
         buffGUI = new BuffGUI(this, settingsManager, guildHandler, getCommandManager());
         listGUI = new ListGUI(this, settingsManager, guildHandler);
+        infoGUI = new InfoGUI(this, settingsManager, guildHandler);
+        infoMembersGUI = new InfoMembersGUI(this, settingsManager, guildHandler);
+        vaultGUI = new VaultGUI(this, settingsManager, guildHandler);
 
 
         if (settingsManager.getProperty(PluginSettings.ANNOUNCEMENTS_CONSOLE)) {

@@ -22,58 +22,40 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.commands.admin;
+package me.glaremasters.guilds.commands.gui;
 
-import co.aikar.commands.ACFBukkitUtil;
-import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Description;
-import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
-import co.aikar.commands.annotation.Syntax;
-import co.aikar.commands.annotation.Values;
 import lombok.AllArgsConstructor;
-import me.glaremasters.guilds.exceptions.ExpectationNotMet;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
-import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.Constants;
 import org.bukkit.entity.Player;
 
 /**
  * Created by Glare
- * Date: 4/4/2019
- * Time: 9:26 PM
+ * Date: 4/8/2019
+ * Time: 10:49 AM
  */
 @AllArgsConstructor @CommandAlias(Constants.ROOT_ALIAS)
-public class CommandAdminPrefix extends BaseCommand {
+public class CommandInfo extends BaseCommand {
 
+    private Guilds guilds;
     private GuildHandler guildHandler;
 
     /**
-     * Admin command to change the prefix of a guild
-     * @param player the admin running the command
-     * @param name the name of a guild
-     * @param prefix the new prefix of the guild
+     * List all the guilds on the server
+     * @param player the player executing this command
      */
-    @Subcommand("admin prefix")
-    @Description("{@@descriptions.admin-prefix}")
-    @CommandPermission(Constants.ADMIN_PERM)
-    @CommandCompletion("@guilds")
-    @Syntax("<name> <prefix>")
-    public void execute(Player player, @Values("@guilds") @Single String name, String prefix) {
-        Guild guild = guildHandler.getGuild(name);
-
-        if (guild == null)
-            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
-
-        guild.setPrefix(ACFBukkitUtil.color(prefix));
-
-        getCurrentCommandIssuer().sendInfo(Messages.PREFIX__SUCCESSFUL);
+    @Subcommand("info")
+    @Description("{@@descriptions.info}")
+    @CommandPermission(Constants.BASE_PERM + "info")
+    public void execute(Player player, Guild guild) {
+        guilds.getInfoGUI().getInfoGUI(guild, player, getCurrentCommandManager()).show(player);
     }
-
 
 }

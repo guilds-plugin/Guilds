@@ -32,16 +32,16 @@ import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
 import lombok.AllArgsConstructor;
-import me.glaremasters.guilds.configuration.sections.TierSettings;
-import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.actions.ConfirmAction;
+import me.glaremasters.guilds.configuration.sections.TierSettings;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.exceptions.InvalidPermissionException;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.guild.GuildTier;
+import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.Constants;
 import me.glaremasters.guilds.utils.EconomyUtils;
 import net.milkbowl.vault.permission.Permission;
@@ -73,7 +73,7 @@ public class CommandUpgrade extends BaseCommand {
         if (!role.isUpgradeGuild())
             ACFUtil.sneaky(new InvalidPermissionException());
 
-        GuildTier tier = guild.getTier();
+        GuildTier tier = guildHandler.getGuildTier(guild.getTier().getLevel() + 1);
         double balance = guild.getBalance();
         double upgradeCost = tier.getCost();
 

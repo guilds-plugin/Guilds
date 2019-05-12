@@ -24,6 +24,7 @@
 
 package me.glaremasters.guilds.commands.admin;
 
+import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
@@ -35,13 +36,14 @@ import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.annotation.Values;
 import lombok.AllArgsConstructor;
-import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.actions.ConfirmAction;
 import me.glaremasters.guilds.api.events.GuildRemoveEvent;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
+import me.glaremasters.guilds.messages.Messages;
+import me.glaremasters.guilds.utils.ClaimUtils;
 import me.glaremasters.guilds.utils.Constants;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -56,6 +58,7 @@ public class CommandAdminRemove extends BaseCommand {
 
     private GuildHandler guildHandler;
     private ActionHandler actionHandler;
+    private SettingsManager settingsManager;
 
     /**
      * Admin command to remove a guild from the server
@@ -84,7 +87,8 @@ public class CommandAdminRemove extends BaseCommand {
 
                 if (event.isCancelled())
                     return;
-                // WorldGuard handling
+                ClaimUtils.deleteWithGuild(player, guild, settingsManager);
+
                 guildHandler.removeGuild(guild);
                 getCurrentCommandIssuer().sendInfo(Messages.ADMIN__DELETE_SUCCESS,
                         "{guild}", name);
