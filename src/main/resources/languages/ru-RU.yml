@@ -154,6 +154,7 @@ home:
   cancelled: "&cВы двигались! Телепортация отменена!"
 sethome:
   successful: "&aВы установили дом своей гильдии!"
+  deleted: "&aYou've successfully deleted your guild home!"
   cooldown: "&cВы должны подождать {amount} секунд, прежде чем делать это снова"
 reload:
   reloaded: "&aФайл конфигураций перезагружен!"
