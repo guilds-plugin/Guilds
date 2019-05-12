@@ -69,7 +69,7 @@ public class CommandSetHome extends BaseCommand {
         if (!role.isChangeHome())
             ACFUtil.sneaky(new InvalidPermissionException());
 
-        if (!EconomyUtils.hasEnough(economy, player, cost))
+        if (!EconomyUtils.hasEnough(getCurrentCommandManager(), economy, player, cost))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__NOT_ENOUGH_MONEY));
 
         // Check if on cooldown

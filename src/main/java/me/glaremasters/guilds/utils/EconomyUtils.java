@@ -24,6 +24,8 @@
 
 package me.glaremasters.guilds.utils;
 
+import co.aikar.commands.CommandManager;
+import me.glaremasters.guilds.messages.Messages;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.entity.Player;
 
@@ -41,8 +43,13 @@ public class EconomyUtils {
      * @param amount the amount to see that they have
      * @return if they have enough
      */
-    public static boolean hasEnough(Economy economy, Player player, double amount) {
-        return economy.getBalance(player) >= amount;
+    public static boolean hasEnough(CommandManager manager, Economy economy, Player player, double amount) {
+        try {
+            return economy.getBalance(player) >= amount;
+        } catch (NullPointerException ex) {
+            manager.getCommandIssuer(player).sendInfo(Messages.ERROR__ECONOMY_REQUIRED);
+        }
+        return false;
     }
 
     /**

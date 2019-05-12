@@ -103,7 +103,7 @@ public class CommandCreate extends BaseCommand {
             }
         }
 
-        if (!EconomyUtils.hasEnough(economy, player, cost))
+        if (!EconomyUtils.hasEnough(getCurrentCommandManager(), economy, player, cost))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__NOT_ENOUGH_MONEY));
 
         getCurrentCommandIssuer().sendInfo(Messages.CREATE__WARNING, "{amount}", String.valueOf(cost));
@@ -111,7 +111,7 @@ public class CommandCreate extends BaseCommand {
         actionHandler.addAction(player, new ConfirmAction() {
             @Override
             public void accept() {
-                if (!EconomyUtils.hasEnough(economy, player, cost))
+                if (!EconomyUtils.hasEnough(getCurrentCommandManager(), economy, player, cost))
                     ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__NOT_ENOUGH_MONEY));
 
                 Guild.GuildBuilder gb = Guild.builder();
