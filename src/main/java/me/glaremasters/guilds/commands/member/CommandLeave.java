@@ -24,6 +24,7 @@
 
 package me.glaremasters.guilds.commands.member;
 
+import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
@@ -37,10 +38,12 @@ import me.glaremasters.guilds.api.events.GuildRemoveEvent;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.messages.Messages;
+import me.glaremasters.guilds.utils.ClaimUtils;
 import me.glaremasters.guilds.utils.Constants;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.codemc.worldguardwrapper.WorldGuardWrapper;
 
 /**
  * Created by Glare
@@ -53,6 +56,7 @@ public class CommandLeave extends BaseCommand {
     private GuildHandler guildHandler;
     private ActionHandler actionHandler;
     private Permission permission;
+    private SettingsManager settingsManager;
 
     /**
      * Leave a guild
@@ -92,7 +96,10 @@ public class CommandLeave extends BaseCommand {
                     guildHandler.removePermsFromAll(permission, guild);
 
                     guildHandler.removeAlliesOnDelete(guild);
+
                     guildHandler.notifyAllies(guild, getCurrentCommandManager());
+
+                    ClaimUtils.deleteWithGuild(player, guild, settingsManager);
 
                     guildHandler.removeGuild(guild);
 

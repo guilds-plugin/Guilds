@@ -211,4 +211,19 @@ public class ClaimUtils {
         return state == WrappedState.DENY;
     }
 
+    /**
+     * Easy method to delete a claim when a guild deletes
+     * @param player the player the check
+     * @param guild the guild they are in
+     * @param settingsManager settings manager
+     */
+    public static void deleteWithGuild(Player player, Guild guild, SettingsManager settingsManager) {
+        if (isEnable(settingsManager)) {
+            WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();
+            if (checkAlreadyExist(wrapper, player, guild)) {
+                removeClaim(wrapper, guild, player);
+            }
+        }
+    }
+
 }

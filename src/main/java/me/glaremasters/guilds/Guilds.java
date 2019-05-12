@@ -400,7 +400,7 @@ public final class Guilds extends JavaPlugin {
                 new CommandAdminAddPlayer(guildHandler),
                 new CommandAdminGive(guildHandler, settingsManager),
                 new CommandAdminPrefix(guildHandler),
-                new CommandAdminRemove(guildHandler, actionHandler),
+                new CommandAdminRemove(guildHandler, actionHandler, settingsManager),
                 new CommandAdminRemovePlayer(guildHandler),
                 new CommandAdminRename(guildHandler),
                 new CommandAdminSpy(guildHandler),
@@ -436,7 +436,7 @@ public final class Guilds extends JavaPlugin {
                 new CommandSetHome(economy, settingsManager),
                 // Management Commands
                 new CommandCreate(this, guildHandler, settingsManager, actionHandler, economy, permissions),
-                new CommandDelete(guildHandler, actionHandler, permissions),
+                new CommandDelete(guildHandler, actionHandler, permissions, settingsManager),
                 new CommandKick(guildHandler, permissions),
                 new CommandPrefix(guildHandler, settingsManager),
                 new CommandRename(guildHandler, settingsManager),
@@ -450,7 +450,7 @@ public final class Guilds extends JavaPlugin {
                 new CommandDemote(guildHandler),
                 new CommandInvite(guildHandler),
                 new CommandLanguage(this),
-                new CommandLeave(guildHandler, actionHandler, permissions),
+                new CommandLeave(guildHandler, actionHandler, permissions, settingsManager),
                 new CommandPromote(guildHandler),
                 // Misc Commands
                 new CommandChat(guildHandler),
