@@ -45,17 +45,26 @@ public class InfoGUI {
         // Create the pane for the main items
         OutlinePane foregroundPane = new OutlinePane(2, 1, 5, 1, Pane.Priority.NORMAL);
 
+        // Create the pane for the guild vault item
+        OutlinePane vaultPane = new OutlinePane(4, 2, 1, 1, Pane.Priority.HIGH);
+
         // Add the items to the background pane
         createBackgroundItems(backgroundPane);
 
         // Add the items to the foreground pane
         createForegroundItems(foregroundPane, guild, player, commandManager);
 
+        // Add the vault item to the vault pane
+        createVaultItem(vaultPane, guild, player, commandManager);
+
         // Add the glass panes to the main GUI background pane
         gui.addPane(backgroundPane);
 
         // Add the foreground pane to the GUI
         gui.addPane(foregroundPane);
+
+        // Add the vault pane to the GUI
+        gui.addPane(vaultPane);
 
         // Return the new info GUI object
         return gui;
@@ -134,6 +143,24 @@ public class InfoGUI {
                 settingsManager.getProperty(GuildInfoSettings.HOME_LORE).stream().map(l ->
                         l.replace("{coords}", home)).collect(Collectors.toList())),
                 event -> event.setCancelled(true)));
+    }
+
+    /**
+     * Create the vault item
+     * @param pane the pane to be added to
+     * @param guild the guild of the player
+     */
+    private void createVaultItem(OutlinePane pane, Guild guild, Player player, CommandManager commandManager) {
+        // Add the vault item to the GUI
+        pane.addItem(new GuiItem(easyItem(settingsManager.getProperty(GuildInfoSettings.VAULT_MATERIAL),
+                settingsManager.getProperty(GuildInfoSettings.VAULT_NAME),
+                settingsManager.getProperty(GuildInfoSettings.VAULT_LORE)),
+                event -> {
+                    // Cancel the event
+                    event.setCancelled(true);
+                    // Open the new GUI
+                    guilds.getVaultGUI().getVaultGUI(guild, player, guilds.getCommandManager()).show(event.getWhoClicked());
+        }));
     }
 
     /**

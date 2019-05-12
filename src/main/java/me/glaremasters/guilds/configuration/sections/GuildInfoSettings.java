@@ -88,6 +88,18 @@ public class GuildInfoSettings implements SettingsHolder {
     public static final Property<String> HOME_EMPTY =
             newProperty(INFO_PATH + "home-empty", "&fNot Set");
 
+    @Comment("What material do you want the vault button to be?")
+    public static final Property<String> VAULT_MATERIAL =
+            newProperty(INFO_PATH + "vault-material", "CHEST");
+
+    @Comment("What do you want the name of the home button to be?")
+    public static final Property<String> VAULT_NAME =
+            newProperty(INFO_PATH + "vault-name", "&fGuild Vaults");
+
+    @Comment("What do you want the lore of the vault button to be?")
+    public static final Property<List<String >> VAULT_LORE =
+            newListProperty(INFO_PATH + "vault-lore", "&fClick here to open your guild vaults!");
+
 
 
 
