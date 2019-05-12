@@ -94,7 +94,6 @@ import me.glaremasters.guilds.configuration.GuildConfigurationBuilder;
 import me.glaremasters.guilds.configuration.sections.HooksSettings;
 import me.glaremasters.guilds.configuration.sections.PluginSettings;
 import me.glaremasters.guilds.database.DatabaseProvider;
-import me.glaremasters.guilds.database.migration.MigrationManager;
 import me.glaremasters.guilds.database.providers.JsonProvider;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildCode;
@@ -157,8 +156,6 @@ public final class Guilds extends JavaPlugin {
     private ActionHandler actionHandler;
     private Economy economy;
     private Permission permissions;
-    @Getter
-    private List<Guild> oldGuilds = new ArrayList<>();
     @Getter
     private BuffGUI buffGUI;
     @Getter
@@ -302,13 +299,6 @@ public final class Guilds extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        try {
-            info("Checking for old Guild Data....");
-            MigrationManager manager = new MigrationManager(this);
-            manager.checkOld(oldGuilds);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         // Check if the server is running Vault
         if (!Bukkit.getPluginManager().isPluginEnabled("Vault")) {
             warn("It looks like you don't have Vault on your server! Stopping plugin..");
@@ -345,7 +335,7 @@ public final class Guilds extends JavaPlugin {
             info("Loading Data..");
             // This will soon be changed to an automatic storage chooser from the config
             // Load the json provider
-            database = new JsonProvider(getDataFolder(), this);
+            database = new JsonProvider(getDataFolder());
             // Load guildhandler with provider
             guildHandler = new GuildHandler(database, getCommandManager(), getPermissions(), getConfig());
             info("Loaded data!");
