@@ -154,6 +154,7 @@ home:
   cancelled: "&cTe-ai miscat! Teleportare oprita!"
 sethome:
   successful: "&aAti setat casa Breslei dumneavoastra!"
+  deleted: "&aYou've successfully deleted your guild home!"
   cooldown: "&cTrebuie sa astepti cel putin {amount} secunde inainte de a face asta din nou"
 reload:
   reloaded: "&aFisierul de configurare a fost reincarcat!"
