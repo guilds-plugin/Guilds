@@ -29,11 +29,11 @@ public class GuildInfoMemberSettings implements SettingsHolder {
 
     @Comment("What do you want the name of the item to be?")
     public static final Property<String> MEMBERS_NAME =
-            newProperty(INFO_PATH + "item.name", "");
+            newProperty(INFO_PATH + "item.name", " ");
 
     @Comment("What do you want the lore of the item to be?")
     public static final Property<List<String>> MEMBERS_LORE =
-            newListProperty(INFO_PATH + "item.lore", "&f• Name: {name}", "&f• Role: {role}", "&f• Status: {status}");
+            newListProperty(INFO_PATH + "item.lore", "&f• Name: {name}", "&f• Role: {role}", "&f• Status: {status}", "");
 
     @Comment("What do you want to be what shows when a member is online?")
     public static final Property<String> MEMBERS_ONLINE =
