@@ -154,6 +154,7 @@ home:
   cancelled: "&cMozogtál! A teleportálás megszakítva!"
 sethome:
   successful: "&aSikeresen beállítottad a céhednek az otthonát!"
+  deleted: "&aYou've successfully deleted your guild home!"
   cooldown: "&cVárnod kell {amount} másodpercet mielőtt újra megteszed ezt."
 reload:
   reloaded: "&aA konfigurációs fájlok újra lettek töltve!"
