@@ -38,7 +38,7 @@ public class GuildInfoSettings implements SettingsHolder {
 
     @Comment("What material do you want the bank button to be?")
     public static final Property<String> BANK_MATERIAL =
-            newProperty(INFO_PATH + "bank-material", "GOLDEN_NUGGET");
+            newProperty(INFO_PATH + "bank-material", "GOLD_INGOT");
 
     @Comment("What do you want the name of the bank button to be?")
     public static final Property<String> BANK_NAME =
