@@ -200,8 +200,6 @@ public final class Guilds extends JavaPlugin {
         if (rsp != null) permissions = rsp.getProvider();
     }
 
-    //todo rewrite
-
     /**
      * Save and handle new files if needed
      */
