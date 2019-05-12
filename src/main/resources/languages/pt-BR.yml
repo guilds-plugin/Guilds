@@ -154,6 +154,7 @@ home:
   cancelled: "&cVocê se mexeu! Teletransporte cancelado!"
 sethome:
   successful: "&aVocê definiu o ponto de spawn de sua guild!"
+  deleted: "&aYou've successfully deleted your guild home!"
   cooldown: "&cVocê deve esperar pelo menos {amount} segundos antes de fazer isto de novo"
 reload:
   reloaded: "&aConfiguração recarregada!"
