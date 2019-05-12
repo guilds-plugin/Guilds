@@ -2,6 +2,7 @@ package me.glaremasters.guilds.guis;
 
 import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFBukkitUtil;
+import co.aikar.commands.CommandManager;
 import com.github.stefvanschie.inventoryframework.Gui;
 import com.github.stefvanschie.inventoryframework.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
@@ -10,8 +11,10 @@ import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.configuration.sections.GuildInfoSettings;
 import me.glaremasters.guilds.guild.Guild;
+import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.ItemBuilder;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
@@ -28,7 +31,7 @@ public class InfoGUI {
     private Guilds guilds;
     private SettingsManager settingsManager;
 
-    public Gui getInfoGUI(Guild guild) {
+    public Gui getInfoGUI(Guild guild, Player player, CommandManager commandManager) {
 
         // Create the GUI with the desired name from the config
         Gui gui = new Gui(guilds, 1, ACFBukkitUtil.color(settingsManager.getProperty(GuildInfoSettings.GUI_NAME)));
@@ -43,7 +46,7 @@ public class InfoGUI {
         createBackgroundItems(backgroundPane);
 
         // Add the items to the forground pane
-        createForegroundItems(foregroundPane);
+        createForegroundItems(foregroundPane, guild, player, commandManager);
 
         // Add the glass panes to the main GUI background pane
         gui.addPane(backgroundPane);
@@ -72,11 +75,30 @@ public class InfoGUI {
     /**
      * Create the regular items that will be on the GUI
      * @param pane the pane to be added to
+     * @param guild the guild of the player
      */
-    private void createForegroundItems(OutlinePane pane) {
+    private void createForegroundItems(OutlinePane pane, Guild guild, Player player, CommandManager commandManager) {
+        // Add the members button to the GUI
         pane.addItem(new GuiItem(easyItem(settingsManager.getProperty(GuildInfoSettings.MEMBERS_MATERIAL),
                 settingsManager.getProperty(GuildInfoSettings.MEMBERS_NAME),
                 settingsManager.getProperty(GuildInfoSettings.MEMBERS_LORE))));
+        // Add the home button to the GUI
+        pane.addItem(new GuiItem(easyItem(settingsManager.getProperty(GuildInfoSettings.HOME_MATERIAL),
+                settingsManager.getProperty(GuildInfoSettings.HOME_NAME),
+                settingsManager.getProperty(GuildInfoSettings.HOME_LORE)), event -> {
+            // Cancel the event
+            event.setCancelled(true);
+            // Check if guild home is null
+            if (guild.getHome() != null) {
+                // Teleport player to guild home
+                player.teleport(guild.getHome().getAsLocation());
+            } else {
+                // Tell them that they have no home set
+                commandManager.getCommandIssuer(player).sendInfo(Messages.HOME__NO_HOME_SET);
+            }
+            // Tell them they teleported successfully
+            commandManager.getCommandIssuer(player).sendInfo(Messages.HOME__TELEPORTED);
+        }));
     }
 
     /**

@@ -35,6 +35,18 @@ public class GuildInfoSettings implements SettingsHolder {
     public static final Property<List<String>> MEMBERS_LORE =
             newListProperty(INFO_PATH + "members-lore", "&fClick here to view guild member info");
 
+    @Comment("What material do you want the home button to be?")
+    public static final Property<String> HOME_MATERIAL =
+            newProperty(INFO_PATH + "home-material", "BED");
+
+    @Comment("What do you want the name of the home button to be?")
+    public static final Property<String> HOME_NAME =
+            newProperty(INFO_PATH + "home-name", "&fGuild Home");
+
+    @Comment("What do you want the lore of the home button to be?")
+    public static final Property<List<String >> HOME_LORE =
+            newListProperty(INFO_PATH + "home-lore", "&fClick here to teleport to your guild home");
+
 
 
 

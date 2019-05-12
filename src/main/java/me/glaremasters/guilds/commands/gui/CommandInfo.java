@@ -55,7 +55,7 @@ public class CommandInfo extends BaseCommand {
     @Description("{@@descriptions.info}")
     @CommandPermission(Constants.BASE_PERM + "info")
     public void execute(Player player, Guild guild) {
-        guilds.getInfoGUI().getInfoGUI(guild).show(player);
+        guilds.getInfoGUI().getInfoGUI(guild, player, getCurrentCommandManager()).show(player);
     }
 
 }
