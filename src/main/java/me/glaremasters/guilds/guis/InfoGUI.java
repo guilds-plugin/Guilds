@@ -40,10 +40,10 @@ public class InfoGUI {
                 guild.getName()).replace("{prefix}", guild.getPrefix())));
 
         // Create the background pane which will just be stained glass
-        OutlinePane backgroundPane = new OutlinePane(0, 0, 9, 1, Pane.Priority.LOW);
+        OutlinePane backgroundPane = new OutlinePane(0, 0, 9, 3, Pane.Priority.LOW);
 
         // Create the pane for the main items
-        OutlinePane foregroundPane = new OutlinePane(2, 0, 5, 1, Pane.Priority.NORMAL);
+        OutlinePane foregroundPane = new OutlinePane(2, 1, 5, 1, Pane.Priority.NORMAL);
 
         // Add the items to the background pane
         createBackgroundItems(backgroundPane);

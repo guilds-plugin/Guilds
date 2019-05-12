@@ -24,29 +24,41 @@ public class GuildInfoSettings implements SettingsHolder {
     public static final Property<String> GUI_NAME =
             newProperty(INFO_PATH + "name", "{guild}");
 
+    @Comment("What material do you want the tier button to be?")
+    public static final Property<String> TIER_MATERIAL =
+            newProperty(INFO_PATH + "tier-material", "DIAMOND");
+
+    @Comment("What do you want the name of the tier button to be?")
+    public static final Property<String> TIER_NAME =
+            newProperty(INFO_PATH + "tier-name", "&fGuild Tier");
+
+    @Comment("What do you want the lore of the tier button to be?")
+    public static final Property<List<String>> TIER_LORE =
+            newListProperty(INFO_PATH + "tier-lore", "&f• Level: {tier}");
+
+    @Comment("What material do you want the bank button to be?")
+    public static final Property<String> BANK_MATERIAL =
+            newProperty(INFO_PATH + "bank-material", "GOLDEN_NUGGET");
+
+    @Comment("What do you want the name of the bank button to be?")
+    public static final Property<String> BANK_NAME =
+            newProperty(INFO_PATH + "bank-name", "&fGuild Bank");
+
+    @Comment("What do you want the lore of the bank button to be?")
+    public static final Property<List<String >> BANK_LORE =
+            newListProperty(INFO_PATH + "bank-lore", "&f• Balance: {current} / {max}");
+
     @Comment("What material do you want the members button to be?")
     public static final Property<String> MEMBERS_MATERIAL =
-            newProperty(INFO_PATH + "members-material", "DIAMOND_HELMET");
+            newProperty(INFO_PATH + "members-material", "IRON_HELMET");
 
     @Comment("What do you want the name of the members button to be?")
     public static final Property<String> MEMBERS_NAME =
-            newProperty(INFO_PATH + "members-name", "&fView Guild Members");
+            newProperty(INFO_PATH + "members-name", "&fGuild Members");
 
     @Comment("What do you want the lore of the members button to be?")
-    public static final Property<List<String>> MEMBERS_LORE =
-            newListProperty(INFO_PATH + "members-lore", "&fClick here to view members!", "&fCurrent: {members} / {max}");
-
-    @Comment("What material do you want the home button to be?")
-    public static final Property<String> HOME_MATERIAL =
-            newProperty(INFO_PATH + "home-material", "BED");
-
-    @Comment("What do you want the name of the home button to be?")
-    public static final Property<String> HOME_NAME =
-            newProperty(INFO_PATH + "home-name", "&fGuild Home");
-
-    @Comment("What do you want the lore of the home button to be?")
-    public static final Property<List<String >> HOME_LORE =
-            newListProperty(INFO_PATH + "home-lore", "&fClick here to teleport to your guild home");
+    public static final Property<List<String >> MEMBERS_LORE =
+            newListProperty(INFO_PATH + "members-lore", "&f• Members: {current} / {max}", "&f• Online: {online} / {total}", "", "&fClick to view members!");
 
     @Comment("What material do you want the status button to be?")
     public static final Property<String> STATUS_MATERIAL =
@@ -58,7 +70,19 @@ public class GuildInfoSettings implements SettingsHolder {
 
     @Comment("What do you want the lore of the status button to be?")
     public static final Property<List<String >> STATUS_LORE =
-            newListProperty(INFO_PATH + "status-lore", "&fStatus: {status}");
+            newListProperty(INFO_PATH + "status-lore", "&f• Status: {status}");
+
+    @Comment("What material do you want the home button to be?")
+    public static final Property<String> HOME_MATERIAL =
+            newProperty(INFO_PATH + "home-material", "BED");
+
+    @Comment("What do you want the name of the home button to be?")
+    public static final Property<String> HOME_NAME =
+            newProperty(INFO_PATH + "home-name", "&fGuild Home");
+
+    @Comment("What do you want the lore of the home button to be?")
+    public static final Property<List<String >> HOME_LORE =
+            newListProperty(INFO_PATH + "home-lore", "&f• Home: {coords}");
 
 
 
