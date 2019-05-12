@@ -79,6 +79,7 @@ error:
   not-officer: "&cL'utente deve essere un Officer nella tua gilda!"
   blacklist: "&cUna o più parole nel nome/prefisso della tua gilda sono nella blacklist!"
   not-enough-money: "&cScusa, non hai abbastanza soldi per farlo"
+  economy-required: "&cAn economy plugin is required for this to work. Please contact your server administrator"
 bank:
   balance: "&aLa tua gilda ha un conto di {amount}."
   deposit-success: "&aHai depositato {amount} nel conto della tua gilda. Il conto della tua gilda adesso è {total}!"
