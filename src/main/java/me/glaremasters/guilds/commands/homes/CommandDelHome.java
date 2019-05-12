@@ -61,7 +61,7 @@ public class CommandDelHome extends BaseCommand {
 
         guild.delHome();
 
-        getCurrentCommandIssuer().sendInfo(Messages.SETHOME__SUCCESSFUL);
+        getCurrentCommandIssuer().sendInfo(Messages.SETHOME__DELETED);
     }
 
 }
