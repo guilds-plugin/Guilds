@@ -79,7 +79,7 @@ error:
   not-officer: "&cПользователь должен быть офицером в вашей гильдии!"
   blacklist: "&cВ названии / префиксе Вашей гильдии обнаружены запрещённые слова!"
   not-enough-money: "&cИзвините, но у вас недостаточно денег, чтобы сделать это"
-  economy-required: "&cAn economy plugin is required for this to work. Please contact your server administrator"
+  economy-required: "&cЧтобы это работало, нужен плагин на экономику. Пожалуйста, сообщите администратору"
 bank:
   balance: "&aБаланс банка Вашей гильдии составляет {amount}."
   deposit-success: "&aВы внесли {amount} в банк своей гильдии. Итого в банке гильдии {total}!"
