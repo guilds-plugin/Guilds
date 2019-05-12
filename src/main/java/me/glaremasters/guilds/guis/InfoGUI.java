@@ -12,6 +12,7 @@ import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.configuration.sections.GuildInfoSettings;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
+import me.glaremasters.guilds.guild.GuildTier;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.ItemBuilder;
 import org.bukkit.Material;
@@ -81,13 +82,23 @@ public class InfoGUI {
      * @param guild the guild of the player
      */
     private void createForegroundItems(OutlinePane pane, Guild guild, Player player, CommandManager commandManager) {
+
+        // Create an easy way to access the guild tier
+        GuildTier tier = guildHandler.getGuildTier(guild.getTier().getLevel());
+
         // Add the tier button to the GUI
         pane.addItem(new GuiItem(easyItem(settingsManager.getProperty(GuildInfoSettings.TIER_MATERIAL),
                 settingsManager.getProperty(GuildInfoSettings.TIER_NAME),
                 settingsManager.getProperty(GuildInfoSettings.TIER_LORE).stream().map(ACFBukkitUtil::color).map(l ->
-                        l.replace("{tier}", guildHandler.getGuildTier(guild.getTier().getLevel()).getName())).collect(Collectors.toList())),
+                        l.replace("{tier}", tier.getName())).collect(Collectors.toList())),
                 event -> event.setCancelled(true)));
-        // Add the home button to the GUI
+        // Add the bank button to the GUI
+        pane.addItem(new GuiItem(easyItem(settingsManager.getProperty(GuildInfoSettings.BANK_MATERIAL),
+                settingsManager.getProperty(GuildInfoSettings.BANK_NAME),
+                settingsManager.getProperty(GuildInfoSettings.BANK_LORE).stream().map(ACFBukkitUtil::color).map(l ->
+                        l.replace("{current}", String.valueOf(guild.getBalance())).replace("{max}",
+                                String.valueOf(tier.getMaxBankBalance()))).collect(Collectors.toList())),
+                event -> event.setCancelled(true)));
     }
 
     /**
