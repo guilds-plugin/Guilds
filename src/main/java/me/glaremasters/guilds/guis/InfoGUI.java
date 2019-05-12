@@ -40,7 +40,7 @@ public class InfoGUI {
         OutlinePane backgroundPane = new OutlinePane(0, 0, 9, 1, Pane.Priority.LOW);
 
         // Create the pane for the main items
-        OutlinePane foregroundPane = new OutlinePane(3, 0, 3, 1, Pane.Priority.NORMAL);
+        OutlinePane foregroundPane = new OutlinePane(2, 0, 5, 1, Pane.Priority.NORMAL);
 
         // Add the items to the background pane
         createBackgroundItems(backgroundPane);
@@ -104,7 +104,8 @@ public class InfoGUI {
         // Add the status button to the GUI
         pane.addItem(new GuiItem(easyItem(settingsManager.getProperty(GuildInfoSettings.STATUS_MATERIAL),
                 settingsManager.getProperty(GuildInfoSettings.STATUS_NAME),
-                settingsManager.getProperty(GuildInfoSettings.STATUS_LORE).stream().map(l -> l.replace("{status}", guild.getStatus().name())).collect(Collectors.toList()))));
+                settingsManager.getProperty(GuildInfoSettings.STATUS_LORE).stream().map(l -> l.replace("{status}",
+                        guild.getStatus().name())).collect(Collectors.toList())), event -> event.setCancelled(true)));
     }
 
     /**
