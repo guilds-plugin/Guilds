@@ -79,6 +79,7 @@ error:
   not-officer: "&cJucatorul trebuie sa fie un Ofiter in breasla ta!"
   blacklist: "&cUnul sau mai multe dintre cuvintele din prefix-ul / numele breslei se afla in blacklist!"
   not-enough-money: "&cNe pare rau, nu ai destui bani pentru a face asta."
+  economy-required: "&cAn economy plugin is required for this to work. Please contact your server administrator"
 bank:
   balance: "&aBanca breslei tale are o balanta de {amount}."
   deposit-success: "&aAi depozitat {amount} in banca breslei. Balanta totala este acum de {total}!"
