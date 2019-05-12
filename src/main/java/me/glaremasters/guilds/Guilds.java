@@ -104,6 +104,7 @@ import me.glaremasters.guilds.guis.BuffGUI;
 import me.glaremasters.guilds.guis.InfoGUI;
 import me.glaremasters.guilds.guis.InfoMembersGUI;
 import me.glaremasters.guilds.guis.ListGUI;
+import me.glaremasters.guilds.guis.VaultGUI;
 import me.glaremasters.guilds.listeners.EntityListener;
 import me.glaremasters.guilds.listeners.EssentialsChatListener;
 import me.glaremasters.guilds.listeners.PlayerListener;
@@ -167,6 +168,8 @@ public final class Guilds extends JavaPlugin {
     private InfoGUI infoGUI;
     @Getter
     private InfoMembersGUI infoMembersGUI;
+    @Getter
+    private VaultGUI vaultGUI;
     private List<String> loadedLanguages;
 
     @Override
@@ -425,7 +428,7 @@ public final class Guilds extends JavaPlugin {
                 // GUI Commands
                 new CommandList(this, guildHandler),
                 new CommandBuff(this),
-                new CommandVault(guildHandler, settingsManager),
+                new CommandVault(this, guildHandler, settingsManager),
                 new CommandInfo(this, guildHandler),
                 // Home Commands
                 new CommandDelHome(),
@@ -465,6 +468,7 @@ public final class Guilds extends JavaPlugin {
         listGUI = new ListGUI(this, settingsManager, guildHandler);
         infoGUI = new InfoGUI(this, settingsManager, guildHandler);
         infoMembersGUI = new InfoMembersGUI(this, settingsManager, guildHandler);
+        vaultGUI = new VaultGUI(this, settingsManager, guildHandler);
 
 
         if (settingsManager.getProperty(PluginSettings.ANNOUNCEMENTS_CONSOLE)) {
