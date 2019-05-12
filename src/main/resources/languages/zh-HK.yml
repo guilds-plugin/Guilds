@@ -79,6 +79,7 @@ error:
   not-officer: "&8[&6公會&8] &f只有副會長以上的位階才能使用"
   blacklist: "&8[&6公會&8] &f你的公會名稱稱/公會前綴有不雅文字，請重新規範你的操作"
   not-enough-money: "&8[&6公會&8] &f你沒有足夠的錢這麼做"
+  economy-required: "&cAn economy plugin is required for this to work. Please contact your server administrator"
 bank:
   balance: "&8[&6公會&8] &f目前公會金庫: {amount}金幣"
   deposit-success: "&8[&6公會&8] &f你已存入 {amount} 金幣到公會金庫中，公會金庫總量: {total}金幣"
