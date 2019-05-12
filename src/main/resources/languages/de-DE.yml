@@ -154,6 +154,7 @@ home:
   cancelled: "&cDu hast dich bewegt! Teleportation abgebrochen!"
 sethome:
   successful: "&aDu hast dein Gildenzuhause gesetzt!"
+  deleted: "&aYou've successfully deleted your guild home!"
   cooldown: "&cDu musst mindestens {amount} Sekunden warten bevor du das erneut tun kannst"
 reload:
   reloaded: "&aKonfigurationsdatei neu geladen!"
