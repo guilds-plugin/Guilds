@@ -79,6 +79,7 @@ error:
   not-officer: "&c至少需要副會長以上階級才能使用!"
   blacklist: "&c您的公會名稱 / 公會前綴有不雅文字!"
   not-enough-money: "&c抱歉，您沒有足夠金錢執行指令"
+  economy-required: "&cAn economy plugin is required for this to work. Please contact your server administrator"
 bank:
   balance: "&a您的公會銀行目前有： {amount}元"
   deposit-success: "&a您已將 {amount} 元存入公會銀行中。 目前您的公會銀行總共有： {total}元!"
