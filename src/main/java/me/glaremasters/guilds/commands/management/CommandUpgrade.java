@@ -73,7 +73,7 @@ public class CommandUpgrade extends BaseCommand {
         if (!role.isUpgradeGuild())
             ACFUtil.sneaky(new InvalidPermissionException());
 
-        GuildTier tier = guild.getTier();
+        GuildTier tier = guildHandler.getGuildTier(guild.getTier().getLevel() + 1);
         double balance = guild.getBalance();
         double upgradeCost = tier.getCost();
 
