@@ -79,6 +79,7 @@ error:
   not-officer: "&cCe joueur doit être officier dans votre guilde !"
   blacklist: "&cUn mot ou plus de votre nom de guilde ou préfix est dans la blacklist !"
   not-enough-money: "&cDésolé, vous n'avez pas assez de money pour faire ça !"
+  economy-required: "&cAn economy plugin is required for this to work. Please contact your server administrator"
 bank:
   balance: "&aVotre guilde possède : {amount}."
   deposit-success: "&aVous avez déposé {amount} dans le coffre de guilde. Le total en banque est de {total} !"
