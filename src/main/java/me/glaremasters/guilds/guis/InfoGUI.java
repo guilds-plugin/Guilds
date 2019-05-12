@@ -28,7 +28,7 @@ public class InfoGUI {
     public Gui getInfoGUI(Guild guild) {
 
         // Create the GUI with the desired name from the config
-        Gui gui = new Gui(guilds, 3, ACFBukkitUtil.color(settingsManager.getProperty(GuildInfoSettings.GUI_NAME)));
+        Gui gui = new Gui(guilds, 1, ACFBukkitUtil.color(settingsManager.getProperty(GuildInfoSettings.GUI_NAME)));
 
         // Create the background pane which will just be stained glass
         OutlinePane backgroundPane = new OutlinePane(0, 0, 9, 1, Pane.Priority.LOW);
