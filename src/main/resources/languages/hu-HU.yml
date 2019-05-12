@@ -79,6 +79,7 @@ error:
   not-officer: "&cA felhasználónak egy Officer-nek kell lennie a céhedben!"
   blacklist: "&cA használt szavak feketelistán vannak."
   not-enough-money: "&cSajnos nincs elég pénzed ehhez."
+  economy-required: "&cAn economy plugin is required for this to work. Please contact your server administrator"
 bank:
   balance: "&aA céhednek a banki egyenlege: {amount}."
   deposit-success: "&a{amount}-t befizettél a céh bankjába. A céh bank egyenlege jelenleg: {total}!"
