@@ -79,6 +79,7 @@ error:
   not-officer: "&cBenutzer muss ein Offizier in deiner Gilde sein!"
   blacklist: "&cEiner oder mehrere Wörter in deinem Gildennamen/präfix sind auf der Schwarzen Liste!"
   not-enough-money: "&cSorry, du hast nicht genug Geld um das zu machen"
+  economy-required: "&cAn economy plugin is required for this to work. Please contact your server administrator"
 bank:
   balance: "&aDie Bank deiner Gilde hat ein Guthaben con {amount}."
   deposit-success: "&aDu hast {amount} in die Bank deiner Gilde abgegeben. Der Total ist jetzt {total}!"
