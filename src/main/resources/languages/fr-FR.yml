@@ -154,6 +154,7 @@ home:
   cancelled: "&cTu as bougé ! La téléportation annulée!"
 sethome:
   successful: "&aHome de guilde défini !"
+  deleted: "&aYou've successfully deleted your guild home!"
   cooldown: "&cVous devez attendre au moins {amount} secondes avant de recommencer"
 reload:
   reloaded: "&aFichiers config rechargés avec succès !"
