@@ -79,6 +79,7 @@ error:
   not-officer: "&c¡El usuario debe ser un Oficial en tu guild!"
   blacklist: "&c¡Una o más palabras en el nombre o prefijo de tu guild está en la lista negra!"
   not-enough-money: "&cPerdón, no tienes suficiente dinero para hacer eso"
+  economy-required: "&cAn economy plugin is required for this to work. Please contact your server administrator"
 bank:
   balance: "&cEl banco de tu guild tiene la cantidad de {amount}."
   deposit-success: "&aHas depositado {amount} en el banco de tu guild. ¡El banco de tu guild ahora tiene {total}!"
