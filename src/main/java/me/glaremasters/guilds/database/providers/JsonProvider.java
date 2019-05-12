@@ -79,15 +79,16 @@ public class JsonProvider implements DatabaseProvider {
 
     @Override
     public void saveGuilds(List<Guild> guilds) throws IOException {
-        JsonWriter writer = null;
 
         for (Guild guild : guilds) {
             JsonFile jsonFile = new JsonFile(new File(dataFolder, guild.getId() + ".json"));
 
-            if (writer == null) writer = new JsonWriter(jsonFile);
-            else writer.setFile(jsonFile);
+            JsonWriter writer = new JsonWriter(jsonFile);
+
+            writer.setFile(jsonFile);
 
             writer.writeAndOverride(guild, true);
+
             ids.add(guild.getId().toString());
         }
 
