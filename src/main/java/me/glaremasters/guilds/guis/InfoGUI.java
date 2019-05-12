@@ -88,16 +88,18 @@ public class InfoGUI {
                 settingsManager.getProperty(GuildInfoSettings.HOME_LORE)), event -> {
             // Cancel the event
             event.setCancelled(true);
+            // Close the GUI
+            event.getWhoClicked().closeInventory();
             // Check if guild home is null
             if (guild.getHome() != null) {
                 // Teleport player to guild home
                 player.teleport(guild.getHome().getAsLocation());
+                // Tell them they teleported successfully
+                commandManager.getCommandIssuer(player).sendInfo(Messages.HOME__TELEPORTED);
             } else {
                 // Tell them that they have no home set
                 commandManager.getCommandIssuer(player).sendInfo(Messages.HOME__NO_HOME_SET);
             }
-            // Tell them they teleported successfully
-            commandManager.getCommandIssuer(player).sendInfo(Messages.HOME__TELEPORTED);
         }));
     }
 
