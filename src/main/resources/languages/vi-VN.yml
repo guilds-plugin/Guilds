@@ -79,6 +79,7 @@ error:
   not-officer: "&cNgười dùng phải là Officer trong Guild của bạn!"
   blacklist: "&cMột hay nhiều phần trong tên guild / tiền tố của bạn đang trong danh sách cấm!"
   not-enough-money: "&cXin lỗi, bạn không đủ tiền để làm điều đó"
+  economy-required: "&cAn economy plugin is required for this to work. Please contact your server administrator"
 bank:
   balance: "&aNgân khố của Guild là {amount}."
   deposit-success: "&aBạn đã nạp {amount} vào ngân khố của guild. Ngân khố hiện tại là {total}!"
