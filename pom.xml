@@ -96,10 +96,6 @@
                                     <shadedPattern>me.glaremasters.guilds.libs.worldguardwrapper</shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern>com.google.gson</pattern>
-                                    <shadedPattern>me.glaremasters.guilds.libs.gson</shadedPattern>
-                                </relocation>
-                                <relocation>
                                     <pattern>co.aikar.commands</pattern>
                                     <shadedPattern>me.glaremasters.guilds.libs.acf</shadedPattern>
                                 </relocation>
@@ -118,10 +114,6 @@
                                 <relocation>
                                     <pattern>org.yaml.snakeyaml</pattern>
                                     <shadedPattern>me.glaremasters.guilds.libs.snakeyml</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>net.reflxction.simplejson</pattern>
-                                    <shadedPattern>me.glaremasters.guilds.libs.simplejson</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>net.minidev.json</pattern>

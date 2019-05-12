@@ -22,30 +22,39 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.configuration;
+package me.glaremasters.guilds.commands.gui;
 
-import ch.jalu.configme.configurationdata.ConfigurationData;
-import ch.jalu.configme.configurationdata.ConfigurationDataBuilder;
-import me.glaremasters.guilds.configuration.sections.*;
+import co.aikar.commands.BaseCommand;
+import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Description;
+import co.aikar.commands.annotation.Subcommand;
+import lombok.AllArgsConstructor;
+import me.glaremasters.guilds.Guilds;
+import me.glaremasters.guilds.guild.GuildHandler;
+import me.glaremasters.guilds.utils.Constants;
+import org.bukkit.entity.Player;
 
 /**
- * Created by GlareMasters
- * Date: 1/17/2019
- * Time: 12:45 PM
+ * Created by Glare
+ * Date: 4/8/2019
+ * Time: 10:49 AM
  */
-public class GuildConfigurationBuilder {
+@AllArgsConstructor @CommandAlias(Constants.ROOT_ALIAS)
+public class CommandInfo extends BaseCommand {
 
-    private GuildConfigurationBuilder() {
-    }
+    private Guilds guilds;
+    private GuildHandler guildHandler;
 
-    public static ConfigurationData buildConfigurationData() {
-        return ConfigurationDataBuilder.createConfiguration(
-                PluginSettings.class, HooksSettings.class, GuildListSettings.class,
-                GuildBuffSettings.class, GuildVaultSettings.class, GuildManageSettings.class,
-                GuildSettings.class, /*CooldownSettings.class,*/ CostSettings.class,
-                ClaimSettings.class, TablistSettings.class, TicketSettings.class, CodeSettings.class,
-                TierSettings.class, RoleSettings.class
-        );
+    /**
+     * List all the guilds on the server
+     * @param player the player executing this command
+     */
+    @Subcommand("info")
+    @Description("{@@descriptions.info}")
+    @CommandPermission(Constants.BASE_PERM + "info")
+    public void execute(Player player) {
+        guilds.getListGUI().getListGUI().show(player);
     }
 
 }
