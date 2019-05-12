@@ -79,6 +79,7 @@ error:
   not-officer: "&cSpeler moet een Officer zijn in jouw Guild!"
   blacklist: "&cEen of meer van de woorden in jouw Guild naam / Guild prefix zijn niet toegestaan!"
   not-enough-money: "&cSorry, je hebt niet genoeg geld om dat te doen!"
+  economy-required: "&cAn economy plugin is required for this to work. Please contact your server administrator"
 bank:
   balance: "&aJouw Guild heeft een bank balans van {amount}."
   deposit-success: "&aJe hebt {amount} aan jouw Guild Bank toegevoegd. Jouw Guild Bank totaal is nu {total}!"
