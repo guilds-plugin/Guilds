@@ -42,7 +42,8 @@ public class GuildConfigurationBuilder {
         return ConfigurationDataBuilder.createConfiguration(
                 PluginSettings.class, HooksSettings.class, GuildListSettings.class,
                 GuildBuffSettings.class, GuildVaultSettings.class, GuildInfoSettings.class,
-                GuildSettings.class, /*CooldownSettings.class,*/ CostSettings.class,
+                GuildInfoMemberSettings.class, GuildSettings.class,
+                /*CooldownSettings.class,*/ CostSettings.class,
                 ClaimSettings.class, TablistSettings.class, TicketSettings.class, CodeSettings.class,
                 TierSettings.class, RoleSettings.class
         );

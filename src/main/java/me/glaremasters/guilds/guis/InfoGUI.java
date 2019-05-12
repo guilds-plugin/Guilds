@@ -13,7 +13,6 @@ import me.glaremasters.guilds.configuration.sections.GuildInfoSettings;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildTier;
-import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -49,7 +48,7 @@ public class InfoGUI {
         // Add the items to the background pane
         createBackgroundItems(backgroundPane);
 
-        // Add the items to the forground pane
+        // Add the items to the foreground pane
         createForegroundItems(foregroundPane, guild, player, commandManager);
 
         // Add the glass panes to the main GUI background pane
@@ -106,8 +105,13 @@ public class InfoGUI {
                         l.replace("{current}", String.valueOf(guild.getMembers().size()))
                                 .replace("{max}", String.valueOf(tier.getMaxMembers()))
                                 .replace("{online}", String.valueOf(guild.getOnlineMembers().size()))).collect(Collectors.toList())),
-                //todo Open the member GUI
-                event -> event.setCancelled(true)));
+
+               event -> {
+            // Cancel the event
+            event.setCancelled(true);
+            // Open the new GUI
+            guilds.getInfoMembersGUI().getInfoMembersGUI(guild, player, guilds.getCommandManager()).show(event.getWhoClicked());
+        }));
         // Add the status button to the GUI
         pane.addItem(new GuiItem(easyItem(settingsManager.getProperty(GuildInfoSettings.STATUS_MATERIAL),
                 settingsManager.getProperty(GuildInfoSettings.STATUS_NAME),
