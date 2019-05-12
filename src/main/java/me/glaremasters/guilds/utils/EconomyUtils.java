@@ -48,8 +48,8 @@ public class EconomyUtils {
             return economy.getBalance(player) >= amount;
         } catch (NullPointerException ex) {
             manager.getCommandIssuer(player).sendInfo(Messages.ERROR__ECONOMY_REQUIRED);
+            return false;
         }
-        return false;
     }
 
     /**
