@@ -24,16 +24,19 @@
 
 package me.glaremasters.guilds.database.providers;
 
-import me.glaremasters.guilds.Guilds;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.guild.Guild;
-import net.reflxction.simplejson.json.JsonFile;
-import net.reflxction.simplejson.json.JsonReader;
-import net.reflxction.simplejson.json.JsonWriter;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -46,32 +49,25 @@ import java.util.Objects;
 public class JsonProvider implements DatabaseProvider {
 
     private final File dataFolder;
-    private Guilds guilds;
     private final List<String> ids = new ArrayList<>();
+    private Gson gson;
 
-    public JsonProvider(File dataFolder, Guilds guilds) {
+    public JsonProvider(File dataFolder) {
         this.dataFolder = new File(dataFolder, "data");
-        this.guilds = guilds;
         //noinspection ResultOfMethodCallIgnored
         this.dataFolder.mkdir();
-
+        gson = new GsonBuilder().setPrettyPrinting().create();
     }
 
     @Override
     public List<Guild> loadGuilds() throws IOException {
-        List<Guild> loadedGuilds = new ArrayList<>(guilds.getOldGuilds());
+        List<Guild> loadedGuilds = new ArrayList<>();
 
 
         for (File file : Objects.requireNonNull(dataFolder.listFiles())) {
-            JsonFile jsonFile = new JsonFile(file);
 
-            JsonReader reader = new JsonReader(jsonFile);
+            loadedGuilds.add(gson.fromJson(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8), Guild.class));
 
-            reader.setFile(jsonFile);
-
-            loadedGuilds.add(reader.deserializeAs(Guild.class));
-
-            reader.close();
         }
 
         return loadedGuilds;
@@ -81,13 +77,9 @@ public class JsonProvider implements DatabaseProvider {
     public void saveGuilds(List<Guild> guilds) throws IOException {
 
         for (Guild guild : guilds) {
-            JsonFile jsonFile = new JsonFile(new File(dataFolder, guild.getId() + ".json"));
+            File file = new File(dataFolder, guild.getId() + ".json");
 
-            JsonWriter writer = new JsonWriter(jsonFile);
-
-            writer.setFile(jsonFile);
-
-            writer.writeAndOverride(guild, true);
+            Files.write(Paths.get(file.getPath()), gson.toJson(guild).getBytes(StandardCharsets.UTF_8));
 
             ids.add(guild.getId().toString());
         }
@@ -100,9 +92,6 @@ public class JsonProvider implements DatabaseProvider {
             }
         }
         ids.clear();
-
-        // Note JsonWriter (writer) does not need to be closed this should only be done if it was instantiated using the BufferedWriter.
-        // See JsonWriter#close() for more info.
     }
 
 }
