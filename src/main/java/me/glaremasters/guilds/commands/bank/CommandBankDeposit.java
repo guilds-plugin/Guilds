@@ -39,6 +39,7 @@ import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.guild.GuildTier;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.Constants;
+import me.glaremasters.guilds.utils.EconomyUtils;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.entity.Player;
 
@@ -75,12 +76,7 @@ public class CommandBankDeposit extends BaseCommand {
         if (amount < 0)
             return;
 
-        if (economy.getBalance(player) < amount) {
-            getCurrentCommandIssuer().sendInfo(Messages.ERROR__NOT_ENOUGH_MONEY);
-            return;
-        }
-
-        if (economy.getBalance(player) < amount)
+        if (!EconomyUtils.hasEnough(getCurrentCommandManager(), economy, player, amount))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__NOT_ENOUGH_MONEY));
 
         if (total > tier.getMaxBankBalance())

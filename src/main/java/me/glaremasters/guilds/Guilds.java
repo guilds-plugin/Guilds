@@ -406,7 +406,7 @@ public final class Guilds extends JavaPlugin {
                 new CommandAdminStatus(guildHandler),
                 new CommandAdminUpgrade(guildHandler),
                 new CommandAdminVault(this, guildHandler),
-                new CommandReload(settingsManager, this),
+                new CommandReload(settingsManager),
                 // Ally Commands
                 new CommandAllyAccept(guildHandler),
                 new CommandAllyAdd(guildHandler),
