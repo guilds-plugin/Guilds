@@ -132,7 +132,6 @@ public class Guild {
      */
     public void removeMember(OfflinePlayer player){
         removeMember(getMember(player.getUniqueId()));
-        //todo remove guild perms
     }
 
     /**

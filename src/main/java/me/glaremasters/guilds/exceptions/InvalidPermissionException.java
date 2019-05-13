@@ -34,6 +34,9 @@ import me.glaremasters.guilds.messages.Messages;
  */
 public class InvalidPermissionException extends InvalidCommandArgument {
 
+    /**
+     * Thrown when a user's role isn't allowed to do an action.
+     */
     public InvalidPermissionException() {
         super(Messages.ERROR__ROLE_NO_PERMISSION, false);
     }

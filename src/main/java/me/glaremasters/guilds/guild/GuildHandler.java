@@ -378,14 +378,6 @@ public class GuildHandler {
     }
 
     /**
-     * Simple method to increment a guild's tier
-     * @param guild the tier being upgraded
-     */
-    public void incrementTier(Guild guild) {
-        guild.setTier(getGuildTier(guild.getTier().getLevel() + 1));
-    }
-
-    /**
      * Returns the lowest guild role
      *
      * @return guild role

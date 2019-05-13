@@ -71,7 +71,7 @@ public class CommandAdminUpgrade extends BaseCommand {
         if (guildHandler.isMaxTier(guild))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.UPGRADE__TIER_MAX));
 
-        guildHandler.incrementTier(guild);
+        guildHandler.upgradeTier(guild);
 
         getCurrentCommandIssuer().sendInfo(Messages.ADMIN__ADMIN_UPGRADE,
                 "{guild}", guild.getName());
