@@ -64,10 +64,11 @@ public class CommandSetHome extends BaseCommand {
     @Description("{@@descriptions.sethome}")
     @CommandPermission(Constants.BASE_PERM + "sethome")
     public void execute(Player player, Guild guild, GuildRole role) {
-        double cost = settingsManager.getProperty(CostSettings.SETHOME);
 
         if (!role.isChangeHome())
             ACFUtil.sneaky(new InvalidPermissionException());
+
+        double cost = settingsManager.getProperty(CostSettings.SETHOME);
 
         if (!EconomyUtils.hasEnough(getCurrentCommandManager(), economy, player, cost))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__NOT_ENOUGH_MONEY));
