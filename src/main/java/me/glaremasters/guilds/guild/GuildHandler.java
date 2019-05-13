@@ -640,7 +640,7 @@ public class GuildHandler {
      * @return new vault
      */
     public Inventory createNewVault(SettingsManager settingsManager) {
-        return Bukkit.createInventory(null, 54, settingsManager.getProperty(GuildVaultSettings.VAULT_NAME));
+        return Bukkit.createInventory(null, 54, ACFBukkitUtil.color(settingsManager.getProperty(GuildVaultSettings.VAULT_NAME)));
     }
 
     /**
