@@ -25,6 +25,7 @@
 package me.glaremasters.guilds.utils;
 
 import ch.jalu.configme.SettingsManager;
+import co.aikar.commands.ACFBukkitUtil;
 import com.dumptruckman.bukkit.configuration.json.JsonConfiguration;
 import me.glaremasters.guilds.configuration.sections.GuildVaultSettings;
 import org.bukkit.Bukkit;
@@ -86,7 +87,7 @@ public class Serialization {
             json.loadFromString(jsons);
 
             int size = json.getInt("size", 54);
-            title = settingsManager.getProperty(GuildVaultSettings.VAULT_NAME);
+            title = ACFBukkitUtil.color(settingsManager.getProperty(GuildVaultSettings.VAULT_NAME));
 
             Inventory inventory = Bukkit.createInventory(null, size, title);
             Map<String, Object> items = json.getConfigurationSection("items").getValues(false);
