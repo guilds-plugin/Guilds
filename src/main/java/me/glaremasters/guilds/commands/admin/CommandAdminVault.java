@@ -35,13 +35,13 @@ import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.annotation.Values;
 import lombok.AllArgsConstructor;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.Constants;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 
 /**
  * Created by Glare
@@ -51,29 +51,26 @@ import org.bukkit.inventory.Inventory;
 @AllArgsConstructor @CommandAlias(Constants.ROOT_ALIAS)
 public class CommandAdminVault extends BaseCommand {
 
+    private Guilds guilds;
     private GuildHandler guildHandler;
 
     /**
      * Admin command to open guild vaults
      * @param player the player running the command
      * @param name the vault of the guild
-     * @param vault the vault number to open
      */
     @Subcommand("admin vault")
     @Description("{@@descriptions.admin-vault}")
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
     @Syntax("<guild> <vault #>")
-    public void execute(Player player, @Values("@guilds") @Single String name, int vault) {
+    public void execute(Player player, @Values("@guilds") @Single String name) {
         Guild guild = guildHandler.getGuild(name);
 
         if (guild == null)
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
 
-        Inventory inventory = guildHandler.getGuildVault(guild, vault);
-
-        if (inventory != null)
-            player.openInventory(inventory);
+        guilds.getVaultGUI().getVaultGUI(guild, player, getCurrentCommandManager()).show(player);
     }
 
 }

@@ -405,7 +405,7 @@ public final class Guilds extends JavaPlugin {
                 new CommandAdminUpdateLanguages(actionHandler, settingsManager, this),
                 new CommandAdminStatus(guildHandler),
                 new CommandAdminUpgrade(guildHandler),
-                new CommandAdminVault(guildHandler),
+                new CommandAdminVault(this, guildHandler),
                 new CommandReload(settingsManager, this),
                 // Ally Commands
                 new CommandAllyAccept(guildHandler),
