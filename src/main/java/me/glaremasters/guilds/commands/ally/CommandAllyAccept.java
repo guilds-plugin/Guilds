@@ -78,6 +78,7 @@ public class CommandAllyAccept extends BaseCommand {
         if (!guild.isAllyPending(target))
             return;
 
+        guild.removePendingAlly(target);
         guildHandler.addAlly(guild, target);
 
         guild.sendMessage(getCurrentCommandManager(), Messages.ALLY__CURRENT_ACCEPTED,
