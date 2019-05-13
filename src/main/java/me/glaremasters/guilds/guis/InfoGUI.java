@@ -122,10 +122,20 @@ public class InfoGUI {
             guilds.getInfoMembersGUI().getInfoMembersGUI(guild, player, guilds.getCommandManager()).show(event.getWhoClicked());
         }));
         // Add the status button to the GUI
-        pane.addItem(new GuiItem(easyItem(settingsManager.getProperty(GuildInfoSettings.STATUS_MATERIAL),
+        boolean status = guild.isPrivate();
+        String material;
+        String statusString;
+        if (status) {
+            material = settingsManager.getProperty(GuildInfoSettings.STATUS_MATERIAL_PRIVATE);
+            statusString = settingsManager.getProperty(GuildInfoSettings.STATUS_PRIVATE);
+        } else {
+            material = settingsManager.getProperty(GuildInfoSettings.STATUS_MATERIAL_PUBLIC);
+            statusString = settingsManager.getProperty(GuildInfoSettings.STATUS_PUBLIC);
+        }
+        pane.addItem(new GuiItem(easyItem(material,
                 settingsManager.getProperty(GuildInfoSettings.STATUS_NAME),
                 settingsManager.getProperty(GuildInfoSettings.STATUS_LORE).stream().map(l ->
-                        l.replace("{status}", guild.getStatus().name())).collect(Collectors.toList())),
+                        l.replace("{status}", statusString)).collect(Collectors.toList())),
                 event -> event.setCancelled(true)));
         // Create a variable for the home
         String home;

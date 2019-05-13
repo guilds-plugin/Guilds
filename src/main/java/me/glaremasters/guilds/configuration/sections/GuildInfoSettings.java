@@ -60,13 +60,25 @@ public class GuildInfoSettings implements SettingsHolder {
     public static final Property<List<String >> MEMBERS_LORE =
             newListProperty(INFO_PATH + "members-lore", "&f• Members: {current} / {max}", "&f• Online: {online} / {current}", "", "&fClick to view members!");
 
-    @Comment("What material do you want the status button to be?")
-    public static final Property<String> STATUS_MATERIAL =
-            newProperty(INFO_PATH + "status-material", "LEVER");
+    @Comment("What material do you want the status button to be when a guild is public?")
+    public static final Property<String> STATUS_MATERIAL_PUBLIC =
+            newProperty(INFO_PATH + "status-material.public", "EMERALD");
+
+    @Comment("What material do you want the status button to be when a guild is private?")
+    public static final Property<String> STATUS_MATERIAL_PRIVATE =
+            newProperty(INFO_PATH + "status-material.private", "REDSTONE");
 
     @Comment("What do you want the name of the status button to be?")
     public static final Property<String> STATUS_NAME =
-            newProperty(INFO_PATH + "status-name", "&fGuild Status");
+            newProperty(INFO_PATH + "status-name-item", "&fGuild Status");
+
+    @Comment("What do you want the status to say if it's public?")
+    public static final Property<String> STATUS_PUBLIC =
+            newProperty(INFO_PATH + "status-name.public", "Public");
+
+    @Comment("What do you want the status to say if it's private?")
+    public static final Property<String> STATUS_PRIVATE =
+            newProperty(INFO_PATH + "status-name.private", "Private");
 
     @Comment("What do you want the lore of the status button to be?")
     public static final Property<List<String >> STATUS_LORE =
