@@ -682,7 +682,6 @@ public class GuildHandler {
      * @param settingsManager settings manager
      * @return the itemstack
      */
-    // todo Test this before release
     public ItemStack matchTicket(SettingsManager settingsManager) {
         ItemBuilder builder = new ItemBuilder(Material.valueOf(settingsManager.getProperty(TicketSettings.TICKET_MATERIAL)));
         builder.setAmount(1);
