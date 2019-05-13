@@ -25,6 +25,7 @@
 package me.glaremasters.guilds.guild;
 
 import ch.jalu.configme.SettingsManager;
+import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.CommandManager;
 import lombok.Getter;
@@ -669,8 +670,8 @@ public class GuildHandler {
     public ItemStack getUpgradeTicket(SettingsManager settingsManager, int amount) {
         ItemBuilder builder = new ItemBuilder(Material.valueOf(settingsManager.getProperty(TicketSettings.TICKET_MATERIAL)));
         builder.setAmount(amount);
-        builder.setName(settingsManager.getProperty(TicketSettings.TICKET_NAME));
-        builder.setLore(settingsManager.getProperty(TicketSettings.TICKET_LORE));
+        builder.setName(ACFBukkitUtil.color(settingsManager.getProperty(TicketSettings.TICKET_NAME)));
+        builder.setLore(settingsManager.getProperty(TicketSettings.TICKET_LORE).stream().map(ACFBukkitUtil::color).collect(Collectors.toList()));
         return builder.build();
     }
 
@@ -679,11 +680,12 @@ public class GuildHandler {
      * @param settingsManager settings manager
      * @return the itemstack
      */
+    // todo Test this before release
     public ItemStack matchTicket(SettingsManager settingsManager) {
         ItemBuilder builder = new ItemBuilder(Material.valueOf(settingsManager.getProperty(TicketSettings.TICKET_MATERIAL)));
         builder.setAmount(1);
-        builder.setName(settingsManager.getProperty(TicketSettings.TICKET_NAME));
-        builder.setLore(settingsManager.getProperty(TicketSettings.TICKET_LORE));
+        builder.setName(ACFBukkitUtil.color(settingsManager.getProperty(TicketSettings.TICKET_NAME)));
+        builder.setLore(settingsManager.getProperty(TicketSettings.TICKET_LORE).stream().map(ACFBukkitUtil::color).collect(Collectors.toList()));
         return builder.build();
     }
 
