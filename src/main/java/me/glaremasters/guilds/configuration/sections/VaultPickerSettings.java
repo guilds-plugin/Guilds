@@ -20,7 +20,7 @@ public class VaultPickerSettings implements SettingsHolder {
     @Comment({"What do you want the name of the gui to be?",
     "Currently supports {name} for the name of the guild."})
     public static final Property<String> GUI_NAME =
-            newProperty("guis.vault-picker.name", "&8» &r{name}''s Vaults");
+            newProperty("guis.vault-picker.name", "&8» &r{name}'s Vaults");
 
     @Comment({"How many rows would you like to display?"})
     public static final Property<Integer> GUI_SIZE =

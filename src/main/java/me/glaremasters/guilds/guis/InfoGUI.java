@@ -13,6 +13,7 @@ import me.glaremasters.guilds.configuration.sections.GuildInfoSettings;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildTier;
+import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -152,7 +153,17 @@ public class InfoGUI {
                 settingsManager.getProperty(GuildInfoSettings.HOME_NAME),
                 settingsManager.getProperty(GuildInfoSettings.HOME_LORE).stream().map(l ->
                         l.replace("{coords}", home)).collect(Collectors.toList())),
-                event -> event.setCancelled(true)));
+                event -> {
+            event.setCancelled(true);
+            if (settingsManager.getProperty(GuildInfoSettings.HOME_TELEPORT)) {
+                if (guild.getHome() == null) {
+                    commandManager.getCommandIssuer(player).sendInfo(Messages.HOME__NO_HOME_SET);
+                    return;
+                }
+                player.teleport(guild.getHome().getAsLocation());
+                commandManager.getCommandIssuer(player).sendInfo(Messages.HOME__TELEPORTED);
+            }
+                }));
     }
 
     /**

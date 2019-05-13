@@ -22,7 +22,7 @@ public class GuildInfoSettings implements SettingsHolder {
     @Comment({"What would you like the name of the GUI to be?",
     "Currently supports {name} for the name of the guild and {prefix} for the prefix of the guild"})
     public static final Property<String> GUI_NAME =
-            newProperty(INFO_PATH + "name", "&8» &r{name}''s Info");
+            newProperty(INFO_PATH + "name", "&8» &r{name}'s Info");
 
     @Comment("What material do you want the tier button to be?")
     public static final Property<String> TIER_MATERIAL =
@@ -99,6 +99,10 @@ public class GuildInfoSettings implements SettingsHolder {
     @Comment("What do you want it to say when a guild doesn't have a home set?")
     public static final Property<String> HOME_EMPTY =
             newProperty(INFO_PATH + "home-empty", "&fNot Set");
+
+    @Comment("Do you want players to be teleported to their guild home when they click this?")
+    public static final Property<Boolean> HOME_TELEPORT =
+            newProperty(INFO_PATH + "home-teleport", false);
 
     @Comment("What material do you want the vault button to be?")
     public static final Property<String> VAULT_MATERIAL =
