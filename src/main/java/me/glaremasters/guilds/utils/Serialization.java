@@ -24,7 +24,9 @@
 
 package me.glaremasters.guilds.utils;
 
+import ch.jalu.configme.SettingsManager;
 import com.dumptruckman.bukkit.configuration.json.JsonConfiguration;
+import me.glaremasters.guilds.configuration.sections.GuildVaultSettings;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.inventory.Inventory;
@@ -67,8 +69,8 @@ public class Serialization {
         return json.saveToString();
     }
 
-    public static Inventory deserializeInventory(String jsons) throws InvalidConfigurationException {
-        return deserializeInventory(jsons, null);
+    public static Inventory deserializeInventory(String jsons, SettingsManager settingsManager) throws InvalidConfigurationException {
+        return deserializeInventory(jsons, null, settingsManager);
     }
 
     /**
@@ -78,15 +80,13 @@ public class Serialization {
      * @return the deserialized string
      * @throws InvalidConfigurationException
      */
-    public static Inventory deserializeInventory(String jsons, String title) throws InvalidConfigurationException {
+    public static Inventory deserializeInventory(String jsons, String title, SettingsManager settingsManager) throws InvalidConfigurationException {
         try {
             JsonConfiguration json = new JsonConfiguration();
             json.loadFromString(jsons);
 
             int size = json.getInt("size", 54);
-            if (title == null) {
-                title = json.getString("name");
-            }
+            title = settingsManager.getProperty(GuildVaultSettings.VAULT_NAME);
 
             Inventory inventory = Bukkit.createInventory(null, size, title);
             Map<String, Object> items = json.getConfigurationSection("items").getValues(false);

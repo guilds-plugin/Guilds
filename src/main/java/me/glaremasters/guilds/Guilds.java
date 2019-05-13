@@ -345,7 +345,7 @@ public final class Guilds extends JavaPlugin {
             // Load the json provider
             database = new JsonProvider(getDataFolder());
             // Load guildhandler with provider
-            guildHandler = new GuildHandler(database, getCommandManager(), getPermissions(), getConfig());
+            guildHandler = new GuildHandler(database, getCommandManager(), getPermissions(), getConfig(), settingsManager);
             info("Loaded data!");
         } catch (IOException e) {
             severe("An error occured loading data! Stopping plugin..");

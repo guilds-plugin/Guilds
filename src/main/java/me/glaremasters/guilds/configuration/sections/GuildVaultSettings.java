@@ -16,7 +16,8 @@ import static ch.jalu.configme.properties.PropertyInitializer.newProperty;
  */
 public class GuildVaultSettings implements SettingsHolder {
 
-    @Comment("What do you want the name of the Vault to be?")
+    @Comment({"What do you want the name of the Vault to be?",
+    "Note: This requires a restart to change the inventory names."})
     public static final Property<String> VAULT_NAME =
             newProperty("guis.vault.name", "Guild Vault");
 

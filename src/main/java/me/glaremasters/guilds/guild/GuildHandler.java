@@ -73,13 +73,15 @@ public class GuildHandler {
     private final DatabaseProvider databaseProvider;
     private final CommandManager commandManager;
     private final Permission permission;
+    private final SettingsManager settingsManager;
 
     //as well as guild permissions from tiers using permission field and tiers list.
 
-    public GuildHandler(DatabaseProvider databaseProvider, CommandManager commandManager, Permission permission, FileConfiguration config) throws IOException {
+    public GuildHandler(DatabaseProvider databaseProvider, CommandManager commandManager, Permission permission, FileConfiguration config, SettingsManager settingsManager) throws IOException {
         this.databaseProvider = databaseProvider;
         this.commandManager = commandManager;
         this.permission = permission;
+        this.settingsManager = settingsManager;
 
         roles = new ArrayList<>();
         tiers = new ArrayList<>();
@@ -430,7 +432,7 @@ public class GuildHandler {
         if (guild.getVaults() == null) return;
         guild.getVaults().forEach(v -> {
             try {
-                vaults.add(Serialization.deserializeInventory(v));
+                vaults.add(Serialization.deserializeInventory(v, settingsManager));
             } catch (InvalidConfigurationException e) {
                 e.printStackTrace();
             }
