@@ -22,7 +22,7 @@ public class GuildInfoSettings implements SettingsHolder {
     @Comment({"What would you like the name of the GUI to be?",
     "Currently supports {name} for the name of the guild and {prefix} for the prefix of the guild"})
     public static final Property<String> GUI_NAME =
-            newProperty(INFO_PATH + "name", "{name}");
+            newProperty(INFO_PATH + "name", "&8» &r{name}''s Info");
 
     @Comment("What material do you want the tier button to be?")
     public static final Property<String> TIER_MATERIAL =
@@ -30,11 +30,11 @@ public class GuildInfoSettings implements SettingsHolder {
 
     @Comment("What do you want the name of the tier button to be?")
     public static final Property<String> TIER_NAME =
-            newProperty(INFO_PATH + "tier-name", "&fGuild Tier");
+            newProperty(INFO_PATH + "tier-name", "&3Guild Tier");
 
     @Comment("What do you want the lore of the tier button to be?")
     public static final Property<List<String>> TIER_LORE =
-            newListProperty(INFO_PATH + "tier-lore", "&f• Level: {tier}");
+            newListProperty(INFO_PATH + "tier-lore", "&8• &7Level: &b{tier}");
 
     @Comment("What material do you want the bank button to be?")
     public static final Property<String> BANK_MATERIAL =
@@ -42,11 +42,11 @@ public class GuildInfoSettings implements SettingsHolder {
 
     @Comment("What do you want the name of the bank button to be?")
     public static final Property<String> BANK_NAME =
-            newProperty(INFO_PATH + "bank-name", "&fGuild Bank");
+            newProperty(INFO_PATH + "bank-name", "&6Guild Bank");
 
     @Comment("What do you want the lore of the bank button to be?")
     public static final Property<List<String >> BANK_LORE =
-            newListProperty(INFO_PATH + "bank-lore", "&f• Balance: {current} / {max}");
+            newListProperty(INFO_PATH + "bank-lore", "&8• &7Balance: &e{current} &7/ &e{max}");
 
     @Comment("What material do you want the members button to be?")
     public static final Property<String> MEMBERS_MATERIAL =
@@ -54,11 +54,11 @@ public class GuildInfoSettings implements SettingsHolder {
 
     @Comment("What do you want the name of the members button to be?")
     public static final Property<String> MEMBERS_NAME =
-            newProperty(INFO_PATH + "members-name", "&fGuild Members");
+            newProperty(INFO_PATH + "members-name", "&5Guild Members");
 
     @Comment("What do you want the lore of the members button to be?")
     public static final Property<List<String >> MEMBERS_LORE =
-            newListProperty(INFO_PATH + "members-lore", "&f• Members: {current} / {max}", "&f• Online: {online} / {current}", "", "&fClick to view members!");
+            newListProperty(INFO_PATH + "members-lore", "&8• &7Members: &d{current} &7/ &d{max}", "&8• &7Online: &d{online} &7/ &d{current}", "", "&7Click to view members!");
 
     @Comment("What material do you want the status button to be when a guild is public?")
     public static final Property<String> STATUS_MATERIAL_PUBLIC =
@@ -70,19 +70,19 @@ public class GuildInfoSettings implements SettingsHolder {
 
     @Comment("What do you want the name of the status button to be?")
     public static final Property<String> STATUS_NAME =
-            newProperty(INFO_PATH + "status-name-item", "&fGuild Status");
+            newProperty(INFO_PATH + "status-name-item", "&2Guild Status");
 
     @Comment("What do you want the status to say if it's public?")
     public static final Property<String> STATUS_PUBLIC =
-            newProperty(INFO_PATH + "status-name.public", "Public");
+            newProperty(INFO_PATH + "status-name.public", "&aPublic");
 
     @Comment("What do you want the status to say if it's private?")
     public static final Property<String> STATUS_PRIVATE =
-            newProperty(INFO_PATH + "status-name.private", "Private");
+            newProperty(INFO_PATH + "status-name.private", "&cPrivate");
 
     @Comment("What do you want the lore of the status button to be?")
     public static final Property<List<String >> STATUS_LORE =
-            newListProperty(INFO_PATH + "status-lore", "&f• Status: {status}");
+            newListProperty(INFO_PATH + "status-lore", "&8• &7Status: &r{status}");
 
     @Comment("What material do you want the home button to be?")
     public static final Property<String> HOME_MATERIAL =
@@ -90,11 +90,11 @@ public class GuildInfoSettings implements SettingsHolder {
 
     @Comment("What do you want the name of the home button to be?")
     public static final Property<String> HOME_NAME =
-            newProperty(INFO_PATH + "home-name", "&fGuild Home");
+            newProperty(INFO_PATH + "home-name", "&cGuild Home");
 
     @Comment("What do you want the lore of the home button to be?")
     public static final Property<List<String >> HOME_LORE =
-            newListProperty(INFO_PATH + "home-lore", "&f• Home: {coords}");
+            newListProperty(INFO_PATH + "home-lore", "&8• &7Home: &f{coords}");
 
     @Comment("What do you want it to say when a guild doesn't have a home set?")
     public static final Property<String> HOME_EMPTY =
@@ -106,11 +106,11 @@ public class GuildInfoSettings implements SettingsHolder {
 
     @Comment("What do you want the name of the home button to be?")
     public static final Property<String> VAULT_NAME =
-            newProperty(INFO_PATH + "vault-name", "&fGuild Vaults");
+            newProperty(INFO_PATH + "vault-name", "&9Guild Vaults");
 
     @Comment("What do you want the lore of the vault button to be?")
     public static final Property<List<String >> VAULT_LORE =
-            newListProperty(INFO_PATH + "vault-lore", "&fClick here to open your guild vaults!");
+            newListProperty(INFO_PATH + "vault-lore", "&7Click here to open your guild vaults!");
 
 
 

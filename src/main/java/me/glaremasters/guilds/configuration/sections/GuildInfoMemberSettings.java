@@ -21,7 +21,7 @@ public class GuildInfoMemberSettings implements SettingsHolder {
 
     @Comment("What would you like the name of the GUI to be?")
     public static final Property<String> GUI_NAME =
-            newProperty(INFO_PATH + "name", "Members of {name}");
+            newProperty(INFO_PATH + "name", "&8» &rMembers of {name}");
 
     @Comment("What material do you want to use to represent members?")
     public static final Property<String> MEMBERS_MATERIAL =
@@ -33,15 +33,15 @@ public class GuildInfoMemberSettings implements SettingsHolder {
 
     @Comment("What do you want the lore of the item to be?")
     public static final Property<List<String>> MEMBERS_LORE =
-            newListProperty(INFO_PATH + "item.lore", "&f• Name: {name}", "&f• Role: {role}", "&f• Status: {status}", "");
+            newListProperty(INFO_PATH + "item.lore", "&8• &7Name: &a{name}", "&8• &7Role: &a{role}", "&8• &7Status: {status}", "");
 
     @Comment("What do you want to be what shows when a member is online?")
     public static final Property<String> MEMBERS_ONLINE =
-            newProperty(INFO_PATH + "item.online", "&fONLINE");
+            newProperty(INFO_PATH + "item.online", "&aOnline");
 
     @Comment("What do you want to be what shows when a member is offline?")
     public static final Property<String> MEMBERS_OFFLINE =
-            newProperty(INFO_PATH + "item.offline", "&fOFFLINE");
+            newProperty(INFO_PATH + "item.offline", "&cOffline");
 
 
 

@@ -19,7 +19,7 @@ public class GuildVaultSettings implements SettingsHolder {
     @Comment({"What do you want the name of the Vault to be?",
     "Note: This requires a restart to change the inventory names."})
     public static final Property<String> VAULT_NAME =
-            newProperty("guis.vault.name", "Guild Vault");
+            newProperty("guis.vault.name", "&8» &rGuild Vault");
 
     @Comment("What materials would you like to blacklist from being put into the vaults?")
     public static final Property<List<String>> BLACKLIST_MATERIALS =

@@ -20,7 +20,7 @@ public class VaultPickerSettings implements SettingsHolder {
     @Comment({"What do you want the name of the gui to be?",
     "Currently supports {name} for the name of the guild."})
     public static final Property<String> GUI_NAME =
-            newProperty("guis.vault-picker.name", "{name}'s Vaults");
+            newProperty("guis.vault-picker.name", "&8» &r{name}''s Vaults");
 
     @Comment({"How many rows would you like to display?"})
     public static final Property<Integer> GUI_SIZE =
@@ -36,15 +36,15 @@ public class VaultPickerSettings implements SettingsHolder {
             newProperty("guis.vault-picker.item-name", " ");
 
     public static final Property<List<String>> PICKER_LORE =
-            newListProperty("guis.vault-picker.item-lore", "&f• Vault #{number}", "&f• Status: {status}", "");
+            newListProperty("guis.vault-picker.item-lore", "&8• &7Vault &9#{number}", "&8• &7Status: {status}", "");
 
     @Comment("What do you want to show when a vault is unlocked?")
     public static final Property<String> PICKER_UNLOCKED =
-            newProperty("guis.vault-picker.unlocked", "&fUNLOCKED");
+            newProperty("guis.vault-picker.unlocked", "&9Unlocked");
 
     @Comment("What do you want to show when a vault is locked?")
     public static final Property<String> PICKER_LOCKED =
-            newProperty("guis.vault-picker.locked", "&fLOCKED");
+            newProperty("guis.vault-picker.locked", "&c&mLocked&r");
 
 
 
