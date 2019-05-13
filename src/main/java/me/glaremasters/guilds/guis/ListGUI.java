@@ -92,6 +92,11 @@ public class ListGUI {
         return gui;
     }
 
+    /**
+     * Set the item to the list
+     * @param pane the pane to add to
+     * @param guild the guild of the pane
+     */
     private void setListItem(OutlinePane pane, Guild guild) {
         GuiItem listItem = new GuiItem(guild.getSkull(), event -> event.setCancelled(true));
         ItemMeta meta = listItem.getItem().getItemMeta();
@@ -101,6 +106,12 @@ public class ListGUI {
         pane.addItem(listItem);
     }
 
+    /**
+     * Update lore with replacements
+     * @param guild the guild being edited
+     * @param lore the lore to change
+     * @return updated lore
+     */
     private List<String> updatedLore(Guild guild, List<String> lore) {
         List<String> updated = new ArrayList<>();
         lore.forEach(line -> updated.add(ACFBukkitUtil.color(line

@@ -134,6 +134,20 @@ public class BuffGUI {
         return gui;
     }
 
+    /**
+     * Set the buff item to the GUI
+     * @param commandManager command manage
+     * @param type the type of potion
+     * @param length the length of the potion
+     * @param amplifier the strength of the potion
+     * @param cost the cost of the potion
+     * @param icon the icon of the potion
+     * @param name the name of the potion
+     * @param lore the lore of the potion
+     * @param pane the pane to add to
+     * @param x The location to add to
+     * @param check check if this should be displayed
+     */
     private void setBuffItem(CommandManager commandManager, String type, int length, int amplifier, double cost, String icon, String name, List<String> lore, StaticPane pane, int x, boolean check) {
         GuiItem buffItem = new GuiItem(new ItemStack(Material.valueOf(icon)), event -> {
             event.setCancelled(true);

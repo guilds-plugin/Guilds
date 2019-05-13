@@ -60,6 +60,10 @@ public class EntityListener implements Listener {
     private SettingsManager settingsManager;
     private final Set<PotionEffectType> bad = new HashSet<>(Arrays.asList(PotionEffectType.BLINDNESS, PotionEffectType.WITHER, PotionEffectType.SLOW_DIGGING, PotionEffectType.WEAKNESS, PotionEffectType.SLOW, PotionEffectType.POISON));
 
+    /**
+     * Handles the extra damage to a mob
+     * @param event
+     */
     @EventHandler
     public void onMobDamage(EntityDamageByEntityEvent event) {
         if (event.getDamager() instanceof Player) {
@@ -69,6 +73,10 @@ public class EntityListener implements Listener {
         }
     }
 
+    /**
+     * Handles extra XP dropped from mobs
+     * @param event
+     */
     @EventHandler
     public void onMobDeath(EntityDeathEvent event) {
         if (!(event.getEntity() instanceof Monster)) return;
@@ -103,6 +111,10 @@ public class EntityListener implements Listener {
         }
     }
 
+    /**
+     * Handles flame arrows
+     * @param event
+     */
     @EventHandler
     public void onFlameArrow(EntityCombustByEntityEvent event) {
 
@@ -137,6 +149,10 @@ public class EntityListener implements Listener {
         }
     }
 
+    /**
+     * Handles splash potions+
+     * @param event
+     */
     @EventHandler
     public void onSplash(PotionSplashEvent event) {
         boolean isHarming = false;
