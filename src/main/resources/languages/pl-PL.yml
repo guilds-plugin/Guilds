@@ -79,7 +79,7 @@ error:
   not-officer: "&cGracz musi być oficerem w twojej gildii!"
   blacklist: "&cJedno lub więcej słów w nazwie lub prefixie twojej gildii jest zabroniona!"
   not-enough-money: "&cNie masz wystarczająco pieniędzy aby to zrobić"
-  economy-required: "Aby to działało, wymagana jest wtyczka ekonomiczna. Skontaktuj się z administratorem serwera"
+  economy-required: "&cAby to działało, wymagana jest wtyczka ekonomiczna. Skontaktuj się z administratorem serwera"
 bank:
   balance: "&aPieniądze gildii: {amount}."
   deposit-success: "&aWpłaciłeś {amount} do banku gildii. Status banku gildii to: {total}!"
@@ -154,7 +154,7 @@ home:
   cancelled: "Poruszyłeś się! Teleportacja anulowana!"
 sethome:
   successful: "Ustawiłeś dom gildii!"
-  deleted: "Pomyślnie usunąłeś swój dom gildii!"
+  deleted: "&aPomyślnie usunąłeś swój dom gildii!"
   cooldown: "Musisz poczekać co najmniej {amount} sekund aby zrobić to ponownie"
 reload:
   reloaded: "Plik konfiguracyjny przeładowany!"
@@ -197,10 +197,10 @@ pending:
 codes:
   created: "Stworzyłeś nowy kod zaproszeniowy: {code} z {amount} użyć!"
   empty: "O nie! Nie mam kodów, najpierw spróbuj jeden stworzyć!"
-  list-header: "Oto następujące kody aktywnych zaproszeń dla twojej gildii:"
-  list-item: "&aID: &6{code} &f| &aUses Remaining: &6{amount} &f| &aCreator: &6{creator}"
-  deleted: "Ten kod zaproszenia został usunięty z twojej gildii!"
-  invalid-code: "Ten kod zaproszenia nie istnieje. Proszę spróbuj ponownie!"
+  list-header: "&aOto następujące kody aktywnych zaproszeń dla twojej gildii:"
+  list-item: "&aID: &6{code} &f| &aMoże nadal być używany: &6{amount} &f| &aTwórca: &6{creator}"
+  deleted: "&aTen kod zaproszenia został usunięty z twojej gildii!"
+  invalid-code: "&cTen kod zaproszenia nie istnieje. Proszę spróbuj ponownie!"
   joined: "&aPomyślnie dołączyłeś &6{guild} &aużywając kodu zaproszenia!"
   guild-message: "&6{player} &adołączył do gildii za pomocą kodu zaproszenia z &6{creator}&a!"
   out: "&cTen kod zaproszenia jest nieużywany! Spróbuj innego!"
@@ -216,10 +216,10 @@ languages:
   console-only: "&cPrzepraszamy, to polecenie można uruchomić tylko z konsoli!"
 help:
   header: "<c3>=== </c3><c1>Pokazuje pomoc dla </c1><c2>{commandprefix}{command}</c2><c3> ===</c3>"
-  detailed-header: "<c3>=== </c3><c1>Showing detailed help for </c1><c2>{commandprefix}{command}</c2><c3> ===</c3>"
+  detailed-header: "<c3>=== </c3><c1>Wyświetlenie szczegółowej pomocy dla </c1><c2>{commandprefix}{command}</c2><c3> ===</c3>"
   format: "<c1>{command}</c1> <c2>{parameters}</c2> <c3>{separator} {description}</c3>"
   command-format: "<c1>{command}</c1> <c2>{parameters}</c2> <c3>{separator} {description}</c3>"
   parameter-format: "<c2>{syntaxorname}</c2>: <c3>{description}</c3>"
-  page-info: "Showing page <c2>{page}</c2> of <c2>{totalpages}</c2> (<c3>{results}</c3> results)."
-  search-header: "<c3>=== </c3><c1>Search results for </c1><c2>{commandprefix}{command} {search}</c2><c3> ===</c3>"
+  page-info: "Pokazuje stronę <c2>{page}</c2> z <c2>{totalpages}</c2> (<c3>{results}</c3> wynik)."
+  search-header: "<c3>=== </c3><c1>Wyniki wyszukiwania dla </c1><c2>{commandprefix}{command} {search}</c2><c3> ===</c3>"
 
