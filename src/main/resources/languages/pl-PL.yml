@@ -79,7 +79,7 @@ error:
   not-officer: "&cGracz musi być oficerem w twojej gildii!"
   blacklist: "&cJedno lub więcej słów w nazwie lub prefixie twojej gildii jest zabroniona!"
   not-enough-money: "&cNie masz wystarczająco pieniędzy aby to zrobić"
-  economy-required: "&cAn economy plugin is required for this to work. Please contact your server administrator"
+  economy-required: "Aby to działało, wymagana jest wtyczka ekonomiczna. Skontaktuj się z administratorem serwera"
 bank:
   balance: "&aPieniądze gildii: {amount}."
   deposit-success: "&aWpłaciłeś {amount} do banku gildii. Status banku gildii to: {total}!"
@@ -154,7 +154,7 @@ home:
   cancelled: "Poruszyłeś się! Teleportacja anulowana!"
 sethome:
   successful: "Ustawiłeś dom gildii!"
-  deleted: "&aYou've successfully deleted your guild home!"
+  deleted: "Pomyślnie usunąłeś swój dom gildii!"
   cooldown: "Musisz poczekać co najmniej {amount} sekund aby zrobić to ponownie"
 reload:
   reloaded: "Plik konfiguracyjny przeładowany!"
