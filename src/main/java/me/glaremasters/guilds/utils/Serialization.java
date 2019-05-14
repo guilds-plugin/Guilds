@@ -46,20 +46,18 @@ public class Serialization {
     private Serialization() {}
 
     public static String serializeInventory(Inventory inventory) {
-        return serializeInventory(inventory.getTitle(), inventory.getSize(), inventory.getContents());
+        return serializeInventory(inventory.getSize(), inventory.getContents());
     }
 
     /**
      * Serialize the inventory to JSON
-     * @param title name of inventory
      * @param size size of inventory
      * @param items the items to be serialized
      * @return serialized inventory
      */
-    public static String serializeInventory(String title, int size, ItemStack[] items) {
+    public static String serializeInventory(int size, ItemStack[] items) {
         JsonConfiguration json = new JsonConfiguration();
         json.set("size", size);
-        json.set("name", title);
         int idx = 0;
         Map<String, ItemStack> itemMap = new HashMap<>();
         for (ItemStack item : items) {
