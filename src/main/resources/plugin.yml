@@ -37,6 +37,7 @@ permissions:
       guilds.command.demote: true
       guilds.command.help: true
       guilds.command.home: true
+      guilds.command.info: true
       guilds.command.invite: true
       guilds.command.language: true
       guilds.command.leave: true
