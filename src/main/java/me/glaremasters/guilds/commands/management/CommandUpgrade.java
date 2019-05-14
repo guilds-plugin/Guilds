@@ -29,9 +29,9 @@ import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
-import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.actions.ConfirmAction;
 import me.glaremasters.guilds.configuration.sections.TierSettings;
@@ -52,13 +52,13 @@ import org.bukkit.entity.Player;
  * Date: 4/5/2019
  * Time: 10:38 PM
  */
-@AllArgsConstructor @CommandAlias(Constants.ROOT_ALIAS)
+@CommandAlias(Constants.ROOT_ALIAS)
 public class CommandUpgrade extends BaseCommand {
 
-    private GuildHandler guildHandler;
-    private ActionHandler actionHandler;
-    private SettingsManager settingsManager;
-    private Permission permission;
+    @Dependency private GuildHandler guildHandler;
+    @Dependency private ActionHandler actionHandler;
+    @Dependency private SettingsManager settingsManager;
+    @Dependency private Permission permission;
 
     /**
      * Upgrade a guild

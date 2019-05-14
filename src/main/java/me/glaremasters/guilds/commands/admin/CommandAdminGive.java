@@ -31,12 +31,12 @@ import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Default;
+import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.annotation.Values;
 import co.aikar.commands.bukkit.contexts.OnlinePlayer;
-import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.messages.Messages;
@@ -48,11 +48,11 @@ import org.bukkit.command.CommandSender;
  * Date: 4/8/2019
  * Time: 2:32 PM
  */
-@AllArgsConstructor @CommandAlias(Constants.ROOT_ALIAS)
+@CommandAlias(Constants.ROOT_ALIAS)
 public class CommandAdminGive extends BaseCommand {
 
-    private GuildHandler guildHandler;
-    private SettingsManager settingsManager;
+    @Dependency private GuildHandler guildHandler;
+    @Dependency private SettingsManager settingsManager;
 
     /**
      * Give a player upgrade tickets

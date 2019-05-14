@@ -6,9 +6,9 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.CommandIssuer;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
-import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.actions.ConfirmAction;
@@ -26,13 +26,12 @@ import java.io.IOException;
  * Date: 4/27/2019
  * Time: 11:17 AM
  */
-@AllArgsConstructor
 @CommandAlias(Constants.ROOT_ALIAS)
 public class CommandAdminUpdateLanguages extends BaseCommand {
 
-    private ActionHandler actionHandler;
-    private SettingsManager settingsManager;
-    private Guilds guilds;
+    @Dependency private ActionHandler actionHandler;
+    @Dependency private SettingsManager settingsManager;
+    @Dependency private Guilds guilds;
 
     /**
      * This command will update all the languages on the server

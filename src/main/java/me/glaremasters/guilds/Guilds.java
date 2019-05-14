@@ -28,6 +28,7 @@ import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.SettingsManagerBuilder;
 import ch.jalu.configme.migration.PlainMigrationService;
 import co.aikar.commands.ACFBukkitUtil;
+import co.aikar.commands.BaseCommand;
 import co.aikar.commands.InvalidCommandArgument;
 import co.aikar.commands.PaperCommandManager;
 import co.aikar.taskchain.BukkitTaskChainFactory;
@@ -126,6 +127,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.codemc.worldguardwrapper.WorldGuardWrapper;
+import org.reflections.Reflections;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -140,6 +142,7 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.logging.Level;
@@ -387,79 +390,26 @@ public final class Guilds extends JavaPlugin {
         loadContexts(commandManager);
         // load the custom command completions
         loadCompletions(commandManager);
+        // load the dependnecies
+        registerDependencies(commandManager);
 
         // Register all the commands
+        Reflections commandClasses = new Reflections("me.glaremasters.guilds.commands");
+        Set<Class<? extends BaseCommand>> commands = commandClasses.getSubTypesOf(BaseCommand.class);
+        commands.forEach(c -> {
+            try {
+                commandManager.registerCommand(c.newInstance());
+            } catch (InstantiationException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        });
 
-        Stream.of(
-                // Action Commands
-                new CommandCancel(actionHandler),
-                new CommandConfirm(actionHandler),
-                // Admin Commands
-                new CommandAdminAddPlayer(guildHandler),
-                new CommandAdminGive(guildHandler, settingsManager),
-                new CommandAdminPrefix(guildHandler),
-                new CommandAdminRemove(guildHandler, actionHandler, settingsManager),
-                new CommandAdminRemovePlayer(guildHandler),
-                new CommandAdminRename(guildHandler),
-                new CommandAdminSpy(guildHandler),
-                new CommandAdminUpdateLanguages(actionHandler, settingsManager, this),
-                new CommandAdminStatus(guildHandler),
-                new CommandAdminUpgrade(guildHandler),
-                new CommandAdminVault(this, guildHandler),
-                new CommandReload(settingsManager),
-                // Ally Commands
-                new CommandAllyAccept(guildHandler),
-                new CommandAllyAdd(guildHandler),
-                new CommandAllyDecline(guildHandler),
-                new CommandAllyList(guildHandler),
-                new CommandAllyRemove(guildHandler),
-                // Bank Commands
-                new CommandBankBalance(),
-                new CommandBankDeposit(economy),
-                new CommandBankWithdraw(economy),
-                // Code Commands
-                new CommandCodeCreate(settingsManager),
-                new CommandCodeDelete(),
-                new CommandCodeInfo(),
-                new CommandCodeList(settingsManager, guildHandler),
-                new CommandCodeRedeem(guildHandler),
-                // GUI Commands
-                new CommandList(this, guildHandler),
-                new CommandBuff(this),
-                new CommandVault(this, guildHandler, settingsManager),
-                new CommandInfo(this, guildHandler),
-                // Home Commands
-                new CommandDelHome(),
-                new CommandHome(),
-                new CommandSetHome(economy, settingsManager),
-                // Management Commands
-                new CommandCreate(this, guildHandler, settingsManager, actionHandler, economy, permissions),
-                new CommandDelete(guildHandler, actionHandler, permissions, settingsManager),
-                new CommandKick(guildHandler, permissions),
-                new CommandPrefix(guildHandler, settingsManager),
-                new CommandRename(guildHandler, settingsManager),
-                new CommandStatus(),
-                new CommandTransfer(),
-                new CommandUpgrade(guildHandler, actionHandler, settingsManager, permissions),
-                // Member Commands
-                new CommandAccept(guildHandler, permissions),
-                new CommandCheck(guildHandler),
-                new CommandDecline(guildHandler),
-                new CommandDemote(guildHandler),
-                new CommandInvite(guildHandler),
-                new CommandLanguage(this),
-                new CommandLeave(guildHandler, actionHandler, permissions, settingsManager),
-                new CommandPromote(guildHandler),
-                // Misc Commands
-                new CommandChat(guildHandler),
-                new CommandHelp(),
-                new CommandRequest(guildHandler)
-        ).forEach(commandManager::registerCommand);
+
 
         if (settingsManager.getProperty(HooksSettings.WORLDGUARD)) {
             // Claim Commands
-            commandManager.registerCommand(new CommandClaim(WorldGuardWrapper.getInstance(), settingsManager));
-            commandManager.registerCommand(new CommandUnclaim(WorldGuardWrapper.getInstance(), settingsManager));
+            commandManager.registerCommand(new CommandClaim());
+            commandManager.registerCommand(new CommandUnclaim());
         }
 
         buffGUI = new BuffGUI(this, settingsManager, guildHandler, getCommandManager());
@@ -644,6 +594,18 @@ public final class Guilds extends JavaPlugin {
      */
     public static <T> TaskChain<T> newSharedChain(String name) {
         return taskChainFactory.newSharedChain(name);
+    }
+
+    /**
+     * Register dependency annotations for the plugin
+     * @param commandManager command manager
+     */
+    private void registerDependencies(PaperCommandManager commandManager) {
+        commandManager.registerDependency(GuildHandler.class, guildHandler);
+        commandManager.registerDependency(SettingsManager.class, settingsManager);
+        commandManager.registerDependency(ActionHandler.class, actionHandler);
+        commandManager.registerDependency(Economy.class, economy);
+        commandManager.registerDependency(Permission.class, permissions);
     }
 
 }

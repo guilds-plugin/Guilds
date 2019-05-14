@@ -27,9 +27,9 @@ package me.glaremasters.guilds.commands.admin;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
-import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.utils.Constants;
 import org.bukkit.entity.Player;
@@ -39,10 +39,10 @@ import org.bukkit.entity.Player;
  * Date: 4/4/2019
  * Time: 9:31 PM
  */
-@AllArgsConstructor @CommandAlias(Constants.ROOT_ALIAS)
+@CommandAlias(Constants.ROOT_ALIAS)
 public class CommandAdminSpy extends BaseCommand {
 
-    private GuildHandler guildHandler;
+    @Dependency private GuildHandler guildHandler;
 
     /**
      * Admin command to turn on Guild Chat Spy

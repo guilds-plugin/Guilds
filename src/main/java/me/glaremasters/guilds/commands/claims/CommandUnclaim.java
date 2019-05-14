@@ -29,6 +29,7 @@ import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
 import lombok.AllArgsConstructor;
@@ -47,11 +48,10 @@ import org.codemc.worldguardwrapper.WorldGuardWrapper;
  * Date: 4/4/2019
  * Time: 10:38 PM
  */
-@AllArgsConstructor @CommandAlias(Constants.ROOT_ALIAS)
+@CommandAlias(Constants.ROOT_ALIAS)
 public class CommandUnclaim extends BaseCommand {
 
-    private WorldGuardWrapper wrapper;
-    private SettingsManager settingsManager;
+    @Dependency private SettingsManager settingsManager;
 
     /**
      * Unclaim a guild claim
@@ -68,6 +68,8 @@ public class CommandUnclaim extends BaseCommand {
 
         if (!ClaimUtils.isEnable(settingsManager))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.CLAIM__HOOK_DISABLED));
+
+        WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();
 
         if (!ClaimUtils.checkAlreadyExist(wrapper, player, guild))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.UNCLAIM__NOT_FOUND));

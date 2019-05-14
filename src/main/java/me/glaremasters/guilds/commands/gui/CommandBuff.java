@@ -28,9 +28,9 @@ import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
-import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.exceptions.InvalidPermissionException;
 import me.glaremasters.guilds.guild.Guild;
@@ -43,10 +43,10 @@ import org.bukkit.entity.Player;
  * Date: 4/8/2019
  * Time: 10:50 AM
  */
-@AllArgsConstructor @CommandAlias(Constants.ROOT_ALIAS)
+@CommandAlias(Constants.ROOT_ALIAS)
 public class CommandBuff extends BaseCommand {
 
-    private Guilds guilds;
+    @Dependency private Guilds guilds;
 
     /**
      * Open the guild buff menu

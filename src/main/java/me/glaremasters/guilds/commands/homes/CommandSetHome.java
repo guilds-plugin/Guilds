@@ -29,9 +29,9 @@ import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
-import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.configuration.sections.CostSettings;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.exceptions.InvalidPermissionException;
@@ -48,11 +48,11 @@ import org.bukkit.entity.Player;
  * Date: 4/4/2019
  * Time: 11:00 PM
  */
-@AllArgsConstructor @CommandAlias(Constants.ROOT_ALIAS)
+@CommandAlias(Constants.ROOT_ALIAS)
 public class CommandSetHome extends BaseCommand {
 
-    private Economy economy;
-    private SettingsManager settingsManager;
+    @Dependency private Economy economy;
+    @Dependency private SettingsManager settingsManager;
 
     /**
      * Set a guild home

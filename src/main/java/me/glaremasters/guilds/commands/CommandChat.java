@@ -28,9 +28,9 @@ import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
-import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.exceptions.InvalidPermissionException;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
@@ -43,10 +43,10 @@ import org.bukkit.entity.Player;
  * Date: 4/5/2019
  * Time: 12:54 AM
  */
-@AllArgsConstructor @CommandAlias(Constants.ROOT_ALIAS)
+@CommandAlias(Constants.ROOT_ALIAS)
 public class CommandChat extends BaseCommand {
 
-    private GuildHandler guildHandler;
+    @Dependency private GuildHandler guildHandler;
 
     /**
      * Toggles Guild Chat

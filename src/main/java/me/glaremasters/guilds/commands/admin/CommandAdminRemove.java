@@ -30,12 +30,12 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.annotation.Values;
-import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.actions.ConfirmAction;
 import me.glaremasters.guilds.api.events.GuildRemoveEvent;
@@ -53,12 +53,12 @@ import org.bukkit.entity.Player;
  * Date: 4/4/2019
  * Time: 8:53 PM
  */
-@AllArgsConstructor @CommandAlias(Constants.ROOT_ALIAS)
+@CommandAlias(Constants.ROOT_ALIAS)
 public class CommandAdminRemove extends BaseCommand {
 
-    private GuildHandler guildHandler;
-    private ActionHandler actionHandler;
-    private SettingsManager settingsManager;
+    @Dependency private GuildHandler guildHandler;
+    @Dependency private ActionHandler actionHandler;
+    @Dependency private SettingsManager settingsManager;
 
     /**
      * Admin command to remove a guild from the server

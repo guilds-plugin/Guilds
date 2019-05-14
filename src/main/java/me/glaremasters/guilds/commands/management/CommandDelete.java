@@ -29,13 +29,12 @@ import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
-import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.actions.ConfirmAction;
 import me.glaremasters.guilds.api.events.GuildRemoveEvent;
-import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.exceptions.InvalidPermissionException;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
@@ -46,20 +45,19 @@ import me.glaremasters.guilds.utils.Constants;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.codemc.worldguardwrapper.WorldGuardWrapper;
 
 /**
  * Created by Glare
  * Date: 4/5/2019
  * Time: 11:12 PM
  */
-@AllArgsConstructor @CommandAlias(Constants.ROOT_ALIAS)
+@CommandAlias(Constants.ROOT_ALIAS)
 public class CommandDelete extends BaseCommand {
 
-    private GuildHandler guildHandler;
-    private ActionHandler actionHandler;
-    private Permission permission;
-    private SettingsManager settingsManager;
+    @Dependency private GuildHandler guildHandler;
+    @Dependency private ActionHandler actionHandler;
+    @Dependency private Permission permission;
+    @Dependency private SettingsManager settingsManager;
 
     /**
      * Delete your guild
