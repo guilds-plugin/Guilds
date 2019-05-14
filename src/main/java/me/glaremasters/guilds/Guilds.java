@@ -404,14 +404,6 @@ public final class Guilds extends JavaPlugin {
             }
         });
 
-
-
-        if (settingsManager.getProperty(HooksSettings.WORLDGUARD)) {
-            // Claim Commands
-            commandManager.registerCommand(new CommandClaim());
-            commandManager.registerCommand(new CommandUnclaim());
-        }
-
         buffGUI = new BuffGUI(this, settingsManager, guildHandler, getCommandManager());
         listGUI = new ListGUI(this, settingsManager, guildHandler);
         infoGUI = new InfoGUI(this, settingsManager, guildHandler);
