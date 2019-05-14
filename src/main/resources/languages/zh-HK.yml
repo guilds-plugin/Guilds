@@ -79,6 +79,7 @@ error:
   not-officer: "&8[&6公會&8] &f只有副會長以上的位階才能使用"
   blacklist: "&8[&6公會&8] &f你的公會名稱稱/公會前綴有不雅文字，請重新規範你的操作"
   not-enough-money: "&8[&6公會&8] &f你沒有足夠的錢這麼做"
+  economy-required: "&cAn economy plugin is required for this to work. Please contact your server administrator"
 bank:
   balance: "&8[&6公會&8] &f目前公會金庫: {amount}金幣"
   deposit-success: "&8[&6公會&8] &f你已存入 {amount} 金幣到公會金庫中，公會金庫總量: {total}金幣"
@@ -117,6 +118,7 @@ delete:
   successful: "&8[&6公會&8] &f成功刪除公會 《 {guild} 》"
   cancelled: "&8[&6公會&8] &f已取消操作"
   warning: "&8[&6公會&8] &f輸入/guilds confirm 來刪除公會 輸入/guilds cancel取消操作"
+  notify-allies: "&c{guild} is no longer your ally because it has been deleted."
 leave:
   cancelled: "&8[&6公會&8] &f已取消操作"
   successful: "&8[&6公會&8] &f你已離開公會"
@@ -152,6 +154,7 @@ home:
   cancelled: "&8[&6公會&8] &f已取消傳送 ！"
 sethome:
   successful: "&8[&6公會&8] &f你已設定公會領地傳送點 ！"
+  deleted: "&aYou've successfully deleted your guild home!"
   cooldown: "&8[&6公會&8] &f你必須等待{amount}秒後才能執行此操作"
 reload:
   reloaded: "&8[&6公會&8] &f已重載"

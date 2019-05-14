@@ -79,6 +79,7 @@ error:
   not-officer: "&cPlayer deve ser um oficial em sua guild!"
   blacklist: "&cUma ou mais palavras em seu nome de guild / prefixo de guild está na lista negra!"
   not-enough-money: "&cDesculpe, você não tem dinheiro suficiente para fazer isto"
+  economy-required: "&cAn economy plugin is required for this to work. Please contact your server administrator"
 bank:
   balance: "&aSua guild tem um saldo de {amount}."
   deposit-success: "&aVocê depositou {amount} no banco de sua guild. Agora o total do banco de sua guild é {total}!"
@@ -117,6 +118,7 @@ delete:
   successful: "&aDeletou '{guild}&r&a' com sucesso!"
   cancelled: "&cCriação de guild cancelada!"
   warning: "&cDigite /guilds confirm para confirmar a exclusão de sua guild, digite /guilds cancel para cancelar."
+  notify-allies: "&c{guild} is no longer your ally because it has been deleted."
 leave:
   cancelled: "&cSaída da guild cancelada!"
   successful: "&aVocê saiu da sua guild com sucesso!"
@@ -152,6 +154,7 @@ home:
   cancelled: "&cVocê se mexeu! Teletransporte cancelado!"
 sethome:
   successful: "&aVocê definiu o ponto de spawn de sua guild!"
+  deleted: "&aYou've successfully deleted your guild home!"
   cooldown: "&cVocê deve esperar pelo menos {amount} segundos antes de fazer isto de novo"
 reload:
   reloaded: "&aConfiguração recarregada!"

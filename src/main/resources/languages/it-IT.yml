@@ -79,6 +79,7 @@ error:
   not-officer: "&cL'utente deve essere un Officer nella tua gilda!"
   blacklist: "&cUna o più parole nel nome/prefisso della tua gilda sono nella blacklist!"
   not-enough-money: "&cScusa, non hai abbastanza soldi per farlo"
+  economy-required: "&cAn economy plugin is required for this to work. Please contact your server administrator"
 bank:
   balance: "&aLa tua gilda ha un conto di {amount}."
   deposit-success: "&aHai depositato {amount} nel conto della tua gilda. Il conto della tua gilda adesso è {total}!"
@@ -117,6 +118,7 @@ delete:
   successful: "&aEliminata la gilda '{guild}&r&a'!"
   cancelled: "&cEliminazione della gilda annullata!"
   warning: "&cScrivi /guilds confirm per eliminare la tua gilda, scrivi /guilds cancel per annullare."
+  notify-allies: "&c{guild} is no longer your ally because it has been deleted."
 leave:
   cancelled: "&cAbbandono della gilda annullato!"
   successful: "&aHai abbandonato la tua gilda!"
@@ -152,6 +154,7 @@ home:
   cancelled: "&cYou moved! Teleportation cancelled!"
 sethome:
   successful: "&aHai impostato il nome della tua gilda!"
+  deleted: "&aYou've successfully deleted your guild home!"
   cooldown: "&cYou must wait at least {amount} seconds before doing this again"
 reload:
   reloaded: "&aFile di configurazione ricaricato!"

@@ -41,7 +41,7 @@ descriptions:
   info: "Deschideti meniul cu informatiile Breslei"
   invite: "Invitati un alt jucator in Breasla dumneavoastra"
   kick: "Elimina un jucator din breasla"
-  language: "Change the language of the plugin messages for you"
+  language: "Modificati limba pluginului pentru dumneavoastra"
   leave: "Paraseste breasla"
   list: "Listeaza toate breslele"
   prefix: "Schimba prefixul breslei"
@@ -79,6 +79,7 @@ error:
   not-officer: "&cJucatorul trebuie sa fie un Ofiter in breasla ta!"
   blacklist: "&cUnul sau mai multe dintre cuvintele din prefix-ul / numele breslei se afla in blacklist!"
   not-enough-money: "&cNe pare rau, nu ai destui bani pentru a face asta."
+  economy-required: "&cAn economy plugin is required for this to work. Please contact your server administrator"
 bank:
   balance: "&aBanca breslei tale are o balanta de {amount}."
   deposit-success: "&aAi depozitat {amount} in banca breslei. Balanta totala este acum de {total}!"
@@ -117,6 +118,7 @@ delete:
   successful: "&aBreasla '{guild}&r&a' a fost stearsa cu succes!"
   cancelled: "&cStregerea Breslei anulata!"
   warning: "&cTastati /guilds confirm pentru a va sterge Breasla, tastati /guilds cancel pentru a anula."
+  notify-allies: "&c{guild} is no longer your ally because it has been deleted."
 leave:
   cancelled: "&cParasirea Breslei anulata!"
   successful: "&aAti parasit Breasla cu succes!"
@@ -152,6 +154,7 @@ home:
   cancelled: "&cTe-ai miscat! Teleportare oprita!"
 sethome:
   successful: "&aAti setat casa Breslei dumneavoastra!"
+  deleted: "&aYou've successfully deleted your guild home!"
   cooldown: "&cTrebuie sa astepti cel putin {amount} secunde inainte de a face asta din nou"
 reload:
   reloaded: "&aFisierul de configurare a fost reincarcat!"

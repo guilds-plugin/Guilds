@@ -31,7 +31,7 @@ descriptions:
   code-redeem: "Активировать код приглашения для вступления в гильдию"
   confirm: "Подтвердить действие"
   create: "Создать гильдию"
-  decline: "Отклонить приглашение в Гильдию"
+  decline: "Отклонить приглашение в гильдию"
   delete: "Расформировать гильдию"
   delhome: "Удалить дом гильдии"
   demote: "Понизить ранг игрока в гильдии"
@@ -62,7 +62,7 @@ create:
   successful: "&aГильдия {guild}&r&a успешно создана!"
   cancelled: "&cСоздание гильдии отменено!"
   requirements: "&cНазвание Вашей гильдии не соответствует требованиям! Вы можете использовать лишь буквы и цифры, а длина не должна превышать 64 символов"
-  name-too-long: "&cYou didn't provide a prefix so the name you input was tested against the prefix requirements and that failed. Please try a shorter name or input a prefix on creation."
+  name-too-long: "&cПрефикс не был указан, а название не соответствует требованиям к префиксу. Сделайте название короче или укажите префикс."
 chat:
   disabled: "Чат гильдии отключен"
   enabled: "Чат гильдии включен"
@@ -79,6 +79,7 @@ error:
   not-officer: "&cПользователь должен быть офицером в вашей гильдии!"
   blacklist: "&cВ названии / префиксе Вашей гильдии обнаружены запрещённые слова!"
   not-enough-money: "&cИзвините, но у вас недостаточно денег, чтобы сделать это"
+  economy-required: "&cЧтобы это работало, нужен плагин на экономику. Пожалуйста, сообщите администратору"
 bank:
   balance: "&aБаланс банка Вашей гильдии составляет {amount}."
   deposit-success: "&aВы внесли {amount} в банк своей гильдии. Итого в банке гильдии {total}!"
@@ -117,12 +118,13 @@ delete:
   successful: "&aГильдия {guild}&r&a успешно расформирована!"
   cancelled: "&cРасформирование гильдии отменено!"
   warning: "&cВведите /guilds confirm для подтверждения или /guilds cancel для отмены расформирования."
+  notify-allies: "&c{guild} больше не является Вашим союзником, поскольку была расформирована."
 leave:
   cancelled: "&cВыход из гильдии отменен!"
   successful: "&aВы успешно покинули гильдию!"
   player-left: "&cИгрок {player} покинул гильдию!"
   guildmaster-left: "&cГильд-мастер {player} покинул гильдию. Гильдия расформирована."
-  warning: "&cВведите /guilds confirm для подтверждения, или /guilds cancel для отмены выхода из Гильдии."
+  warning: "&cВведите /guilds confirm для подтверждения или /guilds cancel для отмены выхода из гильдии."
   warning-guildmaster: "&cВы являетесь Гильд-мастером этой гильдии, и ваш уход будет означать её расформирование. Введите /guilds confirm для подтверждения, или /guilds cancel для отмены ухода из гильдии и её дальнейшего расформирования."
 transfer:
   newmaster: "&aОтныне вы Гильд-мастер своей гильдии!"
@@ -152,6 +154,7 @@ home:
   cancelled: "&cВы двигались! Телепортация отменена!"
 sethome:
   successful: "&aВы установили дом своей гильдии!"
+  deleted: "&aYou've successfully deleted your guild home!"
   cooldown: "&cВы должны подождать {amount} секунд, прежде чем делать это снова"
 reload:
   reloaded: "&aФайл конфигураций перезагружен!"
@@ -205,7 +208,7 @@ codes:
   max: "&cВ гильдии слишком много активных кодов приглашения!"
 vaults:
   maxed: "&cУровень гильдии не позволяет открыть хранилище под этим номером!"
-  blacklisted: "&cYou can't put that item in your Guild Vault because it is blacklisted!"
+  blacklisted: "&cЭтот предмет запрещено класть в хранилище гильдии!"
 languages:
   set: "&aВаш язык для гильдий установлен на {language}"
   warning: "&cВы собираетесь обновить все языковые файлы. Это удалит все текущие языковые файлы и пересоздаст их. Введите /guilds confirm для подтверждения или /guilds cancel для отмены обновления файлов."

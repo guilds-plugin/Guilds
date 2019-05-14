@@ -79,6 +79,7 @@ error:
   not-officer: "&c至少需要副會長以上階級才能使用!"
   blacklist: "&c您的公會名稱 / 公會前綴有不雅文字!"
   not-enough-money: "&c抱歉，您沒有足夠金錢執行指令"
+  economy-required: "&cAn economy plugin is required for this to work. Please contact your server administrator"
 bank:
   balance: "&a您的公會銀行目前有： {amount}元"
   deposit-success: "&a您已將 {amount} 元存入公會銀行中。 目前您的公會銀行總共有： {total}元!"
@@ -117,6 +118,7 @@ delete:
   successful: "&a成功刪除 '{guild}&r&a' !"
   cancelled: "&c已取消公會刪除動作!"
   warning: "&c輸入 /guilds confirm 來刪除公會，輸入 /guilds cancel 以取消此動作"
+  notify-allies: "&c{guild} is no longer your ally because it has been deleted."
 leave:
   cancelled: "&c取消離開公會!"
   successful: "&a您已成功離開公會!"
@@ -152,6 +154,7 @@ home:
   cancelled: "&cYou moved! Teleportation cancelled!"
 sethome:
   successful: "&a您已設置公會領地傳送點!"
+  deleted: "&aYou've successfully deleted your guild home!"
   cooldown: "&cYou must wait at least {amount} seconds before doing this again"
 reload:
   reloaded: "&a已完成重讀文件檔!"

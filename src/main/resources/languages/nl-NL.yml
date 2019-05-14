@@ -79,6 +79,7 @@ error:
   not-officer: "&cSpeler moet een Officer zijn in jouw Guild!"
   blacklist: "&cEen of meer van de woorden in jouw Guild naam / Guild prefix zijn niet toegestaan!"
   not-enough-money: "&cSorry, je hebt niet genoeg geld om dat te doen!"
+  economy-required: "&cOm dit te laten werken is een economy plugin nodig. Neem contact op met je server admin"
 bank:
   balance: "&aJouw Guild heeft een bank balans van {amount}."
   deposit-success: "&aJe hebt {amount} aan jouw Guild Bank toegevoegd. Jouw Guild Bank totaal is nu {total}!"
@@ -117,6 +118,7 @@ delete:
   successful: "&aSuccesvol '{guild}&r&a' verwijderd!"
   cancelled: "&cGuild verwijdering gestopt!"
   warning: "&cTyp /guilds confirm om jouw Guild te verwijderen, typ /guilds cancel om te stoppen."
+  notify-allies: "&c{guild} is geen ally meer omdat deze verwijderd is."
 leave:
   cancelled: "&cGuild verlaten gestopt!"
   successful: "&aJe hebt jouw Guild verlaten!"
@@ -152,6 +154,7 @@ home:
   cancelled: "&cJe hebt bewogen! Teleportatie gestopt!"
 sethome:
   successful: "&aGuild huis ingesteld!"
+  deleted: "&aJe Guild huis is met succes verwijderd!"
   cooldown: "&cJe moet minimaal {amount} seconden wachten om dit opnieuw te doen!"
 reload:
   reloaded: "&aConfiguratie bestand herladen!"

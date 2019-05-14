@@ -79,6 +79,7 @@ error:
   not-officer: "&cNgười dùng phải là Officer trong Guild của bạn!"
   blacklist: "&cMột hay nhiều phần trong tên guild / tiền tố của bạn đang trong danh sách cấm!"
   not-enough-money: "&cXin lỗi, bạn không đủ tiền để làm điều đó"
+  economy-required: "&cAn economy plugin is required for this to work. Please contact your server administrator"
 bank:
   balance: "&aNgân khố của Guild là {amount}."
   deposit-success: "&aBạn đã nạp {amount} vào ngân khố của guild. Ngân khố hiện tại là {total}!"
@@ -117,6 +118,7 @@ delete:
   successful: "&aĐã xoá '{guild}&r&a' thành công!"
   cancelled: "&cGuild deletion cancelled!"
   warning: "Bấm /guilds confirm để xoá guild của bạn, bấm /guilds cancel để huỷ bỏ."
+  notify-allies: "&c{guild} is no longer your ally because it has been deleted."
 leave:
   cancelled: "&cLeaving guild cancelled!"
   successful: "&cBạn đã rời khỏi guild thành công!"
@@ -152,6 +154,7 @@ home:
   cancelled: "&cYou moved! Teleportation cancelled!"
 sethome:
   successful: "&aYou've set your guild home!"
+  deleted: "&aYou've successfully deleted your guild home!"
   cooldown: "&cYou must wait at least {amount} seconds before doing this again"
 reload:
   reloaded: "&aTập tin cấu hình đã được tải lại!"

@@ -79,6 +79,7 @@ error:
   not-officer: "&c¡El usuario debe ser un Oficial en tu guild!"
   blacklist: "&c¡Una o más palabras en el nombre o prefijo de tu guild está en la lista negra!"
   not-enough-money: "&cPerdón, no tienes suficiente dinero para hacer eso"
+  economy-required: "&cAn economy plugin is required for this to work. Please contact your server administrator"
 bank:
   balance: "&cEl banco de tu guild tiene la cantidad de {amount}."
   deposit-success: "&aHas depositado {amount} en el banco de tu guild. ¡El banco de tu guild ahora tiene {total}!"
@@ -117,6 +118,7 @@ delete:
   successful: "&aEliminaste el gremio '{guild}&r&a' correctamente!"
   cancelled: "&cEliminacion del gremio cancelada!"
   warning: "&cEscribe /guilds confirm para eliminar tu gremio, escribe /guilds cancel para cancelarlo."
+  notify-allies: "&c{guild} is no longer your ally because it has been deleted."
 leave:
   cancelled: "&cLa deserción del gremio ha sido cancelada!"
   successful: "&aHas dejado el gremio!"
@@ -152,6 +154,7 @@ home:
   cancelled: "&cTe moviste! Teletransportacion cancelada!"
 sethome:
   successful: "&aEstableciste la casa del Gremio!"
+  deleted: "&aYou've successfully deleted your guild home!"
   cooldown: "&cDebes esperar {amount} segundos para hacerlo de nuevo"
 reload:
   reloaded: "&aConfiguracion recargada!"
