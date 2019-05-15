@@ -40,6 +40,7 @@ import me.glaremasters.guilds.api.GuildsAPI;
 import me.glaremasters.guilds.configuration.GuildConfigurationBuilder;
 import me.glaremasters.guilds.configuration.sections.HooksSettings;
 import me.glaremasters.guilds.configuration.sections.PluginSettings;
+import me.glaremasters.guilds.cooldowns.Cooldown;
 import me.glaremasters.guilds.cooldowns.CooldownHandler;
 import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.database.cooldowns.CooldownsProvider;
@@ -560,9 +561,9 @@ public final class Guilds extends JavaPlugin {
      * Create the cooldowns for the plugin
      */
     private void createCooldowns() {
-        cooldownHandler.addCooldownType("sethome");
-        cooldownHandler.addCooldownType("home");
-        cooldownHandler.addCooldownType("request");
+        cooldownHandler.addCooldownType(Cooldown.TYPES.Request.name());
+        cooldownHandler.addCooldownType(Cooldown.TYPES.Home.name());
+        cooldownHandler.addCooldownType(Cooldown.TYPES.SetHome.name());
     }
 
 }

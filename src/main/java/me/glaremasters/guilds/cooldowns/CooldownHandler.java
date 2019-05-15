@@ -7,6 +7,8 @@ import org.jetbrains.annotations.NotNull;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Glare
@@ -53,14 +55,19 @@ public class CooldownHandler {
         return cooldowns.stream().filter(c -> c.getType().equals(type)).findFirst().orElse(null);
     }
 
+    public boolean hasCooldown(String type, UUID uuid) {
+        Long expire = getCooldown(type).getUuids().get(uuid);
+        return expire != null && expire > System.currentTimeMillis();
+    }
+
     /**
      * Add a player to the cooldown
      * @param player the player to add
      * @param type the type of cooldown
      * @param length how long to put them
      */
-    public void addPlayerToCooldown(Player player, String type, int length) {
-        getCooldown(type).getUuids().put(player.getUniqueId(), length);
+    public void addPlayerToCooldown(Player player, String type, int length, TimeUnit timeUnit) {
+        getCooldown(type).getUuids().put(player.getUniqueId(), (System.currentTimeMillis() + timeUnit.toMillis(length)));
     }
 
 }

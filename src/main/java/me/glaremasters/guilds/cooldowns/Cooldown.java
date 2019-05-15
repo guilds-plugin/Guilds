@@ -15,7 +15,17 @@ import java.util.UUID;
 public class Cooldown {
 
     private String type;
-    private Map<UUID, Integer> uuids;
+    private Map<UUID, Long> uuids;
+
+    public enum TYPES {
+        Request("request"),
+        SetHome("sethome"),
+        Home("home");
+
+        TYPES(String s) {
+
+        }
+    }
 
     public Cooldown(String type) {
         this.type = type;
