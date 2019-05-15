@@ -42,6 +42,9 @@ import me.glaremasters.guilds.configuration.sections.HooksSettings;
 import me.glaremasters.guilds.configuration.sections.PluginSettings;
 import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.database.providers.JsonProvider;
+import me.glaremasters.guilds.dependency.DependencyLoader;
+import me.glaremasters.guilds.dependency.MavenLibraries;
+import me.glaremasters.guilds.dependency.MavenLibrary;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildCode;
 import me.glaremasters.guilds.guild.GuildHandler;
@@ -94,6 +97,13 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+@MavenLibraries(
+        value = {
+                @MavenLibrary(groupId = "co.aikar", artifactId = "taskchain-core", version = "3.7.2", repo = "https://repo.glaremasters.me/repository/public/"),
+                @MavenLibrary(groupId = "co.aikar", artifactId = "taskchain-bukkit", version = "3.7.2", repo = "https://repo.glaremasters.me/repository/public/"),
+                @MavenLibrary(groupId = "net.lingala.zip4j", artifactId = "zip4j", version = "1.3.2")
+        }
+)
 @Getter
 public final class Guilds extends JavaPlugin {
 
@@ -119,6 +129,8 @@ public final class Guilds extends JavaPlugin {
     private VaultGUI vaultGUI;
     private List<String> loadedLanguages;
 
+    private boolean successfulLoad = false;
+
     @Override
     public void onDisable() {
         if (checkVault()) {
@@ -128,6 +140,16 @@ public final class Guilds extends JavaPlugin {
                 e.printStackTrace();
             }
             guildHandler.chatLogout();
+        }
+    }
+
+    @Override
+    public void onLoad() {
+        try {
+            DependencyLoader.loadAll(getClass());
+            successfulLoad = true;
+        } catch (RuntimeException ex) {
+            ex.printStackTrace();
         }
     }
 

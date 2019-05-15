@@ -119,10 +119,6 @@
                                     <pattern>net.minidev.json</pattern>
                                     <shadedPattern>me.glaremasters.guilds.libs.jsoneasy</shadedPattern>
                                 </relocation>
-                                <relocation>
-                                    <pattern>net.lingala.zip4j</pattern>
-                                    <shadedPattern>me.glaremasters.guilds.libs.zip4j</shadedPattern>
-                                </relocation>
                             </relocations>
                         </configuration>
                     </execution>
@@ -199,6 +195,7 @@
             <groupId>co.aikar</groupId>
             <artifactId>taskchain-core</artifactId>
             <version>3.7.2</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Used to make working with bukkit easier -->
@@ -206,6 +203,7 @@
             <groupId>co.aikar</groupId>
             <artifactId>taskchain-bukkit</artifactId>
             <version>3.7.2</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Command framework using annotations -->
@@ -274,6 +272,7 @@
             <groupId>net.lingala.zip4j</groupId>
             <artifactId>zip4j</artifactId>
             <version>1.3.2</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Used to handle some file stuff -->
