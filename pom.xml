@@ -104,14 +104,6 @@
                                     <shadedPattern>me.glaremasters.guilds.libs.configme</shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern>com.github.stefvanschie.inventoryframework</pattern>
-                                    <shadedPattern>me.glaremasters.guilds.libs.inventoryframework</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>com.dumptruckman.bukkit.configuration</pattern>
-                                    <shadedPattern>me.glaremasters.guilds.libs.configuration</shadedPattern>
-                                </relocation>
-                                <relocation>
                                     <pattern>org.yaml.snakeyaml</pattern>
                                     <shadedPattern>me.glaremasters.guilds.libs.snakeyml</shadedPattern>
                                 </relocation>
@@ -265,6 +257,7 @@
             <groupId>com.github.stefvanschie.inventoryframework</groupId>
             <artifactId>IF</artifactId>
             <version>0.3.1</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Used to easily update language files -->

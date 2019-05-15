@@ -49,11 +49,7 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildCode;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
-import me.glaremasters.guilds.guis.BuffGUI;
-import me.glaremasters.guilds.guis.InfoGUI;
-import me.glaremasters.guilds.guis.InfoMembersGUI;
-import me.glaremasters.guilds.guis.ListGUI;
-import me.glaremasters.guilds.guis.VaultGUI;
+import me.glaremasters.guilds.guis.GUIHandler;
 import me.glaremasters.guilds.listeners.EntityListener;
 import me.glaremasters.guilds.listeners.EssentialsChatListener;
 import me.glaremasters.guilds.listeners.PlayerListener;
@@ -102,7 +98,8 @@ import java.util.stream.Stream;
                 @MavenLibrary(groupId = "co.aikar", artifactId = "taskchain-core", version = "3.7.2", repo = "https://repo.glaremasters.me/repository/public/"),
                 @MavenLibrary(groupId = "co.aikar", artifactId = "taskchain-bukkit", version = "3.7.2", repo = "https://repo.glaremasters.me/repository/public/"),
                 @MavenLibrary(groupId = "net.lingala.zip4j", artifactId = "zip4j", version = "1.3.2"),
-                @MavenLibrary(groupId = "commons-io", artifactId = "commons-io", version = "2.6")
+                @MavenLibrary(groupId = "commons-io", artifactId = "commons-io", version = "2.6"),
+                @MavenLibrary(groupId = "com.github.stefvanschie.inventoryframework", artifactId = "IF", version = "0.3.1", repo = "https://repo.glaremasters.me/repository/public/"),
         }
 )
 @Getter
@@ -116,18 +113,9 @@ public final class Guilds extends JavaPlugin {
     private SettingsManager settingsManager;
     private PaperCommandManager commandManager;
     private ActionHandler actionHandler;
+    private GUIHandler guiHandler;
     private Economy economy;
     private Permission permissions;
-    @Getter
-    private BuffGUI buffGUI;
-    @Getter
-    private ListGUI listGUI;
-    @Getter
-    private InfoGUI infoGUI;
-    @Getter
-    private InfoMembersGUI infoMembersGUI;
-    @Getter
-    private VaultGUI vaultGUI;
     private List<String> loadedLanguages;
 
     private boolean successfulLoad = false;
@@ -371,13 +359,6 @@ public final class Guilds extends JavaPlugin {
             }
         });
 
-        buffGUI = new BuffGUI(this, settingsManager, guildHandler, getCommandManager());
-        listGUI = new ListGUI(this, settingsManager, guildHandler);
-        infoGUI = new InfoGUI(this, settingsManager, guildHandler);
-        infoMembersGUI = new InfoMembersGUI(this, settingsManager, guildHandler);
-        vaultGUI = new VaultGUI(this, settingsManager, guildHandler);
-
-
         if (settingsManager.getProperty(PluginSettings.ANNOUNCEMENTS_CONSOLE)) {
             newChain().async(() -> {
                 try {
@@ -387,6 +368,8 @@ public final class Guilds extends JavaPlugin {
                 }
             }).execute();
         }
+
+        guiHandler = new GUIHandler(this, settingsManager, guildHandler, commandManager);
 
         if (settingsManager.getProperty(PluginSettings.UPDATE_CHECK)) {
             UpdateChecker.init(this, 66176).requestUpdateCheck().whenComplete((result, exception) -> {
