@@ -100,6 +100,8 @@ import java.util.stream.Stream;
                 @MavenLibrary(groupId = "net.lingala.zip4j", artifactId = "zip4j", version = "1.3.2"),
                 @MavenLibrary(groupId = "commons-io", artifactId = "commons-io", version = "2.6"),
                 @MavenLibrary(groupId = "com.github.stefvanschie.inventoryframework", artifactId = "IF", version = "0.3.1", repo = "https://repo.glaremasters.me/repository/public/"),
+                @MavenLibrary(groupId = "com.dumptruckman.minecraft", artifactId = "JsonConfiguration", version = "1.1", repo = "https://repo.glaremasters.me/repository/public/"),
+                @MavenLibrary(groupId = "net.minidev", artifactId = "json-smart", version = "1.1.1", repo = "https://repo.glaremasters.me/repository/public/"),
         }
 )
 @Getter

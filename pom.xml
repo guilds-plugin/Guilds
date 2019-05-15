@@ -107,10 +107,6 @@
                                     <pattern>org.yaml.snakeyaml</pattern>
                                     <shadedPattern>me.glaremasters.guilds.libs.snakeyml</shadedPattern>
                                 </relocation>
-                                <relocation>
-                                    <pattern>net.minidev.json</pattern>
-                                    <shadedPattern>me.glaremasters.guilds.libs.jsoneasy</shadedPattern>
-                                </relocation>
                             </relocations>
                         </configuration>
                     </execution>
@@ -250,6 +246,15 @@
             <groupId>com.dumptruckman.minecraft</groupId>
             <artifactId>JsonConfiguration</artifactId>
             <version>1.1</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Required json dependency because no other json lib can handle numbers appropriately. -->
+        <dependency>
+            <groupId>net.minidev</groupId>
+            <artifactId>json-smart</artifactId>
+            <version>1.1.1</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Used for the GUIs -->
