@@ -35,6 +35,7 @@ import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
 import lombok.Getter;
+import me.glaremasters.guilds.acf.ACFManager;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.api.GuildsAPI;
 import me.glaremasters.guilds.configuration.GuildConfigurationBuilder;
@@ -102,6 +103,7 @@ import java.util.stream.Stream;
                 @MavenLibrary(groupId = "com.github.stefvanschie.inventoryframework", artifactId = "IF", version = "0.3.1", repo = "https://repo.glaremasters.me/repository/public/"),
                 @MavenLibrary(groupId = "com.dumptruckman.minecraft", artifactId = "JsonConfiguration", version = "1.1", repo = "https://repo.glaremasters.me/repository/public/"),
                 @MavenLibrary(groupId = "net.minidev", artifactId = "json-smart", version = "1.1.1", repo = "https://repo.glaremasters.me/repository/public/"),
+                @MavenLibrary(groupId = "org.codemc.worldguardwrapper", artifactId = "worldguardwrapper", version = "1.1.5-SNAPSHOT", repo = "https://repo.glaremasters.me/repository/public/"),
         }
 )
 @Getter
@@ -119,6 +121,7 @@ public final class Guilds extends JavaPlugin {
     private Economy economy;
     private Permission permissions;
     private List<String> loadedLanguages;
+    private ACFManager acfManager;
 
     private boolean successfulLoad = false;
 
@@ -351,15 +354,7 @@ public final class Guilds extends JavaPlugin {
         registerDependencies(commandManager);
 
         // Register all the commands
-        Reflections commandClasses = new Reflections("me.glaremasters.guilds.commands");
-        Set<Class<? extends BaseCommand>> commands = commandClasses.getSubTypesOf(BaseCommand.class);
-        commands.forEach(c -> {
-            try {
-                commandManager.registerCommand(c.newInstance());
-            } catch (InstantiationException | IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        });
+        acfManager = new ACFManager(commandManager);
 
         if (settingsManager.getProperty(PluginSettings.ANNOUNCEMENTS_CONSOLE)) {
             newChain().async(() -> {

@@ -92,10 +92,6 @@
                                     <shadedPattern>me.glaremasters.guilds.libs.bstats</shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern>org.codemc.worldguardwrapper</pattern>
-                                    <shadedPattern>me.glaremasters.guilds.libs.worldguardwrapper</shadedPattern>
-                                </relocation>
-                                <relocation>
                                     <pattern>co.aikar.commands</pattern>
                                     <shadedPattern>me.glaremasters.guilds.libs.acf</shadedPattern>
                                 </relocation>
@@ -214,7 +210,7 @@
             <groupId>org.codemc.worldguardwrapper</groupId>
             <artifactId>worldguardwrapper</artifactId>
             <version>1.1.4-SNAPSHOT</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Vault API for Economy and more -->
