@@ -121,7 +121,8 @@ public class ListGUI {
                     .replace("{guild-status}", guild.getStatus().name())
                     .replace("{guild-tier}", String.valueOf(guild.getTier().getLevel()))
                     .replace("{guild-balance}", String.valueOf(guild.getBalance()))
-                    .replace("{guild-member-count}", String.valueOf(guild.getSize())))));
+                    .replace("{guild-member-count}", String.valueOf(guild.getSize())
+                    .replace("{guild-tier-name}", guildHandler.getGuildTier(guild.getTier().getLevel()).getName())))));
         return updated;
     }
 
