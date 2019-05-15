@@ -76,6 +76,8 @@ public class CommandRequest extends BaseCommand {
 
         guildHandler.pingOnlineInviters(target, getCurrentCommandManager(), player);
 
+        guildHandler.addPlayerToCooldown(player, "request", 20);
+
         getCurrentCommandIssuer().sendInfo(Messages.REQUEST__SUCCESS,
                 "{guild}", target.getName());
     }
