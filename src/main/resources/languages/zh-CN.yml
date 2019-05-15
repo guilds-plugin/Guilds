@@ -154,7 +154,7 @@ home:
   cancelled: "&7[&6公会&7]&f已取消传送!"
 sethome:
   successful: "&7[&6公会&7]&f你已设置公会领地传送点!"
-  deleted: "&aYou've successfully deleted your guild home!"
+  deleted: "&7[&6公会&7]&f你已成功删除你的公会领地!"
   cooldown: "&7[&6公会&7]&f你必须等待{amount}秒后才能执行此操作"
 reload:
   reloaded: "&7[&6公会&7]&f已重载"
