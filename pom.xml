@@ -96,10 +96,6 @@
                                     <shadedPattern>me.glaremasters.guilds.libs.acf</shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern>ch.jalu.configme</pattern>
-                                    <shadedPattern>me.glaremasters.guilds.libs.configme</shadedPattern>
-                                </relocation>
-                                <relocation>
                                     <pattern>org.yaml.snakeyaml</pattern>
                                     <shadedPattern>me.glaremasters.guilds.libs.snakeyml</shadedPattern>
                                 </relocation>
@@ -234,7 +230,7 @@
             <groupId>ch.jalu</groupId>
             <artifactId>configme</artifactId>
             <version>1.1.0</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
 
         <!-- JsonConfiguaration (used for serializing the vaults to strings) -->
