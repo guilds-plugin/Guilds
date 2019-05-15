@@ -40,6 +40,7 @@ import me.glaremasters.guilds.api.GuildsAPI;
 import me.glaremasters.guilds.configuration.GuildConfigurationBuilder;
 import me.glaremasters.guilds.configuration.sections.HooksSettings;
 import me.glaremasters.guilds.configuration.sections.PluginSettings;
+import me.glaremasters.guilds.cooldowns.CooldownHandler;
 import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.database.cooldowns.CooldownsProvider;
 import me.glaremasters.guilds.database.providers.JsonProvider;
@@ -101,6 +102,7 @@ public final class Guilds extends JavaPlugin {
     @Getter
     private static GuildsAPI api;
     private GuildHandler guildHandler;
+    private CooldownHandler cooldownHandler;
     private static TaskChainFactory taskChainFactory;
     private DatabaseProvider database;
     private CooldownsProvider cooldownsProvider;
@@ -126,6 +128,7 @@ public final class Guilds extends JavaPlugin {
         if (checkVault()) {
             try {
                 guildHandler.saveData();
+                cooldownHandler.saveCooldowns();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -293,10 +296,12 @@ public final class Guilds extends JavaPlugin {
             // This will soon be changed to an automatic storage chooser from the config
             // Load the json provider
             database = new JsonProvider(getDataFolder());
-            // Load the cooldowns
+            // Load the cooldown folder
             cooldownsProvider = new CooldownsProvider(getDataFolder());
+            // Load the cooldown objects
+            cooldownHandler = new CooldownHandler(cooldownsProvider);
             // Load guildhandler with provider
-            guildHandler = new GuildHandler(database, getCommandManager(), getPermissions(), getConfig(), settingsManager, cooldownsProvider);
+            guildHandler = new GuildHandler(database, getCommandManager(), getPermissions(), getConfig(), settingsManager);
             info("Loaded data!");
         } catch (IOException e) {
             severe("An error occured loading data! Stopping plugin..");
@@ -548,15 +553,16 @@ public final class Guilds extends JavaPlugin {
         commandManager.registerDependency(ActionHandler.class, actionHandler);
         commandManager.registerDependency(Economy.class, economy);
         commandManager.registerDependency(Permission.class, permissions);
+        commandManager.registerDependency(CooldownHandler.class, cooldownHandler);
     }
 
     /**
      * Create the cooldowns for the plugin
      */
     private void createCooldowns() {
-        guildHandler.addCooldownType("sethome");
-        guildHandler.addCooldownType("home");
-        guildHandler.addCooldownType("request");
+        cooldownHandler.addCooldownType("sethome");
+        cooldownHandler.addCooldownType("home");
+        cooldownHandler.addCooldownType("request");
     }
 
 }

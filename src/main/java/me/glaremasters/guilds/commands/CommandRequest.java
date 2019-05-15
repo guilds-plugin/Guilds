@@ -35,6 +35,7 @@ import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.annotation.Values;
+import me.glaremasters.guilds.cooldowns.CooldownHandler;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
@@ -51,6 +52,7 @@ import org.bukkit.entity.Player;
 public class CommandRequest extends BaseCommand {
 
     @Dependency private GuildHandler guildHandler;
+    @Dependency private CooldownHandler cooldownHandler;
 
     /**
      * Request an invite
@@ -76,7 +78,7 @@ public class CommandRequest extends BaseCommand {
 
         guildHandler.pingOnlineInviters(target, getCurrentCommandManager(), player);
 
-        guildHandler.addPlayerToCooldown(player, "request", 20);
+        cooldownHandler.addPlayerToCooldown(player, "request", 20);
 
         getCurrentCommandIssuer().sendInfo(Messages.REQUEST__SUCCESS,
                 "{guild}", target.getName());

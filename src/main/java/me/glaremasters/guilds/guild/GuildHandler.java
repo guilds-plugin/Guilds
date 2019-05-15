@@ -33,9 +33,7 @@ import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.configuration.sections.GuildSettings;
 import me.glaremasters.guilds.configuration.sections.GuildVaultSettings;
 import me.glaremasters.guilds.configuration.sections.TicketSettings;
-import me.glaremasters.guilds.cooldowns.Cooldown;
 import me.glaremasters.guilds.database.DatabaseProvider;
-import me.glaremasters.guilds.database.cooldowns.CooldownsProvider;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.ItemBuilder;
@@ -68,7 +66,6 @@ public class GuildHandler {
     private final List<GuildTier> tiers;
     @Getter private final List<Player> spies;
     @Getter private final List<Player> guildChat;
-    private List<Cooldown> cooldowns;
 
     @Getter private Map<Guild, List<Inventory>> cachedVaults;
     @Getter private List<Player> openedVault;
@@ -77,16 +74,14 @@ public class GuildHandler {
     private final CommandManager commandManager;
     private final Permission permission;
     private final SettingsManager settingsManager;
-    private final CooldownsProvider cooldownsProvider;
 
     //as well as guild permissions from tiers using permission field and tiers list.
 
-    public GuildHandler(DatabaseProvider databaseProvider, CommandManager commandManager, Permission permission, FileConfiguration config, SettingsManager settingsManager, CooldownsProvider cooldownsProvider) throws IOException {
+    public GuildHandler(DatabaseProvider databaseProvider, CommandManager commandManager, Permission permission, FileConfiguration config, SettingsManager settingsManager) {
         this.databaseProvider = databaseProvider;
         this.commandManager = commandManager;
         this.permission = permission;
         this.settingsManager = settingsManager;
-        this.cooldownsProvider = cooldownsProvider;
 
         roles = new ArrayList<>();
         tiers = new ArrayList<>();
@@ -163,9 +158,6 @@ public class GuildHandler {
             g.getMembers().forEach(m -> m.setRole(getGuildRole(m.getRole().getLevel())));
         })).execute();
 
-        cooldowns = cooldownsProvider.loadCooldowns();
-
-
     }
 
     /**
@@ -174,7 +166,6 @@ public class GuildHandler {
     public void saveData() throws IOException {
         guilds.forEach(this::saveVaultCache);
         databaseProvider.saveGuilds(guilds);
-        cooldownsProvider.saveCooldowns(cooldowns);
     }
 
 
@@ -801,35 +792,5 @@ public class GuildHandler {
      */
     public void notifyAllies(Guild guild, CommandManager commandManager) {
         guild.getAllies().forEach(g -> getGuild(g).sendMessage(commandManager, Messages.DELETE__NOTIFY_ALLIES, "{guild}", guild.getName()));
-    }
-
-    /**
-     * Add a new cooldown type to the plugin
-     * @param type the type of cooldown
-     */
-    public void addCooldownType(String type) {
-        if (!cooldowns.contains(type)) {
-            Cooldown cooldown = new Cooldown(type);
-            cooldowns.add(cooldown);
-        }
-    }
-
-    /**
-     * Get a cooldown from the list
-     * @param type the type of cooldown
-     * @return cooldown
-     */
-    public Cooldown getCooldown(@NotNull String type) {
-        return cooldowns.stream().filter(c -> c.getType().equals(type)).findFirst().orElse(null);
-    }
-
-    /**
-     * Add a player to the cooldown
-     * @param player the player to add
-     * @param type the type of cooldown
-     * @param length how long to put them
-     */
-    public void addPlayerToCooldown(Player player, String type, int length) {
-        getCooldown(type).getUuids().put(player.getUniqueId(), length);
     }
 }
