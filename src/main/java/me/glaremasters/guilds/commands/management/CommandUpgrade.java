@@ -73,12 +73,12 @@ public class CommandUpgrade extends BaseCommand {
         if (!role.isUpgradeGuild())
             ACFUtil.sneaky(new InvalidPermissionException());
 
+        if (guildHandler.isMaxTier(guild))
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.UPGRADE__TIER_MAX));
+
         GuildTier tier = guildHandler.getGuildTier(guild.getTier().getLevel() + 1);
         double balance = guild.getBalance();
         double upgradeCost = tier.getCost();
-
-        if (guildHandler.isMaxTier(guild))
-            ACFUtil.sneaky(new ExpectationNotMet(Messages.UPGRADE__TIER_MAX));
 
         if (guildHandler.memberCheck(guild))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.UPGRADE__NOT_ENOUGH_MEMBERS,
