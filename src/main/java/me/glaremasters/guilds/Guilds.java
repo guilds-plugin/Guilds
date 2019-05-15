@@ -28,7 +28,6 @@ import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.SettingsManagerBuilder;
 import ch.jalu.configme.migration.PlainMigrationService;
 import co.aikar.commands.ACFBukkitUtil;
-import co.aikar.commands.BaseCommand;
 import co.aikar.commands.InvalidCommandArgument;
 import co.aikar.commands.PaperCommandManager;
 import co.aikar.taskchain.BukkitTaskChainFactory;
@@ -71,7 +70,6 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.reflections.Reflections;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -86,7 +84,6 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.logging.Level;
@@ -104,6 +101,8 @@ import java.util.stream.Stream;
                 @MavenLibrary(groupId = "com.dumptruckman.minecraft", artifactId = "JsonConfiguration", version = "1.1", repo = "https://repo.glaremasters.me/repository/public/"),
                 @MavenLibrary(groupId = "net.minidev", artifactId = "json-smart", version = "1.1.1", repo = "https://repo.glaremasters.me/repository/public/"),
                 @MavenLibrary(groupId = "org.codemc.worldguardwrapper", artifactId = "worldguardwrapper", version = "1.1.5-SNAPSHOT", repo = "https://repo.glaremasters.me/repository/public/"),
+                @MavenLibrary(groupId = "org.javassist", artifactId = "javassist", version = "3.21.0-GA"),
+                @MavenLibrary(groupId = "org.reflections", artifactId = "reflections", version = "0.9.11"),
         }
 )
 @Getter
