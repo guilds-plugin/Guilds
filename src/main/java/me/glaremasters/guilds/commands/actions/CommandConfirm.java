@@ -29,9 +29,9 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.CommandIssuer;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
-import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.actions.ConfirmAction;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
@@ -43,10 +43,10 @@ import me.glaremasters.guilds.utils.Constants;
  * Date: 4/4/2019
  * Time: 11:23 PM
  */
-@AllArgsConstructor @CommandAlias(Constants.ROOT_ALIAS)
+@CommandAlias(Constants.ROOT_ALIAS)
 public class CommandConfirm extends BaseCommand {
 
-    private ActionHandler actionHandler;
+    @Dependency private ActionHandler actionHandler;
 
     /**
      * Confirm an action

@@ -24,18 +24,16 @@
 
 package me.glaremasters.guilds.commands.gui;
 
-import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
-import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.exceptions.InvalidPermissionException;
 import me.glaremasters.guilds.guild.Guild;
-import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.utils.Constants;
 import org.bukkit.entity.Player;
@@ -45,12 +43,10 @@ import org.bukkit.entity.Player;
  * Date: 4/8/2019
  * Time: 9:09 AM
  */
-@AllArgsConstructor @CommandAlias(Constants.ROOT_ALIAS)
+@CommandAlias(Constants.ROOT_ALIAS)
 public class CommandVault extends BaseCommand {
 
-    private Guilds guilds;
-    private GuildHandler guildHandler;
-    private SettingsManager settingsManager;
+    @Dependency private Guilds guilds;
 
     /**
      * Opens the guild vault

@@ -30,9 +30,9 @@ import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
-import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.exceptions.InvalidPermissionException;
 import me.glaremasters.guilds.guild.Guild;
@@ -48,11 +48,10 @@ import org.codemc.worldguardwrapper.WorldGuardWrapper;
  * Date: 4/4/2019
  * Time: 9:42 PM
  */
-@AllArgsConstructor @CommandAlias(Constants.ROOT_ALIAS)
+@CommandAlias(Constants.ROOT_ALIAS)
 public class CommandClaim extends BaseCommand {
 
-    private WorldGuardWrapper wrapper;
-    private SettingsManager settingsManager;
+    @Dependency private SettingsManager settingsManager;
 
     /**
      * Claim land using the WorldGuard API
@@ -69,6 +68,8 @@ public class CommandClaim extends BaseCommand {
 
         if (!ClaimUtils.isEnable(settingsManager))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.CLAIM__HOOK_DISABLED));
+
+        WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();
 
         if (ClaimUtils.checkAlreadyExist(wrapper, player, guild))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.CLAIM__ALREADY_EXISTS));

@@ -30,11 +30,11 @@ import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
-import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.actions.ConfirmAction;
@@ -63,15 +63,15 @@ import java.util.UUID;
  * Date: 4/5/2019
  * Time: 12:59 AM
  */
-@AllArgsConstructor @CommandAlias(Constants.ROOT_ALIAS)
+@CommandAlias(Constants.ROOT_ALIAS)
 public class CommandCreate extends BaseCommand {
 
-    private Guilds guilds;
-    private GuildHandler guildHandler;
-    private SettingsManager settingsManager;
-    private ActionHandler actionHandler;
-    private Economy economy;
-    private Permission permission;
+    @Dependency private Guilds guilds;
+    @Dependency private GuildHandler guildHandler;
+    @Dependency private SettingsManager settingsManager;
+    @Dependency private ActionHandler actionHandler;
+    @Dependency private Economy economy;
+    @Dependency private Permission permission;
 
     /**
      * Create a guild

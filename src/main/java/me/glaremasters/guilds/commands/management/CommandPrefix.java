@@ -29,10 +29,10 @@ import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
-import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.exceptions.InvalidPermissionException;
 import me.glaremasters.guilds.guild.Guild;
@@ -48,11 +48,11 @@ import org.bukkit.entity.Player;
  * Date: 4/5/2019
  * Time: 11:55 PM
  */
-@AllArgsConstructor @CommandAlias(Constants.ROOT_ALIAS)
+@CommandAlias(Constants.ROOT_ALIAS)
 public class CommandPrefix extends BaseCommand {
 
-    private GuildHandler guildHandler;
-    private SettingsManager settingsManager;
+    @Dependency private GuildHandler guildHandler;
+    @Dependency private SettingsManager settingsManager;
 
     /**
      * Change guild prefix

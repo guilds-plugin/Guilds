@@ -28,9 +28,9 @@ import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
-import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.Constants;
 
@@ -39,10 +39,10 @@ import me.glaremasters.guilds.utils.Constants;
  * Date: 4/8/2019
  * Time: 2:04 PM
  */
-@AllArgsConstructor @CommandAlias(Constants.ROOT_ALIAS)
+@CommandAlias(Constants.ROOT_ALIAS)
 public class CommandReload extends BaseCommand {
 
-    private SettingsManager settingsManager;
+    @Dependency private SettingsManager settingsManager;
 
     /**
      * Reloads the config
