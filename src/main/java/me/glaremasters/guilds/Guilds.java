@@ -271,6 +271,11 @@ public final class Guilds extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        if (!successfulLoad) {
+            warn("Dependencies could not be downloaded, shutting down to prevent file corruption.");
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
         // Check if the server is running Vault
         if (!Bukkit.getPluginManager().isPluginEnabled("Vault")) {
             warn("It looks like you don't have Vault on your server! Stopping plugin..");
