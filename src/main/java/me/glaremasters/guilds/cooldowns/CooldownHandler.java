@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -17,14 +17,13 @@ import java.util.concurrent.TimeUnit;
  */
 public class CooldownHandler {
 
-    private List<Cooldown> cooldowns;
+    private Map<String, Cooldown> cooldowns;
     private final CooldownsProvider cooldownsProvider;
 
     public CooldownHandler(CooldownsProvider cooldownsProvider) throws FileNotFoundException {
         this.cooldownsProvider = cooldownsProvider;
 
         cooldowns = cooldownsProvider.loadCooldowns();
-
     }
 
     /**
@@ -40,10 +39,10 @@ public class CooldownHandler {
      * @param type the type of cooldown
      */
     public void addCooldownType(String type) {
-        if (!cooldowns.contains(type)) {
-            Cooldown cooldown = new Cooldown(type);
-            cooldowns.add(cooldown);
+        if (cooldowns.keySet().contains(type)) {
+            return;
         }
+        cooldowns.put(type, new Cooldown());
     }
 
     /**
@@ -52,7 +51,7 @@ public class CooldownHandler {
      * @return cooldown
      */
     public Cooldown getCooldown(@NotNull String type) {
-        return cooldowns.stream().filter(c -> c.getType().equals(type)).findFirst().orElse(null);
+        return cooldowns.get(type);
     }
 
     public boolean hasCooldown(String type, UUID uuid) {

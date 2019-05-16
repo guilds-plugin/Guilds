@@ -4,6 +4,7 @@ package me.glaremasters.guilds.database.cooldowns;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import me.glaremasters.guilds.cooldowns.Cooldown;
+import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,8 +14,8 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -27,7 +28,7 @@ public class CooldownsProvider {
     private final File dataFolder;
     private Gson gson;
 
-    public CooldownsProvider(File dataFolder) throws IOException {
+    public CooldownsProvider(File dataFolder) {
         this.dataFolder = new File(dataFolder, "cooldowns");
         this.dataFolder.mkdir();
         this.gson = new GsonBuilder().setPrettyPrinting().create();
@@ -38,11 +39,12 @@ public class CooldownsProvider {
      * @return cooldowns
      * @throws FileNotFoundException
      */
-    public List<Cooldown> loadCooldowns() throws FileNotFoundException {
-        List<Cooldown> cooldowns = new ArrayList<>();
+    public Map<String, Cooldown> loadCooldowns() throws FileNotFoundException {
+        Map<String, Cooldown> cooldowns = new HashMap<>();
 
         for (File file: Objects.requireNonNull(dataFolder.listFiles())) {
-            cooldowns.add(gson.fromJson(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8), Cooldown.class));
+            String name = FilenameUtils.removeExtension(file.getName());
+            cooldowns.put(name, gson.fromJson(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8), Cooldown.class));
         }
 
         return cooldowns;
@@ -53,12 +55,11 @@ public class CooldownsProvider {
      * @param cooldowns list of cooldowns
      * @throws IOException
      */
-    public void saveCooldowns(List<Cooldown> cooldowns) throws IOException {
+    public void saveCooldowns(Map<String, Cooldown> cooldowns) throws IOException {
 
-        for (Cooldown cooldown : cooldowns) {
-            File file = new File(dataFolder, cooldown.getType() + ".json");
-
-            Files.write(Paths.get(file.getPath()), gson.toJson(cooldown).getBytes(StandardCharsets.UTF_8));
+        for (Map.Entry<String, Cooldown> entry : cooldowns.entrySet()) {
+            File file = new File(dataFolder, entry.getKey() + ".json");
+            Files.write(Paths.get(file.getPath()), gson.toJson(entry.getValue()).getBytes(StandardCharsets.UTF_8));
         }
     }
 

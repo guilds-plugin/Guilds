@@ -14,7 +14,6 @@ import java.util.UUID;
 @Getter
 public class Cooldown {
 
-    private String type;
     private Map<UUID, Long> uuids;
 
     public enum TYPES {
@@ -27,8 +26,7 @@ public class Cooldown {
         }
     }
 
-    public Cooldown(String type) {
-        this.type = type;
+    public Cooldown() {
         this.uuids = new HashMap<>();
     }
 }
