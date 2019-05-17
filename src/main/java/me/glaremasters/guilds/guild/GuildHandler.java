@@ -794,4 +794,13 @@ public class GuildHandler {
     public void notifyAllies(Guild guild, CommandManager commandManager) {
         guild.getAllies().forEach(g -> getGuild(g).sendMessage(commandManager, Messages.DELETE__NOTIFY_ALLIES, "{guild}", guild.getName()));
     }
+
+    /**
+     * Check if a guild name already exists
+     * @param name name to check
+     * @return exists or not
+     */
+    public boolean checkGuildNames(String name) {
+        return guilds.stream().anyMatch(g -> g.getName().equalsIgnoreCase(name));
+    }
 }

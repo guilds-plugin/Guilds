@@ -90,6 +90,9 @@ public class CommandCreate extends BaseCommand {
         if (guildHandler.getGuild(player) != null)
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__ALREADY_IN_GUILD));
 
+        if (guildHandler.checkGuildNames(name))
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.CREATE__GUILD_NAME_TAKEN));
+
         if (!guildHandler.nameCheck(name, settingsManager))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.CREATE__REQUIREMENTS));
 

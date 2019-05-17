@@ -70,6 +70,9 @@ public class CommandRename extends BaseCommand {
         if (!role.isChangeName())
             ACFUtil.sneaky(new InvalidPermissionException());
 
+        if (guildHandler.checkGuildNames(name))
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.CREATE__GUILD_NAME_TAKEN));
+
         if (!guildHandler.nameCheck(name, settingsManager))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.CREATE__REQUIREMENTS));
 
