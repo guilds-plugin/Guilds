@@ -19,7 +19,8 @@ public class Cooldown {
     public enum TYPES {
         Request("request"),
         SetHome("sethome"),
-        Home("home");
+        Home("home"),
+        Buffs("buffs");
 
         TYPES(String s) {
 

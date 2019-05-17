@@ -1,6 +1,7 @@
 package me.glaremasters.guilds.cooldowns;
 
 import me.glaremasters.guilds.database.cooldowns.CooldownsProvider;
+import me.glaremasters.guilds.guild.Guild;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -97,6 +98,16 @@ public class CooldownHandler {
      */
     public void addCooldown(Player player, String type, int length, TimeUnit timeUnit) {
         getCooldown(type).getUuids().put(player.getUniqueId(), (System.currentTimeMillis() + timeUnit.toMillis(length)));
+    }
+
+    /**
+     * Add a guild to a cooldown
+     * @param guild the guild to add
+     * @param type the type of cooldown
+     * @param length thje length of the cooldown
+     */
+    public void addCooldown(Guild guild, String type, int length, TimeUnit timeUnit) {
+        getCooldown(type).getUuids().put(guild.getId(), (System.currentTimeMillis() + timeUnit.toMillis(length)));
     }
 
 }

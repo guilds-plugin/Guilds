@@ -49,6 +49,10 @@ public class CooldownSettings implements SettingsHolder {
     public static final Property<Integer> REQUEST =
             newProperty("timers.cooldowns.request", 60);
 
+    @Comment("How often (in seconds) can a guild buy a buff?")
+    public static final Property<Integer> BUFF =
+            newProperty("timers.cooldowns.buff", 60);
+
 /*    @Comment("How long should a user have to stand still before teleporting?")
     public static final Property<Integer> WU_HOME =
             newProperty("timers.warmups.home", 3);*/

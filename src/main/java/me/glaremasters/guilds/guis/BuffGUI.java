@@ -26,13 +26,18 @@ package me.glaremasters.guilds.guis;
 
 import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFBukkitUtil;
+import co.aikar.commands.ACFUtil;
 import co.aikar.commands.CommandManager;
 import com.github.stefvanschie.inventoryframework.Gui;
 import com.github.stefvanschie.inventoryframework.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Guilds;
+import me.glaremasters.guilds.configuration.sections.CooldownSettings;
 import me.glaremasters.guilds.configuration.sections.GuildBuffSettings;
+import me.glaremasters.guilds.cooldowns.Cooldown;
+import me.glaremasters.guilds.cooldowns.CooldownHandler;
+import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.messages.Messages;
@@ -43,6 +48,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -57,6 +63,7 @@ public class BuffGUI {
     private SettingsManager settingsManager;
     private GuildHandler guildHandler;
     private CommandManager commandManager;
+    private CooldownHandler cooldownHandler;
 
     public Gui getBuffGUI() {
 
@@ -154,6 +161,10 @@ public class BuffGUI {
             Player player = (Player) event.getWhoClicked();
             if (guildHandler.getGuild(player) == null) return;
             Guild guild = guildHandler.getGuild(player);
+            if (cooldownHandler.hasCooldown(Cooldown.TYPES.Buffs.name(), guild.getId())) {
+                commandManager.getCommandIssuer(player).sendInfo(Messages.ERROR__BUFF_COOLDOWN, "{amount}", String.valueOf(cooldownHandler.getRemaining(Cooldown.TYPES.Buffs.name(), guild.getId())));
+                return;
+            }
             if (!EconomyUtils.hasEnough(guild.getBalance(), cost)) {
                 commandManager.getCommandIssuer(player).sendInfo(Messages.BANK__NOT_ENOUGH_BANK);
                 return;
@@ -161,6 +172,7 @@ public class BuffGUI {
             if (!settingsManager.getProperty(GuildBuffSettings.BUFF_STACKING) && !player.getActivePotionEffects().isEmpty()) return;
             guild.setBalance(guild.getBalance() - cost);
             guild.addPotion(type, (length * 20), amplifier);
+            cooldownHandler.addCooldown(guild, Cooldown.TYPES.Buffs.name(), settingsManager.getProperty(CooldownSettings.BUFF), TimeUnit.SECONDS);
         });
         ItemMeta meta = buffItem.getItem().getItemMeta();
         meta.setDisplayName(ACFBukkitUtil.color(name));

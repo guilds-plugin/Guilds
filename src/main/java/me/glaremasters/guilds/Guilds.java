@@ -358,7 +358,7 @@ public final class Guilds extends JavaPlugin {
             }
         });
 
-        buffGUI = new BuffGUI(this, settingsManager, guildHandler, getCommandManager());
+        buffGUI = new BuffGUI(this, settingsManager, guildHandler, getCommandManager(), cooldownHandler);
         listGUI = new ListGUI(this, settingsManager, guildHandler);
         infoGUI = new InfoGUI(this, settingsManager, guildHandler);
         infoMembersGUI = new InfoMembersGUI(this, settingsManager, guildHandler);
@@ -567,6 +567,7 @@ public final class Guilds extends JavaPlugin {
         cooldownHandler.addCooldownType(Cooldown.TYPES.Request.name());
         cooldownHandler.addCooldownType(Cooldown.TYPES.Home.name());
         cooldownHandler.addCooldownType(Cooldown.TYPES.SetHome.name());
+        cooldownHandler.addCooldownType(Cooldown.TYPES.Buffs.name());
     }
 
 }
