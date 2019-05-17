@@ -32,7 +32,10 @@ import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
+import me.glaremasters.guilds.configuration.sections.CooldownSettings;
 import me.glaremasters.guilds.configuration.sections.CostSettings;
+import me.glaremasters.guilds.cooldowns.Cooldown;
+import me.glaremasters.guilds.cooldowns.CooldownHandler;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.exceptions.InvalidPermissionException;
 import me.glaremasters.guilds.guild.Guild;
@@ -42,6 +45,8 @@ import me.glaremasters.guilds.utils.Constants;
 import me.glaremasters.guilds.utils.EconomyUtils;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.entity.Player;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Glare
@@ -53,6 +58,7 @@ public class CommandSetHome extends BaseCommand {
 
     @Dependency private Economy economy;
     @Dependency private SettingsManager settingsManager;
+    @Dependency private CooldownHandler cooldownHandler;
 
     /**
      * Set a guild home
@@ -68,12 +74,16 @@ public class CommandSetHome extends BaseCommand {
         if (!role.isChangeHome())
             ACFUtil.sneaky(new InvalidPermissionException());
 
+        if (cooldownHandler.hasCooldown(Cooldown.TYPES.SetHome.name(), player.getUniqueId()))
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.SETHOME__COOLDOWN, "{amount}",
+                    String.valueOf(cooldownHandler.getRemaining(Cooldown.TYPES.SetHome.name(), player.getUniqueId()))));
+
         double cost = settingsManager.getProperty(CostSettings.SETHOME);
 
         if (!EconomyUtils.hasEnough(getCurrentCommandManager(), economy, player, cost))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__NOT_ENOUGH_MONEY));
 
-        // Check if on cooldown
+        cooldownHandler.addCooldown(player, Cooldown.TYPES.SetHome.name(), settingsManager.getProperty(CooldownSettings.SETHOME), TimeUnit.SECONDS);
 
         guild.setNewHome(player);
 

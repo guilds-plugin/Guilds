@@ -24,6 +24,7 @@
 
 package me.glaremasters.guilds.commands;
 
+import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
@@ -35,6 +36,7 @@ import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.annotation.Values;
+import me.glaremasters.guilds.configuration.sections.CooldownSettings;
 import me.glaremasters.guilds.cooldowns.Cooldown;
 import me.glaremasters.guilds.cooldowns.CooldownHandler;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
@@ -56,6 +58,7 @@ public class CommandRequest extends BaseCommand {
 
     @Dependency private GuildHandler guildHandler;
     @Dependency private CooldownHandler cooldownHandler;
+    @Dependency private SettingsManager settingsManager;
 
     /**
      * Request an invite
@@ -83,7 +86,7 @@ public class CommandRequest extends BaseCommand {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.REQUEST__COOLDOWN, "{time}",
                     String.valueOf(cooldownHandler.getRemaining(Cooldown.TYPES.Request.name(), player.getUniqueId()))));
 
-        cooldownHandler.addCooldown(player, Cooldown.TYPES.Request.name(), 45, TimeUnit.SECONDS);
+        cooldownHandler.addCooldown(player, Cooldown.TYPES.Request.name(), settingsManager.getProperty(CooldownSettings.REQUEST), TimeUnit.SECONDS);
 
         guildHandler.pingOnlineInviters(target, getCurrentCommandManager(), player);
 
