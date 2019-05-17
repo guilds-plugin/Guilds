@@ -79,10 +79,9 @@ public class CommandRequest extends BaseCommand {
         if (target == null)
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
 
-        if (cooldownHandler.hasCooldown(Cooldown.TYPES.Request.name(), player.getUniqueId())) {
-            player.sendMessage("You've already requested recently. Please wait.");
-            return;
-        }
+        if (cooldownHandler.hasCooldown(Cooldown.TYPES.Request.name(), player.getUniqueId()))
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.REQUEST__COOLDOWN, "{time}",
+                    String.valueOf(cooldownHandler.getRemaining(Cooldown.TYPES.Request.name(), player.getUniqueId()))));
 
         cooldownHandler.addCooldown(player, Cooldown.TYPES.Request.name(), 45, TimeUnit.SECONDS);
 

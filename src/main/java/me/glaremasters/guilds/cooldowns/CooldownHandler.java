@@ -78,6 +78,18 @@ public class CooldownHandler {
     }
 
     /**
+     * Get the time remaining in seconds
+     * @param type the type of cooldown
+     * @param uuid the uuid to check
+     * @return time left
+     */
+    public int getRemaining(String type, UUID uuid) {
+        int int1 = Integer.valueOf(String.format("%d", TimeUnit.MILLISECONDS.toSeconds(getCooldown(type).getUuids().get(uuid))));
+        int int2 = Integer.valueOf(String.format("%d", TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis())));
+        return int1 - int2;
+    }
+
+    /**
      * Add a player to the cooldown
      * @param player the player to add
      * @param type the type of cooldown

@@ -69,6 +69,7 @@ chat:
 request:
   success: "&aYou've successfully requested an invite from {guild}"
   incoming-request: "&a{player} is requesting to join the guild. Send them an invite by doing /guild invite {player}!"
+  cooldown: "You can't send another request for {time} seconds."
 error:
   already-in-guild: "&cYou're already in a guild!"
   no-guild: "&cYou're not in a guild!"
