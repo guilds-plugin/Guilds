@@ -53,9 +53,13 @@ public class CooldownSettings implements SettingsHolder {
     public static final Property<Integer> BUFF =
             newProperty("timers.cooldowns.buff", 60);
 
-/*    @Comment("How long should a user have to stand still before teleporting?")
+    @Comment("Do you want to enable making players stand still before teleporting?")
+    public static final Property<Boolean> WU_HOME_ENABLED =
+            newProperty("timers.warmups.home.enabled", false);
+
+    @Comment("How long should a user have to stand still before teleporting?")
     public static final Property<Integer> WU_HOME =
-            newProperty("timers.warmups.home", 3);*/
+            newProperty("timers.warmups.home.time", 3);
 
     private CooldownSettings() {
     }

@@ -32,6 +32,7 @@ import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.configuration.sections.CooldownSettings;
 import me.glaremasters.guilds.cooldowns.Cooldown;
 import me.glaremasters.guilds.cooldowns.CooldownHandler;
@@ -39,6 +40,7 @@ import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.Constants;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.concurrent.TimeUnit;
@@ -53,6 +55,7 @@ public class CommandHome extends BaseCommand {
 
     @Dependency private CooldownHandler cooldownHandler;
     @Dependency private SettingsManager settingsManager;
+    @Dependency private Guilds guilds;
 
     /**
      * Go to guild home
@@ -72,11 +75,23 @@ public class CommandHome extends BaseCommand {
 
         cooldownHandler.addCooldown(player, Cooldown.TYPES.Home.name(), settingsManager.getProperty(CooldownSettings.HOME), TimeUnit.SECONDS);
 
-        // Handle warmup if enabled
-
-        player.teleport(guild.getHome().getAsLocation());
-
-        getCurrentCommandIssuer().sendInfo(Messages.HOME__TELEPORTED);
+        if (settingsManager.getProperty(CooldownSettings.WU_HOME_ENABLED)) {
+            Location initial = player.getLocation();
+            getCurrentCommandIssuer().sendInfo(Messages.HOME__WARMUP, "{amount}", String.valueOf(settingsManager.getProperty(CooldownSettings.WU_HOME)));
+            Guilds.newChain().delay(settingsManager.getProperty(CooldownSettings.WU_HOME), TimeUnit.SECONDS).sync(() -> {
+                Location curr = player.getLocation();
+                if (initial.distance(curr) > 1) {
+                    guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.HOME__CANCELLED);
+                }
+                else {
+                    player.teleport(guild.getHome().getAsLocation());
+                    guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.HOME__TELEPORTED);
+                }
+            }).execute();
+        } else {
+            player.teleport(guild.getHome().getAsLocation());
+            getCurrentCommandIssuer().sendInfo(Messages.HOME__TELEPORTED);
+        }
 
     }
 
