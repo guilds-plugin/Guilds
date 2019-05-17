@@ -31,6 +31,7 @@ public class CooldownHandler {
      * @throws IOException
      */
     public void saveCooldowns() throws IOException {
+        removeExcess();
         cooldownsProvider.saveCooldowns(cooldowns);
     }
 
@@ -60,12 +61,29 @@ public class CooldownHandler {
     }
 
     /**
+     * Remove old map entires.
+     */
+    public void removeExcess() {
+        long current = System.currentTimeMillis();
+        cooldowns.values().forEach(cooldown -> cooldown.getUuids().values().removeIf(time -> time < current));
+    }
+
+    /**
+     * Remove a player from cooldown
+     * @param type the type of cooldown
+     * @param uuid the uuid to check
+     */
+    public void removeCooldown(String type, UUID uuid) {
+        getCooldown(type).getUuids().remove(uuid);
+    }
+
+    /**
      * Add a player to the cooldown
      * @param player the player to add
      * @param type the type of cooldown
      * @param length how long to put them
      */
-    public void addPlayerToCooldown(Player player, String type, int length, TimeUnit timeUnit) {
+    public void addCooldown(Player player, String type, int length, TimeUnit timeUnit) {
         getCooldown(type).getUuids().put(player.getUniqueId(), (System.currentTimeMillis() + timeUnit.toMillis(length)));
     }
 

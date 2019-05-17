@@ -84,7 +84,7 @@ public class CommandRequest extends BaseCommand {
             return;
         }
 
-        cooldownHandler.addPlayerToCooldown(player, Cooldown.TYPES.Request.name(), 20, TimeUnit.SECONDS);
+        cooldownHandler.addCooldown(player, Cooldown.TYPES.Request.name(), 45, TimeUnit.SECONDS);
 
         guildHandler.pingOnlineInviters(target, getCurrentCommandManager(), player);
 
