@@ -38,19 +38,19 @@ import lombok.Getter;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.api.GuildsAPI;
 import me.glaremasters.guilds.configuration.GuildConfigurationBuilder;
+import me.glaremasters.guilds.configuration.SettingsHandler;
 import me.glaremasters.guilds.configuration.sections.HooksSettings;
 import me.glaremasters.guilds.configuration.sections.PluginSettings;
 import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.database.providers.JsonProvider;
+import me.glaremasters.guilds.dependency.DependencyLoader;
+import me.glaremasters.guilds.dependency.MavenLibraries;
+import me.glaremasters.guilds.dependency.MavenLibrary;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildCode;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
-import me.glaremasters.guilds.guis.BuffGUI;
-import me.glaremasters.guilds.guis.InfoGUI;
-import me.glaremasters.guilds.guis.InfoMembersGUI;
-import me.glaremasters.guilds.guis.ListGUI;
-import me.glaremasters.guilds.guis.VaultGUI;
+import me.glaremasters.guilds.guis.GUIHandler;
 import me.glaremasters.guilds.listeners.EntityListener;
 import me.glaremasters.guilds.listeners.EssentialsChatListener;
 import me.glaremasters.guilds.listeners.PlayerListener;
@@ -94,6 +94,21 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+@MavenLibraries(
+        value = {
+                @MavenLibrary(groupId = "co.aikar", artifactId = "taskchain-core", version = "3.7.2", repo = "https://repo.glaremasters.me/repository/public/"),
+                @MavenLibrary(groupId = "co.aikar", artifactId = "taskchain-bukkit", version = "3.7.2", repo = "https://repo.glaremasters.me/repository/public/"),
+                @MavenLibrary(groupId = "net.lingala.zip4j", artifactId = "zip4j", version = "1.3.2"),
+                @MavenLibrary(groupId = "commons-io", artifactId = "commons-io", version = "2.6"),
+                @MavenLibrary(groupId = "com.github.stefvanschie.inventoryframework", artifactId = "IF", version = "0.3.1", repo = "https://repo.glaremasters.me/repository/public/"),
+                @MavenLibrary(groupId = "com.dumptruckman.minecraft", artifactId = "JsonConfiguration", version = "1.1", repo = "https://repo.glaremasters.me/repository/public/"),
+                @MavenLibrary(groupId = "net.minidev", artifactId = "json-smart", version = "1.1.1", repo = "https://repo.glaremasters.me/repository/public/"),
+                @MavenLibrary(groupId = "org.codemc.worldguardwrapper", artifactId = "worldguardwrapper", version = "1.1.5-SNAPSHOT", repo = "https://repo.glaremasters.me/repository/public/"),
+                @MavenLibrary(groupId = "org.javassist", artifactId = "javassist", version = "3.21.0-GA"),
+                @MavenLibrary(groupId = "org.reflections", artifactId = "reflections", version = "0.9.11"),
+                @MavenLibrary(groupId = "ch.jalu", artifactId = "configme", version = "1.1.0", repo = "https://repo.glaremasters.me/repository/public/")
+        }
+)
 @Getter
 public final class Guilds extends JavaPlugin {
 
@@ -102,22 +117,14 @@ public final class Guilds extends JavaPlugin {
     private GuildHandler guildHandler;
     private static TaskChainFactory taskChainFactory;
     private DatabaseProvider database;
-    private SettingsManager settingsManager;
+    private SettingsHandler settingsHandler;
     private PaperCommandManager commandManager;
     private ActionHandler actionHandler;
+    private GUIHandler guiHandler;
     private Economy economy;
     private Permission permissions;
-    @Getter
-    private BuffGUI buffGUI;
-    @Getter
-    private ListGUI listGUI;
-    @Getter
-    private InfoGUI infoGUI;
-    @Getter
-    private InfoMembersGUI infoMembersGUI;
-    @Getter
-    private VaultGUI vaultGUI;
     private List<String> loadedLanguages;
+    private boolean successfulLoad = false;
 
     @Override
     public void onDisable() {
@@ -128,6 +135,16 @@ public final class Guilds extends JavaPlugin {
                 e.printStackTrace();
             }
             guildHandler.chatLogout();
+        }
+    }
+
+    @Override
+    public void onLoad() {
+        try {
+            DependencyLoader.loadAll(getClass());
+            successfulLoad = true;
+        } catch (RuntimeException ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -195,7 +212,7 @@ public final class Guilds extends JavaPlugin {
                     }
                 }
             }
-            manager.getLocales().setDefaultLocale(Locale.forLanguageTag(settingsManager.getProperty(PluginSettings.MESSAGES_LANGUAGE)));
+            manager.getLocales().setDefaultLocale(Locale.forLanguageTag(settingsHandler.getSettingsManager().getProperty(PluginSettings.MESSAGES_LANGUAGE)));
             info("Loaded successfully!");
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
@@ -254,6 +271,11 @@ public final class Guilds extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        if (!successfulLoad) {
+            warn("Dependencies could not be downloaded, shutting down to prevent file corruption.");
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
         // Check if the server is running Vault
         if (!Bukkit.getPluginManager().isPluginEnabled("Vault")) {
             warn("It looks like you don't have Vault on your server! Stopping plugin..");
@@ -275,14 +297,9 @@ public final class Guilds extends JavaPlugin {
 
         // Load the config
         info("Loading config..");
-        settingsManager = SettingsManagerBuilder
-                .withYamlFile(new File(getDataFolder(), "config.yml"))
-                .migrationService(new PlainMigrationService())
-                .configurationData(GuildConfigurationBuilder.buildConfigurationData())
-                .create();
+        settingsHandler = new SettingsHandler(this);
         info("Loaded config!");
 
-        // Creates / loads the languages files (can be renamed to something that makes more sense) todo
         saveData();
 
         // Load data here.
@@ -292,7 +309,7 @@ public final class Guilds extends JavaPlugin {
             // Load the json provider
             database = new JsonProvider(getDataFolder());
             // Load guildhandler with provider
-            guildHandler = new GuildHandler(database, getCommandManager(), getPermissions(), getConfig(), settingsManager);
+            guildHandler = new GuildHandler(database, getCommandManager(), getPermissions(), getConfig(), settingsHandler.getSettingsManager());
             info("Loaded data!");
         } catch (IOException e) {
             severe("An error occured loading data! Stopping plugin..");
@@ -340,6 +357,7 @@ public final class Guilds extends JavaPlugin {
         // Register all the commands
         Reflections commandClasses = new Reflections("me.glaremasters.guilds.commands");
         Set<Class<? extends BaseCommand>> commands = commandClasses.getSubTypesOf(BaseCommand.class);
+
         commands.forEach(c -> {
             try {
                 commandManager.registerCommand(c.newInstance());
@@ -348,14 +366,7 @@ public final class Guilds extends JavaPlugin {
             }
         });
 
-        buffGUI = new BuffGUI(this, settingsManager, guildHandler, getCommandManager());
-        listGUI = new ListGUI(this, settingsManager, guildHandler);
-        infoGUI = new InfoGUI(this, settingsManager, guildHandler);
-        infoMembersGUI = new InfoMembersGUI(this, settingsManager, guildHandler);
-        vaultGUI = new VaultGUI(this, settingsManager, guildHandler);
-
-
-        if (settingsManager.getProperty(PluginSettings.ANNOUNCEMENTS_CONSOLE)) {
+        if (settingsHandler.getSettingsManager().getProperty(PluginSettings.ANNOUNCEMENTS_CONSOLE)) {
             newChain().async(() -> {
                 try {
                     info(getAnnouncements());
@@ -365,7 +376,9 @@ public final class Guilds extends JavaPlugin {
             }).execute();
         }
 
-        if (settingsManager.getProperty(PluginSettings.UPDATE_CHECK)) {
+        guiHandler = new GUIHandler(this, settingsHandler.getSettingsManager(), guildHandler, commandManager);
+
+        if (settingsHandler.getSettingsManager().getProperty(PluginSettings.UPDATE_CHECK)) {
             UpdateChecker.init(this, 66176).requestUpdateCheck().whenComplete((result, exception) -> {
                 if (result.requiresUpdate()) {
                     this.getLogger().info(String.format("An update is available! Guilds %s may be downloaded on SpigotMC", result.getNewestVersion()));
@@ -384,7 +397,7 @@ public final class Guilds extends JavaPlugin {
         }
 
         // Load all the listeners
-        Stream.of(new EntityListener(guildHandler, settingsManager), new PlayerListener(guildHandler, settingsManager, this, commandManager), new TicketListener(this, guildHandler, settingsManager), new VaultBlacklistListener(this, guildHandler, settingsManager)).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
+        Stream.of(new EntityListener(guildHandler, settingsHandler.getSettingsManager()), new PlayerListener(guildHandler, settingsHandler.getSettingsManager(), this, commandManager), new TicketListener(this, guildHandler, settingsHandler.getSettingsManager()), new VaultBlacklistListener(this, guildHandler, settingsHandler.getSettingsManager())).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
         // Load the optional listeners
         optionalListeners();
 
@@ -400,7 +413,7 @@ public final class Guilds extends JavaPlugin {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }, 20 * 60, (20 * 60) * settingsManager.getProperty(PluginSettings.SAVE_INTERVAL));
+        }, 20 * 60, (20 * 60) * settingsHandler.getSettingsManager().getProperty(PluginSettings.SAVE_INTERVAL));
     }
 
     /**
@@ -484,11 +497,11 @@ public final class Guilds extends JavaPlugin {
      * Register optional listeners based off values in the config
      */
     private void optionalListeners() {
-        if (settingsManager.getProperty(HooksSettings.ESSENTIALS)) {
+        if (settingsHandler.getSettingsManager().getProperty(HooksSettings.ESSENTIALS)) {
             getServer().getPluginManager().registerEvents(new EssentialsChatListener(guildHandler), this);
         }
 
-        if (settingsManager.getProperty(HooksSettings.WORLDGUARD)) {
+        if (settingsHandler.getSettingsManager().getProperty(HooksSettings.WORLDGUARD)) {
             getServer().getPluginManager().registerEvents(new WorldGuardListener(guildHandler), this);
         }
     }
@@ -538,7 +551,7 @@ public final class Guilds extends JavaPlugin {
      */
     private void registerDependencies(PaperCommandManager commandManager) {
         commandManager.registerDependency(GuildHandler.class, guildHandler);
-        commandManager.registerDependency(SettingsManager.class, settingsManager);
+        commandManager.registerDependency(SettingsManager.class, settingsHandler.getSettingsManager());
         commandManager.registerDependency(ActionHandler.class, actionHandler);
         commandManager.registerDependency(Economy.class, economy);
         commandManager.registerDependency(Permission.class, permissions);

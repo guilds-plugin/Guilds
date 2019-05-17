@@ -70,7 +70,7 @@ public class CommandAdminVault extends BaseCommand {
         if (guild == null)
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
 
-        guilds.getVaultGUI().getVaultGUI(guild, player, getCurrentCommandManager()).show(player);
+        guilds.getGuiHandler().getVaultGUI().getVaultGUI(guild, player, getCurrentCommandManager()).show(player);
     }
 
 }

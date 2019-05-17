@@ -52,7 +52,7 @@ public class CommandList extends BaseCommand {
     @Description("{@@descriptions.list}")
     @CommandPermission(Constants.BASE_PERM + "list")
     public void execute(Player player) {
-        guilds.getListGUI().getListGUI().show(player);
+        guilds.getGuiHandler().getListGUI().getListGUI().show(player);
     }
 
 }

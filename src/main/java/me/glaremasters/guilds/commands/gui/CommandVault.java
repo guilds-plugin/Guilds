@@ -61,7 +61,7 @@ public class CommandVault extends BaseCommand {
         if (!role.isOpenVault())
             ACFUtil.sneaky(new InvalidPermissionException());
 
-        guilds.getVaultGUI().getVaultGUI(guild, player, getCurrentCommandManager()).show(player);
+       guilds.getGuiHandler().getVaultGUI().getVaultGUI(guild, player, getCurrentCommandManager()).show(player);
     }
 
 }
