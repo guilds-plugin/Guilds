@@ -24,17 +24,24 @@
 
 package me.glaremasters.guilds.commands.homes;
 
+import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
+import me.glaremasters.guilds.configuration.sections.CooldownSettings;
+import me.glaremasters.guilds.cooldowns.Cooldown;
+import me.glaremasters.guilds.cooldowns.CooldownHandler;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.Constants;
 import org.bukkit.entity.Player;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Glare
@@ -43,6 +50,9 @@ import org.bukkit.entity.Player;
  */
 @CommandAlias(Constants.ROOT_ALIAS)
 public class CommandHome extends BaseCommand {
+
+    @Dependency private CooldownHandler cooldownHandler;
+    @Dependency private SettingsManager settingsManager;
 
     /**
      * Go to guild home
@@ -56,7 +66,11 @@ public class CommandHome extends BaseCommand {
         if (guild.getHome() == null)
             ACFUtil.sneaky(new ExpectationNotMet(Messages.HOME__NO_HOME_SET));
 
-        // Handle cooldown settings
+        if (cooldownHandler.hasCooldown(Cooldown.TYPES.Home.name(), player.getUniqueId()))
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.HOME__COOLDOWN, "{amount}",
+                    String.valueOf(cooldownHandler.getRemaining(Cooldown.TYPES.Home.name(), player.getUniqueId()))));
+
+        cooldownHandler.addCooldown(player, Cooldown.TYPES.Home.name(), settingsManager.getProperty(CooldownSettings.HOME), TimeUnit.SECONDS);
 
         // Handle warmup if enabled
 
