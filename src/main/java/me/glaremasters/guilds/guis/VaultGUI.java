@@ -79,7 +79,7 @@ public class VaultGUI {
                 event.setCancelled(true);
                 try {
                     guildHandler.getGuildVault(guild, (event.getRawSlot() + 1));
-                } catch (Exception ex) {
+                } catch (IndexOutOfBoundsException ex) {
                     guildHandler.getCachedVaults().get(guild).add(guildHandler.createNewVault(settingsManager));
                 }
                 player.openInventory(guildHandler.getGuildVault(guild, (event.getRawSlot() + 1)));
