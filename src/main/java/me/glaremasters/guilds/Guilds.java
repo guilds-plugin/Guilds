@@ -567,10 +567,9 @@ public final class Guilds extends JavaPlugin {
      * Create the cooldowns for the plugin
      */
     private void createCooldowns() {
-        cooldownHandler.addCooldownType(Cooldown.TYPES.Request.name());
-        cooldownHandler.addCooldownType(Cooldown.TYPES.Home.name());
-        cooldownHandler.addCooldownType(Cooldown.TYPES.SetHome.name());
-        cooldownHandler.addCooldownType(Cooldown.TYPES.Buffs.name());
+        for (Cooldown.TYPES type : Cooldown.TYPES.values()) {
+            cooldownHandler.addCooldownType(type.name());
+        }
     }
 
 }

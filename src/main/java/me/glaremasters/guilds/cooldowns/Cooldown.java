@@ -20,7 +20,8 @@ public class Cooldown {
         Request("request"),
         SetHome("sethome"),
         Home("home"),
-        Buffs("buffs");
+        Buffs("buffs"),
+        Join("join");
 
         TYPES(String s) {
 
