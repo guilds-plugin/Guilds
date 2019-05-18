@@ -33,6 +33,7 @@ import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
+import me.glaremasters.guilds.configuration.sections.GuildSettings;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.exceptions.InvalidPermissionException;
 import me.glaremasters.guilds.guild.Guild;
@@ -68,6 +69,9 @@ public class CommandPrefix extends BaseCommand {
     public void execute(Player player, Guild guild, GuildRole role, String prefix) {
         if (!role.isChangePrefix())
             ACFUtil.sneaky(new InvalidPermissionException());
+
+        if (settingsManager.getProperty(GuildSettings.DISABLE_PREFIX))
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.PREFIX__DISABLED));
 
         if (!guildHandler.prefixCheck(prefix, settingsManager))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.CREATE__REQUIREMENTS));

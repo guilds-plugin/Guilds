@@ -144,6 +144,7 @@ upgrade:
   not-enough-members: "&cSorry! You need at least {amount} members to rank up your Guild Tier!"
 prefix:
   successful: "&aGuild's prefix changed successfully to {prefix}!"
+  disabled: "&cThe ability to use prefixes is currently disabled."
 status:
   successful: "&aGuild status set to {status}!"
 rename:

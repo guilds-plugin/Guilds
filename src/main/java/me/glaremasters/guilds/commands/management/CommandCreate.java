@@ -41,6 +41,7 @@ import me.glaremasters.guilds.actions.ConfirmAction;
 import me.glaremasters.guilds.api.events.GuildCreateEvent;
 import me.glaremasters.guilds.configuration.sections.CostSettings;
 import me.glaremasters.guilds.configuration.sections.GuildListSettings;
+import me.glaremasters.guilds.configuration.sections.GuildSettings;
 import me.glaremasters.guilds.cooldowns.Cooldown;
 import me.glaremasters.guilds.cooldowns.CooldownHandler;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
@@ -100,13 +101,15 @@ public class CommandCreate extends BaseCommand {
         if (!guildHandler.nameCheck(name, settingsManager))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.CREATE__REQUIREMENTS));
 
-        if (prefix != null) {
-            if (!guildHandler.prefixCheck(prefix, settingsManager)) {
-                ACFUtil.sneaky(new ExpectationNotMet(Messages.CREATE__REQUIREMENTS));
-            }
-        } else {
-            if (!guildHandler.prefixCheck(name, settingsManager)) {
-                ACFUtil.sneaky(new ExpectationNotMet(Messages.CREATE__NAME_TOO_LONG));
+        if (!settingsManager.getProperty(GuildSettings.DISABLE_PREFIX)) {
+            if (prefix != null) {
+                if (!guildHandler.prefixCheck(prefix, settingsManager)) {
+                    ACFUtil.sneaky(new ExpectationNotMet(Messages.CREATE__REQUIREMENTS));
+                }
+            } else {
+                if (!guildHandler.prefixCheck(name, settingsManager)) {
+                    ACFUtil.sneaky(new ExpectationNotMet(Messages.CREATE__NAME_TOO_LONG));
+                }
             }
         }
 
@@ -124,10 +127,14 @@ public class CommandCreate extends BaseCommand {
                 Guild.GuildBuilder gb = Guild.builder();
                 gb.id(UUID.randomUUID());
                 gb.name(ACFBukkitUtil.color(name));
-                if (prefix == null)
-                    gb.prefix(name);
-                else
-                    gb.prefix(prefix);
+                if (!settingsManager.getProperty(GuildSettings.DISABLE_PREFIX)) {
+                    if (prefix == null)
+                        gb.prefix(ACFBukkitUtil.color(name));
+                    else
+                        gb.prefix(ACFBukkitUtil.color(prefix));
+                } else {
+                    gb.prefix("");
+                }
                 gb.status(Guild.Status.Private);
                 GuildMember master = new GuildMember(player.getUniqueId(), guildHandler.getGuildRole(0));
                 gb.guildMaster(master);

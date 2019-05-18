@@ -52,6 +52,10 @@ public class GuildSettings implements SettingsHolder {
     public static final Property<String> PREFIX_REQUIREMENTS =
             newProperty("guild.requirements.prefix", "[a-zA-Z0-9&]{1,20}");
 
+    @Comment("Would you like to allow players to make a guild without a prefix?")
+    public static final Property<Boolean> DISABLE_PREFIX =
+            newProperty("guild.disable-prefix", false);
+
     @Comment("Do we want to enable the blacklist?")
     public static final Property<Boolean> BLACKLIST_TOGGLE =
             newProperty("guild.blacklist.enabled", true);
