@@ -41,6 +41,8 @@ import me.glaremasters.guilds.actions.ConfirmAction;
 import me.glaremasters.guilds.api.events.GuildCreateEvent;
 import me.glaremasters.guilds.configuration.sections.CostSettings;
 import me.glaremasters.guilds.configuration.sections.GuildListSettings;
+import me.glaremasters.guilds.cooldowns.Cooldown;
+import me.glaremasters.guilds.cooldowns.CooldownHandler;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
@@ -72,6 +74,7 @@ public class CommandCreate extends BaseCommand {
     @Dependency private ActionHandler actionHandler;
     @Dependency private Economy economy;
     @Dependency private Permission permission;
+    @Dependency private CooldownHandler cooldownHandler;
 
     /**
      * Create a guild
@@ -84,6 +87,10 @@ public class CommandCreate extends BaseCommand {
     @CommandPermission(Constants.BASE_PERM + "create")
     @Syntax("<name> (optional) <prefix>")
     public void execute(Player player, String name, @Optional String prefix) {
+
+        if (cooldownHandler.hasCooldown(Cooldown.TYPES.Join.name(), player.getUniqueId()))
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.ACCEPT__COOLDOWN, "{amount}",
+                    String.valueOf(cooldownHandler.getRemaining(Cooldown.TYPES.Join.name(), player.getUniqueId()))));
 
         double cost = settingsManager.getProperty(CostSettings.CREATION);
 

@@ -2,7 +2,7 @@ package me.glaremasters.guilds.cooldowns;
 
 import me.glaremasters.guilds.database.cooldowns.CooldownsProvider;
 import me.glaremasters.guilds.guild.Guild;
-import org.bukkit.entity.Player;
+import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.FileNotFoundException;
@@ -96,7 +96,7 @@ public class CooldownHandler {
      * @param type the type of cooldown
      * @param length how long to put them
      */
-    public void addCooldown(Player player, String type, int length, TimeUnit timeUnit) {
+    public void addCooldown(OfflinePlayer player, String type, int length, TimeUnit timeUnit) {
         getCooldown(type).getUuids().put(player.getUniqueId(), (System.currentTimeMillis() + timeUnit.toMillis(length)));
     }
 

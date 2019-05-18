@@ -186,6 +186,7 @@ accept:
   guild-full: "&cThis guild is full!"
   player-joined: "&a{player} has joined your guild!"
   successful: "&aYou joined guild '{guild}&r&a' successfully"
+  cooldown: "&cYou are currently on cooldown from joining a guild. Try again in {amount} seconds."
 claim:
   already-exists: "&cYou already have a claim. Please remove your previous claim to create a new one"
   overlap: "&cYour claim could not be created because there is another claim nearby"

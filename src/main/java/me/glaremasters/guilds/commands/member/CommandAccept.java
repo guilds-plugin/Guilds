@@ -34,8 +34,9 @@ import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
-import co.aikar.commands.annotation.Values;
 import me.glaremasters.guilds.api.events.GuildJoinEvent;
+import me.glaremasters.guilds.cooldowns.Cooldown;
+import me.glaremasters.guilds.cooldowns.CooldownHandler;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
@@ -55,6 +56,7 @@ public class CommandAccept extends BaseCommand {
 
     @Dependency private GuildHandler guildHandler;
     @Dependency private Permission permission;
+    @Dependency private CooldownHandler cooldownHandler;
 
     /**
      * Accept a guild invite
@@ -69,6 +71,10 @@ public class CommandAccept extends BaseCommand {
     public void execute(Player player, @Single String name) {
         if (guildHandler.getGuild(player) != null)
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__ALREADY_IN_GUILD));
+
+        if (cooldownHandler.hasCooldown(Cooldown.TYPES.Join.name(), player.getUniqueId()))
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.ACCEPT__COOLDOWN, "{amount}",
+                    String.valueOf(cooldownHandler.getRemaining(Cooldown.TYPES.Join.name(), player.getUniqueId()))));
 
         Guild guild = guildHandler.getGuild(name);
 
