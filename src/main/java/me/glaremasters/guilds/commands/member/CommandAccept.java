@@ -64,9 +64,9 @@ public class CommandAccept extends BaseCommand {
     @Subcommand("accept|join")
     @Description("{@@descriptions.accept}")
     @CommandPermission(Constants.BASE_PERM + "accept")
-    @CommandCompletion("@invitedTo")
+    @CommandCompletion("@joinableGuilds")
     @Syntax("<guild name>")
-    public void execute(Player player, @Values("@invitedTo") @Single String name) {
+    public void execute(Player player, @Values("@joinableGuilds") @Single String name) {
         if (guildHandler.getGuild(player) != null)
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__ALREADY_IN_GUILD));
 

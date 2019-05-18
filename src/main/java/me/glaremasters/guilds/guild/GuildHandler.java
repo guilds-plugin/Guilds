@@ -793,4 +793,12 @@ public class GuildHandler {
     public void notifyAllies(Guild guild, CommandManager commandManager) {
         guild.getAllies().forEach(g -> getGuild(g).sendMessage(commandManager, Messages.DELETE__NOTIFY_ALLIES, "{guild}", guild.getName()));
     }
+
+    /**
+     * Get a list of all public guilds on the server
+     * @return list of public guilds
+     */
+    public List<String> getPublicGuilds() {
+        return guilds.stream().filter(g -> !g.isPrivate()).map(Guild::getName).collect(Collectors.toList());
+    }
 }

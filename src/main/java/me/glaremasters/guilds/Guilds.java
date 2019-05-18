@@ -85,6 +85,7 @@ import java.net.HttpURLConnection;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
@@ -448,6 +449,8 @@ public final class Guilds extends JavaPlugin {
         manager.getCommandCompletions().registerCompletion("online", c -> Bukkit.getOnlinePlayers().stream().map(member -> Bukkit.getPlayer(member.getUniqueId()).getName()).collect(Collectors.toList()));
 
         manager.getCommandCompletions().registerCompletion("invitedTo", c -> guildHandler.getInvitedGuilds(c.getPlayer().getUniqueId()));
+
+        manager.getCommandCompletions().registerCompletion("joinableGuilds", c -> Stream.concat(guildHandler.getInvitedGuilds(c.getPlayer().getUniqueId()).stream(), guildHandler.getPublicGuilds().stream()).distinct().collect(Collectors.toList()));
 
         manager.getCommandCompletions().registerCompletion("guilds", c -> guildHandler.getGuildNames());
 
