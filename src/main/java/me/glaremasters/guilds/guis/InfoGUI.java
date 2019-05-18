@@ -78,6 +78,8 @@ public class InfoGUI {
     private void createBackgroundItems(OutlinePane pane) {
         // Start the itembuilder with stained glass
         ItemBuilder builder = new ItemBuilder(new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) 7));
+
+        builder.setName(ACFBukkitUtil.color("&r"));
         // Loop through 27 (three rows)
         for (int i = 0; i < 27; i++) {
             // Add the pane item to the GUI and cancel the click event on it
