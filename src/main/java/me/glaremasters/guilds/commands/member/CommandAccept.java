@@ -24,6 +24,7 @@
 
 package me.glaremasters.guilds.commands.member;
 
+import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
@@ -41,10 +42,12 @@ import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.messages.Messages;
+import me.glaremasters.guilds.utils.ClaimUtils;
 import me.glaremasters.guilds.utils.Constants;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.codemc.worldguardwrapper.WorldGuardWrapper;
 
 /**
  * Created by Glare
@@ -57,6 +60,7 @@ public class CommandAccept extends BaseCommand {
     @Dependency private GuildHandler guildHandler;
     @Dependency private Permission permission;
     @Dependency private CooldownHandler cooldownHandler;
+    @Dependency private SettingsManager settingsManager;
 
     /**
      * Accept a guild invite
@@ -99,6 +103,13 @@ public class CommandAccept extends BaseCommand {
         guild.addMember(player, guildHandler);
 
         guildHandler.addPerms(permission, player);
+
+        if (ClaimUtils.isEnable(settingsManager)) {
+            WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();
+            ClaimUtils.getGuildClaim(wrapper, player, guild).ifPresent(region -> {
+                ClaimUtils.addMember(region, player);
+            });
+        }
 
         getCurrentCommandIssuer().sendInfo(Messages.ACCEPT__SUCCESSFUL,
                 "{guild}", guild.getName());

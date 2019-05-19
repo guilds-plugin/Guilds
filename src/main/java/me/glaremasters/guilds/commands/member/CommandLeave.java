@@ -46,6 +46,7 @@ import me.glaremasters.guilds.utils.Constants;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.codemc.worldguardwrapper.WorldGuardWrapper;
 
 import java.util.concurrent.TimeUnit;
 
@@ -116,7 +117,16 @@ public class CommandLeave extends BaseCommand {
 
                     cooldownHandler.addCooldown(player, Cooldown.TYPES.Join.name(), settingsManager.getProperty(CooldownSettings.JOIN), TimeUnit.SECONDS);
 
+                    if (ClaimUtils.isEnable(settingsManager)) {
+                        WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();
+                        ClaimUtils.getGuildClaim(wrapper, player, guild).ifPresent(region -> {
+                            ClaimUtils.removeMember(region, player);
+                        });
+                    }
+
                     guild.removeMember(player);
+
+
 
                     getCurrentCommandIssuer().sendInfo(Messages.LEAVE__SUCCESSFUL);
 
