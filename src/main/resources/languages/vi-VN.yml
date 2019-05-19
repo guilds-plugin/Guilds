@@ -69,6 +69,7 @@ chat:
 request:
   success: "&aThành công gửi yêu cầu lời mời từ {guild}"
   incoming-request: "&a{player} đang yêu cần tham gia Guild. Gửi họ lời mời bằng cách dùng /guild invite {player}!"
+  cooldown: "You can't send another request for {time} seconds."
 error:
   already-in-guild: "&cBạn đang ở trong một guild!"
   no-guild: "&cBạn không ở trong một guild!"
@@ -80,6 +81,7 @@ error:
   blacklist: "&cMột hay nhiều phần trong tên guild / tiền tố của bạn đang trong danh sách cấm!"
   not-enough-money: "&cXin lỗi, bạn không đủ tiền để làm điều đó"
   economy-required: "&cAn economy plugin is required for this to work. Please contact your server administrator"
+  buff-cooldown: "&cSorry, your guild has recently bought a buff. You can try again in {amount} seconds."
 bank:
   balance: "&aNgân khố của Guild là {amount}."
   deposit-success: "&aBạn đã nạp {amount} vào ngân khố của guild. Ngân khố hiện tại là {total}!"
@@ -142,6 +144,7 @@ upgrade:
   not-enough-members: "&cSorry! You need at least {amount} members to rank up your Guild Tier!"
 prefix:
   successful: "&aGuild's prefix changed successfully to {prefix}!"
+  disabled: "&cThe ability to use prefixes is currently disabled."
 status:
   successful: "&aTrạng thái của Guild đã được đặt thành {status}!"
 rename:
@@ -184,6 +187,7 @@ accept:
   guild-full: "&cGuild này đã full!"
   player-joined: "&a{player} đã tham gia guild của bạn!"
   successful: "&aBạn đã tham gia guild '{guild}&r&a' thành công"
+  cooldown: "&cYou are currently on cooldown from joining a guild. Try again in {amount} seconds."
 claim:
   already-exists: "&cYou already have a claim. Please remove your previous claim to create a new one"
   overlap: "&cYour claim could not be created because there is another claim nearby"
