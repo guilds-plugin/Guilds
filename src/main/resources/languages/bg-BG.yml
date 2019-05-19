@@ -69,6 +69,7 @@ chat:
 request:
   success: "&aYou've successfully requested an invite from {guild}"
   incoming-request: "&a{player} is requesting to join the guild. Send them an invite by doing /guild invite {player}!"
+  cooldown: "You can't send another request for {time} seconds."
 error:
   already-in-guild: "&cYou're already in a guild!"
   no-guild: "&cYou're not in a guild!"
@@ -80,6 +81,7 @@ error:
   blacklist: "&cOne or more of the words in your guild name / guild prefix is on the blacklist!"
   not-enough-money: "&cSorry, you do not have enough money to do that"
   economy-required: "&cAn economy plugin is required for this to work. Please contact your server administrator"
+  buff-cooldown: "&cSorry, your guild has recently bought a buff. You can try again in {amount} seconds."
 bank:
   balance: "&aYour guild's bank has a balance of {amount}."
   deposit-success: "&aYou have deposited {amount} into your Guild Bank. Your Guild Bank total is now {total}!"
@@ -142,6 +144,7 @@ upgrade:
   not-enough-members: "&cSorry! You need at least {amount} members to rank up your Guild Tier!"
 prefix:
   successful: "&aGuild's prefix changed successfully to {prefix}!"
+  disabled: "&cThe ability to use prefixes is currently disabled."
 status:
   successful: "&aGuild status set to {status}!"
 rename:
@@ -184,6 +187,7 @@ accept:
   guild-full: "&cГилдията е пълна!"
   player-joined: "&a{player} влезе в гилдията ви!"
   successful: "&aУспешно влязохте в гилдията '{guild}&r&a'"
+  cooldown: "&cYou are currently on cooldown from joining a guild. Try again in {amount} seconds."
 claim:
   already-exists: "&cВече имате територия. Премахнете предишния си регион, за да създадете нов"
   overlap: "&cТериторията не може да бъде създадена, защото има друга територия наблизо"
