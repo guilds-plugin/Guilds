@@ -69,6 +69,7 @@ chat:
 request:
   success: "&aPomyślnie wysłano prośbę o dołączenie do {guild}"
   incoming-request: "&a{player} chcę dołączyć do gildii. Wyślij mu zaproszenie używając /guild invite {player}!"
+  cooldown: "You can't send another request for {time} seconds."
 error:
   already-in-guild: "&cJesteś już w gildii!"
   no-guild: "&cNie jesteś w gildii!"
@@ -80,6 +81,7 @@ error:
   blacklist: "&cJedno lub więcej słów w nazwie lub prefixie twojej gildii jest zabroniona!"
   not-enough-money: "&cNie masz wystarczająco pieniędzy aby to zrobić"
   economy-required: "&cAby to działało, wymagana jest wtyczka ekonomiczna. Skontaktuj się z administratorem serwera"
+  buff-cooldown: "&cSorry, your guild has recently bought a buff. You can try again in {amount} seconds."
 bank:
   balance: "&aPieniądze gildii: {amount}."
   deposit-success: "&aWpłaciłeś {amount} do banku gildii. Status banku gildii to: {total}!"
@@ -142,6 +144,7 @@ upgrade:
   not-enough-members: "Przykro nam! Potrzebujesz co najmniej {amount} członków aby zwiększyć poziom gildii!"
 prefix:
   successful: "Przedrostek gildii został pomyślnie zmieniony na {prefix}!"
+  disabled: "&cThe ability to use prefixes is currently disabled."
 status:
   successful: "Status gildii został ustawiony na {status}!"
 rename:
@@ -184,6 +187,7 @@ accept:
   guild-full: "Ta gildia jest pełna!"
   player-joined: "{player} dołączył do twojej gildii!"
   successful: "Dołączyłeś do gildii {guild}"
+  cooldown: "&cYou are currently on cooldown from joining a guild. Try again in {amount} seconds."
 claim:
   already-exists: "Już posiadasz claim. Usuń poprzedni claim any stworzyć nowy"
   overlap: "Twój claim nie mógł zostać stworzony ponieważ w pobliżu już istnieje inny claim"
