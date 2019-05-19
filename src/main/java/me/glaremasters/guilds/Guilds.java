@@ -119,7 +119,7 @@ public final class Guilds extends JavaPlugin {
     private static TaskChainFactory taskChainFactory;
     private DatabaseProvider database;
     private CooldownsProvider cooldownsProvider;
-    private SettingsManager settingsManager;
+    private SettingsHandler settingsHandler;
     private PaperCommandManager commandManager;
     private ActionHandler actionHandler;
     private GUIHandler guiHandler;
@@ -373,14 +373,9 @@ public final class Guilds extends JavaPlugin {
             }
         });
 
-        buffGUI = new BuffGUI(this, settingsManager, guildHandler, getCommandManager(), cooldownHandler);
-        listGUI = new ListGUI(this, settingsManager, guildHandler);
-        infoGUI = new InfoGUI(this, settingsManager, guildHandler);
-        infoMembersGUI = new InfoMembersGUI(this, settingsManager, guildHandler);
-        vaultGUI = new VaultGUI(this, settingsManager, guildHandler);
+        guiHandler = new GUIHandler(this, settingsHandler.getSettingsManager(), guildHandler, getCommandManager(), cooldownHandler);
 
-
-        if (settingsManager.getProperty(PluginSettings.ANNOUNCEMENTS_CONSOLE)) {
+        if (settingsHandler.getSettingsManager().getProperty(PluginSettings.ANNOUNCEMENTS_CONSOLE)) {
             newChain().async(() -> {
                 try {
                     info(getAnnouncements());
@@ -389,8 +384,6 @@ public final class Guilds extends JavaPlugin {
                 }
             }).execute();
         }
-
-        guiHandler = new GUIHandler(this, settingsHandler.getSettingsManager(), guildHandler, commandManager);
 
         if (settingsHandler.getSettingsManager().getProperty(PluginSettings.UPDATE_CHECK)) {
             UpdateChecker.init(this, 66176).requestUpdateCheck().whenComplete((result, exception) -> {
@@ -431,7 +424,7 @@ public final class Guilds extends JavaPlugin {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }, 20 * 60, (20 * 60) * settingsManager.getProperty(PluginSettings.SAVE_INTERVAL));
+        }, 20 * 60, (20 * 60) * settingsHandler.getSettingsManager().getProperty(PluginSettings.SAVE_INTERVAL));
 
     }
 
@@ -518,8 +511,8 @@ public final class Guilds extends JavaPlugin {
      * Register optional listeners based off values in the config
      */
     private void optionalListeners() {
-        if (settingsManager.getProperty(HooksSettings.ESSENTIALS)) {
-            getServer().getPluginManager().registerEvents(new EssentialsChatListener(guildHandler, settingsManager), this);
+        if (settingsHandler.getSettingsManager().getProperty(HooksSettings.ESSENTIALS)) {
+            getServer().getPluginManager().registerEvents(new EssentialsChatListener(guildHandler, settingsHandler.getSettingsManager()), this);
         }
 
         if (settingsHandler.getSettingsManager().getProperty(HooksSettings.WORLDGUARD)) {

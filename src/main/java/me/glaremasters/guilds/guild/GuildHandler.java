@@ -801,4 +801,13 @@ public class GuildHandler {
     public List<String> getPublicGuilds() {
         return guilds.stream().filter(g -> !g.isPrivate()).map(Guild::getName).collect(Collectors.toList());
     }
+
+    /**
+     * Check if a guild name already exists
+     * @param name name to check
+     * @return exists or not
+     */
+    public boolean checkGuildNames(String name) {
+        return guilds.stream().anyMatch(g -> g.getName().equalsIgnoreCase(name));
+    }
 }

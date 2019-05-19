@@ -128,7 +128,7 @@ public class InfoGUI {
                         // Cancel the event
                         event.setCancelled(true);
                         // Open the new GUI
-                        guilds.getInfoMembersGUI().getInfoMembersGUI(guild, player, guilds.getCommandManager()).show(event.getWhoClicked());
+                        guilds.getGuiHandler().getInfoMembersGUI().getInfoMembersGUI(guild, player, guilds.getCommandManager()).show(event.getWhoClicked());
                     }));
         }
         // Add the status button to the GUI
@@ -194,7 +194,7 @@ public class InfoGUI {
                         // Cancel the event
                         event.setCancelled(true);
                         // Open the new GUI
-                        guilds.getVaultGUI().getVaultGUI(guild, player, guilds.getCommandManager()).show(event.getWhoClicked());
+                        guilds.getGuiHandler().getVaultGUI().getVaultGUI(guild, player, guilds.getCommandManager()).show(event.getWhoClicked());
                     }));
         }
     }

@@ -4,6 +4,7 @@ import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.CommandManager;
 import lombok.Getter;
 import me.glaremasters.guilds.Guilds;
+import me.glaremasters.guilds.cooldowns.CooldownHandler;
 import me.glaremasters.guilds.guild.GuildHandler;
 
 /**
@@ -23,14 +24,16 @@ public class GUIHandler {
     private SettingsManager settingsManager;
     private GuildHandler guildHandler;
     private CommandManager commandManager;
+    private CooldownHandler cooldownHandler;
 
-    public GUIHandler(Guilds guilds, SettingsManager settingsManager, GuildHandler guildHandler, CommandManager commandManager) {
+    public GUIHandler(Guilds guilds, SettingsManager settingsManager, GuildHandler guildHandler, CommandManager commandManager, CooldownHandler cooldownHandler) {
         this.guilds = guilds;
         this.settingsManager = settingsManager;
         this.guildHandler = guildHandler;
         this.commandManager = commandManager;
+        this.cooldownHandler = cooldownHandler;
 
-        buffGUI = new BuffGUI(this.guilds, this.settingsManager, this.guildHandler, this.commandManager);
+        buffGUI = new BuffGUI(this.guilds, this.settingsManager, this.guildHandler, this.commandManager, this.cooldownHandler);
         listGUI = new ListGUI(this.guilds, this.settingsManager, this.guildHandler);
         infoGUI = new InfoGUI(this.guilds, this.settingsManager, this.guildHandler);
         infoMembersGUI = new InfoMembersGUI(this.guilds, this.settingsManager, this.guildHandler);
