@@ -47,6 +47,8 @@ import me.glaremasters.guilds.utils.EconomyUtils;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.entity.Player;
 
+import java.text.NumberFormat;
+
 /**
  * Created by Glare
  * Date: 4/5/2019
@@ -73,27 +75,30 @@ public class CommandUpgrade extends BaseCommand {
         if (!role.isUpgradeGuild())
             ACFUtil.sneaky(new InvalidPermissionException());
 
+        if (guildHandler.isMaxTier(guild))
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.UPGRADE__TIER_MAX));
+
         GuildTier tier = guildHandler.getGuildTier(guild.getTier().getLevel() + 1);
         double balance = guild.getBalance();
         double upgradeCost = tier.getCost();
-
-        if (guildHandler.isMaxTier(guild))
-            ACFUtil.sneaky(new ExpectationNotMet(Messages.UPGRADE__TIER_MAX));
 
         if (guildHandler.memberCheck(guild))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.UPGRADE__NOT_ENOUGH_MEMBERS,
                     "{amount}", String.valueOf(tier.getMembersToRankup())));
 
         if (!EconomyUtils.hasEnough(balance, upgradeCost))
-            ACFUtil.sneaky(new ExpectationNotMet(Messages.UPGRADE__NOT_ENOUGH_MONEY, "{needed}", String.valueOf(upgradeCost - balance)));
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.UPGRADE__NOT_ENOUGH_MONEY, "{needed}",
+                    String.valueOf(NumberFormat.getInstance().format(upgradeCost - balance))));
 
-        getCurrentCommandIssuer().sendInfo(Messages.UPGRADE__MONEY_WARNING, "{amount}", String.valueOf(upgradeCost));
+        getCurrentCommandIssuer().sendInfo(Messages.UPGRADE__MONEY_WARNING, "{amount}",
+                String.valueOf(NumberFormat.getInstance().format(upgradeCost)));
 
         actionHandler.addAction(player, new ConfirmAction() {
             @Override
             public void accept() {
                 if (!EconomyUtils.hasEnough(balance, upgradeCost))
-                    ACFUtil.sneaky(new ExpectationNotMet(Messages.UPGRADE__NOT_ENOUGH_MONEY, "{needed}", String.valueOf(upgradeCost - balance)));
+                    ACFUtil.sneaky(new ExpectationNotMet(Messages.UPGRADE__NOT_ENOUGH_MONEY, "{needed}",
+                            String.valueOf(NumberFormat.getInstance().format(upgradeCost - balance))));
 
                 guild.setBalance(balance - upgradeCost);
 

@@ -34,6 +34,8 @@ import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.Constants;
 import org.bukkit.entity.Player;
 
+import java.text.NumberFormat;
+
 /**
  * Created by Glare
  * Date: 4/4/2019
@@ -52,7 +54,7 @@ public class CommandBankBalance extends BaseCommand {
     @CommandPermission(Constants.BANK_PERM + "balance")
     public void execute(Player player, Guild guild) {
         getCurrentCommandIssuer().sendInfo(Messages.BANK__BALANCE,
-                "{amount}", String.valueOf(guild.getBalance()));
+                "{amount}", String.valueOf(NumberFormat.getInstance().format(guild.getBalance())));
     }
 
 }

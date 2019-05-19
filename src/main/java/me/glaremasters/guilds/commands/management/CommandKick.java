@@ -24,6 +24,7 @@
 
 package me.glaremasters.guilds.commands.management;
 
+import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
@@ -35,6 +36,9 @@ import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.annotation.Values;
+import me.glaremasters.guilds.configuration.sections.CooldownSettings;
+import me.glaremasters.guilds.cooldowns.Cooldown;
+import me.glaremasters.guilds.cooldowns.CooldownHandler;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.exceptions.InvalidPermissionException;
 import me.glaremasters.guilds.guild.Guild;
@@ -42,11 +46,15 @@ import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildMember;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.messages.Messages;
+import me.glaremasters.guilds.utils.ClaimUtils;
 import me.glaremasters.guilds.utils.Constants;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.codemc.worldguardwrapper.WorldGuardWrapper;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Glare
@@ -58,6 +66,8 @@ public class CommandKick extends BaseCommand {
 
     @Dependency private GuildHandler guildHandler;
     @Dependency private Permission permission;
+    @Dependency private SettingsManager settingsManager;
+    @Dependency private CooldownHandler cooldownHandler;
 
     /**
      * Kick a player from the guild
@@ -90,6 +100,13 @@ public class CommandKick extends BaseCommand {
             ACFUtil.sneaky(new InvalidPermissionException());
 
         guildHandler.removePerms(permission, boot);
+
+        cooldownHandler.addCooldown(boot, Cooldown.TYPES.Join.name(), settingsManager.getProperty(CooldownSettings.JOIN), TimeUnit.SECONDS);
+
+        if (ClaimUtils.isEnable(settingsManager)) {
+            WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();
+            ClaimUtils.getGuildClaim(wrapper, player, guild).ifPresent(region -> ClaimUtils.removeMember(region, player));
+        }
 
         guild.removeMember(kick);
 

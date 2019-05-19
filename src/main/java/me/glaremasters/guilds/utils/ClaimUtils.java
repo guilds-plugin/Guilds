@@ -175,6 +175,24 @@ public class ClaimUtils {
     }
 
     /**
+     * Add a member to a claim
+     * @param claim the claim to add
+     * @param player the player to add
+     */
+    public static void addMember(IWrappedRegion claim, Player player) {
+        getMembers(claim).addPlayer(player.getUniqueId());
+    }
+
+    /**
+     * Remove a member from a claim
+     * @param claim the claim to check
+     * @param player the player to remove
+     */
+    public static void removeMember(IWrappedRegion claim, Player player) {
+        getMembers(claim).removePlayer(player.getUniqueId());
+    }
+
+    /**
      * Set the enter message for a guild claim
      * @param wrapper the worldguard wrapper
      * @param claim the claim to adjust

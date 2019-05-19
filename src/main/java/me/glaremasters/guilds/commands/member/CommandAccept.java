@@ -24,6 +24,7 @@
 
 package me.glaremasters.guilds.commands.member;
 
+import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
@@ -34,16 +35,19 @@ import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
-import co.aikar.commands.annotation.Values;
 import me.glaremasters.guilds.api.events.GuildJoinEvent;
+import me.glaremasters.guilds.cooldowns.Cooldown;
+import me.glaremasters.guilds.cooldowns.CooldownHandler;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.messages.Messages;
+import me.glaremasters.guilds.utils.ClaimUtils;
 import me.glaremasters.guilds.utils.Constants;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.codemc.worldguardwrapper.WorldGuardWrapper;
 
 /**
  * Created by Glare
@@ -55,6 +59,8 @@ public class CommandAccept extends BaseCommand {
 
     @Dependency private GuildHandler guildHandler;
     @Dependency private Permission permission;
+    @Dependency private CooldownHandler cooldownHandler;
+    @Dependency private SettingsManager settingsManager;
 
     /**
      * Accept a guild invite
@@ -64,11 +70,15 @@ public class CommandAccept extends BaseCommand {
     @Subcommand("accept|join")
     @Description("{@@descriptions.accept}")
     @CommandPermission(Constants.BASE_PERM + "accept")
-    @CommandCompletion("@invitedTo")
+    @CommandCompletion("@joinableGuilds")
     @Syntax("<guild name>")
-    public void execute(Player player, @Values("@invitedTo") @Single String name) {
+    public void execute(Player player, @Single String name) {
         if (guildHandler.getGuild(player) != null)
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__ALREADY_IN_GUILD));
+
+        if (cooldownHandler.hasCooldown(Cooldown.TYPES.Join.name(), player.getUniqueId()))
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.ACCEPT__COOLDOWN, "{amount}",
+                    String.valueOf(cooldownHandler.getRemaining(Cooldown.TYPES.Join.name(), player.getUniqueId()))));
 
         Guild guild = guildHandler.getGuild(name);
 
@@ -93,6 +103,13 @@ public class CommandAccept extends BaseCommand {
         guild.addMember(player, guildHandler);
 
         guildHandler.addPerms(permission, player);
+
+        if (ClaimUtils.isEnable(settingsManager)) {
+            WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();
+            ClaimUtils.getGuildClaim(wrapper, player, guild).ifPresent(region -> {
+                ClaimUtils.addMember(region, player);
+            });
+        }
 
         getCurrentCommandIssuer().sendInfo(Messages.ACCEPT__SUCCESSFUL,
                 "{guild}", guild.getName());

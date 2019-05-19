@@ -52,6 +52,10 @@ public class GuildSettings implements SettingsHolder {
     public static final Property<String> PREFIX_REQUIREMENTS =
             newProperty("guild.requirements.prefix", "[a-zA-Z0-9&]{1,20}");
 
+    @Comment("Would you like to allow players to make a guild without a prefix?")
+    public static final Property<Boolean> DISABLE_PREFIX =
+            newProperty("guild.disable-prefix", false);
+
     @Comment("Do we want to enable the blacklist?")
     public static final Property<Boolean> BLACKLIST_TOGGLE =
             newProperty("guild.blacklist.enabled", true);
@@ -60,7 +64,7 @@ public class GuildSettings implements SettingsHolder {
     public static final Property<List<String>> BLACKLIST_WORDS =
             newListProperty("guild.blacklist.words", "crap", "ass", "stupid");
 
-    @Comment("This is the style used when a message sent in guild chat.")
+    @Comment({"This is the style used when a message sent in guild chat.", "As of 3.4.7, this now supports {display-name} to show the display name of a player."})
     public static final Property<String> GUILD_CHAT_FORMAT =
             newProperty("guild.format.chat", "&7&l[Guild Chat]&r &b[{role}&b]&r &b {player}: {message}");
 

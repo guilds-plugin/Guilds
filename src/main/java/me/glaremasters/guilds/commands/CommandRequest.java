@@ -24,6 +24,7 @@
 
 package me.glaremasters.guilds.commands;
 
+import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
@@ -35,12 +36,17 @@ import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.annotation.Values;
+import me.glaremasters.guilds.configuration.sections.CooldownSettings;
+import me.glaremasters.guilds.cooldowns.Cooldown;
+import me.glaremasters.guilds.cooldowns.CooldownHandler;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.Constants;
 import org.bukkit.entity.Player;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Glare
@@ -51,6 +57,8 @@ import org.bukkit.entity.Player;
 public class CommandRequest extends BaseCommand {
 
     @Dependency private GuildHandler guildHandler;
+    @Dependency private CooldownHandler cooldownHandler;
+    @Dependency private SettingsManager settingsManager;
 
     /**
      * Request an invite
@@ -74,7 +82,14 @@ public class CommandRequest extends BaseCommand {
         if (target == null)
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
 
+        if (cooldownHandler.hasCooldown(Cooldown.TYPES.Request.name(), player.getUniqueId()))
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.REQUEST__COOLDOWN, "{time}",
+                    String.valueOf(cooldownHandler.getRemaining(Cooldown.TYPES.Request.name(), player.getUniqueId()))));
+
+        cooldownHandler.addCooldown(player, Cooldown.TYPES.Request.name(), settingsManager.getProperty(CooldownSettings.REQUEST), TimeUnit.SECONDS);
+
         guildHandler.pingOnlineInviters(target, getCurrentCommandManager(), player);
+
 
         getCurrentCommandIssuer().sendInfo(Messages.REQUEST__SUCCESS,
                 "{guild}", target.getName());

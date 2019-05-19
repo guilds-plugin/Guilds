@@ -45,9 +45,25 @@ public class CooldownSettings implements SettingsHolder {
     public static final Property<Integer> HOME =
             newProperty("timers.cooldowns.home", 60);
 
+    @Comment("How often (in seconds) can a player request to join a guild?")
+    public static final Property<Integer> REQUEST =
+            newProperty("timers.cooldowns.request", 60);
+
+    @Comment("How often (in seconds) can a guild buy a buff?")
+    public static final Property<Integer> BUFF =
+            newProperty("timers.cooldowns.buff", 60);
+
+    @Comment("How long should a user have to wait before joining a new guild after leaving one?")
+    public static final Property<Integer> JOIN =
+            newProperty("timers.cooldowns.join", 120);
+
+    @Comment("Do you want to enable making players stand still before teleporting?")
+    public static final Property<Boolean> WU_HOME_ENABLED =
+            newProperty("timers.warmups.home.enabled", false);
+
     @Comment("How long should a user have to stand still before teleporting?")
     public static final Property<Integer> WU_HOME =
-            newProperty("timers.warmups.home", 3);
+            newProperty("timers.warmups.home.time", 3);
 
     private CooldownSettings() {
     }

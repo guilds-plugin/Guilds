@@ -32,6 +32,7 @@ import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
 import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
 import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Guilds;
+import me.glaremasters.guilds.configuration.sections.GuildInfoSettings;
 import me.glaremasters.guilds.configuration.sections.GuildListSettings;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
@@ -113,15 +114,23 @@ public class ListGUI {
      * @return updated lore
      */
     private List<String> updatedLore(Guild guild, List<String> lore) {
+        boolean status = guild.isPrivate();
+        String statusString;
+        if (status) {
+            statusString = settingsManager.getProperty(GuildInfoSettings.STATUS_PRIVATE);
+        } else {
+            statusString = settingsManager.getProperty(GuildInfoSettings.STATUS_PUBLIC);
+        }
         List<String> updated = new ArrayList<>();
         lore.forEach(line -> updated.add(ACFBukkitUtil.color(line
                     .replace("{guild-name}", guild.getName())
                     .replace("{guild-prefix}", guild.getPrefix())
                     .replace("{guild-master}", Bukkit.getOfflinePlayer(guild.getGuildMaster().getUuid()).getName())
-                    .replace("{guild-status}", guild.getStatus().name())
+                    .replace("{guild-status}", statusString)
                     .replace("{guild-tier}", String.valueOf(guild.getTier().getLevel()))
                     .replace("{guild-balance}", String.valueOf(guild.getBalance()))
-                    .replace("{guild-member-count}", String.valueOf(guild.getSize())))));
+                    .replace("{guild-member-count}", String.valueOf(guild.getSize())
+                    .replace("{guild-tier-name}", guildHandler.getGuildTier(guild.getTier().getLevel()).getName())))));
         return updated;
     }
 

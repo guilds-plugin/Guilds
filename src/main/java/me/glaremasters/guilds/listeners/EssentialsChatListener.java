@@ -24,7 +24,9 @@
 
 package me.glaremasters.guilds.listeners;
 
+import ch.jalu.configme.SettingsManager;
 import lombok.AllArgsConstructor;
+import me.glaremasters.guilds.configuration.sections.HooksSettings;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import org.bukkit.Bukkit;
@@ -42,6 +44,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 public class EssentialsChatListener implements Listener {
 
     private GuildHandler guildHandler;
+    private SettingsManager settingsManager;
 
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
@@ -51,7 +54,13 @@ public class EssentialsChatListener implements Listener {
         String message = event.getFormat();
 
         if (guild == null) {
-            String regex = "(\\{GUILD(?:.+)?})";
+            String regex;
+
+            if (settingsManager.getProperty(HooksSettings.ESS_FORMAT)) {
+                regex = "(\\[\\{GUILD(?:.+)?}])";
+            } else {
+                regex = "(\\{GUILD(?:.+)?})";
+            }
 
             event.setFormat(message.replaceAll(regex, ""));
             return;

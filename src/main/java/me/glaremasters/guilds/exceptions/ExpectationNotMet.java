@@ -44,11 +44,11 @@ public class ExpectationNotMet extends InvalidCommandArgument {
 
     /**
      * Exception used
-     * @param key
-     * @param replacements
+     * @param key the message to send to the user
+     * @param replacements any placeholders to replace
      */
     public ExpectationNotMet(MessageKeyProvider key, String... replacements) {
-        super (key.getMessageKey(), replacements);
+        super (key.getMessageKey(),false, replacements);
     }
 
 }

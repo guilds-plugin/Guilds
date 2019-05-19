@@ -35,6 +35,9 @@ import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.actions.ConfirmAction;
 import me.glaremasters.guilds.api.events.GuildLeaveEvent;
 import me.glaremasters.guilds.api.events.GuildRemoveEvent;
+import me.glaremasters.guilds.configuration.sections.CooldownSettings;
+import me.glaremasters.guilds.cooldowns.Cooldown;
+import me.glaremasters.guilds.cooldowns.CooldownHandler;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.messages.Messages;
@@ -43,6 +46,9 @@ import me.glaremasters.guilds.utils.Constants;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.codemc.worldguardwrapper.WorldGuardWrapper;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Glare
@@ -56,6 +62,7 @@ public class CommandLeave extends BaseCommand {
     @Dependency private ActionHandler actionHandler;
     @Dependency private Permission permission;
     @Dependency private SettingsManager settingsManager;
+    @Dependency private CooldownHandler cooldownHandler;
 
     /**
      * Leave a guild
@@ -98,6 +105,8 @@ public class CommandLeave extends BaseCommand {
 
                     guildHandler.notifyAllies(guild, getCurrentCommandManager());
 
+                    cooldownHandler.addCooldown(player, Cooldown.TYPES.Join.name(), settingsManager.getProperty(CooldownSettings.JOIN), TimeUnit.SECONDS);
+
                     ClaimUtils.deleteWithGuild(player, guild, settingsManager);
 
                     guildHandler.removeGuild(guild);
@@ -106,7 +115,18 @@ public class CommandLeave extends BaseCommand {
 
                     guildHandler.removePerms(permission, player);
 
+                    cooldownHandler.addCooldown(player, Cooldown.TYPES.Join.name(), settingsManager.getProperty(CooldownSettings.JOIN), TimeUnit.SECONDS);
+
+                    if (ClaimUtils.isEnable(settingsManager)) {
+                        WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();
+                        ClaimUtils.getGuildClaim(wrapper, player, guild).ifPresent(region -> {
+                            ClaimUtils.removeMember(region, player);
+                        });
+                    }
+
                     guild.removeMember(player);
+
+
 
                     getCurrentCommandIssuer().sendInfo(Messages.LEAVE__SUCCESSFUL);
 

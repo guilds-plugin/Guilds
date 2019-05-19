@@ -77,7 +77,7 @@ public class GuildHandler {
 
     //as well as guild permissions from tiers using permission field and tiers list.
 
-    public GuildHandler(DatabaseProvider databaseProvider, CommandManager commandManager, Permission permission, FileConfiguration config, SettingsManager settingsManager) throws IOException {
+    public GuildHandler(DatabaseProvider databaseProvider, CommandManager commandManager, Permission permission, FileConfiguration config, SettingsManager settingsManager) {
         this.databaseProvider = databaseProvider;
         this.commandManager = commandManager;
         this.permission = permission;
@@ -157,7 +157,6 @@ public class GuildHandler {
             g.setTier(getGuildTier(g.getTier().getLevel()));
             g.getMembers().forEach(m -> m.setRole(getGuildRole(m.getRole().getLevel())));
         })).execute();
-
 
     }
 
@@ -796,11 +795,10 @@ public class GuildHandler {
     }
 
     /**
-     * Check if a guild name already exists
-     * @param name name to check
-     * @return exists or not
+     * Get a list of all public guilds on the server
+     * @return list of public guilds
      */
-    public boolean checkGuildNames(String name) {
-        return guilds.stream().anyMatch(g -> g.getName().equalsIgnoreCase(name));
+    public List<String> getPublicGuilds() {
+        return guilds.stream().filter(g -> !g.isPrivate()).map(Guild::getName).collect(Collectors.toList());
     }
 }

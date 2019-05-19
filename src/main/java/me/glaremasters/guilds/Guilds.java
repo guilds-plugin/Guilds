@@ -38,7 +38,10 @@ import me.glaremasters.guilds.api.GuildsAPI;
 import me.glaremasters.guilds.configuration.SettingsHandler;
 import me.glaremasters.guilds.configuration.sections.HooksSettings;
 import me.glaremasters.guilds.configuration.sections.PluginSettings;
+import me.glaremasters.guilds.cooldowns.Cooldown;
+import me.glaremasters.guilds.cooldowns.CooldownHandler;
 import me.glaremasters.guilds.database.DatabaseProvider;
+import me.glaremasters.guilds.database.cooldowns.CooldownsProvider;
 import me.glaremasters.guilds.database.providers.JsonProvider;
 import me.glaremasters.guilds.dependency.DependencyLoader;
 import me.glaremasters.guilds.dependency.MavenLibraries;
@@ -112,9 +115,11 @@ public final class Guilds extends JavaPlugin {
     @Getter
     private static GuildsAPI api;
     private GuildHandler guildHandler;
+    private CooldownHandler cooldownHandler;
     private static TaskChainFactory taskChainFactory;
     private DatabaseProvider database;
-    private SettingsHandler settingsHandler;
+    private CooldownsProvider cooldownsProvider;
+    private SettingsManager settingsManager;
     private PaperCommandManager commandManager;
     private ActionHandler actionHandler;
     private GUIHandler guiHandler;
@@ -128,6 +133,7 @@ public final class Guilds extends JavaPlugin {
         if (checkVault()) {
             try {
                 guildHandler.saveData();
+                cooldownHandler.saveCooldowns();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -305,6 +311,10 @@ public final class Guilds extends JavaPlugin {
             // This will soon be changed to an automatic storage chooser from the config
             // Load the json provider
             database = new JsonProvider(getDataFolder());
+            // Load the cooldown folder
+            cooldownsProvider = new CooldownsProvider(getDataFolder());
+            // Load the cooldown objects
+            cooldownHandler = new CooldownHandler(cooldownsProvider);
             // Load guildhandler with provider
             guildHandler = new GuildHandler(database, getCommandManager(), getPermissions(), getConfig(), settingsHandler.getSettingsManager());
             info("Loaded data!");
@@ -363,7 +373,14 @@ public final class Guilds extends JavaPlugin {
             }
         });
 
-        if (settingsHandler.getSettingsManager().getProperty(PluginSettings.ANNOUNCEMENTS_CONSOLE)) {
+        buffGUI = new BuffGUI(this, settingsManager, guildHandler, getCommandManager(), cooldownHandler);
+        listGUI = new ListGUI(this, settingsManager, guildHandler);
+        infoGUI = new InfoGUI(this, settingsManager, guildHandler);
+        infoMembersGUI = new InfoMembersGUI(this, settingsManager, guildHandler);
+        vaultGUI = new VaultGUI(this, settingsManager, guildHandler);
+
+
+        if (settingsManager.getProperty(PluginSettings.ANNOUNCEMENTS_CONSOLE)) {
             newChain().async(() -> {
                 try {
                     info(getAnnouncements());
@@ -403,14 +420,19 @@ public final class Guilds extends JavaPlugin {
         api = new GuildsAPI(getGuildHandler());
         info("Enabled API!");
 
+        // Create cooldowns if they don't exist
+        createCooldowns();
+
         info("Ready to go! That only took " + (System.currentTimeMillis() - startingTime) + "ms");
         getServer().getScheduler().scheduleAsyncRepeatingTask(this, () -> {
             try {
                 guildHandler.saveData();
+                cooldownHandler.saveCooldowns();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }, 20 * 60, (20 * 60) * settingsHandler.getSettingsManager().getProperty(PluginSettings.SAVE_INTERVAL));
+        }, 20 * 60, (20 * 60) * settingsManager.getProperty(PluginSettings.SAVE_INTERVAL));
+
     }
 
     /**
@@ -443,6 +465,8 @@ public final class Guilds extends JavaPlugin {
         manager.getCommandCompletions().registerCompletion("online", c -> Bukkit.getOnlinePlayers().stream().map(member -> Bukkit.getPlayer(member.getUniqueId()).getName()).collect(Collectors.toList()));
 
         manager.getCommandCompletions().registerCompletion("invitedTo", c -> guildHandler.getInvitedGuilds(c.getPlayer().getUniqueId()));
+
+        manager.getCommandCompletions().registerCompletion("joinableGuilds", c -> Stream.concat(guildHandler.getInvitedGuilds(c.getPlayer().getUniqueId()).stream(), guildHandler.getPublicGuilds().stream()).distinct().collect(Collectors.toList()));
 
         manager.getCommandCompletions().registerCompletion("guilds", c -> guildHandler.getGuildNames());
 
@@ -494,8 +518,8 @@ public final class Guilds extends JavaPlugin {
      * Register optional listeners based off values in the config
      */
     private void optionalListeners() {
-        if (settingsHandler.getSettingsManager().getProperty(HooksSettings.ESSENTIALS)) {
-            getServer().getPluginManager().registerEvents(new EssentialsChatListener(guildHandler), this);
+        if (settingsManager.getProperty(HooksSettings.ESSENTIALS)) {
+            getServer().getPluginManager().registerEvents(new EssentialsChatListener(guildHandler, settingsManager), this);
         }
 
         if (settingsHandler.getSettingsManager().getProperty(HooksSettings.WORLDGUARD)) {
@@ -552,6 +576,16 @@ public final class Guilds extends JavaPlugin {
         commandManager.registerDependency(ActionHandler.class, actionHandler);
         commandManager.registerDependency(Economy.class, economy);
         commandManager.registerDependency(Permission.class, permissions);
+        commandManager.registerDependency(CooldownHandler.class, cooldownHandler);
+    }
+
+    /**
+     * Create the cooldowns for the plugin
+     */
+    private void createCooldowns() {
+        for (Cooldown.TYPES type : Cooldown.TYPES.values()) {
+            cooldownHandler.addCooldownType(type.name());
+        }
     }
 
 }

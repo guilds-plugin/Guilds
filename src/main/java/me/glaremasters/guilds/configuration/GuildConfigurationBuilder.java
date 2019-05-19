@@ -28,6 +28,7 @@ import ch.jalu.configme.configurationdata.ConfigurationData;
 import ch.jalu.configme.configurationdata.ConfigurationDataBuilder;
 import me.glaremasters.guilds.configuration.sections.ClaimSettings;
 import me.glaremasters.guilds.configuration.sections.CodeSettings;
+import me.glaremasters.guilds.configuration.sections.CooldownSettings;
 import me.glaremasters.guilds.configuration.sections.CostSettings;
 import me.glaremasters.guilds.configuration.sections.GuildBuffSettings;
 import me.glaremasters.guilds.configuration.sections.GuildInfoMemberSettings;
@@ -58,7 +59,7 @@ public class GuildConfigurationBuilder {
                 PluginSettings.class, HooksSettings.class, GuildListSettings.class,
                 GuildBuffSettings.class, VaultPickerSettings.class, GuildVaultSettings.class,
                 GuildInfoSettings.class, GuildInfoMemberSettings.class, GuildSettings.class,
-                /*CooldownSettings.class,*/ CostSettings.class,
+                CooldownSettings.class, CostSettings.class,
                 ClaimSettings.class, TablistSettings.class, TicketSettings.class, CodeSettings.class,
                 TierSettings.class, RoleSettings.class
         );
