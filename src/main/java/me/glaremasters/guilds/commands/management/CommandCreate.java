@@ -57,6 +57,7 @@ import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -116,7 +117,7 @@ public class CommandCreate extends BaseCommand {
         if (!EconomyUtils.hasEnough(getCurrentCommandManager(), economy, player, cost))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__NOT_ENOUGH_MONEY));
 
-        getCurrentCommandIssuer().sendInfo(Messages.CREATE__WARNING, "{amount}", String.valueOf(cost));
+        getCurrentCommandIssuer().sendInfo(Messages.CREATE__WARNING, "{amount}", String.valueOf(NumberFormat.getInstance().format(cost)));
 
         actionHandler.addAction(player, new ConfirmAction() {
             @Override

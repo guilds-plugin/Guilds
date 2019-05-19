@@ -41,6 +41,8 @@ import me.glaremasters.guilds.utils.Constants;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.entity.Player;
 
+import java.text.NumberFormat;
+
 /**
  * Created by Glare
  * Date: 4/4/2019
@@ -78,8 +80,8 @@ public class CommandBankWithdraw extends BaseCommand {
         guild.setBalance(balance - amount);
         economy.depositPlayer(player, amount);
         getCurrentCommandIssuer().sendInfo(Messages.BANK__WITHDRAWL_SUCCESS,
-                "{amount}", String.valueOf(amount),
-                "{total}", String.valueOf(guild.getBalance()));
+                "{amount}", String.valueOf(NumberFormat.getInstance().format(amount)),
+                "{total}", String.valueOf(NumberFormat.getInstance().format(guild.getBalance())));
 
     }
 }
