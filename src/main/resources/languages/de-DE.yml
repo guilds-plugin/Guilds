@@ -69,6 +69,7 @@ chat:
 request:
   success: "&aDu hast erfolgreich eine Einladung für die Gilde {guild} verlangt"
   incoming-request: "&a{player} möchte der Gilde beitreten. Sende Ihm eine Einladung mit /guild invite {player}!"
+  cooldown: "You can't send another request for {time} seconds."
 error:
   already-in-guild: "&cDu bist bereits in einer Gilde!"
   no-guild: "&cDu bist nicht in einer Gilde!"
@@ -80,6 +81,7 @@ error:
   blacklist: "&cEiner oder mehrere Wörter in deinem Gildennamen/präfix sind auf der Schwarzen Liste!"
   not-enough-money: "&cSorry, du hast nicht genug Geld um das zu machen"
   economy-required: "&cAn economy plugin is required for this to work. Please contact your server administrator"
+  buff-cooldown: "&cSorry, your guild has recently bought a buff. You can try again in {amount} seconds."
 bank:
   balance: "&aDie Bank deiner Gilde hat ein Guthaben con {amount}."
   deposit-success: "&aDu hast {amount} in die Bank deiner Gilde abgegeben. Der Total ist jetzt {total}!"
@@ -142,6 +144,7 @@ upgrade:
   not-enough-members: "&cSorry! Du brauchst mindestens {amount} Mitglieder um deine Gildenstufe zu verbessern!"
 prefix:
   successful: "&aGildenpräfix erfolgreich geändert zu {prefix}!"
+  disabled: "&cThe ability to use prefixes is currently disabled."
 status:
   successful: "&aGildenstatus geändert zu {status}!"
 rename:
@@ -184,6 +187,7 @@ accept:
   guild-full: "&cDiese Gilde ist voll!"
   player-joined: "&a{player} ist deiner Gilde beigetreten!"
   successful: "&aDu bist erfolgreich der Gilde '{guild}&r&a' beigetreten"
+  cooldown: "&cYou are currently on cooldown from joining a guild. Try again in {amount} seconds."
 claim:
   already-exists: "&cDu hast bereits einen Besitz. Bitte entferne deinen alten Besitz bevor du einen neuen erstellst"
   overlap: "&cDein Besitz konnte nicht erstellt werden da ein anderer Besitz in der nähe ist"
