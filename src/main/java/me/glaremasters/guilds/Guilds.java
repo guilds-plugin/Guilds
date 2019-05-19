@@ -502,7 +502,7 @@ public final class Guilds extends JavaPlugin {
      */
     private void optionalListeners() {
         if (settingsManager.getProperty(HooksSettings.ESSENTIALS)) {
-            getServer().getPluginManager().registerEvents(new EssentialsChatListener(guildHandler), this);
+            getServer().getPluginManager().registerEvents(new EssentialsChatListener(guildHandler, settingsManager), this);
         }
 
         if (settingsManager.getProperty(HooksSettings.WORLDGUARD)) {
