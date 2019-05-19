@@ -102,6 +102,11 @@ public class CommandCreate extends BaseCommand {
         if (guildHandler.checkGuildNames(name))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.CREATE__GUILD_NAME_TAKEN));
 
+        if (settingsManager.getProperty(GuildSettings.BLACKLIST_TOGGLE)) {
+            if (guildHandler.blacklistCheck(name, settingsManager))
+                ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__BLACKLIST));
+        }
+
         if (!guildHandler.nameCheck(name, settingsManager))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.CREATE__REQUIREMENTS));
 
