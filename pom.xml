@@ -92,36 +92,12 @@
                                     <shadedPattern>me.glaremasters.guilds.libs.bstats</shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern>org.codemc.worldguardwrapper</pattern>
-                                    <shadedPattern>me.glaremasters.guilds.libs.worldguardwrapper</shadedPattern>
-                                </relocation>
-                                <relocation>
                                     <pattern>co.aikar.commands</pattern>
                                     <shadedPattern>me.glaremasters.guilds.libs.acf</shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern>ch.jalu.configme</pattern>
-                                    <shadedPattern>me.glaremasters.guilds.libs.configme</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>com.github.stefvanschie.inventoryframework</pattern>
-                                    <shadedPattern>me.glaremasters.guilds.libs.inventoryframework</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>com.dumptruckman.bukkit.configuration</pattern>
-                                    <shadedPattern>me.glaremasters.guilds.libs.configuration</shadedPattern>
-                                </relocation>
-                                <relocation>
                                     <pattern>org.yaml.snakeyaml</pattern>
                                     <shadedPattern>me.glaremasters.guilds.libs.snakeyml</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>net.minidev.json</pattern>
-                                    <shadedPattern>me.glaremasters.guilds.libs.jsoneasy</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>net.lingala.zip4j</pattern>
-                                    <shadedPattern>me.glaremasters.guilds.libs.zip4j</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
@@ -199,6 +175,7 @@
             <groupId>co.aikar</groupId>
             <artifactId>taskchain-core</artifactId>
             <version>3.7.2</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Used to make working with bukkit easier -->
@@ -206,6 +183,7 @@
             <groupId>co.aikar</groupId>
             <artifactId>taskchain-bukkit</artifactId>
             <version>3.7.2</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Command framework using annotations -->
@@ -228,7 +206,7 @@
             <groupId>org.codemc.worldguardwrapper</groupId>
             <artifactId>worldguardwrapper</artifactId>
             <version>1.1.4-SNAPSHOT</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Vault API for Economy and more -->
@@ -252,7 +230,7 @@
             <groupId>ch.jalu</groupId>
             <artifactId>configme</artifactId>
             <version>1.1.0</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
 
         <!-- JsonConfiguaration (used for serializing the vaults to strings) -->
@@ -260,6 +238,15 @@
             <groupId>com.dumptruckman.minecraft</groupId>
             <artifactId>JsonConfiguration</artifactId>
             <version>1.1</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Required json dependency because no other json lib can handle numbers appropriately. -->
+        <dependency>
+            <groupId>net.minidev</groupId>
+            <artifactId>json-smart</artifactId>
+            <version>1.1.1</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Used for the GUIs -->
@@ -267,6 +254,7 @@
             <groupId>com.github.stefvanschie.inventoryframework</groupId>
             <artifactId>IF</artifactId>
             <version>0.3.1</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Used to easily update language files -->
@@ -274,6 +262,7 @@
             <groupId>net.lingala.zip4j</groupId>
             <artifactId>zip4j</artifactId>
             <version>1.3.2</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Used to handle some file stuff -->
@@ -281,6 +270,7 @@
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>2.6</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Used for reflections -->
@@ -294,6 +284,7 @@
                     <artifactId>guava</artifactId>
                 </exclusion>
             </exclusions>
+            <scope>provided</scope>
         </dependency>
 
     </dependencies>
