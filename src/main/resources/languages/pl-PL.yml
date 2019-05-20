@@ -62,14 +62,14 @@ create:
   successful: "&aGildia '{guild}&r&a' została stworzona pomyślnie!"
   cancelled: "&cTworzenie gildii anulowane!"
   requirements: "&cTwoja gildia nie spełnia wymagań! Możesz używać tylko znaków alfanumerycznych oraz długość gildii nie może przekraczać 64 znaki"
-  name-too-long: "Nie podałeś przedrostka, z tego powodu twoja nazwa nie mogła zostać sprawdzona na podstawie wymagań. Spróbuj użyć krótszej nazwy lub dodaj przedrostek przy kreacji."
+  name-too-long: "&cNie podałeś przedrostka, z tego powodu twoja nazwa nie mogła zostać sprawdzona na podstawie wymagań. Spróbuj użyć krótszej nazwy lub dodaj przedrostek przy tworzeniu prefixa."
 chat:
   disabled: "Chat Gildii wyłączony"
   enabled: "Chat Gildii włączony"
 request:
   success: "&aPomyślnie wysłano prośbę o dołączenie do {guild}"
   incoming-request: "&a{player} chcę dołączyć do gildii. Wyślij mu zaproszenie używając /guild invite {player}!"
-  cooldown: "You can't send another request for {time} seconds."
+  cooldown: "Nie możesz wysłać kolejnej prośby poczekaj {time} sekund."
 error:
   already-in-guild: "&cJesteś już w gildii!"
   no-guild: "&cNie jesteś w gildii!"
@@ -81,7 +81,7 @@ error:
   blacklist: "&cJedno lub więcej słów w nazwie lub prefixie twojej gildii jest zabroniona!"
   not-enough-money: "&cNie masz wystarczająco pieniędzy aby to zrobić"
   economy-required: "&cAby to działało, wymagana jest wtyczka ekonomiczna. Skontaktuj się z administratorem serwera"
-  buff-cooldown: "&cSorry, your guild has recently bought a buff. You can try again in {amount} seconds."
+  buff-cooldown: "Przepraszamy, twoja gildia niedawno kupiła buffa. Możesz spróbować ponownie za {amount} sekund."
 bank:
   balance: "&aPieniądze gildii: {amount}."
   deposit-success: "&aWpłaciłeś {amount} do banku gildii. Status banku gildii to: {total}!"
