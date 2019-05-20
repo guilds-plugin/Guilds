@@ -69,7 +69,7 @@ chat:
 request:
   success: "&aЗапрос на приглашение от {guild} отправлен"
   incoming-request: "&a{player} просит вступить в гильдию. Используйте /guild invite {player}, чтобы принять!"
-  cooldown: "You can't send another request for {time} seconds."
+  cooldown: "Вы не можете отправлять запросы ещё {time} секунд."
 error:
   already-in-guild: "&cВы уже состоите в гильдии!"
   no-guild: "&cВы не состоите в гильдии!"
