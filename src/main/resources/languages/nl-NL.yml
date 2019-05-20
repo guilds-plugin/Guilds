@@ -69,7 +69,7 @@ chat:
 request:
   success: "&aJe hebt een uitnodiging aangevraagd voor {guild}"
   incoming-request: "&a{player} vraagt om een Guild uitnodiging. Stuur een uitnodiging met /guild invite {player}!"
-  cooldown: "You can't send another request for {time} seconds."
+  cooldown: "Je kunt nog {time} seconden geen ander verzoek sturen."
 error:
   already-in-guild: "&cJe zit al in een Guild!"
   no-guild: "&cJe zit niet in een Guild!"
