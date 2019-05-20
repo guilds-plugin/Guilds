@@ -69,6 +69,7 @@ chat:
 request:
   success: "&aTe sikeresen kérvényeztél egy meghívást az alábbi céhbe: {guild}"
   incoming-request: "&a{player} kérvényezi a csatlakozást a céhhez. Ahhoz hgy csatlakozhasson, írd be az alábbi parancsot /guild invite {player}"
+  cooldown: "You can't send another request for {time} seconds."
 error:
   already-in-guild: "&cTe már benne vagy egy céhben!"
   no-guild: "&cNem vagy benne semmilyen céhben."
@@ -80,6 +81,7 @@ error:
   blacklist: "&cA használt szavak feketelistán vannak."
   not-enough-money: "&cSajnos nincs elég pénzed ehhez."
   economy-required: "&cAn economy plugin is required for this to work. Please contact your server administrator"
+  buff-cooldown: "&cSorry, your guild has recently bought a buff. You can try again in {amount} seconds."
 bank:
   balance: "&aA céhednek a banki egyenlege: {amount}."
   deposit-success: "&a{amount}-t befizettél a céh bankjába. A céh bank egyenlege jelenleg: {total}!"
@@ -142,6 +144,7 @@ upgrade:
   not-enough-members: "Sajnálom! Legalább {amount} tagra van szükséged ahhoz hogy feljebb fejleszd a céhed szintjét."
 prefix:
   successful: "&aA céh előtagja sikeresen meg lett változtatva az alábbira: {prefix}"
+  disabled: "&cThe ability to use prefixes is currently disabled."
 status:
   successful: "&aA céh státusza sikeresen meg lett változtatva az alábbira: {status}!"
 rename:
@@ -184,6 +187,7 @@ accept:
   guild-full: "&cEz a céh teli van!"
   player-joined: "&a{player} csatlakozott a céhbe!"
   successful: "&aSikeresen csatlakoztál az alábbi céhbe: '{guild}'"
+  cooldown: "&cYou are currently on cooldown from joining a guild. Try again in {amount} seconds."
 claim:
   already-exists: "&cMár van egy területet. Kérlek távolítsd el az előző területet."
   overlap: "&cA terület nem létrehozható mert már van egy másik terület a közelben"

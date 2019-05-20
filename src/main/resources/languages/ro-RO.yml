@@ -69,6 +69,7 @@ chat:
 request:
   success: "&aAi solocitati cu succest o invitatie de la {guild}"
   incoming-request: "&a{player} cere sa se alature breslei. Trimite-i o invitatie folosind /guild invite {player}!"
+  cooldown: "You can't send another request for {time} seconds."
 error:
   already-in-guild: "&cDeja apartii unei bresle!"
   no-guild: "&cNu esti in nicio breasla!"
@@ -80,6 +81,7 @@ error:
   blacklist: "&cUnul sau mai multe dintre cuvintele din prefix-ul / numele breslei se afla in blacklist!"
   not-enough-money: "&cNe pare rau, nu ai destui bani pentru a face asta."
   economy-required: "&cAn economy plugin is required for this to work. Please contact your server administrator"
+  buff-cooldown: "&cSorry, your guild has recently bought a buff. You can try again in {amount} seconds."
 bank:
   balance: "&aBanca breslei tale are o balanta de {amount}."
   deposit-success: "&aAi depozitat {amount} in banca breslei. Balanta totala este acum de {total}!"
@@ -142,6 +144,7 @@ upgrade:
   not-enough-members: "&cNe pareu rau! Aveti nevoie de cel putin {amount} membrii pentru a trece la urmatorul nivel al Breslei!"
 prefix:
   successful: "&aPrefixul Breslei a fost modificat cu succes in {prefix}!"
+  disabled: "&cThe ability to use prefixes is currently disabled."
 status:
   successful: "&aStatutul Breslei a fost setat la {status}!"
 rename:
@@ -184,6 +187,7 @@ accept:
   guild-full: "&cAceasta Breasla este plina!"
   player-joined: "&a{player} s-a alaturat Breslei!"
   successful: "&aTe-ai alaturat cu succes breslei '{guild}&r&a'"
+  cooldown: "&cYou are currently on cooldown from joining a guild. Try again in {amount} seconds."
 claim:
   already-exists: "&cAveti deja un claim. Va rugam sa il stergeti pe cel curent pentru a crea unul nou"
   overlap: "&cClaim-ul dumneavoastra nu a putut fi creat deoarece se afla un alt claim in apropiere"

@@ -69,6 +69,7 @@ chat:
 request:
   success: "&7[&6公会&7]&f对公会[{guild}&f]的申请已发出，请等待处理"
   incoming-request: "&7[&6公会&7]&f{player}请求加入公会,请输入/guild invite {player} 来确认"
+  cooldown: "You can't send another request for {time} seconds."
 error:
   already-in-guild: "&7[&6公会&7]&f你已拥有一个公会!"
   no-guild: "&7[&6公会&7]&f你没有加入公会!"
@@ -80,6 +81,7 @@ error:
   blacklist: "&7[&6公会&7]&f你的公会名称/公会前缀有不雅文字，请重新规范你的操作"
   not-enough-money: "&7[&6公会&7]&f你没有足够的钱这么做"
   economy-required: "&7[&6公会&7]&f服务器未安装经济插件,请联系管理员"
+  buff-cooldown: "&cSorry, your guild has recently bought a buff. You can try again in {amount} seconds."
 bank:
   balance: "&7[&6公会&7]&f当前公会金库: {amount}金币"
   deposit-success: "&7[&6公会&7]&f你已存入 {amount} 金币到公会金库中，公会金库总量: {total}金币"
@@ -142,6 +144,7 @@ upgrade:
   not-enough-members: "&7[&6公会&7]&f你需要至少 {amount} 位公会成员来升级公会"
 prefix:
   successful: "&7[&6公会&7]&f已成功更改工会前缀成 {prefix}!"
+  disabled: "&cThe ability to use prefixes is currently disabled."
 status:
   successful: "&7[&6公会&7]&f公会状态已更新为 {status}!"
 rename:
@@ -154,7 +157,7 @@ home:
   cancelled: "&7[&6公会&7]&f已取消传送!"
 sethome:
   successful: "&7[&6公会&7]&f你已设置公会领地传送点!"
-  deleted: "&aYou've successfully deleted your guild home!"
+  deleted: "&7[&6公会&7]&f你已成功删除你的公会领地!"
   cooldown: "&7[&6公会&7]&f你必须等待{amount}秒后才能执行此操作"
 reload:
   reloaded: "&7[&6公会&7]&f已重载"
@@ -184,6 +187,7 @@ accept:
   guild-full: "&7[&6公会&7]&f该公会人数已满!"
   player-joined: "&7[&6公会&7]&f{player} 已加入公会!"
   successful: "&7[&6公会&7]&f你已加入公会 {guild}"
+  cooldown: "&cYou are currently on cooldown from joining a guild. Try again in {amount} seconds."
 claim:
   already-exists: "&7[&6公会&7]&f你已设置了公会领地,请尝试删除之前的领地后重试\""
   overlap: "&7[&6公会&7]&f距离其他公会的领地太近了,请尝试换到其他的位置"

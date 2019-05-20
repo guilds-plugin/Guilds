@@ -62,13 +62,14 @@ create:
   successful: "&aGildia '{guild}&r&a' została stworzona pomyślnie!"
   cancelled: "&cTworzenie gildii anulowane!"
   requirements: "&cTwoja gildia nie spełnia wymagań! Możesz używać tylko znaków alfanumerycznych oraz długość gildii nie może przekraczać 64 znaki"
-  name-too-long: "Nie podałeś przedrostka, z tego powodu twoja nazwa nie mogła zostać sprawdzona na podstawie wymagań. Spróbuj użyć krótszej nazwy lub dodaj przedrostek przy kreacji."
+  name-too-long: "&cNie podałeś przedrostka, z tego powodu twoja nazwa nie mogła zostać sprawdzona na podstawie wymagań. Spróbuj użyć krótszej nazwy lub dodaj przedrostek przy tworzeniu prefixa."
 chat:
   disabled: "Chat Gildii wyłączony"
   enabled: "Chat Gildii włączony"
 request:
   success: "&aPomyślnie wysłano prośbę o dołączenie do {guild}"
   incoming-request: "&a{player} chcę dołączyć do gildii. Wyślij mu zaproszenie używając /guild invite {player}!"
+  cooldown: "Nie możesz wysłać kolejnej prośby poczekaj {time} sekund."
 error:
   already-in-guild: "&cJesteś już w gildii!"
   no-guild: "&cNie jesteś w gildii!"
@@ -80,6 +81,7 @@ error:
   blacklist: "&cJedno lub więcej słów w nazwie lub prefixie twojej gildii jest zabroniona!"
   not-enough-money: "&cNie masz wystarczająco pieniędzy aby to zrobić"
   economy-required: "&cAby to działało, wymagana jest wtyczka ekonomiczna. Skontaktuj się z administratorem serwera"
+  buff-cooldown: "Przepraszamy, twoja gildia niedawno kupiła buffa. Możesz spróbować ponownie za {amount} sekund."
 bank:
   balance: "&aPieniądze gildii: {amount}."
   deposit-success: "&aWpłaciłeś {amount} do banku gildii. Status banku gildii to: {total}!"
@@ -142,6 +144,7 @@ upgrade:
   not-enough-members: "Przykro nam! Potrzebujesz co najmniej {amount} członków aby zwiększyć poziom gildii!"
 prefix:
   successful: "Przedrostek gildii został pomyślnie zmieniony na {prefix}!"
+  disabled: "&cMożliwość używania prefiksów jest obecnie wyłączona."
 status:
   successful: "Status gildii został ustawiony na {status}!"
 rename:
@@ -175,20 +178,21 @@ ally:
   incoming-invite: "Masz przychodzącą prośbę o sojusz od gildii {guild}!"
   current-remove: "Usunąłeś gildie {guild} he swojej listy sojuszników!"
   target-remove: "{guild} usunęła was ze swojej listy sojuszników!"
-  already-ally: "Ta gildia już jest twoim sojusznikiem!"
-  same-guild: "Nie możesz wysłać prośby o sojusz do samego siebie!"
-  not-allied: "Nie możesz usunąć gildii która nie jest twoim sojusznikiem!"
-  already-requested: "Posiadasz już prośbę o sojusz dla tej gildii która nie została jeszcze rozpatrzona!"
+  already-ally: "&cTa gildia już jest twoim sojusznikiem!"
+  same-guild: "&cNie możesz wysłać prośby o sojusz do samego siebie!"
+  not-allied: "&cNie możesz usunąć gildii która nie jest twoim sojusznikiem!"
+  already-requested: "&cPosiadasz już prośbę o sojusz dla tej gildii która nie została jeszcze rozpatrzona!"
 accept:
-  not-invited: "Ta gildia jest prywatna / Nie otrzymałeś zaproszenia do tej gildii."
-  guild-full: "Ta gildia jest pełna!"
-  player-joined: "{player} dołączył do twojej gildii!"
-  successful: "Dołączyłeś do gildii {guild}"
+  not-invited: "&cTa gildia jest prywatna / Nie otrzymałeś zaproszenia do tej gildii."
+  guild-full: "&cTa gildia jest pełna!"
+  player-joined: "&a{player} dołączył do twojej gildii!"
+  successful: "&aDołączyłeś do gildii {guild}"
+  cooldown: "&cJesteś na odnowieniu od dołączenia do gildii. Spróbuj ponownie za {amount} sekund."
 claim:
-  already-exists: "Już posiadasz claim. Usuń poprzedni claim any stworzyć nowy"
-  overlap: "Twój claim nie mógł zostać stworzony ponieważ w pobliżu już istnieje inny claim"
-  success: "Nowy claim został stworzony! Rozprzestrzenia się od {loc1} do {loc2}!"
-  hook-disabled: "Proszę włączyć claimy w pliku konfiguracji aby użyć tej funkcji"
+  already-exists: "&cJuż posiadasz claim. Usuń poprzedni claim aby stworzyć nowy"
+  overlap: "&cTwój claim nie mógł zostać stworzony ponieważ w pobliżu już istnieje inny claim"
+  success: "&aNowy claim został stworzony! Rozprzestrzenia się od {loc1} do {loc2}!"
+  hook-disabled: "&cProszę włączyć claimy w pliku konfiguracji aby użyć tej funkcji"
 unclaim:
   success: "&aUsunąłeś zajęty teren gildii!"
   not-found: "&cNie możesz usunąć terenu, który nie jest twój!"

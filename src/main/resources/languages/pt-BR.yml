@@ -69,6 +69,7 @@ chat:
 request:
   success: "&aVocê pediu para entrar em {guild} com sucesso"
   incoming-request: "&a{player} está solicitando participar da guild, Mande um convite para eles utilizando o comando /guild invite {player}!"
+  cooldown: "You can't send another request for {time} seconds."
 error:
   already-in-guild: "&cVocê já está em uma guild!"
   no-guild: "&cVocê não está em uma guild!"
@@ -80,6 +81,7 @@ error:
   blacklist: "&cUma ou mais palavras em seu nome de guild / prefixo de guild está na lista negra!"
   not-enough-money: "&cDesculpe, você não tem dinheiro suficiente para fazer isto"
   economy-required: "&cAn economy plugin is required for this to work. Please contact your server administrator"
+  buff-cooldown: "&cSorry, your guild has recently bought a buff. You can try again in {amount} seconds."
 bank:
   balance: "&aSua guild tem um saldo de {amount}."
   deposit-success: "&aVocê depositou {amount} no banco de sua guild. Agora o total do banco de sua guild é {total}!"
@@ -142,6 +144,7 @@ upgrade:
   not-enough-members: "&cDesculpe! Você necessita de pelo menos {amount} membros para melhorar sua guild!"
 prefix:
   successful: "&aPrefix da guild alterado para {prefix}!"
+  disabled: "&cThe ability to use prefixes is currently disabled."
 status:
   successful: "&aStatus da guild defiinido como {status}!"
 rename:
@@ -184,6 +187,7 @@ accept:
   guild-full: "&cEsta guild está cheia!"
   player-joined: "&a{player} entrou na sua guild!"
   successful: "&aVocê entrou na guild '{guild}&r&a' com sucesso"
+  cooldown: "&cYou are currently on cooldown from joining a guild. Try again in {amount} seconds."
 claim:
   already-exists: "&cVocê já tem uma terra reinvidicada. Por favor remova sua reclamação anterior para criar uma nova"
   overlap: "&cSua terra não pode ser reinvidicada pois há outra terra reinvidicada por perto"

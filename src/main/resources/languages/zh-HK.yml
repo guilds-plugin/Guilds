@@ -69,6 +69,7 @@ chat:
 request:
   success: "&8[&6公會&8] &f對公會[《 {guild} 》&f]的申請已發出，請等待處理"
   incoming-request: "&8[&6公會&8] &f{player}請求加入公會， 請輸入/guild invite {player} 來確認"
+  cooldown: "You can't send another request for {time} seconds."
 error:
   already-in-guild: "&8[&6公會&8] &f你已擁有一個公會 ！"
   no-guild: "&8[&6公會&8] &f你沒有加入公會 ！"
@@ -80,6 +81,7 @@ error:
   blacklist: "&8[&6公會&8] &f你的公會名稱稱/公會前綴有不雅文字，請重新規範你的操作"
   not-enough-money: "&8[&6公會&8] &f你沒有足夠的錢這麼做"
   economy-required: "&cAn economy plugin is required for this to work. Please contact your server administrator"
+  buff-cooldown: "&cSorry, your guild has recently bought a buff. You can try again in {amount} seconds."
 bank:
   balance: "&8[&6公會&8] &f目前公會金庫: {amount}金幣"
   deposit-success: "&8[&6公會&8] &f你已存入 {amount} 金幣到公會金庫中，公會金庫總量: {total}金幣"
@@ -142,6 +144,7 @@ upgrade:
   not-enough-members: "&8[&6公會&8] &f你需要至少 {amount} 位公會成員來升級公會"
 prefix:
   successful: "&8[&6公會&8] &f已成功更改公會前綴成 {prefix} ！"
+  disabled: "&cThe ability to use prefixes is currently disabled."
 status:
   successful: "&8[&6公會&8] &f公會狀態已更新為 {status} ！"
 rename:
@@ -184,6 +187,7 @@ accept:
   guild-full: "&8[&6公會&8] &f該公會人數已滿 ！"
   player-joined: "&8[&6公會&8] &f{player} 已加入公會 ！"
   successful: "&8[&6公會&8] &f你已加入公會 《 {guild} 》"
+  cooldown: "&cYou are currently on cooldown from joining a guild. Try again in {amount} seconds."
 claim:
   already-exists: "&8[&6公會&8] &f你已設定了公會領地， 請嘗試刪除之前的領地後重試\""
   overlap: "&8[&6公會&8] &f距離其他公會的領地太近了， 請嘗試換到其他的位置"

@@ -69,6 +69,7 @@ chat:
 request:
   success: "&aJe hebt een uitnodiging aangevraagd voor {guild}"
   incoming-request: "&a{player} vraagt om een Guild uitnodiging. Stuur een uitnodiging met /guild invite {player}!"
+  cooldown: "Je kunt nog {time} seconden geen ander verzoek sturen."
 error:
   already-in-guild: "&cJe zit al in een Guild!"
   no-guild: "&cJe zit niet in een Guild!"
@@ -80,6 +81,7 @@ error:
   blacklist: "&cEen of meer van de woorden in jouw Guild naam / Guild prefix zijn niet toegestaan!"
   not-enough-money: "&cSorry, je hebt niet genoeg geld om dat te doen!"
   economy-required: "&cOm dit te laten werken is een economy plugin nodig. Neem contact op met je server admin"
+  buff-cooldown: "&cSorry, jouw Guild heeft recentelijk een buff gekocht. Je kunt het opnieuw proberen in {amount} seconden."
 bank:
   balance: "&aJouw Guild heeft een bank balans van {amount}."
   deposit-success: "&aJe hebt {amount} aan jouw Guild Bank toegevoegd. Jouw Guild Bank totaal is nu {total}!"
@@ -142,6 +144,7 @@ upgrade:
   not-enough-members: "&cSorry! Je hebt minimaal {amount} leden nodig om jouw Guild Tier te upgraden!"
 prefix:
   successful: "&aGuild's prefix veranderd naar {prefix}!"
+  disabled: "&cDe functionaliteit om prefixes in te stellen staat momenteel uit."
 status:
   successful: "&aGuild status ingesteld op {status}!"
 rename:
@@ -184,6 +187,7 @@ accept:
   guild-full: "&cDeze Guild is vol!"
   player-joined: "&a{player} is nu lid van jouw Guild!"
   successful: "&aJe bent nu lid van '{guild}&r&a'!"
+  cooldown: "&cJe hebt momenteel een cooldown om een Guild te joinen. Probeer het opnieuw in {amount} seconden."
 claim:
   already-exists: "&cJe hebt al een claim. Verwijder je huidige claim om een nieuwe te maken"
   overlap: "&cJe claim kan niet worden gemaakt omdat er een andere claim dichtbij is"

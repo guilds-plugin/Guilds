@@ -69,6 +69,7 @@ chat:
 request:
   success: "&aHai richiesto un invito da {guild}"
   incoming-request: "&a{player} sta richiedendo di unirsi alla gilda. Inviagli un invito scrivendo /guild invite {player}!"
+  cooldown: "You can't send another request for {time} seconds."
 error:
   already-in-guild: "&cSei già in una gilda!"
   no-guild: "&cNon sei in una gilda!"
@@ -80,6 +81,7 @@ error:
   blacklist: "&cUna o più parole nel nome/prefisso della tua gilda sono nella blacklist!"
   not-enough-money: "&cScusa, non hai abbastanza soldi per farlo"
   economy-required: "&cAn economy plugin is required for this to work. Please contact your server administrator"
+  buff-cooldown: "&cSorry, your guild has recently bought a buff. You can try again in {amount} seconds."
 bank:
   balance: "&aLa tua gilda ha un conto di {amount}."
   deposit-success: "&aHai depositato {amount} nel conto della tua gilda. Il conto della tua gilda adesso è {total}!"
@@ -142,6 +144,7 @@ upgrade:
   not-enough-members: "&cScusa! Hai bisogno di almeno {amount} membri per alzare il livello della tua gilda!"
 prefix:
   successful: "&aPrefisso della gilda cambiato in {prefix}!"
+  disabled: "&cThe ability to use prefixes is currently disabled."
 status:
   successful: "&aStato della gilda impostato a {status}!"
 rename:
@@ -184,6 +187,7 @@ accept:
   guild-full: "&cQuesta gilda è piena!"
   player-joined: "&a{player} si è unito alla tua gilda!"
   successful: "&aTi sei unito a '{guild}&r&a'"
+  cooldown: "&cYou are currently on cooldown from joining a guild. Try again in {amount} seconds."
 claim:
   already-exists: "&cHai già richiesto del terreno. Perfavore smetti di richiedere il precedente terreno prima di richiederne un altro"
   overlap: "&cNon puoi richiedere questo terreno perchè ce ne già un altro vicino"

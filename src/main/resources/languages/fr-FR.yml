@@ -69,6 +69,7 @@ chat:
 request:
   success: "&aVous avez demandé avec succès une invitation à la guilde {guild}"
   incoming-request: "&a{player} demande à rejoindre la guilde. Envoyez lui une invitation en faisant /guild invite {player}!"
+  cooldown: "You can't send another request for {time} seconds."
 error:
   already-in-guild: "&Vous êtes déjà dans une guilde !"
   no-guild: "&cVous n'êtes pas dans une guilde !"
@@ -80,6 +81,7 @@ error:
   blacklist: "&cUn mot ou plus de votre nom de guilde ou préfix est dans la blacklist !"
   not-enough-money: "&cDésolé, vous n'avez pas assez de money pour faire ça !"
   economy-required: "&cAn economy plugin is required for this to work. Please contact your server administrator"
+  buff-cooldown: "&cSorry, your guild has recently bought a buff. You can try again in {amount} seconds."
 bank:
   balance: "&aVotre guilde possède : {amount}."
   deposit-success: "&aVous avez déposé {amount} dans le coffre de guilde. Le total en banque est de {total} !"
@@ -142,6 +144,7 @@ upgrade:
   not-enough-members: "&cDésolé! Vous avez besoin d'au moins {amount} membres pour augmenter votre tier de Guilde !"
 prefix:
   successful: "&aLe préfix de guilde a bien été changé to {prefix}!"
+  disabled: "&cThe ability to use prefixes is currently disabled."
 status:
   successful: "&aStatut de guilde défini sur {status}!"
 rename:
@@ -184,6 +187,7 @@ accept:
   guild-full: "&cCette guilde est pleine"
   player-joined: "Le joueur &a{player} a rejoint votre guilde !"
   successful: "&aVous avez rejoint la guilde '{guild}&r&a' avec succès"
+  cooldown: "&cYou are currently on cooldown from joining a guild. Try again in {amount} seconds."
 claim:
   already-exists: "&cVous avez déjà une zone claim. Veuillez supprimer votre zone claim précédente pour en créer une nouvelle."
   overlap: "&cVotre demande n'a pas pu être créée car une autre zone claim est à proximité"
