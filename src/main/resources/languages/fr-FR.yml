@@ -62,14 +62,14 @@ create:
   successful: "&aLa Guilde '{guild}&r&a' est créée avec succès !"
   cancelled: "&cCréation de guilde annulée !"
   requirements: "&Votre nom de guilde ne correspond pas aux critères ! Vous devez utiliser seulement des caractères alphanumérique et d'un maximum de 64 lettres"
-  name-too-long: "&cYou didn't provide a prefix so the name you input was tested against the prefix requirements and that failed. Please try a shorter name or input a prefix on creation."
+  name-too-long: "&cVous n'avez spécifié aucun prefix et le nom entré ne pouvais pas être utilisé comme prefix. Essayez d'entrer un nom plus court ou entrez un prefix."
 chat:
   disabled: "Chat de guilde désactivé"
   enabled: "Chat de guilde activé"
 request:
   success: "&aVous avez demandé avec succès une invitation à la guilde {guild}"
   incoming-request: "&a{player} demande à rejoindre la guilde. Envoyez lui une invitation en faisant /guild invite {player}!"
-  cooldown: "You can't send another request for {time} seconds."
+  cooldown: "Vous ne pouvez envoyez de nouvelles requêtes avant {time} secondes."
 error:
   already-in-guild: "&Vous êtes déjà dans une guilde !"
   no-guild: "&cVous n'êtes pas dans une guilde !"
@@ -80,8 +80,8 @@ error:
   not-officer: "&cCe joueur doit être officier dans votre guilde !"
   blacklist: "&cUn mot ou plus de votre nom de guilde ou préfix est dans la blacklist !"
   not-enough-money: "&cDésolé, vous n'avez pas assez de money pour faire ça !"
-  economy-required: "&cAn economy plugin is required for this to work. Please contact your server administrator"
-  buff-cooldown: "&cSorry, your guild has recently bought a buff. You can try again in {amount} seconds."
+  economy-required: "&cUn plugin d'économie est requis pour que cela fonctionne. Contactez un administrateur."
+  buff-cooldown: "&cDésolé, votre guilde a récemment acheté un buff. Vous pouvez réessayer dans {amount} secondes.  "
 bank:
   balance: "&aVotre guilde possède : {amount}."
   deposit-success: "&aVous avez déposé {amount} dans le coffre de guilde. Le total en banque est de {total} !"
@@ -120,7 +120,7 @@ delete:
   successful: "&aSuppression de la guilde '{guild}&r&a' réussi !"
   cancelled: "&cSuppression de la guilde annulée !"
   warning: "&cEcrivez /guilds confirm pour supprimer votre guilde, ecrivez /guilds cancel pour annuler."
-  notify-allies: "&c{guild} is no longer your ally because it has been deleted."
+  notify-allies: "&c{guild} n'est plus votre alliée car elle a été dissoute."
 leave:
   cancelled: "&cQuitter la guilde annulée !"
   successful: "&aVous avez quitté votre guilde avec succès !"
