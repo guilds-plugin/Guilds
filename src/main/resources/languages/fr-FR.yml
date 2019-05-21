@@ -138,7 +138,7 @@ invite:
 upgrade:
   tier-max: "&cVous ne pouvez pas améliorer la guilde une fois de plus ! Vous êtes au maximum !"
   money-warning: "&cVous allez dépenser {amount} pour mettre à jour votre guilde. (Ecrivez /guilds confirm pour continuer)"
-  cancel: "&cUpgrade annulé !"
+  cancel: "&cAmélioration annulé !"
   success: "&aVous avez mis à jour votre guilde avec succès !"
   not-enough-money: "&cDésolé ! Vous n'avez pas assez d'argent pour améliorer votre guilde ! Vous avez besoin de {needed} de plus !"
   not-enough-members: "&cDésolé! Vous avez besoin d'au moins {amount} membres pour augmenter votre tier de Guilde !"
@@ -160,7 +160,7 @@ sethome:
   deleted: "&aVous avez supprimé votre home de guilde!"
   cooldown: "&cVous devez attendre au moins {amount} secondes avant de recommencer"
 reload:
-  reloaded: "&aFichiers config rechargés avec succès !"
+  reloaded: "&aFichiers de config rechargés avec succès !"
 cancel:
   error: "&cAucune action à annuler !"
   success: "&aAction annulée !"
@@ -168,7 +168,7 @@ confirm:
   error: "&cAucune action à confirmer !"
   success: "&aAction confirmée !"
 ally:
-  none: "&cVous navez pas d'allié !"
+  none: "&cVous n'avez pas d'allié !"
   list: "Votre guilde a les alliés suivants: {ally-list}"
   current-declined: "&a{guild} : La demande d'alliance a été refusée !"
   target-declined: "&cVotre demande d'alliance avec {guild} a été refusée !"
@@ -180,7 +180,7 @@ ally:
   target-remove: "&c{guild} vous a retiré de sa liste d'alliés !"
   already-ally: "&cCette guilde est déjà votre alliée !"
   same-guild: "&cVous ne pouvez pas envoyer une invitation d'alliance à vous même ! "
-  not-allied: "&cVous ne pouvez pas supprrimer cette guilde, elle n'est pas votre alliée !"
+  not-allied: "&cVous ne pouvez pas supprimer cette guilde, elle n'est pas votre alliée !"
   already-requested: "&cVous avez déjà une demande d'allié en attente auprès de cette guilde !"
 accept:
   not-invited: "&cCette guilde est privée / vous n'avez pas reçu d'invitation de la guilde."
@@ -200,7 +200,7 @@ pending:
   invites: "&aVous avez {number} invitation(s) en attente de la guilde: &e{guilds}&r&a . Ecrivez /guild accept <name> or /guild deny <name> pour accepter ou refuser une invitation!"
 codes:
   created: "&aVous avez créé un nouveau code d'invitation: &6{code} &aavec &6{amount} &autilisations !"
-  empty: "&cOh non ! Je n\\'ai pas de codes, essaie d\\'en faire un premièrement !"
+  empty: "&cOh non ! Je n'ai pas de codes, essaie d'en faire un premièrement !"
   list-header: "&aVoici les codes d'activation actifs pour votre guilde :"
   list-item: "&aID: &6{code} &f| &aUtilisations Restantes: &6{amount} &f| &aCréateur: &6{creator}"
   deleted: "&aCe code d'invitation a été retiré de votre guilde !"
