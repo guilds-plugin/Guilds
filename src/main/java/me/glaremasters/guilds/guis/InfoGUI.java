@@ -9,18 +9,23 @@ import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
 import com.github.stefvanschie.inventoryframework.pane.Pane;
 import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Guilds;
+import me.glaremasters.guilds.configuration.sections.CooldownSettings;
 import me.glaremasters.guilds.configuration.sections.GuildInfoSettings;
+import me.glaremasters.guilds.cooldowns.Cooldown;
+import me.glaremasters.guilds.cooldowns.CooldownHandler;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildTier;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.ItemBuilder;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -34,6 +39,7 @@ public class InfoGUI {
     private Guilds guilds;
     private SettingsManager settingsManager;
     private GuildHandler guildHandler;
+    private CooldownHandler cooldownHandler;
 
     public Gui getInfoGUI(Guild guild, Player player, CommandManager commandManager) {
 
@@ -167,13 +173,36 @@ public class InfoGUI {
                             l.replace("{coords}", home)).collect(Collectors.toList())),
                     event -> {
                         event.setCancelled(true);
+                        if (cooldownHandler.hasCooldown(Cooldown.TYPES.Home.name(), player.getUniqueId())) {
+                            commandManager.getCommandIssuer(player).sendInfo(Messages.HOME__COOLDOWN, "{amount}",
+                                    String.valueOf(cooldownHandler.getRemaining(Cooldown.TYPES.Home.name(), player.getUniqueId())));
+                            return;
+                        }
+
                         if (settingsManager.getProperty(GuildInfoSettings.HOME_TELEPORT)) {
                             if (guild.getHome() == null) {
                                 commandManager.getCommandIssuer(player).sendInfo(Messages.HOME__NO_HOME_SET);
                                 return;
                             }
-                            player.teleport(guild.getHome().getAsLocation());
-                            commandManager.getCommandIssuer(player).sendInfo(Messages.HOME__TELEPORTED);
+
+                            if (settingsManager.getProperty(CooldownSettings.WU_HOME_ENABLED)) {
+                                Location initial = player.getLocation();
+                                commandManager.getCommandIssuer(player).sendInfo(Messages.HOME__WARMUP, "{amount}", String.valueOf(settingsManager.getProperty(CooldownSettings.WU_HOME)));
+                                Guilds.newChain().delay(settingsManager.getProperty(CooldownSettings.WU_HOME), TimeUnit.SECONDS).sync(() -> {
+                                    Location curr = player.getLocation();
+                                    if (initial.distance(curr) > 1) {
+                                        guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.HOME__CANCELLED);
+                                    }
+                                    else {
+                                        player.teleport(guild.getHome().getAsLocation());
+                                        guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.HOME__TELEPORTED);
+                                    }
+                                }).execute();
+                            } else {
+                                player.teleport(guild.getHome().getAsLocation());
+                                commandManager.getCommandIssuer(player).sendInfo(Messages.HOME__TELEPORTED);
+                            }
+                            cooldownHandler.addCooldown(player, Cooldown.TYPES.Home.name(), settingsManager.getProperty(CooldownSettings.HOME), TimeUnit.SECONDS);
                         }
                     }));
         }
