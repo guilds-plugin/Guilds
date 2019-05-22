@@ -80,14 +80,15 @@ public class CommandSetHome extends BaseCommand {
 
         double cost = settingsManager.getProperty(CostSettings.SETHOME);
 
-        if (!EconomyUtils.hasEnough(getCurrentCommandManager(), economy, player, cost))
+        if (!EconomyUtils.hasEnough(guild.getBalance(), cost))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__NOT_ENOUGH_MONEY));
+
 
         cooldownHandler.addCooldown(player, Cooldown.TYPES.SetHome.name(), settingsManager.getProperty(CooldownSettings.SETHOME), TimeUnit.SECONDS);
 
         guild.setNewHome(player);
 
-        economy.withdrawPlayer(player, cost);
+        guild.setBalance(guild.getBalance() - cost);
         getCurrentCommandIssuer().sendInfo(Messages.SETHOME__SUCCESSFUL);
     }
 
