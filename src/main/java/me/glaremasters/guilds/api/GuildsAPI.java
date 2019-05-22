@@ -52,7 +52,7 @@ public class GuildsAPI {
     }
 
     /**
-     * Get the guild of a player by uuid
+     * Get a guild by it's uuid
      * @param uuid uuid of the player
      * @return the guild they are in
      */
