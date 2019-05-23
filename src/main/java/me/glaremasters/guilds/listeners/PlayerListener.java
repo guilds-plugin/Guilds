@@ -46,6 +46,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import static me.glaremasters.guilds.utils.StringUtils.color;
 
@@ -74,18 +75,21 @@ public class PlayerListener implements Listener {
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         if (settingsManager.getProperty(PluginSettings.ANNOUNCEMENTS_IN_GAME)) {
-            guilds.getServer().getScheduler().scheduleAsyncDelayedTask(guilds, () -> {
-                if (player.isOp()) {
-                    if (!ALREADY_INFORMED.contains(player.getUniqueId())) {
-                        try {
-                            JSONMessage.create(color("&f[&aGuilds&f]&r Announcements (Hover over me for more information)")).tooltip(guilds.getAnnouncements()).openURL(guilds.getDescription().getWebsite()).send(player);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        ALREADY_INFORMED.add(player.getUniqueId());
-                    }
+            Guilds.newChain().delay(5, TimeUnit.SECONDS).sync(() -> {
+                if (!player.isOp())
+                    return;
+
+                if (ALREADY_INFORMED.contains(player.getUniqueId()))
+                    return;
+
+                try {
+                    JSONMessage.create(color("&f[&aGuilds&f]&r Announcements (Hover over me for more information)")).tooltip(guilds.getAnnouncements()).openURL(guilds.getDescription().getWebsite()).send(player);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            }, 70L);
+
+                ALREADY_INFORMED.add(player.getUniqueId());
+            }).execute();
         }
     }
 
