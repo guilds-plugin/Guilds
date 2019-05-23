@@ -27,6 +27,12 @@ public class CommandMotdRemove extends BaseCommand {
     @Dependency private GuildHandler guildHandler;
     @Dependency private SettingsManager settingsManager;
 
+    /**
+     * Remove the motd of a guild
+     * @param player the player running the command
+     * @param guild the guild of the player
+     * @param role the role of the player
+     */
     // Remove the MOTD
     @Subcommand("motd remove")
     @Description("{@@descriptions.motd-remove}")

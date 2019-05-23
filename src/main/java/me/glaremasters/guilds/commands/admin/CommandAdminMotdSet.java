@@ -29,6 +29,12 @@ public class CommandAdminMotdSet extends BaseCommand {
     @Dependency private GuildHandler guildHandler;
     @Dependency private SettingsManager settingsManager;
 
+    /**
+     * Set the MOTD of a guild
+     * @param player the player running the command
+     * @param guild the guild to modify
+     * @param motd the new motd for the guild
+     */
     // Admin set it, add in args
     @Subcommand("admin motd set")
     @Description("{@@descriptions.admin-motd-set}")

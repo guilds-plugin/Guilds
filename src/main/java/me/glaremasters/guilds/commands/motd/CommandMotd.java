@@ -26,6 +26,11 @@ public class CommandMotd extends BaseCommand {
     @Dependency private GuildHandler guildHandler;
     @Dependency private SettingsManager settingsManager;
 
+    /**
+     * View the motd of a guild
+     * @param player the player running the command
+     * @param guild the player's guild
+     */
     // View the actual MOTD
     @Subcommand("motd")
     @Description("{@@descriptions.motd}")
