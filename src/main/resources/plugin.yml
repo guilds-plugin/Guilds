@@ -42,6 +42,8 @@ permissions:
       guilds.command.language: true
       guilds.command.leave: true
       guilds.command.list: true
+      guilds.command.motd: true
+      guilds.command.motd-modify: true
       guilds.command.prefix: true
       guilds.command.promote: true
       guilds.command.rename: true
