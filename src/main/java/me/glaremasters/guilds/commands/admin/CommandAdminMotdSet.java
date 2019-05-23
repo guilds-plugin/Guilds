@@ -31,7 +31,7 @@ public class CommandAdminMotdSet extends BaseCommand {
 
     // Admin set it, add in args
     @Subcommand("admin motd set")
-    @Description("{@@descriptions.admin-motd-remove}")
+    @Description("{@@descriptions.admin-motd-set}")
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
     public void execute(Player player, @Single String guild, String motd) {

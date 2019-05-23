@@ -28,7 +28,7 @@ public class CommandMotd extends BaseCommand {
 
     // View the actual MOTD
     @Subcommand("motd")
-    @Description("{@@descriptions.kick}")
+    @Description("{@@descriptions.motd}")
     @CommandPermission(Constants.BASE_PERM + "motd")
     public void execute(Player player, Guild guild) {
         // Check if motd is null
