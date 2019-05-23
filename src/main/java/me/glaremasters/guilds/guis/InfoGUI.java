@@ -240,6 +240,11 @@ public class InfoGUI {
         }
     }
 
+    /**
+     * Create the motd itmestack for the GUI
+     * @param pane the pane to add it to
+     * @param guild the guild that you're getting the motd of
+     */
     private void createMotdItem(OutlinePane pane, Guild guild) {
         // Add the MOTD item to the GUI
         if (settingsManager.getProperty(GuildInfoSettings.MOTD_DISPLAY)) {
