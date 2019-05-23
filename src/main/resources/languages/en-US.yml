@@ -234,6 +234,8 @@ help:
   page-info: "Showing page <c2>{page}</c2> of <c2>{totalpages}</c2> (<c3>{results}</c3> results)."
   search-header: "<c3>=== </c3><c1>Search results for </c1><c2>{commandprefix}{command} {search}</c2><c3> ===</c3>"
 motd:
-  success: "&aYou've successfully set your guild's MOTD."
+  success: "&aYou've successfully set your guild's MOTD to {motd}."
   remove: "&aYou've successfully removed your guild's MOTD."
+  motd: "&7[&aGuild MOTD&7] {motd}"
+  not-set: "&cYour guild currently does not have a MOTD set."
 

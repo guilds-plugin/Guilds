@@ -38,7 +38,7 @@ public class CommandMotdSet extends BaseCommand {
 
         guild.setMotd(ACFBukkitUtil.color(motd));
 
-        getCurrentCommandIssuer().sendInfo(Messages.MOTD__SUCCESS);
+        getCurrentCommandIssuer().sendInfo(Messages.MOTD__SUCCESS, "{motd}", guild.getMotd());
     }
 
 }
