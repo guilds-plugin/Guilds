@@ -59,6 +59,9 @@ public class InfoGUI {
         // Create the pane for the guild vault item
         OutlinePane vaultPane = new OutlinePane(4, 2, 1, 1, Pane.Priority.HIGH);
 
+        // Creat the mane for the motd item
+        OutlinePane motdPane = new OutlinePane(4, 0, 1, 1, Pane.Priority.HIGH);
+
         // Add the items to the background pane
         createBackgroundItems(backgroundPane);
 
@@ -68,6 +71,9 @@ public class InfoGUI {
         // Add the vault item to the vault pane
         createVaultItem(vaultPane, guild, player, commandManager);
 
+        // Add the motd item to the info pane
+        createMotdItem(motdPane, guild);
+
         // Add the glass panes to the main GUI background pane
         gui.addPane(backgroundPane);
 
@@ -76,6 +82,9 @@ public class InfoGUI {
 
         // Add the vault pane to the GUI
         gui.addPane(vaultPane);
+
+        // Add the motd pane to the gui
+        gui.addPane(motdPane);
 
         // Return the new info GUI object
         return gui;
@@ -228,6 +237,16 @@ public class InfoGUI {
                         // Open the new GUI
                         guilds.getGuiHandler().getVaultGUI().getVaultGUI(guild, player, guilds.getCommandManager()).show(event.getWhoClicked());
                     }));
+        }
+    }
+
+    private void createMotdItem(OutlinePane pane, Guild guild) {
+        // Add the MOTD item to the GUI
+        if (settingsManager.getProperty(GuildInfoSettings.MOTD_DISPLAY)) {
+            pane.addItem(new GuiItem(easyItem(settingsManager.getProperty(GuildInfoSettings.MOTD_MATERIAL),
+                    settingsManager.getProperty(GuildInfoSettings.MOTD_NAME),
+                    settingsManager.getProperty(GuildInfoSettings.MOTD_LORE).stream().map(l -> l.replace("{motd}", guild.getMotd())).collect(Collectors.toList())),
+                    event -> event.setCancelled(true)));
         }
     }
 

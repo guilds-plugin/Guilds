@@ -140,6 +140,22 @@ public class GuildInfoSettings implements SettingsHolder {
     public static final Property<Boolean> VAULT_DISPLAY =
             newProperty(INFO_PATH + "vault-display", true);
 
+    @Comment("What material do you want the motd button to be?")
+    public static final Property<String> MOTD_MATERIAL =
+            newProperty(INFO_PATH + "motd-material", "SIGN");
+
+    @Comment("What do you want the name of the motd button to be?")
+    public static final Property<String> MOTD_NAME =
+            newProperty(INFO_PATH + "motd-name", "&6Guild MOTD");
+
+    @Comment("What do you want the lore of the motd button to be?")
+    public static final Property<List<String >> MOTD_LORE =
+            newListProperty(INFO_PATH + "motd-lore", "{motd}");
+
+    @Comment("Would you like to display this button?")
+    public static final Property<Boolean> MOTD_DISPLAY =
+            newProperty(INFO_PATH + "motd-display", true);
+
 
 
 
