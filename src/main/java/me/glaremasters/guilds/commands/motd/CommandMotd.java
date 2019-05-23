@@ -31,10 +31,10 @@ public class CommandMotd extends BaseCommand {
     @Description("{@@descriptions.kick}")
     @CommandPermission(Constants.BASE_PERM + "motd")
     public void execute(Player player, Guild guild) {
-
+        // Check if motd is null
         if (guild.getMotd() == null)
             ACFUtil.sneaky(new ExpectationNotMet(Messages.MOTD__NOT_SET));
-
+        // Tell the user their motd
         getCurrentCommandIssuer().sendInfo(Messages.MOTD__MOTD, "{motd}", guild.getMotd());
     }
 
