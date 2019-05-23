@@ -107,6 +107,8 @@ admin:
   admin-guild-upgrade: "&aYour guild tier has been upgraded by an Admin!"
   spy-on: "&aGuild Chat Spy has been enabled!"
   spy-off: "&cGuild Chat Spy has been disabled!"
+  motd-success: "&aYou've successfully set the MOTD for {guild}."
+  motd-remove: "&aYou've successfully removed the MOTD for {guild}."
 boot:
   player-kicked: "&cPlayer '{player}' has been kicked from the guild by {kicker}!"
   successful: "&aSuccessfully kicked {player} from your guild!"

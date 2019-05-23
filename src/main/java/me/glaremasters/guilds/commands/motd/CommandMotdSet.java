@@ -13,6 +13,7 @@ import me.glaremasters.guilds.exceptions.InvalidPermissionException;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
+import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.Constants;
 import org.bukkit.entity.Player;
 
@@ -35,9 +36,9 @@ public class CommandMotdSet extends BaseCommand {
         if (!role.isModifyMotd())
             ACFUtil.sneaky(new InvalidPermissionException());
 
-        // Tell them MOTD has been set
-
         guild.setMotd(ACFBukkitUtil.color(motd));
+
+        getCurrentCommandIssuer().sendInfo(Messages.MOTD__SUCCESS);
     }
 
 }

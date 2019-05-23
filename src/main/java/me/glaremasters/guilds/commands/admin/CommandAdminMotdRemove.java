@@ -8,6 +8,7 @@ import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
 import me.glaremasters.guilds.guild.GuildHandler;
+import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.Constants;
 import org.bukkit.entity.Player;
 
@@ -27,6 +28,11 @@ public class CommandAdminMotdRemove extends BaseCommand {
     @Description("{@@descriptions.admin-motd-remove}")
     @CommandPermission(Constants.ADMIN_PERM)
     public void execute(Player player, String guild) {
+
+        // do stuff
+
+
+        getCurrentCommandIssuer().sendInfo(Messages.ADMIN__MOTD_REMOVE);
 
     }
 
