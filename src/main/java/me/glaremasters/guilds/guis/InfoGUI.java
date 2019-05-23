@@ -243,9 +243,10 @@ public class InfoGUI {
     private void createMotdItem(OutlinePane pane, Guild guild) {
         // Add the MOTD item to the GUI
         if (settingsManager.getProperty(GuildInfoSettings.MOTD_DISPLAY)) {
+            String motd = guild.getMotd() == null ? "" : guild.getMotd();
             pane.addItem(new GuiItem(easyItem(settingsManager.getProperty(GuildInfoSettings.MOTD_MATERIAL),
                     settingsManager.getProperty(GuildInfoSettings.MOTD_NAME),
-                    settingsManager.getProperty(GuildInfoSettings.MOTD_LORE).stream().map(l -> l.replace("{motd}", guild.getMotd())).collect(Collectors.toList())),
+                    settingsManager.getProperty(GuildInfoSettings.MOTD_LORE).stream().map(l -> l.replace("{motd}", motd)).collect(Collectors.toList())),
                     event -> event.setCancelled(true)));
         }
     }
