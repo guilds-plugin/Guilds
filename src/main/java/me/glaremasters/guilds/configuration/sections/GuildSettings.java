@@ -87,6 +87,10 @@ public class GuildSettings implements SettingsHolder {
     public static final Property<Boolean> RESPECT_WG_PVP_FLAG =
             newProperty("guild.damage.respect-wg-pvp-flag", false);
 
+    @Comment("Would you like to send players their guild's motd on login?")
+    public static final Property<Boolean> MOTD_ON_LOGIN =
+            newProperty("guild.motd-on-login", true);
+
 
 
     private GuildSettings() {

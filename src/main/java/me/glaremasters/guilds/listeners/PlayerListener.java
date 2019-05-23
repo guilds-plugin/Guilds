@@ -33,6 +33,7 @@ import me.glaremasters.guilds.configuration.sections.GuildSettings;
 import me.glaremasters.guilds.configuration.sections.PluginSettings;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
+import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.JSONMessage;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -91,6 +92,27 @@ public class PlayerListener implements Listener {
                 ALREADY_INFORMED.add(player.getUniqueId());
             }).execute();
         }
+    }
+
+    /**
+     * Send the player their guild's motd if they have one
+     * @param event player join event
+     */
+    @EventHandler
+    public void tryMotd(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+        Guild guild = guildHandler.getGuild(player);
+
+        if (guild == null)
+            return;
+
+        if (guild.getMotd() == null)
+            return;
+
+        if (!settingsManager.getProperty(GuildSettings.MOTD_ON_LOGIN))
+            return;
+
+        Guilds.newChain().delay(5, TimeUnit.SECONDS).sync(() -> guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.MOTD__MOTD, "{motd}", guild.getMotd())).execute();
     }
 
     /**
