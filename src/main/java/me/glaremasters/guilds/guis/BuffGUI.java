@@ -68,6 +68,9 @@ public class BuffGUI {
 
         Gui gui = new Gui(guilds, 1, ACFBukkitUtil.color(settingsManager.getProperty(GuildBuffSettings.GUILD_BUFF_NAME)));
 
+        // Prevent players from being able to items into the GUIs
+        gui.setOnGlobalClick(event -> event.setCancelled(true));
+
         StaticPane pane = new StaticPane(0, 0, 9, 1);
 
         // Haste

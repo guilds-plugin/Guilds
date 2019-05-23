@@ -1,15 +1,15 @@
 package me.glaremasters.guilds.commands.motd;
 
+import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Subcommand;
 import me.glaremasters.guilds.guild.Guild;
+import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.utils.Constants;
-import ch.jalu.configme.SettingsManager;
-import me.glaremasters.guilds.guild.GuildHandler;
 import org.bukkit.entity.Player;
 
 /**

@@ -47,6 +47,9 @@ public class InfoGUI {
         Gui gui = new Gui(guilds, 3, ACFBukkitUtil.color(settingsManager.getProperty(GuildInfoSettings.GUI_NAME).replace("{name}",
                 guild.getName()).replace("{prefix}", guild.getPrefix())));
 
+        // Prevent players from being able to items into the GUIs
+        gui.setOnGlobalClick(event -> event.setCancelled(true));
+
         // Create the background pane which will just be stained glass
         OutlinePane backgroundPane = new OutlinePane(0, 0, 9, 3, Pane.Priority.LOW);
 

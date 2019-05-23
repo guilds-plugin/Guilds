@@ -40,6 +40,9 @@ public class InfoMembersGUI {
         Gui gui = new Gui(guilds, 6, ACFBukkitUtil.color(settingsManager.getProperty(GuildInfoMemberSettings.GUI_NAME).replace("{name}",
                 guild.getName())));
 
+        // Prevent players from being able to items into the GUIs
+        gui.setOnGlobalClick(event -> event.setCancelled(true));
+
         // Create the pane for the main items
         OutlinePane foregroundPane = new OutlinePane(0, 0, 9, 6, Pane.Priority.NORMAL);
 

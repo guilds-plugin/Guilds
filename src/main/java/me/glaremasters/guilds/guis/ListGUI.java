@@ -64,6 +64,9 @@ public class ListGUI {
         // Create the base GUI
         Gui gui = new Gui(guilds, 6, ACFBukkitUtil.color(settingsManager.getProperty(GuildListSettings.GUILD_LIST_NAME)));
 
+        // Prevent players from being able to items into the GUIs
+        gui.setOnGlobalClick(event -> event.setCancelled(true));
+
         // Prepare a paginated pane
         PaginatedPane paginatedPane = new PaginatedPane(0, 0, 9, 5);
 
