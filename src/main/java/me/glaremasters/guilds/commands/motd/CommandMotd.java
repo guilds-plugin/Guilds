@@ -5,10 +5,10 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Dependency;
+import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
-import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.utils.Constants;
 import org.bukkit.entity.Player;
 
@@ -25,9 +25,13 @@ public class CommandMotd extends BaseCommand {
 
     // View the actual MOTD
     @Subcommand("motd")
+    @Description("{@@descriptions.motd}")
     @CommandPermission(Constants.BASE_PERM + "motd")
-    public void execute(Player player, Guild guild, GuildRole guildRole) {
+    public void execute(Player player, Guild guild) {
 
+        if (guild.getMotd() != null) {
+            getCurrentCommandIssuer().sendMessage(guild.getMotd());
+        }
     }
 
 }

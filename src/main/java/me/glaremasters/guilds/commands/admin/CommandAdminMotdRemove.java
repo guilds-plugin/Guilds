@@ -5,6 +5,7 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Dependency;
+import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.utils.Constants;
@@ -23,6 +24,7 @@ public class CommandAdminMotdRemove extends BaseCommand {
 
     // Admin set it, add in args
     @Subcommand("admin motd remove")
+    @Description("{@@descriptions.admin-motd-remove}")
     @CommandPermission(Constants.ADMIN_PERM)
     public void execute(Player player, String guild) {
 

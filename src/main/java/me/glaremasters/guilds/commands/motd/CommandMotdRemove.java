@@ -1,11 +1,14 @@
 package me.glaremasters.guilds.commands.motd;
 
 import ch.jalu.configme.SettingsManager;
+import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Dependency;
+import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
+import me.glaremasters.guilds.exceptions.InvalidPermissionException;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
@@ -25,9 +28,13 @@ public class CommandMotdRemove extends BaseCommand {
 
     // Remove the MOTD
     @Subcommand("motd remove")
+    @Description("{@@descriptions.motd-remove}")
     @CommandPermission(Constants.MOTD_PERM + "modify")
-    public void execute(Player player, Guild guild, GuildRole guildRole) {
+    public void execute(Player player, Guild guild, GuildRole role) {
+        if (!role.isModifyMotd())
+            ACFUtil.sneaky(new InvalidPermissionException());
 
+        guild.setMotd(null);
     }
 
 }

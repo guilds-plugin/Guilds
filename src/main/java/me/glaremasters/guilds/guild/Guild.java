@@ -61,7 +61,7 @@ public class Guild {
     }
 
     private final UUID id;
-    private String name, prefix;
+    private String name, prefix, motd;
     private GuildMember guildMaster;
 
     private GuildHome home;
