@@ -26,7 +26,7 @@ public class CommandMotdSet extends BaseCommand {
     // Set the MOTD
     @Subcommand("motd set")
     @CommandPermission(Constants.MOTD_PERM + "modify")
-    public void execute(Player player, Guild guild, GuildRole guildRole) {
+    public void execute(Player player, Guild guild, GuildRole guildRole, String motd) {
 
     }
 

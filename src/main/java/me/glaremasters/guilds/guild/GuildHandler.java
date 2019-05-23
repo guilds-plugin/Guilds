@@ -126,6 +126,7 @@ public class GuildHandler {
                     .createCode(roleSection.getBoolean(path + "create-code"))
                     .deleteCode(roleSection.getBoolean(path + "delete-code"))
                     .seeCodeRedeemers(roleSection.getBoolean(path + "see-code-redeemers"))
+                    .modifyMotd(roleSection.getBoolean(path + "modify-motd"))
                     .build());
         }
 
