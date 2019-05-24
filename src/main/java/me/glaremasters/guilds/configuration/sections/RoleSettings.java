@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2018 Glare
+ * Copyright (c) 2019 Glare
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -123,6 +123,9 @@ public class RoleSettings implements SettingsHolder {
     public static final Property<Boolean> ZERO_SCR =
             newProperty("roles.0.permissions.see-code-redeemers", true);
 
+    public static final Property<Boolean> ZERO_MOTD =
+            newProperty("roles.0.permissions.modify-motd", true);
+
     public static final Property<String> ONE_NAME =
             newProperty("roles.1.name", "Officer");
 
@@ -209,6 +212,9 @@ public class RoleSettings implements SettingsHolder {
 
     public static final Property<Boolean> ONE_SCR =
             newProperty("roles.1.permissions.see-code-redeemers", true);
+
+    public static final Property<Boolean> ONE_MOTD =
+            newProperty("roles.1.permissions.modify-motd", false);
 
     public static final Property<String> TWO_NAME =
             newProperty("roles.2.name", "Veteran");
@@ -297,6 +303,9 @@ public class RoleSettings implements SettingsHolder {
     public static final Property<Boolean> TWO_SCR =
             newProperty("roles.2.permissions.see-code-redeemers", false);
 
+    public static final Property<Boolean> TWO_MOTD =
+            newProperty("roles.2.permissions.modify-motd", false);
+
     public static final Property<String> THREE_NAME =
             newProperty("roles.3.name", "roles");
 
@@ -383,6 +392,10 @@ public class RoleSettings implements SettingsHolder {
 
     public static final Property<Boolean> THREE_SCR =
             newProperty("roles.3.permissions.see-code-redeemers", false);
+
+    public static final Property<Boolean> THREE_MOTD =
+            newProperty("roles.3.permissions.modify-motd", false);
+
     private RoleSettings() {
     }
 }

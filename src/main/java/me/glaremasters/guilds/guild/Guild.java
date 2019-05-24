@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2018 Glare
+ * Copyright (c) 2019 Glare
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -61,7 +61,7 @@ public class Guild {
     }
 
     private final UUID id;
-    private String name, prefix;
+    private String name, prefix, motd;
     private GuildMember guildMaster;
 
     private GuildHome home;

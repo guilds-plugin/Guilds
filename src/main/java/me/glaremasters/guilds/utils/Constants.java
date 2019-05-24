@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2018 Glare
+ * Copyright (c) 2019 Glare
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,6 +36,7 @@ public class Constants {
     public static final String CODE_PERM = BASE_PERM + "code.";
     public static final String BANK_PERM = BASE_PERM + "bank.";
     public static final String ALLY_PERM = BANK_PERM + "ally.";
+    public static final String MOTD_PERM = BASE_PERM + "motd.";
     public static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11";
     public static final String ROOT_ALIAS = "guild|guilds|g";
 

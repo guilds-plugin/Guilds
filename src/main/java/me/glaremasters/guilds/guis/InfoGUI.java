@@ -1,3 +1,27 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2019 Glare
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package me.glaremasters.guilds.guis;
 
 import ch.jalu.configme.SettingsManager;
@@ -9,18 +33,23 @@ import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
 import com.github.stefvanschie.inventoryframework.pane.Pane;
 import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Guilds;
+import me.glaremasters.guilds.configuration.sections.CooldownSettings;
 import me.glaremasters.guilds.configuration.sections.GuildInfoSettings;
+import me.glaremasters.guilds.cooldowns.Cooldown;
+import me.glaremasters.guilds.cooldowns.CooldownHandler;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildTier;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.ItemBuilder;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -34,12 +63,16 @@ public class InfoGUI {
     private Guilds guilds;
     private SettingsManager settingsManager;
     private GuildHandler guildHandler;
+    private CooldownHandler cooldownHandler;
 
     public Gui getInfoGUI(Guild guild, Player player, CommandManager commandManager) {
 
         // Create the GUI with the desired name from the config
         Gui gui = new Gui(guilds, 3, ACFBukkitUtil.color(settingsManager.getProperty(GuildInfoSettings.GUI_NAME).replace("{name}",
                 guild.getName()).replace("{prefix}", guild.getPrefix())));
+
+        // Prevent players from being able to items into the GUIs
+        gui.setOnGlobalClick(event -> event.setCancelled(true));
 
         // Create the background pane which will just be stained glass
         OutlinePane backgroundPane = new OutlinePane(0, 0, 9, 3, Pane.Priority.LOW);
@@ -50,6 +83,9 @@ public class InfoGUI {
         // Create the pane for the guild vault item
         OutlinePane vaultPane = new OutlinePane(4, 2, 1, 1, Pane.Priority.HIGH);
 
+        // Creat the mane for the motd item
+        OutlinePane motdPane = new OutlinePane(4, 0, 1, 1, Pane.Priority.HIGH);
+
         // Add the items to the background pane
         createBackgroundItems(backgroundPane);
 
@@ -59,6 +95,9 @@ public class InfoGUI {
         // Add the vault item to the vault pane
         createVaultItem(vaultPane, guild, player, commandManager);
 
+        // Add the motd item to the info pane
+        createMotdItem(motdPane, guild);
+
         // Add the glass panes to the main GUI background pane
         gui.addPane(backgroundPane);
 
@@ -67,6 +106,9 @@ public class InfoGUI {
 
         // Add the vault pane to the GUI
         gui.addPane(vaultPane);
+
+        // Add the motd pane to the gui
+        gui.addPane(motdPane);
 
         // Return the new info GUI object
         return gui;
@@ -167,13 +209,36 @@ public class InfoGUI {
                             l.replace("{coords}", home)).collect(Collectors.toList())),
                     event -> {
                         event.setCancelled(true);
+                        if (cooldownHandler.hasCooldown(Cooldown.TYPES.Home.name(), player.getUniqueId())) {
+                            commandManager.getCommandIssuer(player).sendInfo(Messages.HOME__COOLDOWN, "{amount}",
+                                    String.valueOf(cooldownHandler.getRemaining(Cooldown.TYPES.Home.name(), player.getUniqueId())));
+                            return;
+                        }
+
                         if (settingsManager.getProperty(GuildInfoSettings.HOME_TELEPORT)) {
                             if (guild.getHome() == null) {
                                 commandManager.getCommandIssuer(player).sendInfo(Messages.HOME__NO_HOME_SET);
                                 return;
                             }
-                            player.teleport(guild.getHome().getAsLocation());
-                            commandManager.getCommandIssuer(player).sendInfo(Messages.HOME__TELEPORTED);
+
+                            if (settingsManager.getProperty(CooldownSettings.WU_HOME_ENABLED)) {
+                                Location initial = player.getLocation();
+                                commandManager.getCommandIssuer(player).sendInfo(Messages.HOME__WARMUP, "{amount}", String.valueOf(settingsManager.getProperty(CooldownSettings.WU_HOME)));
+                                Guilds.newChain().delay(settingsManager.getProperty(CooldownSettings.WU_HOME), TimeUnit.SECONDS).sync(() -> {
+                                    Location curr = player.getLocation();
+                                    if (initial.distance(curr) > 1) {
+                                        guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.HOME__CANCELLED);
+                                    }
+                                    else {
+                                        player.teleport(guild.getHome().getAsLocation());
+                                        guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.HOME__TELEPORTED);
+                                    }
+                                }).execute();
+                            } else {
+                                player.teleport(guild.getHome().getAsLocation());
+                                commandManager.getCommandIssuer(player).sendInfo(Messages.HOME__TELEPORTED);
+                            }
+                            cooldownHandler.addCooldown(player, Cooldown.TYPES.Home.name(), settingsManager.getProperty(CooldownSettings.HOME), TimeUnit.SECONDS);
                         }
                     }));
         }
@@ -196,6 +261,22 @@ public class InfoGUI {
                         // Open the new GUI
                         guilds.getGuiHandler().getVaultGUI().getVaultGUI(guild, player, guilds.getCommandManager()).show(event.getWhoClicked());
                     }));
+        }
+    }
+
+    /**
+     * Create the motd itmestack for the GUI
+     * @param pane the pane to add it to
+     * @param guild the guild that you're getting the motd of
+     */
+    private void createMotdItem(OutlinePane pane, Guild guild) {
+        // Add the MOTD item to the GUI
+        if (settingsManager.getProperty(GuildInfoSettings.MOTD_DISPLAY)) {
+            String motd = guild.getMotd() == null ? "" : guild.getMotd();
+            pane.addItem(new GuiItem(easyItem(settingsManager.getProperty(GuildInfoSettings.MOTD_MATERIAL),
+                    settingsManager.getProperty(GuildInfoSettings.MOTD_NAME),
+                    settingsManager.getProperty(GuildInfoSettings.MOTD_LORE).stream().map(l -> l.replace("{motd}", motd)).collect(Collectors.toList())),
+                    event -> event.setCancelled(true)));
         }
     }
 

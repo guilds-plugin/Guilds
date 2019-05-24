@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.commands.claims;
+package me.glaremasters.guilds.commands.motd;
 
 import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFUtil;
@@ -33,49 +33,38 @@ import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
-import me.glaremasters.guilds.exceptions.InvalidPermissionException;
 import me.glaremasters.guilds.guild.Guild;
-import me.glaremasters.guilds.guild.GuildRole;
+import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.messages.Messages;
-import me.glaremasters.guilds.utils.ClaimUtils;
 import me.glaremasters.guilds.utils.Constants;
 import org.bukkit.entity.Player;
-import org.codemc.worldguardwrapper.WorldGuardWrapper;
 
 /**
  * Created by Glare
- * Date: 4/4/2019
- * Time: 10:38 PM
+ * Date: 5/22/2019
+ * Time: 11:00 PM
  */
 @CommandAlias(Constants.ROOT_ALIAS)
-public class CommandUnclaim extends BaseCommand {
+public class CommandMotd extends BaseCommand {
 
+    @Dependency private GuildHandler guildHandler;
     @Dependency private SettingsManager settingsManager;
 
     /**
-     * Unclaim a guild claim
+     * View the motd of a guild
      * @param player the player running the command
-     * @param guild the guild the player is in
-     * @param role the role of the player
+     * @param guild the player's guild
      */
-    @Subcommand("unclaim")
-    @Description("{@@descriptions.unclaim}")
-    @CommandPermission(Constants.BASE_PERM + "unclaim")
-    public void execute(Player player, Guild guild, GuildRole role) {
-        if (!role.isUnclaimLand())
-            ACFUtil.sneaky(new InvalidPermissionException());
-
-        if (!ClaimUtils.isEnable(settingsManager))
-            ACFUtil.sneaky(new ExpectationNotMet(Messages.CLAIM__HOOK_DISABLED));
-
-        WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();
-
-        if (!ClaimUtils.checkAlreadyExist(wrapper, player, guild))
-            ACFUtil.sneaky(new ExpectationNotMet(Messages.UNCLAIM__NOT_FOUND));
-
-        ClaimUtils.removeClaim(wrapper, guild, player);
-
-        getCurrentCommandIssuer().sendInfo(Messages.UNCLAIM__SUCCESS);
+    // View the actual MOTD
+    @Subcommand("motd")
+    @Description("{@@descriptions.motd}")
+    @CommandPermission(Constants.BASE_PERM + "motd")
+    public void execute(Player player, Guild guild) {
+        // Check if motd is null
+        if (guild.getMotd() == null)
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.MOTD__NOT_SET));
+        // Tell the user their motd
+        getCurrentCommandIssuer().sendInfo(Messages.MOTD__MOTD, "{motd}", guild.getMotd());
     }
 
 }

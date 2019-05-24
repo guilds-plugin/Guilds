@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2018 Glare
+ * Copyright (c) 2019 Glare
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -86,6 +86,10 @@ public class GuildSettings implements SettingsHolder {
     "ONLY PUT THIS ON TRUE IF YOU HAVE WORLDGUARD INSTALLED OR YOU WILL BREAK STUFF"})
     public static final Property<Boolean> RESPECT_WG_PVP_FLAG =
             newProperty("guild.damage.respect-wg-pvp-flag", false);
+
+    @Comment("Would you like to send players their guild's motd on login?")
+    public static final Property<Boolean> MOTD_ON_LOGIN =
+            newProperty("guild.motd-on-login", true);
 
 
 

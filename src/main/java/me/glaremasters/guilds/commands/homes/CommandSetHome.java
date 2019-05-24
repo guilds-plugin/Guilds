@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2018 Glare
+ * Copyright (c) 2019 Glare
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -80,14 +80,15 @@ public class CommandSetHome extends BaseCommand {
 
         double cost = settingsManager.getProperty(CostSettings.SETHOME);
 
-        if (!EconomyUtils.hasEnough(getCurrentCommandManager(), economy, player, cost))
+        if (!EconomyUtils.hasEnough(guild.getBalance(), cost))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__NOT_ENOUGH_MONEY));
+
 
         cooldownHandler.addCooldown(player, Cooldown.TYPES.SetHome.name(), settingsManager.getProperty(CooldownSettings.SETHOME), TimeUnit.SECONDS);
 
         guild.setNewHome(player);
 
-        economy.withdrawPlayer(player, cost);
+        guild.setBalance(guild.getBalance() - cost);
         getCurrentCommandIssuer().sendInfo(Messages.SETHOME__SUCCESSFUL);
     }
 

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2018 Glare
+ * Copyright (c) 2019 Glare
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -43,5 +43,5 @@ public class GuildRole {
 
     private transient boolean chat, invite, kick, promote, demote, changePrefix, changeName, changeHome, removeGuild, addAlly,
             removeAlly, allyChat, openVault, transferGuild, changeStatus, activateBuff, upgradeGuild, depositMoney,
-            withdrawMoney, claimLand, unclaimLand, destroy, place, interact, createCode, deleteCode, seeCodeRedeemers;
+            withdrawMoney, claimLand, unclaimLand, destroy, place, interact, createCode, deleteCode, seeCodeRedeemers, modifyMotd;
 }

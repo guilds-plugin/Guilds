@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2018 Glare
+ * Copyright (c) 2019 Glare
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,6 +33,7 @@ import me.glaremasters.guilds.configuration.sections.GuildSettings;
 import me.glaremasters.guilds.configuration.sections.PluginSettings;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
+import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.JSONMessage;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -46,6 +47,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import static me.glaremasters.guilds.utils.StringUtils.color;
 
@@ -74,19 +76,43 @@ public class PlayerListener implements Listener {
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         if (settingsManager.getProperty(PluginSettings.ANNOUNCEMENTS_IN_GAME)) {
-            guilds.getServer().getScheduler().scheduleAsyncDelayedTask(guilds, () -> {
-                if (player.isOp()) {
-                    if (!ALREADY_INFORMED.contains(player.getUniqueId())) {
-                        try {
-                            JSONMessage.create(color("&f[&aGuilds&f]&r Announcements (Hover over me for more information)")).tooltip(guilds.getAnnouncements()).openURL(guilds.getDescription().getWebsite()).send(player);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        ALREADY_INFORMED.add(player.getUniqueId());
-                    }
+            Guilds.newChain().delay(5, TimeUnit.SECONDS).sync(() -> {
+                if (!player.isOp())
+                    return;
+
+                if (ALREADY_INFORMED.contains(player.getUniqueId()))
+                    return;
+
+                try {
+                    JSONMessage.create(color("&f[&aGuilds&f]&r Announcements (Hover over me for more information)")).tooltip(guilds.getAnnouncements()).openURL(guilds.getDescription().getWebsite()).send(player);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            }, 70L);
+
+                ALREADY_INFORMED.add(player.getUniqueId());
+            }).execute();
         }
+    }
+
+    /**
+     * Send the player their guild's motd if they have one
+     * @param event player join event
+     */
+    @EventHandler
+    public void tryMotd(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+        Guild guild = guildHandler.getGuild(player);
+
+        if (guild == null)
+            return;
+
+        if (guild.getMotd() == null)
+            return;
+
+        if (!settingsManager.getProperty(GuildSettings.MOTD_ON_LOGIN))
+            return;
+
+        Guilds.newChain().delay(5, TimeUnit.SECONDS).sync(() -> guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.MOTD__MOTD, "{motd}", guild.getMotd())).execute();
     }
 
     /**

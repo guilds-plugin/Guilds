@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2018 Glare
+ * Copyright (c) 2019 Glare
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -126,6 +126,7 @@ public class GuildHandler {
                     .createCode(roleSection.getBoolean(path + "create-code"))
                     .deleteCode(roleSection.getBoolean(path + "delete-code"))
                     .seeCodeRedeemers(roleSection.getBoolean(path + "see-code-redeemers"))
+                    .modifyMotd(roleSection.getBoolean(path + "modify-motd"))
                     .build());
         }
 

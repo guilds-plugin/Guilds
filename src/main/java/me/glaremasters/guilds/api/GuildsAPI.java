@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2018 Glare
+ * Copyright (c) 2019 Glare
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -52,7 +52,7 @@ public class GuildsAPI {
     }
 
     /**
-     * Get the guild of a player by uuid
+     * Get a guild by it's uuid
      * @param uuid uuid of the player
      * @return the guild they are in
      */

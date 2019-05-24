@@ -1,3 +1,27 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2019 Glare
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package me.glaremasters.guilds.guis;
 
 import ch.jalu.configme.SettingsManager;
@@ -40,15 +64,14 @@ public class VaultGUI {
                 ACFBukkitUtil.color(settingsManager.getProperty(VaultPickerSettings.GUI_NAME).replace("{name}",
                 guild.getName())));
 
+        // Prevent players from being able to items into the GUIs
+        gui.setOnGlobalClick(event -> event.setCancelled(true));
+
         // Create the pane for the main items
         OutlinePane foregroundPane = new OutlinePane(0, 0, 9, settingsManager.getProperty(VaultPickerSettings.GUI_SIZE), Pane.Priority.NORMAL);
 
-        OutlinePane bg = new OutlinePane(0, 0, 9, settingsManager.getProperty(VaultPickerSettings.GUI_SIZE), Pane.Priority.LOW);
-
         // Add the items to the foreground pane
         createForegroundItems(foregroundPane, guild, player, commandManager);
-
-        createBackgroundItems(bg);
 
         // Set it back to 0
         num = 0;
@@ -56,26 +79,8 @@ public class VaultGUI {
         // Add the foreground pane to the GUI
         gui.addPane(foregroundPane);
 
-        gui.addPane(bg);
-
         // Return the create GUI object
         return gui;
-    }
-
-    /**
-     * Create the background panes
-     * @param pane the pane to add to
-     */
-    private void createBackgroundItems(OutlinePane pane) {
-        // Start the itembuilder with stained glass
-        ItemBuilder builder = new ItemBuilder(new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) 7));
-        // Set the name to be empty
-        builder.setName(ACFBukkitUtil.color("&r"));
-        // Loop through 27 (three rows)
-        for (int i = 0; i < 27; i++) {
-            // Add the pane item to the GUI and cancel the click event on it
-            pane.addItem(new GuiItem(builder.build(), event -> event.setCancelled(true)));
-        }
     }
 
 

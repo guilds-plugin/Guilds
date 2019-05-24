@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2018 Glare
+ * Copyright (c) 2019 Glare
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -42,7 +42,7 @@ public enum Messages implements MessageKeyProvider {
 
     ADMIN__DELETE_WARNING, ADMIN__DELETE_SUCCESS, ADMIN__GUILD_VAULT_SIGN, ADMIN__PLAYER_ADDED, ADMIN__ADMIN_PLAYER_ADDED, ADMIN__ADMIN_GUILD_ADD, ADMIN__PLAYER_REMOVED, ADMIN__ADMIN_PLAYER_REMOVED,
 
-    ADMIN__ADMIN_GUILD_REMOVE, ADMIN__ADMIN_UPGRADE, ADMIN__ADMIN_GUILD_UPGRADE, ADMIN__SPY_ON, ADMIN__SPY_OFF,
+    ADMIN__ADMIN_GUILD_REMOVE, ADMIN__ADMIN_UPGRADE, ADMIN__ADMIN_GUILD_UPGRADE, ADMIN__SPY_ON, ADMIN__SPY_OFF, ADMIN__MOTD_SUCCESS, ADMIN__MOTD_REMOVE,
 
     BOOT__PLAYER_KICKED, BOOT__SUCCESSFUL, BOOT__KICKED,
 
@@ -101,7 +101,9 @@ public enum Messages implements MessageKeyProvider {
     LANGUAGES__SET, LANGUAGES__WARNING, LANGUAGES__UPDATED, LANGUAGES__CONSOLE_ONLY,
 
     HELP__HEADER, HELP__DETAILED_HEADER, HELP__FORMAT, HELP__COMMAND_FORMAT, HELP__PARAMETER_FORMAT,
-    HELP__PAGE_INFO, HELP__SEARCH_HEADER;
+    HELP__PAGE_INFO, HELP__SEARCH_HEADER,
+
+    MOTD__SUCCESS, MOTD__REMOVE, MOTD__MOTD, MOTD__NOT_SET;
 
     /**
      * Message keys that grab from the config to send messages
