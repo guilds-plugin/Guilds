@@ -2,6 +2,8 @@
 descriptions:
   accept: "Aceptar una invitación de gremio"
   admin-addplayer: "Comando de administración para agregar un jugador a un gremio"
+  admin-motd-set: "Set the MOTD for a Guild"
+  admin-motd-remove: "Remove the MOTD of a Guild"
   admin-prefix: "Comando de administrador para cambiar el prefijo de una guild"
   admin-rename: "Comando de administrador para cambiar el nombre de una guild"
   admin-remove: "Comando de administrador para remover una guild del servidor"
@@ -44,6 +46,9 @@ descriptions:
   language: "Cambia el idioma de los mensajes del plugin por ti"
   leave: "Dejar tu guild"
   list: "Listar todas las guilds"
+  motd: "View your Guild's MOTD"
+  motd-set: "Set your Guild's MOTD"
+  motd-remove: "Remove your Guild's MOTD"
   prefix: "Cambiar el prefijo de tu guild"
   promote: "Asciende a un usuario en tu Gremio"
   reload: "Recarga el archivo de configuración de plugin"
@@ -102,6 +107,8 @@ admin:
   admin-guild-upgrade: "¡&aTu nivel de gremio ha sido actualizado por un administrador!"
   spy-on: "¡&aEl chat espia de gremios ha sido habilitado!"
   spy-off: "¡&aEl chat espia de gremios ha sido deshabilitado!"
+  motd-success: "&aYou've successfully set the MOTD for {guild} to {motd}."
+  motd-remove: "&aYou've successfully removed the MOTD for {guild}."
 boot:
   player-kicked: "¡&cEl Jugador '{player}' ha sido expulsado del Gremio por {kicker}!"
   successful: "¡&aExpulsaste a {player} del gremio!"
@@ -226,4 +233,9 @@ help:
   parameter-format: "<c2>{syntaxorname}</c2>: <c3>{description}</c3>"
   page-info: "Showing page <c2>{page}</c2> of <c2>{totalpages}</c2> (<c3>{results}</c3> results)."
   search-header: "<c3>=== </c3><c1>Search results for </c1><c2>{commandprefix}{command} {search}</c2><c3> ===</c3>"
+motd:
+  success: "&aYou've successfully set your guild's MOTD to {motd}."
+  remove: "&aYou've successfully removed your guild's MOTD."
+  motd: "&7[&aGuild MOTD&7] {motd}"
+  not-set: "&cYour guild currently does not have a MOTD set."
 

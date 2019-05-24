@@ -2,6 +2,8 @@
 descriptions:
   accept: "接受公會邀請"
   admin-addplayer: "[管理用功能] 將玩家添加到公會"
+  admin-motd-set: "Set the MOTD for a Guild"
+  admin-motd-remove: "Remove the MOTD of a Guild"
   admin-prefix: "[管理用功能] 更改公會前綴"
   admin-rename: "[管理用功能] 重命名公會"
   admin-remove: "[管理用功能] 從伺服器中刪除公會"
@@ -44,6 +46,9 @@ descriptions:
   language: "更改語言預設文件"
   leave: "離開你的公會"
   list: "列出所有公會"
+  motd: "View your Guild's MOTD"
+  motd-set: "Set your Guild's MOTD"
+  motd-remove: "Remove your Guild's MOTD"
   prefix: "更改你的公會前綴"
   promote: "升級公會成員位階"
   reload: "重新載入設定檔"
@@ -102,6 +107,8 @@ admin:
   admin-guild-upgrade: "&8[&6公會&8] &f你的公會階級已由管理員升級 ！"
   spy-on: "&8[&6公會&8] &f開啟監視公會聊天頻道 ！"
   spy-off: "&8[&6公會&8] &f關閉監視公會聊天頻道 ！"
+  motd-success: "&aYou've successfully set the MOTD for {guild} to {motd}."
+  motd-remove: "&aYou've successfully removed the MOTD for {guild}."
 boot:
   player-kicked: "&8[&6公會&8] &f玩家 '{player}' 已被 {kicker} 逐出 ！"
   successful: "&8[&6公會&8] &f已逐出玩家 {player}"
@@ -226,4 +233,9 @@ help:
   parameter-format: "<c2>{syntaxorname}</c2>： <c3>{description}</c3>"
   page-info: "第<c2>{page}</c2>/<c2>{totalpages}</c2>頁 (<c3>{results}</c3>結果)."
   search-header: "<c3>=== </c3><c1>搜尋說明書： </c1><c2>{commandprefix}{command} {search}</c2><c3> ===</c3>"
+motd:
+  success: "&aYou've successfully set your guild's MOTD to {motd}."
+  remove: "&aYou've successfully removed your guild's MOTD."
+  motd: "&7[&aGuild MOTD&7] {motd}"
+  not-set: "&cYour guild currently does not have a MOTD set."
 

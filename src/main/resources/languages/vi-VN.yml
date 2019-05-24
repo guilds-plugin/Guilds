@@ -2,6 +2,8 @@
 descriptions:
   accept: "Chấp nhận một lời mời tham gia guild"
   admin-addplayer: "Lệnh Admin để thêm một người chơi vào một Guild"
+  admin-motd-set: "Set the MOTD for a Guild"
+  admin-motd-remove: "Remove the MOTD of a Guild"
   admin-prefix: "Lệnh Admin để thay đổi tiền tố của một Guild"
   admin-rename: "Lệnh Admin để đổi tên một Guild"
   admin-remove: "Lệnh Admin để xoá một Guild khỏi máy chủ"
@@ -44,6 +46,9 @@ descriptions:
   language: "Thay đổi ngôn ngữ plugin cho bạn"
   leave: "Rời khỏi Guild của bạn"
   list: "Danh sách tất cả Guild"
+  motd: "View your Guild's MOTD"
+  motd-set: "Set your Guild's MOTD"
+  motd-remove: "Remove your Guild's MOTD"
   prefix: "Thay đổi tiền tố Guild của bạn"
   promote: "Thăng chức một người dùng trong Guild của bạn"
   reload: "Tải lại file cấu hình của plugin"
@@ -102,6 +107,8 @@ admin:
   admin-guild-upgrade: "&aYour guild tier has been upgraded by an Admin!"
   spy-on: "&aGuild Chat Spy has been enabled!"
   spy-off: "&cGuild Chat Spy has been disabled!"
+  motd-success: "&aYou've successfully set the MOTD for {guild} to {motd}."
+  motd-remove: "&aYou've successfully removed the MOTD for {guild}."
 boot:
   player-kicked: "&cNgười chơi '{player}' đã bị kick khỏi guild bởi {kicker}!"
   successful: "&aĐã kick thành công {player} khỏi guild của bạn!"
@@ -226,4 +233,9 @@ help:
   parameter-format: "<c2>{syntaxorname}</c2>: <c3>{description}</c3>"
   page-info: "Showing page <c2>{page}</c2> of <c2>{totalpages}</c2> (<c3>{results}</c3> results)."
   search-header: "<c3>=== </c3><c1>Search results for </c1><c2>{commandprefix}{command} {search}</c2><c3> ===</c3>"
+motd:
+  success: "&aYou've successfully set your guild's MOTD to {motd}."
+  remove: "&aYou've successfully removed your guild's MOTD."
+  motd: "&7[&aGuild MOTD&7] {motd}"
+  not-set: "&cYour guild currently does not have a MOTD set."
 

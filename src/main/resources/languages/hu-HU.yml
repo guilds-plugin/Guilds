@@ -2,6 +2,8 @@
 descriptions:
   accept: "Fogadjon el egy céh meghívást"
   admin-addplayer: "Adminisztrátori parancs egy játékos hozzáadásához a céhhez"
+  admin-motd-set: "Set the MOTD for a Guild"
+  admin-motd-remove: "Remove the MOTD of a Guild"
   admin-prefix: "Adminisztrátori parancs a céh előtagjának/prefixének módosításához"
   admin-rename: "Adminisztrátori parancs a céh átnevezéséhez"
   admin-remove: "Adminisztrátori parancs a céh eltávolításához a szerverről."
@@ -44,6 +46,9 @@ descriptions:
   language: "Change the language of the plugin messages for you"
   leave: "Céh elhagyása"
   list: "Az összes céh kilistázása"
+  motd: "View your Guild's MOTD"
+  motd-set: "Set your Guild's MOTD"
+  motd-remove: "Remove your Guild's MOTD"
   prefix: "A céh előtagjának megváltoztatása"
   promote: "Egy céhtag előléptetése"
   reload: "Újratölti a plugin konfigurációs fájljait."
@@ -102,6 +107,8 @@ admin:
   admin-guild-upgrade: "&aA céhed szintje fel lett fejlesztve egy adminisztrátor által."
   spy-on: "&aCsevegési kéme bekapcsolva!"
   spy-off: "&cCsevegési kém kikapcsolva"
+  motd-success: "&aYou've successfully set the MOTD for {guild} to {motd}."
+  motd-remove: "&aYou've successfully removed the MOTD for {guild}."
 boot:
   player-kicked: "&cJátékos '{player}' ki lett dobva a céhből {kicker} által!"
   successful: "&aSikeresen kirúgtad {player} játékost a céhből!"
@@ -226,4 +233,9 @@ help:
   parameter-format: "<c2>{syntaxorname}</c2>: <c3>{description}</c3>"
   page-info: "Showing page <c2>{page}</c2> of <c2>{totalpages}</c2> (<c3>{results}</c3> results)."
   search-header: "<c3>=== </c3><c1>Search results for </c1><c2>{commandprefix}{command} {search}</c2><c3> ===</c3>"
+motd:
+  success: "&aYou've successfully set your guild's MOTD to {motd}."
+  remove: "&aYou've successfully removed your guild's MOTD."
+  motd: "&7[&aGuild MOTD&7] {motd}"
+  not-set: "&cYour guild currently does not have a MOTD set."
 

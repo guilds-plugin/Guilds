@@ -2,6 +2,8 @@
 descriptions:
   accept: "Приема покана за гилдия"
   admin-addplayer: "Администраторска команда, с която да добавите играч в Гилдия"
+  admin-motd-set: "Set the MOTD for a Guild"
+  admin-motd-remove: "Remove the MOTD of a Guild"
   admin-prefix: "Администраторска команда, с която да промените префикс на Гилдия"
   admin-rename: "Администраторска команда, с която да прекръстите Гилдия"
   admin-remove: "Администраторска команда, с която да премахнете Гилдия от сървъра"
@@ -44,6 +46,9 @@ descriptions:
   language: "Change the language of the plugin messages for you"
   leave: "Leave your Guild"
   list: "Показва всички Гилдии"
+  motd: "View your Guild's MOTD"
+  motd-set: "Set your Guild's MOTD"
+  motd-remove: "Remove your Guild's MOTD"
   prefix: "Change the prefix of your Guild"
   promote: "Promote a user in your Guild"
   reload: "Reloads the plugin's configuration file"
@@ -102,6 +107,8 @@ admin:
   admin-guild-upgrade: "&aYour guild tier has been upgraded by an Admin!"
   spy-on: "&aGuild Chat Spy has been enabled!"
   spy-off: "&cGuild Chat Spy has been disabled!"
+  motd-success: "&aYou've successfully set the MOTD for {guild} to {motd}."
+  motd-remove: "&aYou've successfully removed the MOTD for {guild}."
 boot:
   player-kicked: "&cPlayer '{player}' has been kicked from the guild by {kicker}!"
   successful: "&aSuccessfully kicked {player} from your guild!"
@@ -226,4 +233,9 @@ help:
   parameter-format: "<c2>{syntaxorname}</c2>: <c3>{description}</c3>"
   page-info: "Showing page <c2>{page}</c2> of <c2>{totalpages}</c2> (<c3>{results}</c3> results)."
   search-header: "<c3>=== </c3><c1>Search results for </c1><c2>{commandprefix}{command} {search}</c2><c3> ===</c3>"
+motd:
+  success: "&aYou've successfully set your guild's MOTD to {motd}."
+  remove: "&aYou've successfully removed your guild's MOTD."
+  motd: "&7[&aGuild MOTD&7] {motd}"
+  not-set: "&cYour guild currently does not have a MOTD set."
 
