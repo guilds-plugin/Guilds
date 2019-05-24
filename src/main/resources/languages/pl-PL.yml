@@ -2,6 +2,8 @@
 descriptions:
   accept: "Zaakceptuj zaproszenie do gildi"
   admin-addplayer: "Komenda administratora aby zaprosić gracza do gildi"
+  admin-motd-set: "Set the MOTD for a Guild"
+  admin-motd-remove: "Remove the MOTD of a Guild"
   admin-prefix: "Komenda administratora aby zmienić prefix gildi"
   admin-rename: "Komenda administratora aby zmienić nazwę gildi"
   admin-remove: "Komenda administratora aby usunąć gildie z serwera"
@@ -44,6 +46,9 @@ descriptions:
   language: "Zmień język wiadomości wtyczek dla siebie"
   leave: "Wyjdz z gildii"
   list: "Lista wszystkich gildii"
+  motd: "View your Guild's MOTD"
+  motd-set: "Set your Guild's MOTD"
+  motd-remove: "Remove your Guild's MOTD"
   prefix: "Zmień prefix gildii"
   promote: "Awansuj gracza w gildii"
   reload: "Przeładuj plik konfiguracyjny pluginu"
@@ -102,6 +107,8 @@ admin:
   admin-guild-upgrade: "&aTwój tier gildii został ulepszony przez Admina!"
   spy-on: "&aPodgląd Chatu gildii włączony!"
   spy-off: "&cPodgląd Chatu gildii wyłączony!"
+  motd-success: "&aYou've successfully set the MOTD for {guild} to {motd}."
+  motd-remove: "&aYou've successfully removed the MOTD for {guild}."
 boot:
   player-kicked: "&cGracz '{player}' został wyrzucony z gildii przez {kicker}!"
   successful: "&aPomyślnie wyrzuciłeś gracza {player} z twojej gildii!"
@@ -226,4 +233,9 @@ help:
   parameter-format: "<c2>{syntaxorname}</c2>: <c3>{description}</c3>"
   page-info: "Pokazuje stronę <c2>{page}</c2> z <c2>{totalpages}</c2> (<c3>{results}</c3> wynik)."
   search-header: "<c3>=== </c3><c1>Wyniki wyszukiwania dla </c1><c2>{commandprefix}{command} {search}</c2><c3> ===</c3>"
+motd:
+  success: "&aYou've successfully set your guild's MOTD to {motd}."
+  remove: "&aYou've successfully removed your guild's MOTD."
+  motd: "&7[&aGuild MOTD&7] {motd}"
+  not-set: "&cYour guild currently does not have a MOTD set."
 
