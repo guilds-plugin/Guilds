@@ -2,6 +2,8 @@
 descriptions:
   accept: "Aceitar um convite de uma guild"
   admin-addplayer: "Comando administrativo para adicionar um player para uma guild"
+  admin-motd-set: "Set the MOTD for a Guild"
+  admin-motd-remove: "Remove the MOTD of a Guild"
   admin-prefix: "Comando administrativo para mudar o prefix de uma guild"
   admin-rename: "Comando administrativo para renomear uma guild"
   admin-remove: "Comando administrativo para remover uma guild do servidor"
@@ -44,6 +46,9 @@ descriptions:
   language: "Change the language of the plugin messages for you"
   leave: "Sair da guild"
   list: "Listar todas as guilds"
+  motd: "View your Guild's MOTD"
+  motd-set: "Set your Guild's MOTD"
+  motd-remove: "Remove your Guild's MOTD"
   prefix: "Alterar prefix de sua guild"
   promote: "Promover um player em sua guild"
   reload: "Recarrega o arquivo de configuração do plugin"
@@ -102,6 +107,8 @@ admin:
   admin-guild-upgrade: "&aSua guild foi melhorada por um administrador!"
   spy-on: "&aEspião de chat de guild ativado!"
   spy-off: "&cEspião de chat de guild desativado!"
+  motd-success: "&aYou've successfully set the MOTD for {guild} to {motd}."
+  motd-remove: "&aYou've successfully removed the MOTD for {guild}."
 boot:
   player-kicked: "&cPlayer '{player}' foi kickado da guild por {kicker}!"
   successful: "&aVocê kickou {player} de sua guild!"
@@ -226,4 +233,9 @@ help:
   parameter-format: "<c2>{syntaxorname}</c2>: <c3>{description}</c3>"
   page-info: "Showing page <c2>{page}</c2> of <c2>{totalpages}</c2> (<c3>{results}</c3> results)."
   search-header: "<c3>=== </c3><c1>Search results for </c1><c2>{commandprefix}{command} {search}</c2><c3> ===</c3>"
+motd:
+  success: "&aYou've successfully set your guild's MOTD to {motd}."
+  remove: "&aYou've successfully removed your guild's MOTD."
+  motd: "&7[&aGuild MOTD&7] {motd}"
+  not-set: "&cYour guild currently does not have a MOTD set."
 
