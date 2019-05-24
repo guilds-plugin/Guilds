@@ -2,6 +2,8 @@
 descriptions:
   accept: "Accepteer een Guild uitnodiging"
   admin-addplayer: "Admin command om een speler aan een Guild toe te voegen"
+  admin-motd-set: "Set the MOTD for a Guild"
+  admin-motd-remove: "Remove the MOTD of a Guild"
   admin-prefix: "Admin command om een Guild's prefix te veranderen"
   admin-rename: "Admin command om een Guild te hernoemen"
   admin-remove: "Admin command om een Guild te verwijderen van de server"
@@ -44,6 +46,9 @@ descriptions:
   language: "De taal van de plugin berichten wijzigen"
   leave: "Verlaat jouw Guild"
   list: "Zie alle Guilds"
+  motd: "View your Guild's MOTD"
+  motd-set: "Set your Guild's MOTD"
+  motd-remove: "Remove your Guild's MOTD"
   prefix: "Verander de prefix van jouw Guild"
   promote: "Promoot een speler in jouw Guild"
   reload: "Herlaad het plugin configuratie bestand"
@@ -102,6 +107,8 @@ admin:
   admin-guild-upgrade: "&aJouw Guild tier is geupgrade door een Admin!"
   spy-on: "&aGuild Chat Spy is ingeschakeld!"
   spy-off: "&cGuild Chat Spy is uitgeschakeld!!"
+  motd-success: "&aYou've successfully set the MOTD for {guild} to {motd}."
+  motd-remove: "&aYou've successfully removed the MOTD for {guild}."
 boot:
   player-kicked: "&cSpeler'{player}' is uit de Guild gezet door {kicker}!"
   successful: "&a{player} is succesvol uit jouw Guild gezet!"
@@ -226,4 +233,9 @@ help:
   parameter-format: "<c2>{syntaxorname}</c2>: <c3>{description}</c3>"
   page-info: "Pagina <c2>{page}</c2> van <c2>{totalpages}</c2> (<c3>{results}</c3> resultaten)."
   search-header: "<c3>=== </c3><c1>Zoekresultaten voor </c1><c2>{commandprefix}{command} {search}</c2><c3> ===</c3>"
+motd:
+  success: "&aYou've successfully set your guild's MOTD to {motd}."
+  remove: "&aYou've successfully removed your guild's MOTD."
+  motd: "&7[&aGuild MOTD&7] {motd}"
+  not-set: "&cYour guild currently does not have a MOTD set."
 
