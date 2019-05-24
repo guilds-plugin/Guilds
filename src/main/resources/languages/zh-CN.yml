@@ -2,6 +2,8 @@
 descriptions:
   accept: "同意公会邀请"
   admin-addplayer: "以管理员身份强制将玩家添加到公会"
+  admin-motd-set: "Set the MOTD for a Guild"
+  admin-motd-remove: "Remove the MOTD of a Guild"
   admin-prefix: "以管理员身份强制更改公会前缀"
   admin-rename: "以管理员身份强制重命名公会"
   admin-remove: "以管理员身份强制从服务器中删除公会"
@@ -44,6 +46,9 @@ descriptions:
   language: "更改你的语言预设文件"
   leave: "离开你的公会"
   list: "列出所有公会"
+  motd: "View your Guild's MOTD"
+  motd-set: "Set your Guild's MOTD"
+  motd-remove: "Remove your Guild's MOTD"
   prefix: "更改你的公会前缀"
   promote: "升级公会成员位阶"
   reload: "chongzia"
@@ -102,6 +107,8 @@ admin:
   admin-guild-upgrade: "&7[&6公会&7]&f你的公会阶级已由管理员升级!"
   spy-on: "&7[&6公会&7]&f开启监视公会聊天频道!"
   spy-off: "&7[&6公会&7]&f关闭监视工会聊天频道!"
+  motd-success: "&aYou've successfully set the MOTD for {guild} to {motd}."
+  motd-remove: "&aYou've successfully removed the MOTD for {guild}."
 boot:
   player-kicked: "&7[&6公会&7]&f玩家 '{player}' 已被 {kicker} 踢出!"
   successful: "&7[&6公会&7]&f已踢出玩家 {player}"
@@ -226,4 +233,9 @@ help:
   parameter-format: "<c2>{syntaxorname}</c2>: <c3>{description}</c3>"
   page-info: "帮助页<c2>{page}</c2>的 <c2>{totalpages}</c2> (<c3>{results}</c3>结果)."
   search-header: "<c3>=== </c3><c1>搜索帮助</c1><c2>{commandprefix}{command} {search}</c2><c3> ===</c3>"
+motd:
+  success: "&aYou've successfully set your guild's MOTD to {motd}."
+  remove: "&aYou've successfully removed your guild's MOTD."
+  motd: "&7[&aGuild MOTD&7] {motd}"
+  not-set: "&cYour guild currently does not have a MOTD set."
 
