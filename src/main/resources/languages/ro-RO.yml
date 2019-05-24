@@ -2,6 +2,8 @@
 descriptions:
   accept: "Accepta o invitatie in breasla"
   admin-addplayer: "Comanda pentru admini pentru a adauga un membru in breasla"
+  admin-motd-set: "Set the MOTD for a Guild"
+  admin-motd-remove: "Remove the MOTD of a Guild"
   admin-prefix: "Comanda pentru admini pentru a schimba prefixul breslei"
   admin-rename: "Comanda pentru admini pentru a redenumi o breasla"
   admin-remove: "Comanda pentru admini pentru a sterge o breasla"
@@ -44,6 +46,9 @@ descriptions:
   language: "Modificati limba pluginului pentru dumneavoastra"
   leave: "Paraseste breasla"
   list: "Listeaza toate breslele"
+  motd: "View your Guild's MOTD"
+  motd-set: "Set your Guild's MOTD"
+  motd-remove: "Remove your Guild's MOTD"
   prefix: "Schimba prefixul breslei"
   promote: "Promoveaza un membru al breslei"
   reload: "Reincarcati configurarea pluginului"
@@ -102,6 +107,8 @@ admin:
   admin-guild-upgrade: "&aBreasla ta a fost upgradata de catre un Admin!"
   spy-on: "&aSpy chat-ul Breslei a fost activat!"
   spy-off: "&cSpy chat-ul Breslei a fost dezactivat!"
+  motd-success: "&aYou've successfully set the MOTD for {guild} to {motd}."
+  motd-remove: "&aYou've successfully removed the MOTD for {guild}."
 boot:
   player-kicked: "&cJucatorul '{player}' a fost data afara din Breasla de catre {kicker}!"
   successful: "&aL-ati dat afara pe din Breasla pe {player} cu succes!"
@@ -226,4 +233,9 @@ help:
   parameter-format: "<c2>{syntaxorname}</c2>: <c3>{description}</c3>"
   page-info: "Showing page <c2>{page}</c2> of <c2>{totalpages}</c2> (<c3>{results}</c3> results)."
   search-header: "<c3>=== </c3><c1>Search results for </c1><c2>{commandprefix}{command} {search}</c2><c3> ===</c3>"
+motd:
+  success: "&aYou've successfully set your guild's MOTD to {motd}."
+  remove: "&aYou've successfully removed your guild's MOTD."
+  motd: "&7[&aGuild MOTD&7] {motd}"
+  not-set: "&cYour guild currently does not have a MOTD set."
 
