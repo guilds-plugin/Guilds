@@ -32,6 +32,7 @@ import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.guild.GuildTier;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -68,6 +69,16 @@ public class GuildsAPI {
      */
     public Guild getGuild(@NotNull String name) {
         return guildHandler.getGuild(name);
+    }
+
+    /**
+     * Get a copy of one of a guild's vaults
+     * @param guild the guild to get the vault of
+     * @param vaultNumber which vault to get
+     * @return guild vault
+     */
+    public Inventory getGuildVault(@NotNull Guild guild, int vaultNumber) {
+        return guildHandler.getGuildVault(guild, vaultNumber);
     }
 
     /**
