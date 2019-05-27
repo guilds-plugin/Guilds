@@ -111,6 +111,39 @@ public class EntityListener implements Listener {
         }
     }
 
+    @EventHandler
+    public void onArrow(EntityDamageByEntityEvent event) {
+
+        if (!(event.getEntity() instanceof Player))
+            return;
+
+        if (!(event.getDamager() instanceof Arrow))
+            return;
+
+        Arrow arrow = (Arrow) event.getDamager();
+
+        if (!(arrow.getShooter() instanceof Player))
+            return;
+
+        Player damagee = (Player) event.getEntity();
+        Player damager = (Player) arrow.getShooter();
+
+        if (settingsManager.getProperty(GuildSettings.RESPECT_WG_PVP_FLAG)) {
+            event.setCancelled(ClaimUtils.checkPvpDisabled(damagee));
+            return;
+        }
+
+        if (guildHandler.isSameGuild(damagee, damager)) {
+            event.setCancelled(!settingsManager.getProperty(GuildSettings.GUILD_DAMAGE));
+            return;
+        }
+
+        if (guildHandler.isAlly(damagee, damager)) {
+            event.setCancelled(!settingsManager.getProperty(GuildSettings.ALLY_DAMAGE));
+        }
+
+    }
+
     /**
      * Handles flame arrows
      * @param event
