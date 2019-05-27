@@ -134,4 +134,13 @@ public class CooldownHandler {
         getCooldown(type).getUuids().put(guild.getId(), (System.currentTimeMillis() + timeUnit.toMillis(length)));
     }
 
+    /**
+     * Create the cooldowns for the plugin
+     */
+    public void createCooldowns() {
+        for (Cooldown.TYPES type : Cooldown.TYPES.values()) {
+            addCooldownType(type.name());
+        }
+    }
+
 }

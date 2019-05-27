@@ -38,7 +38,6 @@ import me.glaremasters.guilds.api.GuildsAPI;
 import me.glaremasters.guilds.configuration.SettingsHandler;
 import me.glaremasters.guilds.configuration.sections.HooksSettings;
 import me.glaremasters.guilds.configuration.sections.PluginSettings;
-import me.glaremasters.guilds.cooldowns.Cooldown;
 import me.glaremasters.guilds.cooldowns.CooldownHandler;
 import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.database.cooldowns.CooldownsProvider;
@@ -414,7 +413,7 @@ public final class Guilds extends JavaPlugin {
         info("Enabled API!");
 
         // Create cooldowns if they don't exist
-        createCooldowns();
+        cooldownHandler.createCooldowns();
 
         info("Ready to go! That only took " + (System.currentTimeMillis() - startingTime) + "ms");
         getServer().getScheduler().scheduleAsyncRepeatingTask(this, () -> {
@@ -570,15 +569,6 @@ public final class Guilds extends JavaPlugin {
         commandManager.registerDependency(Economy.class, economy);
         commandManager.registerDependency(Permission.class, permissions);
         commandManager.registerDependency(CooldownHandler.class, cooldownHandler);
-    }
-
-    /**
-     * Create the cooldowns for the plugin
-     */
-    private void createCooldowns() {
-        for (Cooldown.TYPES type : Cooldown.TYPES.values()) {
-            cooldownHandler.addCooldownType(type.name());
-        }
     }
 
 }
