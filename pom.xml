@@ -205,7 +205,7 @@
         <dependency>
             <groupId>org.codemc.worldguardwrapper</groupId>
             <artifactId>worldguardwrapper</artifactId>
-            <version>1.1.4-SNAPSHOT</version>
+            <version>1.1.5-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
 

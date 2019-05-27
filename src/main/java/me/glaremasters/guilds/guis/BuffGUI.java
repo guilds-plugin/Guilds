@@ -78,14 +78,14 @@ public class BuffGUI {
                 settingsManager.getProperty(GuildBuffSettings.HASTE_AMPLIFIER), settingsManager.getProperty(GuildBuffSettings.HASTE_PRICE),
                 settingsManager.getProperty(GuildBuffSettings.HASTE_ICON), settingsManager.getProperty(GuildBuffSettings.HASTE_NAME),
                 settingsManager.getProperty(GuildBuffSettings.HASTE_LORE),
-                pane, 0,
+                pane, settingsManager.getProperty(GuildBuffSettings.HASTE_SLOT),
                 settingsManager.getProperty(GuildBuffSettings.HASTE_DISPLAY));
         // Speed
         setBuffItem(commandManager, settingsManager.getProperty(GuildBuffSettings.SPEED_TYPE), settingsManager.getProperty(GuildBuffSettings.SPEED_TIME),
                 settingsManager.getProperty(GuildBuffSettings.SPEED_AMPLIFIER), settingsManager.getProperty(GuildBuffSettings.SPEED_PRICE),
                 settingsManager.getProperty(GuildBuffSettings.SPEED_ICON), settingsManager.getProperty(GuildBuffSettings.SPEED_NAME),
                 settingsManager.getProperty(GuildBuffSettings.SPEED_LORE),
-                pane, 1,
+                pane, settingsManager.getProperty(GuildBuffSettings.SPEED_SLOT),
                 settingsManager.getProperty(GuildBuffSettings.SPEED_DISPLAY));
         // Fire
         setBuffItem(commandManager, settingsManager.getProperty(GuildBuffSettings.FR_TYPE), settingsManager.getProperty(GuildBuffSettings.FR_TIME),
@@ -99,42 +99,42 @@ public class BuffGUI {
                 settingsManager.getProperty(GuildBuffSettings.NV_AMPLIFIER), settingsManager.getProperty(GuildBuffSettings.NV_PRICE),
                 settingsManager.getProperty(GuildBuffSettings.NV_ICON), settingsManager.getProperty(GuildBuffSettings.NV_NAME),
                 settingsManager.getProperty(GuildBuffSettings.NV_LORE),
-                pane, 3,
+                pane, settingsManager.getProperty(GuildBuffSettings.NV_SLOT),
                 settingsManager.getProperty(GuildBuffSettings.NV_DISPLAY));
         // Invisibility
         setBuffItem(commandManager, settingsManager.getProperty(GuildBuffSettings.INVISIBILITY_TYPE), settingsManager.getProperty(GuildBuffSettings.INVISIBILITY_TIME),
                 settingsManager.getProperty(GuildBuffSettings.INVISIBILITY_AMPLIFIER), settingsManager.getProperty(GuildBuffSettings.INVISIBILITY_PRICE),
                 settingsManager.getProperty(GuildBuffSettings.INVISIBILITY_ICON), settingsManager.getProperty(GuildBuffSettings.INVISIBILITY_NAME),
                 settingsManager.getProperty(GuildBuffSettings.INVISIBILITY_LORE),
-                pane, 4,
+                pane, settingsManager.getProperty(GuildBuffSettings.INVISIBILITY_SLOT),
                 settingsManager.getProperty(GuildBuffSettings.INVISIBILITY_DISPLAY));
         // Strength
         setBuffItem(commandManager, settingsManager.getProperty(GuildBuffSettings.STRENGTH_TYPE), settingsManager.getProperty(GuildBuffSettings.STRENGTH_TIME),
                 settingsManager.getProperty(GuildBuffSettings.STRENGTH_AMPLIFIER), settingsManager.getProperty(GuildBuffSettings.STRENGTH_PRICE),
                 settingsManager.getProperty(GuildBuffSettings.STRENGTH_ICON), settingsManager.getProperty(GuildBuffSettings.STRENGTH_NAME),
                 settingsManager.getProperty(GuildBuffSettings.STRENGTH_LORE),
-                pane, 5,
+                pane, settingsManager.getProperty(GuildBuffSettings.STRENGTH_SLOT),
                 settingsManager.getProperty(GuildBuffSettings.STRENGTH_DISPLAY));
         // Jump
         setBuffItem(commandManager, settingsManager.getProperty(GuildBuffSettings.JUMP_TYPE), settingsManager.getProperty(GuildBuffSettings.JUMP_TIME),
                 settingsManager.getProperty(GuildBuffSettings.JUMP_AMPLIFIER), settingsManager.getProperty(GuildBuffSettings.JUMP_PRICE),
                 settingsManager.getProperty(GuildBuffSettings.JUMP_ICON), settingsManager.getProperty(GuildBuffSettings.JUMP_NAME),
                 settingsManager.getProperty(GuildBuffSettings.JUMP_LORE),
-                pane, 6,
+                pane, settingsManager.getProperty(GuildBuffSettings.JUMP_SLOT),
                 settingsManager.getProperty(GuildBuffSettings.JUMP_DISPLAY));
         // Water
         setBuffItem(commandManager, settingsManager.getProperty(GuildBuffSettings.WB_TYPE), settingsManager.getProperty(GuildBuffSettings.WB_TIME),
                 settingsManager.getProperty(GuildBuffSettings.WB_AMPLIFIER), settingsManager.getProperty(GuildBuffSettings.WB_PRICE),
                 settingsManager.getProperty(GuildBuffSettings.WB_ICON), settingsManager.getProperty(GuildBuffSettings.WB_NAME),
                 settingsManager.getProperty(GuildBuffSettings.WB_LORE),
-                pane, 7,
+                pane, settingsManager.getProperty(GuildBuffSettings.WB_SLOT),
                 settingsManager.getProperty(GuildBuffSettings.WB_DISPLAY));
         // Regen
         setBuffItem(commandManager, settingsManager.getProperty(GuildBuffSettings.REGENERATION_TYPE), settingsManager.getProperty(GuildBuffSettings.REGENERATION_TIME),
                 settingsManager.getProperty(GuildBuffSettings.REGENERATION_AMPLIFIER), settingsManager.getProperty(GuildBuffSettings.REGENERATION_PRICE),
                 settingsManager.getProperty(GuildBuffSettings.REGENERATION_ICON), settingsManager.getProperty(GuildBuffSettings.REGENERATION_NAME),
                 settingsManager.getProperty(GuildBuffSettings.REGENERATION_LORE),
-                pane, 8,
+                pane, settingsManager.getProperty(GuildBuffSettings.REGENERATION_SLOT),
                 settingsManager.getProperty(GuildBuffSettings.REGENERATION_DISPLAY));
 
         gui.addPane(pane);

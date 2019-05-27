@@ -82,6 +82,10 @@ public class GuildBuffSettings implements SettingsHolder {
     public static final Property<Boolean> HASTE_DISPLAY =
             newProperty(BUFF_PATH + "haste.display", true);
 
+    @Comment("What slot would you like this to use?")
+    public static final Property<Integer> HASTE_SLOT =
+            newProperty(BUFF_PATH + "haste.slot", 0);
+
     @Comment("What do you want to name the buff?")
     public static final Property<String> SPEED_NAME =
             newProperty(BUFF_PATH + "speed.name", "&a&lBlessing of the Cheetah");
@@ -113,6 +117,10 @@ public class GuildBuffSettings implements SettingsHolder {
     @Comment("Do you want this buff to show in-game?")
     public static final Property<Boolean> SPEED_DISPLAY =
             newProperty(BUFF_PATH + "speed.display", true);
+
+    @Comment("What slot would you like this to use?")
+    public static final Property<Integer> SPEED_SLOT =
+            newProperty(BUFF_PATH + "speed.slot", 1);
 
     @Comment("What do you want to name the buff?")
     public static final Property<String> FR_NAME =
@@ -146,6 +154,10 @@ public class GuildBuffSettings implements SettingsHolder {
     public static final Property<Boolean> FR_DISPLAY =
             newProperty(BUFF_PATH + "fire-resistance.display", true);
 
+    @Comment("What slot would you like this to use?")
+    public static final Property<Integer> FR_SLOT =
+            newProperty(BUFF_PATH + "fire-resistance.slot", 2);
+
     @Comment("What do you want to name the buff?")
     public static final Property<String> NV_NAME =
             newProperty(BUFF_PATH + "night-vision.name", "&a&lEyes of the Lurking Demon");
@@ -177,6 +189,10 @@ public class GuildBuffSettings implements SettingsHolder {
     @Comment("Do you want this buff to show in-game?")
     public static final Property<Boolean> NV_DISPLAY =
             newProperty(BUFF_PATH + "night-vision.display", true);
+
+    @Comment("What slot would you like this to use?")
+    public static final Property<Integer> NV_SLOT =
+            newProperty(BUFF_PATH + "night-vision.slot", 3);
 
     @Comment("What do you want to name the buff?")
     public static final Property<String> INVISIBILITY_NAME =
@@ -210,6 +226,10 @@ public class GuildBuffSettings implements SettingsHolder {
     public static final Property<Boolean> INVISIBILITY_DISPLAY =
             newProperty(BUFF_PATH + "invisibility.display", true);
 
+    @Comment("What slot would you like this to use?")
+    public static final Property<Integer> INVISIBILITY_SLOT =
+            newProperty(BUFF_PATH + "invisibility.slot", 4);
+
     @Comment("What do you want to name the buff?")
     public static final Property<String> STRENGTH_NAME =
             newProperty(BUFF_PATH + "strength.name", "&a&lMighty Strength of the Pouncing Lion");
@@ -242,6 +262,10 @@ public class GuildBuffSettings implements SettingsHolder {
     public static final Property<Boolean> STRENGTH_DISPLAY =
             newProperty(BUFF_PATH + "strength.display", true);
 
+    @Comment("What slot would you like this to use?")
+    public static final Property<Integer> STRENGTH_SLOT =
+            newProperty(BUFF_PATH + "strength.slot", 5);
+
     @Comment("What do you want to name the buff?")
     public static final Property<String> JUMP_NAME =
             newProperty(BUFF_PATH + "jump.name", "&a&lBounce of the Quick Witted Rabbit");
@@ -264,7 +288,7 @@ public class GuildBuffSettings implements SettingsHolder {
 
     @Comment("What type of potion is this?")
     public static final Property<String> JUMP_TYPE =
-            newProperty(BUFF_PATH + "jump.type", "JUMP_BOOST");
+            newProperty(BUFF_PATH + "jump.type", "JUMP");
 
     @Comment("You can put as much as you want here")
     public static final Property<List<String>> JUMP_LORE =
@@ -273,6 +297,10 @@ public class GuildBuffSettings implements SettingsHolder {
     @Comment("Do you want this buff to show in-game?")
     public static final Property<Boolean> JUMP_DISPLAY =
             newProperty(BUFF_PATH + "jump.display", true);
+
+    @Comment("What slot would you like this to use?")
+    public static final Property<Integer> JUMP_SLOT =
+            newProperty(BUFF_PATH + "jump.slot", 6);
 
     @Comment("What do you want to name the buff?")
     public static final Property<String> WB_NAME =
@@ -306,6 +334,10 @@ public class GuildBuffSettings implements SettingsHolder {
     public static final Property<Boolean> WB_DISPLAY =
             newProperty(BUFF_PATH + "water-breathing.display", true);
 
+    @Comment("What slot would you like this to use?")
+    public static final Property<Integer> WB_SLOT =
+            newProperty(BUFF_PATH + "water-breathing.slot", 7);
+
     @Comment("What do you want to name the buff?")
     public static final Property<String> REGENERATION_NAME =
             newProperty(BUFF_PATH + "regeneration.name", "&a&lIntegrity of the Mystic Witch");
@@ -337,6 +369,10 @@ public class GuildBuffSettings implements SettingsHolder {
     @Comment("Do you want this buff to show in-game?")
     public static final Property<Boolean> REGENERATION_DISPLAY =
             newProperty(BUFF_PATH + "regeneration.display", true);
+
+    @Comment("What slot would you like this to use?")
+    public static final Property<Integer> REGENERATION_SLOT =
+            newProperty(BUFF_PATH + "regeneration.slot", 8);
 
     private GuildBuffSettings() {
     }
