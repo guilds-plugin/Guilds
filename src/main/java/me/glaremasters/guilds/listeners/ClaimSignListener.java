@@ -55,7 +55,7 @@ public class ClaimSignListener implements Listener {
         if (!event.getLine(0).equalsIgnoreCase("[Guild Claim]"))
             return;
 
-        if (!player.hasPermission("guilds.claimsigns.place")) {
+        if (!player.hasPermission("guilds.claimsigns.place") && !player.hasPermission("worldguard.region.redefine.*")) {
             guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.CLAIM__SIGN_NO_PERMISSION);
             event.setCancelled(true);
             return;
