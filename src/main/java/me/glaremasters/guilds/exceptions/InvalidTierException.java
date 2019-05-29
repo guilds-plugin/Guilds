@@ -22,31 +22,23 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.guild;
+package me.glaremasters.guilds.exceptions;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.ToString;
+import co.aikar.commands.InvalidCommandArgument;
+import me.glaremasters.guilds.messages.Messages;
 
-import java.util.List;
+/**
+ * Created by GlareMasters
+ * Date: 4/4/2019
+ * Time: 4:42 PM
+ */
+public class InvalidTierException extends InvalidCommandArgument {
 
-@Getter
-@Builder
-@ToString
-@AllArgsConstructor
-public class GuildTier {
-
-    private final int level;
-    private final transient String name;
-    private final transient double cost;
-    private final transient int maxMembers;
-    private final transient int vaultAmount;
-    private final transient double mobXpMultiplier;
-    private final transient double damageMultiplier;
-    private final transient double maxBankBalance;
-    private final transient int membersToRankup;
-    private final transient boolean useBuffs;
-    private final transient List<String> permissions;
+    /**
+     * Thrown when a user's role isn't allowed to do an action.
+     */
+    public InvalidTierException() {
+        super(Messages.ERROR__TIER_NO_PERMISSION, false);
+    }
 
 }

@@ -80,6 +80,7 @@ error:
   already-in-guild: "&cYou're already in a guild!"
   no-guild: "&cYou're not in a guild!"
   role-no-permission: "&cYour role is not high enough to do that!"
+  tier-no-permission: "&cYour guild tier is not high enough to do that!"
   guild-no-exist: "&cThat Guild does not exist! (If you are getting this due to trying to join a guild that has a custom colored name, you can try doing /join guild <player who invited you> to join also!"
   player-not-found: "&cPlayer '{player}&r&c' is not online!"
   player-not-in-guild: "&c{player} is not in your Guild!"
