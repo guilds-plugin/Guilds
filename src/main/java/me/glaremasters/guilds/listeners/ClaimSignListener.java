@@ -96,6 +96,11 @@ public class ClaimSignListener implements Listener {
             return;
 
         Player player = event.getPlayer();
+
+        // Idk why this would be null but apparently it can be
+        if (player == null)
+            return;
+
         Sign sign = (Sign) block.getState();
 
         if (!sign.getLine(0).equalsIgnoreCase("[Guild Claim]"))
