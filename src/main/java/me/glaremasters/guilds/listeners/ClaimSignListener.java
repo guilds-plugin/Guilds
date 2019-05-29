@@ -25,16 +25,13 @@
 package me.glaremasters.guilds.listeners;
 
 import ch.jalu.configme.SettingsManager;
-import co.aikar.commands.ACFUtil;
 import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.configuration.sections.ClaimSettings;
-import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.ClaimUtils;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
