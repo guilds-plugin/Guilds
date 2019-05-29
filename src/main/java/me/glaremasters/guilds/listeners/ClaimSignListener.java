@@ -93,6 +93,9 @@ public class ClaimSignListener implements Listener {
     public void onSignInteract(PlayerInteractEvent event) {
         Block block = event.getClickedBlock();
 
+        if (block == null)
+            return;
+
         if (block.getType() != Material.WALL_SIGN && block.getType() != Material.SIGN_POST)
             return;
 
