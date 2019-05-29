@@ -63,6 +63,10 @@ public class ClaimSettings implements SettingsHolder {
     public static final Property<List<String>> DISABLED_WORLDS =
             newListProperty("claims.disabled-worlds", "");
 
+    @Comment("Would you like to enable claim signs?")
+    public static final Property<Boolean> CLAIM_SIGNS =
+            newProperty("claims.claim-signs", false);
+
     private ClaimSettings() {
     }
 

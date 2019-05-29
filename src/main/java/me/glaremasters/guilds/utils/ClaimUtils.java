@@ -101,6 +101,17 @@ public class ClaimUtils {
     }
 
     /**
+     * Check if a worldguard region already exists
+     * @param wrapper the wrapper
+     * @param player the player to get the world of
+     * @param name the name of the region
+     * @return exist or not
+     */
+    public static boolean checkAlreadyExist(WorldGuardWrapper wrapper, Player player, String name) {
+        return wrapper.getRegion(player.getWorld(), name).isPresent();
+    }
+
+    /**
      * Get a list of regions around a player
      * @param player the player being checked
      * @return the list of surrounding regions

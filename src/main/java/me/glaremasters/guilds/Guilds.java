@@ -50,6 +50,7 @@ import me.glaremasters.guilds.guild.GuildCode;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.guis.GUIHandler;
+import me.glaremasters.guilds.listeners.ClaimSignListener;
 import me.glaremasters.guilds.listeners.EntityListener;
 import me.glaremasters.guilds.listeners.EssentialsChatListener;
 import me.glaremasters.guilds.listeners.PlayerListener;
@@ -516,6 +517,7 @@ public final class Guilds extends JavaPlugin {
 
         if (settingsHandler.getSettingsManager().getProperty(HooksSettings.WORLDGUARD)) {
             getServer().getPluginManager().registerEvents(new WorldGuardListener(guildHandler), this);
+            getServer().getPluginManager().registerEvents(new ClaimSignListener(this, settingsHandler.getSettingsManager()), this);
         }
     }
 

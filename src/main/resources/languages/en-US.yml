@@ -200,6 +200,11 @@ claim:
   overlap: "&cYour claim could not be created because there is another claim nearby"
   success: "&aNew claim created! It goes from {loc1} to {loc2}!"
   hook-disabled: "&cPlease enable claims in the config to utilize this feature"
+  sign-not-enabled: "&cThis feature is not enabled. To use it, you must turn it on via the config."
+  sign-no-permission: "&cYou do not have permission to create Claim Sign!"
+  sign-invalid-format: "&cInvalid Claim Sign format! Please try again!"
+  sign-invalid-region: "&cInvalid Worldguard Region!"
+  sign-placed: "&aYou've successfully created a Claim Sign for the region {region} with the price {price}."
 unclaim:
   success: "&aYou've successfully remove your guild claim!"
   not-found: "&cYou can't unclaim land that you don't have!"
