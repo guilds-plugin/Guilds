@@ -102,7 +102,7 @@ import java.util.stream.Stream;
                 @MavenLibrary(groupId = "com.github.stefvanschie.inventoryframework", artifactId = "IF", version = "0.3.1", repo = "https://repo.glaremasters.me/repository/public/"),
                 @MavenLibrary(groupId = "com.dumptruckman.minecraft", artifactId = "JsonConfiguration", version = "1.1", repo = "https://repo.glaremasters.me/repository/public/"),
                 @MavenLibrary(groupId = "net.minidev", artifactId = "json-smart", version = "1.1.1", repo = "https://repo.glaremasters.me/repository/public/"),
-                @MavenLibrary(groupId = "org.codemc.worldguardwrapper", artifactId = "worldguardwrapper", version = "1.1.5-SNAPSHOT", repo = "https://repo.glaremasters.me/repository/public/"),
+                @MavenLibrary(groupId = "org.codemc.worldguardwrapper", artifactId = "worldguardwrapper", version = "1.1.6-SNAPSHOT", repo = "https://repo.glaremasters.me/repository/public/"),
                 @MavenLibrary(groupId = "org.javassist", artifactId = "javassist", version = "3.21.0-GA"),
                 @MavenLibrary(groupId = "org.reflections", artifactId = "reflections", version = "0.9.11"),
                 @MavenLibrary(groupId = "ch.jalu", artifactId = "configme", version = "1.1.0", repo = "https://repo.glaremasters.me/repository/public/")
