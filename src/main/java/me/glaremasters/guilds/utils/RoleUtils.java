@@ -66,8 +66,26 @@ public class RoleUtils {
         return guild.getMember(player.getUniqueId()).getRole().getLevel() == 1;
     }
 
+    /**
+     * Check if you a user can promote another user
+     * @param guild the guild they are in
+     * @param target the target to check
+     * @param player the player to check
+     * @return if they can promote or not
+     */
     public static boolean checkPromote(Guild guild, OfflinePlayer target, OfflinePlayer player) {
         return (guild.getMember(target.getUniqueId()).getRole().getLevel() - 1) == guild.getMember(player.getUniqueId()).getRole().getLevel();
+    }
+
+    /**
+     * Check if two users have the same role
+     * @param guild the guild they are in
+     * @param player the player to check
+     * @param target the target to check
+     * @return same role or not
+     */
+    public static boolean sameRole(Guild guild, OfflinePlayer player, OfflinePlayer target) {
+        return (guild.getMember(player.getUniqueId()).getRole().getLevel() == guild.getMember(target.getUniqueId()).getRole().getLevel());
     }
 
     /**
