@@ -10,6 +10,7 @@ descriptions:
   admin-removeplayer: "Admin command to remove a player from a Guild"
   admin-status: "Admin command to change a Guild's status"
   admin-spy: "Admin command to enable guild chat spy"
+  admin-unclaim: "Admin command to unclaim a guild's land"
   admin-update-languages: "Admin command to update the language files"
   admin-upgrade: "Admin command to upgrade a Guild's tier"
   admin-vault: "Admin command to view a guild's vault"
