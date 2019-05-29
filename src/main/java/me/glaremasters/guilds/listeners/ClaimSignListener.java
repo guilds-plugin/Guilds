@@ -32,6 +32,7 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.ClaimUtils;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
@@ -92,15 +93,10 @@ public class ClaimSignListener implements Listener {
     public void onSignInteract(PlayerInteractEvent event) {
         Block block = event.getClickedBlock();
 
-        if (!(event.getClickedBlock().getState() instanceof Sign))
+        if (block.getType() != Material.WALL_SIGN && block.getType() != Material.SIGN_POST)
             return;
 
         Player player = event.getPlayer();
-
-        // Idk why this would be null but apparently it can be
-        if (player == null)
-            return;
-
         Sign sign = (Sign) block.getState();
 
         if (!sign.getLine(0).equalsIgnoreCase("[Guild Claim]"))
