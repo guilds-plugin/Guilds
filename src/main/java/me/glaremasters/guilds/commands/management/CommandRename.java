@@ -40,9 +40,11 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.messages.Messages;
+import me.glaremasters.guilds.utils.ClaimUtils;
 import me.glaremasters.guilds.utils.Constants;
 import me.glaremasters.guilds.utils.StringUtils;
 import org.bukkit.entity.Player;
+import org.codemc.worldguardwrapper.WorldGuardWrapper;
 
 /**
  * Created by Glare
@@ -82,6 +84,16 @@ public class CommandRename extends BaseCommand {
         }
 
         guild.setName(StringUtils.color(name));
+
+         if (ClaimUtils.isEnable(settingsManager)) {
+             WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();
+             if (ClaimUtils.checkAlreadyExist(wrapper, player, guild)) {
+                 ClaimUtils.getGuildClaim(wrapper, player, guild).ifPresent(region -> {
+                     ClaimUtils.setEnterMessage(wrapper, region, settingsManager, guild);
+                     ClaimUtils.setExitMessage(wrapper, region, settingsManager, guild);
+                 });
+             }
+         }
 
         getCurrentCommandIssuer().sendInfo(Messages.RENAME__SUCCESSFUL,
                 "{name}", name);
