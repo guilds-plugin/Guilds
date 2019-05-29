@@ -63,9 +63,15 @@ public class ClaimSettings implements SettingsHolder {
     public static final Property<List<String>> DISABLED_WORLDS =
             newListProperty("claims.disabled-worlds", "");
 
-    @Comment("Would you like to enable claim signs?")
+    @Comment({"Would you like to enable claim signs?", "Format - ",
+    "First Line: [Guild Claim]", "Second Line: WorldGuard Region Name", "Third Line: Price"})
     public static final Property<Boolean> CLAIM_SIGNS =
             newProperty("claims.claim-signs", false);
+
+    @Comment({"Would you like to make it so that claims can only be aquired through the purchasing with signs?",
+            "This will disable the regular claim commands."})
+    public static final Property<Boolean> FORCE_CLAIM_SIGNS =
+            newProperty("claims.force-claim-signs", false);
 
     private ClaimSettings() {
     }

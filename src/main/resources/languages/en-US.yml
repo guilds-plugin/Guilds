@@ -205,6 +205,9 @@ claim:
   sign-invalid-format: "&cInvalid Claim Sign format! Please try again!"
   sign-invalid-region: "&cInvalid Worldguard Region!"
   sign-placed: "&aYou've successfully created a Claim Sign for the region {region} with the price {price}."
+  sign-not-enough: "&cYou do not have enough money in your Guild Bank to purchase this Guild Claim."
+  sign-forced: "&cYou can only claim land via Claim Signs! Ask a staff member on your server for help!"
+  sign-buy-success: "&aHooray! You have bought this claim!"
 unclaim:
   success: "&aYou've successfully remove your guild claim!"
   not-found: "&cYou can't unclaim land that you don't have!"

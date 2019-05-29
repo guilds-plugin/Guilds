@@ -517,7 +517,7 @@ public final class Guilds extends JavaPlugin {
 
         if (settingsHandler.getSettingsManager().getProperty(HooksSettings.WORLDGUARD)) {
             getServer().getPluginManager().registerEvents(new WorldGuardListener(guildHandler), this);
-            getServer().getPluginManager().registerEvents(new ClaimSignListener(this, settingsHandler.getSettingsManager()), this);
+            getServer().getPluginManager().registerEvents(new ClaimSignListener(this, settingsHandler.getSettingsManager(), guildHandler), this);
         }
     }
 

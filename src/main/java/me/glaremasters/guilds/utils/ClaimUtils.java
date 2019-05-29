@@ -36,6 +36,7 @@ import org.codemc.worldguardwrapper.flag.IWrappedFlag;
 import org.codemc.worldguardwrapper.flag.WrappedState;
 import org.codemc.worldguardwrapper.region.IWrappedDomain;
 import org.codemc.worldguardwrapper.region.IWrappedRegion;
+import org.codemc.worldguardwrapper.selection.ICuboidSelection;
 
 import java.util.Optional;
 import java.util.Set;
@@ -139,6 +140,16 @@ public class ClaimUtils {
     }
 
     /**
+     * Create a new claim from an existing one
+     * @param wrapper the wrapper
+     * @param guild the guild the claim is going to
+     * @param selection the selection of the old claim.
+     */
+    public static void createClaim(WorldGuardWrapper wrapper, Guild guild, ICuboidSelection selection) {
+        wrapper.addCuboidRegion(getClaimName(guild), selection.getMinimumPoint(), selection.getMaximumPoint());
+    }
+
+    /**
      * Remove a guild claim
      * @param wrapper worldguard wrapper
      * @param guild the guild of the player
@@ -156,6 +167,28 @@ public class ClaimUtils {
      */
     public static Optional<IWrappedRegion> getGuildClaim(WorldGuardWrapper wrapper, Player player, Guild guild) {
         return wrapper.getRegion(player.getWorld(), getClaimName(guild));
+    }
+
+    /**
+     * Get a claim object
+     * @param wrapper the wrapper
+     * @param player the player to check world
+     * @param name the name of the claim
+     * @return claim
+     */
+    public static Optional<IWrappedRegion> getClaim(WorldGuardWrapper wrapper, Player player, String name) {
+        return wrapper.getRegion(player.getWorld(), name);
+    }
+
+    /**
+     * Get the selection of a claim
+     * @param wrapper the wrapper
+     * @param player the player to get the world of
+     * @param name name of claim
+     * @return selection
+     */
+    public static ICuboidSelection getSelection(WorldGuardWrapper wrapper, Player player, String name) {
+        return (ICuboidSelection) wrapper.getRegion(player.getWorld(), name).get().getSelection();
     }
 
     /**
