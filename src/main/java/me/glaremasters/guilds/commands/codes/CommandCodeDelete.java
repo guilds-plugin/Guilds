@@ -55,7 +55,6 @@ public class CommandCodeDelete extends BaseCommand {
      * @param guild the guild the invite is being deleted from
      * @param role the role of the user
      */
-
     @Subcommand("code delete")
     @Description("{@@descriptions.code-delete}")
     @CommandPermission(Constants.CODE_PERM + "delete")

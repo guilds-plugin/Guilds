@@ -50,6 +50,11 @@ public class CommandLanguage extends BaseCommand {
 
     @Dependency private Guilds guilds;
 
+    /**
+     * Set the language for the plugin
+     * @param player the player to set the language for
+     * @param language the language to set it as
+     */
     @Subcommand("language")
     @Description("{@@descriptions.language}")
     @CommandPermission(Constants.BASE_PERM + "language")

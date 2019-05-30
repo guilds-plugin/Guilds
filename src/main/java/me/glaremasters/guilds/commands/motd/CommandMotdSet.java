@@ -59,7 +59,6 @@ public class CommandMotdSet extends BaseCommand {
      * @param role the role of the player
      * @param motd the new motd for the guild
      */
-    // Set the MOTD
     @Subcommand("motd set")
     @Description("{@@descriptions.motd-set}")
     @CommandPermission(Constants.MOTD_PERM + "modify")

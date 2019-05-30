@@ -58,7 +58,6 @@ public class CommandAdminMotdRemove extends BaseCommand {
      * @param player the player running the command
      * @param guild the guild to modify
      */
-    // Admin set it, add in args
     @Subcommand("admin motd remove")
     @Description("{@@descriptions.admin-motd-remove}")
     @CommandPermission(Constants.ADMIN_PERM)

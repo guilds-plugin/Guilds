@@ -59,7 +59,6 @@ public class CommandAdminMotdSet extends BaseCommand {
      * @param guild the guild to modify
      * @param motd the new motd for the guild
      */
-    // Admin set it, add in args
     @Subcommand("admin motd set")
     @Description("{@@descriptions.admin-motd-set}")
     @CommandPermission(Constants.ADMIN_PERM)
