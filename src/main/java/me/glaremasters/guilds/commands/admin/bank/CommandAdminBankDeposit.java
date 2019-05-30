@@ -26,6 +26,7 @@ package me.glaremasters.guilds.commands.admin.bank;
 
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
+import co.aikar.commands.CommandIssuer;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
@@ -33,41 +34,50 @@ import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
-import co.aikar.commands.annotation.Values;
+import co.aikar.commands.annotation.Syntax;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.Constants;
 import ch.jalu.configme.SettingsManager;
 import me.glaremasters.guilds.guild.GuildHandler;
-import org.bukkit.entity.Player;
 
 /**
  * Created by Glare
  * Date: 5/30/2019
- * Time: 2:19 PM
+ * Time: 2:35 PM
  */
 @CommandAlias(Constants.ROOT_ALIAS)
-public class CommandAdminBankBalance extends BaseCommand {
+public class CommandAdminBankDeposit extends BaseCommand {
 
     @Dependency private GuildHandler guildHandler;
     @Dependency private SettingsManager settingsManager;
 
     /**
-     * Admin command to check a guild's bank balance
-     * @param player the player running the command
-     * @param name the name of the of guild
+     * Admin command to put money into a guild's bank
+     * @param issuer the person running the command
+     * @param name the name of the guild
+     * @param amount the amount to put in
      */
-    @Subcommand("admin bank balance")
-    @Description("{@@descriptions.admin-bank-balance}")
+    @Subcommand("admin bank deposit")
+    @Description("{@@descriptions.admin-bank-deposit}")
     @CommandPermission(Constants.ADMIN_PERM)
+    @Syntax("<amount>")
     @CommandCompletion("@guilds")
-    public void execute(Player player, @Single String name) {
+    public void execute(CommandIssuer issuer, @Single String name, double amount) {
         Guild guild = guildHandler.getGuild(name);
 
         if (guild == null)
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
 
-        getCurrentCommandIssuer().sendInfo(Messages.ADMIN__BANK_BALANCE, "{guild}", guild.getName(), "{balance}", String.valueOf(guild.getBalance()));
+        double balance = guild.getBalance();
+        double total = balance + amount;
+
+        guild.setBalance(total);
+
+        getCurrentCommandIssuer().sendInfo(Messages.ADMIN__BANK_DEPOSIT, "{amount}", String.valueOf(amount),
+                "{guild}", guild.getName(),
+                "{total}", String.valueOf(total));
     }
+
 }
