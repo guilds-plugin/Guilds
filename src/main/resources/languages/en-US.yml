@@ -2,6 +2,7 @@
 descriptions:
   accept: "Accept a guild invite"
   admin-addplayer: "Admin command to add a player to a Guild"
+  admin-bank-balance: "Admin command to view a guild's bank balance"
   admin-motd-set: "Set the MOTD for a Guild"
   admin-motd-remove: "Remove the MOTD of a Guild"
   admin-prefix: "Admin command to change a Guild's prefix"
@@ -111,6 +112,7 @@ admin:
   spy-off: "&cGuild Chat Spy has been disabled!"
   motd-success: "&aYou've successfully set the MOTD for {guild} to {motd}."
   motd-remove: "&aYou've successfully removed the MOTD for {guild}."
+  bank-balance: "&aThe guild {guild} has a bank balance of {balance}."
 boot:
   player-kicked: "&cPlayer '{player}' has been kicked from the guild by {kicker}!"
   successful: "&aSuccessfully kicked {player} from your guild!"
