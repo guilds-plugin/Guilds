@@ -43,7 +43,8 @@ public class GuildSettings implements SettingsHolder {
     @Comment({"With the default RegEx currently set, the minimum length of the prefix is 1 and the maximum is 64.",
             "To change this, adjust the number and you can refer to the link below on how to modify RegEx.",
             "RegEx (https://en.wikipedia.org/wiki/Regular_expression) used to only allow certain characters (default only allows alphanumeric characters).",
-            "To turn off the ability to use colors, remove the & from the RegEx."
+            "To turn off the ability to use colors, remove the & from the RegEx.",
+            "Trying to use symbols such as Chinese ones? Try this Regex: [\\u4E00-\\u9FA5_a-zA-Z0-9&_\\一-龥]{1,6}"
     })
     public static final Property<String> NAME_REQUIREMENTS =
             newProperty("guild.requirements.name", "[a-zA-Z0-9&]{1,64}");
