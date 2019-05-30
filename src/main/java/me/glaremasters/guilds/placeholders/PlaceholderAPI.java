@@ -32,26 +32,48 @@ import org.bukkit.entity.Player;
 
 public class PlaceholderAPI extends PlaceholderExpansion {
 
+    /**
+     * Get the identifier of the expansion
+     * @return identifier
+     */
     @Override
     public String getIdentifier() {
         return "guilds";
     }
 
+    /**
+     * Keep alive through papi reloads
+     * @return
+     */
     @Override
     public boolean persist() {
         return true;
     }
 
+    /**
+     * Get the author of the expansion
+     * @return author
+     */
     @Override
     public String getAuthor() {
         return "blockslayer22";
     }
 
+    /**
+     * Get the version of the expansion
+     * @return version
+     */
     @Override
     public String getVersion() {
-        return "1.1.0";
+        return "1.2";
     }
 
+    /**
+     * ADd in the placeholders
+     * @param p player to check
+     * @param arg the placeholder to check with
+     * @return placeholder
+     */
     @Override
     public String onPlaceholderRequest(Player p, String arg) {
 
