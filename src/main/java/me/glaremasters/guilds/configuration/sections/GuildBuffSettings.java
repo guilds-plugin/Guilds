@@ -347,7 +347,7 @@ public class GuildBuffSettings implements SettingsHolder {
             newProperty(BUFF_PATH + "strength.commands.clicker.enabled", false);
 
     @Comment("What commands would you like to execute on the player that clicked? (Supports {player})")
-    public static final Property<List<String>> HSTRENGTH_CLICKER_COMMANDS =
+    public static final Property<List<String>> STRENGTH_CLICKER_COMMANDS =
             newListProperty(BUFF_PATH + "strength.commands.clicker.commands", "");
 
     @Comment("Would you like to enable commands to be sent to all online players in the guild?")
