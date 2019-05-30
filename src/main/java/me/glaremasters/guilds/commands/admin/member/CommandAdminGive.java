@@ -22,58 +22,55 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.commands.admin;
+package me.glaremasters.guilds.commands.admin.member;
 
-import co.aikar.commands.ACFBukkitUtil;
+import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
-import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.annotation.Values;
+import co.aikar.commands.bukkit.contexts.OnlinePlayer;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
-import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.Constants;
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 
 /**
  * Created by Glare
- * Date: 4/4/2019
- * Time: 9:29 PM
+ * Date: 4/8/2019
+ * Time: 2:32 PM
  */
 @CommandAlias(Constants.ROOT_ALIAS)
-public class CommandAdminRename extends BaseCommand {
+public class CommandAdminGive extends BaseCommand {
 
     @Dependency private GuildHandler guildHandler;
+    @Dependency private SettingsManager settingsManager;
 
     /**
-     * Admin command to rename a guild
-     * @param player the admin running the command
-     * @param name the name of the guild
-     * @param newName the new name of the guild
+     * Give a player upgrade tickets
+     * @param sender the executor of this command
+     * @param player the player receiving the tickets
+     * @param amount amount of tickets
      */
-    @Subcommand("admin rename")
-    @Description("{@@descriptions.admin-prefix}")
+    @Subcommand("admin give")
+    @Description("{@@descriptions.give}")
     @CommandPermission(Constants.ADMIN_PERM)
-    @CommandCompletion("@guilds")
-    @Syntax("<name> <new name>")
-    public void execute(Player player, @Values("@guilds") @Single String name, String newName) {
-        Guild guild = guildHandler.getGuild(name);
+    @CommandCompletion("@online")
+    @Syntax("<player> <amount>")
+    public void execute(CommandSender sender, @Values("@online") OnlinePlayer player, @Default("1") Integer amount) {
+        if (player == null)
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__PLAYER_NOT_FOUND));
 
-        if (guild == null)
-            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
-
-        guild.setName(ACFBukkitUtil.color(newName));
-        getCurrentCommandIssuer().sendInfo(Messages.RENAME__SUCCESSFUL,
-                "{name}", newName);
-
+        player.getPlayer().getInventory().addItem(guildHandler.getUpgradeTicket(settingsManager, amount));
+        getCurrentCommandIssuer().sendInfo(Messages.CONFIRM__SUCCESS);
     }
 
 }

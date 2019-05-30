@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.commands.admin;
+package me.glaremasters.guilds.commands.admin.member;
 
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;

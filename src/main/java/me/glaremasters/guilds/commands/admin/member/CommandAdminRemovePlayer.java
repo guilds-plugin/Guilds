@@ -22,57 +22,67 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.commands.admin;
+package me.glaremasters.guilds.commands.admin.member;
 
-import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
-import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
-import co.aikar.commands.annotation.Values;
+import co.aikar.commands.annotation.Syntax;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.Constants;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 /**
  * Created by Glare
- * Date: 5/22/2019
- * Time: 11:06 PM
+ * Date: 4/4/2019
+ * Time: 9:10 PM
  */
 @CommandAlias(Constants.ROOT_ALIAS)
-public class CommandAdminMotdRemove extends BaseCommand {
+public class CommandAdminRemovePlayer extends BaseCommand {
 
     @Dependency private GuildHandler guildHandler;
-    @Dependency private SettingsManager settingsManager;
 
     /**
-     * Remove the MOTD of a guild
-     * @param player the player running the command
-     * @param guild the guild to modify
+     * Admin command to remove a player from a guild
+     * @param player the admin running the command
+     * @param target the guild the player is being removed from
      */
-    @Subcommand("admin motd remove")
-    @Description("{@@descriptions.admin-motd-remove}")
+    @Subcommand("admin removeplayer")
+    @Description("{@@descriptions.admin-removeplayer}")
     @CommandPermission(Constants.ADMIN_PERM)
-    @CommandCompletion("@guilds")
-    public void execute(Player player, @Values("@guilds") @Single String guild) {
-        // Get the target guild
-        Guild targetGuild = guildHandler.getGuild(guild);
-        // Check if target guild is null, throw error
-        if (targetGuild == null)
-            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
-        // Remove the MOTD of the guild
-        targetGuild.setMotd(null);
-        // Tell user they removed the motd
-        getCurrentCommandIssuer().sendInfo(Messages.ADMIN__MOTD_REMOVE, "{guild}", targetGuild.getName());
+    @Syntax("<name>")
+    public void execute(Player player, String target) {
+        OfflinePlayer removing = Bukkit.getOfflinePlayer(target);
 
+        if (removing == null)
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__PLAYER_NOT_FOUND));
+
+        Guild guild = guildHandler.getGuild(removing);
+
+        if (guild == null)
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
+
+        guild.removeMember(removing);
+
+        if (removing.isOnline())
+            getCurrentCommandManager().getCommandIssuer(removing).sendInfo(Messages.ADMIN__PLAYER_REMOVED,
+                    "{guild}", guild.getName());
+
+        getCurrentCommandIssuer().sendInfo(Messages.ADMIN__ADMIN_PLAYER_REMOVED,
+                "{player}", removing.getName(),
+                "{guild}", guild.getName());
+
+        guild.sendMessage(getCurrentCommandManager(), Messages.ADMIN__ADMIN_GUILD_REMOVE,
+                "{player}", removing.getName());
     }
 
 }

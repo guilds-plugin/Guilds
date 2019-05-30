@@ -22,10 +22,9 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.commands.admin;
+package me.glaremasters.guilds.commands.admin.manage;
 
 import ch.jalu.configme.SettingsManager;
-import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
@@ -35,44 +34,76 @@ import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.annotation.Syntax;
+import co.aikar.commands.annotation.Values;
+import me.glaremasters.guilds.actions.ActionHandler;
+import me.glaremasters.guilds.actions.ConfirmAction;
+import me.glaremasters.guilds.api.events.GuildRemoveEvent;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.messages.Messages;
+import me.glaremasters.guilds.utils.ClaimUtils;
 import me.glaremasters.guilds.utils.Constants;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 /**
  * Created by Glare
- * Date: 5/22/2019
- * Time: 11:06 PM
+ * Date: 4/4/2019
+ * Time: 8:53 PM
  */
 @CommandAlias(Constants.ROOT_ALIAS)
-public class CommandAdminMotdSet extends BaseCommand {
+public class CommandAdminRemove extends BaseCommand {
 
     @Dependency private GuildHandler guildHandler;
+    @Dependency private ActionHandler actionHandler;
     @Dependency private SettingsManager settingsManager;
 
     /**
-     * Set the MOTD of a guild
-     * @param player the player running the command
-     * @param guild the guild to modify
-     * @param motd the new motd for the guild
+     * Admin command to remove a guild from the server
+     * @param player the admin running the command
+     * @param name the name of the guild being removed
      */
-    @Subcommand("admin motd set")
-    @Description("{@@descriptions.admin-motd-set}")
+    @Subcommand("admin remove")
+    @Description("{@@descriptions.admin-remove}")
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
-    public void execute(Player player, @Single String guild, String motd) {
-        // Get the target guild
-        Guild targetGuild = guildHandler.getGuild(guild);
-        // Check if target guild is null, throw error
-        if (targetGuild == null)
+    @Syntax("<guild name>")
+    public void execute(Player player, @Values("@guilds") @Single String name) {
+        Guild guild = guildHandler.getGuild(name);
+
+        if (guild == null)
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
-        // Set the MOTD of the guild
-        targetGuild.setMotd(ACFBukkitUtil.color(motd));
-        // Tell the player that they set the motd
-        getCurrentCommandIssuer().sendInfo(Messages.ADMIN__MOTD_SUCCESS, "{guild}", targetGuild.getName(), "{motd}", targetGuild.getMotd());
+
+        getCurrentCommandIssuer().sendInfo(Messages.DELETE__WARNING,
+                "{guild}", name);
+
+        actionHandler.addAction(player, new ConfirmAction() {
+            @Override
+            public void accept() {
+                GuildRemoveEvent event = new GuildRemoveEvent(player, guild, GuildRemoveEvent.Cause.ADMIN_DELETED);
+                Bukkit.getPluginManager().callEvent(event);
+
+                if (event.isCancelled())
+                    return;
+                ClaimUtils.deleteWithGuild(player, guild, settingsManager);
+
+                guild.sendMessage(getCurrentCommandManager(), Messages.LEAVE__GUILDMASTER_LEFT,
+                        "{player}", Bukkit.getOfflinePlayer(guild.getGuildMaster().getUuid()).getName());
+
+                guildHandler.removeGuild(guild);
+                getCurrentCommandIssuer().sendInfo(Messages.ADMIN__DELETE_SUCCESS,
+                        "{guild}", name);
+                actionHandler.removeAction(player);
+            }
+
+            @Override
+            public void decline() {
+                actionHandler.removeAction(player);
+            }
+        });
+
     }
 
 }

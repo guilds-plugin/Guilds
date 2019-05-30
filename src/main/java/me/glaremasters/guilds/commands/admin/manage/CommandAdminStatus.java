@@ -22,9 +22,8 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.commands.admin;
+package me.glaremasters.guilds.commands.admin.manage;
 
-import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
@@ -46,34 +45,33 @@ import org.bukkit.entity.Player;
 /**
  * Created by Glare
  * Date: 4/4/2019
- * Time: 9:26 PM
+ * Time: 9:22 PM
  */
 @CommandAlias(Constants.ROOT_ALIAS)
-public class CommandAdminPrefix extends BaseCommand {
+public class CommandAdminStatus extends BaseCommand {
 
     @Dependency private GuildHandler guildHandler;
 
     /**
-     * Admin command to change the prefix of a guild
+     * Admin command to change a guild's status
      * @param player the admin running the command
-     * @param name the name of a guild
-     * @param prefix the new prefix of the guild
+     * @param name the guild to change the status of
      */
-    @Subcommand("admin prefix")
-    @Description("{@@descriptions.admin-prefix}")
+    @Subcommand("admin status")
+    @Description("{@@descriptions.admin-status}")
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
-    @Syntax("<name> <prefix>")
-    public void execute(Player player, @Values("@guilds") @Single String name, String prefix) {
+    @Syntax("<name>")
+    public void execute(Player player, @Values("@guilds") @Single String name) {
         Guild guild = guildHandler.getGuild(name);
 
         if (guild == null)
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
 
-        guild.setPrefix(ACFBukkitUtil.color(prefix));
+        guild.toggleStatus();
 
-        getCurrentCommandIssuer().sendInfo(Messages.PREFIX__SUCCESSFUL);
+        getCurrentCommandIssuer().sendInfo(Messages.STATUS__SUCCESSFUL,
+                "{status}", guild.getStatus().name());
     }
-
 
 }

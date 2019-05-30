@@ -22,67 +22,58 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.commands.admin;
+package me.glaremasters.guilds.commands.admin.manage;
 
+import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
+import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
+import co.aikar.commands.annotation.Values;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.Constants;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 /**
  * Created by Glare
  * Date: 4/4/2019
- * Time: 9:10 PM
+ * Time: 9:29 PM
  */
 @CommandAlias(Constants.ROOT_ALIAS)
-public class CommandAdminRemovePlayer extends BaseCommand {
+public class CommandAdminRename extends BaseCommand {
 
     @Dependency private GuildHandler guildHandler;
 
     /**
-     * Admin command to remove a player from a guild
+     * Admin command to rename a guild
      * @param player the admin running the command
-     * @param target the guild the player is being removed from
+     * @param name the name of the guild
+     * @param newName the new name of the guild
      */
-    @Subcommand("admin removeplayer")
-    @Description("{@@descriptions.admin-removeplayer}")
+    @Subcommand("admin rename")
+    @Description("{@@descriptions.admin-prefix}")
     @CommandPermission(Constants.ADMIN_PERM)
-    @Syntax("<name>")
-    public void execute(Player player, String target) {
-        OfflinePlayer removing = Bukkit.getOfflinePlayer(target);
-
-        if (removing == null)
-            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__PLAYER_NOT_FOUND));
-
-        Guild guild = guildHandler.getGuild(removing);
+    @CommandCompletion("@guilds")
+    @Syntax("<name> <new name>")
+    public void execute(Player player, @Values("@guilds") @Single String name, String newName) {
+        Guild guild = guildHandler.getGuild(name);
 
         if (guild == null)
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
 
-        guild.removeMember(removing);
+        guild.setName(ACFBukkitUtil.color(newName));
+        getCurrentCommandIssuer().sendInfo(Messages.RENAME__SUCCESSFUL,
+                "{name}", newName);
 
-        if (removing.isOnline())
-            getCurrentCommandManager().getCommandIssuer(removing).sendInfo(Messages.ADMIN__PLAYER_REMOVED,
-                    "{guild}", guild.getName());
-
-        getCurrentCommandIssuer().sendInfo(Messages.ADMIN__ADMIN_PLAYER_REMOVED,
-                "{player}", removing.getName(),
-                "{guild}", guild.getName());
-
-        guild.sendMessage(getCurrentCommandManager(), Messages.ADMIN__ADMIN_GUILD_REMOVE,
-                "{player}", removing.getName());
     }
 
 }
