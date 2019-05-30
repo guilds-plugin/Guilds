@@ -92,7 +92,7 @@ public class BuffGUI {
                 settingsManager.getProperty(GuildBuffSettings.FR_AMPLIFIER), settingsManager.getProperty(GuildBuffSettings.FR_PRICE),
                 settingsManager.getProperty(GuildBuffSettings.FR_ICON), settingsManager.getProperty(GuildBuffSettings.FR_NAME),
                 settingsManager.getProperty(GuildBuffSettings.FR_LORE),
-                pane, 2,
+                pane, settingsManager.getProperty(GuildBuffSettings.FR_SLOT),
                 settingsManager.getProperty(GuildBuffSettings.FR_DISPLAY));
         // Night
         setBuffItem(commandManager, settingsManager.getProperty(GuildBuffSettings.NV_TYPE), settingsManager.getProperty(GuildBuffSettings.NV_TIME),
