@@ -4,6 +4,7 @@ descriptions:
   admin-addplayer: "Admin command to add a player to a Guild"
   admin-bank-balance: "Admin command to view a guild's bank balance"
   admin-bank-despoti: "Admin command to put money into a guild's bank"
+  admin-bank-withdraw: "Admin command to take money from a guild's bank"
   admin-motd-set: "Set the MOTD for a Guild"
   admin-motd-remove: "Remove the MOTD of a Guild"
   admin-prefix: "Admin command to change a Guild's prefix"
@@ -115,6 +116,7 @@ admin:
   motd-remove: "&aYou've successfully removed the MOTD for {guild}."
   bank-balance: "&aThe guild {guild} has a bank balance of {balance}."
   bank-deposit: "&aYou've successfully put {amount} into {guild}'s bank. Their new balance is {total}."
+  bank-withdraw: "&aYou've successfully taken {amount} from {guild}'s bank. Their new balance is {total}."
 boot:
   player-kicked: "&cPlayer '{player}' has been kicked from the guild by {kicker}!"
   successful: "&aSuccessfully kicked {player} from your guild!"

@@ -45,22 +45,22 @@ import me.glaremasters.guilds.guild.GuildHandler;
 /**
  * Created by Glare
  * Date: 5/30/2019
- * Time: 2:35 PM
+ * Time: 3:36 PM
  */
 @CommandAlias(Constants.ROOT_ALIAS)
-public class CommandAdminBankDeposit extends BaseCommand {
+public class CommandAdminBankWithdraw extends BaseCommand {
 
     @Dependency private GuildHandler guildHandler;
     @Dependency private SettingsManager settingsManager;
 
     /**
-     * Admin command to put money into a guild's bank
+     * Admin command to remove money from a guild vault
      * @param issuer the person running the command
      * @param name the name of the guild
-     * @param amount the amount to put in
+     * @param amount how much to remove
      */
-    @Subcommand("admin bank deposit")
-    @Description("{@@descriptions.admin-bank-deposit}")
+    @Subcommand("admin bank withdraw")
+    @Description("{@@descriptions.admin-bank-withdraw}")
     @CommandPermission(Constants.ADMIN_PERM)
     @Syntax("<amount>")
     @CommandCompletion("@guilds")
@@ -73,12 +73,14 @@ public class CommandAdminBankDeposit extends BaseCommand {
         if (amount < 0)
             return;
 
-        double balance = guild.getBalance();
-        double total = balance + amount;
+        double total = guild.getBalance() - amount;
+
+        if (guild.getBalance() < amount)
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.BANK__NOT_ENOUGH_BANK));
 
         guild.setBalance(total);
 
-        getCurrentCommandIssuer().sendInfo(Messages.ADMIN__BANK_DEPOSIT, "{amount}", String.valueOf(amount),
+        getCurrentCommandIssuer().sendInfo(Messages.ADMIN__BANK_WITHDRAW, "{amount}", String.valueOf(amount),
                 "{guild}", guild.getName(),
                 "{total}", String.valueOf(total));
     }
