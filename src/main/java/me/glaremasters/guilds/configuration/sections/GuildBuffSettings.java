@@ -82,6 +82,22 @@ public class GuildBuffSettings implements SettingsHolder {
     public static final Property<Boolean> HASTE_DISPLAY =
             newProperty(BUFF_PATH + "haste.display", true);
 
+    @Comment("Would you like to enable commands to be sent to the player who bought the buff?")
+    public static final Property<Boolean> HASTE_CLICKER_COMMAND_CHECK =
+            newProperty(BUFF_PATH + "haste.commands.clicker.enabled", false);
+
+    @Comment("What commands would you like to execute on the player that clicked? (Supports {player})")
+    public static final Property<List<String>> HASTE_CLICKER_COMMANDS =
+            newListProperty(BUFF_PATH + "haste.commands.clicker.commands", "");
+
+    @Comment("Would you like to enable commands to be sent to all online players in the guild?")
+    public static final Property<Boolean> HASTE_GUILD_COMMAND_CHECK =
+            newProperty(BUFF_PATH + "haste.commands.guild.enabled", false);
+
+    @Comment("What commands would you like to execute on all online players in guild? (Supports {player})")
+    public static final Property<List<String>> HASTE_GUILD_COMMANDS =
+            newListProperty(BUFF_PATH + "haste.commands.guild.commands", "");
+
     @Comment("What slot would you like this to use?")
     public static final Property<Integer> HASTE_SLOT =
             newProperty(BUFF_PATH + "haste.slot", 0);
@@ -117,6 +133,22 @@ public class GuildBuffSettings implements SettingsHolder {
     @Comment("Do you want this buff to show in-game?")
     public static final Property<Boolean> SPEED_DISPLAY =
             newProperty(BUFF_PATH + "speed.display", true);
+
+    @Comment("Would you like to enable commands to be sent to the player who bought the buff?")
+    public static final Property<Boolean> SPEED_CLICKER_COMMAND_CHECK =
+            newProperty(BUFF_PATH + "speed.commands.clicker.enabled", false);
+
+    @Comment("What commands would you like to execute on the player that clicked? (Supports {player})")
+    public static final Property<List<String>> SPEED_CLICKER_COMMANDS =
+            newListProperty(BUFF_PATH + "speed.commands.clicker.commands", "");
+
+    @Comment("Would you like to enable commands to be sent to all online players in the guild?")
+    public static final Property<Boolean> SPEED_GUILD_COMMAND_CHECK =
+            newProperty(BUFF_PATH + "speed.commands.guild.enabled", false);
+
+    @Comment("What commands would you like to execute on all online players in guild? (Supports {player})")
+    public static final Property<List<String>> SPEED_GUILD_COMMANDS =
+            newListProperty(BUFF_PATH + "speed.commands.guild.commands", "");
 
     @Comment("What slot would you like this to use?")
     public static final Property<Integer> SPEED_SLOT =
@@ -154,6 +186,22 @@ public class GuildBuffSettings implements SettingsHolder {
     public static final Property<Boolean> FR_DISPLAY =
             newProperty(BUFF_PATH + "fire-resistance.display", true);
 
+    @Comment("Would you like to enable commands to be sent to the player who bought the buff?")
+    public static final Property<Boolean> FR_CLICKER_COMMAND_CHECK =
+            newProperty(BUFF_PATH + "fire-resistance.commands.clicker.enabled", false);
+
+    @Comment("What commands would you like to execute on the player that clicked? (Supports {player})")
+    public static final Property<List<String>> FR_CLICKER_COMMANDS =
+            newListProperty(BUFF_PATH + "fire-resistance.commands.clicker.commands", "");
+
+    @Comment("Would you like to enable commands to be sent to all online players in the guild?")
+    public static final Property<Boolean> FR_GUILD_COMMAND_CHECK =
+            newProperty(BUFF_PATH + "fire-resistance.commands.guild.enabled", false);
+
+    @Comment("What commands would you like to execute on all online players in guild? (Supports {player})")
+    public static final Property<List<String>> FR_GUILD_COMMANDS =
+            newListProperty(BUFF_PATH + "fire-resistance.commands.guild.commands", "");
+
     @Comment("What slot would you like this to use?")
     public static final Property<Integer> FR_SLOT =
             newProperty(BUFF_PATH + "fire-resistance.slot", 2);
@@ -189,6 +237,22 @@ public class GuildBuffSettings implements SettingsHolder {
     @Comment("Do you want this buff to show in-game?")
     public static final Property<Boolean> NV_DISPLAY =
             newProperty(BUFF_PATH + "night-vision.display", true);
+
+    @Comment("Would you like to enable commands to be sent to the player who bought the buff?")
+    public static final Property<Boolean> NV_CLICKER_COMMAND_CHECK =
+            newProperty(BUFF_PATH + "night-vision.commands.clicker.enabled", false);
+
+    @Comment("What commands would you like to execute on the player that clicked? (Supports {player})")
+    public static final Property<List<String>> NV_CLICKER_COMMANDS =
+            newListProperty(BUFF_PATH + "night-vision.commands.clicker.commands", "");
+
+    @Comment("Would you like to enable commands to be sent to all online players in the guild?")
+    public static final Property<Boolean> NV_GUILD_COMMAND_CHECK =
+            newProperty(BUFF_PATH + "night-vision.commands.guild.enabled", false);
+
+    @Comment("What commands would you like to execute on all online players in guild? (Supports {player})")
+    public static final Property<List<String>> NV_GUILD_COMMANDS =
+            newListProperty(BUFF_PATH + "night-vision.commands.guild.commands", "");
 
     @Comment("What slot would you like this to use?")
     public static final Property<Integer> NV_SLOT =
@@ -226,6 +290,22 @@ public class GuildBuffSettings implements SettingsHolder {
     public static final Property<Boolean> INVISIBILITY_DISPLAY =
             newProperty(BUFF_PATH + "invisibility.display", true);
 
+    @Comment("Would you like to enable commands to be sent to the player who bought the buff?")
+    public static final Property<Boolean> INVISIBILITY_CLICKER_COMMAND_CHECK =
+            newProperty(BUFF_PATH + "invisibility.commands.clicker.enabled", false);
+
+    @Comment("What commands would you like to execute on the player that clicked? (Supports {player})")
+    public static final Property<List<String>> INVISIBILITY_CLICKER_COMMANDS =
+            newListProperty(BUFF_PATH + "invisibility.commands.clicker.commands", "");
+
+    @Comment("Would you like to enable commands to be sent to all online players in the guild?")
+    public static final Property<Boolean> INVISIBILITY_GUILD_COMMAND_CHECK =
+            newProperty(BUFF_PATH + "invisibility.commands.guild.enabled", false);
+
+    @Comment("What commands would you like to execute on all online players in guild? (Supports {player})")
+    public static final Property<List<String>> INVISIBILITY_GUILD_COMMANDS =
+            newListProperty(BUFF_PATH + "invisibility.commands.guild.commands", "");
+
     @Comment("What slot would you like this to use?")
     public static final Property<Integer> INVISIBILITY_SLOT =
             newProperty(BUFF_PATH + "invisibility.slot", 4);
@@ -261,6 +341,22 @@ public class GuildBuffSettings implements SettingsHolder {
     @Comment("Do you want this buff to show in-game?")
     public static final Property<Boolean> STRENGTH_DISPLAY =
             newProperty(BUFF_PATH + "strength.display", true);
+
+    @Comment("Would you like to enable commands to be sent to the player who bought the buff?")
+    public static final Property<Boolean> STRENGTH_CLICKER_COMMAND_CHECK =
+            newProperty(BUFF_PATH + "strength.commands.clicker.enabled", false);
+
+    @Comment("What commands would you like to execute on the player that clicked? (Supports {player})")
+    public static final Property<List<String>> HSTRENGTH_CLICKER_COMMANDS =
+            newListProperty(BUFF_PATH + "strength.commands.clicker.commands", "");
+
+    @Comment("Would you like to enable commands to be sent to all online players in the guild?")
+    public static final Property<Boolean> STRENGTH_GUILD_COMMAND_CHECK =
+            newProperty(BUFF_PATH + "strength.commands.guild.enabled", false);
+
+    @Comment("What commands would you like to execute on all online players in guild? (Supports {player})")
+    public static final Property<List<String>> STRENGTH_GUILD_COMMANDS =
+            newListProperty(BUFF_PATH + "strength.commands.guild.commands", "");
 
     @Comment("What slot would you like this to use?")
     public static final Property<Integer> STRENGTH_SLOT =
@@ -298,6 +394,22 @@ public class GuildBuffSettings implements SettingsHolder {
     public static final Property<Boolean> JUMP_DISPLAY =
             newProperty(BUFF_PATH + "jump.display", true);
 
+    @Comment("Would you like to enable commands to be sent to the player who bought the buff?")
+    public static final Property<Boolean> JUMP_CLICKER_COMMAND_CHECK =
+            newProperty(BUFF_PATH + "jump.commands.clicker.enabled", false);
+
+    @Comment("What commands would you like to execute on the player that clicked? (Supports {player})")
+    public static final Property<List<String>> JUMP_CLICKER_COMMANDS =
+            newListProperty(BUFF_PATH + "jump.commands.clicker.commands", "");
+
+    @Comment("Would you like to enable commands to be sent to all online players in the guild?")
+    public static final Property<Boolean> JUMP_GUILD_COMMAND_CHECK =
+            newProperty(BUFF_PATH + "jump.commands.guild.enabled", false);
+
+    @Comment("What commands would you like to execute on all online players in guild? (Supports {player})")
+    public static final Property<List<String>> JUMP_GUILD_COMMANDS =
+            newListProperty(BUFF_PATH + "jump.commands.guild.commands", "");
+
     @Comment("What slot would you like this to use?")
     public static final Property<Integer> JUMP_SLOT =
             newProperty(BUFF_PATH + "jump.slot", 6);
@@ -334,6 +446,22 @@ public class GuildBuffSettings implements SettingsHolder {
     public static final Property<Boolean> WB_DISPLAY =
             newProperty(BUFF_PATH + "water-breathing.display", true);
 
+    @Comment("Would you like to enable commands to be sent to the player who bought the buff?")
+    public static final Property<Boolean> WB_CLICKER_COMMAND_CHECK =
+            newProperty(BUFF_PATH + "water-breathing.commands.clicker.enabled", false);
+
+    @Comment("What commands would you like to execute on the player that clicked? (Supports {player})")
+    public static final Property<List<String>> WB_CLICKER_COMMANDS =
+            newListProperty(BUFF_PATH + "water-breathing.commands.clicker.commands", "");
+
+    @Comment("Would you like to enable commands to be sent to all online players in the guild?")
+    public static final Property<Boolean> WB_GUILD_COMMAND_CHECK =
+            newProperty(BUFF_PATH + "water-breathing.commands.guild.enabled", false);
+
+    @Comment("What commands would you like to execute on all online players in guild? (Supports {player})")
+    public static final Property<List<String>> WB_GUILD_COMMANDS =
+            newListProperty(BUFF_PATH + "water-breathing.commands.guild.commands", "");
+
     @Comment("What slot would you like this to use?")
     public static final Property<Integer> WB_SLOT =
             newProperty(BUFF_PATH + "water-breathing.slot", 7);
@@ -369,6 +497,22 @@ public class GuildBuffSettings implements SettingsHolder {
     @Comment("Do you want this buff to show in-game?")
     public static final Property<Boolean> REGENERATION_DISPLAY =
             newProperty(BUFF_PATH + "regeneration.display", true);
+
+    @Comment("Would you like to enable commands to be sent to the player who bought the buff?")
+    public static final Property<Boolean> REGENERATION_CLICKER_COMMAND_CHECK =
+            newProperty(BUFF_PATH + "regeneration.commands.clicker.enabled", false);
+
+    @Comment("What commands would you like to execute on the player that clicked? (Supports {player})")
+    public static final Property<List<String>> REGENERATION_CLICKER_COMMANDS =
+            newListProperty(BUFF_PATH + "regeneration.commands.clicker.commands", "");
+
+    @Comment("Would you like to enable commands to be sent to all online players in the guild?")
+    public static final Property<Boolean> REGENERATION_GUILD_COMMAND_CHECK =
+            newProperty(BUFF_PATH + "regeneration.commands.guild.enabled", false);
+
+    @Comment("What commands would you like to execute on all online players in guild? (Supports {player})")
+    public static final Property<List<String>> REGENERATION_GUILD_COMMANDS =
+            newListProperty(BUFF_PATH + "regeneration.commands.guild.commands", "");
 
     @Comment("What slot would you like this to use?")
     public static final Property<Integer> REGENERATION_SLOT =
