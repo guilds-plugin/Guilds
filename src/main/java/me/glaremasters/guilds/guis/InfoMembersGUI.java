@@ -26,7 +26,6 @@ package me.glaremasters.guilds.guis;
 
 import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFBukkitUtil;
-import co.aikar.commands.CommandManager;
 import com.github.stefvanschie.inventoryframework.Gui;
 import com.github.stefvanschie.inventoryframework.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
@@ -40,7 +39,6 @@ import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.utils.ItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
@@ -58,7 +56,7 @@ public class InfoMembersGUI {
     private SettingsManager settingsManager;
     private GuildHandler guildHandler;
 
-    public Gui getInfoMembersGUI(Guild guild, Player player, CommandManager commandManager) {
+    public Gui getInfoMembersGUI(Guild guild) {
 
         // Create the GUI with the desired name from the config
         Gui gui = new Gui(guilds, 6, ACFBukkitUtil.color(settingsManager.getProperty(GuildInfoMemberSettings.GUI_NAME).replace("{name}",
@@ -71,7 +69,7 @@ public class InfoMembersGUI {
         OutlinePane foregroundPane = new OutlinePane(0, 0, 9, 6, Pane.Priority.NORMAL);
 
         // Add the items to the foreground pane
-        createForegroundItems(foregroundPane, guild, player, commandManager);
+        createForegroundItems(foregroundPane, guild);
 
         // Add the foreground pane to the GUI
         gui.addPane(foregroundPane);
@@ -85,7 +83,7 @@ public class InfoMembersGUI {
      * @param pane the pane to be added to
      * @param guild the guild of the player
      */
-    private void createForegroundItems(OutlinePane pane, Guild guild, Player player, CommandManager commandManager) {
+    private void createForegroundItems(OutlinePane pane, Guild guild) {
 
         guild.getMembers().forEach(m -> {
 

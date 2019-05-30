@@ -170,7 +170,7 @@ public class InfoGUI {
                         // Cancel the event
                         event.setCancelled(true);
                         // Open the new GUI
-                        guilds.getGuiHandler().getInfoMembersGUI().getInfoMembersGUI(guild, player, guilds.getCommandManager()).show(event.getWhoClicked());
+                        guilds.getGuiHandler().getInfoMembersGUI().getInfoMembersGUI(guild).show(event.getWhoClicked());
                     }));
         }
         // Add the status button to the GUI
