@@ -81,13 +81,13 @@ chat:
 request:
   success: "&a{guild} loncasından başarıyla bir davet istediniz"
   incoming-request: "&a{player} loncaya katılmak istiyor. /guild invite {player} yazarak ona bir davet gönder!"
-  cooldown: "You can't send another request for {time} seconds."
+  cooldown: "{time} saniye boyunca başka bir istek gönderemezsiniz."
 error:
-  already-in-guild: "&cYou're already in a guild!"
+  already-in-guild: "&cZaten bir loncadasın!"
   no-guild: "&cYou're not in a guild!"
-  role-no-permission: "&cYour role is not high enough to do that!"
-  tier-no-permission: "&cYour guild tier is not high enough to do that!"
-  guild-no-exist: "&cThat Guild does not exist! (If you are getting this due to trying to join a guild that has a custom colored name, you can try doing /join guild <player who invited you> to join also!"
+  role-no-permission: "&cRolün bunu yapacak kadar yüksek değil!"
+  tier-no-permission: "&cLonca aşaması bunu yapacak kadar yüksek değil!"
+  guild-no-exist: "&cBu Lonca yok! (Özel renkli bir isme sahip olan bir loncaya katılmaya çalıştığınız için bunu alıyorsanız, siz de /join guild <seni davet eden oyuncu adını yazarak> katılabilirsiniz!"
   player-not-found: "&cPlayer '{player}&r&c' is not online!"
   player-not-in-guild: "&c{player} is not in your Guild!"
   not-officer: "&cUser must be an Officer in your Guild!"
