@@ -24,6 +24,7 @@
 
 package me.glaremasters.guilds.commands.admin.bank;
 
+import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.CommandIssuer;
@@ -37,10 +38,9 @@ import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.guild.Guild;
+import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.Constants;
-import ch.jalu.configme.SettingsManager;
-import me.glaremasters.guilds.guild.GuildHandler;
 
 /**
  * Created by Glare
