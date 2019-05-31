@@ -156,6 +156,7 @@ invite:
   already-invited: "El jugador ya fue invitado a tu Gremio"
   message: "&a{player} te ha invitado a su gremio, '{guild}' escribe /guild join {guild} para unirte!"
   successful: "&aHas invitado al jugador {player} a tu Gremio!"
+  already-in-guild: "&c{player} is already in another guild!"
 upgrade:
   tier-max: "&cNo puedes subir mas, ya ostentas el nivel maximo!"
   money-warning: "&cEstas a punto de gastar {amount} para actualizar tu gremio. (Escribe /guilds confirm para continuar)"
@@ -244,7 +245,7 @@ vaults:
   blacklisted: "&cYou can't put that item in your Guild Vault because it is blacklisted!"
 languages:
   set: "Has configurado correctamente tu idioma para {language}"
-  warning: "&cYou are about to update all the language files. This will delete all current language files and recreate them. Type /guilds confirm to remove this guild, type /guilds cancel to cancel."
+  warning: "&cYou are about to update all the language files. This will delete all current language files and recreate them. Type /guilds confirm to continue, type /guilds cancel to cancel."
   updated: "&aLanguage files have been recreated and reloaded!"
   console-only: "&cSorry, this command can only be ran from console!"
 help:
