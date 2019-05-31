@@ -182,7 +182,7 @@ sethome:
   deleted: "&aYou've successfully deleted your guild home!"
   cooldown: "&cYou must wait at least {amount} seconds before doing this again"
 reload:
-  reloaded: "&aConfiguration file reloaded!"
+  reloaded: "&aYapılandırma dosyası yeniden yüklendi!"
 cancel:
   error: "&cYou have no actions to cancel!"
   success: "&aAction cancelled!"
@@ -190,7 +190,7 @@ confirm:
   error: "&cYou have no actions to confirm!"
   success: "&aAction confirmed!"
 ally:
-  none: "&cYou have no allies!"
+  none: "&cHiç müttefikiniz yok!"
   list: "Your Guild has the following allies: {ally-list}"
   current-declined: "&a{guild}'s ally request has been denied!"
   target-declined: "&cYour ally request to {guild} has been denied!"
