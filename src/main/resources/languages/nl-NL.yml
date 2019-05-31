@@ -156,6 +156,7 @@ invite:
   already-invited: "Deze speler is al uitgenodigd voor jouw Guild"
   message: "&a{player} heeft jouw uitgenodigd voor zijn/haar Guild, '{guild}' Typ /guild join {guild} om toe te treden!"
   successful: "&aJe hebt {player} uitgenodigd voor jouw Guild!"
+  already-in-guild: "&c{player} is already in another guild!"
 upgrade:
   tier-max: "&cKan niet meer upgraden! De Guild tier is al op het hoogste niveau!"
   money-warning: "&cJe staat op het punt {amount} uit te geven om jouw Guild te upgraden. (Typ /guilds confirm om door te gaan)"
@@ -244,7 +245,7 @@ vaults:
   blacklisted: "&cJe kunt dat item niet in jouw Guild kluis stoppen omdat het op de blacklist staat!"
 languages:
   set: "Je hebt met succes je taal ingesteld op {language}"
-  warning: "&cJe staat op het punt om de taalbestanden te updaten. Dit verwijdert alle huidige taalbestanden en maakt ze opnieuw. Typ /guilds confirm om te bevestigen, typ /guilds cancel om te annuleren."
+  warning: "&cYou are about to update all the language files. This will delete all current language files and recreate them. Type /guilds confirm to continue, type /guilds cancel to cancel."
   updated: "&aTaalbestanden zijn opnieuw aangemaakt en herladen!"
   console-only: "&cSorry, deze command kan alleen via de console gebruikt worden!"
 help:
