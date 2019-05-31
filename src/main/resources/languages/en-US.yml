@@ -245,7 +245,7 @@ vaults:
   blacklisted: "&cYou can't put that item in your Guild Vault because it is blacklisted!"
 languages:
   set: "&aYou've successfully set your language to {language}"
-  warning: "&cYou are about to update all the language files. This will delete all current language files and recreate them. Type /guilds confirm to remove this guild, type /guilds cancel to cancel."
+  warning: "&cYou are about to update all the language files. This will delete all current language files and recreate them. Type /guilds confirm to continue, type /guilds cancel to cancel."
   updated: "&aLanguage files have been recreated and reloaded!"
   console-only: "&cSorry, this command can only be ran from console!"
 help:
