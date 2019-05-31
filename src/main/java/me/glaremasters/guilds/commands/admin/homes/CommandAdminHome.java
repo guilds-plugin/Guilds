@@ -53,7 +53,7 @@ public class CommandAdminHome extends BaseCommand {
     @Dependency private SettingsManager settingsManager;
 
     @Subcommand("admin home")
-    @Description("{@@descriptions.admin-delhome}")
+    @Description("{@@descriptions.admin-home}")
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
     public void execute(Player player, @Single String name) {
