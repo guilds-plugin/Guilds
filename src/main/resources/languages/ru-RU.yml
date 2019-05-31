@@ -156,6 +156,7 @@ invite:
   already-invited: "&cЭтот игрок уже приглашен!"
   message: "&aИгрок {player} пригласил Вас в свою гильдию {guild}&r&a"
   successful: "&aВы пригласили игрока {player} в свою гильдию!"
+  already-in-guild: "&c{player} is already in another guild!"
 upgrade:
   tier-max: "&cМаксимальный уровень гильдии уже достигнут!"
   money-warning: "&cВы собираетесь потратить {amount} на улучшение гильдии. (Введите /guilds confirm для подтверждения)"
@@ -244,7 +245,7 @@ vaults:
   blacklisted: "&cЭтот предмет запрещено класть в хранилище гильдии!"
 languages:
   set: "&aВаш язык для гильдий установлен на {language}"
-  warning: "&cВы собираетесь обновить все языковые файлы. Это удалит все текущие языковые файлы и пересоздаст их. Введите /guilds confirm для подтверждения или /guilds cancel для отмены обновления файлов."
+  warning: "&cYou are about to update all the language files. This will delete all current language files and recreate them. Type /guilds confirm to continue, type /guilds cancel to cancel."
   updated: "&aЯзыковые файлы были пересозданы и перезагружены!"
   console-only: "&cИзвините, но это команда может быть использована только из консоли!"
 help:
