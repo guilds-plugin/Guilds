@@ -128,7 +128,7 @@ boot:
   successful: "&aSuccessfully kicked {player} from your guild!"
   kicked: "&cYou have been kicked from your guild by {kicker}!"
 decline:
-  success: "&aGuild Invite Declined!"
+  success: "&aLonca Davetiyesi Reddedildi!"
 demote:
   cant-demote: "&cThat player can not be demoted!"
   demote-successful: "&aYou've successfully demoted {player} from {old} to {new}"
@@ -139,7 +139,7 @@ promote:
   you-were-promoted: "&aYou've been promoted from {old} to {new}"
 delete:
   successful: "&aDeleted '{guild}&r&a' successfully!"
-  cancelled: "&cGuild deletion cancelled!"
+  cancelled: "&cLonca silme işlemi iptal edildi!"
   warning: "&cType /guilds confirm to delete your guild, type /guilds cancel to cancel."
   notify-allies: "&c{guild} is no longer your ally because it has been deleted."
 leave:
@@ -151,14 +151,14 @@ leave:
   warning-guildmaster: "&cYou're the Guild Master of this guild, leaving the guild will mean that the guild is deleted. Type /guilds confirm to leave and delete your guild, type /guilds cancel to cancel."
 transfer:
   newmaster: "&aYou are the new Guild Master of your Guild!"
-  success: "&aGuild has been transferred!"
+  success: "&aLonca transfer edildi!"
 invite:
-  already-invited: "User is already invited to your guild"
+  already-invited: "Kullanıcı zaten Lonca'nıza davet edildi"
   message: "&a{player} has invited you to his/her guild, '{guild}' Type /guild join {guild} to join!"
   successful: "&aYou've successfully invited {player} to your guild!"
-  already-in-guild: "&c{player} is already in another guild!"
+  already-in-guild: "&c{player} zaten başka bir loncada!"
 upgrade:
-  tier-max: "&cCannot upgrade again! You're already maxed!"
+  tier-max: "&cTekrar yükseltilemiyor! Zaten maximumda!"
   money-warning: "&cYou are about to spend {amount} to set upgrade your guild. (Type /guilds confirm to continue)"
   cancel: "&cUpgrade cancelled!"
   success: "&aYou've successfully upgraded your guild!"
