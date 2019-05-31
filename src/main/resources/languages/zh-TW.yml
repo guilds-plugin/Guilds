@@ -156,6 +156,7 @@ invite:
   already-invited: "已成功邀請玩家至您的工會"
   message: "&a{player} 邀情您加入公會， '{guild}' 輸入 /guild join {guild} 即可加入!"
   successful: "&a您已成功邀請玩家 {player} 至您的公會!"
+  already-in-guild: "&c{player} is already in another guild!"
 upgrade:
   tier-max: "&c無法再次升級! 您已升級至最頂級公會!"
   money-warning: "&c您將會消耗 {amount} 元以升級您的公會 (輸入 /guilds confirm 以繼續下一步)"
@@ -244,7 +245,7 @@ vaults:
   blacklisted: "&cYou can't put that item in your Guild Vault because it is blacklisted!"
 languages:
   set: "&aYou've successfully set your language to {language}"
-  warning: "&cYou are about to update all the language files. This will delete all current language files and recreate them. Type /guilds confirm to remove this guild, type /guilds cancel to cancel."
+  warning: "&cYou are about to update all the language files. This will delete all current language files and recreate them. Type /guilds confirm to continue, type /guilds cancel to cancel."
   updated: "&aLanguage files have been recreated and reloaded!"
   console-only: "&cSorry, this command can only be ran from console!"
 help:
