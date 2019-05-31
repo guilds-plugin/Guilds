@@ -32,6 +32,7 @@ import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.guild.GuildTier;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -43,6 +44,7 @@ public class GuildsAPI {
     private final GuildHandler guildHandler;
 
     /**
+     *
      * Get the guild of a player
      * @param player the players you're getting the guild of
      * @return the guild that the player is in
@@ -70,46 +72,66 @@ public class GuildsAPI {
     }
 
     /**
+     * Get a copy of one of a guild's vaults
+     * @param guild the guild to get the vault of
+     * @param vaultNumber which vault to get
+     * @return guild vault
+     */
+    public Inventory getGuildVault(@NotNull Guild guild, int vaultNumber) {
+        return guildHandler.getGuildVault(guild, vaultNumber);
+    }
+
+    /**
+     * @deprecated
      * Get the guild master of a guild
      * @param player the player you're getting the guild of
      * @return uuid of the guild master
      */
+    @Deprecated
     public UUID getGuildMaster(@NotNull Player player) {
         return getGuild(player).getGuildMaster().getUuid();
     }
 
     /**
+     * @deprecated
      * Get the amount of members in a guild
      * @param player the player you're getting the guild of
      * @return amount of members in the guild
      */
+    @Deprecated
     public int getGuildMemberCount(@NotNull Player player) {
         return getGuild(player).getSize();
     }
 
     /**
+     * @deprecated
      * Get amount of members online
      * @param player member
      * @return amount of members online
      */
+    @Deprecated
     public int getGuildMembersOnline(@NotNull Player player) {
         return guildHandler.getGuild(player).getOnlineMembers().size();
     }
 
     /**
+     * @deprecated
      * Status of a guild
      * @param player status
      * @return the status of a guild
      */
+    @Deprecated
     public Guild.Status getGuildStatus(@NotNull Player player) {
         return getGuild(player).getStatus();
     }
 
     /**
+     * @deprecated
      * Prefix of a guild
      * @param player prefix
      * @return the prefix of a guild
      */
+    @Deprecated
     public String getGuildPrefix(@NotNull Player player) {
         return getGuild(player).getPrefix();
     }
@@ -124,55 +146,67 @@ public class GuildsAPI {
     }
 
     /**
+     * @deprecated
      * Get the tier of a guild
      * @param player tier
      * @return the tier of a guild
      */
+    @Deprecated
     public GuildTier getGuildTier(@NotNull Player player) {
         return getGuild(player).getTier();
     }
 
     /**
+     * @deprecated
      * Get the bank balance of a guild
      * @param player balance
      * @return the balance of the guild
      */
+    @Deprecated
     public double getBankBalance(@NotNull Player player) {
         return getGuild(player).getBalance();
     }
 
     /**
+     * @deprecated
      * Get the max balance of a guild from its tier
      * @param player the player that we are checking
      * @return the max balance
      */
+    @Deprecated
     public double getMaxBalance(@NotNull Player player) {
         return getGuild(player).getTier().getMaxMembers();
     }
 
     /**
+     * @deprecated
      * Get the guild codes of a guild
      * @param player the player the guild is in
      * @return the list of guild codes
      */
+    @Deprecated
     public List<GuildCode> getGuildCodes(@NotNull Player player) {
         return getGuild(player).getCodes();
     }
 
     /**
+     * @deprecated
      * Get the ID of a guild
      * @param player the player to check
      * @return the id of the guild they are in
      */
+    @Deprecated
     public String getGuildId(@NotNull Player player) {
         return getGuild(player).getId().toString();
     }
 
     /**
+     * @deprecated
      * Get the max members allowed in a guild based on their tier
      * @param player the player to check
      * @return the max amount of members in a guild
      */
+    @Deprecated
     public int getMaxMembers(@NotNull Player player) {
         return getGuild(player).getTier().getMaxMembers();
     }

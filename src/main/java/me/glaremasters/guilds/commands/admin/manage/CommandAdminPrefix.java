@@ -22,9 +22,9 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.commands.admin;
+package me.glaremasters.guilds.commands.admin.manage;
 
-import ch.jalu.configme.SettingsManager;
+import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
@@ -36,74 +36,44 @@ import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.annotation.Values;
-import me.glaremasters.guilds.actions.ActionHandler;
-import me.glaremasters.guilds.actions.ConfirmAction;
-import me.glaremasters.guilds.api.events.GuildRemoveEvent;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.messages.Messages;
-import me.glaremasters.guilds.utils.ClaimUtils;
 import me.glaremasters.guilds.utils.Constants;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 /**
  * Created by Glare
  * Date: 4/4/2019
- * Time: 8:53 PM
+ * Time: 9:26 PM
  */
 @CommandAlias(Constants.ROOT_ALIAS)
-public class CommandAdminRemove extends BaseCommand {
+public class CommandAdminPrefix extends BaseCommand {
 
     @Dependency private GuildHandler guildHandler;
-    @Dependency private ActionHandler actionHandler;
-    @Dependency private SettingsManager settingsManager;
 
     /**
-     * Admin command to remove a guild from the server
+     * Admin command to change the prefix of a guild
      * @param player the admin running the command
-     * @param name the name of the guild being removed
+     * @param name the name of a guild
+     * @param prefix the new prefix of the guild
      */
-    @Subcommand("admin remove")
-    @Description("{@@descriptions.admin-remove}")
+    @Subcommand("admin prefix")
+    @Description("{@@descriptions.admin-prefix}")
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
-    @Syntax("<guild name>")
-    public void execute(Player player, @Values("@guilds") @Single String name) {
+    @Syntax("<name> <prefix>")
+    public void execute(Player player, @Values("@guilds") @Single String name, String prefix) {
         Guild guild = guildHandler.getGuild(name);
 
         if (guild == null)
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
 
-        getCurrentCommandIssuer().sendInfo(Messages.DELETE__WARNING,
-                "{guild}", name);
+        guild.setPrefix(ACFBukkitUtil.color(prefix));
 
-        actionHandler.addAction(player, new ConfirmAction() {
-            @Override
-            public void accept() {
-                GuildRemoveEvent event = new GuildRemoveEvent(player, guild, GuildRemoveEvent.Cause.ADMIN_DELETED);
-                Bukkit.getPluginManager().callEvent(event);
-
-                if (event.isCancelled())
-                    return;
-                ClaimUtils.deleteWithGuild(player, guild, settingsManager);
-
-                guild.sendMessage(getCurrentCommandManager(), Messages.LEAVE__GUILDMASTER_LEFT,
-                        "{player}", Bukkit.getOfflinePlayer(guild.getGuildMaster().getUuid()).getName());
-
-                guildHandler.removeGuild(guild);
-                getCurrentCommandIssuer().sendInfo(Messages.ADMIN__DELETE_SUCCESS,
-                        "{guild}", name);
-                actionHandler.removeAction(player);
-            }
-
-            @Override
-            public void decline() {
-                actionHandler.removeAction(player);
-            }
-        });
-
+        getCurrentCommandIssuer().sendInfo(Messages.PREFIX__SUCCESSFUL);
     }
+
 
 }

@@ -55,7 +55,6 @@ public class CommandMotd extends BaseCommand {
      * @param player the player running the command
      * @param guild the player's guild
      */
-    // View the actual MOTD
     @Subcommand("motd")
     @Description("{@@descriptions.motd}")
     @CommandPermission(Constants.BASE_PERM + "motd")

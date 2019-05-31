@@ -86,6 +86,9 @@ public class CommandDemote extends BaseCommand {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__PLAYER_NOT_IN_GUILD,
                     "{player}", target));
 
+        if (RoleUtils.sameRole(guild, player, user))
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.DEMOTE__CANT_DEMOTE));
+
         if (RoleUtils.isLowest(guildHandler, guild.getMember(user.getUniqueId())) ||
                 (RoleUtils.isLower(guild.getMember(user.getUniqueId()), guild.getMember(player.getUniqueId()))))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.DEMOTE__CANT_DEMOTE));

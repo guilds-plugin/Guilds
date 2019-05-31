@@ -32,6 +32,7 @@ import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
+import me.glaremasters.guilds.configuration.sections.ClaimSettings;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.exceptions.InvalidPermissionException;
 import me.glaremasters.guilds.guild.Guild;
@@ -67,6 +68,9 @@ public class CommandUnclaim extends BaseCommand {
 
         if (!ClaimUtils.isEnable(settingsManager))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.CLAIM__HOOK_DISABLED));
+
+        if (settingsManager.getProperty(ClaimSettings.FORCE_CLAIM_SIGNS))
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.CLAIM__SIGN_FORCED));
 
         WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();
 

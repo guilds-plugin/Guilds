@@ -22,52 +22,67 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.commands.codes;
+package me.glaremasters.guilds.commands.admin.bank;
 
+import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
+import co.aikar.commands.CommandIssuer;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
-import co.aikar.commands.annotation.Values;
-import me.glaremasters.guilds.exceptions.InvalidPermissionException;
+import co.aikar.commands.annotation.Syntax;
+import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.guild.Guild;
-import me.glaremasters.guilds.guild.GuildRole;
+import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.Constants;
-import org.bukkit.entity.Player;
 
 /**
  * Created by Glare
- * Date: 4/4/2019
- * Time: 5:16 PM
+ * Date: 5/30/2019
+ * Time: 3:36 PM
  */
 @CommandAlias(Constants.ROOT_ALIAS)
-public class CommandCodeDelete extends BaseCommand {
+public class CommandAdminBankWithdraw extends BaseCommand {
 
+    @Dependency private GuildHandler guildHandler;
+    @Dependency private SettingsManager settingsManager;
 
     /**
-     * Delete an invite code from the guild
-     * @param player the player deleting the invite code
-     * @param guild the guild the invite is being deleted from
-     * @param role the role of the user
+     * Admin command to remove money from a guild vault
+     * @param issuer the person running the command
+     * @param name the name of the guild
+     * @param amount how much to remove
      */
-    @Subcommand("code delete")
-    @Description("{@@descriptions.code-delete}")
-    @CommandPermission(Constants.CODE_PERM + "delete")
-    @CommandCompletion("@activeCodes")
-    public void execute(Player player, Guild guild, GuildRole role, @Values("@activeCodes") @Single String code) {
+    @Subcommand("admin bank withdraw")
+    @Description("{@@descriptions.admin-bank-withdraw}")
+    @CommandPermission(Constants.ADMIN_PERM)
+    @Syntax("<amount>")
+    @CommandCompletion("@guilds")
+    public void execute(CommandIssuer issuer, @Single String name, double amount) {
+        Guild guild = guildHandler.getGuild(name);
 
-        if (!role.isDeleteCode())
-            ACFUtil.sneaky(new InvalidPermissionException());
+        if (guild == null)
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
 
-        guild.removeCode(code);
+        if (amount < 0)
+            return;
 
-        getCurrentCommandIssuer().sendInfo(Messages.CODES__DELETED);
+        double total = guild.getBalance() - amount;
 
+        if (guild.getBalance() < amount)
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.BANK__NOT_ENOUGH_BANK));
+
+        guild.setBalance(total);
+
+        getCurrentCommandIssuer().sendInfo(Messages.ADMIN__BANK_WITHDRAW, "{amount}", String.valueOf(amount),
+                "{guild}", guild.getName(),
+                "{total}", String.valueOf(total));
     }
 
 }

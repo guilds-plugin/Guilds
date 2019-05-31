@@ -22,20 +22,23 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.commands.codes;
+package me.glaremasters.guilds.commands.admin.manage;
 
+import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.annotation.Values;
-import me.glaremasters.guilds.exceptions.InvalidPermissionException;
+import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.guild.Guild;
-import me.glaremasters.guilds.guild.GuildRole;
+import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.Constants;
 import org.bukkit.entity.Player;
@@ -43,30 +46,33 @@ import org.bukkit.entity.Player;
 /**
  * Created by Glare
  * Date: 4/4/2019
- * Time: 5:16 PM
+ * Time: 9:29 PM
  */
 @CommandAlias(Constants.ROOT_ALIAS)
-public class CommandCodeDelete extends BaseCommand {
+public class CommandAdminRename extends BaseCommand {
 
+    @Dependency private GuildHandler guildHandler;
 
     /**
-     * Delete an invite code from the guild
-     * @param player the player deleting the invite code
-     * @param guild the guild the invite is being deleted from
-     * @param role the role of the user
+     * Admin command to rename a guild
+     * @param player the admin running the command
+     * @param name the name of the guild
+     * @param newName the new name of the guild
      */
-    @Subcommand("code delete")
-    @Description("{@@descriptions.code-delete}")
-    @CommandPermission(Constants.CODE_PERM + "delete")
-    @CommandCompletion("@activeCodes")
-    public void execute(Player player, Guild guild, GuildRole role, @Values("@activeCodes") @Single String code) {
+    @Subcommand("admin rename")
+    @Description("{@@descriptions.admin-prefix}")
+    @CommandPermission(Constants.ADMIN_PERM)
+    @CommandCompletion("@guilds")
+    @Syntax("<name> <new name>")
+    public void execute(Player player, @Values("@guilds") @Single String name, String newName) {
+        Guild guild = guildHandler.getGuild(name);
 
-        if (!role.isDeleteCode())
-            ACFUtil.sneaky(new InvalidPermissionException());
+        if (guild == null)
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
 
-        guild.removeCode(code);
-
-        getCurrentCommandIssuer().sendInfo(Messages.CODES__DELETED);
+        guild.setName(ACFBukkitUtil.color(newName));
+        getCurrentCommandIssuer().sendInfo(Messages.RENAME__SUCCESSFUL,
+                "{name}", newName);
 
     }
 

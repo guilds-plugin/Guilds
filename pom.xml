@@ -30,7 +30,7 @@
 
     <groupId>me.glaremasters</groupId>
     <artifactId>guilds</artifactId>
-    <version>3.4.8-RELEASE</version>
+    <version>3.4.9-BETA</version>
     <packaging>jar</packaging>
 
     <name>Guilds</name>
@@ -205,7 +205,7 @@
         <dependency>
             <groupId>org.codemc.worldguardwrapper</groupId>
             <artifactId>worldguardwrapper</artifactId>
-            <version>1.1.4-SNAPSHOT</version>
+            <version>1.1.6-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
 

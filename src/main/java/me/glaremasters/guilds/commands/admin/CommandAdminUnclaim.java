@@ -24,7 +24,7 @@
 
 package me.glaremasters.guilds.commands.admin;
 
-import co.aikar.commands.ACFBukkitUtil;
+import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
@@ -40,40 +40,45 @@ import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.messages.Messages;
+import me.glaremasters.guilds.utils.ClaimUtils;
 import me.glaremasters.guilds.utils.Constants;
 import org.bukkit.entity.Player;
+import org.codemc.worldguardwrapper.WorldGuardWrapper;
 
 /**
  * Created by Glare
- * Date: 4/4/2019
- * Time: 9:29 PM
+ * Date: 5/29/2019
+ * Time: 9:34 AM
  */
 @CommandAlias(Constants.ROOT_ALIAS)
-public class CommandAdminRename extends BaseCommand {
+public class CommandAdminUnclaim extends BaseCommand {
 
     @Dependency private GuildHandler guildHandler;
+    @Dependency private SettingsManager settingsManager;
 
-    /**
-     * Admin command to rename a guild
-     * @param player the admin running the command
-     * @param name the name of the guild
-     * @param newName the new name of the guild
-     */
-    @Subcommand("admin rename")
-    @Description("{@@descriptions.admin-prefix}")
+    @Subcommand("admin unclaim")
+    @Description("{@@descriptions.admin-unclaim}")
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
-    @Syntax("<name> <new name>")
-    public void execute(Player player, @Values("@guilds") @Single String name, String newName) {
+    @Syntax("<name>")
+    public void execute(Player player, @Values("@guilds") @Single String name) {
         Guild guild = guildHandler.getGuild(name);
 
         if (guild == null)
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
 
-        guild.setName(ACFBukkitUtil.color(newName));
-        getCurrentCommandIssuer().sendInfo(Messages.RENAME__SUCCESSFUL,
-                "{name}", newName);
+        if (!ClaimUtils.isEnable(settingsManager))
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.CLAIM__HOOK_DISABLED));
 
+        WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();
+
+        if (!ClaimUtils.checkAlreadyExist(wrapper, player, guild)) {
+            getCurrentCommandManager().getCommandIssuer(player).sendInfo(Messages.UNCLAIM__NOT_FOUND);
+            return;
+        }
+
+        ClaimUtils.removeClaim(wrapper, guild, player);
+        getCurrentCommandIssuer().sendInfo(Messages.UNCLAIM__SUCCESS);
     }
 
 }

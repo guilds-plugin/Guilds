@@ -40,6 +40,7 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.EconomyUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -74,68 +75,157 @@ public class BuffGUI {
         StaticPane pane = new StaticPane(0, 0, 9, 1);
 
         // Haste
-        setBuffItem(commandManager, settingsManager.getProperty(GuildBuffSettings.HASTE_TYPE), settingsManager.getProperty(GuildBuffSettings.HASTE_TIME),
-                settingsManager.getProperty(GuildBuffSettings.HASTE_AMPLIFIER), settingsManager.getProperty(GuildBuffSettings.HASTE_PRICE),
-                settingsManager.getProperty(GuildBuffSettings.HASTE_ICON), settingsManager.getProperty(GuildBuffSettings.HASTE_NAME),
+        setBuffItem(commandManager,
+                settingsManager.getProperty(GuildBuffSettings.HASTE_TYPE),
+                settingsManager.getProperty(GuildBuffSettings.HASTE_TIME),
+                settingsManager.getProperty(GuildBuffSettings.HASTE_AMPLIFIER),
+                settingsManager.getProperty(GuildBuffSettings.HASTE_PRICE),
+                settingsManager.getProperty(GuildBuffSettings.HASTE_ICON),
+                settingsManager.getProperty(GuildBuffSettings.HASTE_NAME),
                 settingsManager.getProperty(GuildBuffSettings.HASTE_LORE),
-                pane, 0,
-                settingsManager.getProperty(GuildBuffSettings.HASTE_DISPLAY));
+                pane,
+                settingsManager.getProperty(GuildBuffSettings.HASTE_SLOT),
+                settingsManager.getProperty(GuildBuffSettings.HASTE_DISPLAY),
+                settingsManager.getProperty(GuildBuffSettings.HASTE_CLICKER_COMMAND_CHECK),
+                settingsManager.getProperty(GuildBuffSettings.HASTE_CLICKER_COMMANDS),
+                settingsManager.getProperty(GuildBuffSettings.HASTE_GUILD_COMMAND_CHECK),
+                settingsManager.getProperty(GuildBuffSettings.HASTE_GUILD_COMMANDS
+                ));
         // Speed
-        setBuffItem(commandManager, settingsManager.getProperty(GuildBuffSettings.SPEED_TYPE), settingsManager.getProperty(GuildBuffSettings.SPEED_TIME),
-                settingsManager.getProperty(GuildBuffSettings.SPEED_AMPLIFIER), settingsManager.getProperty(GuildBuffSettings.SPEED_PRICE),
-                settingsManager.getProperty(GuildBuffSettings.SPEED_ICON), settingsManager.getProperty(GuildBuffSettings.SPEED_NAME),
+        setBuffItem(commandManager,
+                settingsManager.getProperty(GuildBuffSettings.SPEED_TYPE),
+                settingsManager.getProperty(GuildBuffSettings.SPEED_TIME),
+                settingsManager.getProperty(GuildBuffSettings.SPEED_AMPLIFIER),
+                settingsManager.getProperty(GuildBuffSettings.SPEED_PRICE),
+                settingsManager.getProperty(GuildBuffSettings.SPEED_ICON),
+                settingsManager.getProperty(GuildBuffSettings.SPEED_NAME),
                 settingsManager.getProperty(GuildBuffSettings.SPEED_LORE),
-                pane, 1,
-                settingsManager.getProperty(GuildBuffSettings.SPEED_DISPLAY));
+                pane,
+                settingsManager.getProperty(GuildBuffSettings.SPEED_SLOT),
+                settingsManager.getProperty(GuildBuffSettings.SPEED_DISPLAY),
+                settingsManager.getProperty(GuildBuffSettings.SPEED_CLICKER_COMMAND_CHECK),
+                settingsManager.getProperty(GuildBuffSettings.SPEED_CLICKER_COMMANDS),
+                settingsManager.getProperty(GuildBuffSettings.SPEED_GUILD_COMMAND_CHECK),
+                settingsManager.getProperty(GuildBuffSettings.SPEED_GUILD_COMMANDS
+                ));
         // Fire
-        setBuffItem(commandManager, settingsManager.getProperty(GuildBuffSettings.FR_TYPE), settingsManager.getProperty(GuildBuffSettings.FR_TIME),
-                settingsManager.getProperty(GuildBuffSettings.FR_AMPLIFIER), settingsManager.getProperty(GuildBuffSettings.FR_PRICE),
-                settingsManager.getProperty(GuildBuffSettings.FR_ICON), settingsManager.getProperty(GuildBuffSettings.FR_NAME),
+        setBuffItem(commandManager,
+                settingsManager.getProperty(GuildBuffSettings.FR_TYPE),
+                settingsManager.getProperty(GuildBuffSettings.FR_TIME),
+                settingsManager.getProperty(GuildBuffSettings.FR_AMPLIFIER),
+                settingsManager.getProperty(GuildBuffSettings.FR_PRICE),
+                settingsManager.getProperty(GuildBuffSettings.FR_ICON),
+                settingsManager.getProperty(GuildBuffSettings.FR_NAME),
                 settingsManager.getProperty(GuildBuffSettings.FR_LORE),
-                pane, 2,
-                settingsManager.getProperty(GuildBuffSettings.FR_DISPLAY));
+                pane,
+                settingsManager.getProperty(GuildBuffSettings.FR_SLOT),
+                settingsManager.getProperty(GuildBuffSettings.FR_DISPLAY),
+                settingsManager.getProperty(GuildBuffSettings.FR_CLICKER_COMMAND_CHECK),
+                settingsManager.getProperty(GuildBuffSettings.FR_CLICKER_COMMANDS),
+                settingsManager.getProperty(GuildBuffSettings.FR_GUILD_COMMAND_CHECK),
+                settingsManager.getProperty(GuildBuffSettings.FR_GUILD_COMMANDS
+                ));
         // Night
-        setBuffItem(commandManager, settingsManager.getProperty(GuildBuffSettings.NV_TYPE), settingsManager.getProperty(GuildBuffSettings.NV_TIME),
-                settingsManager.getProperty(GuildBuffSettings.NV_AMPLIFIER), settingsManager.getProperty(GuildBuffSettings.NV_PRICE),
-                settingsManager.getProperty(GuildBuffSettings.NV_ICON), settingsManager.getProperty(GuildBuffSettings.NV_NAME),
+        setBuffItem(commandManager,
+                settingsManager.getProperty(GuildBuffSettings.NV_TYPE),
+                settingsManager.getProperty(GuildBuffSettings.NV_TIME),
+                settingsManager.getProperty(GuildBuffSettings.NV_AMPLIFIER),
+                settingsManager.getProperty(GuildBuffSettings.NV_PRICE),
+                settingsManager.getProperty(GuildBuffSettings.NV_ICON),
+                settingsManager.getProperty(GuildBuffSettings.NV_NAME),
                 settingsManager.getProperty(GuildBuffSettings.NV_LORE),
-                pane, 3,
-                settingsManager.getProperty(GuildBuffSettings.NV_DISPLAY));
+                pane, settingsManager.getProperty(GuildBuffSettings.NV_SLOT),
+                settingsManager.getProperty(GuildBuffSettings.NV_DISPLAY),
+                settingsManager.getProperty(GuildBuffSettings.NV_CLICKER_COMMAND_CHECK),
+                settingsManager.getProperty(GuildBuffSettings.NV_CLICKER_COMMANDS),
+                settingsManager.getProperty(GuildBuffSettings.NV_GUILD_COMMAND_CHECK),
+                settingsManager.getProperty(GuildBuffSettings.NV_GUILD_COMMANDS
+                ));
         // Invisibility
-        setBuffItem(commandManager, settingsManager.getProperty(GuildBuffSettings.INVISIBILITY_TYPE), settingsManager.getProperty(GuildBuffSettings.INVISIBILITY_TIME),
-                settingsManager.getProperty(GuildBuffSettings.INVISIBILITY_AMPLIFIER), settingsManager.getProperty(GuildBuffSettings.INVISIBILITY_PRICE),
-                settingsManager.getProperty(GuildBuffSettings.INVISIBILITY_ICON), settingsManager.getProperty(GuildBuffSettings.INVISIBILITY_NAME),
+        setBuffItem(commandManager,
+                settingsManager.getProperty(GuildBuffSettings.INVISIBILITY_TYPE),
+                settingsManager.getProperty(GuildBuffSettings.INVISIBILITY_TIME),
+                settingsManager.getProperty(GuildBuffSettings.INVISIBILITY_AMPLIFIER),
+                settingsManager.getProperty(GuildBuffSettings.INVISIBILITY_PRICE),
+                settingsManager.getProperty(GuildBuffSettings.INVISIBILITY_ICON),
+                settingsManager.getProperty(GuildBuffSettings.INVISIBILITY_NAME),
                 settingsManager.getProperty(GuildBuffSettings.INVISIBILITY_LORE),
-                pane, 4,
-                settingsManager.getProperty(GuildBuffSettings.INVISIBILITY_DISPLAY));
+                pane,
+                settingsManager.getProperty(GuildBuffSettings.INVISIBILITY_SLOT),
+                settingsManager.getProperty(GuildBuffSettings.INVISIBILITY_DISPLAY),
+                settingsManager.getProperty(GuildBuffSettings.INVISIBILITY_CLICKER_COMMAND_CHECK),
+                settingsManager.getProperty(GuildBuffSettings.INVISIBILITY_CLICKER_COMMANDS),
+                settingsManager.getProperty(GuildBuffSettings.INVISIBILITY_GUILD_COMMAND_CHECK),
+                settingsManager.getProperty(GuildBuffSettings.INVISIBILITY_GUILD_COMMANDS
+                ));
         // Strength
-        setBuffItem(commandManager, settingsManager.getProperty(GuildBuffSettings.STRENGTH_TYPE), settingsManager.getProperty(GuildBuffSettings.STRENGTH_TIME),
-                settingsManager.getProperty(GuildBuffSettings.STRENGTH_AMPLIFIER), settingsManager.getProperty(GuildBuffSettings.STRENGTH_PRICE),
-                settingsManager.getProperty(GuildBuffSettings.STRENGTH_ICON), settingsManager.getProperty(GuildBuffSettings.STRENGTH_NAME),
+        setBuffItem(commandManager,
+                settingsManager.getProperty(GuildBuffSettings.STRENGTH_TYPE),
+                settingsManager.getProperty(GuildBuffSettings.STRENGTH_TIME),
+                settingsManager.getProperty(GuildBuffSettings.STRENGTH_AMPLIFIER),
+                settingsManager.getProperty(GuildBuffSettings.STRENGTH_PRICE),
+                settingsManager.getProperty(GuildBuffSettings.STRENGTH_ICON),
+                settingsManager.getProperty(GuildBuffSettings.STRENGTH_NAME),
                 settingsManager.getProperty(GuildBuffSettings.STRENGTH_LORE),
-                pane, 5,
-                settingsManager.getProperty(GuildBuffSettings.STRENGTH_DISPLAY));
+                pane,
+                settingsManager.getProperty(GuildBuffSettings.STRENGTH_SLOT),
+                settingsManager.getProperty(GuildBuffSettings.STRENGTH_DISPLAY),
+                settingsManager.getProperty(GuildBuffSettings.STRENGTH_CLICKER_COMMAND_CHECK),
+                settingsManager.getProperty(GuildBuffSettings.STRENGTH_CLICKER_COMMANDS),
+                settingsManager.getProperty(GuildBuffSettings.STRENGTH_GUILD_COMMAND_CHECK),
+                settingsManager.getProperty(GuildBuffSettings.STRENGTH_GUILD_COMMANDS
+                ));
         // Jump
-        setBuffItem(commandManager, settingsManager.getProperty(GuildBuffSettings.JUMP_TYPE), settingsManager.getProperty(GuildBuffSettings.JUMP_TIME),
-                settingsManager.getProperty(GuildBuffSettings.JUMP_AMPLIFIER), settingsManager.getProperty(GuildBuffSettings.JUMP_PRICE),
-                settingsManager.getProperty(GuildBuffSettings.JUMP_ICON), settingsManager.getProperty(GuildBuffSettings.JUMP_NAME),
+        setBuffItem(commandManager,
+                settingsManager.getProperty(GuildBuffSettings.JUMP_TYPE),
+                settingsManager.getProperty(GuildBuffSettings.JUMP_TIME),
+                settingsManager.getProperty(GuildBuffSettings.JUMP_AMPLIFIER),
+                settingsManager.getProperty(GuildBuffSettings.JUMP_PRICE),
+                settingsManager.getProperty(GuildBuffSettings.JUMP_ICON),
+                settingsManager.getProperty(GuildBuffSettings.JUMP_NAME),
                 settingsManager.getProperty(GuildBuffSettings.JUMP_LORE),
-                pane, 6,
-                settingsManager.getProperty(GuildBuffSettings.JUMP_DISPLAY));
+                pane,
+                settingsManager.getProperty(GuildBuffSettings.JUMP_SLOT),
+                settingsManager.getProperty(GuildBuffSettings.JUMP_DISPLAY),
+                settingsManager.getProperty(GuildBuffSettings.JUMP_CLICKER_COMMAND_CHECK),
+                settingsManager.getProperty(GuildBuffSettings.JUMP_CLICKER_COMMANDS),
+                settingsManager.getProperty(GuildBuffSettings.JUMP_GUILD_COMMAND_CHECK),
+                settingsManager.getProperty(GuildBuffSettings.JUMP_GUILD_COMMANDS
+                ));
         // Water
-        setBuffItem(commandManager, settingsManager.getProperty(GuildBuffSettings.WB_TYPE), settingsManager.getProperty(GuildBuffSettings.WB_TIME),
-                settingsManager.getProperty(GuildBuffSettings.WB_AMPLIFIER), settingsManager.getProperty(GuildBuffSettings.WB_PRICE),
-                settingsManager.getProperty(GuildBuffSettings.WB_ICON), settingsManager.getProperty(GuildBuffSettings.WB_NAME),
+        setBuffItem(commandManager,
+                settingsManager.getProperty(GuildBuffSettings.WB_TYPE),
+                settingsManager.getProperty(GuildBuffSettings.WB_TIME),
+                settingsManager.getProperty(GuildBuffSettings.WB_AMPLIFIER),
+                settingsManager.getProperty(GuildBuffSettings.WB_PRICE),
+                settingsManager.getProperty(GuildBuffSettings.WB_ICON),
+                settingsManager.getProperty(GuildBuffSettings.WB_NAME),
                 settingsManager.getProperty(GuildBuffSettings.WB_LORE),
-                pane, 7,
-                settingsManager.getProperty(GuildBuffSettings.WB_DISPLAY));
+                pane,
+                settingsManager.getProperty(GuildBuffSettings.WB_SLOT),
+                settingsManager.getProperty(GuildBuffSettings.WB_DISPLAY),
+                settingsManager.getProperty(GuildBuffSettings.WB_CLICKER_COMMAND_CHECK),
+                settingsManager.getProperty(GuildBuffSettings.WB_CLICKER_COMMANDS),
+                settingsManager.getProperty(GuildBuffSettings.WB_GUILD_COMMAND_CHECK),
+                settingsManager.getProperty(GuildBuffSettings.WB_GUILD_COMMANDS
+                ));
         // Regen
-        setBuffItem(commandManager, settingsManager.getProperty(GuildBuffSettings.REGENERATION_TYPE), settingsManager.getProperty(GuildBuffSettings.REGENERATION_TIME),
-                settingsManager.getProperty(GuildBuffSettings.REGENERATION_AMPLIFIER), settingsManager.getProperty(GuildBuffSettings.REGENERATION_PRICE),
-                settingsManager.getProperty(GuildBuffSettings.REGENERATION_ICON), settingsManager.getProperty(GuildBuffSettings.REGENERATION_NAME),
+        setBuffItem(commandManager,
+                settingsManager.getProperty(GuildBuffSettings.REGENERATION_TYPE),
+                settingsManager.getProperty(GuildBuffSettings.REGENERATION_TIME),
+                settingsManager.getProperty(GuildBuffSettings.REGENERATION_AMPLIFIER),
+                settingsManager.getProperty(GuildBuffSettings.REGENERATION_PRICE),
+                settingsManager.getProperty(GuildBuffSettings.REGENERATION_ICON),
+                settingsManager.getProperty(GuildBuffSettings.REGENERATION_NAME),
                 settingsManager.getProperty(GuildBuffSettings.REGENERATION_LORE),
-                pane, 8,
-                settingsManager.getProperty(GuildBuffSettings.REGENERATION_DISPLAY));
+                pane,
+                settingsManager.getProperty(GuildBuffSettings.REGENERATION_SLOT),
+                settingsManager.getProperty(GuildBuffSettings.REGENERATION_DISPLAY),
+                settingsManager.getProperty(GuildBuffSettings.REGENERATION_CLICKER_COMMAND_CHECK),
+                settingsManager.getProperty(GuildBuffSettings.REGENERATION_CLICKER_COMMANDS),
+                settingsManager.getProperty(GuildBuffSettings.REGENERATION_GUILD_COMMAND_CHECK),
+                settingsManager.getProperty(GuildBuffSettings.REGENERATION_GUILD_COMMANDS
+                ));
 
         gui.addPane(pane);
 
@@ -156,7 +246,9 @@ public class BuffGUI {
      * @param x The location to add to
      * @param check check if this should be displayed
      */
-    private void setBuffItem(CommandManager commandManager, String type, int length, int amplifier, double cost, String icon, String name, List<String> lore, StaticPane pane, int x, boolean check) {
+    private void setBuffItem(CommandManager commandManager, String type, int length, int amplifier,
+                             double cost, String icon, String name, List<String> lore, StaticPane pane, int x,
+                             boolean check, boolean clickerCheck, List<String> clickerCommands, boolean guildCheck, List<String> guildCommands) {
         GuiItem buffItem = new GuiItem(new ItemStack(Material.valueOf(icon)), event -> {
             event.setCancelled(true);
             Player player = (Player) event.getWhoClicked();
@@ -174,6 +266,9 @@ public class BuffGUI {
             guild.setBalance(guild.getBalance() - cost);
             guild.addPotion(type, (length * 20), amplifier);
             cooldownHandler.addCooldown(guild, Cooldown.TYPES.Buffs.name(), settingsManager.getProperty(CooldownSettings.BUFF), TimeUnit.SECONDS);
+
+            executeClickerCommands(clickerCheck, clickerCommands, player);
+            executeGuildCommands(guildCheck, guildCommands, guild);
         });
         ItemMeta meta = buffItem.getItem().getItemMeta();
         meta.setDisplayName(ACFBukkitUtil.color(name));
@@ -181,6 +276,36 @@ public class BuffGUI {
         buffItem.getItem().setItemMeta(meta);
         if (check)
             pane.addItem(buffItem, x, 0);
+    }
+
+    /**
+     * Execute a list of commands on the player who bought the buff
+     * @param check if this can run or not
+     * @param commands the commands to run
+     * @param player the player to execute them on
+     */
+    private void executeClickerCommands(boolean check, List<String> commands, Player player) {
+        if (check) {
+            commands.forEach(c -> {
+                String update = c.replace("{player}", player.getName());
+                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), update);
+            });
+        }
+    }
+
+    /**
+     * Execute a list of commands on all players online in a guild
+     * @param check if this can run or not
+     * @param commands the commands to run
+     * @param guild the guild of players to run on
+     */
+    private void executeGuildCommands(boolean check, List<String> commands, Guild guild) {
+        if (check) {
+            guild.getOnlineAsPlayers().forEach(p -> commands.forEach(c -> {
+                String update = c.replace("{player}", p.getName());
+                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), update);
+            }));
+        }
     }
 
 

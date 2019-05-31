@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.commands.member;
+package me.glaremasters.guilds.commands.admin.member;
 
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
@@ -35,71 +35,64 @@ import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.annotation.Values;
-import me.glaremasters.guilds.api.events.GuildInviteEvent;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
-import me.glaremasters.guilds.exceptions.InvalidPermissionException;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
-import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.Constants;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 /**
  * Created by Glare
- * Date: 4/5/2019
- * Time: 10:15 PM
+ * Date: 4/4/2019
+ * Time: 8:59 PM
  */
 @CommandAlias(Constants.ROOT_ALIAS)
-public class CommandInvite extends BaseCommand {
+public class CommandAdminAddPlayer extends BaseCommand {
 
-    @Dependency private GuildHandler guildHandler;
+   @Dependency private GuildHandler guildHandler;
 
     /**
-     * Invite player to guild
-     * @param player current player
-     * @param target player being invited
-     * @param guild the guild that the targetPlayer is being invited to
-     * @param role the role of the player
+     * Admin command to add a player to a guild
+     * @param player the admin running the command
+     * @param target the player being added to the guild
+     * @param name the guild the player is being added to
      */
-    @Subcommand("invite")
-    @Description("{@@descriptions.invite}")
-    @CommandPermission(Constants.BASE_PERM + "invite")
-    @CommandCompletion("@online")
-    @Syntax("<name>")
-    public void execute(Player player, Guild guild, GuildRole role, @Values("@online") @Single String target) {
-        if (!role.isInvite())
-            ACFUtil.sneaky(new InvalidPermissionException());
+    @Subcommand("admin addplayer")
+    @Description("{@@descriptions.admin-addplayer}")
+    @CommandPermission(Constants.ADMIN_PERM)
+    @CommandCompletion("@online @guilds")
+    @Syntax("<player> <guild>")
+    public void execute(Player player, @Values("@online") @Single String target, @Values("@guilds") @Single String name) {
+        OfflinePlayer adding = Bukkit.getOfflinePlayer(target);
 
-        Player pl = Bukkit.getPlayer(target);
+        if (adding == null)
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__PLAYER_NOT_FOUND));
 
-        if (pl == null || !pl.isOnline())
-            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__PLAYER_NOT_FOUND, "{player}", target));
+        Guild possibleGuild = guildHandler.getGuild(adding);
 
-        if (guildHandler.getGuild(pl) != null)
-            ACFUtil.sneaky(new ExpectationNotMet(Messages.INVITE__ALREADY_IN_GUILD, "{player}", target));
+        if (possibleGuild != null)
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__ALREADY_IN_GUILD));
 
-        if (guild.checkIfInvited(pl))
-            ACFUtil.sneaky(new ExpectationNotMet(Messages.INVITE__ALREADY_INVITED));
+        Guild targetGuild = guildHandler.getGuild(name);
 
-        GuildInviteEvent event =  new GuildInviteEvent(player, guild, pl);
-        Bukkit.getPluginManager().callEvent(event);
+        if (targetGuild == null)
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
 
-        if (event.isCancelled())
-            return;
+        targetGuild.addMember(adding, guildHandler);
 
-        guild.inviteMember(pl.getUniqueId());
+        if (adding.isOnline())
+            getCurrentCommandManager().getCommandIssuer(adding).sendInfo(Messages.ADMIN__PLAYER_ADDED,
+                    "{guild}", targetGuild.getName());
 
-        getCurrentCommandManager().getCommandIssuer(pl).sendInfo(Messages.INVITE__MESSAGE,
-                        "{player}", player.getName(),
-                "{guild}", guild.getName());
+        getCurrentCommandIssuer().sendInfo(Messages.ADMIN__ADMIN_PLAYER_ADDED,
+                "{player}", adding.getName(),
+                "{guild}", targetGuild.getName());
 
-        getCurrentCommandIssuer().sendInfo(Messages.INVITE__SUCCESSFUL,
-                "{player}", pl.getName());
-
-
-
+        targetGuild.sendMessage(getCurrentCommandManager(), Messages.ADMIN__ADMIN_GUILD_ADD,
+                "{player}", adding.getName());
     }
 
 }

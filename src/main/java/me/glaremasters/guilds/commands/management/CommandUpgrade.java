@@ -84,7 +84,7 @@ public class CommandUpgrade extends BaseCommand {
 
         if (guildHandler.memberCheck(guild))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.UPGRADE__NOT_ENOUGH_MEMBERS,
-                    "{amount}", String.valueOf(tier.getMembersToRankup())));
+                    "{amount}", String.valueOf(guild.getTier().getMembersToRankup())));
 
         if (!EconomyUtils.hasEnough(balance, upgradeCost))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.UPGRADE__NOT_ENOUGH_MONEY, "{needed}",

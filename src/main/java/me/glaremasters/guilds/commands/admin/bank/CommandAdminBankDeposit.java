@@ -22,11 +22,12 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.commands.admin;
+package me.glaremasters.guilds.commands.admin.bank;
 
-import co.aikar.commands.ACFBukkitUtil;
+import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
+import co.aikar.commands.CommandIssuer;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
@@ -35,45 +36,51 @@ import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
-import co.aikar.commands.annotation.Values;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.Constants;
-import org.bukkit.entity.Player;
 
 /**
  * Created by Glare
- * Date: 4/4/2019
- * Time: 9:26 PM
+ * Date: 5/30/2019
+ * Time: 2:35 PM
  */
 @CommandAlias(Constants.ROOT_ALIAS)
-public class CommandAdminPrefix extends BaseCommand {
+public class CommandAdminBankDeposit extends BaseCommand {
 
     @Dependency private GuildHandler guildHandler;
+    @Dependency private SettingsManager settingsManager;
 
     /**
-     * Admin command to change the prefix of a guild
-     * @param player the admin running the command
-     * @param name the name of a guild
-     * @param prefix the new prefix of the guild
+     * Admin command to put money into a guild's bank
+     * @param issuer the person running the command
+     * @param name the name of the guild
+     * @param amount the amount to put in
      */
-    @Subcommand("admin prefix")
-    @Description("{@@descriptions.admin-prefix}")
+    @Subcommand("admin bank deposit")
+    @Description("{@@descriptions.admin-bank-deposit}")
     @CommandPermission(Constants.ADMIN_PERM)
+    @Syntax("<amount>")
     @CommandCompletion("@guilds")
-    @Syntax("<name> <prefix>")
-    public void execute(Player player, @Values("@guilds") @Single String name, String prefix) {
+    public void execute(CommandIssuer issuer, @Single String name, double amount) {
         Guild guild = guildHandler.getGuild(name);
 
         if (guild == null)
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
 
-        guild.setPrefix(ACFBukkitUtil.color(prefix));
+        if (amount < 0)
+            return;
 
-        getCurrentCommandIssuer().sendInfo(Messages.PREFIX__SUCCESSFUL);
+        double balance = guild.getBalance();
+        double total = balance + amount;
+
+        guild.setBalance(total);
+
+        getCurrentCommandIssuer().sendInfo(Messages.ADMIN__BANK_DEPOSIT, "{amount}", String.valueOf(amount),
+                "{guild}", guild.getName(),
+                "{total}", String.valueOf(total));
     }
-
 
 }

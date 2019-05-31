@@ -32,26 +32,48 @@ import org.bukkit.entity.Player;
 
 public class PlaceholderAPI extends PlaceholderExpansion {
 
+    /**
+     * Get the identifier of the expansion
+     * @return identifier
+     */
     @Override
     public String getIdentifier() {
         return "guilds";
     }
 
+    /**
+     * Keep alive through papi reloads
+     * @return
+     */
     @Override
     public boolean persist() {
         return true;
     }
 
+    /**
+     * Get the author of the expansion
+     * @return author
+     */
     @Override
     public String getAuthor() {
         return "blockslayer22";
     }
 
+    /**
+     * Get the version of the expansion
+     * @return version
+     */
     @Override
     public String getVersion() {
-        return "1.1.0";
+        return "1.2";
     }
 
+    /**
+     * ADd in the placeholders
+     * @param p player to check
+     * @param arg the placeholder to check with
+     * @return placeholder
+     */
     @Override
     public String onPlaceholderRequest(Player p, String arg) {
 
@@ -66,35 +88,35 @@ public class PlaceholderAPI extends PlaceholderExpansion {
 
         switch (lowerArg) {
             case "id":
-                return api.getGuildId(p);
+                return api.getGuild(p).getId().toString();
             case "name":
                 return api.getGuild(p).getName();
             case "master":
-                return Bukkit.getOfflinePlayer(api.getGuildMaster(p)).getName();
+                return Bukkit.getOfflinePlayer(api.getGuild(p).getGuildMaster().getUuid()).getName();
             case "member_count":
-                return String.valueOf(api.getGuildMemberCount(p));
+                return String.valueOf(api.getGuild(p).getMembers().size());
             case "prefix":
-                return api.getGuildPrefix(p);
+                return api.getGuild(p).getPrefix();
             case "members_online":
-                return String.valueOf(api.getGuildMembersOnline(p));
+                return String.valueOf(api.getGuild(p).getOnlineMembers().size());
             case "status":
-                return String.valueOf(api.getGuildStatus(p));
+                return api.getGuild(p).getStatus().name();
             case "role":
                 return api.getGuildRole(p).getName();
             case "tier":
-                return String.valueOf(api.getGuildTier(p));
+                return String.valueOf(api.getGuild(p).getTier().getLevel());
             case "balance":
-                return String.valueOf(api.getBankBalance(p));
+                return String.valueOf(api.getGuild(p).getBalance());
             case "tier_name":
-                return api.getGuildTier(p).getName();
+                return api.getGuild(p).getTier().getName();
             case "role_node":
                 return api.getGuildRole(p).getNode();
             case "code_amount":
-                return String.valueOf(api.getGuildCodes(p).size());
+                return String.valueOf(api.getGuild(p).getCodes().size());
             case "max_members":
-                return String.valueOf(api.getMaxMembers(p));
+                return String.valueOf(api.getGuild(p).getTier().getMaxMembers());
             case "max_balance":
-                return String.valueOf(api.getMaxBalance(p));
+                return String.valueOf(api.getGuild(p).getTier().getMaxBankBalance());
             default:
                 return "";
         }

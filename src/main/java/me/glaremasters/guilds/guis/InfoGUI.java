@@ -170,7 +170,7 @@ public class InfoGUI {
                         // Cancel the event
                         event.setCancelled(true);
                         // Open the new GUI
-                        guilds.getGuiHandler().getInfoMembersGUI().getInfoMembersGUI(guild, player, guilds.getCommandManager()).show(event.getWhoClicked());
+                        guilds.getGuiHandler().getInfoMembersGUI().getInfoMembersGUI(guild).show(event.getWhoClicked());
                     }));
         }
         // Add the status button to the GUI
@@ -258,6 +258,9 @@ public class InfoGUI {
                     event -> {
                         // Cancel the event
                         event.setCancelled(true);
+                        // Check if they have the perms to open the vaults
+                        if (!guild.getMember(player.getUniqueId()).getRole().isOpenVault())
+                            return;
                         // Open the new GUI
                         guilds.getGuiHandler().getVaultGUI().getVaultGUI(guild, player, guilds.getCommandManager()).show(event.getWhoClicked());
                     }));

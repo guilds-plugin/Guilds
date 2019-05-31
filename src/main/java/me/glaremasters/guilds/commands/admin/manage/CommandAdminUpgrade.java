@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.commands.admin;
+package me.glaremasters.guilds.commands.admin.manage;
 
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
@@ -45,33 +45,38 @@ import org.bukkit.entity.Player;
 /**
  * Created by Glare
  * Date: 4/4/2019
- * Time: 9:22 PM
+ * Time: 9:14 PM
  */
 @CommandAlias(Constants.ROOT_ALIAS)
-public class CommandAdminStatus extends BaseCommand {
+public class CommandAdminUpgrade extends BaseCommand {
 
     @Dependency private GuildHandler guildHandler;
 
     /**
-     * Admin command to change a guild's status
+     * Admin command to upgrade a guild's tier
      * @param player the admin running the command
-     * @param name the guild to change the status of
+     * @param name the name of the guild being upgraded
      */
-    @Subcommand("admin status")
-    @Description("{@@descriptions.admin-status}")
+    @Subcommand("admin upgrade")
+    @Description("{@@descriptions.admin-upgrade}")
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
-    @Syntax("<name>")
+    @Syntax("<guild name>")
     public void execute(Player player, @Values("@guilds") @Single String name) {
         Guild guild = guildHandler.getGuild(name);
 
         if (guild == null)
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
 
-        guild.toggleStatus();
+        if (guildHandler.isMaxTier(guild))
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.UPGRADE__TIER_MAX));
 
-        getCurrentCommandIssuer().sendInfo(Messages.STATUS__SUCCESSFUL,
-                "{status}", guild.getStatus().name());
+        guildHandler.upgradeTier(guild);
+
+        getCurrentCommandIssuer().sendInfo(Messages.ADMIN__ADMIN_UPGRADE,
+                "{guild}", guild.getName());
+
+        guild.sendMessage(getCurrentCommandManager(), Messages.ADMIN__ADMIN_GUILD_UPGRADE);
     }
 
 }

@@ -54,7 +54,7 @@ public class CommandChat extends BaseCommand {
      * @param guild the guild the player is from
      * @param role the role the player has
      */
-    @Subcommand("chat")
+    @Subcommand("chat|c")
     @Description("{@@descriptions.chat}")
     @CommandPermission(Constants.BASE_PERM + "chat")
     public void execute(Player player, Guild guild, GuildRole role) {

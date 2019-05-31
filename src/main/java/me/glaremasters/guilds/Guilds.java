@@ -38,7 +38,6 @@ import me.glaremasters.guilds.api.GuildsAPI;
 import me.glaremasters.guilds.configuration.SettingsHandler;
 import me.glaremasters.guilds.configuration.sections.HooksSettings;
 import me.glaremasters.guilds.configuration.sections.PluginSettings;
-import me.glaremasters.guilds.cooldowns.Cooldown;
 import me.glaremasters.guilds.cooldowns.CooldownHandler;
 import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.database.cooldowns.CooldownsProvider;
@@ -51,6 +50,7 @@ import me.glaremasters.guilds.guild.GuildCode;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.guis.GUIHandler;
+import me.glaremasters.guilds.listeners.ClaimSignListener;
 import me.glaremasters.guilds.listeners.EntityListener;
 import me.glaremasters.guilds.listeners.EssentialsChatListener;
 import me.glaremasters.guilds.listeners.PlayerListener;
@@ -103,7 +103,7 @@ import java.util.stream.Stream;
                 @MavenLibrary(groupId = "com.github.stefvanschie.inventoryframework", artifactId = "IF", version = "0.3.1", repo = "https://repo.glaremasters.me/repository/public/"),
                 @MavenLibrary(groupId = "com.dumptruckman.minecraft", artifactId = "JsonConfiguration", version = "1.1", repo = "https://repo.glaremasters.me/repository/public/"),
                 @MavenLibrary(groupId = "net.minidev", artifactId = "json-smart", version = "1.1.1", repo = "https://repo.glaremasters.me/repository/public/"),
-                @MavenLibrary(groupId = "org.codemc.worldguardwrapper", artifactId = "worldguardwrapper", version = "1.1.5-SNAPSHOT", repo = "https://repo.glaremasters.me/repository/public/"),
+                @MavenLibrary(groupId = "org.codemc.worldguardwrapper", artifactId = "worldguardwrapper", version = "1.1.6-SNAPSHOT", repo = "https://repo.glaremasters.me/repository/public/"),
                 @MavenLibrary(groupId = "org.javassist", artifactId = "javassist", version = "3.21.0-GA"),
                 @MavenLibrary(groupId = "org.reflections", artifactId = "reflections", version = "0.9.11"),
                 @MavenLibrary(groupId = "ch.jalu", artifactId = "configme", version = "1.1.0", repo = "https://repo.glaremasters.me/repository/public/")
@@ -414,7 +414,7 @@ public final class Guilds extends JavaPlugin {
         info("Enabled API!");
 
         // Create cooldowns if they don't exist
-        createCooldowns();
+        cooldownHandler.createCooldowns();
 
         info("Ready to go! That only took " + (System.currentTimeMillis() - startingTime) + "ms");
         getServer().getScheduler().scheduleAsyncRepeatingTask(this, () -> {
@@ -517,6 +517,7 @@ public final class Guilds extends JavaPlugin {
 
         if (settingsHandler.getSettingsManager().getProperty(HooksSettings.WORLDGUARD)) {
             getServer().getPluginManager().registerEvents(new WorldGuardListener(guildHandler), this);
+            getServer().getPluginManager().registerEvents(new ClaimSignListener(this, settingsHandler.getSettingsManager(), guildHandler), this);
         }
     }
 
@@ -570,15 +571,6 @@ public final class Guilds extends JavaPlugin {
         commandManager.registerDependency(Economy.class, economy);
         commandManager.registerDependency(Permission.class, permissions);
         commandManager.registerDependency(CooldownHandler.class, cooldownHandler);
-    }
-
-    /**
-     * Create the cooldowns for the plugin
-     */
-    private void createCooldowns() {
-        for (Cooldown.TYPES type : Cooldown.TYPES.values()) {
-            cooldownHandler.addCooldownType(type.name());
-        }
     }
 
 }

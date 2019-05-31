@@ -22,55 +22,67 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.commands.admin;
+package me.glaremasters.guilds.commands.admin.member;
 
-import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
-import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
-import co.aikar.commands.annotation.Values;
-import co.aikar.commands.bukkit.contexts.OnlinePlayer;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
+import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.Constants;
-import org.bukkit.command.CommandSender;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 
 /**
  * Created by Glare
- * Date: 4/8/2019
- * Time: 2:32 PM
+ * Date: 4/4/2019
+ * Time: 9:10 PM
  */
 @CommandAlias(Constants.ROOT_ALIAS)
-public class CommandAdminGive extends BaseCommand {
+public class CommandAdminRemovePlayer extends BaseCommand {
 
     @Dependency private GuildHandler guildHandler;
-    @Dependency private SettingsManager settingsManager;
 
     /**
-     * Give a player upgrade tickets
-     * @param sender the executor of this command
-     * @param player the player receiving the tickets
-     * @param amount amount of tickets
+     * Admin command to remove a player from a guild
+     * @param player the admin running the command
+     * @param target the guild the player is being removed from
      */
-    @Subcommand("admin give")
-    @Description("{@@descriptions.give}")
+    @Subcommand("admin removeplayer")
+    @Description("{@@descriptions.admin-removeplayer}")
     @CommandPermission(Constants.ADMIN_PERM)
-    @CommandCompletion("@online")
-    @Syntax("<player> <amount>")
-    public void execute(CommandSender sender, @Values("@online") OnlinePlayer player, @Default("1") Integer amount) {
-        if (player == null)
+    @Syntax("<name>")
+    public void execute(Player player, String target) {
+        OfflinePlayer removing = Bukkit.getOfflinePlayer(target);
+
+        if (removing == null)
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__PLAYER_NOT_FOUND));
 
-        player.getPlayer().getInventory().addItem(guildHandler.getUpgradeTicket(settingsManager, amount));
-        getCurrentCommandIssuer().sendInfo(Messages.CONFIRM__SUCCESS);
+        Guild guild = guildHandler.getGuild(removing);
+
+        if (guild == null)
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
+
+        guild.removeMember(removing);
+
+        if (removing.isOnline())
+            getCurrentCommandManager().getCommandIssuer(removing).sendInfo(Messages.ADMIN__PLAYER_REMOVED,
+                    "{guild}", guild.getName());
+
+        getCurrentCommandIssuer().sendInfo(Messages.ADMIN__ADMIN_PLAYER_REMOVED,
+                "{player}", removing.getName(),
+                "{guild}", guild.getName());
+
+        guild.sendMessage(getCurrentCommandManager(), Messages.ADMIN__ADMIN_GUILD_REMOVE,
+                "{player}", removing.getName());
     }
 
 }
