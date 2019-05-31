@@ -244,10 +244,10 @@ vaults:
   maxed: "&cYou can't open this vault because you already have the max amount of vaults for your Guild Tier!"
   blacklisted: "&cYou can't put that item in your Guild Vault because it is blacklisted!"
 languages:
-  set: "&aYou've successfully set your language to {language}"
+  set: "&aDilinizi başarıyla {language} olarak ayarladınız"
   warning: "&cYou are about to update all the language files. This will delete all current language files and recreate them. Type /guilds confirm to continue, type /guilds cancel to cancel."
-  updated: "&aLanguage files have been recreated and reloaded!"
-  console-only: "&cSorry, this command can only be ran from console!"
+  updated: "&aDil dosyaları yeniden oluşturuldu ve yeniden yüklendi!"
+  console-only: "&cÜzgünüz, bu komut sadece konsoldan çalıştırılabilir!"
 help:
   header: "<c3>=== </c3><c1>Showing help for </c1><c2>{commandprefix}{command}</c2><c3> ===</c3>"
   detailed-header: "<c3>=== </c3><c1>Showing detailed help for </c1><c2>{commandprefix}{command}</c2><c3> ===</c3>"
