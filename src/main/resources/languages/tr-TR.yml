@@ -237,15 +237,15 @@ codes:
   invalid-code: "&cBu davet kodu görünmüyor. Lütfen tekrar deneyin!"
   joined: "&6Davet kodunu kullanarak {guild}'a &abaşarıyla katıldın!"
   guild-message: "&6{player} &ahas joined the guild using an invite code from &6{creator}&a!"
-  out: "&cThat invite code is all out of uses! Please try another one!"
+  out: "&cBu davet kodu kullanım dışı! Lütfen başka bir tane deneyin!"
   info: "&aInvite Code Information:\n&aID: &6{code}\n&aUses: &6{amount}\n&aCreator: &6{creator}\n&aRedeemers: &6{redeemers}"
-  max: "&cYou already have too many active invite codes in your guild!"
+  max: "&cLoncada zaten çok fazla aktif davet kodu var!"
 vaults:
-  maxed: "&cYou can't open this vault because you already have the max amount of vaults for your Guild Tier!"
-  blacklisted: "&cYou can't put that item in your Guild Vault because it is blacklisted!"
+  maxed: "&cBu kasayı açamazsınız çünkü Lonca Aşaması için maksimum miktarda kasaya sahipsiniz!"
+  blacklisted: "&cBu eşyayı Lonca Kasanıza koyamazsınız çünkü kara listeye alınmış!"
 languages:
   set: "&aDilinizi başarıyla {language} olarak ayarladınız"
-  warning: "&cYou are about to update all the language files. This will delete all current language files and recreate them. Type /guilds confirm to continue, type /guilds cancel to cancel."
+  warning: "&cTüm dil dosyalarını güncellemek üzeresiniz. Bu, tüm geçerli dil dosyalarını siler ve yeniden oluşturur. /guilds confirm devam etmek için onaylayın, /guilds cancel iptal etmek için."
   updated: "&aDil dosyaları yeniden oluşturuldu ve yeniden yüklendi!"
   console-only: "&cÜzgünüz, bu komut sadece konsoldan çalıştırılabilir!"
 help:
