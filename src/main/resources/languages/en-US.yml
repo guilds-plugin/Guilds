@@ -156,6 +156,7 @@ invite:
   already-invited: "User is already invited to your guild"
   message: "&a{player} has invited you to his/her guild, '{guild}' Type /guild join {guild} to join!"
   successful: "&aYou've successfully invited {player} to your guild!"
+  already-in-guild: "&c{player} is already in another guild!"
 upgrade:
   tier-max: "&cCannot upgrade again! You're already maxed!"
   money-warning: "&cYou are about to spend {amount} to set upgrade your guild. (Type /guilds confirm to continue)"

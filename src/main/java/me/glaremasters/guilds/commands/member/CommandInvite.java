@@ -78,7 +78,7 @@ public class CommandInvite extends BaseCommand {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__PLAYER_NOT_FOUND, "{player}", target));
 
         if (guildHandler.getGuild(pl) != null)
-            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__ALREADY_IN_GUILD));
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.INVITE__ALREADY_IN_GUILD, "{player}", target));
 
         if (guild.checkIfInvited(pl))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.INVITE__ALREADY_INVITED));
