@@ -146,7 +146,7 @@ leave:
   cancelled: "&cGuild verlaten gestopt!"
   successful: "&aJe hebt jouw Guild verlaten!"
   player-left: "&cSpeler '{player}' heeft jouw Guild verlaten!"
-  guildmaster-left: "&cDeGuild Master, '{player}' heeft de Guild verlaten. De Guild wordt nu verwijderd."
+  guildmaster-left: "&cDe Guild Master, '{player}' heeft de Guild verlaten. De Guild wordt nu verwijderd."
   warning: "&cTyp /guilds confirm om jouw Guild te verwijderen, typ /guilds cancel om te stoppen."
   warning-guildmaster: "&cJe bent de Guild Master van deze Guild, als je de Guild verlaat dan zal deze verwijderd worden. Typ /guilds confirm om je Guild te verlaten en te verwijderen, typ /guilds cancel om te stoppen."
 transfer:
@@ -201,7 +201,7 @@ ally:
   current-remove: "&aJe hebt {guild} verwijderd als bondgenoot!"
   target-remove: "&c{guild} heeft jouw Guild verwijderd als bondgenoot!"
   already-ally: "&cDie Guild is al jouw bondgenoot!"
-  same-guild: "&cJe kan geen bondgenoot verzoek aan jezelf sturen!"
+  same-guild: "&cJe kunt geen bondgenoot verzoek aan jezelf sturen!"
   not-allied: "&cJe bent geen bondgenoten met deze Guild!"
   already-requested: "&cJe hebt op het moment al een openstaand bondgenoot verzoek aan deze Guild!"
 accept:
