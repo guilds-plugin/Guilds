@@ -79,7 +79,7 @@ chat:
   disabled: "Чат гильдии отключен"
   enabled: "Чат гильдии включен"
 request:
-  success: "&aЗапрос на приглашение от {guild} отправлен"
+  success: "&aЗапрос на вступление в {guild} отправлен"
   incoming-request: "&a{player} просит вступить в гильдию. Используйте /guild invite {player}, чтобы принять!"
   cooldown: "Вы не можете отправлять запросы ещё {time} секунд."
 error:
