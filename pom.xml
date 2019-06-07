@@ -101,7 +101,7 @@
                                 </relocation>
                                 <relocation>
                                     <pattern>org.apache.commons</pattern>
-                                    <shadedPattern>me.glaremasters.guilds.libs.commons-io</shadedPattern>
+                                    <shadedPattern>me.glaremasters.guilds.libs.commonsio</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>com.google.common</pattern>

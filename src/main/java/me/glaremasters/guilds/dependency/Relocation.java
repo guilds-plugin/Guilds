@@ -15,8 +15,8 @@ public class Relocation {
     private final Collection<String> excludes;
 
     private Relocation(String pattern, String relocatedPattern, Collection<String> includes, Collection<String> excludes) {
-        this.pattern = requireNonNull(pattern, "pattern");
-        this.relocatedPattern = requireNonNull(relocatedPattern, "relocatedPattern");
+        this.pattern = requireNonNull(pattern, "pattern").replace("{}", ".");
+        this.relocatedPattern = requireNonNull(relocatedPattern, "relocatedPattern").replace("{}", ".");
         this.includes = includes != null ? Collections.unmodifiableList(new LinkedList<>(includes)) : Collections.emptyList();
         this.excludes = excludes != null ? Collections.unmodifiableList(new LinkedList<>(excludes)) : Collections.emptyList();
     }
