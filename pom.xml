@@ -99,6 +99,14 @@
                                     <pattern>org.yaml.snakeyaml</pattern>
                                     <shadedPattern>me.glaremasters.guilds.libs.snakeyml</shadedPattern>
                                 </relocation>
+                                <relocation>
+                                    <pattern>org.apache.commons</pattern>
+                                    <shadedPattern>me.glaremasters.guilds.libs.commons-io</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com.google.common</pattern>
+                                    <shadedPattern>me.glaremasters.guilds.libs.guava</shadedPattern>
+                                </relocation>
                             </relocations>
                         </configuration>
                     </execution>
@@ -287,5 +295,11 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>21.0</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 </project>
