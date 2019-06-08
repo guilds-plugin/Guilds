@@ -80,7 +80,7 @@ chat:
   enabled: "Чат гильдии включен"
 request:
   success: "&aЗапрос на вступление в {guild} отправлен"
-  incoming-request: "&a{player} просит вступить в гильдию. Используйте /guild invite {player}, чтобы принять!"
+  incoming-request: "&a{player} просит вступить в гильдию. Введите /guild invite {player}, чтобы принять!"
   cooldown: "Вы не можете отправлять запросы ещё {time} секунд."
 error:
   already-in-guild: "&cВы уже состоите в гильдии!"
@@ -172,7 +172,7 @@ status:
 rename:
   successful: "&aНазвание гильдии изменено на {name}!"
 home:
-  no-home-set: "&cДом гильдии не установлен! Используйте &a/guilds sethome &cдля установки!"
+  no-home-set: "&cДом гильдии не установлен! Введите &a/guilds sethome &cдля установки!"
   teleported: "&aВы телепортировались в дом гильдии!"
   cooldown: "&cВы должны подождать {amount} секунд, прежде чем делать это снова"
   warmup: "&aВы будете телепортированы через {amount} секунд. Не двигайтесь!"
