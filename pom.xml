@@ -100,7 +100,7 @@
                                     <shadedPattern>me.glaremasters.guilds.libs.snakeyml</shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern>org.apache.commons</pattern>
+                                    <pattern>org.apache.commons.io</pattern>
                                     <shadedPattern>me.glaremasters.guilds.libs.commonsio</shadedPattern>
                                 </relocation>
                                 <relocation>
