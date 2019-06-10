@@ -96,6 +96,10 @@
                                     <shadedPattern>me.glaremasters.guilds.libs.acf</shadedPattern>
                                 </relocation>
                                 <relocation>
+                                    <pattern>co.aikar.taskchain</pattern>
+                                    <shadedPattern>me.glaremasters.guilds.libs.taskchain</shadedPattern>
+                                </relocation>
+                                <relocation>
                                     <pattern>org.yaml.snakeyaml</pattern>
                                     <shadedPattern>me.glaremasters.guilds.libs.snakeyml</shadedPattern>
                                 </relocation>

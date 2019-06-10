@@ -143,8 +143,8 @@ public final class Guilds extends JavaPlugin {
      */
     private void loadDepLibs(LibraryLoader loader) {
         loader.loadLibrary(Library.builder().groupId("commons-io").artifactId("commons-io").version("2.6").checksum("+HfTBGYKwqFC84ZbrfyXHex+1zx0fH+NXS9ROcpzZRM=").relocate("org{}apache{}commons{}io", "me.glaremasters.guilds.libs.commonsio").build());
-        loader.loadLibrary(Library.builder().groupId("co.aikar").artifactId("taskchain-core").version("3.7.2").checksum("OpSCCN+7v6gqFpsU/LUNOOXzjImwjyE2ShHZ5xFUj/Q=").build());
-        loader.loadLibrary(Library.builder().groupId("co.aikar").artifactId("taskchain-bukkit").version("3.7.2").checksum("B/O3+zWGalLs8otAr8tdNnIc/39FDRh6tN5qvNgfEaI=").build());
+        loader.loadLibrary(Library.builder().groupId("co.aikar").artifactId("taskchain-core").version("3.7.2").checksum("OpSCCN+7v6gqFpsU/LUNOOXzjImwjyE2ShHZ5xFUj/Q=").relocate("co{}aikar{}taskchain", "me.glaremasters.guilds.libs.taskchain").build());
+        loader.loadLibrary(Library.builder().groupId("co.aikar").artifactId("taskchain-bukkit").version("3.7.2").checksum("B/O3+zWGalLs8otAr8tdNnIc/39FDRh6tN5qvNgfEaI=").relocate("co{}aikar{}taskchain", "me.glaremasters.guilds.libs.taskchain").build());
         loader.loadLibrary(Library.builder().groupId("net.lingala.zip4j").artifactId("zip4j").version("1.3.2").checksum("xnCY1DDFdDEUMnKOvUx8RWcvnM9cZHAutq+4gWwirQg=").build());
         loader.loadLibrary(Library.builder().groupId("com.github.stefvanschie.inventoryframework").artifactId("IF").version("0.3.1").checksum("MOPOPYQSpI3jqFrhQkpTABdO2JpoN4kNqFQTxq7KB+E=").build());
         loader.loadLibrary(Library.builder().groupId("com.dumptruckman.minecraft").artifactId("JsonConfiguration").version("1.1").checksum("aEEn9nIShT4mvJlF538Mnv+hbP/Yv17ANGchaaBoyCw=").build());
