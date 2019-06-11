@@ -75,7 +75,7 @@ public class CommandHome extends BaseCommand {
 
         cooldownHandler.addCooldown(player, Cooldown.TYPES.Home.name(), settingsManager.getProperty(CooldownSettings.HOME), TimeUnit.SECONDS);
 
-        if (settingsManager.getProperty(CooldownSettings.WU_HOME_ENABLED)) {
+        if (settingsManager.getProperty(CooldownSettings.WU_HOME_ENABLED) && !player.hasPermission("guilds.warmup.bypass")) {
             Location initial = player.getLocation();
             getCurrentCommandIssuer().sendInfo(Messages.HOME__WARMUP, "{amount}", String.valueOf(settingsManager.getProperty(CooldownSettings.WU_HOME)));
             Guilds.newChain().delay(settingsManager.getProperty(CooldownSettings.WU_HOME), TimeUnit.SECONDS).sync(() -> {
