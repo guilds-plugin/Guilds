@@ -152,6 +152,8 @@ public class ClaimSignListener implements Listener {
 
         player.getWorld().getBlockAt(block.getLocation()).breakNaturally();
 
+        guild.setBalance(guild.getBalance() - Double.valueOf(sign.getLine(2)));
+
         guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.CLAIM__SIGN_BUY_SUCCESS);
     }
 
