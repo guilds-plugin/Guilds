@@ -7,8 +7,9 @@ descriptions:
   admin-bank-withdraw: "Adnmin command om geld uit een Guild's bank te halen"
   admin-delhome: "Admin command om het huis van een Guild te verwijderen"
   admin-home: "Admin command om te teleporteren naar het huis van een Guild"
-  admin-motd-set: "Stel de MOTD van een Guild in"
-  admin-motd-remove: "Verwijder de MOTD van een Guild"
+  admin-motd: "Admin command to view the MOTD of a guild"
+  admin-motd-set: "Admin command to set the motd of a guild"
+  admin-motd-remove: "Admin command to remove the motd of a guild"
   admin-prefix: "Admin command om een Guild's prefix te veranderen"
   admin-rename: "Admin command om een Guild te hernoemen"
   admin-remove: "Admin command om een Guild te verwijderen van de server"
@@ -97,8 +98,8 @@ error:
   buff-cooldown: "&cSorry, jouw Guild heeft recentelijk een buff gekocht. Je kunt het opnieuw proberen in {amount} seconden."
 bank:
   balance: "&aJouw Guild heeft een bank balans van {amount}."
-  deposit-success: "&aJe hebt {amount} aan jouw Guild Bank toegevoegd. Jouw Guild Bank totaal is nu {total}!"
-  withdrawl-success: "&aJe hebt {amount} uit jouw Guild Bank gehaald. Jouw Guild Bank totaal is nu {total}!"
+  deposit-success: "&a{player} has just deposited {amount} into the Guild Bank."
+  withdrawl-success: "&a{player} has just withdrawn {amount} from the Guild Bank."
   not-enough-bank: "&cEr is niet genoeg geld in de Guild Bank om dat te doen!"
   over-max: "&cSorry, je kunt niet zoveel storten omdat je dan over de maximale banksaldo zult gaan!"
 admin:
@@ -115,6 +116,7 @@ admin:
   admin-guild-upgrade: "&aJouw Guild tier is geupgrade door een Admin!"
   spy-on: "&aGuild Chat Spy is ingeschakeld!"
   spy-off: "&cGuild Chat Spy is uitgeschakeld!!"
+  motd: "&a{guild}'s MOTD is: {motd}"
   motd-success: "&aJe hebt met succes de MOTD voor {guild} ingesteld op {motd}."
   motd-remove: "&aJe hebt met succes de MOTD voor {guild} verwijderd."
   bank-balance: "&aDe Guild {guild} heeft een bank balans van {balance}."
@@ -261,4 +263,3 @@ motd:
   remove: "&aJe hebt met succes jouw Guild's MOTD verwijderd."
   motd: "&7[&aGuild MOTD&7] {motd}"
   not-set: "&cJouw Guild heeft momenteel geen MOTD ingesteld."
-
