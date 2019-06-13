@@ -7,8 +7,9 @@ descriptions:
   admin-bank-withdraw: "Admin command to take money from a guild's bank"
   admin-delhome: "Admin command to delete the home of a guild"
   admin-home: "Admin command to teleport to the home of a guild"
-  admin-motd-set: "Set the MOTD for a Guild"
-  admin-motd-remove: "Remove the MOTD of a Guild"
+  admin-motd: "Admin command to view the MOTD of a guild"
+  admin-motd-set: "Admin command to set the motd of a guild"
+  admin-motd-remove: "Admin command to remove the motd of a guild"
   admin-prefix: "Comanda pentru admini pentru a schimba prefixul breslei"
   admin-rename: "Comanda pentru admini pentru a redenumi o breasla"
   admin-remove: "Comanda pentru admini pentru a sterge o breasla"
@@ -97,8 +98,8 @@ error:
   buff-cooldown: "&cSorry, your guild has recently bought a buff. You can try again in {amount} seconds."
 bank:
   balance: "&aBanca breslei tale are o balanta de {amount}."
-  deposit-success: "&aAi depozitat {amount} in banca breslei. Balanta totala este acum de {total}!"
-  withdrawl-success: "&aAi retras {amount} din banca breslei. Balanta totala este acum de {total}!"
+  deposit-success: "&a{player} has just deposited {amount} into the Guild Bank."
+  withdrawl-success: "&a{player} has just withdrawn {amount} from the Guild Bank."
   not-enough-bank: "&cNu exista suficiente fonduri in banca Breslei pentru a face asta"
   over-max: "&cImi pare rau, dar nu poti depozita o suma mai mare decat limita bancii tale!"
 admin:
@@ -115,6 +116,7 @@ admin:
   admin-guild-upgrade: "&aBreasla ta a fost upgradata de catre un Admin!"
   spy-on: "&aSpy chat-ul Breslei a fost activat!"
   spy-off: "&cSpy chat-ul Breslei a fost dezactivat!"
+  motd: "&a{guild}'s MOTD is: {motd}"
   motd-success: "&aYou've successfully set the MOTD for {guild} to {motd}."
   motd-remove: "&aYou've successfully removed the MOTD for {guild}."
   bank-balance: "&aThe guild {guild} has a bank balance of {balance}."
@@ -261,4 +263,3 @@ motd:
   remove: "&aYou've successfully removed your guild's MOTD."
   motd: "&7[&aGuild MOTD&7] {motd}"
   not-set: "&cYour guild currently does not have a MOTD set."
-
