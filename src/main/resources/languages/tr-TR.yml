@@ -7,8 +7,9 @@ descriptions:
   admin-bank-withdraw: "Bir lonca bankasından para almak için yönetici komutu"
   admin-delhome: "Bir loncanın evini silmek için yönetici komutu"
   admin-home: "Bir loncanın evine ışınlanacak yönetici komutu"
-  admin-motd-set: "MOTD'yi Bir Loncaya Ayarla"
-  admin-motd-remove: "Bir Lonca'nın MOTD'sini kaldır"
+  admin-motd: "Admin command to view the MOTD of a guild"
+  admin-motd-set: "Admin command to set the motd of a guild"
+  admin-motd-remove: "Admin command to remove the motd of a guild"
   admin-prefix: "Bir Lonca öneki değiştirmek için yönetici komutu"
   admin-rename: "Bir Loncayı yeniden adlandırmak için yönetici komutu"
   admin-remove: "Loncayı sunucudan kaldırmak için yönetici komutu"
@@ -97,8 +98,8 @@ error:
   buff-cooldown: "&cMaalesef, loncanız yakın zamanda bir buff satın aldı. {amount} saniye içinde tekrar deneyebilirsiniz."
 bank:
   balance: "&aLoncanın bankasının bakiyesi {amount}."
-  deposit-success: "&aLonca Bankanıza {amount} yatırdınız. Lonca Bankası toplamınız şimdi {total}!"
-  withdrawl-success: "&aLonca Bankanızdan {amount}'ı geri aldınız. Lonca Bankası toplamınız şimdi {total}!"
+  deposit-success: "&a{player} has just deposited {amount} into the Guild Bank."
+  withdrawl-success: "&a{player} has just withdrawn {amount} from the Guild Bank."
   not-enough-bank: "&cLonca Bankası'nda bunu yapmak için yeterli değil"
   over-max: "&cMaalesef, maksimum banka bakiyenizi aşacağınız kadar para yatıramazsınız!"
 admin:
@@ -115,6 +116,7 @@ admin:
   admin-guild-upgrade: "&aLonca aşamanız bir Yönetici tarafından yükseltildi!"
   spy-on: "&aGuild Chat Spy has been enabled!"
   spy-off: "&cGuild Chat Spy has been disabled!"
+  motd: "&a{guild}'s MOTD is: {motd}"
   motd-success: "&aYou've successfully set the MOTD for {guild} to {motd}."
   motd-remove: "&aYou've successfully removed the MOTD for {guild}."
   bank-balance: "&aThe guild {guild} has a bank balance of {balance}."
@@ -261,4 +263,3 @@ motd:
   remove: "&aLoncanın MOTD'sini başarıyla kaldırdın."
   motd: "&7[&aLonca MOTD&7] {motd}"
   not-set: "&cLonca şu anda bir MOTD ayarlanmasına sahip değil."
-
