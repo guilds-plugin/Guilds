@@ -7,8 +7,9 @@ descriptions:
   admin-bank-withdraw: "Админ-команда, чтобы снять деньги с банка гильдии"
   admin-delhome: "Админ-команда для удаления дома гильдии"
   admin-home: "Админ-команда для телепортации на дом гильдии"
-  admin-motd-set: "Установить сообщения дня для гильдии"
-  admin-motd-remove: "Удалить сообщения дня из гильдии"
+  admin-motd: "Admin command to view the MOTD of a guild"
+  admin-motd-set: "Admin command to set the motd of a guild"
+  admin-motd-remove: "Admin command to remove the motd of a guild"
   admin-prefix: "Админ-команда для смены префикса гильдии"
   admin-rename: "Админ-команда для переименования гильдии"
   admin-remove: "Админ-команда для расформирования гильдии"
@@ -97,8 +98,8 @@ error:
   buff-cooldown: "&cИзвините, но Ваша гильдия недавно уже купила бафф. Попробуйте снова через {amount} секунд."
 bank:
   balance: "&aБаланс банка Вашей гильдии составляет {amount}."
-  deposit-success: "&aВы внесли {amount} в банк своей гильдии. Итого в банке гильдии {total}!"
-  withdrawl-success: "&aВы сняли {amount} с банка Вашей гильдии. Итого в банке гильдии {total}!"
+  deposit-success: "&a{player} has just deposited {amount} into the Guild Bank."
+  withdrawl-success: "&a{player} has just withdrawn {amount} from the Guild Bank."
   not-enough-bank: "&cВ банке гильдии недостаточно денег"
   over-max: "&cИзвините, нельзя положить на счет так много денег - банк превысит максимальный лимит!"
 admin:
@@ -115,6 +116,7 @@ admin:
   admin-guild-upgrade: "&aАдминистратор повысил уровень вашей гильдии!"
   spy-on: "&aСлежка за чатами гильдий включена!"
   spy-off: "&cСлежка за чатами гильдий выключена!"
+  motd: "&a{guild}'s MOTD is: {motd}"
   motd-success: "&aВы успешно установили сообщения дня для {guild} на {motd}."
   motd-remove: "&aВы успешно удалили сообщения дня для {guild}."
   bank-balance: "&aГильдия {guild} имеет баланс банка {balance}."
@@ -261,4 +263,3 @@ motd:
   remove: "&aВы успешно удалили сообщения дня Вашей гильдии."
   motd: "&7[&aСообщение дня гильдии&7] {motd}"
   not-set: "&cВ Вашей гильдии не установлено сообщения дня."
-
