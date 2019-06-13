@@ -30,7 +30,7 @@
 
     <groupId>me.glaremasters</groupId>
     <artifactId>guilds</artifactId>
-    <version>3.4.9-RELEASE</version>
+    <version>3.5.0-BETA</version>
     <packaging>jar</packaging>
 
     <name>Guilds</name>
@@ -96,8 +96,20 @@
                                     <shadedPattern>me.glaremasters.guilds.libs.acf</shadedPattern>
                                 </relocation>
                                 <relocation>
+                                    <pattern>co.aikar.taskchain</pattern>
+                                    <shadedPattern>me.glaremasters.guilds.libs.taskchain</shadedPattern>
+                                </relocation>
+                                <relocation>
                                     <pattern>org.yaml.snakeyaml</pattern>
                                     <shadedPattern>me.glaremasters.guilds.libs.snakeyml</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.apache.commons.io</pattern>
+                                    <shadedPattern>me.glaremasters.guilds.libs.commonsio</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com.google.common</pattern>
+                                    <shadedPattern>me.glaremasters.guilds.libs.guava</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
@@ -287,5 +299,11 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>21.0</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 </project>

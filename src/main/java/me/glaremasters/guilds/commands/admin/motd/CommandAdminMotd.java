@@ -22,64 +22,58 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.commands.bank;
+package me.glaremasters.guilds.commands.admin.motd;
 
+import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
+import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
-import co.aikar.commands.annotation.Syntax;
+import co.aikar.commands.annotation.Values;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
-import me.glaremasters.guilds.exceptions.InvalidPermissionException;
 import me.glaremasters.guilds.guild.Guild;
-import me.glaremasters.guilds.guild.GuildRole;
+import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.Constants;
-import net.milkbowl.vault.economy.Economy;
 import org.bukkit.entity.Player;
-
-import java.text.NumberFormat;
 
 /**
  * Created by Glare
- * Date: 4/4/2019
- * Time: 5:42 PM
+ * Date: 5/22/2019
+ * Time: 11:00 PM
  */
 @CommandAlias(Constants.ROOT_ALIAS)
-public class CommandBankWithdraw extends BaseCommand {
+public class CommandAdminMotd extends BaseCommand {
 
-    @Dependency private Economy economy;
+    @Dependency private GuildHandler guildHandler;
+    @Dependency private SettingsManager settingsManager;
 
     /**
-     * Take money from the bank
-     * @param player the player to check
-     * @param guild the guild they are in
-     * @param role the role of the player
-     * @param amount the amount being taken out
+     * View the motd of a guild
+     * @param player the player running the command
+     * @param guild the player's guild
      */
-    @Subcommand("bank withdraw")
-    @Description("{@@descriptions.bank-withdraw}")
-    @CommandPermission(Constants.BANK_PERM + "withdraw")
-    @Syntax("<amount>")
-    public void execute(Player player, Guild guild, GuildRole role, double amount) {
-
-        double balance = guild.getBalance();
-
-        if (!role.isWithdrawMoney())
-            ACFUtil.sneaky(new InvalidPermissionException());
-
-        if (amount < 0)
-            return;
-
-        if (balance < amount)
-            ACFUtil.sneaky(new ExpectationNotMet(Messages.BANK__NOT_ENOUGH_BANK));
-
-        guild.setBalance(balance - amount);
-        economy.depositPlayer(player, amount);
-        guild.sendMessage(getCurrentCommandManager(), Messages.BANK__WITHDRAWL_SUCCESS, "{player}", player.getName(),
-                "{amount}", String.valueOf(NumberFormat.getInstance().format(amount)));
+    @Subcommand("admin motd")
+    @Description("{@@descriptions.admin-motd}")
+    @CommandPermission(Constants.ADMIN_PERM)
+    @CommandCompletion("@guilds")
+    public void execute(Player player, @Values("@guilds") @Single String guild) {
+        // Get the target guild
+        Guild targetGuild = guildHandler.getGuild(guild);
+        // Check if target guild is null, throw error
+        if (targetGuild == null)
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
+        // Check if motd is null
+        if (targetGuild.getMotd() == null)
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.MOTD__NOT_SET));
+        // Tell the user their motd
+        getCurrentCommandIssuer().sendInfo(Messages.ADMIN__MOTD,
+                "{guild}", targetGuild.getName(), "{motd}", targetGuild.getMotd());
     }
+
 }

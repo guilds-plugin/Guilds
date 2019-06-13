@@ -32,8 +32,8 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.ClaimUtils;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -91,16 +91,20 @@ public class ClaimSignListener implements Listener {
 
     @EventHandler
     public void onSignInteract(PlayerInteractEvent event) {
+
+        if (!event.hasBlock())
+            return;
+
         Block block = event.getClickedBlock();
 
-        if (block == null)
+        BlockState state = block.getState();
+
+        if (!(state instanceof Sign))
             return;
 
-        if (block.getType() != Material.WALL_SIGN && block.getType() != Material.SIGN_POST)
-            return;
+        Sign sign = (Sign) state;
 
         Player player = event.getPlayer();
-        Sign sign = (Sign) block.getState();
 
         if (!sign.getLine(0).equalsIgnoreCase("[Guild Claim]"))
             return;
@@ -147,6 +151,8 @@ public class ClaimSignListener implements Listener {
         });
 
         player.getWorld().getBlockAt(block.getLocation()).breakNaturally();
+
+        guild.setBalance(guild.getBalance() - Double.valueOf(sign.getLine(2)));
 
         guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.CLAIM__SIGN_BUY_SUCCESS);
     }

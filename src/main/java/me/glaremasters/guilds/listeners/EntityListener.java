@@ -133,7 +133,7 @@ public class EntityListener implements Listener {
             return;
         }
 
-        if (guildHandler.isSameGuild(damagee, damager)) {
+        if (guildHandler.isSameGuild(damagee, damager) && damagee != damager ) {
             event.setCancelled(!settingsManager.getProperty(GuildSettings.GUILD_DAMAGE));
             return;
         }
@@ -209,7 +209,7 @@ public class EntityListener implements Listener {
         for (LivingEntity entity : event.getAffectedEntities()) {
             if (entity instanceof Player)  {
                 Player player = (Player) entity;
-                if (guildHandler.isSameGuild(shooter, player)) {
+                if (guildHandler.isSameGuild(shooter, player) && potion.getShooter() != player ) {
                     event.setCancelled(!settingsManager.getProperty(GuildSettings.GUILD_DAMAGE));
                     return;
                 }

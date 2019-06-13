@@ -86,11 +86,8 @@ public class CommandBankDeposit extends BaseCommand {
 
         economy.withdrawPlayer(player, amount);
         guild.setBalance(total);
-        getCurrentCommandIssuer().sendInfo(Messages.BANK__DEPOSIT_SUCCESS,
-                "{amount}", String.valueOf(NumberFormat.getInstance().format(amount)),
-                "{total}", String.valueOf(NumberFormat.getInstance().format(guild.getBalance())));
-
-
+        guild.sendMessage(getCurrentCommandManager(), Messages.BANK__DEPOSIT_SUCCESS, "{player}", player.getName(),
+                "{amount}", String.valueOf(NumberFormat.getInstance().format(amount)));
     }
 
 }

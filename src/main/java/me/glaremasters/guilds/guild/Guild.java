@@ -390,10 +390,13 @@ public class Guild {
         GuildMember oldMaster = getMember(oldPlayer.getUniqueId());
         GuildMember newMaster = getMember(newPlayer.getUniqueId());
 
+        GuildRole gm = oldMaster.getRole();
+
         if (newMaster.getRole().getLevel() != 1)
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__NOT_OFFICER));
 
         oldMaster.setRole(newMaster.getRole());
+        newMaster.setRole(gm);
         setGuildMaster(newMaster);
     }
 
