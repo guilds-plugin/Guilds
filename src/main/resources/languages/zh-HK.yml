@@ -7,8 +7,9 @@ descriptions:
   admin-bank-withdraw: "Admin command to take money from a guild's bank"
   admin-delhome: "Admin command to delete the home of a guild"
   admin-home: "Admin command to teleport to the home of a guild"
-  admin-motd-set: "Set the MOTD for a Guild"
-  admin-motd-remove: "Remove the MOTD of a Guild"
+  admin-motd: "Admin command to view the MOTD of a guild"
+  admin-motd-set: "Admin command to set the motd of a guild"
+  admin-motd-remove: "Admin command to remove the motd of a guild"
   admin-prefix: "[管理用功能] 更改公會前綴"
   admin-rename: "[管理用功能] 重命名公會"
   admin-remove: "[管理用功能] 從伺服器中刪除公會"
@@ -97,8 +98,8 @@ error:
   buff-cooldown: "&cSorry, your guild has recently bought a buff. You can try again in {amount} seconds."
 bank:
   balance: "&8[&6公會&8] &f目前公會金庫: {amount}金幣"
-  deposit-success: "&8[&6公會&8] &f你已存入 {amount} 金幣到公會金庫中，公會金庫總量: {total}金幣"
-  withdrawl-success: "&8[&6公會&8] &f你已從公會金庫中取出 {amount} 金幣，公會金庫總量: {total}金幣"
+  deposit-success: "&a{player} has just deposited {amount} into the Guild Bank."
+  withdrawl-success: "&a{player} has just withdrawn {amount} from the Guild Bank."
   not-enough-bank: "&8[&6公會&8] &f金庫裏沒有足夠的金幣"
   over-max: "&8[&6公會&8] &f你不能存入這麼多的金幣，已超出容量"
 admin:
@@ -115,6 +116,7 @@ admin:
   admin-guild-upgrade: "&8[&6公會&8] &f你的公會階級已由管理員升級 ！"
   spy-on: "&8[&6公會&8] &f開啟監視公會聊天頻道 ！"
   spy-off: "&8[&6公會&8] &f關閉監視公會聊天頻道 ！"
+  motd: "&a{guild}'s MOTD is: {motd}"
   motd-success: "&aYou've successfully set the MOTD for {guild} to {motd}."
   motd-remove: "&aYou've successfully removed the MOTD for {guild}."
   bank-balance: "&aThe guild {guild} has a bank balance of {balance}."
@@ -261,4 +263,3 @@ motd:
   remove: "&aYou've successfully removed your guild's MOTD."
   motd: "&7[&aGuild MOTD&7] {motd}"
   not-set: "&cYour guild currently does not have a MOTD set."
-
