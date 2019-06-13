@@ -7,8 +7,9 @@ descriptions:
   admin-bank-withdraw: "Admin command to take money from a guild's bank"
   admin-delhome: "Admin command to delete the home of a guild"
   admin-home: "Admin command to teleport to the home of a guild"
-  admin-motd-set: "Set the MOTD for a Guild"
-  admin-motd-remove: "Remove the MOTD of a Guild"
+  admin-motd: "Admin command to view the MOTD of a guild"
+  admin-motd-set: "Admin command to set the motd of a guild"
+  admin-motd-remove: "Admin command to remove the motd of a guild"
   admin-prefix: "Comando de administrador para cambiar el prefijo de una guild"
   admin-rename: "Comando de administrador para cambiar el nombre de una guild"
   admin-remove: "Comando de administrador para remover una guild del servidor"
@@ -97,8 +98,8 @@ error:
   buff-cooldown: "&cSorry, your guild has recently bought a buff. You can try again in {amount} seconds."
 bank:
   balance: "&cEl banco de tu guild tiene la cantidad de {amount}."
-  deposit-success: "&aHas depositado {amount} en el banco de tu guild. ¡El banco de tu guild ahora tiene {total}!"
-  withdrawl-success: "&aHas depositado {amount} en el banco de tu gremio. ¡El fondo de tu gremio tiene ahora {total}!"
+  deposit-success: "&a{player} has just deposited {amount} into the Guild Bank."
+  withdrawl-success: "&a{player} has just withdrawn {amount} from the Guild Bank."
   not-enough-bank: "&cNo hay suficiente dinero en el banco de tu guild para hacer eso"
   over-max: "&cLo sentimos, no puede depositar tanto como lo haría sobre su saldo bancario máximo!"
 admin:
@@ -115,6 +116,7 @@ admin:
   admin-guild-upgrade: "¡&aTu nivel de gremio ha sido actualizado por un administrador!"
   spy-on: "¡&aEl chat espia de gremios ha sido habilitado!"
   spy-off: "¡&aEl chat espia de gremios ha sido deshabilitado!"
+  motd: "&a{guild}'s MOTD is: {motd}"
   motd-success: "&aYou've successfully set the MOTD for {guild} to {motd}."
   motd-remove: "&aYou've successfully removed the MOTD for {guild}."
   bank-balance: "&aThe guild {guild} has a bank balance of {balance}."
@@ -261,4 +263,3 @@ motd:
   remove: "&aYou've successfully removed your guild's MOTD."
   motd: "&7[&aGuild MOTD&7] {motd}"
   not-set: "&cYour guild currently does not have a MOTD set."
-

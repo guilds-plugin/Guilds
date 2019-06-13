@@ -7,8 +7,9 @@ descriptions:
   admin-bank-withdraw: "Admin command to take money from a guild's bank"
   admin-delhome: "Admin command to delete the home of a guild"
   admin-home: "Admin command to teleport to the home of a guild"
-  admin-motd-set: "Définir le message du jour d'une guilde"
-  admin-motd-remove: "Supprimer le message du jour d'une guilde"
+  admin-motd: "Admin command to view the MOTD of a guild"
+  admin-motd-set: "Admin command to set the motd of a guild"
+  admin-motd-remove: "Admin command to remove the motd of a guild"
   admin-prefix: "Commande admin pour changer le préfixe de guilde"
   admin-rename: "Commande admin pour renommer une guilde"
   admin-remove: "Commande admin pour supprimer une guilde du serveur"
@@ -97,8 +98,8 @@ error:
   buff-cooldown: "&cDésolé, votre guilde a récemment acheté un buff. Vous pouvez réessayer dans {amount} secondes.  "
 bank:
   balance: "&aVotre guilde possède : {amount}."
-  deposit-success: "&aVous avez déposé {amount} dans le coffre de guilde. Le total en banque est de {total} !"
-  withdrawl-success: "&aVous avez retiré {amount} de votre banque de guilde. Le total en banque est de {total} !"
+  deposit-success: "&a{player} has just deposited {amount} into the Guild Bank."
+  withdrawl-success: "&a{player} has just withdrawn {amount} from the Guild Bank."
   not-enough-bank: "&cIl n'y a pas assez d'argent en banque pour faire cela"
   over-max: "&cDésolé, vous ne pouvez pas déposer autant, ou vous dépasserez la limite maximum de votre banque !"
 admin:
@@ -115,6 +116,7 @@ admin:
   admin-guild-upgrade: "&aVotre tier de guilde a été mis à niveau par un administrateur. !"
   spy-on: "&aEspionnage de chat de guilde activé !"
   spy-off: "&cEspionnage de chat de guilde  désactivé !"
+  motd: "&a{guild}'s MOTD is: {motd}"
   motd-success: "&aVous avez bien changé le message du jour de la guilde {guild} en {motd}."
   motd-remove: "&aVous avez bien supprimé le message du jour de la guilde {guild}."
   bank-balance: "&aThe guild {guild} has a bank balance of {balance}."
@@ -261,4 +263,3 @@ motd:
   remove: "&aVous avez bien supprimé le message du jour de la guilde."
   motd: "&7[&aMessage du jour de Guilde&7] {motd}"
   not-set: "&cVotre guilde n'a aucun message du jour définit."
-

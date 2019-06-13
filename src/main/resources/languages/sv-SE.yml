@@ -7,8 +7,9 @@ descriptions:
   admin-bank-withdraw: "Admin command to take money from a guild's bank"
   admin-delhome: "Admin command to delete the home of a guild"
   admin-home: "Admin command to teleport to the home of a guild"
-  admin-motd-set: "Set the MOTD for a Guild"
-  admin-motd-remove: "Remove the MOTD of a Guild"
+  admin-motd: "Admin command to view the MOTD of a guild"
+  admin-motd-set: "Admin command to set the motd of a guild"
+  admin-motd-remove: "Admin command to remove the motd of a guild"
   admin-prefix: "Admin command to change a Guild's prefix"
   admin-rename: "Admin command to rename a Guild"
   admin-remove: "Admin command to remove a Guild from the server"
@@ -97,8 +98,8 @@ error:
   buff-cooldown: "&cSorry, your guild has recently bought a buff. You can try again in {amount} seconds."
 bank:
   balance: "&aYour guild's bank has a balance of {amount}."
-  deposit-success: "&aYou have deposited {amount} into your Guild Bank. Your Guild Bank total is now {total}!"
-  withdrawl-success: "&aYou have withdrawn {amount} from your Guild Bank. Your Guild Bank total is now {total}!"
+  deposit-success: "&a{player} has just deposited {amount} into the Guild Bank."
+  withdrawl-success: "&a{player} has just withdrawn {amount} from the Guild Bank."
   not-enough-bank: "&cThere isn't enough in the Guild Bank to do that"
   over-max: "&cSorry, you can't deposit that much as you would go over your max bank balance!"
 admin:
@@ -115,6 +116,7 @@ admin:
   admin-guild-upgrade: "&aYour guild tier has been upgraded by an Admin!"
   spy-on: "&aGuild Chat Spy has been enabled!"
   spy-off: "&cGuild Chat Spy has been disabled!"
+  motd: "&a{guild}'s MOTD is: {motd}"
   motd-success: "&aYou've successfully set the MOTD for {guild} to {motd}."
   motd-remove: "&aYou've successfully removed the MOTD for {guild}."
   bank-balance: "&aThe guild {guild} has a bank balance of {balance}."
@@ -261,4 +263,3 @@ motd:
   remove: "&aYou've successfully removed your guild's MOTD."
   motd: "&7[&aGuild MOTD&7] {motd}"
   not-set: "&cYour guild currently does not have a MOTD set."
-

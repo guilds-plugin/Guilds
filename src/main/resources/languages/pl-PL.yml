@@ -7,8 +7,9 @@ descriptions:
   admin-bank-withdraw: "Admin command to take money from a guild's bank"
   admin-delhome: "Admin command to delete the home of a guild"
   admin-home: "Admin command to teleport to the home of a guild"
-  admin-motd-set: "Set the MOTD for a Guild"
-  admin-motd-remove: "Remove the MOTD of a Guild"
+  admin-motd: "Admin command to view the MOTD of a guild"
+  admin-motd-set: "Admin command to set the motd of a guild"
+  admin-motd-remove: "Admin command to remove the motd of a guild"
   admin-prefix: "Komenda administratora aby zmienić prefix gildi"
   admin-rename: "Komenda administratora aby zmienić nazwę gildi"
   admin-remove: "Komenda administratora aby usunąć gildie z serwera"
@@ -97,8 +98,8 @@ error:
   buff-cooldown: "Przepraszamy, twoja gildia niedawno kupiła buffa. Możesz spróbować ponownie za {amount} sekund."
 bank:
   balance: "&aPieniądze gildii: {amount}."
-  deposit-success: "&aWpłaciłeś {amount} do banku gildii. Status banku gildii to: {total}!"
-  withdrawl-success: "&aWypłaciłeś {amount} z banku gildii. Status banku gildii to: {total}!"
+  deposit-success: "&a{player} has just deposited {amount} into the Guild Bank."
+  withdrawl-success: "&a{player} has just withdrawn {amount} from the Guild Bank."
   not-enough-bank: "&cZa mało pieniędzy w banku gildii aby to zrobić"
   over-max: "Wybacz, nie możesz tyle wpłacić ponieważ wykroczył byś poza swój limit konta!"
 admin:
@@ -115,6 +116,7 @@ admin:
   admin-guild-upgrade: "&aTwój tier gildii został ulepszony przez Admina!"
   spy-on: "&aPodgląd Chatu gildii włączony!"
   spy-off: "&cPodgląd Chatu gildii wyłączony!"
+  motd: "&a{guild}'s MOTD is: {motd}"
   motd-success: "&aYou've successfully set the MOTD for {guild} to {motd}."
   motd-remove: "&aYou've successfully removed the MOTD for {guild}."
   bank-balance: "&aThe guild {guild} has a bank balance of {balance}."
@@ -261,4 +263,3 @@ motd:
   remove: "&aYou've successfully removed your guild's MOTD."
   motd: "&7[&aGuild MOTD&7] {motd}"
   not-set: "&cYour guild currently does not have a MOTD set."
-

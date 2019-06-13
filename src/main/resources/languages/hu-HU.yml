@@ -7,8 +7,9 @@ descriptions:
   admin-bank-withdraw: "Admin command to take money from a guild's bank"
   admin-delhome: "Admin command to delete the home of a guild"
   admin-home: "Admin command to teleport to the home of a guild"
-  admin-motd-set: "Set the MOTD for a Guild"
-  admin-motd-remove: "Remove the MOTD of a Guild"
+  admin-motd: "Admin command to view the MOTD of a guild"
+  admin-motd-set: "Admin command to set the motd of a guild"
+  admin-motd-remove: "Admin command to remove the motd of a guild"
   admin-prefix: "Adminisztrátori parancs a céh előtagjának/prefixének módosításához"
   admin-rename: "Adminisztrátori parancs a céh átnevezéséhez"
   admin-remove: "Adminisztrátori parancs a céh eltávolításához a szerverről."
@@ -97,8 +98,8 @@ error:
   buff-cooldown: "&cSorry, your guild has recently bought a buff. You can try again in {amount} seconds."
 bank:
   balance: "&aA céhednek a banki egyenlege: {amount}."
-  deposit-success: "&a{amount}-t befizettél a céh bankjába. A céh bank egyenlege jelenleg: {total}!"
-  withdrawl-success: "&a{amount}-t kivettél a céh bankjából. A céh bank egyenlege jelenleg: {total}!"
+  deposit-success: "&a{player} has just deposited {amount} into the Guild Bank."
+  withdrawl-success: "&a{player} has just withdrawn {amount} from the Guild Bank."
   not-enough-bank: "&cNincs elég pénz a bankban ehhez."
   over-max: "&cNem tudsz több ennyi pénzt betenni, mivel meghaladná a maximum összeget!"
 admin:
@@ -115,6 +116,7 @@ admin:
   admin-guild-upgrade: "&aA céhed szintje fel lett fejlesztve egy adminisztrátor által."
   spy-on: "&aCsevegési kéme bekapcsolva!"
   spy-off: "&cCsevegési kém kikapcsolva"
+  motd: "&a{guild}'s MOTD is: {motd}"
   motd-success: "&aYou've successfully set the MOTD for {guild} to {motd}."
   motd-remove: "&aYou've successfully removed the MOTD for {guild}."
   bank-balance: "&aThe guild {guild} has a bank balance of {balance}."
@@ -261,4 +263,3 @@ motd:
   remove: "&aYou've successfully removed your guild's MOTD."
   motd: "&7[&aGuild MOTD&7] {motd}"
   not-set: "&cYour guild currently does not have a MOTD set."
-

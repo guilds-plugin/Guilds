@@ -7,8 +7,9 @@ descriptions:
   admin-bank-withdraw: "Admin command to take money from a guild's bank"
   admin-delhome: "Admin command to delete the home of a guild"
   admin-home: "Admin command to teleport to the home of a guild"
-  admin-motd-set: "Set the MOTD for a Guild"
-  admin-motd-remove: "Remove the MOTD of a Guild"
+  admin-motd: "Admin command to view the MOTD of a guild"
+  admin-motd-set: "Admin command to set the motd of a guild"
+  admin-motd-remove: "Admin command to remove the motd of a guild"
   admin-prefix: "Lệnh Admin để thay đổi tiền tố của một Guild"
   admin-rename: "Lệnh Admin để đổi tên một Guild"
   admin-remove: "Lệnh Admin để xoá một Guild khỏi máy chủ"
@@ -97,8 +98,8 @@ error:
   buff-cooldown: "&cSorry, your guild has recently bought a buff. You can try again in {amount} seconds."
 bank:
   balance: "&aNgân khố của Guild là {amount}."
-  deposit-success: "&aBạn đã nạp {amount} vào ngân khố của guild. Ngân khố hiện tại là {total}!"
-  withdrawl-success: "&aBạn đã rút {amount} từ ngân khố của guild. Ngân khố hiện tại là {total}!"
+  deposit-success: "&a{player} has just deposited {amount} into the Guild Bank."
+  withdrawl-success: "&a{player} has just withdrawn {amount} from the Guild Bank."
   not-enough-bank: "&cGuild Bank không có đủ để làm điều đó"
   over-max: "&cSorry, you can't deposit that much as you would go over your max bank balance!"
 admin:
@@ -115,6 +116,7 @@ admin:
   admin-guild-upgrade: "&aYour guild tier has been upgraded by an Admin!"
   spy-on: "&aGuild Chat Spy has been enabled!"
   spy-off: "&cGuild Chat Spy has been disabled!"
+  motd: "&a{guild}'s MOTD is: {motd}"
   motd-success: "&aYou've successfully set the MOTD for {guild} to {motd}."
   motd-remove: "&aYou've successfully removed the MOTD for {guild}."
   bank-balance: "&aThe guild {guild} has a bank balance of {balance}."
@@ -261,4 +263,3 @@ motd:
   remove: "&aYou've successfully removed your guild's MOTD."
   motd: "&7[&aGuild MOTD&7] {motd}"
   not-set: "&cYour guild currently does not have a MOTD set."
-
