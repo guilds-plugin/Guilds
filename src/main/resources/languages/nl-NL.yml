@@ -7,7 +7,7 @@ descriptions:
   admin-bank-withdraw: "Adnmin command om geld uit een Guild's bank te halen"
   admin-delhome: "Admin command om het huis van een Guild te verwijderen"
   admin-home: "Admin command om te teleporteren naar het huis van een Guild"
-  admin-motd: "Admin command to view the MOTD of a guild"
+  admin-motd: "Admin command om de MOTD van een Guild te bekijken"
   admin-motd-set: "Admin command to set the motd of a guild"
   admin-motd-remove: "Admin command to remove the motd of a guild"
   admin-prefix: "Admin command om een Guild's prefix te veranderen"
