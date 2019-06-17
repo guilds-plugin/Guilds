@@ -57,6 +57,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class GuildHandler {
 
@@ -197,7 +198,7 @@ public class GuildHandler {
      * @return the guild object with given name
      */
     public Guild getGuild(@NotNull String name) {
-        return guilds.stream().filter(guild -> guild.getName().equals(name)).findFirst().orElse(null);
+        return guilds.stream().filter(guild -> ACFBukkitUtil.removeColors(guild.getName()).equals(name)).findFirst().orElse(null);
     }
 
     /**
@@ -802,6 +803,17 @@ public class GuildHandler {
      */
     public List<String> getPublicGuilds() {
         return guilds.stream().filter(g -> !g.isPrivate()).map(Guild::getName).collect(Collectors.toList());
+    }
+
+    /**
+     * Get a total list of all joinable guilds to a player
+     * @param player the player to check
+     * @return list of all guilds
+     */
+    public List<String> getJoinableGuild(Player player) {
+        List<String> fixedInvited = getInvitedGuilds(player.getUniqueId()).stream().map(ACFBukkitUtil::removeColors).collect(Collectors.toList());
+        List<String> fixedPublic = getPublicGuilds().stream().map(ACFBukkitUtil::removeColors).collect(Collectors.toList());
+        return Stream.concat(fixedInvited.stream(), fixedPublic.stream()).collect(Collectors.toList());
     }
 
     /**

@@ -464,7 +464,7 @@ public final class Guilds extends JavaPlugin {
 
         manager.getCommandCompletions().registerCompletion("invitedTo", c -> guildHandler.getInvitedGuilds(c.getPlayer().getUniqueId()));
 
-        manager.getCommandCompletions().registerCompletion("joinableGuilds", c -> Stream.concat(guildHandler.getInvitedGuilds(c.getPlayer().getUniqueId()).stream(), guildHandler.getPublicGuilds().stream()).distinct().collect(Collectors.toList()));
+        manager.getCommandCompletions().registerCompletion("joinableGuilds", c -> guildHandler.getJoinableGuild(c.getPlayer()));
 
         manager.getCommandCompletions().registerCompletion("guilds", c -> guildHandler.getGuildNames());
 
