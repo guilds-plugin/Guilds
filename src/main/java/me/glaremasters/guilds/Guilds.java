@@ -409,7 +409,7 @@ public final class Guilds extends JavaPlugin {
         }
 
         // Load all the listeners
-        Stream.of(new EntityListener(guildHandler, settingsHandler.getSettingsManager()), new PlayerListener(guildHandler, settingsHandler.getSettingsManager(), this, commandManager), new TicketListener(this, guildHandler, settingsHandler.getSettingsManager()), new VaultBlacklistListener(this, guildHandler, settingsHandler.getSettingsManager())).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
+        Stream.of(new EntityListener(guildHandler, settingsHandler.getSettingsManager()), new PlayerListener(guildHandler, settingsHandler.getSettingsManager(), this, permissions), new TicketListener(this, guildHandler, settingsHandler.getSettingsManager()), new VaultBlacklistListener(this, guildHandler, settingsHandler.getSettingsManager())).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
         // Load the optional listeners
         optionalListeners();
 
