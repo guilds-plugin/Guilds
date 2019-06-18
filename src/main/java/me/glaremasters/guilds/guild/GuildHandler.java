@@ -239,16 +239,6 @@ public class GuildHandler {
     }
 
     /**
-     * Retrieve a guild tier by name
-     *
-     * @param name the name of the tier
-     * @return the tier object if found
-     */
-    public GuildTier getGuildTier(String name) {
-        return tiers.stream().filter(tier -> tier.getName().equals(name)).findFirst().orElse(null);
-    }
-
-    /**
      * Retrieve a guild tier by level
      *
      * @param level the level of the tier
@@ -811,7 +801,10 @@ public class GuildHandler {
      * @return list of all guilds
      */
     public List<String> getJoinableGuild(Player player) {
-        return Stream.concat(getInvitedGuilds(player.getUniqueId()).stream(), getPublicGuilds().stream()).map(ACFBukkitUtil::removeColors).collect(Collectors.toList());
+        return Stream.concat(getInvitedGuilds(player.getUniqueId()).stream(),
+                getPublicGuilds().stream())
+                .map(ACFBukkitUtil::removeColors)
+                .collect(Collectors.toList());
     }
 
     /**
