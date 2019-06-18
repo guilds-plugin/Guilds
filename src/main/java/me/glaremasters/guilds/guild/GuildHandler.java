@@ -811,9 +811,7 @@ public class GuildHandler {
      * @return list of all guilds
      */
     public List<String> getJoinableGuild(Player player) {
-        List<String> fixedInvited = getInvitedGuilds(player.getUniqueId()).stream().map(ACFBukkitUtil::removeColors).collect(Collectors.toList());
-        List<String> fixedPublic = getPublicGuilds().stream().map(ACFBukkitUtil::removeColors).collect(Collectors.toList());
-        return Stream.concat(fixedInvited.stream(), fixedPublic.stream()).collect(Collectors.toList());
+        return Stream.concat(getInvitedGuilds(player.getUniqueId()).stream(), getPublicGuilds().stream()).map(ACFBukkitUtil::removeColors).collect(Collectors.toList());
     }
 
     /**
