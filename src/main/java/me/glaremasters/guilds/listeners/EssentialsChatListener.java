@@ -24,9 +24,7 @@
 
 package me.glaremasters.guilds.listeners;
 
-import ch.jalu.configme.SettingsManager;
 import lombok.AllArgsConstructor;
-import me.glaremasters.guilds.configuration.sections.HooksSettings;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import org.bukkit.Bukkit;
@@ -44,7 +42,6 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 public class EssentialsChatListener implements Listener {
 
     private GuildHandler guildHandler;
-    private SettingsManager settingsManager;
 
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
@@ -54,14 +51,10 @@ public class EssentialsChatListener implements Listener {
         String message = event.getFormat();
 
         if (guild == null) {
-            String regex;
+            String regex = "(\\{GUILD(?:.+)?})";
+            String formatted = "(\\\\{GUILD_FORMATTED\\\\})";
 
-            if (settingsManager.getProperty(HooksSettings.ESS_FORMAT)) {
-                regex = "(\\[\\{GUILD(?:.+)?}])";
-            } else {
-                regex = "(\\{GUILD(?:.+)?})";
-            }
-
+            event.setFormat(message.replace(formatted, guildHandler.getFormattedPlaceholder(player)));
             event.setFormat(message.replaceAll(regex, ""));
             return;
         }
@@ -73,7 +66,8 @@ public class EssentialsChatListener implements Listener {
                 .replace("{GUILD_STATUS}", guild.getStatus().name())
                 .replace("{GUILD_MEMBER_COUNT}",  String.valueOf(guild.getSize()))
                 .replace("{GUILD_MEMBERS_ONLINE}", String.valueOf(guild.getOnlineMembers().size()))
-                .replace("{GUILD_ROLE}", guild.getMember(player.getUniqueId()).getRole().getName());
+                .replace("{GUILD_ROLE}", guild.getMember(player.getUniqueId()).getRole().getName())
+                .replace("{GUILD_FORMATTED}", guildHandler.getFormattedPlaceholder(player));
 
         event.setFormat(message);
     }

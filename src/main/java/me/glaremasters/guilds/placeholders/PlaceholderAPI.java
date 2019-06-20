@@ -24,13 +24,18 @@
 
 package me.glaremasters.guilds.placeholders;
 
+import lombok.AllArgsConstructor;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.api.GuildsAPI;
+import me.glaremasters.guilds.guild.GuildHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+@AllArgsConstructor
 public class PlaceholderAPI extends PlaceholderExpansion {
+
+    private GuildHandler guildHandler;
 
     /**
      * Get the identifier of the expansion
@@ -117,6 +122,8 @@ public class PlaceholderAPI extends PlaceholderExpansion {
                 return String.valueOf(api.getGuild(p).getTier().getMaxMembers());
             case "max_balance":
                 return String.valueOf(api.getGuild(p).getTier().getMaxBankBalance());
+            case "formatted":
+                return guildHandler.getFormattedPlaceholder(p);
             default:
                 return "";
         }

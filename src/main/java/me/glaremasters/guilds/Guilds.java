@@ -321,7 +321,7 @@ public final class Guilds extends JavaPlugin {
 
         // If they have placeholderapi, enable it.
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            new PlaceholderAPI().register();
+            new PlaceholderAPI(guildHandler).register();
         }
 
         info("Enabling Metrics..");
@@ -499,7 +499,7 @@ public final class Guilds extends JavaPlugin {
      */
     private void optionalListeners() {
         if (settingsHandler.getSettingsManager().getProperty(HooksSettings.ESSENTIALS)) {
-            getServer().getPluginManager().registerEvents(new EssentialsChatListener(guildHandler, settingsHandler.getSettingsManager()), this);
+            getServer().getPluginManager().registerEvents(new EssentialsChatListener(guildHandler), this);
         }
 
         if (settingsHandler.getSettingsManager().getProperty(HooksSettings.WORLDGUARD)) {

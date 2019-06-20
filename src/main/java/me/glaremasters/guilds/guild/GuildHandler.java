@@ -815,4 +815,27 @@ public class GuildHandler {
     public boolean checkGuildNames(String name) {
         return guilds.stream().anyMatch(g -> g.getName().equalsIgnoreCase(name));
     }
+
+    /**
+     * Get the formatted placeholder that uses brackets
+     * @param player the player to check
+     * @return formatted placeholder
+     */
+    public String getFormattedPlaceholder(Player player) {
+        String leftBracket = settingsManager.getProperty(GuildSettings.FORMAT_BRACKET_LEFT);
+        String content = settingsManager.getProperty(GuildSettings.FORMAT_CONTENT);
+        String noGuild = settingsManager.getProperty(GuildSettings.FORMAT_NO_GUILD);
+        String rightBracket = settingsManager.getProperty(GuildSettings.FORMAT_BRACKET_RIGHT);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(leftBracket).append(content).append(rightBracket);
+
+        String combined = sb.toString();
+
+        Guild guild = getGuild(player);
+        if (guild == null) {
+            return noGuild;
+        }
+        return ACFBukkitUtil.color(combined.replace("{name}", guild.getName()).replace("{prefix}", guild.getPrefix()));
+    }
 }
