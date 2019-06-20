@@ -307,10 +307,10 @@ public class RoleSettings implements SettingsHolder {
             newProperty("roles.2.permissions.modify-motd", false);
 
     public static final Property<String> THREE_NAME =
-            newProperty("roles.3.name", "roles");
+            newProperty("roles.3.name", "Member");
 
     public static final Property<String> THREE_PERM =
-            newProperty("roles.3.permission-node", "guilds.roles.roles");
+            newProperty("roles.3.permission-node", "guilds.roles.member");
 
     public static final Property<Boolean> THREE_AB =
             newProperty("roles.3.permissions.activate-buff", false);
