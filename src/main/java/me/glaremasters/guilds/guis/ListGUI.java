@@ -40,6 +40,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -56,11 +57,6 @@ public class ListGUI {
 
     public Gui getListGUI() {
 
-        // Get the page count
-        int pages = (int) Math.ceil((double) guildHandler.getGuildsSize() / 45);
-        int guildAmount = guildHandler.getGuildsSize();
-
-
         // Create the base GUI
         Gui gui = new Gui(guilds, 6, ACFBukkitUtil.color(settingsManager.getProperty(GuildListSettings.GUILD_LIST_NAME)));
 
@@ -68,32 +64,34 @@ public class ListGUI {
         gui.setOnGlobalClick(event -> event.setCancelled(true));
 
         // Prepare a paginated pane
-        PaginatedPane paginatedPane = new PaginatedPane(0, 0, 9, 5);
+        OutlinePane paginatedPane = new OutlinePane(0, 0, 9, 5);
 
-        // Loop through the pages
-        for (int page = 0; page < pages; page++) {
-            // Make an outline pane for each one
-            OutlinePane outlinePane = new OutlinePane(0, 0, 9 ,5);
+        // Add the items to the pane
+        createListItems(paginatedPane);
 
-            // Loop through all the items in the pane
-            for (int i = 0; i < guildAmount; i++) {
-                // Create the item here
-                Guild guild = guildHandler.getGuilds().get(i);
-                if (guild != null) {
-                    setListItem(outlinePane, guild);
-                    paginatedPane.addPane(page, outlinePane);
-                }
-
-                // Add the created item to the pane
-
-            }
-
-            // Add the outline to the paginated pane
-            gui.addPane(paginatedPane);
-        }
+        // Add the pane to the GUI
+        gui.addPane(paginatedPane);
 
         // Return the GUI
         return gui;
+    }
+
+    private void createListItems(OutlinePane pane) {
+        List<Guild> guilds = guildHandler.getGuilds();
+        String sortOrder = settingsManager.getProperty(GuildListSettings.GUILD_LIST_SORT);
+
+        // Check if it's supposed to be sorted by tier
+        if (sortOrder.equalsIgnoreCase("TIER")) {
+            guilds.sort(Comparator.<Guild>comparingInt(g -> g.getTier().getLevel()).reversed());
+        }
+
+        // Check if it's supposed to be sorted by members
+        if (sortOrder.equalsIgnoreCase("MEMBERS")) {
+            guilds.sort(Comparator.<Guild>comparingInt(g -> g.getMembers().size()).reversed());
+        }
+
+        // Loop through each guild to create the item
+        guilds.forEach(g -> setListItem(pane, g));
     }
 
     /**
