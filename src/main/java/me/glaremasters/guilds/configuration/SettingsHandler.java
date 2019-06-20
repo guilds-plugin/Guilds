@@ -48,7 +48,7 @@ public class SettingsHandler {
 
         settingsManager = SettingsManagerBuilder
                 .withYamlFile(new File(guilds.getDataFolder(), "config.yml"))
-                .migrationService(new PlainMigrationService())
+                .migrationService(new GuildsMigrationService())
                 .configurationData(GuildConfigurationBuilder.buildConfigurationData())
                 .create();
     }
