@@ -76,6 +76,10 @@ public class ListGUI {
         return gui;
     }
 
+    /**
+     * Create all the items for the GUI
+     * @param pane the pane to add the items to
+     */
     private void createListItems(OutlinePane pane) {
         List<Guild> guilds = guildHandler.getGuilds();
         String sortOrder = settingsManager.getProperty(GuildListSettings.GUILD_LIST_SORT);
