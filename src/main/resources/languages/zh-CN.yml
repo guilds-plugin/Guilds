@@ -3,7 +3,7 @@ descriptions:
   accept: "同意公会邀请"
   admin-addplayer: "以管理员身份强制将玩家添加到公会"
   admin-bank-balance: "Admin command to view a guild's bank balance"
-  admin-bank-despoti: "Admin command to put money into a guild's bank"
+  admin-bank-deposit: "Admin command to put money into a guild's bank"
   admin-bank-withdraw: "Admin command to take money from a guild's bank"
   admin-delhome: "Admin command to delete the home of a guild"
   admin-home: "Admin command to teleport to the home of a guild"
@@ -98,8 +98,8 @@ error:
   buff-cooldown: "&7[&6公会&7]&f抱歉,你的公会在近期已购买了一个BUFF,请等待{amount}秒后重试"
 bank:
   balance: "&7[&6公会&7]&f当前公会金库: {amount}金币"
-  deposit-success: "&a{player} has just deposited {amount} into the Guild Bank."
-  withdrawl-success: "&a{player} has just withdrawn {amount} from the Guild Bank."
+  deposit-success: "&a{player} has just deposited {amount} into the Guild Bank. Your new total is {total}."
+  withdrawl-success: "&a{player} has just withdrawn {amount} from the Guild Bank. Your new total is {total}."
   not-enough-bank: "&7[&6公会&7]&f金库里没有足够的金币"
   over-max: "&7[&6公会&7]&f你不能存入这么多的金币，已超出容量"
 admin:
