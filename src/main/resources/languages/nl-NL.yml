@@ -3,7 +3,7 @@ descriptions:
   accept: "Accepteer een Guild uitnodiging"
   admin-addplayer: "Admin command om een speler aan een Guild toe te voegen"
   admin-bank-balance: "Admin command om een Guild's bank te bekijken"
-  admin-bank-despoti: "Admin command om geld in een Guild's bank te stoppen"
+  admin-bank-deposit: "Admin command to put money into a guild's bank"
   admin-bank-withdraw: "Adnmin command om geld uit een Guild's bank te halen"
   admin-delhome: "Admin command om het huis van een Guild te verwijderen"
   admin-home: "Admin command om te teleporteren naar het huis van een Guild"
@@ -98,8 +98,8 @@ error:
   buff-cooldown: "&cSorry, jouw Guild heeft recentelijk een buff gekocht. Je kunt het opnieuw proberen in {amount} seconden."
 bank:
   balance: "&aJouw Guild heeft een bank balans van {amount}."
-  deposit-success: "&a{player} heeft zojuist {amount} in de Guild Bank gestort."
-  withdrawl-success: "&a{player} heeft zojuist {amount} uit de Guild Bank gehaald."
+  deposit-success: "&a{player} has just deposited {amount} into the Guild Bank. Your new total is {total}."
+  withdrawl-success: "&a{player} has just withdrawn {amount} from the Guild Bank. Your new total is {total}."
   not-enough-bank: "&cEr is niet genoeg geld in de Guild Bank om dat te doen!"
   over-max: "&cSorry, je kunt niet zoveel storten omdat je dan over de maximale banksaldo zult gaan!"
 admin:
