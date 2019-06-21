@@ -3,7 +3,7 @@ descriptions:
   accept: "Aceptar una invitación de gremio"
   admin-addplayer: "Comando de administración para agregar un jugador a un gremio"
   admin-bank-balance: "Admin command to view a guild's bank balance"
-  admin-bank-despoti: "Admin command to put money into a guild's bank"
+  admin-bank-deposit: "Admin command to put money into a guild's bank"
   admin-bank-withdraw: "Admin command to take money from a guild's bank"
   admin-delhome: "Admin command to delete the home of a guild"
   admin-home: "Admin command to teleport to the home of a guild"
@@ -98,8 +98,8 @@ error:
   buff-cooldown: "&cSorry, your guild has recently bought a buff. You can try again in {amount} seconds."
 bank:
   balance: "&cEl banco de tu guild tiene la cantidad de {amount}."
-  deposit-success: "&a{player} has just deposited {amount} into the Guild Bank."
-  withdrawl-success: "&a{player} has just withdrawn {amount} from the Guild Bank."
+  deposit-success: "&a{player} has just deposited {amount} into the Guild Bank. Your new total is {total}."
+  withdrawl-success: "&a{player} has just withdrawn {amount} from the Guild Bank. Your new total is {total}."
   not-enough-bank: "&cNo hay suficiente dinero en el banco de tu guild para hacer eso"
   over-max: "&cLo sentimos, no puede depositar tanto como lo haría sobre su saldo bancario máximo!"
 admin:

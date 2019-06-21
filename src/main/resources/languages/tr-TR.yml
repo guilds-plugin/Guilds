@@ -3,7 +3,7 @@ descriptions:
   accept: "Lonca davetini kabul et"
   admin-addplayer: "Bir Loncaya oyuncu eklemek için yönetici komutu"
   admin-bank-balance: "Bir loncanın banka bakiyesini görüntülemek için yönetici komutu"
-  admin-bank-despoti: "Bir loncanın bankasına para koymak için yönetici komutu"
+  admin-bank-deposit: "Admin command to put money into a guild's bank"
   admin-bank-withdraw: "Bir lonca bankasından para almak için yönetici komutu"
   admin-delhome: "Bir loncanın evini silmek için yönetici komutu"
   admin-home: "Bir loncanın evine ışınlanacak yönetici komutu"
@@ -98,8 +98,8 @@ error:
   buff-cooldown: "&cMaalesef, loncanız yakın zamanda bir buff satın aldı. {amount} saniye içinde tekrar deneyebilirsiniz."
 bank:
   balance: "&aLoncanın bankasının bakiyesi {amount}."
-  deposit-success: "&a{player} has just deposited {amount} into the Guild Bank."
-  withdrawl-success: "&a{player} has just withdrawn {amount} from the Guild Bank."
+  deposit-success: "&a{player} has just deposited {amount} into the Guild Bank. Your new total is {total}."
+  withdrawl-success: "&a{player} has just withdrawn {amount} from the Guild Bank. Your new total is {total}."
   not-enough-bank: "&cLonca Bankası'nda bunu yapmak için yeterli değil"
   over-max: "&cMaalesef, maksimum banka bakiyenizi aşacağınız kadar para yatıramazsınız!"
 admin:

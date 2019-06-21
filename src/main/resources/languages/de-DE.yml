@@ -3,7 +3,7 @@ descriptions:
   accept: "Eine Gildeneinladung annehmen"
   admin-addplayer: "Admin-Befehl, um einen Spieler in einer Gilde hinzufügen"
   admin-bank-balance: "Admin command to view a guild's bank balance"
-  admin-bank-despoti: "Admin command to put money into a guild's bank"
+  admin-bank-deposit: "Admin command to put money into a guild's bank"
   admin-bank-withdraw: "Admin command to take money from a guild's bank"
   admin-delhome: "Admin command to delete the home of a guild"
   admin-home: "Admin command to teleport to the home of a guild"
@@ -98,8 +98,8 @@ error:
   buff-cooldown: "&cSorry, your guild has recently bought a buff. You can try again in {amount} seconds."
 bank:
   balance: "&aDie Bank deiner Gilde hat ein Guthaben con {amount}."
-  deposit-success: "&a{player} has just deposited {amount} into the Guild Bank."
-  withdrawl-success: "&a{player} has just withdrawn {amount} from the Guild Bank."
+  deposit-success: "&a{player} has just deposited {amount} into the Guild Bank. Your new total is {total}."
+  withdrawl-success: "&a{player} has just withdrawn {amount} from the Guild Bank. Your new total is {total}."
   not-enough-bank: "&cDa ist nicht genug in deiner Gildenbank um das zu machen"
   over-max: "&cSorry, du kannst nicht soviel einzahlen, da du über das maximum der Bank gehen würdest!"
 admin:
