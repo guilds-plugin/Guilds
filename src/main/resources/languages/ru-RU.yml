@@ -3,7 +3,7 @@ descriptions:
   accept: "Принять приглашение в гильдию"
   admin-addplayer: "Админ-команда для добавления игрока в гильдию"
   admin-bank-balance: "Админ-команда для просмотра баланса гильдии"
-  admin-bank-deposit: "Admin command to put money into a guild's bank"
+  admin-bank-deposit: "Админ-команда, чтобы положить деньги в банк гильдии"
   admin-bank-withdraw: "Админ-команда, чтобы снять деньги с банка гильдии"
   admin-delhome: "Админ-команда для удаления дома гильдии"
   admin-home: "Админ-команда для телепортации на дом гильдии"
@@ -98,8 +98,8 @@ error:
   buff-cooldown: "&cИзвините, но Ваша гильдия недавно уже купила бафф. Попробуйте снова через {amount} секунд."
 bank:
   balance: "&aБаланс банка Вашей гильдии составляет {amount}."
-  deposit-success: "&a{player} has just deposited {amount} into the Guild Bank. Your new total is {total}."
-  withdrawl-success: "&a{player} has just withdrawn {amount} from the Guild Bank. Your new total is {total}."
+  deposit-success: "&a{player} положил {amount} в банк гильдии. Новый баланс {total}."
+  withdrawl-success: "&a{player} снял {amount} из банка гильдии. Новый баланс {total}."
   not-enough-bank: "&cВ банке гильдии недостаточно денег"
   over-max: "&cИзвините, нельзя положить на счет так много денег - банк превысит максимальный лимит!"
 admin:
