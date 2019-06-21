@@ -41,10 +41,6 @@ public class HooksSettings implements SettingsHolder {
     public static final Property<Boolean> ESSENTIALS =
             newProperty("hooks.essentials-chat", false);
 
-    @Comment("Do you want to remove brackets (if you have them) from the EssX format if the player doesn't have a guild?")
-    public static final Property<Boolean> ESS_FORMAT =
-            newProperty("hooks.essentials-remove-brackets", false);
-
     @Comment("Do we want to hook into WorldGuard to allow claiming land?")
     public static final Property<Boolean> WORLDGUARD =
             newProperty("hooks.worldguard-claims", false);

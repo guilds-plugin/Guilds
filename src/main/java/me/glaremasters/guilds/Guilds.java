@@ -42,8 +42,6 @@ import me.glaremasters.guilds.cooldowns.CooldownHandler;
 import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.database.cooldowns.CooldownsProvider;
 import me.glaremasters.guilds.database.providers.JsonProvider;
-import me.glaremasters.guilds.dependency.Library;
-import me.glaremasters.guilds.dependency.LibraryLoader;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildCode;
 import me.glaremasters.guilds.guild.GuildHandler;
@@ -61,6 +59,8 @@ import me.glaremasters.guilds.placeholders.PlaceholderAPI;
 import me.glaremasters.guilds.updater.UpdateChecker;
 import me.glaremasters.guilds.utils.Constants;
 import me.glaremasters.guilds.utils.StringUtils;
+import net.byteflux.libby.BukkitLibraryManager;
+import net.byteflux.libby.Library;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bstats.bukkit.Metrics;
@@ -128,32 +128,14 @@ public final class Guilds extends JavaPlugin {
     @Override
     public void onLoad() {
         try {
-            LibraryLoader loader = new LibraryLoader(this);
+            BukkitLibraryManager loader = new BukkitLibraryManager(this);
             loader.addRepository("https://repo.glaremasters.me/repository/public/");
+            loader.addMavenCentral();
             loadDepLibs(loader);
             successfulLoad = true;
         } catch (RuntimeException ex) {
             ex.printStackTrace();
         }
-    }
-
-    /**
-     * Load all the dependencies for the plugin
-     * @param loader the loader to add to
-     */
-    private void loadDepLibs(LibraryLoader loader) {
-        loader.loadLibrary(Library.builder().groupId("commons-io").artifactId("commons-io").version("2.6").checksum("+HfTBGYKwqFC84ZbrfyXHex+1zx0fH+NXS9ROcpzZRM=").relocate("org{}apache{}commons{}io", "me.glaremasters.guilds.libs.commonsio").build());
-        loader.loadLibrary(Library.builder().groupId("co.aikar").artifactId("taskchain-core").version("3.7.2").checksum("OpSCCN+7v6gqFpsU/LUNOOXzjImwjyE2ShHZ5xFUj/Q=").relocate("co{}aikar{}taskchain", "me.glaremasters.guilds.libs.taskchain").build());
-        loader.loadLibrary(Library.builder().groupId("co.aikar").artifactId("taskchain-bukkit").version("3.7.2").checksum("B/O3+zWGalLs8otAr8tdNnIc/39FDRh6tN5qvNgfEaI=").relocate("co{}aikar{}taskchain", "me.glaremasters.guilds.libs.taskchain").build());
-        loader.loadLibrary(Library.builder().groupId("net.lingala.zip4j").artifactId("zip4j").version("1.3.2").checksum("xnCY1DDFdDEUMnKOvUx8RWcvnM9cZHAutq+4gWwirQg=").build());
-        loader.loadLibrary(Library.builder().groupId("com.github.stefvanschie.inventoryframework").artifactId("IF").version("0.3.1").checksum("MOPOPYQSpI3jqFrhQkpTABdO2JpoN4kNqFQTxq7KB+E=").build());
-        loader.loadLibrary(Library.builder().groupId("com.dumptruckman.minecraft").artifactId("JsonConfiguration").version("1.1").checksum("aEEn9nIShT4mvJlF538Mnv+hbP/Yv17ANGchaaBoyCw=").build());
-        loader.loadLibrary(Library.builder().groupId("net.minidev").artifactId("json-smart").version("1.1.1").checksum("zr2iXDGRqkQWc8Q9elqVZ6pdhqEBAa6RWohckLzuh3E=").build());
-        loader.loadLibrary(Library.builder().groupId("org.codemc.worldguardwrapper").artifactId("worldguardwrapper").version("1.1.6-SNAPSHOT").checksum("G023FrJyvpmZxVWeXcGUCBipNB3BSA3rKcKPnCP7Sac=").build());
-        loader.loadLibrary(Library.builder().groupId("org.javassist").artifactId("javassist").version("3.21.0-GA").checksum("eqWeAx+UGYSvB9rMbKhebcm9OkhemqJJTLwDTvoSJdA=").build());
-        loader.loadLibrary(Library.builder().groupId("org.reflections").artifactId("reflections").version("0.9.11").checksum("zKiEKPiokZ34hRBYM9Rf8HvSb5hflu5VaQVRIWtYtKE=").relocate("com{}google{}common", "me.glaremasters.guilds.libs.guava").build());
-        loader.loadLibrary(Library.builder().groupId("ch.jalu").artifactId("configme").version("1.1.0").checksum("c3EUKZSs/xPSHwn/K0KMf9hTbN0ijRXyIBtOg5PxUnI=").build());
-        loader.loadLibrary(Library.builder().groupId("com.google.guava").artifactId("guava").version("21.0").checksum("lyE5cYq8ikiT+njLqM97LJA/Ncl6r0T6MDGwZplItIA=").relocate("com{}google{}common", "me.glaremasters.guilds.libs.guava").build());
     }
 
     /**
@@ -339,7 +321,7 @@ public final class Guilds extends JavaPlugin {
 
         // If they have placeholderapi, enable it.
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            new PlaceholderAPI().register();
+            new PlaceholderAPI(guildHandler).register();
         }
 
         info("Enabling Metrics..");
@@ -409,7 +391,7 @@ public final class Guilds extends JavaPlugin {
         }
 
         // Load all the listeners
-        Stream.of(new EntityListener(guildHandler, settingsHandler.getSettingsManager()), new PlayerListener(guildHandler, settingsHandler.getSettingsManager(), this, commandManager), new TicketListener(this, guildHandler, settingsHandler.getSettingsManager()), new VaultBlacklistListener(this, guildHandler, settingsHandler.getSettingsManager())).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
+        Stream.of(new EntityListener(guildHandler, settingsHandler.getSettingsManager()), new PlayerListener(guildHandler, settingsHandler.getSettingsManager(), this, permissions), new TicketListener(this, guildHandler, settingsHandler.getSettingsManager()), new VaultBlacklistListener(this, guildHandler, settingsHandler.getSettingsManager())).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
         // Load the optional listeners
         optionalListeners();
 
@@ -464,7 +446,7 @@ public final class Guilds extends JavaPlugin {
 
         manager.getCommandCompletions().registerCompletion("invitedTo", c -> guildHandler.getInvitedGuilds(c.getPlayer().getUniqueId()));
 
-        manager.getCommandCompletions().registerCompletion("joinableGuilds", c -> Stream.concat(guildHandler.getInvitedGuilds(c.getPlayer().getUniqueId()).stream(), guildHandler.getPublicGuilds().stream()).distinct().collect(Collectors.toList()));
+        manager.getCommandCompletions().registerCompletion("joinableGuilds", c -> guildHandler.getJoinableGuild(c.getPlayer()));
 
         manager.getCommandCompletions().registerCompletion("guilds", c -> guildHandler.getGuildNames());
 
@@ -517,7 +499,7 @@ public final class Guilds extends JavaPlugin {
      */
     private void optionalListeners() {
         if (settingsHandler.getSettingsManager().getProperty(HooksSettings.ESSENTIALS)) {
-            getServer().getPluginManager().registerEvents(new EssentialsChatListener(guildHandler, settingsHandler.getSettingsManager()), this);
+            getServer().getPluginManager().registerEvents(new EssentialsChatListener(guildHandler), this);
         }
 
         if (settingsHandler.getSettingsManager().getProperty(HooksSettings.WORLDGUARD)) {
@@ -576,6 +558,102 @@ public final class Guilds extends JavaPlugin {
         commandManager.registerDependency(Economy.class, economy);
         commandManager.registerDependency(Permission.class, permissions);
         commandManager.registerDependency(CooldownHandler.class, cooldownHandler);
+    }
+
+    /**
+     * Load all the dependencies for the plugin
+     * @param loader the loader to add to
+     */
+    private void loadDepLibs(BukkitLibraryManager loader) {
+
+        loader.loadLibrary(Library.builder()
+                .groupId("commons-io")
+                .artifactId("commons-io")
+                .version("2.6")
+                .checksum("+HfTBGYKwqFC84ZbrfyXHex+1zx0fH+NXS9ROcpzZRM=")
+                .relocate("org{}apache{}commons{}io", "me.glaremasters.guilds.libs.commonsio")
+                .build());
+
+        loader.loadLibrary(Library.builder()
+                .groupId("co.aikar")
+                .artifactId("taskchain-core")
+                .version("3.7.2")
+                .checksum("OpSCCN+7v6gqFpsU/LUNOOXzjImwjyE2ShHZ5xFUj/Q=")
+                .relocate("co{}aikar{}taskchain", "me.glaremasters.guilds.libs.taskchain")
+                .build());
+
+        loader.loadLibrary(Library.builder()
+                .groupId("co.aikar")
+                .artifactId("taskchain-bukkit")
+                .version("3.7.2")
+                .checksum("B/O3+zWGalLs8otAr8tdNnIc/39FDRh6tN5qvNgfEaI=")
+                .relocate("co{}aikar{}taskchain", "me.glaremasters.guilds.libs.taskchain")
+                .build());
+
+        loader.loadLibrary(Library.builder()
+                .groupId("net.lingala.zip4j")
+                .artifactId("zip4j")
+                .version("1.3.2")
+                .checksum("xnCY1DDFdDEUMnKOvUx8RWcvnM9cZHAutq+4gWwirQg=")
+                .build());
+
+        loader.loadLibrary(Library.builder()
+                .groupId("com.github.stefvanschie.inventoryframework")
+                .artifactId("IF")
+                .version("0.3.1")
+                .checksum("MOPOPYQSpI3jqFrhQkpTABdO2JpoN4kNqFQTxq7KB+E=")
+                .build());
+
+        loader.loadLibrary(Library.builder()
+                .groupId("com.dumptruckman.minecraft")
+                .artifactId("JsonConfiguration")
+                .version("1.1")
+                .checksum("aEEn9nIShT4mvJlF538Mnv+hbP/Yv17ANGchaaBoyCw=")
+                .build());
+
+        loader.loadLibrary(Library.builder()
+                .groupId("net.minidev")
+                .artifactId("json-smart")
+                .version("1.1.1")
+                .checksum("zr2iXDGRqkQWc8Q9elqVZ6pdhqEBAa6RWohckLzuh3E=")
+                .build());
+
+        loader.loadLibrary(Library.builder()
+                .groupId("org.codemc.worldguardwrapper")
+                .artifactId("worldguardwrapper")
+                .version("1.1.6-SNAPSHOT")
+                .checksum("G023FrJyvpmZxVWeXcGUCBipNB3BSA3rKcKPnCP7Sac=")
+                .build());
+
+        loader.loadLibrary(Library.builder()
+                .groupId("org.javassist")
+                .artifactId("javassist")
+                .version("3.21.0-GA")
+                .checksum("eqWeAx+UGYSvB9rMbKhebcm9OkhemqJJTLwDTvoSJdA=")
+                .build());
+
+        loader.loadLibrary(Library.builder()
+                .groupId("org.reflections")
+                .artifactId("reflections")
+                .version("0.9.11")
+                .checksum("zKiEKPiokZ34hRBYM9Rf8HvSb5hflu5VaQVRIWtYtKE=")
+                .relocate("com{}google{}common", "me.glaremasters.guilds.libs.guava")
+                .build());
+
+        loader.loadLibrary(Library.builder()
+                .groupId("ch.jalu")
+                .artifactId("configme")
+                .version("1.1.0")
+                .checksum("c3EUKZSs/xPSHwn/K0KMf9hTbN0ijRXyIBtOg5PxUnI=")
+                .build());
+
+        loader.loadLibrary(Library.builder()
+                .groupId("com.google.guava")
+                .artifactId("guava")
+                .version("21.0")
+                .checksum("lyE5cYq8ikiT+njLqM97LJA/Ncl6r0T6MDGwZplItIA=")
+                .relocate("com{}google{}common", "me.glaremasters.guilds.libs.guava")
+                .build());
     }
 
 }

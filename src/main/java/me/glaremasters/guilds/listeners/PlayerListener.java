@@ -35,6 +35,7 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.JSONMessage;
+import net.milkbowl.vault.permission.Permission;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -64,7 +65,7 @@ public class PlayerListener implements Listener {
     private GuildHandler guildHandler;
     private SettingsManager settingsManager;
     private Guilds guilds;
-    private PaperCommandManager commandManager;
+    private Permission permission;
 
     private final Set<UUID> ALREADY_INFORMED = new HashSet<>();
 
@@ -133,8 +134,21 @@ public class PlayerListener implements Listener {
         }
     }
 
+    /**
+     * Make sure the player is still not in these modes when logging out.
+     * @param event
+     */
     @EventHandler
     public void chatLeave(PlayerQuitEvent event) {
         guildHandler.chatLogout(event.getPlayer());
+    }
+
+    /**
+     * Make sure the player has all the perms for their current tier.
+     * @param event
+     */
+    @EventHandler
+    public void permCheck(PlayerJoinEvent event) {
+        guildHandler.addPerms(permission, event.getPlayer());
     }
 }

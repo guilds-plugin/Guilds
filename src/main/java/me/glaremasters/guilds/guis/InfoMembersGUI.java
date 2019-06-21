@@ -35,12 +35,14 @@ import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.configuration.sections.GuildInfoMemberSettings;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
+import me.glaremasters.guilds.guild.GuildMember;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.utils.ItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -85,7 +87,10 @@ public class InfoMembersGUI {
      */
     private void createForegroundItems(OutlinePane pane, Guild guild) {
 
-        guild.getMembers().forEach(m -> {
+        List<GuildMember> members = guild.getMembers();
+        members.sort(Comparator.comparingInt(g -> g.getRole().getLevel()));
+
+        members.forEach(m -> {
 
             // Create a variable for the status
             String status;

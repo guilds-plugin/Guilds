@@ -80,6 +80,7 @@ public class CommandBankWithdraw extends BaseCommand {
         guild.setBalance(balance - amount);
         economy.depositPlayer(player, amount);
         guild.sendMessage(getCurrentCommandManager(), Messages.BANK__WITHDRAWL_SUCCESS, "{player}", player.getName(),
-                "{amount}", String.valueOf(NumberFormat.getInstance().format(amount)));
+                "{amount}", String.valueOf(NumberFormat.getInstance().format(amount)),
+                "{total}", String.valueOf(NumberFormat.getInstance().format(guild.getBalance())));
     }
 }

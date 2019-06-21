@@ -57,6 +57,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class GuildHandler {
 
@@ -197,7 +198,7 @@ public class GuildHandler {
      * @return the guild object with given name
      */
     public Guild getGuild(@NotNull String name) {
-        return guilds.stream().filter(guild -> guild.getName().equals(name)).findFirst().orElse(null);
+        return guilds.stream().filter(guild -> ACFBukkitUtil.removeColors(guild.getName()).equals(name)).findFirst().orElse(null);
     }
 
     /**
@@ -235,16 +236,6 @@ public class GuildHandler {
      */
     public String getNameById(@NotNull UUID uuid) {
         return getGuild(uuid).getName();
-    }
-
-    /**
-     * Retrieve a guild tier by name
-     *
-     * @param name the name of the tier
-     * @return the tier object if found
-     */
-    public GuildTier getGuildTier(String name) {
-        return tiers.stream().filter(tier -> tier.getName().equals(name)).findFirst().orElse(null);
     }
 
     /**
@@ -805,11 +796,46 @@ public class GuildHandler {
     }
 
     /**
+     * Get a total list of all joinable guilds to a player
+     * @param player the player to check
+     * @return list of all guilds
+     */
+    public List<String> getJoinableGuild(Player player) {
+        return Stream.concat(getInvitedGuilds(player.getUniqueId()).stream(),
+                getPublicGuilds().stream())
+                .map(ACFBukkitUtil::removeColors)
+                .collect(Collectors.toList());
+    }
+
+    /**
      * Check if a guild name already exists
      * @param name name to check
      * @return exists or not
      */
     public boolean checkGuildNames(String name) {
         return guilds.stream().anyMatch(g -> g.getName().equalsIgnoreCase(name));
+    }
+
+    /**
+     * Get the formatted placeholder that uses brackets
+     * @param player the player to check
+     * @return formatted placeholder
+     */
+    public String getFormattedPlaceholder(Player player) {
+        String leftBracket = settingsManager.getProperty(GuildSettings.FORMAT_BRACKET_LEFT);
+        String content = settingsManager.getProperty(GuildSettings.FORMAT_CONTENT);
+        String noGuild = settingsManager.getProperty(GuildSettings.FORMAT_NO_GUILD);
+        String rightBracket = settingsManager.getProperty(GuildSettings.FORMAT_BRACKET_RIGHT);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(leftBracket).append(content).append(rightBracket);
+
+        String combined = sb.toString();
+
+        Guild guild = getGuild(player);
+        if (guild == null) {
+            return noGuild;
+        }
+        return ACFBukkitUtil.color(combined.replace("{name}", guild.getName()).replace("{prefix}", guild.getPrefix()));
     }
 }

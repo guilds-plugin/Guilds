@@ -26,6 +26,7 @@ package me.glaremasters.guilds.configuration.sections;
 
 import ch.jalu.configme.Comment;
 import ch.jalu.configme.SettingsHolder;
+import ch.jalu.configme.configurationdata.CommentsConfiguration;
 import ch.jalu.configme.properties.Property;
 
 import java.util.List;
@@ -73,6 +74,22 @@ public class GuildSettings implements SettingsHolder {
     public static final Property<String> SPY_CHAT_FORMAT =
             newProperty("guild.format.spy", "&7&l[Guild Spy]&r &b[{guild}&b]&r &b[{role}&b]&r &b {player}: {message}");
 
+    @Comment("The left bracket in the placeholder")
+    public static final Property<String> FORMAT_BRACKET_LEFT =
+            newProperty("guild.format.placeholder-design.left-bracket", "[");
+
+    @Comment("The content of the placeholder. Either will be {name} or {prefix}")
+    public static final Property<String> FORMAT_CONTENT =
+            newProperty("guild.format.placeholder-design.content", "{name}");
+
+    @Comment("What to show instead of the placeholder if there's no guild")
+    public static final Property<String> FORMAT_NO_GUILD =
+            newProperty("guild.format.placeholder-design.no-guild", "");
+
+    @Comment("The right bracket in the placeholder")
+    public static final Property<String> FORMAT_BRACKET_RIGHT =
+            newProperty("guild.format.placeholder-design.right-bracket", "]");
+
     @Comment("Do we want people in the same guild to be able to damage each other?")
     public static final Property<Boolean> GUILD_DAMAGE =
             newProperty("guild.damage.guild", false);
@@ -93,7 +110,14 @@ public class GuildSettings implements SettingsHolder {
             newProperty("guild.motd-on-login", true);
 
 
-
     private GuildSettings() {
+    }
+
+    @Override
+    public void registerComments(CommentsConfiguration conf) {
+        String[] pluginHeader = {
+                "Used for {GUILD_FORMATTED} and %guilds_formatted%"
+        };
+        conf.setComment("guild.format.placeholder-design", pluginHeader);
     }
 }

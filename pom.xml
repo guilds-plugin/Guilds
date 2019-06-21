@@ -30,7 +30,7 @@
 
     <groupId>me.glaremasters</groupId>
     <artifactId>guilds</artifactId>
-    <version>3.5.0-RELEASE</version>
+    <version>3.5.1-BETA</version>
     <packaging>jar</packaging>
 
     <name>Guilds</name>
@@ -110,6 +110,10 @@
                                 <relocation>
                                     <pattern>com.google.common</pattern>
                                     <shadedPattern>me.glaremasters.guilds.libs.guava</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>net.byteflux.libby</pattern>
+                                    <shadedPattern>me.glaremasters.guilds.libs.libby</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
@@ -299,11 +303,19 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- Used for some data handling -->
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>21.0</version>
             <scope>provided</scope>
+        </dependency>
+
+        <!-- Used for handling runtime dependencies -->
+        <dependency>
+            <groupId>net.byteflux</groupId>
+            <artifactId>libby-bukkit</artifactId>
+            <version>0.0.1</version>
         </dependency>
     </dependencies>
 </project>
