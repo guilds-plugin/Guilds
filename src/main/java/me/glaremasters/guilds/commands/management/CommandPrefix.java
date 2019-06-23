@@ -74,7 +74,7 @@ public class CommandPrefix extends BaseCommand {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.PREFIX__DISABLED));
 
         if (!guildHandler.prefixCheck(prefix, settingsManager))
-            ACFUtil.sneaky(new ExpectationNotMet(Messages.CREATE__REQUIREMENTS));
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.CREATE__PREFIX_TOO_LONG));
 
         getCurrentCommandIssuer().sendInfo(Messages.PREFIX__SUCCESSFUL,
                 "{prefix}", prefix);

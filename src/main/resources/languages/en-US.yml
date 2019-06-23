@@ -76,6 +76,7 @@ create:
   cancelled: "&cGuild creation cancelled!"
   requirements: "&cYour guild's name does not match the requirements! You can only use alphanumeric characters and the length of the name cannot exceed 64"
   name-too-long: "&cYou didn't provide a prefix so the name you input was tested against the prefix requirements and that failed. Please try a shorter name or input a prefix on creation."
+  prefix-too-long: "&cThe guild prefix provided did not match the requirements! Perphaps you had too many characters?"
 chat:
   disabled: "Guild Chat Disabled"
   enabled: "Guild Chat Enabled"
