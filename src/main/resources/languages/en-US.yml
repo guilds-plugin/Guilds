@@ -101,7 +101,7 @@ error:
 bank:
   balance: "&aYour guild's bank has a balance of {amount}."
   deposit-success: "&a{player} has just deposited {amount} into the Guild Bank. Your new total is {total}."
-  withdrawl-success: "&a{player} has just withdrawn {amount} from the Guild Bank. Your new total is {total}."
+  withdrawal-success: "&a{player} has just withdrawn {amount} from the Guild Bank. Your new total is {total}."
   not-enough-bank: "&cThere isn't enough in the Guild Bank to do that"
   over-max: "&cSorry, you can't deposit that much as you would go over your max bank balance!"
 admin:
