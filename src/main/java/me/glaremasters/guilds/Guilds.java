@@ -306,7 +306,7 @@ public final class Guilds extends JavaPlugin {
             guildHandler = new GuildHandler(database, getCommandManager(), getPermissions(), getConfig(), settingsHandler.getSettingsManager());
             info("Loaded data!");
         } catch (IOException e) {
-            severe("An error occured loading data! Stopping plugin..");
+            severe("An error occurred loading data! Stopping plugin..");
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
