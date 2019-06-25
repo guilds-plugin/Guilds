@@ -35,11 +35,13 @@ import co.aikar.taskchain.TaskChainFactory;
 import lombok.Getter;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.api.GuildsAPI;
+import me.glaremasters.guilds.arena.ArenaHandler;
 import me.glaremasters.guilds.configuration.SettingsHandler;
 import me.glaremasters.guilds.configuration.sections.HooksSettings;
 import me.glaremasters.guilds.configuration.sections.PluginSettings;
 import me.glaremasters.guilds.cooldowns.CooldownHandler;
 import me.glaremasters.guilds.database.DatabaseProvider;
+import me.glaremasters.guilds.database.arenas.ArenasProvider;
 import me.glaremasters.guilds.database.cooldowns.CooldownsProvider;
 import me.glaremasters.guilds.database.providers.JsonProvider;
 import me.glaremasters.guilds.guild.Guild;
@@ -100,9 +102,11 @@ public final class Guilds extends JavaPlugin {
     private static GuildsAPI api;
     private GuildHandler guildHandler;
     private CooldownHandler cooldownHandler;
+    private ArenaHandler arenaHandler;
     private static TaskChainFactory taskChainFactory;
     private DatabaseProvider database;
     private CooldownsProvider cooldownsProvider;
+    private ArenasProvider arenasProvider;
     private SettingsHandler settingsHandler;
     private PaperCommandManager commandManager;
     private ActionHandler actionHandler;
@@ -302,6 +306,10 @@ public final class Guilds extends JavaPlugin {
             cooldownsProvider = new CooldownsProvider(getDataFolder());
             // Load the cooldown objects
             cooldownHandler = new CooldownHandler(cooldownsProvider);
+            // Load the arena folder
+            arenasProvider = new ArenasProvider(getDataFolder());
+            // Load the arena objects
+            arenaHandler = new ArenaHandler(arenasProvider);
             // Load guildhandler with provider
             guildHandler = new GuildHandler(database, getCommandManager(), getPermissions(), getConfig(), settingsHandler.getSettingsManager());
             info("Loaded data!");

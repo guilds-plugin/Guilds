@@ -14,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ArenasProvider {
 
@@ -34,7 +35,7 @@ public class ArenasProvider {
      */
     public List<Arena> loadArenas() throws IOException {
         List<Arena> loadedArenas = new ArrayList<>();
-        for (File file : dataFolder.listFiles()) {
+        for (File file : Objects.requireNonNull(dataFolder.listFiles())) {
             loadedArenas.add(gson.fromJson(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8), Arena.class));
         }
         return loadedArenas;
