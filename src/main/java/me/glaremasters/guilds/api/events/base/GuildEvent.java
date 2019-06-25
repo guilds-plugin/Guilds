@@ -32,11 +32,10 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 
-@Getter
 public class GuildEvent extends PlayerEvent implements Cancellable {
 
+    private static HandlerList handlers = new HandlerList();
     @Getter
-    private HandlerList handlers = new HandlerList();
     @Setter
     private boolean cancelled = false;
     private final Guild guild;
@@ -49,6 +48,15 @@ public class GuildEvent extends PlayerEvent implements Cancellable {
     public GuildEvent(Player player, Guild guild) {
         super(player);
         this.guild = guild;
+    }
+
+    @Override
+    public HandlerList getHandlers() {
+        return handlers;
+    }
+
+    public static HandlerList getHandlerList() {
+        return handlers;
     }
 
 }

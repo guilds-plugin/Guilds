@@ -74,7 +74,11 @@ public class CommandCodeInfo extends BaseCommand {
 
         GuildCode gc = guild.getCode(code);
 
-        getCurrentCommandIssuer().sendInfo(Messages.CODES__INFO, "{code}", gc.getId(), "{amount}", String.valueOf(gc.getUses()), "{creator}", Bukkit.getOfflinePlayer(gc.getCreator()).getName(), "{redeemers}", guild.getRedeemers(code));
+        getCurrentCommandIssuer().sendInfo(Messages.CODES__INFO,
+                "{code}", gc.getId(),
+                "{amount}", String.valueOf(gc.getUses()),
+                "{creator}", Bukkit.getOfflinePlayer(gc.getCreator()).getName(),
+                "{redeemers}", guild.getRedeemers(code));
 
     }
 
