@@ -122,6 +122,7 @@ public final class Guilds extends JavaPlugin {
             try {
                 guildHandler.saveData();
                 cooldownHandler.saveCooldowns();
+                arenaHandler.saveArenas();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -566,6 +567,7 @@ public final class Guilds extends JavaPlugin {
         commandManager.registerDependency(Economy.class, economy);
         commandManager.registerDependency(Permission.class, permissions);
         commandManager.registerDependency(CooldownHandler.class, cooldownHandler);
+        commandManager.registerDependency(ArenaHandler.class, arenaHandler);
     }
 
     /**
