@@ -9,6 +9,7 @@ import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
 import me.glaremasters.guilds.arena.Arena;
 import me.glaremasters.guilds.arena.ArenaHandler;
+import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.Constants;
 import org.bukkit.entity.Player;
 
@@ -31,7 +32,7 @@ public class CommandArenaCreate extends BaseCommand {
         ab.defender("");
         Arena arena = ab.build();
         arenaHandler.addArena(arena);
-        // Send message about arena
+        getCurrentCommandIssuer().sendInfo(Messages.ARENA__CREATED, "{arena}", name);
     }
 
 }

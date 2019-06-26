@@ -121,7 +121,9 @@ public enum Messages implements MessageKeyProvider {
     HELP__HEADER, HELP__DETAILED_HEADER, HELP__FORMAT, HELP__COMMAND_FORMAT,
     HELP__PARAMETER_FORMAT, HELP__PAGE_INFO, HELP__SEARCH_HEADER,
 
-    MOTD__SUCCESS, MOTD__REMOVE, MOTD__MOTD, MOTD__NOT_SET;
+    MOTD__SUCCESS, MOTD__REMOVE, MOTD__MOTD, MOTD__NOT_SET,
+
+    ARENA__CREATED;
 
     /**
      * Message keys that grab from the config to send messages
