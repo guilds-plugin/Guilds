@@ -123,7 +123,7 @@ public enum Messages implements MessageKeyProvider {
 
     MOTD__SUCCESS, MOTD__REMOVE, MOTD__MOTD, MOTD__NOT_SET,
 
-    ARENA__CREATED;
+    ARENA__CREATED, ARENA__NO_EXIST, ARENA__CHALLENGER_SET, ARENA__DEFENDER_SET;
 
     /**
      * Message keys that grab from the config to send messages

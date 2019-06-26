@@ -268,3 +268,6 @@ motd:
   not-set: "&cYour guild currently does not have a MOTD set."
 arena:
   created: "&aYou've successfully create an arena called {arena}! Don't forget to set the spawn points! Learn more by doing /guild arena".
+  no-exist: "&cAn arena with that name does not exist."
+  challenger-set: "&aYou've successfully set the Challenger location for {arena} to your current location!"
+  defender-set: "&aYou've successfully set the Defender location for {arena} to your current location!"
