@@ -35,6 +35,7 @@ import co.aikar.taskchain.TaskChainFactory;
 import lombok.Getter;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.api.GuildsAPI;
+import me.glaremasters.guilds.arena.Arena;
 import me.glaremasters.guilds.arena.ArenaHandler;
 import me.glaremasters.guilds.configuration.SettingsHandler;
 import me.glaremasters.guilds.configuration.sections.HooksSettings;
@@ -417,6 +418,7 @@ public final class Guilds extends JavaPlugin {
             try {
                 guildHandler.saveData();
                 cooldownHandler.saveCooldowns();
+                arenaHandler.saveArenas();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -488,6 +490,8 @@ public final class Guilds extends JavaPlugin {
             if (list == null) return null;
             return IntStream.rangeClosed(1, list.size()).mapToObj(Objects::toString).collect(Collectors.toList());
         });
+
+        manager.getCommandCompletions().registerCompletion("arenas", c -> arenaHandler.getArenas().stream().map(Arena::getName).collect(Collectors.toList()));
 
         manager.getCommandCompletions().registerCompletion("languages", c -> loadedLanguages.stream().sorted().collect(Collectors.toList()));
     }

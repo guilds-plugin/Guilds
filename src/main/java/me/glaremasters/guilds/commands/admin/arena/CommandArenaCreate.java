@@ -25,13 +25,11 @@ public class CommandArenaCreate extends BaseCommand {
     @Description("{@@descriptions.arena-create}")
     @Syntax("<name>")
     public void execute(Player player, String name) {
-        Arena.ArenaBuilder ab = Arena.builder();
-        ab.id(UUID.randomUUID());
-        ab.name(name);
-        ab.challenger("");
-        ab.defender("");
-        Arena arena = ab.build();
+        // Create the new arena object
+        Arena arena = new Arena(UUID.randomUUID(), name, null, null);
+        // Add the arena to the handler
         arenaHandler.addArena(arena);
+        // Tell the user that it has been created
         getCurrentCommandIssuer().sendInfo(Messages.ARENA__CREATED, "{arena}", name);
     }
 
