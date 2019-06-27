@@ -84,6 +84,7 @@ import java.net.HttpURLConnection;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
@@ -492,6 +493,8 @@ public final class Guilds extends JavaPlugin {
         });
 
         manager.getCommandCompletions().registerCompletion("arenas", c -> arenaHandler.getArenas().stream().map(Arena::getName).collect(Collectors.toList()));
+
+        manager.getCommandCompletions().registerCompletion("locations", c -> Arrays.asList("challenger", "defender"));
 
         manager.getCommandCompletions().registerCompletion("languages", c -> loadedLanguages.stream().sorted().collect(Collectors.toList()));
     }
