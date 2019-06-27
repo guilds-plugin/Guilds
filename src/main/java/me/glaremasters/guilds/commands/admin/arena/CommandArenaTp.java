@@ -24,6 +24,12 @@ public class CommandArenaTp extends BaseCommand {
 
     @Dependency ArenaHandler arenaHandler;
 
+    /**
+     * Teleport to the location of a team for an arena
+     * @param player the player running the command
+     * @param arena the arena to select
+     * @param location the team to teleport to
+     */
     @Subcommand("arena tp")
     @CommandPermission(Constants.ADMIN_PERM)
     @Description("{@@descriptions.arena-tp}")

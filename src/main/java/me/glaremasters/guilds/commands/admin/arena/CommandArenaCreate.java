@@ -20,6 +20,11 @@ public class CommandArenaCreate extends BaseCommand {
 
     @Dependency ArenaHandler arenaHandler;
 
+    /**
+     * Create a new arena
+     * @param player the player running the command
+     * @param name name of new arena
+     */
     @Subcommand("arena create")
     @CommandPermission(Constants.ADMIN_PERM)
     @Description("{@@descriptions.arena-create}")

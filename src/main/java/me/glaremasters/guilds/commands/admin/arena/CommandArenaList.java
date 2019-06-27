@@ -23,6 +23,10 @@ public class CommandArenaList extends BaseCommand {
 
     @Dependency ArenaHandler arenaHandler;
 
+    /**
+     * List all the arenas on the server
+     * @param player the player running the command
+     */
     @Subcommand("arena list")
     @CommandPermission(Constants.ADMIN_PERM)
     @Description("{@@descriptions.arena-list}")

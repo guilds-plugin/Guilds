@@ -24,6 +24,11 @@ public class CommandArenaDefender extends BaseCommand {
 
     @Dependency ArenaHandler arenaHandler;
 
+    /**
+     * Set the defender spawn point for an arena
+     * @param player the player running the command
+     * @param arena the arena being modified
+     */
     @Subcommand("arena set defender")
     @CommandPermission(Constants.ADMIN_PERM)
     @Description("{@@descriptions.arena-defender}")

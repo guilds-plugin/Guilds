@@ -25,6 +25,11 @@ public class CommandArenaDelete extends BaseCommand {
 
     @Dependency ArenaHandler arenaHandler;
 
+    /**
+     * Remove an arena from the server
+     * @param player the player running the command
+     * @param arena the arena being removed
+     */
     @Subcommand("arena delete")
     @CommandPermission(Constants.ADMIN_PERM)
     @Description("{@@descriptions.arena-delete}")

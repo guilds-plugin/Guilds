@@ -24,6 +24,11 @@ public class CommandArenaChallenger extends BaseCommand {
 
     @Dependency ArenaHandler arenaHandler;
 
+    /**
+     * Set the challenger spawn point for an arena
+     * @param player the player running the command
+     * @param arena the arena being modified
+     */
     @Subcommand("arena set challenger")
     @CommandPermission(Constants.ADMIN_PERM)
     @Description("{@@descriptions.arena-challenger}")
