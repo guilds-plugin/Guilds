@@ -276,3 +276,5 @@ arena:
   no-exist: "&cAn arena with that name does not exist."
   challenger-set: "&aYou've successfully set the Challenger location for &c{arena}&a to your current location!"
   defender-set: "&aYou've successfully set the Defender location for &c{arena}&a to your current location!"
+  list: "&aThe following arena(s) on the server are: &c{arenas}&a."
+  list-empty: "&cThere are currently no arenas created on the server."
