@@ -29,6 +29,7 @@ descriptions:
   arena-challenger: "Set the challenger location for an arena"
   arena-create: "Create a new war arena"
   arena-defender: "Set the defender location for an arena"
+  arena-delete: "Delete a war arena"
   bank-balance: "Show the bank balance of your guild"
   bank-deposit: "Put money in your Guild bank"
   bank-withdraw: "Take money from your Guild bank"
@@ -270,6 +271,7 @@ motd:
   not-set: "&cYour guild currently does not have a MOTD set."
 arena:
   created: "&aYou've successfully create an arena called &c{arena}&a! Don't forget to set the spawn points! Learn more by doing /guild arena"
+  deleted: "&aYou've successfully deleted the arena called &c{arena}&a"
   no-exist: "&cAn arena with that name does not exist."
   challenger-set: "&aYou've successfully set the Challenger location for &c{arena}&a to your current location!"
   defender-set: "&aYou've successfully set the Defender location for &c{arena}&a to your current location!"
