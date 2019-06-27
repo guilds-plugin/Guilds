@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 public class ArenaHandler {
@@ -67,7 +67,6 @@ public class ArenaHandler {
      */
     public Arena getAvailableArena() {
         List<Arena> availableArenas = getArenas().stream().filter(Objects::nonNull).filter(a -> !a.isInUse()).collect(Collectors.toList());
-        Random random = new Random();
-        return availableArenas.get(random.nextInt(availableArenas.size()));
+        return availableArenas.get(ThreadLocalRandom.current().nextInt(availableArenas.size()));
     }
 }
