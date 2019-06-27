@@ -17,5 +17,6 @@ public class Arena {
     private String name;
     private String challenger;
     private String defender;
+    private transient boolean inUse;
 
 }
