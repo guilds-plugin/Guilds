@@ -31,6 +31,7 @@ descriptions:
   arena-defender: "Set the defender location for an arena"
   arena-delete: "Delete a war arena"
   arena-list: "List all the created arenas"
+  arena-tp: "Teleport to a location of an arena"
   bank-balance: "Show the bank balance of your guild"
   bank-deposit: "Put money in your Guild bank"
   bank-withdraw: "Take money from your Guild bank"
@@ -278,3 +279,5 @@ arena:
   defender-set: "&aYou've successfully set the Defender location for &c{arena}&a to your current location!"
   list: "&aThe following arena(s) on the server are: &c{arenas}&a."
   list-empty: "&cThere are currently no arenas created on the server."
+  position-not-set: "&cThe location for that team has not been set yet. Try setting it before teleporting to it!"
+  teleported-to-selection: "&aWooosh! You've teleported to the &c{team}&a spawn point for &c{arena}&a."
