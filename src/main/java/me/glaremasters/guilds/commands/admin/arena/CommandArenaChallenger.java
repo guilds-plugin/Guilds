@@ -24,7 +24,7 @@ public class CommandArenaChallenger extends BaseCommand {
 
     @Dependency ArenaHandler arenaHandler;
 
-    @Subcommand("arena challenger")
+    @Subcommand("arena set challenger")
     @CommandPermission(Constants.ADMIN_PERM)
     @Description("{@@descriptions.arena-challenger}")
     @Syntax("<arena>")

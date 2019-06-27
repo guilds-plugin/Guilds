@@ -24,7 +24,7 @@ public class CommandArenaDefender extends BaseCommand {
 
     @Dependency ArenaHandler arenaHandler;
 
-    @Subcommand("arena defender")
+    @Subcommand("arena set defender")
     @CommandPermission(Constants.ADMIN_PERM)
     @Description("{@@descriptions.arena-defender}")
     @Syntax("<arena>")
