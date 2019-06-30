@@ -218,7 +218,7 @@ claim:
   success: "&aÚj terület létrehozva! Területi kiterjedése: {loc1} > {loc2}!"
   hook-disabled: "&cKérjük, engedélyezze a területeket a konfigurációban, hogy kihasználja ezt a funkciót"
   sign-not-enabled: "&cThis feature is not enabled. To use it, you must turn it on via the config."
-  sign-no-permission: "&cYou do not have permission to create Claim Sign!"
+  sign-no-permission: "&cNincs meg a megfelelő jogosultságod ahhoz, hogy létrehozz egy Claim táblát!"
   sign-invalid-format: "&cInvalid Claim Sign format! Please try again!"
   sign-invalid-region: "&cÉrvénytelen Worldguard régió!"
   sign-placed: "&aYou've successfully created a Claim Sign for the region {region} with the price {price}."
