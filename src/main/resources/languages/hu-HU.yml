@@ -123,8 +123,8 @@ admin:
   bank-deposit: "&aYou've successfully put {amount} into {guild}'s bank. Their new balance is {total}."
   bank-withdraw: "&aYou've successfully taken {amount} from {guild}'s bank. Their new balance is {total}."
   sethome: "&aYou've successfully set a new guild home for {guild}."
-  home: "&aYou've successfully teleported to {guild}'s home."
-  delhome: "&aYou've successfully removed the guild home for {guild}."
+  home: "&aSikeresen el lettél teleportálva a {guild} céhnek az otthonába."
+  delhome: "&aSikeresen eltávolítottad a {guild} céh otthonát."
 boot:
   player-kicked: "&cJátékos '{player}' ki lett dobva a céhből {kicker} által!"
   successful: "&aSikeresen kirúgtad {player} játékost a céhből!"
@@ -143,7 +143,7 @@ delete:
   successful: "&aA '{guild}&r&a' céh sikeresen törlésre került!"
   cancelled: "&cA céh törlése visszavonásra került!"
   warning: "&cÍrd be a /guilds confirm parancsot a céhed törlésére, /guilds cancel parancsot a törlés visszavonására"
-  notify-allies: "&c{guild} is no longer your ally because it has been deleted."
+  notify-allies: "&c{guild} többé nem a szövetségesed, mivel meg lett szűnve."
 leave:
   cancelled: "&cA céh elhagyása visszavonva!"
   successful: "&aSikeresen elhagytad a céhet!"
@@ -158,7 +158,7 @@ invite:
   already-invited: "Ezt a játékost már valaki meghívta ebbe a céhbe."
   message: "&a{player} meghívott, hogy csatlakozz a céhébe: '{guild}' Írd be a /guild join {guild} parancsot a céhhez való csatlakozáshoz."
   successful: "&aSikeresen meghívtad {player}-t a céhedbe!"
-  already-in-guild: "&c{player} is already in another guild!"
+  already-in-guild: "&c{player} már egy másik céhben van!"
 upgrade:
   tier-max: "&cNem tudod feljebb fejleszteni a céhed. (Elérte a maximális szintet)"
   money-warning: "&cTe most {amount}-t költesz arra hogy a céhed szintjét feljebb fejleszd. (Írd be a /guilds confirm parancsot a folytatáshoz)"
@@ -220,7 +220,7 @@ claim:
   sign-not-enabled: "&cThis feature is not enabled. To use it, you must turn it on via the config."
   sign-no-permission: "&cYou do not have permission to create Claim Sign!"
   sign-invalid-format: "&cInvalid Claim Sign format! Please try again!"
-  sign-invalid-region: "&cInvalid Worldguard Region!"
+  sign-invalid-region: "&cÉrvénytelen Worldguard régió!"
   sign-placed: "&aYou've successfully created a Claim Sign for the region {region} with the price {price}."
   sign-not-enough: "&cYou do not have enough money in your Guild Bank to purchase this Guild Claim."
   sign-forced: "&cYou can only claim land via Claim Signs! Ask a staff member on your server for help!"
