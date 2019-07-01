@@ -127,7 +127,7 @@ public enum Messages implements MessageKeyProvider {
     ARENA__DELETED, ARENA__LIST, ARENA__LIST_EMPTY, ARENA__POSITION_NOT_SET,
     ARENA__TELEPORTED_TO_SELECTION, ARENA__ALL_FULL,
 
-    WAR__NO_DEFENDERS;
+    WAR__NO_DEFENDERS, WAR__CHALLENGE_SENT, WAR__INCOMING_CHALLENGE;
 
     /**
      * Message keys that grab from the config to send messages

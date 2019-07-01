@@ -70,6 +70,7 @@ public class GuildHandler {
 
     @Getter private Map<Guild, List<Inventory>> cachedVaults;
     @Getter private List<Player> openedVault;
+    @Getter private List<GuildChallenge> challenges;
 
     private final DatabaseProvider databaseProvider;
     private final CommandManager commandManager;
@@ -90,6 +91,7 @@ public class GuildHandler {
         guildChat = new ArrayList<>();
         cachedVaults = new HashMap<>();
         openedVault = new ArrayList<>();
+        challenges = new ArrayList<>();
 
         //GuildRoles objects
         ConfigurationSection roleSection = config.getConfigurationSection("roles");
@@ -639,16 +641,6 @@ public class GuildHandler {
     }
 
     /**
-     * Get a list of the online war people for your guild
-     * @param guild the guild to check
-     * @return list of online war people
-     */
-    public List<Player> getOnlineDefenders(Guild guild) {
-        List<GuildMember> members = guild.getOnlineMembers().stream().filter(m -> m.getRole().isInitiateWar()).collect(Collectors.toList());
-        return members.stream().map(m -> Bukkit.getPlayer(m.getUuid())).collect(Collectors.toList());
-    }
-
-    /**
      * Simple method to inform all online inviters that someone wants to join
      * @param guild guild to be requested
      * @param commandManager command manager
@@ -849,4 +841,63 @@ public class GuildHandler {
         }
         return ACFBukkitUtil.color(combined.replace("{name}", guild.getName()).replace("{prefix}", guild.getPrefix()));
     }
+
+    // Challenges
+
+    /**
+     * Add a challenge to the list
+     * @param challenge challenge
+     */
+    public void addChallenge(@NotNull GuildChallenge challenge) {
+        challenges.add(challenge);
+    }
+
+    /**
+     * Remove a challenge from the list
+     * @param challenge challenge
+     */
+    public void removeChallenge(@NotNull GuildChallenge challenge) {
+        challenges.remove(challenge);
+    }
+
+    /**
+     * Get a challenge and search by defending guilds
+     * @param guild the defending guild
+     * @return challenge
+     */
+    public GuildChallenge getChallengeByDefender(@NotNull Guild guild) {
+        return challenges.stream().filter(c -> c.getDefender() == guild.getId()).findFirst().orElse(null);
+    }
+
+    /**
+     * Get a challenge and search by challenging guilds
+     * @param guild the challenging guild
+     * @return challenge
+     */
+    public GuildChallenge getChallengeByChallenger(@NotNull Guild guild) {
+        return challenges.stream().filter(c -> c.getChallenger() == guild.getId()).findFirst().orElse(null);
+    }
+
+
+    /**
+     * Get a list of the online war people for your guild
+     * @param guild the guild to check
+     * @return list of online war people
+     */
+    public List<Player> getOnlineDefenders(Guild guild) {
+        List<GuildMember> members = guild.getOnlineMembers().stream().filter(m -> m.getRole().isInitiateWar()).collect(Collectors.toList());
+        return members.stream().map(m -> Bukkit.getPlayer(m.getUuid())).collect(Collectors.toList());
+    }
+
+    /**
+     * Send a message to all online defenders
+     * @param guild the guild defending
+     * @param commandManager the command manager
+     * @param challenger the guild challenging
+     * @param acceptTime
+     */
+    public void pingOnlineDefenders(Guild guild, CommandManager commandManager, String challenger, int acceptTime) {
+        getOnlineDefenders(guild).forEach(m -> commandManager.getCommandIssuer(m).sendInfo(Messages.WAR__INCOMING_CHALLENGE, "{guild}", challenger, "{amount}", String.valueOf(acceptTime)));
+    }
+
 }
