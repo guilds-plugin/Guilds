@@ -82,6 +82,14 @@ public class GuildsAPI {
     }
 
     /**
+     * Get a copy of the guild handler
+     * @return guild handler
+     */
+    public GuildHandler getGuildHandler() {
+        return guildHandler;
+    }
+
+    /**
      * @deprecated
      * Get the guild master of a guild
      * @param player the player you're getting the guild of
