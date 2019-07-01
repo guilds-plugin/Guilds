@@ -282,3 +282,5 @@ arena:
   position-not-set: "&cThe location for that team has not been set yet. Try setting it before teleporting to it!"
   teleported-to-selection: "&aWooosh! You've teleported to the &c{team}&a spawn point for &c{arena}&a."
   all-full: "&cSorry, all arenas on the server are currently in use! Try again later!"
+war:
+  no-defenders: "&cSorry, there are no people online in that guild to accept a war challenge!"

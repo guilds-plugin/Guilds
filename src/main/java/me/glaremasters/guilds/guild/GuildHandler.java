@@ -639,6 +639,16 @@ public class GuildHandler {
     }
 
     /**
+     * Get a list of the online war people for your guild
+     * @param guild the guild to check
+     * @return list of online war people
+     */
+    public List<Player> getOnlineDefenders(Guild guild) {
+        List<GuildMember> members = guild.getOnlineMembers().stream().filter(m -> m.getRole().isInitiateWar()).collect(Collectors.toList());
+        return members.stream().map(m -> Bukkit.getPlayer(m.getUuid())).collect(Collectors.toList());
+    }
+
+    /**
      * Simple method to inform all online inviters that someone wants to join
      * @param guild guild to be requested
      * @param commandManager command manager

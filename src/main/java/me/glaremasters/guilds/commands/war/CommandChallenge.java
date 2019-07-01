@@ -36,13 +36,20 @@ public class CommandChallenge extends BaseCommand {
         if (!role.isInitiateWar())
             ACFUtil.sneaky(new InvalidPermissionException());
 
+        // Check if there are any open arenas
         if (arenaHandler.getAvailableArena() == null)
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ARENA__ALL_FULL));
 
+        // Get the guild
         Guild targetGuild = guildHandler.getGuild(target);
 
+        // Check if null
         if (targetGuild == null)
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
+
+        // Check for online defenders to accept challenge
+        if (guildHandler.getOnlineDefenders(targetGuild).isEmpty())
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.WAR__NO_DEFENDERS));
     }
 
 }
