@@ -33,10 +33,10 @@ public class CommandChallenge extends BaseCommand {
     @Dependency private ArenaHandler arenaHandler;
     @Dependency private SettingsManager settingsManager;
 
-    @Subcommand("challenges")
-    @Description("{@@descriptions.challenges}")
+    @Subcommand("challenge")
+    @Description("{@@descriptions.challenge}")
     @Syntax("<guild>")
-    @CommandPermission(Constants.WAR_PERM + "challenges")
+    @CommandPermission(Constants.WAR_PERM + "challenge")
     @CommandCompletion("@guilds")
     public void execute(Player player, Guild guild, GuildRole role, @Values("@guilds") @Single String target) {
         if (!role.isInitiateWar())
@@ -53,7 +53,7 @@ public class CommandChallenge extends BaseCommand {
         if (targetGuild == null)
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
 
-        // Check for online defenders to accept challenges
+        // Check for online defenders to accept challenge
         if (guildHandler.getOnlineDefenders(targetGuild).isEmpty())
             ACFUtil.sneaky(new ExpectationNotMet(Messages.WAR__NO_DEFENDERS));
 
