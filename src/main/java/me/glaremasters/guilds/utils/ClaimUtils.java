@@ -30,6 +30,7 @@ import me.glaremasters.guilds.configuration.sections.ClaimSettings;
 import me.glaremasters.guilds.configuration.sections.HooksSettings;
 import me.glaremasters.guilds.guild.Guild;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.codemc.worldguardwrapper.WorldGuardWrapper;
 import org.codemc.worldguardwrapper.flag.IWrappedFlag;
@@ -232,8 +233,22 @@ public class ClaimUtils {
      * @param claim the claim to check
      * @param player the player to remove
      */
-    public static void removeMember(IWrappedRegion claim, Player player) {
+    public static void removeMember(IWrappedRegion claim, OfflinePlayer player) {
         getMembers(claim).removePlayer(player.getUniqueId());
+    }
+
+    /**
+     * Kick a member from the guild region by force
+     * @param playerKicked player being kicked
+     * @param playerExecuting player executing
+     * @param guild guild they are in
+     * @param settingsManager settings manager
+     */
+    public static void kickMember(OfflinePlayer playerKicked, Player playerExecuting, Guild guild, SettingsManager settingsManager) {
+        if (isEnable(settingsManager)) {
+            WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();
+            getGuildClaim(wrapper, playerExecuting, guild).ifPresent(r -> removeMember(r, playerKicked));
+        }
     }
 
     /**

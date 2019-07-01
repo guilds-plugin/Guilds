@@ -24,6 +24,7 @@
 
 package me.glaremasters.guilds.commands.admin.member;
 
+import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
@@ -36,6 +37,7 @@ import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.messages.Messages;
+import me.glaremasters.guilds.utils.ClaimUtils;
 import me.glaremasters.guilds.utils.Constants;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -50,6 +52,7 @@ import org.bukkit.entity.Player;
 public class CommandAdminRemovePlayer extends BaseCommand {
 
     @Dependency private GuildHandler guildHandler;
+    @Dependency private SettingsManager settingsManager;
 
     /**
      * Admin command to remove a player from a guild
@@ -70,6 +73,8 @@ public class CommandAdminRemovePlayer extends BaseCommand {
 
         if (guild == null)
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
+
+        ClaimUtils.kickMember(removing, player, guild, settingsManager);
 
         guild.removeMember(removing);
 

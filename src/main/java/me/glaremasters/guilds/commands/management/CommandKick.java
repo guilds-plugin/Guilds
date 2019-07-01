@@ -103,6 +103,8 @@ public class CommandKick extends BaseCommand {
 
         cooldownHandler.addCooldown(boot, Cooldown.TYPES.Join.name(), settingsManager.getProperty(CooldownSettings.JOIN), TimeUnit.SECONDS);
 
+        ClaimUtils.kickMember(boot, player, guild, settingsManager);
+
         if (ClaimUtils.isEnable(settingsManager)) {
             WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();
             ClaimUtils.getGuildClaim(wrapper, player, guild).ifPresent(region -> ClaimUtils.removeMember(region, player));
