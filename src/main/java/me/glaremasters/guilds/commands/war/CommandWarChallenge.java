@@ -43,6 +43,14 @@ public class CommandWarChallenge extends BaseCommand {
         if (!role.isInitiateWar())
             ACFUtil.sneaky(new InvalidPermissionException());
 
+        // Make sure they aren't already challenging someone
+        if (guildHandler.getChallengeByChallenger(guild) != null)
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.WAR__ALREADY_CHALLENGING));
+
+        // Make sure they aren't already being challenged by themselves
+        if (guildHandler.getChallengeByDefender(guild) != null)
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.WAR__ALREADY_CHALLENGING));
+
         // Check if there are any open arenas
         if (arenaHandler.getAvailableArena() == null)
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ARENA__ALL_FULL));
@@ -53,6 +61,10 @@ public class CommandWarChallenge extends BaseCommand {
         // Check if null
         if (targetGuild == null)
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
+
+        // Check if same guild
+        if (guild.getId() == targetGuild.getId())
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.WAR__NO_SELF_CHALLENGE));
 
         // Check for online defenders to accept challenge
         if (guildHandler.getOnlineDefenders(targetGuild).isEmpty())

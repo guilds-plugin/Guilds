@@ -290,3 +290,5 @@ war:
   challenge-sent: "&aA war challenge has been sent to {guild}! They will have {amount} seconds to accept it!"
   incoming-challenge: "&aBeware! The guild {guild} has just sent you a war challenge! Show them you are the best in all the lands by doing /guild war accept or be a little scary cat and run away by doing /guild war deny! You have {amount} time to decide!"
   no-pending-challenge: "&cSorry! You don't have a pending war challenge to accept."
+  already-challenging: "&cSorry, you already have a pending challenge. Please cancel it or wait for it to expire."
+  no-self-challenge: "&cSilly person, you can't challenge yourself to a war!"
