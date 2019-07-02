@@ -27,7 +27,9 @@ package me.glaremasters.guilds.api;
 import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
+import me.glaremasters.guilds.guild.GuildRole;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 
@@ -74,6 +76,15 @@ public class GuildsAPI {
      */
     public Inventory getGuildVault(@NotNull Guild guild, int vaultNumber) {
         return guildHandler.getGuildVault(guild, vaultNumber);
+    }
+
+    /**
+     * Get the role of a player
+     * @param player role
+     * @return the role of a player
+     */
+    public GuildRole getGuildRole(@NotNull Player player) {
+        return getGuild(player).getMember(player.getUniqueId()).getRole();
     }
 
     /**
