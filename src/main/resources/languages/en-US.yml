@@ -75,6 +75,9 @@ descriptions:
   upgrade: "Upgrade your Guild tier!"
   vault: "Opens the Guild vault"
   version: "Information about the plugin"
+  war-accept: "Accept a war challenge"
+  war-challenge: "Challenge another guild to a war"
+  war-deny: "Deny a war challenge"
 create:
   guild-name-taken: "&cThis name is already taken!"
   warning: "&cThe creation of a Guild cost {amount}. Type /guilds confirm to create your guild, type /guilds cancel to cancel."
@@ -286,3 +289,4 @@ war:
   no-defenders: "&cThe puny guild you challenged has nobody man enough to accept it."
   challenge-sent: "&aA war challenge has been sent to {guild}! They will have {amount} seconds to accept it!"
   incoming-challenge: "&aBeware! The guild {guild} has just sent you a war challenge! Show them you are the best in all the lands by doing /guild war accept or be a little scary cat and run away by doing /guild war deny! You have {amount} time to decide!"
+  no-pending-challenge: "&cSorry! You don't have a pending war challenge to accept."
