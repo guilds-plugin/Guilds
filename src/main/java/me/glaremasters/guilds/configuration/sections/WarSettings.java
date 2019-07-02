@@ -12,4 +12,12 @@ public class WarSettings implements SettingsHolder {
     public static final Property<Integer> ACCEPT_TIME =
             newProperty("war.accept-time", 120);
 
+    @Comment("What is the min number of players needed on each side for a war to start?")
+    public static final Property<Integer> MIN_PLAYERS =
+            newProperty("war.min-players", 3);
+
+    @Comment("What is the max number of players allowed on each side for a war?")
+    public static final Property<Integer> MAX_PLAYERS =
+            newProperty("war.max-players", 8);
+
 }
