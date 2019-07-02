@@ -109,6 +109,8 @@ public class CommandWarChallenge extends BaseCommand {
                    guild.sendMessage(guilds.getCommandManager(), Messages.WAR__GUILD_EXPIRED_CHALLENGE, "{guild}", targetGuild.getName());
                    // Send message to defender saying they didn't accept it
                     targetGuild.sendMessage(guilds.getCommandManager(), Messages.WAR__TARGET_EXPIRED_CHALLENGE);
+                    // Remove the challenge from the list
+                    guildHandler.removeChallenge(challenge);
                 }
             }
         }).execute();
