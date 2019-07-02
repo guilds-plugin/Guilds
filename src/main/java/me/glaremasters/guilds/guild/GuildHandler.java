@@ -861,6 +861,15 @@ public class GuildHandler {
     }
 
     /**
+     * Get a challenge by it's uuid
+     * @param uuid the uuid of the challenge
+     * @return the challenge
+     */
+    public GuildChallenge getChallenge(@NotNull UUID uuid) {
+        return challenges.stream().filter(c -> c.getId() == uuid).findAny().orElse(null);
+    }
+
+    /**
      * Get a challenge and search by defending guilds
      * @param guild the defending guild
      * @return challenge

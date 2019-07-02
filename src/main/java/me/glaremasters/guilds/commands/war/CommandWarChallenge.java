@@ -12,6 +12,7 @@ import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.annotation.Values;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.arena.ArenaHandler;
 import me.glaremasters.guilds.configuration.sections.WarSettings;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
@@ -26,6 +27,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 @CommandAlias(Constants.ROOT_ALIAS)
 public class CommandWarChallenge extends BaseCommand {
@@ -33,6 +35,7 @@ public class CommandWarChallenge extends BaseCommand {
     @Dependency private GuildHandler guildHandler;
     @Dependency private ArenaHandler arenaHandler;
     @Dependency private SettingsManager settingsManager;
+    @Dependency private Guilds guilds;
 
     @Subcommand("war challenge")
     @Description("{@@descriptions.war-challenge}")
@@ -92,6 +95,23 @@ public class CommandWarChallenge extends BaseCommand {
 
         // Send message to defending guild
         guildHandler.pingOnlineDefenders(targetGuild, getCurrentCommandManager(), guild.getName(), acceptTime);
+
+        // After acceptTime is up, check if the challenge has been accepted or not
+        Guilds.newChain().delay(acceptTime, TimeUnit.SECONDS).sync(() -> {
+            // Check if it was denied
+            if (guildHandler.getChallenge(challenge.getId()) != null) {
+                // War system has already started if it's accepted so don't do anything
+                if (challenge.isAccepted()) {
+                    return;
+                    // They have not accepted or denied it, so let's auto deny it
+                } else {
+                    // Send message to challenger saying they didn't accept it
+                   guild.sendMessage(guilds.getCommandManager(), Messages.WAR__GUILD_EXPIRED_CHALLENGE, "{guild}", targetGuild.getName());
+                   // Send message to defender saying they didn't accept it
+                    targetGuild.sendMessage(guilds.getCommandManager(), Messages.WAR__TARGET_EXPIRED_CHALLENGE);
+                }
+            }
+        }).execute();
     }
 
 }
