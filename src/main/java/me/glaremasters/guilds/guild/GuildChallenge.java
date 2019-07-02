@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -18,5 +19,9 @@ public class GuildChallenge {
     private UUID challenger;
     private UUID defender;
     private boolean accepted;
+    private int minPlayersPerSide;
+    private int maxPlayersPerSide;
+    private List<UUID> challengingPlayers;
+    private List<UUID> defendingPlayers;
 
 }
