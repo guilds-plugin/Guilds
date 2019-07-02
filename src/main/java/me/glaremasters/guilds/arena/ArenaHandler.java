@@ -67,6 +67,9 @@ public class ArenaHandler {
      */
     public Arena getAvailableArena() {
         List<Arena> availableArenas = getArenas().stream().filter(Objects::nonNull).filter(a -> !a.isInUse()).collect(Collectors.toList());
+        if (availableArenas.isEmpty()) {
+            return null;
+        }
         return availableArenas.get(ThreadLocalRandom.current().nextInt(availableArenas.size()));
     }
 }
