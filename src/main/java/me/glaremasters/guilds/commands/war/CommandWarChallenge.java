@@ -24,17 +24,18 @@ import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.Constants;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 @CommandAlias(Constants.ROOT_ALIAS)
-public class CommandChallenge extends BaseCommand {
+public class CommandWarChallenge extends BaseCommand {
 
     @Dependency private GuildHandler guildHandler;
     @Dependency private ArenaHandler arenaHandler;
     @Dependency private SettingsManager settingsManager;
 
-    @Subcommand("challenge")
-    @Description("{@@descriptions.challenge}")
+    @Subcommand("war challenge")
+    @Description("{@@descriptions.war-challenge}")
     @Syntax("<guild>")
     @CommandPermission(Constants.WAR_PERM + "challenge")
     @CommandCompletion("@guilds")
@@ -57,8 +58,16 @@ public class CommandChallenge extends BaseCommand {
         if (guildHandler.getOnlineDefenders(targetGuild).isEmpty())
             ACFUtil.sneaky(new ExpectationNotMet(Messages.WAR__NO_DEFENDERS));
 
+        // Min players
+        int minPlayers = settingsManager.getProperty(WarSettings.MIN_PLAYERS);
+        // Max players
+        int maxPlayers = settingsManager.getProperty(WarSettings.MAX_PLAYERS);
+
         // Create the new guild challenge
-        GuildChallenge challenge = new GuildChallenge(UUID.randomUUID(), System.currentTimeMillis(), guild.getId(), targetGuild.getId(), false);
+        GuildChallenge challenge = new GuildChallenge(UUID.randomUUID(), System.currentTimeMillis(),
+                guild.getId(), targetGuild.getId(), false,
+                minPlayers, maxPlayers,
+                new ArrayList<>(), new ArrayList<>());
 
         // Add the new challenge to the handler
         guildHandler.getChallenges().add(challenge);
