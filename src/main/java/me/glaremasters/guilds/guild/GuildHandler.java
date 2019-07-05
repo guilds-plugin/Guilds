@@ -894,21 +894,12 @@ public class GuildHandler {
     }
 
     /**
-     * Get a challenge and search by defending guilds
-     * @param guild the defending guild
-     * @return challenge
+     * Get a guild challenge by a guild
+     * @param guild the guild to check
+     * @return the challenge
      */
-    public GuildChallenge getChallengeByDefender(@NotNull Guild guild) {
-        return challenges.stream().filter(c -> c.getDefender() == guild.getId()).findFirst().orElse(null);
-    }
-
-    /**
-     * Get a challenge and search by challenging guilds
-     * @param guild the challenging guild
-     * @return challenge
-     */
-    public GuildChallenge getChallengeByChallenger(@NotNull Guild guild) {
-        return challenges.stream().filter(c -> c.getChallenger() == guild.getId()).findFirst().orElse(null);
+    public GuildChallenge getChallenge(@NotNull Guild guild) {
+        return challenges.stream().filter(c -> c.getChallenger() == guild.getId() || c.getDefender() == guild.getId()).findFirst().orElse(null);
     }
 
 

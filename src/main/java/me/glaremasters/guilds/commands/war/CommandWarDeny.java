@@ -29,13 +29,13 @@ public class CommandWarDeny extends BaseCommand {
         if (!role.isInitiateWar())
             ACFUtil.sneaky(new InvalidPermissionException());
 
-        GuildChallenge challenge = guildHandler.getChallengeByDefender(guild);
+        GuildChallenge challenge = guildHandler.getChallenge(guild);
 
         // Check to make sure they have a pending challenge
         if (challenge == null)
             ACFUtil.sneaky(new ExpectationNotMet(Messages.WAR__NO_PENDING_CHALLENGE));
 
-        // Delete the challenge and notify both guilds
+        // Get the challenger guild cause we assume this is the defender
         Guild challenger = guildHandler.getGuild(challenge.getChallenger());
 
         // Should never be null, but just in case

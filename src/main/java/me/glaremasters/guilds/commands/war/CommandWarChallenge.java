@@ -46,12 +46,8 @@ public class CommandWarChallenge extends BaseCommand {
         if (!role.isInitiateWar())
             ACFUtil.sneaky(new InvalidPermissionException());
 
-        // Make sure they aren't already challenging someone
-        if (guildHandler.getChallengeByChallenger(guild) != null)
-            ACFUtil.sneaky(new ExpectationNotMet(Messages.WAR__ALREADY_CHALLENGING));
-
-        // Make sure they aren't already being challenged by themselves
-        if (guildHandler.getChallengeByDefender(guild) != null)
+        // Make sure they aren't already challenging someone / being challenged
+        if (guildHandler.getChallenge(guild) != null)
             ACFUtil.sneaky(new ExpectationNotMet(Messages.WAR__ALREADY_CHALLENGING));
 
         // Check if there are any open arenas

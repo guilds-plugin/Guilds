@@ -20,4 +20,8 @@ public class WarSettings implements SettingsHolder {
     public static final Property<Integer> MAX_PLAYERS =
             newProperty("war.max-players", 8);
 
+    @Comment("How long do players of both sides have to join the war? (In seconds)")
+    public static final Property<Integer> JOIN_TIME =
+            newProperty("war.join-time", 60);
+
 }
