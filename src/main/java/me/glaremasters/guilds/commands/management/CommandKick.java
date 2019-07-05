@@ -52,7 +52,6 @@ import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.codemc.worldguardwrapper.WorldGuardWrapper;
 
 import java.util.concurrent.TimeUnit;
 
@@ -104,11 +103,6 @@ public class CommandKick extends BaseCommand {
         cooldownHandler.addCooldown(boot, Cooldown.TYPES.Join.name(), settingsManager.getProperty(CooldownSettings.JOIN), TimeUnit.SECONDS);
 
         ClaimUtils.kickMember(boot, player, guild, settingsManager);
-
-        if (ClaimUtils.isEnable(settingsManager)) {
-            WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();
-            ClaimUtils.getGuildClaim(wrapper, player, guild).ifPresent(region -> ClaimUtils.removeMember(region, player));
-        }
 
         guild.removeMember(kick);
 
