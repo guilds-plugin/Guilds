@@ -311,6 +311,16 @@ public class GuildHandler {
         return pGuild.getId().toString().equals(tGuild.getId().toString());
     }
 
+    /**
+     * Compare two guilds to see if they are the same
+     * @param g1 guild 1
+     * @param g2 guild 2
+     * @return same or not
+     */
+    public boolean isSameGuild(Guild g1, Guild g2) {
+        return g1.getId() == g2.getId();
+    }
+
 
     /**
      * Removes an ally.

@@ -66,7 +66,7 @@ public class CommandWarChallenge extends BaseCommand {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
 
         // Check if same guild
-        if (guild.getId() == targetGuild.getId())
+        if (guildHandler.isSameGuild(guild, targetGuild))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.WAR__NO_SELF_CHALLENGE));
 
         // Check for online defenders to accept challenge
