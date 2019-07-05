@@ -55,6 +55,7 @@ public class WorldGuardListener implements Listener {
         GuildRole role = guild.getMember(player.getUniqueId()).getRole();
 
         for (IWrappedRegion region : wrapper.getRegions(location)) {
+            System.out.println(region);
             if (region.getId().equals(guild.getId().toString())) {
                 event.setCancelled(!role.isPlace());
             }
@@ -72,7 +73,7 @@ public class WorldGuardListener implements Listener {
         GuildRole role = guild.getMember(player.getUniqueId()).getRole();
 
         for (IWrappedRegion region : wrapper.getRegions(location)) {
-            if (region.getId().equalsIgnoreCase(guild.getName())) {
+            if (region.getId().equals(guild.getId().toString())) {
                 event.setCancelled(!role.isDestroy());
             }
         }
@@ -89,7 +90,7 @@ public class WorldGuardListener implements Listener {
         GuildRole role = guild.getMember(player.getUniqueId()).getRole();
 
         for (IWrappedRegion region : wrapper.getRegions(location)) {
-            if (region.getId().equalsIgnoreCase(guild.getName())) {
+            if (region.getId().equals(guild.getId().toString())) {
                 event.setCancelled(!role.isInteract());
             }
         }
