@@ -919,4 +919,15 @@ public class GuildHandler {
         getOnlineDefenders(guild).forEach(m -> commandManager.getCommandIssuer(m).sendInfo(Messages.WAR__INCOMING_CHALLENGE, "{guild}", challenger, "{amount}", String.valueOf(acceptTime)));
     }
 
+    /**
+     * Simple method to check if both guilds have enough players online
+     * @param challenger challenging guild
+     * @param defender defending guild
+     * @param amount amount to check
+     * @return enough players online
+     */
+    public boolean checkEnoughOnline(Guild challenger, Guild defender, int amount) {
+        return challenger.getOnlineAsPlayers().size() >= amount && defender.getOnlineAsPlayers().size() >= amount;
+    }
+
 }

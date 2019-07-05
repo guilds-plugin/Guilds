@@ -296,3 +296,4 @@ war:
   target-expired-challenge: "&cSeems like you punny weaklings were too scared to make a decision in time. The challenge has been cancelled."
   challenge-denied-defender: "&aWe understand, war isn't for everyone. You've denied the challenge from {guild}."
   challenge-denied-challenger: "&aYe must be too mighty for {guild}, they have chosen to not fight you on this fine day"
+  not-enough-on: "&cEither your guild or the guild you are challenging does not have the minimum amount of players online required for a war."
