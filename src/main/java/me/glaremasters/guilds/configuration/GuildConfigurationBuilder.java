@@ -43,6 +43,7 @@ import me.glaremasters.guilds.configuration.sections.TablistSettings;
 import me.glaremasters.guilds.configuration.sections.TicketSettings;
 import me.glaremasters.guilds.configuration.sections.TierSettings;
 import me.glaremasters.guilds.configuration.sections.VaultPickerSettings;
+import me.glaremasters.guilds.configuration.sections.WarSettings;
 
 /**
  * Created by GlareMasters
@@ -59,7 +60,7 @@ public class GuildConfigurationBuilder {
                 PluginSettings.class, HooksSettings.class, GuildListSettings.class,
                 GuildBuffSettings.class, VaultPickerSettings.class, GuildVaultSettings.class,
                 GuildInfoSettings.class, GuildInfoMemberSettings.class, GuildSettings.class,
-                CooldownSettings.class, CostSettings.class,
+                WarSettings.class, CooldownSettings.class, CostSettings.class,
                 ClaimSettings.class, TablistSettings.class, TicketSettings.class, CodeSettings.class,
                 TierSettings.class, RoleSettings.class
         );
