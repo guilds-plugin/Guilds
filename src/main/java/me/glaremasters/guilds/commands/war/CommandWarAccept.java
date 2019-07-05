@@ -8,7 +8,6 @@ import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
-import me.glaremasters.guilds.configuration.sections.WarSettings;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.exceptions.InvalidPermissionException;
 import me.glaremasters.guilds.guild.Guild;
@@ -41,11 +40,8 @@ public class CommandWarAccept extends BaseCommand {
         // Get the challenger guild cause we assume this is the defender
         Guild challenger = guildHandler.getGuild(challenge.getChallenger());
 
-        // Min players
-        int minPlayers = settingsManager.getProperty(WarSettings.MIN_PLAYERS);
-
         // Check again when accepting to make sure there are still enough players online
-        if (!guildHandler.checkEnoughOnline(challenger, guild, minPlayers))
+        if (!guildHandler.checkEnoughOnline(challenger, guild, challenge.getMinPlayersPerSide()))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.WAR__NOT_ENOUGH_ON));
      }
 

@@ -902,7 +902,6 @@ public class GuildHandler {
         return challenges.stream().filter(c -> c.getChallenger() == guild.getId() || c.getDefender() == guild.getId()).findFirst().orElse(null);
     }
 
-
     /**
      * Get a list of the online war people for your guild
      * @param guild the guild to check
