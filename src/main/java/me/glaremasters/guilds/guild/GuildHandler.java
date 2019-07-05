@@ -855,6 +855,20 @@ public class GuildHandler {
     // Challenges
 
     /**
+     * Create a new Guild Challenge
+     * @param challenger the challenging guild
+     * @param defender the defending guild
+     * @param minPlayer the min amount of players
+     * @param maxPlayers the amount of players
+     * @return new challenge
+     */
+    public GuildChallenge createNewChallenge(Guild challenger, Guild defender, int minPlayer, int maxPlayers) {
+        return new GuildChallenge(UUID.randomUUID(), System.currentTimeMillis(), challenger.getId(),
+                defender.getId(), false, minPlayer,
+                maxPlayers, new ArrayList<>(), new ArrayList<>());
+    }
+
+    /**
      * Add a challenge to the list
      * @param challenge challenge
      */

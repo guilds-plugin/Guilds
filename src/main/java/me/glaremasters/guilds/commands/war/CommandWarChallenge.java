@@ -77,19 +77,16 @@ public class CommandWarChallenge extends BaseCommand {
         int minPlayers = settingsManager.getProperty(WarSettings.MIN_PLAYERS);
         // Max players
         int maxPlayers = settingsManager.getProperty(WarSettings.MAX_PLAYERS);
-        
+
         // Check to make sure both guilds have enough players on for a war
         if (!guildHandler.checkEnoughOnline(guild, targetGuild, minPlayers))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.WAR__NOT_ENOUGH_ON));
 
         // Create the new guild challenge
-        GuildChallenge challenge = new GuildChallenge(UUID.randomUUID(), System.currentTimeMillis(),
-                guild.getId(), targetGuild.getId(), false,
-                minPlayers, maxPlayers,
-                new ArrayList<>(), new ArrayList<>());
+        GuildChallenge challenge = guildHandler.createNewChallenge(guild, targetGuild, minPlayers, maxPlayers);
 
         // Add the new challenge to the handler
-        guildHandler.getChallenges().add(challenge);
+        guildHandler.addChallenge(challenge);
 
         // Set an int to the amount of time allowed to accept it an invite
         int acceptTime = settingsManager.getProperty(WarSettings.ACCEPT_TIME);
