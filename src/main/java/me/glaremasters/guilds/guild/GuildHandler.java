@@ -30,6 +30,7 @@ import co.aikar.commands.ACFUtil;
 import co.aikar.commands.CommandManager;
 import lombok.Getter;
 import me.glaremasters.guilds.Guilds;
+import me.glaremasters.guilds.arena.Arena;
 import me.glaremasters.guilds.configuration.sections.GuildSettings;
 import me.glaremasters.guilds.configuration.sections.GuildVaultSettings;
 import me.glaremasters.guilds.configuration.sections.TicketSettings;
@@ -40,6 +41,7 @@ import me.glaremasters.guilds.utils.ItemBuilder;
 import me.glaremasters.guilds.utils.Serialization;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
@@ -862,10 +864,12 @@ public class GuildHandler {
      * @param maxPlayers the amount of players
      * @return new challenge
      */
-    public GuildChallenge createNewChallenge(Guild challenger, Guild defender, int minPlayer, int maxPlayers) {
+    public GuildChallenge createNewChallenge(Guild challenger, Guild defender, int minPlayer, int maxPlayers, Arena arena) {
         return new GuildChallenge(UUID.randomUUID(), System.currentTimeMillis(), challenger.getId(),
-                defender.getId(), false, false, minPlayer,
-                maxPlayers, new ArrayList<>(), new ArrayList<>());
+                defender.getId(), false, false,
+                minPlayer, maxPlayers, new ArrayList<>(),
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
+                arena);
     }
 
     /**
@@ -932,6 +936,26 @@ public class GuildHandler {
      */
     public boolean checkEnoughOnline(Guild challenger, Guild defender, int amount) {
         return challenger.getOnlineAsPlayers().size() >= amount && defender.getOnlineAsPlayers().size() >= amount;
+    }
+
+    /**
+     * Teleport challengers to the arena
+     * @param players players to teleport
+     * @param arena arena to teleport to
+     */
+    public void teleportChallenger(List<Player> players, Arena arena) {
+        Location loc = ACFBukkitUtil.stringToLocation(arena.getChallenger());
+        players.forEach(p -> p.teleport(loc));
+    }
+
+    /**
+     * Teleport defenders to the arena
+     * @param players players to teleport
+     * @param arena arena to teleport to
+     */
+    public void teleportDefender(List<Player> players, Arena arena) {
+        Location loc = ACFBukkitUtil.stringToLocation(arena.getDefender());
+        players.forEach(p -> p.teleport(loc));
     }
 
 }

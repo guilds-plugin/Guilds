@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import me.glaremasters.guilds.arena.Arena;
+import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.UUID;
@@ -22,7 +24,10 @@ public class GuildChallenge {
     private boolean joinble;
     private int minPlayersPerSide;
     private int maxPlayersPerSide;
-    private List<UUID> challengingPlayers;
-    private List<UUID> defendingPlayers;
+    private transient List<Player> challengingPlayers;
+    private transient List<Player> defendingPlayers;
+    private List<UUID> challengingPlayersUUID;
+    private List<UUID> defendingPlayersUUID;
+    private Arena arena;
 
 }
