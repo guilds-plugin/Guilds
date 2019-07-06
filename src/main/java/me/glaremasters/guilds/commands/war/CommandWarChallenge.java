@@ -13,6 +13,7 @@ import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.annotation.Values;
 import me.glaremasters.guilds.Guilds;
+import me.glaremasters.guilds.arena.Arena;
 import me.glaremasters.guilds.arena.ArenaHandler;
 import me.glaremasters.guilds.configuration.sections.WarSettings;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
@@ -50,8 +51,11 @@ public class CommandWarChallenge extends BaseCommand {
         if (guildHandler.getChallenge(guild) != null)
             ACFUtil.sneaky(new ExpectationNotMet(Messages.WAR__ALREADY_CHALLENGING));
 
+        // Get an arena
+        Arena arena = arenaHandler.getAvailableArena();
+
         // Check if there are any open arenas
-        if (arenaHandler.getAvailableArena() == null)
+        if (arena == null)
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ARENA__ALL_FULL));
 
         // Get the guild
@@ -79,10 +83,13 @@ public class CommandWarChallenge extends BaseCommand {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.WAR__NOT_ENOUGH_ON));
 
         // Create the new guild challenge
-        GuildChallenge challenge = guildHandler.createNewChallenge(guild, targetGuild, minPlayers, maxPlayers);
+        GuildChallenge challenge = guildHandler.createNewChallenge(guild, targetGuild, minPlayers, maxPlayers, arena);
 
         // Add the new challenge to the handler
         guildHandler.addChallenge(challenge);
+
+        // Reserve the arena
+        arena.setInUse(true);
 
         // Set an int to the amount of time allowed to accept it an invite
         int acceptTime = settingsManager.getProperty(WarSettings.ACCEPT_TIME);
@@ -106,6 +113,8 @@ public class CommandWarChallenge extends BaseCommand {
                    guild.sendMessage(guilds.getCommandManager(), Messages.WAR__GUILD_EXPIRED_CHALLENGE, "{guild}", targetGuild.getName());
                    // Send message to defender saying they didn't accept it
                     targetGuild.sendMessage(guilds.getCommandManager(), Messages.WAR__TARGET_EXPIRED_CHALLENGE);
+                    // Unreserve arena
+                    challenge.getArena().setInUse(false);
                     // Remove the challenge from the list
                     guildHandler.removeChallenge(challenge);
                 }

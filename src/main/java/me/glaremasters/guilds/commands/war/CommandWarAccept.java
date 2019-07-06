@@ -22,6 +22,7 @@ import me.glaremasters.guilds.utils.Constants;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -55,6 +56,9 @@ public class CommandWarAccept extends BaseCommand {
         // Variable for join time
         int joinTime = settingsManager.getProperty(WarSettings.JOIN_TIME);
 
+        // Variable for ready time
+        int readyTime = settingsManager.getProperty(WarSettings.READY_TIME);
+
         // Send message to challenger
         challenger.sendMessage(getCurrentCommandManager(), Messages.WAR__CHALLENGER_WAR_ACCEPTED,
                 "{guild}", guild.getName(),
@@ -73,10 +77,22 @@ public class CommandWarAccept extends BaseCommand {
         List<Player> online = Stream.concat(guild.getOnlineAsPlayers().stream(), challenger.getOnlineAsPlayers().stream()).collect(Collectors.toList());
 
         // The message to send
-        String msg = getCurrentCommandManager().getLocales().getMessage(getCurrentCommandIssuer(), Messages.WAR__ACTION_BAR_JOIN.getMessageKey());
+        String joinMsg = getCurrentCommandManager().getLocales().getMessage(getCurrentCommandIssuer(), Messages.WAR__ACTION_BAR_JOIN.getMessageKey());
+        String readyMsg = getCurrentCommandManager().getLocales().getMessage(getCurrentCommandIssuer(), Messages.WAR__ACTION_BAR_READY.getMessageKey());
 
         // Start sending ActionBar
-        new GuildWarTimeTask(guilds, joinTime, online, msg, challenge).runTaskTimer(guilds, 0L, 20L);
+        Guilds.newChain().sync(() -> {
+            // Start the timer for joining the war
+            new GuildWarTimeTask(guilds, joinTime, online, joinMsg, challenge).runTaskTimer(guilds, 0L, 20L);
+        }).delay(joinTime, TimeUnit.SECONDS).sync(() -> {
+            // Start the timer for time until the war starts after everyone joins
+            List<Player> warReady = Stream.concat(challenge.getChallengingPlayers().stream(), challenge.getDefendingPlayers().stream()).collect(Collectors.toList());
+            new GuildWarTimeTask(guilds, readyTime, warReady, readyMsg, challenge).runTaskTimer(guilds, 0L, 20L);
+        }).delay(readyTime, TimeUnit.SECONDS).sync(() -> {
+            guildHandler.teleportChallenger(challenge.getChallengingPlayers(), challenge.getArena());
+            guildHandler.teleportDefender(challenge.getDefendingPlayers(), challenge.getArena());
+        }).execute();
+
     }
 
 }
