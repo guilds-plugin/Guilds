@@ -864,7 +864,7 @@ public class GuildHandler {
      */
     public GuildChallenge createNewChallenge(Guild challenger, Guild defender, int minPlayer, int maxPlayers) {
         return new GuildChallenge(UUID.randomUUID(), System.currentTimeMillis(), challenger.getId(),
-                defender.getId(), false, minPlayer,
+                defender.getId(), false, false, minPlayer,
                 maxPlayers, new ArrayList<>(), new ArrayList<>());
     }
 

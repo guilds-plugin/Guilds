@@ -19,6 +19,7 @@ public class GuildChallenge {
     private UUID challenger;
     private UUID defender;
     private boolean accepted;
+    private boolean joinble;
     private int minPlayersPerSide;
     private int maxPlayersPerSide;
     private List<UUID> challengingPlayers;
