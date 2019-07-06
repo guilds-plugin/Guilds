@@ -865,8 +865,8 @@ public class GuildHandler {
      * @return new challenge
      */
     public GuildChallenge createNewChallenge(Guild challenger, Guild defender, int minPlayer, int maxPlayers, Arena arena) {
-        return new GuildChallenge(UUID.randomUUID(), System.currentTimeMillis(), challenger.getId(),
-                defender.getId(), false, false,
+        return new GuildChallenge(UUID.randomUUID(), System.currentTimeMillis(), challenger,
+                defender, false, false,
                 minPlayer, maxPlayers, new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                 arena);
@@ -903,7 +903,7 @@ public class GuildHandler {
      * @return the challenge
      */
     public GuildChallenge getChallenge(@NotNull Guild guild) {
-        return challenges.stream().filter(c -> c.getChallenger() == guild.getId() || c.getDefender() == guild.getId()).findFirst().orElse(null);
+        return challenges.stream().filter(c -> c.getChallenger() == guild || c.getDefender() == guild).findFirst().orElse(null);
     }
 
     /**

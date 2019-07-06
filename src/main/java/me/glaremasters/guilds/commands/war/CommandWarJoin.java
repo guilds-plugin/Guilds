@@ -66,7 +66,7 @@ public class CommandWarJoin extends BaseCommand {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.WAR__NOT_JOINABLE));
 
         // Check if they are the defender
-        if (challenge.getDefender() == guild.getId()) {
+        if (challenge.getDefender() == guild) {
             // Check defending size
             if (challenge.getDefendingPlayers().size() == challenge.getMaxPlayersPerSide()) {
                 ACFUtil.sneaky(new ExpectationNotMet(Messages.WAR__ALREADY_AT_MAX));

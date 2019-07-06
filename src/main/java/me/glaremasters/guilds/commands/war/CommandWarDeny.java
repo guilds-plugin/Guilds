@@ -36,7 +36,7 @@ public class CommandWarDeny extends BaseCommand {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.WAR__NO_PENDING_CHALLENGE));
 
         // Get the challenger guild cause we assume this is the defender
-        Guild challenger = guildHandler.getGuild(challenge.getChallenger());
+        Guild challenger = challenge.getChallenger();
 
         // Should never be null, but just in case
         if (challenger == null)
