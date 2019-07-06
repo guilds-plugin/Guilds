@@ -78,6 +78,7 @@ descriptions:
   war-accept: "Accept a war challenge"
   war-challenge: "Challenge another guild to a war"
   war-deny: "Deny a war challenge"
+  war-join: "Join a pending war"
 create:
   guild-name-taken: "&cThis name is already taken!"
   warning: "&cThe creation of a Guild cost {amount}. Type /guilds confirm to create your guild, type /guilds cancel to cancel."
@@ -301,3 +302,7 @@ war:
   defender-war-accepted: "&aPrepare yourselves, you've just accepted the challenge against {guild}! Gear up and get ready! You have {amount} seconds to join the war by doing /guild war join"
   action-bar-join: "{amount} seconds left to join the war. /guild war join!"
   not-joinable: "&cSorry, the war is not joinable at this time"
+  not-enough-joined: "&cEither your guild or the other guild did not have enough people join. Cancelling war."
+  already-at-max: "&cSorry, your guild already has the max amount of players on your team in the war!"
+  war-joined: "&aSuccess! You have joined the guild war! Prepare for a starting message soon."
+  action-bar-ready: "{amount} seconds left until the war starts! Prepare yourselves!"
