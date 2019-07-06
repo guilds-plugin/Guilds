@@ -24,4 +24,8 @@ public class WarSettings implements SettingsHolder {
     public static final Property<Integer> JOIN_TIME =
             newProperty("war.join-time", 60);
 
+    @Comment("How long should we wait to teleport the players and start the war after everyone joined?")
+    public static final Property<Integer> READY_TIME =
+            newProperty("war.ready-time", 60);
+
 }
