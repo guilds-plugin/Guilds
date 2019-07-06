@@ -316,6 +316,7 @@
             <groupId>net.byteflux</groupId>
             <artifactId>libby-bukkit</artifactId>
             <version>0.0.1</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>
