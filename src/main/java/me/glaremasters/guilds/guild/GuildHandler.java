@@ -559,7 +559,7 @@ public class GuildHandler {
         List<String> list = getInvitedGuilds(player.getUniqueId());
 
         if (list.isEmpty()) {
-            manager.getCommandIssuer(player).sendInfo(Messages.ERROR__NO_GUILD);
+            manager.getCommandIssuer(player).sendInfo(Messages.ERROR__NO_PENDING_INVITES);
             return;
         }
 
