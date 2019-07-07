@@ -96,10 +96,11 @@ error:
   not-enough-money: "&cPerdón, no tienes suficiente dinero para hacer eso"
   economy-required: "&cAn economy plugin is required for this to work. Please contact your server administrator"
   buff-cooldown: "&cSorry, your guild has recently bought a buff. You can try again in {amount} seconds."
+  no-pending-invites: "&cSorry, you currently do not have any pending guild invites!"
 bank:
   balance: "&cEl banco de tu guild tiene la cantidad de {amount}."
   deposit-success: "&a{player} has just deposited {amount} into the Guild Bank. Your new total is {total}."
-  withdrawl-success: "&a{player} has just withdrawn {amount} from the Guild Bank. Your new total is {total}."
+  withdrawal-success: "&a{player} has just withdrawn {amount} from the Guild Bank. Your new total is {total}."
   not-enough-bank: "&cNo hay suficiente dinero en el banco de tu guild para hacer eso"
   over-max: "&cLo sentimos, no puede depositar tanto como lo haría sobre su saldo bancario máximo!"
 admin:
@@ -229,7 +230,7 @@ unclaim:
   success: "&aHas eliminado exitosamente tu reclamo de gremio!"
   not-found: "&cNo puedes abandonar la tierra que no tienes!"
 pending:
-  invites: "&aTienes {number} invitaciones pendientes de: &e{guilds}&r&a . Usa /guild accept <nombre> o /guild deny <nombre> para aceptar o rechazar una invitacion!"
+  invites: "&aYou have {number} pending invite(s) from the guild(s): &e{guilds}&r&a . Use /guild accept <name> or /guild decline <name> to join or decline an invite!"
 codes:
   created: "&aHas creado un nuevo código de invitación: &6{code} &acon &6{amount} &ausos!"
   empty: "&c¡Oh no! No tengo códigos, intenta hacer uno primero!"
