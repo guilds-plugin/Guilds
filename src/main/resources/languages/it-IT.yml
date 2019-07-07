@@ -96,10 +96,11 @@ error:
   not-enough-money: "&cScusa, non hai abbastanza soldi per farlo"
   economy-required: "&cAn economy plugin is required for this to work. Please contact your server administrator"
   buff-cooldown: "&cSorry, your guild has recently bought a buff. You can try again in {amount} seconds."
+  no-pending-invites: "&cSorry, you currently do not have any pending guild invites!"
 bank:
   balance: "&aLa tua gilda ha un conto di {amount}."
   deposit-success: "&a{player} has just deposited {amount} into the Guild Bank. Your new total is {total}."
-  withdrawl-success: "&a{player} has just withdrawn {amount} from the Guild Bank. Your new total is {total}."
+  withdrawal-success: "&a{player} has just withdrawn {amount} from the Guild Bank. Your new total is {total}."
   not-enough-bank: "&cNon ci sono abbastanza soldi nel conto della tua gilda per farlo"
   over-max: "&cSorry, you can't deposit that much as you would go over your max bank balance!"
 admin:
@@ -229,7 +230,7 @@ unclaim:
   success: "&aHai rimosso la richiesta di territorio della tua gilda!"
   not-found: "&cNon puoi smettere di richiedere territori che non hai mai richiesto!"
 pending:
-  invites: "&aHai {number} invito/i in sospeso dalla/e gilda/e: &e{guilds}&r&a . Scrivi /guild accept <nome> o /guild deny <nome> per accettare o rifiutare un invito!"
+  invites: "&aYou have {number} pending invite(s) from the guild(s): &e{guilds}&r&a . Use /guild accept <name> or /guild decline <name> to join or decline an invite!"
 codes:
   created: "&aYou've created a new invite code: &6{code} &awith &6{amount} &auses!"
   empty: "&cOh no! I have no codes, try making one first!"
