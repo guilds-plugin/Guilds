@@ -96,11 +96,11 @@ error:
   not-enough-money: "&cИзвините, но у вас недостаточно денег, чтобы сделать это"
   economy-required: "&cЧтобы это работало, нужен плагин на экономику. Пожалуйста, сообщите администратору"
   buff-cooldown: "&cИзвините, но Ваша гильдия недавно уже купила бафф. Попробуйте снова через {amount} секунд."
-  no-pending-invites: "&cSorry, you currently do not have any pending guild invites!"
+  no-pending-invites: "&cИзвините, но у Вас нет ожидающих приглашений в гильдию!"
 bank:
   balance: "&aБаланс банка Вашей гильдии составляет {amount}."
   deposit-success: "&a{player} положил {amount} в банк гильдии. Новый баланс {total}."
-  withdrawal-success: "&a{player} has just withdrawn {amount} from the Guild Bank. Your new total is {total}."
+  withdrawal-success: "&a{player} снял {amount} из банка гильдии. Новый баланс {total}."
   not-enough-bank: "&cВ банке гильдии недостаточно денег"
   over-max: "&cИзвините, нельзя положить на счет так много денег - банк превысит максимальный лимит!"
 admin:
@@ -230,7 +230,7 @@ unclaim:
   success: "&aВы успешно удалили регион гильдии!"
   not-found: "&cВы не можете удалить регион, которого у Вас нет!"
 pending:
-  invites: "&aYou have {number} pending invite(s) from the guild(s): &e{guilds}&r&a . Use /guild accept <name> or /guild decline <name> to join or decline an invite!"
+  invites: "&aВы имеете {number} действующих приглашений от следующих гильдий: &e{guilds}&r&a . Введите /guild accept <гильдия> для принятия или /guild decline <гильдия> для отклонения приглашения на вступление!"
 codes:
   created: "&aВы создали код приглашения: &6{code} &aна &6{amount} &aиспользований!"
   empty: "&cО нет! Кодов не имеется, попробуй создать новый!"
