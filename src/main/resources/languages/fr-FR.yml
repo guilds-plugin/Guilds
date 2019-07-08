@@ -96,10 +96,11 @@ error:
   not-enough-money: "&cDésolé, vous n'avez pas assez d'argent pour faire ça !"
   economy-required: "&cUn plugin d'économie est requis pour que cela fonctionne. Contactez un administrateur."
   buff-cooldown: "&cDésolé, votre guilde a récemment acheté un buff. Vous pouvez réessayer dans {amount} secondes.  "
+  no-pending-invites: "&cSorry, you currently do not have any pending guild invites!"
 bank:
   balance: "&aVotre guilde possède : {amount}."
   deposit-success: "&a{player} has just deposited {amount} into the Guild Bank. Your new total is {total}."
-  withdrawl-success: "&a{player} has just withdrawn {amount} from the Guild Bank. Your new total is {total}."
+  withdrawal-success: "&a{player} has just withdrawn {amount} from the Guild Bank. Your new total is {total}."
   not-enough-bank: "&cIl n'y a pas assez d'argent en banque pour faire cela"
   over-max: "&cDésolé, vous ne pouvez pas déposer autant, ou vous dépasserez la limite maximum de votre banque !"
 admin:
@@ -229,7 +230,7 @@ unclaim:
   success: "&aVous avez réussi à supprimer votre demande de guilde !"
   not-found: "&cVous ne pouvez pas claim des terres que vous n'avez pas !"
 pending:
-  invites: "&aVous avez {number} invitation(s) en attente de la guilde: &e{guilds}&r&a . Ecrivez /guild accept <name> or /guild deny <name> pour accepter ou refuser une invitation!"
+  invites: "&aYou have {number} pending invite(s) from the guild(s): &e{guilds}&r&a . Use /guild accept <name> or /guild decline <name> to join or decline an invite!"
 codes:
   created: "&aVous avez créé un nouveau code d'invitation: &6{code} &aavec &6{amount} &autilisations !"
   empty: "&cOh non ! Je n'ai pas de codes, essaie d'en faire un premièrement !"

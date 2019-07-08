@@ -2,12 +2,12 @@
 descriptions:
   accept: "Eine Gildeneinladung annehmen"
   admin-addplayer: "Admin-Befehl, um einen Spieler in einer Gilde hinzufügen"
-  admin-bank-balance: "Admin command to view a guild's bank balance"
-  admin-bank-deposit: "Admin command to put money into a guild's bank"
+  admin-bank-balance: "Admin-Befehl zum Anzeigen des Guthabens einer Gilde"
+  admin-bank-deposit: "Admin-Befehl um das Guthaben einer Gilde anzuzeigen"
   admin-bank-withdraw: "Admin command to take money from a guild's bank"
   admin-delhome: "Admin command to delete the home of a guild"
   admin-home: "Admin command to teleport to the home of a guild"
-  admin-motd: "Admin command to view the MOTD of a guild"
+  admin-motd: "Admin-Befehl um die MOTD einer Gilde anzusehen"
   admin-motd-set: "Admin command to set the motd of a guild"
   admin-motd-remove: "Admin command to remove the motd of a guild"
   admin-prefix: "Admin-Befehl um den Präfix einer Gilde zu ändern"
@@ -96,10 +96,11 @@ error:
   not-enough-money: "&cSorry, du hast nicht genug Geld um das zu machen"
   economy-required: "&cAn economy plugin is required for this to work. Please contact your server administrator"
   buff-cooldown: "&cSorry, your guild has recently bought a buff. You can try again in {amount} seconds."
+  no-pending-invites: "&cSorry, you currently do not have any pending guild invites!"
 bank:
   balance: "&aDie Bank deiner Gilde hat ein Guthaben con {amount}."
   deposit-success: "&a{player} has just deposited {amount} into the Guild Bank. Your new total is {total}."
-  withdrawl-success: "&a{player} has just withdrawn {amount} from the Guild Bank. Your new total is {total}."
+  withdrawal-success: "&a{player} has just withdrawn {amount} from the Guild Bank. Your new total is {total}."
   not-enough-bank: "&cDa ist nicht genug in deiner Gildenbank um das zu machen"
   over-max: "&cSorry, du kannst nicht soviel einzahlen, da du über das maximum der Bank gehen würdest!"
 admin:
@@ -229,7 +230,7 @@ unclaim:
   success: "&aDu hast erfolgreich dein Gildenbesitz entfernt!"
   not-found: "&cDu kannst kein Land entfernen, das du nicht besitzt!"
 pending:
-  invites: "&aDu hast {number} ausstehende Einladung(en) von der/den Gilde(n): &e{guilds}&r&a . Verwende /guild accept <name> oder /guild deny <name> um eine Einladung anzunehmen oder abzulehnen!"
+  invites: "&aYou have {number} pending invite(s) from the guild(s): &e{guilds}&r&a . Use /guild accept <name> or /guild decline <name> to join or decline an invite!"
 codes:
   created: "&aDu hast einen neuen Einladungscode erstellt: &6{code} &amit &6{amount} &averwendungen!"
   empty: "&cOh nein! Ich habe keine Codes, versuch einen zuerst zu erstellen!"

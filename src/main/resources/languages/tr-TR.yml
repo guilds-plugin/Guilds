@@ -96,10 +96,11 @@ error:
   not-enough-money: "&cMaalesef, bunu yapmak için yeterli paranız yok"
   economy-required: "&cBunun çalışması için bir ekonomi eklentisi gereklidir. Lütfen sunucu yöneticinize başvurun"
   buff-cooldown: "&cMaalesef, loncanız yakın zamanda bir buff satın aldı. {amount} saniye içinde tekrar deneyebilirsiniz."
+  no-pending-invites: "&cSorry, you currently do not have any pending guild invites!"
 bank:
   balance: "&aLoncanın bankasının bakiyesi {amount}."
   deposit-success: "&a{player} has just deposited {amount} into the Guild Bank. Your new total is {total}."
-  withdrawl-success: "&a{player} has just withdrawn {amount} from the Guild Bank. Your new total is {total}."
+  withdrawal-success: "&a{player} has just withdrawn {amount} from the Guild Bank. Your new total is {total}."
   not-enough-bank: "&cLonca Bankası'nda bunu yapmak için yeterli değil"
   over-max: "&cMaalesef, maksimum banka bakiyenizi aşacağınız kadar para yatıramazsınız!"
 admin:
@@ -229,7 +230,7 @@ unclaim:
   success: "&aLonca talebini başarıyla kaldırdın!"
   not-found: "&cYou can't unclaim land that you don't have!"
 pending:
-  invites: "&aYou have {number} pending invite(s) from the guild(s): &e{guilds}&r&a . Use /guild accept <name> or /guild deny <name> to join or deny an invite!"
+  invites: "&aYou have {number} pending invite(s) from the guild(s): &e{guilds}&r&a . Use /guild accept <name> or /guild decline <name> to join or decline an invite!"
 codes:
   created: "&aYou've created a new invite code: &6{code} &awith &6{amount} &auses!"
   empty: "&cOh hayır! Kodum yok, ilk önce bir tane yapmayı deneyin!"
