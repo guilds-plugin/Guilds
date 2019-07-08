@@ -622,7 +622,6 @@ public final class Guilds extends JavaPlugin {
                 .groupId("org.codemc.worldguardwrapper")
                 .artifactId("worldguardwrapper")
                 .version("1.1.6-SNAPSHOT")
-                .checksum("G023FrJyvpmZxVWeXcGUCBipNB3BSA3rKcKPnCP7Sac=")
                 .build());
 
         loader.loadLibrary(Library.builder()
