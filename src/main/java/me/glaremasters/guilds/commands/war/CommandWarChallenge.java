@@ -15,6 +15,7 @@ import co.aikar.commands.annotation.Values;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.arena.Arena;
 import me.glaremasters.guilds.arena.ArenaHandler;
+import me.glaremasters.guilds.challenges.ChallengeHandler;
 import me.glaremasters.guilds.configuration.sections.WarSettings;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.exceptions.InvalidPermissionException;
@@ -34,6 +35,7 @@ import java.util.concurrent.TimeUnit;
 public class CommandWarChallenge extends BaseCommand {
 
     @Dependency private GuildHandler guildHandler;
+    @Dependency private ChallengeHandler challengeHandler;
     @Dependency private ArenaHandler arenaHandler;
     @Dependency private SettingsManager settingsManager;
     @Dependency private Guilds guilds;
@@ -48,7 +50,7 @@ public class CommandWarChallenge extends BaseCommand {
             ACFUtil.sneaky(new InvalidPermissionException());
 
         // Make sure they aren't already challenging someone / being challenged
-        if (guildHandler.getChallenge(guild) != null)
+        if (challengeHandler.getChallenge(guild) != null)
             ACFUtil.sneaky(new ExpectationNotMet(Messages.WAR__ALREADY_CHALLENGING));
 
         // Get an arena
@@ -70,7 +72,7 @@ public class CommandWarChallenge extends BaseCommand {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.WAR__NO_SELF_CHALLENGE));
 
         // Check for online defenders to accept challenge
-        if (guildHandler.getOnlineDefenders(targetGuild).isEmpty())
+        if (challengeHandler.getOnlineDefenders(targetGuild).isEmpty())
             ACFUtil.sneaky(new ExpectationNotMet(Messages.WAR__NO_DEFENDERS));
 
         // Min players
@@ -79,14 +81,14 @@ public class CommandWarChallenge extends BaseCommand {
         int maxPlayers = settingsManager.getProperty(WarSettings.MAX_PLAYERS);
 
         // Check to make sure both guilds have enough players on for a war
-        if (!guildHandler.checkEnoughOnline(guild, targetGuild, minPlayers))
+        if (!challengeHandler.checkEnoughOnline(guild, targetGuild, minPlayers))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.WAR__NOT_ENOUGH_ON));
 
         // Create the new guild challenge
-        GuildChallenge challenge = guildHandler.createNewChallenge(guild, targetGuild, minPlayers, maxPlayers, arena);
+        GuildChallenge challenge = challengeHandler.createNewChallenge(guild, targetGuild, minPlayers, maxPlayers, arena);
 
         // Add the new challenge to the handler
-        guildHandler.addChallenge(challenge);
+        challengeHandler.addChallenge(challenge);
 
         // Reserve the arena
         arena.setInUse(true);
@@ -98,12 +100,12 @@ public class CommandWarChallenge extends BaseCommand {
         getCurrentCommandIssuer().sendInfo(Messages.WAR__CHALLENGE_SENT, "{guild}", targetGuild.getName(), "{amount}", String.valueOf(acceptTime));
 
         // Send message to defending guild
-        guildHandler.pingOnlineDefenders(targetGuild, getCurrentCommandManager(), guild.getName(), acceptTime);
+        challengeHandler.pingOnlineDefenders(targetGuild, getCurrentCommandManager(), guild.getName(), acceptTime);
 
         // After acceptTime is up, check if the challenge has been accepted or not
         Guilds.newChain().delay(acceptTime, TimeUnit.SECONDS).sync(() -> {
             // Check if it was denied
-            if (guildHandler.getChallenge(challenge.getId()) != null) {
+            if (challengeHandler.getChallenge(challenge.getId()) != null) {
                 // War system has already started if it's accepted so don't do anything
                 if (challenge.isAccepted()) {
                     return;
@@ -116,7 +118,7 @@ public class CommandWarChallenge extends BaseCommand {
                     // Unreserve arena
                     challenge.getArena().setInUse(false);
                     // Remove the challenge from the list
-                    guildHandler.removeChallenge(challenge);
+                   challengeHandler.removeChallenge(challenge);
                 }
             }
         }).execute();

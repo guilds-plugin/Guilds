@@ -9,6 +9,7 @@ import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
 import me.glaremasters.guilds.Guilds;
+import me.glaremasters.guilds.challenges.ChallengeHandler;
 import me.glaremasters.guilds.configuration.sections.WarSettings;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.exceptions.InvalidPermissionException;
@@ -31,6 +32,7 @@ import java.util.stream.Stream;
 public class CommandWarAccept extends BaseCommand {
 
     @Dependency private GuildHandler guildHandler;
+    @Dependency private ChallengeHandler challengeHandler;
     @Dependency private SettingsManager settingsManager;
     @Dependency private Guilds guilds;
 
@@ -41,7 +43,7 @@ public class CommandWarAccept extends BaseCommand {
         if (!role.isInitiateWar())
             ACFUtil.sneaky(new InvalidPermissionException());
 
-        GuildChallenge challenge = guildHandler.getChallenge(guild);
+        GuildChallenge challenge = challengeHandler.getChallenge(guild);
 
         // Check to make sure they have a pending challenge
         if (challenge == null)
@@ -51,7 +53,7 @@ public class CommandWarAccept extends BaseCommand {
         Guild challenger = challenge.getChallenger();
 
         // Check again when accepting to make sure there are still enough players online
-        if (!guildHandler.checkEnoughOnline(challenger, guild, challenge.getMinPlayersPerSide()))
+        if (!challengeHandler.checkEnoughOnline(challenger, guild, challenge.getMinPlayersPerSide()))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.WAR__NOT_ENOUGH_ON));
 
         // Variable for join time
@@ -90,8 +92,8 @@ public class CommandWarAccept extends BaseCommand {
             List<UUID> warReady = Stream.concat(challenge.getChallengePlayers().stream(), challenge.getDefendPlayers().stream()).collect(Collectors.toList());
             new GuildWarTimeTask(guilds, readyTime, warReady, readyMsg, challenge).runTaskTimer(guilds, 0L, 20L);
         }).delay(readyTime, TimeUnit.SECONDS).sync(() -> {
-            guildHandler.teleportChallenger(challenge.getChallengePlayers(), challenge.getArena());
-            guildHandler.teleportDefender(challenge.getDefendPlayers(), challenge.getArena());
+            challengeHandler.teleportChallenger(challenge.getChallengePlayers(), challenge.getArena());
+            challengeHandler.teleportDefender(challenge.getDefendPlayers(), challenge.getArena());
         }).execute();
 
     }

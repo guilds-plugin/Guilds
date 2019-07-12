@@ -37,6 +37,7 @@ import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.api.GuildsAPI;
 import me.glaremasters.guilds.arena.Arena;
 import me.glaremasters.guilds.arena.ArenaHandler;
+import me.glaremasters.guilds.challenges.ChallengeHandler;
 import me.glaremasters.guilds.configuration.SettingsHandler;
 import me.glaremasters.guilds.configuration.sections.HooksSettings;
 import me.glaremasters.guilds.configuration.sections.PluginSettings;
@@ -105,6 +106,7 @@ public final class Guilds extends JavaPlugin {
     private GuildHandler guildHandler;
     private CooldownHandler cooldownHandler;
     private ArenaHandler arenaHandler;
+    private ChallengeHandler challengeHandler;
     private static TaskChainFactory taskChainFactory;
     private DatabaseProvider database;
     private CooldownsProvider cooldownsProvider;
@@ -313,6 +315,8 @@ public final class Guilds extends JavaPlugin {
             arenasProvider = new ArenasProvider(getDataFolder());
             // Load the arena objects
             arenaHandler = new ArenaHandler(arenasProvider);
+            // Load the challenge handler
+            challengeHandler = new ChallengeHandler();
             // Load guildhandler with provider
             guildHandler = new GuildHandler(database, getCommandManager(), getPermissions(), getConfig(), settingsHandler.getSettingsManager());
             info("Loaded data!");
@@ -575,6 +579,7 @@ public final class Guilds extends JavaPlugin {
         commandManager.registerDependency(Permission.class, permissions);
         commandManager.registerDependency(CooldownHandler.class, cooldownHandler);
         commandManager.registerDependency(ArenaHandler.class, arenaHandler);
+        commandManager.registerDependency(ChallengeHandler.class, challengeHandler);
     }
 
     /**

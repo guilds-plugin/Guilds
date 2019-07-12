@@ -32,6 +32,7 @@ import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
+import me.glaremasters.guilds.challenges.ChallengeHandler;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildChallenge;
@@ -49,13 +50,14 @@ import org.bukkit.entity.Player;
 public class CommandWarJoin extends BaseCommand {
 
     @Dependency private GuildHandler guildHandler;
+    @Dependency private ChallengeHandler challengeHandler;
     @Dependency private SettingsManager settingsManager;
 
     @Subcommand("war join")
     @Description("{@@descriptions.war-join}")
     @CommandPermission(Constants.WAR_PERM + "join")
     public void execute(Player player, Guild guild) {
-        GuildChallenge challenge = guildHandler.getChallenge(guild);
+        GuildChallenge challenge = challengeHandler.getChallenge(guild);
 
         // Check to make sure they have a pending challenge
         if (challenge == null)

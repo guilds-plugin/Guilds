@@ -7,6 +7,7 @@ import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
+import me.glaremasters.guilds.challenges.ChallengeHandler;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.exceptions.InvalidPermissionException;
 import me.glaremasters.guilds.guild.Guild;
@@ -21,6 +22,7 @@ import org.bukkit.entity.Player;
 public class CommandWarDeny extends BaseCommand {
 
     @Dependency private GuildHandler guildHandler;
+    @Dependency private ChallengeHandler challengeHandler;
 
     @Subcommand("war deny")
     @Description("{@@descriptions.war-deny}")
@@ -29,7 +31,7 @@ public class CommandWarDeny extends BaseCommand {
         if (!role.isInitiateWar())
             ACFUtil.sneaky(new InvalidPermissionException());
 
-        GuildChallenge challenge = guildHandler.getChallenge(guild);
+        GuildChallenge challenge = challengeHandler.getChallenge(guild);
 
         // Check to make sure they have a pending challenge
         if (challenge == null)
@@ -47,7 +49,7 @@ public class CommandWarDeny extends BaseCommand {
         // Send message to defender saying they've denied the challenge
         guild.sendMessage(getCurrentCommandManager(), Messages.WAR__CHALLENGE_DENIED_DEFENDER, "{guild}", challenger.getName());
         // Remove the challenge
-        guildHandler.removeChallenge(challenge);
+        challengeHandler.removeChallenge(challenge);
     }
 
 }

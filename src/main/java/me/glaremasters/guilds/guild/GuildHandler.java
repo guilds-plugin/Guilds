@@ -30,7 +30,6 @@ import co.aikar.commands.ACFUtil;
 import co.aikar.commands.CommandManager;
 import lombok.Getter;
 import me.glaremasters.guilds.Guilds;
-import me.glaremasters.guilds.arena.Arena;
 import me.glaremasters.guilds.configuration.sections.GuildSettings;
 import me.glaremasters.guilds.configuration.sections.GuildVaultSettings;
 import me.glaremasters.guilds.configuration.sections.TicketSettings;
@@ -41,7 +40,6 @@ import me.glaremasters.guilds.utils.ItemBuilder;
 import me.glaremasters.guilds.utils.Serialization;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
@@ -72,7 +70,6 @@ public class GuildHandler {
 
     @Getter private Map<Guild, List<Inventory>> cachedVaults;
     @Getter private List<Player> openedVault;
-    @Getter private List<GuildChallenge> challenges;
 
     private final DatabaseProvider databaseProvider;
     private final CommandManager commandManager;
@@ -93,7 +90,6 @@ public class GuildHandler {
         guildChat = new ArrayList<>();
         cachedVaults = new HashMap<>();
         openedVault = new ArrayList<>();
-        challenges = new ArrayList<>();
 
         //GuildRoles objects
         ConfigurationSection roleSection = config.getConfigurationSection("roles");
@@ -853,118 +849,4 @@ public class GuildHandler {
         }
         return ACFBukkitUtil.color(combined.replace("{name}", guild.getName()).replace("{prefix}", guild.getPrefix()));
     }
-
-    // Challenges
-
-    /**
-     * Create a new Guild Challenge
-     * @param challenger the challenging guild
-     * @param defender the defending guild
-     * @param minPlayer the min amount of players
-     * @param maxPlayers the amount of players
-     * @return new challenge
-     */
-    public GuildChallenge createNewChallenge(Guild challenger, Guild defender, int minPlayer, int maxPlayers, Arena arena) {
-        return new GuildChallenge(UUID.randomUUID(), System.currentTimeMillis(), challenger,
-                defender, false, false,
-                minPlayer, maxPlayers, new ArrayList<>(), new ArrayList<>(),
-                arena);
-    }
-
-    /**
-     * Add a challenge to the list
-     * @param challenge challenge
-     */
-    public void addChallenge(@NotNull GuildChallenge challenge) {
-        challenges.add(challenge);
-    }
-
-    /**
-     * Remove a challenge from the list
-     * @param challenge challenge
-     */
-    public void removeChallenge(@NotNull GuildChallenge challenge) {
-        challenges.remove(challenge);
-    }
-
-    /**
-     * Get a challenge by it's uuid
-     * @param uuid the uuid of the challenge
-     * @return the challenge
-     */
-    public GuildChallenge getChallenge(@NotNull UUID uuid) {
-        return challenges.stream().filter(c -> c.getId() == uuid).findAny().orElse(null);
-    }
-
-    /**
-     * Get a guild challenge by a guild
-     * @param guild the guild to check
-     * @return the challenge
-     */
-    public GuildChallenge getChallenge(@NotNull Guild guild) {
-        return challenges.stream().filter(c -> c.getChallenger() == guild || c.getDefender() == guild).findFirst().orElse(null);
-    }
-
-    /**
-     * Get a list of the online war people for your guild
-     * @param guild the guild to check
-     * @return list of online war people
-     */
-    public List<Player> getOnlineDefenders(Guild guild) {
-        List<GuildMember> members = guild.getOnlineMembers().stream().filter(m -> m.getRole().isInitiateWar()).collect(Collectors.toList());
-        return members.stream().map(m -> Bukkit.getPlayer(m.getUuid())).collect(Collectors.toList());
-    }
-
-    /**
-     * Send a message to all online defenders
-     * @param guild the guild defending
-     * @param commandManager the command manager
-     * @param challenger the guild challenging
-     * @param acceptTime
-     */
-    public void pingOnlineDefenders(Guild guild, CommandManager commandManager, String challenger, int acceptTime) {
-        getOnlineDefenders(guild).forEach(m -> commandManager.getCommandIssuer(m).sendInfo(Messages.WAR__INCOMING_CHALLENGE, "{guild}", challenger, "{amount}", String.valueOf(acceptTime)));
-    }
-
-    /**
-     * Simple method to check if both guilds have enough players online
-     * @param challenger challenging guild
-     * @param defender defending guild
-     * @param amount amount to check
-     * @return enough players online
-     */
-    public boolean checkEnoughOnline(Guild challenger, Guild defender, int amount) {
-        return challenger.getOnlineAsPlayers().size() >= amount && defender.getOnlineAsPlayers().size() >= amount;
-    }
-
-    /**
-     * Teleport challengers to the arena
-     * @param players players to teleport
-     * @param arena arena to teleport to
-     */
-    public void teleportChallenger(List<UUID> players, Arena arena) {
-        Location loc = ACFBukkitUtil.stringToLocation(arena.getChallenger());
-        players.forEach(p -> {
-            Player player = Bukkit.getPlayer(p);
-            if (player != null) {
-                player.teleport(loc);
-            }
-        });
-    }
-
-    /**
-     * Teleport defenders to the arena
-     * @param players players to teleport
-     * @param arena arena to teleport to
-     */
-    public void teleportDefender(List<UUID> players, Arena arena) {
-        Location loc = ACFBukkitUtil.stringToLocation(arena.getDefender());
-        players.forEach(p -> {
-            Player player = Bukkit.getPlayer(p);
-            if (player != null) {
-                player.teleport(loc);
-            }
-        });
-    }
-
 }
