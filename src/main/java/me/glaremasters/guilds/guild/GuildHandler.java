@@ -867,8 +867,7 @@ public class GuildHandler {
     public GuildChallenge createNewChallenge(Guild challenger, Guild defender, int minPlayer, int maxPlayers, Arena arena) {
         return new GuildChallenge(UUID.randomUUID(), System.currentTimeMillis(), challenger,
                 defender, false, false,
-                minPlayer, maxPlayers, new ArrayList<>(),
-                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
+                minPlayer, maxPlayers, new ArrayList<>(), new ArrayList<>(),
                 arena);
     }
 
@@ -943,9 +942,14 @@ public class GuildHandler {
      * @param players players to teleport
      * @param arena arena to teleport to
      */
-    public void teleportChallenger(List<Player> players, Arena arena) {
+    public void teleportChallenger(List<UUID> players, Arena arena) {
         Location loc = ACFBukkitUtil.stringToLocation(arena.getChallenger());
-        players.forEach(p -> p.teleport(loc));
+        players.forEach(p -> {
+            Player player = Bukkit.getPlayer(p);
+            if (player != null) {
+                player.teleport(loc);
+            }
+        });
     }
 
     /**
@@ -953,9 +957,14 @@ public class GuildHandler {
      * @param players players to teleport
      * @param arena arena to teleport to
      */
-    public void teleportDefender(List<Player> players, Arena arena) {
+    public void teleportDefender(List<UUID> players, Arena arena) {
         Location loc = ACFBukkitUtil.stringToLocation(arena.getDefender());
-        players.forEach(p -> p.teleport(loc));
+        players.forEach(p -> {
+            Player player = Bukkit.getPlayer(p);
+            if (player != null) {
+                player.teleport(loc);
+            }
+        });
     }
 
 }

@@ -245,6 +245,14 @@ public class Guild {
     }
 
     /**
+     * Get all online members as UUID
+     * @return list of UUIDs
+     */
+    public List<UUID> getOnlineAsUUIDs() {
+        return getOnlineMembers().stream().map(GuildMember::getUuid).collect(Collectors.toList());
+    }
+
+    /**
      * Get all players as a list
      * @return list of players
      */

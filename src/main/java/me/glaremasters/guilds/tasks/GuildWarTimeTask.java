@@ -32,6 +32,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by Glare
@@ -42,11 +43,11 @@ public class GuildWarTimeTask extends BukkitRunnable {
 
     private final JavaPlugin plugin;
     private int timeLeft;
-    private List<Player> players;
+    private List<UUID> players;
     private String message;
     private GuildChallenge challenge;
 
-    public GuildWarTimeTask(JavaPlugin plugin, int timeLeft, List<Player> players, String message, GuildChallenge challenge) {
+    public GuildWarTimeTask(JavaPlugin plugin, int timeLeft, List<UUID> players, String message, GuildChallenge challenge) {
         this.plugin = plugin;
         this.timeLeft = timeLeft;
         this.players = players;
@@ -56,7 +57,12 @@ public class GuildWarTimeTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        players.forEach(p -> JSONMessage.actionbar(message.replace("{amount}", String.valueOf(timeLeft)), p));
+        players.forEach(p -> {
+            Player player = Bukkit.getPlayer(p);
+            if (player != null) {
+                JSONMessage.actionbar(message.replace("{amount}", String.valueOf(timeLeft)), player);
+            }
+        });
         timeLeft--;
         if (timeLeft == 0) {
             challenge.setJoinble(false);

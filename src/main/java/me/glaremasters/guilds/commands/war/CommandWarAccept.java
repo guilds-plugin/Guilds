@@ -22,6 +22,7 @@ import me.glaremasters.guilds.utils.Constants;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -74,7 +75,7 @@ public class CommandWarAccept extends BaseCommand {
         challenge.setJoinble(true);
 
         // Get all the players to send the action bar to
-        List<Player> online = Stream.concat(guild.getOnlineAsPlayers().stream(), challenger.getOnlineAsPlayers().stream()).collect(Collectors.toList());
+        List<UUID> online = Stream.concat(guild.getOnlineAsUUIDs().stream(), challenger.getOnlineAsUUIDs().stream()).collect(Collectors.toList());
 
         // The message to send
         String joinMsg = getCurrentCommandManager().getLocales().getMessage(getCurrentCommandIssuer(), Messages.WAR__ACTION_BAR_JOIN.getMessageKey());
@@ -86,11 +87,11 @@ public class CommandWarAccept extends BaseCommand {
             new GuildWarTimeTask(guilds, joinTime, online, joinMsg, challenge).runTaskTimer(guilds, 0L, 20L);
         }).delay(joinTime, TimeUnit.SECONDS).sync(() -> {
             // Start the timer for time until the war starts after everyone joins
-            List<Player> warReady = Stream.concat(challenge.getChallengingPlayers().stream(), challenge.getDefendingPlayers().stream()).collect(Collectors.toList());
+            List<UUID> warReady = Stream.concat(challenge.getChallengePlayers().stream(), challenge.getDefendPlayers().stream()).collect(Collectors.toList());
             new GuildWarTimeTask(guilds, readyTime, warReady, readyMsg, challenge).runTaskTimer(guilds, 0L, 20L);
         }).delay(readyTime, TimeUnit.SECONDS).sync(() -> {
-            guildHandler.teleportChallenger(challenge.getChallengingPlayers(), challenge.getArena());
-            guildHandler.teleportDefender(challenge.getDefendingPlayers(), challenge.getArena());
+            guildHandler.teleportChallenger(challenge.getChallengePlayers(), challenge.getArena());
+            guildHandler.teleportDefender(challenge.getDefendPlayers(), challenge.getArena());
         }).execute();
 
     }

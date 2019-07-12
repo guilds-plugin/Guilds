@@ -68,20 +68,18 @@ public class CommandWarJoin extends BaseCommand {
         // Check if they are the defender
         if (challenge.getDefender() == guild) {
             // Check defending size
-            if (challenge.getDefendingPlayers().size() == challenge.getMaxPlayersPerSide()) {
+            if (challenge.getDefendPlayers().size() == challenge.getMaxPlayersPerSide()) {
                 ACFUtil.sneaky(new ExpectationNotMet(Messages.WAR__ALREADY_AT_MAX));
             }
             // If not full, add them to it
-            challenge.getDefendingPlayers().add(player);
-            challenge.getDefendingPlayersUUID().add(player.getUniqueId());
+            challenge.getDefendPlayers().add(player.getUniqueId());
         } else {
             // Assume they are challenging if not defending
-            if (challenge.getChallengingPlayers().size() == challenge.getMaxPlayersPerSide()) {
+            if (challenge.getChallengePlayers().size() == challenge.getMaxPlayersPerSide()) {
                 ACFUtil.sneaky(new ExpectationNotMet(Messages.WAR__ALREADY_AT_MAX));
             }
             // Add if they aren't full
-            challenge.getChallengingPlayers().add(player);
-            challenge.getDefendingPlayersUUID().add(player.getUniqueId());
+            challenge.getDefendPlayers().add(player.getUniqueId());
         }
 
         // Tell them they joined
