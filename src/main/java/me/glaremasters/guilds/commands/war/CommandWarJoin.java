@@ -81,7 +81,7 @@ public class CommandWarJoin extends BaseCommand {
                 ACFUtil.sneaky(new ExpectationNotMet(Messages.WAR__ALREADY_AT_MAX));
             }
             // Add if they aren't full
-            challenge.getDefendPlayers().add(player.getUniqueId());
+            challenge.getChallengePlayers().add(player.getUniqueId());
         }
 
         // Tell them they joined
