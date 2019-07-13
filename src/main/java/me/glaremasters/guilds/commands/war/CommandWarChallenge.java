@@ -24,12 +24,9 @@ import me.glaremasters.guilds.guild.GuildChallenge;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.messages.Messages;
+import me.glaremasters.guilds.tasks.GuildWarChallengeCheckTask;
 import me.glaremasters.guilds.utils.Constants;
 import org.bukkit.entity.Player;
-
-import java.util.ArrayList;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 @CommandAlias(Constants.ROOT_ALIAS)
 public class CommandWarChallenge extends BaseCommand {
@@ -103,25 +100,7 @@ public class CommandWarChallenge extends BaseCommand {
         challengeHandler.pingOnlineDefenders(targetGuild, getCurrentCommandManager(), guild.getName(), acceptTime);
 
         // After acceptTime is up, check if the challenge has been accepted or not
-        Guilds.newChain().delay(acceptTime, TimeUnit.SECONDS).sync(() -> {
-            // Check if it was denied
-            if (challengeHandler.getChallenge(challenge.getId()) != null) {
-                // War system has already started if it's accepted so don't do anything
-                if (challenge.isAccepted()) {
-                    return;
-                    // They have not accepted or denied it, so let's auto deny it
-                } else {
-                    // Send message to challenger saying they didn't accept it
-                   guild.sendMessage(guilds.getCommandManager(), Messages.WAR__GUILD_EXPIRED_CHALLENGE, "{guild}", targetGuild.getName());
-                   // Send message to defender saying they didn't accept it
-                    targetGuild.sendMessage(guilds.getCommandManager(), Messages.WAR__TARGET_EXPIRED_CHALLENGE);
-                    // Unreserve arena
-                    challenge.getArena().setInUse(false);
-                    // Remove the challenge from the list
-                   challengeHandler.removeChallenge(challenge);
-                }
-            }
-        }).execute();
+        new GuildWarChallengeCheckTask(guilds, challenge, challengeHandler).runTaskLater(guilds, (acceptTime * 20));
     }
 
 }
