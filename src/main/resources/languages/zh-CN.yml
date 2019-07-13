@@ -225,12 +225,12 @@ claim:
   sign-placed: "&aYou've successfully created a Claim Sign for the region {region} with the price {price}."
   sign-not-enough: "&cYou do not have enough money in your Guild Bank to purchase this Guild Claim."
   sign-forced: "&cYou can only claim land via Claim Signs! Ask a staff member on your server for help!"
-  sign-buy-success: "&aHooray! You have bought this claim!"
+  sign-buy-success: "&7[&6公会&7]&f你购买了这个区域"
 unclaim:
   success: "&7[&6公会&7]&f你已成功删除你的公会领地!"
   not-found: "&7[&6公会&7]&f公会领地不存在!"
 pending:
-  invites: "&aYou have {number} pending invite(s) from the guild(s): &e{guilds}&r&a . Use /guild accept <name> or /guild decline <name> to join or decline an invite!"
+  invites: "&7[&6公会&7]&f你有来自公会的 {number} 个待处理邀请:  {guilds}   使用 /guild accept <name> 或 /guild deny <name> 来处理请求!"
 codes:
   created: "&7[&6公会&7]&f你创建了新的邀请码: {code} X {amount} 请及时使用!"
   empty: "&7[&6公会&7]&f你没有邀请码了,请重新创建!"
@@ -248,7 +248,7 @@ vaults:
   blacklisted: "&7[&6公会&7]&f你不能把该物品放入公会仓库,它已被列为黑名单物品"
 languages:
   set: "&7[&6公会&7]&f你已设置语言文件为 {language}"
-  warning: "&cYou are about to update all the language files. This will delete all current language files and recreate them. Type /guilds confirm to continue, type /guilds cancel to cancel."
+  warning: "&7[&6公会&7]&f该操作将更新所有语言文件， 这将删除所有当前语言文件并重新创建, 输入/guilds confirm 确认删除，键入/guilds cancel取消"
   updated: "&7[&6公会&7]&f已重新创建并重新加载语言文件"
   console-only: "&7[&6公会&7]&f该操作只允许控制台执行"
 help:
