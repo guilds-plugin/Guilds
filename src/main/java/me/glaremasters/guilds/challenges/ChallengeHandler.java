@@ -137,6 +137,16 @@ public class ChallengeHandler {
     }
 
     /**
+     * Make sure enough players joined the challenge
+     * @param challenge the challenge to check
+     * @return enough joined or not
+     */
+    public boolean checkEnoughJoined(GuildChallenge challenge) {
+        return challenge.getChallengePlayers().size() >= challenge.getMinPlayersPerSide()
+                && challenge.getDefendPlayers().size() >= challenge.getMinPlayersPerSide();
+    }
+
+    /**
      * Teleport challengers to the arena
      * @param players players to teleport
      * @param arena arena to teleport to
