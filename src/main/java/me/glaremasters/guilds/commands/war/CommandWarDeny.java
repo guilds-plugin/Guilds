@@ -48,6 +48,8 @@ public class CommandWarDeny extends BaseCommand {
         challenger.sendMessage(getCurrentCommandManager(), Messages.WAR__CHALLENGE_DENIED_CHALLENGER, "{guild}", guild.getName());
         // Send message to defender saying they've denied the challenge
         guild.sendMessage(getCurrentCommandManager(), Messages.WAR__CHALLENGE_DENIED_DEFENDER, "{guild}", challenger.getName());
+        // Open the arena back up
+        challenge.getArena().setInUse(false);
         // Remove the challenge
         challengeHandler.removeChallenge(challenge);
     }
