@@ -28,27 +28,26 @@ import me.glaremasters.guilds.guild.GuildChallenge;
 import me.glaremasters.guilds.utils.JSONMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by Glare
- * Date: 7/5/2019
- * Time: 8:06 PM
+ * Date: 7/13/2019
+ * Time: 6:49 PM
  */
-public class GuildWarTimeTask extends BukkitRunnable {
+public class GuildWarReadyTask extends BukkitRunnable {
 
-    private final JavaPlugin plugin;
     private int timeLeft;
     private List<UUID> players;
     private String message;
     private GuildChallenge challenge;
 
-    public GuildWarTimeTask(JavaPlugin plugin, int timeLeft, List<UUID> players, String message, GuildChallenge challenge) {
-        this.plugin = plugin;
+    public GuildWarReadyTask(int timeLeft, List<UUID> players, String message, GuildChallenge challenge) {
         this.timeLeft = timeLeft;
         this.players = players;
         this.message = message;

@@ -18,13 +18,12 @@ import me.glaremasters.guilds.guild.GuildChallenge;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.messages.Messages;
-import me.glaremasters.guilds.tasks.GuildWarTimeTask;
+import me.glaremasters.guilds.tasks.GuildWarJoinTask;
 import me.glaremasters.guilds.utils.Constants;
 import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -83,18 +82,20 @@ public class CommandWarAccept extends BaseCommand {
         String joinMsg = getCurrentCommandManager().getLocales().getMessage(getCurrentCommandIssuer(), Messages.WAR__ACTION_BAR_JOIN.getMessageKey());
         String readyMsg = getCurrentCommandManager().getLocales().getMessage(getCurrentCommandIssuer(), Messages.WAR__ACTION_BAR_READY.getMessageKey());
 
-        // Start sending ActionBar
+        // Send the ActionBar for the join time
+        new GuildWarJoinTask(guilds, joinTime, readyTime, online, joinMsg, readyMsg, challenge, challengeHandler).runTaskTimer(guilds, 0L, 20L);
+
+/*        // Start sending ActionBar
         Guilds.newChain().sync(() -> {
             // Start the timer for joining the war
-            new GuildWarTimeTask(guilds, joinTime, online, joinMsg, challenge).runTaskTimer(guilds, 0L, 20L);
+            new GuildWarTimeTask(guilds, joinTime, online, joinMsg, challenge).runTask(guilds, 0L, 20L);
         }).delay(joinTime, TimeUnit.SECONDS).sync(() -> {
             // Start the timer for time until the war starts after everyone joins
-            List<UUID> warReady = Stream.concat(challenge.getChallengePlayers().stream(), challenge.getDefendPlayers().stream()).collect(Collectors.toList());
             new GuildWarTimeTask(guilds, readyTime, warReady, readyMsg, challenge).runTaskTimer(guilds, 0L, 20L);
         }).delay(readyTime, TimeUnit.SECONDS).sync(() -> {
             challengeHandler.teleportChallenger(challenge.getChallengePlayers(), challenge.getArena());
             challengeHandler.teleportDefender(challenge.getDefendPlayers(), challenge.getArena());
-        }).execute();
+        }).execute();*/
 
     }
 
