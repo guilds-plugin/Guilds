@@ -5,6 +5,7 @@ descriptions:
   admin-bank-balance: "Admin command to view a guild's bank balance"
   admin-bank-deposit: "Admin command to put money into a guild's bank"
   admin-bank-withdraw: "Admin command to take money from a guild's bank"
+  admin-claim: "Admin command to claim a guild's land"
   admin-delhome: "Admin command to delete the home of a guild"
   admin-home: "Admin command to teleport to the home of a guild"
   admin-motd: "Admin command to view the MOTD of a guild"
