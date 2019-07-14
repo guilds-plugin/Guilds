@@ -84,19 +84,6 @@ public class CommandWarAccept extends BaseCommand {
 
         // Send the ActionBar for the join time
         new GuildWarJoinTask(guilds, joinTime, readyTime, online, joinMsg, readyMsg, challenge, challengeHandler).runTaskTimer(guilds, 0L, 20L);
-
-/*        // Start sending ActionBar
-        Guilds.newChain().sync(() -> {
-            // Start the timer for joining the war
-            new GuildWarTimeTask(guilds, joinTime, online, joinMsg, challenge).runTask(guilds, 0L, 20L);
-        }).delay(joinTime, TimeUnit.SECONDS).sync(() -> {
-            // Start the timer for time until the war starts after everyone joins
-            new GuildWarTimeTask(guilds, readyTime, warReady, readyMsg, challenge).runTaskTimer(guilds, 0L, 20L);
-        }).delay(readyTime, TimeUnit.SECONDS).sync(() -> {
-            challengeHandler.teleportChallenger(challenge.getChallengePlayers(), challenge.getArena());
-            challengeHandler.teleportDefender(challenge.getDefendPlayers(), challenge.getArena());
-        }).execute();*/
-
     }
 
 }

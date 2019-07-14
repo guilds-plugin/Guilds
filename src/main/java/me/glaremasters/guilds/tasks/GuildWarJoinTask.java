@@ -86,7 +86,7 @@ public class GuildWarJoinTask extends BukkitRunnable {
                 return;
             }
             List<UUID> warReady = Stream.concat(challenge.getChallengePlayers().stream(), challenge.getDefendPlayers().stream()).collect(Collectors.toList());
-            new GuildWarReadyTask(readyTime, warReady, readyMsg, challenge).runTaskTimer(guilds, 0L, 20L);
+            new GuildWarReadyTask(guilds, readyTime, warReady, readyMsg, challenge, challengeHandler).runTaskTimer(guilds, 0L, 20L);
             cancel();
         }
     }
