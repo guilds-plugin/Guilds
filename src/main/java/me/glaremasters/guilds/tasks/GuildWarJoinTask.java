@@ -28,21 +28,39 @@ import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.challenges.ChallengeHandler;
 import me.glaremasters.guilds.guild.GuildChallenge;
 import me.glaremasters.guilds.messages.Messages;
+import me.glaremasters.guilds.utils.JSONMessage;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by Glare
  * Date: 7/13/2019
- * Time: 6:23 PM
+ * Time: 6:42 PM
  */
-public class GuildWarChallengeCheckTask extends BukkitRunnable {
+public class GuildWarJoinTask extends BukkitRunnable {
 
     private Guilds guilds;
+    private int timeLeft;
+    private int readyTime;
+    private List<UUID> players;
+    private String joinMsg;
+    private String readyMsg;
     private GuildChallenge challenge;
     private ChallengeHandler challengeHandler;
 
-    public GuildWarChallengeCheckTask(Guilds guilds, GuildChallenge challenge, ChallengeHandler challengeHandler) {
+    public GuildWarJoinTask(Guilds guilds, int timeLeft, int readyTime, List<UUID> players, String joinMsg, String readyMsg, GuildChallenge challenge, ChallengeHandler challengeHandler) {
         this.guilds = guilds;
+        this.timeLeft = timeLeft;
+        this.readyTime = readyTime;
+        this.players = players;
+        this.joinMsg = joinMsg;
+        this.readyMsg = readyMsg;
         this.challenge = challenge;
         this.challengeHandler = challengeHandler;
     }
@@ -50,23 +68,26 @@ public class GuildWarChallengeCheckTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        // Check if it was denied
-        if (challengeHandler.getChallenge(challenge.getId()) != null) {
-            // War system has already started if it's accepted so don't do anything
-            if (challenge.isAccepted()) {
-                return;
-                // They have not accepted or denied it, so let's auto deny it
-            } else {
-                // Send message to challenger saying they didn't accept it
-                challenge.getChallenger().sendMessage(guilds.getCommandManager(), Messages.WAR__GUILD_EXPIRED_CHALLENGE,
-                        "{guild}", challenge.getDefender().getName());
-                // Send message to defender saying they didn't accept it
-                challenge.getDefender().sendMessage(guilds.getCommandManager(), Messages.WAR__TARGET_EXPIRED_CHALLENGE);
-                // Unreserve arena
-                challenge.getArena().setInUse(false);
-                // Remove the challenge from the list
-                challengeHandler.removeChallenge(challenge);
+        players.forEach(p -> {
+            Player player = Bukkit.getPlayer(p);
+            if (player != null) {
+                JSONMessage.actionbar(joinMsg.replace("{amount}", String.valueOf(timeLeft)), player);
             }
+        });
+        timeLeft--;
+        if (timeLeft == 0) {
+            challenge.setJoinble(false);
+            if (!challengeHandler.checkEnoughJoined(challenge)) {
+                challenge.getChallenger().sendMessage(guilds.getCommandManager(), Messages.WAR__NOT_ENOUGH_JOINED);
+                challenge.getDefender().sendMessage(guilds.getCommandManager(), Messages.WAR__NOT_ENOUGH_JOINED);
+                challenge.getArena().setInUse(false);
+                challengeHandler.removeChallenge(challenge);
+                cancel();
+                return;
+            }
+            List<UUID> warReady = Stream.concat(challenge.getChallengePlayers().stream(), challenge.getDefendPlayers().stream()).collect(Collectors.toList());
+            new GuildWarReadyTask(readyTime, warReady, readyMsg, challenge).runTaskTimer(guilds, 0L, 20L);
+            cancel();
         }
     }
 }
