@@ -1,10 +1,10 @@
 ---
 descriptions:
-  accept: "Accept a guild invite"
-  admin-addplayer: "Admin command to add a player to a Guild"
-  admin-bank-balance: "Admin command to view a guild's bank balance"
-  admin-bank-deposit: "Admin command to put money into a guild's bank"
-  admin-bank-withdraw: "Admin command to take money from a guild's bank"
+  accept: "길드로부터의 초대를 수락합니다."
+  admin-addplayer: "길드에 플레이어를 추가하는 관리자 명령어입니다."
+  admin-bank-balance: "길드 계좌의 잔액을 확인하는 어드민 명령어입니다."
+  admin-bank-deposit: "길드의 계좌에 돈을 추가하는 어드민 명령어입니다."
+  admin-bank-withdraw: "길드의 계좌에서 돈을 차감하는 어드민 명령어입니다."
   admin-delhome: "Admin command to delete the home of a guild"
   admin-home: "Admin command to teleport to the home of a guild"
   admin-motd: "Admin command to view the MOTD of a guild"
