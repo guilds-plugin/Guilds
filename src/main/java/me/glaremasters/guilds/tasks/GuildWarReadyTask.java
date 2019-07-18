@@ -78,8 +78,8 @@ public class GuildWarReadyTask extends BukkitRunnable {
                 cancel();
                 return;
             }
-            challengeHandler.teleportChallenger(challenge.getChallengePlayers(), challenge.getArena());
-            challengeHandler.teleportDefender(challenge.getDefendPlayers(), challenge.getArena());
+            challengeHandler.sendToArena(challenge.getChallengePlayers(), challenge.getArena().getChallengerLoc());
+            challengeHandler.sendToArena(challenge.getDefendPlayers(), challenge.getArena().getDefenderLoc());
             cancel();
         }
     }

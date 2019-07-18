@@ -24,7 +24,6 @@
 
 package me.glaremasters.guilds.challenges;
 
-import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.CommandManager;
 import lombok.Getter;
 import me.glaremasters.guilds.arena.Arena;
@@ -147,31 +146,15 @@ public class ChallengeHandler {
     }
 
     /**
-     * Teleport challengers to the arena
-     * @param players players to teleport
-     * @param arena arena to teleport to
+     * Simplified method to send players to arena
+     * @param players the players to teleport
+     * @param location the location to send the players to
      */
-    public void teleportChallenger(List<UUID> players, Arena arena) {
-        Location loc = ACFBukkitUtil.stringToLocation(arena.getChallenger());
+    public void sendToArena(List<UUID> players, Location location) {
         players.forEach(p -> {
             Player player = Bukkit.getPlayer(p);
             if (player != null) {
-                player.teleport(loc);
-            }
-        });
-    }
-
-    /**
-     * Teleport defenders to the arena
-     * @param players players to teleport
-     * @param arena arena to teleport to
-     */
-    public void teleportDefender(List<UUID> players, Arena arena) {
-        Location loc = ACFBukkitUtil.stringToLocation(arena.getDefender());
-        players.forEach(p -> {
-            Player player = Bukkit.getPlayer(p);
-            if (player != null) {
-                player.teleport(loc);
+                player.teleport(location);
             }
         });
     }
