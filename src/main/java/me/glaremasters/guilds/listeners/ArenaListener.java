@@ -27,7 +27,9 @@ public class ArenaListener implements Listener {
             if (challengeHandler.checkIfOver(challenge)) {
                 // Do something
                 challenge.setStarted(false);
+                challenge.getArena().setInUse(false);
                 challengeHandler.announceWinner(challenge, guilds.getCommandManager());
+                challengeHandler.teleportRemaining(challenge);
             }
         }
     }
@@ -66,7 +68,9 @@ public class ArenaListener implements Listener {
             if (challengeHandler.checkIfOver(challenge)) {
                 // Do something
                 challenge.setStarted(false);
+                challenge.getArena().setInUse(false);
                 challengeHandler.announceWinner(challenge, guilds.getCommandManager());
+                challengeHandler.teleportRemaining(challenge);
             }
         }
     }
