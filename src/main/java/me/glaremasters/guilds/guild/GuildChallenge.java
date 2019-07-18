@@ -7,7 +7,7 @@ import lombok.Setter;
 import me.glaremasters.guilds.arena.Arena;
 
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -30,6 +30,6 @@ public class GuildChallenge {
     private Arena arena;
     private String winner;
 
-    private Set<UUID> aliveChallengers;
-    private Set<UUID> aliveDefenders;
+    private Map<UUID, String> aliveChallengers;
+    private Map<UUID, String> aliveDefenders;
 }

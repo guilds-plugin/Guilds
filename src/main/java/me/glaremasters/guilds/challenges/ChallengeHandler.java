@@ -24,6 +24,7 @@
 
 package me.glaremasters.guilds.challenges;
 
+import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.CommandManager;
 import lombok.Getter;
 import me.glaremasters.guilds.arena.Arena;
@@ -37,11 +38,14 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by Glare
@@ -69,7 +73,7 @@ public class ChallengeHandler {
                 defender, false, false,
                 false, minPlayer, maxPlayers,
                 new ArrayList<>(), new ArrayList<>(), arena,
-                "", new HashSet<>(), new HashSet<>());
+                "", new HashMap<>(), new HashMap<>());
     }
 
     /**
@@ -113,7 +117,7 @@ public class ChallengeHandler {
      */
     public GuildChallenge getChallenge(@NotNull Player player) {
         return getActiveChallenges().stream()
-                .filter(c -> c.getAliveChallengers().contains(player.getUniqueId()) || c.getAliveDefenders().contains(player.getUniqueId()))
+                .filter(c -> c.getAliveChallengers().keySet().contains(player.getUniqueId()) || c.getAliveDefenders().keySet().contains(player.getUniqueId()))
                 .findAny().orElse(null);
     }
 
@@ -173,18 +177,31 @@ public class ChallengeHandler {
      * @param location the location to send the players to
      */
     public void sendToArena(List<UUID> players, Location location, GuildChallenge challenge, String team) {
-        Set<UUID> active = new HashSet<>();
+        Map<UUID, String> active = new HashMap<>();
         players.forEach(p -> {
             Player player = Bukkit.getPlayer(p);
             if (player != null) {
+                active.put(p, ACFBukkitUtil.fullLocationToString(player.getLocation()));
                 player.teleport(location);
-                active.add(player.getUniqueId());
             }
         });
         if (team.equalsIgnoreCase("challenger")) {
             challenge.setAliveChallengers(active);
         } else {
             challenge.setAliveDefenders(active);
+        }
+    }
+
+    /**
+     * Teleport a player out of the arena
+     * @param player the player to teleport
+     * @param challenge the challenge they are part of
+     */
+    public void exitArena(Player player, GuildChallenge challenge) {
+        Map<UUID, String> updatedMap = Stream.of(challenge.getAliveChallengers(), challenge.getAliveDefenders()).flatMap(m -> m.entrySet().stream()).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        String location = updatedMap.get(player.getUniqueId());
+        if (location != null) {
+            player.teleport(ACFBukkitUtil.stringToLocation(location));
         }
     }
 
@@ -206,11 +223,11 @@ public class ChallengeHandler {
      * @return if it's over or not
      */
     public boolean checkIfOver(GuildChallenge challenge) {
-        if (challenge.getAliveChallengers().size() == 0) {
+        if (challenge.getAliveChallengers().keySet().size() == 0) {
             challenge.setWinner(challenge.getDefender().getName());
             return true;
         }
-        if (challenge.getAliveDefenders().size() == 0) {
+        if (challenge.getAliveDefenders().keySet().size() == 0) {
             challenge.setWinner(challenge.getChallenger().getName());
             return true;
         }

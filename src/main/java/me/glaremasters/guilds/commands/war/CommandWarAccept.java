@@ -51,6 +51,10 @@ public class CommandWarAccept extends BaseCommand {
         // Get the challenger guild cause we assume this is the defender
         Guild challenger = challenge.getChallenger();
 
+        // Make sure it wasn't already accepted
+        if (challenge.isAccepted())
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.WAR__ALREADY_ACCEPTED));
+
         // Check again when accepting to make sure there are still enough players online
         if (!challengeHandler.checkEnoughOnline(challenger, guild, challenge.getMinPlayersPerSide()))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.WAR__NOT_ENOUGH_ON));
