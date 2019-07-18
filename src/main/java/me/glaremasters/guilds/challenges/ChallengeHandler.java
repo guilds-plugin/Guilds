@@ -32,17 +32,15 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildChallenge;
 import me.glaremasters.guilds.guild.GuildMember;
 import me.glaremasters.guilds.messages.Messages;
+import org.apache.commons.collections4.map.LinkedMap;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -73,7 +71,7 @@ public class ChallengeHandler {
                 defender, false, false,
                 false, minPlayer, maxPlayers,
                 new ArrayList<>(), new ArrayList<>(), arena,
-                "", new HashMap<>(), new HashMap<>());
+                "", new LinkedMap<>(), new LinkedMap<>());
     }
 
     /**
@@ -172,24 +170,38 @@ public class ChallengeHandler {
     }
 
     /**
-     * Simplified method to send players to arena
-     * @param players the players to teleport
-     * @param location the location to send the players to
+     * Prepare the final list for a challenge
+     * @param players the players in the challenge
+     * @param challenge the challenge this is for
+     * @param team the team they are on
      */
-    public void sendToArena(List<UUID> players, Location location, GuildChallenge challenge, String team) {
-        Map<UUID, String> active = new HashMap<>();
+    public void prepareFinalList(List<UUID> players, GuildChallenge challenge, String team) {
+        LinkedMap<UUID, String> finalList = new LinkedMap<>();
         players.forEach(p -> {
             Player player = Bukkit.getPlayer(p);
             if (player != null) {
-                active.put(p, ACFBukkitUtil.fullLocationToString(player.getLocation()));
-                player.teleport(location);
+                finalList.putIfAbsent(p, ACFBukkitUtil.fullLocationToString(player.getLocation()));
             }
         });
         if (team.equalsIgnoreCase("challenger")) {
-            challenge.setAliveChallengers(active);
+            challenge.setAliveChallengers(finalList);
         } else {
-            challenge.setAliveDefenders(active);
+            challenge.setAliveDefenders(finalList);
         }
+    }
+
+    /**
+     * Send players to arena
+     * @param players the players to send
+     * @param location the location to send them to
+     */
+    public void sendToArena(LinkedMap<UUID, String> players, Location location) {
+        players.keySet().forEach(p -> {
+            Player player = Bukkit.getPlayer(p);
+            if (player != null) {
+                player.teleport(location);
+            }
+        });
     }
 
     /**

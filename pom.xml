@@ -108,6 +108,10 @@
                                     <shadedPattern>me.glaremasters.guilds.libs.commonsio</shadedPattern>
                                 </relocation>
                                 <relocation>
+                                    <pattern>org.apache.commons.collections4</pattern>
+                                    <shadedPattern>me.glaremasters.guilds.libs.collections</shadedPattern>
+                                </relocation>
+                                <relocation>
                                     <pattern>com.google.common</pattern>
                                     <shadedPattern>me.glaremasters.guilds.libs.guava</shadedPattern>
                                 </relocation>
@@ -318,5 +322,14 @@
             <version>0.0.1</version>
             <scope>compile</scope>
         </dependency>
+
+        <!-- Used for Map Handling -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>4.4</version>
+            <scope>provided</scope>
+        </dependency>
+
     </dependencies>
 </project>

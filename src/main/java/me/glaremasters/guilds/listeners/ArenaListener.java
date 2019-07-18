@@ -34,15 +34,21 @@ public class ArenaListener implements Listener {
     private void handleExist(Player player, GuildChallenge challenge) {
         challengeHandler.removePlayer(player);
         if (challengeHandler.checkIfOver(challenge)) {
-            // Do something
+            // Specify the war is over
             challenge.setStarted(false);
+            // Open up the arena
             challenge.getArena().setInUse(false);
+            // Broadcast the winner
             challengeHandler.announceWinner(challenge, guilds.getCommandManager());
+            // Move rest of players out of arena
             challengeHandler.teleportRemaining(challenge);
             try {
+                // Save the details about the challenge
                 challengesProvider.saveChallenge(challenge);
+                challengeHandler.removeChallenge(challenge);
             } catch (IOException e) {
                 e.printStackTrace();
+                challengeHandler.removeChallenge(challenge);
             }
         }
     }

@@ -609,6 +609,13 @@ public final class Guilds extends JavaPlugin {
                 .build());
 
         loader.loadLibrary(Library.builder()
+                .groupId("org.apache.commons")
+                .artifactId("commons-collections4")
+                .version("4.4")
+                .relocate("org{}apache{}commons{}collections4", "me.glaremasters.guilds.libs.collections")
+                .build());
+
+        loader.loadLibrary(Library.builder()
                 .groupId("co.aikar")
                 .artifactId("taskchain-core")
                 .version("3.7.2")

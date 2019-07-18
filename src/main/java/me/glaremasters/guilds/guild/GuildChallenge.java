@@ -8,9 +8,9 @@ import lombok.Setter;
 import me.glaremasters.guilds.arena.Arena;
 import me.glaremasters.guilds.challenges.adapters.WarArenaChallengeAdapter;
 import me.glaremasters.guilds.challenges.adapters.WarGuildChallengeAdapater;
+import org.apache.commons.collections4.map.LinkedMap;
 
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -36,6 +36,6 @@ public class GuildChallenge {
     private Arena arena;
     private String winner;
 
-    private transient Map<UUID, String> aliveChallengers;
-    private transient Map<UUID, String> aliveDefenders;
+    private transient LinkedMap<UUID, String> aliveChallengers;
+    private transient LinkedMap<UUID, String> aliveDefenders;
 }

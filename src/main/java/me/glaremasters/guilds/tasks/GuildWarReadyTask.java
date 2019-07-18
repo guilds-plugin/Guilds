@@ -78,8 +78,15 @@ public class GuildWarReadyTask extends BukkitRunnable {
                 cancel();
                 return;
             }
-            challengeHandler.sendToArena(challenge.getChallengePlayers(), challenge.getArena().getChallengerLoc(), challenge, "challenger");
-            challengeHandler.sendToArena(challenge.getDefendPlayers(), challenge.getArena().getDefenderLoc(), challenge, "defender");
+            // Create final list for both sides
+            challengeHandler.prepareFinalList(challenge.getChallengePlayers(), challenge, "challengers");
+            challengeHandler.prepareFinalList(challenge.getDefendPlayers(), challenge, "defender");
+
+            // Make sure both are the same size
+
+            // Send them both to the arena
+            challengeHandler.sendToArena(challenge.getAliveChallengers(), challenge.getArena().getChallengerLoc());
+            challengeHandler.sendToArena(challenge.getAliveDefenders(), challenge.getArena().getDefenderLoc());
             challenge.setStarted(true);
             cancel();
         }
