@@ -44,6 +44,7 @@ import me.glaremasters.guilds.configuration.sections.PluginSettings;
 import me.glaremasters.guilds.cooldowns.CooldownHandler;
 import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.database.arenas.ArenasProvider;
+import me.glaremasters.guilds.database.challenges.ChallengesProvider;
 import me.glaremasters.guilds.database.cooldowns.CooldownsProvider;
 import me.glaremasters.guilds.database.providers.JsonProvider;
 import me.glaremasters.guilds.guild.Guild;
@@ -111,6 +112,7 @@ public final class Guilds extends JavaPlugin {
     private static TaskChainFactory taskChainFactory;
     private DatabaseProvider database;
     private CooldownsProvider cooldownsProvider;
+    private ChallengesProvider challengesProvider;
     private ArenasProvider arenasProvider;
     private SettingsHandler settingsHandler;
     private PaperCommandManager commandManager;
@@ -318,6 +320,8 @@ public final class Guilds extends JavaPlugin {
             arenaHandler = new ArenaHandler(arenasProvider);
             // Load the challenge handler
             challengeHandler = new ChallengeHandler();
+            // Load the challenge provider
+            challengesProvider = new ChallengesProvider(getDataFolder());
             // Load guildhandler with provider
             guildHandler = new GuildHandler(database, getCommandManager(), getPermissions(), getConfig(), settingsHandler.getSettingsManager());
             info("Loaded data!");
@@ -412,7 +416,7 @@ public final class Guilds extends JavaPlugin {
                 new PlayerListener(guildHandler, settingsHandler.getSettingsManager(), this, permissions),
                 new TicketListener(this, guildHandler, settingsHandler.getSettingsManager()),
                 new VaultBlacklistListener(this, guildHandler, settingsHandler.getSettingsManager()),
-                new ArenaListener(this, challengeHandler))
+                new ArenaListener(this, challengeHandler, challengesProvider))
                 .forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
         // Load the optional listeners
         optionalListeners();
@@ -587,6 +591,7 @@ public final class Guilds extends JavaPlugin {
         commandManager.registerDependency(CooldownHandler.class, cooldownHandler);
         commandManager.registerDependency(ArenaHandler.class, arenaHandler);
         commandManager.registerDependency(ChallengeHandler.class, challengeHandler);
+        commandManager.registerDependency(ChallengesProvider.class, challengesProvider);
     }
 
     /**

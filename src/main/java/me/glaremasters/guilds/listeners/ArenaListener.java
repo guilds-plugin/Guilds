@@ -3,6 +3,7 @@ package me.glaremasters.guilds.listeners;
 import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.challenges.ChallengeHandler;
+import me.glaremasters.guilds.database.challenges.ChallengesProvider;
 import me.glaremasters.guilds.guild.GuildChallenge;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -10,11 +11,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import java.io.IOException;
+
 @AllArgsConstructor
 public class ArenaListener implements Listener {
 
     private Guilds guilds;
     private ChallengeHandler challengeHandler;
+    private ChallengesProvider challengesProvider;
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
@@ -23,13 +27,22 @@ public class ArenaListener implements Listener {
         // Check if they are part of an active challenge
         if (challenge != null) {
             // Remove the player from the alive players
-            challengeHandler.removePlayer(player);
-            if (challengeHandler.checkIfOver(challenge)) {
-                // Do something
-                challenge.setStarted(false);
-                challenge.getArena().setInUse(false);
-                challengeHandler.announceWinner(challenge, guilds.getCommandManager());
-                challengeHandler.teleportRemaining(challenge);
+            handleExist(player, challenge);
+        }
+    }
+
+    private void handleExist(Player player, GuildChallenge challenge) {
+        challengeHandler.removePlayer(player);
+        if (challengeHandler.checkIfOver(challenge)) {
+            // Do something
+            challenge.setStarted(false);
+            challenge.getArena().setInUse(false);
+            challengeHandler.announceWinner(challenge, guilds.getCommandManager());
+            challengeHandler.teleportRemaining(challenge);
+            try {
+                challengesProvider.saveChallenge(challenge);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -63,15 +76,7 @@ public class ArenaListener implements Listener {
             // Teleport them out of the arena
             challengeHandler.exitArena(entity, challenge);
             // Remove them
-            challengeHandler.removePlayer(entity);
-            // Check if they were last person or not
-            if (challengeHandler.checkIfOver(challenge)) {
-                // Do something
-                challenge.setStarted(false);
-                challenge.getArena().setInUse(false);
-                challengeHandler.announceWinner(challenge, guilds.getCommandManager());
-                challengeHandler.teleportRemaining(challenge);
-            }
+            handleExist(entity, challenge);
         }
     }
 
