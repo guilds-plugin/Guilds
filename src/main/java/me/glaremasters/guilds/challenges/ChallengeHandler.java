@@ -171,7 +171,7 @@ public class ChallengeHandler {
 
     /**
      * Prepare the final list for a challenge
-     * @param players the players in the challenge
+     * @param players the players in the challengeGi
      * @param challenge the challenge this is for
      * @param team the team they are on
      */
@@ -197,7 +197,9 @@ public class ChallengeHandler {
      */
     public void sendToArena(LinkedMap<UUID, String> players, Location location) {
         players.keySet().forEach(p -> {
+            System.out.println(p);
             Player player = Bukkit.getPlayer(p);
+            System.out.println(player);
             if (player != null) {
                 player.teleport(location);
             }

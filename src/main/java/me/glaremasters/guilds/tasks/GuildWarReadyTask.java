@@ -79,11 +79,24 @@ public class GuildWarReadyTask extends BukkitRunnable {
                 return;
             }
             // Create final list for both sides
-            challengeHandler.prepareFinalList(challenge.getChallengePlayers(), challenge, "challengers");
+            challengeHandler.prepareFinalList(challenge.getChallengePlayers(), challenge, "challenger");
             challengeHandler.prepareFinalList(challenge.getDefendPlayers(), challenge, "defender");
 
             // Make sure both are the same size
-
+            if (challenge.getAliveDefenders().size() > challenge.getAliveChallengers().size()) {
+                do {
+                    UUID last = challenge.getAliveDefenders().lastKey();
+                    guilds.getCommandManager().getCommandIssuer(Bukkit.getPlayer(last)).sendInfo(Messages.WAR__REMOVED_FOR_SIZE);
+                    challenge.getAliveDefenders().remove(last);
+                } while (challenge.getAliveDefenders().size() != challenge.getAliveChallengers().size());
+            } else if (challenge.getAliveChallengers().size() > challenge.getAliveDefenders().size()) {
+                do {
+                    UUID last = challenge.getAliveChallengers().lastKey();
+                    guilds.getCommandManager().getCommandIssuer(Bukkit.getPlayer(last)).sendInfo(Messages.WAR__REMOVED_FOR_SIZE);
+                    challenge.getAliveChallengers().remove(last);
+                } while (challenge.getAliveChallengers().size() != challenge.getAliveDefenders().size());
+            }
+            
             // Send them both to the arena
             challengeHandler.sendToArena(challenge.getAliveChallengers(), challenge.getArena().getChallengerLoc());
             challengeHandler.sendToArena(challenge.getAliveDefenders(), challenge.getArena().getDefenderLoc());
