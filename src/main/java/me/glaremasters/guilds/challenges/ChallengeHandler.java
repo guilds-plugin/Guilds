@@ -195,9 +195,38 @@ public class ChallengeHandler {
     public void removePlayer(Player player) {
         GuildChallenge c = getChallenge(player);
         if (c != null) {
-            c.getAliveDefenders().remove(player);
-            c.getAliveChallengers().remove(player);
+            c.getAliveDefenders().remove(player.getUniqueId());
+            c.getAliveChallengers().remove(player.getUniqueId());
         }
+    }
+
+    /**
+     * Check if a challenge is over because a team won
+     * @param challenge the challenge to check
+     * @return if it's over or not
+     */
+    public boolean checkIfOver(GuildChallenge challenge) {
+        if (challenge.getAliveChallengers().size() == 0) {
+            challenge.setWinner(challenge.getDefender().getName());
+            return true;
+        }
+        if (challenge.getAliveDefenders().size() == 0) {
+            challenge.setWinner(challenge.getChallenger().getName());
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Announce the winner to the guild
+     * @param challenge the challenge to check
+     * @param commandManager the command manager
+     */
+    public void announceWinner(GuildChallenge challenge, CommandManager commandManager) {
+        challenge.getDefender().sendMessage(commandManager, Messages.WAR__WINNER,
+                "{guild}", challenge.getWinner());
+        challenge.getChallenger().sendMessage(commandManager, Messages.WAR__WINNER,
+                "{guild}", challenge.getWinner());
     }
 
 }
