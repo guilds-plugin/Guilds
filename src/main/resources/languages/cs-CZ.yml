@@ -91,7 +91,7 @@ error:
   guild-no-exist: "&cTenhle cech neexistuje! Pokuď to děláte kvůli snaze připojit se k cechu, který má vlastní barevné jméno, můžete zkusit příkaz /guild accept <hráč, který vás pozval>, abyste se připojili také!"
   player-not-found: "&cHráč '{player}&r&c' není online!"
   player-not-in-guild: "&c{player} není v tvém cechu!"
-  not-officer: "&cUživatel musí být ve vašem cechu důstojníkem!"
+  not-officer: "&cUživatel musí být ve vašem cechu správcem!"
   blacklist: "&cJedno nebo více slov ve vašem názvu cechu / cechovní prefix je na černé listině!"
   not-enough-money: "&cNemáte dostatek peněz k dané činnosti"
   economy-required: "&cK tomu je nutný ekonomický plugin. Obraťte se na správce serveru"
@@ -108,7 +108,7 @@ admin:
   delete-success: "&aÚspěšně jste odstranil cech {guild}."
   guild-vault-sign: "Veřejný cechovní trezor vytvořen!"
   player-added: "&aByl jste přidán do cechu {guild} jako admin!"
-  admin-player-added: "&aAdmin přidal {player} do cechu {guild}!"
+  admin-player-added: "&aPřidal jste {player} do cechu {guild}!"
   admin-guild-add: "&a{player} byl přidán do vašeho cechu adminem!"
   player-removed: "&cByl jste odstraněn z cechu {guild} adminem!"
   admin-player-removed: "&aOdstranili jste hráče {player} z {guild}!"
@@ -154,7 +154,7 @@ leave:
   warning-guildmaster: "&cJsi mistr tohodle cechu, opuštění cechu znamená, že cech bude rozpuštěn. Příkaz /guilds confirm k opuštění cechu a rozpuštění, příkaz /guilds cancel k odmítnutí této činnosti."
 transfer:
   newmaster: "&aStal jsi se mistrem cechu!"
-  success: "&aCech byl převeden!"
+  success: "&aCech byl předán!"
 invite:
   already-invited: "Hráč je již pozván do vašeho cechu"
   message: "&a{player} vás pozval/a do jeho/jejího cechu, '{guild}' příkaz /guild join {guild} pro přípojení!"
