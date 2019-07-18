@@ -306,3 +306,4 @@ war:
   already-at-max: "&cSorry, your guild already has the max amount of players on your team in the war!"
   war-joined: "&aSuccess! You have joined the guild war! Prepare for a starting message soon."
   action-bar-ready: "{amount} seconds left until the war starts! Prepare yourselves!"
+  winner: "&aThe battle was rough... blood was shed... tears were present... but in the end, the mighty warriors of {guild} won the battle!"

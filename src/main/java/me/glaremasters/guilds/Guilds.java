@@ -51,6 +51,7 @@ import me.glaremasters.guilds.guild.GuildCode;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.guis.GUIHandler;
+import me.glaremasters.guilds.listeners.ArenaListener;
 import me.glaremasters.guilds.listeners.ClaimSignListener;
 import me.glaremasters.guilds.listeners.EntityListener;
 import me.glaremasters.guilds.listeners.EssentialsChatListener;
@@ -406,7 +407,13 @@ public final class Guilds extends JavaPlugin {
         }
 
         // Load all the listeners
-        Stream.of(new EntityListener(guildHandler, settingsHandler.getSettingsManager()), new PlayerListener(guildHandler, settingsHandler.getSettingsManager(), this, permissions), new TicketListener(this, guildHandler, settingsHandler.getSettingsManager()), new VaultBlacklistListener(this, guildHandler, settingsHandler.getSettingsManager())).forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
+        Stream.of(
+                new EntityListener(guildHandler, settingsHandler.getSettingsManager()),
+                new PlayerListener(guildHandler, settingsHandler.getSettingsManager(), this, permissions),
+                new TicketListener(this, guildHandler, settingsHandler.getSettingsManager()),
+                new VaultBlacklistListener(this, guildHandler, settingsHandler.getSettingsManager()),
+                new ArenaListener(this, challengeHandler))
+                .forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
         // Load the optional listeners
         optionalListeners();
 
