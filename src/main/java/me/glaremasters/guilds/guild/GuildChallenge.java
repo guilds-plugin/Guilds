@@ -7,6 +7,7 @@ import lombok.Setter;
 import me.glaremasters.guilds.arena.Arena;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -21,10 +22,14 @@ public class GuildChallenge {
     private Guild defender;
     private boolean accepted;
     private boolean joinble;
+    private boolean started;
     private int minPlayersPerSide;
     private int maxPlayersPerSide;
     private List<UUID> challengePlayers;
     private List<UUID> defendPlayers;
     private Arena arena;
+    private String winner;
 
+    private Set<UUID> aliveChallengers;
+    private Set<UUID> aliveDefenders;
 }
