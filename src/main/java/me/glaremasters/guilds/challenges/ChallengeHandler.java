@@ -37,7 +37,9 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -65,8 +67,9 @@ public class ChallengeHandler {
     public GuildChallenge createNewChallenge(Guild challenger, Guild defender, int minPlayer, int maxPlayers, Arena arena) {
         return new GuildChallenge(UUID.randomUUID(), System.currentTimeMillis(), challenger,
                 defender, false, false,
-                minPlayer, maxPlayers, new ArrayList<>(), new ArrayList<>(),
-                arena);
+                false, minPlayer, maxPlayers,
+                new ArrayList<>(), new ArrayList<>(), arena,
+                "", new HashSet<>(), new HashSet<>());
     }
 
     /**
@@ -101,6 +104,25 @@ public class ChallengeHandler {
      */
     public GuildChallenge getChallenge(@NotNull Guild guild) {
         return challenges.stream().filter(c -> c.getChallenger() == guild || c.getDefender() == guild).findFirst().orElse(null);
+    }
+
+    /**
+     * Get a challenge from a player
+     * @param player the player to check
+     * @return the challenge they are part of
+     */
+    public GuildChallenge getChallenge(@NotNull Player player) {
+        return getActiveChallenges().stream()
+                .filter(c -> c.getAliveChallengers().contains(player.getUniqueId()) || c.getAliveDefenders().contains(player.getUniqueId()))
+                .findAny().orElse(null);
+    }
+
+    /**
+     * Get a list of active challenges
+     * @return active challenges
+     */
+    public List<GuildChallenge> getActiveChallenges() {
+        return challenges.stream().filter(GuildChallenge::isStarted).collect(Collectors.toList());
     }
 
     /**
@@ -150,13 +172,32 @@ public class ChallengeHandler {
      * @param players the players to teleport
      * @param location the location to send the players to
      */
-    public void sendToArena(List<UUID> players, Location location) {
+    public void sendToArena(List<UUID> players, Location location, GuildChallenge challenge, String team) {
+        Set<UUID> active = new HashSet<>();
         players.forEach(p -> {
             Player player = Bukkit.getPlayer(p);
             if (player != null) {
                 player.teleport(location);
+                active.add(player.getUniqueId());
             }
         });
+        if (team.equalsIgnoreCase("challenger")) {
+            challenge.setAliveChallengers(active);
+        } else {
+            challenge.setAliveDefenders(active);
+        }
+    }
+
+    /**
+     * Remove a player from a challenge
+     * @param player player to remove
+     */
+    public void removePlayer(Player player) {
+        GuildChallenge c = getChallenge(player);
+        if (c != null) {
+            c.getAliveDefenders().remove(player);
+            c.getAliveChallengers().remove(player);
+        }
     }
 
 }
