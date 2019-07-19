@@ -28,6 +28,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.guild.Guild;
+import me.glaremasters.guilds.guild.GuildScore;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
@@ -78,7 +79,6 @@ public class JsonProvider implements DatabaseProvider {
 
         for (Guild guild : guilds) {
             File file = new File(dataFolder, guild.getId() + ".json");
-
             Files.write(Paths.get(file.getPath()), gson.toJson(guild).getBytes(StandardCharsets.UTF_8));
 
             ids.add(guild.getId().toString());
