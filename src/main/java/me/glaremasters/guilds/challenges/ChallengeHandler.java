@@ -24,10 +24,12 @@
 
 package me.glaremasters.guilds.challenges;
 
+import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.CommandManager;
 import lombok.Getter;
 import me.glaremasters.guilds.arena.Arena;
+import me.glaremasters.guilds.configuration.sections.WarSettings;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildChallenge;
 import me.glaremasters.guilds.guild.GuildMember;
@@ -278,6 +280,33 @@ public class ChallengeHandler {
                 "{guild}", challenge.getWinner().getName());
         challenge.getChallenger().sendMessage(commandManager, Messages.WAR__WINNER,
                 "{guild}", challenge.getWinner().getName());
+    }
+
+    /**
+     * Give the rewards to the winner
+     * @param settingsManager the settings manager
+     * @param challenge the challenge
+     */
+    public void giveRewards(SettingsManager settingsManager, GuildChallenge challenge) {
+        List<UUID> winners;
+        UUID teamWinner = challenge.getWinner().getId();
+        if (teamWinner == challenge.getChallenger().getId()) {
+            winners = challenge.getChallengePlayers();
+        } else {
+            winners = challenge.getDefendPlayers();
+        }
+        List<String> commands = settingsManager.getProperty(WarSettings.WAR_REWARDS);
+        if (settingsManager.getProperty(WarSettings.WAR_REWARDS_ENABLED)) {
+            winners.forEach(p -> {
+                Player player = Bukkit.getPlayer(p);
+                if (player != null) {
+                    commands.forEach(c -> {
+                        c = c.replace("{player}", player.getName());
+                        Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), c);
+                    });
+                }
+            });
+        }
     }
 
 }

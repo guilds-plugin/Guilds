@@ -1,5 +1,6 @@
 package me.glaremasters.guilds.listeners;
 
+import ch.jalu.configme.SettingsManager;
 import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.challenges.ChallengeHandler;
@@ -19,6 +20,7 @@ public class ArenaListener implements Listener {
     private Guilds guilds;
     private ChallengeHandler challengeHandler;
     private ChallengesProvider challengesProvider;
+    private SettingsManager settingsManager;
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
@@ -42,6 +44,8 @@ public class ArenaListener implements Listener {
             challengeHandler.announceWinner(challenge, guilds.getCommandManager());
             // Move rest of players out of arena
             challengeHandler.teleportRemaining(challenge);
+            // Run the reward commands
+            challengeHandler.giveRewards(settingsManager, challenge);
             try {
                 // Save the details about the challenge
                 challengesProvider.saveChallenge(challenge);
