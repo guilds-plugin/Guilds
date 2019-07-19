@@ -34,7 +34,8 @@ public class GuildChallenge {
     private List<UUID> defendPlayers;
     @JsonAdapter(WarArenaChallengeAdapter.class)
     private Arena arena;
-    private String winner;
+    @JsonAdapter(WarGuildChallengeAdapater.class)
+    private Guild winner;
 
     private transient LinkedMap<UUID, String> aliveChallengers;
     private transient LinkedMap<UUID, String> aliveDefenders;

@@ -71,7 +71,7 @@ public class ChallengeHandler {
                 defender, false, false,
                 false, minPlayer, maxPlayers,
                 new ArrayList<>(), new ArrayList<>(), arena,
-                "", new LinkedMap<>(), new LinkedMap<>());
+                null, new LinkedMap<>(), new LinkedMap<>());
     }
 
     /**
@@ -254,11 +254,11 @@ public class ChallengeHandler {
      */
     public boolean checkIfOver(GuildChallenge challenge) {
         if (challenge.getAliveChallengers().keySet().size() == 0) {
-            challenge.setWinner(challenge.getDefender().getName());
+            challenge.setWinner(challenge.getDefender());
             return true;
         }
         if (challenge.getAliveDefenders().keySet().size() == 0) {
-            challenge.setWinner(challenge.getChallenger().getName());
+            challenge.setWinner(challenge.getChallenger());
             return true;
         }
         return false;
@@ -271,9 +271,9 @@ public class ChallengeHandler {
      */
     public void announceWinner(GuildChallenge challenge, CommandManager commandManager) {
         challenge.getDefender().sendMessage(commandManager, Messages.WAR__WINNER,
-                "{guild}", challenge.getWinner());
+                "{guild}", challenge.getWinner().getName());
         challenge.getChallenger().sendMessage(commandManager, Messages.WAR__WINNER,
-                "{guild}", challenge.getWinner());
+                "{guild}", challenge.getWinner().getName());
     }
 
 }
