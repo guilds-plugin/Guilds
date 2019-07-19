@@ -255,10 +255,14 @@ public class ChallengeHandler {
     public boolean checkIfOver(GuildChallenge challenge) {
         if (challenge.getAliveChallengers().keySet().size() == 0) {
             challenge.setWinner(challenge.getDefender());
+            challenge.getDefender().getGuildScore().addWin();
+            challenge.getChallenger().getGuildScore().addLoss();
             return true;
         }
         if (challenge.getAliveDefenders().keySet().size() == 0) {
             challenge.setWinner(challenge.getChallenger());
+            challenge.getDefender().getGuildScore().addLoss();
+            challenge.getChallenger().getGuildScore().addWin();
             return true;
         }
         return false;
