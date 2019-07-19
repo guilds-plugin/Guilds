@@ -44,6 +44,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -307,6 +308,24 @@ public class ChallengeHandler {
                 }
             });
         }
+    }
+
+    /**
+     * Check to see if a Guild can be challenged
+     * @param guild the guild to check
+     * @param settingsManager the settings manager
+     * @return if they can be challenge or not
+     */
+    public boolean notOnCooldown(Guild guild, SettingsManager settingsManager) {
+        long cooldownTime = TimeUnit.MINUTES.toMillis(settingsManager.getProperty(WarSettings.DEFEND_COOLDOWN));
+        long lastDefended = guild.getLastDefended();
+        long currentTime = System.currentTimeMillis();
+
+        if (lastDefended == 0) {
+            return true;
+        }
+
+        return (currentTime - lastDefended > cooldownTime);
     }
 
 }

@@ -11,6 +11,12 @@ import static ch.jalu.configme.properties.PropertyInitializer.newProperty;
 
 public class WarSettings implements SettingsHolder {
 
+    @Comment({"How often (in minutes) can a guild be the defender in a war?",
+    "This is to help prevent abuse from guilds fighting each other to farm rewards.",
+    "This is defaulted to 1 day."})
+    public static final Property<Integer> DEFEND_COOLDOWN =
+            newProperty("war.defend-cooldown", 1440);
+
     @Comment("How long does a defending guild have to accept a war challenge? (In seconds)")
     public static final Property<Integer> ACCEPT_TIME =
             newProperty("war.accept-time", 120);

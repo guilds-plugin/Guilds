@@ -42,6 +42,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -78,6 +79,8 @@ public class Guild {
     private List<GuildCode> codes;
 
     private List<String> vaults;
+
+    private long lastDefended;
 
     /**
      * Get a member in the guild
@@ -504,6 +507,10 @@ public class Guild {
             this.vaults = new ArrayList<>();
         }
         return this.vaults;
+    }
+
+    public long getLastDefended() {
+        return lastDefended;
     }
 }
 

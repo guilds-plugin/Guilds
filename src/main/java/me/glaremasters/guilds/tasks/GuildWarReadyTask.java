@@ -101,6 +101,7 @@ public class GuildWarReadyTask extends BukkitRunnable {
             challengeHandler.sendToArena(challenge.getAliveChallengers(), challenge.getArena().getChallengerLoc());
             challengeHandler.sendToArena(challenge.getAliveDefenders(), challenge.getArena().getDefenderLoc());
             challenge.setStarted(true);
+            challenge.getDefender().setLastDefended(System.currentTimeMillis());
             cancel();
         }
     }
