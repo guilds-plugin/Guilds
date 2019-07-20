@@ -17,6 +17,10 @@ public class WarSettings implements SettingsHolder {
     public static final Property<Integer> DEFEND_COOLDOWN =
             newProperty("war.defend-cooldown", 1440);
 
+    @Comment("Would you like to block commands while a player is in the war?")
+    public static final Property<Boolean> DISABLE_COMMANDS =
+            newProperty("war.disable-commands", false);
+
     @Comment("How long does a defending guild have to accept a war challenge? (In seconds)")
     public static final Property<Integer> ACCEPT_TIME =
             newProperty("war.accept-time", 120);

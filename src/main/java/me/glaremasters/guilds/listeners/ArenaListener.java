@@ -4,12 +4,15 @@ import ch.jalu.configme.SettingsManager;
 import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.challenges.ChallengeHandler;
+import me.glaremasters.guilds.configuration.sections.WarSettings;
 import me.glaremasters.guilds.database.challenges.ChallengesProvider;
 import me.glaremasters.guilds.guild.GuildChallenge;
+import me.glaremasters.guilds.messages.Messages;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.io.IOException;
@@ -87,6 +90,24 @@ public class ArenaListener implements Listener {
             challengeHandler.exitArena(entity, challenge);
             // Remove them
             handleExist(entity, challenge);
+        }
+    }
+
+    @EventHandler
+    public void onCommand(PlayerCommandPreprocessEvent event) {
+        Player player = event.getPlayer();
+        // Check if commands are blocked during arena
+        if (settingsManager.getProperty(WarSettings.DISABLE_COMMANDS)) {
+            // See if player has challenge
+            GuildChallenge challenge = challengeHandler.getChallenge(player);
+            // If they have one, continue
+            if (challenge != null) {
+                // Cancel the command
+                event.setCancelled(true);
+                // Tell them they can't run commands while in war
+                guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.WAR__COMMANDS_BLOCKED);
+            }
+
         }
     }
 
