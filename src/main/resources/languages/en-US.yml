@@ -311,3 +311,7 @@ war:
   removed-for-size: "&cSorry! You were one of the last people to join. To make each side even, you've been removed from the war"
   defend-cooldown: "&c{guild} has already defended themselves in the arena recently. Let them regain their strength and challenge them anothr time!"
   commands-blocked: "&cSorry! You can't run commands while in a war!"
+acf:
+  invalid-syntax: "Usage: <c2>{command}</c2> <c3>{syntax}</c3>"
+  permission_denied: "I'm sorry, but you do not have permission to perform this command."
+  unknown-commands: "Unknown Command, please type <c2>/help</c2>"
