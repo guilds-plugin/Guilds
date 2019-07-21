@@ -69,9 +69,12 @@ public class EntityListener implements Listener {
         if (event.getDamager() instanceof Player) {
             Player player = (Player) event.getDamager();
             Guild guild = guildHandler.getGuild(player);
+            if (guild == null) {
+                return;
+            }
             double dmg = event.getDamage();
             double multiplier = guild.getTier().getDamageMultiplier();
-            if (guild != null) event.setDamage(dmg * multiplier);
+            event.setDamage(dmg * multiplier);
         }
     }
 
@@ -86,9 +89,12 @@ public class EntityListener implements Listener {
         Player killer = monster.getKiller();
         if (killer == null) return;
         Guild guild = guildHandler.getGuild(killer);
+        if (guild == null) {
+            return;
+        }
         double xp = event.getDroppedExp();
         double multiplier = guild.getTier().getMobXpMultiplier();
-        if (guild != null) event.setDroppedExp((int) Math.round(xp * multiplier));
+        event.setDroppedExp((int) Math.round(xp * multiplier));
     }
 
     /**
