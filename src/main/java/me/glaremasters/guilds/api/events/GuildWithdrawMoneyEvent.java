@@ -24,12 +24,13 @@
 
 package me.glaremasters.guilds.api.events;
 
+import me.glaremasters.guilds.api.events.base.GuildEvent;
 import me.glaremasters.guilds.guild.Guild;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-public class GuildWithdrawMoneyEvent extends Event {
+public class GuildWithdrawMoneyEvent extends GuildEvent {
 
     protected double amount;
     protected Player player;
@@ -43,6 +44,7 @@ public class GuildWithdrawMoneyEvent extends Event {
      * @param amount amount money deposit
      */
     public GuildWithdrawMoneyEvent(Player player, Guild guild, double amount) {
+        super(player,guild);
         this.guild = guild;
         this.player = player;
         this.amount= amount;
@@ -52,9 +54,9 @@ public class GuildWithdrawMoneyEvent extends Event {
         return this.amount;
     }
 
-    public Player getPlayer(){
+    /*public Player getPlayer(){
         return this.player;
-    }
+    }*/
 
     @Override
     public HandlerList getHandlers() {
