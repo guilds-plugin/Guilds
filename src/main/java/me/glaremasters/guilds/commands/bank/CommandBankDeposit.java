@@ -32,6 +32,7 @@ import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
+import me.glaremasters.guilds.api.events.GuildDepositMoneyEvent;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.exceptions.InvalidPermissionException;
 import me.glaremasters.guilds.guild.Guild;
@@ -41,6 +42,7 @@ import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.Constants;
 import me.glaremasters.guilds.utils.EconomyUtils;
 import net.milkbowl.vault.economy.Economy;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.text.NumberFormat;
@@ -89,6 +91,7 @@ public class CommandBankDeposit extends BaseCommand {
         guild.sendMessage(getCurrentCommandManager(), Messages.BANK__DEPOSIT_SUCCESS, "{player}", player.getName(),
                 "{amount}", String.valueOf(NumberFormat.getInstance().format(amount)),
                         "{total}", String.valueOf(NumberFormat.getInstance().format(guild.getBalance())));
+        Bukkit.getPluginManager().callEvent(new GuildDepositMoneyEvent(player,guild,amount));
     }
 
 }
