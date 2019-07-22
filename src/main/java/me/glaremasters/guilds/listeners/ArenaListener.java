@@ -78,18 +78,19 @@ public class ArenaListener implements Listener {
             return;
         }
 
-        // Cancel the last damage so they don't die
-        event.setCancelled(true);
-
         // Check to make sure they have a challenge
         GuildChallenge challenge = challengeHandler.getChallenge(entity);
 
         // Make sure it's not null
         if (challenge != null) {
-            // Teleport them out of the arena
-            challengeHandler.exitArena(entity, challenge);
-            // Remove them
-            handleExist(entity, challenge);
+            if (challenge.isStarted()) {
+                // Cancel the last damage so they don't die
+                event.setCancelled(true);
+                // Teleport them out of the arena
+                challengeHandler.exitArena(entity, challenge);
+                // Remove them
+                handleExist(entity, challenge);
+            }
         }
     }
 
