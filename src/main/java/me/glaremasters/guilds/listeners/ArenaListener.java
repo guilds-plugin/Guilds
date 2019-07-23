@@ -1,6 +1,7 @@
 package me.glaremasters.guilds.listeners;
 
 import ch.jalu.configme.SettingsManager;
+import co.aikar.commands.ACFBukkitUtil;
 import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.challenges.ChallengeHandler;
@@ -13,10 +14,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 @AllArgsConstructor
 public class ArenaListener implements Listener {
@@ -25,6 +31,7 @@ public class ArenaListener implements Listener {
     private ChallengeHandler challengeHandler;
     private ChallengesProvider challengesProvider;
     private SettingsManager settingsManager;
+    private final Map<UUID, String> playerDeath = new HashMap<>();
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
@@ -62,7 +69,46 @@ public class ArenaListener implements Listener {
     }
 
     @EventHandler
-    public void onDeath(EntityDamageByEntityEvent event) {
+    public void onDeath(PlayerDeathEvent event) {
+        Player player = event.getEntity();
+
+        // Get the challenge object
+        GuildChallenge challenge = challengeHandler.getChallenge(player);
+
+        // If it's null, stop here
+        if (challenge == null) {
+            return;
+        }
+        // Make sure the challenge is started
+        if (!challenge.isStarted()) {
+            return;
+        }
+        // Keep the inventory
+        event.setKeepInventory(true);
+        // Keep the levels
+        event.setKeepLevel(true);
+
+        // Add them to the death list
+        playerDeath.put(player.getUniqueId(), challengeHandler.getAllPlayers(challenge).get(player.getUniqueId()));
+
+        // Handle rest of arena stuff like normal
+        handleExist(player, challenge);
+    }
+
+     @EventHandler
+     public void onRespawn(PlayerRespawnEvent event) {
+        Player player = event.getPlayer();
+        // Check if dead players contains this player
+        if (playerDeath.containsKey(player.getUniqueId())) {
+            // If it does, set their respawn location to the place they came from
+            event.setRespawnLocation(ACFBukkitUtil.stringToLocation(playerDeath.get(player.getUniqueId())));
+            // Remove from the map
+            playerDeath.remove(player.getUniqueId());
+        }
+     }
+
+    @EventHandler
+    public void onDeathByPlayer(EntityDamageByEntityEvent event) {
         // Check to make sure both parties are players
         if (!(event.getEntity() instanceof Player)) {
             return;
@@ -72,7 +118,6 @@ public class ArenaListener implements Listener {
         }
         // Get a copy of the killer and player being killed
         Player entity = (Player) event.getEntity();
-        Player killer = (Player) event.getDamager();
 
         // Check to make sure this damage would kill them to prevent excess checking
         if (entity.getHealth() - event.getFinalDamage() > 1) {
