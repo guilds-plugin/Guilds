@@ -412,7 +412,7 @@ public final class Guilds extends JavaPlugin {
 
         // Load all the listeners
         Stream.of(
-                new EntityListener(guildHandler, settingsHandler.getSettingsManager()),
+                new EntityListener(guildHandler, settingsHandler.getSettingsManager(), challengeHandler),
                 new PlayerListener(guildHandler, settingsHandler.getSettingsManager(), this, permissions),
                 new TicketListener(this, guildHandler, settingsHandler.getSettingsManager()),
                 new VaultBlacklistListener(this, guildHandler, settingsHandler.getSettingsManager()),

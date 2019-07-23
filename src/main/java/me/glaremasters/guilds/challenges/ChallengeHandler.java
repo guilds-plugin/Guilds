@@ -28,8 +28,10 @@ import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.CommandManager;
 import lombok.Getter;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.arena.Arena;
 import me.glaremasters.guilds.configuration.sections.WarSettings;
+import me.glaremasters.guilds.database.challenges.ChallengesProvider;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildChallenge;
 import me.glaremasters.guilds.guild.GuildMember;
@@ -40,6 +42,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -327,5 +330,38 @@ public class ChallengeHandler {
 
         return (currentTime - lastDefended > cooldownTime);
     }
+
+    /**
+     * Handle finishing of the arena war
+     * @param guilds guilds instance
+     * @param settingsManager the settings manager
+     * @param challengesProvider challenges provider
+     * @param player player to remove
+     * @param challenge the challenge being checked
+     */
+    public void handleFinish(Guilds guilds, SettingsManager settingsManager, ChallengesProvider challengesProvider, Player player, GuildChallenge challenge) {
+        removePlayer(player);
+        if (checkIfOver(challenge)) {
+            // Specify the war is over
+            challenge.setStarted(false);
+            // Open up the arena
+            challenge.getArena().setInUse(false);
+            // Broadcast the winner
+            announceWinner(challenge, guilds.getCommandManager());
+            // Move rest of players out of arena
+            teleportRemaining(challenge);
+            // Run the reward commands
+            giveRewards(settingsManager, challenge);
+            try {
+                // Save the details about the challenge
+                challengesProvider.saveChallenge(challenge);
+                removeChallenge(challenge);
+            } catch (IOException e) {
+                e.printStackTrace();
+                removeChallenge(challenge);
+            }
+        }
+    }
+
 
 }

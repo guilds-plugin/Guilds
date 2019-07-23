@@ -19,7 +19,6 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -40,31 +39,7 @@ public class ArenaListener implements Listener {
         // Check if they are part of an active challenge
         if (challenge != null) {
             // Remove the player from the alive players
-            handleExist(player, challenge);
-        }
-    }
-
-    private void handleExist(Player player, GuildChallenge challenge) {
-        challengeHandler.removePlayer(player);
-        if (challengeHandler.checkIfOver(challenge)) {
-            // Specify the war is over
-            challenge.setStarted(false);
-            // Open up the arena
-            challenge.getArena().setInUse(false);
-            // Broadcast the winner
-            challengeHandler.announceWinner(challenge, guilds.getCommandManager());
-            // Move rest of players out of arena
-            challengeHandler.teleportRemaining(challenge);
-            // Run the reward commands
-            challengeHandler.giveRewards(settingsManager, challenge);
-            try {
-                // Save the details about the challenge
-                challengesProvider.saveChallenge(challenge);
-                challengeHandler.removeChallenge(challenge);
-            } catch (IOException e) {
-                e.printStackTrace();
-                challengeHandler.removeChallenge(challenge);
-            }
+            challengeHandler.handleFinish(guilds, settingsManager, challengesProvider, player, challenge);
         }
     }
 
@@ -92,7 +67,7 @@ public class ArenaListener implements Listener {
         playerDeath.put(player.getUniqueId(), challengeHandler.getAllPlayers(challenge).get(player.getUniqueId()));
 
         // Handle rest of arena stuff like normal
-        handleExist(player, challenge);
+        challengeHandler.handleFinish(guilds, settingsManager, challengesProvider, player, challenge);
     }
 
      @EventHandler
@@ -135,7 +110,7 @@ public class ArenaListener implements Listener {
                 // Teleport them out of the arena
                 challengeHandler.exitArena(entity, challenge);
                 // Remove them
-                handleExist(entity, challenge);
+                challengeHandler.handleFinish(guilds, settingsManager, challengesProvider, entity, challenge);
             }
         }
     }
