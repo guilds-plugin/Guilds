@@ -8,6 +8,7 @@ import me.glaremasters.guilds.configuration.sections.WarSettings;
 import me.glaremasters.guilds.database.challenges.ChallengesProvider;
 import me.glaremasters.guilds.guild.GuildChallenge;
 import me.glaremasters.guilds.messages.Messages;
+import me.glaremasters.guilds.utils.Constants;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -103,6 +104,10 @@ public class ArenaListener implements Listener {
             GuildChallenge challenge = challengeHandler.getChallenge(player);
             // If they have one, continue
             if (challenge != null) {
+                // Check if they are admin to bypass
+                if (player.hasPermission(Constants.ADMIN_PERM)) {
+                    return;
+                }
                 // Cancel the command
                 event.setCancelled(true);
                 // Tell them they can't run commands while in war
