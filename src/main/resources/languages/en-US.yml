@@ -313,5 +313,5 @@ war:
   commands-blocked: "&cSorry! You can't run commands while in a war!"
 acf:
   invalid-syntax: "Usage: <c2>{command}</c2> <c3>{syntax}</c3>"
-  permission_denied: "I'm sorry, but you do not have permission to perform this command."
+  permission-denied: "I'm sorry, but you do not have permission to perform this command."
   unknown-commands: "Unknown Command, please type <c2>/help</c2>"
