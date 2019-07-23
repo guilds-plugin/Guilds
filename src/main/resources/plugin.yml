@@ -54,6 +54,10 @@ permissions:
       guilds.command.unclaim: true
       guilds.command.upgrade: true
       guilds.command.vault: true
+      guilds.command.war.accept: true
+      guilds.command.war.challenge: true
+      guilds.command.war.deny: true
+      guilds.command.war.join: true
     default: true
   guilds.group.admin:
     children:
