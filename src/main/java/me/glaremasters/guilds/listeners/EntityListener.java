@@ -26,8 +26,10 @@ package me.glaremasters.guilds.listeners;
 
 import ch.jalu.configme.SettingsManager;
 import lombok.AllArgsConstructor;
+import me.glaremasters.guilds.challenges.ChallengeHandler;
 import me.glaremasters.guilds.configuration.sections.GuildSettings;
 import me.glaremasters.guilds.guild.Guild;
+import me.glaremasters.guilds.guild.GuildChallenge;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.utils.ClaimUtils;
 import org.bukkit.entity.Arrow;
@@ -58,6 +60,7 @@ public class EntityListener implements Listener {
 
     private GuildHandler guildHandler;
     private SettingsManager settingsManager;
+    private ChallengeHandler challengeHandler;
     private final Set<PotionEffectType> bad = new HashSet<>(Arrays.asList(PotionEffectType.BLINDNESS, PotionEffectType.WITHER, PotionEffectType.SLOW_DIGGING, PotionEffectType.WEAKNESS, PotionEffectType.SLOW, PotionEffectType.POISON));
 
     /**
@@ -107,15 +110,30 @@ public class EntityListener implements Listener {
         Player player = (Player) event.getEntity();
         Player damager = (Player) event.getDamager();
 
+        // Make sure that they aren't in a claim that turns off pvpv
         if (settingsManager.getProperty(GuildSettings.RESPECT_WG_PVP_FLAG)) {
             event.setCancelled(ClaimUtils.checkPvpDisabled(player));
             return;
         }
 
+        // Check if they are the same guild
         if (guildHandler.isSameGuild(player, damager)) {
             event.setCancelled(!settingsManager.getProperty(GuildSettings.GUILD_DAMAGE));
             return;
         }
+
+        // Get the challenge object
+        GuildChallenge challenge = challengeHandler.getChallenge(player);
+
+        // Check if they are in a challenge
+        if (challenge != null) {
+            // Check if the challenge has started
+            if (challenge.isStarted()) {
+                // Cancel the rest of the checks in case they are battling allies
+                return;
+            }
+        }
+
         if (guildHandler.isAlly(player, damager)) {
             event.setCancelled(!settingsManager.getProperty(GuildSettings.ALLY_DAMAGE));
         }
