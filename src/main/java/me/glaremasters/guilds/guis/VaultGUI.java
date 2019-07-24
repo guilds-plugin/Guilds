@@ -37,6 +37,7 @@ import me.glaremasters.guilds.configuration.sections.VaultPickerSettings;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.utils.ItemBuilder;
+import me.glaremasters.guilds.utils.XMaterial;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -125,7 +126,7 @@ public class VaultGUI {
      */
     private ItemStack easyItem(String material, String name, List<String> lore) {
         // Start the itembuilder
-        ItemBuilder builder = new ItemBuilder(Material.valueOf(material));
+        ItemBuilder builder = new ItemBuilder(XMaterial.matchXMaterial(material).parseMaterial());
         // Sets the name of the item
         builder.setName(ACFBukkitUtil.color(name));
         // Sets the lore of the item
