@@ -232,7 +232,7 @@ claim:
   hook-disabled: "&cBitte activiere Besitz in der Konfiguration um dieses Feature zu verwenden"
   sign-not-enabled: "&cDiese Funktion ist nicht aktiviert. Um sie zu benutzen musst du diese über die config aktivieren."
   sign-no-permission: "&cDu hast keine Erlaubnis um Grundstücksschilder zu erstellen!"
-  sign-invalid-format: "&cInvalid Claim Sign format! Please try again!"
+  sign-invalid-format: "&cFalsches Grundstücksschild format! Bitte versuche es erneut!"
   sign-invalid-region: "&cUnerlaubte Worldguard Region!"
   sign-placed: "&aYou've successfully created a Claim Sign for the region {region} with the price {price}."
   sign-not-enough: "&cDu hast nicht genug Geld in der Gildenbank um dieses Gildengrundstück zu kaufen."
