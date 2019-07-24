@@ -5,6 +5,7 @@ descriptions:
   admin-bank-balance: "Admin command om een Guild's bank te bekijken"
   admin-bank-deposit: "Admin command om geld in een Guild's bank te stoppen"
   admin-bank-withdraw: "Adnmin command om geld uit een Guild's bank te halen"
+  admin-claim: "Admin command to claim a guild's land"
   admin-delhome: "Admin command om het huis van een Guild te verwijderen"
   admin-home: "Admin command om te teleporteren naar het huis van een Guild"
   admin-motd: "Admin command om de MOTD van een Guild te bekijken"
@@ -310,3 +311,8 @@ war:
   already-accepted: "&cYou can't accept a challenge you've already accepted! Be patient!"
   removed-for-size: "&cSorry! You were one of the last people to join. To make each side even, you've been removed from the war"
   defend-cooldown: "&c{guild} has already defended themselves in the arena recently. Let them regain their strength and challenge them another time!"
+  commands-blocked: "&cSorry! You can't run commands while in a war!"
+acf:
+  invalid-syntax: "Usage: <c2>{command}</c2> <c3>{syntax}</c3>"
+  permission-denied: "I'm sorry, but you do not have permission to perform this command."
+  unknown-commands: "Unknown Command, please type <c2>/help</c2>"
