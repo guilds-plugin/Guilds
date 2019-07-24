@@ -5,6 +5,7 @@ descriptions:
   admin-bank-balance: "Bir loncanın banka bakiyesini görüntülemek için yönetici komutu"
   admin-bank-deposit: "Admin command to put money into a guild's bank"
   admin-bank-withdraw: "Bir lonca bankasından para almak için yönetici komutu"
+  admin-claim: "Admin command to claim a guild's land"
   admin-delhome: "Bir loncanın evini silmek için yönetici komutu"
   admin-home: "Bir loncanın evine ışınlanacak yönetici komutu"
   admin-motd: "Admin command to view the MOTD of a guild"
@@ -310,3 +311,8 @@ war:
   already-accepted: "&cYou can't accept a challenge you've already accepted! Be patient!"
   removed-for-size: "&cSorry! You were one of the last people to join. To make each side even, you've been removed from the war"
   defend-cooldown: "&c{guild} has already defended themselves in the arena recently. Let them regain their strength and challenge them another time!"
+  commands-blocked: "&cSorry! You can't run commands while in a war!"
+acf:
+  invalid-syntax: "Usage: <c2>{command}</c2> <c3>{syntax}</c3>"
+  permission-denied: "I'm sorry, but you do not have permission to perform this command."
+  unknown-commands: "Unknown Command, please type <c2>/help</c2>"
