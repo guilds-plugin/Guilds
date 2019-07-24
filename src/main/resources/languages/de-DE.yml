@@ -132,12 +132,12 @@ admin:
   motd: "&a{guild}'s MOTD is: {motd}"
   motd-success: "&aYou've successfully set the MOTD for {guild} to {motd}."
   motd-remove: "&aYou've successfully removed the MOTD for {guild}."
-  bank-balance: "&aThe guild {guild} has a bank balance of {balance}."
-  bank-deposit: "&aYou've successfully put {amount} into {guild}'s bank. Their new balance is {total}."
-  bank-withdraw: "&aYou've successfully taken {amount} from {guild}'s bank. Their new balance is {total}."
+  bank-balance: "&aDie Gilde {guild} het einen Kontostand von {balance}."
+  bank-deposit: "&aDu hast erfolgreich {amount} in {guild}'s Bank deponiert. Der neue Kontostand ist nun {total}."
+  bank-withdraw: "&aDu hast erfolgreich {amount} von {guild}'s Bank abgehoben. Der neue Kontostand ist nun {total}."
   sethome: "&aDu hast erfolgreich ein neues Gilden Zuhause für {guild} gesetzt."
-  home: "&aYou've successfully teleported to {guild}'s home."
-  delhome: "&aYou've successfully removed the guild home for {guild}."
+  home: "&aDu hast dich erfolgreich zum Heim von {guild} teleportiert."
+  delhome: "&aDu hast erfolgreich das Gildenheim für {guild} entfernt."
 boot:
   player-kicked: "&cSpieler '{player}' wurde von {kicker} aus der Gilde gekickt!"
   successful: "&a{player} erfolgreich aus deiner Gilde gekickt!"
@@ -156,7 +156,7 @@ delete:
   successful: "&a'{guild}&r&a' erfolgreich gelöscht!"
   cancelled: "&cLöschen der Gilde abgebrochen!"
   warning: "&cSchreibe /guilds confirm um deine Gilde zu löschen. Schreibe /guilds cancel zum abbrechen."
-  notify-allies: "&c{guild} is no longer your ally because it has been deleted."
+  notify-allies: "&c{guild} ist nicht mehr dein Verbündeter, da die Gilde gelöscht wurde."
 leave:
   cancelled: "&cGilde verlassen abgebrochen!"
   successful: "&aDu hast erfolgreich deine Gilde verlassen!"
@@ -171,7 +171,7 @@ invite:
   already-invited: "Benutzer ist bereits zu deiner Gilde eingeladen"
   message: "&a{player} hat dich zu ihrer/seiner Gilde '{guild}' eingeladen. Schreibe /guild join {guild} zum beitreten!"
   successful: "&aDu hast {player} erfolgreich zu deiner Gilde eingeladen!"
-  already-in-guild: "&c{player} is already in another guild!"
+  already-in-guild: "&c{player} ist bereits in einer anderen Gilde!"
 upgrade:
   tier-max: "&cKann nicht erneut verbessern! Du bist bereits maximum!"
   money-warning: "&cDu bist dabei {amount} auszugeben um deine Gilde zu verbessern. (Schreibe /guilds confirm zum fortfahrn)"
@@ -181,7 +181,7 @@ upgrade:
   not-enough-members: "&cSorry! Du brauchst mindestens {amount} Mitglieder um deine Gildenstufe zu verbessern!"
 prefix:
   successful: "&aGildenpräfix erfolgreich geändert zu {prefix}!"
-  disabled: "&cThe ability to use prefixes is currently disabled."
+  disabled: "&cDie Nutzung von Präfixen ist derzeit deaktiviert."
 status:
   successful: "&aGildenstatus geändert zu {status}!"
 rename:
@@ -194,7 +194,7 @@ home:
   cancelled: "&cDu hast dich bewegt! Teleportation abgebrochen!"
 sethome:
   successful: "&aDu hast dein Gildenzuhause gesetzt!"
-  deleted: "&aYou've successfully deleted your guild home!"
+  deleted: "&aDu hast erflogreich dein Gildenheim gelöscht!"
   cooldown: "&cDu musst mindestens {amount} Sekunden warten bevor du das erneut tun kannst"
 reload:
   reloaded: "&aKonfigurationsdatei neu geladen!"
@@ -230,7 +230,7 @@ claim:
   overlap: "&cDein Besitz konnte nicht erstellt werden da ein anderer Besitz in der nähe ist"
   success: "&aNeuer Besitz erstellt! Er geht von {loc1} zu {loc2}!"
   hook-disabled: "&cBitte activiere Besitz in der Konfiguration um dieses Feature zu verwenden"
-  sign-not-enabled: "&cThis feature is not enabled. To use it, you must turn it on via the config."
+  sign-not-enabled: "&cDiese Funktion ist nicht aktiviert. Um sie zu benutzen musst du diese über die config aktivieren."
   sign-no-permission: "&cDu hast keine Erlaubnis um Grundstücksschilder zu erstellen!"
   sign-invalid-format: "&cInvalid Claim Sign format! Please try again!"
   sign-invalid-region: "&cUnerlaubte Worldguard Region!"
@@ -249,7 +249,7 @@ codes:
   list-header: "&aHier sind die folgenden aktiven Einladungscodes für deine Gilde:"
   list-item: "&aID: &6{code} &f| &aUses Remaining: &6{amount} &f| &aCreator: &6{creator}"
   deleted: "&aThat invite code has been removed from your guild!"
-  invalid-code: "&cThat invite code does not seem to exist. Please try again!"
+  invalid-code: "&cDieser Einladungscode scheint nicht zu existieren. Bitte versuche es erneut!"
   joined: "&aYou've successfully joined &6{guild} &ausing an invite code!"
   guild-message: "&6{player} &ahas joined the guild using an invite code from &6{creator}&a!"
   out: "&cThat invite code is all out of uses! Please try another one!"
