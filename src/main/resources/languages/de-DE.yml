@@ -108,7 +108,7 @@ error:
   not-enough-money: "&cSorry, du hast nicht genug Geld um das zu machen"
   economy-required: "&cAn economy plugin is required for this to work. Please contact your server administrator"
   buff-cooldown: "&cSorry, your guild has recently bought a buff. You can try again in {amount} seconds."
-  no-pending-invites: "&cSorry, you currently do not have any pending guild invites!"
+  no-pending-invites: "&cEntschuldigung, du hast aktuell keine ausstehenden Gildeneinladungen!"
 bank:
   balance: "&aDie Bank deiner Gilde hat ein Guthaben con {amount}."
   deposit-success: "&a{player} has just deposited {amount} into the Guild Bank. Your new total is {total}."
@@ -135,7 +135,7 @@ admin:
   bank-balance: "&aThe guild {guild} has a bank balance of {balance}."
   bank-deposit: "&aYou've successfully put {amount} into {guild}'s bank. Their new balance is {total}."
   bank-withdraw: "&aYou've successfully taken {amount} from {guild}'s bank. Their new balance is {total}."
-  sethome: "&aYou've successfully set a new guild home for {guild}."
+  sethome: "&aDu hast erfolgreich ein neues Gilden Zuhause für {guild} gesetzt."
   home: "&aYou've successfully teleported to {guild}'s home."
   delhome: "&aYou've successfully removed the guild home for {guild}."
 boot:
