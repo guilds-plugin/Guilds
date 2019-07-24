@@ -5,6 +5,7 @@ descriptions:
   admin-bank-balance: "Админ-команда для просмотра баланса гильдии"
   admin-bank-deposit: "Админ-команда, чтобы положить деньги в банк гильдии"
   admin-bank-withdraw: "Админ-команда, чтобы снять деньги с банка гильдии"
+  admin-claim: "Admin command to claim a guild's land"
   admin-delhome: "Админ-команда для удаления дома гильдии"
   admin-home: "Админ-команда для телепортации на дом гильдии"
   admin-motd: "Админ-команда для просмотра сообщения дня гильдии"
@@ -310,3 +311,8 @@ war:
   already-accepted: "&cYou can't accept a challenge you've already accepted! Be patient!"
   removed-for-size: "&cSorry! You were one of the last people to join. To make each side even, you've been removed from the war"
   defend-cooldown: "&c{guild} has already defended themselves in the arena recently. Let them regain their strength and challenge them another time!"
+  commands-blocked: "&cSorry! You can't run commands while in a war!"
+acf:
+  invalid-syntax: "Usage: <c2>{command}</c2> <c3>{syntax}</c3>"
+  permission-denied: "I'm sorry, but you do not have permission to perform this command."
+  unknown-commands: "Unknown Command, please type <c2>/help</c2>"
