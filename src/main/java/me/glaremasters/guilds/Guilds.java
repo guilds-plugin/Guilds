@@ -392,23 +392,7 @@ public final class Guilds extends JavaPlugin {
             }).execute();
         }
 
-        if (settingsHandler.getSettingsManager().getProperty(PluginSettings.UPDATE_CHECK)) {
-            UpdateChecker.init(this, 66176).requestUpdateCheck().whenComplete((result, exception) -> {
-                if (result.requiresUpdate()) {
-                    this.getLogger().info(String.format("An update is available! Guilds %s may be downloaded on SpigotMC", result.getNewestVersion()));
-                    return;
-                }
-
-                UpdateChecker.UpdateReason reason = result.getReason();
-                if (reason == UpdateChecker.UpdateReason.UP_TO_DATE) {
-                    this.getLogger().info(String.format("Your version of Guilds (%s) is up to date!", result.getNewestVersion()));
-                } else if (reason == UpdateChecker.UpdateReason.UNRELEASED_VERSION) {
-                    this.getLogger().info(String.format("Your version of Guilds (%s) is more recent than the one publicly available. Are you on a development build?", result.getNewestVersion()));
-                } else {
-                    this.getLogger().warning("Could not check for a new version of Guilds. Reason: " + reason);
-                }
-            });
-        }
+        UpdateChecker.runCheck(this, settingsHandler.getSettingsManager());
 
         // Load all the listeners
         Stream.of(
