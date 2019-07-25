@@ -126,11 +126,11 @@ public final class Guilds extends JavaPlugin {
 
     @Override
     public void onLoad() {
+        BukkitLibraryManager loader = new BukkitLibraryManager(this);
+        Libraries libraries = new Libraries();
+        loader.addRepository("https://repo.glaremasters.me/repository/public/");
+        loader.addMavenCentral();
         try {
-            BukkitLibraryManager loader = new BukkitLibraryManager(this);
-            Libraries libraries = new Libraries();
-            loader.addRepository("https://repo.glaremasters.me/repository/public/");
-            loader.addMavenCentral();
             libraries.loadDepLibs(loader);
             successfulLoad = true;
         } catch (RuntimeException ex) {
