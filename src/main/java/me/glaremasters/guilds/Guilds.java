@@ -24,18 +24,15 @@
 
 package me.glaremasters.guilds;
 
-import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFBukkitUtil;
-import co.aikar.commands.BaseCommand;
-import co.aikar.commands.InvalidCommandArgument;
 import co.aikar.commands.PaperCommandManager;
 import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
 import lombok.Getter;
+import me.glaremasters.guilds.acf.ACFHandler;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.api.GuildsAPI;
-import me.glaremasters.guilds.arena.Arena;
 import me.glaremasters.guilds.arena.ArenaHandler;
 import me.glaremasters.guilds.challenges.ChallengeHandler;
 import me.glaremasters.guilds.configuration.SettingsHandler;
@@ -48,10 +45,7 @@ import me.glaremasters.guilds.database.challenges.ChallengesProvider;
 import me.glaremasters.guilds.database.cooldowns.CooldownsProvider;
 import me.glaremasters.guilds.database.providers.JsonProvider;
 import me.glaremasters.guilds.dependency.Libraries;
-import me.glaremasters.guilds.guild.Guild;
-import me.glaremasters.guilds.guild.GuildCode;
 import me.glaremasters.guilds.guild.GuildHandler;
-import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.guis.GUIHandler;
 import me.glaremasters.guilds.listeners.ArenaListener;
 import me.glaremasters.guilds.listeners.ClaimSignListener;
@@ -61,23 +55,18 @@ import me.glaremasters.guilds.listeners.PlayerListener;
 import me.glaremasters.guilds.listeners.TicketListener;
 import me.glaremasters.guilds.listeners.VaultBlacklistListener;
 import me.glaremasters.guilds.listeners.WorldGuardListener;
-import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.placeholders.PlaceholderAPI;
 import me.glaremasters.guilds.updater.UpdateChecker;
 import me.glaremasters.guilds.utils.Constants;
 import me.glaremasters.guilds.utils.StringUtils;
 import net.byteflux.libby.BukkitLibraryManager;
-import net.byteflux.libby.Library;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.reflections.Reflections;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -88,17 +77,13 @@ import java.net.HttpURLConnection;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
-import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 @Getter
@@ -106,6 +91,7 @@ public final class Guilds extends JavaPlugin {
 
     @Getter
     private static GuildsAPI api;
+    private ACFHandler acfHandler;
     private GuildHandler guildHandler;
     private CooldownHandler cooldownHandler;
     private ArenaHandler arenaHandler;
@@ -195,33 +181,6 @@ public final class Guilds extends JavaPlugin {
             ex.printStackTrace();
         }
 
-    }
-
-    /**
-     * Load the languages for the server from ACF BCM
-     *
-     * @param manager ACF BCM
-     */
-    public void loadLanguages(PaperCommandManager manager) {
-        loadedLanguages.clear();
-        try {
-            File languageFolder = new File(getDataFolder(), "languages");
-            for (File file : Objects.requireNonNull(languageFolder.listFiles())) {
-                if (file.isFile()) {
-                    if (file.getName().endsWith(".yml")) {
-                        String updatedName = file.getName().replace(".yml", "");
-                        loadedLanguages.add(updatedName);
-                        manager.addSupportedLanguage(Locale.forLanguageTag(updatedName));
-                        manager.getLocales().loadYamlLanguageFile(new File(languageFolder, file.getName()), Locale.forLanguageTag(updatedName));
-                    }
-                }
-            }
-            manager.getLocales().setDefaultLocale(Locale.forLanguageTag(settingsHandler.getSettingsManager().getProperty(PluginSettings.MESSAGES_LANGUAGE)));
-            info("Loaded successfully!");
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
-            info("Failed to load!");
-        }
     }
 
     /**
@@ -357,30 +316,7 @@ public final class Guilds extends JavaPlugin {
         info("Loading Commands and Language Data..");
         // Load the ACF command manager
         commandManager = new PaperCommandManager(this);
-        commandManager.usePerIssuerLocale(true, false);
-        // Load the languages
-        loadLanguages(commandManager);
-        //deprecated due to being unstable
-        //noinspection deprecation
-        commandManager.enableUnstableAPI("help");
-        // load the custom command contexts
-        loadContexts(commandManager);
-        // load the custom command completions
-        loadCompletions(commandManager);
-        // load the dependnecies
-        registerDependencies(commandManager);
-
-        // Register all the commands
-        Reflections commandClasses = new Reflections("me.glaremasters.guilds.commands");
-        Set<Class<? extends BaseCommand>> commands = commandClasses.getSubTypesOf(BaseCommand.class);
-
-        commands.forEach(c -> {
-            try {
-                commandManager.registerCommand(c.newInstance());
-            } catch (InstantiationException | IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        });
+        acfHandler = new ACFHandler(this, commandManager);
 
         guiHandler = new GUIHandler(this, settingsHandler.getSettingsManager(), guildHandler, getCommandManager(), cooldownHandler);
 
@@ -426,78 +362,6 @@ public final class Guilds extends JavaPlugin {
             }
         }, 20 * 60, (20 * 60) * settingsHandler.getSettingsManager().getProperty(PluginSettings.SAVE_INTERVAL));
 
-    }
-
-    /**
-     * Load the contexts for the server from ACF BCM
-     *
-     * @param manager ACF BCM
-     */
-    private void loadContexts(PaperCommandManager manager) {
-        manager.getCommandContexts().registerIssuerOnlyContext(Guild.class, c -> {
-            Guild guild = guildHandler.getGuild(c.getPlayer());
-            if (guild == null)  throw new InvalidCommandArgument(Messages.ERROR__NO_GUILD);
-            return guild;
-        });
-
-        manager.getCommandContexts().registerIssuerOnlyContext(GuildRole.class, c -> {
-            Guild guild = guildHandler.getGuild(c.getPlayer());
-            if (guild == null) return null;
-            return getGuildHandler().getGuildRole(guild.getMember(c.getPlayer().getUniqueId()).getRole().getLevel());
-        });
-    }
-
-    private void loadCompletions(PaperCommandManager manager) {
-
-        manager.getCommandCompletions().registerCompletion("members", c -> {
-            Guild guild = guildHandler.getGuild(c.getPlayer());
-            if (guild == null) return null;
-            return guild.getMembers().stream().map(member -> Bukkit.getOfflinePlayer(member.getUuid()).getName()).collect(Collectors.toList());
-        });
-
-        manager.getCommandCompletions().registerCompletion("online", c -> Bukkit.getOnlinePlayers().stream().map(member -> Bukkit.getPlayer(member.getUniqueId()).getName()).collect(Collectors.toList()));
-
-        manager.getCommandCompletions().registerCompletion("invitedTo", c -> guildHandler.getInvitedGuilds(c.getPlayer().getUniqueId()));
-
-        manager.getCommandCompletions().registerCompletion("joinableGuilds", c -> guildHandler.getJoinableGuild(c.getPlayer()));
-
-        manager.getCommandCompletions().registerCompletion("guilds", c -> guildHandler.getGuildNames());
-
-        manager.getCommandCompletions().registerAsyncCompletion("allyInvites", c -> {
-           Guild guild = guildHandler.getGuild(c.getPlayer());
-            if (guild == null) return null;
-           if (!guild.hasPendingAllies()) return null;
-           return guild.getPendingAllies().stream().map(g -> guildHandler.getNameById(g)).collect(Collectors.toList());
-        });
-
-        manager.getCommandCompletions().registerAsyncCompletion("allies", c -> {
-            Guild guild = guildHandler.getGuild(c.getPlayer());
-            if (guild == null) return null;
-            if (!guild.hasAllies()) return null;
-            return guild.getAllies().stream().map(g -> guildHandler.getNameById(g)).collect(Collectors.toList());
-        });
-
-        manager.getCommandCompletions().registerAsyncCompletion("activeCodes", c -> {
-            Guild guild = guildHandler.getGuild(c.getPlayer());
-            if (guild == null) return null;
-            if (guild.getCodes() == null) return null;
-            return guild.getCodes().stream().map(GuildCode::getId).collect(Collectors.toList());
-        });
-
-        manager.getCommandCompletions().registerAsyncCompletion("vaultAmount", c -> {
-            Guild guild = guildHandler.getGuild(c.getPlayer());
-            if (guild == null) return null;
-            if (guild.getVaults() == null) return null;
-            List<Inventory> list = guildHandler.getCachedVaults().get(guild);
-            if (list == null) return null;
-            return IntStream.rangeClosed(1, list.size()).mapToObj(Objects::toString).collect(Collectors.toList());
-        });
-
-        manager.getCommandCompletions().registerCompletion("arenas", c -> arenaHandler.getArenas().stream().map(Arena::getName).collect(Collectors.toList()));
-
-        manager.getCommandCompletions().registerCompletion("locations", c -> Arrays.asList("challenger", "defender"));
-
-        manager.getCommandCompletions().registerCompletion("languages", c -> loadedLanguages.stream().sorted().collect(Collectors.toList()));
     }
 
     /**
@@ -562,22 +426,6 @@ public final class Guilds extends JavaPlugin {
      */
     public static <T> TaskChain<T> newSharedChain(String name) {
         return taskChainFactory.newSharedChain(name);
-    }
-
-    /**
-     * Register dependency annotations for the plugin
-     * @param commandManager command manager
-     */
-    private void registerDependencies(PaperCommandManager commandManager) {
-        commandManager.registerDependency(GuildHandler.class, guildHandler);
-        commandManager.registerDependency(SettingsManager.class, settingsHandler.getSettingsManager());
-        commandManager.registerDependency(ActionHandler.class, actionHandler);
-        commandManager.registerDependency(Economy.class, economy);
-        commandManager.registerDependency(Permission.class, permissions);
-        commandManager.registerDependency(CooldownHandler.class, cooldownHandler);
-        commandManager.registerDependency(ArenaHandler.class, arenaHandler);
-        commandManager.registerDependency(ChallengeHandler.class, challengeHandler);
-        commandManager.registerDependency(ChallengesProvider.class, challengesProvider);
     }
 
 }

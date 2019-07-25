@@ -80,7 +80,7 @@ public class CommandAdminUpdateLanguages extends BaseCommand {
                     } catch (ZipException | IOException e) {
                         e.printStackTrace();
                     }
-                }).sync(() -> guilds.loadLanguages(guilds.getCommandManager())).execute();
+                }).sync(() -> guilds.getAcfHandler().registerLanguages(guilds, guilds.getCommandManager())).execute();
                 actionHandler.removeAction(issuer.getIssuer());
             }
 
