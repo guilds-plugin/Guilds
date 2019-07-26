@@ -24,18 +24,31 @@
 
 package me.glaremasters.guilds.api.events;
 
+import lombok.Getter;
 import me.glaremasters.guilds.api.events.base.GuildEvent;
 import me.glaremasters.guilds.guild.Guild;
 import org.bukkit.entity.Player;
 
+@Getter
 public class GuildLeaveEvent extends GuildEvent {
+
+    private final Cause cause;
+
 
     /**
      * Called a when a player leaves the guild
      * @param player the player leaving the guild
      * @param guild the guild the player was leaving
+     * @param cause the reason the event was called
      */
-    public GuildLeaveEvent(Player player, Guild guild) {
+    public GuildLeaveEvent(Player player, Guild guild, Cause cause) {
         super(player, guild);
+        this.cause = cause;
+    }
+
+    public enum Cause {
+        PLAYER_LEFT,
+        PLAYER_KICKED,
+        ADMIN_REMOVED
     }
 }
