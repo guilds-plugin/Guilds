@@ -348,9 +348,6 @@ public final class Guilds extends JavaPlugin {
         api = new GuildsAPI(getGuildHandler());
         info("Enabled API!");
 
-        // Create cooldowns if they don't exist
-        cooldownHandler.createCooldowns();
-
         info("Ready to go! That only took " + (System.currentTimeMillis() - startingTime) + "ms");
         getServer().getScheduler().scheduleAsyncRepeatingTask(this, () -> {
             try {
