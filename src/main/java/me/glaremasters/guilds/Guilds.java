@@ -57,7 +57,7 @@ import me.glaremasters.guilds.listeners.VaultBlacklistListener;
 import me.glaremasters.guilds.listeners.WorldGuardListener;
 import me.glaremasters.guilds.placeholders.PlaceholderAPI;
 import me.glaremasters.guilds.updater.UpdateChecker;
-import me.glaremasters.guilds.utils.Constants;
+import me.glaremasters.guilds.utils.LoggingUtils;
 import me.glaremasters.guilds.utils.StringUtils;
 import net.byteflux.libby.BukkitLibraryManager;
 import net.milkbowl.vault.economy.Economy;
@@ -68,14 +68,9 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.JarURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -83,7 +78,6 @@ import java.util.Objects;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.logging.Level;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Getter
@@ -184,43 +178,6 @@ public final class Guilds extends JavaPlugin {
     }
 
     /**
-     * Log any message to console with any level.
-     *
-     * @param level the log level to log on.
-     * @param msg   the message to log.
-     */
-    public void log(Level level, String msg) {
-        getLogger().log(level, msg);
-    }
-
-    /**
-     * Log a message to console on INFO level.
-     *
-     * @param msg the msg you want to log.
-     */
-    public void info(String msg) {
-        log(Level.INFO, msg);
-    }
-
-    /**
-     * Log a message to console on WARNING level.
-     *
-     * @param msg the msg you want to log.
-     */
-    public void warn(String msg) {
-        log(Level.WARNING, msg);
-    }
-
-    /**
-     * Log a message to console on SEVERE level.
-     *
-     * @param msg the msg you want to log.
-     */
-    public void severe(String msg) {
-        log(Level.SEVERE, msg);
-    }
-
-    /**
      * Guilds logLogo in console
      */
     private void logLogo(ConsoleCommandSender sender) {
@@ -235,13 +192,13 @@ public final class Guilds extends JavaPlugin {
     @Override
     public void onEnable() {
         if (!successfulLoad) {
-            warn("Dependencies could not be downloaded, shutting down to prevent file corruption.");
+            LoggingUtils.warn("Dependencies could not be downloaded, shutting down to prevent file corruption.");
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
         // Check if the server is running Vault
         if (!Bukkit.getPluginManager().isPluginEnabled("Vault")) {
-            warn("It looks like you don't have Vault on your server! Stopping plugin..");
+            LoggingUtils.warn("It looks like you don't have Vault on your server! Stopping plugin..");
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
@@ -259,15 +216,15 @@ public final class Guilds extends JavaPlugin {
         logLogo(Bukkit.getConsoleSender());
 
         // Load the config
-        info("Loading config..");
+        LoggingUtils.info("Loading config..");
         settingsHandler = new SettingsHandler(this);
-        info("Loaded config!");
+        LoggingUtils.info("Loaded config!");
 
         saveData();
 
         // Load data here.
         try {
-            info("Loading Data..");
+            LoggingUtils.info("Loading Data..");
             // This will soon be changed to an automatic storage chooser from the config
             // Load the json provider
             database = new JsonProvider(getDataFolder());
@@ -285,35 +242,35 @@ public final class Guilds extends JavaPlugin {
             challengesProvider = new ChallengesProvider(getDataFolder());
             // Load guildhandler with provider
             guildHandler = new GuildHandler(database, getCommandManager(), getPermissions(), getConfig(), settingsHandler.getSettingsManager());
-            info("Loaded data!");
+            LoggingUtils.info("Loaded data!");
         } catch (IOException e) {
-            severe("An error occurred loading data! Stopping plugin..");
+            LoggingUtils.severe("An error occurred loading data! Stopping plugin..");
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
 
         // Load Vault
-        info("Hooking into Vault..");
+        LoggingUtils.info("Hooking into Vault..");
         // Setup Vaults Economy Hook
         setupEconomy();
         // Setup Vaults Permission Hook
         setupPermissions();
-        info("Hooked into Vault!");
+        LoggingUtils.info("Hooked into Vault!");
 
         // If they have placeholderapi, enable it.
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             new PlaceholderAPI(guildHandler).register();
         }
 
-        info("Enabling Metrics..");
+        LoggingUtils.info("Enabling Metrics..");
         // start bstats
         Metrics metrics = new Metrics(this);
         metrics.addCustomChart(new Metrics.SingleLineChart("guilds", () -> getGuildHandler().getGuildsSize()));
-        info("Enabled Metrics!");
+        LoggingUtils.info("Enabled Metrics!");
 
         // Initialize the action handler for actions in the plugin
         actionHandler = new ActionHandler();
-        info("Loading Commands and Language Data..");
+        LoggingUtils.info("Loading Commands and Language Data..");
         // Load the ACF command manager
         commandManager = new PaperCommandManager(this);
         acfHandler = new ACFHandler(this, commandManager);
@@ -323,7 +280,7 @@ public final class Guilds extends JavaPlugin {
         if (settingsHandler.getSettingsManager().getProperty(PluginSettings.ANNOUNCEMENTS_CONSOLE)) {
             newChain().async(() -> {
                 try {
-                    info(StringUtils.getAnnouncements(this));
+                    LoggingUtils.info(StringUtils.getAnnouncements(this));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -343,12 +300,12 @@ public final class Guilds extends JavaPlugin {
         // Load the optional listeners
         optionalListeners();
 
-        info("Enabling the Guilds API..");
+        LoggingUtils.info("Enabling the Guilds API..");
         // Initialize the API (probably be placed in different spot?)
         api = new GuildsAPI(getGuildHandler());
-        info("Enabled API!");
+        LoggingUtils.info("Enabled API!");
 
-        info("Ready to go! That only took " + (System.currentTimeMillis() - startingTime) + "ms");
+        LoggingUtils.info("Ready to go! That only took " + (System.currentTimeMillis() - startingTime) + "ms");
         getServer().getScheduler().scheduleAsyncRepeatingTask(this, () -> {
             try {
                 guildHandler.saveData();

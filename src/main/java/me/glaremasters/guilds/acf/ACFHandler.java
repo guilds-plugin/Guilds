@@ -17,6 +17,7 @@ import me.glaremasters.guilds.guild.GuildCode;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.messages.Messages;
+import me.glaremasters.guilds.utils.LoggingUtils;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
@@ -71,10 +72,10 @@ public class ACFHandler {
                 }
             }
             commandManager.getLocales().setDefaultLocale(Locale.forLanguageTag(guilds.getSettingsHandler().getSettingsManager().getProperty(PluginSettings.MESSAGES_LANGUAGE)));
-            guilds.info("Loaded successfully!");
+            LoggingUtils.info("Loaded successfully!");
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
-            guilds.info("Failed to load!");
+            LoggingUtils.info("Failed to load!");
         }
     }
 
