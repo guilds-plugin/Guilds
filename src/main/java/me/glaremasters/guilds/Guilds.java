@@ -323,7 +323,7 @@ public final class Guilds extends JavaPlugin {
         if (settingsHandler.getSettingsManager().getProperty(PluginSettings.ANNOUNCEMENTS_CONSOLE)) {
             newChain().async(() -> {
                 try {
-                    info(getAnnouncements());
+                    info(StringUtils.getAnnouncements(this));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -384,26 +384,6 @@ public final class Guilds extends JavaPlugin {
             getServer().getPluginManager().registerEvents(new WorldGuardListener(guildHandler), this);
             getServer().getPluginManager().registerEvents(new ClaimSignListener(this, settingsHandler.getSettingsManager(), guildHandler), this);
         }
-    }
-
-    /**
-     * Get the announcements for the plugin
-     * @return announcements
-     * @throws IOException
-     */
-    public String getAnnouncements() throws IOException {
-        String announcement;
-        URL url = new URL("https://glaremasters.me/guilds/announcements/?id=" + getDescription().getVersion());
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        con.setRequestProperty("User-Agent", Constants.USER_AGENT);
-        try (InputStream in = con.getInputStream()) {
-            String result = new BufferedReader(new InputStreamReader(in)).lines().collect(Collectors.joining("\n"));
-            announcement = StringUtils.convert_html(result);
-            con.disconnect();
-        } catch (Exception ex) {
-            announcement = "Could not fetch announcements!";
-        }
-        return announcement;
     }
 
     /**
