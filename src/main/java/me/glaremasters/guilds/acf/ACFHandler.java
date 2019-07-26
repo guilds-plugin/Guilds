@@ -111,7 +111,7 @@ public class ACFHandler {
      */
     public void registerCustomCompletions(PaperCommandManager commandManager, GuildHandler guildHandler, ArenaHandler arenaHandler) {
         commandManager.getCommandCompletions().registerCompletion("online", c -> Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.toList()));
-        commandManager.getCommandCompletions().registerCompletion("invitedTo", c -> guildHandler.getInvitedGuilds(c.getPlayer().getUniqueId()));
+        commandManager.getCommandCompletions().registerCompletion("invitedTo", c -> guildHandler.getInvitedGuilds(c.getPlayer()));
         commandManager.getCommandCompletions().registerCompletion("joinableGuilds", c -> guildHandler.getJoinableGuild(c.getPlayer()));
         commandManager.getCommandCompletions().registerCompletion("guilds", c -> guildHandler.getGuildNames());
         commandManager.getCommandCompletions().registerCompletion("arenas", c -> arenaHandler.getArenas().stream().map(Arena::getName).collect(Collectors.toList()));

@@ -401,11 +401,11 @@ public class GuildHandler {
     /**
      * Returns a string list of all the guilds that a member is invited to
      *
-     * @param uuid the uuid of the member
+     * @param player the uuid of the member
      * @return a string list of guilds's names.
      */
-    public List<String> getInvitedGuilds(UUID uuid) {
-        return guilds.stream().filter(guild -> guild.getInvitedMembers().contains(uuid)).map(Guild::getName).collect(Collectors.toList());
+    public List<String> getInvitedGuilds(OfflinePlayer player) {
+        return guilds.stream().filter(guild -> guild.getInvitedMembers().contains(player.getUniqueId())).map(Guild::getName).collect(Collectors.toList());
     }
 
     /**
@@ -567,7 +567,7 @@ public class GuildHandler {
      * @param player the player being checked
      */
     public void checkInvites(CommandManager manager, Player player) {
-        List<String> list = getInvitedGuilds(player.getUniqueId());
+        List<String> list = getInvitedGuilds(player);
 
         if (list.isEmpty()) {
             manager.getCommandIssuer(player).sendInfo(Messages.ERROR__NO_PENDING_INVITES);
@@ -812,7 +812,7 @@ public class GuildHandler {
      * @return list of all guilds
      */
     public List<String> getJoinableGuild(Player player) {
-        return Stream.concat(getInvitedGuilds(player.getUniqueId()).stream(),
+        return Stream.concat(getInvitedGuilds(player).stream(),
                 getPublicGuilds().stream())
                 .map(ACFBukkitUtil::removeColors)
                 .collect(Collectors.toList());
