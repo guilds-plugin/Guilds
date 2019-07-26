@@ -52,17 +52,17 @@ public class GuildsAPI {
 
     /**
      * Get a guild by it's uuid
-     * @param uuid uuid of the player
-     * @return the guild they are in
+     * @param uuid uuid of the guild
+     * @return the guild the uuid belong to
      */
     public Guild getGuild(@NotNull UUID uuid) {
         return guildHandler.getGuild(uuid);
     }
 
     /**
-     * Get the guild of a player by their name
-     * @param name the name of the player
-     * @return the guild they are in
+     * Get a guild by it's name
+     * @param name the name of the guild
+     * @return the guild object
      */
     public Guild getGuild(@NotNull String name) {
         return guildHandler.getGuild(name);
