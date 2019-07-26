@@ -177,18 +177,6 @@ public final class Guilds extends JavaPlugin {
 
     }
 
-    /**
-     * Guilds logLogo in console
-     */
-    private void logLogo(ConsoleCommandSender sender) {
-        sender.sendMessage(ACFBukkitUtil.color("&a  ________ "));
-        sender.sendMessage(ACFBukkitUtil.color("&a /  _____/ "));
-        sender.sendMessage(ACFBukkitUtil.color("&a/   \\  ___ " + "  &3Guilds &8v" + getDescription().getVersion()));
-        sender.sendMessage(ACFBukkitUtil.color("&a\\    \\_\\  \\" + "  &3Server Version: &8" + getServer().getVersion()));
-        sender.sendMessage(ACFBukkitUtil.color("&a \\______  /"));
-        sender.sendMessage(ACFBukkitUtil.color("&a        \\/ "));
-    }
-
     @Override
     public void onEnable() {
         if (!successfulLoad) {
@@ -213,7 +201,7 @@ public final class Guilds extends JavaPlugin {
         taskChainFactory = BukkitTaskChainFactory.create(this);
 
         // Flex teh guild logLogo
-        logLogo(Bukkit.getConsoleSender());
+        LoggingUtils.logLogo(Bukkit.getConsoleSender(), this);
 
         // Load the config
         LoggingUtils.info("Loading config..");
