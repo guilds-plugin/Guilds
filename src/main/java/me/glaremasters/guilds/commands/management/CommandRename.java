@@ -33,6 +33,7 @@ import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
+import me.glaremasters.guilds.api.events.GuildRenameEvent;
 import me.glaremasters.guilds.configuration.sections.GuildSettings;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.exceptions.InvalidPermissionException;
@@ -43,6 +44,7 @@ import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.ClaimUtils;
 import me.glaremasters.guilds.utils.Constants;
 import me.glaremasters.guilds.utils.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.codemc.worldguardwrapper.WorldGuardWrapper;
 
@@ -81,6 +83,13 @@ public class CommandRename extends BaseCommand {
         if (settingsManager.getProperty(GuildSettings.BLACKLIST_TOGGLE)) {
             if (guildHandler.blacklistCheck(name, settingsManager))
                 ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__BLACKLIST));
+        }
+
+        GuildRenameEvent event = new GuildRenameEvent(player, guild);
+        Bukkit.getPluginManager().callEvent(event);
+
+        if (event.isCancelled()) {
+            return;
         }
 
         guild.setName(StringUtils.color(name));
