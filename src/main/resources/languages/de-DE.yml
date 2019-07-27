@@ -86,8 +86,8 @@ create:
   successful: "&aGilde '{guild}&r&a' erfolgreich erstellt!"
   cancelled: "&cGilden-erstellung abgebrochen!"
   requirements: "&cDer Name deiner Gilde entspricht nicht den anforderungen! Du kannst nur Alphanummerische Zeichen verwenden und der name darf nicht länger als 64 sein"
-  name-too-long: "&cYou didn't provide a prefix so the name you input was tested against the prefix requirements and that failed. Please try a shorter name or input a prefix on creation."
-  prefix-too-long: "&cThe guild prefix provided did not match the requirements! Perphaps you had too many characters?"
+  name-too-long: "&cDu hast keinen Präfix angegeben, also wurde der eingegebene Name gegen die Präfixvoraussetzungen getestet und ist gescheitert. Bitte versuche einen kürzeren Namen und verwende einen Präfix bei der Erstellung."
+  prefix-too-long: "&cDer Gilden Präfix der angegeben wurde entstimmt nicht den Voraussetzungen. Vielleicht hat er zu viele Zeichen?"
 chat:
   disabled: "Gilden Chat deaktiviert"
   enabled: "Gilden Chat aktiviert"
@@ -224,7 +224,7 @@ accept:
   guild-full: "&cDiese Gilde ist voll!"
   player-joined: "&a{player} ist deiner Gilde beigetreten!"
   successful: "&aDu bist erfolgreich der Gilde '{guild}&r&a' beigetreten"
-  cooldown: "&cYou are currently on cooldown from joining a guild. Try again in {amount} seconds."
+  cooldown: "&cDu musst etwas warten bevor du einer Gilde beitrittst. Versuch es erneut in {amount} Sekunden."
 claim:
   already-exists: "&cDu hast bereits einen Besitz. Bitte entferne deinen alten Besitz bevor du einen neuen erstellst"
   overlap: "&cDein Besitz konnte nicht erstellt werden da ein anderer Besitz in der nähe ist"
@@ -234,7 +234,7 @@ claim:
   sign-no-permission: "&cDu hast keine Erlaubnis um Grundstücksschilder zu erstellen!"
   sign-invalid-format: "&cFalsches Grundstücksschild format! Bitte versuche es erneut!"
   sign-invalid-region: "&cUnerlaubte Worldguard Region!"
-  sign-placed: "&aYou've successfully created a Claim Sign for the region {region} with the price {price}."
+  sign-placed: "&aDu hast erfolgreich ein Grundstückschild für die Region {region} erstellt, mit einem Preis von {price}."
   sign-not-enough: "&cDu hast nicht genug Geld in der Gildenbank um dieses Gildengrundstück zu kaufen."
   sign-forced: "&cDu kannst Grundstücke nur mit Grundstücksschildern beanspruchen! Frage nach Hilfe vom Serverpersonal!"
   sign-buy-success: "&aHurra! Du hast erfolgreich das Grundstück gekauft!"
