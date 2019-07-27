@@ -242,7 +242,7 @@ unclaim:
   success: "&aDu hast erfolgreich dein Gildenbesitz entfernt!"
   not-found: "&cDu kannst kein Land entfernen, das du nicht besitzt!"
 pending:
-  invites: "&aYou have {number} pending invite(s) from the guild(s): &e{guilds}&r&a . Use /guild accept <name> or /guild decline <name> to join or decline an invite!"
+  invites: "&aDu hast {number} ausstehende Einladungen von der/den Gilde/n: &e{guilds}&r&a . Verwende /guild accept <name> oder/guild decline <name> um beizutreten oder die Einladung abzulehnen!"
 codes:
   created: "&aDu hast einen neuen Einladungscode erstellt: &6{code} &amit &6{amount} &averwendungen!"
   empty: "&cOh nein! Ich habe keine Codes, versuch einen zuerst zu erstellen!"
