@@ -289,8 +289,8 @@ arena:
   all-full: "&cИзвините, все арены на сервере в данный момент заняты! Попробуйте снова позже!"
 war:
   no-defenders: "&cУ вызываемой гильдии недостаточно участников для подтверждения вызова."
-  challenge-sent: "&aA war challenge has been sent to &b{guild}&a! They will have &b{amount} &aseconds to accept it!"
-  incoming-challenge: "&aBeware! The guild &b{guild} &ahas just sent you a war challenge! Show them you are the best in all the lands by doing /guild war accept or be a little scary cat and run away by doing /guild war deny! You have &b{amount} &atime to decide!"
+  challenge-sent: "&aВызов на войну был отправлен &b{guild}&a! У них есть &b{amount}&a секунд, чтобы подтвердить его!"
+  incoming-challenge: "&aОсторожно! Гильдия &b{guild} &aвызывает вас на войну! Покажите им своё превосходство используя /guild war accept или сбежите как маленький трусливый котёнок используя /guild war deny! У вас есть &b{amount} &aсекунд для решения!"
   no-pending-challenge: "&cИзвините! У вас нет ожидающих вызовов на войну."
   already-challenging: "&cИзвините, у вас уже есть ожидающий вызов. Пожалуйста, отмените или дождитесь пока он истечёт."
   no-self-challenge: "&cГлупый человек, ты не можешь вызвать себя на войну!"
