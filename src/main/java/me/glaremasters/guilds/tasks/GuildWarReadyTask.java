@@ -105,6 +105,7 @@ public class GuildWarReadyTask extends BukkitRunnable {
                 challenge.getChallenger().sendMessage(guilds.getCommandManager(), Messages.WAR__REMOVED_FOR_SIZE, "{players}", heldBackMessage);
                 challenge.getDefender().sendMessage(guilds.getCommandManager(), Messages.WAR__REMOVED_FOR_SIZE, "{players}", heldBackMessage);
             }
+            heldBack.clear();
             
             // Send them both to the arena
             challengeHandler.sendToArena(challenge.getAliveChallengers(), challenge.getArena().getChallengerLoc());
