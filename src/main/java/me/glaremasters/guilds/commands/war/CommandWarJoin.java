@@ -84,8 +84,8 @@ public class CommandWarJoin extends BaseCommand {
             challenge.getChallengePlayers().add(player.getUniqueId());
         }
 
-        // Tell them they joined
-        getCurrentCommandIssuer().sendInfo(Messages.WAR__WAR_JOINED);
+       // Tell the guild that a player has joined the war.
+        guild.sendMessage(getCurrentCommandManager(), Messages.WAR__WAR_JOINED, "{player}", player.getName());
     }
 
 }
