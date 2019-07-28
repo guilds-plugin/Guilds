@@ -312,6 +312,8 @@ war:
   removed-for-size: "&aThe following player(s) have been removed from the war in order to keep each side even: {players}"
   defend-cooldown: "&c{guild} has already defended themselves in the arena recently. Let them regain their strength and challenge them another time!"
   commands-blocked: "&cSorry! You can't run commands while in a war!"
+  player-killed-player: "&b{player} &ahas been killed by &b{killer}&a!"
+  player-killed-other: "&b{player} &ahas been killed for unknown reasons."
 acf:
   invalid-syntax: "Usage: <c2>{command}</c2> <c3>{syntax}</c3>"
   permission-denied: "I'm sorry, but you do not have permission to perform this command."

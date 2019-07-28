@@ -287,6 +287,30 @@ public class ChallengeHandler {
     }
 
     /**
+     * Announce when a player is killed to everyone in the war
+     * @param challenge the challenge
+     * @param guilds main class
+     * @param player player died
+     * @param killer player that killed player
+     */
+    public void announceDeath(GuildChallenge challenge, Guilds guilds, Player player, Player killer) {
+        getAllPlayersAlive(challenge).keySet().forEach(u -> guilds.getCommandManager().getCommandIssuer(Bukkit.getPlayer(u))
+                .sendInfo(Messages.WAR__PLAYER_KILLED_PLAYER,
+                        "{player}", player.getName(), "{killed}", killer.getName()));
+    }
+
+    /**
+     * Announces when a player is killed to everyone in the war
+     * @param challenge the challenge
+     * @param guilds main class
+     * @param player player that died
+     */
+    public void announceDeath(GuildChallenge challenge, Guilds guilds, Player player) {
+        getAllPlayersAlive(challenge).keySet().forEach(u -> guilds.getCommandManager().getCommandIssuer(Bukkit.getPlayer(u))
+                .sendInfo(Messages.WAR__PLAYER_KILLED_OTHER, "{player}", player.getName()));
+    }
+
+    /**
      * Give the rewards to the winner
      * @param settingsManager the settings manager
      * @param challenge the challenge

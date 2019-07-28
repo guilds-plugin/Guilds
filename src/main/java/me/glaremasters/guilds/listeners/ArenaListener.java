@@ -66,6 +66,9 @@ public class ArenaListener implements Listener {
         // Add them to the death list
         playerDeath.put(player.getUniqueId(), challengeHandler.getAllPlayersAlive(challenge).get(player.getUniqueId()));
 
+        // Announce that a player has died
+        challengeHandler.announceDeath(challenge, guilds, player);
+
         // Handle rest of arena stuff like normal
         challengeHandler.handleFinish(guilds, settingsManager, challengesProvider, player, challenge);
     }
@@ -93,6 +96,7 @@ public class ArenaListener implements Listener {
         }
         // Get a copy of the killer and player being killed
         Player entity = (Player) event.getEntity();
+        Player killer = (Player) event.getDamager();
 
         // Check to make sure this damage would kill them to prevent excess checking
         if (entity.getHealth() - event.getFinalDamage() > 1) {
@@ -107,6 +111,8 @@ public class ArenaListener implements Listener {
             if (challenge.isStarted()) {
                 // Cancel the last damage so they don't die
                 event.setCancelled(true);
+                // Tell everyone in the arena that the player was killed
+                challengeHandler.announceDeath(challenge, guilds, entity, killer);
                 // Teleport them out of the arena
                 challengeHandler.exitArena(entity, challenge);
                 // Remove them

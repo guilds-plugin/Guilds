@@ -99,7 +99,7 @@ public class GuildWarReadyTask extends BukkitRunnable {
                     challenge.getAliveChallengers().remove(last);
                 } while (challenge.getAliveChallengers().size() != challenge.getAliveDefenders().size());
             }
-            
+
             if (heldBack.size() > 0) {
                 String heldBackMessage = Joiner.on(", ").join(heldBack);
                 challenge.getChallenger().sendMessage(guilds.getCommandManager(), Messages.WAR__REMOVED_FOR_SIZE, "{players}", heldBackMessage);
