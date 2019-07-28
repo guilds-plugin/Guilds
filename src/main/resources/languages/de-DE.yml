@@ -254,13 +254,13 @@ codes:
   guild-message: "&6{player} &ahas joined the guild using an invite code from &6{creator}&a!"
   out: "&cThat invite code is all out of uses! Please try another one!"
   info: "&aInvite Code Information:\n&aID: &6{code}\n&aUses: &6{amount}\n&aCreator: &6{creator}\n&aRedeemers: &6{redeemers}"
-  max: "&cYou already have too many active invite codes in your guild!"
+  max: "&cDu hast bereits zu viele aktive Einladungscodes in deiner Gilde!"
 vaults:
   maxed: "&cYou can't open this vault because you already have the max amount of vaults for your Guild Tier!"
   blacklisted: "&cYou can't put that item in your Guild Vault because it is blacklisted!"
 languages:
   set: "&aDu hast erfolgreich die Sprache zu {language} geändert"
-  warning: "&cYou are about to update all the language files. This will delete all current language files and recreate them. Type /guilds confirm to continue, type /guilds cancel to cancel."
+  warning: "&cDu bist dabei alle Sprachdateien zu aktualisieren. Dies wird alle derzeitigen Sprachpakete löschen und neuerstellen. Gib /guilds confirm ein, um zu bestätigen oder /guilds cancel, um abzubrechen."
   updated: "&aSprachdateien wurden neu erstellt und geladen!"
   console-only: "&cEntschuldigung, diesen Befehl kannst du nur in der Konsole verwenden!"
 help:
