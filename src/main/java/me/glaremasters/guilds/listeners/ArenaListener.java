@@ -114,7 +114,7 @@ public class ArenaListener implements Listener {
                 // Tell everyone in the arena that the player was killed
                 challengeHandler.announceDeath(challenge, guilds, entity, killer);
                 // Teleport them out of the arena
-                challengeHandler.exitArena(entity, challenge);
+                challengeHandler.exitArena(entity, challenge, guilds);
                 // Remove them
                 challengeHandler.handleFinish(guilds, settingsManager, challengesProvider, entity, challenge);
             }
