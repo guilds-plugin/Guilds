@@ -217,10 +217,12 @@ public class ChallengeHandler {
      * @param player the player to teleport
      * @param challenge the challenge they are part of
      */
-    public void exitArena(Player player, GuildChallenge challenge) {
+    public void exitArena(Player player, GuildChallenge challenge, Guilds guilds) {
         String location = getAllPlayersAlive(challenge).get(player.getUniqueId());
         if (location != null) {
             player.teleport(ACFBukkitUtil.stringToLocation(location));
+            guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.WAR__TELEPORTED_BACK);
+            player.setHealth(20);
         }
     }
 
