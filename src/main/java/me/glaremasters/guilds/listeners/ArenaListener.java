@@ -64,7 +64,7 @@ public class ArenaListener implements Listener {
         event.setKeepLevel(true);
 
         // Add them to the death list
-        playerDeath.put(player.getUniqueId(), challengeHandler.getAllPlayers(challenge).get(player.getUniqueId()));
+        playerDeath.put(player.getUniqueId(), challengeHandler.getAllPlayersAlive(challenge).get(player.getUniqueId()));
 
         // Handle rest of arena stuff like normal
         challengeHandler.handleFinish(guilds, settingsManager, challengesProvider, player, challenge);

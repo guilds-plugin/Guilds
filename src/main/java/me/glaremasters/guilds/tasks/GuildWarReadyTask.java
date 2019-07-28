@@ -24,6 +24,7 @@
 
 package me.glaremasters.guilds.tasks;
 
+import com.google.common.base.Joiner;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.challenges.ChallengeHandler;
 import me.glaremasters.guilds.guild.GuildChallenge;
@@ -33,6 +34,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -82,19 +84,26 @@ public class GuildWarReadyTask extends BukkitRunnable {
             challengeHandler.prepareFinalList(challenge.getChallengePlayers(), challenge, "challenger");
             challengeHandler.prepareFinalList(challenge.getDefendPlayers(), challenge, "defender");
 
+            List<String> heldBack = new ArrayList<>();
             // Make sure both are the same size
             if (challenge.getAliveDefenders().size() > challenge.getAliveChallengers().size()) {
                 do {
                     UUID last = challenge.getAliveDefenders().lastKey();
-                    guilds.getCommandManager().getCommandIssuer(Bukkit.getPlayer(last)).sendInfo(Messages.WAR__REMOVED_FOR_SIZE);
+                    heldBack.add(Bukkit.getPlayer(last).getName());
                     challenge.getAliveDefenders().remove(last);
                 } while (challenge.getAliveDefenders().size() != challenge.getAliveChallengers().size());
             } else if (challenge.getAliveChallengers().size() > challenge.getAliveDefenders().size()) {
                 do {
                     UUID last = challenge.getAliveChallengers().lastKey();
-                    guilds.getCommandManager().getCommandIssuer(Bukkit.getPlayer(last)).sendInfo(Messages.WAR__REMOVED_FOR_SIZE);
+                    heldBack.add(Bukkit.getPlayer(last).getName());
                     challenge.getAliveChallengers().remove(last);
                 } while (challenge.getAliveChallengers().size() != challenge.getAliveDefenders().size());
+            }
+            
+            if (heldBack.size() > 0) {
+                String heldBackMessage = Joiner.on(", ").join(heldBack);
+                challenge.getChallenger().sendMessage(guilds.getCommandManager(), Messages.WAR__REMOVED_FOR_SIZE, "{players}", heldBackMessage);
+                challenge.getDefender().sendMessage(guilds.getCommandManager(), Messages.WAR__REMOVED_FOR_SIZE, "{players}", heldBackMessage);
             }
             
             // Send them both to the arena

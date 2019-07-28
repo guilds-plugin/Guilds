@@ -218,7 +218,7 @@ public class ChallengeHandler {
      * @param challenge the challenge they are part of
      */
     public void exitArena(Player player, GuildChallenge challenge) {
-        String location = getAllPlayers(challenge).get(player.getUniqueId());
+        String location = getAllPlayersAlive(challenge).get(player.getUniqueId());
         if (location != null) {
             player.teleport(ACFBukkitUtil.stringToLocation(location));
         }
@@ -229,7 +229,7 @@ public class ChallengeHandler {
      * @param challenge the challenge to get alive left of
      * @return compiled map
      */
-    public Map<UUID, String> getAllPlayers(GuildChallenge challenge) {
+    public Map<UUID, String> getAllPlayersAlive(GuildChallenge challenge) {
         return Stream.of(challenge.getAliveChallengers(), challenge.getAliveDefenders()).flatMap(m -> m.entrySet().stream()).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
@@ -238,7 +238,7 @@ public class ChallengeHandler {
      * @param challenge the challenge to check
      */
     public void teleportRemaining(GuildChallenge challenge) {
-        getAllPlayers(challenge).forEach((key, value) -> Bukkit.getPlayer(key).teleport(ACFBukkitUtil.stringToLocation(value)));
+        getAllPlayersAlive(challenge).forEach((key, value) -> Bukkit.getPlayer(key).teleport(ACFBukkitUtil.stringToLocation(value)));
     }
 
     /**
