@@ -285,7 +285,7 @@ arena:
   list: "&aLa seguente arena/e sul server sono: &c{arena}&a."
   list-empty: "&cAttualmente non ci sono arene create sul server."
   position-not-set: "&cLa posizione per quel team non è ancora stata impostata. Prova ad impostarla prima di teletrasportarti ad essa!"
-  teleported-to-selection: "&aWooosh! You've teleported to the &c{team}&a spawn point for &c{arena}&a."
+  teleported-to-selection: "&aWooosh! Ti sei teletrasportato al &c{team}&a punto di spawn per &c{arena}&a."
   all-full: "&cSorry, all arenas on the server are currently in use! Try again later!"
 war:
   no-defenders: "&cThe puny guild you challenged has nobody man enough to accept it."
