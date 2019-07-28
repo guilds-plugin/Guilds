@@ -298,7 +298,7 @@ public class ChallengeHandler {
     public void announceDeath(GuildChallenge challenge, Guilds guilds, Player player, Player killer) {
         getAllPlayersAlive(challenge).keySet().forEach(u -> guilds.getCommandManager().getCommandIssuer(Bukkit.getPlayer(u))
                 .sendInfo(Messages.WAR__PLAYER_KILLED_PLAYER,
-                        "{player}", player.getName(), "{killed}", killer.getName()));
+                        "{player}", player.getName(), "{killer}", killer.getName()));
     }
 
     /**

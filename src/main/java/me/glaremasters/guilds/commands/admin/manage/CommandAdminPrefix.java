@@ -72,7 +72,8 @@ public class CommandAdminPrefix extends BaseCommand {
 
         guild.setPrefix(ACFBukkitUtil.color(prefix));
 
-        getCurrentCommandIssuer().sendInfo(Messages.PREFIX__SUCCESSFUL);
+        getCurrentCommandIssuer().sendInfo(Messages.PREFIX__SUCCESSFUL,
+                "{prefix}", prefix);
     }
 
 
