@@ -96,10 +96,11 @@ error:
   not-enough-money: "&cSorry, you do not have enough money to do that"
   economy-required: "&cAn economy plugin is required for this to work. Please contact your server administrator"
   buff-cooldown: "&cSorry, your guild has recently bought a buff. You can try again in {amount} seconds."
+  no-pending-invites: "&cSorry, you currently do not have any pending guild invites!"
 bank:
   balance: "&aYour guild's bank has a balance of {amount}."
   deposit-success: "&a{player} has just deposited {amount} into the Guild Bank. Your new total is {total}."
-  withdrawl-success: "&a{player} has just withdrawn {amount} from the Guild Bank. Your new total is {total}."
+  withdrawal-success: "&a{player} has just withdrawn {amount} from the Guild Bank. Your new total is {total}."
   not-enough-bank: "&cThere isn't enough in the Guild Bank to do that"
   over-max: "&cSorry, you can't deposit that much as you would go over your max bank balance!"
 admin:
@@ -229,7 +230,7 @@ unclaim:
   success: "&aУспешно премахнахте територията на гилдията ви!"
   not-found: "&cНе можете да отхвърлите територия която не притежавате!"
 pending:
-  invites: "&aИмате {number} покана/и от гилдия/ите: &e{guilds}&r&a . Използвайте /guild accept <име> или /guild deny <име>, за да приемете или откажете покана!"
+  invites: "&aYou have {number} pending invite(s) from the guild(s): &e{guilds}&r&a . Use /guild accept <name> or /guild decline <name> to join or decline an invite!"
 codes:
   created: "&aСъздадохте нов код за покана: &6{code} &aс &6{amount} &aизползвания!"
   empty: "&cО, не! Нямате никакви кодове, опитайте първо да направите един!"

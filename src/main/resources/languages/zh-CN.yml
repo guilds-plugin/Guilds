@@ -96,10 +96,11 @@ error:
   not-enough-money: "&7[&6公会&7]&f你没有足够的钱这么做"
   economy-required: "&7[&6公会&7]&f服务器未安装经济插件,请联系管理员"
   buff-cooldown: "&7[&6公会&7]&f抱歉,你的公会在近期已购买了一个BUFF,请等待{amount}秒后重试"
+  no-pending-invites: "&cSorry, you currently do not have any pending guild invites!"
 bank:
   balance: "&7[&6公会&7]&f当前公会金库: {amount}金币"
   deposit-success: "&a{player} has just deposited {amount} into the Guild Bank. Your new total is {total}."
-  withdrawl-success: "&a{player} has just withdrawn {amount} from the Guild Bank. Your new total is {total}."
+  withdrawal-success: "&a{player} has just withdrawn {amount} from the Guild Bank. Your new total is {total}."
   not-enough-bank: "&7[&6公会&7]&f金库里没有足够的金币"
   over-max: "&7[&6公会&7]&f你不能存入这么多的金币，已超出容量"
 admin:
@@ -229,7 +230,7 @@ unclaim:
   success: "&7[&6公会&7]&f你已成功删除你的公会领地!"
   not-found: "&7[&6公会&7]&f公会领地不存在!"
 pending:
-  invites: "&7[&6公会&7]&f你有来自公会的 {number} 个待处理邀请:  {guilds}   使用 /guild accept <name> 或 /guild deny <name> 来处理请求!"
+  invites: "&aYou have {number} pending invite(s) from the guild(s): &e{guilds}&r&a . Use /guild accept <name> or /guild decline <name> to join or decline an invite!"
 codes:
   created: "&7[&6公会&7]&f你创建了新的邀请码: {code} X {amount} 请及时使用!"
   empty: "&7[&6公会&7]&f你没有邀请码了,请重新创建!"
