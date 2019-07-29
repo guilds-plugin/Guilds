@@ -318,4 +318,4 @@ war:
 acf:
   invalid-syntax: "Использование: <c2>{command}</c2> <c3>{syntax}</c3>"
   permission-denied: "Извините, но Вам нельзя выполнять данную команду."
-  unknown-command: "Unknown Command, please type <c2>/help</c2>"
+  unknown-command: "Неизвестная команда, используйте: <c2>/help</c2>"
