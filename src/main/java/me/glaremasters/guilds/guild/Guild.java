@@ -28,7 +28,6 @@ import co.aikar.commands.ACFUtil;
 import co.aikar.commands.CommandManager;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
 import lombok.Setter;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.messages.Messages;
@@ -43,10 +42,10 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@Getter
 @Setter
 @Builder
 @AllArgsConstructor
@@ -68,6 +67,7 @@ public class Guild {
     private GuildSkull guildSkull;
     private Status status;
     private GuildTier tier;
+    private GuildScore guildScore;
     private double balance;
 
     private List<GuildMember> members;
@@ -79,6 +79,8 @@ public class Guild {
     private List<GuildCode> codes;
 
     private List<String> vaults;
+
+    private long lastDefended;
 
     /**
      * Get a member in the guild
@@ -245,6 +247,14 @@ public class Guild {
     }
 
     /**
+     * Get all online members as UUID
+     * @return list of UUIDs
+     */
+    public List<UUID> getOnlineAsUUIDs() {
+        return getOnlineMembers().stream().map(GuildMember::getUuid).collect(Collectors.toList());
+    }
+
+    /**
      * Get all players as a list
      * @return list of players
      */
@@ -408,6 +418,99 @@ public class Guild {
      */
     public void addPotion(String type, int length, int amplifier) {
         getOnlineAsPlayers().forEach(p -> p.addPotionEffect(new PotionEffect(PotionEffectType.getByName(type), length, amplifier)));
+    }
+
+    public UUID getId() {
+        return this.id;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public String getPrefix() {
+        return this.prefix;
+    }
+
+    public String getMotd() {
+        return this.motd;
+    }
+
+    public GuildMember getGuildMaster() {
+        return this.guildMaster;
+    }
+
+    public GuildHome getHome() {
+        return this.home;
+    }
+
+    public GuildSkull getGuildSkull() {
+        return this.guildSkull;
+    }
+
+    public Status getStatus() {
+        return this.status;
+    }
+
+    public GuildTier getTier() {
+        return this.tier;
+    }
+
+    public double getBalance() {
+        return this.balance;
+    }
+
+    public List<GuildMember> getMembers() {
+        if (this.members == null) {
+            this.members = new ArrayList<>();
+        }
+        return this.members;
+    }
+
+    public List<UUID> getInvitedMembers() {
+        if (this.invitedMembers == null) {
+            this.invitedMembers = new ArrayList<>();
+        }
+        return this.invitedMembers;
+    }
+
+    public List<UUID> getAllies() {
+        if (this.allies == null) {
+            this.allies = new ArrayList<>();
+        }
+        return this.allies;
+    }
+
+    public List<UUID> getPendingAllies() {
+        if (this.pendingAllies == null) {
+            this.pendingAllies = new ArrayList<>();
+        }
+        return this.pendingAllies;
+    }
+
+    public GuildScore getGuildScore() {
+        if (this.guildScore == null) {
+            this.guildScore = new GuildScore();
+        }
+        return this.guildScore;
+    }
+
+    public List<GuildCode> getCodes() {
+        if (this.codes == null) {
+            this.codes = new ArrayList<>();
+        }
+        return this.codes;
+    }
+
+    public List<String> getVaults() {
+        if (this.vaults == null) {
+            this.vaults = new ArrayList<>();
+        }
+        return this.vaults;
+    }
+
+    public long getLastDefended() {
+        return lastDefended;
     }
 }
 

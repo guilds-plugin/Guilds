@@ -26,16 +26,13 @@ package me.glaremasters.guilds.api;
 
 import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.guild.Guild;
-import me.glaremasters.guilds.guild.GuildCode;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
-import me.glaremasters.guilds.guild.GuildTier;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -55,17 +52,17 @@ public class GuildsAPI {
 
     /**
      * Get a guild by it's uuid
-     * @param uuid uuid of the player
-     * @return the guild they are in
+     * @param uuid uuid of the guild
+     * @return the guild the uuid belong to
      */
     public Guild getGuild(@NotNull UUID uuid) {
         return guildHandler.getGuild(uuid);
     }
 
     /**
-     * Get the guild of a player by their name
-     * @param name the name of the player
-     * @return the guild they are in
+     * Get a guild by it's name
+     * @param name the name of the guild
+     * @return the guild object
      */
     public Guild getGuild(@NotNull String name) {
         return guildHandler.getGuild(name);
@@ -82,14 +79,6 @@ public class GuildsAPI {
     }
 
     /**
-     * Get a copy of the guild handler
-     * @return guild handler
-     */
-    public GuildHandler getGuildHandler() {
-        return guildHandler;
-    }
-
-    /**
      * Get the role of a player
      * @param player role
      * @return the role of a player
@@ -98,4 +87,11 @@ public class GuildsAPI {
         return getGuild(player).getMember(player.getUniqueId()).getRole();
     }
 
+    /**
+     * Get a copy of the guild handler
+     * @return guild handler
+     */
+    public GuildHandler getGuildHandler() {
+        return guildHandler;
+    }
 }

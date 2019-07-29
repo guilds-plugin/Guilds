@@ -1,18 +1,37 @@
 package me.glaremasters.guilds.utils;
 
 import lombok.experimental.UtilityClass;
-import org.bukkit.ChatColor;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.stream.Collectors;
 
 @UtilityClass
 public final class StringUtils {
 
     /**
-     * Color a message
-     * @param msg the message to color
-     * @return a copy of the message with color
+     * Get the announcements for the plugin
+     * @return announcements
+     * @throws IOException
      */
-    public static String color(String msg) {
-        return ChatColor.translateAlternateColorCodes('&', msg);
+    public String getAnnouncements(JavaPlugin plugin) throws IOException {
+        String announcement;
+        URL url = new URL("https://glaremasters.me/guilds/announcements/?id=" + plugin.getDescription().getVersion());
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestProperty("User-Agent", Constants.USER_AGENT);
+        try (InputStream in = con.getInputStream()) {
+            String result = new BufferedReader(new InputStreamReader(in)).lines().collect(Collectors.joining("\n"));
+            announcement = StringUtils.convert_html(result);
+            con.disconnect();
+        } catch (Exception ex) {
+            announcement = "Could not fetch announcements!";
+        }
+        return announcement;
     }
 
     /**

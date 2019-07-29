@@ -38,6 +38,7 @@ public class GuildEvent extends PlayerEvent implements Cancellable {
     @Getter
     @Setter
     private boolean cancelled = false;
+    @Getter
     private final Guild guild;
 
     /**

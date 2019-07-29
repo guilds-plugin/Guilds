@@ -42,6 +42,7 @@ import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildTier;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.ItemBuilder;
+import me.glaremasters.guilds.utils.XMaterial;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -120,7 +121,7 @@ public class InfoGUI {
      */
     private void createBackgroundItems(OutlinePane pane) {
         // Start the itembuilder with stained glass
-        ItemBuilder builder = new ItemBuilder(new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) 7));
+        ItemBuilder builder = new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem());
         // Set the name to be empty
         builder.setName(ACFBukkitUtil.color("&r"));
         // Loop through 27 (three rows)
@@ -292,7 +293,7 @@ public class InfoGUI {
      */
     private ItemStack easyItem(String material, String name, List<String> lore) {
         // Start the itembuilder
-        ItemBuilder builder = new ItemBuilder(Material.valueOf(material));
+        ItemBuilder builder = new ItemBuilder(new ItemStack(XMaterial.matchXMaterial(material).parseMaterial()));
         // Sets the name of the item
         builder.setName(ACFBukkitUtil.color(name));
         // Sets the lore of the item

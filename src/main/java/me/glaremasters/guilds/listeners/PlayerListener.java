@@ -26,7 +26,6 @@ package me.glaremasters.guilds.listeners;
 
 import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFBukkitUtil;
-import co.aikar.commands.PaperCommandManager;
 import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.configuration.sections.GuildSettings;
@@ -35,6 +34,7 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.JSONMessage;
+import me.glaremasters.guilds.utils.StringUtils;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -49,8 +49,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-
-import static me.glaremasters.guilds.utils.StringUtils.color;
 
 /**
  * Created by GlareMasters
@@ -85,7 +83,7 @@ public class PlayerListener implements Listener {
                     return;
 
                 try {
-                    JSONMessage.create(color("&f[&aGuilds&f]&r Announcements (Hover over me for more information)")).tooltip(guilds.getAnnouncements()).openURL(guilds.getDescription().getWebsite()).send(player);
+                    JSONMessage.create(ACFBukkitUtil.color("&f[&aGuilds&f]&r Announcements (Hover over me for more information)")).tooltip(StringUtils.getAnnouncements(guilds)).openURL(guilds.getDescription().getWebsite()).send(player);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

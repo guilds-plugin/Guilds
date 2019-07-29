@@ -25,6 +25,7 @@
 package me.glaremasters.guilds.commands.management;
 
 import ch.jalu.configme.SettingsManager;
+import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
@@ -74,12 +75,12 @@ public class CommandPrefix extends BaseCommand {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.PREFIX__DISABLED));
 
         if (!guildHandler.prefixCheck(prefix, settingsManager))
-            ACFUtil.sneaky(new ExpectationNotMet(Messages.CREATE__REQUIREMENTS));
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.CREATE__PREFIX_TOO_LONG));
 
         getCurrentCommandIssuer().sendInfo(Messages.PREFIX__SUCCESSFUL,
                 "{prefix}", prefix);
 
-        guild.setPrefix(StringUtils.color(prefix));
+        guild.setPrefix(ACFBukkitUtil.color(prefix));
 
     }
 

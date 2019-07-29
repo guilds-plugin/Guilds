@@ -24,7 +24,8 @@ public class GuildsMigrationService extends PlainMigrationService {
      */
     private static boolean hasDeprecatedProperties(PropertyReader reader) {
         String[] deprecatedProperties = {
-                "hooks.essentials-remove-brackets"
+                "hooks.essentials-remove-brackets",
+                "tablist.enabled"
         };
         for (String deprecatedPath :deprecatedProperties) {
             if (reader.contains(deprecatedPath)) {

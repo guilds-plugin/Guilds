@@ -67,7 +67,9 @@ public class EssentialsChatListener implements Listener {
                 .replace("{GUILD_MEMBER_COUNT}",  String.valueOf(guild.getSize()))
                 .replace("{GUILD_MEMBERS_ONLINE}", String.valueOf(guild.getOnlineMembers().size()))
                 .replace("{GUILD_ROLE}", guild.getMember(player.getUniqueId()).getRole().getName())
-                .replace("{GUILD_FORMATTED}", guildHandler.getFormattedPlaceholder(player));
+                .replace("{GUILD_FORMATTED}", guildHandler.getFormattedPlaceholder(player))
+                .replace("{GUILD_CHALLENGE_WINS}", String.valueOf(guild.getGuildScore().getWins()))
+                .replace("{GUILD_CHALLENGE_LOSES}", String.valueOf(guild.getGuildScore().getLoses()));
 
         event.setFormat(message);
     }

@@ -49,6 +49,7 @@ public class CooldownHandler {
         this.cooldownsProvider = cooldownsProvider;
 
         cooldowns = cooldownsProvider.loadCooldowns();
+        createCooldowns();
     }
 
     /**

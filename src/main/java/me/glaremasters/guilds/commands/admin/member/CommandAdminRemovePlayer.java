@@ -33,6 +33,9 @@ import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
+import me.glaremasters.guilds.Guilds;
+import me.glaremasters.guilds.api.GuildsAPI;
+import me.glaremasters.guilds.api.events.GuildLeaveEvent;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
@@ -73,6 +76,14 @@ public class CommandAdminRemovePlayer extends BaseCommand {
 
         if (guild == null)
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
+
+        GuildLeaveEvent event = new GuildLeaveEvent(player, guild, GuildLeaveEvent.Cause.ADMIN_REMOVED);
+        Bukkit.getPluginManager().callEvent(event);
+
+        if (event.isCancelled()) {
+            return;
+        }
+
 
         ClaimUtils.kickMember(removing, player, guild, settingsManager);
 

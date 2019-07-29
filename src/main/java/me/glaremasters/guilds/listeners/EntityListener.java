@@ -26,8 +26,10 @@ package me.glaremasters.guilds.listeners;
 
 import ch.jalu.configme.SettingsManager;
 import lombok.AllArgsConstructor;
+import me.glaremasters.guilds.challenges.ChallengeHandler;
 import me.glaremasters.guilds.configuration.sections.GuildSettings;
 import me.glaremasters.guilds.guild.Guild;
+import me.glaremasters.guilds.guild.GuildChallenge;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.utils.ClaimUtils;
 import org.bukkit.entity.Arrow;
@@ -58,6 +60,7 @@ public class EntityListener implements Listener {
 
     private GuildHandler guildHandler;
     private SettingsManager settingsManager;
+    private ChallengeHandler challengeHandler;
     private final Set<PotionEffectType> bad = new HashSet<>(Arrays.asList(PotionEffectType.BLINDNESS, PotionEffectType.WITHER, PotionEffectType.SLOW_DIGGING, PotionEffectType.WEAKNESS, PotionEffectType.SLOW, PotionEffectType.POISON));
 
     /**
@@ -69,7 +72,12 @@ public class EntityListener implements Listener {
         if (event.getDamager() instanceof Player) {
             Player player = (Player) event.getDamager();
             Guild guild = guildHandler.getGuild(player);
-            if (guild != null) event.setDamage((int) (event.getDamage() * guild.getTier().getDamageMultiplier()));
+            if (guild == null) {
+                return;
+            }
+            double dmg = event.getDamage();
+            double multiplier = guild.getTier().getDamageMultiplier();
+            event.setDamage(dmg * multiplier);
         }
     }
 
@@ -84,7 +92,12 @@ public class EntityListener implements Listener {
         Player killer = monster.getKiller();
         if (killer == null) return;
         Guild guild = guildHandler.getGuild(killer);
-        if (guild != null) event.setDroppedExp((int) (event.getDroppedExp() * guild.getTier().getDamageMultiplier()));
+        if (guild == null) {
+            return;
+        }
+        double xp = event.getDroppedExp();
+        double multiplier = guild.getTier().getMobXpMultiplier();
+        event.setDroppedExp((int) Math.round(xp * multiplier));
     }
 
     /**
@@ -97,15 +110,30 @@ public class EntityListener implements Listener {
         Player player = (Player) event.getEntity();
         Player damager = (Player) event.getDamager();
 
+        // Make sure that they aren't in a claim that turns off pvpv
         if (settingsManager.getProperty(GuildSettings.RESPECT_WG_PVP_FLAG)) {
             event.setCancelled(ClaimUtils.checkPvpDisabled(player));
             return;
         }
 
+        // Check if they are the same guild
         if (guildHandler.isSameGuild(player, damager)) {
             event.setCancelled(!settingsManager.getProperty(GuildSettings.GUILD_DAMAGE));
             return;
         }
+
+        // Get the challenge object
+        GuildChallenge challenge = challengeHandler.getChallenge(player);
+
+        // Check if they are in a challenge
+        if (challenge != null) {
+            // Check if the challenge has started
+            if (challenge.isStarted()) {
+                // Cancel the rest of the checks in case they are battling allies
+                return;
+            }
+        }
+
         if (guildHandler.isAlly(player, damager)) {
             event.setCancelled(!settingsManager.getProperty(GuildSettings.ALLY_DAMAGE));
         }

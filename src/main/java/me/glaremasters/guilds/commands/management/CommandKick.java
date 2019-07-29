@@ -36,6 +36,7 @@ import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.annotation.Values;
+import me.glaremasters.guilds.api.events.GuildLeaveEvent;
 import me.glaremasters.guilds.configuration.sections.CooldownSettings;
 import me.glaremasters.guilds.cooldowns.Cooldown;
 import me.glaremasters.guilds.cooldowns.CooldownHandler;
@@ -52,7 +53,6 @@ import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.codemc.worldguardwrapper.WorldGuardWrapper;
 
 import java.util.concurrent.TimeUnit;
 
@@ -98,6 +98,14 @@ public class CommandKick extends BaseCommand {
 
         if (guild.isMaster(boot))
             ACFUtil.sneaky(new InvalidPermissionException());
+
+        GuildLeaveEvent event = new GuildLeaveEvent(player, guild, GuildLeaveEvent.Cause.PLAYER_KICKED);
+        Bukkit.getPluginManager().callEvent(event);
+
+        if (event.isCancelled()) {
+            return;
+        }
+
 
         guildHandler.removePerms(permission, boot);
 

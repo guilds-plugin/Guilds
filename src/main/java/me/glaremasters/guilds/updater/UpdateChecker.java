@@ -24,11 +24,15 @@
 
 package me.glaremasters.guilds.updater;
 
+import ch.jalu.configme.SettingsManager;
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
+import me.glaremasters.guilds.Guilds;
+import me.glaremasters.guilds.configuration.SettingsHandler;
+import me.glaremasters.guilds.configuration.sections.PluginSettings;
 import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -335,6 +339,35 @@ public final class UpdateChecker {
          */
         public String getNewestVersion() {
             return newestVersion;
+        }
+
+    }
+
+    /**
+     * Run the update check for the plugin
+     * @param guilds main plugin class
+     * @param settingsManager settings manager
+     */
+    public static void runCheck(Guilds guilds, SettingsManager settingsManager) {
+        if (settingsManager.getProperty(PluginSettings.UPDATE_CHECK)) {
+            UpdateChecker.init(guilds, 66176).requestUpdateCheck().whenComplete((result, exception) -> {
+                if (result.requiresUpdate()) {
+                    guilds.getLogger().info(String.format("An update is available! Guilds %s may be downloaded on SpigotMC", result.getNewestVersion()));
+                    return;
+                }
+                String reason = result.getReason().toString();
+                switch (reason) {
+                    case "UP_TO_DATE":
+                        guilds.getLogger().info(String.format("Your version of Guilds (%s) is up to date!", result.getNewestVersion()));
+                        break;
+                    case "UNRELEASED_VERSION":
+                        guilds.getLogger().info(String.format("Your version of Guilds (%s) is more recent than the one publicly available. Are you on a development build?", result.getNewestVersion()));
+                        break;
+                    default:
+                        guilds.getLogger().warning("Could not check for a new version of Guilds. Reason: " + reason);
+                        break;
+                }
+            });
         }
 
     }
