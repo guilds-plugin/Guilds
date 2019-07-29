@@ -26,6 +26,7 @@ package me.glaremasters.guilds.configuration.sections;
 
 import ch.jalu.configme.Comment;
 import ch.jalu.configme.SettingsHolder;
+import ch.jalu.configme.configurationdata.CommentsConfiguration;
 import ch.jalu.configme.properties.Property;
 
 import java.util.List;
@@ -94,5 +95,14 @@ public class GuildListSettings implements SettingsHolder {
 
 
     private GuildListSettings() {
+    }
+
+    @Override
+    public void registerComments(CommentsConfiguration conf) {
+        String[] pluginHeader = {
+                "Use the following website to get available materials: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html",
+                "This can work across all MC versions and will attempt to use the proper material based on what version of MC you are using."
+        };
+        conf.setComment("guis", pluginHeader);
     }
 }

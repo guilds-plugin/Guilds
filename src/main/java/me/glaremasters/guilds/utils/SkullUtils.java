@@ -68,7 +68,7 @@ public class SkullUtils {
      * @return skull
      */
     public static ItemStack getSkull(String skinUrl) {
-        ItemStack head = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+        ItemStack head = XMaterial.PLAYER_HEAD.parseItem();
         if (skinUrl.isEmpty()) return head;
 
         SkullMeta headMeta = (SkullMeta) head.getItemMeta();

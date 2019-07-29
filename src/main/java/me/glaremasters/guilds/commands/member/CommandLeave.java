@@ -81,7 +81,7 @@ public class CommandLeave extends BaseCommand {
         actionHandler.addAction(player, new ConfirmAction() {
             @Override
             public void accept() {
-                GuildLeaveEvent event = new GuildLeaveEvent(player, guild);
+                GuildLeaveEvent event = new GuildLeaveEvent(player, guild, GuildLeaveEvent.Cause.PLAYER_LEFT);
                 Bukkit.getPluginManager().callEvent(event);
 
                 if (event.isCancelled())

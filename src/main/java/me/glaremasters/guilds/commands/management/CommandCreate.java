@@ -113,7 +113,7 @@ public class CommandCreate extends BaseCommand {
         if (!settingsManager.getProperty(GuildSettings.DISABLE_PREFIX)) {
             if (prefix != null) {
                 if (!guildHandler.prefixCheck(prefix, settingsManager)) {
-                    ACFUtil.sneaky(new ExpectationNotMet(Messages.CREATE__REQUIREMENTS));
+                    ACFUtil.sneaky(new ExpectationNotMet(Messages.CREATE__PREFIX_TOO_LONG));
                 }
             } else {
                 if (!guildHandler.prefixCheck(name, settingsManager)) {

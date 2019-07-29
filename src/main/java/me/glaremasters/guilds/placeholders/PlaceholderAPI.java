@@ -70,7 +70,7 @@ public class PlaceholderAPI extends PlaceholderExpansion {
      */
     @Override
     public String getVersion() {
-        return "1.2";
+        return "2.0";
     }
 
     /**
@@ -124,6 +124,10 @@ public class PlaceholderAPI extends PlaceholderExpansion {
                 return String.valueOf(api.getGuild(p).getTier().getMaxBankBalance());
             case "formatted":
                 return guildHandler.getFormattedPlaceholder(p);
+            case "challenge_wins":
+                return String.valueOf(api.getGuild(p).getGuildScore().getWins());
+            case "challenge_loses":
+                return String.valueOf(api.getGuild(p).getGuildScore().getLoses());
             default:
                 return "";
         }

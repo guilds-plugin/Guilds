@@ -126,6 +126,9 @@ public class RoleSettings implements SettingsHolder {
     public static final Property<Boolean> ZERO_MOTD =
             newProperty("roles.0.permissions.modify-motd", true);
 
+    public static final Property<Boolean> ZERO_WAR =
+            newProperty("roles.0.permissions.initiate-war", true);
+
     public static final Property<String> ONE_NAME =
             newProperty("roles.1.name", "Officer");
 
@@ -215,6 +218,9 @@ public class RoleSettings implements SettingsHolder {
 
     public static final Property<Boolean> ONE_MOTD =
             newProperty("roles.1.permissions.modify-motd", false);
+
+    public static final Property<Boolean> ONE_WAR =
+            newProperty("roles.1.permissions.initiate-war", true);
 
     public static final Property<String> TWO_NAME =
             newProperty("roles.2.name", "Veteran");
@@ -306,6 +312,9 @@ public class RoleSettings implements SettingsHolder {
     public static final Property<Boolean> TWO_MOTD =
             newProperty("roles.2.permissions.modify-motd", false);
 
+    public static final Property<Boolean> TWO_WAR =
+            newProperty("roles.2.permissions.initiate-war", false);
+
     public static final Property<String> THREE_NAME =
             newProperty("roles.3.name", "Member");
 
@@ -395,6 +404,9 @@ public class RoleSettings implements SettingsHolder {
 
     public static final Property<Boolean> THREE_MOTD =
             newProperty("roles.3.permissions.modify-motd", false);
+
+    public static final Property<Boolean> THREE_WAR =
+            newProperty("roles.3.permissions.initiate-war", false);
 
     private RoleSettings() {
     }

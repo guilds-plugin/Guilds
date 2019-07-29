@@ -40,6 +40,7 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.EconomyUtils;
+import me.glaremasters.guilds.utils.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -249,7 +250,7 @@ public class BuffGUI {
     private void setBuffItem(CommandManager commandManager, String type, int length, int amplifier,
                              double cost, String icon, String name, List<String> lore, StaticPane pane, int x,
                              boolean check, boolean clickerCheck, List<String> clickerCommands, boolean guildCheck, List<String> guildCommands) {
-        GuiItem buffItem = new GuiItem(new ItemStack(Material.valueOf(icon)), event -> {
+        GuiItem buffItem = new GuiItem(new ItemStack(XMaterial.matchXMaterial(icon).parseMaterial()), event -> {
             event.setCancelled(true);
             Player player = (Player) event.getWhoClicked();
             if (guildHandler.getGuild(player) == null) return;
