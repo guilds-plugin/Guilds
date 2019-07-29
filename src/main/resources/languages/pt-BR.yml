@@ -318,4 +318,4 @@ war:
 acf:
   invalid-syntax: "Uso: <c2>{command}</c2> <c3>{syntax}</c3>"
   permission-denied: "Desculpe, você não tem permissão para executar este comando."
-  unknown-commands: "Comando desconhecido, por favor digite </c2>/help<c2>"
+  unknown-command: "Unknown Command, please type <c2>/help</c2>"
