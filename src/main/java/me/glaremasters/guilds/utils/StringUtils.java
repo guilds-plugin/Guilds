@@ -1,6 +1,5 @@
 package me.glaremasters.guilds.utils;
 
-import lombok.experimental.UtilityClass;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.BufferedReader;
@@ -11,15 +10,18 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.stream.Collectors;
 
-@UtilityClass
 public final class StringUtils {
+
+    private StringUtils() {
+        throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
+    }
 
     /**
      * Get the announcements for the plugin
      * @return announcements
      * @throws IOException
      */
-    public String getAnnouncements(JavaPlugin plugin) throws IOException {
+    public static String getAnnouncements(JavaPlugin plugin) throws IOException {
         String announcement;
         URL url = new URL("https://glaremasters.me/guilds/announcements/?id=" + plugin.getDescription().getVersion());
         HttpURLConnection con = (HttpURLConnection) url.openConnection();

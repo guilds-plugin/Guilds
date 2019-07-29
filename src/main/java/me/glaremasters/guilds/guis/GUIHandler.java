@@ -26,7 +26,6 @@ package me.glaremasters.guilds.guis;
 
 import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.CommandManager;
-import lombok.Getter;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.cooldowns.CooldownHandler;
 import me.glaremasters.guilds.guild.GuildHandler;
@@ -38,11 +37,11 @@ import me.glaremasters.guilds.guild.GuildHandler;
  */
 public class GUIHandler {
 
-    @Getter private BuffGUI buffGUI;
-    @Getter private ListGUI listGUI;
-    @Getter private InfoGUI infoGUI;
-    @Getter private InfoMembersGUI infoMembersGUI;
-    @Getter private VaultGUI vaultGUI;
+    private BuffGUI buffGUI;
+    private ListGUI listGUI;
+    private InfoGUI infoGUI;
+    private InfoMembersGUI infoMembersGUI;
+    private VaultGUI vaultGUI;
 
     private Guilds guilds;
     private SettingsManager settingsManager;
@@ -64,4 +63,23 @@ public class GUIHandler {
         vaultGUI = new VaultGUI(this.guilds, this.settingsManager, this.guildHandler);
     }
 
+    public BuffGUI getBuffGUI() {
+        return this.buffGUI;
+    }
+
+    public ListGUI getListGUI() {
+        return this.listGUI;
+    }
+
+    public InfoGUI getInfoGUI() {
+        return this.infoGUI;
+    }
+
+    public InfoMembersGUI getInfoMembersGUI() {
+        return this.infoMembersGUI;
+    }
+
+    public VaultGUI getVaultGUI() {
+        return this.vaultGUI;
+    }
 }

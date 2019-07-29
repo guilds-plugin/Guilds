@@ -27,7 +27,6 @@ package me.glaremasters.guilds.challenges;
 import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.CommandManager;
-import lombok.Getter;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.arena.Arena;
 import me.glaremasters.guilds.configuration.sections.WarSettings;
@@ -58,7 +57,7 @@ import java.util.stream.Stream;
  */
 public class ChallengeHandler {
 
-    @Getter private List<GuildChallenge> challenges;
+    private List<GuildChallenge> challenges;
 
     public ChallengeHandler() {
         this.challenges = new ArrayList<>();
@@ -390,4 +389,7 @@ public class ChallengeHandler {
     }
 
 
+    public List<GuildChallenge> getChallenges() {
+        return this.challenges;
+    }
 }

@@ -29,8 +29,6 @@ import co.aikar.commands.ACFBukkitUtil;
 import com.github.stefvanschie.inventoryframework.Gui;
 import com.github.stefvanschie.inventoryframework.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
-import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
-import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.configuration.sections.GuildInfoSettings;
 import me.glaremasters.guilds.configuration.sections.GuildListSettings;
@@ -48,12 +46,17 @@ import java.util.List;
  * Date: 4/13/2019
  * Time: 3:51 PM
  */
-@AllArgsConstructor
 public class ListGUI {
 
     private Guilds guilds;
     private SettingsManager settingsManager;
     private GuildHandler guildHandler;
+
+    public ListGUI(Guilds guilds, SettingsManager settingsManager, GuildHandler guildHandler) {
+        this.guilds = guilds;
+        this.settingsManager = settingsManager;
+        this.guildHandler = guildHandler;
+    }
 
     public Gui getListGUI() {
 

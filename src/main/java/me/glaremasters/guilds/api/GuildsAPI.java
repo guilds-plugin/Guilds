@@ -24,7 +24,6 @@
 
 package me.glaremasters.guilds.api;
 
-import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
@@ -35,10 +34,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
-@AllArgsConstructor
 public class GuildsAPI {
 
     private final GuildHandler guildHandler;
+
+    public GuildsAPI(GuildHandler guildHandler) {
+        this.guildHandler = guildHandler;
+    }
 
     /**
      *

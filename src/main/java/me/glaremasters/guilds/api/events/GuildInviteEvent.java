@@ -24,12 +24,10 @@
 
 package me.glaremasters.guilds.api.events;
 
-import lombok.Getter;
 import me.glaremasters.guilds.api.events.base.GuildEvent;
 import me.glaremasters.guilds.guild.Guild;
 import org.bukkit.entity.Player;
 
-@Getter
 public class GuildInviteEvent extends GuildEvent {
 
     private final Player invitedPlayer;
@@ -44,5 +42,9 @@ public class GuildInviteEvent extends GuildEvent {
         super(player, guild);
 
         this.invitedPlayer = invitedPlayer;
+    }
+
+    public Player getInvitedPlayer() {
+        return this.invitedPlayer;
     }
 }

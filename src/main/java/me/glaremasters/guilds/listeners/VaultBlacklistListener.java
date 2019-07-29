@@ -26,7 +26,6 @@ package me.glaremasters.guilds.listeners;
 
 import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFBukkitUtil;
-import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.configuration.sections.GuildVaultSettings;
 import me.glaremasters.guilds.guild.GuildHandler;
@@ -46,12 +45,17 @@ import java.util.stream.Collectors;
  * Date: 5/7/2019
  * Time: 4:50 PM
  */
-@AllArgsConstructor
 public class VaultBlacklistListener implements Listener {
 
     private Guilds guilds;
     private GuildHandler guildHandler;
     private SettingsManager settingsManager;
+
+    public VaultBlacklistListener(Guilds guilds, GuildHandler guildHandler, SettingsManager settingsManager) {
+        this.guilds = guilds;
+        this.guildHandler = guildHandler;
+        this.settingsManager = settingsManager;
+    }
 
     /**
      * Helps determine if a player has a Guild vault open

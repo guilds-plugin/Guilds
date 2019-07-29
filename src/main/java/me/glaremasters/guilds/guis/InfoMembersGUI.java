@@ -30,7 +30,6 @@ import com.github.stefvanschie.inventoryframework.Gui;
 import com.github.stefvanschie.inventoryframework.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
 import com.github.stefvanschie.inventoryframework.pane.Pane;
-import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.configuration.sections.GuildInfoMemberSettings;
 import me.glaremasters.guilds.guild.Guild;
@@ -40,7 +39,6 @@ import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.utils.ItemBuilder;
 import me.glaremasters.guilds.utils.XMaterial;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Comparator;
@@ -52,12 +50,17 @@ import java.util.stream.Collectors;
  * Date: 5/12/2019
  * Time: 1:57 PM
  */
-@AllArgsConstructor
 public class InfoMembersGUI {
 
     private Guilds guilds;
     private SettingsManager settingsManager;
     private GuildHandler guildHandler;
+
+    public InfoMembersGUI(Guilds guilds, SettingsManager settingsManager, GuildHandler guildHandler) {
+        this.guilds = guilds;
+        this.settingsManager = settingsManager;
+        this.guildHandler = guildHandler;
+    }
 
     public Gui getInfoMembersGUI(Guild guild) {
 

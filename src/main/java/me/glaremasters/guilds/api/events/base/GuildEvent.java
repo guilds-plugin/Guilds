@@ -24,8 +24,6 @@
 
 package me.glaremasters.guilds.api.events.base;
 
-import lombok.Getter;
-import lombok.Setter;
 import me.glaremasters.guilds.guild.Guild;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
@@ -35,10 +33,7 @@ import org.bukkit.event.player.PlayerEvent;
 public class GuildEvent extends PlayerEvent implements Cancellable {
 
     private static HandlerList handlers = new HandlerList();
-    @Getter
-    @Setter
     private boolean cancelled = false;
-    @Getter
     private final Guild guild;
 
     /**
@@ -60,4 +55,15 @@ public class GuildEvent extends PlayerEvent implements Cancellable {
         return handlers;
     }
 
+    public boolean isCancelled() {
+        return this.cancelled;
+    }
+
+    public Guild getGuild() {
+        return this.guild;
+    }
+
+    public void setCancelled(boolean cancelled) {
+        this.cancelled = cancelled;
+    }
 }

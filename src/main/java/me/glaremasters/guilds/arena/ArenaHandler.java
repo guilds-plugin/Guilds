@@ -1,6 +1,5 @@
 package me.glaremasters.guilds.arena;
 
-import lombok.Getter;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.database.arenas.ArenasProvider;
 import org.jetbrains.annotations.NotNull;
@@ -13,7 +12,7 @@ import java.util.stream.Collectors;
 
 public class ArenaHandler {
 
-    @Getter private List<Arena> arenas;
+    private List<Arena> arenas;
     private final ArenasProvider arenasProvider;
 
     public ArenaHandler(ArenasProvider arenasProvider) {
@@ -71,5 +70,9 @@ public class ArenaHandler {
             return null;
         }
         return availableArenas.get(ThreadLocalRandom.current().nextInt(availableArenas.size()));
+    }
+
+    public List<Arena> getArenas() {
+        return this.arenas;
     }
 }

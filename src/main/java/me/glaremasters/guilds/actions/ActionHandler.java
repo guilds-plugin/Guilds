@@ -24,7 +24,6 @@
 
 package me.glaremasters.guilds.actions;
 
-import lombok.Getter;
 import org.bukkit.command.CommandSender;
 
 import java.util.HashMap;
@@ -32,7 +31,6 @@ import java.util.Map;
 
 public class ActionHandler {
 
-    @Getter
     private final Map<CommandSender, ConfirmAction> actions = new HashMap<>();
 
     /**
@@ -64,5 +62,9 @@ public class ActionHandler {
      */
     public ConfirmAction getAction(CommandSender sender) {
         return actions.get(sender);
+    }
+
+    public Map<CommandSender, ConfirmAction> getActions() {
+        return this.actions;
     }
 }

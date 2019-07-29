@@ -24,9 +24,6 @@
 
 package me.glaremasters.guilds.guild;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
 import org.bukkit.Bukkit;
 
 import java.util.UUID;
@@ -34,13 +31,15 @@ import java.util.UUID;
 /**
  * Created by GlareMasters on 6/28/2018.
  */
-@AllArgsConstructor
-@Getter
-@Setter
 public class GuildMember {
 
     private final UUID uuid;
     private GuildRole role;
+
+    public GuildMember(UUID uuid, GuildRole role) {
+        this.uuid = uuid;
+        this.role = role;
+    }
 
     /**
      * Check and see if a guild member is online
@@ -48,5 +47,17 @@ public class GuildMember {
      */
     public boolean isOnline() {
         return Bukkit.getOfflinePlayer(uuid).isOnline();
+    }
+
+    public UUID getUuid() {
+        return this.uuid;
+    }
+
+    public GuildRole getRole() {
+        return this.role;
+    }
+
+    public void setRole(GuildRole role) {
+        this.role = role;
     }
 }

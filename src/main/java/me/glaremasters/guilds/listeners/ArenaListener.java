@@ -2,7 +2,6 @@ package me.glaremasters.guilds.listeners;
 
 import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFBukkitUtil;
-import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.challenges.ChallengeHandler;
 import me.glaremasters.guilds.configuration.sections.WarSettings;
@@ -23,7 +22,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-@AllArgsConstructor
 public class ArenaListener implements Listener {
 
     private Guilds guilds;
@@ -31,6 +29,13 @@ public class ArenaListener implements Listener {
     private ChallengesProvider challengesProvider;
     private SettingsManager settingsManager;
     private final Map<UUID, String> playerDeath = new HashMap<>();
+
+    public ArenaListener(Guilds guilds, ChallengeHandler challengeHandler, ChallengesProvider challengesProvider, SettingsManager settingsManager) {
+        this.guilds = guilds;
+        this.challengeHandler = challengeHandler;
+        this.challengesProvider = challengesProvider;
+        this.settingsManager = settingsManager;
+    }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {

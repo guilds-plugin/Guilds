@@ -28,7 +28,6 @@ import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.CommandManager;
-import lombok.Getter;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.configuration.sections.GuildSettings;
 import me.glaremasters.guilds.configuration.sections.GuildVaultSettings;
@@ -62,14 +61,14 @@ import java.util.stream.Stream;
 public class GuildHandler {
 
 
-    @Getter private List<Guild> guilds;
+    private List<Guild> guilds;
     private final List<GuildRole> roles;
     private final List<GuildTier> tiers;
-    @Getter private final List<Player> spies;
-    @Getter private final List<Player> guildChat;
+    private final List<Player> spies;
+    private final List<Player> guildChat;
 
-    @Getter private Map<Guild, List<Inventory>> cachedVaults;
-    @Getter private List<Player> openedVault;
+    private Map<Guild, List<Inventory>> cachedVaults;
+    private List<Player> openedVault;
 
     private final DatabaseProvider databaseProvider;
     private final CommandManager commandManager;
@@ -848,5 +847,25 @@ public class GuildHandler {
             return noGuild;
         }
         return ACFBukkitUtil.color(combined.replace("{name}", guild.getName()).replace("{prefix}", guild.getPrefix()));
+    }
+
+    public List<Guild> getGuilds() {
+        return this.guilds;
+    }
+
+    public List<Player> getSpies() {
+        return this.spies;
+    }
+
+    public List<Player> getGuildChat() {
+        return this.guildChat;
+    }
+
+    public Map<Guild, List<Inventory>> getCachedVaults() {
+        return this.cachedVaults;
+    }
+
+    public List<Player> getOpenedVault() {
+        return this.openedVault;
     }
 }
