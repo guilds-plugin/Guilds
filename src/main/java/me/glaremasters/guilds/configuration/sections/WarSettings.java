@@ -12,8 +12,8 @@ import static ch.jalu.configme.properties.PropertyInitializer.newProperty;
 public class WarSettings implements SettingsHolder {
 
     @Comment({"How often (in minutes) can a guild be the defender in a war?",
-    "This is to help prevent abuse from guilds fighting each other to farm rewards.",
-    "This is defaulted to 1 day."})
+            "This is to help prevent abuse from guilds fighting each other to farm rewards.",
+            "This is defaulted to 1 day."})
     public static final Property<Integer> DEFEND_COOLDOWN =
             newProperty("war.defend-cooldown", 1440);
 
@@ -41,17 +41,6 @@ public class WarSettings implements SettingsHolder {
     public static final Property<Integer> READY_TIME =
             newProperty("war.ready-time", 60);
 
-    @Comment("Would you like to enable running commands before a challenge starts? (such as broadcasting)")
-    public static final Property<Boolean> ENABLE_PRE_CHALLENGE_COMMANDS =
-            newProperty("war.pre-challenge-commands.enabled", false);
-
-    @Comment({"What commands would you like to run before a challenge starts?",
-    "Supports the following placeholder:",
-    "{challenger} - The name of the challenging Guild",
-    "{defender} - The name of the defending Guild"})
-    public static final Property<List<String>> PRE_CHALLENGE_COMMANDS =
-            newListProperty("war.pre-challenge-commands.commands", "");
-
     @Comment("Would you like to enable running commands after a challenge ends? (such as broadcasting)")
     public static final Property<Boolean> ENABLE_POST_CHALLENGE_COMMANDS =
             newProperty("war.post-challenge-commands.enabled", false);
@@ -69,7 +58,7 @@ public class WarSettings implements SettingsHolder {
             newProperty("war.rewards.enabled", false);
 
     @Comment({"What rewards (commands) would you like to run for the winning Guild?",
-    "Current supports {player}."})
+            "Current supports {player}."})
     public static final Property<List<String>> WAR_REWARDS =
             newListProperty("war.rewards.rewards", "");
 
