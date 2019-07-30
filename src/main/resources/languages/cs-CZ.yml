@@ -5,7 +5,7 @@ descriptions:
   admin-bank-balance: "Admin příkaz pro zobrazení bankovního zůstatku cechu"
   admin-bank-deposit: "Admin příkaz pro vložení peněz do cechu"
   admin-bank-withdraw: "Admin příkaz pro sebrání peněz z banky cechu"
-  admin-claim: "Admin command to claim a guild's land"
+  admin-claim: "Admin příkaz pro přivlastnění cechovní oblasti (claim guild land)"
   admin-delhome: "Admin příkaz pro odstranění domova (home) cechu"
   admin-home: "Admin příkaz teleportovat do domova (home) cechu"
   admin-motd: "Admin příkaz pro zobrazení MOTD cechu"
@@ -316,6 +316,6 @@ war:
   player-killed-other: "&b{player} &ahas been killed for unknown reasons."
   teleported-back: "&aYou fought hard! Alas, not everyone can be the best. You've been teleported back to your original location!"
 acf:
-  invalid-syntax: "Usage: <c2>{command}</c2> <c3>{syntax}</c3>"
-  permission-denied: "I'm sorry, but you do not have permission to perform this command."
-  unknown-command: "Unknown Command, please type <c2>/help</c2>"
+  invalid-syntax: "Použí: <c2>{command}</c2> <c3>{syntax}</c3>"
+  permission-denied: "Omlouváme se, ale nemáš dostatečná opravnění k použítí příkazu."
+  unknown-command: "Neznámý příkaz, prosím použí <c2>/help</c2>"
