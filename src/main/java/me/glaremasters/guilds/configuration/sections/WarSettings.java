@@ -41,6 +41,29 @@ public class WarSettings implements SettingsHolder {
     public static final Property<Integer> READY_TIME =
             newProperty("war.ready-time", 60);
 
+    @Comment("Would you like to enable running commands before a challenge starts? (such as broadcasting)")
+    public static final Property<Boolean> ENABLE_PRE_CHALLENGE_COMMANDS =
+            newProperty("war.pre-challenge-commands.enabled", false);
+
+    @Comment({"What commands would you like to run before a challenge starts?",
+    "Supports the following placeholder:",
+    "{challenger} - The name of the challenging Guild",
+    "{defender} - The name of the defending Guild"})
+    public static final Property<List<String>> PRE_CHALLENGE_COMMANDS =
+            newListProperty("war.pre-challenge-commands.commands", "");
+
+    @Comment("Would you like to enable running commands after a challenge ends? (such as broadcasting)")
+    public static final Property<Boolean> ENABLE_POST_CHALLENGE_COMMANDS =
+            newProperty("war.post-challenge-commands.enabled", false);
+
+    @Comment({"What commands would you like to run after a challenge ends??",
+            "Supports the following placeholder:",
+            "{challenger} - The name of the challenging Guild",
+            "{defender} - The name of the defending Guild",
+            "{winner} - The winner of the challenge"})
+    public static final Property<List<String>> POST_CHALLENGE_COMMANDS =
+            newListProperty("war.post-challenge-commands.commands", "");
+
     @Comment("Would you like to give rewards to the winning guild?")
     public static final Property<Boolean> WAR_REWARDS_ENABLED =
             newProperty("war.rewards.enabled", false);
