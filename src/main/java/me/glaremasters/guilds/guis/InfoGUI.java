@@ -31,7 +31,6 @@ import com.github.stefvanschie.inventoryframework.Gui;
 import com.github.stefvanschie.inventoryframework.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
 import com.github.stefvanschie.inventoryframework.pane.Pane;
-import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.configuration.sections.CooldownSettings;
 import me.glaremasters.guilds.configuration.sections.GuildInfoSettings;
@@ -44,7 +43,6 @@ import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.ItemBuilder;
 import me.glaremasters.guilds.utils.XMaterial;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -58,13 +56,19 @@ import java.util.stream.Collectors;
  * Date: 5/11/2019
  * Time: 11:17 PM
  */
-@AllArgsConstructor
 public class InfoGUI {
 
     private Guilds guilds;
     private SettingsManager settingsManager;
     private GuildHandler guildHandler;
     private CooldownHandler cooldownHandler;
+
+    public InfoGUI(Guilds guilds, SettingsManager settingsManager, GuildHandler guildHandler, CooldownHandler cooldownHandler) {
+        this.guilds = guilds;
+        this.settingsManager = settingsManager;
+        this.guildHandler = guildHandler;
+        this.cooldownHandler = cooldownHandler;
+    }
 
     public Gui getInfoGUI(Guild guild, Player player, CommandManager commandManager) {
 

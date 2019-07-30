@@ -24,7 +24,6 @@
 
 package me.glaremasters.guilds.guild;
 
-import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
@@ -33,7 +32,6 @@ import org.bukkit.Location;
  * Date: 2/14/2019
  * Time: 9:33 AM
  */
-@AllArgsConstructor
 public class GuildHome {
 
     private String world;
@@ -42,6 +40,15 @@ public class GuildHome {
     private double z;
     private float yaw;
     private float pitch;
+
+    public GuildHome(String world, double x, double y, double z, float yaw, float pitch) {
+        this.world = world;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.yaw = yaw;
+        this.pitch = pitch;
+    }
 
     /**
      * Get the guild home object as a location

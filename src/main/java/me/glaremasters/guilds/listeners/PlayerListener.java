@@ -26,7 +26,6 @@ package me.glaremasters.guilds.listeners;
 
 import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFBukkitUtil;
-import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.configuration.sections.GuildSettings;
 import me.glaremasters.guilds.configuration.sections.PluginSettings;
@@ -55,7 +54,6 @@ import java.util.concurrent.TimeUnit;
  * Date: 7/19/2018
  * Time: 5:31 PM
  */
-@AllArgsConstructor
 public class PlayerListener implements Listener {
 
     //todo
@@ -66,6 +64,13 @@ public class PlayerListener implements Listener {
     private Permission permission;
 
     private final Set<UUID> ALREADY_INFORMED = new HashSet<>();
+
+    public PlayerListener(GuildHandler guildHandler, SettingsManager settingsManager, Guilds guilds, Permission permission) {
+        this.guildHandler = guildHandler;
+        this.settingsManager = settingsManager;
+        this.guilds = guilds;
+        this.permission = permission;
+    }
 
     /**
      * This will check if a user is OP and will inform them of any important announcements from the Guild's Developer

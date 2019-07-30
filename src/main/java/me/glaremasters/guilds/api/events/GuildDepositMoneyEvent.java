@@ -1,11 +1,9 @@
 package me.glaremasters.guilds.api.events;
 
-import lombok.Getter;
 import me.glaremasters.guilds.api.events.base.GuildEvent;
 import me.glaremasters.guilds.guild.Guild;
 import org.bukkit.entity.Player;
 
-@Getter
 public class GuildDepositMoneyEvent extends GuildEvent {
 
     private final double amount;
@@ -20,5 +18,9 @@ public class GuildDepositMoneyEvent extends GuildEvent {
     public GuildDepositMoneyEvent(Player player, Guild guild, double amount) {
         super(player, guild);
         this.amount = amount;
+    }
+
+    public double getAmount() {
+        return this.amount;
     }
 }

@@ -24,7 +24,6 @@
 
 package me.glaremasters.guilds.listeners;
 
-import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import org.bukkit.Bukkit;
@@ -38,10 +37,13 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
  * Date: 11/12/2018
  * Time: 12:27 AM
  */
-@AllArgsConstructor
 public class EssentialsChatListener implements Listener {
 
     private GuildHandler guildHandler;
+
+    public EssentialsChatListener(GuildHandler guildHandler) {
+        this.guildHandler = guildHandler;
+    }
 
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {

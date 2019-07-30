@@ -55,7 +55,8 @@ public class GuildListSettings implements SettingsHolder {
     @Comment({"How should the menu be sorted?",
             "LOADED: In the order that the Guilds were loaded on startup",
             "TIER: In order from highest tier to lowest tier",
-            "MEMBERS: In order from most members to least members"})
+            "MEMBERS: In order from most members to least members",
+            "BALANCE: In order from most in bank to least"})
     public static final Property<String> GUILD_LIST_SORT =
             newProperty(LIST_PATH + "sort", "LOADED");
 

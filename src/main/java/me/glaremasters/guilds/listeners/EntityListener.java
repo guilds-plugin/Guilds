@@ -25,7 +25,6 @@
 package me.glaremasters.guilds.listeners;
 
 import ch.jalu.configme.SettingsManager;
-import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.challenges.ChallengeHandler;
 import me.glaremasters.guilds.configuration.sections.GuildSettings;
 import me.glaremasters.guilds.guild.Guild;
@@ -55,13 +54,18 @@ import java.util.Set;
  * Date: 7/19/2018
  * Time: 5:21 PM
  */
-@AllArgsConstructor
 public class EntityListener implements Listener {
 
     private GuildHandler guildHandler;
     private SettingsManager settingsManager;
     private ChallengeHandler challengeHandler;
     private final Set<PotionEffectType> bad = new HashSet<>(Arrays.asList(PotionEffectType.BLINDNESS, PotionEffectType.WITHER, PotionEffectType.SLOW_DIGGING, PotionEffectType.WEAKNESS, PotionEffectType.SLOW, PotionEffectType.POISON));
+
+    public EntityListener(GuildHandler guildHandler, SettingsManager settingsManager, ChallengeHandler challengeHandler) {
+        this.guildHandler = guildHandler;
+        this.settingsManager = settingsManager;
+        this.challengeHandler = challengeHandler;
+    }
 
     /**
      * Handles the extra damage to a mob

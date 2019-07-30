@@ -18,8 +18,6 @@ import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.Constants;
 import org.bukkit.entity.Player;
 
-import java.util.UUID;
-
 @CommandAlias(Constants.ROOT_ALIAS)
 public class CommandArenaDelete extends BaseCommand {
 

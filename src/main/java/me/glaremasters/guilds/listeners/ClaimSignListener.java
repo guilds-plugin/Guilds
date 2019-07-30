@@ -25,7 +25,6 @@
 package me.glaremasters.guilds.listeners;
 
 import ch.jalu.configme.SettingsManager;
-import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.configuration.sections.ClaimSettings;
 import me.glaremasters.guilds.guild.Guild;
@@ -48,13 +47,18 @@ import org.codemc.worldguardwrapper.selection.ICuboidSelection;
  * Date: 5/29/2019
  * Time: 7:01 AM
  */
-@AllArgsConstructor
 public class ClaimSignListener implements Listener {
 
     private Guilds guilds;
     private SettingsManager settingsManager;
     private GuildHandler guildHandler;
     private final WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();
+
+    public ClaimSignListener(Guilds guilds, SettingsManager settingsManager, GuildHandler guildHandler) {
+        this.guilds = guilds;
+        this.settingsManager = settingsManager;
+        this.guildHandler = guildHandler;
+    }
 
     @EventHandler
     public void onSignChange(SignChangeEvent event) {

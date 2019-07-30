@@ -24,7 +24,6 @@
 
 package me.glaremasters.guilds.placeholders;
 
-import lombok.AllArgsConstructor;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.api.GuildsAPI;
@@ -32,10 +31,13 @@ import me.glaremasters.guilds.guild.GuildHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-@AllArgsConstructor
 public class PlaceholderAPI extends PlaceholderExpansion {
 
     private GuildHandler guildHandler;
+
+    public PlaceholderAPI(GuildHandler guildHandler) {
+        this.guildHandler = guildHandler;
+    }
 
     /**
      * Get the identifier of the expansion

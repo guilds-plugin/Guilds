@@ -24,12 +24,10 @@
 
 package me.glaremasters.guilds.api.events;
 
-import lombok.Getter;
 import me.glaremasters.guilds.api.events.base.GuildEvent;
 import me.glaremasters.guilds.guild.Guild;
 import org.bukkit.entity.Player;
 
-@Getter
 public class GuildLeaveEvent extends GuildEvent {
 
     private final Cause cause;
@@ -44,6 +42,10 @@ public class GuildLeaveEvent extends GuildEvent {
     public GuildLeaveEvent(Player player, Guild guild, Cause cause) {
         super(player, guild);
         this.cause = cause;
+    }
+
+    public Cause getCause() {
+        return this.cause;
     }
 
     public enum Cause {

@@ -24,12 +24,10 @@
 
 package me.glaremasters.guilds;
 
-import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.PaperCommandManager;
 import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
-import lombok.Getter;
 import me.glaremasters.guilds.acf.ACFHandler;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.api.GuildsAPI;
@@ -64,7 +62,6 @@ import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -77,13 +74,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-import java.util.logging.Level;
 import java.util.stream.Stream;
 
-@Getter
 public final class Guilds extends JavaPlugin {
 
-    @Getter
     private static GuildsAPI api;
     private ACFHandler acfHandler;
     private GuildHandler guildHandler;
@@ -103,6 +97,10 @@ public final class Guilds extends JavaPlugin {
     private Permission permissions;
     private List<String> loadedLanguages;
     private boolean successfulLoad = false;
+
+    public static GuildsAPI getApi() {
+        return Guilds.api;
+    }
 
     @Override
     public void onDisable() {
@@ -350,4 +348,71 @@ public final class Guilds extends JavaPlugin {
         return taskChainFactory.newSharedChain(name);
     }
 
+    public ACFHandler getAcfHandler() {
+        return this.acfHandler;
+    }
+
+    public GuildHandler getGuildHandler() {
+        return this.guildHandler;
+    }
+
+    public CooldownHandler getCooldownHandler() {
+        return this.cooldownHandler;
+    }
+
+    public ArenaHandler getArenaHandler() {
+        return this.arenaHandler;
+    }
+
+    public ChallengeHandler getChallengeHandler() {
+        return this.challengeHandler;
+    }
+
+    public DatabaseProvider getDatabase() {
+        return this.database;
+    }
+
+    public CooldownsProvider getCooldownsProvider() {
+        return this.cooldownsProvider;
+    }
+
+    public ChallengesProvider getChallengesProvider() {
+        return this.challengesProvider;
+    }
+
+    public ArenasProvider getArenasProvider() {
+        return this.arenasProvider;
+    }
+
+    public SettingsHandler getSettingsHandler() {
+        return this.settingsHandler;
+    }
+
+    public PaperCommandManager getCommandManager() {
+        return this.commandManager;
+    }
+
+    public ActionHandler getActionHandler() {
+        return this.actionHandler;
+    }
+
+    public GUIHandler getGuiHandler() {
+        return this.guiHandler;
+    }
+
+    public Economy getEconomy() {
+        return this.economy;
+    }
+
+    public Permission getPermissions() {
+        return this.permissions;
+    }
+
+    public List<String> getLoadedLanguages() {
+        return this.loadedLanguages;
+    }
+
+    public boolean isSuccessfulLoad() {
+        return this.successfulLoad;
+    }
 }

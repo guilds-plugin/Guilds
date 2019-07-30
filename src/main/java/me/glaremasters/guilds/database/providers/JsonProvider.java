@@ -28,7 +28,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.guild.Guild;
-import me.glaremasters.guilds.guild.GuildScore;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;

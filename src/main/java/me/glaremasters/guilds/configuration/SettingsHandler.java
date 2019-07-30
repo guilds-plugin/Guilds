@@ -26,8 +26,6 @@ package me.glaremasters.guilds.configuration;
 
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.SettingsManagerBuilder;
-import ch.jalu.configme.migration.PlainMigrationService;
-import lombok.Getter;
 import me.glaremasters.guilds.Guilds;
 
 import java.io.File;
@@ -40,7 +38,7 @@ import java.io.File;
 public class SettingsHandler {
 
     private Guilds guilds;
-    @Getter private SettingsManager settingsManager;
+    private SettingsManager settingsManager;
 
     public SettingsHandler(Guilds guilds) {
 
@@ -53,4 +51,7 @@ public class SettingsHandler {
                 .create();
     }
 
+    public SettingsManager getSettingsManager() {
+        return this.settingsManager;
+    }
 }

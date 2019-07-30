@@ -39,7 +39,6 @@ import me.glaremasters.guilds.configuration.sections.GuildVaultSettings;
 import me.glaremasters.guilds.configuration.sections.HooksSettings;
 import me.glaremasters.guilds.configuration.sections.PluginSettings;
 import me.glaremasters.guilds.configuration.sections.RoleSettings;
-import me.glaremasters.guilds.configuration.sections.TablistSettings;
 import me.glaremasters.guilds.configuration.sections.TicketSettings;
 import me.glaremasters.guilds.configuration.sections.TierSettings;
 import me.glaremasters.guilds.configuration.sections.VaultPickerSettings;

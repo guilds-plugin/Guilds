@@ -30,7 +30,6 @@ import co.aikar.commands.CommandManager;
 import com.github.stefvanschie.inventoryframework.Gui;
 import com.github.stefvanschie.inventoryframework.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
-import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.configuration.sections.CooldownSettings;
 import me.glaremasters.guilds.configuration.sections.GuildBuffSettings;
@@ -42,7 +41,6 @@ import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.EconomyUtils;
 import me.glaremasters.guilds.utils.XMaterial;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -56,7 +54,6 @@ import java.util.stream.Collectors;
  * Date: 4/12/2019
  * Time: 10:01 PM
  */
-@AllArgsConstructor
 public class BuffGUI {
 
     private Guilds guilds;
@@ -64,6 +61,14 @@ public class BuffGUI {
     private GuildHandler guildHandler;
     private CommandManager commandManager;
     private CooldownHandler cooldownHandler;
+
+    public BuffGUI(Guilds guilds, SettingsManager settingsManager, GuildHandler guildHandler, CommandManager commandManager, CooldownHandler cooldownHandler) {
+        this.guilds = guilds;
+        this.settingsManager = settingsManager;
+        this.guildHandler = guildHandler;
+        this.commandManager = commandManager;
+        this.cooldownHandler = cooldownHandler;
+    }
 
     public Gui getBuffGUI() {
 

@@ -1,15 +1,17 @@
 package me.glaremasters.guilds.utils;
 
 import co.aikar.commands.ACFBukkitUtil;
-import lombok.experimental.UtilityClass;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.Plugin;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-@UtilityClass
-public class LoggingUtils {
+public final class LoggingUtils {
+
+    private LoggingUtils() {
+        throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
+    }
 
     /**
      * Log any message to console with any level.
@@ -17,7 +19,7 @@ public class LoggingUtils {
      * @param level the log level to log on.
      * @param msg   the message to log.
      */
-    public void log(Level level, String msg) {
+    public static void log(Level level, String msg) {
         Logger.getLogger("Guilds").log(level, msg);
     }
 
@@ -26,7 +28,7 @@ public class LoggingUtils {
      *
      * @param msg the msg you want to log.
      */
-    public void info(String msg) {
+    public static void info(String msg) {
         log(Level.INFO, msg);
     }
 
@@ -35,7 +37,7 @@ public class LoggingUtils {
      *
      * @param msg the msg you want to log.
      */
-    public void warn(String msg) {
+    public static void warn(String msg) {
         log(Level.WARNING, msg);
     }
 
@@ -44,7 +46,7 @@ public class LoggingUtils {
      *
      * @param msg the msg you want to log.
      */
-    public void severe(String msg) {
+    public static void severe(String msg) {
         log(Level.SEVERE, msg);
     }
 
@@ -52,7 +54,7 @@ public class LoggingUtils {
     /**
      * Guilds logLogo in console
      */
-    public void logLogo(ConsoleCommandSender sender, Plugin plugin) {
+    public static void logLogo(ConsoleCommandSender sender, Plugin plugin) {
         sender.sendMessage(ACFBukkitUtil.color("&a  ________ "));
         sender.sendMessage(ACFBukkitUtil.color("&a /  _____/ "));
         sender.sendMessage(ACFBukkitUtil.color("&a/   \\  ___ " + "  &3Guilds &8v" + plugin.getDescription().getVersion()));

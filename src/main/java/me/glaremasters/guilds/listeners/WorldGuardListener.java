@@ -24,7 +24,6 @@
 
 package me.glaremasters.guilds.listeners;
 
-import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
@@ -38,11 +37,14 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.codemc.worldguardwrapper.WorldGuardWrapper;
 import org.codemc.worldguardwrapper.region.IWrappedRegion;
 
-@AllArgsConstructor
 public class WorldGuardListener implements Listener {
 
     private GuildHandler guildHandler;
     private final WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();
+
+    public WorldGuardListener(GuildHandler guildHandler) {
+        this.guildHandler = guildHandler;
+    }
 
     @EventHandler
     public void onPlace(BlockPlaceEvent event) {

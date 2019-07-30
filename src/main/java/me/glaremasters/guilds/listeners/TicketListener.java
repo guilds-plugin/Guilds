@@ -25,7 +25,6 @@
 package me.glaremasters.guilds.listeners;
 
 import ch.jalu.configme.SettingsManager;
-import lombok.AllArgsConstructor;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
@@ -42,7 +41,6 @@ import org.bukkit.inventory.ItemStack;
  * Date: 9/27/2018
  * Time: 7:08 PM
  */
-@AllArgsConstructor
 public class TicketListener implements Listener {
 
     //todo
@@ -51,6 +49,12 @@ public class TicketListener implements Listener {
     private Guilds guilds;
     private GuildHandler guildHandler;
     private SettingsManager settingsManager;
+
+    public TicketListener(Guilds guilds, GuildHandler guildHandler, SettingsManager settingsManager) {
+        this.guilds = guilds;
+        this.guildHandler = guildHandler;
+        this.settingsManager = settingsManager;
+    }
 
     /**
      * This even handles Guild TicketListener and how they are used by the player

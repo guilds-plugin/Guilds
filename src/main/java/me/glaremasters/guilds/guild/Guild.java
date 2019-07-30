@@ -26,9 +26,6 @@ package me.glaremasters.guilds.guild;
 
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.CommandManager;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Setter;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.SkullUtils;
@@ -42,14 +39,103 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@Setter
-@Builder
-@AllArgsConstructor
 public class Guild {
+
+    public Guild(UUID id, String name, String prefix, String motd, GuildMember guildMaster, GuildHome home, GuildSkull guildSkull, Status status, GuildTier tier, GuildScore guildScore, double balance, List<GuildMember> members, List<UUID> invitedMembers, List<UUID> allies, List<UUID> pendingAllies, List<GuildCode> codes, List<String> vaults, long lastDefended) {
+        this.id = id;
+        this.name = name;
+        this.prefix = prefix;
+        this.motd = motd;
+        this.guildMaster = guildMaster;
+        this.home = home;
+        this.guildSkull = guildSkull;
+        this.status = status;
+        this.tier = tier;
+        this.guildScore = guildScore;
+        this.balance = balance;
+        this.members = members;
+        this.invitedMembers = invitedMembers;
+        this.allies = allies;
+        this.pendingAllies = pendingAllies;
+        this.codes = codes;
+        this.vaults = vaults;
+        this.lastDefended = lastDefended;
+    }
+
+    public static GuildBuilder builder() {
+        return new GuildBuilder();
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
+    }
+
+    public void setMotd(String motd) {
+        this.motd = motd;
+    }
+
+    public void setGuildMaster(GuildMember guildMaster) {
+        this.guildMaster = guildMaster;
+    }
+
+    public void setHome(GuildHome home) {
+        this.home = home;
+    }
+
+    public void setGuildSkull(GuildSkull guildSkull) {
+        this.guildSkull = guildSkull;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public void setTier(GuildTier tier) {
+        this.tier = tier;
+    }
+
+    public void setGuildScore(GuildScore guildScore) {
+        this.guildScore = guildScore;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
+    public void setMembers(List<GuildMember> members) {
+        this.members = members;
+    }
+
+    public void setInvitedMembers(List<UUID> invitedMembers) {
+        this.invitedMembers = invitedMembers;
+    }
+
+    public void setAllies(List<UUID> allies) {
+        this.allies = allies;
+    }
+
+    public void setPendingAllies(List<UUID> pendingAllies) {
+        this.pendingAllies = pendingAllies;
+    }
+
+    public void setCodes(List<GuildCode> codes) {
+        this.codes = codes;
+    }
+
+    public void setVaults(List<String> vaults) {
+        this.vaults = vaults;
+    }
+
+    public void setLastDefended(long lastDefended) {
+        this.lastDefended = lastDefended;
+    }
 
     public enum Status {
         Public("Public"),
@@ -511,6 +597,128 @@ public class Guild {
 
     public long getLastDefended() {
         return lastDefended;
+    }
+
+    public static class GuildBuilder {
+        private UUID id;
+        private String name;
+        private String prefix;
+        private String motd;
+        private GuildMember guildMaster;
+        private GuildHome home;
+        private GuildSkull guildSkull;
+        private Status status;
+        private GuildTier tier;
+        private GuildScore guildScore;
+        private double balance;
+        private List<GuildMember> members;
+        private List<UUID> invitedMembers;
+        private List<UUID> allies;
+        private List<UUID> pendingAllies;
+        private List<GuildCode> codes;
+        private List<String> vaults;
+        private long lastDefended;
+
+        GuildBuilder() {
+        }
+
+        public Guild.GuildBuilder id(UUID id) {
+            this.id = id;
+            return this;
+        }
+
+        public Guild.GuildBuilder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Guild.GuildBuilder prefix(String prefix) {
+            this.prefix = prefix;
+            return this;
+        }
+
+        public Guild.GuildBuilder motd(String motd) {
+            this.motd = motd;
+            return this;
+        }
+
+        public Guild.GuildBuilder guildMaster(GuildMember guildMaster) {
+            this.guildMaster = guildMaster;
+            return this;
+        }
+
+        public Guild.GuildBuilder home(GuildHome home) {
+            this.home = home;
+            return this;
+        }
+
+        public Guild.GuildBuilder guildSkull(GuildSkull guildSkull) {
+            this.guildSkull = guildSkull;
+            return this;
+        }
+
+        public Guild.GuildBuilder status(Status status) {
+            this.status = status;
+            return this;
+        }
+
+        public Guild.GuildBuilder tier(GuildTier tier) {
+            this.tier = tier;
+            return this;
+        }
+
+        public Guild.GuildBuilder guildScore(GuildScore guildScore) {
+            this.guildScore = guildScore;
+            return this;
+        }
+
+        public Guild.GuildBuilder balance(double balance) {
+            this.balance = balance;
+            return this;
+        }
+
+        public Guild.GuildBuilder members(List<GuildMember> members) {
+            this.members = members;
+            return this;
+        }
+
+        public Guild.GuildBuilder invitedMembers(List<UUID> invitedMembers) {
+            this.invitedMembers = invitedMembers;
+            return this;
+        }
+
+        public Guild.GuildBuilder allies(List<UUID> allies) {
+            this.allies = allies;
+            return this;
+        }
+
+        public Guild.GuildBuilder pendingAllies(List<UUID> pendingAllies) {
+            this.pendingAllies = pendingAllies;
+            return this;
+        }
+
+        public Guild.GuildBuilder codes(List<GuildCode> codes) {
+            this.codes = codes;
+            return this;
+        }
+
+        public Guild.GuildBuilder vaults(List<String> vaults) {
+            this.vaults = vaults;
+            return this;
+        }
+
+        public Guild.GuildBuilder lastDefended(long lastDefended) {
+            this.lastDefended = lastDefended;
+            return this;
+        }
+
+        public Guild build() {
+            return new Guild(id, name, prefix, motd, guildMaster, home, guildSkull, status, tier, guildScore, balance, members, invitedMembers, allies, pendingAllies, codes, vaults, lastDefended);
+        }
+
+        public String toString() {
+            return "Guild.GuildBuilder(id=" + this.id + ", name=" + this.name + ", prefix=" + this.prefix + ", motd=" + this.motd + ", guildMaster=" + this.guildMaster + ", home=" + this.home + ", guildSkull=" + this.guildSkull + ", status=" + this.status + ", tier=" + this.tier + ", guildScore=" + this.guildScore + ", balance=" + this.balance + ", members=" + this.members + ", invitedMembers=" + this.invitedMembers + ", allies=" + this.allies + ", pendingAllies=" + this.pendingAllies + ", codes=" + this.codes + ", vaults=" + this.vaults + ", lastDefended=" + this.lastDefended + ")";
+        }
     }
 }
 

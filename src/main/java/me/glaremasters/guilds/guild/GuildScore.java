@@ -1,10 +1,5 @@
 package me.glaremasters.guilds.guild;
 
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
 public class GuildScore {
 
     private int wins;
@@ -27,5 +22,21 @@ public class GuildScore {
      */
     public void addLoss() {
         setLoses(getLoses() + 1);
+    }
+
+    public int getWins() {
+        return this.wins;
+    }
+
+    public int getLoses() {
+        return this.loses;
+    }
+
+    public void setWins(int wins) {
+        this.wins = wins;
+    }
+
+    public void setLoses(int loses) {
+        this.loses = loses;
     }
 }
