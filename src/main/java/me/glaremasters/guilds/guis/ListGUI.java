@@ -97,6 +97,11 @@ public class ListGUI {
             guilds.sort(Comparator.<Guild>comparingInt(g -> g.getMembers().size()).reversed());
         }
 
+        // Check if it's supposed to be sorted by bank balance
+        if (sortOrder.equalsIgnoreCase("BALANCE")) {
+            guilds.sort(Comparator.comparingDouble(Guild::getBalance).reversed());
+        }
+
         // Loop through each guild to create the item
         guilds.forEach(g -> setListItem(pane, g));
     }
