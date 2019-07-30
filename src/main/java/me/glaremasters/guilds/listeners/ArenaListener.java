@@ -65,6 +65,10 @@ public class ArenaListener implements Listener {
         }
         // Keep the inventory
         event.setKeepInventory(true);
+
+        // Due to 1.14.4 new dupe bug, let's stop this
+        event.getDrops().clear();
+        
         // Keep the levels
         event.setKeepLevel(true);
 
