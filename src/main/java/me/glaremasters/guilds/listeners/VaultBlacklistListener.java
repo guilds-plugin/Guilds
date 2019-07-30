@@ -28,6 +28,7 @@ import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFBukkitUtil;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.configuration.sections.GuildVaultSettings;
+import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.messages.Messages;
 import org.bukkit.entity.Player;
@@ -67,6 +68,20 @@ public class VaultBlacklistListener implements Listener {
         if (event.getPlayer() instanceof Player) {
             Player player = (Player) event.getPlayer();
             guildHandler.getOpenedVault().remove(player);
+        }
+    }
+
+    @EventHandler
+    public void onClick(InventoryClickEvent event) {
+        if (event.getWhoClicked() instanceof Player) {
+            Player player = (Player) event.getWhoClicked();
+            Guild guild = guildHandler.getGuild(player);
+            if (guild != null) {
+                if (guildHandler.getOpenedVault().contains(player)) {
+                    guilds.getGuiHandler().getVaultGUI().getVaultGUI(guild, player, guilds.getCommandManager()).show(event.getWhoClicked());
+                    guildHandler.getOpenedVault().remove(player);
+                }
+            }
         }
     }
 

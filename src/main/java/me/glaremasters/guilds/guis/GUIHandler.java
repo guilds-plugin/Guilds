@@ -57,9 +57,9 @@ public class GUIHandler {
         this.cooldownHandler = cooldownHandler;
 
         buffGUI = new BuffGUI(this.guilds, this.settingsManager, this.guildHandler, this.commandManager, this.cooldownHandler);
-        listGUI = new ListGUI(this.guilds, this.settingsManager, this.guildHandler);
-        infoGUI = new InfoGUI(this.guilds, this.settingsManager, this.guildHandler, this.cooldownHandler);
-        infoMembersGUI = new InfoMembersGUI(this.guilds, this.settingsManager, this.guildHandler);
+        listGUI = new ListGUI(this.guilds, this.settingsManager, this.guildHandler, commandManager);
+        infoGUI = new InfoGUI(this.guilds, this.settingsManager, this.guildHandler, this.cooldownHandler, commandManager);
+        infoMembersGUI = new InfoMembersGUI(this.guilds, this.settingsManager, this.guildHandler, commandManager);
         vaultGUI = new VaultGUI(this.guilds, this.settingsManager, this.guildHandler);
     }
 
