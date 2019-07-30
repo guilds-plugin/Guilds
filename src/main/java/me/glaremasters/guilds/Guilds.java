@@ -104,7 +104,7 @@ public final class Guilds extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        if (checkVault()) {
+        if (checkVault() && economy != null) {
             try {
                 guildHandler.saveData();
                 cooldownHandler.saveCooldowns();
@@ -189,6 +189,27 @@ public final class Guilds extends JavaPlugin {
             return;
         }
 
+        // Load Vault
+        LoggingUtils.info("Hooking into Vault..");
+        // Setup Vaults Economy Hook
+        setupEconomy();
+        // Setup Vaults Permission Hook
+        setupPermissions();
+        if (economy == null) {
+            LoggingUtils.warn("It looks like you don't have an Economy plugin on your server! Stopping plugin..");
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
+        LoggingUtils.info("Economy Found: " + economy.getName());
+        LoggingUtils.info("Permissions Found: " + permissions.getName());
+        if (permissions.getName().equals("GroupManager")) {
+            LoggingUtils.warn("GroupManager is not designed for newer MC versions. Expect issues with permissions.");
+        }
+        if (permissions.getName().equals("PermissionsEx")) {
+            LoggingUtils.warn("PermissionsEx is not designed to run permission async. Expect issues with permissions.");
+        }
+        LoggingUtils.info("Hooked into Vault!");
+
         loadedLanguages = new ArrayList<>();
 
         // This is really just for shits and giggles
@@ -234,14 +255,6 @@ public final class Guilds extends JavaPlugin {
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
-
-        // Load Vault
-        LoggingUtils.info("Hooking into Vault..");
-        // Setup Vaults Economy Hook
-        setupEconomy();
-        // Setup Vaults Permission Hook
-        setupPermissions();
-        LoggingUtils.info("Hooked into Vault!");
 
         // If they have placeholderapi, enable it.
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
