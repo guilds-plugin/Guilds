@@ -36,6 +36,7 @@ import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
 import me.glaremasters.guilds.api.events.GuildJoinEvent;
+import me.glaremasters.guilds.configuration.sections.PluginSettings;
 import me.glaremasters.guilds.cooldowns.Cooldown;
 import me.glaremasters.guilds.cooldowns.CooldownHandler;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
@@ -102,7 +103,7 @@ public class CommandAccept extends BaseCommand {
 
         guild.addMember(player, guildHandler);
 
-        guildHandler.addPerms(permission, player);
+        guildHandler.addPerms(permission, player, settingsManager.getProperty(PluginSettings.RUN_VAULT_ASYNC));
 
         if (ClaimUtils.isEnable(settingsManager)) {
             WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();

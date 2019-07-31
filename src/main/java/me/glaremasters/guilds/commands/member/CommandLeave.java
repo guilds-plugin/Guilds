@@ -36,6 +36,7 @@ import me.glaremasters.guilds.actions.ConfirmAction;
 import me.glaremasters.guilds.api.events.GuildLeaveEvent;
 import me.glaremasters.guilds.api.events.GuildRemoveEvent;
 import me.glaremasters.guilds.configuration.sections.CooldownSettings;
+import me.glaremasters.guilds.configuration.sections.PluginSettings;
 import me.glaremasters.guilds.cooldowns.Cooldown;
 import me.glaremasters.guilds.cooldowns.CooldownHandler;
 import me.glaremasters.guilds.guild.Guild;
@@ -99,7 +100,7 @@ public class CommandLeave extends BaseCommand {
 
                     getCurrentCommandIssuer().sendInfo(Messages.LEAVE__SUCCESSFUL);
 
-                    guildHandler.removePermsFromAll(permission, guild);
+                    guildHandler.removePermsFromAll(permission, guild, settingsManager.getProperty(PluginSettings.RUN_VAULT_ASYNC));
 
                     guildHandler.removeAlliesOnDelete(guild);
 
@@ -113,7 +114,7 @@ public class CommandLeave extends BaseCommand {
 
                 } else {
 
-                    guildHandler.removePerms(permission, player);
+                    guildHandler.removePerms(permission, player, settingsManager.getProperty(PluginSettings.RUN_VAULT_ASYNC));
 
                     cooldownHandler.addCooldown(player, Cooldown.TYPES.Join.name(), settingsManager.getProperty(CooldownSettings.JOIN), TimeUnit.SECONDS);
 

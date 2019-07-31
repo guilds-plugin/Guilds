@@ -26,6 +26,7 @@ package me.glaremasters.guilds.guis;
 
 import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFBukkitUtil;
+import co.aikar.commands.CommandManager;
 import com.github.stefvanschie.inventoryframework.Gui;
 import com.github.stefvanschie.inventoryframework.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
@@ -39,6 +40,7 @@ import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.utils.ItemBuilder;
 import me.glaremasters.guilds.utils.XMaterial;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Comparator;
@@ -55,11 +57,13 @@ public class InfoMembersGUI {
     private Guilds guilds;
     private SettingsManager settingsManager;
     private GuildHandler guildHandler;
+    private CommandManager commandManager;
 
-    public InfoMembersGUI(Guilds guilds, SettingsManager settingsManager, GuildHandler guildHandler) {
+    public InfoMembersGUI(Guilds guilds, SettingsManager settingsManager, GuildHandler guildHandler, CommandManager commandManager) {
         this.guilds = guilds;
         this.settingsManager = settingsManager;
         this.guildHandler = guildHandler;
+        this.commandManager = commandManager;
     }
 
     public Gui getInfoMembersGUI(Guild guild) {
@@ -69,7 +73,19 @@ public class InfoMembersGUI {
                 guild.getName())));
 
         // Prevent players from being able to items into the GUIs
-        gui.setOnGlobalClick(event -> event.setCancelled(true));
+        gui.setOnGlobalClick(event -> {
+            event.setCancelled(true);
+            if (event.getClickedInventory() == null) {
+                Player player = (Player) event.getWhoClicked();
+                Guild g = guildHandler.getGuild(player);
+                if (g == null) {
+                    guilds.getGuiHandler().getListGUI().getListGUI().show(event.getWhoClicked());
+                } else {
+                    guilds.getGuiHandler().getInfoGUI().getInfoGUI(g, player).show(event.getWhoClicked());
+                }
+            }
+
+        });
 
         // Create the pane for the main items
         OutlinePane foregroundPane = new OutlinePane(0, 0, 9, 6, Pane.Priority.NORMAL);

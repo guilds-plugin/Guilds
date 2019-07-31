@@ -44,17 +44,19 @@ public class Libraries {
                 .build());
 
         loader.loadLibrary(Library.builder()
-                .groupId("net.lingala.zip4j")
+                .groupId("net{}lingala{}zip4j")
                 .artifactId("zip4j")
                 .version("1.3.2")
                 .checksum("xnCY1DDFdDEUMnKOvUx8RWcvnM9cZHAutq+4gWwirQg=")
+                .relocate("net{}lingala{}zip4j", "me.glaremasters.guilds.libs.zip4j")
                 .build());
 
         loader.loadLibrary(Library.builder()
-                .groupId("com.github.stefvanschie.inventoryframework")
+                .groupId("com{}github{}stefvanschie{}inventoryframework")
                 .artifactId("IF")
                 .version("0.3.1")
                 .checksum("MOPOPYQSpI3jqFrhQkpTABdO2JpoN4kNqFQTxq7KB+E=")
+                .relocate("com{}github{}stefvanschie{}inventoryframework", "me.glaremasters.guilds.libs.if")
                 .build());
 
         loader.loadLibrary(Library.builder()
@@ -86,11 +88,12 @@ public class Libraries {
                 .build());
 
         loader.loadLibrary(Library.builder()
-                .groupId("org.reflections")
+                .groupId("org{}reflections")
                 .artifactId("reflections")
                 .version("0.9.11")
                 .checksum("zKiEKPiokZ34hRBYM9Rf8HvSb5hflu5VaQVRIWtYtKE=")
                 .relocate("com{}google{}common", "me.glaremasters.guilds.libs.guava")
+                .relocate("org{}reflections", "me.glaremasters.guilds.libs.reflections")
                 .build());
 
         loader.loadLibrary(Library.builder()

@@ -377,6 +377,15 @@ public class ChallengeHandler {
             teleportRemaining(challenge);
             // Run the reward commands
             giveRewards(settingsManager, challenge);
+            // Execute post war commands
+            if (settingsManager.getProperty(WarSettings.ENABLE_POST_CHALLENGE_COMMANDS)) {
+                settingsManager.getProperty(WarSettings.POST_CHALLENGE_COMMANDS).forEach(c -> {
+                        c = c.replace("{challenger}", challenge.getChallenger().getName());
+                        c = c.replace("{defender}", challenge.getDefender().getName());
+                        c = c.replace("{winner}", challenge.getWinner().getName());
+                        Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), c);
+                });
+            }
             try {
                 // Save the details about the challenge
                 challengesProvider.saveChallenge(challenge);

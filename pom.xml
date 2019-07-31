@@ -30,7 +30,7 @@
 
     <groupId>me.glaremasters</groupId>
     <artifactId>guilds</artifactId>
-    <version>3.5.2.1-RELEASE</version>
+    <version>3.5.2.2-RELEASE</version>
     <packaging>jar</packaging>
 
     <name>Guilds</name>
@@ -116,8 +116,20 @@
                                     <shadedPattern>me.glaremasters.guilds.libs.guava</shadedPattern>
                                 </relocation>
                                 <relocation>
+                                    <pattern>com.github.stefvanschie.inventoryframework</pattern>
+                                    <shadedPattern>me.glaremasters.guilds.libs.if</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.reflections</pattern>
+                                    <shadedPattern>me.glaremasters.guilds.libs.reflections</shadedPattern>
+                                </relocation>
+                                <relocation>
                                     <pattern>net.byteflux.libby</pattern>
                                     <shadedPattern>me.glaremasters.guilds.libs.libby</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>net.lingala.zip4j</pattern>
+                                    <shadedPattern>me.glaremasters.guilds.libs.zip4j</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>

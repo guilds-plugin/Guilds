@@ -35,6 +35,7 @@ import co.aikar.commands.annotation.Subcommand;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.actions.ConfirmAction;
 import me.glaremasters.guilds.api.events.GuildRemoveEvent;
+import me.glaremasters.guilds.configuration.sections.PluginSettings;
 import me.glaremasters.guilds.exceptions.InvalidPermissionException;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
@@ -83,7 +84,7 @@ public class CommandDelete extends BaseCommand {
                 if (event.isCancelled())
                     return;
 
-                guildHandler.removePermsFromAll(permission, guild);
+                guildHandler.removePermsFromAll(permission, guild, settingsManager.getProperty(PluginSettings.RUN_VAULT_ASYNC));
 
                 guildHandler.removeAlliesOnDelete(guild);
 

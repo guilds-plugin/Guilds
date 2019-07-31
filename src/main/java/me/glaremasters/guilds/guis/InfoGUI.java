@@ -62,15 +62,17 @@ public class InfoGUI {
     private SettingsManager settingsManager;
     private GuildHandler guildHandler;
     private CooldownHandler cooldownHandler;
+    private CommandManager commandManager;
 
-    public InfoGUI(Guilds guilds, SettingsManager settingsManager, GuildHandler guildHandler, CooldownHandler cooldownHandler) {
+    public InfoGUI(Guilds guilds, SettingsManager settingsManager, GuildHandler guildHandler, CooldownHandler cooldownHandler, CommandManager commandManager) {
         this.guilds = guilds;
         this.settingsManager = settingsManager;
         this.guildHandler = guildHandler;
         this.cooldownHandler = cooldownHandler;
+        this.commandManager = commandManager;
     }
 
-    public Gui getInfoGUI(Guild guild, Player player, CommandManager commandManager) {
+    public Gui getInfoGUI(Guild guild, Player player) {
 
         // Create the GUI with the desired name from the config
         Gui gui = new Gui(guilds, 3, ACFBukkitUtil.color(settingsManager.getProperty(GuildInfoSettings.GUI_NAME).replace("{name}",
@@ -95,10 +97,10 @@ public class InfoGUI {
         createBackgroundItems(backgroundPane);
 
         // Add the items to the foreground pane
-        createForegroundItems(foregroundPane, guild, player, commandManager);
+        createForegroundItems(foregroundPane, guild, player);
 
         // Add the vault item to the vault pane
-        createVaultItem(vaultPane, guild, player, commandManager);
+        createVaultItem(vaultPane, guild, player);
 
         // Add the motd item to the info pane
         createMotdItem(motdPane, guild);
@@ -140,7 +142,7 @@ public class InfoGUI {
      * @param pane the pane to be added to
      * @param guild the guild of the player
      */
-    private void createForegroundItems(OutlinePane pane, Guild guild, Player player, CommandManager commandManager) {
+    private void createForegroundItems(OutlinePane pane, Guild guild, Player player) {
 
         // Create an easy way to access the guild tier
         GuildTier tier = guildHandler.getGuildTier(guild.getTier().getLevel());
@@ -254,7 +256,7 @@ public class InfoGUI {
      * @param pane the pane to be added to
      * @param guild the guild of the player
      */
-    private void createVaultItem(OutlinePane pane, Guild guild, Player player, CommandManager commandManager) {
+    private void createVaultItem(OutlinePane pane, Guild guild, Player player) {
         // Add the vault item to the GUI
         if (settingsManager.getProperty(GuildInfoSettings.VAULT_DISPLAY)) {
             pane.addItem(new GuiItem(easyItem(settingsManager.getProperty(GuildInfoSettings.VAULT_MATERIAL),

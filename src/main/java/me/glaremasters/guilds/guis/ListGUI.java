@@ -26,6 +26,7 @@ package me.glaremasters.guilds.guis;
 
 import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFBukkitUtil;
+import co.aikar.commands.CommandManager;
 import com.github.stefvanschie.inventoryframework.Gui;
 import com.github.stefvanschie.inventoryframework.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
@@ -51,11 +52,13 @@ public class ListGUI {
     private Guilds guilds;
     private SettingsManager settingsManager;
     private GuildHandler guildHandler;
+    private CommandManager commandManager;
 
-    public ListGUI(Guilds guilds, SettingsManager settingsManager, GuildHandler guildHandler) {
+    public ListGUI(Guilds guilds, SettingsManager settingsManager, GuildHandler guildHandler, CommandManager commandManager) {
         this.guilds = guilds;
         this.settingsManager = settingsManager;
         this.guildHandler = guildHandler;
+        this.commandManager = commandManager;
     }
 
     public Gui getListGUI() {
@@ -145,8 +148,10 @@ public class ListGUI {
                     .replace("{guild-status}", statusString)
                     .replace("{guild-tier}", String.valueOf(guild.getTier().getLevel()))
                     .replace("{guild-balance}", String.valueOf(guild.getBalance()))
-                    .replace("{guild-member-count}", String.valueOf(guild.getSize())
-                    .replace("{guild-tier-name}", guildHandler.getGuildTier(guild.getTier().getLevel()).getName())))));
+                    .replace("{guild-member-count}", String.valueOf(guild.getSize()))
+                    .replace("{guild-challenge-wins}", String.valueOf(guild.getGuildScore().getWins()))
+                    .replace("{guild-challenge-loses}", String.valueOf(guild.getGuildScore().getLoses()))
+                    .replace("{guild-tier-name}", guildHandler.getGuildTier(guild.getTier().getLevel()).getName()))));
         return updated;
     }
 

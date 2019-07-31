@@ -69,7 +69,12 @@ public class VaultGUI {
                 guild.getName())));
 
         // Prevent players from being able to items into the GUIs
-        gui.setOnGlobalClick(event -> event.setCancelled(true));
+        gui.setOnGlobalClick(event -> {
+            event.setCancelled(true);
+            if (event.getClickedInventory() == null) {
+                guilds.getGuiHandler().getInfoGUI().getInfoGUI(guild, player).show(event.getWhoClicked());
+            }
+        });
 
         // Create the pane for the main items
         OutlinePane foregroundPane = new OutlinePane(0, 0, 9, settingsManager.getProperty(VaultPickerSettings.GUI_SIZE), Pane.Priority.NORMAL);
