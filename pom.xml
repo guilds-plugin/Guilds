@@ -116,12 +116,23 @@
                                     <shadedPattern>me.glaremasters.guilds.libs.guava</shadedPattern>
                                 </relocation>
                                 <relocation>
+                                    <pattern>com.github.stefvanschie.inventoryframework</pattern>
+                                    <shadedPattern>me.glaremasters.guilds.libs.if</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern></pattern>
+                                </relocation>
+                                <relocation>
                                     <pattern>org.reflections</pattern>
                                     <shadedPattern>me.glaremasters.guilds.libs.reflections</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>net.byteflux.libby</pattern>
                                     <shadedPattern>me.glaremasters.guilds.libs.libby</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>net.lingala.zip4j</pattern>
+                                    <shadedPattern>me.glaremasters.guilds.libs.zip4j</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
