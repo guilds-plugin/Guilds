@@ -706,9 +706,17 @@ public class GuildHandler {
         if (tier.getPermissions().isEmpty())
             return;
         if (async) {
-            Guilds.newChain().async(() -> tier.getPermissions().forEach(perm -> permission.playerRemove(null, player, perm))).execute();
+            Guilds.newChain().async(() -> tier.getPermissions().forEach(perm -> {
+                if (!perm.equals("")) {
+                    permission.playerRemove(null, player, perm);
+                }
+            })).execute();
         } else {
-            tier.getPermissions().forEach(perm -> permission.playerRemove(null, player, perm));
+            tier.getPermissions().forEach(perm -> {
+                if (!perm.equals("")) {
+                    permission.playerRemove(null, player, perm);
+                }
+            });
         }
 
     }
@@ -726,9 +734,17 @@ public class GuildHandler {
         if (tier.getPermissions().isEmpty())
             return;
         if (async) {
-            Guilds.newChain().async(() -> tier.getPermissions().forEach(perm -> permission.playerAdd(null, player, perm))).execute();
+            Guilds.newChain().async(() -> tier.getPermissions().forEach(perm -> {
+                if (!perm.equals("")) {
+                    permission.playerAdd(null, player, perm);
+                }
+            })).execute();
         } else {
-            tier.getPermissions().forEach(perm -> permission.playerAdd(null, player, perm));
+            tier.getPermissions().forEach(perm -> {
+                if (!perm.equals("")) {
+                    permission.playerAdd(null, player, perm);
+                }
+            });
         }
 
     }
@@ -743,9 +759,17 @@ public class GuildHandler {
         if (tier.getPermissions().isEmpty())
             return;
         if (async) {
-            Guilds.newChain().async(() -> guild.getAllAsPlayers().forEach(player -> getGuildTier(guild.getTier().getLevel()).getPermissions().forEach(perm -> permission.playerAdd(null, player, perm)))).execute();
+            Guilds.newChain().async(() -> guild.getAllAsPlayers().forEach(player -> getGuildTier(guild.getTier().getLevel()).getPermissions().forEach(perm -> {
+                if (!perm.equals("")) {
+                    permission.playerAdd(null, player, perm);
+                }
+            }))).execute();
         } else {
-            guild.getAllAsPlayers().forEach(player -> getGuildTier(guild.getTier().getLevel()).getPermissions().forEach(perm -> permission.playerAdd(null, player, perm)));
+            guild.getAllAsPlayers().forEach(player -> getGuildTier(guild.getTier().getLevel()).getPermissions().forEach(perm -> {
+                if (!perm.equals("")) {
+                    permission.playerAdd(null, player, perm);
+                }
+            }));
         }
 
     }
@@ -760,9 +784,17 @@ public class GuildHandler {
         if (tier.getPermissions().isEmpty())
             return;
         if (async) {
-            Guilds.newChain().async(() -> guild.getAllAsPlayers().forEach(player -> getGuildTier(guild.getTier().getLevel()).getPermissions().forEach(perm -> permission.playerRemove(null, player, perm)))).execute();
+            Guilds.newChain().async(() -> guild.getAllAsPlayers().forEach(player -> getGuildTier(guild.getTier().getLevel()).getPermissions().forEach(perm -> {
+                if (!perm.equals("")) {
+                    permission.playerRemove(null, player, perm);
+                }
+            }))).execute();
         } else {
-            guild.getAllAsPlayers().forEach(player -> getGuildTier(guild.getTier().getLevel()).getPermissions().forEach(perm -> permission.playerRemove(null, player, perm)));
+            guild.getAllAsPlayers().forEach(player -> getGuildTier(guild.getTier().getLevel()).getPermissions().forEach(perm -> {
+                if (!perm.equals("")) {
+                    permission.playerRemove(null, player, perm);
+                }
+            }));
         }
 
     }
