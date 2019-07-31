@@ -1,8 +1,8 @@
 ---
 descriptions:
-  accept: "Accept a guild invite"
-  admin-addplayer: "Admin command to add a player to a Guild"
-  admin-bank-balance: "Admin command to view a guild's bank balance"
+  accept: "Acceptera guild inbjudan"
+  admin-addplayer: "Admin kommandon för att lägga till en spelare i en guild"
+  admin-bank-balance: "Admin-kommando för att se guildens saldo"
   admin-bank-deposit: "Admin command to put money into a guild's bank"
   admin-bank-withdraw: "Admin command to take money from a guild's bank"
   admin-claim: "Admin command to claim a guild's land"
