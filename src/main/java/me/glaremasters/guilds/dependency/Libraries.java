@@ -86,11 +86,12 @@ public class Libraries {
                 .build());
 
         loader.loadLibrary(Library.builder()
-                .groupId("org.reflections")
+                .groupId("org{}reflections")
                 .artifactId("reflections")
                 .version("0.9.11")
                 .checksum("zKiEKPiokZ34hRBYM9Rf8HvSb5hflu5VaQVRIWtYtKE=")
                 .relocate("com{}google{}common", "me.glaremasters.guilds.libs.guava")
+                .relocate("org{}reflections", "me.glaremasters.guilds.libs.reflections")
                 .build());
 
         loader.loadLibrary(Library.builder()

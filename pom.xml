@@ -116,6 +116,10 @@
                                     <shadedPattern>me.glaremasters.guilds.libs.guava</shadedPattern>
                                 </relocation>
                                 <relocation>
+                                    <pattern>org.reflections</pattern>
+                                    <shadedPattern>me.glaremasters.guilds.libs.reflections</shadedPattern>
+                                </relocation>
+                                <relocation>
                                     <pattern>net.byteflux.libby</pattern>
                                     <shadedPattern>me.glaremasters.guilds.libs.libby</shadedPattern>
                                 </relocation>
