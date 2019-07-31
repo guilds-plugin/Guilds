@@ -413,7 +413,7 @@ public class GuildHandler {
      * @return a string list of guild names
      */
     public List<String> getGuildNames() {
-        return guilds.stream().map(Guild::getName).collect(Collectors.toList());
+        return guilds.stream().map(Guild::getName).map(ACFBukkitUtil::removeColors).collect(Collectors.toList());
     }
 
     /**
