@@ -34,6 +34,7 @@ import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.actions.ConfirmAction;
+import me.glaremasters.guilds.configuration.sections.PluginSettings;
 import me.glaremasters.guilds.configuration.sections.TierSettings;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.exceptions.InvalidPermissionException;
@@ -103,12 +104,12 @@ public class CommandUpgrade extends BaseCommand {
                 guild.setBalance(balance - upgradeCost);
 
                 if (!settingsManager.getProperty(TierSettings.CARRY_OVER))
-                    guildHandler.removePermsFromAll(permission, guild);
+                    guildHandler.removePermsFromAll(permission, guild, settingsManager.getProperty(PluginSettings.RUN_VAULT_ASYNC));
 
 
                 guildHandler.upgradeTier(guild);
 
-                guildHandler.addPermsToAll(permission, guild);
+                guildHandler.addPermsToAll(permission, guild, settingsManager.getProperty(PluginSettings.RUN_VAULT_ASYNC));
 
                 getCurrentCommandIssuer().sendInfo(Messages.UPGRADE__SUCCESS);
                 actionHandler.removeAction(player);

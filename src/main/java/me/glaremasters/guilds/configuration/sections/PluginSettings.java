@@ -71,6 +71,13 @@ public final class PluginSettings implements SettingsHolder {
     public static final Property<Boolean> UPDATE_CHECK =
             newProperty("settings.update-check", true);
 
+    @Comment({"Would you like to run vault permission changes async? (Will be less stress on the main thread and prevent lag)",
+    "Async is used by LuckPerms.",
+    "Set this to false if you are using PEx.",
+    "I do suggest you switch to LuckPerms so that you can keep it async, but ultimately the choice is yours."})
+    public static final Property<Boolean> RUN_VAULT_ASYNC =
+            newProperty("settings.run-vault-async", true);
+
     private PluginSettings() {
     }
 

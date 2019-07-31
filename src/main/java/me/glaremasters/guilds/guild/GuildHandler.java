@@ -698,14 +698,19 @@ public class GuildHandler {
      * @param permission the permission to remove
      * @param player the player to remove from
      */
-    public void removePerms(Permission permission, OfflinePlayer player) {
+    public void removePerms(Permission permission, OfflinePlayer player, boolean async) {
         Guild guild = getGuild(player);
         if (guild == null)
             return;
         GuildTier tier = getGuildTier(guild.getTier().getLevel());
         if (tier.getPermissions().isEmpty())
             return;
-        Guilds.newChain().async(() -> tier.getPermissions().forEach(perm -> permission.playerRemove(null, player, perm))).execute();
+        if (async) {
+            Guilds.newChain().async(() -> tier.getPermissions().forEach(perm -> permission.playerRemove(null, player, perm))).execute();
+        } else {
+            tier.getPermissions().forEach(perm -> permission.playerRemove(null, player, perm));
+        }
+
     }
 
     /**
@@ -713,14 +718,19 @@ public class GuildHandler {
      * @param permission the permission to add
      * @param player the player to add to
      */
-    public void addPerms(Permission permission, OfflinePlayer player) {
+    public void addPerms(Permission permission, OfflinePlayer player, boolean async) {
         Guild guild = getGuild(player);
         if (guild == null)
             return;
         GuildTier tier = getGuildTier(guild.getTier().getLevel());
         if (tier.getPermissions().isEmpty())
             return;
-        Guilds.newChain().async(() -> tier.getPermissions().forEach(perm -> permission.playerAdd(null, player, perm))).execute();
+        if (async) {
+            Guilds.newChain().async(() -> tier.getPermissions().forEach(perm -> permission.playerAdd(null, player, perm))).execute();
+        } else {
+            tier.getPermissions().forEach(perm -> permission.playerAdd(null, player, perm));
+        }
+
     }
 
     /**
@@ -728,11 +738,16 @@ public class GuildHandler {
      * @param permission permission to add
      * @param guild the guild being modified
      */
-    public void addPermsToAll(Permission permission, Guild guild) {
+    public void addPermsToAll(Permission permission, Guild guild, boolean async) {
         GuildTier tier = getGuildTier(guild.getTier().getLevel());
         if (tier.getPermissions().isEmpty())
             return;
-        Guilds.newChain().async(() -> guild.getAllAsPlayers().forEach(player -> getGuildTier(guild.getTier().getLevel()).getPermissions().forEach(perm -> permission.playerAdd(null, player, perm)))).execute();
+        if (async) {
+            Guilds.newChain().async(() -> guild.getAllAsPlayers().forEach(player -> getGuildTier(guild.getTier().getLevel()).getPermissions().forEach(perm -> permission.playerAdd(null, player, perm)))).execute();
+        } else {
+            guild.getAllAsPlayers().forEach(player -> getGuildTier(guild.getTier().getLevel()).getPermissions().forEach(perm -> permission.playerAdd(null, player, perm)));
+        }
+
     }
 
     /**
@@ -740,11 +755,16 @@ public class GuildHandler {
      * @param permission permission to remove
      * @param guild the guild being modified
      */
-    public void removePermsFromAll(Permission permission, Guild guild) {
+    public void removePermsFromAll(Permission permission, Guild guild, boolean async) {
         GuildTier tier = getGuildTier(guild.getTier().getLevel());
         if (tier.getPermissions().isEmpty())
             return;
-        Guilds.newChain().async(() -> guild.getAllAsPlayers().forEach(player -> getGuildTier(guild.getTier().getLevel()).getPermissions().forEach(perm -> permission.playerRemove(null, player, perm)))).execute();
+        if (async) {
+            Guilds.newChain().async(() -> guild.getAllAsPlayers().forEach(player -> getGuildTier(guild.getTier().getLevel()).getPermissions().forEach(perm -> permission.playerRemove(null, player, perm)))).execute();
+        } else {
+            guild.getAllAsPlayers().forEach(player -> getGuildTier(guild.getTier().getLevel()).getPermissions().forEach(perm -> permission.playerRemove(null, player, perm)));
+        }
+
     }
 
     /**

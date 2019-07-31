@@ -152,6 +152,6 @@ public class PlayerListener implements Listener {
      */
     @EventHandler
     public void permCheck(PlayerJoinEvent event) {
-        guildHandler.addPerms(permission, event.getPlayer());
+        guildHandler.addPerms(permission, event.getPlayer(), settingsManager.getProperty(PluginSettings.RUN_VAULT_ASYNC));
     }
 }

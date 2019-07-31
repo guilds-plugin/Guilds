@@ -120,9 +120,6 @@
                                     <shadedPattern>me.glaremasters.guilds.libs.if</shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern></pattern>
-                                </relocation>
-                                <relocation>
                                     <pattern>org.reflections</pattern>
                                     <shadedPattern>me.glaremasters.guilds.libs.reflections</shadedPattern>
                                 </relocation>
