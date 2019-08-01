@@ -177,6 +177,9 @@ public final class Guilds extends JavaPlugin {
 
     @Override
     public void onEnable() {
+       
+        LoggingUtils.logLogo(Bukkit.getConsoleSender(), this);
+
         if (!successfulLoad) {
             LoggingUtils.warn("Dependencies could not be downloaded, shutting down to prevent file corruption.");
             Bukkit.getPluginManager().disablePlugin(this);
@@ -218,9 +221,6 @@ public final class Guilds extends JavaPlugin {
 
         // Load up TaskChain
         taskChainFactory = BukkitTaskChainFactory.create(this);
-
-        // Flex teh guild logLogo
-        LoggingUtils.logLogo(Bukkit.getConsoleSender(), this);
 
         // Load the config
         LoggingUtils.info("Loading config..");
