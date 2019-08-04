@@ -71,6 +71,10 @@ public final class PluginSettings implements SettingsHolder {
     public static final Property<Boolean> UPDATE_CHECK =
             newProperty("settings.update-check", true);
 
+    @Comment("What would you like the command aliases for the plugin to be?")
+    public static final Property<String> PLUGIN_ALIASES =
+            newProperty("settings.plugin-aliases", "guild|guilds|g");
+
     @Comment({"Would you like to run vault permission changes async? (Will be less stress on the main thread and prevent lag)",
     "Async is used by LuckPerms.",
     "Set this to false if you are using PEx.",

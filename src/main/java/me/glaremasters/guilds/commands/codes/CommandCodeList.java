@@ -45,7 +45,7 @@ import org.bukkit.entity.Player;
  * Date: 4/4/2019
  * Time: 5:19 PM
  */
-@CommandAlias(Constants.ROOT_ALIAS)
+@CommandAlias("%guilds")
 public class CommandCodeList extends BaseCommand {
 
     @Dependency private SettingsManager settingsManager;

@@ -53,7 +53,7 @@ import org.codemc.worldguardwrapper.WorldGuardWrapper;
  * Date: 4/5/2019
  * Time: 11:46 PM
  */
-@CommandAlias(Constants.ROOT_ALIAS)
+@CommandAlias("%guilds")
 public class CommandRename extends BaseCommand {
 
     @Dependency private GuildHandler guildHandler;

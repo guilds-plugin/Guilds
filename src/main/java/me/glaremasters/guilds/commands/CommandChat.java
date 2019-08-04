@@ -43,7 +43,7 @@ import org.bukkit.entity.Player;
  * Date: 4/5/2019
  * Time: 12:54 AM
  */
-@CommandAlias(Constants.ROOT_ALIAS)
+@CommandAlias("%guilds")
 public class CommandChat extends BaseCommand {
 
     @Dependency private GuildHandler guildHandler;

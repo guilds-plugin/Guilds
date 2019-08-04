@@ -49,6 +49,9 @@ public class ACFHandler {
         registerCustomContexts(commandManager, guilds.getGuildHandler());
         registerCustomCompletions(commandManager, guilds.getGuildHandler(), guilds.getArenaHandler());
         registerDependencyInjections(commandManager);
+
+        commandManager.getCommandReplacements().addReplacement("guilds", guilds.getSettingsHandler().getSettingsManager().getProperty(PluginSettings.PLUGIN_ALIASES));
+
         registerCommands(commandManager);
     }
 

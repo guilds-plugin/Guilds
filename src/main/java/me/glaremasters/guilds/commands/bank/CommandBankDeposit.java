@@ -52,7 +52,7 @@ import java.text.NumberFormat;
  * Date: 4/4/2019
  * Time: 5:32 PM
  */
-@CommandAlias(Constants.ROOT_ALIAS)
+@CommandAlias("%guilds")
 public class CommandBankDeposit extends BaseCommand {
 
     @Dependency private Economy economy;

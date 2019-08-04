@@ -42,7 +42,7 @@ import org.bukkit.entity.Player;
  * Date: 4/4/2019
  * Time: 11:00 PM
  */
-@CommandAlias(Constants.ROOT_ALIAS)
+@CommandAlias("%guilds")
 public class CommandDelHome extends BaseCommand {
 
     /**

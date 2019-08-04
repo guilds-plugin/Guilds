@@ -39,7 +39,7 @@ import me.glaremasters.guilds.utils.Constants;
  * Date: 4/8/2019
  * Time: 2:04 PM
  */
-@CommandAlias(Constants.ROOT_ALIAS)
+@CommandAlias("%guilds")
 public class CommandReload extends BaseCommand {
 
     @Dependency private SettingsManager settingsManager;

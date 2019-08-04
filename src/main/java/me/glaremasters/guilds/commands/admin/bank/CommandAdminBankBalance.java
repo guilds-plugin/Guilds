@@ -46,7 +46,7 @@ import org.bukkit.entity.Player;
  * Date: 5/30/2019
  * Time: 2:19 PM
  */
-@CommandAlias(Constants.ROOT_ALIAS)
+@CommandAlias("%guilds")
 public class CommandAdminBankBalance extends BaseCommand {
 
     @Dependency private GuildHandler guildHandler;

@@ -48,7 +48,7 @@ import org.codemc.worldguardwrapper.WorldGuardWrapper;
  * Date: 4/4/2019
  * Time: 10:38 PM
  */
-@CommandAlias(Constants.ROOT_ALIAS)
+@CommandAlias("%guilds")
 public class CommandUnclaim extends BaseCommand {
 
     @Dependency private SettingsManager settingsManager;

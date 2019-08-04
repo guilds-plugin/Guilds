@@ -46,7 +46,7 @@ import me.glaremasters.guilds.utils.Constants;
 import org.bukkit.entity.Player;
 import org.codemc.worldguardwrapper.WorldGuardWrapper;
 
-@CommandAlias(Constants.ROOT_ALIAS)
+@CommandAlias("%guilds")
 public class CommandAdminClaim extends BaseCommand {
 
     @Dependency private GuildHandler guildHandler;

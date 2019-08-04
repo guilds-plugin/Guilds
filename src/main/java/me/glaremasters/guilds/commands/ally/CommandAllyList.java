@@ -45,7 +45,7 @@ import java.util.stream.Collectors;
  * Date: 4/4/2019
  * Time: 5:52 PM
  */
-@CommandAlias(Constants.ROOT_ALIAS)
+@CommandAlias("%guilds")
 public class CommandAllyList extends BaseCommand {
 
     @Dependency private GuildHandler guildHandler;

@@ -43,7 +43,7 @@ import me.glaremasters.guilds.utils.Constants;
  * Date: 4/4/2019
  * Time: 11:23 PM
  */
-@CommandAlias(Constants.ROOT_ALIAS)
+@CommandAlias("%guilds")
 public class CommandConfirm extends BaseCommand {
 
     @Dependency private ActionHandler actionHandler;

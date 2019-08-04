@@ -48,7 +48,7 @@ import org.bukkit.command.CommandSender;
  * Date: 4/8/2019
  * Time: 2:32 PM
  */
-@CommandAlias(Constants.ROOT_ALIAS)
+@CommandAlias("%guilds")
 public class CommandAdminGive extends BaseCommand {
 
     @Dependency private GuildHandler guildHandler;

@@ -50,7 +50,7 @@ import java.util.concurrent.TimeUnit;
  * Date: 4/4/2019
  * Time: 11:00 PM
  */
-@CommandAlias(Constants.ROOT_ALIAS)
+@CommandAlias("%guilds")
 public class CommandHome extends BaseCommand {
 
     @Dependency private CooldownHandler cooldownHandler;
