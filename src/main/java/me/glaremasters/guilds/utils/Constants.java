@@ -39,6 +39,5 @@ public class Constants {
     public static final String MOTD_PERM = BASE_PERM + "motd.";
     public static final String WAR_PERM = BASE_PERM + "war.";
     public static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11";
-    public static final String ROOT_ALIAS = "guild|guilds|g";
 
 }
