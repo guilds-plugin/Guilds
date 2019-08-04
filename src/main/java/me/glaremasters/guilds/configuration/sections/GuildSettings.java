@@ -74,6 +74,10 @@ public class GuildSettings implements SettingsHolder {
     public static final Property<String> SPY_CHAT_FORMAT =
             newProperty("guild.format.spy", "&7&l[Guild Spy]&r &b[{guild}&b]&r &b[{role}&b]&r &b {player}: {message}");
 
+    @Comment("Would you like to log the guild chat to console?")
+    public static final Property<Boolean> LOG_GUILD_CHAT =
+            newProperty("guild.format.log-guild-chat", false);
+
     @Comment("The left bracket in the placeholder")
     public static final Property<String> FORMAT_BRACKET_LEFT =
             newProperty("guild.format.placeholder-design.left-bracket", "[");

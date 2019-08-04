@@ -33,6 +33,7 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.JSONMessage;
+import me.glaremasters.guilds.utils.LoggingUtils;
 import me.glaremasters.guilds.utils.StringUtils;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.entity.Player;
@@ -134,6 +135,9 @@ public class PlayerListener implements Listener {
             guild.sendMessage(ACFBukkitUtil.color(settingsManager.getProperty(GuildSettings.GUILD_CHAT_FORMAT).replace("{role}", guildHandler.getGuildRole(guild.getMember(player.getUniqueId()).getRole().getLevel()).getName()).replace("{player}", player.getName()).replace("{display-name}", player.getDisplayName()).replace("{message}", event.getMessage())));
             guildHandler.getSpies().forEach(s -> s.sendMessage(ACFBukkitUtil.color(settingsManager.getProperty(GuildSettings.SPY_CHAT_FORMAT).replace("{role}", guildHandler.getGuildRole(guild.getMember(player.getUniqueId()).getRole().getLevel()).getName()).replace("{player}", player.getName()).replace("{display-name}", player.getDisplayName()).replace("{message}", event.getMessage()).replace("{guild}", guild.getName()))));
             event.setCancelled(true);
+            if (settingsManager.getProperty(GuildSettings.LOG_GUILD_CHAT)) {
+                LoggingUtils.info(ACFBukkitUtil.color(settingsManager.getProperty(GuildSettings.SPY_CHAT_FORMAT).replace("{role}", guildHandler.getGuildRole(guild.getMember(player.getUniqueId()).getRole().getLevel()).getName()).replace("{player}", player.getName()).replace("{display-name}", player.getDisplayName()).replace("{message}", event.getMessage()).replace("{guild}", guild.getName())));
+            }
         }
     }
 
