@@ -43,6 +43,8 @@ public class ArenaListener implements Listener {
         GuildChallenge challenge = challengeHandler.getChallenge(player);
         // Check if they are part of an active challenge
         if (challenge != null) {
+            // Announce they left
+            challengeHandler.announceDeath(challenge, guilds, player, player, ChallengeHandler.Cause.PLAYER_KILLED_QUIT);
             // Remove the player from the alive players
             challengeHandler.handleFinish(guilds, settingsManager, challengesProvider, player, challenge);
         }
@@ -76,7 +78,7 @@ public class ArenaListener implements Listener {
         playerDeath.put(player.getUniqueId(), challengeHandler.getAllPlayersAlive(challenge).get(player.getUniqueId()));
 
         // Announce that a player has died
-        challengeHandler.announceDeath(challenge, guilds, player);
+        challengeHandler.announceDeath(challenge, guilds, player, player, ChallengeHandler.Cause.PLAYER_KILLED_UNKNOWN);
 
         // Handle rest of arena stuff like normal
         challengeHandler.handleFinish(guilds, settingsManager, challengesProvider, player, challenge);
@@ -121,7 +123,7 @@ public class ArenaListener implements Listener {
                 // Cancel the last damage so they don't die
                 event.setCancelled(true);
                 // Tell everyone in the arena that the player was killed
-                challengeHandler.announceDeath(challenge, guilds, entity, killer);
+                challengeHandler.announceDeath(challenge, guilds, entity, killer, ChallengeHandler.Cause.PLAYER_KILLED_PLAYER);
                 // Teleport them out of the arena
                 challengeHandler.exitArena(entity, challenge, guilds);
                 // Remove them
