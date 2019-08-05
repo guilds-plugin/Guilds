@@ -23,7 +23,7 @@ public final class StringUtils {
      */
     public static String getAnnouncements(JavaPlugin plugin) throws IOException {
         String announcement;
-        URL url = new URL("https://glaremasters.me/guilds/announcements/?id=" + plugin.getDescription().getVersion());
+        URL url = new URL("https://glaremasters.me/api/guilds/?id=" + plugin.getDescription().getVersion());
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestProperty("User-Agent", Constants.USER_AGENT);
         try (InputStream in = con.getInputStream()) {
