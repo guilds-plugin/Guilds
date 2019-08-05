@@ -314,6 +314,7 @@ war:
   commands-blocked: "&cSorry! You can't run commands while in a war!"
   player-killed-player: "&b{player} &ahas been killed by &b{killer}&a!"
   player-killed-other: "&b{player} &ahas been killed for unknown reasons."
+  player-killed-quit: "&b{player} &ahas been killed due to leaving the server."
   teleported-back: "&aYou fought hard! Alas, not everyone can be the best. You've been teleported back to your original location!"
 acf:
   invalid-syntax: "Použí: <c2>{command}</c2> <c3>{syntax}</c3>"
