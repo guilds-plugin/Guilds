@@ -18,7 +18,7 @@ import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.Constants;
 import org.bukkit.entity.Player;
 
-@CommandAlias(Constants.ROOT_ALIAS)
+@CommandAlias("%guilds")
 public class CommandWarDeny extends BaseCommand {
 
     @Dependency private GuildHandler guildHandler;

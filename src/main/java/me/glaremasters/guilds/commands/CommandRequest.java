@@ -53,7 +53,7 @@ import java.util.concurrent.TimeUnit;
  * Date: 4/8/2019
  * Time: 10:50 AM
  */
-@CommandAlias(Constants.ROOT_ALIAS)
+@CommandAlias("%guilds")
 public class CommandRequest extends BaseCommand {
 
     @Dependency private GuildHandler guildHandler;

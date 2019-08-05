@@ -48,7 +48,7 @@ import org.bukkit.entity.Player;
  * Date: 4/5/2019
  * Time: 10:54 PM
  */
-@CommandAlias(Constants.ROOT_ALIAS)
+@CommandAlias("%guilds")
 public class CommandTransfer extends BaseCommand {
 
     /**

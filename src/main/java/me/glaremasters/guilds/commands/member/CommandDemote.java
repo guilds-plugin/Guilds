@@ -52,7 +52,7 @@ import org.bukkit.entity.Player;
  * Date: 4/4/2019
  * Time: 11:31 PM
  */
-@CommandAlias(Constants.ROOT_ALIAS)
+@CommandAlias("%guilds")
 public class CommandDemote extends BaseCommand {
 
     @Dependency private GuildHandler guildHandler;

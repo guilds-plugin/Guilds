@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-@CommandAlias(Constants.ROOT_ALIAS)
+@CommandAlias("%guilds")
 public class CommandArenaCreate extends BaseCommand {
 
     @Dependency ArenaHandler arenaHandler;

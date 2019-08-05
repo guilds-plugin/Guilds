@@ -49,7 +49,7 @@ import org.bukkit.entity.Player;
  * Date: 4/4/2019
  * Time: 4:51 PM
  */
-@CommandAlias(Constants.ROOT_ALIAS)
+@CommandAlias("%guilds")
 public class CommandCodeCreate extends BaseCommand {
 
     @Dependency private SettingsManager settingsManager;

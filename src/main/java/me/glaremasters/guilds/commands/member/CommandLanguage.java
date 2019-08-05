@@ -45,7 +45,7 @@ import java.util.Locale;
  * Date: 4/14/2019
  * Time: 12:39 AM
  */
-@CommandAlias(Constants.ROOT_ALIAS)
+@CommandAlias("%guilds")
 public class CommandLanguage extends BaseCommand {
 
     @Dependency private Guilds guilds;

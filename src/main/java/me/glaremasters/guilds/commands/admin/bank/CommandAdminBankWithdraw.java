@@ -47,7 +47,7 @@ import me.glaremasters.guilds.utils.Constants;
  * Date: 5/30/2019
  * Time: 3:36 PM
  */
-@CommandAlias(Constants.ROOT_ALIAS)
+@CommandAlias("%guilds")
 public class CommandAdminBankWithdraw extends BaseCommand {
 
     @Dependency private GuildHandler guildHandler;

@@ -47,7 +47,7 @@ import org.bukkit.entity.Player;
  * Date: 4/5/2019
  * Time: 10:25 PM
  */
-@CommandAlias(Constants.ROOT_ALIAS)
+@CommandAlias("%guilds")
 public class CommandDecline extends BaseCommand {
 
     @Dependency private GuildHandler guildHandler;

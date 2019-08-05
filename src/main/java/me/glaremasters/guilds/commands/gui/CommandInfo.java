@@ -39,7 +39,7 @@ import org.bukkit.entity.Player;
  * Created by Glare
  * Date: 4/8/2019
  * Time: 10:49 AM
- */@CommandAlias(Constants.ROOT_ALIAS)
+ */@CommandAlias("%guilds")
 public class CommandInfo extends BaseCommand {
 
     @Dependency private Guilds guilds;

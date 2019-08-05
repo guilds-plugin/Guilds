@@ -49,7 +49,7 @@ import org.bukkit.entity.Player;
  * Date: 4/4/2019
  * Time: 9:10 PM
  */
-@CommandAlias(Constants.ROOT_ALIAS)
+@CommandAlias("%guilds")
 public class CommandAdminRemovePlayer extends BaseCommand {
 
     @Dependency private GuildHandler guildHandler;

@@ -56,7 +56,7 @@ import java.util.concurrent.TimeUnit;
  * Date: 4/5/2019
  * Time: 11:25 PM
  */
-@CommandAlias(Constants.ROOT_ALIAS)
+@CommandAlias("%guilds")
 public class CommandLeave extends BaseCommand {
 
     @Dependency private GuildHandler guildHandler;

@@ -50,7 +50,7 @@ import java.io.IOException;
  * Date: 4/27/2019
  * Time: 11:17 AM
  */
-@CommandAlias(Constants.ROOT_ALIAS)
+@CommandAlias("%guilds")
 public class CommandAdminUpdateLanguages extends BaseCommand {
 
     @Dependency private ActionHandler actionHandler;

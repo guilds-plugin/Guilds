@@ -41,7 +41,7 @@ import java.text.NumberFormat;
  * Date: 4/4/2019
  * Time: 5:30 PM
  */
-@CommandAlias(Constants.ROOT_ALIAS)
+@CommandAlias("%guilds")
 public class CommandBankBalance extends BaseCommand {
 
     /**

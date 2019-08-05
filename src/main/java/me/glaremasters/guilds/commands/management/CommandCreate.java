@@ -67,7 +67,7 @@ import java.util.UUID;
  * Date: 4/5/2019
  * Time: 12:59 AM
  */
-@CommandAlias(Constants.ROOT_ALIAS)
+@CommandAlias("%guilds")
 public class CommandCreate extends BaseCommand {
 
     @Dependency private Guilds guilds;

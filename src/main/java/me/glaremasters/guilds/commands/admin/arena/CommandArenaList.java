@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-@CommandAlias(Constants.ROOT_ALIAS)
+@CommandAlias("%guilds")
 public class CommandArenaList extends BaseCommand {
 
     @Dependency ArenaHandler arenaHandler;

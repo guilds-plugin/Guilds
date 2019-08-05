@@ -50,7 +50,7 @@ import org.codemc.worldguardwrapper.WorldGuardWrapper;
  * Date: 5/29/2019
  * Time: 9:34 AM
  */
-@CommandAlias(Constants.ROOT_ALIAS)
+@CommandAlias("%guilds")
 public class CommandAdminUnclaim extends BaseCommand {
 
     @Dependency private GuildHandler guildHandler;

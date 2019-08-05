@@ -202,9 +202,7 @@ public class ChallengeHandler {
      */
     public void sendToArena(LinkedMap<UUID, String> players, Location location) {
         players.keySet().forEach(p -> {
-            System.out.println(p);
             Player player = Bukkit.getPlayer(p);
-            System.out.println(player);
             if (player != null) {
                 player.teleport(location);
             }
@@ -288,27 +286,31 @@ public class ChallengeHandler {
     }
 
     /**
-     * Announce when a player is killed to everyone in the war
-     * @param challenge the challenge
+     * Announce when a player dies
+     * @param challenge the challenge to look at
      * @param guilds main class
-     * @param player player died
-     * @param killer player that killed player
+     * @param player the player that died
+     * @param killer possible killer
+     * @param cause the reason they died
      */
-    public void announceDeath(GuildChallenge challenge, Guilds guilds, Player player, Player killer) {
-        getAllPlayersAlive(challenge).keySet().forEach(u -> guilds.getCommandManager().getCommandIssuer(Bukkit.getPlayer(u))
-                .sendInfo(Messages.WAR__PLAYER_KILLED_PLAYER,
-                        "{player}", player.getName(), "{killer}", killer.getName()));
-    }
-
-    /**
-     * Announces when a player is killed to everyone in the war
-     * @param challenge the challenge
-     * @param guilds main class
-     * @param player player that died
-     */
-    public void announceDeath(GuildChallenge challenge, Guilds guilds, Player player) {
-        getAllPlayersAlive(challenge).keySet().forEach(u -> guilds.getCommandManager().getCommandIssuer(Bukkit.getPlayer(u))
-                .sendInfo(Messages.WAR__PLAYER_KILLED_OTHER, "{player}", player.getName()));
+    public void announceDeath(GuildChallenge challenge, Guilds guilds, Player player, Player killer, Cause cause) {
+        Messages message;
+        switch (cause.toString()) {
+            case "PLAYER_KILLED_PLAYER":
+                message = Messages.WAR__PLAYER_KILLED_PLAYER;
+                break;
+            case "PLAYER_KILLED_UNKNOWN":
+                message = Messages.WAR__PLAYER_KILLED_OTHER;
+                break;
+            case "PLAYER_KILLED_QUIT":
+                message = Messages.WAR__PLAYER_KILLED_QUIT;
+                break;
+            default:
+                message = Messages.WAR__PLAYER_KILLED_OTHER;
+                break;
+        }
+        getAllPlayersAlive(challenge).keySet().forEach(p -> guilds.getCommandManager().getCommandIssuer(Bukkit.getPlayer(p))
+                .sendInfo(message, "{player}", player.getName(), "{killer}", killer.getName()));
     }
 
     /**
@@ -395,6 +397,12 @@ public class ChallengeHandler {
                 removeChallenge(challenge);
             }
         }
+    }
+
+    public enum Cause {
+        PLAYER_KILLED_PLAYER,
+        PLAYER_KILLED_UNKNOWN,
+        PLAYER_KILLED_QUIT
     }
 
 

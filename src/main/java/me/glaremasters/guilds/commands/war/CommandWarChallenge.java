@@ -28,7 +28,7 @@ import me.glaremasters.guilds.tasks.GuildWarChallengeCheckTask;
 import me.glaremasters.guilds.utils.Constants;
 import org.bukkit.entity.Player;
 
-@CommandAlias(Constants.ROOT_ALIAS)
+@CommandAlias("%guilds")
 public class CommandWarChallenge extends BaseCommand {
 
     @Dependency private GuildHandler guildHandler;
