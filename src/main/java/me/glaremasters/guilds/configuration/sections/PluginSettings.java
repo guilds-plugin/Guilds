@@ -71,7 +71,8 @@ public final class PluginSettings implements SettingsHolder {
     public static final Property<Boolean> UPDATE_CHECK =
             newProperty("settings.update-check", true);
 
-    @Comment("What would you like the command aliases for the plugin to be?")
+    @Comment({"What would you like the command aliases for the plugin to be?",
+    "You can have as many as your want, just separate each with | and NO SPACES."})
     public static final Property<String> PLUGIN_ALIASES =
             newProperty("settings.plugin-aliases", "guild|guilds|g");
 
