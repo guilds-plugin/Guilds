@@ -314,8 +314,9 @@ war:
   commands-blocked: "Извините! Вы не можете выполнять команды во время войны!"
   player-killed-player: "&b{player} &aбыл убит &b{killer}&a!"
   player-killed-other: "&b{player} &aубит по неизвестной причине."
+  player-killed-quit: "&b{player} &ahas been killed due to leaving the server."
   teleported-back: "&aВы упорно боролись! Увы, не все могут быть лучшими. Вы были телепортированы на исходное местоположение!"
 acf:
   invalid-syntax: "Использование: <c2>{command}</c2> <c3>{syntax}</c3>"
   permission-denied: "Извините, но Вам нельзя выполнять данную команду."
-  unknown-command: "Unknown Command, please type <c2>/help</c2>"
+  unknown-command: "Неизвестная команда, используйте: <c2>/help</c2>"

@@ -314,6 +314,7 @@ war:
   commands-blocked: "&cSpiacenti! Non puoi eseguire comandi mentre sei in una guerra!"
   player-killed-player: "&b{player} &aè stato ucciso da &b{killer}&a!"
   player-killed-other: "&b{player} &aè stato ucciso per ragioni sconosciute."
+  player-killed-quit: "&b{player} &ahas been killed due to leaving the server."
   teleported-back: "&aHai combattuto duro! Alas, non tutti possono essere i migliori. Sei stato teletrasportato indietro alla tua posizione originale!"
 acf:
   invalid-syntax: "Uso: <c2>{command}</c2> <c3>{syntax}</c3>"

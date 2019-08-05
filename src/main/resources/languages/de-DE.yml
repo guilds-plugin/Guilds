@@ -283,8 +283,8 @@ arena:
   challenger-set: "&aYou've successfully set the Challenger location for &c{arena}&a to your current location!"
   defender-set: "&aYou've successfully set the Defender location for &c{arena}&a to your current location!"
   list: "&aThe following arena(s) on the server are: &c{arenas}&a."
-  list-empty: "&cThere are currently no arenas created on the server."
-  position-not-set: "&cThe location for that team has not been set yet. Try setting it before teleporting to it!"
+  list-empty: "&cMomentan wurde keine Arena auf diesem Server erstellt."
+  position-not-set: "&cDie Position für das Team wurde noch nicht gesetzt. Versuche es zu setzen, bevor du teleportierst!"
   teleported-to-selection: "&aWooosh! You've teleported to the &c{team}&a spawn point for &c{arena}&a."
   all-full: "&cSorry, all arenas on the server are currently in use! Try again later!"
 war:
@@ -314,6 +314,7 @@ war:
   commands-blocked: "&cEntschuldigung! Du kannst keine Befehle verwenden während du im Krieg bist!"
   player-killed-player: "&b{player} &ahas been killed by &b{killer}&a!"
   player-killed-other: "&b{player} &ahas been killed for unknown reasons."
+  player-killed-quit: "&b{player} &ahas been killed due to leaving the server."
   teleported-back: "&aYou fought hard! Alas, not everyone can be the best. You've been teleported back to your original location!"
 acf:
   invalid-syntax: "Usage: <c2>{command}</c2> <c3>{syntax}</c3>"
