@@ -202,9 +202,7 @@ public class ChallengeHandler {
      */
     public void sendToArena(LinkedMap<UUID, String> players, Location location) {
         players.keySet().forEach(p -> {
-            System.out.println(p);
             Player player = Bukkit.getPlayer(p);
-            System.out.println(player);
             if (player != null) {
                 player.teleport(location);
             }
