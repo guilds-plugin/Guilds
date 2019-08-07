@@ -108,6 +108,7 @@ error:
   not-enough-money: "&cNe pare rau, nu ai destui bani pentru a face asta."
   economy-required: "&cAn economy plugin is required for this to work. Please contact your server administrator"
   buff-cooldown: "&cSorry, your guild has recently bought a buff. You can try again in {amount} seconds."
+  buff-no-permission: "&cSorry, you do not have permission to buy this buff!"
   no-pending-invites: "&cSorry, you currently do not have any pending guild invites!"
 bank:
   balance: "&aBanca breslei tale are o balanta de {amount}."
