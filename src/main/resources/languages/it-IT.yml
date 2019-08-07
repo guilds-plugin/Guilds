@@ -108,6 +108,7 @@ error:
   not-enough-money: "&cScusa, non hai abbastanza soldi per farlo"
   economy-required: "&cUn plugin economia è richiesto per fare questo lavoro. Per favore contatta il tuo amministratore server"
   buff-cooldown: "&c Ci spiace, la tua gilda ha recentemente comprato un appassionato. Puoi riprovare in {amount} secondi."
+  buff-no-permission: "&cSorry, you do not have permission to buy this buff!"
   no-pending-invites: "&cCi spiace, correntemente non hai inviti gilda in attesa!"
 bank:
   balance: "&aLa tua gilda ha un conto di {amount}."
