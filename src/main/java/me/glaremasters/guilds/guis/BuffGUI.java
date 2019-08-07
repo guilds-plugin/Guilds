@@ -260,6 +260,12 @@ public class BuffGUI {
             Player player = (Player) event.getWhoClicked();
             if (guildHandler.getGuild(player) == null) return;
             Guild guild = guildHandler.getGuild(player);
+            if (settingsManager.getProperty(GuildBuffSettings.PER_BUFF_PERMISSIONS)) {
+                if (!player.hasPermission("guilds.buff." + type.toLowerCase())) {
+                    commandManager.getCommandIssuer(player).sendInfo(Messages.ERROR__BUFF_NO_PERMISSION);
+                    return;
+                }
+            }
             if (cooldownHandler.hasCooldown(Cooldown.TYPES.Buffs.name(), guild.getId())) {
                 commandManager.getCommandIssuer(player).sendInfo(Messages.ERROR__BUFF_COOLDOWN, "{amount}", String.valueOf(cooldownHandler.getRemaining(Cooldown.TYPES.Buffs.name(), guild.getId())));
                 return;

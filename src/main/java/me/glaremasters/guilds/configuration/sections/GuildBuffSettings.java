@@ -50,6 +50,12 @@ public class GuildBuffSettings implements SettingsHolder {
     public static final Property<Boolean> BUFF_STACKING =
             newProperty("guis.guild-buffs.buff-stacking", false);
 
+    @Comment({"Do you want to enable requiring per-buff permissions?",
+            "For example, if I wanted to buy the haste buff,",
+            "I would need the permission guilds.buff.haste"})
+    public static final Property<Boolean> PER_BUFF_PERMISSIONS =
+            newProperty("guis.guild-buffs.per-buff-permissions", false);
+
     @Comment("What do you want to name the buff?")
     public static final Property<String> HASTE_NAME =
             newProperty(BUFF_PATH + "haste.name", "&a&lSubstance of the Redmod Graff");
@@ -388,7 +394,7 @@ public class GuildBuffSettings implements SettingsHolder {
 
     @Comment("You can put as much as you want here")
     public static final Property<List<String>> JUMP_LORE =
-            newListProperty(BUFF_PATH + "jump.description",  "&aType » &7Jump", "&aLength » &760 Seconds", "&aCost » &7$60");
+            newListProperty(BUFF_PATH + "jump.description", "&aType » &7Jump", "&aLength » &760 Seconds", "&aCost » &7$60");
 
     @Comment("Do you want this buff to show in-game?")
     public static final Property<Boolean> JUMP_DISPLAY =

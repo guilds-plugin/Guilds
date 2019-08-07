@@ -93,7 +93,7 @@ public final class PluginSettings implements SettingsHolder {
                 "Creator: Glare",
                 "Contributors: https://github.com/guilds-plugin/Guilds/graphs/contributors",
                 "Issues: https://github.com/guilds-plugin/Guilds/issues",
-                "Spigot: https://www.spigotmc.org/resources/guilds.48920/",
+                "Spigot: https://www.spigotmc.org/resources/66176/",
                 "Wiki: https://wiki.glaremasters.me/",
                 "Discord: https://glaremasters.me/discord"
         };
