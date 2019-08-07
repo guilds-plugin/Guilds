@@ -54,6 +54,10 @@ public class GuildSettings implements SettingsHolder {
     public static final Property<String> PREFIX_REQUIREMENTS =
             newProperty("guild.requirements.prefix", "[a-zA-Z0-9&]{1,20}");
 
+    @Comment("Would you like to include color codes signs (&b &l, etc) in the length check?")
+    public static final Property<Boolean> INCLUDE_COLOR_CODES =
+            newProperty("guild.requirements.include-color-codes", true);
+
     @Comment("Would you like to allow players to make a guild without a prefix?")
     public static final Property<Boolean> DISABLE_PREFIX =
             newProperty("guild.disable-prefix", false);

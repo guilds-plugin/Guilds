@@ -39,6 +39,7 @@ import me.glaremasters.guilds.utils.ItemBuilder;
 import me.glaremasters.guilds.utils.Serialization;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
@@ -594,6 +595,10 @@ public class GuildHandler {
      */
     public boolean nameCheck(String name, SettingsManager settingsManager) {
         String regex = settingsManager.getProperty(GuildSettings.NAME_REQUIREMENTS);
+        if (!settingsManager.getProperty(GuildSettings.INCLUDE_COLOR_CODES)) {
+            String tmp = ACFBukkitUtil.color(name);
+            return ChatColor.stripColor(tmp).matches(regex);
+        }
         return name.matches(regex);
     }
 
@@ -605,6 +610,10 @@ public class GuildHandler {
      */
     public boolean prefixCheck(String name, SettingsManager settingsManager) {
         String regex = settingsManager.getProperty(GuildSettings.PREFIX_REQUIREMENTS);
+        if (!settingsManager.getProperty(GuildSettings.INCLUDE_COLOR_CODES)) {
+            String tmp = ACFBukkitUtil.color(name);
+            return ChatColor.stripColor(tmp).matches(regex);
+        }
         return name.matches(regex);
     }
 
