@@ -108,6 +108,7 @@ error:
   not-enough-money: "&8[&6公會&8] &f你沒有足夠的錢這麼做"
   economy-required: "&cAn economy plugin is required for this to work. Please contact your server administrator"
   buff-cooldown: "&cSorry, your guild has recently bought a buff. You can try again in {amount} seconds."
+  buff-no-permission: "&cSorry, you do not have permission to buy this buff!"
   no-pending-invites: "&cSorry, you currently do not have any pending guild invites!"
 bank:
   balance: "&8[&6公會&8] &f目前公會金庫: {amount}金幣"
