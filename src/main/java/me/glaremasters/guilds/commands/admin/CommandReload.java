@@ -26,6 +26,7 @@ package me.glaremasters.guilds.commands.admin;
 
 import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.BaseCommand;
+import co.aikar.commands.CommandIssuer;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Dependency;
@@ -50,8 +51,8 @@ public class CommandReload extends BaseCommand {
     @Subcommand("reload")
     @Description("{@@descriptions.reload}")
     @CommandPermission(Constants.ADMIN_PERM)
-    public void execute() {
+    public void execute(CommandIssuer issuer) {
         settingsManager.reload();
-        getCurrentCommandIssuer().sendInfo(Messages.RELOAD__RELOADED);
+        issuer.sendInfo(Messages.RELOAD__RELOADED);
     }
 }
