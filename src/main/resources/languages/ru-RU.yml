@@ -108,6 +108,7 @@ error:
   not-enough-money: "&cИзвините, но у вас недостаточно денег, чтобы сделать это"
   economy-required: "&cЧтобы это работало, нужен плагин на экономику. Пожалуйста, сообщите администратору"
   buff-cooldown: "&cИзвините, но Ваша гильдия недавно уже купила бафф. Попробуйте снова через {amount} секунд."
+  buff-no-permission: "&cSorry, you do not have permission to buy this buff!"
   no-pending-invites: "&cИзвините, но у Вас нет ожидающих приглашений в гильдию!"
 bank:
   balance: "&aБаланс банка Вашей гильдии составляет {amount}."
