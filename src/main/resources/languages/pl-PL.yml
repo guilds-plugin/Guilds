@@ -108,6 +108,7 @@ error:
   not-enough-money: "&cNie masz wystarczająco pieniędzy aby to zrobić"
   economy-required: "&cAby to działało, wymagana jest wtyczka ekonomiczna. Skontaktuj się z administratorem serwera"
   buff-cooldown: "Przepraszamy, twoja gildia niedawno kupiła buffa. Możesz spróbować ponownie za {amount} sekund."
+  buff-no-permission: "&cSorry, you do not have permission to buy this buff!"
   no-pending-invites: "&cSorry, you currently do not have any pending guild invites!"
 bank:
   balance: "&aPieniądze gildii: {amount}."

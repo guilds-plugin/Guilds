@@ -108,6 +108,7 @@ error:
   not-enough-money: "&cNemáte dostatek peněz k dané činnosti"
   economy-required: "&cK tomu je nutný ekonomický plugin. Obraťte se na správce serveru"
   buff-cooldown: "&cJe mi líto, váš cech nedávno koupil buff. Můžete to zkusit znovu {amount} sekund."
+  buff-no-permission: "&cSorry, you do not have permission to buy this buff!"
   no-pending-invites: "&cOmlouváme se, v současné době nemáte žádné čekající cechovní pozvání!"
 bank:
   balance: "&aVaše cechovní banka je naplněná {amount}."

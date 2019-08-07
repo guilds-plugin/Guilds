@@ -108,6 +108,7 @@ error:
   not-enough-money: "&cИзвините, но у вас недостаточно денег, чтобы сделать это"
   economy-required: "&cЧтобы это работало, нужен плагин на экономику. Пожалуйста, сообщите администратору"
   buff-cooldown: "&cИзвините, но Ваша гильдия недавно уже купила бафф. Попробуйте снова через {amount} секунд."
+  buff-no-permission: "&cSorry, you do not have permission to buy this buff!"
   no-pending-invites: "&cИзвините, но у Вас нет ожидающих приглашений в гильдию!"
 bank:
   balance: "&aБаланс банка Вашей гильдии составляет {amount}."
@@ -314,7 +315,7 @@ war:
   commands-blocked: "Извините! Вы не можете выполнять команды во время войны!"
   player-killed-player: "&b{player} &aбыл убит &b{killer}&a!"
   player-killed-other: "&b{player} &aубит по неизвестной причине."
-  player-killed-quit: "&b{player} &ahas been killed due to leaving the server."
+  player-killed-quit: "&b{player} &aвышел с сервера и был убит."
   teleported-back: "&aВы упорно боролись! Увы, не все могут быть лучшими. Вы были телепортированы на исходное местоположение!"
 acf:
   invalid-syntax: "Использование: <c2>{command}</c2> <c3>{syntax}</c3>"

@@ -108,6 +108,7 @@ error:
   not-enough-money: "&cMaalesef, bunu yapmak için yeterli paranız yok"
   economy-required: "&cBunun çalışması için bir ekonomi eklentisi gereklidir. Lütfen sunucu yöneticinize başvurun"
   buff-cooldown: "&cMaalesef, loncanız yakın zamanda bir buff satın aldı. {amount} saniye içinde tekrar deneyebilirsiniz."
+  buff-no-permission: "&cSorry, you do not have permission to buy this buff!"
   no-pending-invites: "&cSorry, you currently do not have any pending guild invites!"
 bank:
   balance: "&aLoncanın bankasının bakiyesi {amount}."
