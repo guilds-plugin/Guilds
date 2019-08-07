@@ -108,6 +108,7 @@ error:
   not-enough-money: "&cDésolé, vous n'avez pas assez d'argent pour faire ça !"
   economy-required: "&cUn plugin d'économie est requis pour que cela fonctionne. Contactez un administrateur."
   buff-cooldown: "&cDésolé, votre guilde a récemment acheté un buff. Vous pouvez réessayer dans {amount} secondes.  "
+  buff-no-permission: "&cSorry, you do not have permission to buy this buff!"
   no-pending-invites: "&cSorry, you currently do not have any pending guild invites!"
 bank:
   balance: "&aVotre guilde possède : {amount}."
