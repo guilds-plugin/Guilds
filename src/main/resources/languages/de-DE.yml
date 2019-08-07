@@ -108,6 +108,7 @@ error:
   not-enough-money: "&cSorry, du hast nicht genug Geld um das zu machen"
   economy-required: "@cEin Wirtschafts plugin wird benötigt damit diese Funktion verwendet werden kann. Bitte kontaktiere deinen Serveradministrator"
   buff-cooldown: "&cEntschuldigung, deine Gilde hat kürzlich erst einen Buff gekauft. Du kannst es erneut in {amount} Sekunden versuchen."
+  buff-no-permission: "&cSorry, you do not have permission to buy this buff!"
   no-pending-invites: "&cEntschuldigung, du hast aktuell keine ausstehenden Gildeneinladungen!"
 bank:
   balance: "&aDie Bank deiner Gilde hat ein Guthaben con {amount}."
