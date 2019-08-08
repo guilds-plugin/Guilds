@@ -108,7 +108,7 @@ error:
   not-enough-money: "&cNemáte dostatek peněz k dané činnosti"
   economy-required: "&cK tomu je nutný ekonomický plugin. Obraťte se na správce serveru"
   buff-cooldown: "&cJe mi líto, váš cech nedávno koupil buff. Můžete to zkusit znovu {amount} sekund."
-  buff-no-permission: "&cSorry, you do not have permission to buy this buff!"
+  buff-no-permission: "&cPromiňte, nemáte povolení ke koupi této schopnosti (buff)!"
   no-pending-invites: "&cOmlouváme se, v současné době nemáte žádné čekající cechovní pozvání!"
 bank:
   balance: "&aVaše cechovní banka je naplněná {amount}."
@@ -281,7 +281,7 @@ arena:
   created: "&a Úspěšně vytvořena aréna jménem &c{arena}&a! Nezapomeň vytvořit spawn point (kde se objeví hráči) Více informací /guild arena"
   deleted: "&a Úspěšně odstraněna aréna jménem &c{arena}&a"
   no-exist: "&c Aréna s tímhle jménem neexistuje."
-  challenger-set: "&aYou've successfully set the Challenger location for &c{arena}&a to your current location!"
+  challenger-set: "&aÚspěšně jste nastavili oblast výzvy (challanger) pro &c{arena}&a do vaší aktuální polohy!"
   defender-set: "&aYou've successfully set the Defender location for &c{arena}&a to your current location!"
   list: "&aThe following arena(s) on the server are: &c{arenas}&a."
   list-empty: "&cThere are currently no arenas created on the server."
