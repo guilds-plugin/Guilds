@@ -108,7 +108,7 @@ error:
   not-enough-money: "&7[&6公会&7]&f你没有足够的钱这么做"
   economy-required: "&7[&6公会&7]&f服务器未安装经济插件,请联系管理员"
   buff-cooldown: "&7[&6公会&7]&f抱歉,你的公会在近期已购买了一个BUFF,请等待{amount}秒后重试"
-  buff-no-permission: "&cSorry, you do not have permission to buy this buff!"
+  buff-no-permission: "&c抱歉, 你没有权限购买这个增益效果!"
   no-pending-invites: "&c抱歉, 你没有待接受的公会邀请!"
 bank:
   balance: "&7[&6公会&7]&f当前公会金库: {amount}金币"
