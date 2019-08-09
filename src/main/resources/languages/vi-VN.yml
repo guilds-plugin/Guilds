@@ -2,8 +2,8 @@
 descriptions:
   accept: "Chấp nhận một lời mời tham gia guild"
   admin-addplayer: "Lệnh Admin để thêm một người chơi vào một Guild"
-  admin-bank-balance: "Admin command to view a guild's bank balance"
-  admin-bank-deposit: "Admin command to put money into a guild's bank"
+  admin-bank-balance: "Lệnh cho quản trị viên để xem số tiền của Guild"
+  admin-bank-deposit: "Lệnh cho quản trị viên để thêm tiền vào kho tiền của guild"
   admin-bank-withdraw: "Admin command to take money from a guild's bank"
   admin-claim: "Admin command to claim a guild's land"
   admin-delhome: "Admin command to delete the home of a guild"
