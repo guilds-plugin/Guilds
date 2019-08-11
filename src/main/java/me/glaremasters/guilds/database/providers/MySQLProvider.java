@@ -23,9 +23,11 @@ public class MySQLProvider implements DatabaseProvider {
     private SettingsManager settingsManager;
     private final List<String> ids = new ArrayList<>();
     private Queries queries;
+    private String prefix;
 
     public MySQLProvider(SettingsManager settingsManager) {
         this.settingsManager = settingsManager;
+        this.prefix = settingsManager.getProperty(StorageSettings.SQL_TABLE_PREFIX);
         this.queries = new Queries();
 
         // Create the Hikari DS
@@ -45,7 +47,7 @@ public class MySQLProvider implements DatabaseProvider {
         hikari.setConnectionTimeout(settingsManager.getProperty(StorageSettings.SQL_POOL_TIMEOUT));
 
         // Try to create the table if it doesn't exist
-        queries.createTable(hikari);
+        queries.createTable(hikari, prefix);
 
 
         gson = new GsonBuilder().setPrettyPrinting().create();
@@ -56,7 +58,7 @@ public class MySQLProvider implements DatabaseProvider {
         List<Guild> loadedGuilds = new ArrayList<>();
         try {
             Connection connection = hikari.getConnection();
-            queries.loadGuilds(gson, connection, loadedGuilds);
+            queries.loadGuilds(gson, connection, loadedGuilds, prefix);
             connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -70,15 +72,15 @@ public class MySQLProvider implements DatabaseProvider {
             Connection connection = hikari.getConnection();
             for (Guild guild : guilds) {
                 try {
-                    queries.saveGuild(gson, guild, connection);
+                    queries.saveGuild(gson, guild, connection, prefix);
                     ids.add(guild.getId().toString());
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
             }
 
-            List<String> toDelete = new ArrayList<>(CollectionUtils.subtract(queries.getGuildIDs(connection), ids));
-            queries.deleteGuilds(connection, toDelete);
+            List<String> toDelete = new ArrayList<>(CollectionUtils.subtract(queries.getGuildIDs(connection, prefix), ids));
+            queries.deleteGuilds(connection, toDelete, prefix);
             connection.close();
 
         } catch (SQLException e) {

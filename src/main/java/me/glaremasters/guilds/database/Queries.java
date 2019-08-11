@@ -13,10 +13,10 @@ import java.util.List;
 
 public class Queries {
 
-    public void createTable(HikariDataSource hikari) {
+    public void createTable(HikariDataSource hikari, String prefix) {
         try {
             PreparedStatement guildsTable = hikari.getConnection().prepareStatement(
-                    "CREATE TABLE IF NOT EXISTS `guilds` (\n" +
+                    "CREATE TABLE IF NOT EXISTS `" + prefix + "guilds` (\n" +
                             "  `id` VARCHAR(36) NOT NULL,\n" +
                             "  `data` JSON NOT NULL,\n" +
                             "  PRIMARY KEY (`id`),\n" +
@@ -28,41 +28,41 @@ public class Queries {
         }
     }
 
-    private PreparedStatement getGuilds(Connection connection) throws SQLException {
-        return connection.prepareStatement("SELECT * FROM guilds");
+    private PreparedStatement getGuilds(Connection connection, String prefix) throws SQLException {
+        return connection.prepareStatement("SELECT * FROM `" + prefix + "guilds`");
     }
 
-    public void loadGuilds(Gson gson, Connection connection, List<Guild> guilds) throws SQLException {
-        PreparedStatement preparedStatement = getGuilds(connection);
+    public void loadGuilds(Gson gson, Connection connection, List<Guild> guilds, String prefix) throws SQLException {
+        PreparedStatement preparedStatement = getGuilds(connection, prefix);
         ResultSet set = preparedStatement.executeQuery();
         while (set.next()) {
             guilds.add(gson.fromJson(set.getString("data"), Guild.class));
         }
     }
 
-    private boolean guildExist(Connection connection, String id) throws SQLException {
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM guilds WHERE id='" + id + "'");
+    private boolean guildExist(Connection connection, String id, String prefix) throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM `" + prefix + "guilds` WHERE id='" + id + "'");
         ResultSet set = preparedStatement.executeQuery();
         return set.isBeforeFirst();
     }
 
-    private void saveNewGuild(Gson gson, Guild guild, Connection connection) throws SQLException {
-        PreparedStatement save = connection.prepareStatement("INSERT INTO `guilds` (id, data) VALUES (?, ?)");
+    private void saveNewGuild(Gson gson, Guild guild, Connection connection, String prefix) throws SQLException {
+        PreparedStatement save = connection.prepareStatement("INSERT INTO `" + prefix + "guilds` (id, data) VALUES (?, ?)");
         save.setString(1, guild.getId().toString());
         save.setString(2, gson.toJson(guild));
         save.execute();
     }
 
-    private void saveExistingGuild(Gson gson, Guild guild, Connection connection) throws SQLException {
-        PreparedStatement update = connection.prepareStatement("UPDATE `guilds` SET data = ? WHERE id = ?");
+    private void saveExistingGuild(Gson gson, Guild guild, Connection connection, String prefix) throws SQLException {
+        PreparedStatement update = connection.prepareStatement("UPDATE `" + prefix + "guilds` SET data = ? WHERE id = ?");
         update.setString(1, gson.toJson(guild));
         update.setString(2, guild.getId().toString());
         update.execute();
     }
 
-    public List<String> getGuildIDs(Connection connection) throws SQLException {
+    public List<String> getGuildIDs(Connection connection, String prefix) throws SQLException {
         List<String> ids = new ArrayList<>();
-        PreparedStatement update = connection.prepareStatement("SELECT id FROM guilds");
+        PreparedStatement update = connection.prepareStatement("SELECT id FROM `" + prefix + "guilds`");
         ResultSet set = update.executeQuery();
         while (set.next()) {
             ids.add(set.getString("id"));
@@ -70,19 +70,19 @@ public class Queries {
         return ids;
     }
 
-    public void deleteGuilds(Connection connection, List<String> guilds) throws SQLException {
+    public void deleteGuilds(Connection connection, List<String> guilds, String prefix) throws SQLException {
         for (String guild : guilds) {
-            PreparedStatement delete = connection.prepareStatement("DELETE FROM `guilds` WHERE id = ?");
+            PreparedStatement delete = connection.prepareStatement("DELETE FROM `" + prefix + "guilds` WHERE id = ?");
             delete.setString(1, guild);
             delete.execute();
         }
     }
 
-    public void saveGuild(Gson gson, Guild guild, Connection connection) throws SQLException {
-        if (guildExist(connection, guild.getId().toString())) {
-            saveExistingGuild(gson, guild, connection);
+    public void saveGuild(Gson gson, Guild guild, Connection connection, String prefix) throws SQLException {
+        if (guildExist(connection, guild.getId().toString(), prefix)) {
+            saveExistingGuild(gson, guild, connection, prefix);
         } else {
-            saveNewGuild(gson, guild, connection);
+            saveNewGuild(gson, guild, connection, prefix);
         }
     }
 
