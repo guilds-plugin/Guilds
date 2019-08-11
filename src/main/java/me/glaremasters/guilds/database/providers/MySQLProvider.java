@@ -8,6 +8,7 @@ import me.glaremasters.guilds.configuration.sections.StorageSettings;
 import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.database.Queries;
 import me.glaremasters.guilds.guild.Guild;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -75,13 +76,15 @@ public class MySQLProvider implements DatabaseProvider {
                     e.printStackTrace();
                 }
             }
-            for (String id : queries.getGuildIDs(connection)) {
-                System.out.println(id);
-            }
+
+            List<String> toDelete = new ArrayList<>(CollectionUtils.subtract(queries.getGuildIDs(connection), ids));
+            queries.deleteGuilds(connection, toDelete);
             connection.close();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        ids.clear();
     }
 
 

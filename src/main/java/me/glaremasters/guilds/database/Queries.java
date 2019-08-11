@@ -70,6 +70,14 @@ public class Queries {
         return ids;
     }
 
+    public void deleteGuilds(Connection connection, List<String> guilds) throws SQLException {
+        for (String guild : guilds) {
+            PreparedStatement delete = connection.prepareStatement("DELETE FROM `guilds` WHERE id = ?");
+            delete.setString(1, guild);
+            delete.execute();
+        }
+    }
+
     public void saveGuild(Gson gson, Guild guild, Connection connection) throws SQLException {
         if (guildExist(connection, guild.getId().toString())) {
             saveExistingGuild(gson, guild, connection);
