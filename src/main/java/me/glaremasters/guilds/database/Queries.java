@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Queries {
@@ -57,6 +58,16 @@ public class Queries {
         update.setString(1, gson.toJson(guild));
         update.setString(2, guild.getId().toString());
         update.execute();
+    }
+
+    public List<String> getGuildIDs(Connection connection) throws SQLException {
+        List<String> ids = new ArrayList<>();
+        PreparedStatement update = connection.prepareStatement("SELECT id FROM guilds");
+        ResultSet set = update.executeQuery();
+        while (set.next()) {
+            ids.add(set.getString("id"));
+        }
+        return ids;
     }
 
     public void saveGuild(Gson gson, Guild guild, Connection connection) throws SQLException {

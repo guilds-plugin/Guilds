@@ -20,6 +20,7 @@ public class MySQLProvider implements DatabaseProvider {
     private Gson gson;
     private HikariDataSource hikari;
     private SettingsManager settingsManager;
+    private final List<String> ids = new ArrayList<>();
     private Queries queries;
 
     public MySQLProvider(SettingsManager settingsManager) {
@@ -55,6 +56,7 @@ public class MySQLProvider implements DatabaseProvider {
         try {
             Connection connection = hikari.getConnection();
             queries.loadGuilds(gson, connection, loadedGuilds);
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -68,10 +70,15 @@ public class MySQLProvider implements DatabaseProvider {
             for (Guild guild : guilds) {
                 try {
                     queries.saveGuild(gson, guild, connection);
+                    ids.add(guild.getId().toString());
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
             }
+            for (String id : queries.getGuildIDs(connection)) {
+                System.out.println(id);
+            }
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
