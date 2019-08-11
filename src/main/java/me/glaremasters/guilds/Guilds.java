@@ -223,15 +223,13 @@ public final class Guilds extends JavaPlugin {
         taskChainFactory = BukkitTaskChainFactory.create(this);
 
         // Load the config
-        LoggingUtils.info("Loading config..");
         settingsHandler = new SettingsHandler(this);
-        LoggingUtils.info("Loaded config!");
+        LoggingUtils.info("Loaded configuration files!");
 
         saveData();
 
         // Load data here.
         try {
-            LoggingUtils.info("Loading Data..");
             // This will soon be changed to an automatic storage chooser from the config
             // Load the json provider
             database = new JsonProvider(getDataFolder());
@@ -249,7 +247,7 @@ public final class Guilds extends JavaPlugin {
             challengesProvider = new ChallengesProvider(getDataFolder());
             // Load guildhandler with provider
             guildHandler = new GuildHandler(database, getCommandManager(), getPermissions(), getConfig(), settingsHandler.getSettingsManager());
-            LoggingUtils.info("Loaded data!");
+            LoggingUtils.info("Loaded data files!");
         } catch (IOException e) {
             LoggingUtils.severe("An error occurred loading data! Stopping plugin..");
             Bukkit.getPluginManager().disablePlugin(this);
@@ -261,11 +259,9 @@ public final class Guilds extends JavaPlugin {
             new PlaceholderAPI(guildHandler).register();
         }
 
-        LoggingUtils.info("Enabling Metrics..");
         // start bstats
         Metrics metrics = new Metrics(this);
         metrics.addCustomChart(new Metrics.SingleLineChart("guilds", () -> getGuildHandler().getGuildsSize()));
-        LoggingUtils.info("Enabled Metrics!");
 
         // Initialize the action handler for actions in the plugin
         actionHandler = new ActionHandler();
@@ -299,10 +295,8 @@ public final class Guilds extends JavaPlugin {
         // Load the optional listeners
         optionalListeners();
 
-        LoggingUtils.info("Enabling the Guilds API..");
         // Initialize the API (probably be placed in different spot?)
         api = new GuildsAPI(getGuildHandler());
-        LoggingUtils.info("Enabled API!");
 
         LoggingUtils.info("Ready to go! That only took " + (System.currentTimeMillis() - startingTime) + "ms");
         getServer().getScheduler().scheduleAsyncRepeatingTask(this, () -> {
