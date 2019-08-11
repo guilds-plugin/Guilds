@@ -26,7 +26,7 @@ public class Queries {
         }
     }
 
-    public PreparedStatement getGuilds(HikariDataSource hikari) throws SQLException {
+    private PreparedStatement getGuilds(HikariDataSource hikari) throws SQLException {
         return hikari.getConnection().prepareStatement("SELECT * FROM guilds");
     }
 
@@ -38,11 +38,32 @@ public class Queries {
         }
     }
 
-    public void saveGuild(Gson gson, Guild guild, HikariDataSource hikari) throws SQLException {
+    private boolean guildExist(HikariDataSource hikari, String id) throws SQLException {
+        PreparedStatement preparedStatement = hikari.getConnection().prepareStatement("SELECT * FROM guilds WHERE id='" + id + "'");
+        ResultSet set = preparedStatement.executeQuery();
+        return set.next();
+    }
+
+    private void saveNewGuild(Gson gson, Guild guild, HikariDataSource hikari) throws SQLException {
         PreparedStatement save = hikari.getConnection().prepareStatement("INSERT INTO `guilds` (id, data) VALUES (?, ?)");
         save.setString(1, guild.getId().toString());
         save.setString(2, gson.toJson(guild));
         save.execute();
+    }
+
+    private void saveExistingGuild(Gson gson, Guild guild, HikariDataSource hikari) throws SQLException {
+        PreparedStatement update = hikari.getConnection().prepareStatement("UPDATE `guilds` SET data = ? WHERE id = ?");
+        update.setString(1, gson.toJson(guild));
+        update.setString(2, guild.getId().toString());
+        update.execute();
+    }
+
+    public void saveGuild(Gson gson, Guild guild, HikariDataSource hikari) throws SQLException {
+        if (guildExist(hikari, guild.getId().toString())) {
+            saveExistingGuild(gson, guild, hikari);
+        } else {
+            saveNewGuild(gson, guild, hikari);
+        }
     }
 
 }
