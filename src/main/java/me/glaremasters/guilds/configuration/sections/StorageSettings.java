@@ -21,7 +21,7 @@ public class StorageSettings implements SettingsHolder {
     public static final Property<String> SQL_HOST =
             newProperty("storage.sql.host", "localhost");
 
-    @Comment("Define the port for the database. (MySQL: 3306, PostgreSQL: 5432, MongoDB: 27017)")
+    @Comment("Define the port for the database.")
     public static final Property<String> SQL_PORT =
             newProperty("storage.sql.port", "3306");
 
@@ -39,11 +39,11 @@ public class StorageSettings implements SettingsHolder {
     public static final Property<String> SQL_PASSWORD =
             newProperty("storage.sql.password", "");
 
-    @Comment({"Sets the maximum size of the SQL connection pool.", "This value will determine the maximum number of connections maintained.", "Note: If you are using SQLite this does not apply."})
+    @Comment({"Sets the maximum size of the SQL connection pool.", "This value will determine the maximum number of connections maintained."})
     public static final Property<Integer> SQL_POOL_SIZE =
             newProperty("storage.sql.pool.maximum-pool-size", 10);
 
-    @Comment({"Sets the minimum number of idle connections that the pool will maintain.", "For maximum performance keep this value the same as 'maximum-pool-size'", "Note: If you are using SQLite this does not apply."})
+    @Comment({"Sets the minimum number of idle connections that the pool will maintain.", "For maximum performance keep this value the same as 'maximum-pool-size'"})
     public static final Property<Integer> SQL_POOL_IDLE =
             newProperty("storage.sql.pool.minimum-idle", 10);
 

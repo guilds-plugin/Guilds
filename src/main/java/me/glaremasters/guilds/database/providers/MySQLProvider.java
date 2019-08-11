@@ -10,6 +10,7 @@ import me.glaremasters.guilds.database.Queries;
 import me.glaremasters.guilds.guild.Guild;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,24 +52,28 @@ public class MySQLProvider implements DatabaseProvider {
     @Override
     public List<Guild> loadGuilds() throws IOException {
         List<Guild> loadedGuilds = new ArrayList<>();
-
         try {
-            queries.loadGuilds(gson, hikari, loadedGuilds);
+            Connection connection = hikari.getConnection();
+            queries.loadGuilds(gson, connection, loadedGuilds);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return loadedGuilds;
     }
 
     @Override
     public void saveGuilds(List<Guild> guilds) throws IOException {
-        for (Guild guild : guilds) {
-            try {
-                queries.saveGuild(gson, guild, hikari);
-            } catch (SQLException e) {
-                e.printStackTrace();
+        try {
+            Connection connection = hikari.getConnection();
+            for (Guild guild : guilds) {
+                try {
+                    queries.saveGuild(gson, guild, connection);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
