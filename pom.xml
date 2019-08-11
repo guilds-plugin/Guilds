@@ -138,6 +138,10 @@
                                     <pattern>net.lingala.zip4j</pattern>
                                     <shadedPattern>me.glaremasters.guilds.libs.zip4j</shadedPattern>
                                 </relocation>
+                                <relocation>
+                                    <pattern>com.zaxxer.hikari</pattern>
+                                    <shadedPattern>me.glaremasters.guilds.libs.hikari</shadedPattern>
+                                </relocation>
                             </relocations>
                         </configuration>
                     </execution>
@@ -347,5 +351,12 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- Used for MySQL Pooling -->
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>3.3.1</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 </project>

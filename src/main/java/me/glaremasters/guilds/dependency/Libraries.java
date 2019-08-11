@@ -110,6 +110,13 @@ public class Libraries {
                 .checksum("lyE5cYq8ikiT+njLqM97LJA/Ncl6r0T6MDGwZplItIA=")
                 .relocate("com{}google{}common", "me.glaremasters.guilds.libs.guava")
                 .build());
+
+        loader.loadLibrary(Library.builder()
+                .groupId("com.zaxxer")
+                .artifactId("HikariCP")
+                .version("3.3.1")
+                .relocate("com{}zaxxer{}hikari", "me.glaremasters.guilds.libs.hikari")
+                .build());
     }
 
 }

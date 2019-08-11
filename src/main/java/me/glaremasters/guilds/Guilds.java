@@ -36,12 +36,14 @@ import me.glaremasters.guilds.challenges.ChallengeHandler;
 import me.glaremasters.guilds.configuration.SettingsHandler;
 import me.glaremasters.guilds.configuration.sections.HooksSettings;
 import me.glaremasters.guilds.configuration.sections.PluginSettings;
+import me.glaremasters.guilds.configuration.sections.StorageSettings;
 import me.glaremasters.guilds.cooldowns.CooldownHandler;
 import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.database.arenas.ArenasProvider;
 import me.glaremasters.guilds.database.challenges.ChallengesProvider;
 import me.glaremasters.guilds.database.cooldowns.CooldownsProvider;
 import me.glaremasters.guilds.database.providers.JsonProvider;
+import me.glaremasters.guilds.database.providers.MySQLProvider;
 import me.glaremasters.guilds.dependency.Libraries;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guis.GUIHandler;
@@ -234,7 +236,7 @@ public final class Guilds extends JavaPlugin {
             LoggingUtils.info("Loading Data..");
             // This will soon be changed to an automatic storage chooser from the config
             // Load the json provider
-            database = new JsonProvider(getDataFolder());
+            setDatabaseType();
             // Load the cooldown folder
             cooldownsProvider = new CooldownsProvider(getDataFolder());
             // Load the cooldown objects
@@ -313,8 +315,21 @@ public final class Guilds extends JavaPlugin {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }, 20 * 60, (20 * 60) * settingsHandler.getSettingsManager().getProperty(PluginSettings.SAVE_INTERVAL));
+        }, 20 * 60, (20 * 60) * settingsHandler.getSettingsManager().getProperty(StorageSettings.SAVE_INTERVAL));
 
+    }
+
+    public void setDatabaseType() {
+
+        switch (settingsHandler.getSettingsManager().getProperty(StorageSettings.STORAGE_TYPE).toLowerCase()) {
+            case "mysql":
+                database = new MySQLProvider(settingsHandler.getSettingsManager());
+                break;
+            case "json":
+            default:
+                database = new JsonProvider(getDataFolder());
+                break;
+        }
     }
 
     /**

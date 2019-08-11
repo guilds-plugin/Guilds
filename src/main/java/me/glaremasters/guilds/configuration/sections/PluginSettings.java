@@ -63,10 +63,6 @@ public final class PluginSettings implements SettingsHolder {
     public static final Property<Boolean> UPDATE_LANGUAGES =
             newProperty("settings.player-update-languages", false);
 
-    @Comment("How often (in minutes) do you want all Guild Data to save?")
-    public static final Property<Integer> SAVE_INTERVAL =
-            newProperty("settings.save-interval", 1);
-
     @Comment("Would you like to check for plugin updates on startup? It's highly suggested you keep this enabled!")
     public static final Property<Boolean> UPDATE_CHECK =
             newProperty("settings.update-check", true);

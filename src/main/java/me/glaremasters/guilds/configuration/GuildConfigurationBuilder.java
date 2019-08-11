@@ -39,6 +39,7 @@ import me.glaremasters.guilds.configuration.sections.GuildVaultSettings;
 import me.glaremasters.guilds.configuration.sections.HooksSettings;
 import me.glaremasters.guilds.configuration.sections.PluginSettings;
 import me.glaremasters.guilds.configuration.sections.RoleSettings;
+import me.glaremasters.guilds.configuration.sections.StorageSettings;
 import me.glaremasters.guilds.configuration.sections.TicketSettings;
 import me.glaremasters.guilds.configuration.sections.TierSettings;
 import me.glaremasters.guilds.configuration.sections.VaultPickerSettings;
@@ -56,7 +57,7 @@ public class GuildConfigurationBuilder {
 
     public static ConfigurationData buildConfigurationData() {
         return ConfigurationDataBuilder.createConfiguration(
-                PluginSettings.class, HooksSettings.class, GuildListSettings.class,
+                PluginSettings.class, StorageSettings.class, HooksSettings.class, GuildListSettings.class,
                 GuildBuffSettings.class, VaultPickerSettings.class, GuildVaultSettings.class,
                 GuildInfoSettings.class, GuildInfoMemberSettings.class, GuildSettings.class,
                 WarSettings.class, CooldownSettings.class, CostSettings.class,
