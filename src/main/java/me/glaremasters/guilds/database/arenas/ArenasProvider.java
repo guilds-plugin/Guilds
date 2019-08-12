@@ -2,6 +2,7 @@ package me.glaremasters.guilds.database.arenas;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.arena.Arena;
 import org.apache.commons.io.FilenameUtils;
 
@@ -21,11 +22,12 @@ public class ArenasProvider {
     private final File dataFolder;
     private final List<String> ids = new ArrayList<>();
     private Gson gson;
+    private Guilds guilds;
 
-    public ArenasProvider(File dataFolder) {
-        this.dataFolder = new File(dataFolder, "arenas");
+    public ArenasProvider(Guilds guilds) {
+        this.dataFolder = new File(guilds.getDataFolder(), "arenas");
         this.dataFolder.mkdir();
-        this.gson = new GsonBuilder().setPrettyPrinting().create();
+        this.gson = guilds.getGson();
     }
 
     /**

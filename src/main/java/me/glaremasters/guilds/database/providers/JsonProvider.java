@@ -26,6 +26,7 @@ package me.glaremasters.guilds.database.providers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.guild.Guild;
 import org.apache.commons.io.FilenameUtils;
@@ -48,15 +49,17 @@ import java.util.Objects;
  */
 public class JsonProvider implements DatabaseProvider {
 
+    private Guilds guilds;
     private final File dataFolder;
     private final List<String> ids = new ArrayList<>();
     private Gson gson;
 
-    public JsonProvider(File dataFolder) {
-        this.dataFolder = new File(dataFolder, "data");
+    public JsonProvider(Guilds guilds) {
+        this.guilds = guilds;
+        this.dataFolder = new File(guilds.getDataFolder(), "data");
         //noinspection ResultOfMethodCallIgnored
         this.dataFolder.mkdir();
-        gson = new GsonBuilder().setPrettyPrinting().create();
+        this.gson = guilds.getGson();
     }
 
     @Override

@@ -28,6 +28,8 @@ import co.aikar.commands.PaperCommandManager;
 import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import me.glaremasters.guilds.acf.ACFHandler;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.api.GuildsAPI;
@@ -81,6 +83,7 @@ import java.util.stream.Stream;
 public final class Guilds extends JavaPlugin {
 
     private static GuildsAPI api;
+    private Gson gson;
     private ACFHandler acfHandler;
     private GuildHandler guildHandler;
     private CooldownHandler cooldownHandler;
@@ -194,6 +197,8 @@ public final class Guilds extends JavaPlugin {
             return;
         }
 
+        gson = new GsonBuilder().setPrettyPrinting().create();
+
         // Load Vault
         LoggingUtils.info("Hooking into Vault..");
         // Setup Vaults Economy Hook
@@ -238,17 +243,17 @@ public final class Guilds extends JavaPlugin {
             // Load the json provider
             setDatabaseType();
             // Load the cooldown folder
-            cooldownsProvider = new CooldownsProvider(getDataFolder());
+            cooldownsProvider = new CooldownsProvider(this);
             // Load the cooldown objects
             cooldownHandler = new CooldownHandler(cooldownsProvider);
             // Load the arena folder
-            arenasProvider = new ArenasProvider(getDataFolder());
+            arenasProvider = new ArenasProvider(this);
             // Load the arena objects
             arenaHandler = new ArenaHandler(arenasProvider);
             // Load the challenge handler
             challengeHandler = new ChallengeHandler();
             // Load the challenge provider
-            challengesProvider = new ChallengesProvider(getDataFolder());
+            challengesProvider = new ChallengesProvider(this);
             // Load guildhandler with provider
             guildHandler = new GuildHandler(database, getCommandManager(), getPermissions(), getConfig(), settingsHandler.getSettingsManager());
             LoggingUtils.info("Loaded data!");
@@ -323,11 +328,11 @@ public final class Guilds extends JavaPlugin {
 
         switch (settingsHandler.getSettingsManager().getProperty(StorageSettings.STORAGE_TYPE).toLowerCase()) {
             case "mysql":
-                database = new MySQLProvider(settingsHandler.getSettingsManager());
+                database = new MySQLProvider(this, settingsHandler.getSettingsManager());
                 break;
             case "json":
             default:
-                database = new JsonProvider(getDataFolder());
+                database = new JsonProvider(this);
                 break;
         }
     }
@@ -442,5 +447,9 @@ public final class Guilds extends JavaPlugin {
 
     public boolean isSuccessfulLoad() {
         return this.successfulLoad;
+    }
+
+    public Gson getGson() {
+        return gson;
     }
 }

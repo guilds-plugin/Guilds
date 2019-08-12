@@ -4,6 +4,7 @@ import ch.jalu.configme.SettingsManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.zaxxer.hikari.HikariDataSource;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.configuration.sections.StorageSettings;
 import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.database.Queries;
@@ -18,6 +19,7 @@ import java.util.List;
 
 public class MySQLProvider implements DatabaseProvider {
 
+    private Guilds guilds;
     private Gson gson;
     private HikariDataSource hikari;
     private SettingsManager settingsManager;
@@ -25,7 +27,7 @@ public class MySQLProvider implements DatabaseProvider {
     private Queries queries;
     private String prefix;
 
-    public MySQLProvider(SettingsManager settingsManager) {
+    public MySQLProvider(Guilds guilds, SettingsManager settingsManager) {
         this.settingsManager = settingsManager;
         this.prefix = settingsManager.getProperty(StorageSettings.SQL_TABLE_PREFIX);
         this.queries = new Queries();
@@ -50,7 +52,7 @@ public class MySQLProvider implements DatabaseProvider {
         queries.createTable(hikari, prefix);
 
 
-        gson = new GsonBuilder().setPrettyPrinting().create();
+        gson = guilds.getGson();
     }
 
     @Override

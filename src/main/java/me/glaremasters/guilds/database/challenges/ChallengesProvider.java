@@ -2,6 +2,7 @@ package me.glaremasters.guilds.database.challenges;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.guild.GuildChallenge;
 
 import java.io.File;
@@ -14,11 +15,12 @@ public class ChallengesProvider {
 
     private final File dataFolder;
     private Gson gson;
+    private Guilds guilds;
 
-    public ChallengesProvider(File dataFolder) {
-        this.dataFolder = new File(dataFolder, "challenges");
+    public ChallengesProvider(Guilds guilds) {
+        this.dataFolder = new File(guilds.getDataFolder(), "challenges");
         this.dataFolder.mkdir();
-        this.gson = new GsonBuilder().setPrettyPrinting().create();
+        this.gson = guilds.getGson();
     }
 
     /**

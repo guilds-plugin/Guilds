@@ -37,14 +37,14 @@ public class CommandMigrate extends BaseCommand {
         switch (type) {
             case "mysql":
                 try {
-                    new JsonProvider(guilds.getDataFolder()).saveGuilds(handler.getGuilds());
+                    new JsonProvider(guilds).saveGuilds(handler.getGuilds());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 break;
             case "json":
                 try {
-                    new MySQLProvider(settingsManager).saveGuilds(handler.getGuilds());
+                    new MySQLProvider(guilds, settingsManager).saveGuilds(handler.getGuilds());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
