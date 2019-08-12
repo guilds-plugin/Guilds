@@ -10,6 +10,7 @@ import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.database.Queries;
 import me.glaremasters.guilds.guild.Guild;
 import org.apache.commons.collections4.CollectionUtils;
+import org.jdbi.v3.core.Jdbi;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -18,8 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MySQLProvider implements DatabaseProvider {
-
     private Guilds guilds;
+    private Jdbi jdbi;
     private Gson gson;
     private HikariDataSource hikari;
     private SettingsManager settingsManager;
