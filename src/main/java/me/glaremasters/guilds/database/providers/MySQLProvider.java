@@ -68,6 +68,7 @@ public class MySQLProvider implements DatabaseProvider {
 
     @Override
     public void saveGuilds(List<Guild> guilds) throws IOException {
+
         try {
             Connection connection = hikari.getConnection();
             for (Guild guild : guilds) {
