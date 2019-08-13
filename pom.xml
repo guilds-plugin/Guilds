@@ -30,7 +30,7 @@
 
     <groupId>me.glaremasters</groupId>
     <artifactId>guilds</artifactId>
-    <version>3.5.2.6-RELEASE</version>
+    <version>3.5.2.7-RELEASE</version>
     <packaging>jar</packaging>
 
     <name>Guilds</name>
@@ -335,7 +335,7 @@
         <dependency>
             <groupId>net.byteflux</groupId>
             <artifactId>libby-bukkit</artifactId>
-            <version>0.0.1</version>
+            <version>0.0.2-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
 
