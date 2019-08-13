@@ -35,6 +35,7 @@ import me.glaremasters.guilds.configuration.sections.GuildInfoSettings;
 import me.glaremasters.guilds.configuration.sections.GuildListSettings;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
+import me.glaremasters.guilds.guild.GuildScore;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -103,6 +104,10 @@ public class ListGUI {
         // Check if it's supposed to be sorted by bank balance
         if (sortOrder.equalsIgnoreCase("BALANCE")) {
             guilds.sort(Comparator.comparingDouble(Guild::getBalance).reversed());
+        }
+
+        if (sortOrder.equalsIgnoreCase("WINS")) {
+            guilds.sort(Comparator.<Guild>comparingInt(g -> g.getGuildScore().getWins()).reversed());
         }
 
         // Loop through each guild to create the item
