@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.commands.admin;
+package me.glaremasters.guilds.commands.console;
 
 import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFUtil;
@@ -61,14 +61,12 @@ public class CommandAdminUpdateLanguages extends BaseCommand {
      * This command will update all the languages on the server
      * @param issuer the person running the command
      */
-    @Subcommand("admin update-language")
-    @Description("{@@descriptions.admin-update-languages}")
+    @Subcommand("console update-languages")
+    @Description("{@@descriptions.console-update-languages}")
     @CommandPermission(Constants.ADMIN_PERM)
     public void execute(CommandIssuer issuer) {
         if (issuer.isPlayer()) {
-            if (!settingsManager.getProperty(PluginSettings.UPDATE_LANGUAGES)) {
-                ACFUtil.sneaky(new ExpectationNotMet(Messages.LANGUAGES__CONSOLE_ONLY));
-            }
+            return;
         }
         getCurrentCommandIssuer().sendInfo(Messages.LANGUAGES__WARNING);
         actionHandler.addAction(issuer.getIssuer(), new ConfirmAction() {
