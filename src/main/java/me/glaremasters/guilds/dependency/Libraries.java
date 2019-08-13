@@ -47,7 +47,6 @@ public class Libraries {
                 .groupId("net{}lingala{}zip4j")
                 .artifactId("zip4j")
                 .version("1.3.2")
-                .checksum("xnCY1DDFdDEUMnKOvUx8RWcvnM9cZHAutq+4gWwirQg=")
                 .relocate("net{}lingala{}zip4j", "me.glaremasters.guilds.libs.zip4j")
                 .build());
 
