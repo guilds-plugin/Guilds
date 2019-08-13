@@ -30,18 +30,26 @@ import co.aikar.commands.CommandManager;
 import com.github.stefvanschie.inventoryframework.Gui;
 import com.github.stefvanschie.inventoryframework.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
+import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
+import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.configuration.sections.GuildInfoSettings;
 import me.glaremasters.guilds.configuration.sections.GuildListSettings;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildScore;
+import me.glaremasters.guilds.utils.ItemBuilder;
+import me.glaremasters.guilds.utils.XMaterial;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Glare
@@ -54,12 +62,14 @@ public class ListGUI {
     private SettingsManager settingsManager;
     private GuildHandler guildHandler;
     private CommandManager commandManager;
+    private List<GuiItem> items;
 
     public ListGUI(Guilds guilds, SettingsManager settingsManager, GuildHandler guildHandler, CommandManager commandManager) {
         this.guilds = guilds;
         this.settingsManager = settingsManager;
         this.guildHandler = guildHandler;
         this.commandManager = commandManager;
+        this.items = new ArrayList<>();
     }
 
     public Gui getListGUI() {
@@ -71,7 +81,12 @@ public class ListGUI {
         gui.setOnGlobalClick(event -> event.setCancelled(true));
 
         // Prepare a paginated pane
-        OutlinePane paginatedPane = new OutlinePane(0, 0, 9, 5);
+        PaginatedPane paginatedPane = new PaginatedPane(0, 0, 9, 5);
+
+        // Prepare the buttons
+        StaticPane pane = new StaticPane(0, 5, 9, 1);
+
+        createButtons(pane, paginatedPane, gui);
 
         // Add the items to the pane
         createListItems(paginatedPane);
@@ -79,15 +94,34 @@ public class ListGUI {
         // Add the pane to the GUI
         gui.addPane(paginatedPane);
 
+        gui.addPane(pane);
+
         // Return the GUI
         return gui;
+    }
+
+    private void createButtons(StaticPane pane, PaginatedPane paginatedPane, Gui gui) {
+        // Next Button
+        pane.addItem(new GuiItem(easyItem(settingsManager.getProperty(GuildListSettings.GUILD_LIST_NEXT_PAGE_ITEM), settingsManager.getProperty(GuildListSettings.GUILD_LIST_NEXT_PAGE_ITEM_NAME)), event -> {
+            if (!((paginatedPane.getPage() + 1) + 1 > paginatedPane.getPages())) {
+                paginatedPane.setPage(paginatedPane.getPage() + 1);
+                gui.update();
+            }
+        }), 8, 0);
+        // Back Button
+        pane.addItem(new GuiItem(easyItem(settingsManager.getProperty(GuildListSettings.GUILD_LIST_PREVIOUS_PAGE_ITEM), settingsManager.getProperty(GuildListSettings.GUILD_LIST_PREVIOUS_PAGE_ITEM_NAME)), event -> {
+            if (!((paginatedPane.getPage() - 1) < 0)) {
+                paginatedPane.setPage(paginatedPane.getPage() - 1);
+                gui.update();
+            }
+        }), 0, 0);
     }
 
     /**
      * Create all the items for the GUI
      * @param pane the pane to add the items to
      */
-    private void createListItems(OutlinePane pane) {
+    private void createListItems(PaginatedPane pane) {
         List<Guild> guilds = guildHandler.getGuilds();
         String sortOrder = settingsManager.getProperty(GuildListSettings.GUILD_LIST_SORT);
 
@@ -111,15 +145,16 @@ public class ListGUI {
         }
 
         // Loop through each guild to create the item
-        guilds.forEach(g -> setListItem(pane, g));
+        guilds.forEach(this::setListItem);
+        pane.populateWithGuiItems(items);
+        items.clear();
     }
 
     /**
      * Set the item to the list
-     * @param pane the pane to add to
      * @param guild the guild of the pane
      */
-    private void setListItem(OutlinePane pane, Guild guild) {
+    private void setListItem(Guild guild) {
         GuiItem listItem = new GuiItem(guild.getSkull(), event -> {
             guilds.getGuiHandler().getInfoMembersGUI().getInfoMembersGUI(guild).show(event.getWhoClicked());
             event.setCancelled(true);
@@ -128,7 +163,7 @@ public class ListGUI {
         meta.setDisplayName(ACFBukkitUtil.color(settingsManager.getProperty(GuildListSettings.GUILD_LIST_ITEM_NAME).replace("{player}", Bukkit.getOfflinePlayer(guild.getGuildMaster().getUuid()).getName()).replace("{guild}", guild.getName())));
         meta.setLore(updatedLore(guild, settingsManager.getProperty(GuildListSettings.GUILD_LIST_HEAD_LORE)));
         listItem.getItem().setItemMeta(meta);
-        pane.addItem(listItem);
+        items.add(listItem);
     }
 
     /**
@@ -158,6 +193,23 @@ public class ListGUI {
                     .replace("{guild-challenge-loses}", String.valueOf(guild.getGuildScore().getLoses()))
                     .replace("{guild-tier-name}", guildHandler.getGuildTier(guild.getTier().getLevel()).getName()))));
         return updated;
+    }
+
+    /**
+     * Easily create an item for the GUI
+     * @param material the material of the item
+     * @param name the name of the item
+     * @return created itemstack
+     */
+    private ItemStack easyItem(String material, String name) {
+        // Start the itembuilder
+        ItemBuilder builder = new ItemBuilder(new ItemStack(XMaterial.matchXMaterial(material).parseMaterial()));
+        // Sets the name of the item
+        builder.setName(ACFBukkitUtil.color(name));
+        // Hide attributes
+        builder.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        // Return the created item
+        return builder.build();
     }
 
 }
