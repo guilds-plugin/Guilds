@@ -85,7 +85,7 @@ public class CommandRename extends BaseCommand {
                 ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__BLACKLIST));
         }
 
-        GuildRenameEvent event = new GuildRenameEvent(player, guild);
+        GuildRenameEvent event = new GuildRenameEvent(player, guild, name);
         Bukkit.getPluginManager().callEvent(event);
 
         if (event.isCancelled()) {
