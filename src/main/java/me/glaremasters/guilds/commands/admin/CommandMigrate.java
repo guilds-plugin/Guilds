@@ -27,28 +27,12 @@ public class CommandMigrate extends BaseCommand {
     @Subcommand("admin migrate")
     @Description("{@@descriptions.admin-migrate}")
     @CommandPermission(Constants.ADMIN_PERM)
-    public void execute(CommandIssuer issuer) {
+    public void execute(CommandIssuer issuer) throws IOException {
         if (issuer.isPlayer()) {
             return;
         }
 
-        String type = settingsManager.getProperty(StorageSettings.STORAGE_TYPE).toLowerCase();
-
-        switch (type) {
-            case "mysql":
-                try {
-                    new JsonProvider(guilds).saveGuilds(handler.getGuilds());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                break;
-            case "json":
-                try {
-                    new MySQLProvider(guilds, settingsManager).saveGuilds(handler.getGuilds());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-        }
+        guilds.getDatabase().saveGuilds(handler.getGuilds());
     }
 
 }

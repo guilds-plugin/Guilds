@@ -25,11 +25,11 @@
 package me.glaremasters.guilds.database.providers;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import me.glaremasters.guilds.Guilds;
-import me.glaremasters.guilds.database.DatabaseProvider;
 import me.glaremasters.guilds.guild.Guild;
 import org.apache.commons.io.FilenameUtils;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -39,6 +39,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -48,52 +49,75 @@ import java.util.Objects;
  * Time: 11:38 AM
  */
 public class JsonProvider implements DatabaseProvider {
-
-    private Guilds guilds;
     private final File dataFolder;
     private final List<String> ids = new ArrayList<>();
     private Gson gson;
 
-    public JsonProvider(Guilds guilds) {
-        this.guilds = guilds;
-        this.dataFolder = new File(guilds.getDataFolder(), "data");
-        //noinspection ResultOfMethodCallIgnored
-        this.dataFolder.mkdir();
-        this.gson = guilds.getGson();
+    public JsonProvider(File dataFolder) {
+        this.dataFolder = dataFolder;
+        this.gson = Guilds.getGson();
     }
 
     @Override
-    public List<Guild> loadGuilds() throws IOException {
+    public void createContainer(@Nullable String tablePrefix) {
+        if (!this.dataFolder.exists()) {
+            this.dataFolder.mkdir();
+        }
+    }
+
+    @Override
+    public boolean guildExists(@Nullable String tablePrefix, @NotNull String id) {
+        return Arrays.stream(Objects.requireNonNull(dataFolder.listFiles()))
+                .map(f -> FilenameUtils.removeExtension(f.getName()))
+                .anyMatch(n -> n.equals(id));
+    }
+
+    @Override
+    public List<Guild> getAllGuilds(@Nullable String tablePrefix) throws IOException {
         List<Guild> loadedGuilds = new ArrayList<>();
 
-
         for (File file : Objects.requireNonNull(dataFolder.listFiles())) {
-
             loadedGuilds.add(gson.fromJson(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8), Guild.class));
-
         }
 
         return loadedGuilds;
     }
 
     @Override
-    public void saveGuilds(List<Guild> guilds) throws IOException {
+    public Guild getGuild(@Nullable String tablePrefix, @NotNull String id) throws IOException {
+        String data = Arrays.stream(Objects.requireNonNull(dataFolder.listFiles()))
+                .map(f -> FilenameUtils.removeExtension(f.getName()))
+                .filter(n -> n.equals(id))
+                .findFirst()
+                .orElse(null);
 
-        for (Guild guild : guilds) {
-            File file = new File(dataFolder, guild.getId() + ".json");
-            Files.write(Paths.get(file.getPath()), gson.toJson(guild).getBytes(StandardCharsets.UTF_8));
+        if (data == null) return null;
 
-            ids.add(guild.getId().toString());
-        }
-
-        for (File file : Objects.requireNonNull(dataFolder.listFiles())) {
-            String name = FilenameUtils.removeExtension(file.getName());
-            boolean keep = ids.stream().anyMatch(str -> str.equals(name));
-            if (!keep) {
-                file.delete();
-            }
-        }
-        ids.clear();
+        return gson.fromJson(data, Guild.class);
     }
 
+    @Override
+    public void createGuild(@Nullable String tablePrefix, @NotNull String id, @NotNull String data) throws IOException {
+        writeGuildFile(new File(dataFolder, id + ".json"), data);
+    }
+
+    @Override
+    public void updateGuild(@Nullable String tablePrefix, @NotNull String id, @NotNull String data) throws IOException {
+        File file = new File(data, id + ".json");
+        deleteGuild(file);
+        writeGuildFile(file, data);
+    }
+
+    private void writeGuildFile(File file, String data) throws IOException {
+        Files.write(Paths.get(file.getPath()), data.getBytes(StandardCharsets.UTF_8));
+    }
+
+    @Override
+    public void deleteGuild(@Nullable String tablePrefix, @NotNull String id) throws IOException {
+        deleteGuild(new File(dataFolder, id + ".json"));
+    }
+
+    private void deleteGuild(File file) {
+        if (file.exists()) file.delete();
+    }
 }

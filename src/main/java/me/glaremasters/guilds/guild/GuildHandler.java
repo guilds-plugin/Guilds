@@ -32,7 +32,7 @@ import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.configuration.sections.GuildSettings;
 import me.glaremasters.guilds.configuration.sections.GuildVaultSettings;
 import me.glaremasters.guilds.configuration.sections.TicketSettings;
-import me.glaremasters.guilds.database.DatabaseProvider;
+import me.glaremasters.guilds.database.DatabaseAdapter;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.ItemBuilder;
@@ -71,14 +71,14 @@ public class GuildHandler {
     private Map<Guild, List<Inventory>> cachedVaults;
     private List<Player> openedVault;
 
-    private final DatabaseProvider databaseProvider;
+    private final DatabaseAdapter databaseProvider;
     private final CommandManager commandManager;
     private final Permission permission;
     private final SettingsManager settingsManager;
 
     //as well as guild permissions from tiers using permission field and tiers list.
 
-    public GuildHandler(DatabaseProvider databaseProvider, CommandManager commandManager, Permission permission, FileConfiguration config, SettingsManager settingsManager) {
+    public GuildHandler(DatabaseAdapter databaseProvider, CommandManager commandManager, Permission permission, FileConfiguration config, SettingsManager settingsManager) {
         this.databaseProvider = databaseProvider;
         this.commandManager = commandManager;
         this.permission = permission;
@@ -153,7 +153,7 @@ public class GuildHandler {
 
         Guilds.newChain().async(() -> {
             try {
-                guilds = databaseProvider.loadGuilds();
+                guilds = databaseProvider.getAllGuilds();
             } catch (IOException e) {
                 e.printStackTrace();
             }

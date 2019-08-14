@@ -1,97 +1,51 @@
 package me.glaremasters.guilds.database.providers;
 
-import ch.jalu.configme.SettingsManager;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.zaxxer.hikari.HikariDataSource;
-import me.glaremasters.guilds.Guilds;
-import me.glaremasters.guilds.configuration.sections.StorageSettings;
-import me.glaremasters.guilds.database.DatabaseProvider;
-import me.glaremasters.guilds.database.Queries;
+import me.glaremasters.guilds.database.guild.GuildRowMapper;
 import me.glaremasters.guilds.guild.Guild;
-import org.apache.commons.collections4.CollectionUtils;
-import org.jdbi.v3.core.Jdbi;
+import org.jdbi.v3.sqlobject.config.RegisterRowMapper;
+import org.jdbi.v3.sqlobject.customizer.Bind;
+import org.jdbi.v3.sqlobject.customizer.Define;
+import org.jdbi.v3.sqlobject.statement.SqlQuery;
+import org.jdbi.v3.sqlobject.statement.SqlUpdate;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-public class MySQLProvider implements DatabaseProvider {
-    private Guilds guilds;
-    private Jdbi jdbi;
-    private Gson gson;
-    private HikariDataSource hikari;
-    private SettingsManager settingsManager;
-    private final List<String> ids = new ArrayList<>();
-    private Queries queries;
-    private String prefix;
-
-    public MySQLProvider(Guilds guilds, SettingsManager settingsManager) {
-        this.settingsManager = settingsManager;
-        this.prefix = settingsManager.getProperty(StorageSettings.SQL_TABLE_PREFIX);
-        this.queries = new Queries();
-
-        // Create the Hikari DS
-        hikari = new HikariDataSource();
-        // Set the pool name
-        hikari.setPoolName("Guilds Connection Pool");
-        // Set the datasource
-        hikari.setDataSourceClassName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
-        hikari.addDataSourceProperty("serverName", settingsManager.getProperty(StorageSettings.SQL_HOST));
-        hikari.addDataSourceProperty("port", settingsManager.getProperty(StorageSettings.SQL_PORT));
-        hikari.addDataSourceProperty("databaseName", settingsManager.getProperty(StorageSettings.SQL_DATABASE));
-        hikari.addDataSourceProperty("user", settingsManager.getProperty(StorageSettings.SQL_USERNAME));
-        hikari.addDataSourceProperty("password", settingsManager.getProperty(StorageSettings.SQL_PASSWORD));
-        hikari.setMaximumPoolSize(settingsManager.getProperty(StorageSettings.SQL_POOL_SIZE));
-        hikari.setMinimumIdle(settingsManager.getProperty(StorageSettings.SQL_POOL_IDLE));
-        hikari.setMaxLifetime(settingsManager.getProperty(StorageSettings.SQL_POOL_LIFETIME));
-        hikari.setConnectionTimeout(settingsManager.getProperty(StorageSettings.SQL_POOL_TIMEOUT));
-
-        // Try to create the table if it doesn't exist
-        queries.createTable(hikari, prefix);
-
-
-        gson = guilds.getGson();
-    }
+public interface MySQLProvider extends DatabaseProvider {
+    @Override
+    @SqlQuery(
+            "CREATE TABLE IF NOT EXISTS <prefix>guild (\n" +
+                    "  `id` VARCHAR(36) NOT NULL,\n" +
+                    "  `data` JSON NOT NULL,\n" +
+                    "  PRIMARY KEY (`id`),\n" +
+                    "  UNIQUE (`id`));"
+    )
+    void createContainer(@Define("prefix") @NotNull String table);
 
     @Override
-    public List<Guild> loadGuilds() throws IOException {
-        List<Guild> loadedGuilds = new ArrayList<>();
-        try {
-            Connection connection = hikari.getConnection();
-            queries.loadGuilds(gson, connection, loadedGuilds, prefix);
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return loadedGuilds;
-    }
+    @SqlQuery("SELECT EXISTS(SELECT 1 FROM <prefix>guild WHERE id = :id)")
+    boolean guildExists(@Define("prefix") @NotNull String table, @Bind("id") @NotNull String id) throws IOException;
 
     @Override
-    public void saveGuilds(List<Guild> guilds) throws IOException {
+    @SqlQuery("SELECT * FROM <prefix>guild")
+    @RegisterRowMapper(GuildRowMapper.class)
+    List<Guild> getAllGuilds(@Define("prefix") @NotNull String table);
 
-        try {
-            Connection connection = hikari.getConnection();
-            for (Guild guild : guilds) {
-                try {
-                    queries.saveGuild(gson, guild, connection, prefix);
-                    ids.add(guild.getId().toString());
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+    @Override
+    @SqlQuery("SELECT * FROM <prefix>guild WHERE id = :id")
+    @RegisterRowMapper(GuildRowMapper.class)
+    Guild getGuild(@Define("prefix") @NotNull String table, @Bind("id") @NotNull String id) throws IOException;
 
-            List<String> toDelete = new ArrayList<>(CollectionUtils.subtract(queries.getGuildIDs(connection, prefix), ids));
-            queries.deleteGuilds(connection, toDelete, prefix);
-            connection.close();
+    @Override
+    @SqlUpdate("INSERT INTO <prefix>guild(id, data) VALUES (:id, :data)")
+    void createGuild(@Define("prefix") @NotNull String table, @Bind("id") String id, @Bind("data") String data);
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        ids.clear();
-    }
+    @Override
+    @SqlUpdate("UPDATE <prefix>guild SET data = :data WHERE id = :id")
+    void updateGuild(@Define("prefix") @NotNull String table, @Bind("id") @NotNull String id, @Bind("data") @NotNull String data) throws IOException;
 
-
+    @Override
+    @SqlUpdate("DELETE FROM <prefix>guild WHERE id = :id")
+    void deleteGuild(@Define("prefix") @NotNull String table, @Bind("id") @NotNull String id) throws IOException;
 }
