@@ -21,31 +21,31 @@ public interface MySQLProvider extends DatabaseProvider {
                     "  PRIMARY KEY (`id`),\n" +
                     "  UNIQUE (`id`));"
     )
-    void createContainer(@Define("prefix") @NotNull String table);
+    void createContainer(@Define("prefix") @NotNull String prefix);
 
     @Override
     @SqlQuery("SELECT EXISTS(SELECT 1 FROM <prefix>guild WHERE id = :id)")
-    boolean guildExists(@Define("prefix") @NotNull String table, @Bind("id") @NotNull String id) throws IOException;
+    boolean guildExists(@Define("prefix") @NotNull String prefix, @Bind("id") @NotNull String id) throws IOException;
 
     @Override
     @SqlQuery("SELECT * FROM <prefix>guild")
     @RegisterRowMapper(GuildRowMapper.class)
-    List<Guild> getAllGuilds(@Define("prefix") @NotNull String table);
+    List<Guild> getAllGuilds(@Define("prefix") @NotNull String prefix);
 
     @Override
     @SqlQuery("SELECT * FROM <prefix>guild WHERE id = :id")
     @RegisterRowMapper(GuildRowMapper.class)
-    Guild getGuild(@Define("prefix") @NotNull String table, @Bind("id") @NotNull String id) throws IOException;
+    Guild getGuild(@Define("prefix") @NotNull String prefix, @Bind("id") @NotNull String id) throws IOException;
 
     @Override
     @SqlUpdate("INSERT INTO <prefix>guild(id, data) VALUES (:id, :data)")
-    void createGuild(@Define("prefix") @NotNull String table, @Bind("id") String id, @Bind("data") String data);
+    void createGuild(@Define("prefix") @NotNull String prefix, @Bind("id") String id, @Bind("data") String data);
 
     @Override
     @SqlUpdate("UPDATE <prefix>guild SET data = :data WHERE id = :id")
-    void updateGuild(@Define("prefix") @NotNull String table, @Bind("id") @NotNull String id, @Bind("data") @NotNull String data) throws IOException;
+    void updateGuild(@Define("prefix") @NotNull String prefix, @Bind("id") @NotNull String id, @Bind("data") @NotNull String data) throws IOException;
 
     @Override
     @SqlUpdate("DELETE FROM <prefix>guild WHERE id = :id")
-    void deleteGuild(@Define("prefix") @NotNull String table, @Bind("id") @NotNull String id) throws IOException;
+    void deleteGuild(@Define("prefix") @NotNull String prefix, @Bind("id") @NotNull String id) throws IOException;
 }
