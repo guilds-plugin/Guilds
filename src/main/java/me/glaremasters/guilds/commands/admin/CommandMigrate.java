@@ -9,9 +9,6 @@ import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
 import me.glaremasters.guilds.Guilds;
-import me.glaremasters.guilds.configuration.sections.StorageSettings;
-import me.glaremasters.guilds.database.providers.JsonProvider;
-import me.glaremasters.guilds.database.providers.MySQLProvider;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.utils.Constants;
 
@@ -32,7 +29,7 @@ public class CommandMigrate extends BaseCommand {
             return;
         }
 
-        guilds.getDatabase().saveGuilds(handler.getGuilds());
+        guilds.getDatabase().getGuildAdapter().saveGuilds(handler.getGuilds());
     }
 
 }

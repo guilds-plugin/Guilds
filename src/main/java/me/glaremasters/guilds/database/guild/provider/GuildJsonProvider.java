@@ -22,10 +22,11 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.database.providers;
+package me.glaremasters.guilds.database.guild.provider;
 
 import com.google.gson.Gson;
 import me.glaremasters.guilds.Guilds;
+import me.glaremasters.guilds.database.guild.GuildProvider;
 import me.glaremasters.guilds.guild.Guild;
 import org.apache.commons.io.FilenameUtils;
 import org.jetbrains.annotations.NotNull;
@@ -48,12 +49,12 @@ import java.util.Objects;
  * Date: 7/18/2018
  * Time: 11:38 AM
  */
-public class JsonProvider implements DatabaseProvider {
+public class GuildJsonProvider implements GuildProvider {
     private final File dataFolder;
     private final List<String> ids = new ArrayList<>();
     private Gson gson;
 
-    public JsonProvider(File dataFolder) {
+    public GuildJsonProvider(File dataFolder) {
         this.dataFolder = dataFolder;
         this.gson = Guilds.getGson();
     }

@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.database.providers;
+package me.glaremasters.guilds.database.guild;
 
 import me.glaremasters.guilds.guild.Guild;
 import org.jetbrains.annotations.NotNull;
@@ -36,7 +36,7 @@ import java.util.List;
  * Date: 7/18/2018
  * Time: 1:47 AM
  */
-public interface DatabaseProvider {
+public interface GuildProvider {
     /**
      * Creates the container that will hold guilds
      * @param tablePrefix the prefix, if any, to use

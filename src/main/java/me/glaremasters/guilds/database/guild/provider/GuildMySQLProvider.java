@@ -1,5 +1,6 @@
-package me.glaremasters.guilds.database.providers;
+package me.glaremasters.guilds.database.guild.provider;
 
+import me.glaremasters.guilds.database.guild.GuildProvider;
 import me.glaremasters.guilds.database.guild.GuildRowMapper;
 import me.glaremasters.guilds.guild.Guild;
 import org.jdbi.v3.sqlobject.config.RegisterRowMapper;
@@ -12,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.util.List;
 
-public interface MySQLProvider extends DatabaseProvider {
+public interface GuildMySQLProvider extends GuildProvider {
     @Override
     @SqlQuery(
             "CREATE TABLE IF NOT EXISTS <prefix>guild (\n" +

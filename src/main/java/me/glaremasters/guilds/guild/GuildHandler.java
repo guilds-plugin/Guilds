@@ -153,7 +153,7 @@ public class GuildHandler {
 
         Guilds.newChain().async(() -> {
             try {
-                guilds = databaseProvider.getAllGuilds();
+                guilds = databaseProvider.getGuildAdapter().getAllGuilds();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -169,7 +169,7 @@ public class GuildHandler {
      */
     public void saveData() throws IOException {
         guilds.forEach(this::saveVaultCache);
-        databaseProvider.saveGuilds(guilds);
+        databaseProvider.getGuildAdapter().saveGuilds(guilds);
     }
 
 
