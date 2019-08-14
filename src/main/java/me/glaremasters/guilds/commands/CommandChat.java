@@ -30,7 +30,9 @@ import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
+import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.annotation.Syntax;
 import me.glaremasters.guilds.exceptions.InvalidPermissionException;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
@@ -57,10 +59,18 @@ public class CommandChat extends BaseCommand {
     @Subcommand("chat|c")
     @Description("{@@descriptions.chat}")
     @CommandPermission(Constants.BASE_PERM + "chat")
-    public void execute(Player player, Guild guild, GuildRole role) {
+    @Syntax("[msg]")
+    public void execute(Player player, Guild guild, GuildRole role, @Optional String msg) {
+
         if (!role.isChat())
             ACFUtil.sneaky(new InvalidPermissionException());
-        guildHandler.toggleGuildChat(getCurrentCommandManager(), player);
+
+        if (msg == null) {
+            guildHandler.toggleGuildChat(getCurrentCommandManager(), player);
+        } else {
+            guildHandler.handleGuildChat(guild, player, msg);
+        }
+
     }
 
 }
