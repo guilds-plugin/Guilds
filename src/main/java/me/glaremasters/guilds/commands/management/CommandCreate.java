@@ -133,59 +133,57 @@ public class CommandCreate extends BaseCommand {
                 if (!EconomyUtils.hasEnough(getCurrentCommandManager(), economy, player, cost))
                     ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__NOT_ENOUGH_MONEY));
 
-                for (int i = 0; i < 50; i++) {
-                    Guild.GuildBuilder gb = Guild.builder();
-                    gb.id(UUID.randomUUID());
-                    gb.name(ACFBukkitUtil.color(name));
-                    if (!settingsManager.getProperty(GuildSettings.DISABLE_PREFIX)) {
-                        if (prefix == null)
-                            gb.prefix(ACFBukkitUtil.color(name));
-                        else
-                            gb.prefix(ACFBukkitUtil.color(prefix));
-                    } else {
-                        gb.prefix("");
-                    }
-                    gb.status(Guild.Status.Private);
-                    GuildMember master = new GuildMember(player.getUniqueId(), guildHandler.getGuildRole(0));
-                    gb.guildMaster(master);
-
-                    List<GuildMember> members = new ArrayList<>();
-                    members.add(master);
-                    gb.members(members);
-                    gb.home(null);
-                    gb.balance(0);
-                    gb.tier(guildHandler.getGuildTier(1));
-
-                    gb.invitedMembers(new ArrayList<>());
-                    gb.allies(new ArrayList<>());
-                    gb.pendingAllies(new ArrayList<>());
-
-                    gb.vaults(new ArrayList<>());
-                    gb.codes(new ArrayList<>());
-
-                    Guild guild = gb.build();
-
-                    GuildCreateEvent event = new GuildCreateEvent(player, guild);
-                    Bukkit.getPluginManager().callEvent(event);
-
-                    if (event.isCancelled()) return;
-
-                    guildHandler.addGuild(guild);
-
-                    economy.withdrawPlayer(player, cost);
-
-                    getCurrentCommandIssuer().sendInfo(Messages.CREATE__SUCCESSFUL, "{guild}", guild.getName());
-
-                    actionHandler.removeAction(player);
-
-                    Guilds.newChain().async(() -> {
-                        try {
-                            guild.setGuildSkull(new GuildSkull(player));
-                        } catch (Exception ex) {
-                            guild.setGuildSkull(new GuildSkull(settingsManager.getProperty(GuildListSettings.GUILD_LIST_HEAD_DEFAULT_URL)));
-                        }
-                    }).execute();
+                Guild.GuildBuilder gb = Guild.builder();
+                gb.id(UUID.randomUUID());
+                gb.name(ACFBukkitUtil.color(name));
+                if (!settingsManager.getProperty(GuildSettings.DISABLE_PREFIX)) {
+                    if (prefix == null)
+                        gb.prefix(ACFBukkitUtil.color(name));
+                    else
+                        gb.prefix(ACFBukkitUtil.color(prefix));
+                } else {
+                    gb.prefix("");
                 }
+                gb.status(Guild.Status.Private);
+                GuildMember master = new GuildMember(player.getUniqueId(), guildHandler.getGuildRole(0));
+                gb.guildMaster(master);
+
+                List<GuildMember> members = new ArrayList<>();
+                members.add(master);
+                gb.members(members);
+                gb.home(null);
+                gb.balance(0);
+                gb.tier(guildHandler.getGuildTier(1));
+
+                gb.invitedMembers(new ArrayList<>());
+                gb.allies(new ArrayList<>());
+                gb.pendingAllies(new ArrayList<>());
+
+                gb.vaults(new ArrayList<>());
+                gb.codes(new ArrayList<>());
+
+                Guild guild = gb.build();
+
+                GuildCreateEvent event = new GuildCreateEvent(player, guild);
+                Bukkit.getPluginManager().callEvent(event);
+
+                if (event.isCancelled()) return;
+
+                guildHandler.addGuild(guild);
+
+                economy.withdrawPlayer(player, cost);
+
+                getCurrentCommandIssuer().sendInfo(Messages.CREATE__SUCCESSFUL, "{guild}", guild.getName());
+
+                actionHandler.removeAction(player);
+
+                Guilds.newChain().async(() -> {
+                    try {
+                        guild.setGuildSkull(new GuildSkull(player));
+                    } catch (Exception ex) {
+                        guild.setGuildSkull(new GuildSkull(settingsManager.getProperty(GuildListSettings.GUILD_LIST_HEAD_DEFAULT_URL)));
+                    }
+                }).execute();
 
             }
 
