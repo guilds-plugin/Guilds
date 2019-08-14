@@ -73,18 +73,15 @@ public class InfoMembersGUI {
                 guild.getName())));
 
         // Prevent players from being able to items into the GUIs
-        gui.setOnGlobalClick(event -> {
+        gui.setOnOutsideClick(event -> {
             event.setCancelled(true);
-            if (event.getClickedInventory() == null) {
-                Player player = (Player) event.getWhoClicked();
-                Guild g = guildHandler.getGuild(player);
-                if (g == null) {
-                    guilds.getGuiHandler().getListGUI().getListGUI().show(event.getWhoClicked());
-                } else {
-                    guilds.getGuiHandler().getInfoGUI().getInfoGUI(g, player).show(event.getWhoClicked());
-                }
+            Player player = (Player) event.getWhoClicked();
+            Guild g = guildHandler.getGuild(player);
+            if (g == null) {
+                guilds.getGuiHandler().getListGUI().getListGUI().show(event.getWhoClicked());
+            } else {
+                guilds.getGuiHandler().getInfoGUI().getInfoGUI(g, player).show(event.getWhoClicked());
             }
-
         });
 
         // Create the pane for the main items

@@ -46,16 +46,16 @@ public class Libraries {
         loader.loadLibrary(Library.builder()
                 .groupId("net{}lingala{}zip4j")
                 .artifactId("zip4j")
-                .version("1.3.2")
-                .checksum("xnCY1DDFdDEUMnKOvUx8RWcvnM9cZHAutq+4gWwirQg=")
+                .version("2.1.2")
+                .checksum("J7wqxAk066coV79fCMwzPGL8rHZ9Jz7mwtJ9QMhg9I8=")
                 .relocate("net{}lingala{}zip4j", "me.glaremasters.guilds.libs.zip4j")
                 .build());
 
         loader.loadLibrary(Library.builder()
                 .groupId("com{}github{}stefvanschie{}inventoryframework")
                 .artifactId("IF")
-                .version("0.3.1")
-                .checksum("MOPOPYQSpI3jqFrhQkpTABdO2JpoN4kNqFQTxq7KB+E=")
+                .version("0.5.8")
+                .checksum("t09sCQxreghG3a3pqA7rYLuFXK/Uf3OL5mhhvCM1yFA=")
                 .relocate("com{}github{}stefvanschie{}inventoryframework", "me.glaremasters.guilds.libs.if")
                 .build());
 

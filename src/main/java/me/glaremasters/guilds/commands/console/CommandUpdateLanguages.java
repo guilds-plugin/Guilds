@@ -22,10 +22,9 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.commands.admin;
+package me.glaremasters.guilds.commands.console;
 
 import ch.jalu.configme.SettingsManager;
-import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.CommandIssuer;
 import co.aikar.commands.annotation.CommandAlias;
@@ -36,12 +35,9 @@ import co.aikar.commands.annotation.Subcommand;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.actions.ConfirmAction;
-import me.glaremasters.guilds.configuration.sections.PluginSettings;
-import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.Constants;
 import me.glaremasters.guilds.utils.LanguageUpdateUtils;
-import net.lingala.zip4j.exception.ZipException;
 
 import java.io.IOException;
 
@@ -51,7 +47,7 @@ import java.io.IOException;
  * Time: 11:17 AM
  */
 @CommandAlias("%guilds")
-public class CommandAdminUpdateLanguages extends BaseCommand {
+public class CommandUpdateLanguages extends BaseCommand {
 
     @Dependency private ActionHandler actionHandler;
     @Dependency private SettingsManager settingsManager;
@@ -61,14 +57,12 @@ public class CommandAdminUpdateLanguages extends BaseCommand {
      * This command will update all the languages on the server
      * @param issuer the person running the command
      */
-    @Subcommand("admin update-language")
-    @Description("{@@descriptions.admin-update-languages}")
+    @Subcommand("console update-languages")
+    @Description("{@@descriptions.console-update-languages}")
     @CommandPermission(Constants.ADMIN_PERM)
     public void execute(CommandIssuer issuer) {
         if (issuer.isPlayer()) {
-            if (!settingsManager.getProperty(PluginSettings.UPDATE_LANGUAGES)) {
-                ACFUtil.sneaky(new ExpectationNotMet(Messages.LANGUAGES__CONSOLE_ONLY));
-            }
+            return;
         }
         getCurrentCommandIssuer().sendInfo(Messages.LANGUAGES__WARNING);
         actionHandler.addAction(issuer.getIssuer(), new ConfirmAction() {
@@ -77,7 +71,7 @@ public class CommandAdminUpdateLanguages extends BaseCommand {
                 Guilds.newChain().async(() -> {
                     try {
                         LanguageUpdateUtils.updateLanguages();
-                    } catch (ZipException | IOException e) {
+                    } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }).sync(() -> guilds.getAcfHandler().registerLanguages(guilds, guilds.getCommandManager())).execute();
