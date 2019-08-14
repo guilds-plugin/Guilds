@@ -267,8 +267,8 @@ languages:
 backup:
   started: "& a V současné době zálohujete všechna data cechů!"
   finished: "&a Všechna data Guilds byla zálohována a umístěna do složky pluginu."
-  warning: "&cYou are about to make a backup of all the data for the plugin. Please make sure not to do anything intensive during this. Type /guilds confirm to continue, type /guilds cancel to cancel."
-  cancelled: "aYou've successfully cancelled the backup."
+  warning: "&c Chystáte se zálohovat všechna data pro plugin. Ujistěte se, že během tohoto neuděláte nic intenzivního. Použíte /guilds confirm pro pokračování, nebo /guilds cancel pro zrušení příkazu."
+  cancelled: "Úspěšně jste zrušili tvoření zálohy."
 help:
   header: "<c3>=== </c3><c1>Zobrazuje se nápověda </c1><c2>{commandprefix}{command}</c2><c3> ===</c3>"
   detailed-header: "<c3>=== </c3><c1>Zobrazuje se nápověda </c1><c2>{commandprefix}{command}</c2><c3> ===</c3>"
