@@ -25,12 +25,12 @@ public final class DatabaseAdapter implements AutoCloseable {
             backend = DatabaseBackend.JSON;
         }
 
-        if (doConnect) {
-            setUpBackend(settings, backend);
-        }
-
         this.guilds = guilds;
         this.settings = settings;
+
+        if (doConnect) {
+            setUpBackend(backend);
+        }
     }
 
     public boolean isConnected() {
@@ -74,18 +74,15 @@ public final class DatabaseAdapter implements AutoCloseable {
         }
 
         DatabaseAdapter cloned = new DatabaseAdapter(this.guilds, this.settings, false);
-        cloned.setUpBackend(this.settings, backend);
+        cloned.setUpBackend(backend);
         return cloned;
     }
 
-    private void setUpBackend(SettingsManager settings, DatabaseBackend backend) {
+    private void setUpBackend(DatabaseBackend backend) {
         if (isConnected()) return;
 
-        if (backend != DatabaseBackend.JSON) {
-            this.databaseManager = new DatabaseManager(settings);
-            this.sqlTablePrefix = settings.getProperty(StorageSettings.SQL_TABLE_PREFIX).toLowerCase();
-        }
-
+        this.databaseManager = new DatabaseManager(settings);
+        this.sqlTablePrefix = this.settings.getProperty(StorageSettings.SQL_TABLE_PREFIX).toLowerCase();
         this.guildAdapter = new GuildAdapter(guilds, this);
         this.backend = backend;
     }
