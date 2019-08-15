@@ -86,19 +86,19 @@ public class GuildJsonProvider implements GuildProvider {
 
     @Override
     public Guild getGuild(@Nullable String tablePrefix, @NotNull String id) throws IOException {
-        String data = Arrays.stream(Objects.requireNonNull(dataFolder.listFiles()))
-                .map(f -> FilenameUtils.removeExtension(f.getName()))
-                .filter(n -> n.equals(id))
+        File data = Arrays.stream(Objects.requireNonNull(dataFolder.listFiles()))
+                .filter(f -> FilenameUtils.removeExtension(f.getName()).equals(id))
                 .findFirst()
                 .orElse(null);
 
         if (data == null) return null;
 
-        return gson.fromJson(data, Guild.class);
+        return gson.fromJson(new InputStreamReader(new FileInputStream(data), StandardCharsets.UTF_8), Guild.class);
     }
 
     @Override
     public void createGuild(@Nullable String tablePrefix, @NotNull String id, @NotNull String data) throws IOException {
+        if (guildExists(tablePrefix, id)) return;
         writeGuildFile(new File(dataFolder, id + ".json"), data);
     }
 
@@ -114,7 +114,7 @@ public class GuildJsonProvider implements GuildProvider {
     }
 
     @Override
-    public void deleteGuild(@Nullable String tablePrefix, @NotNull String id) throws IOException {
+    public void deleteGuild(@Nullable String tablePrefix, @NotNull String id) {
         deleteGuild(new File(dataFolder, id + ".json"));
     }
 
