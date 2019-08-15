@@ -5,6 +5,8 @@ import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.configuration.sections.StorageSettings;
 import me.glaremasters.guilds.database.guild.GuildAdapter;
 
+import java.io.IOException;
+
 public final class DatabaseAdapter implements AutoCloseable {
     private final Guilds guilds;
     private final SettingsManager settings;
@@ -13,11 +15,11 @@ public final class DatabaseAdapter implements AutoCloseable {
     private DatabaseManager databaseManager;
     private String sqlTablePrefix;
 
-    public DatabaseAdapter(Guilds guilds, SettingsManager settings) {
+    public DatabaseAdapter(Guilds guilds, SettingsManager settings) throws IOException {
         this(guilds, settings, true);
     }
 
-    public DatabaseAdapter(Guilds guilds, SettingsManager settings, boolean doConnect) {
+    public DatabaseAdapter(Guilds guilds, SettingsManager settings, boolean doConnect) throws IOException {
         String backendName = settings.getProperty(StorageSettings.STORAGE_TYPE).toLowerCase();
         DatabaseBackend backend = DatabaseBackend.getByBackendName(backendName);
 
@@ -68,7 +70,7 @@ public final class DatabaseAdapter implements AutoCloseable {
         return sqlTablePrefix;
     }
 
-    public DatabaseAdapter cloneWith(DatabaseBackend backend) throws IllegalArgumentException {
+    public DatabaseAdapter cloneWith(DatabaseBackend backend) throws IllegalArgumentException, IOException {
         if (this.backend.equals(backend)) {
             throw new IllegalArgumentException("Given backend matches current backend. Use this backend.");
         }
@@ -78,12 +80,20 @@ public final class DatabaseAdapter implements AutoCloseable {
         return cloned;
     }
 
-    private void setUpBackend(DatabaseBackend backend) {
+    private void setUpBackend(DatabaseBackend backend) throws IOException {
         if (isConnected()) return;
 
-        this.databaseManager = new DatabaseManager(settings);
-        this.sqlTablePrefix = this.settings.getProperty(StorageSettings.SQL_TABLE_PREFIX).toLowerCase();
-        this.guildAdapter = new GuildAdapter(guilds, this);
+        if (backend != DatabaseBackend.JSON) {
+            this.databaseManager = new DatabaseManager(settings);
+            this.sqlTablePrefix = this.settings.getProperty(StorageSettings.SQL_TABLE_PREFIX).toLowerCase();
+        }
+
         this.backend = backend;
+
+        // You may wish to create container(s) elsewhere, but this is an OK spot.
+        // In JSON mode, this is equivalent to making the file.
+        // In SQL mode, this is equivalent to creating the table.
+        this.guildAdapter = new GuildAdapter(guilds, this);
+        this.guildAdapter.createContainer();
     }
 }
