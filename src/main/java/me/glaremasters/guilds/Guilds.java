@@ -241,7 +241,12 @@ public final class Guilds extends JavaPlugin {
         // Load data here.
         try {
             LoggingUtils.info("Loading Data..");
-            database = new DatabaseAdapter(this, settingsHandler.getSettingsManager());
+            setDatabase(new DatabaseAdapter(this, settingsHandler.getSettingsManager()));
+            if (!database.isConnected()) {
+                // Jump down to the catch
+                throw new IOException("Failed to connect to Database.");
+            }
+
             // Load the cooldown folder
             cooldownsProvider = new CooldownsProvider(this);
             // Load the cooldown objects
@@ -390,6 +395,10 @@ public final class Guilds extends JavaPlugin {
 
     public DatabaseAdapter getDatabase() {
         return this.database;
+    }
+
+    public void setDatabase(DatabaseAdapter database) {
+        this.database = database;
     }
 
     public CooldownsProvider getCooldownsProvider() {

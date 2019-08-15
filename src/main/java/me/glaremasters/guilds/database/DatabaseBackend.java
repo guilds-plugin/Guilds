@@ -27,6 +27,6 @@ public enum DatabaseBackend {
     }
 
     public static DatabaseBackend getByBackendName(String backendName) {
-        return Arrays.stream(values()).filter(n -> n.backendName.toLowerCase().equals(backendName)).findFirst().orElse(null);
+        return Arrays.stream(values()).filter(n -> n.backendName.equals(backendName.toLowerCase())).findFirst().orElse(null);
     }
 }
