@@ -14,22 +14,29 @@ public class DatabaseManager {
     public DatabaseManager(SettingsManager settingsManager, DatabaseBackend backend) {
         HikariConfig config = new HikariConfig();
 
-        // todo check for sqlite datasource somehow and then make sure it uses the db file
-        if (backend == DatabaseBackend.MYSQL) {
-            config.setPoolName("Guilds Connection Pool");
-            config.setDataSourceClassName(settingsManager.getProperty(StorageSettings.DATASOURCE));
-            config.addDataSourceProperty("serverName", settingsManager.getProperty(StorageSettings.SQL_HOST));
-            config.addDataSourceProperty("port", settingsManager.getProperty(StorageSettings.SQL_PORT));
-            config.addDataSourceProperty("databaseName", settingsManager.getProperty(StorageSettings.SQL_DATABASE));
-            config.addDataSourceProperty("user", settingsManager.getProperty(StorageSettings.SQL_USERNAME));
-            config.addDataSourceProperty("password", settingsManager.getProperty(StorageSettings.SQL_PASSWORD));
-            config.addDataSourceProperty("useSSL", settingsManager.getProperty(StorageSettings.SQL_ENABLE_SSL));
-            config.setMaximumPoolSize(settingsManager.getProperty(StorageSettings.SQL_POOL_SIZE));
-            config.setMinimumIdle(settingsManager.getProperty(StorageSettings.SQL_POOL_IDLE));
-            config.setMaxLifetime(settingsManager.getProperty(StorageSettings.SQL_POOL_LIFETIME));
-            config.setConnectionTimeout(settingsManager.getProperty(StorageSettings.SQL_POOL_TIMEOUT));
-        } else {
-            config.setJdbcUrl("jdbc:sqlite:plugins/Guilds/" + settingsManager.getProperty(StorageSettings.SQL_DATABASE) + ".db");
+        config.setPoolName("Guilds Connection Pool");
+        config.setDataSourceClassName(settingsManager.getProperty(StorageSettings.DATASOURCE));
+        config.setMaximumPoolSize(settingsManager.getProperty(StorageSettings.SQL_POOL_SIZE));
+        config.setMinimumIdle(settingsManager.getProperty(StorageSettings.SQL_POOL_IDLE));
+        config.setMaxLifetime(settingsManager.getProperty(StorageSettings.SQL_POOL_LIFETIME));
+        config.setConnectionTimeout(settingsManager.getProperty(StorageSettings.SQL_POOL_TIMEOUT));
+
+        String databaseName = settingsManager.getProperty(StorageSettings.SQL_DATABASE);
+
+        switch (backend) {
+            case MYSQL:
+                config.addDataSourceProperty("serverName", settingsManager.getProperty(StorageSettings.SQL_HOST));
+                config.addDataSourceProperty("port", settingsManager.getProperty(StorageSettings.SQL_PORT));
+                config.addDataSourceProperty("databaseName", databaseName);
+                config.addDataSourceProperty("user", settingsManager.getProperty(StorageSettings.SQL_USERNAME));
+                config.addDataSourceProperty("password", settingsManager.getProperty(StorageSettings.SQL_PASSWORD));
+                config.addDataSourceProperty("useSSL", settingsManager.getProperty(StorageSettings.SQL_ENABLE_SSL));
+                break;
+            case SQLITE:
+                config.setJdbcUrl(String.format("jdbc:sqlite:plugins/Guilds/%s.db", databaseName));
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid backend for DatabaseManager setup: " + backend.getBackendName());
         }
 
         HikariDataSource hikari;

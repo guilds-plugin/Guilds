@@ -25,9 +25,6 @@ public class GuildAdapter {
                 provider = new GuildJsonProvider(fileDataFolder);
                 break;
             case MYSQL:
-                sqlTablePrefix = adapter.getSqlTablePrefix();
-                provider = adapter.getDatabaseManager().getJdbi().onDemand(backend.getGuildProvider());
-                break;
             case SQLITE:
                 sqlTablePrefix = adapter.getSqlTablePrefix();
                 provider = adapter.getDatabaseManager().getJdbi().onDemand(backend.getGuildProvider());
