@@ -73,7 +73,7 @@ public class CommandMigrate extends BaseCommand {
                         e.printStackTrace();
                     }
                 }).sync(() -> {
-                    guilds.getCommandManager().getCommandIssuer(issuer.getIssuer()).sendInfo(Messages.MIGRATE__COMPLETE);
+                    guilds.getCommandManager().getCommandIssuer(issuer.getIssuer()).sendInfo(Messages.MIGRATE__COMPLETE, "{amount}", String.valueOf(guildHandler.getGuildsSize()));
                     actionHandler.removeAction(issuer.getIssuer());
                 }).execute();
             }
