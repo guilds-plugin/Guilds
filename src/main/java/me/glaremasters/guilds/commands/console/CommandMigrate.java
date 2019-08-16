@@ -50,8 +50,10 @@ public class CommandMigrate extends BaseCommand {
 
                 Guilds.newChain().async(() -> {
                     try {
+                        guildHandler.setMigrating(true);
                         DatabaseAdapter resolvedAdapter = guilds.getDatabase().cloneWith(resolvedBacked);
                         if (!resolvedAdapter.isConnected()) {
+                            guildHandler.setMigrating(false);
                             ACFUtil.sneaky(new ExpectationNotMet(Messages.MIGRATE__CONNECTION_FAILED));
                         }
 
@@ -61,10 +63,13 @@ public class CommandMigrate extends BaseCommand {
                         guilds.setDatabase(resolvedAdapter);
                         old.close();
 
+                        guildHandler.setMigrating(false);
 
                     } catch (IllegalArgumentException ex) {
+                        guildHandler.setMigrating(false);
                         ACFUtil.sneaky(new ExpectationNotMet(Messages.MIGRATE__SAME_BACKEND));
                     } catch (IOException e) {
+                        guildHandler.setMigrating(false);
                         e.printStackTrace();
                     }
                 }).sync(() -> {

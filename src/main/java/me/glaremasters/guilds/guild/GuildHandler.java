@@ -77,6 +77,8 @@ public class GuildHandler {
     private final Permission permission;
     private final SettingsManager settingsManager;
 
+    private boolean migrating;
+
     //as well as guild permissions from tiers using permission field and tiers list.
 
     public GuildHandler(Guilds guildsPlugin, CommandManager commandManager, Permission permission, FileConfiguration config, SettingsManager settingsManager) {
@@ -91,6 +93,8 @@ public class GuildHandler {
         guildChat = new ArrayList<>();
         cachedVaults = new HashMap<>();
         openedVault = new ArrayList<>();
+
+        migrating = false;
 
         //GuildRoles objects
         ConfigurationSection roleSection = config.getConfigurationSection("roles");
@@ -943,5 +947,13 @@ public class GuildHandler {
 
     public List<Player> getOpenedVault() {
         return this.openedVault;
+    }
+
+    public boolean isMigrating() {
+        return migrating;
+    }
+
+    public void setMigrating(boolean migrating) {
+        this.migrating = migrating;
     }
 }
