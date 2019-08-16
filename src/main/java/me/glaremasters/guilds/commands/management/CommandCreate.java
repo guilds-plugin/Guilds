@@ -184,6 +184,7 @@ public class CommandCreate extends BaseCommand {
                         guild.setGuildSkull(new GuildSkull(settingsManager.getProperty(GuildListSettings.GUILD_LIST_HEAD_DEFAULT_URL)));
                     }
                 }).execute();
+
             }
 
             @Override

@@ -69,11 +69,9 @@ public class VaultGUI {
                 guild.getName())));
 
         // Prevent players from being able to items into the GUIs
-        gui.setOnGlobalClick(event -> {
+        gui.setOnOutsideClick(event -> {
             event.setCancelled(true);
-            if (event.getClickedInventory() == null) {
-                guilds.getGuiHandler().getInfoGUI().getInfoGUI(guild, player).show(event.getWhoClicked());
-            }
+            guilds.getGuiHandler().getInfoGUI().getInfoGUI(guild, player).show(event.getWhoClicked());
         });
 
         // Create the pane for the main items

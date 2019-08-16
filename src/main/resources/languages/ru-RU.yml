@@ -19,7 +19,6 @@ descriptions:
   admin-status: "Админ-команда для смены статуса гильдии"
   admin-spy: "Админ-команда для слежки за чатами гильдий"
   admin-unclaim: "Админ-команда для удаления региона гильдии"
-  admin-update-languages: "Админ-команда для обновления языковых файлов"
   admin-upgrade: "Админ-команда для повышения уровня гильдии"
   admin-vault: "Админ-команда для просмотра хранилища гильдии"
   ally-accept: "Принять предложение на союз от другой гильдии"
@@ -47,6 +46,8 @@ descriptions:
   code-list: "Список действующих кодов приглашения в гильдию"
   code-redeem: "Активировать код приглашения для вступления в гильдию"
   confirm: "Подтвердить действие"
+  console-backup: "Backup the plugin's data"
+  console-update-languages: "Console command to update the language files"
   create: "Создать гильдию"
   decline: "Отклонить приглашение в гильдию"
   delete: "Расформировать гильдию"
@@ -108,7 +109,7 @@ error:
   not-enough-money: "&cИзвините, но у вас недостаточно денег, чтобы сделать это"
   economy-required: "&cЧтобы это работало, нужен плагин на экономику. Пожалуйста, сообщите администратору"
   buff-cooldown: "&cИзвините, но Ваша гильдия недавно уже купила бафф. Попробуйте снова через {amount} секунд."
-  buff-no-permission: "&cSorry, you do not have permission to buy this buff!"
+  buff-no-permission: "&cИзвините, Вам нельзя покупать этот бафф!"
   no-pending-invites: "&cИзвините, но у Вас нет ожидающих приглашений в гильдию!"
 bank:
   balance: "&aБаланс банка Вашей гильдии составляет {amount}."
@@ -263,7 +264,11 @@ languages:
   set: "&aВаш язык для гильдий установлен на {language}"
   warning: "&cВы собираетесь обновить все языковые файлы. Это удалит все текущие языковые файлы и пересоздаст их. Введите /guilds confirm для подтверждения или /guilds cancel для отмены обновления файлов."
   updated: "&aЯзыковые файлы были пересозданы и перезагружены!"
-  console-only: "&cИзвините, но это команда может быть использована только из консоли!"
+backup:
+  started: "&aCurrently backing up all Guilds data!"
+  finished: "&aAll Guilds data has been backed up and placed in your plugins folder."
+  warning: "&cYou are about to make a backup of all the data for the plugin. Please make sure not to do anything intensive during this. Type /guilds confirm to continue, type /guilds cancel to cancel."
+  cancelled: "aYou've successfully cancelled the backup."
 help:
   header: "<c3>=== </c3><c1>Помощь для </c1><c2>{commandprefix}{command}</c2><c3> ===</c3>"
   detailed-header: "<c3>=== </c3><c1>Детализированная помощь для </c1><c2>{commandprefix}{command}</c2><c3> ===</c3>"

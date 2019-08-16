@@ -56,11 +56,12 @@ public class GuildListSettings implements SettingsHolder {
             "LOADED: In the order that the Guilds were loaded on startup",
             "TIER: In order from highest tier to lowest tier",
             "MEMBERS: In order from most members to least members",
-            "BALANCE: In order from most in bank to least"})
+            "BALANCE: In order from most in bank to least",
+            "WINS: In order from most arena wins to least"})
     public static final Property<String> GUILD_LIST_SORT =
             newProperty(LIST_PATH + "sort", "LOADED");
 
-/*    @Comment("What item should players click to go to the next page?")
+    @Comment("What item should players click to go to the next page?")
     public static final Property<String> GUILD_LIST_NEXT_PAGE_ITEM =
             newProperty(LIST_PATH + "next-page-item", "EMPTY_MAP");
 
@@ -75,14 +76,6 @@ public class GuildListSettings implements SettingsHolder {
     @Comment("What should the name of this item be?")
     public static final Property<String> GUILD_LIST_PREVIOUS_PAGE_ITEM_NAME =
             newProperty(LIST_PATH + "previous-page-item-name", "&fPrevious Page");
-
-    @Comment("What item should players be able to hover over to see what page they are currently on?")
-    public static final Property<String> GUILD_LIST_PAGE_NUMBER_ITEM =
-            newProperty(LIST_PATH + "page-number-item", "DIAMOND_BLOCK");
-
-    @Comment("What should the name of this item be?")
-    public static final Property<String> GUILD_LIST_PAGE_NUMBER_ITEM_NAME =
-            newProperty(LIST_PATH + "page-number-item-name", "&fPage: {page}");*/
 
     @Comment("What should be the default texture url for textures that fail to load in? Refer to the Guild Manage settings to see how to change the texture!")
     public static final Property<String> GUILD_LIST_HEAD_DEFAULT_URL =

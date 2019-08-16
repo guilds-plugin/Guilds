@@ -36,6 +36,7 @@ import me.glaremasters.guilds.database.DatabaseAdapter;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.ItemBuilder;
+import me.glaremasters.guilds.utils.LoggingUtils;
 import me.glaremasters.guilds.utils.Serialization;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
@@ -885,6 +886,20 @@ public class GuildHandler {
      */
     public boolean checkGuildNames(String name) {
         return guilds.stream().anyMatch(g -> g.getName().equalsIgnoreCase(name));
+    }
+
+    /**
+     * Handle the guild chat messages
+     * @param guild the guild the player is in
+     * @param player the player running the message
+     * @param msg the message
+     */
+    public void handleGuildChat(Guild guild, Player player, String msg) {
+        guild.sendMessage(ACFBukkitUtil.color(settingsManager.getProperty(GuildSettings.GUILD_CHAT_FORMAT).replace("{role}", getGuildRole(guild.getMember(player.getUniqueId()).getRole().getLevel()).getName()).replace("{player}", player.getName()).replace("{display-name}", player.getDisplayName()).replace("{message}", msg)));
+        getSpies().forEach(s -> s.sendMessage(ACFBukkitUtil.color(settingsManager.getProperty(GuildSettings.SPY_CHAT_FORMAT).replace("{role}", getGuildRole(guild.getMember(player.getUniqueId()).getRole().getLevel()).getName()).replace("{player}", player.getName()).replace("{display-name}", player.getDisplayName()).replace("{message}", msg).replace("{guild}", guild.getName()))));
+        if (settingsManager.getProperty(GuildSettings.LOG_GUILD_CHAT)) {
+            LoggingUtils.info(ACFBukkitUtil.color(settingsManager.getProperty(GuildSettings.SPY_CHAT_FORMAT).replace("{role}", getGuildRole(guild.getMember(player.getUniqueId()).getRole().getLevel()).getName()).replace("{player}", player.getName()).replace("{display-name}", player.getDisplayName()).replace("{message}", msg).replace("{guild}", guild.getName())));
+        }
     }
 
     /**
