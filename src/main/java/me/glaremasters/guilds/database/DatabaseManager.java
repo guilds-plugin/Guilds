@@ -22,6 +22,7 @@ public class DatabaseManager {
         config.addDataSourceProperty("databaseName", settingsManager.getProperty(StorageSettings.SQL_DATABASE));
         config.addDataSourceProperty("user", settingsManager.getProperty(StorageSettings.SQL_USERNAME));
         config.addDataSourceProperty("password", settingsManager.getProperty(StorageSettings.SQL_PASSWORD));
+        config.addDataSourceProperty("useSSL", settingsManager.getProperty(StorageSettings.SQL_ENABLE_SSL));
         config.setMaximumPoolSize(settingsManager.getProperty(StorageSettings.SQL_POOL_SIZE));
         config.setMinimumIdle(settingsManager.getProperty(StorageSettings.SQL_POOL_IDLE));
         config.setMaxLifetime(settingsManager.getProperty(StorageSettings.SQL_POOL_LIFETIME));

@@ -48,6 +48,9 @@ public class GuildAdapter {
     }
 
     public void saveGuilds(@NotNull List<Guild> guilds) throws IOException {
+        // TODO: this whole deal here with the ids and deletion is reimplemented in GuildHandler, but if you want
+        //      to keep guild deletion here in the save task, then we are going to have to do some work.
+
         List<String> ids = new ArrayList<>();
 
         for (Guild guild : guilds) {
@@ -60,7 +63,7 @@ public class GuildAdapter {
                 String name = FilenameUtils.removeExtension(file.getName());
                 boolean keep = ids.stream().anyMatch(str -> str.equals(name));
                 if (!keep) {
-                    file.delete();
+                    deleteGuild(name);
                 }
             }
 

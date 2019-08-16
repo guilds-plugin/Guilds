@@ -15,7 +15,7 @@ import java.util.List;
 
 public interface GuildMySQLProvider extends GuildProvider {
     @Override
-    @SqlQuery(
+    @SqlUpdate(
             "CREATE TABLE IF NOT EXISTS <prefix>guild (\n" +
                     "  `id` VARCHAR(36) NOT NULL,\n" +
                     "  `data` JSON NOT NULL,\n" +

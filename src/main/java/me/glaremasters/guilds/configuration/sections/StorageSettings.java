@@ -39,6 +39,10 @@ public class StorageSettings implements SettingsHolder {
     public static final Property<String> SQL_PASSWORD =
             newProperty("storage.sql.password", "");
 
+    @Comment("Sets whether or not to use SSL for the remote SQL database connection")
+    public static final Property<Boolean> SQL_ENABLE_SSL =
+            newProperty("storage.sql.enable-ssl", false);
+
     @Comment({"Sets the maximum size of the SQL connection pool.", "This value will determine the maximum number of connections maintained."})
     public static final Property<Integer> SQL_POOL_SIZE =
             newProperty("storage.sql.pool.maximum-pool-size", 10);
