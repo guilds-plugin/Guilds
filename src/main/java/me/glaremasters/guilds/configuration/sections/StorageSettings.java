@@ -14,8 +14,7 @@ public class StorageSettings implements SettingsHolder {
             newProperty("storage.storage-type", "json");
 
     @Comment({"Which datasource should be used? Use the correct one for each database",
-    "MySQL: com.mysql.jdbc.jdbc2.optional.MysqlDataSource",
-    "SQLite: org.sqlite.JDBC"})
+            "MySQL: com.mysql.jdbc.jdbc2.optional.MysqlDataSource"})
     public static final Property<String> DATASOURCE =
             newProperty("storage.datasource", "com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
 

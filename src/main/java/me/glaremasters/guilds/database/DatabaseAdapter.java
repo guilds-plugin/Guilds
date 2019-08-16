@@ -41,8 +41,10 @@ public final class DatabaseAdapter implements AutoCloseable {
     }
 
     public void open() {
+        String backendName = settings.getProperty(StorageSettings.STORAGE_TYPE).toLowerCase();
+        DatabaseBackend backend = DatabaseBackend.getByBackendName(backendName);
         if (databaseManager != null && !databaseManager.isConnected()) {
-            databaseManager = new DatabaseManager(settings);
+            databaseManager = new DatabaseManager(settings, backend);
         }
     }
 
@@ -84,7 +86,7 @@ public final class DatabaseAdapter implements AutoCloseable {
         if (isConnected()) return;
 
         if (backend != DatabaseBackend.JSON) {
-            this.databaseManager = new DatabaseManager(settings);
+            this.databaseManager = new DatabaseManager(settings, backend);
             this.sqlTablePrefix = this.settings.getProperty(StorageSettings.SQL_TABLE_PREFIX).toLowerCase();
         }
 

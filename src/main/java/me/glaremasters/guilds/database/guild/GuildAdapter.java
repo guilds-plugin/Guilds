@@ -29,8 +29,6 @@ public class GuildAdapter {
                 provider = adapter.getDatabaseManager().getJdbi().onDemand(backend.getGuildProvider());
                 break;
             case SQLITE:
-                File databaseFile = new File(guilds.getDataFolder(), "data.db");
-                if (databaseFile.exists()) databaseFile.mkdir();
                 sqlTablePrefix = adapter.getSqlTablePrefix();
                 provider = adapter.getDatabaseManager().getJdbi().onDemand(backend.getGuildProvider());
                 break;
