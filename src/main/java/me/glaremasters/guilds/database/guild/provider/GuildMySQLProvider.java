@@ -9,6 +9,7 @@ import org.jdbi.v3.sqlobject.customizer.Define;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.util.List;
@@ -27,6 +28,10 @@ public interface GuildMySQLProvider extends GuildProvider {
     @Override
     @SqlQuery("SELECT EXISTS(SELECT 1 FROM <prefix>guild WHERE id = :id)")
     boolean guildExists(@Define("prefix") @NotNull String prefix, @Bind("id") @NotNull String id) throws IOException;
+
+    @Override
+    @SqlQuery("SELECT id FROM <prefix>guild")
+    List<String> getAllGuildIds(@Define("prefix") @NotNull String tablePrefix) throws IOException;
 
     @Override
     @SqlQuery("SELECT * FROM <prefix>guild")

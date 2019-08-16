@@ -53,6 +53,13 @@ public interface GuildProvider {
     boolean guildExists(@Nullable String tablePrefix, @NotNull String id) throws IOException;
 
     /**
+     * Gets all guild IDs from the database
+     * @param tablePrefix the prefix, if any, to use
+     * @return a list of guild ids
+     */
+    List<String> getAllGuildIds(@Nullable String tablePrefix) throws IOException;
+
+    /**
      * Gets all guilds from the database
      * @param tablePrefix the prefix, if any, to use
      * @return a list of guilds

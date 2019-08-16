@@ -189,16 +189,6 @@ public class GuildHandler {
      * @param guild the guild being removed
      */
     public void removeGuild(@NotNull Guild guild) {
-        // TODO: I couldn't reasonably figure out how to work this into the save task that files used.
-        //      If you must do it that way, perhaps store a list of guilds that were deleted and iterate
-        //      that in the save task (in GuildAdapter).
-        try {
-            databaseProvider.getGuildAdapter().deleteGuild(guild.getId().toString());
-        } catch (IOException ex) {
-            // TODO: guild could not be removed
-            return;
-        }
-
         cachedVaults.remove(guild);
         guilds.remove(guild);
     }

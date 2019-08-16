@@ -74,6 +74,17 @@ public class GuildJsonProvider implements GuildProvider {
     }
 
     @Override
+    public List<String> getAllGuildIds(@Nullable String tablePrefix) {
+        List<String> loadedGuildIds = new ArrayList<>();
+
+        for (File file : Objects.requireNonNull(dataFolder.listFiles())) {
+            loadedGuildIds.add(FilenameUtils.removeExtension(file.getName()));
+        }
+
+        return loadedGuildIds;
+    }
+
+    @Override
     public List<Guild> getAllGuilds(@Nullable String tablePrefix) throws IOException {
         List<Guild> loadedGuilds = new ArrayList<>();
 
