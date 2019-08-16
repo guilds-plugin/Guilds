@@ -23,7 +23,7 @@ public class DatabaseManager {
         switch (backend) {
             case MYSQL:
                 config.setPoolName("Guilds MySQL Connection Pool");
-                config.setDataSourceClassName(settingsManager.getProperty(StorageSettings.DATASOURCE));
+                config.setDataSourceClassName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
                 config.addDataSourceProperty("serverName", settingsManager.getProperty(StorageSettings.SQL_HOST));
                 config.addDataSourceProperty("port", settingsManager.getProperty(StorageSettings.SQL_PORT));
                 config.addDataSourceProperty("databaseName", databaseName);
