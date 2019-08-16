@@ -117,6 +117,38 @@ public class Libraries {
                 .version("3.3.1")
                 .relocate("com{}zaxxer{}hikari", "me.glaremasters.guilds.libs.hikari")
                 .build());
+
+        loader.loadLibrary(Library.builder()
+                .groupId("org{}jdbi")
+                .artifactId("jdbi3-core")
+                .version("3.8.2")
+                .relocate("org{}jdbi", "me.glaremasters.guilds.libs.jdbi")
+                .checksum("+WVImk+rb9rFTpV05tpbShAMYgS0UnUNzOc2cZDS4n0=")
+                .build());
+
+        loader.loadLibrary(Library.builder()
+                .groupId("org{}jdbi")
+                .artifactId("jdbi3-sqlobject")
+                .version("3.8.2")
+                .relocate("org{}jdbi", "me.glaremasters.guilds.libs.jdbi")
+                .checksum("C1YqefomaJiob2FgRp7YLeofVKTt81D+sIEIKV3zQio=")
+                .build());
+
+        loader.loadLibrary(Library.builder()
+                .groupId("io.leangen.geantyref")
+                .artifactId("geantyref")
+                .version("1.3.7")
+                .relocate("org{}jdbi", "me.glaremasters.guilds.libs.jdbi")
+                .checksum("+JH4yXPM0d/LhBv+2EZOiWsbMN3dA9kzxL6p5CihEaI=")
+                .build());
+
+        loader.loadLibrary(Library.builder()
+                .groupId("org.antlr")
+                .artifactId("antlr4-runtime")
+                .version("4.7.2")
+                .relocate("org{}jdbi", "me.glaremasters.guilds.libs.jdbi")
+                .checksum("TFGLh9S9/4tEzYy8GvgW6US2Kj/luAt4FQHPH0dZu8Q=")
+                .build());
     }
 
 }

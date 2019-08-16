@@ -142,6 +142,10 @@
                                     <pattern>com.zaxxer.hikari</pattern>
                                     <shadedPattern>me.glaremasters.guilds.libs.hikari</shadedPattern>
                                 </relocation>
+                                <relocation>
+                                    <pattern>org.jdbi</pattern>
+                                    <shadedPattern>me.glaremasters.guilds.libs.jdbi</shadedPattern>
+                                </relocation>
                             </relocations>
                         </configuration>
                     </execution>
@@ -363,25 +367,16 @@
         <dependency>
             <groupId>org.jdbi</groupId>
             <artifactId>jdbi3-core</artifactId>
+            <version>3.8.2</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Lets us use POJOs to represent Database information -->
         <dependency>
             <groupId>org.jdbi</groupId>
             <artifactId>jdbi3-sqlobject</artifactId>
+            <version>3.8.2</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
-
-    <dependencyManagement>
-        <dependencies>
-            <!-- Ensures all jdbi artifacts are the same version -->
-            <dependency>
-                <groupId>org.jdbi</groupId>
-                <artifactId>jdbi3-bom</artifactId>
-                <type>pom</type>
-                <version>3.8.2</version>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 </project>
