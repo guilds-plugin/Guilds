@@ -33,7 +33,7 @@ public class DatabaseManager {
                 break;
             case SQLITE:
                 config.setPoolName("Guilds SQLite Connection Pool");
-                config.setJdbcUrl(String.format("jdbc:sqlite:plugins/Guilds/%s.db", databaseName));
+                config.setJdbcUrl("jdbc:sqlite:plugins/Guilds/guilds.db");
                 break;
             default:
                 throw new IllegalArgumentException("Invalid backend for DatabaseManager setup: " + backend.getBackendName());
