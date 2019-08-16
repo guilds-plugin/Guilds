@@ -14,7 +14,6 @@ public class DatabaseManager {
     public DatabaseManager(SettingsManager settingsManager, DatabaseBackend backend) {
         HikariConfig config = new HikariConfig();
 
-        config.setPoolName("Guilds Connection Pool");
         config.setMaximumPoolSize(settingsManager.getProperty(StorageSettings.SQL_POOL_SIZE));
         config.setMinimumIdle(settingsManager.getProperty(StorageSettings.SQL_POOL_IDLE));
         config.setMaxLifetime(settingsManager.getProperty(StorageSettings.SQL_POOL_LIFETIME));
@@ -23,7 +22,8 @@ public class DatabaseManager {
         String databaseName = settingsManager.getProperty(StorageSettings.SQL_DATABASE);
         switch (backend) {
             case MYSQL:
-                config.setDataSourceClassName(settingsManager.getProperty(StorageSettings.DATASOURCE));
+                config.setPoolName("Guilds MySQL Connection Pool");
+                config.setDataSourceClassName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
                 config.addDataSourceProperty("serverName", settingsManager.getProperty(StorageSettings.SQL_HOST));
                 config.addDataSourceProperty("port", settingsManager.getProperty(StorageSettings.SQL_PORT));
                 config.addDataSourceProperty("databaseName", databaseName);
@@ -32,6 +32,7 @@ public class DatabaseManager {
                 config.addDataSourceProperty("useSSL", settingsManager.getProperty(StorageSettings.SQL_ENABLE_SSL));
                 break;
             case SQLITE:
+                config.setPoolName("Guilds SQLite Connection Pool");
                 config.setJdbcUrl(String.format("jdbc:sqlite:plugins/Guilds/%s.db", databaseName));
                 break;
             default:

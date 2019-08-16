@@ -72,15 +72,15 @@ public class GuildHandler {
     private Map<Guild, List<Inventory>> cachedVaults;
     private List<Player> openedVault;
 
-    private final DatabaseAdapter databaseProvider;
+    private final Guilds guildsPlugin;
     private final CommandManager commandManager;
     private final Permission permission;
     private final SettingsManager settingsManager;
 
     //as well as guild permissions from tiers using permission field and tiers list.
 
-    public GuildHandler(DatabaseAdapter databaseProvider, CommandManager commandManager, Permission permission, FileConfiguration config, SettingsManager settingsManager) {
-        this.databaseProvider = databaseProvider;
+    public GuildHandler(Guilds guildsPlugin, CommandManager commandManager, Permission permission, FileConfiguration config, SettingsManager settingsManager) {
+        this.guildsPlugin = guildsPlugin;
         this.commandManager = commandManager;
         this.permission = permission;
         this.settingsManager = settingsManager;
@@ -154,7 +154,7 @@ public class GuildHandler {
 
         Guilds.newChain().async(() -> {
             try {
-                guilds = databaseProvider.getGuildAdapter().getAllGuilds();
+                guilds = guildsPlugin.getDatabase().getGuildAdapter().getAllGuilds();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -170,7 +170,7 @@ public class GuildHandler {
      */
     public void saveData() throws IOException {
         guilds.forEach(this::saveVaultCache);
-        databaseProvider.getGuildAdapter().saveGuilds(guilds);
+        guildsPlugin.getDatabase().getGuildAdapter().saveGuilds(guilds);
     }
 
 
