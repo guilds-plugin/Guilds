@@ -48,26 +48,29 @@ public class CommandMigrate extends BaseCommand {
                     ACFUtil.sneaky(new ExpectationNotMet(Messages.MIGRATE__INVALID_BACKEND));
                 }
 
-                try {
-                    DatabaseAdapter resolvedAdapter = guilds.getDatabase().cloneWith(resolvedBacked);
-                    if (!resolvedAdapter.isConnected()) {
-                        ACFUtil.sneaky(new ExpectationNotMet(Messages.MIGRATE__CONNECTION_FAILED));
+                Guilds.newChain().async(() -> {
+                    try {
+                        DatabaseAdapter resolvedAdapter = guilds.getDatabase().cloneWith(resolvedBacked);
+                        if (!resolvedAdapter.isConnected()) {
+                            ACFUtil.sneaky(new ExpectationNotMet(Messages.MIGRATE__CONNECTION_FAILED));
+                        }
+
+                        resolvedAdapter.getGuildAdapter().saveGuilds(guildHandler.getGuilds());
+
+                        DatabaseAdapter old = guilds.getDatabase();
+                        guilds.setDatabase(resolvedAdapter);
+                        old.close();
+
+
+                    } catch (IllegalArgumentException ex) {
+                        ACFUtil.sneaky(new ExpectationNotMet(Messages.MIGRATE__SAME_BACKEND));
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-
-                    resolvedAdapter.getGuildAdapter().saveGuilds(guildHandler.getGuilds());
-
-                    DatabaseAdapter old = guilds.getDatabase();
-                    guilds.setDatabase(resolvedAdapter);
-                    old.close();
-
-                    getCurrentCommandIssuer().sendInfo(Messages.MIGRATE__COMPLETE);
-                } catch (IllegalArgumentException ex) {
-                    ACFUtil.sneaky(new ExpectationNotMet(Messages.MIGRATE__SAME_BACKEND));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                actionHandler.removeAction(issuer.getIssuer());
+                }).sync(() -> {
+                    guilds.getCommandManager().getCommandIssuer(issuer.getIssuer()).sendInfo(Messages.MIGRATE__COMPLETE);
+                    actionHandler.removeAction(issuer.getIssuer());
+                }).execute();
             }
 
             @Override
