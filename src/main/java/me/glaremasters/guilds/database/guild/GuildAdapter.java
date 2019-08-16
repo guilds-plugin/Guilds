@@ -18,12 +18,22 @@ public class GuildAdapter {
 
     public GuildAdapter(Guilds guilds, DatabaseAdapter adapter) {
         DatabaseBackend backend = adapter.getBackend();
-        if (backend == DatabaseBackend.JSON) {
-            File fileDataFolder = new File(guilds.getDataFolder(), "data");
-            provider = new GuildJsonProvider(fileDataFolder);
-        } else {
-            sqlTablePrefix = adapter.getSqlTablePrefix();
-            provider = adapter.getDatabaseManager().getJdbi().onDemand(backend.getGuildProvider());
+        switch (backend) {
+            default:
+            case JSON:
+                File fileDataFolder = new File(guilds.getDataFolder(), "data");
+                provider = new GuildJsonProvider(fileDataFolder);
+                break;
+            case MYSQL:
+                sqlTablePrefix = adapter.getSqlTablePrefix();
+                provider = adapter.getDatabaseManager().getJdbi().onDemand(backend.getGuildProvider());
+                break;
+            case SQLITE:
+                File databaseFile = new File(guilds.getDataFolder(), "data.db");
+                if (databaseFile.exists()) databaseFile.mkdir();
+                sqlTablePrefix = adapter.getSqlTablePrefix();
+                provider = adapter.getDatabaseManager().getJdbi().onDemand(backend.getGuildProvider());
+                break;
         }
     }
 

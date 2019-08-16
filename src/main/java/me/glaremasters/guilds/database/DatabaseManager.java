@@ -16,7 +16,10 @@ public class DatabaseManager {
         // Set the pool name
         config.setPoolName("Guilds Connection Pool");
         // Set the datasource
-        config.setDataSourceClassName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
+        config.setDataSourceClassName(settingsManager.getProperty(StorageSettings.DATASOURCE));
+
+        // todo check for sqlite datasource somehow and then make sure it uses the db file
+
         config.addDataSourceProperty("serverName", settingsManager.getProperty(StorageSettings.SQL_HOST));
         config.addDataSourceProperty("port", settingsManager.getProperty(StorageSettings.SQL_PORT));
         config.addDataSourceProperty("databaseName", settingsManager.getProperty(StorageSettings.SQL_DATABASE));

@@ -3,12 +3,14 @@ package me.glaremasters.guilds.database;
 import me.glaremasters.guilds.database.guild.GuildProvider;
 import me.glaremasters.guilds.database.guild.provider.GuildJsonProvider;
 import me.glaremasters.guilds.database.guild.provider.GuildMySQLProvider;
+import me.glaremasters.guilds.database.guild.provider.GuildSQLiteProvider;
 
 import java.util.Arrays;
 
 public enum DatabaseBackend {
     JSON("json", GuildJsonProvider.class),
-    MYSQL("mysql", GuildMySQLProvider.class);
+    MYSQL("mysql", GuildMySQLProvider.class),
+    SQLITE("sqlite", GuildSQLiteProvider.class);
 
     private final String backendName;
     private final Class<? extends GuildProvider> guildProvider;

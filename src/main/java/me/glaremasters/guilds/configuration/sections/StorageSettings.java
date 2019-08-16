@@ -13,6 +13,12 @@ public class StorageSettings implements SettingsHolder {
     public static final Property<String> STORAGE_TYPE =
             newProperty("storage.storage-type", "json");
 
+    @Comment({"Which datasource should be used? Use the correct one for each database",
+    "MySQL: com.mysql.jdbc.jdbc2.optional.MysqlDataSource",
+    "SQLite: org.sqlite.JDBC"})
+    public static final Property<String> DATASOURCE =
+            newProperty("storage.datasource", "com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
+
     @Comment({"How often (in minutes) do you want all Guild Data to save?"})
     public static final Property<Integer> SAVE_INTERVAL =
             newProperty("storage.save-interval", 1);
