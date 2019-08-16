@@ -104,7 +104,7 @@ public class GuildJsonProvider implements GuildProvider {
 
     @Override
     public void updateGuild(@Nullable String tablePrefix, @NotNull String id, @NotNull String data) throws IOException {
-        File file = new File(data, id + ".json");
+        File file = new File(id + ".json", data);
         deleteGuild(file);
         writeGuildFile(file, data);
     }
