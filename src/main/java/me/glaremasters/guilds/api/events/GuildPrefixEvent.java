@@ -4,22 +4,22 @@ import me.glaremasters.guilds.api.events.base.GuildEvent;
 import me.glaremasters.guilds.guild.Guild;
 import org.bukkit.entity.Player;
 
-public class GuildRenameEvent extends GuildEvent {
+public class GuildPrefixEvent extends GuildEvent {
 
-    private String name;
+    private String prefix;
 
     /**
      * Base guild event
-     *
-     * @param player player in event
+     *  @param player player in event
      * @param guild  guild in the event
+     * @param prefix
      */
-    public GuildRenameEvent(Player player, Guild guild, String newName) {
+    public GuildPrefixEvent(Player player, Guild guild, String prefix) {
         super(player, guild);
-        this.name = newName;
+        this.prefix = prefix;
     }
 
-    public String getName() {
-        return name;
+    public String getPrefix() {
+        return prefix;
     }
 }

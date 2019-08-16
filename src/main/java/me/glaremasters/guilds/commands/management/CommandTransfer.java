@@ -34,6 +34,7 @@ import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.annotation.Values;
+import me.glaremasters.guilds.api.events.GuildTransferEvent;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.exceptions.InvalidPermissionException;
 import me.glaremasters.guilds.guild.Guild;
@@ -71,6 +72,13 @@ public class CommandTransfer extends BaseCommand {
 
         if (transfer == null)
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__PLAYER_NOT_FOUND));
+
+        GuildTransferEvent event = new GuildTransferEvent(player, guild, transfer);
+        Bukkit.getPluginManager().callEvent(event);
+
+        if (event.isCancelled()) {
+            return;
+        }
 
         guild.transferGuild(player, transfer);
 
