@@ -76,6 +76,10 @@ public class CommandAdminRemove extends BaseCommand {
         if (guild == null)
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
 
+        if (guildHandler.isMigrating()) {
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__MIGRATING));
+        }
+
         getCurrentCommandIssuer().sendInfo(Messages.DELETE__WARNING,
                 "{guild}", name);
 

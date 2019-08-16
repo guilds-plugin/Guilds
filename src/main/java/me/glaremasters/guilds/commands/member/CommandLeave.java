@@ -25,6 +25,7 @@
 package me.glaremasters.guilds.commands.member;
 
 import ch.jalu.configme.SettingsManager;
+import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
@@ -39,6 +40,7 @@ import me.glaremasters.guilds.configuration.sections.CooldownSettings;
 import me.glaremasters.guilds.configuration.sections.PluginSettings;
 import me.glaremasters.guilds.cooldowns.Cooldown;
 import me.glaremasters.guilds.cooldowns.CooldownHandler;
+import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.messages.Messages;
@@ -74,6 +76,11 @@ public class CommandLeave extends BaseCommand {
     @Description("{@@descriptions.leave}")
     @CommandPermission(Constants.BASE_PERM + "leave")
     public void execute(Player player, Guild guild) {
+
+        if (guildHandler.isMigrating()) {
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__MIGRATING));
+        }
+
         if (guild.isMaster(player))
             getCurrentCommandIssuer().sendInfo(Messages.LEAVE__WARNING_GUILDMASTER);
         else

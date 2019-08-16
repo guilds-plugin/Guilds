@@ -90,6 +90,10 @@ public class CommandCreate extends BaseCommand {
     @Syntax("<name> (optional) <prefix>")
     public void execute(Player player, String name, @Optional String prefix) {
 
+        if (guildHandler.isMigrating()) {
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__MIGRATING));
+        }
+
         if (cooldownHandler.hasCooldown(Cooldown.TYPES.Join.name(), player.getUniqueId()))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ACCEPT__COOLDOWN, "{amount}",
                     String.valueOf(cooldownHandler.getRemaining(Cooldown.TYPES.Join.name(), player.getUniqueId()))));

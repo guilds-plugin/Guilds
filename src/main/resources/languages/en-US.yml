@@ -112,6 +112,7 @@ error:
   buff-cooldown: "&cSorry, your guild has recently bought a buff. You can try again in {amount} seconds."
   buff-no-permission: "&cSorry, you do not have permission to buy this buff!"
   no-pending-invites: "&cSorry, you currently do not have any pending guild invites!"
+  migrating: "&cSorry, this action can't be done. Data is currently migrating! Try again a few minutes."
 bank:
   balance: "&aYour guild's bank has a balance of {amount}."
   deposit-success: "&a{player} has just deposited {amount} into the Guild Bank. Your new total is {total}."

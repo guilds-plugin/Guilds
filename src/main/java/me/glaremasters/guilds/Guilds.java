@@ -323,6 +323,9 @@ public final class Guilds extends JavaPlugin {
         LoggingUtils.info("Ready to go! That only took " + (System.currentTimeMillis() - startingTime) + "ms");
         getServer().getScheduler().scheduleAsyncRepeatingTask(this, () -> {
             try {
+                if (guildHandler.isMigrating()) {
+                    return;
+                }
                 guildHandler.saveData();
                 cooldownHandler.saveCooldowns();
                 arenaHandler.saveArenas();
