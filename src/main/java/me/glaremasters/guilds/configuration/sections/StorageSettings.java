@@ -67,7 +67,13 @@ public class StorageSettings implements SettingsHolder {
         String[] poolHeader = {
                 "These settings change the SQL connection pool.",
                 "The default settings are optimized for the majority of users.",
-                "Do NOT change these settings unless you know what you are doing!"
+                "Do NOT change these settings unless you know what you are doing!",
+                "For those looking to migrate data:",
+                "IF YOU ARE MIGRATING FROM JSON OR SQLITE TO MYSQL THE SETTINGS MUST BE CONFIGURED EVEN IF THE DATA TYPE IS SET TO JSON OR MYSQL.",
+                "When migrating to MySQL, it will attempt to use the MySQL backend (grab the login information here) in order to connect to the database.",
+                "We are not responsible for data loss if you are too lazy to read the warnings.",
+                "ALWAYS REMEMBER TO BACKUP DATA BEFORE MIGRATING.",
+                "Lastly, remember to change your storage-type to the type you're migrating to before you reboot."
         };
         conf.setComment("storage.sql.pool", poolHeader);
     }
