@@ -30,6 +30,7 @@ import co.aikar.commands.CommandManager;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.arena.Arena;
 import me.glaremasters.guilds.configuration.sections.WarSettings;
+import me.glaremasters.guilds.database.DatabaseAdapter;
 import me.glaremasters.guilds.database.challenges.ChallengeAdapter;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildChallenge;
@@ -41,6 +42,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -365,7 +367,7 @@ public class ChallengeHandler {
      * @param player player to remove
      * @param challenge the challenge being checked
      */
-    public void handleFinish(Guilds guilds, SettingsManager settingsManager, ChallengeAdapter adapter, Player player, GuildChallenge challenge) {
+    public void handleFinish(Guilds guilds, SettingsManager settingsManager, DatabaseAdapter databaseAdapter, Player player, GuildChallenge challenge) {
         removePlayer(player);
         if (checkIfOver(challenge)) {
             // Specify the war is over
@@ -389,7 +391,7 @@ public class ChallengeHandler {
             }
             try {
                 // Save the details about the challenge
-               adapter.createChallenge(challenge);
+               databaseAdapter.getChallengeAdapter().createChallenge(challenge);
                 removeChallenge(challenge);
             } catch (IOException e) {
                 e.printStackTrace();
