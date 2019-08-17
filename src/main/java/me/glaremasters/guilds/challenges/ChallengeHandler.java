@@ -30,6 +30,7 @@ import co.aikar.commands.CommandManager;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.arena.Arena;
 import me.glaremasters.guilds.configuration.sections.WarSettings;
+import me.glaremasters.guilds.database.challenges.ChallengeAdapter;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildChallenge;
 import me.glaremasters.guilds.guild.GuildMember;
@@ -361,11 +362,10 @@ public class ChallengeHandler {
      * Handle finishing of the arena war
      * @param guilds guilds instance
      * @param settingsManager the settings manager
-     * @param challengesProvider challenges provider
      * @param player player to remove
      * @param challenge the challenge being checked
      */
-    public void handleFinish(Guilds guilds, SettingsManager settingsManager, ChallengesProvider challengesProvider, Player player, GuildChallenge challenge) {
+    public void handleFinish(Guilds guilds, SettingsManager settingsManager, ChallengeAdapter adapter, Player player, GuildChallenge challenge) {
         removePlayer(player);
         if (checkIfOver(challenge)) {
             // Specify the war is over
@@ -389,7 +389,7 @@ public class ChallengeHandler {
             }
             try {
                 // Save the details about the challenge
-                challengesProvider.saveChallenge(challenge);
+               adapter.createChallenge(challenge);
                 removeChallenge(challenge);
             } catch (IOException e) {
                 e.printStackTrace();

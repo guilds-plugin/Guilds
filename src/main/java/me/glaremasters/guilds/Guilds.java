@@ -89,7 +89,6 @@ public final class Guilds extends JavaPlugin {
     private static TaskChainFactory taskChainFactory;
     private DatabaseAdapter database;
     private CooldownsProvider cooldownsProvider;
-    private ChallengesProvider challengesProvider;
     private ArenasProvider arenasProvider;
     private SettingsHandler settingsHandler;
     private PaperCommandManager commandManager;
@@ -260,8 +259,6 @@ public final class Guilds extends JavaPlugin {
             arenaHandler = new ArenaHandler(arenasProvider);
             // Load the challenge handler
             challengeHandler = new ChallengeHandler();
-            // Load the challenge provider
-            challengesProvider = new ChallengesProvider(this);
             // Load guildhandler with provider
             guildHandler = new GuildHandler(this, getCommandManager(), getPermissions(), getConfig(), settingsHandler.getSettingsManager());
             LoggingUtils.info("Loaded data!");
@@ -309,7 +306,7 @@ public final class Guilds extends JavaPlugin {
                 new PlayerListener(guildHandler, settingsHandler.getSettingsManager(), this, permissions),
                 new TicketListener(this, guildHandler, settingsHandler.getSettingsManager()),
                 new VaultBlacklistListener(this, guildHandler, settingsHandler.getSettingsManager()),
-                new ArenaListener(this, challengeHandler, challengesProvider, settingsHandler.getSettingsManager()))
+                new ArenaListener(this, challengeHandler, database, settingsHandler.getSettingsManager()))
                 .forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
         // Load the optional listeners
         optionalListeners();
@@ -409,10 +406,6 @@ public final class Guilds extends JavaPlugin {
 
     public CooldownsProvider getCooldownsProvider() {
         return this.cooldownsProvider;
-    }
-
-    public ChallengesProvider getChallengesProvider() {
-        return this.challengesProvider;
     }
 
     public ArenasProvider getArenasProvider() {

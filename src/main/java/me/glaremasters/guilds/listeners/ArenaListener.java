@@ -5,6 +5,8 @@ import co.aikar.commands.ACFBukkitUtil;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.challenges.ChallengeHandler;
 import me.glaremasters.guilds.configuration.sections.WarSettings;
+import me.glaremasters.guilds.database.DatabaseAdapter;
+import me.glaremasters.guilds.database.challenges.ChallengeAdapter;
 import me.glaremasters.guilds.guild.GuildChallenge;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.Constants;
@@ -25,14 +27,14 @@ public class ArenaListener implements Listener {
 
     private Guilds guilds;
     private ChallengeHandler challengeHandler;
-    private ChallengesProvider challengesProvider;
+    private DatabaseAdapter adapter;
     private SettingsManager settingsManager;
     private final Map<UUID, String> playerDeath = new HashMap<>();
 
-    public ArenaListener(Guilds guilds, ChallengeHandler challengeHandler, ChallengesProvider challengesProvider, SettingsManager settingsManager) {
+    public ArenaListener(Guilds guilds, ChallengeHandler challengeHandler, DatabaseAdapter adapter, SettingsManager settingsManager) {
         this.guilds = guilds;
         this.challengeHandler = challengeHandler;
-        this.challengesProvider = challengesProvider;
+        this.adapter = adapter;
         this.settingsManager = settingsManager;
     }
 
@@ -45,7 +47,7 @@ public class ArenaListener implements Listener {
             // Announce they left
             challengeHandler.announceDeath(challenge, guilds, player, player, ChallengeHandler.Cause.PLAYER_KILLED_QUIT);
             // Remove the player from the alive players
-            challengeHandler.handleFinish(guilds, settingsManager, challengesProvider, player, challenge);
+            challengeHandler.handleFinish(guilds, settingsManager, adapter.getChallengeAdapter(), player, challenge);
         }
     }
 
@@ -80,7 +82,7 @@ public class ArenaListener implements Listener {
         challengeHandler.announceDeath(challenge, guilds, player, player, ChallengeHandler.Cause.PLAYER_KILLED_UNKNOWN);
 
         // Handle rest of arena stuff like normal
-        challengeHandler.handleFinish(guilds, settingsManager, challengesProvider, player, challenge);
+        challengeHandler.handleFinish(guilds, settingsManager, adapter.getChallengeAdapter(), player, challenge);
     }
 
      @EventHandler
@@ -126,7 +128,7 @@ public class ArenaListener implements Listener {
                 // Teleport them out of the arena
                 challengeHandler.exitArena(entity, challenge, guilds);
                 // Remove them
-                challengeHandler.handleFinish(guilds, settingsManager, challengesProvider, entity, challenge);
+                challengeHandler.handleFinish(guilds, settingsManager, adapter.getChallengeAdapter(), entity, challenge);
             }
         }
     }

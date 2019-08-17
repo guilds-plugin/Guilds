@@ -3,6 +3,7 @@ package me.glaremasters.guilds.database;
 import ch.jalu.configme.SettingsManager;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.configuration.sections.StorageSettings;
+import me.glaremasters.guilds.database.challenges.ChallengeAdapter;
 import me.glaremasters.guilds.database.guild.GuildAdapter;
 
 import java.io.IOException;
@@ -12,6 +13,7 @@ public final class DatabaseAdapter implements AutoCloseable {
     private final SettingsManager settings;
     private DatabaseBackend backend;
     private GuildAdapter guildAdapter;
+    private ChallengeAdapter challengeAdapter;
     private DatabaseManager databaseManager;
     private String sqlTablePrefix;
 
@@ -64,6 +66,10 @@ public final class DatabaseAdapter implements AutoCloseable {
         return guildAdapter;
     }
 
+    public ChallengeAdapter getChallengeAdapter() {
+        return challengeAdapter;
+    }
+
     public DatabaseManager getDatabaseManager() {
         return databaseManager;
     }
@@ -97,5 +103,8 @@ public final class DatabaseAdapter implements AutoCloseable {
         // In SQL mode, this is equivalent to creating the table.
         this.guildAdapter = new GuildAdapter(guilds, this);
         this.guildAdapter.createContainer();
+
+        this.challengeAdapter = new ChallengeAdapter(guilds, this);
+        this.challengeAdapter.createContainer();
     }
 }
