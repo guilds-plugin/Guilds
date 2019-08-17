@@ -42,7 +42,6 @@ import me.glaremasters.guilds.configuration.sections.StorageSettings;
 import me.glaremasters.guilds.cooldowns.CooldownHandler;
 import me.glaremasters.guilds.database.DatabaseAdapter;
 import me.glaremasters.guilds.database.arenas.ArenasProvider;
-import me.glaremasters.guilds.database.challenges.ChallengesProvider;
 import me.glaremasters.guilds.database.cooldowns.CooldownsProvider;
 import me.glaremasters.guilds.dependency.Libraries;
 import me.glaremasters.guilds.guild.GuildHandler;

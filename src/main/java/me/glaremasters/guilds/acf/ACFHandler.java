@@ -11,7 +11,6 @@ import me.glaremasters.guilds.arena.ArenaHandler;
 import me.glaremasters.guilds.challenges.ChallengeHandler;
 import me.glaremasters.guilds.configuration.sections.PluginSettings;
 import me.glaremasters.guilds.cooldowns.CooldownHandler;
-import me.glaremasters.guilds.database.challenges.ChallengesProvider;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildCode;
 import me.glaremasters.guilds.guild.GuildHandler;

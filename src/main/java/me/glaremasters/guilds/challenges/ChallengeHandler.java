@@ -30,7 +30,6 @@ import co.aikar.commands.CommandManager;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.arena.Arena;
 import me.glaremasters.guilds.configuration.sections.WarSettings;
-import me.glaremasters.guilds.database.challenges.ChallengesProvider;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildChallenge;
 import me.glaremasters.guilds.guild.GuildMember;

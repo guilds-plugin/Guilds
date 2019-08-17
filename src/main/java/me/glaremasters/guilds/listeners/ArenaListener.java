@@ -5,7 +5,6 @@ import co.aikar.commands.ACFBukkitUtil;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.challenges.ChallengeHandler;
 import me.glaremasters.guilds.configuration.sections.WarSettings;
-import me.glaremasters.guilds.database.challenges.ChallengesProvider;
 import me.glaremasters.guilds.guild.GuildChallenge;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.Constants;
