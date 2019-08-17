@@ -1,7 +1,6 @@
 package me.glaremasters.guilds.arena;
 
 import me.glaremasters.guilds.Guilds;
-import me.glaremasters.guilds.database.arenas.ArenasProvider;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -13,14 +12,14 @@ import java.util.stream.Collectors;
 public class ArenaHandler {
 
     private List<Arena> arenas;
-    private final ArenasProvider arenasProvider;
+    private Guilds guilds;
 
-    public ArenaHandler(ArenasProvider arenasProvider) {
-        this.arenasProvider = arenasProvider;
+    public ArenaHandler(Guilds guilds) {
+        this.guilds = guilds;
 
         Guilds.newChain().async(() -> {
             try {
-                arenas = arenasProvider.loadArenas();
+                arenas = guilds.getDatabase().getArenaAdapter().getAllArenas();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -32,7 +31,7 @@ public class ArenaHandler {
      * @throws IOException
      */
     public void saveArenas() throws IOException {
-        arenasProvider.saveArenas(arenas);
+        guilds.getDatabase().getArenaAdapter().saveArenas(arenas);
     }
 
     /**

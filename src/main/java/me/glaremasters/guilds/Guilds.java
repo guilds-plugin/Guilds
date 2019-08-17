@@ -41,7 +41,6 @@ import me.glaremasters.guilds.configuration.sections.PluginSettings;
 import me.glaremasters.guilds.configuration.sections.StorageSettings;
 import me.glaremasters.guilds.cooldowns.CooldownHandler;
 import me.glaremasters.guilds.database.DatabaseAdapter;
-import me.glaremasters.guilds.database.arenas.ArenasProvider;
 import me.glaremasters.guilds.database.cooldowns.CooldownsProvider;
 import me.glaremasters.guilds.dependency.Libraries;
 import me.glaremasters.guilds.guild.GuildHandler;
@@ -89,7 +88,6 @@ public final class Guilds extends JavaPlugin {
     private static TaskChainFactory taskChainFactory;
     private DatabaseAdapter database;
     private CooldownsProvider cooldownsProvider;
-    private ArenasProvider arenasProvider;
     private SettingsHandler settingsHandler;
     private PaperCommandManager commandManager;
     private ActionHandler actionHandler;
@@ -253,12 +251,10 @@ public final class Guilds extends JavaPlugin {
             cooldownsProvider = new CooldownsProvider(this);
             // Load the cooldown objects
             cooldownHandler = new CooldownHandler(cooldownsProvider);
-            // Load the arena folder
-            arenasProvider = new ArenasProvider(this);
             // Load the arena objects
-            arenaHandler = new ArenaHandler(arenasProvider);
+            arenaHandler = new ArenaHandler(this);
             // Load the challenge handler
-            challengeHandler = new ChallengeHandler();
+            challengeHandler = new ChallengeHandler(this);
             // Load guildhandler with provider
             guildHandler = new GuildHandler(this, getCommandManager(), getPermissions(), getConfig(), settingsHandler.getSettingsManager());
             LoggingUtils.info("Loaded data!");
@@ -306,7 +302,7 @@ public final class Guilds extends JavaPlugin {
                 new PlayerListener(guildHandler, settingsHandler.getSettingsManager(), this, permissions),
                 new TicketListener(this, guildHandler, settingsHandler.getSettingsManager()),
                 new VaultBlacklistListener(this, guildHandler, settingsHandler.getSettingsManager()),
-                new ArenaListener(this, challengeHandler, database, settingsHandler.getSettingsManager()))
+                new ArenaListener(this, challengeHandler, settingsHandler.getSettingsManager()))
                 .forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
         // Load the optional listeners
         optionalListeners();
@@ -406,10 +402,6 @@ public final class Guilds extends JavaPlugin {
 
     public CooldownsProvider getCooldownsProvider() {
         return this.cooldownsProvider;
-    }
-
-    public ArenasProvider getArenasProvider() {
-        return this.arenasProvider;
     }
 
     public SettingsHandler getSettingsHandler() {
