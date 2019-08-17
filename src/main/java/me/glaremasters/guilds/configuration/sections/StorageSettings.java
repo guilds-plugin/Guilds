@@ -35,7 +35,7 @@ public class StorageSettings implements SettingsHolder {
 
     @Comment("Define the credentials for the database. (Doesn't apply to SQLite)")
     public static final Property<String> SQL_USERNAME =
-            newProperty("storage.sql.username (Doesn't apply to SQLite)", "root");
+            newProperty("storage.sql.username", "root");
     public static final Property<String> SQL_PASSWORD =
             newProperty("storage.sql.password", "");
 
