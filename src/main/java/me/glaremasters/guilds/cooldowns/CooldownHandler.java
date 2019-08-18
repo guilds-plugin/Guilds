@@ -24,6 +24,7 @@
 
 package me.glaremasters.guilds.cooldowns;
 
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.database.cooldowns.CooldownsProvider;
 import me.glaremasters.guilds.guild.Guild;
 import org.bukkit.OfflinePlayer;
@@ -43,12 +44,19 @@ import java.util.concurrent.TimeUnit;
 public class CooldownHandler {
 
     private Map<String, Cooldown> cooldowns;
-    private final CooldownsProvider cooldownsProvider;
+    private Guilds guilds;
 
-    public CooldownHandler(CooldownsProvider cooldownsProvider) throws FileNotFoundException {
-        this.cooldownsProvider = cooldownsProvider;
+    public CooldownHandler(Guilds guilds) {
+        this.guilds = guilds;
 
-        cooldowns = cooldownsProvider.loadCooldowns();
+        Guilds.newChain().async(() -> {
+            try {
+                cooldowns = guilds.getDatabase().getCooldownAdapter().getAllCooldowns();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).execute();
+
         createCooldowns();
     }
 

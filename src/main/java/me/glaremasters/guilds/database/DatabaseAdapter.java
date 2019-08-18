@@ -5,6 +5,7 @@ import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.configuration.sections.StorageSettings;
 import me.glaremasters.guilds.database.arenas.ArenaAdapter;
 import me.glaremasters.guilds.database.challenges.ChallengeAdapter;
+import me.glaremasters.guilds.database.cooldowns.CooldownAdapter;
 import me.glaremasters.guilds.database.guild.GuildAdapter;
 
 import java.io.IOException;
@@ -16,6 +17,7 @@ public final class DatabaseAdapter implements AutoCloseable {
     private GuildAdapter guildAdapter;
     private ChallengeAdapter challengeAdapter;
     private ArenaAdapter arenaAdapter;
+    private CooldownAdapter cooldownAdapter;
     private DatabaseManager databaseManager;
     private String sqlTablePrefix;
 
@@ -76,6 +78,10 @@ public final class DatabaseAdapter implements AutoCloseable {
         return arenaAdapter;
     }
 
+    public CooldownAdapter getCooldownAdapter() {
+        return cooldownAdapter;
+    }
+
     public DatabaseManager getDatabaseManager() {
         return databaseManager;
     }
@@ -115,5 +121,8 @@ public final class DatabaseAdapter implements AutoCloseable {
 
         this.arenaAdapter = new ArenaAdapter(guilds, this);
         this.arenaAdapter.createContainer();
+
+        this.cooldownAdapter = new CooldownAdapter(guilds, this);
+        this.cooldownAdapter.createContainer();
     }
 }
