@@ -216,9 +216,9 @@ public class InfoGUI {
                             l.replace("{coords}", home)).collect(Collectors.toList())),
                     event -> {
                         event.setCancelled(true);
-                        if (cooldownHandler.hasCooldown(Cooldown.TYPES.Home.name(), player.getUniqueId())) {
+                        if (cooldownHandler.hasCooldown(Cooldown.Type.Home.name(), player.getUniqueId())) {
                             commandManager.getCommandIssuer(player).sendInfo(Messages.HOME__COOLDOWN, "{amount}",
-                                    String.valueOf(cooldownHandler.getRemaining(Cooldown.TYPES.Home.name(), player.getUniqueId())));
+                                    String.valueOf(cooldownHandler.getRemaining(Cooldown.Type.Home.name(), player.getUniqueId())));
                             return;
                         }
 
@@ -245,7 +245,7 @@ public class InfoGUI {
                                 player.teleport(guild.getHome().getAsLocation());
                                 commandManager.getCommandIssuer(player).sendInfo(Messages.HOME__TELEPORTED);
                             }
-                            cooldownHandler.addCooldown(player, Cooldown.TYPES.Home.name(), settingsManager.getProperty(CooldownSettings.HOME), TimeUnit.SECONDS);
+                            cooldownHandler.addCooldown(player, Cooldown.Type.Home.name(), settingsManager.getProperty(CooldownSettings.HOME), TimeUnit.SECONDS);
                         }
                     }));
         }

@@ -24,8 +24,9 @@
 
 package me.glaremasters.guilds.cooldowns;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.google.common.base.Preconditions;
+
+import java.util.Arrays;
 import java.util.UUID;
 
 /**
@@ -34,26 +35,53 @@ import java.util.UUID;
  * Time: 9:27 PM
  */
 public class Cooldown {
+    private Type cooldownType;
+    private UUID cooldownOwner;
+    private Long cooldownExpiry;
 
-    private Map<UUID, Long> uuids;
-
-    public Map<UUID, Long> getUuids() {
-        return this.uuids;
+    public Cooldown(String cooldownType, String cooldownOwner, Long cooldownExpiry) {
+        this(Type.getByTypeName(cooldownType), UUID.fromString(cooldownOwner), cooldownExpiry);
     }
 
-    public enum TYPES {
+    public Cooldown(Type cooldownType, UUID cooldownOwner, Long cooldownExpiry) {
+        Preconditions.checkNotNull(cooldownType, "cooldown type");
+        Preconditions.checkNotNull(cooldownOwner, "cooldown owner");
+        this.cooldownType = cooldownType;
+        this.cooldownOwner = cooldownOwner;
+        this.cooldownExpiry = cooldownExpiry;
+    }
+
+    public Type getCooldownType() {
+        return cooldownType;
+    }
+
+    public UUID getCooldownOwner() {
+        return cooldownOwner;
+    }
+
+    public Long getCooldownExpiry() {
+        return cooldownExpiry;
+    }
+
+    public enum Type {
         Request("request"),
         SetHome("sethome"),
         Home("home"),
         Buffs("buffs"),
         Join("join");
 
-        TYPES(String s) {
+        private String typeName;
 
+        Type(String typeName) {
+            this.typeName = typeName;
         }
-    }
 
-    public Cooldown() {
-        this.uuids = new HashMap<>();
+        public String getTypeName() {
+            return typeName;
+        }
+
+        public static Type getByTypeName(String typeName) {
+            return Arrays.stream(values()).filter(c -> c.getTypeName().equalsIgnoreCase(typeName)).findFirst().orElse(null);
+        }
     }
 }

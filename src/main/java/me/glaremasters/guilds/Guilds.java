@@ -250,7 +250,7 @@ public final class Guilds extends JavaPlugin {
             // Load the cooldown folder
             cooldownsProvider = new CooldownsProvider(this);
             // Load the cooldown objects
-            cooldownHandler = new CooldownHandler(cooldownsProvider);
+            cooldownHandler = new CooldownHandler(this);
             // Load the arena objects
             arenaHandler = new ArenaHandler(this);
             // Load the challenge handler
