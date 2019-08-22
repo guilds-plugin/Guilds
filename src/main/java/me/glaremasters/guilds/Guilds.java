@@ -113,6 +113,7 @@ public final class Guilds extends JavaPlugin {
                 e.printStackTrace();
             }
             guildHandler.chatLogout();
+            commandManager.unregisterCommands();
         }
     }
 
