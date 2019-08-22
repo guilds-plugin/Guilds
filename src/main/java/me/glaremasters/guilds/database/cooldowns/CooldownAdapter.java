@@ -5,12 +5,17 @@ import me.glaremasters.guilds.cooldowns.Cooldown;
 import me.glaremasters.guilds.database.DatabaseAdapter;
 import me.glaremasters.guilds.database.DatabaseBackend;
 import me.glaremasters.guilds.database.cooldowns.provider.CooldownJsonProvider;
+import me.glaremasters.guilds.utils.LoggingUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class CooldownAdapter {
     private final CooldownProvider provider;
@@ -40,39 +45,41 @@ public class CooldownAdapter {
         return provider.getAllCooldowns(sqlTablePrefix);
     }
 
+    public boolean cooldownExists(Cooldown cooldown) throws IOException {
+        return cooldownExists(cooldown.getCooldownType(), cooldown.getCooldownOwner());
+    }
+
     public boolean cooldownExists(Cooldown.Type cooldownType, UUID cooldownOwner) throws IOException {
         return provider.cooldownExists(sqlTablePrefix, cooldownType.getTypeName(), cooldownOwner.toString());
     }
 
+    public void createCooldown(Cooldown cooldown) throws IOException {
+        createCooldown(cooldown.getCooldownType(), cooldown.getCooldownOwner(), cooldown.getCooldownExpiry());
+    }
+
     public void createCooldown(Cooldown.Type cooldownType, UUID cooldownOwner, Long cooldownExpiry) throws IOException {
-        provider.createCooldown(sqlTablePrefix, cooldownType.getTypeName(), cooldownOwner.toString(), cooldownExpiry);
+        provider.createCooldown(sqlTablePrefix, cooldownType.getTypeName(), cooldownOwner.toString(), new Timestamp(cooldownExpiry));
+    }
+
+    public void deleteCooldown(Cooldown cooldown) throws IOException {
+        deleteCooldown(cooldown.getCooldownType(), cooldown.getCooldownOwner());
     }
 
     public void deleteCooldown(Cooldown.Type cooldownType, UUID cooldownOwner) throws IOException {
         provider.deleteCooldown(sqlTablePrefix, cooldownType.getTypeName(), cooldownOwner.toString());
     }
 
-    public void saveCooldowns(List<Cooldown> cooldowns) throws IOException {
-        List<Cooldown> knownCooldowns = getAllCooldowns();
-
-        // First let's comb through the passed in cooldowns and check to see if we even know about them.
-        // If not, let's create them.
-        for (Cooldown cooldown : cooldowns) {
-            if (!knownCooldowns.contains(cooldown)) {
-                createCooldown(cooldown.getCooldownType(), cooldown.getCooldownOwner(), cooldown.getCooldownExpiry());
+    public void saveCooldowns(Collection<Cooldown> cooldowns) {
+        try {
+            LoggingUtils.info("Saving cooldowns...");
+            for (Cooldown cooldown : cooldowns) {
+                if (!cooldownExists(cooldown)) {
+                    LoggingUtils.info("Creating...");
+                    createCooldown(cooldown);
+                }
             }
-        }
-
-        // Now we have to reload the cooldowns so we have an accurate picture of the database.
-        knownCooldowns = getAllCooldowns();
-
-        // We mutate knownCooldowns to contain only those cooldowns not also contained in the passed in cooldowns
-        // The remaining cooldowns will be those that are expired and were removed in the handler.
-        boolean mustPerformDeletions = knownCooldowns.removeAll(cooldowns);
-        if (mustPerformDeletions) {
-            for (Cooldown cooldown : knownCooldowns) {
-                deleteCooldown(cooldown.getCooldownType(), cooldown.getCooldownOwner());
-            }
+        } catch (IOException ex) {
+            LoggingUtils.warn("Failed to save cooldowns");
         }
     }
 }

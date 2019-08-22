@@ -35,6 +35,7 @@ import java.util.UUID;
  * Time: 9:27 PM
  */
 public class Cooldown {
+    private UUID cooldownId;
     private Type cooldownType;
     private UUID cooldownOwner;
     private Long cooldownExpiry;
@@ -46,9 +47,14 @@ public class Cooldown {
     public Cooldown(Type cooldownType, UUID cooldownOwner, Long cooldownExpiry) {
         Preconditions.checkNotNull(cooldownType, "cooldown type");
         Preconditions.checkNotNull(cooldownOwner, "cooldown owner");
+        this.cooldownId = UUID.randomUUID();
         this.cooldownType = cooldownType;
         this.cooldownOwner = cooldownOwner;
         this.cooldownExpiry = cooldownExpiry;
+    }
+
+    public UUID getCooldownId() {
+        return cooldownId;
     }
 
     public Type getCooldownType() {

@@ -12,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.List;
 
 public interface CooldownMySQLProvider extends CooldownProvider {
@@ -38,7 +39,7 @@ public interface CooldownMySQLProvider extends CooldownProvider {
 
     @Override
     @SqlUpdate("INSERT INTO <prefix>cooldowns(type, owner, expiry) VALUES (:type, :owner, :expiry)")
-    void createCooldown(@Define("prefix") @NotNull String prefix, @NotNull @Bind("type") String type, @NotNull @Bind("owner") String owner, @NotNull @Bind("expiry") Long expiry);
+    void createCooldown(@Define("prefix") @NotNull String prefix, @NotNull @Bind("type") String type, @NotNull @Bind("owner") String owner, @NotNull @Bind("expiry") Timestamp expiry);
 
     @Override
     @SqlUpdate("DELETE FROM <prefix>cooldowns WHERE type = :type AND owner = :owner")

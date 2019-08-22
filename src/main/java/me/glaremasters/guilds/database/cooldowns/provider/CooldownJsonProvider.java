@@ -17,6 +17,7 @@ import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.Timestamp;
 import java.util.*;
 
 public class CooldownJsonProvider implements CooldownProvider {
@@ -59,10 +60,10 @@ public class CooldownJsonProvider implements CooldownProvider {
     }
 
     @Override
-    public void createCooldown(@Nullable String tablePrefix, @NotNull String cooldownType, @NotNull String cooldownOwner, @NotNull Long cooldownExpiry) throws IOException {
+    public void createCooldown(@Nullable String tablePrefix, @NotNull String cooldownType, @NotNull String cooldownOwner, @NotNull Timestamp cooldownExpiry) throws IOException {
         List<Cooldown> current = getAllCooldowns(tablePrefix);
         if (cooldownExists(cooldownType, cooldownOwner, current)) return;
-        current.add(new Cooldown(cooldownType, cooldownOwner, cooldownExpiry));
+        current.add(new Cooldown(cooldownType, cooldownOwner, cooldownExpiry.getTime()));
         writeCooldownFile(cooldownFile, current);
     }
 
