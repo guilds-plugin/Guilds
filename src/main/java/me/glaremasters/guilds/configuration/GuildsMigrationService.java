@@ -26,7 +26,8 @@ public class GuildsMigrationService extends PlainMigrationService {
         String[] deprecatedProperties = {
                 "hooks.essentials-remove-brackets",
                 "tablist.enabled",
-                "settings.save-interval"
+                "settings.save-interval",
+                "settings.player-update-languages"
         };
         for (String deprecatedPath :deprecatedProperties) {
             if (reader.contains(deprecatedPath)) {
