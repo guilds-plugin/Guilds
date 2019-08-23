@@ -40,14 +40,22 @@ public class Cooldown {
     private UUID cooldownOwner;
     private Long cooldownExpiry;
 
+    public Cooldown(String id, String cooldownType, String cooldownOwner, Long cooldownExpiry) {
+        this(UUID.fromString(id), Type.getByTypeName(cooldownType), UUID.fromString(cooldownOwner), cooldownExpiry);
+    }
+
     public Cooldown(String cooldownType, String cooldownOwner, Long cooldownExpiry) {
         this(Type.getByTypeName(cooldownType), UUID.fromString(cooldownOwner), cooldownExpiry);
     }
 
     public Cooldown(Type cooldownType, UUID cooldownOwner, Long cooldownExpiry) {
+        this(UUID.randomUUID(), cooldownType, cooldownOwner, cooldownExpiry);
+    }
+
+    public Cooldown(UUID cooldownId, Type cooldownType, UUID cooldownOwner, Long cooldownExpiry) {
         Preconditions.checkNotNull(cooldownType, "cooldown type");
         Preconditions.checkNotNull(cooldownOwner, "cooldown owner");
-        this.cooldownId = UUID.randomUUID();
+        this.cooldownId = cooldownId;
         this.cooldownType = cooldownType;
         this.cooldownOwner = cooldownOwner;
         this.cooldownExpiry = cooldownExpiry;
