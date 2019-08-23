@@ -12,6 +12,7 @@ public class CooldownRowMapper implements RowMapper<Cooldown> {
     @Override
     public Cooldown map(ResultSet rs, StatementContext ctx) throws SQLException {
         return new Cooldown(
+                UUID.fromString(rs.getString("id")),
                 Cooldown.Type.getByTypeName(rs.getString("type")),
                 UUID.fromString(rs.getString("owner")),
                 rs.getTimestamp("expiry").getTime()

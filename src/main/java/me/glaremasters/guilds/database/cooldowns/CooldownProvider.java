@@ -36,14 +36,27 @@ public interface CooldownProvider {
     List<Cooldown> getAllCooldowns(@Nullable String tablePrefix) throws IOException;
 
     /**
-     * Create a new cooldown in the database
+     * Create a new cooldown (with a random ID) in the database
      * @param tablePrefix the table prefix
      * @param cooldownType the cooldown type
      * @param cooldownOwner the owner UUID of the cooldown
      * @param cooldownExpiry when the cooldown expires in milliseconds
      * @throws IOException
      */
-    void createCooldown(@Nullable String tablePrefix, @NotNull String cooldownType, @NotNull String cooldownOwner, @NotNull Timestamp cooldownExpiry) throws IOException;
+    default void createCooldown(@Nullable String tablePrefix, @NotNull String cooldownType, @NotNull String cooldownOwner, @NotNull Timestamp cooldownExpiry) throws IOException {
+        createCooldown(tablePrefix, UUID.randomUUID().toString(), cooldownOwner, cooldownOwner, cooldownExpiry);
+    }
+
+    /**
+     * Create a new cooldown in the database
+     * @param tablePrefix the table prefix
+     * @param id the UUID id for the cooldown
+     * @param cooldownType the cooldown type
+     * @param cooldownOwner the owner UUID of the cooldown
+     * @param cooldownExpiry when the cooldown expires in milliseconds
+     * @throws IOException
+     */
+    void createCooldown(@Nullable String tablePrefix, @NotNull String id, @NotNull String cooldownType, @NotNull String cooldownOwner, @NotNull Timestamp cooldownExpiry) throws IOException;
 
     /**
      * Delete a cooldown from the database

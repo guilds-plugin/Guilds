@@ -18,7 +18,7 @@ public interface CooldownSQLiteProvider extends CooldownProvider {
     @Override
     @SqlUpdate(
             "CREATE TABLE IF NOT EXISTS <prefix>cooldowns (\n" +
-                    "  `id` INT NOT NULL AUTO_INCREMENT,\n" +
+                    "  `id` VARCHAR(36) NOT NULL,\n" +
                     "  `type` VARCHAR(36) NOT NULL,\n" +
                     "  `owner` VARCHAR(36) NOT NULL,\n" +
                     "  `expiry` TIMESTAMP NOT NULL,\n" +
@@ -33,8 +33,8 @@ public interface CooldownSQLiteProvider extends CooldownProvider {
     List<Cooldown> getAllCooldowns(@Define("prefix") @NotNull String prefix);
 
     @Override
-    @SqlUpdate("INSERT INTO <prefix>cooldowns(type, owner, expiry) VALUES (:type, :owner, :expiry)")
-    void createCooldown(@Define("prefix") @NotNull String prefix, @NotNull @Bind("type") String type, @NotNull @Bind("owner") String owner, @NotNull @Bind("expiry") Timestamp expiry);
+    @SqlUpdate("INSERT INTO <prefix>cooldowns(id, type, owner, expiry) VALUES (:id, :type, :owner, :expiry)")
+    void createCooldown(@Define("prefix") @NotNull String prefix, @NotNull @Bind("id") String id, @NotNull @Bind("type") String type, @NotNull @Bind("owner") String owner, @NotNull @Bind("expiry") Timestamp expiry);
 
     @Override
     @SqlUpdate("DELETE FROM <prefix>cooldowns WHERE type = :type AND owner = :owner")
