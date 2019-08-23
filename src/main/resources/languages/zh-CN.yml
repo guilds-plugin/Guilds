@@ -47,6 +47,7 @@ descriptions:
   code-redeem: "使用邀请码加入公会"
   confirm: "确认"
   console-backup: "备份此插件的数据"
+  console-migrate: "Migrate your data from one source to another"
   console-update-languages: "用于更新语言文件的控制台指令"
   create: "创建公会"
   decline: "拒绝公会邀请"
@@ -111,6 +112,7 @@ error:
   buff-cooldown: "&7[&6公会&7]&f抱歉,你的公会在近期已购买了一个BUFF,请等待{amount}秒后重试"
   buff-no-permission: "&c抱歉, 你没有权限购买这个增益效果!"
   no-pending-invites: "&c抱歉, 你没有待接受的公会邀请!"
+  migrating: "&cSorry, this action can't be done. Data is currently migrating! Try again a few minutes."
 bank:
   balance: "&7[&6公会&7]&f当前公会金库: {amount}金币"
   deposit-success: "&a{player} 存入了 {amount} 至公会银行. 现在的余额为 {total}."
@@ -326,3 +328,10 @@ acf:
   invalid-syntax: "用法: <c2>{command}</c2> <c3>{syntax}</c3>"
   permission-denied: "抱歉, 你没有权限执行此命令."
   unknown-command: "未知指令， 请输入 <c2>/help</c2>"
+migrate:
+  invalid-backend: "&cThe backend you've attempted to migrate to is invalid."
+  connection-failed: "&cConnecting to the new backend failed! Make sure your authentication is properly configured!"
+  same-backend: "&cYou can't migrate to the same backend you are already using!"
+  complete: "&aMigration of data ({amount} guilds) has been completed and will continue to use this new backend until being rebooted. Make sure to change your backend in the config to what you migrated to before you reboot!"
+  warning: "&bImportant! &cYou are about to migrate ALL your plugin data. It is HIGHLY suggested that you make a backup of ALL data before doing this. If you lose your data, it can NOT be recovered. Are you sure you would like to continue? Type /guilds confirm to continue or /guilds cancel to cancel!"
+  cancelled: "&aYou've successfully cancelled the migration of data!"
