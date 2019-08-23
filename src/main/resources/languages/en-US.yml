@@ -47,6 +47,7 @@ descriptions:
   code-redeem: "Redeem an invite code to join a guild"
   confirm: "Confirm an action"
   console-backup: "Backup the plugin's data"
+  console-migrate: "Migrate your data from one source to another"
   console-update-languages: "Console command to update the language files"
   create: "Create a Guild"
   decline: "Decline a Guild invite"
@@ -111,6 +112,7 @@ error:
   buff-cooldown: "&cSorry, your guild has recently bought a buff. You can try again in {amount} seconds."
   buff-no-permission: "&cSorry, you do not have permission to buy this buff!"
   no-pending-invites: "&cSorry, you currently do not have any pending guild invites!"
+  migrating: "&cSorry, this action can't be done. Data is currently migrating! Try again a few minutes."
 bank:
   balance: "&aYour guild's bank has a balance of {amount}."
   deposit-success: "&a{player} has just deposited {amount} into the Guild Bank. Your new total is {total}."
@@ -326,3 +328,10 @@ acf:
   invalid-syntax: "Usage: <c2>{command}</c2> <c3>{syntax}</c3>"
   permission-denied: "I'm sorry, but you do not have permission to perform this command."
   unknown-command: "Unknown Command, please type <c2>/help</c2>"
+migrate:
+  invalid-backend: "&cThe backend you've attempted to migrate to is invalid."
+  connection-failed: "&cConnecting to the new backend failed! Make sure your authentication is properly configured!"
+  same-backend: "&cYou can't migrate to the same backend you are already using!"
+  complete: "&aMigration of data ({amount} guilds) has been completed and will continue to use this new backend until being rebooted. Make sure to change your backend in the config to what you migrated to before you reboot!"
+  warning: "&bImportant! &cYou are about to migrate ALL your plugin data. It is HIGHLY suggested that you make a backup of ALL data before doing this. If you lose your data, it can NOT be recovered. Are you sure you would like to continue? Type /guilds confirm to continue or /guilds cancel to cancel!"
+  cancelled: "&aYou've successfully cancelled the migration of data!"
