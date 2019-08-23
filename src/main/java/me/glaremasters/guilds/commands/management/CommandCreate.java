@@ -94,9 +94,9 @@ public class CommandCreate extends BaseCommand {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__MIGRATING));
         }
 
-        if (cooldownHandler.hasCooldown(Cooldown.TYPES.Join.name(), player.getUniqueId()))
+        if (cooldownHandler.hasCooldown(Cooldown.Type.Join.name(), player.getUniqueId()))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ACCEPT__COOLDOWN, "{amount}",
-                    String.valueOf(cooldownHandler.getRemaining(Cooldown.TYPES.Join.name(), player.getUniqueId()))));
+                    String.valueOf(cooldownHandler.getRemaining(Cooldown.Type.Join.name(), player.getUniqueId()))));
 
         double cost = settingsManager.getProperty(CostSettings.CREATION);
 

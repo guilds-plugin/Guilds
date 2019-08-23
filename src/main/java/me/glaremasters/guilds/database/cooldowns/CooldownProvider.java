@@ -5,7 +5,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public interface CooldownProvider {
 
@@ -17,53 +20,37 @@ public interface CooldownProvider {
     void createContainer(@Nullable String tablePrefix) throws IOException;
 
     /**
-     * Checks whether or not a cooldown with the specified same exists
-     * @param name the cooldown name
+     * Checks if a cooldown exists in the database
+     * @oaram tablePrefix the prefix, if any, to use
+     * @param cooldownType the cooldown type
+     * @param cooldownOwner the owner UUID of the cooldown
      * @return true or false
-     * @throws IOException
      */
-    boolean cooldownExists(@Nullable String tablePrefix, @NotNull String name) throws IOException;
+    boolean cooldownExists(@Nullable String tablePrefix, @NotNull String cooldownType, @NotNull String cooldownOwner) throws IOException;
 
     /**
      * Gets all cooldowns from the database
      * @param tablePrefix the prefix, if any, to use
      * @return a list of cooldowns
      */
-    Map<String, Cooldown> getAllCooldowns(@Nullable String tablePrefix) throws IOException;
+    List<Cooldown> getAllCooldowns(@Nullable String tablePrefix) throws IOException;
 
     /**
-     * Gets a single cooldown by name
-     * @param tablePrefix the prefix, if any, to use
-     * @param name the name of the cooldown to load
-     * @return the found cooldown or null
-     * @throws IOException
-     */
-    Cooldown getCooldown(@Nullable String tablePrefix, @NotNull String name) throws IOException;
-
-    /**
-     * Create a new cooldown
+     * Create a new cooldown in the database
      * @param tablePrefix the table prefix
-     * @param name name of cooldown
-     * @param data data of cooldown
+     * @param cooldownType the cooldown type
+     * @param cooldownOwner the owner UUID of the cooldown
+     * @param cooldownExpiry when the cooldown expires in milliseconds
      * @throws IOException
      */
-    void createCooldown(@Nullable String tablePrefix, String name, String data) throws IOException;
-
-    /**
-     * Update an existing cooldown with new data
-     * @param tablePrefix the table prefix
-     * @param name the name of the cooldown
-     * @param data data of cooldown
-     * @throws IOException
-     */
-    void updateCooldown(@Nullable String tablePrefix, @NotNull String name, @NotNull String data) throws IOException;
+    void createCooldown(@Nullable String tablePrefix, @NotNull String cooldownType, @NotNull String cooldownOwner, @NotNull Timestamp cooldownExpiry) throws IOException;
 
     /**
      * Delete a cooldown from the database
      * @param tablePrefix the table prefix
-     * @param name the name of the cooldown
+     * @param cooldownType the type of cooldown
+     * @param cooldownOwner the owner UUID of the cooldown
      * @throws IOException
      */
-    void deleteCooldown(@Nullable String tablePrefix, @NotNull String name) throws IOException;
-
+    void deleteCooldown(@Nullable String tablePrefix, @NotNull String cooldownType, @NotNull String cooldownOwner) throws IOException;
 }

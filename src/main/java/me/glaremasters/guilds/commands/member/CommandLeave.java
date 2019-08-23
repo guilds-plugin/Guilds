@@ -113,7 +113,7 @@ public class CommandLeave extends BaseCommand {
 
                     guildHandler.notifyAllies(guild, getCurrentCommandManager());
 
-                    cooldownHandler.addCooldown(player, Cooldown.TYPES.Join.name(), settingsManager.getProperty(CooldownSettings.JOIN), TimeUnit.SECONDS);
+                    cooldownHandler.addCooldown(player, Cooldown.Type.Join.name(), settingsManager.getProperty(CooldownSettings.JOIN), TimeUnit.SECONDS);
 
                     ClaimUtils.deleteWithGuild(player, guild, settingsManager);
 
@@ -123,7 +123,7 @@ public class CommandLeave extends BaseCommand {
 
                     guildHandler.removePerms(permission, player, settingsManager.getProperty(PluginSettings.RUN_VAULT_ASYNC));
 
-                    cooldownHandler.addCooldown(player, Cooldown.TYPES.Join.name(), settingsManager.getProperty(CooldownSettings.JOIN), TimeUnit.SECONDS);
+                    cooldownHandler.addCooldown(player, Cooldown.Type.Join.name(), settingsManager.getProperty(CooldownSettings.JOIN), TimeUnit.SECONDS);
 
                     if (ClaimUtils.isEnable(settingsManager)) {
                         WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();

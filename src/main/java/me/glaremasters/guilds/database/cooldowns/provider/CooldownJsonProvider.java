@@ -1,6 +1,7 @@
 package me.glaremasters.guilds.database.cooldowns.provider;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.cooldowns.Cooldown;
 import me.glaremasters.guilds.database.cooldowns.CooldownProvider;
@@ -12,83 +13,77 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.sql.Timestamp;
+import java.util.*;
 
 public class CooldownJsonProvider implements CooldownProvider {
     private final File dataFolder;
+    private final File cooldownFile;
     private Gson gson;
+    private Type cooldownCollectionType;
 
     public CooldownJsonProvider(File dataFolder) {
         this.dataFolder = dataFolder;
+        this.cooldownFile = new File(dataFolder, "cooldowns.json");
         this.gson = Guilds.getGson();
+        this.cooldownCollectionType = new TypeToken<List<Cooldown>>(){}.getType(); // needed to serialize a list properly
     }
 
     @Override
     public void createContainer(@Nullable String tablePrefix) throws IOException {
         if (!this.dataFolder.exists()) {
             this.dataFolder.mkdir();
+
+            if (!this.cooldownFile.exists()) {
+                this.cooldownFile.createNewFile();
+            }
         }
     }
 
     @Override
-    public boolean cooldownExists(@Nullable String tablePrefix, @NotNull String name) throws IOException {
-        return Arrays.stream(Objects.requireNonNull(dataFolder.listFiles()))
-                .map(f -> FilenameUtils.removeExtension(f.getName()))
-                .anyMatch(n -> n.equals(name));
+    public boolean cooldownExists(@Nullable String tablePrefix, @NotNull String cooldownType, @NotNull String cooldownOwner) throws IOException {
+        return cooldownExists(cooldownType, cooldownOwner, getAllCooldowns(tablePrefix));
     }
 
     @Override
     public List<Cooldown> getAllCooldowns(@Nullable String tablePrefix) throws IOException {
-        List<Cooldown> loadedCooldowns = new ArrayList<>();
+        List<Cooldown> loadedCooldowns = gson.fromJson(
+                new InputStreamReader(new FileInputStream(cooldownFile), StandardCharsets.UTF_8),
+                cooldownCollectionType
+        );
 
-        for (File file : Objects.requireNonNull(dataFolder.listFiles())) {
-            loadedCooldowns.add(gson.fromJson(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8), Cooldown.class));
-        }
-
-        return loadedCooldowns;
+        return loadedCooldowns == null ? new ArrayList<>() : loadedCooldowns;
     }
 
     @Override
-    public Cooldown getCooldown(@Nullable String tablePrefix, @NotNull String name) throws IOException {
-        File data = Arrays.stream(Objects.requireNonNull(dataFolder.listFiles()))
-                .filter(f -> FilenameUtils.removeExtension(f.getName()).equals(name))
+    public void createCooldown(@Nullable String tablePrefix, @NotNull String cooldownType, @NotNull String cooldownOwner, @NotNull Timestamp cooldownExpiry) throws IOException {
+        List<Cooldown> current = getAllCooldowns(tablePrefix);
+        if (cooldownExists(cooldownType, cooldownOwner, current)) return;
+        current.add(new Cooldown(cooldownType, cooldownOwner, cooldownExpiry.getTime()));
+        writeCooldownFile(cooldownFile, current);
+    }
+
+    @Override
+    public void deleteCooldown(@Nullable String tablePrefix, @NotNull String cooldownType, @NotNull String cooldownOwner) throws IOException {
+        List<Cooldown> current = getAllCooldowns(tablePrefix);
+        if (!cooldownExists(cooldownType, cooldownOwner, current)) return;
+        current.removeIf(c -> c.getCooldownType().getTypeName().equalsIgnoreCase(cooldownType) && c.getCooldownOwner().toString().equals(cooldownOwner));
+        writeCooldownFile(cooldownFile, current);
+    }
+
+    private void writeCooldownFile(File file, List<Cooldown> cooldowns) throws IOException {
+        Files.write(Paths.get(file.getPath()), gson.toJson(cooldowns, cooldownCollectionType).getBytes(StandardCharsets.UTF_8));
+    }
+
+    private boolean cooldownExists(@NotNull String cooldownType, @NotNull String cooldownOwner, @NotNull List<Cooldown> current) throws IOException {
+        return current.stream()
+                .filter(c -> c.getCooldownType().getTypeName().equalsIgnoreCase(cooldownType) && c.getCooldownOwner().toString().equals(cooldownOwner))
                 .findFirst()
-                .orElse(null);
-
-        if (data == null) return null;
-
-        return gson.fromJson(new InputStreamReader(new FileInputStream(data), StandardCharsets.UTF_8), Cooldown.class);
+                .orElse(null) != null;
     }
 
-    @Override
-    public void createCooldown(@Nullable String tablePrefix, String name, String data) throws IOException {
-        if (cooldownExists(tablePrefix, name)) return;
-        writeCooldownFile(new File(dataFolder, name + ".json"), data);
-    }
-
-    @Override
-    public void updateCooldown(@Nullable String tablePrefix, @NotNull String name, @NotNull String data) throws IOException {
-        File file = new File(dataFolder, name + ".json");
-        deleteCooldown(file);
-        writeCooldownFile(file, data);
-    }
-
-    private void writeCooldownFile(File file, String data) throws IOException {
-        Files.write(Paths.get(file.getPath()), data.getBytes(StandardCharsets.UTF_8));
-    }
-
-    @Override
-    public void deleteCooldown(@Nullable String tablePrefix, @NotNull String name) throws IOException {
-        deleteCooldown(new File(dataFolder, name + ".json"));
-    }
-
-    private void deleteCooldown(File file) {
-        if (file.exists()) file.delete();
-    }
 }

@@ -378,5 +378,12 @@
             <version>3.8.2</version>
             <scope>provided</scope>
         </dependency>
+
+        <!-- Expiring maps for cooldowns -->
+        <dependency>
+            <groupId>net.jodah</groupId>
+            <artifactId>expiringmap</artifactId>
+            <version>0.5.9</version>
+        </dependency>
     </dependencies>
 </project>
