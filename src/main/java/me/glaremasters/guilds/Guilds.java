@@ -41,7 +41,6 @@ import me.glaremasters.guilds.configuration.sections.PluginSettings;
 import me.glaremasters.guilds.configuration.sections.StorageSettings;
 import me.glaremasters.guilds.cooldowns.CooldownHandler;
 import me.glaremasters.guilds.database.DatabaseAdapter;
-import me.glaremasters.guilds.database.cooldowns.CooldownsProvider;
 import me.glaremasters.guilds.dependency.Libraries;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guis.GUIHandler;
@@ -87,7 +86,6 @@ public final class Guilds extends JavaPlugin {
     private ChallengeHandler challengeHandler;
     private static TaskChainFactory taskChainFactory;
     private DatabaseAdapter database;
-    private CooldownsProvider cooldownsProvider;
     private SettingsHandler settingsHandler;
     private PaperCommandManager commandManager;
     private ActionHandler actionHandler;
@@ -246,9 +244,6 @@ public final class Guilds extends JavaPlugin {
                 // Jump down to the catch
                 throw new IOException("Failed to connect to Database.");
             }
-
-            // Load the cooldown folder
-            cooldownsProvider = new CooldownsProvider(this);
             // Load the cooldown objects
             cooldownHandler = new CooldownHandler(this);
             // Load the arena objects
@@ -398,10 +393,6 @@ public final class Guilds extends JavaPlugin {
 
     public void setDatabase(DatabaseAdapter database) {
         this.database = database;
-    }
-
-    public CooldownsProvider getCooldownsProvider() {
-        return this.cooldownsProvider;
     }
 
     public SettingsHandler getSettingsHandler() {
