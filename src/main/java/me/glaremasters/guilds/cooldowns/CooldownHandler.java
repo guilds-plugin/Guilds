@@ -52,20 +52,19 @@ public class CooldownHandler {
     public CooldownHandler(Guilds guilds) {
         this.guilds = guilds;
         cooldowns = ExpiringMap.builder().variableExpiration().expirationListener((key, cooldown) -> {
-            Cooldown casted = (Cooldown) cooldown;
-            LoggingUtils.info("Cooldown has expired from map " + casted.getCooldownType() + " // " + casted.getCooldownOwner());
         }).build();
 
         Guilds.newChain().async(() -> {
             try {
                 List<Cooldown> saved = guilds.getDatabase().getCooldownAdapter().getAllCooldowns();
                 for (Cooldown cooldown : saved) {
-                    if (!(System.currentTimeMillis() > cooldown.getCooldownExpiry())) {
-                        // saved in db but not already expired? track it.
-                        addCooldown(cooldown);
-                    } else {
-                        // saved in db but already expired? nuke it.
+                    // If the time in the cooldown is LESS THAN the current time, then that time has already passed
+                    if (cooldown.getCooldownExpiry() < System.currentTimeMillis()) {
+                        // Since the time has already passed, let's remove it
                         guilds.getDatabase().getCooldownAdapter().deleteCooldown(cooldown);
+                    } else {
+                        // The time has not past, we won't remove it
+                        addCooldown(cooldown);
                     }
                 }
             } catch (IOException e) {
@@ -159,13 +158,11 @@ public class CooldownHandler {
     public void addCooldown(Cooldown.Type cooldownType, UUID cooldownOwner, int length, TimeUnit timeUnit) {
         Cooldown cooldown = new Cooldown(cooldownType, cooldownOwner, (System.currentTimeMillis() + timeUnit.toMillis(length)));
         cooldowns.put(cooldown.getCooldownId(), cooldown, ExpirationPolicy.CREATED, length, timeUnit);
-        LoggingUtils.info("Added cooldown " + cooldownType  + " for " + cooldownOwner.toString());
     }
 
     private void addCooldown(Cooldown cooldown) {
-        long remainingSeconds = (System.currentTimeMillis() - cooldown.getCooldownExpiry());
+        long remainingSeconds = cooldown.getCooldownExpiry() - System.currentTimeMillis();
         if (remainingSeconds < 0) return;
-        remainingSeconds = remainingSeconds / 1000;
-        cooldowns.put(cooldown.getCooldownId(), cooldown, ExpirationPolicy.CREATED, remainingSeconds, TimeUnit.SECONDS);
+        cooldowns.put(cooldown.getCooldownId(), cooldown, ExpirationPolicy.CREATED, TimeUnit.MILLISECONDS.toSeconds(remainingSeconds), TimeUnit.SECONDS);
     }
 }

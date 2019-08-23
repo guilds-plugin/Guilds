@@ -77,7 +77,7 @@ public class ChallengeHandler {
                 defender, false, false,
                 false, minPlayer, maxPlayers,
                 new ArrayList<>(), new ArrayList<>(), arena,
-                null, new LinkedMap<>(), new LinkedMap<>());
+                null, null, new LinkedMap<>(), new LinkedMap<>());
     }
 
     /**
@@ -261,12 +261,14 @@ public class ChallengeHandler {
     public boolean checkIfOver(GuildChallenge challenge) {
         if (challenge.getAliveChallengers().keySet().size() == 0) {
             challenge.setWinner(challenge.getDefender());
+            challenge.setLoser(challenge.getChallenger());
             challenge.getDefender().getGuildScore().addWin();
             challenge.getChallenger().getGuildScore().addLoss();
             return true;
         }
         if (challenge.getAliveDefenders().keySet().size() == 0) {
             challenge.setWinner(challenge.getChallenger());
+            challenge.setLoser(challenge.getDefender());
             challenge.getDefender().getGuildScore().addLoss();
             challenge.getChallenger().getGuildScore().addWin();
             return true;
@@ -385,6 +387,7 @@ public class ChallengeHandler {
                         c = c.replace("{challenger}", challenge.getChallenger().getName());
                         c = c.replace("{defender}", challenge.getDefender().getName());
                         c = c.replace("{winner}", challenge.getWinner().getName());
+                        c = c.replace("{loser}", challenge.getLoser().getName());
                         Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), c);
                 });
             }
