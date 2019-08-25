@@ -114,6 +114,7 @@ public final class Guilds extends JavaPlugin {
                 e.printStackTrace();
             }
             guildHandler.chatLogout();
+            commandManager.unregisterCommands();
         }
 
         LoggingUtils.info("Shutting down database...");

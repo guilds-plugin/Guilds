@@ -34,6 +34,7 @@ import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
+import me.glaremasters.guilds.api.events.GuildPrefixEvent;
 import me.glaremasters.guilds.configuration.sections.GuildSettings;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.exceptions.InvalidPermissionException;
@@ -42,6 +43,7 @@ import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.Constants;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 /**
@@ -69,6 +71,13 @@ public class CommandPrefix extends BaseCommand {
     public void execute(Player player, Guild guild, GuildRole role, String prefix) {
         if (!role.isChangePrefix())
             ACFUtil.sneaky(new InvalidPermissionException());
+
+        GuildPrefixEvent event = new GuildPrefixEvent(player, guild, prefix);
+        Bukkit.getPluginManager().callEvent(event);
+
+        if (event.isCancelled()) {
+            return;
+        }
 
         if (settingsManager.getProperty(GuildSettings.DISABLE_PREFIX))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.PREFIX__DISABLED));
