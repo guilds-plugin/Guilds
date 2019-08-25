@@ -36,6 +36,7 @@ import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.actions.ConfirmAction;
 import me.glaremasters.guilds.api.events.GuildRemoveEvent;
 import me.glaremasters.guilds.configuration.sections.PluginSettings;
+import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.exceptions.InvalidPermissionException;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
@@ -72,6 +73,10 @@ public class CommandDelete extends BaseCommand {
     public void execute(Player player, Guild guild, GuildRole role) {
         if (!role.isRemoveGuild())
             ACFUtil.sneaky(new InvalidPermissionException());
+
+        if (guildHandler.isMigrating()) {
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__MIGRATING));
+        }
 
         getCurrentCommandIssuer().sendInfo(Messages.DELETE__WARNING);
 

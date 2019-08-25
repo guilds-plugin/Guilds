@@ -28,11 +28,13 @@ public class GuildChallenge {
     private Arena arena;
     @JsonAdapter(WarGuildChallengeAdapater.class)
     private Guild winner;
+    @JsonAdapter(WarGuildChallengeAdapater.class)
+    private Guild loser;
 
     private transient LinkedMap<UUID, String> aliveChallengers;
     private transient LinkedMap<UUID, String> aliveDefenders;
 
-    public GuildChallenge(UUID id, long initiateTime, Guild challenger, Guild defender, boolean accepted, boolean joinble, boolean started, int minPlayersPerSide, int maxPlayersPerSide, List<UUID> challengePlayers, List<UUID> defendPlayers, Arena arena, Guild winner, LinkedMap<UUID, String> aliveChallengers, LinkedMap<UUID, String> aliveDefenders) {
+    public GuildChallenge(UUID id, long initiateTime, Guild challenger, Guild defender, boolean accepted, boolean joinble, boolean started, int minPlayersPerSide, int maxPlayersPerSide, List<UUID> challengePlayers, List<UUID> defendPlayers, Arena arena, Guild winner, Guild loser, LinkedMap<UUID, String> aliveChallengers, LinkedMap<UUID, String> aliveDefenders) {
         this.id = id;
         this.initiateTime = initiateTime;
         this.challenger = challenger;
@@ -46,6 +48,7 @@ public class GuildChallenge {
         this.defendPlayers = defendPlayers;
         this.arena = arena;
         this.winner = winner;
+        this.loser = loser;
         this.aliveChallengers = aliveChallengers;
         this.aliveDefenders = aliveDefenders;
     }
@@ -166,6 +169,14 @@ public class GuildChallenge {
         this.winner = winner;
     }
 
+    public Guild getLoser() {
+        return loser;
+    }
+
+    public void setLoser(Guild loser) {
+        this.loser = loser;
+    }
+
     public void setAliveChallengers(LinkedMap<UUID, String> aliveChallengers) {
         this.aliveChallengers = aliveChallengers;
     }
@@ -188,6 +199,7 @@ public class GuildChallenge {
         private List<UUID> defendPlayers;
         private Arena arena;
         private Guild winner;
+        private Guild loser;
         private LinkedMap<UUID, String> aliveChallengers;
         private LinkedMap<UUID, String> aliveDefenders;
 
@@ -259,6 +271,11 @@ public class GuildChallenge {
             return this;
         }
 
+        public GuildChallenge.GuildChallengeBuilder loser(Guild loser) {
+            this.loser = loser;
+            return this;
+        }
+
         public GuildChallenge.GuildChallengeBuilder aliveChallengers(LinkedMap<UUID, String> aliveChallengers) {
             this.aliveChallengers = aliveChallengers;
             return this;
@@ -270,11 +287,11 @@ public class GuildChallenge {
         }
 
         public GuildChallenge build() {
-            return new GuildChallenge(id, initiateTime, challenger, defender, accepted, joinble, started, minPlayersPerSide, maxPlayersPerSide, challengePlayers, defendPlayers, arena, winner, aliveChallengers, aliveDefenders);
+            return new GuildChallenge(id, initiateTime, challenger, defender, accepted, joinble, started, minPlayersPerSide, maxPlayersPerSide, challengePlayers, defendPlayers, arena, winner, loser, aliveChallengers, aliveDefenders);
         }
 
         public String toString() {
-            return "GuildChallenge.GuildChallengeBuilder(id=" + this.id + ", initiateTime=" + this.initiateTime + ", challenger=" + this.challenger + ", defender=" + this.defender + ", accepted=" + this.accepted + ", joinble=" + this.joinble + ", started=" + this.started + ", minPlayersPerSide=" + this.minPlayersPerSide + ", maxPlayersPerSide=" + this.maxPlayersPerSide + ", challengePlayers=" + this.challengePlayers + ", defendPlayers=" + this.defendPlayers + ", arena=" + this.arena + ", winner=" + this.winner + ", aliveChallengers=" + this.aliveChallengers + ", aliveDefenders=" + this.aliveDefenders + ")";
+            return "GuildChallenge.GuildChallengeBuilder(id=" + this.id + ", initiateTime=" + this.initiateTime + ", challenger=" + this.challenger + ", defender=" + this.defender + ", accepted=" + this.accepted + ", joinble=" + this.joinble + ", started=" + this.started + ", minPlayersPerSide=" + this.minPlayersPerSide + ", maxPlayersPerSide=" + this.maxPlayersPerSide + ", challengePlayers=" + this.challengePlayers + ", defendPlayers=" + this.defendPlayers + ", arena=" + this.arena + ", winner=" + this.winner + ", loser=" + this.loser + ", aliveChallengers=" + this.aliveChallengers + ", aliveDefenders=" + this.aliveDefenders + ")";
         }
     }
 }

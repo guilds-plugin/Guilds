@@ -266,8 +266,8 @@ public class BuffGUI {
                     return;
                 }
             }
-            if (cooldownHandler.hasCooldown(Cooldown.TYPES.Buffs.name(), guild.getId())) {
-                commandManager.getCommandIssuer(player).sendInfo(Messages.ERROR__BUFF_COOLDOWN, "{amount}", String.valueOf(cooldownHandler.getRemaining(Cooldown.TYPES.Buffs.name(), guild.getId())));
+            if (cooldownHandler.hasCooldown(Cooldown.Type.Buffs.name(), guild.getId())) {
+                commandManager.getCommandIssuer(player).sendInfo(Messages.ERROR__BUFF_COOLDOWN, "{amount}", String.valueOf(cooldownHandler.getRemaining(Cooldown.Type.Buffs.name(), guild.getId())));
                 return;
             }
             if (!EconomyUtils.hasEnough(guild.getBalance(), cost)) {
@@ -277,7 +277,7 @@ public class BuffGUI {
             if (!settingsManager.getProperty(GuildBuffSettings.BUFF_STACKING) && !player.getActivePotionEffects().isEmpty()) return;
             guild.setBalance(guild.getBalance() - cost);
             guild.addPotion(type, (length * 20), amplifier);
-            cooldownHandler.addCooldown(guild, Cooldown.TYPES.Buffs.name(), settingsManager.getProperty(CooldownSettings.BUFF), TimeUnit.SECONDS);
+            cooldownHandler.addCooldown(guild, Cooldown.Type.Buffs.name(), settingsManager.getProperty(CooldownSettings.BUFF), TimeUnit.SECONDS);
 
             executeClickerCommands(clickerCheck, clickerCommands, player);
             executeGuildCommands(guildCheck, guildCommands, guild);

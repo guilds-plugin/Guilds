@@ -77,9 +77,9 @@ public class CommandAccept extends BaseCommand {
         if (guildHandler.getGuild(player) != null)
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__ALREADY_IN_GUILD));
 
-        if (cooldownHandler.hasCooldown(Cooldown.TYPES.Join.name(), player.getUniqueId()))
+        if (cooldownHandler.hasCooldown(Cooldown.Type.Join.name(), player.getUniqueId()))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ACCEPT__COOLDOWN, "{amount}",
-                    String.valueOf(cooldownHandler.getRemaining(Cooldown.TYPES.Join.name(), player.getUniqueId()))));
+                    String.valueOf(cooldownHandler.getRemaining(Cooldown.Type.Join.name(), player.getUniqueId()))));
 
         Guild guild = guildHandler.getGuild(name);
 

@@ -110,7 +110,7 @@ public class CommandKick extends BaseCommand {
 
         guildHandler.removePerms(permission, boot, settingsManager.getProperty(PluginSettings.RUN_VAULT_ASYNC));
 
-        cooldownHandler.addCooldown(boot, Cooldown.TYPES.Join.name(), settingsManager.getProperty(CooldownSettings.JOIN), TimeUnit.SECONDS);
+        cooldownHandler.addCooldown(boot, Cooldown.Type.Join.name(), settingsManager.getProperty(CooldownSettings.JOIN), TimeUnit.SECONDS);
 
         ClaimUtils.kickMember(boot, player, guild, settingsManager);
 

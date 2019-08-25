@@ -69,11 +69,11 @@ public class CommandHome extends BaseCommand {
         if (guild.getHome() == null)
             ACFUtil.sneaky(new ExpectationNotMet(Messages.HOME__NO_HOME_SET));
 
-        if (cooldownHandler.hasCooldown(Cooldown.TYPES.Home.name(), player.getUniqueId()))
+        if (cooldownHandler.hasCooldown(Cooldown.Type.Home.name(), player.getUniqueId()))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.HOME__COOLDOWN, "{amount}",
-                    String.valueOf(cooldownHandler.getRemaining(Cooldown.TYPES.Home.name(), player.getUniqueId()))));
+                    String.valueOf(cooldownHandler.getRemaining(Cooldown.Type.Home.name(), player.getUniqueId()))));
 
-        cooldownHandler.addCooldown(player, Cooldown.TYPES.Home.name(), settingsManager.getProperty(CooldownSettings.HOME), TimeUnit.SECONDS);
+        cooldownHandler.addCooldown(player, Cooldown.Type.Home.name(), settingsManager.getProperty(CooldownSettings.HOME), TimeUnit.SECONDS);
 
         if (settingsManager.getProperty(CooldownSettings.WU_HOME_ENABLED) && !player.hasPermission("guilds.warmup.bypass")) {
             Location initial = player.getLocation();

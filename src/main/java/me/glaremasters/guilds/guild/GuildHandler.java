@@ -32,7 +32,7 @@ import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.configuration.sections.GuildSettings;
 import me.glaremasters.guilds.configuration.sections.GuildVaultSettings;
 import me.glaremasters.guilds.configuration.sections.TicketSettings;
-import me.glaremasters.guilds.database.DatabaseProvider;
+import me.glaremasters.guilds.database.DatabaseAdapter;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.ItemBuilder;
@@ -72,15 +72,17 @@ public class GuildHandler {
     private Map<Guild, List<Inventory>> cachedVaults;
     private List<Player> openedVault;
 
-    private final DatabaseProvider databaseProvider;
+    private final Guilds guildsPlugin;
     private final CommandManager commandManager;
     private final Permission permission;
     private final SettingsManager settingsManager;
 
+    private boolean migrating;
+
     //as well as guild permissions from tiers using permission field and tiers list.
 
-    public GuildHandler(DatabaseProvider databaseProvider, CommandManager commandManager, Permission permission, FileConfiguration config, SettingsManager settingsManager) {
-        this.databaseProvider = databaseProvider;
+    public GuildHandler(Guilds guildsPlugin, CommandManager commandManager, Permission permission, FileConfiguration config, SettingsManager settingsManager) {
+        this.guildsPlugin = guildsPlugin;
         this.commandManager = commandManager;
         this.permission = permission;
         this.settingsManager = settingsManager;
@@ -91,6 +93,8 @@ public class GuildHandler {
         guildChat = new ArrayList<>();
         cachedVaults = new HashMap<>();
         openedVault = new ArrayList<>();
+
+        migrating = false;
 
         //GuildRoles objects
         ConfigurationSection roleSection = config.getConfigurationSection("roles");
@@ -154,7 +158,7 @@ public class GuildHandler {
 
         Guilds.newChain().async(() -> {
             try {
-                guilds = databaseProvider.loadGuilds();
+                guilds = guildsPlugin.getDatabase().getGuildAdapter().getAllGuilds();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -170,7 +174,7 @@ public class GuildHandler {
      */
     public void saveData() throws IOException {
         guilds.forEach(this::saveVaultCache);
-        databaseProvider.saveGuilds(guilds);
+        guildsPlugin.getDatabase().getGuildAdapter().saveGuilds(guilds);
     }
 
 
@@ -943,5 +947,13 @@ public class GuildHandler {
 
     public List<Player> getOpenedVault() {
         return this.openedVault;
+    }
+
+    public boolean isMigrating() {
+        return migrating;
+    }
+
+    public void setMigrating(boolean migrating) {
+        this.migrating = migrating;
     }
 }

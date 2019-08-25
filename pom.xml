@@ -30,7 +30,7 @@
 
     <groupId>me.glaremasters</groupId>
     <artifactId>guilds</artifactId>
-    <version>3.5.2.9-RELEASE</version>
+    <version>3.5.3-BETA</version>
     <packaging>jar</packaging>
 
     <name>Guilds</name>
@@ -137,6 +137,14 @@
                                 <relocation>
                                     <pattern>net.lingala.zip4j</pattern>
                                     <shadedPattern>me.glaremasters.guilds.libs.zip4j</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com.zaxxer.hikari</pattern>
+                                    <shadedPattern>me.glaremasters.guilds.libs.hikari</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.jdbi</pattern>
+                                    <shadedPattern>me.glaremasters.guilds.libs.jdbi</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
@@ -347,5 +355,35 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- Used for MySQL Pooling -->
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>3.3.1</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Abstracts MySQL interfacing -->
+        <dependency>
+            <groupId>org.jdbi</groupId>
+            <artifactId>jdbi3-core</artifactId>
+            <version>3.8.2</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Lets us use POJOs to represent Database information -->
+        <dependency>
+            <groupId>org.jdbi</groupId>
+            <artifactId>jdbi3-sqlobject</artifactId>
+            <version>3.8.2</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Expiring maps for cooldowns -->
+        <dependency>
+            <groupId>net.jodah</groupId>
+            <artifactId>expiringmap</artifactId>
+            <version>0.5.9</version>
+        </dependency>
     </dependencies>
 </project>

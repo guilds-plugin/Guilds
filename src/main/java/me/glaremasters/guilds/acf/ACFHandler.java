@@ -11,7 +11,7 @@ import me.glaremasters.guilds.arena.ArenaHandler;
 import me.glaremasters.guilds.challenges.ChallengeHandler;
 import me.glaremasters.guilds.configuration.sections.PluginSettings;
 import me.glaremasters.guilds.cooldowns.CooldownHandler;
-import me.glaremasters.guilds.database.challenges.ChallengesProvider;
+import me.glaremasters.guilds.database.DatabaseAdapter;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildCode;
 import me.glaremasters.guilds.guild.GuildHandler;
@@ -120,6 +120,7 @@ public class ACFHandler {
         commandManager.getCommandCompletions().registerCompletion("arenas", c -> arenaHandler.getArenas().stream().map(Arena::getName).collect(Collectors.toList()));
         commandManager.getCommandCompletions().registerCompletion("locations", c -> Arrays.asList("challenger", "defender"));
         commandManager.getCommandCompletions().registerCompletion("languages", c -> guilds.getLoadedLanguages().stream().sorted().collect(Collectors.toList()));
+        commandManager.getCommandCompletions().registerCompletion("sources", c -> Arrays.asList("JSON", "MYSQL", "SQLITE"));
 
         commandManager.getCommandCompletions().registerCompletion("members", c -> {
             Guild guild = guildHandler.getGuild(c.getPlayer());
@@ -209,7 +210,7 @@ public class ACFHandler {
         commandManager.registerDependency(CooldownHandler.class, guilds.getCooldownHandler());
         commandManager.registerDependency(ArenaHandler.class, guilds.getArenaHandler());
         commandManager.registerDependency(ChallengeHandler.class, guilds.getChallengeHandler());
-        commandManager.registerDependency(ChallengesProvider.class, guilds.getChallengesProvider());
+        commandManager.registerDependency(DatabaseAdapter.class, guilds.getDatabase());
     }
 
 }

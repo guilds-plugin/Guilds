@@ -30,7 +30,6 @@ import co.aikar.commands.CommandManager;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.arena.Arena;
 import me.glaremasters.guilds.configuration.sections.WarSettings;
-import me.glaremasters.guilds.database.challenges.ChallengesProvider;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildChallenge;
 import me.glaremasters.guilds.guild.GuildMember;
@@ -58,8 +57,10 @@ import java.util.stream.Stream;
 public class ChallengeHandler {
 
     private List<GuildChallenge> challenges;
+    private Guilds guilds;
 
-    public ChallengeHandler() {
+    public ChallengeHandler(Guilds guilds) {
+        this.guilds = guilds;
         this.challenges = new ArrayList<>();
     }
 
@@ -76,7 +77,7 @@ public class ChallengeHandler {
                 defender, false, false,
                 false, minPlayer, maxPlayers,
                 new ArrayList<>(), new ArrayList<>(), arena,
-                null, new LinkedMap<>(), new LinkedMap<>());
+                null, null, new LinkedMap<>(), new LinkedMap<>());
     }
 
     /**
@@ -260,12 +261,14 @@ public class ChallengeHandler {
     public boolean checkIfOver(GuildChallenge challenge) {
         if (challenge.getAliveChallengers().keySet().size() == 0) {
             challenge.setWinner(challenge.getDefender());
+            challenge.setLoser(challenge.getChallenger());
             challenge.getDefender().getGuildScore().addWin();
             challenge.getChallenger().getGuildScore().addLoss();
             return true;
         }
         if (challenge.getAliveDefenders().keySet().size() == 0) {
             challenge.setWinner(challenge.getChallenger());
+            challenge.setLoser(challenge.getDefender());
             challenge.getDefender().getGuildScore().addLoss();
             challenge.getChallenger().getGuildScore().addWin();
             return true;
@@ -362,11 +365,10 @@ public class ChallengeHandler {
      * Handle finishing of the arena war
      * @param guilds guilds instance
      * @param settingsManager the settings manager
-     * @param challengesProvider challenges provider
      * @param player player to remove
      * @param challenge the challenge being checked
      */
-    public void handleFinish(Guilds guilds, SettingsManager settingsManager, ChallengesProvider challengesProvider, Player player, GuildChallenge challenge) {
+    public void handleFinish(Guilds guilds, SettingsManager settingsManager, Player player, GuildChallenge challenge) {
         removePlayer(player);
         if (checkIfOver(challenge)) {
             // Specify the war is over
@@ -385,12 +387,13 @@ public class ChallengeHandler {
                         c = c.replace("{challenger}", challenge.getChallenger().getName());
                         c = c.replace("{defender}", challenge.getDefender().getName());
                         c = c.replace("{winner}", challenge.getWinner().getName());
+                        c = c.replace("{loser}", challenge.getLoser().getName());
                         Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), c);
                 });
             }
             try {
                 // Save the details about the challenge
-                challengesProvider.saveChallenge(challenge);
+               guilds.getDatabase().getChallengeAdapter().createChallenge(challenge);
                 removeChallenge(challenge);
             } catch (IOException e) {
                 e.printStackTrace();
