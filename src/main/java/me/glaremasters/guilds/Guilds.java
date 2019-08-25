@@ -28,6 +28,8 @@ import co.aikar.commands.PaperCommandManager;
 import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import me.glaremasters.guilds.acf.ACFHandler;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.api.GuildsAPI;
@@ -36,12 +38,9 @@ import me.glaremasters.guilds.challenges.ChallengeHandler;
 import me.glaremasters.guilds.configuration.SettingsHandler;
 import me.glaremasters.guilds.configuration.sections.HooksSettings;
 import me.glaremasters.guilds.configuration.sections.PluginSettings;
+import me.glaremasters.guilds.configuration.sections.StorageSettings;
 import me.glaremasters.guilds.cooldowns.CooldownHandler;
-import me.glaremasters.guilds.database.DatabaseProvider;
-import me.glaremasters.guilds.database.arenas.ArenasProvider;
-import me.glaremasters.guilds.database.challenges.ChallengesProvider;
-import me.glaremasters.guilds.database.cooldowns.CooldownsProvider;
-import me.glaremasters.guilds.database.providers.JsonProvider;
+import me.glaremasters.guilds.database.DatabaseAdapter;
 import me.glaremasters.guilds.dependency.Libraries;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guis.GUIHandler;
@@ -79,16 +78,14 @@ import java.util.stream.Stream;
 public final class Guilds extends JavaPlugin {
 
     private static GuildsAPI api;
+    private static Gson gson;
     private ACFHandler acfHandler;
     private GuildHandler guildHandler;
     private CooldownHandler cooldownHandler;
     private ArenaHandler arenaHandler;
     private ChallengeHandler challengeHandler;
     private static TaskChainFactory taskChainFactory;
-    private DatabaseProvider database;
-    private CooldownsProvider cooldownsProvider;
-    private ChallengesProvider challengesProvider;
-    private ArenasProvider arenasProvider;
+    private DatabaseAdapter database;
     private SettingsHandler settingsHandler;
     private PaperCommandManager commandManager;
     private ActionHandler actionHandler;
@@ -97,6 +94,10 @@ public final class Guilds extends JavaPlugin {
     private Permission permissions;
     private List<String> loadedLanguages;
     private boolean successfulLoad = false;
+
+    public static Gson getGson() {
+        return gson;
+    }
 
     public static GuildsAPI getApi() {
         return Guilds.api;
@@ -113,7 +114,12 @@ public final class Guilds extends JavaPlugin {
                 e.printStackTrace();
             }
             guildHandler.chatLogout();
+            commandManager.unregisterCommands();
         }
+
+        LoggingUtils.info("Shutting down database...");
+        database.close();
+        LoggingUtils.info("Database has been shut down.");
     }
 
     @Override
@@ -192,6 +198,8 @@ public final class Guilds extends JavaPlugin {
             return;
         }
 
+        gson = new GsonBuilder().setPrettyPrinting().create();
+
         // Load Vault
         LoggingUtils.info("Hooking into Vault..");
         // Setup Vaults Economy Hook
@@ -223,31 +231,29 @@ public final class Guilds extends JavaPlugin {
         taskChainFactory = BukkitTaskChainFactory.create(this);
 
         // Load the config
+        LoggingUtils.info("Loading config..");
         settingsHandler = new SettingsHandler(this);
-        LoggingUtils.info("Loaded configuration files!");
+        LoggingUtils.info("Loaded config!");
 
         saveData();
 
         // Load data here.
         try {
-            // This will soon be changed to an automatic storage chooser from the config
-            // Load the json provider
-            database = new JsonProvider(getDataFolder());
-            // Load the cooldown folder
-            cooldownsProvider = new CooldownsProvider(getDataFolder());
+            LoggingUtils.info("Loading Data..");
+            setDatabase(new DatabaseAdapter(this, settingsHandler.getSettingsManager()));
+            if (!database.isConnected()) {
+                // Jump down to the catch
+                throw new IOException("Failed to connect to Database.");
+            }
             // Load the cooldown objects
-            cooldownHandler = new CooldownHandler(cooldownsProvider);
-            // Load the arena folder
-            arenasProvider = new ArenasProvider(getDataFolder());
+            cooldownHandler = new CooldownHandler(this);
             // Load the arena objects
-            arenaHandler = new ArenaHandler(arenasProvider);
+            arenaHandler = new ArenaHandler(this);
             // Load the challenge handler
-            challengeHandler = new ChallengeHandler();
-            // Load the challenge provider
-            challengesProvider = new ChallengesProvider(getDataFolder());
+            challengeHandler = new ChallengeHandler(this);
             // Load guildhandler with provider
-            guildHandler = new GuildHandler(database, getCommandManager(), getPermissions(), getConfig(), settingsHandler.getSettingsManager());
-            LoggingUtils.info("Loaded data files!");
+            guildHandler = new GuildHandler(this, getCommandManager(), getPermissions(), getConfig(), settingsHandler.getSettingsManager());
+            LoggingUtils.info("Loaded data!");
         } catch (IOException e) {
             LoggingUtils.severe("An error occurred loading data! Stopping plugin..");
             Bukkit.getPluginManager().disablePlugin(this);
@@ -259,9 +265,11 @@ public final class Guilds extends JavaPlugin {
             new PlaceholderAPI(guildHandler).register();
         }
 
+        LoggingUtils.info("Enabling Metrics..");
         // start bstats
         Metrics metrics = new Metrics(this);
         metrics.addCustomChart(new Metrics.SingleLineChart("guilds", () -> getGuildHandler().getGuildsSize()));
+        LoggingUtils.info("Enabled Metrics!");
 
         // Initialize the action handler for actions in the plugin
         actionHandler = new ActionHandler();
@@ -290,24 +298,29 @@ public final class Guilds extends JavaPlugin {
                 new PlayerListener(guildHandler, settingsHandler.getSettingsManager(), this, permissions),
                 new TicketListener(this, guildHandler, settingsHandler.getSettingsManager()),
                 new VaultBlacklistListener(this, guildHandler, settingsHandler.getSettingsManager()),
-                new ArenaListener(this, challengeHandler, challengesProvider, settingsHandler.getSettingsManager()))
+                new ArenaListener(this, challengeHandler, settingsHandler.getSettingsManager()))
                 .forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
         // Load the optional listeners
         optionalListeners();
 
+        LoggingUtils.info("Enabling the Guilds API..");
         // Initialize the API (probably be placed in different spot?)
         api = new GuildsAPI(getGuildHandler());
+        LoggingUtils.info("Enabled API!");
 
         LoggingUtils.info("Ready to go! That only took " + (System.currentTimeMillis() - startingTime) + "ms");
         getServer().getScheduler().scheduleAsyncRepeatingTask(this, () -> {
             try {
+                if (guildHandler.isMigrating()) {
+                    return;
+                }
                 guildHandler.saveData();
-                cooldownHandler.saveCooldowns();
+                //cooldownHandler.saveCooldowns(); We are going to save on shutdown only, no need for runtime saving
                 arenaHandler.saveArenas();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }, 20 * 60, (20 * 60) * settingsHandler.getSettingsManager().getProperty(PluginSettings.SAVE_INTERVAL));
+        }, 20 * 60, (20 * 60) * settingsHandler.getSettingsManager().getProperty(StorageSettings.SAVE_INTERVAL));
 
     }
 
@@ -375,20 +388,12 @@ public final class Guilds extends JavaPlugin {
         return this.challengeHandler;
     }
 
-    public DatabaseProvider getDatabase() {
+    public DatabaseAdapter getDatabase() {
         return this.database;
     }
 
-    public CooldownsProvider getCooldownsProvider() {
-        return this.cooldownsProvider;
-    }
-
-    public ChallengesProvider getChallengesProvider() {
-        return this.challengesProvider;
-    }
-
-    public ArenasProvider getArenasProvider() {
-        return this.arenasProvider;
+    public void setDatabase(DatabaseAdapter database) {
+        this.database = database;
     }
 
     public SettingsHandler getSettingsHandler() {

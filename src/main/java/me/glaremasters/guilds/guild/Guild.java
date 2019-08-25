@@ -408,6 +408,9 @@ public class Guild {
      */
     public String getRedeemers(String code) {
         GuildCode gc = getCode(code);
+        if (gc.getRedeemers().isEmpty()) {
+            return "";
+        }
         StringBuilder builder = new StringBuilder();
         gc.getRedeemers().forEach(r -> builder.append(Bukkit.getOfflinePlayer(r).getName() + ", "));
         builder.setLength(builder.length() - 2);

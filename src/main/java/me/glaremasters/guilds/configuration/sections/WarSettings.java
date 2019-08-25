@@ -49,7 +49,8 @@ public class WarSettings implements SettingsHolder {
             "Supports the following placeholder:",
             "{challenger} - The name of the challenging Guild",
             "{defender} - The name of the defending Guild",
-            "{winner} - The winner of the challenge"})
+            "{winner} - The winner of the challenge",
+            "{loser} - The loser of the challenge"})
     public static final Property<List<String>> POST_CHALLENGE_COMMANDS =
             newListProperty("war.post-challenge-commands.commands", "");
 

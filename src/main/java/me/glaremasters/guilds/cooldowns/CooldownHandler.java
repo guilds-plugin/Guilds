@@ -24,16 +24,21 @@
 
 package me.glaremasters.guilds.cooldowns;
 
-import me.glaremasters.guilds.database.cooldowns.CooldownsProvider;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.guild.Guild;
+import me.glaremasters.guilds.utils.LoggingUtils;
+import net.jodah.expiringmap.ExpirationPolicy;
+import net.jodah.expiringmap.ExpiringMap;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
+
+// TODO: from simple -
+//  I created a bunch of shims in here so I didn't have to go around changing all kinds of references to methods.
+//  They are the ones that are taking cooldown types by name. I just resolve the cooldown type and pass it to the new method.
 
 /**
  * Created by Glare
@@ -41,77 +46,85 @@ import java.util.concurrent.TimeUnit;
  * Time: 9:40 AM
  */
 public class CooldownHandler {
+    private ExpiringMap<UUID, Cooldown> cooldowns;
+    private Guilds guilds;
 
-    private Map<String, Cooldown> cooldowns;
-    private final CooldownsProvider cooldownsProvider;
+    public CooldownHandler(Guilds guilds) {
+        this.guilds = guilds;
+        cooldowns = ExpiringMap.builder().variableExpiration().expirationListener((key, cooldown) -> {
+        }).build();
 
-    public CooldownHandler(CooldownsProvider cooldownsProvider) throws FileNotFoundException {
-        this.cooldownsProvider = cooldownsProvider;
-
-        cooldowns = cooldownsProvider.loadCooldowns();
-        createCooldowns();
+        Guilds.newChain().async(() -> {
+            try {
+                List<Cooldown> saved = guilds.getDatabase().getCooldownAdapter().getAllCooldowns();
+                for (Cooldown cooldown : saved) {
+                    // If the time in the cooldown is LESS THAN the current time, then that time has already passed
+                    if (cooldown.getCooldownExpiry() < System.currentTimeMillis()) {
+                        // Since the time has already passed, let's remove it
+                        guilds.getDatabase().getCooldownAdapter().deleteCooldown(cooldown);
+                    } else {
+                        // The time has not past, we won't remove it
+                        addCooldown(cooldown);
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).execute();
     }
 
     /**
      * Save the cooldowns
      * @throws IOException
      */
-    public void saveCooldowns() throws IOException {
-        removeExcess();
-        cooldownsProvider.saveCooldowns(cooldowns);
-    }
-
-    /**
-     * Add a new cooldown type to the plugin
-     * @param type the type of cooldown
-     */
-    public void addCooldownType(String type) {
-        if (cooldowns.keySet().contains(type)) {
-            return;
-        }
-        cooldowns.put(type, new Cooldown());
+    public void saveCooldowns() {
+        guilds.getDatabase().getCooldownAdapter().saveCooldowns(cooldowns.values());
     }
 
     /**
      * Get a cooldown from the list
-     * @param type the type of cooldown
+     * @param cooldownType the cooldown type
+     * @param cooldownOwner the owner UUID of the cooldown
      * @return cooldown
      */
-    public Cooldown getCooldown(@NotNull String type) {
-        return cooldowns.get(type);
-    }
-
-    public boolean hasCooldown(String type, UUID uuid) {
-        Long expire = getCooldown(type).getUuids().get(uuid);
-        return expire != null && expire > System.currentTimeMillis();
+    public Cooldown getCooldown(@NotNull Cooldown.Type cooldownType, @NotNull UUID cooldownOwner) {
+        return cooldowns.values().stream().filter(c -> c.getCooldownType() == cooldownType && c.getCooldownOwner().equals(cooldownOwner)).findFirst().orElse(null);
     }
 
     /**
-     * Remove old map entires.
+     * Check if a cooldown is still valid
+     * @param cooldownType the cooldown type name
+     * @param cooldownOwner the owner UUID of the cooldown
+     * @return true or false
      */
-    public void removeExcess() {
-        long current = System.currentTimeMillis();
-        cooldowns.values().forEach(cooldown -> cooldown.getUuids().values().removeIf(time -> time < current));
+    public boolean hasCooldown(@NotNull String cooldownType, @NotNull UUID cooldownOwner) {
+        return hasCooldown(Cooldown.Type.getByTypeName(cooldownType), cooldownOwner);
     }
 
     /**
-     * Remove a player from cooldown
-     * @param type the type of cooldown
-     * @param uuid the uuid to check
+     * Check if a cooldown is still valid
+     * @param cooldownType the cooldown type
+     * @param cooldownOwner the owner UUID of the cooldown
+     * @return true or false
      */
-    public void removeCooldown(String type, UUID uuid) {
-        getCooldown(type).getUuids().remove(uuid);
+    public boolean hasCooldown(@NotNull Cooldown.Type cooldownType, @NotNull UUID cooldownOwner) {
+        Cooldown cooldown = getCooldown(cooldownType, cooldownOwner);
+        return cooldown != null && cooldown.getCooldownExpiry() > System.currentTimeMillis();
+    }
+
+    public int getRemaining(String cooldownType, UUID cooldownOwner) {
+        return getRemaining(Cooldown.Type.getByTypeName(cooldownType), cooldownOwner);
     }
 
     /**
      * Get the time remaining in seconds
-     * @param type the type of cooldown
-     * @param uuid the uuid to check
+     * @param cooldownType the type of cooldown
+     * @param cooldownOwner the uuid to check
      * @return time left
      */
-    public int getRemaining(String type, UUID uuid) {
-        int int1 = Integer.valueOf(String.format("%d", TimeUnit.MILLISECONDS.toSeconds(getCooldown(type).getUuids().get(uuid))));
-        int int2 = Integer.valueOf(String.format("%d", TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis())));
+    public int getRemaining(Cooldown.Type cooldownType, UUID cooldownOwner) {
+        int int1 = Integer.parseInt(String.format("%d", TimeUnit.MILLISECONDS.toSeconds(getCooldown(cooldownType, cooldownOwner).getCooldownExpiry())));
+        int int2 = Integer.parseInt(String.format("%d", TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis())));
         return int1 - int2;
     }
 
@@ -122,7 +135,7 @@ public class CooldownHandler {
      * @param length how long to put them
      */
     public void addCooldown(OfflinePlayer player, String type, int length, TimeUnit timeUnit) {
-        getCooldown(type).getUuids().put(player.getUniqueId(), (System.currentTimeMillis() + timeUnit.toMillis(length)));
+        addCooldown(Cooldown.Type.getByTypeName(type), player.getUniqueId(), length, timeUnit);
     }
 
     /**
@@ -132,16 +145,24 @@ public class CooldownHandler {
      * @param length thje length of the cooldown
      */
     public void addCooldown(Guild guild, String type, int length, TimeUnit timeUnit) {
-        getCooldown(type).getUuids().put(guild.getId(), (System.currentTimeMillis() + timeUnit.toMillis(length)));
+        addCooldown(Cooldown.Type.getByTypeName(type), guild.getId(), length, timeUnit);
     }
 
     /**
-     * Create the cooldowns for the plugin
+     * Add a cooldown
+     * @param cooldownType the cooldown type
+     * @param cooldownOwner the cooldown owner UUID
+     * @param length length of time
+     * @param timeUnit unit of time
      */
-    public void createCooldowns() {
-        for (Cooldown.TYPES type : Cooldown.TYPES.values()) {
-            addCooldownType(type.name());
-        }
+    public void addCooldown(Cooldown.Type cooldownType, UUID cooldownOwner, int length, TimeUnit timeUnit) {
+        Cooldown cooldown = new Cooldown(cooldownType, cooldownOwner, (System.currentTimeMillis() + timeUnit.toMillis(length)));
+        cooldowns.put(cooldown.getCooldownId(), cooldown, ExpirationPolicy.CREATED, length, timeUnit);
     }
 
+    private void addCooldown(Cooldown cooldown) {
+        long remainingSeconds = cooldown.getCooldownExpiry() - System.currentTimeMillis();
+        if (remainingSeconds < 0) return;
+        cooldowns.put(cooldown.getCooldownId(), cooldown, ExpirationPolicy.CREATED, TimeUnit.MILLISECONDS.toSeconds(remainingSeconds), TimeUnit.SECONDS);
+    }
 }
