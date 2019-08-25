@@ -44,7 +44,7 @@ public interface CooldownProvider {
      * @throws IOException
      */
     default void createCooldown(@Nullable String tablePrefix, @NotNull String cooldownType, @NotNull String cooldownOwner, @NotNull Timestamp cooldownExpiry) throws IOException {
-        createCooldown(tablePrefix, UUID.randomUUID().toString(), cooldownOwner, cooldownOwner, cooldownExpiry);
+        createCooldown(tablePrefix, UUID.randomUUID().toString(), cooldownType, cooldownOwner, cooldownExpiry);
     }
 
     /**
