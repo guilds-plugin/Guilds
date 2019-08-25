@@ -28,6 +28,10 @@ public interface CooldownSQLiteProvider extends CooldownProvider {
     void createContainer(@Define("prefix") @NotNull String prefix);
 
     @Override
+    @SqlQuery("SELECT EXISTS(SELECT 1 FROM <prefix>cooldowns WHERE type = :type AND owner = :owner)")
+    boolean cooldownExists(@Define("prefix") @NotNull String tablePrefix, @NotNull @Bind("type") String cooldownType, @NotNull @Bind("owner") String cooldownOwner) throws IOException;
+
+    @Override
     @SqlQuery("SELECT * FROM <prefix>cooldowns")
     @RegisterRowMapper(CooldownRowMapper.class)
     List<Cooldown> getAllCooldowns(@Define("prefix") @NotNull String prefix);
