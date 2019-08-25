@@ -47,6 +47,7 @@ descriptions:
   code-redeem: "Použijte kód pozvání pro vstup do cechu"
   confirm: "Potvrďte akci"
   console-backup: "Zálohovat data pluginu"
+  console-migrate: "Přesuňte data z jednoho zdroje do druhého"
   console-update-languages: "Příkaz konzoly pro aktualizaci jazykových souborů"
   create: "Vytvořte cech"
   decline: "Odmítněte pozvání do cechu"
@@ -111,6 +112,7 @@ error:
   buff-cooldown: "&cJe mi líto, váš cech nedávno koupil buff. Můžete to zkusit znovu {amount} sekund."
   buff-no-permission: "&cPromiňte, nemáte povolení ke koupi této schopnosti (buff)!"
   no-pending-invites: "&cOmlouváme se, v současné době nemáte žádné čekající cechovní pozvání!"
+  migrating: "&cPromiňte, tuto akci nelze provést. Data se právě přesouvají! Zkuste to znovu za několik minut."
 bank:
   balance: "&aVaše cechovní banka je naplněná {amount}."
   deposit-success: "&a{player} právě uložil {amount} do cechovní banky. Vaše cechovní peníze jsou {total}."
@@ -326,3 +328,10 @@ acf:
   invalid-syntax: "Použí: <c2>{command}</c2> <c3>{syntax}</c3>"
   permission-denied: "Omlouváme se, ale nemáš dostatečná opravnění k použítí příkazu."
   unknown-command: "Neznámý příkaz, prosím použí <c2>/help</c2>"
+migrate:
+  invalid-backend: "&cZdroj (backend) do kterého se mají přesunout data je neplatný."
+  connection-failed: "Připojení k novému zdroje (backend) selhalo! Zkontrolujte, zda je vaše ověřování správně nakonfigurováno!"
+  same-backend: "&cNemůžete přesunout data do samého zdroje (backendu), který již používáte!"
+  complete: "&aPřesun dat ({amount} cechů) byla dokončena a bude tento nový backend používán až do restartování. Než restartujete, nezapomeňte změnit svůj zdroj (backend) v konfiguraci na to, do čeho jste přesouvali!"
+  warning: "&bDůležité! &c Chystáte se přesouvat VŠECHNY údaje o vašem pluginu. Důrazně doporučujeme, abyste si před provedením této operace vytvořili zálohu VŠECH dat. Pokud ztratíte data, NEMŮŽETE je obnovit. Opravdu chcete pokračovat? Typ /guilds confirm pro pokračování nebo /guilds cancel zrušit!"
+  cancelled: "&aÚspěšně jste zrušili přesun dat!"
