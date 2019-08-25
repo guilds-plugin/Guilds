@@ -71,10 +71,8 @@ public class CooldownAdapter {
 
     public void saveCooldowns(Collection<Cooldown> cooldowns) {
         try {
-            LoggingUtils.info("Saving cooldowns...");
             for (Cooldown cooldown : cooldowns) {
                 if (!cooldownExists(cooldown)) {
-                    LoggingUtils.info("Creating...");
                     createCooldown(cooldown);
                 }
             }
