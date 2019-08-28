@@ -7,6 +7,8 @@ import me.glaremasters.guilds.database.arenas.ArenaAdapter;
 import me.glaremasters.guilds.database.challenges.ChallengeAdapter;
 import me.glaremasters.guilds.database.cooldowns.CooldownAdapter;
 import me.glaremasters.guilds.database.guild.GuildAdapter;
+import me.glaremasters.guilds.utils.LoggingUtils;
+import org.bukkit.Bukkit;
 
 import java.io.IOException;
 
@@ -110,19 +112,25 @@ public final class DatabaseAdapter implements AutoCloseable {
 
         this.backend = backend;
 
-        // You may wish to create container(s) elsewhere, but this is an OK spot.
-        // In JSON mode, this is equivalent to making the file.
-        // In SQL mode, this is equivalent to creating the table.
-        this.guildAdapter = new GuildAdapter(guilds, this);
-        this.guildAdapter.createContainer();
+        try {
+            // You may wish to create container(s) elsewhere, but this is an OK spot.
+            // In JSON mode, this is equivalent to making the file.
+            // In SQL mode, this is equivalent to creating the table.
+            this.guildAdapter = new GuildAdapter(guilds, this);
+            this.guildAdapter.createContainer();
 
-        this.challengeAdapter = new ChallengeAdapter(guilds, this);
-        this.challengeAdapter.createContainer();
+            this.challengeAdapter = new ChallengeAdapter(guilds, this);
+            this.challengeAdapter.createContainer();
 
-        this.arenaAdapter = new ArenaAdapter(guilds, this);
-        this.arenaAdapter.createContainer();
+            this.arenaAdapter = new ArenaAdapter(guilds, this);
+            this.arenaAdapter.createContainer();
 
-        this.cooldownAdapter = new CooldownAdapter(guilds, this);
-        this.cooldownAdapter.createContainer();
+            this.cooldownAdapter = new CooldownAdapter(guilds, this);
+            this.cooldownAdapter.createContainer();
+        } catch (Exception ex) {
+            LoggingUtils.severe("There was an issue setting up the backend database. Shutting down to prevent further issues. If you are using MySQL, make sure your database server is on the latest version!");
+            ex.printStackTrace();
+            Bukkit.getServer().getPluginManager().disablePlugin(guilds);
+        }
     }
 }
