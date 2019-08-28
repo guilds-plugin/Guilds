@@ -69,6 +69,10 @@ public class CommandUnclaim extends BaseCommand {
         if (!ClaimUtils.isEnable(settingsManager))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.CLAIM__HOOK_DISABLED));
 
+        if (ClaimUtils.isInDisabledWorld(player, settingsManager)) {
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.CLAIM__HOOK_DISABLED));
+        }
+
         if (settingsManager.getProperty(ClaimSettings.FORCE_CLAIM_SIGNS))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.CLAIM__SIGN_FORCED));
 

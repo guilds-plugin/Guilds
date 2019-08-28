@@ -132,6 +132,16 @@ public class ClaimUtils {
     }
 
     /**
+     * Check if a world can be used for claiming
+     * @param player the player to check
+     * @param settingsManager list of disabled worlds
+     * @return is in disabled worlds or not
+     */
+    public static boolean isInDisabledWorld(Player player, SettingsManager settingsManager) {
+        return settingsManager.getProperty(ClaimSettings.DISABLED_WORLDS).contains(player.getWorld().getName());
+    }
+
+    /**
      * Create a new guild claim
      * @param guild the guild making the claim
      * @param player the player running the command
