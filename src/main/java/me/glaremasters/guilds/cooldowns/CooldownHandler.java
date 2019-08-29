@@ -165,4 +165,8 @@ public class CooldownHandler {
         if (remainingSeconds < 0) return;
         cooldowns.put(cooldown.getCooldownId(), cooldown, ExpirationPolicy.CREATED, TimeUnit.MILLISECONDS.toSeconds(remainingSeconds), TimeUnit.SECONDS);
     }
+
+    public ExpiringMap<UUID, Cooldown> getCooldowns() {
+        return cooldowns;
+    }
 }
