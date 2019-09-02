@@ -8,6 +8,7 @@ public class Libraries {
 
     /**
      * Load all the dependencies for the plugin
+     *
      * @param loader the loader to add to
      */
     public void loadDepLibs(BukkitLibraryManager loader) {
@@ -148,6 +149,12 @@ public class Libraries {
                 .version("4.7.2")
                 .relocate("org{}jdbi", "me.glaremasters.guilds.libs.jdbi")
                 .checksum("TFGLh9S9/4tEzYy8GvgW6US2Kj/luAt4FQHPH0dZu8Q=")
+                .build());
+
+        loader.loadLibrary(Library.builder()
+                .groupId("org.slf4j")
+                .artifactId("slf4j-api")
+                .version("1.7.25")
                 .build());
     }
 

@@ -384,6 +384,15 @@
             <groupId>net.jodah</groupId>
             <artifactId>expiringmap</artifactId>
             <version>0.5.9</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- Used to compensate for SpigotMC -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.25</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>
