@@ -169,6 +169,8 @@ public class CommandCreate extends BaseCommand {
 
                 Guild guild = gb.build();
 
+                guild.setCreationDate(System.currentTimeMillis());
+
                 GuildCreateEvent event = new GuildCreateEvent(player, guild);
                 Bukkit.getPluginManager().callEvent(event);
 
