@@ -121,6 +121,22 @@ public class PlayerListener implements Listener {
     }
 
     /**
+     * Set the last login time of a player
+     * @param event
+     */
+    @EventHandler
+    public void updateLastLogin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+        Guild guild = guildHandler.getGuild(player);
+
+        if (guild == null) {
+            return;
+        }
+
+        guild.getMember(player.getUniqueId()).setLastLogin(System.currentTimeMillis());
+    }
+
+    /**
      * Handles guild chat
      * @param event
      */

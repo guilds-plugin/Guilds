@@ -196,6 +196,7 @@ public class Guild {
         if (getMembers().contains(member)) return;
         removeInvitedMember(member.getUuid());
         getMembers().add(member);
+        member.setJoinDate(System.currentTimeMillis());
     }
 
     /**
