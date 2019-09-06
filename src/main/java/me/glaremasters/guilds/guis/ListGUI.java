@@ -46,6 +46,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -119,6 +120,7 @@ public class ListGUI {
 
     /**
      * Create all the items for the GUI
+     *
      * @param pane the pane to add the items to
      */
     private void createListItems(PaginatedPane pane) {
@@ -152,6 +154,7 @@ public class ListGUI {
 
     /**
      * Set the item to the list
+     *
      * @param guild the guild of the pane
      */
     private void setListItem(Guild guild) {
@@ -168,11 +171,13 @@ public class ListGUI {
 
     /**
      * Update lore with replacements
+     *
      * @param guild the guild being edited
-     * @param lore the lore to change
+     * @param lore  the lore to change
      * @return updated lore
      */
     private List<String> updatedLore(Guild guild, List<String> lore) {
+        SimpleDateFormat sdf = new SimpleDateFormat(settingsManager.getProperty(GuildListSettings.GUI_TIME_FORMAT));
         boolean status = guild.isPrivate();
         String statusString;
         if (status) {
@@ -182,23 +187,25 @@ public class ListGUI {
         }
         List<String> updated = new ArrayList<>();
         lore.forEach(line -> updated.add(ACFBukkitUtil.color(line
-                    .replace("{guild-name}", guild.getName())
-                    .replace("{guild-prefix}", guild.getPrefix())
-                    .replace("{guild-master}", Bukkit.getOfflinePlayer(guild.getGuildMaster().getUuid()).getName())
-                    .replace("{guild-status}", statusString)
-                    .replace("{guild-tier}", String.valueOf(guild.getTier().getLevel()))
-                    .replace("{guild-balance}", String.valueOf(guild.getBalance()))
-                    .replace("{guild-member-count}", String.valueOf(guild.getSize()))
-                    .replace("{guild-challenge-wins}", String.valueOf(guild.getGuildScore().getWins()))
-                    .replace("{guild-challenge-loses}", String.valueOf(guild.getGuildScore().getLoses()))
-                    .replace("{guild-tier-name}", guildHandler.getGuildTier(guild.getTier().getLevel()).getName()))));
+                .replace("{guild-name}", guild.getName())
+                .replace("{guild-prefix}", guild.getPrefix())
+                .replace("{guild-master}", Bukkit.getOfflinePlayer(guild.getGuildMaster().getUuid()).getName())
+                .replace("{guild-status}", statusString)
+                .replace("{guild-tier}", String.valueOf(guild.getTier().getLevel()))
+                .replace("{guild-balance}", String.valueOf(guild.getBalance()))
+                .replace("{guild-member-count}", String.valueOf(guild.getSize()))
+                .replace("{guild-challenge-wins}", String.valueOf(guild.getGuildScore().getWins()))
+                .replace("{guild-challenge-loses}", String.valueOf(guild.getGuildScore().getLoses()))
+                .replace("{creation}", sdf.format(guild.getCreationDate()))
+                .replace("{guild-tier-name}", guildHandler.getGuildTier(guild.getTier().getLevel()).getName()))));
         return updated;
     }
 
     /**
      * Easily create an item for the GUI
+     *
      * @param material the material of the item
-     * @param name the name of the item
+     * @param name     the name of the item
      * @return created itemstack
      */
     private ItemStack easyItem(String material, String name) {
