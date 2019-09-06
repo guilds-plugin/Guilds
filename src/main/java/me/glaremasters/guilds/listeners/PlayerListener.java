@@ -144,7 +144,7 @@ public class PlayerListener implements Listener {
         }
 
         // Set their last login
-        guild.getMember(player.getUniqueId()).setLastLogin(System.currentTimeMillis());
+        member.setLastLogin(System.currentTimeMillis());
     }
 
     /**
