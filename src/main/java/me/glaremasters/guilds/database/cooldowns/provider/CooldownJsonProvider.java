@@ -37,10 +37,10 @@ public class CooldownJsonProvider implements CooldownProvider {
     public void createContainer(@Nullable String tablePrefix) throws IOException {
         if (!this.dataFolder.exists()) {
             this.dataFolder.mkdir();
+        }
 
-            if (!this.cooldownFile.exists()) {
-                this.cooldownFile.createNewFile();
-            }
+        if (!this.cooldownFile.exists()) {
+            this.cooldownFile.createNewFile();
         }
     }
 
