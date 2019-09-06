@@ -43,6 +43,11 @@ public class GuildListSettings implements SettingsHolder {
 
     private static final String LIST_PATH = "guis.guild-list.";
 
+    @Comment({"What time format should we use in the GUIs?",
+            "You can use this site to build it https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html"})
+    public static final Property<String> GUI_TIME_FORMAT =
+            newProperty("guis.time-format", "MMM, d, yy hh:mm aaa");
+
     @Comment("What should the name of the inventory be?")
     public static final Property<String> GUILD_LIST_NAME =
             newProperty(LIST_PATH + "gui-name", "Guild List");

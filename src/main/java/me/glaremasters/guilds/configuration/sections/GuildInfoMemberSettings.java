@@ -57,7 +57,7 @@ public class GuildInfoMemberSettings implements SettingsHolder {
 
     @Comment("What do you want the lore of the item to be?")
     public static final Property<List<String>> MEMBERS_LORE =
-            newListProperty(INFO_PATH + "item.lore", "&8• &7Name: &a{name}", "&8• &7Role: &a{role}", "&8• &7Status: {status}", "");
+            newListProperty(INFO_PATH + "item.lore", "&8• &7Name: &a{name}", "&8• &7Role: &a{role}", "&8• &7Status: {status}", "&8• &7Join Date: &a{join}", "&8• &7Last Login: &a{login}");
 
     @Comment("What do you want to be what shows when a member is online?")
     public static final Property<String> MEMBERS_ONLINE =
