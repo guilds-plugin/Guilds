@@ -31,6 +31,7 @@ import me.glaremasters.guilds.configuration.sections.GuildSettings;
 import me.glaremasters.guilds.configuration.sections.PluginSettings;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
+import me.glaremasters.guilds.guild.GuildMember;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.JSONMessage;
 import me.glaremasters.guilds.utils.LoggingUtils;
@@ -118,6 +119,32 @@ public class PlayerListener implements Listener {
             return;
 
         Guilds.newChain().delay(5, TimeUnit.SECONDS).sync(() -> guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.MOTD__MOTD, "{motd}", guild.getMotd())).execute();
+    }
+
+    /**
+     * Set the last login time of a player
+     * @param event
+     */
+    @EventHandler
+    public void updateLastLogin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+        Guild guild = guildHandler.getGuild(player);
+
+        // Check if guild is null
+        if (guild == null) {
+            return;
+        }
+
+        // Create member object
+        GuildMember member = guild.getMember(player.getUniqueId());
+
+        // Set their join date to the first time they login after the update
+        if (member.getJoinDate() == 0) {
+            member.setJoinDate(System.currentTimeMillis());
+        }
+
+        // Set their last login
+        member.setLastLogin(System.currentTimeMillis());
     }
 
     /**

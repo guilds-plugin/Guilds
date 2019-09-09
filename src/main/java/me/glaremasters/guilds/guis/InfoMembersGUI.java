@@ -33,6 +33,7 @@ import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
 import com.github.stefvanschie.inventoryframework.pane.Pane;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.configuration.sections.GuildInfoMemberSettings;
+import me.glaremasters.guilds.configuration.sections.GuildListSettings;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildMember;
@@ -43,7 +44,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.text.SimpleDateFormat;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -107,6 +110,8 @@ public class InfoMembersGUI {
         List<GuildMember> members = guild.getMembers();
         members.sort(Comparator.comparingInt(g -> g.getRole().getLevel()));
 
+        SimpleDateFormat sdf = new SimpleDateFormat(settingsManager.getProperty(GuildListSettings.GUI_TIME_FORMAT));
+
         members.forEach(m -> {
 
             // Create a variable for the status
@@ -132,6 +137,8 @@ public class InfoMembersGUI {
                     settingsManager.getProperty(GuildInfoMemberSettings.MEMBERS_LORE).stream().map(l ->
                             l.replace("{name}", name)
                                     .replace("{role}", role.getName())
+                                    .replace("{join}", sdf.format(new Date(m.getJoinDate())))
+                                    .replace("{login}", sdf.format(new Date(m.getLastLogin())))
                                     .replace("{status}", status)).collect(Collectors.toList())),
                     event -> event.setCancelled(true)));
         });

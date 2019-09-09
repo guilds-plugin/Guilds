@@ -137,6 +137,14 @@ public class Guild {
         this.lastDefended = lastDefended;
     }
 
+    public long getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(long creationDate) {
+        this.creationDate = creationDate;
+    }
+
     public enum Status {
         Public("Public"),
         Private("Private");
@@ -167,6 +175,7 @@ public class Guild {
     private List<String> vaults;
 
     private long lastDefended;
+    private long creationDate;
 
     /**
      * Get a member in the guild
@@ -196,6 +205,7 @@ public class Guild {
         if (getMembers().contains(member)) return;
         removeInvitedMember(member.getUuid());
         getMembers().add(member);
+        member.setJoinDate(System.currentTimeMillis());
     }
 
     /**

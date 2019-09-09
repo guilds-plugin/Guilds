@@ -165,6 +165,9 @@ public class GuildHandler {
         }).sync(() -> guilds.forEach(this::createVaultCache)).sync(() -> guilds.forEach(g -> {
             g.setTier(getGuildTier(g.getTier().getLevel()));
             g.getMembers().forEach(m -> m.setRole(getGuildRole(m.getRole().getLevel())));
+            if (g.getCreationDate() == 0) {
+                g.setCreationDate(System.currentTimeMillis());
+            }
         })).execute();
 
     }

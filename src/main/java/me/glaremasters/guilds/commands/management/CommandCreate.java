@@ -150,6 +150,7 @@ public class CommandCreate extends BaseCommand {
                 }
                 gb.status(Guild.Status.Private);
                 GuildMember master = new GuildMember(player.getUniqueId(), guildHandler.getGuildRole(0));
+                master.setJoinDate(System.currentTimeMillis());
                 gb.guildMaster(master);
 
                 List<GuildMember> members = new ArrayList<>();
@@ -167,6 +168,8 @@ public class CommandCreate extends BaseCommand {
                 gb.codes(new ArrayList<>());
 
                 Guild guild = gb.build();
+
+                guild.setCreationDate(System.currentTimeMillis());
 
                 GuildCreateEvent event = new GuildCreateEvent(player, guild);
                 Bukkit.getPluginManager().callEvent(event);

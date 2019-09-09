@@ -34,11 +34,15 @@ import java.util.UUID;
 public class GuildMember {
 
     private final UUID uuid;
+    private long joinDate;
+    private long lastLogin;
     private GuildRole role;
 
     public GuildMember(UUID uuid, GuildRole role) {
         this.uuid = uuid;
         this.role = role;
+        this.joinDate = 0;
+        this.lastLogin = 0;
     }
 
     /**
@@ -59,5 +63,21 @@ public class GuildMember {
 
     public void setRole(GuildRole role) {
         this.role = role;
+    }
+
+    public long getJoinDate() {
+        return joinDate;
+    }
+
+    public void setJoinDate(long joinDate) {
+        this.joinDate = joinDate;
+    }
+
+    public long getLastLogin() {
+        return lastLogin;
+    }
+
+    public void setLastLogin(long lastLogin) {
+        this.lastLogin = lastLogin;
     }
 }
