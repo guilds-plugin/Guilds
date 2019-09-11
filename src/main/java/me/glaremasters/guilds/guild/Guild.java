@@ -44,6 +44,10 @@ import java.util.stream.Collectors;
 
 public class Guild {
 
+    public Guild(UUID id) {
+        this.id = id;
+    }
+
     public Guild(UUID id, String name, String prefix, String motd, GuildMember guildMaster, GuildHome home, GuildSkull guildSkull, Status status, GuildTier tier, GuildScore guildScore, double balance, List<GuildMember> members, List<UUID> invitedMembers, List<UUID> allies, List<UUID> pendingAllies, List<GuildCode> codes, List<String> vaults, long lastDefended) {
         this.id = id;
         this.name = name;

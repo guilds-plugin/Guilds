@@ -13,6 +13,11 @@ public class Arena {
     private String defender;
     private transient boolean inUse;
 
+    public Arena(UUID id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public Arena(UUID id, String name, String challenger, String defender, boolean inUse) {
         this.id = id;
         this.name = name;
