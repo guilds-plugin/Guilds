@@ -24,6 +24,9 @@
 
 package me.glaremasters.guilds.api;
 
+import me.glaremasters.guilds.arena.Arena;
+import me.glaremasters.guilds.arena.ArenaHandler;
+import me.glaremasters.guilds.database.arenas.ArenaAdapter;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
@@ -37,9 +40,11 @@ import java.util.UUID;
 public class GuildsAPI {
 
     private final GuildHandler guildHandler;
+    private final ArenaHandler arenaHandler;
 
-    public GuildsAPI(GuildHandler guildHandler) {
+    public GuildsAPI(GuildHandler guildHandler, ArenaHandler arenaHandler) {
         this.guildHandler = guildHandler;
+        this.arenaHandler = arenaHandler;
     }
 
     /**
@@ -90,10 +95,28 @@ public class GuildsAPI {
     }
 
     /**
+     * Gets an Arena by its name
+     * @param name the arena name
+     * @return the arena
+     */
+    public Arena getArenaByName(@NotNull String name) {
+        return arenaHandler.getArena(name);
+    }
+
+    /**
      * Get a copy of the guild handler
      * @return guild handler
      */
     public GuildHandler getGuildHandler() {
         return guildHandler;
+    }
+
+
+    /**
+     * Get a copy of the arena handler
+     * @return arena handler
+     */
+    public ArenaHandler getArenaHandler() {
+        return arenaHandler;
     }
 }
