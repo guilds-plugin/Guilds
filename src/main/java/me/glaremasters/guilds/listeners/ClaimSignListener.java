@@ -131,7 +131,7 @@ public class ClaimSignListener implements Listener {
             return;
         }
 
-        if (ClaimUtils.checkAlreadyExist(wrapper, player, guild)) {
+        if (ClaimUtils.checkAlreadyExist(wrapper, guild)) {
             guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.CLAIM__ALREADY_EXISTS);
             return;
         }

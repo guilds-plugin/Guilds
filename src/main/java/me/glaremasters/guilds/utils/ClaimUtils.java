@@ -29,8 +29,10 @@ import co.aikar.commands.ACFBukkitUtil;
 import me.glaremasters.guilds.configuration.sections.ClaimSettings;
 import me.glaremasters.guilds.configuration.sections.HooksSettings;
 import me.glaremasters.guilds.guild.Guild;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.codemc.worldguardwrapper.WorldGuardWrapper;
 import org.codemc.worldguardwrapper.flag.IWrappedFlag;
@@ -94,12 +96,16 @@ public class ClaimUtils {
 
     /**
      * Check if a guild claim already exists
-     * @param player the player running the command
      * @param guild the guild of the player
      * @return if a claim already exists
      */
-    public static boolean checkAlreadyExist(WorldGuardWrapper wrapper, Player player, Guild guild) {
-        return wrapper.getRegion(player.getWorld(), getClaimName(guild)).isPresent();
+    public static boolean checkAlreadyExist(WorldGuardWrapper wrapper, Guild guild) {
+        for (World world : Bukkit.getWorlds()) {
+            if (wrapper.getRegion(world, getClaimName(guild)).isPresent()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -164,10 +170,11 @@ public class ClaimUtils {
      * Remove a guild claim
      * @param wrapper worldguard wrapper
      * @param guild the guild of the player
-     * @param player the player running the command
      */
-    public static void removeClaim(WorldGuardWrapper wrapper, Guild guild, Player player) {
-        wrapper.removeRegion(player.getWorld(), getClaimName(guild));
+    public static void removeClaim(WorldGuardWrapper wrapper, Guild guild) {
+        for (World world: Bukkit.getWorlds()) {
+            wrapper.removeRegion(world, getClaimName(guild));
+        }
     }
 
     /**
@@ -300,15 +307,14 @@ public class ClaimUtils {
 
     /**
      * Easy method to delete a claim when a guild deletes
-     * @param player the player the check
      * @param guild the guild they are in
      * @param settingsManager settings manager
      */
-    public static void deleteWithGuild(Player player, Guild guild, SettingsManager settingsManager) {
+    public static void deleteWithGuild(Guild guild, SettingsManager settingsManager) {
         if (isEnable(settingsManager)) {
             WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();
-            if (checkAlreadyExist(wrapper, player, guild)) {
-                removeClaim(wrapper, guild, player);
+            if (checkAlreadyExist(wrapper, guild)) {
+                removeClaim(wrapper, guild);
             }
         }
     }

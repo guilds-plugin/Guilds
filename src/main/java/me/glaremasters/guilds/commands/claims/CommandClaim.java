@@ -79,7 +79,7 @@ public class CommandClaim extends BaseCommand {
 
         WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();
 
-        if (ClaimUtils.checkAlreadyExist(wrapper, player, guild))
+        if (ClaimUtils.checkAlreadyExist(wrapper, guild))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.CLAIM__ALREADY_EXISTS));
 
         if (ClaimUtils.checkOverlap(wrapper, player, settingsManager))

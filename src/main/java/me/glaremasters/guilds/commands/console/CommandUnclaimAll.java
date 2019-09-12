@@ -1,8 +1,9 @@
-package me.glaremasters.guilds.commands.admin.claims;
+package me.glaremasters.guilds.commands.console;
 
 import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
+import co.aikar.commands.CommandIssuer;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Dependency;
@@ -13,19 +14,21 @@ import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.ClaimUtils;
 import me.glaremasters.guilds.utils.Constants;
-import org.bukkit.entity.Player;
 import org.codemc.worldguardwrapper.WorldGuardWrapper;
 
 @CommandAlias("%guilds")
-public class CommandAdminUnclaimAll extends BaseCommand {
+public class CommandUnclaimAll extends BaseCommand {
 
     @Dependency private GuildHandler guildHandler;
     @Dependency private SettingsManager settingsManager;
 
-    @Subcommand("admin unclaim-all")
-    @Description("{@@descriptions.admin-unclaim-all}")
+    @Subcommand("console unclaimall")
+    @Description("{@@descriptions.console-unclaim-all}")
     @CommandPermission(Constants.ADMIN_PERM)
-    public void execute(Player player) {
+    public void execute(CommandIssuer issuer) {
+        if (issuer.isPlayer()) {
+            return;
+        }
 
         if (!ClaimUtils.isEnable(settingsManager))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.CLAIM__HOOK_DISABLED));
@@ -33,8 +36,8 @@ public class CommandAdminUnclaimAll extends BaseCommand {
         WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();
 
         guildHandler.getGuilds().forEach(g -> {
-            if (ClaimUtils.checkAlreadyExist(wrapper, player, g)) {
-                ClaimUtils.removeClaim(wrapper, g, player);
+            if (ClaimUtils.checkAlreadyExist(wrapper, g)) {
+                ClaimUtils.removeClaim(wrapper, g);
             }
         });
         getCurrentCommandIssuer().sendInfo(Messages.UNCLAIM__ALL_SUCCESS);

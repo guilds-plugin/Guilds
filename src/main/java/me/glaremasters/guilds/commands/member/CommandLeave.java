@@ -115,7 +115,7 @@ public class CommandLeave extends BaseCommand {
 
                     cooldownHandler.addCooldown(player, Cooldown.Type.Join.name(), settingsManager.getProperty(CooldownSettings.JOIN), TimeUnit.SECONDS);
 
-                    ClaimUtils.deleteWithGuild(player, guild, settingsManager);
+                    ClaimUtils.deleteWithGuild(guild, settingsManager);
 
                     guildHandler.removeGuild(guild);
 

@@ -91,7 +91,7 @@ public class CommandAdminRemove extends BaseCommand {
 
                 if (event.isCancelled())
                     return;
-                ClaimUtils.deleteWithGuild(player, guild, settingsManager);
+                ClaimUtils.deleteWithGuild(guild, settingsManager);
 
                 guild.sendMessage(getCurrentCommandManager(), Messages.LEAVE__GUILDMASTER_LEFT,
                         "{player}", Bukkit.getOfflinePlayer(guild.getGuildMaster().getUuid()).getName());
