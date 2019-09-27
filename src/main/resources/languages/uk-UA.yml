@@ -48,6 +48,7 @@ descriptions:
   confirm: "Confirm an action"
   console-backup: "Backup the plugin's data"
   console-migrate: "Migrate your data from one source to another"
+  console-unclaim-all: "Admin command to unclaim all guild claims on the server"
   console-update-languages: "Console command to update the language files"
   create: "Create a Guild"
   decline: "Decline a Guild invite"
@@ -245,6 +246,9 @@ claim:
 unclaim:
   success: "&aYou've successfully remove your guild claim!"
   not-found: "&cYou can't unclaim land that you don't have!"
+  all-warning: "&bImportant! &cYou are about to remove ALL claim data. Are you sure you would like to continue? Type /guilds confirm to continue or /guilds cancel to cancel!"
+  all-cancelled: "&aYou've successfully cancelled the removal of all claim data on the server."
+  all-success: "&aYou've successfully remove all guild claims on the server!"
 pending:
   invites: "&aYou have {number} pending invite(s) from the guild(s): &e{guilds}&r&a . Use /guild accept <name> or /guild decline <name> to join or decline an invite!"
 codes:
