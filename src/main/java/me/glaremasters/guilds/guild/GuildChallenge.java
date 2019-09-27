@@ -20,6 +20,7 @@ public class GuildChallenge {
     private transient boolean accepted;
     private transient boolean joinble;
     private transient boolean started;
+    private boolean completed;
     private transient int minPlayersPerSide;
     private transient int maxPlayersPerSide;
     private List<UUID> challengePlayers;
@@ -34,7 +35,7 @@ public class GuildChallenge {
     private transient LinkedMap<UUID, String> aliveChallengers;
     private transient LinkedMap<UUID, String> aliveDefenders;
 
-    public GuildChallenge(UUID id, long initiateTime, Guild challenger, Guild defender, boolean accepted, boolean joinble, boolean started, int minPlayersPerSide, int maxPlayersPerSide, List<UUID> challengePlayers, List<UUID> defendPlayers, Arena arena, Guild winner, Guild loser, LinkedMap<UUID, String> aliveChallengers, LinkedMap<UUID, String> aliveDefenders) {
+    public GuildChallenge(UUID id, long initiateTime, Guild challenger, Guild defender, boolean accepted, boolean joinble, boolean started, boolean completed, int minPlayersPerSide, int maxPlayersPerSide, List<UUID> challengePlayers, List<UUID> defendPlayers, Arena arena, Guild winner, Guild loser, LinkedMap<UUID, String> aliveChallengers, LinkedMap<UUID, String> aliveDefenders) {
         this.id = id;
         this.initiateTime = initiateTime;
         this.challenger = challenger;
@@ -42,6 +43,7 @@ public class GuildChallenge {
         this.accepted = accepted;
         this.joinble = joinble;
         this.started = started;
+        this.completed = completed;
         this.minPlayersPerSide = minPlayersPerSide;
         this.maxPlayersPerSide = maxPlayersPerSide;
         this.challengePlayers = challengePlayers;
@@ -185,6 +187,14 @@ public class GuildChallenge {
         this.aliveDefenders = aliveDefenders;
     }
 
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
+
     public static class GuildChallengeBuilder {
         private UUID id;
         private long initiateTime;
@@ -193,6 +203,7 @@ public class GuildChallenge {
         private boolean accepted;
         private boolean joinble;
         private boolean started;
+        private boolean completed;
         private int minPlayersPerSide;
         private int maxPlayersPerSide;
         private List<UUID> challengePlayers;
@@ -238,6 +249,11 @@ public class GuildChallenge {
 
         public GuildChallenge.GuildChallengeBuilder started(boolean started) {
             this.started = started;
+            return this;
+        }
+
+        public GuildChallenge.GuildChallengeBuilder completed(boolean completed) {
+            this.completed = completed;
             return this;
         }
 
@@ -287,7 +303,7 @@ public class GuildChallenge {
         }
 
         public GuildChallenge build() {
-            return new GuildChallenge(id, initiateTime, challenger, defender, accepted, joinble, started, minPlayersPerSide, maxPlayersPerSide, challengePlayers, defendPlayers, arena, winner, loser, aliveChallengers, aliveDefenders);
+            return new GuildChallenge(id, initiateTime, challenger, defender, accepted, joinble, started, completed, minPlayersPerSide, maxPlayersPerSide, challengePlayers, defendPlayers, arena, winner, loser, aliveChallengers, aliveDefenders);
         }
 
         public String toString() {

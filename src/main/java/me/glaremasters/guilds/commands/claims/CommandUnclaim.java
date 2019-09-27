@@ -78,10 +78,10 @@ public class CommandUnclaim extends BaseCommand {
 
         WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();
 
-        if (!ClaimUtils.checkAlreadyExist(wrapper, player, guild))
+        if (!ClaimUtils.checkAlreadyExist(wrapper, guild))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.UNCLAIM__NOT_FOUND));
 
-        ClaimUtils.removeClaim(wrapper, guild, player);
+        ClaimUtils.removeClaim(wrapper, guild);
 
         getCurrentCommandIssuer().sendInfo(Messages.UNCLAIM__SUCCESS);
     }

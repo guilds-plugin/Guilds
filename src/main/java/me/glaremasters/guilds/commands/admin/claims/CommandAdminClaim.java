@@ -68,7 +68,7 @@ public class CommandAdminClaim extends BaseCommand {
 
         WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();
 
-        if (ClaimUtils.checkAlreadyExist(wrapper, player, guild)) {
+        if (ClaimUtils.checkAlreadyExist(wrapper, guild)) {
             getCurrentCommandManager().getCommandIssuer(player).sendInfo(Messages.CLAIM__ALREADY_EXISTS);
             return;
         }

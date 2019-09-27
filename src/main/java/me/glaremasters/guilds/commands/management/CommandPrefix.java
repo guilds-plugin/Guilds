@@ -72,18 +72,23 @@ public class CommandPrefix extends BaseCommand {
         if (!role.isChangePrefix())
             ACFUtil.sneaky(new InvalidPermissionException());
 
+        if (settingsManager.getProperty(GuildSettings.DISABLE_PREFIX))
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.PREFIX__DISABLED));
+
+        if (!guildHandler.prefixCheck(prefix, settingsManager))
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.CREATE__PREFIX_TOO_LONG));
+
+        if (settingsManager.getProperty(GuildSettings.BLACKLIST_TOGGLE)) {
+            if (guildHandler.blacklistCheck(prefix, settingsManager))
+                ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__BLACKLIST));
+        }
+
         GuildPrefixEvent event = new GuildPrefixEvent(player, guild, prefix);
         Bukkit.getPluginManager().callEvent(event);
 
         if (event.isCancelled()) {
             return;
         }
-
-        if (settingsManager.getProperty(GuildSettings.DISABLE_PREFIX))
-            ACFUtil.sneaky(new ExpectationNotMet(Messages.PREFIX__DISABLED));
-
-        if (!guildHandler.prefixCheck(prefix, settingsManager))
-            ACFUtil.sneaky(new ExpectationNotMet(Messages.CREATE__PREFIX_TOO_LONG));
 
         getCurrentCommandIssuer().sendInfo(Messages.PREFIX__SUCCESSFUL,
                 "{prefix}", prefix);

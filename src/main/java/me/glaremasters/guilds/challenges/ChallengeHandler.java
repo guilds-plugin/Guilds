@@ -61,7 +61,26 @@ public class ChallengeHandler {
 
     public ChallengeHandler(Guilds guilds) {
         this.guilds = guilds;
-        this.challenges = new ArrayList<>();
+
+        Guilds.newChain().async(() -> {
+            try {
+                challenges = guilds.getDatabase().getChallengeAdapter().getAllChallenges();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).sync(() -> challenges.forEach(c -> {
+            if (!c.isCompleted()) {
+                c.setCompleted(true);
+            }
+        })).execute();
+    }
+
+    /**
+     * Save the data of challenges
+     * @throws IOException
+     */
+    public void saveData() throws IOException {
+        guilds.getDatabase().getChallengeAdapter().saveChallenges(challenges);
     }
 
     /**
@@ -75,7 +94,7 @@ public class ChallengeHandler {
     public GuildChallenge createNewChallenge(Guild challenger, Guild defender, int minPlayer, int maxPlayers, Arena arena) {
         return new GuildChallenge(UUID.randomUUID(), System.currentTimeMillis(), challenger,
                 defender, false, false,
-                false, minPlayer, maxPlayers,
+                false, false, minPlayer, maxPlayers,
                 new ArrayList<>(), new ArrayList<>(), arena,
                 null, null, new LinkedMap<>(), new LinkedMap<>());
     }
@@ -111,7 +130,7 @@ public class ChallengeHandler {
      * @return the challenge
      */
     public GuildChallenge getChallenge(@NotNull Guild guild) {
-        return challenges.stream().filter(c -> c.getChallenger() == guild || c.getDefender() == guild).findFirst().orElse(null);
+        return challenges.stream().filter(c -> (c.getChallenger() == guild || c.getDefender() == guild) && !c.isCompleted()).findFirst().orElse(null);
     }
 
     /**
@@ -121,7 +140,7 @@ public class ChallengeHandler {
      */
     public GuildChallenge getChallenge(@NotNull Player player) {
         return getActiveChallenges().stream()
-                .filter(c -> c.getAliveChallengers().keySet().contains(player.getUniqueId()) || c.getAliveDefenders().keySet().contains(player.getUniqueId()))
+                .filter(c -> (c.getAliveChallengers().containsKey(player.getUniqueId()) || c.getAliveDefenders().containsKey(player.getUniqueId())) && !c.isCompleted())
                 .findAny().orElse(null);
     }
 
@@ -373,6 +392,7 @@ public class ChallengeHandler {
         if (checkIfOver(challenge)) {
             // Specify the war is over
             challenge.setStarted(false);
+            challenge.setCompleted(true);
             // Open up the arena
             challenge.getArena().setInUse(false);
             // Broadcast the winner
@@ -393,11 +413,9 @@ public class ChallengeHandler {
             }
             try {
                 // Save the details about the challenge
-               guilds.getDatabase().getChallengeAdapter().createChallenge(challenge);
-                removeChallenge(challenge);
+               saveData();
             } catch (IOException e) {
                 e.printStackTrace();
-                removeChallenge(challenge);
             }
         }
     }

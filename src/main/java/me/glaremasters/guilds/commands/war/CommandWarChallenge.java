@@ -64,14 +64,14 @@ public class CommandWarChallenge extends BaseCommand {
         if (targetGuild == null)
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
 
+        // Check if same guild
+        if (guildHandler.isSameGuild(guild, targetGuild))
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.WAR__NO_SELF_CHALLENGE));
+
         // Make sure the defending guild is not on cooldown
         if (!challengeHandler.notOnCooldown(targetGuild, settingsManager))
             ACFUtil.sneaky(new ExpectationNotMet(Messages.WAR__DEFEND_COOLDOWN,
                     "{guild}", targetGuild.getName()));
-
-        // Check if same guild
-        if (guildHandler.isSameGuild(guild, targetGuild))
-            ACFUtil.sneaky(new ExpectationNotMet(Messages.WAR__NO_SELF_CHALLENGE));
 
         // Check for online defenders to accept challenge
         if (challengeHandler.getOnlineDefenders(targetGuild).isEmpty())

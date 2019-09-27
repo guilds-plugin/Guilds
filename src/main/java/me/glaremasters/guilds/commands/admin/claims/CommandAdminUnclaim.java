@@ -72,12 +72,12 @@ public class CommandAdminUnclaim extends BaseCommand {
 
         WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();
 
-        if (!ClaimUtils.checkAlreadyExist(wrapper, player, guild)) {
+        if (!ClaimUtils.checkAlreadyExist(wrapper, guild)) {
             getCurrentCommandManager().getCommandIssuer(player).sendInfo(Messages.UNCLAIM__NOT_FOUND);
             return;
         }
 
-        ClaimUtils.removeClaim(wrapper, guild, player);
+        ClaimUtils.removeClaim(wrapper, guild);
         getCurrentCommandIssuer().sendInfo(Messages.UNCLAIM__SUCCESS);
     }
 

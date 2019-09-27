@@ -317,6 +317,7 @@ public final class Guilds extends JavaPlugin {
                 guildHandler.saveData();
                 //cooldownHandler.saveCooldowns(); We are going to save on shutdown only, no need for runtime saving
                 arenaHandler.saveArenas();
+                challengeHandler.saveData();
             } catch (IOException e) {
                 e.printStackTrace();
             }

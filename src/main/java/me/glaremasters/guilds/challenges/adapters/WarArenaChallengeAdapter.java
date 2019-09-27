@@ -6,6 +6,7 @@ import com.google.gson.stream.JsonWriter;
 import me.glaremasters.guilds.arena.Arena;
 
 import java.io.IOException;
+import java.util.UUID;
 
 public class WarArenaChallengeAdapter extends TypeAdapter<Arena> {
 
@@ -21,6 +22,12 @@ public class WarArenaChallengeAdapter extends TypeAdapter<Arena> {
 
     @Override
     public Arena read(JsonReader in) throws IOException {
-        return null;
+        in.beginObject();
+        in.nextName();
+        String id = in.nextString();
+        in.nextName();
+        String name = in.nextString();
+        in.endObject();
+        return new Arena(UUID.fromString(id), name);
     }
 }

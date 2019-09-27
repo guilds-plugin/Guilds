@@ -96,7 +96,7 @@ public class CommandRename extends BaseCommand {
 
          if (ClaimUtils.isEnable(settingsManager)) {
              WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();
-             if (ClaimUtils.checkAlreadyExist(wrapper, player, guild)) {
+             if (ClaimUtils.checkAlreadyExist(wrapper, guild)) {
                  ClaimUtils.getGuildClaim(wrapper, player, guild).ifPresent(region -> {
                      ClaimUtils.setEnterMessage(wrapper, region, settingsManager, guild);
                      ClaimUtils.setExitMessage(wrapper, region, settingsManager, guild);

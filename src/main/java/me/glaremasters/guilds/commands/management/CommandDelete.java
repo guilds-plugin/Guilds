@@ -98,7 +98,7 @@ public class CommandDelete extends BaseCommand {
                 guild.sendMessage(getCurrentCommandManager(), Messages.LEAVE__GUILDMASTER_LEFT,
                         "{player}", player.getName());
 
-                ClaimUtils.deleteWithGuild(player, guild, settingsManager);
+                ClaimUtils.deleteWithGuild(guild, settingsManager);
 
                 guildHandler.removeGuild(guild);
 

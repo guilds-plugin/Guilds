@@ -14,6 +14,7 @@ import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.actions.ConfirmAction;
 import me.glaremasters.guilds.arena.ArenaHandler;
+import me.glaremasters.guilds.challenges.ChallengeHandler;
 import me.glaremasters.guilds.cooldowns.CooldownHandler;
 import me.glaremasters.guilds.database.DatabaseAdapter;
 import me.glaremasters.guilds.database.DatabaseBackend;
@@ -32,6 +33,7 @@ public class CommandMigrate extends BaseCommand {
     @Dependency private ActionHandler actionHandler;
     @Dependency private ArenaHandler arenaHandler;
     @Dependency private CooldownHandler cooldownHandler;
+    @Dependency private ChallengeHandler challengeHandler;
 
     @Subcommand("console migrate")
     @Description("{@@descriptions.console-migrate}")
@@ -64,6 +66,7 @@ public class CommandMigrate extends BaseCommand {
                         resolvedAdapter.getGuildAdapter().saveGuilds(guildHandler.getGuilds());
                         resolvedAdapter.getArenaAdapter().saveArenas(arenaHandler.getArenas());
                         resolvedAdapter.getCooldownAdapter().saveCooldowns(cooldownHandler.getCooldowns().values());
+                        resolvedAdapter.getChallengeAdapter().saveChallenges(challengeHandler.getChallenges());
 
                         DatabaseAdapter old = guilds.getDatabase();
                         guilds.setDatabase(resolvedAdapter);
