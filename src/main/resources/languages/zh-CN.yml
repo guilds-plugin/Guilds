@@ -48,6 +48,7 @@ descriptions:
   confirm: "确认"
   console-backup: "备份此插件的数据"
   console-migrate: "Migrate your data from one source to another"
+  console-unclaim-all: "Admin command to unclaim all guild claims on the server"
   console-update-languages: "用于更新语言文件的控制台指令"
   create: "创建公会"
   decline: "拒绝公会邀请"
@@ -245,6 +246,9 @@ claim:
 unclaim:
   success: "&7[&6公会&7]&f你已成功删除你的公会领地!"
   not-found: "&7[&6公会&7]&f公会领地不存在!"
+  all-warning: "&bImportant! &cYou are about to remove ALL claim data. Are you sure you would like to continue? Type /guilds confirm to continue or /guilds cancel to cancel!"
+  all-cancelled: "&aYou've successfully cancelled the removal of all claim data on the server."
+  all-success: "&aYou've successfully remove all guild claims on the server!"
 pending:
   invites: "&7[&6公会&7]&f你有来自公会的 {number} 个待处理邀请:  {guilds}   使用 /guild accept <name> 或 /guild deny <name> 来处理请求!"
 codes:
