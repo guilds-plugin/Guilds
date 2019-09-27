@@ -48,6 +48,7 @@ descriptions:
   confirm: "Подтвердить действие"
   console-backup: "Сделать резервную копию данных плагина"
   console-migrate: "Перенос Ваших данных из одного источника в другой"
+  console-unclaim-all: "Admin command to unclaim all guild claims on the server"
   console-update-languages: "Консольная команда для обновления языковых файлов"
   create: "Создать гильдию"
   decline: "Отклонить приглашение в гильдию"
@@ -245,6 +246,9 @@ claim:
 unclaim:
   success: "&aВы успешно удалили регион гильдии!"
   not-found: "&cВы не можете удалить регион, которого у Вас нет!"
+  all-warning: "&bImportant! &cYou are about to remove ALL claim data. Are you sure you would like to continue? Type /guilds confirm to continue or /guilds cancel to cancel!"
+  all-cancelled: "&aYou've successfully cancelled the removal of all claim data on the server."
+  all-success: "&aYou've successfully remove all guild claims on the server!"
 pending:
   invites: "&aВы имеете {number} действующих приглашений от следующих гильдий: &e{guilds}&r&a . Введите /guild accept <гильдия> для принятия или /guild decline <гильдия> для отклонения приглашения на вступление!"
 codes:
