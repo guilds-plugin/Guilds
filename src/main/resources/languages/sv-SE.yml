@@ -46,7 +46,7 @@ descriptions:
   code-list: "Lista alla nuvarande inbjudningskoder i din kod"
   code-redeem: "Lös in en inbjudningskod till en guild"
   confirm: "Bekräfta en handling"
-  console-backup: "Backup the plugin's data"
+  console-backup: "Säkerhetskopiera pluginets data"
   console-migrate: "Migrate your data from one source to another"
   console-unclaim-all: "Admin command to unclaim all guild claims on the server"
   console-update-languages: "Console command to update the language files"
