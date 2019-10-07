@@ -66,7 +66,7 @@ public class GuildSettings implements SettingsHolder {
     public static final Property<Boolean> BLACKLIST_TOGGLE =
             newProperty("guild.blacklist.enabled", true);
 
-    @Comment("Do we want the balcklist to be case sesitive?")
+    @Comment("Do we want the blacklist to be case sensitive?")
     public static final Property<Boolean> BLACKLIST_SENSITIVE =
             newProperty("guild.blacklist.case-sensitive", true);
 
