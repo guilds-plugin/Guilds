@@ -632,7 +632,10 @@ public class GuildHandler {
      * @return blacklisted or not
      */
     public boolean blacklistCheck(String name, SettingsManager settingsManager) {
-        return settingsManager.getProperty(GuildSettings.BLACKLIST_WORDS).stream().anyMatch(s -> s.toLowerCase().contains(name));
+    	if (settingsManager.getProperty(GuildSettings.BLACKLIST_SENSITIVE))
+    		return settingsManager.getProperty(GuildSettings.BLACKLIST_WORDS).stream().anyMatch(s -> s.toLowerCase().contains(name));
+    	else
+    		return settingsManager.getProperty(GuildSettings.BLACKLIST_WORDS).stream().anyMatch(s -> s.equalsIgnoreCase(name));
     }
 
     /**
