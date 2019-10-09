@@ -71,8 +71,9 @@ public class CommandDelete extends BaseCommand {
     @Description("{@@descriptions.delete}")
     @CommandPermission(Constants.BASE_PERM + "delete")
     public void execute(Player player, Guild guild, GuildRole role) {
-        if (!role.isRemoveGuild())
+        if (!role.isRemoveGuild()) {
             ACFUtil.sneaky(new InvalidPermissionException());
+        }
 
         if (guildHandler.isMigrating()) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__MIGRATING));
@@ -86,8 +87,9 @@ public class CommandDelete extends BaseCommand {
                 GuildRemoveEvent event = new GuildRemoveEvent(player, guild, GuildRemoveEvent.Cause.PLAYER_DELETED);
                 Bukkit.getPluginManager().callEvent(event);
 
-                if (event.isCancelled())
+                if (event.isCancelled()) {
                     return;
+                }
 
                 guildHandler.removePermsFromAll(permission, guild, settingsManager.getProperty(PluginSettings.RUN_VAULT_ASYNC));
 

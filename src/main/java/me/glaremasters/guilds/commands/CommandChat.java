@@ -61,9 +61,9 @@ public class CommandChat extends BaseCommand {
     @CommandPermission(Constants.BASE_PERM + "chat")
     @Syntax("[msg]")
     public void execute(Player player, Guild guild, GuildRole role, @Optional String msg) {
-
-        if (!role.isChat())
+        if (!role.isChat()) {
             ACFUtil.sneaky(new InvalidPermissionException());
+        }
 
         if (msg == null) {
             guildHandler.toggleGuildChat(getCurrentCommandManager(), player);

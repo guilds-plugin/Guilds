@@ -59,11 +59,13 @@ public class CommandAdminHome extends BaseCommand {
     public void execute(Player player, @Single String name) {
         Guild guild = guildHandler.getGuild(name);
 
-        if (guild == null)
+        if (guild == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
+        }
 
-        if (guild.getHome() == null)
+        if (guild.getHome() == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.HOME__NO_HOME_SET));
+        }
 
         player.teleport(guild.getHome().getAsLocation());
 

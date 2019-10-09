@@ -28,21 +28,24 @@ public class CommandWarDeny extends BaseCommand {
     @Description("{@@descriptions.war-deny}")
     @CommandPermission(Constants.WAR_PERM + "deny")
     public void execute(Player player, Guild guild, GuildRole role) {
-        if (!role.isInitiateWar())
+        if (!role.isInitiateWar()) {
             ACFUtil.sneaky(new InvalidPermissionException());
+        }
 
         GuildChallenge challenge = challengeHandler.getChallenge(guild);
 
         // Check to make sure they have a pending challenge
-        if (challenge == null)
+        if (challenge == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.WAR__NO_PENDING_CHALLENGE));
+        }
 
         // Get the challenger guild cause we assume this is the defender
         Guild challenger = challenge.getChallenger();
 
         // Should never be null, but just in case
-        if (challenger == null)
+        if (challenger == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
+        }
 
         // Send message to challenger saying that the challenge has been denied
         challenger.sendMessage(getCurrentCommandManager(), Messages.WAR__CHALLENGE_DENIED_CHALLENGER, "{guild}", guild.getName());

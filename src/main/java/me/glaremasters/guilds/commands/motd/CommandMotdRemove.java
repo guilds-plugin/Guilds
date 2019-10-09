@@ -62,8 +62,9 @@ public class CommandMotdRemove extends BaseCommand {
     @CommandPermission(Constants.MOTD_PERM + "modify")
     public void execute(Player player, Guild guild, GuildRole role) {
         // Check if role can modify the motd
-        if (!role.isModifyMotd())
+        if (!role.isModifyMotd()) {
             ACFUtil.sneaky(new InvalidPermissionException());
+        }
         // Remove the motd
         guild.setMotd(null);
         // Tell user they removed the motd

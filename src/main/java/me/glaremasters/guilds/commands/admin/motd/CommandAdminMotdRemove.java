@@ -66,8 +66,9 @@ public class CommandAdminMotdRemove extends BaseCommand {
         // Get the target guild
         Guild targetGuild = guildHandler.getGuild(guild);
         // Check if target guild is null, throw error
-        if (targetGuild == null)
+        if (targetGuild == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
+        }
         // Remove the MOTD of the guild
         targetGuild.setMotd(null);
         // Tell user they removed the motd

@@ -67,16 +67,19 @@ public class CommandAdminBankWithdraw extends BaseCommand {
     public void execute(CommandIssuer issuer, @Single String name, double amount) {
         Guild guild = guildHandler.getGuild(name);
 
-        if (guild == null)
+        if (guild == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
+        }
 
-        if (amount < 0)
+        if (amount < 0) {
             return;
+        }
 
         double total = guild.getBalance() - amount;
 
-        if (guild.getBalance() < amount)
+        if (guild.getBalance() < amount) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.BANK__NOT_ENOUGH_BANK));
+        }
 
         guild.setBalance(total);
 

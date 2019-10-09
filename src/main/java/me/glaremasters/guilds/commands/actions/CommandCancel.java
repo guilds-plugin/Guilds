@@ -58,8 +58,9 @@ public class CommandCancel extends BaseCommand {
     public void execute(CommandIssuer player) {
         ConfirmAction action = actionHandler.getAction(player.getIssuer());
 
-        if (action == null)
+        if (action == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.CANCEL__ERROR));
+        }
 
         getCurrentCommandIssuer().sendInfo(Messages.CANCEL__SUCCESS);
         action.decline();

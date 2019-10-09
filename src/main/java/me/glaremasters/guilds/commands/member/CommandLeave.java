@@ -81,10 +81,12 @@ public class CommandLeave extends BaseCommand {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__MIGRATING));
         }
 
-        if (guild.isMaster(player))
+        if (guild.isMaster(player)) {
             getCurrentCommandIssuer().sendInfo(Messages.LEAVE__WARNING_GUILDMASTER);
-        else
+        }
+        else {
             getCurrentCommandIssuer().sendInfo(Messages.LEAVE__WARNING);
+        }
 
         actionHandler.addAction(player, new ConfirmAction() {
             @Override
@@ -92,8 +94,9 @@ public class CommandLeave extends BaseCommand {
                 GuildLeaveEvent event = new GuildLeaveEvent(player, guild, GuildLeaveEvent.Cause.PLAYER_LEFT);
                 Bukkit.getPluginManager().callEvent(event);
 
-                if (event.isCancelled())
+                if (event.isCancelled()) {
                     return;
+                }
 
                 if (guild.isMaster(player)) {
                     GuildRemoveEvent removeEvent = new GuildRemoveEvent(player, guild, GuildRemoveEvent.Cause.MASTER_LEFT);
@@ -127,9 +130,7 @@ public class CommandLeave extends BaseCommand {
 
                     if (ClaimUtils.isEnable(settingsManager)) {
                         WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();
-                        ClaimUtils.getGuildClaim(wrapper, player, guild).ifPresent(region -> {
-                            ClaimUtils.removeMember(region, player);
-                        });
+                        ClaimUtils.getGuildClaim(wrapper, player, guild).ifPresent(region -> ClaimUtils.removeMember(region, player));
                     }
 
                     guild.removeMember(player);

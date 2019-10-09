@@ -65,11 +65,13 @@ public class CommandCodeCreate extends BaseCommand {
     @Syntax("<uses>")
     @CommandPermission(Constants.CODE_PERM + "create")
     public void execute(Player player, Guild guild, GuildRole role, @Default("1") Integer uses) {
-        if (!role.isCreateCode())
+        if (!role.isCreateCode()) {
             ACFUtil.sneaky(new InvalidPermissionException());
+        }
 
-        if (guild.getActiveCheck(settingsManager.getProperty(CodeSettings.ACTIVE_CODE_AMOUNT)))
+        if (guild.getActiveCheck(settingsManager.getProperty(CodeSettings.ACTIVE_CODE_AMOUNT))) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.CODES__MAX));
+        }
 
         String code = RandomStringUtils.randomAlphabetic(settingsManager.getProperty(CodeSettings.CODE_LENGTH));
 

@@ -68,16 +68,20 @@ public class CommandBankWithdraw extends BaseCommand {
     @Syntax("<amount>")
     public void execute(Player player, Guild guild, GuildRole role, double amount) {
 
+        if (!role.isWithdrawMoney()) {
+            ACFUtil.sneaky(new InvalidPermissionException());
+        }
+
         double balance = guild.getBalance();
 
-        if (!role.isWithdrawMoney())
-            ACFUtil.sneaky(new InvalidPermissionException());
-
-        if (amount < 0)
+        if (amount < 0) {
             return;
+        }
 
-        if (balance < amount)
+        if (balance < amount) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.BANK__NOT_ENOUGH_BANK));
+        }
+
 
         GuildWithdrawMoneyEvent event = new GuildWithdrawMoneyEvent(player, guild, amount);
         Bukkit.getPluginManager().callEvent(event);

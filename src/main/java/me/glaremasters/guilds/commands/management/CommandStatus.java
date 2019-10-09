@@ -55,8 +55,9 @@ public class CommandStatus extends BaseCommand {
     @Description("{@@descriptions.status}")
     @CommandPermission(Constants.BASE_PERM + "status")
     public void execute(Player player, Guild guild, GuildRole role) {
-        if (!role.isChangeStatus())
+        if (!role.isChangeStatus()) {
             ACFUtil.sneaky(new InvalidPermissionException());
+        }
         guild.toggleStatus();
         getCurrentCommandIssuer().sendInfo(Messages.STATUS__SUCCESSFUL,
                 "{status}", guild.getStatus().name());

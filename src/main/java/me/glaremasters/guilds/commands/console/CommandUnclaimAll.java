@@ -33,8 +33,9 @@ public class CommandUnclaimAll extends BaseCommand {
             getCurrentCommandIssuer().sendInfo(Messages.ERROR__CONSOLE_COMMAND);
         }
 
-        if (!ClaimUtils.isEnable(settingsManager))
+        if (!ClaimUtils.isEnable(settingsManager)) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.CLAIM__HOOK_DISABLED));
+        }
 
         getCurrentCommandIssuer().sendInfo(Messages.MIGRATE__WARNING);
 

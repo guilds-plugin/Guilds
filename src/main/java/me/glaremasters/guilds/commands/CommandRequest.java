@@ -74,17 +74,20 @@ public class CommandRequest extends BaseCommand {
     public void execute(Player player, @Values("@guilds") @Single String name) {
         Guild guild = guildHandler.getGuild(player);
 
-        if (guild != null)
+        if (guild != null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__ALREADY_IN_GUILD));
+        }
 
         Guild target = guildHandler.getGuild(name);
 
-        if (target == null)
+        if (target == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
+        }
 
-        if (cooldownHandler.hasCooldown(Cooldown.Type.Request.name(), player.getUniqueId()))
+        if (cooldownHandler.hasCooldown(Cooldown.Type.Request.name(), player.getUniqueId())) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.REQUEST__COOLDOWN, "{time}",
                     String.valueOf(cooldownHandler.getRemaining(Cooldown.Type.Request.name(), player.getUniqueId()))));
+        }
 
         cooldownHandler.addCooldown(player, Cooldown.Type.Request.name(), settingsManager.getProperty(CooldownSettings.REQUEST), TimeUnit.SECONDS);
 

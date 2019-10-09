@@ -58,8 +58,9 @@ public class CommandCheck extends BaseCommand {
     public void execute(Player player) {
         Guild guild = guildHandler.getGuild(player);
 
-        if (guild != null)
+        if (guild != null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__ALREADY_IN_GUILD));
+        }
 
         guildHandler.checkInvites(getCurrentCommandManager(), player);
     }

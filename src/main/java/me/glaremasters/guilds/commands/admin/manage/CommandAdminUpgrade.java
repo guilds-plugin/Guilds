@@ -65,11 +65,13 @@ public class CommandAdminUpgrade extends BaseCommand {
     public void execute(Player player, @Values("@guilds") @Single String name) {
         Guild guild = guildHandler.getGuild(name);
 
-        if (guild == null)
+        if (guild == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
+        }
 
-        if (guildHandler.isMaxTier(guild))
+        if (guildHandler.isMaxTier(guild)) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.UPGRADE__TIER_MAX));
+        }
 
         guildHandler.upgradeTier(guild);
 

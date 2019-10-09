@@ -59,8 +59,9 @@ public class CommandAllyList extends BaseCommand {
     @Description("{@@descriptions.ally-list}")
     @CommandPermission(Constants.ALLY_PERM + "list")
     public void execute(Player player, Guild guild) {
-        if (!guild.hasAllies())
+        if (!guild.hasAllies()) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ALLY__NONE));
+        }
 
         getCurrentCommandIssuer().sendInfo(Messages.ALLY__LIST,
                 "{ally-list}", guild.getAllies().stream().map(m -> guildHandler.getGuild(m).getName()).collect(Collectors.joining(",")));

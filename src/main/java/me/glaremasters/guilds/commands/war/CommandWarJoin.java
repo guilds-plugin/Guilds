@@ -60,12 +60,14 @@ public class CommandWarJoin extends BaseCommand {
         GuildChallenge challenge = challengeHandler.getChallenge(guild);
 
         // Check to make sure they have a pending challenge
-        if (challenge == null)
+        if (challenge == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.WAR__NO_PENDING_CHALLENGE));
+        }
 
         // Make sure the war is joinablke
-        if (!challenge.isJoinble())
+        if (!challenge.isJoinble()) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.WAR__NOT_JOINABLE));
+        }
 
         // Check if they are the defender
         if (challenge.getDefender() == guild) {

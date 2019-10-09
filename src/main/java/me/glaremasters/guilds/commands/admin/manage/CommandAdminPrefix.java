@@ -67,8 +67,9 @@ public class CommandAdminPrefix extends BaseCommand {
     public void execute(Player player, @Values("@guilds") @Single String name, String prefix) {
         Guild guild = guildHandler.getGuild(name);
 
-        if (guild == null)
+        if (guild == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
+        }
 
         guild.setPrefix(ACFBukkitUtil.color(prefix));
 

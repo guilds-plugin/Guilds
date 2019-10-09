@@ -59,8 +59,9 @@ public class CommandAdminDelHome extends BaseCommand {
     public void execute(Player player, @Single String name) {
         Guild guild = guildHandler.getGuild(name);
 
-        if (guild == null)
+        if (guild == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
+        }
 
         guild.delHome();
 

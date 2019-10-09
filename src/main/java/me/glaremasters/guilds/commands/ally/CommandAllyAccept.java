@@ -67,16 +67,19 @@ public class CommandAllyAccept extends BaseCommand {
     @CommandCompletion("@allyInvites")
     @Syntax("<guild name>")
     public void execute(Player player, Guild guild, GuildRole role, @Values("@allyInvites") @Single String name) {
-        if (!role.isAddAlly())
+        if (!role.isAddAlly()) {
             ACFUtil.sneaky(new InvalidPermissionException());
+        }
 
         Guild target = guildHandler.getGuild(name);
 
-        if (target == null)
+        if (target == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
+        }
 
-        if (!guild.isAllyPending(target))
+        if (!guild.isAllyPending(target)) {
             return;
+        }
 
         guild.removePendingAlly(target);
         guildHandler.addAlly(guild, target);

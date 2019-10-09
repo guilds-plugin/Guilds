@@ -64,11 +64,13 @@ public class CommandAdminUnclaim extends BaseCommand {
     public void execute(Player player, @Values("@guilds") @Single String name) {
         Guild guild = guildHandler.getGuild(name);
 
-        if (guild == null)
+        if (guild == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
+        }
 
-        if (!ClaimUtils.isEnable(settingsManager))
+        if (!ClaimUtils.isEnable(settingsManager)) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.CLAIM__HOOK_DISABLED));
+        }
 
         WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();
 

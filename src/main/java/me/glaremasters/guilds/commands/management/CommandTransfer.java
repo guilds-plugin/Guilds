@@ -65,13 +65,16 @@ public class CommandTransfer extends BaseCommand {
     @CommandCompletion("@members")
     @Syntax("<player>")
     public void execute(Player player, Guild guild, GuildRole role, @Values("@members") @Single String target) {
-        if (!role.isTransferGuild())
+        if (!role.isTransferGuild()) {
             ACFUtil.sneaky(new InvalidPermissionException());
+        }
 
         Player transfer = Bukkit.getPlayer(target);
 
-        if (transfer == null)
+        if (transfer == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__PLAYER_NOT_FOUND));
+        }
+
 
         GuildTransferEvent event = new GuildTransferEvent(player, guild, transfer);
         Bukkit.getPluginManager().callEvent(event);

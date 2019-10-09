@@ -58,8 +58,9 @@ public class CommandConfirm extends BaseCommand {
     public void execute(CommandIssuer player) {
         ConfirmAction action = actionHandler.getAction(player.getIssuer());
 
-        if (action == null)
+        if (action == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.CONFIRM__ERROR));
+        }
 
         getCurrentCommandIssuer().sendInfo(Messages.CONFIRM__SUCCESS);
         action.accept();

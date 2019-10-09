@@ -70,19 +70,20 @@ public class CommandSetHome extends BaseCommand {
     @Description("{@@descriptions.sethome}")
     @CommandPermission(Constants.BASE_PERM + "sethome")
     public void execute(Player player, Guild guild, GuildRole role) {
-
-        if (!role.isChangeHome())
+        if (!role.isChangeHome()) {
             ACFUtil.sneaky(new InvalidPermissionException());
+        }
 
-        if (cooldownHandler.hasCooldown(Cooldown.Type.SetHome.name(), player.getUniqueId()))
+        if (cooldownHandler.hasCooldown(Cooldown.Type.SetHome.name(), player.getUniqueId())) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.SETHOME__COOLDOWN, "{amount}",
                     String.valueOf(cooldownHandler.getRemaining(Cooldown.Type.SetHome.name(), player.getUniqueId()))));
+        }
 
         double cost = settingsManager.getProperty(CostSettings.SETHOME);
 
-        if (!EconomyUtils.hasEnough(guild.getBalance(), cost))
+        if (!EconomyUtils.hasEnough(guild.getBalance(), cost)) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.BANK__NOT_ENOUGH_BANK));
-
+        }
 
         cooldownHandler.addCooldown(player, Cooldown.Type.SetHome.name(), settingsManager.getProperty(CooldownSettings.SETHOME), TimeUnit.SECONDS);
 

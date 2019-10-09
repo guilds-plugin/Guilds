@@ -67,13 +67,15 @@ public class CommandAdminRemovePlayer extends BaseCommand {
     public void execute(Player player, String target) {
         OfflinePlayer removing = Bukkit.getOfflinePlayer(target);
 
-        if (removing == null)
+        if (removing == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__PLAYER_NOT_FOUND));
+        }
 
         Guild guild = guildHandler.getGuild(removing);
 
-        if (guild == null)
+        if (guild == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
+        }
 
         GuildLeaveEvent event = new GuildLeaveEvent(player, guild, GuildLeaveEvent.Cause.ADMIN_REMOVED);
         Bukkit.getPluginManager().callEvent(event);
@@ -87,9 +89,10 @@ public class CommandAdminRemovePlayer extends BaseCommand {
 
         guild.removeMember(removing);
 
-        if (removing.isOnline())
+        if (removing.isOnline()) {
             getCurrentCommandManager().getCommandIssuer(removing).sendInfo(Messages.ADMIN__PLAYER_REMOVED,
                     "{guild}", guild.getName());
+        }
 
         getCurrentCommandIssuer().sendInfo(Messages.ADMIN__ADMIN_PLAYER_REMOVED,
                 "{player}", removing.getName(),

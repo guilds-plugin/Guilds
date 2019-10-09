@@ -34,8 +34,9 @@ public class CommandArenaList extends BaseCommand {
 
         List<String> arenas = arenaHandler.getArenas().stream().filter(Objects::nonNull).map(Arena::getName).collect(Collectors.toList());
 
-        if (arenas.isEmpty())
+        if (arenas.isEmpty()) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ARENA__LIST_EMPTY));
+        }
 
         getCurrentCommandIssuer().sendInfo(Messages.ARENA__LIST, "{arenas}", String.join(", ", arenas));
     }

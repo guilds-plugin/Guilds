@@ -38,8 +38,9 @@ public class CommandArenaDelete extends BaseCommand {
         Arena selectedArena = arenaHandler.getArena(arena);
 
         // Make sure it's not null
-        if (selectedArena == null)
+        if (selectedArena == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ARENA__NO_EXIST));
+        }
 
         // Remove the arena from the existence of time
         arenaHandler.removeArena(selectedArena);

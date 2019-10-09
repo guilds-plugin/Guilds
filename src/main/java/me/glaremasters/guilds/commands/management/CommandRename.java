@@ -71,18 +71,22 @@ public class CommandRename extends BaseCommand {
     @CommandPermission(Constants.BASE_PERM + "rename")
     @Syntax("<name>")
     public void execute(Player player, Guild guild, GuildRole role, String name) {
-        if (!role.isChangeName())
+        if (!role.isChangeName()) {
             ACFUtil.sneaky(new InvalidPermissionException());
+        }
 
-        if (guildHandler.checkGuildNames(name))
+        if (guildHandler.checkGuildNames(name)) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.CREATE__GUILD_NAME_TAKEN));
+        }
 
-        if (!guildHandler.nameCheck(name, settingsManager))
+        if (!guildHandler.nameCheck(name, settingsManager)) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.CREATE__REQUIREMENTS));
+        }
 
         if (settingsManager.getProperty(GuildSettings.BLACKLIST_TOGGLE)) {
-            if (guildHandler.blacklistCheck(name, settingsManager))
+            if (guildHandler.blacklistCheck(name, settingsManager)) {
                 ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__BLACKLIST));
+            }
         }
 
         GuildRenameEvent event = new GuildRenameEvent(player, guild, name);

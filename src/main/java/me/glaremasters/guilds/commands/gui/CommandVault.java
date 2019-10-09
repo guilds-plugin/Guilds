@@ -58,8 +58,9 @@ public class CommandVault extends BaseCommand {
     @Description("{@@descriptions.vault}")
     @CommandPermission(Constants.BASE_PERM + "vault")
     public void execute(Player player, Guild guild, GuildRole role) {
-        if (!role.isOpenVault())
+        if (!role.isOpenVault()) {
             ACFUtil.sneaky(new InvalidPermissionException());
+        }
 
        guilds.getGuiHandler().getVaultGUI().getVaultGUI(guild, player, getCurrentCommandManager()).show(player);
     }
