@@ -43,6 +43,7 @@ permissions:
       guilds.command.language: true
       guilds.command.leave: true
       guilds.command.list: true
+      guilds.command.members: true
       guilds.command.motd: true
       guilds.command.motd-modify: true
       guilds.command.prefix: true

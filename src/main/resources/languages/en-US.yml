@@ -64,6 +64,7 @@ descriptions:
   language: "Change the language of the plugin messages for you"
   leave: "Leave your Guild"
   list: "List all Guilds"
+  members: "Opens the Member List GUI"
   motd: "View your Guild's MOTD"
   motd-set: "Set your Guild's MOTD"
   motd-remove: "Remove your Guild's MOTD"
