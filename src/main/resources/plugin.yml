@@ -64,5 +64,6 @@ permissions:
   guilds.group.admin:
     children:
       guilds.command.admin: true
+      guilds.chat.spy: true
       guilds.group.member: true
     default: op
