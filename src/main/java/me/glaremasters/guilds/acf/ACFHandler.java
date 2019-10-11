@@ -120,7 +120,7 @@ public class ACFHandler {
         commandManager.getCommandCompletions().registerCompletion("arenas", c -> arenaHandler.getArenas().stream().map(Arena::getName).collect(Collectors.toList()));
         commandManager.getCommandCompletions().registerCompletion("locations", c -> Arrays.asList("challenger", "defender"));
         commandManager.getCommandCompletions().registerCompletion("languages", c -> guilds.getLoadedLanguages().stream().sorted().collect(Collectors.toList()));
-        commandManager.getCommandCompletions().registerCompletion("sources", c -> Arrays.asList("JSON", "MYSQL", "SQLITE"));
+        commandManager.getCommandCompletions().registerCompletion("sources", c -> Arrays.asList("JSON", "MYSQL", "SQLITE", "MARIADB"));
 
         commandManager.getCommandCompletions().registerCompletion("members", c -> {
             Guild guild = guildHandler.getGuild(c.getPlayer());
