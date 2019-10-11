@@ -146,6 +146,10 @@
                                     <pattern>org.jdbi</pattern>
                                     <shadedPattern>me.glaremasters.guilds.libs.jdbi</shadedPattern>
                                 </relocation>
+                                <relocation>
+                                    <pattern>org.mariadb.jdbc</pattern>
+                                    <shadedPattern>me.glaremasters.guilds.libs.mariadb</shadedPattern>
+                                </relocation>
                             </relocations>
                         </configuration>
                     </execution>
@@ -392,6 +396,14 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>1.7.25</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Used for MariaDB -->
+        <dependency>
+            <groupId>org.mariadb.jdbc</groupId>
+            <artifactId>mariadb-java-client</artifactId>
+            <version>2.4.0</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

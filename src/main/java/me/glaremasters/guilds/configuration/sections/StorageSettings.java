@@ -9,7 +9,7 @@ import static ch.jalu.configme.properties.PropertyInitializer.newProperty;
 
 public class StorageSettings implements SettingsHolder {
 
-    @Comment("What storage method should be used? (MySQL, JSON, SQLite)")
+    @Comment("What storage method should be used? (MySQL, MariaDB, JSON, SQLite)")
     public static final Property<String> STORAGE_TYPE =
             newProperty("storage.storage-type", "json");
 
