@@ -50,7 +50,7 @@ public class CommandAdminSpy extends BaseCommand {
      */
     @Subcommand("admin spy")
     @Description("{@@descriptions.admin-spy}")
-    @CommandPermission(Constants.ADMIN_PERM)
+    @CommandPermission("guilds.chat.spy")
     public void execute(Player player) {
         guildHandler.toggleSpy(getCurrentCommandManager(), player);
     }

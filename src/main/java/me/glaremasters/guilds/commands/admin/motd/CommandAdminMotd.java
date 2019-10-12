@@ -66,11 +66,13 @@ public class CommandAdminMotd extends BaseCommand {
         // Get the target guild
         Guild targetGuild = guildHandler.getGuild(guild);
         // Check if target guild is null, throw error
-        if (targetGuild == null)
+        if (targetGuild == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
+        }
         // Check if motd is null
-        if (targetGuild.getMotd() == null)
+        if (targetGuild.getMotd() == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.MOTD__NOT_SET));
+        }
         // Tell the user their motd
         getCurrentCommandIssuer().sendInfo(Messages.ADMIN__MOTD,
                 "{guild}", targetGuild.getName(), "{motd}", targetGuild.getMotd());

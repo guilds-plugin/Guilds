@@ -63,23 +63,27 @@ public class CommandUnclaim extends BaseCommand {
     @Description("{@@descriptions.unclaim}")
     @CommandPermission(Constants.BASE_PERM + "unclaim")
     public void execute(Player player, Guild guild, GuildRole role) {
-        if (!role.isUnclaimLand())
+        if (!role.isUnclaimLand()) {
             ACFUtil.sneaky(new InvalidPermissionException());
+        }
 
-        if (!ClaimUtils.isEnable(settingsManager))
+        if (!ClaimUtils.isEnable(settingsManager)) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.CLAIM__HOOK_DISABLED));
+        }
 
         if (ClaimUtils.isInDisabledWorld(player, settingsManager)) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.CLAIM__HOOK_DISABLED));
         }
 
-        if (settingsManager.getProperty(ClaimSettings.FORCE_CLAIM_SIGNS))
+        if (settingsManager.getProperty(ClaimSettings.FORCE_CLAIM_SIGNS)) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.CLAIM__SIGN_FORCED));
+        }
 
         WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();
 
-        if (!ClaimUtils.checkAlreadyExist(wrapper, guild))
+        if (!ClaimUtils.checkAlreadyExist(wrapper, guild)) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.UNCLAIM__NOT_FOUND));
+        }
 
         ClaimUtils.removeClaim(wrapper, guild);
 

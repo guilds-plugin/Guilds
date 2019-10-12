@@ -66,8 +66,9 @@ public class CommandAdminGive extends BaseCommand {
     @CommandCompletion("@online")
     @Syntax("<player> <amount>")
     public void execute(CommandSender sender, @Values("@online") OnlinePlayer player, @Default("1") Integer amount) {
-        if (player == null)
+        if (player == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__PLAYER_NOT_FOUND));
+        }
 
         player.getPlayer().getInventory().addItem(guildHandler.getUpgradeTicket(settingsManager, amount));
         getCurrentCommandIssuer().sendInfo(Messages.CONFIRM__SUCCESS);

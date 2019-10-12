@@ -69,25 +69,30 @@ public class CommandInvite extends BaseCommand {
     @CommandCompletion("@online")
     @Syntax("<name>")
     public void execute(Player player, Guild guild, GuildRole role, @Values("@online") @Single String target) {
-        if (!role.isInvite())
+        if (!role.isInvite()) {
             ACFUtil.sneaky(new InvalidPermissionException());
+        }
 
         Player pl = Bukkit.getPlayer(target);
 
-        if (pl == null || !pl.isOnline())
+        if (pl == null || !pl.isOnline()) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__PLAYER_NOT_FOUND, "{player}", target));
+        }
 
-        if (guildHandler.getGuild(pl) != null)
+        if (guildHandler.getGuild(pl) != null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.INVITE__ALREADY_IN_GUILD, "{player}", target));
+        }
 
-        if (guild.checkIfInvited(pl))
+        if (guild.checkIfInvited(pl)) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.INVITE__ALREADY_INVITED));
+        }
 
         GuildInviteEvent event =  new GuildInviteEvent(player, guild, pl);
         Bukkit.getPluginManager().callEvent(event);
 
-        if (event.isCancelled())
+        if (event.isCancelled()) {
             return;
+        }
 
         guild.inviteMember(pl.getUniqueId());
 

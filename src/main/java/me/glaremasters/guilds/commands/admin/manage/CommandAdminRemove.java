@@ -73,8 +73,9 @@ public class CommandAdminRemove extends BaseCommand {
     public void execute(Player player, @Values("@guilds") @Single String name) {
         Guild guild = guildHandler.getGuild(name);
 
-        if (guild == null)
+        if (guild == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
+        }
 
         if (guildHandler.isMigrating()) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__MIGRATING));
@@ -89,8 +90,10 @@ public class CommandAdminRemove extends BaseCommand {
                 GuildRemoveEvent event = new GuildRemoveEvent(player, guild, GuildRemoveEvent.Cause.ADMIN_DELETED);
                 Bukkit.getPluginManager().callEvent(event);
 
-                if (event.isCancelled())
+                if (event.isCancelled()) {
                     return;
+                }
+
                 ClaimUtils.deleteWithGuild(guild, settingsManager);
 
                 guild.sendMessage(getCurrentCommandManager(), Messages.LEAVE__GUILDMASTER_LEFT,

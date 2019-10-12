@@ -156,6 +156,13 @@ public class Libraries {
                 .artifactId("slf4j-api")
                 .version("1.7.25")
                 .build());
+
+        loader.loadLibrary(Library.builder()
+                .groupId("org{}mariadb{}jdbc")
+                .artifactId("mariadb-java-client")
+                .version("2.4.0")
+                .relocate("org{}mariadb{}jdbc", "me.glaremasters.guilds.libs.mariadb")
+                .build());
     }
 
 }

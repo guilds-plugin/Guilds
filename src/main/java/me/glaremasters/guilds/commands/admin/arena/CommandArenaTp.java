@@ -40,21 +40,24 @@ public class CommandArenaTp extends BaseCommand {
         Arena selectedArena = arenaHandler.getArena(arena);
 
         // Make sure it's not null
-        if (selectedArena == null)
+        if (selectedArena == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ARENA__NO_EXIST));
+        }
 
         // Make sure the selected point exist
         if (location.equalsIgnoreCase("challenger")) {
-            if (selectedArena.getChallenger() == null)
+            if (selectedArena.getChallenger() == null) {
                 // Tell them that the point wasn't set yet
                 ACFUtil.sneaky(new ExpectationNotMet(Messages.ARENA__POSITION_NOT_SET));
+            }
             // Teleport them to the location
             player.teleport(ACFBukkitUtil.stringToLocation(selectedArena.getChallenger()));
             // Make sure the selected point exist
         } else if (location.equalsIgnoreCase("defender")) {
-            if (selectedArena.getDefender() == null)
+            if (selectedArena.getDefender() == null) {
                 // Tell them that the point wasn't set yet
                 ACFUtil.sneaky(new ExpectationNotMet(Messages.ARENA__POSITION_NOT_SET));
+            }
             // Teleport them to the location
             player.teleport(ACFBukkitUtil.stringToLocation(selectedArena.getDefender()));
         }

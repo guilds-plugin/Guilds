@@ -39,25 +39,29 @@ public class CommandWarAccept extends BaseCommand {
     @Description("{@@descriptions.war-accept}")
     @CommandPermission(Constants.WAR_PERM + "accept")
     public void execute(Player player, Guild guild, GuildRole role) {
-        if (!role.isInitiateWar())
+        if (!role.isInitiateWar()) {
             ACFUtil.sneaky(new InvalidPermissionException());
+        }
 
         GuildChallenge challenge = challengeHandler.getChallenge(guild);
 
         // Check to make sure they have a pending challenge
-        if (challenge == null)
+        if (challenge == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.WAR__NO_PENDING_CHALLENGE));
+        }
 
         // Get the challenger guild cause we assume this is the defender
         Guild challenger = challenge.getChallenger();
 
         // Make sure it wasn't already accepted
-        if (challenge.isAccepted())
+        if (challenge.isAccepted()) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.WAR__ALREADY_ACCEPTED));
+        }
 
         // Check again when accepting to make sure there are still enough players online
-        if (!challengeHandler.checkEnoughOnline(challenger, guild, challenge.getMinPlayersPerSide()))
+        if (!challengeHandler.checkEnoughOnline(challenger, guild, challenge.getMinPlayersPerSide())) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.WAR__NOT_ENOUGH_ON));
+        }
 
         // Variable for join time
         int joinTime = settingsManager.getProperty(WarSettings.JOIN_TIME);

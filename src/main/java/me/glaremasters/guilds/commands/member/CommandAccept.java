@@ -74,29 +74,35 @@ public class CommandAccept extends BaseCommand {
     @CommandCompletion("@joinableGuilds")
     @Syntax("<guild name>")
     public void execute(Player player, @Single String name) {
-        if (guildHandler.getGuild(player) != null)
+        if (guildHandler.getGuild(player) != null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__ALREADY_IN_GUILD));
+        }
 
-        if (cooldownHandler.hasCooldown(Cooldown.Type.Join.name(), player.getUniqueId()))
+        if (cooldownHandler.hasCooldown(Cooldown.Type.Join.name(), player.getUniqueId())) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ACCEPT__COOLDOWN, "{amount}",
                     String.valueOf(cooldownHandler.getRemaining(Cooldown.Type.Join.name(), player.getUniqueId()))));
+        }
 
         Guild guild = guildHandler.getGuild(name);
 
-        if (guild == null)
+        if (guild == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
+        }
 
-        if (!guild.checkIfInvited(player) && guild.isPrivate())
+        if (!guild.checkIfInvited(player) && guild.isPrivate()) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ACCEPT__NOT_INVITED));
+        }
 
-        if (guildHandler.checkIfFull(guild))
+        if (guildHandler.checkIfFull(guild)) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ACCEPT__GUILD_FULL));
+        }
 
         GuildJoinEvent event = new GuildJoinEvent(player, guild);
         Bukkit.getPluginManager().callEvent(event);
 
-        if (event.isCancelled())
+        if (event.isCancelled()) {
             return;
+        }
 
         guild.sendMessage(getCurrentCommandManager(), Messages.ACCEPT__PLAYER_JOINED,
                 "{player}", player.getName());
@@ -107,9 +113,7 @@ public class CommandAccept extends BaseCommand {
 
         if (ClaimUtils.isEnable(settingsManager)) {
             WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();
-            ClaimUtils.getGuildClaim(wrapper, player, guild).ifPresent(region -> {
-                ClaimUtils.addMember(region, player);
-            });
+            ClaimUtils.getGuildClaim(wrapper, player, guild).ifPresent(region -> ClaimUtils.addMember(region, player));
         }
 
         getCurrentCommandIssuer().sendInfo(Messages.ACCEPT__SUCCESSFUL,

@@ -94,25 +94,30 @@ public class CommandCreate extends BaseCommand {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__MIGRATING));
         }
 
-        if (cooldownHandler.hasCooldown(Cooldown.Type.Join.name(), player.getUniqueId()))
+        if (cooldownHandler.hasCooldown(Cooldown.Type.Join.name(), player.getUniqueId())) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ACCEPT__COOLDOWN, "{amount}",
                     String.valueOf(cooldownHandler.getRemaining(Cooldown.Type.Join.name(), player.getUniqueId()))));
+        }
 
         double cost = settingsManager.getProperty(CostSettings.CREATION);
 
-        if (guildHandler.getGuild(player) != null)
+        if (guildHandler.getGuild(player) != null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__ALREADY_IN_GUILD));
-
-        if (guildHandler.checkGuildNames(name))
-            ACFUtil.sneaky(new ExpectationNotMet(Messages.CREATE__GUILD_NAME_TAKEN));
-
-        if (settingsManager.getProperty(GuildSettings.BLACKLIST_TOGGLE)) {
-            if (guildHandler.blacklistCheck(name, settingsManager))
-                ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__BLACKLIST));
         }
 
-        if (!guildHandler.nameCheck(name, settingsManager))
+        if (guildHandler.checkGuildNames(name)) {
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.CREATE__GUILD_NAME_TAKEN));
+        }
+
+        if (settingsManager.getProperty(GuildSettings.BLACKLIST_TOGGLE)) {
+            if (guildHandler.blacklistCheck(name, settingsManager)) {
+                ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__BLACKLIST));
+            }
+        }
+
+        if (!guildHandler.nameCheck(name, settingsManager)) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.CREATE__REQUIREMENTS));
+        }
 
         if (!settingsManager.getProperty(GuildSettings.DISABLE_PREFIX)) {
             if (prefix != null) {
@@ -126,25 +131,29 @@ public class CommandCreate extends BaseCommand {
             }
         }
 
-        if (!EconomyUtils.hasEnough(getCurrentCommandManager(), economy, player, cost))
+        if (!EconomyUtils.hasEnough(getCurrentCommandManager(), economy, player, cost)) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__NOT_ENOUGH_MONEY));
+        }
 
         getCurrentCommandIssuer().sendInfo(Messages.CREATE__WARNING, "{amount}", String.valueOf(NumberFormat.getInstance().format(cost)));
 
         actionHandler.addAction(player, new ConfirmAction() {
             @Override
             public void accept() {
-                if (!EconomyUtils.hasEnough(getCurrentCommandManager(), economy, player, cost))
+                if (!EconomyUtils.hasEnough(getCurrentCommandManager(), economy, player, cost)) {
                     ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__NOT_ENOUGH_MONEY));
+                }
 
                 Guild.GuildBuilder gb = Guild.builder();
                 gb.id(UUID.randomUUID());
                 gb.name(ACFBukkitUtil.color(name));
                 if (!settingsManager.getProperty(GuildSettings.DISABLE_PREFIX)) {
-                    if (prefix == null)
+                    if (prefix == null) {
                         gb.prefix(ACFBukkitUtil.color(name));
-                    else
+                    }
+                    else {
                         gb.prefix(ACFBukkitUtil.color(prefix));
+                    }
                 } else {
                     gb.prefix("");
                 }

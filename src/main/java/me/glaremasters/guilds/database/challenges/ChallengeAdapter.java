@@ -25,6 +25,7 @@ public class ChallengeAdapter {
                 break;
             case MYSQL:
             case SQLITE:
+            case MARIADB:
                 sqlTablePrefix = adapter.getSqlTablePrefix();
                 provider = adapter.getDatabaseManager().getJdbi().onDemand(backend.getChallengeProvider());
                 break;

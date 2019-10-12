@@ -73,23 +73,27 @@ public class CommandUpgrade extends BaseCommand {
     @Description("{@@descriptions.upgrade}")
     @CommandPermission(Constants.BASE_PERM + "upgrade")
     public void execute(Player player, Guild guild, GuildRole role) {
-        if (!role.isUpgradeGuild())
+        if (!role.isUpgradeGuild()) {
             ACFUtil.sneaky(new InvalidPermissionException());
+        }
 
-        if (guildHandler.isMaxTier(guild))
+        if (guildHandler.isMaxTier(guild)) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.UPGRADE__TIER_MAX));
+        }
 
         GuildTier tier = guildHandler.getGuildTier(guild.getTier().getLevel() + 1);
         double balance = guild.getBalance();
         double upgradeCost = tier.getCost();
 
-        if (guildHandler.memberCheck(guild))
+        if (guildHandler.memberCheck(guild)) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.UPGRADE__NOT_ENOUGH_MEMBERS,
                     "{amount}", String.valueOf(guild.getTier().getMembersToRankup())));
+        }
 
-        if (!EconomyUtils.hasEnough(balance, upgradeCost))
+        if (!EconomyUtils.hasEnough(balance, upgradeCost)) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.UPGRADE__NOT_ENOUGH_MONEY, "{needed}",
                     String.valueOf(NumberFormat.getInstance().format(upgradeCost - balance))));
+        }
 
         getCurrentCommandIssuer().sendInfo(Messages.UPGRADE__MONEY_WARNING, "{amount}",
                 String.valueOf(NumberFormat.getInstance().format(upgradeCost)));
@@ -97,15 +101,16 @@ public class CommandUpgrade extends BaseCommand {
         actionHandler.addAction(player, new ConfirmAction() {
             @Override
             public void accept() {
-                if (!EconomyUtils.hasEnough(balance, upgradeCost))
+                if (!EconomyUtils.hasEnough(balance, upgradeCost)) {
                     ACFUtil.sneaky(new ExpectationNotMet(Messages.UPGRADE__NOT_ENOUGH_MONEY, "{needed}",
                             String.valueOf(NumberFormat.getInstance().format(upgradeCost - balance))));
+                }
 
                 guild.setBalance(balance - upgradeCost);
 
-                if (!settingsManager.getProperty(TierSettings.CARRY_OVER))
+                if (!settingsManager.getProperty(TierSettings.CARRY_OVER)) {
                     guildHandler.removePermsFromAll(permission, guild, settingsManager.getProperty(PluginSettings.RUN_VAULT_ASYNC));
-
+                }
 
                 guildHandler.upgradeTier(guild);
 

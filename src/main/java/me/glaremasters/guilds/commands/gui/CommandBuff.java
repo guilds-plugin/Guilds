@@ -59,11 +59,13 @@ public class CommandBuff extends BaseCommand {
     @Description("{@@descriptions.buff}")
     @CommandPermission(Constants.BASE_PERM + "buff")
     public void execute(Player player, Guild guild, GuildRole role) {
-        if (!guild.getTier().isUseBuffs())
+        if (!guild.getTier().isUseBuffs()) {
             ACFUtil.sneaky(new InvalidTierException());
+        }
 
-        if (!role.isActivateBuff())
+        if (!role.isActivateBuff()) {
             ACFUtil.sneaky(new InvalidPermissionException());
+        }
 
         guilds.getGuiHandler().getBuffGUI().getBuffGUI().show(player);
     }

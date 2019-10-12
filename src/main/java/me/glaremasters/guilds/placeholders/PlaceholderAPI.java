@@ -72,7 +72,7 @@ public class PlaceholderAPI extends PlaceholderExpansion {
      */
     @Override
     public String getVersion() {
-        return "2.0";
+        return "2.1";
     }
 
     /**
@@ -130,6 +130,8 @@ public class PlaceholderAPI extends PlaceholderExpansion {
                 return String.valueOf(api.getGuild(p).getGuildScore().getWins());
             case "challenge_loses":
                 return String.valueOf(api.getGuild(p).getGuildScore().getLoses());
+            case "motd":
+                return api.getGuild(p).getMotd();
             default:
                 return "";
         }

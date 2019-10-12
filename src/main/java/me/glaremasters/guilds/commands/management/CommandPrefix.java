@@ -69,18 +69,22 @@ public class CommandPrefix extends BaseCommand {
     @CommandPermission(Constants.BASE_PERM + "prefix")
     @Syntax("<prefix>")
     public void execute(Player player, Guild guild, GuildRole role, String prefix) {
-        if (!role.isChangePrefix())
+        if (!role.isChangePrefix()) {
             ACFUtil.sneaky(new InvalidPermissionException());
+        }
 
-        if (settingsManager.getProperty(GuildSettings.DISABLE_PREFIX))
+        if (settingsManager.getProperty(GuildSettings.DISABLE_PREFIX)) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.PREFIX__DISABLED));
+        }
 
-        if (!guildHandler.prefixCheck(prefix, settingsManager))
+        if (!guildHandler.prefixCheck(prefix, settingsManager)) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.CREATE__PREFIX_TOO_LONG));
+        }
 
         if (settingsManager.getProperty(GuildSettings.BLACKLIST_TOGGLE)) {
-            if (guildHandler.blacklistCheck(prefix, settingsManager))
+            if (guildHandler.blacklistCheck(prefix, settingsManager)) {
                 ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__BLACKLIST));
+            }
         }
 
         GuildPrefixEvent event = new GuildPrefixEvent(player, guild, prefix);

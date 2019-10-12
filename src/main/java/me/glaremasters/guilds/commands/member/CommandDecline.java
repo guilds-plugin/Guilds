@@ -65,14 +65,17 @@ public class CommandDecline extends BaseCommand {
     public void execute(Player player, @Values("@invitedTo") @Single String name) {
         Guild guild = guildHandler.getGuild(name);
 
-        if (guild == null)
+        if (guild == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
+        }
 
-        if (guildHandler.getGuild(player) != null)
+        if (guildHandler.getGuild(player) != null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__ALREADY_IN_GUILD));
+        }
 
-        if (!guild.checkIfInvited(player))
+        if (!guild.checkIfInvited(player)) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ACCEPT__NOT_INVITED));
+        }
 
         guild.removeInvitedMember(player.getUniqueId());
 

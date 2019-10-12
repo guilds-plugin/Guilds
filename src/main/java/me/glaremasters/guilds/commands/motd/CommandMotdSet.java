@@ -64,8 +64,9 @@ public class CommandMotdSet extends BaseCommand {
     @CommandPermission(Constants.MOTD_PERM + "modify")
     public void execute(Player player, Guild guild, GuildRole role, String motd) {
         // Check if user can modify motd
-        if (!role.isModifyMotd())
+        if (!role.isModifyMotd()) {
             ACFUtil.sneaky(new InvalidPermissionException());
+        }
         // Set the motd
         guild.setMotd(ACFBukkitUtil.color(motd));
         // Tell the user they set the motd

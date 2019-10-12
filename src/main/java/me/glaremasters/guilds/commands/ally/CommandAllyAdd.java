@@ -69,28 +69,34 @@ public class CommandAllyAdd extends BaseCommand {
     @CommandCompletion("@guilds")
     @Syntax("<guild name>")
     public void execute(Player player, Guild guild, GuildRole role, @Values("@guilds") @Single String name) {
-        if (!role.isAddAlly())
+        if (!role.isAddAlly()) {
             ACFUtil.sneaky(new InvalidPermissionException());
+        }
 
         Guild target = guildHandler.getGuild(name);
 
-        if (target == null)
+        if (target == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
+        }
 
-        if (guild.isAllyPending(target))
+        if (guild.isAllyPending(target)) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ALLY__ALREADY_REQUESTED));
+        }
 
-        if (guildHandler.isAlly(guild, target))
+        if (guildHandler.isAlly(guild, target)) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ALLY__ALREADY_ALLY));
+        }
 
-        if (guild.getId().equals(target.getId()))
+        if (guild.getId().equals(target.getId())) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ALLY__SAME_GUILD));
+        }
 
         GuildAddAllyEvent event = new GuildAddAllyEvent(player, guild, target);
         Bukkit.getServer().getPluginManager().callEvent(event);
 
-        if (event.isCancelled())
+        if (event.isCancelled()) {
             return;
+        }
 
         getCurrentCommandIssuer().sendInfo(Messages.ALLY__INVITE_SENT,
                 "{guild}", target.getName());

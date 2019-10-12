@@ -70,28 +70,34 @@ public class CommandDemote extends BaseCommand {
     @CommandCompletion("@members")
     @Syntax("<player>")
     public void execute(Player player, Guild guild, GuildRole role, @Values("@members") @Single String target) {
-        if (!role.isDemote())
+        if (!role.isDemote()) {
             ACFUtil.sneaky(new InvalidPermissionException());
+        }
 
         OfflinePlayer user = PlayerUtils.getPlayer(target);
 
-        if (user == null)
+        if (user == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__PLAYER_NOT_FOUND,
                     "{player}", target));
+        }
 
-        if (user.getName().equals(player.getName()))
+        if (user.getName().equals(player.getName())) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.DEMOTE__CANT_DEMOTE));
+        }
 
-        if (!RoleUtils.inGuild(guild, user))
+        if (!RoleUtils.inGuild(guild, user)) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__PLAYER_NOT_IN_GUILD,
                     "{player}", target));
+        }
 
-        if (RoleUtils.sameRole(guild, player, user))
+        if (RoleUtils.sameRole(guild, player, user)) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.DEMOTE__CANT_DEMOTE));
+        }
 
         if (RoleUtils.isLowest(guildHandler, guild.getMember(user.getUniqueId())) ||
-                (RoleUtils.isLower(guild.getMember(user.getUniqueId()), guild.getMember(player.getUniqueId()))))
+                (RoleUtils.isLower(guild.getMember(user.getUniqueId()), guild.getMember(player.getUniqueId())))) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.DEMOTE__CANT_DEMOTE));
+        }
 
         RoleUtils.demote(guildHandler, guild, user);
 
@@ -103,10 +109,12 @@ public class CommandDemote extends BaseCommand {
                 "{old}", oldRole,
                 "{new}", newRole);
 
-        if (user.isOnline())
+        if (user.isOnline()) {
             getCurrentCommandManager().getCommandIssuer(user).sendInfo(Messages.DEMOTE__YOU_WERE_DEMOTED,
                     "{old}", oldRole,
                     "{new}", newRole);
+        }
+
 
 
     }

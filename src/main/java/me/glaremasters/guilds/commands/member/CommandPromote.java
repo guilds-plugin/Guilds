@@ -70,24 +70,29 @@ public class CommandPromote extends BaseCommand {
     @CommandCompletion("@members")
     @Syntax("<player>")
     public void execute(Player player, Guild guild, GuildRole role, @Values("@members") @Single String target) {
-        if (!role.isPromote())
+        if (!role.isPromote()) {
             ACFUtil.sneaky(new InvalidPermissionException());
+        }
 
         OfflinePlayer user = PlayerUtils.getPlayer(target);
 
-        if (user == null)
+        if (user == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__PLAYER_NOT_FOUND,
                     "{player}", target));
+        }
 
-        if (user.getName().equals(player.getName()))
+        if (user.getName().equals(player.getName())) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.PROMOTE__CANT_PROMOTE));
+        }
 
-        if ((!RoleUtils.inGuild(guild, user)) && !RoleUtils.checkPromote(guild, user, player))
+        if ((!RoleUtils.inGuild(guild, user)) && !RoleUtils.checkPromote(guild, user, player)) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__PLAYER_NOT_IN_GUILD,
                     "{player}", target));
+        }
 
-        if (RoleUtils.isOfficer(guild, user))
+        if (RoleUtils.isOfficer(guild, user)) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.PROMOTE__CANT_PROMOTE));
+        }
 
         RoleUtils.promote(guildHandler, guild, user);
 
@@ -99,10 +104,11 @@ public class CommandPromote extends BaseCommand {
                 "{old}", oldRole,
                 "{new}", newRole);
 
-        if (user.isOnline())
+        if (user.isOnline()) {
             getCurrentCommandManager().getCommandIssuer(user).sendInfo(Messages.PROMOTE__YOU_WERE_PROMOTED,
                     "{old}", oldRole,
                     "{new}", newRole);
+        }
 
 
     }

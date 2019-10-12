@@ -67,11 +67,13 @@ public class CommandAdminBankDeposit extends BaseCommand {
     public void execute(CommandIssuer issuer, @Single String name, double amount) {
         Guild guild = guildHandler.getGuild(name);
 
-        if (guild == null)
+        if (guild == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
+        }
 
-        if (amount < 0)
+        if (amount < 0) {
             return;
+        }
 
         double balance = guild.getBalance();
         double total = balance + amount;

@@ -43,39 +43,46 @@ public class CommandWarChallenge extends BaseCommand {
     @CommandPermission(Constants.WAR_PERM + "challenge")
     @CommandCompletion("@guilds")
     public void execute(Player player, Guild guild, GuildRole role, @Values("@guilds") @Single String target) {
-        if (!role.isInitiateWar())
+        if (!role.isInitiateWar()) {
             ACFUtil.sneaky(new InvalidPermissionException());
+        }
 
         // Make sure they aren't already challenging someone / being challenged
-        if (challengeHandler.getChallenge(guild) != null)
+        if (challengeHandler.getChallenge(guild) != null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.WAR__ALREADY_CHALLENGING));
+        }
 
         // Get an arena
         Arena arena = arenaHandler.getAvailableArena();
 
         // Check if there are any open arenas
-        if (arena == null)
+        if (arena == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ARENA__ALL_FULL));
+        }
 
         // Get the guild
         Guild targetGuild = guildHandler.getGuild(target);
 
         // Check if null
-        if (targetGuild == null)
+        if (targetGuild == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
+        }
 
         // Check if same guild
-        if (guildHandler.isSameGuild(guild, targetGuild))
+        if (guildHandler.isSameGuild(guild, targetGuild)) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.WAR__NO_SELF_CHALLENGE));
+        }
 
         // Make sure the defending guild is not on cooldown
-        if (!challengeHandler.notOnCooldown(targetGuild, settingsManager))
+        if (!challengeHandler.notOnCooldown(targetGuild, settingsManager)) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.WAR__DEFEND_COOLDOWN,
                     "{guild}", targetGuild.getName()));
+        }
 
         // Check for online defenders to accept challenge
-        if (challengeHandler.getOnlineDefenders(targetGuild).isEmpty())
+        if (challengeHandler.getOnlineDefenders(targetGuild).isEmpty()) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.WAR__NO_DEFENDERS));
+        }
 
         // Min players
         int minPlayers = settingsManager.getProperty(WarSettings.MIN_PLAYERS);
@@ -83,8 +90,9 @@ public class CommandWarChallenge extends BaseCommand {
         int maxPlayers = settingsManager.getProperty(WarSettings.MAX_PLAYERS);
 
         // Check to make sure both guilds have enough players on for a war
-        if (!challengeHandler.checkEnoughOnline(guild, targetGuild, minPlayers))
+        if (!challengeHandler.checkEnoughOnline(guild, targetGuild, minPlayers)) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.WAR__NOT_ENOUGH_ON));
+        }
 
         // Create the new guild challenge
         GuildChallenge challenge = challengeHandler.createNewChallenge(guild, targetGuild, minPlayers, maxPlayers, arena);

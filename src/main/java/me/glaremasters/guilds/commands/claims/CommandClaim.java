@@ -64,26 +64,32 @@ public class CommandClaim extends BaseCommand {
     @Description("{@@descriptions.claim}")
     @CommandPermission(Constants.BASE_PERM + "claim")
     public void execute(Player player, Guild guild, GuildRole role) {
-        if (!role.isClaimLand())
+        if (!role.isClaimLand()) {
             ACFUtil.sneaky(new InvalidPermissionException());
+        }
 
-        if (!ClaimUtils.isEnable(settingsManager))
+        if (!ClaimUtils.isEnable(settingsManager)) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.CLAIM__HOOK_DISABLED));
+        }
 
         if (ClaimUtils.isInDisabledWorld(player, settingsManager)) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.CLAIM__HOOK_DISABLED));
         }
 
-        if (settingsManager.getProperty(ClaimSettings.FORCE_CLAIM_SIGNS))
+        if (settingsManager.getProperty(ClaimSettings.FORCE_CLAIM_SIGNS)) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.CLAIM__SIGN_FORCED));
+        }
 
         WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();
 
-        if (ClaimUtils.checkAlreadyExist(wrapper, guild))
+        if (ClaimUtils.checkAlreadyExist(wrapper, guild)) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.CLAIM__ALREADY_EXISTS));
+        }
 
-        if (ClaimUtils.checkOverlap(wrapper, player, settingsManager))
+
+        if (ClaimUtils.checkOverlap(wrapper, player, settingsManager)) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.CLAIM__OVERLAP));
+        }
 
         ClaimUtils.createClaim(wrapper, guild, player, settingsManager);
 

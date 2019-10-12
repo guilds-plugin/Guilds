@@ -65,12 +65,13 @@ public class CommandCodeInfo extends BaseCommand {
     @Syntax("<code>")
     @CommandCompletion("@activeCodes")
     public void execute(Player player, Guild guild, GuildRole role, @Values("@activeCodes") @Single String code) {
-
-        if (!role.isSeeCodeRedeemers())
+        if (!role.isSeeCodeRedeemers()) {
             ACFUtil.sneaky(new InvalidPermissionException());
+        }
 
-        if (code == null)
+        if (code == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.CODES__INVALID_CODE));
+        }
 
         GuildCode gc = guild.getCode(code);
 

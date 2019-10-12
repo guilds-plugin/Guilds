@@ -69,22 +69,26 @@ public class CommandAllyRemove extends BaseCommand {
     @CommandCompletion("@allies")
     @Syntax("<guild name>")
     public void execute(Player player, Guild guild, GuildRole role, @Values("@allies") @Single String name) {
-        if (!role.isRemoveAlly())
+        if (!role.isRemoveAlly()) {
             ACFUtil.sneaky(new InvalidPermissionException());
+        }
 
         Guild target = guildHandler.getGuild(name);
 
-        if (target == null)
+        if (target == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
+        }
 
-        if (!guildHandler.isAlly(guild, target))
+        if (!guildHandler.isAlly(guild, target)) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ALLY__NOT_ALLIED));
+        }
 
         GuildRemoveAllyEvent event = new GuildRemoveAllyEvent(player, guild, target);
         Bukkit.getServer().getPluginManager().callEvent(event);
 
-        if (event.isCancelled())
+        if (event.isCancelled()) {
             return;
+        }
 
         guildHandler.removeAlly(guild, target);
 

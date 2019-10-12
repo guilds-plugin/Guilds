@@ -66,12 +66,14 @@ public class CommandHome extends BaseCommand {
     @Description("{@@descriptions.home}")
     @CommandPermission(Constants.BASE_PERM + "home")
     public void execute(Player player, Guild guild) {
-        if (guild.getHome() == null)
+        if (guild.getHome() == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.HOME__NO_HOME_SET));
+        }
 
-        if (cooldownHandler.hasCooldown(Cooldown.Type.Home.name(), player.getUniqueId()))
+        if (cooldownHandler.hasCooldown(Cooldown.Type.Home.name(), player.getUniqueId())) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.HOME__COOLDOWN, "{amount}",
                     String.valueOf(cooldownHandler.getRemaining(Cooldown.Type.Home.name(), player.getUniqueId()))));
+        }
 
         cooldownHandler.addCooldown(player, Cooldown.Type.Home.name(), settingsManager.getProperty(CooldownSettings.HOME), TimeUnit.SECONDS);
 

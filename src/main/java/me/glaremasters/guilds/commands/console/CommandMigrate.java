@@ -41,7 +41,7 @@ public class CommandMigrate extends BaseCommand {
     @CommandCompletion("@sources")
     public void execute(CommandIssuer issuer, @Values("@sources") String toBackend) throws IOException {
         if (issuer.isPlayer()) {
-            return;
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__CONSOLE_COMMAND);
         }
 
         getCurrentCommandIssuer().sendInfo(Messages.MIGRATE__WARNING);

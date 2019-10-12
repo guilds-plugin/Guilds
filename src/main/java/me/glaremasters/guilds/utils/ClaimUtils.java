@@ -101,8 +101,12 @@ public class ClaimUtils {
      */
     public static boolean checkAlreadyExist(WorldGuardWrapper wrapper, Guild guild) {
         for (World world : Bukkit.getWorlds()) {
-            if (wrapper.getRegion(world, getClaimName(guild)).isPresent()) {
+            Optional<IWrappedRegion> tempRegion = wrapper.getRegion(world, getClaimName(guild));
+            try {
+                tempRegion.get().getId();
                 return true;
+            } catch (Exception ex) {
+                return false;
             }
         }
         return false;

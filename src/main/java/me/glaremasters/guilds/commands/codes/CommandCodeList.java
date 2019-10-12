@@ -60,16 +60,17 @@ public class CommandCodeList extends BaseCommand {
     @Description("{@@descriptions.code-list}")
     @CommandPermission(Constants.CODE_PERM + "list")
     public void execute(Player player, Guild guild) {
-
-        if (guild.getCodes().isEmpty())
+        if (guild.getCodes().isEmpty()) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.CODES__EMPTY));
+        }
 
         getCurrentCommandIssuer().sendInfo(Messages.CODES__LIST_HEADER);
 
-        if (settingsManager.getProperty(CodeSettings.LIST_INACTIVE_CODES))
+        if (settingsManager.getProperty(CodeSettings.LIST_INACTIVE_CODES)) {
             guildHandler.handleCodeList(getCurrentCommandManager(), player, guild.getCodes());
-        else
+        } else {
             guildHandler.handleCodeList(getCurrentCommandManager(), player, guild.getActiveCodes());
+        }
     }
 
 }

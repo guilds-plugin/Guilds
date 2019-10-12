@@ -62,7 +62,7 @@ public class CommandUpdateLanguages extends BaseCommand {
     @CommandPermission(Constants.ADMIN_PERM)
     public void execute(CommandIssuer issuer) {
         if (issuer.isPlayer()) {
-            return;
+            getCurrentCommandIssuer().sendInfo(Messages.ERROR__CONSOLE_COMMAND);
         }
         getCurrentCommandIssuer().sendInfo(Messages.LANGUAGES__WARNING);
         actionHandler.addAction(issuer.getIssuer(), new ConfirmAction() {

@@ -67,8 +67,9 @@ public class CommandAdminRename extends BaseCommand {
     public void execute(Player player, @Values("@guilds") @Single String name, String newName) {
         Guild guild = guildHandler.getGuild(name);
 
-        if (guild == null)
+        if (guild == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
+        }
 
         guild.setName(ACFBukkitUtil.color(newName));
         getCurrentCommandIssuer().sendInfo(Messages.RENAME__SUCCESSFUL,

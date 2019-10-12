@@ -60,9 +60,9 @@ public class CommandCodeDelete extends BaseCommand {
     @CommandPermission(Constants.CODE_PERM + "delete")
     @CommandCompletion("@activeCodes")
     public void execute(Player player, Guild guild, GuildRole role, @Values("@activeCodes") @Single String code) {
-
-        if (!role.isDeleteCode())
+        if (!role.isDeleteCode()) {
             ACFUtil.sneaky(new InvalidPermissionException());
+        }
 
         guild.removeCode(code);
 

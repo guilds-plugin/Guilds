@@ -68,24 +68,29 @@ public class CommandAdminAddPlayer extends BaseCommand {
     public void execute(Player player, @Values("@online") @Single String target, @Values("@guilds") @Single String name) {
         OfflinePlayer adding = Bukkit.getOfflinePlayer(target);
 
-        if (adding == null)
+        if (adding == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__PLAYER_NOT_FOUND));
+        }
 
         Guild possibleGuild = guildHandler.getGuild(adding);
 
-        if (possibleGuild != null)
+        if (possibleGuild != null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__ALREADY_IN_GUILD));
+        }
 
         Guild targetGuild = guildHandler.getGuild(name);
 
-        if (targetGuild == null)
+        if (targetGuild == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
+        }
+
 
         targetGuild.addMember(adding, guildHandler);
 
-        if (adding.isOnline())
+        if (adding.isOnline()) {
             getCurrentCommandManager().getCommandIssuer(adding).sendInfo(Messages.ADMIN__PLAYER_ADDED,
                     "{guild}", targetGuild.getName());
+        }
 
         getCurrentCommandIssuer().sendInfo(Messages.ADMIN__ADMIN_PLAYER_ADDED,
                 "{player}", adding.getName(),

@@ -67,8 +67,9 @@ public class CommandAdminMotdSet extends BaseCommand {
         // Get the target guild
         Guild targetGuild = guildHandler.getGuild(guild);
         // Check if target guild is null, throw error
-        if (targetGuild == null)
+        if (targetGuild == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
+        }
         // Set the MOTD of the guild
         targetGuild.setMotd(ACFBukkitUtil.color(motd));
         // Tell the player that they set the motd

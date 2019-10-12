@@ -26,6 +26,7 @@ public class GuildAdapter {
                 break;
             case MYSQL:
             case SQLITE:
+            case MARIADB:
                 sqlTablePrefix = adapter.getSqlTablePrefix();
                 provider = adapter.getDatabaseManager().getJdbi().onDemand(backend.getGuildProvider());
                 break;

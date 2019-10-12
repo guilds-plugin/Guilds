@@ -35,6 +35,15 @@ public class DatabaseManager {
                 config.setPoolName("Guilds SQLite Connection Pool");
                 config.setJdbcUrl("jdbc:sqlite:plugins/Guilds/guilds.db");
                 break;
+            case MARIADB:
+                config.setPoolName("Guilds MariaDB Connection Pool");
+                config.setDataSourceClassName("org.mariadb.jdbc.MariaDbDataSource");
+                config.addDataSourceProperty("serverName", settingsManager.getProperty(StorageSettings.SQL_HOST));
+                config.addDataSourceProperty("port", settingsManager.getProperty(StorageSettings.SQL_PORT));
+                config.addDataSourceProperty("databaseName", databaseName);
+                config.addDataSourceProperty("user", settingsManager.getProperty(StorageSettings.SQL_USERNAME));
+                config.addDataSourceProperty("password", settingsManager.getProperty(StorageSettings.SQL_PASSWORD));
+                break;
             default:
                 throw new IllegalArgumentException("Invalid backend for DatabaseManager setup: " + backend.getBackendName());
         }

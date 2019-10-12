@@ -70,21 +70,25 @@ public class CommandBankDeposit extends BaseCommand {
     @Syntax("<amount>")
     public void execute(Player player, Guild guild, GuildRole role, double amount) {
 
+        if (!role.isDepositMoney()) {
+            ACFUtil.sneaky(new InvalidPermissionException());
+        }
+
         double balance = guild.getBalance();
         double total = amount + balance;
         GuildTier tier = guild.getTier();
 
-        if (!role.isDepositMoney())
-            ACFUtil.sneaky(new InvalidPermissionException());
-
-        if (amount < 0)
+        if (amount < 0) {
             return;
+        }
 
-        if (!EconomyUtils.hasEnough(getCurrentCommandManager(), economy, player, amount))
+        if (!EconomyUtils.hasEnough(getCurrentCommandManager(), economy, player, amount)) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__NOT_ENOUGH_MONEY));
+        }
 
-        if (total > tier.getMaxBankBalance())
+        if (total > tier.getMaxBankBalance()) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.BANK__OVER_MAX));
+        }
 
         GuildDepositMoneyEvent event = new GuildDepositMoneyEvent(player, guild, amount);
         Bukkit.getPluginManager().callEvent(event);

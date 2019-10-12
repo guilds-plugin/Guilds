@@ -83,22 +83,26 @@ public class CommandKick extends BaseCommand {
     @CommandCompletion("@members")
     @Syntax("<name>")
     public void execute(Player player, Guild guild, GuildRole role, @Values("@members") @Single String name) {
-        if (!role.isKick())
+        if (!role.isKick()) {
             ACFUtil.sneaky(new InvalidPermissionException());
+        }
 
         OfflinePlayer boot = Bukkit.getOfflinePlayer(name);
 
-        if (boot == null)
+        if (boot == null) {
             return;
+        }
 
         GuildMember kick = guild.getMember(boot.getUniqueId());
 
-        if (kick == null)
+        if (kick == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__PLAYER_NOT_IN_GUILD,
                     "{player}", name));
+        }
 
-        if (guild.isMaster(boot))
+        if (guild.isMaster(boot)) {
             ACFUtil.sneaky(new InvalidPermissionException());
+        }
 
         GuildLeaveEvent event = new GuildLeaveEvent(player, guild, GuildLeaveEvent.Cause.PLAYER_KICKED);
         Bukkit.getPluginManager().callEvent(event);
@@ -123,9 +127,10 @@ public class CommandKick extends BaseCommand {
                 "{player}", boot.getName(),
                 "{kicker}", player.getName());
 
-        if (boot.isOnline())
+        if (boot.isOnline()) {
             getCurrentCommandManager().getCommandIssuer(boot).sendInfo(Messages.BOOT__KICKED,
                     "{kicker}", player.getName());
+        }
     }
 
 }

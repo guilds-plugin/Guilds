@@ -58,16 +58,19 @@ public class CommandCodeRedeem extends BaseCommand {
     @CommandPermission(Constants.CODE_PERM + "redeem")
     public void execute(Player player, String code) {
 
-        if (guildHandler.getGuild(player) != null)
+        if (guildHandler.getGuild(player) != null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__ALREADY_IN_GUILD));
+        }
 
         Guild guild = guildHandler.getGuildByCode(code);
 
-        if (guild == null)
+        if (guild == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.CODES__INVALID_CODE));
+        }
 
-        if (guildHandler.checkIfFull(guild))
+        if (guildHandler.checkIfFull(guild)) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ACCEPT__GUILD_FULL));
+        }
 
         guildHandler.handleInvite(getCurrentCommandManager(), player, guild, guild.getCode(code));
     }
