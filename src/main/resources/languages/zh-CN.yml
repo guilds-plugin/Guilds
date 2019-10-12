@@ -64,6 +64,7 @@ descriptions:
   language: "更改你的语言预设文件"
   leave: "离开你的公会"
   list: "列出所有公会"
+  members: "Opens the Member List GUI"
   motd: "查看你公会的MOTD"
   motd-set: "设置你公会的MOTD"
   motd-remove: "移除你公会的MOTD"
@@ -114,6 +115,7 @@ error:
   buff-no-permission: "&c抱歉, 你没有权限购买这个增益效果!"
   no-pending-invites: "&c抱歉, 你没有待接受的公会邀请!"
   migrating: "&cSorry, this action can't be done. Data is currently migrating! Try again a few minutes."
+  console-command: "&cSorry, this command can only be preformed by the console."
 bank:
   balance: "&7[&6公会&7]&f当前公会金库: {amount}金币"
   deposit-success: "&a{player} 存入了 {amount} 至公会银行. 现在的余额为 {total}."
