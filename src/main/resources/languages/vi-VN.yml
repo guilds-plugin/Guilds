@@ -64,6 +64,7 @@ descriptions:
   language: "Thay đổi ngôn ngữ plugin cho bạn"
   leave: "Rời khỏi Guild của bạn"
   list: "Danh sách tất cả Guild"
+  members: "Opens the Member List GUI"
   motd: "View your Guild's MOTD"
   motd-set: "Set your Guild's MOTD"
   motd-remove: "Remove your Guild's MOTD"
@@ -114,6 +115,7 @@ error:
   buff-no-permission: "&cSorry, you do not have permission to buy this buff!"
   no-pending-invites: "&cSorry, you currently do not have any pending guild invites!"
   migrating: "&cSorry, this action can't be done. Data is currently migrating! Try again a few minutes."
+  console-command: "&cSorry, this command can only be preformed by the console."
 bank:
   balance: "&aNgân khố của Guild là {amount}."
   deposit-success: "&a{player} has just deposited {amount} into the Guild Bank. Your new total is {total}."

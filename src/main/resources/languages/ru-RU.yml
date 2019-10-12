@@ -64,6 +64,7 @@ descriptions:
   language: "Изменить персональный язык сообщений плагина"
   leave: "Покинуть гильдию"
   list: "Список всех гильдий"
+  members: "Opens the Member List GUI"
   motd: "Посмотреть сообщения дня Вашей гильдии"
   motd-set: "Установить сообщения дня Вашей гильдии"
   motd-remove: "Удалить сообщения дня Вашей гильдии"
@@ -114,6 +115,7 @@ error:
   buff-no-permission: "&cИзвините, Вам нельзя покупать этот бафф!"
   no-pending-invites: "&cИзвините, но у Вас нет ожидающих приглашений в гильдию!"
   migrating: "&cИзвините, это действие не может быть выполнено. В данный момент происходит перенос данных! Попробуйте снова через несколько минут."
+  console-command: "&cSorry, this command can only be preformed by the console."
 bank:
   balance: "&aБаланс банка Вашей гильдии составляет {amount}."
   deposit-success: "&a{player} положил {amount} в банк гильдии. Новый баланс {total}."

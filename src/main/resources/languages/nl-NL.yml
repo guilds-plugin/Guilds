@@ -64,6 +64,7 @@ descriptions:
   language: "De taal van de plugin berichten wijzigen"
   leave: "Verlaat jouw Guild"
   list: "Zie alle Guilds"
+  members: "Opens the Member List GUI"
   motd: "Bekijk jouw Guild's MOTD"
   motd-set: "Stel jouw Guild's MOTD in"
   motd-remove: "Verwijder jouw Guild's MOTD"
@@ -114,6 +115,7 @@ error:
   buff-no-permission: "&cSorry, you do not have permission to buy this buff!"
   no-pending-invites: "&cSorry, you currently do not have any pending guild invites!"
   migrating: "&cSorry, this action can't be done. Data is currently migrating! Try again a few minutes."
+  console-command: "&cSorry, this command can only be preformed by the console."
 bank:
   balance: "&aJouw Guild heeft een bank balans van {amount}."
   deposit-success: "&a{player} heeft zojuist {amount} in de Guild bank gestopt. Het nieuwe totaal is {total}."

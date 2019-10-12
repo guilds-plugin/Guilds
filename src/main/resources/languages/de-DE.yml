@@ -64,6 +64,7 @@ descriptions:
   language: "Ändere die Sprache der Plugin-Nachrichten für dich"
   leave: "Verlasse deine Gilde"
   list: "Zeige alle Gilden"
+  members: "Opens the Member List GUI"
   motd: "Zeige die MOTD deiner Gilde an"
   motd-set: "Setzte die MOTD für deine Gilde"
   motd-remove: "Entferne die MOTD deiner Gilde"
@@ -114,6 +115,7 @@ error:
   buff-no-permission: "&cSorry, you do not have permission to buy this buff!"
   no-pending-invites: "&cEntschuldigung, du hast aktuell keine ausstehenden Gildeneinladungen!"
   migrating: "&cSorry, this action can't be done. Data is currently migrating! Try again a few minutes."
+  console-command: "&cSorry, this command can only be preformed by the console."
 bank:
   balance: "&aDie Bank deiner Gilde hat ein Guthaben con {amount}."
   deposit-success: "&a{player} hat grade {amount} in der Gildenbank deponiert. Der neue Kontostand ist nun {total}."

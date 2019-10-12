@@ -64,6 +64,7 @@ descriptions:
   language: "Cambia la lingua dei messaggi plugin per te"
   leave: "Abbandona la tua gilda"
   list: "Elenca tutte le gilde"
+  members: "Opens the Member List GUI"
   motd: "Vedi il MOTD della tua Gilda"
   motd-set: "Imposta il MOTD della tua Gilda"
   motd-remove: "Rimuovi il MOTD della tua Gilda"
@@ -114,6 +115,7 @@ error:
   buff-no-permission: "&cSorry, you do not have permission to buy this buff!"
   no-pending-invites: "&cCi spiace, correntemente non hai inviti gilda in attesa!"
   migrating: "&cSorry, this action can't be done. Data is currently migrating! Try again a few minutes."
+  console-command: "&cSorry, this command can only be preformed by the console."
 bank:
   balance: "&aLa tua gilda ha un conto di {amount}."
   deposit-success: "&a{player} ha appena depositato {amount} nella Banca Gilda. Il tuo nuovo totale è {totale}."
