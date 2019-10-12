@@ -119,7 +119,7 @@ error:
 bank:
   balance: "&aSua guild tem um saldo de {amount}."
   deposit-success: "&aO jogador {player} depositou {amount} no Banco da Guilda. Seu novo total é de {total}."
-  withdrawal-success: "&a{player} has just withdrawn {amount} from the Guild Bank. Your new total is {total}."
+  withdrawal-success: "&aO jogador {player} retirou {amount} do Banco da Guilda. Seu novo total é {total}."
   not-enough-bank: "&cNão tem dinheiro suficiente no banco da guild para isto"
   over-max: "& cSinto muito, você não pode depositar esse tanto pois você passaria o limite máximo do seu saldo bancário!"
 admin:
@@ -136,8 +136,8 @@ admin:
   admin-guild-upgrade: "&aSua guild foi melhorada por um administrador!"
   spy-on: "&aEspião de chat de guild ativado!"
   spy-off: "&cEspião de chat de guild desativado!"
-  motd: "&a{guild}'s MOTD is: {motd}"
-  motd-success: "&aYou've successfully set the MOTD for {guild} to {motd}."
+  motd: "&aA mensagem do dia da guilda {guild} é: {motd}"
+  motd-success: "&aVocê definiu com sucesso a mensagem do dia da guilda {guild} para {motd}."
   motd-remove: "&aYou've successfully removed the MOTD for {guild}."
   bank-balance: "&aThe guild {guild} has a bank balance of {balance}."
   bank-deposit: "&aYou've successfully put {amount} into {guild}'s bank. Their new balance is {total}."
