@@ -64,6 +64,7 @@ descriptions:
   language: "Change le langage des messages du plugin pour vous"
   leave: "Quitte votre guilde"
   list: "Liste des Guildes"
+  members: "Opens the Member List GUI"
   motd: "Voir le message du jour de votre guilde"
   motd-set: "Définir le message du jour de votre guilde"
   motd-remove: "Supprimer le message du jour de votre guilde"
@@ -114,6 +115,7 @@ error:
   buff-no-permission: "&cSorry, you do not have permission to buy this buff!"
   no-pending-invites: "&cSorry, you currently do not have any pending guild invites!"
   migrating: "&cSorry, this action can't be done. Data is currently migrating! Try again a few minutes."
+  console-command: "&cSorry, this command can only be preformed by the console."
 bank:
   balance: "&aVotre guilde possède : {amount}."
   deposit-success: "&a{player} has just deposited {amount} into the Guild Bank. Your new total is {total}."
