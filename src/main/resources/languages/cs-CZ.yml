@@ -64,7 +64,7 @@ descriptions:
   language: "Změňte jazyk pluginu"
   leave: "Odejít z cechu"
   list: "Seznam všech cechů"
-  members: "Opens the Member List GUI"
+  members: "Otevře \"GUI\" (menu) list členů cechu"
   motd: "Prohlédněte si MOTD svého cechu"
   motd-set: "Nastavte si MOTD cechu"
   motd-remove: "Odebrat MOTD z cechu"
@@ -115,7 +115,7 @@ error:
   buff-no-permission: "&cPromiňte, nemáte povolení ke koupi této schopnosti (buff)!"
   no-pending-invites: "&cOmlouváme se, v současné době nemáte žádné čekající cechovní pozvání!"
   migrating: "&cPromiňte, tuto akci nelze provést. Data se právě přesouvají! Zkuste to znovu za několik minut."
-  console-command: "&cSorry, this command can only be preformed by the console."
+  console-command: "&cOmlouváme se, ale tento příkaz může být proveden pouze pomocí konzole."
 bank:
   balance: "&aVaše cechovní banka je naplněná {amount}."
   deposit-success: "&a{player} právě uložil {amount} do cechovní banky. Vaše cechovní peníze jsou {total}."
