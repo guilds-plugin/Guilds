@@ -241,8 +241,8 @@ claim:
   sign-no-permission: "&cVocê não tem permissão para criar uma Placa de Proteção!"
   sign-invalid-format: "&cFormato inválido de Placa de Proteção! Por favor, tente novamente!"
   sign-invalid-region: "&cRegião do WorldGuard inválida!"
-  sign-placed: "&aYou've successfully created a Claim Sign for the region {region} with the price {price}."
-  sign-not-enough: "&cYou do not have enough money in your Guild Bank to purchase this Guild Claim."
+  sign-placed: "&aVocê criou uma Placa de Proteção para a região {region} com o preço {price}."
+  sign-not-enough: "&cVocê não tem dinheiro suficiente no Banco da sua Guilda para comprar esta Proteção de Guilda."
   sign-forced: "&cYou can only claim land via Claim Signs! Ask a staff member on your server for help!"
   sign-buy-success: "&aHooray! You have bought this claim!"
 unclaim:
