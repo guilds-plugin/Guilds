@@ -73,18 +73,14 @@ public class GuildHandler {
     private List<Player> openedVault;
 
     private final Guilds guildsPlugin;
-    private final CommandManager commandManager;
-    private final Permission permission;
     private final SettingsManager settingsManager;
 
     private boolean migrating;
 
     //as well as guild permissions from tiers using permission field and tiers list.
 
-    public GuildHandler(Guilds guildsPlugin, CommandManager commandManager, Permission permission, FileConfiguration config, SettingsManager settingsManager) {
+    public GuildHandler(Guilds guildsPlugin, FileConfiguration config, SettingsManager settingsManager) {
         this.guildsPlugin = guildsPlugin;
-        this.commandManager = commandManager;
-        this.permission = permission;
         this.settingsManager = settingsManager;
 
         roles = new ArrayList<>();
@@ -163,7 +159,14 @@ public class GuildHandler {
                 e.printStackTrace();
             }
         }).sync(() -> guilds.forEach(this::createVaultCache)).sync(() -> guilds.forEach(g -> {
-            g.setTier(getGuildTier(g.getTier().getLevel()));
+            GuildTier tempTier = getGuildTier(g.getTier().getLevel());
+            if (tempTier != null) {
+                g.setTier(tempTier);
+            } else {
+                g.setTier(getLowestGuildTier());
+                LoggingUtils.severe("The guild (" + g.getName() + ") had a tier level that doesn't exist on the server anymore. "
+                + "To prevent issues, they've been automatically set the the lowest tier level on the server.");
+            }
             g.getMembers().forEach(m -> m.setRole(getGuildRole(m.getRole().getLevel())));
             if (g.getCreationDate() == 0) {
                 g.setCreationDate(System.currentTimeMillis());
@@ -395,6 +398,14 @@ public class GuildHandler {
      */
     public GuildRole getLowestGuildRole() {
         return roles.get(roles.size() - 1);
+    }
+
+    /**
+     * Get the lowest guild tier
+     * @return the lowest guild tier
+     */
+    public GuildTier getLowestGuildTier() {
+        return tiers.get(0);
     }
 
     /**
