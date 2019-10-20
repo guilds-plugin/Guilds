@@ -130,6 +130,14 @@ public class ACFHandler {
             return guild.getMembers().stream().map(m -> Bukkit.getOfflinePlayer(m.getUuid()).getName()).collect(Collectors.toList());
         });
 
+        commandManager.getCommandCompletions().registerCompletion("members-admin", c -> {
+           Guild guild = guildHandler.getGuild(c.getContextValue(String.class, 1));
+           if (guild == null) {
+               return null;
+           }
+            return guild.getMembers().stream().map(m -> Bukkit.getOfflinePlayer(m.getUuid()).getName()).collect(Collectors.toList());
+        });
+
         commandManager.getCommandCompletions().registerAsyncCompletion("allyInvites", c-> {
             Guild guild = guildHandler.getGuild(c.getPlayer());
             if (guild == null) {

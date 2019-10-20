@@ -514,6 +514,24 @@ public class Guild {
     }
 
     /**
+     * Transfer a guild to another player via admin command
+     * @param master The new master of the guild
+     * @param guildHandler Guild handler
+     */
+    public void transferGuildAdmin(OfflinePlayer master, GuildHandler guildHandler) {
+
+        GuildMember currentMaster = getMember(getGuildMaster().getUuid());
+        GuildMember newMaster = getMember(master.getUniqueId());
+
+        GuildRole masterRole = currentMaster.getRole();
+
+        currentMaster.setRole(guildHandler.getGuildRole(masterRole.getLevel() + 1));
+        newMaster.setRole(guildHandler.getGuildRole(0));
+
+        setGuildMaster(newMaster);
+    }
+
+    /**
      * Simple method to add a buff to all online members
      * @param type the potion type
      * @param length the length of the potion
