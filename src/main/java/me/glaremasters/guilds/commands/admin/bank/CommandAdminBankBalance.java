@@ -27,13 +27,16 @@ package me.glaremasters.guilds.commands.admin.bank;
 import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
+import co.aikar.commands.CommandIssuer;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
+import co.aikar.commands.annotation.Flags;
 import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.annotation.Values;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
@@ -54,15 +57,14 @@ public class CommandAdminBankBalance extends BaseCommand {
 
     /**
      * Admin command to check a guild's bank balance
-     * @param player the player running the command
-     * @param name the name of the of guild
+     * @param issuer the player running the command
+     * @param guild the name of the of guild
      */
     @Subcommand("admin bank balance")
     @Description("{@@descriptions.admin-bank-balance}")
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
-    public void execute(Player player, @Single String name) {
-        Guild guild = guildHandler.getGuild(name);
+    public void execute(CommandIssuer issuer, @Flags("admin") @Values("@guilds") Guild guild) {
 
         if (guild == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
