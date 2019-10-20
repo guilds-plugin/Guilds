@@ -77,6 +77,10 @@ public class CommandTransfer extends BaseCommand {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__PLAYER_NOT_FOUND));
         }
 
+        if (guild.getGuildMaster().getUuid().equals(transfer.getUniqueId())) {
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__TRANSFER_SAME_PERSON));
+        }
+
 
         GuildTransferEvent event = new GuildTransferEvent(player, guild, transfer);
         Bukkit.getPluginManager().callEvent(event);
