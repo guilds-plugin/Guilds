@@ -498,7 +498,7 @@ public class Guild {
      * @param oldPlayer old player
      * @param newPlayer new player
      */
-    public void transferGuild(Player oldPlayer, Player newPlayer) {
+    public void transferGuild(Player oldPlayer, OfflinePlayer newPlayer) {
 
         GuildMember oldMaster = getMember(oldPlayer.getUniqueId());
         GuildMember newMaster = getMember(newPlayer.getUniqueId());

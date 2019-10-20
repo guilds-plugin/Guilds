@@ -41,6 +41,7 @@ import me.glaremasters.guilds.guild.GuildCode;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.Constants;
+import me.glaremasters.guilds.utils.PlayerUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -78,7 +79,7 @@ public class CommandCodeInfo extends BaseCommand {
         getCurrentCommandIssuer().sendInfo(Messages.CODES__INFO,
                 "{code}", gc.getId(),
                 "{amount}", String.valueOf(gc.getUses()),
-                "{creator}", Bukkit.getOfflinePlayer(gc.getCreator()).getName(),
+                "{creator}", PlayerUtils.getPlayer(gc.getCreator()).getName(),
                 "{redeemers}", guild.getRedeemers(code));
 
     }

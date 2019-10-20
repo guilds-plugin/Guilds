@@ -26,24 +26,25 @@ package me.glaremasters.guilds.api.events;
 
 import me.glaremasters.guilds.api.events.base.GuildEvent;
 import me.glaremasters.guilds.guild.Guild;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 public class GuildTransferEvent extends GuildEvent {
 
-    private Player newMaster;
+    private OfflinePlayer newMaster;
 
     /**
      * Base guild event
      *  @param player player in event
      * @param guild  guild in the event
-     * @param newMaster
+     * @param newMaster new master of guild
      */
-    public GuildTransferEvent(Player player, Guild guild, Player newMaster) {
+    public GuildTransferEvent(Player player, Guild guild, OfflinePlayer newMaster) {
         super(player, guild);
         this.newMaster = newMaster;
     }
 
-    public Player getNewMaster() {
+    public OfflinePlayer getNewMaster() {
         return newMaster;
     }
 }

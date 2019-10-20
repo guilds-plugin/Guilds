@@ -40,6 +40,7 @@ import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.ClaimUtils;
 import me.glaremasters.guilds.utils.Constants;
+import me.glaremasters.guilds.utils.PlayerUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -65,7 +66,7 @@ public class CommandAdminRemovePlayer extends BaseCommand {
     @CommandPermission(Constants.ADMIN_PERM)
     @Syntax("<name>")
     public void execute(Player player, String target) {
-        OfflinePlayer removing = Bukkit.getOfflinePlayer(target);
+        OfflinePlayer removing = PlayerUtils.getPlayer(target);
 
         if (removing == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__PLAYER_NOT_FOUND));

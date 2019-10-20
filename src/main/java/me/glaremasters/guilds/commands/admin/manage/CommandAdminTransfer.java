@@ -40,6 +40,7 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.Constants;
+import me.glaremasters.guilds.utils.PlayerUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -68,7 +69,7 @@ public class CommandAdminTransfer extends BaseCommand {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
         }
 
-        OfflinePlayer transferPlayer = Bukkit.getOfflinePlayer(newMaster);
+        OfflinePlayer transferPlayer = PlayerUtils.getPlayer(newMaster);
 
         if (transferPlayer == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__PLAYER_NOT_FOUND));

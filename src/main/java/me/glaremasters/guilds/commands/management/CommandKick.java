@@ -50,6 +50,7 @@ import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.ClaimUtils;
 import me.glaremasters.guilds.utils.Constants;
+import me.glaremasters.guilds.utils.PlayerUtils;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -87,7 +88,7 @@ public class CommandKick extends BaseCommand {
             ACFUtil.sneaky(new InvalidPermissionException());
         }
 
-        OfflinePlayer boot = Bukkit.getOfflinePlayer(name);
+        OfflinePlayer boot = PlayerUtils.getPlayer(name);
 
         if (boot == null) {
             return;

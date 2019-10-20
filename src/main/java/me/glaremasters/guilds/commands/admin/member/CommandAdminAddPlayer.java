@@ -40,6 +40,7 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.Constants;
+import me.glaremasters.guilds.utils.PlayerUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -66,7 +67,7 @@ public class CommandAdminAddPlayer extends BaseCommand {
     @CommandCompletion("@online @guilds")
     @Syntax("<player> <guild>")
     public void execute(Player player, @Values("@online") @Single String target, @Values("@guilds") @Single String name) {
-        OfflinePlayer adding = Bukkit.getOfflinePlayer(target);
+        OfflinePlayer adding = PlayerUtils.getPlayer(name);
 
         if (adding == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__PLAYER_NOT_FOUND));
