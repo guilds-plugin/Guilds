@@ -26,7 +26,6 @@ package me.glaremasters.guilds.guis;
 
 import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFBukkitUtil;
-import co.aikar.commands.CommandManager;
 import com.github.stefvanschie.inventoryframework.Gui;
 import com.github.stefvanschie.inventoryframework.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
@@ -60,13 +59,11 @@ public class InfoMembersGUI {
     private Guilds guilds;
     private SettingsManager settingsManager;
     private GuildHandler guildHandler;
-    private CommandManager commandManager;
 
-    public InfoMembersGUI(Guilds guilds, SettingsManager settingsManager, GuildHandler guildHandler, CommandManager commandManager) {
+    public InfoMembersGUI(Guilds guilds, SettingsManager settingsManager, GuildHandler guildHandler) {
         this.guilds = guilds;
         this.settingsManager = settingsManager;
         this.guildHandler = guildHandler;
-        this.commandManager = commandManager;
     }
 
     public Gui getInfoMembersGUI(Guild guild) {

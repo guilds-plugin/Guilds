@@ -32,7 +32,6 @@ import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.configuration.sections.GuildSettings;
 import me.glaremasters.guilds.configuration.sections.GuildVaultSettings;
 import me.glaremasters.guilds.configuration.sections.TicketSettings;
-import me.glaremasters.guilds.database.DatabaseAdapter;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.ItemBuilder;
