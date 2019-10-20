@@ -112,8 +112,15 @@ public class ACFHandler {
      * @param guildHandler guild handler
      */
     public void registerCustomContexts(PaperCommandManager commandManager, GuildHandler guildHandler) {
-        commandManager.getCommandContexts().registerIssuerOnlyContext(Guild.class, c -> {
-            Guild guild = guildHandler.getGuild(c.getPlayer());
+
+        commandManager.getCommandContexts().registerIssuerAwareContext(Guild.class, c-> {
+            Guild guild;
+            if (c.hasFlag("admin")) {
+               guild = guildHandler.getGuild(c.getArgs().get(0));
+            }
+            else {
+                guild = guildHandler.getGuild(c.getPlayer());
+            }
             if (guild == null) {
                 throw new InvalidCommandArgument(Messages.ERROR__NO_GUILD);
             }
