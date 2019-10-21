@@ -674,7 +674,7 @@ public class GuildHandler {
      */
     public List<Player> getOnlineInviters(Guild guild) {
         List<GuildMember> members = guild.getOnlineMembers().stream().filter(m -> m.getRole().isInvite()).collect(Collectors.toList());
-        return members.stream().map(m -> Bukkit.getPlayer(m.getUuid())).collect(Collectors.toList());
+        return members.stream().map(GuildMember::getAsPlayer).collect(Collectors.toList());
     }
 
     /**

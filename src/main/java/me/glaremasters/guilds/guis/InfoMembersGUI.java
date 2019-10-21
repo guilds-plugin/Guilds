@@ -105,7 +105,21 @@ public class InfoMembersGUI {
     private void createForegroundItems(OutlinePane pane, Guild guild) {
 
         List<GuildMember> members = guild.getMembers();
-        members.sort(Comparator.comparingInt(g -> g.getRole().getLevel()));
+
+        String sortOrder = settingsManager.getProperty(GuildInfoMemberSettings.SORT_ORDER).toUpperCase();
+
+        switch (sortOrder) {
+            default:
+            case "ROLE":
+                members.sort(Comparator.comparingInt(g -> g.getRole().getLevel()));
+                break;
+            case "NAME":
+                members.sort(Comparator.comparing(GuildMember::getName));
+                break;
+            case "AGE":
+                members.sort(Comparator.comparingLong(GuildMember::getJoinDate));
+                break;
+        }
 
         SimpleDateFormat sdf = new SimpleDateFormat(settingsManager.getProperty(GuildListSettings.GUI_TIME_FORMAT));
 

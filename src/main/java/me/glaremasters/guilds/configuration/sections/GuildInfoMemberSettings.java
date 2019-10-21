@@ -43,6 +43,13 @@ public class GuildInfoMemberSettings implements SettingsHolder {
 
     private static final String INFO_PATH = "guis.guild-info-members.";
 
+    @Comment({"How should the menu be sorted?",
+            "ROLE: In order from highest role to lowest",
+            "NAME: In order by their username",
+            "AGE: In order of length in guild"})
+    public static final Property<String> SORT_ORDER =
+            newProperty(INFO_PATH + "sort", "ROLE");
+
     @Comment("What would you like the name of the GUI to be?")
     public static final Property<String> GUI_NAME =
             newProperty(INFO_PATH + "name", "&8» &rMembers of {name}");

@@ -118,25 +118,30 @@ public class ListGUI {
      */
     private void createListItems(PaginatedPane pane) {
         List<Guild> guilds = guildHandler.getGuilds();
-        String sortOrder = settingsManager.getProperty(GuildListSettings.GUILD_LIST_SORT);
+        String sortOrder = settingsManager.getProperty(GuildListSettings.GUILD_LIST_SORT).toUpperCase();
 
-        // Check if it's supposed to be sorted by tier
-        if (sortOrder.equalsIgnoreCase("TIER")) {
-            guilds.sort(Comparator.<Guild>comparingInt(g -> g.getTier().getLevel()).reversed());
-        }
-
-        // Check if it's supposed to be sorted by members
-        if (sortOrder.equalsIgnoreCase("MEMBERS")) {
-            guilds.sort(Comparator.<Guild>comparingInt(g -> g.getMembers().size()).reversed());
-        }
-
-        // Check if it's supposed to be sorted by bank balance
-        if (sortOrder.equalsIgnoreCase("BALANCE")) {
-            guilds.sort(Comparator.comparingDouble(Guild::getBalance).reversed());
-        }
-
-        if (sortOrder.equalsIgnoreCase("WINS")) {
-            guilds.sort(Comparator.<Guild>comparingInt(g -> g.getGuildScore().getWins()).reversed());
+        switch (sortOrder) {
+            case "TIER":
+                guilds.sort(Comparator.<Guild>comparingInt(g -> g.getTier().getLevel()).reversed());
+                break;
+            case "MEMBERS":
+                guilds.sort(Comparator.<Guild>comparingInt(g -> g.getMembers().size()).reversed());
+                break;
+            case "BALANCE":
+                guilds.sort(Comparator.comparingDouble(Guild::getBalance).reversed());
+                break;
+            case "WINS":
+                guilds.sort(Comparator.<Guild>comparingInt(g -> g.getGuildScore().getWins()).reversed());
+                break;
+            case "NAME":
+                guilds.sort(Comparator.comparing(Guild::getName));
+                break;
+            case "AGE":
+                guilds.sort(Comparator.comparingLong(Guild::getCreationDate));
+                break;
+            default:
+            case "LOADED":
+                break;
         }
 
         // Loop through each guild to create the item

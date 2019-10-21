@@ -359,7 +359,7 @@ public class Guild {
      * @return list of players
      */
     public List<OfflinePlayer> getAllAsPlayers() {
-        return getMembers().stream().map(m -> Bukkit.getOfflinePlayer(m.getUuid())).collect(Collectors.toList());
+        return getMembers().stream().map(GuildMember::getAsOfflinePlayer).collect(Collectors.toList());
     }
 
     /**
