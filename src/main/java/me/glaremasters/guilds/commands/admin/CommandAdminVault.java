@@ -31,6 +31,7 @@ import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
+import co.aikar.commands.annotation.Flags;
 import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
@@ -57,15 +58,14 @@ public class CommandAdminVault extends BaseCommand {
     /**
      * Admin command to open guild vaults
      * @param player the player running the command
-     * @param name the vault of the guild
+     * @param guild the vault of the guild
      */
     @Subcommand("admin vault")
     @Description("{@@descriptions.admin-vault}")
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
     @Syntax("<guild> <vault #>")
-    public void execute(Player player, @Values("@guilds") @Single String name) {
-        Guild guild = guildHandler.getGuild(name);
+    public void execute(Player player, @Flags("admin") @Values("@guilds") Guild guild) {
 
         if (guild == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
