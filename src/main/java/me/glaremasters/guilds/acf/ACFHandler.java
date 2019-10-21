@@ -116,7 +116,7 @@ public class ACFHandler {
         commandManager.getCommandContexts().registerIssuerAwareContext(Guild.class, c-> {
             Guild guild;
             if (c.hasFlag("admin")) {
-               guild = guildHandler.getGuild(c.getArgs().get(0));
+               guild = guildHandler.getGuild(c.popFirstArg());
             }
             else {
                 guild = guildHandler.getGuild(c.getPlayer());

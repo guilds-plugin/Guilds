@@ -118,6 +118,7 @@ error:
   migrating: "&cSorry, this action can't be done. Data is currently migrating! Try again a few minutes."
   console-command: "&cSorry, this command can only be preformed by the console."
   transfer-same-person: "&cSorry, you can't transfer a guild to the same person that is already the leader of that guild!"
+  player-no-exist: "&cSorry, it doesn't look like that player has ever been on the server before!"
 bank:
   balance: "&aYour guild's bank has a balance of {amount}."
   deposit-success: "&a{player} has just deposited {amount} into the Guild Bank. Your new total is {total}."

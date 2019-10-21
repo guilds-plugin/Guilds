@@ -31,6 +31,7 @@ import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
+import co.aikar.commands.annotation.Flags;
 import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
@@ -55,15 +56,14 @@ public class CommandAdminUpgrade extends BaseCommand {
     /**
      * Admin command to upgrade a guild's tier
      * @param player the admin running the command
-     * @param name the name of the guild being upgraded
+     * @param 'name' the name of the guild being upgraded
      */
     @Subcommand("admin upgrade")
     @Description("{@@descriptions.admin-upgrade}")
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
     @Syntax("<guild name>")
-    public void execute(Player player, @Values("@guilds") @Single String name) {
-        Guild guild = guildHandler.getGuild(name);
+    public void execute(Player player, @Flags("admin") @Values("@guilds") Guild guild) {
 
         if (guild == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));

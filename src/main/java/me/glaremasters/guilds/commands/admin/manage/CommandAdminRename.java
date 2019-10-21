@@ -32,6 +32,7 @@ import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
+import co.aikar.commands.annotation.Flags;
 import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
@@ -56,7 +57,7 @@ public class CommandAdminRename extends BaseCommand {
     /**
      * Admin command to rename a guild
      * @param player the admin running the command
-     * @param name the name of the guild
+     * @param guild the name of the guild
      * @param newName the new name of the guild
      */
     @Subcommand("admin rename")
@@ -64,8 +65,7 @@ public class CommandAdminRename extends BaseCommand {
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
     @Syntax("<name> <new name>")
-    public void execute(Player player, @Values("@guilds") @Single String name, String newName) {
-        Guild guild = guildHandler.getGuild(name);
+    public void execute(Player player, @Single @Flags("admin") @Values("@guilds") Guild guild, @Single String newName) {
 
         if (guild == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));

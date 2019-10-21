@@ -31,6 +31,7 @@ import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
+import co.aikar.commands.annotation.Flags;
 import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
@@ -53,7 +54,7 @@ public class CommandAdminTransfer extends BaseCommand {
     /**
      * Transfer a guild to another player
      * @param player The player executing the command
-     * @param name the name of the guild that's being modified
+     * @param guild the name of the guild that's being modified
      * @param newMaster The new master of the guild
      */
     @Subcommand("admin transfer")
@@ -61,9 +62,7 @@ public class CommandAdminTransfer extends BaseCommand {
     @Description("{@@descriptions.admin-transfer}")
     @CommandCompletion("@guilds @members-admin")
     @Syntax("<guild> <new master>")
-    public void execute(Player player, @Values("@guilds") @Single String name, @Values("@members-admin") @Single String newMaster) {
-
-        Guild guild = guildHandler.getGuild(name);
+    public void execute(Player player, @Flags("admin") @Values("@guilds") Guild guild, @Values("@members-admin") @Single String newMaster) {
 
         if (guild == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
