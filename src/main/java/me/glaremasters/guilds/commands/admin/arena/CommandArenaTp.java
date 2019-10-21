@@ -59,35 +59,33 @@ public class CommandArenaTp extends BaseCommand {
     @Description("{@@descriptions.arena-tp}")
     @Syntax("<arena> <position>")
     @CommandCompletion("@arenas @locations")
-    public void execute(Player player, @Values("@arenas") @Single String arena, @Values("@locations") @Single String location) {
-        // Get the arena they selected
-        Arena selectedArena = arenaHandler.getArena(arena);
+    public void execute(Player player, @Values("@arenas") Arena arena, @Values("@locations") @Single String location) {
 
         // Make sure it's not null
-        if (selectedArena == null) {
+        if (arena == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ARENA__NO_EXIST));
         }
 
         // Make sure the selected point exist
         if (location.equalsIgnoreCase("challenger")) {
-            if (selectedArena.getChallenger() == null) {
+            if (arena.getChallenger() == null) {
                 // Tell them that the point wasn't set yet
                 ACFUtil.sneaky(new ExpectationNotMet(Messages.ARENA__POSITION_NOT_SET));
             }
             // Teleport them to the location
-            player.teleport(ACFBukkitUtil.stringToLocation(selectedArena.getChallenger()));
+            player.teleport(ACFBukkitUtil.stringToLocation(arena.getChallenger()));
             // Make sure the selected point exist
         } else if (location.equalsIgnoreCase("defender")) {
-            if (selectedArena.getDefender() == null) {
+            if (arena.getDefender() == null) {
                 // Tell them that the point wasn't set yet
                 ACFUtil.sneaky(new ExpectationNotMet(Messages.ARENA__POSITION_NOT_SET));
             }
             // Teleport them to the location
-            player.teleport(ACFBukkitUtil.stringToLocation(selectedArena.getDefender()));
+            player.teleport(ACFBukkitUtil.stringToLocation(arena.getDefender()));
         }
 
         // Tell them they've been teleported to the selected location
-        getCurrentCommandIssuer().sendInfo(Messages.ARENA__TELEPORTED_TO_SELECTION, "{team}", location, "{arena}", arena);
+        getCurrentCommandIssuer().sendInfo(Messages.ARENA__TELEPORTED_TO_SELECTION, "{team}", location, "{arena}", arena.getName());
     }
 
 }

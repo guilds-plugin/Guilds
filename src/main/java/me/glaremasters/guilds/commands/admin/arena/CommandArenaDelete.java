@@ -31,7 +31,6 @@ import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
-import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.annotation.Values;
@@ -57,20 +56,20 @@ public class CommandArenaDelete extends BaseCommand {
     @Description("{@@descriptions.arena-delete}")
     @CommandCompletion("@arenas")
     @Syntax("<name>")
-    public void execute(Player player, @Values("@arenas") @Single String arena) {
-        // Get the arena
-        Arena selectedArena = arenaHandler.getArena(arena);
+    public void execute(Player player, @Values("@arenas") Arena arena) {
 
         // Make sure it's not null
-        if (selectedArena == null) {
+        if (arena == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ARENA__NO_EXIST));
         }
 
+        String arenaName = arena.getName();
+
         // Remove the arena from the existence of time
-        arenaHandler.removeArena(selectedArena);
+        arenaHandler.removeArena(arena);
 
         // Tell the user that it has been created
-        getCurrentCommandIssuer().sendInfo(Messages.ARENA__DELETED, "{arena}", arena);
+        getCurrentCommandIssuer().sendInfo(Messages.ARENA__DELETED, "{arena}", arenaName);
     }
 
 }

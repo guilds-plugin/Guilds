@@ -70,7 +70,7 @@ public class ACFHandler {
         commandManager.enableUnstableAPI("help");
 
         registerLanguages(guilds, commandManager);
-        registerCustomContexts(commandManager, guilds.getGuildHandler());
+        registerCustomContexts(commandManager, guilds.getGuildHandler(), guilds.getArenaHandler());
         registerCustomCompletions(commandManager, guilds.getGuildHandler(), guilds.getArenaHandler());
         registerDependencyInjections(commandManager);
 
@@ -111,7 +111,7 @@ public class ACFHandler {
      * @param commandManager command manager
      * @param guildHandler guild handler
      */
-    public void registerCustomContexts(PaperCommandManager commandManager, GuildHandler guildHandler) {
+    public void registerCustomContexts(PaperCommandManager commandManager, GuildHandler guildHandler, ArenaHandler arenaHandler) {
 
         commandManager.getCommandContexts().registerIssuerAwareContext(Guild.class, c-> {
             Guild guild;
@@ -134,6 +134,8 @@ public class ACFHandler {
             }
             return guildHandler.getGuildRole(guild.getMember(c.getPlayer().getUniqueId()).getRole().getLevel());
         });
+
+        commandManager.getCommandContexts().registerContext(Arena.class, c -> arenaHandler.getArena(c.popFirstArg()));
     }
 
 
