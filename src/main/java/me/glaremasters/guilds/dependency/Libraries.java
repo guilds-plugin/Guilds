@@ -124,8 +124,7 @@ public class Libraries {
         loader.loadLibrary(Library.builder()
                 .groupId("ch.jalu")
                 .artifactId("configme")
-                .version("1.1.0")
-                .checksum("c3EUKZSs/xPSHwn/K0KMf9hTbN0ijRXyIBtOg5PxUnI=")
+                .version("1.2.0")
                 .build());
 
         loader.loadLibrary(Library.builder()

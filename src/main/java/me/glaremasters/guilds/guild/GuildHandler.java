@@ -45,11 +45,13 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -78,7 +80,7 @@ public class GuildHandler {
 
     //as well as guild permissions from tiers using permission field and tiers list.
 
-    public GuildHandler(Guilds guildsPlugin, FileConfiguration config, SettingsManager settingsManager) {
+    public GuildHandler(Guilds guildsPlugin, SettingsManager settingsManager) {
         this.guildsPlugin = guildsPlugin;
         this.settingsManager = settingsManager;
 
@@ -91,8 +93,12 @@ public class GuildHandler {
 
         migrating = false;
 
+        YamlConfiguration tempTierConfig = YamlConfiguration.loadConfiguration(new File(guildsPlugin.getDataFolder(), "tiers.yml"));
+        YamlConfiguration tempRoleConfig = YamlConfiguration.loadConfiguration(new File(guildsPlugin.getDataFolder(), "roles.yml"));
+
+
         //GuildRoles objects
-        ConfigurationSection roleSection = config.getConfigurationSection("roles");
+        ConfigurationSection roleSection = tempRoleConfig.getConfigurationSection("roles");
 
         for (String s : roleSection.getKeys(false)) {
             String path = s + ".permissions.";
@@ -134,7 +140,7 @@ public class GuildHandler {
 
 
         //GuildTier objects
-        ConfigurationSection tierSection = config.getConfigurationSection("tiers.list");
+        ConfigurationSection tierSection = tempTierConfig.getConfigurationSection("tiers.list");
         for (String key : tierSection.getKeys(false)) {
             tiers.add(GuildTier.builder()
                     .level(tierSection.getInt(key + ".level"))

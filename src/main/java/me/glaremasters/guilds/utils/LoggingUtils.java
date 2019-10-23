@@ -53,7 +53,7 @@ public final class LoggingUtils {
      * @param msg the msg you want to log.
      */
     public static void info(String msg) {
-        log(Level.INFO, msg);
+        log(Level.INFO, ACFBukkitUtil.color(msg));
     }
 
     /**
