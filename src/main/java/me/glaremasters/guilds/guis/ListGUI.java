@@ -26,10 +26,8 @@ package me.glaremasters.guilds.guis;
 
 import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFBukkitUtil;
-import co.aikar.commands.CommandManager;
 import com.github.stefvanschie.inventoryframework.Gui;
 import com.github.stefvanschie.inventoryframework.GuiItem;
-import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
 import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import me.glaremasters.guilds.Guilds;
@@ -37,11 +35,9 @@ import me.glaremasters.guilds.configuration.sections.GuildInfoSettings;
 import me.glaremasters.guilds.configuration.sections.GuildListSettings;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
-import me.glaremasters.guilds.guild.GuildScore;
 import me.glaremasters.guilds.utils.ItemBuilder;
 import me.glaremasters.guilds.utils.XMaterial;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -50,7 +46,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by Glare
@@ -62,14 +57,12 @@ public class ListGUI {
     private Guilds guilds;
     private SettingsManager settingsManager;
     private GuildHandler guildHandler;
-    private CommandManager commandManager;
     private List<GuiItem> items;
 
-    public ListGUI(Guilds guilds, SettingsManager settingsManager, GuildHandler guildHandler, CommandManager commandManager) {
+    public ListGUI(Guilds guilds, SettingsManager settingsManager, GuildHandler guildHandler) {
         this.guilds = guilds;
         this.settingsManager = settingsManager;
         this.guildHandler = guildHandler;
-        this.commandManager = commandManager;
         this.items = new ArrayList<>();
     }
 
@@ -125,25 +118,30 @@ public class ListGUI {
      */
     private void createListItems(PaginatedPane pane) {
         List<Guild> guilds = guildHandler.getGuilds();
-        String sortOrder = settingsManager.getProperty(GuildListSettings.GUILD_LIST_SORT);
+        String sortOrder = settingsManager.getProperty(GuildListSettings.GUILD_LIST_SORT).toUpperCase();
 
-        // Check if it's supposed to be sorted by tier
-        if (sortOrder.equalsIgnoreCase("TIER")) {
-            guilds.sort(Comparator.<Guild>comparingInt(g -> g.getTier().getLevel()).reversed());
-        }
-
-        // Check if it's supposed to be sorted by members
-        if (sortOrder.equalsIgnoreCase("MEMBERS")) {
-            guilds.sort(Comparator.<Guild>comparingInt(g -> g.getMembers().size()).reversed());
-        }
-
-        // Check if it's supposed to be sorted by bank balance
-        if (sortOrder.equalsIgnoreCase("BALANCE")) {
-            guilds.sort(Comparator.comparingDouble(Guild::getBalance).reversed());
-        }
-
-        if (sortOrder.equalsIgnoreCase("WINS")) {
-            guilds.sort(Comparator.<Guild>comparingInt(g -> g.getGuildScore().getWins()).reversed());
+        switch (sortOrder) {
+            case "TIER":
+                guilds.sort(Comparator.<Guild>comparingInt(g -> g.getTier().getLevel()).reversed());
+                break;
+            case "MEMBERS":
+                guilds.sort(Comparator.<Guild>comparingInt(g -> g.getMembers().size()).reversed());
+                break;
+            case "BALANCE":
+                guilds.sort(Comparator.comparingDouble(Guild::getBalance).reversed());
+                break;
+            case "WINS":
+                guilds.sort(Comparator.<Guild>comparingInt(g -> g.getGuildScore().getWins()).reversed());
+                break;
+            case "NAME":
+                guilds.sort(Comparator.comparing(Guild::getName));
+                break;
+            case "AGE":
+                guilds.sort(Comparator.comparingLong(Guild::getCreationDate));
+                break;
+            default:
+            case "LOADED":
+                break;
         }
 
         // Loop through each guild to create the item

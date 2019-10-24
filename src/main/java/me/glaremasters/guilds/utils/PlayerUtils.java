@@ -27,6 +27,8 @@ package me.glaremasters.guilds.utils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
+import java.util.UUID;
+
 /**
  * Created by Glare
  * Date: 4/4/2019
@@ -50,6 +52,15 @@ public class PlayerUtils {
      */
     public static OfflinePlayer getPlayer(String target) {
         return Bukkit.getOfflinePlayer(target);
+    }
+
+    /**
+     * Simple object from uuid
+     * @param uuid the uuid of the player
+     * @return player object
+     */
+    public static OfflinePlayer getPlayer(UUID uuid) {
+        return Bukkit.getOfflinePlayer(uuid);
     }
 
 }

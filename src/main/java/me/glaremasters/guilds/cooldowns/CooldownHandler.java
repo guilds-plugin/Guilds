@@ -26,14 +26,14 @@ package me.glaremasters.guilds.cooldowns;
 
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.guild.Guild;
-import me.glaremasters.guilds.utils.LoggingUtils;
 import net.jodah.expiringmap.ExpirationPolicy;
 import net.jodah.expiringmap.ExpiringMap;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 // TODO: from simple -

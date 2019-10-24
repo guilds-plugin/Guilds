@@ -32,6 +32,7 @@ import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
+import co.aikar.commands.annotation.Flags;
 import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
@@ -56,13 +57,17 @@ public class CommandAdminUnclaim extends BaseCommand {
     @Dependency private GuildHandler guildHandler;
     @Dependency private SettingsManager settingsManager;
 
+    /**
+     * Admin command to unclaim land for a guild
+     * @param player the player running the command
+     * @param guild the name of the guild that land is being unclaimed from
+     */
     @Subcommand("admin unclaim")
     @Description("{@@descriptions.admin-unclaim}")
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
     @Syntax("<name>")
-    public void execute(Player player, @Values("@guilds") @Single String name) {
-        Guild guild = guildHandler.getGuild(name);
+    public void execute(Player player, @Flags("admin") @Values("@guilds") Guild guild) {
 
         if (guild == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));

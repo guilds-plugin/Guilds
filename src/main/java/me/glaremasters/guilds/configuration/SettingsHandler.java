@@ -26,6 +26,7 @@ package me.glaremasters.guilds.configuration;
 
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.SettingsManagerBuilder;
+import ch.jalu.configme.migration.PlainMigrationService;
 import me.glaremasters.guilds.Guilds;
 
 import java.io.File;
@@ -39,6 +40,9 @@ public class SettingsHandler {
 
     private Guilds guilds;
     private SettingsManager settingsManager;
+    private SettingsManager tierSettings;
+    private SettingsManager roleSettings;
+    private SettingsManager buffSettings;
 
     public SettingsHandler(Guilds guilds) {
 
@@ -46,12 +50,39 @@ public class SettingsHandler {
 
         settingsManager = SettingsManagerBuilder
                 .withYamlFile(new File(guilds.getDataFolder(), "config.yml"))
-                .migrationService(new GuildsMigrationService())
+                .migrationService(new GuildsMigrationService(guilds.getDataFolder()))
                 .configurationData(GuildConfigurationBuilder.buildConfigurationData())
+                .create();
+
+        tierSettings = SettingsManagerBuilder.withYamlFile(new File(guilds.getDataFolder(), "tiers.yml"))
+                .migrationService(new PlainMigrationService())
+                .configurationData(GuildConfigurationBuilder.buildTierData())
+                .create();
+
+        roleSettings = SettingsManagerBuilder.withYamlFile(new File(guilds.getDataFolder(), "roles.yml"))
+                .migrationService(new PlainMigrationService())
+                .configurationData(GuildConfigurationBuilder.buildRoleData())
+                .create();
+
+        buffSettings = SettingsManagerBuilder.withYamlFile(new File(guilds.getDataFolder(), "buffs.yml"))
+                .migrationService(new PlainMigrationService())
+                .configurationData(GuildConfigurationBuilder.buildBuffData())
                 .create();
     }
 
     public SettingsManager getSettingsManager() {
         return this.settingsManager;
+    }
+
+    public SettingsManager getTierSettings() {
+        return tierSettings;
+    }
+
+    public SettingsManager getRoleSettings() {
+        return roleSettings;
+    }
+
+    public SettingsManager getBuffSettings() {
+        return buffSettings;
     }
 }

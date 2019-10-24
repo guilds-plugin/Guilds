@@ -77,17 +77,40 @@ public class VaultGUI {
         // Create the pane for the main items
         OutlinePane foregroundPane = new OutlinePane(0, 0, 9, settingsManager.getProperty(VaultPickerSettings.GUI_SIZE), Pane.Priority.NORMAL);
 
+        // Create the background pane which will just be stained glass
+        OutlinePane backgroundPane = new OutlinePane(0, 0, 9, settingsManager.getProperty(VaultPickerSettings.GUI_SIZE), Pane.Priority.LOW);
+
         // Add the items to the foreground pane
         createForegroundItems(foregroundPane, guild, player, commandManager);
+        
+        createBackgroundItems(backgroundPane);
 
         // Set it back to 0
         num = 0;
+
+        gui.addPane(backgroundPane);
 
         // Add the foreground pane to the GUI
         gui.addPane(foregroundPane);
 
         // Return the create GUI object
         return gui;
+    }
+
+    /**
+     * Create the background panes
+     * @param pane the pane to add to
+     */
+    private void createBackgroundItems(OutlinePane pane) {
+        // Start the itembuilder with stained glass
+        ItemBuilder builder = new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem());
+        // Set the name to be empty
+        builder.setName(ACFBukkitUtil.color("&r"));
+        // Loop through 27 (three rows)
+        for (int i = 0; i < (pane.getHeight() * 9); i++) {
+            // Add the pane item to the GUI and cancel the click event on it
+            pane.addItem(new GuiItem(builder.build(), event -> event.setCancelled(true)));
+        }
     }
 
 

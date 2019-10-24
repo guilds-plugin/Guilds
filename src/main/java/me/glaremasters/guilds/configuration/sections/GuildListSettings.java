@@ -62,7 +62,9 @@ public class GuildListSettings implements SettingsHolder {
             "TIER: In order from highest tier to lowest tier",
             "MEMBERS: In order from most members to least members",
             "BALANCE: In order from most in bank to least",
-            "WINS: In order from most arena wins to least"})
+            "WINS: In order from most arena wins to least",
+            "NAME: In order by name",
+            "AGE: In order from first created to last"})
     public static final Property<String> GUILD_LIST_SORT =
             newProperty(LIST_PATH + "sort", "LOADED");
 

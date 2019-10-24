@@ -27,11 +27,13 @@ package me.glaremasters.guilds.commands.admin.motd;
 import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
+import co.aikar.commands.CommandIssuer;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
+import co.aikar.commands.annotation.Flags;
 import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Values;
@@ -55,27 +57,26 @@ public class CommandAdminMotd extends BaseCommand {
 
     /**
      * View the motd of a guild
-     * @param player the player running the command
+     * @param issuer the player running the command
      * @param guild the player's guild
      */
     @Subcommand("admin motd")
     @Description("{@@descriptions.admin-motd}")
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
-    public void execute(Player player, @Values("@guilds") @Single String guild) {
-        // Get the target guild
-        Guild targetGuild = guildHandler.getGuild(guild);
+    public void execute(CommandIssuer issuer, @Flags("admin") @Values("@guilds") Guild guild) {
+
         // Check if target guild is null, throw error
-        if (targetGuild == null) {
+        if (guild == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
         }
         // Check if motd is null
-        if (targetGuild.getMotd() == null) {
+        if (guild.getMotd() == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.MOTD__NOT_SET));
         }
         // Tell the user their motd
         getCurrentCommandIssuer().sendInfo(Messages.ADMIN__MOTD,
-                "{guild}", targetGuild.getName(), "{motd}", targetGuild.getMotd());
+                "{guild}", guild.getName(), "{motd}", guild.getMotd());
     }
 
 }

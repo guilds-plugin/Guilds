@@ -22,66 +22,65 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.commands.codes;
+package me.glaremasters.guilds.commands.admin.manage;
 
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
+import co.aikar.commands.annotation.Flags;
 import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.annotation.Values;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
-import me.glaremasters.guilds.exceptions.InvalidPermissionException;
 import me.glaremasters.guilds.guild.Guild;
-import me.glaremasters.guilds.guild.GuildCode;
-import me.glaremasters.guilds.guild.GuildRole;
+import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.Constants;
 import me.glaremasters.guilds.utils.PlayerUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-/**
- * Created by Glare
- * Date: 4/4/2019
- * Time: 5:23 PM
- */
 @CommandAlias("%guilds")
-public class CommandCodeInfo extends BaseCommand {
+public class CommandAdminTransfer extends BaseCommand {
+
+    @Dependency private GuildHandler guildHandler;
 
     /**
-     * THis command will display info about a guild's codes
-     * @param player the player running the command
-     * @param guild the guild they are in
-     * @param role the role of the player
-     * @param code the code they are requesting information about
+     * Transfer a guild to another player
+     * @param player The player executing the command
+     * @param guild the name of the guild that's being modified
+     * @param newMaster The new master of the guild
      */
-    @Subcommand("code info")
-    @Description("{@@descriptions.code-info}")
-    @CommandPermission(Constants.CODE_PERM + "info")
-    @Syntax("<code>")
-    @CommandCompletion("@activeCodes")
-    public void execute(Player player, Guild guild, GuildRole role, @Values("@activeCodes") @Single String code) {
-        if (!role.isSeeCodeRedeemers()) {
-            ACFUtil.sneaky(new InvalidPermissionException());
+    @Subcommand("admin transfer")
+    @CommandPermission(Constants.ADMIN_PERM)
+    @Description("{@@descriptions.admin-transfer}")
+    @CommandCompletion("@guilds @members-admin")
+    @Syntax("<guild> <new master>")
+    public void execute(Player player, @Flags("admin") @Values("@guilds") Guild guild, @Values("@members-admin") @Single String newMaster) {
+
+        if (guild == null) {
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
         }
 
-        if (code == null) {
-            ACFUtil.sneaky(new ExpectationNotMet(Messages.CODES__INVALID_CODE));
+        OfflinePlayer transferPlayer = PlayerUtils.getPlayer(newMaster);
+
+        if (transferPlayer == null) {
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__PLAYER_NOT_FOUND));
         }
 
-        GuildCode gc = guild.getCode(code);
+        if (guild.getGuildMaster().getUuid().equals(transferPlayer.getUniqueId())) {
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__TRANSFER_SAME_PERSON));
+        }
 
-        getCurrentCommandIssuer().sendInfo(Messages.CODES__INFO,
-                "{code}", gc.getId(),
-                "{amount}", String.valueOf(gc.getUses()),
-                "{creator}", PlayerUtils.getPlayer(gc.getCreator()).getName(),
-                "{redeemers}", guild.getRedeemers(code));
+        guild.transferGuildAdmin(transferPlayer, guildHandler);
 
+        getCurrentCommandIssuer().sendInfo(Messages.TRANSFER__SUCCESS);
     }
 
 }

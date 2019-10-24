@@ -32,6 +32,7 @@ import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
+import co.aikar.commands.annotation.Flags;
 import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
@@ -56,7 +57,7 @@ public class CommandAdminPrefix extends BaseCommand {
     /**
      * Admin command to change the prefix of a guild
      * @param player the admin running the command
-     * @param name the name of a guild
+     * @param guild the name of a guild
      * @param prefix the new prefix of the guild
      */
     @Subcommand("admin prefix")
@@ -64,8 +65,7 @@ public class CommandAdminPrefix extends BaseCommand {
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
     @Syntax("<name> <prefix>")
-    public void execute(Player player, @Values("@guilds") @Single String name, String prefix) {
-        Guild guild = guildHandler.getGuild(name);
+    public void execute(Player player, @Flags("admin") @Values("@guilds") Guild guild, String prefix) {
 
         if (guild == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));

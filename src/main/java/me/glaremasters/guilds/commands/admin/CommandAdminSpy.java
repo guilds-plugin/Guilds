@@ -31,7 +31,6 @@ import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
 import me.glaremasters.guilds.guild.GuildHandler;
-import me.glaremasters.guilds.utils.Constants;
 import org.bukkit.entity.Player;
 
 /**

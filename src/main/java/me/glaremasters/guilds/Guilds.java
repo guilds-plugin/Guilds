@@ -252,8 +252,8 @@ public final class Guilds extends JavaPlugin {
             // Load the challenge handler
             challengeHandler = new ChallengeHandler(this);
             // Load guildhandler with provider
-            guildHandler = new GuildHandler(this, getCommandManager(), getPermissions(), getConfig(), settingsHandler.getSettingsManager());
-            LoggingUtils.info("Loaded data!");
+            guildHandler = new GuildHandler(this, settingsHandler.getSettingsManager());
+            LoggingUtils.info("Data has been loaded!");
         } catch (IOException e) {
             LoggingUtils.severe("An error occurred loading data! Stopping plugin..");
             Bukkit.getPluginManager().disablePlugin(this);

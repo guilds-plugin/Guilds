@@ -33,8 +33,10 @@ import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
+import co.aikar.commands.annotation.Flags;
 import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.annotation.Values;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
@@ -63,17 +65,15 @@ public class CommandAdminMotdSet extends BaseCommand {
     @Description("{@@descriptions.admin-motd-set}")
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
-    public void execute(Player player, @Single String guild, String motd) {
-        // Get the target guild
-        Guild targetGuild = guildHandler.getGuild(guild);
+    public void execute(Player player, @Flags("admin") @Values("@guilds") Guild guild, String motd) {
         // Check if target guild is null, throw error
-        if (targetGuild == null) {
+        if (guild == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
         }
         // Set the MOTD of the guild
-        targetGuild.setMotd(ACFBukkitUtil.color(motd));
+        guild.setMotd(ACFBukkitUtil.color(motd));
         // Tell the player that they set the motd
-        getCurrentCommandIssuer().sendInfo(Messages.ADMIN__MOTD_SUCCESS, "{guild}", targetGuild.getName(), "{motd}", targetGuild.getMotd());
+        getCurrentCommandIssuer().sendInfo(Messages.ADMIN__MOTD_SUCCESS, "{guild}", guild.getName(), "{motd}", guild.getMotd());
     }
 
 }

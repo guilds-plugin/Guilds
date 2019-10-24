@@ -33,9 +33,11 @@ import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
+import co.aikar.commands.annotation.Flags;
 import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
+import co.aikar.commands.annotation.Values;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
@@ -56,7 +58,7 @@ public class CommandAdminBankDeposit extends BaseCommand {
     /**
      * Admin command to put money into a guild's bank
      * @param issuer the person running the command
-     * @param name the name of the guild
+     * @param guild the name of the guild
      * @param amount the amount to put in
      */
     @Subcommand("admin bank deposit")
@@ -64,8 +66,7 @@ public class CommandAdminBankDeposit extends BaseCommand {
     @CommandPermission(Constants.ADMIN_PERM)
     @Syntax("<amount>")
     @CommandCompletion("@guilds")
-    public void execute(CommandIssuer issuer, @Single String name, double amount) {
-        Guild guild = guildHandler.getGuild(name);
+    public void execute(CommandIssuer issuer, @Flags("admin") @Values("@guilds") Guild guild, double amount) {
 
         if (guild == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));

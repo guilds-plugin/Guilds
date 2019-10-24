@@ -31,6 +31,7 @@ import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
+import co.aikar.commands.annotation.Flags;
 import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
@@ -55,15 +56,14 @@ public class CommandAdminStatus extends BaseCommand {
     /**
      * Admin command to change a guild's status
      * @param player the admin running the command
-     * @param name the guild to change the status of
+     * @param guild the guild to change the status of
      */
     @Subcommand("admin status")
     @Description("{@@descriptions.admin-status}")
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
     @Syntax("<name>")
-    public void execute(Player player, @Values("@guilds") @Single String name) {
-        Guild guild = guildHandler.getGuild(name);
+    public void execute(Player player, @Flags("admin") @Values("@guilds") Guild guild) {
 
         if (guild == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));

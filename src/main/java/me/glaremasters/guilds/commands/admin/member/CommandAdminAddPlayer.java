@@ -26,11 +26,13 @@ package me.glaremasters.guilds.commands.admin.member;
 
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
+import co.aikar.commands.CommandIssuer;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
+import co.aikar.commands.annotation.Flags;
 import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
@@ -40,6 +42,7 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.Constants;
+import me.glaremasters.guilds.utils.PlayerUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -56,47 +59,42 @@ public class CommandAdminAddPlayer extends BaseCommand {
 
     /**
      * Admin command to add a player to a guild
-     * @param player the admin running the command
-     * @param target the player being added to the guild
-     * @param name the guild the player is being added to
+     * @param issuer the admin running the command
+     * @param guild  the guild the player is being added to
+     * @param targetPlayer the player being added to a guild
      */
     @Subcommand("admin addplayer")
     @Description("{@@descriptions.admin-addplayer}")
     @CommandPermission(Constants.ADMIN_PERM)
-    @CommandCompletion("@online @guilds")
-    @Syntax("<player> <guild>")
-    public void execute(Player player, @Values("@online") @Single String target, @Values("@guilds") @Single String name) {
-        OfflinePlayer adding = Bukkit.getOfflinePlayer(target);
+    @CommandCompletion("@guilds @online")
+    @Syntax("<guild> <player>")
+    public void execute(CommandIssuer issuer, @Flags("admin") @Values("@guilds") Guild guild, String targetPlayer) {
+        OfflinePlayer adding = PlayerUtils.getPlayer(targetPlayer);
 
-        if (adding == null) {
-            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__PLAYER_NOT_FOUND));
+        if (adding == null || !adding.hasPlayedBefore()) {
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__PLAYER_NO_EXIST));
         }
 
-        Guild possibleGuild = guildHandler.getGuild(adding);
-
-        if (possibleGuild != null) {
+        if (guildHandler.getGuild(adding) != null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__ALREADY_IN_GUILD));
         }
 
-        Guild targetGuild = guildHandler.getGuild(name);
-
-        if (targetGuild == null) {
+        if (guild == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
         }
 
-
-        targetGuild.addMember(adding, guildHandler);
+        guild.addMember(adding, guildHandler);
 
         if (adding.isOnline()) {
             getCurrentCommandManager().getCommandIssuer(adding).sendInfo(Messages.ADMIN__PLAYER_ADDED,
-                    "{guild}", targetGuild.getName());
+                    "{guild}", guild.getName());
         }
 
         getCurrentCommandIssuer().sendInfo(Messages.ADMIN__ADMIN_PLAYER_ADDED,
                 "{player}", adding.getName(),
-                "{guild}", targetGuild.getName());
+                "{guild}", guild.getName());
 
-        targetGuild.sendMessage(getCurrentCommandManager(), Messages.ADMIN__ADMIN_GUILD_ADD,
+        guild.sendMessage(getCurrentCommandManager(), Messages.ADMIN__ADMIN_GUILD_ADD,
                 "{player}", adding.getName());
     }
 

@@ -25,6 +25,8 @@
 package me.glaremasters.guilds.guild;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
@@ -50,7 +52,31 @@ public class GuildMember {
      * @return true or false
      */
     public boolean isOnline() {
-        return Bukkit.getOfflinePlayer(uuid).isOnline();
+        return getAsOfflinePlayer().isOnline();
+    }
+
+    /**
+     * Get a guild member as an offline player
+     * @return offline player object
+     */
+    public OfflinePlayer getAsOfflinePlayer() {
+        return Bukkit.getOfflinePlayer(uuid);
+    }
+
+    /**
+     * Get a guild member as a player
+     * @return player object
+     */
+    public Player getAsPlayer() {
+        return Bukkit.getPlayer(uuid);
+    }
+
+    /**
+     * Get a guild member's name
+     * @return the name of the guild member
+     */
+    public String getName() {
+        return getAsOfflinePlayer().getName();
     }
 
     public UUID getUuid() {

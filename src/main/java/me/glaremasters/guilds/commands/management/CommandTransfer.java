@@ -41,7 +41,9 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.Constants;
+import me.glaremasters.guilds.utils.PlayerUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 /**
@@ -69,10 +71,14 @@ public class CommandTransfer extends BaseCommand {
             ACFUtil.sneaky(new InvalidPermissionException());
         }
 
-        Player transfer = Bukkit.getPlayer(target);
+        OfflinePlayer transfer = PlayerUtils.getPlayer(target);
 
         if (transfer == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__PLAYER_NOT_FOUND));
+        }
+
+        if (guild.getGuildMaster().getUuid().equals(transfer.getUniqueId())) {
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__TRANSFER_SAME_PERSON));
         }
 
 
@@ -86,7 +92,10 @@ public class CommandTransfer extends BaseCommand {
         guild.transferGuild(player, transfer);
 
         getCurrentCommandIssuer().sendInfo(Messages.TRANSFER__SUCCESS);
-        getCurrentCommandManager().getCommandIssuer(transfer).sendInfo(Messages.TRANSFER__NEWMASTER);
+
+        if (transfer.isOnline()) {
+            getCurrentCommandManager().getCommandIssuer(transfer).sendInfo(Messages.TRANSFER__NEWMASTER);
+        }
     }
 
 }

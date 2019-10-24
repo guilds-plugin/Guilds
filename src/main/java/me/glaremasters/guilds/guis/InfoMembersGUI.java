@@ -26,7 +26,6 @@ package me.glaremasters.guilds.guis;
 
 import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFBukkitUtil;
-import co.aikar.commands.CommandManager;
 import com.github.stefvanschie.inventoryframework.Gui;
 import com.github.stefvanschie.inventoryframework.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
@@ -60,13 +59,11 @@ public class InfoMembersGUI {
     private Guilds guilds;
     private SettingsManager settingsManager;
     private GuildHandler guildHandler;
-    private CommandManager commandManager;
 
-    public InfoMembersGUI(Guilds guilds, SettingsManager settingsManager, GuildHandler guildHandler, CommandManager commandManager) {
+    public InfoMembersGUI(Guilds guilds, SettingsManager settingsManager, GuildHandler guildHandler) {
         this.guilds = guilds;
         this.settingsManager = settingsManager;
         this.guildHandler = guildHandler;
-        this.commandManager = commandManager;
     }
 
     public Gui getInfoMembersGUI(Guild guild) {
@@ -108,7 +105,21 @@ public class InfoMembersGUI {
     private void createForegroundItems(OutlinePane pane, Guild guild) {
 
         List<GuildMember> members = guild.getMembers();
-        members.sort(Comparator.comparingInt(g -> g.getRole().getLevel()));
+
+        String sortOrder = settingsManager.getProperty(GuildInfoMemberSettings.SORT_ORDER).toUpperCase();
+
+        switch (sortOrder) {
+            default:
+            case "ROLE":
+                members.sort(Comparator.comparingInt(g -> g.getRole().getLevel()));
+                break;
+            case "NAME":
+                members.sort(Comparator.comparing(GuildMember::getName));
+                break;
+            case "AGE":
+                members.sort(Comparator.comparingLong(GuildMember::getJoinDate));
+                break;
+        }
 
         SimpleDateFormat sdf = new SimpleDateFormat(settingsManager.getProperty(GuildListSettings.GUI_TIME_FORMAT));
 

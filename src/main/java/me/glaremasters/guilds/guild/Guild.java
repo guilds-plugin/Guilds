@@ -359,7 +359,7 @@ public class Guild {
      * @return list of players
      */
     public List<OfflinePlayer> getAllAsPlayers() {
-        return getMembers().stream().map(m -> Bukkit.getOfflinePlayer(m.getUuid())).collect(Collectors.toList());
+        return getMembers().stream().map(GuildMember::getAsOfflinePlayer).collect(Collectors.toList());
     }
 
     /**
@@ -498,7 +498,7 @@ public class Guild {
      * @param oldPlayer old player
      * @param newPlayer new player
      */
-    public void transferGuild(Player oldPlayer, Player newPlayer) {
+    public void transferGuild(Player oldPlayer, OfflinePlayer newPlayer) {
 
         GuildMember oldMaster = getMember(oldPlayer.getUniqueId());
         GuildMember newMaster = getMember(newPlayer.getUniqueId());
@@ -510,6 +510,24 @@ public class Guild {
 
         oldMaster.setRole(newMaster.getRole());
         newMaster.setRole(gm);
+        setGuildMaster(newMaster);
+    }
+
+    /**
+     * Transfer a guild to another player via admin command
+     * @param master The new master of the guild
+     * @param guildHandler Guild handler
+     */
+    public void transferGuildAdmin(OfflinePlayer master, GuildHandler guildHandler) {
+
+        GuildMember currentMaster = getMember(getGuildMaster().getUuid());
+        GuildMember newMaster = getMember(master.getUniqueId());
+
+        GuildRole masterRole = currentMaster.getRole();
+
+        currentMaster.setRole(guildHandler.getGuildRole(masterRole.getLevel() + 1));
+        newMaster.setRole(guildHandler.getGuildRole(0));
+
         setGuildMaster(newMaster);
     }
 

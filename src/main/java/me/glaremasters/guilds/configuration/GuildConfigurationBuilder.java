@@ -58,12 +58,24 @@ public class GuildConfigurationBuilder {
     public static ConfigurationData buildConfigurationData() {
         return ConfigurationDataBuilder.createConfiguration(
                 PluginSettings.class, StorageSettings.class, HooksSettings.class, GuildListSettings.class,
-                GuildBuffSettings.class, VaultPickerSettings.class, GuildVaultSettings.class,
-                GuildInfoSettings.class, GuildInfoMemberSettings.class, GuildSettings.class,
+                VaultPickerSettings.class, GuildVaultSettings.class, GuildInfoSettings.class,
+                GuildInfoMemberSettings.class, GuildSettings.class,
                 WarSettings.class, CooldownSettings.class, CostSettings.class,
-                ClaimSettings.class, /*TablistSettings.class,*/ TicketSettings.class, CodeSettings.class,
-                TierSettings.class, RoleSettings.class
+                ClaimSettings.class, /*TablistSettings.class,*/ TicketSettings.class, CodeSettings.class
         );
     }
+
+    public static ConfigurationData buildTierData() {
+        return ConfigurationDataBuilder.createConfiguration(TierSettings.class);
+    }
+
+    public static ConfigurationData buildRoleData() {
+        return ConfigurationDataBuilder.createConfiguration(RoleSettings.class);
+    }
+
+    public static ConfigurationData buildBuffData() {
+        return ConfigurationDataBuilder.createConfiguration(GuildBuffSettings.class);
+    }
+
 
 }
