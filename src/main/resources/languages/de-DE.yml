@@ -18,6 +18,7 @@ descriptions:
   admin-sethome: "Admin-Befehl um das Zuhause einer Gilde festzulegen"
   admin-status: "Admin-Befehl zum ändern des Gilden-Status"
   admin-spy: "Admin-Befehl zum aktivieren des Chat-Spions der Gilde"
+  admin-transfer: "Admin command to transfer a guild from one person to another"
   admin-unclaim: "Admin-Befehl um Beanspruchung von Gildenland aufzuheben"
   admin-upgrade: "Admin-Befehl um die Stufe einer Gilde zu erhöhen"
   admin-vault: "Admin-Befehl zum Anzeigen des Tresors einer Gilde"
@@ -116,6 +117,8 @@ error:
   no-pending-invites: "&cEntschuldigung, du hast aktuell keine ausstehenden Gildeneinladungen!"
   migrating: "&cEntschuldigung, diese Aktion kann nicht durchgeführt werden, weil gerade Daten migriert werden! Versuche es in wenigen Minuten noch einmal."
   console-command: "&cEntschuldigung, dieser Befehl kann nur von der Konsole ausgeführt werden."
+  transfer-same-person: "&cSorry, you can't transfer a guild to the same person that is already the leader of that guild!"
+  player-no-exist: "&cSorry, it doesn't look like that player has ever been on the server before!"
 bank:
   balance: "&aDie Bank deiner Gilde hat ein Guthaben con {amount}."
   deposit-success: "&a{player} hat grade {amount} in der Gildenbank deponiert. Der neue Kontostand ist nun {total}."
@@ -334,6 +337,7 @@ acf:
   invalid-syntax: "Benutzung: <c2>{command}</c2> <c3>{syntax}</c3>"
   permission-denied: "Entschuldigung, aber du hast keine Berechtigung diesen Befehl zu verwenden."
   unknown-command: "Unbekannter Befehl, tippe <c2>/help</c2>"
+  error-performing: "I'm sorry, but there was an error performing this command."
 migrate:
   invalid-backend: "&cDas Backend, welches du migrieren möchtest ist ungültig."
   connection-failed: "&cVerbindung zum neuen Backend fehlgeschlagen. Stelle sicher dass die Authentifizierung korrekt konfiguriert ist!"
