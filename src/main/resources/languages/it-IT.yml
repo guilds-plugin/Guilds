@@ -18,6 +18,7 @@ descriptions:
   admin-sethome: "Comando amministratore per impostare la casa di una gilda"
   admin-status: "Comando da Admin per modificare lo stato di una gilda"
   admin-spy: "Comando da Admin per abilitare la chat spy della gilda"
+  admin-transfer: "Admin command to transfer a guild from one person to another"
   admin-unclaim: "Comando amministratore per annullare la rivendicazione di una terra della gilda"
   admin-upgrade: "Comando da Admin per alzare il livello di una gilda"
   admin-vault: "Comando amministratore per visualizzare il caveau"
@@ -116,6 +117,8 @@ error:
   no-pending-invites: "&cCi spiace, correntemente non hai inviti gilda in attesa!"
   migrating: "&cSorry, this action can't be done. Data is currently migrating! Try again a few minutes."
   console-command: "&cSorry, this command can only be preformed by the console."
+  transfer-same-person: "&cSorry, you can't transfer a guild to the same person that is already the leader of that guild!"
+  player-no-exist: "&cSorry, it doesn't look like that player has ever been on the server before!"
 bank:
   balance: "&aLa tua gilda ha un conto di {amount}."
   deposit-success: "&a{player} ha appena depositato {amount} nella Banca Gilda. Il tuo nuovo totale è {totale}."
@@ -334,6 +337,7 @@ acf:
   invalid-syntax: "Uso: <c2>{command}</c2> <c3>{syntax}</c3>"
   permission-denied: "Mi spiace, ma non hai i permessi per praticare questo comando."
   unknown-command: "Unknown Command, please type <c2>/help</c2>"
+  error-performing: "I'm sorry, but there was an error performing this command."
 migrate:
   invalid-backend: "&cThe backend you've attempted to migrate to is invalid."
   connection-failed: "&cConnecting to the new backend failed! Make sure your authentication is properly configured!"
