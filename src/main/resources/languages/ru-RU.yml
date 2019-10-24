@@ -18,6 +18,7 @@ descriptions:
   admin-sethome: "Админ-команда для установки дома гильдии"
   admin-status: "Админ-команда для смены статуса гильдии"
   admin-spy: "Админ-команда для слежки за чатами гильдий"
+  admin-transfer: "Admin command to transfer a guild from one person to another"
   admin-unclaim: "Админ-команда для удаления региона гильдии"
   admin-upgrade: "Админ-команда для повышения уровня гильдии"
   admin-vault: "Админ-команда для просмотра хранилища гильдии"
@@ -116,6 +117,8 @@ error:
   no-pending-invites: "&cИзвините, но у Вас нет ожидающих приглашений в гильдию!"
   migrating: "&cИзвините, это действие не может быть выполнено. В данный момент происходит перенос данных! Попробуйте снова через несколько минут."
   console-command: "&cSorry, this command can only be preformed by the console."
+  transfer-same-person: "&cSorry, you can't transfer a guild to the same person that is already the leader of that guild!"
+  player-no-exist: "&cSorry, it doesn't look like that player has ever been on the server before!"
 bank:
   balance: "&aБаланс банка Вашей гильдии составляет {amount}."
   deposit-success: "&a{player} положил {amount} в банк гильдии. Новый баланс {total}."
@@ -334,6 +337,7 @@ acf:
   invalid-syntax: "Использование: <c2>{command}</c2> <c3>{syntax}</c3>"
   permission-denied: "Извините, но Вам нельзя выполнять данную команду."
   unknown-command: "Неизвестная команда, используйте: <c2>/help</c2>"
+  error-performing: "I'm sorry, but there was an error performing this command."
 migrate:
   invalid-backend: "&cThe backend you've attempted to migrate to is invalid."
   connection-failed: "&cConnecting to the new backend failed! Make sure your authentication is properly configured!"
