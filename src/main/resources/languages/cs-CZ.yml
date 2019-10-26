@@ -18,7 +18,7 @@ descriptions:
   admin-sethome: "Admin příkaz pro nastavení domova (sethome) cechu"
   admin-status: "Admin příkaz k změně statusu/stavu cechu"
   admin-spy: "Admin příkaz k zapnutí tajného chatu cechu"
-  admin-transfer: "Admin command to transfer a guild from one person to another"
+  admin-transfer: "Admin příkaz pro přemístění cechu z jedného hráče na druhého hráče"
   admin-unclaim: "Admin příkaz pro odstranění (unclaim) oblasti cechu"
   admin-upgrade: "Admin příkaz k vylepšení stupně cechu"
   admin-vault: "Admin příkaz pro zobrazení cechového trezoru"
@@ -117,7 +117,7 @@ error:
   no-pending-invites: "&cOmlouváme se, v současné době nemáte žádné čekající cechovní pozvání!"
   migrating: "&cPromiňte, tuto akci nelze provést. Data se právě přesouvají! Zkuste to znovu za několik minut."
   console-command: "&cOmlouváme se, ale tento příkaz může být proveden pouze pomocí konzole."
-  transfer-same-person: "&cSorry, you can't transfer a guild to the same person that is already the leader of that guild!"
+  transfer-same-person: "&cOmlouváme se, ale nemůžete převést cech na stejnou osobu, která je již vůdcem tohoto cechu!"
   player-no-exist: "&cOmlouváme se, ale nevypadá to, že by ten to hráč na serveru byl už předtím!"
 bank:
   balance: "&aVaše cechovní banka je naplněná {amount}."
