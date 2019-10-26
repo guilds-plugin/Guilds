@@ -118,7 +118,7 @@ error:
   migrating: "&cPromiňte, tuto akci nelze provést. Data se právě přesouvají! Zkuste to znovu za několik minut."
   console-command: "&cOmlouváme se, ale tento příkaz může být proveden pouze pomocí konzole."
   transfer-same-person: "&cSorry, you can't transfer a guild to the same person that is already the leader of that guild!"
-  player-no-exist: "&cSorry, it doesn't look like that player has ever been on the server before!"
+  player-no-exist: "&cOmlouváme se, ale nevypadá to, že by ten to hráč na serveru byl už předtím!"
 bank:
   balance: "&aVaše cechovní banka je naplněná {amount}."
   deposit-success: "&a{player} právě uložil {amount} do cechovní banky. Vaše cechovní peníze jsou {total}."
@@ -337,7 +337,7 @@ acf:
   invalid-syntax: "Použí: <c2>{command}</c2> <c3>{syntax}</c3>"
   permission-denied: "Omlouváme se, ale nemáš dostatečná opravnění k použítí příkazu."
   unknown-command: "Neznámý příkaz, prosím použí <c2>/help</c2>"
-  error-performing: "I'm sorry, but there was an error performing this command."
+  error-performing: "Omlouváme se, ale při provádění tohoto příkazu došlo k chybě."
 migrate:
   invalid-backend: "&cZdroj (backend) do kterého se mají přesunout data je neplatný."
   connection-failed: "Připojení k novému zdroje (backend) selhalo! Zkontrolujte, zda je vaše ověřování správně nakonfigurováno!"
