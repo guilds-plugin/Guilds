@@ -144,7 +144,7 @@ admin:
   motd-remove: "&aYou've successfully removed the MOTD for {guild}."
   bank-balance: "&aThe guild {guild} has a bank balance of {balance}."
   bank-deposit: "&aYou've successfully put {amount} into {guild}'s bank. Their new balance is {total}."
-  bank-withdraw: "&aYou've successfully taken {amount} from {guild}'s bank. Their new balance is {total}."
+  bank-withdraw: "&aTu haz tomado satisfactoriamente {amount} del banco de {guild}. Su nuevo saldo es {total}."
   sethome: "&aYou've successfully set a new guild home for {guild}."
   home: "&aYou've successfully teleported to {guild}'s home."
   delhome: "&aYou've successfully removed the guild home for {guild}."
@@ -307,7 +307,7 @@ arena:
 war:
   no-defenders: "&cThe puny guild you challenged has nobody man enough to accept it."
   challenge-sent: "&aA war challenge has been sent to &b{guild}&a! They will have &b{amount} &aseconds to accept it!"
-  incoming-challenge: "&aBeware! The guild &b{guild} &ahas just sent you a war challenge! Show them you are the best in all the lands by doing /guild war accept or be a little scary cat and run away by doing /guild war deny! You have &b{amount} &atime to decide!"
+  incoming-challenge: "&a¡Cuidado! ¡El gremio &b{guild} &aacaba de enviarte un desafío de guerra! Muéstrales que eres el mejor en todas las tierras haciendo /guild war accept o sé un pequeño gato asustado huyendo haciendo /guild war deny! ¡Tú tienes &b{amount} &ade tiempo a decidir!"
   no-pending-challenge: "&cSorry! You don't have a pending war challenge to accept."
   already-challenging: "&cSorry, you already have a pending challenge. Please cancel it or wait for it to expire."
   no-self-challenge: "&cSilly person, you can't challenge yourself to a war!"
