@@ -18,7 +18,7 @@ descriptions:
   admin-sethome: "Comando administrativo para definir a home de uma guilda"
   admin-status: "Comando administrativo para alterar o estado de uma guilda"
   admin-spy: "Comando administrativo para habilitar o espião de chat das guildas"
-  admin-transfer: "Admin command to transfer a guild from one person to another"
+  admin-transfer: "Comando administrativo para transferir uma guilda de uma pessoa para outra"
   admin-unclaim: "Comando administrativo para desproteger um território de guilda"
   admin-upgrade: "Comando administrativo para melhorar uma guild"
   admin-vault: "Comando de administrador para ver o cofre da guild"
@@ -117,8 +117,8 @@ error:
   no-pending-invites: "&cDesculpe, atualmente você não possui nenhum convite de guilda pendente!"
   migrating: "&cDesculpe, esta ação não pode ser feita. Os dados estão sendo migrados atualmente! Tente novamente em alguns minutos."
   console-command: "&cDesculpe, este comando só pode ser executado pelo console."
-  transfer-same-person: "&cSorry, you can't transfer a guild to the same person that is already the leader of that guild!"
-  player-no-exist: "&cSorry, it doesn't look like that player has ever been on the server before!"
+  transfer-same-person: "&cDesculpe, você não pode transferir uma guilda para a mesma pessoa que já é a dona da guilda!"
+  player-no-exist: "&cDesculpe, não parece que o jogador foi visto alguma vez no servidor!"
 bank:
   balance: "&aSua guild tem um saldo de {amount}."
   deposit-success: "&aO jogador {player} depositou {amount} no Banco da Guilda. Seu novo total é de {total}."
@@ -337,7 +337,7 @@ acf:
   invalid-syntax: "Uso: <c2>{command}</c2> <c3>{syntax}</c3>"
   permission-denied: "Desculpe, você não tem permissão para executar este comando."
   unknown-command: "Comando desconhecido, por favor, digite <c2>/help</c2>"
-  error-performing: "I'm sorry, but there was an error performing this command."
+  error-performing: "Desculpe-me, mas houve um erro ao realizar este comando."
 migrate:
   invalid-backend: "&cO backend para o qual você tentou migrar é inválido."
   connection-failed: "&cA conexão para o novo backend falhou! Certifique se sua autenticação está propriamente configurada!"
