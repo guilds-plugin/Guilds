@@ -32,6 +32,7 @@ import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.actions.ConfirmAction;
 import me.glaremasters.guilds.configuration.sections.PluginSettings;
@@ -58,6 +59,7 @@ import java.text.NumberFormat;
 @CommandAlias("%guilds")
 public class CommandUpgrade extends BaseCommand {
 
+    @Dependency private Guilds guilds;
     @Dependency private GuildHandler guildHandler;
     @Dependency private ActionHandler actionHandler;
     @Dependency private SettingsManager settingsManager;
@@ -108,7 +110,7 @@ public class CommandUpgrade extends BaseCommand {
 
                 guild.setBalance(balance - upgradeCost);
 
-                if (!settingsManager.getProperty(TierSettings.CARRY_OVER)) {
+                if (!guilds.getSettingsHandler().getTierSettings().getProperty(TierSettings.CARRY_OVER)) {
                     guildHandler.removePermsFromAll(permission, guild, settingsManager.getProperty(PluginSettings.RUN_VAULT_ASYNC));
                 }
 
