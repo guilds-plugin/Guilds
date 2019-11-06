@@ -62,7 +62,7 @@ public class CommandAdminTransfer extends BaseCommand {
     @Description("{@@descriptions.admin-transfer}")
     @CommandCompletion("@guilds @members-admin")
     @Syntax("<guild> <new master>")
-    public void execute(Player player, @Flags("admin") @Values("@guilds") Guild guild, @Values("@members-admin") @Single String newMaster) {
+    public void execute(Player player, @Flags("admin") @Values("@guilds") @Single Guild guild, @Values("@members-admin") @Single String newMaster) {
 
         if (guild == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));

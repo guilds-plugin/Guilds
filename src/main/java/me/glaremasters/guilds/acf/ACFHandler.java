@@ -164,7 +164,7 @@ public class ACFHandler {
         });
 
         commandManager.getCommandCompletions().registerCompletion("members-admin", c -> {
-           Guild guild = guildHandler.getGuild(c.getContextValue(String.class, 1));
+            Guild guild = c.getContextValue(Guild.class, 1);
            if (guild == null) {
                return null;
            }
