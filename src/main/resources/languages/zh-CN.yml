@@ -18,7 +18,7 @@ descriptions:
   admin-sethome: "以管理员身份设置公会的领地"
   admin-status: "以管理员身份强制更改公会状态"
   admin-spy: "以管理员身份强制监控公会聊天"
-  admin-transfer: "Admin command to transfer a guild from one person to another"
+  admin-transfer: "以管理员权限将一个公会转让给另一个人"
   admin-unclaim: "以管理员身份取消公会占地"
   admin-upgrade: "以管理员身份强制升级公会等级"
   admin-vault: "以管理员身份强制查看公会金库"
