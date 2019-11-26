@@ -58,13 +58,15 @@ public class BuffGUI {
 
     private Guilds guilds;
     private SettingsManager settingsManager;
+    private SettingsManager mainConfig;
     private GuildHandler guildHandler;
     private CommandManager commandManager;
     private CooldownHandler cooldownHandler;
 
-    public BuffGUI(Guilds guilds, SettingsManager settingsManager, GuildHandler guildHandler, CommandManager commandManager, CooldownHandler cooldownHandler) {
+    public BuffGUI(Guilds guilds, SettingsManager settingsManager, SettingsManager mainConfig, GuildHandler guildHandler, CommandManager commandManager, CooldownHandler cooldownHandler) {
         this.guilds = guilds;
         this.settingsManager = settingsManager;
+        this.mainConfig = mainConfig;
         this.guildHandler = guildHandler;
         this.commandManager = commandManager;
         this.cooldownHandler = cooldownHandler;
@@ -277,7 +279,7 @@ public class BuffGUI {
             if (!settingsManager.getProperty(GuildBuffSettings.BUFF_STACKING) && !player.getActivePotionEffects().isEmpty()) return;
             guild.setBalance(guild.getBalance() - cost);
             guild.addPotion(type, (length * 20), amplifier);
-            cooldownHandler.addCooldown(guild, Cooldown.Type.Buffs.name(), settingsManager.getProperty(CooldownSettings.BUFF), TimeUnit.SECONDS);
+            cooldownHandler.addCooldown(guild, Cooldown.Type.Buffs.name(), mainConfig.getProperty(CooldownSettings.BUFF), TimeUnit.SECONDS);
 
             executeClickerCommands(clickerCheck, clickerCommands, player);
             executeGuildCommands(guildCheck, guildCommands, guild);
