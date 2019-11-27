@@ -31,9 +31,12 @@ import me.glaremasters.guilds.guild.GuildHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.text.DecimalFormat;
+
 public class PlaceholderAPI extends PlaceholderExpansion {
 
     private GuildHandler guildHandler;
+    private DecimalFormat df = new DecimalFormat("###.##");
 
     public PlaceholderAPI(GuildHandler guildHandler) {
         this.guildHandler = guildHandler;
@@ -113,11 +116,7 @@ public class PlaceholderAPI extends PlaceholderExpansion {
             case "tier":
                 return String.valueOf(api.getGuild(p).getTier().getLevel());
             case "balance":
-                return String.valueOf(api.getGuild(p).getBalance());
-            case "tier_name":
-                return api.getGuild(p).getTier().getName();
-            case "role_node":
-                return api.getGuildRole(p).getNode();
+                return df.format(api.getGuild(p).getBalance());
             case "code_amount":
                 return String.valueOf(api.getGuild(p).getCodes().size());
             case "max_members":
