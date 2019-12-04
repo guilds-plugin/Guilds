@@ -45,7 +45,7 @@ permissions:
       guilds.command.list: true
       guilds.command.members: true
       guilds.command.motd: true
-      guilds.command.motd-modify: true
+      guilds.command.motd.modify: true
       guilds.command.prefix: true
       guilds.command.promote: true
       guilds.command.rename: true
