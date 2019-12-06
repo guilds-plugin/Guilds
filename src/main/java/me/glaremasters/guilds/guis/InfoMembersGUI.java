@@ -87,14 +87,39 @@ public class InfoMembersGUI {
         // Create the pane for the main items
         OutlinePane foregroundPane = new OutlinePane(0, 0, 9, 6, Pane.Priority.NORMAL);
 
+        // Create the background pane which will just be stained glass
+        OutlinePane backgroundPane = new OutlinePane(0, 0, 9, 6, Pane.Priority.LOW);
+
+        // Add the items to the background pane
+        createBackgroundItems(backgroundPane);
+
         // Add the items to the foreground pane
         createForegroundItems(foregroundPane, guild);
+
+        // Add the glass panes to the main GUI background pane
+        gui.addPane(backgroundPane);
 
         // Add the foreground pane to the GUI
         gui.addPane(foregroundPane);
 
         // Return the create GUI object
         return gui;
+    }
+
+    /**
+     * Create the background panes
+     * @param pane the pane to add to
+     */
+    private void createBackgroundItems(OutlinePane pane) {
+        // Start the itembuilder with stained glass
+        ItemBuilder builder = new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem());
+        // Set the name to be empty
+        builder.setName(ACFBukkitUtil.color("&r"));
+        // Loop through 27 (three rows)
+        for (int i = 0; i < 54; i++) {
+            // Add the pane item to the GUI and cancel the click event on it
+            pane.addItem(new GuiItem(builder.build(), event -> event.setCancelled(true)));
+        }
     }
 
     /**
