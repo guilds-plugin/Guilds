@@ -113,14 +113,22 @@ public class GuildSettings implements SettingsHolder {
     @Comment({"Do we want to respect WorldGuard flags for PVP deny?",
             "This will be checked first before checking same guild and ally.",
             "This is ONLY needed if you have either of the above two options to set true.",
-    "ONLY PUT THIS ON TRUE IF YOU HAVE WORLDGUARD INSTALLED OR YOU WILL BREAK STUFF"})
+            "ONLY PUT THIS ON TRUE IF YOU HAVE WORLDGUARD INSTALLED OR YOU WILL BREAK STUFF"})
     public static final Property<Boolean> RESPECT_WG_PVP_FLAG =
             newProperty("guild.damage.respect-wg-pvp-flag", false);
 
     @Comment("Would you like to send players their guild's motd on login?")
     public static final Property<Boolean> MOTD_ON_LOGIN =
             newProperty("guild.motd-on-login", true);
+    
+    @Comment({"Do we want to enable world whitelist?",
+            "This allows PvP between allies, disabled buffs and cancels teleportation to war in worlds that are not listed."})
+    public static final Property<Boolean> WORLDS_WHITELIST_TOGGLE =
+            newProperty("guild.world-whitelist.enabled", false);
 
+    @Comment("What worlds would you like to whitelisted")
+    public static final Property<List<String>> WHITELIST_WORLDS =
+            newListProperty("guild.world-whitelist.worlds", "world", "world_nether", "world_the_end");
 
     private GuildSettings() {
     }

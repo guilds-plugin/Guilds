@@ -45,6 +45,11 @@ public class HooksSettings implements SettingsHolder {
     public static final Property<Boolean> WORLDGUARD =
             newProperty("hooks.worldguard-claims", false);
 
+    @Comment({"Do we want to hook into DungeonsXL?",
+            "This allows PvP between allies, disabled buffs and cancels teleportation to war in DungneonsXL games."})
+    public static final Property<Boolean> DUNGEONSXL =
+            newProperty("hooks.dugeonsxl", false);
+
     private HooksSettings() {
     }
 }
