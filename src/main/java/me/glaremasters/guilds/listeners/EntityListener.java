@@ -25,12 +25,17 @@
 package me.glaremasters.guilds.listeners;
 
 import ch.jalu.configme.SettingsManager;
+//import de.erethon.dungeonsxl.DungeonsXL;
 import me.glaremasters.guilds.challenges.ChallengeHandler;
 import me.glaremasters.guilds.configuration.sections.GuildSettings;
+import me.glaremasters.guilds.configuration.sections.HooksSettings;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildChallenge;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.utils.ClaimUtils;
+
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Monster;
@@ -45,8 +50,10 @@ import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -55,18 +62,24 @@ import java.util.Set;
  * Time: 5:21 PM
  */
 public class EntityListener implements Listener {
-
+    
     private GuildHandler guildHandler;
     private SettingsManager settingsManager;
     private ChallengeHandler challengeHandler;
     private final Set<PotionEffectType> bad = new HashSet<>(Arrays.asList(PotionEffectType.BLINDNESS, PotionEffectType.WITHER, PotionEffectType.SLOW_DIGGING, PotionEffectType.WEAKNESS, PotionEffectType.SLOW, PotionEffectType.POISON));
+    public List<World> worldWL = new ArrayList<World>();
 
     public EntityListener(GuildHandler guildHandler, SettingsManager settingsManager, ChallengeHandler challengeHandler) {
         this.guildHandler = guildHandler;
         this.settingsManager = settingsManager;
         this.challengeHandler = challengeHandler;
+        
+        for (String world : settingsManager.getProperty(GuildSettings.WHITELIST_WORLDS)) {
+            world.split(",");
+            worldWL.add(Bukkit.getWorld(world));
+        }
     }
-
+    
     /**
      * Handles the extra damage to a mob
      * @param event
@@ -84,6 +97,7 @@ public class EntityListener implements Listener {
             event.setDamage(dmg * multiplier);
         }
     }
+
 
     /**
      * Handles extra XP dropped from mobs
@@ -113,8 +127,19 @@ public class EntityListener implements Listener {
         if (!(event.getEntity() instanceof Player) || !(event.getDamager() instanceof Player)) return;
         Player player = (Player) event.getEntity();
         Player damager = (Player) event.getDamager();
+        
+        // Check if player in dungeon
+        if (settingsManager.getProperty(HooksSettings.DUNGEONSXL)) {
+            if (player.getWorld().toString().contains("DXL_Game_")) return;
+        }
 
-        // Make sure that they aren't in a claim that turns off pvpv
+        // Check world whitelist
+        if (settingsManager.getProperty(GuildSettings.WORLDS_WHITELIST_TOGGLE)) {
+            if (!worldWL.contains(player.getWorld())) return;
+        }
+
+
+        // Make sure that they aren't in a claim that turns off pvp
         if (settingsManager.getProperty(GuildSettings.RESPECT_WG_PVP_FLAG)) {
             event.setCancelled(ClaimUtils.checkPvpDisabled(player));
             return;
