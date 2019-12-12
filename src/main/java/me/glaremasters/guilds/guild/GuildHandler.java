@@ -42,6 +42,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -68,6 +69,7 @@ public class GuildHandler {
     private final List<GuildTier> tiers;
     private final List<Player> spies;
     private final List<Player> guildChat;
+    private final List<World> worldWhiteList;
 
     private Map<Guild, List<Inventory>> cachedVaults;
     private List<Player> openedVault;
@@ -89,6 +91,7 @@ public class GuildHandler {
         guildChat = new ArrayList<>();
         cachedVaults = new HashMap<>();
         openedVault = new ArrayList<>();
+        worldWhiteList = new ArrayList<>();
 
         migrating = false;
 
@@ -948,6 +951,14 @@ public class GuildHandler {
             return noGuild;
         }
         return ACFBukkitUtil.color(combined.replace("{name}", guild.getName()).replace("{prefix}", guild.getPrefix()));
+    }
+    
+    public List<World> getWorldWhitelist() {
+        for (String world : settingsManager.getProperty(GuildSettings.WHITELIST_WORLDS)) {
+            world.split(",");
+            worldWhiteList.add(Bukkit.getWorld(world));
+        }
+        return worldWhiteList;
     }
 
     public List<Guild> getGuilds() {
