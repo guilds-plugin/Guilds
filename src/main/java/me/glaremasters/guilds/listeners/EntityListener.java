@@ -127,7 +127,6 @@ public class EntityListener implements Listener {
             if (!guildHandler.getWorldWhitelist().contains(player.getWorld())) return;
         }
 
-
         // Make sure that they aren't in a claim that turns off pvp
         if (settingsManager.getProperty(GuildSettings.RESPECT_WG_PVP_FLAG)) {
             event.setCancelled(ClaimUtils.checkPvpDisabled(player));
@@ -178,6 +177,15 @@ public class EntityListener implements Listener {
             event.setCancelled(ClaimUtils.checkPvpDisabled(damagee));
             return;
         }
+        
+        if (settingsManager.getProperty(HooksSettings.DUNGEONSXL)) {
+            if (damager.getWorld().toString().contains("DXL_Game_")) return;
+        }
+
+        if (settingsManager.getProperty(GuildSettings.WORLDS_WHITELIST_TOGGLE)) {
+            if (!guildHandler.getWorldWhitelist().contains(damager.getWorld())) return;
+
+        }
 
         if (guildHandler.isSameGuild(damagee, damager) && damagee != damager ) {
             event.setCancelled(!settingsManager.getProperty(GuildSettings.GUILD_DAMAGE));
@@ -214,6 +222,14 @@ public class EntityListener implements Listener {
         if (settingsManager.getProperty(GuildSettings.RESPECT_WG_PVP_FLAG)) {
             event.setCancelled(ClaimUtils.checkPvpDisabled(damagee));
             return;
+        }
+        
+        if (settingsManager.getProperty(HooksSettings.DUNGEONSXL)) {
+            if (damager.getWorld().toString().contains("DXL_Game_")) return;
+        }
+
+        if (settingsManager.getProperty(GuildSettings.WORLDS_WHITELIST_TOGGLE)) {
+            if (!guildHandler.getWorldWhitelist().contains(damager.getWorld())) return;
         }
 
         if (guildHandler.isSameGuild(damagee, damager)) {
@@ -255,6 +271,15 @@ public class EntityListener implements Listener {
         for (LivingEntity entity : event.getAffectedEntities()) {
             if (entity instanceof Player)  {
                 Player player = (Player) entity;
+                
+                if (settingsManager.getProperty(HooksSettings.DUNGEONSXL)) {
+                    if (shooter.getWorld().toString().contains("DXL_Game_")) return;
+                }
+
+                if (settingsManager.getProperty(GuildSettings.WORLDS_WHITELIST_TOGGLE)) {
+                    if (!guildHandler.getWorldWhitelist().contains(shooter.getWorld())) return;
+                }
+                
                 if (guildHandler.isSameGuild(shooter, player) && potion.getShooter() != player ) {
                     event.setCancelled(!settingsManager.getProperty(GuildSettings.GUILD_DAMAGE));
                     return;
