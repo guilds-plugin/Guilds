@@ -952,7 +952,11 @@ public class GuildHandler {
         }
         return ACFBukkitUtil.color(combined.replace("{name}", guild.getName()).replace("{prefix}", guild.getPrefix()));
     }
-    
+
+    /**
+     * Get whitelisted worlds
+     * @return world list
+     */
     public List<World> getWorldWhitelist() {
         for (String world : settingsManager.getProperty(GuildSettings.WHITELIST_WORLDS)) {
             world.split(",");

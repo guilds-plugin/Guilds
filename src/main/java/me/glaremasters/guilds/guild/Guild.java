@@ -26,6 +26,8 @@ package me.glaremasters.guilds.guild;
 
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.CommandManager;
+import me.glaremasters.guilds.configuration.sections.GuildSettings;
+import me.glaremasters.guilds.configuration.sections.HooksSettings;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.SkullUtils;
@@ -37,12 +39,18 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import ch.jalu.configme.SettingsManager;
+
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class Guild {
+    
+    private GuildHandler guildHandler;
+    private SettingsManager settingsManager;
 
     public Guild(UUID id) {
         this.id = id;
@@ -532,13 +540,30 @@ public class Guild {
     }
 
     /**
+     * Get available online players
+     * including world check if enabled
+     * @return list available for buff players
+     */
+    public List<Player> availablePlayers() {
+        return getOnlineAsPlayers().stream().filter(p -> !
+            ((settingsManager.getProperty(HooksSettings.DUNGEONSXL)
+            &&
+            !p.getWorld().toString().contains("DXL_World_"))
+        ||
+            (settingsManager.getProperty(GuildSettings.WORLDS_WHITELIST_TOGGLE)
+            &&
+            !guildHandler.getWorldWhitelist().contains(p.getWorld()))))
+        .collect(Collectors.toList());
+    }
+
+    /**
      * Simple method to add a buff to all online members
      * @param type the potion type
      * @param length the length of the potion
      * @param amplifier the strength of the potion
      */
     public void addPotion(String type, int length, int amplifier) {
-        getOnlineAsPlayers().forEach(p -> p.addPotionEffect(new PotionEffect(PotionEffectType.getByName(type), length, amplifier)));
+        availablePlayers().forEach(p -> p.addPotionEffect(new PotionEffect(PotionEffectType.getByName(type), length, amplifier)));
     }
 
     public UUID getId() {

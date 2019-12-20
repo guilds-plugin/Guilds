@@ -28,6 +28,7 @@ import com.google.common.base.Joiner;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.challenges.ChallengeHandler;
 import me.glaremasters.guilds.guild.GuildChallenge;
+import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.JSONMessage;
 import org.bukkit.Bukkit;
@@ -80,6 +81,7 @@ public class GuildWarReadyTask extends BukkitRunnable {
                 cancel();
                 return;
             }
+
             // Create final list for both sides
             challengeHandler.prepareFinalList(challenge.getChallengePlayers(), challenge, "challenger");
             challengeHandler.prepareFinalList(challenge.getDefendPlayers(), challenge, "defender");

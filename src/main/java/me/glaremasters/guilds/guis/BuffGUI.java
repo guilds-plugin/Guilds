@@ -308,14 +308,14 @@ public class BuffGUI {
     }
 
     /**
-     * Execute a list of commands on all players online in a guild
+     * Execute a list of commands on all available players online in a guild
      * @param check if this can run or not
      * @param commands the commands to run
      * @param guild the guild of players to run on
      */
     private void executeGuildCommands(boolean check, List<String> commands, Guild guild) {
         if (check) {
-            guild.getOnlineAsPlayers().forEach(p -> commands.forEach(c -> {
+            guild.availablePlayers().forEach(p -> commands.forEach(c -> {
                 String update = c.replace("{player}", p.getName());
                 Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), update);
             }));

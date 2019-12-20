@@ -29,9 +29,12 @@ import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.CommandManager;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.arena.Arena;
+import me.glaremasters.guilds.configuration.sections.GuildSettings;
+import me.glaremasters.guilds.configuration.sections.HooksSettings;
 import me.glaremasters.guilds.configuration.sections.WarSettings;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildChallenge;
+import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildMember;
 import me.glaremasters.guilds.messages.Messages;
 import org.apache.commons.collections4.map.LinkedMap;
@@ -56,8 +59,10 @@ import java.util.stream.Stream;
  */
 public class ChallengeHandler {
 
+    private GuildHandler guildHandler;
     private List<GuildChallenge> challenges;
     private Guilds guilds;
+    private SettingsManager settingsManager;
 
     public ChallengeHandler(Guilds guilds) {
         this.guilds = guilds;
@@ -204,10 +209,21 @@ public class ChallengeHandler {
         LinkedMap<UUID, String> finalList = new LinkedMap<>();
         players.forEach(p -> {
             Player player = Bukkit.getPlayer(p);
+            if (settingsManager.getProperty(HooksSettings.DUNGEONSXL)
+                &&
+                !player.getWorld().toString().contains("DXL_Game_"))
+                return;
+
+            if (settingsManager.getProperty(GuildSettings.WORLDS_WHITELIST_TOGGLE)
+                &&
+                !guildHandler.getWorldWhitelist().contains(player.getWorld()))
+                return;
+
             if (player != null) {
                 finalList.putIfAbsent(p, ACFBukkitUtil.fullLocationToString(player.getLocation()));
             }
         });
+
         if (team.equalsIgnoreCase("challenger")) {
             challenge.setAliveChallengers(finalList);
         } else {
