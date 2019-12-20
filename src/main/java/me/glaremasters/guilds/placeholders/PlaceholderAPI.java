@@ -132,7 +132,7 @@ public class PlaceholderAPI extends PlaceholderExpansion {
             case "challenge_loses":
                 return String.valueOf(api.getGuild(p).getGuildScore().getLoses());
             case "motd":
-                return api.getGuild(p).getMotd();
+                return api.getGuild(p).getMotd() == null ? "" : api.getGuild(p).getMotd();
             default:
                 return "";
         }
