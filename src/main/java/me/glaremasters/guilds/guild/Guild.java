@@ -548,7 +548,7 @@ public class Guild {
         return getOnlineAsPlayers().stream().filter(p -> !
             ((settingsManager.getProperty(HooksSettings.DUNGEONSXL)
             &&
-            !p.getWorld().toString().contains("DXL_World_"))
+            p.getWorld().toString().contains("DXL_World_"))
         ||
             (settingsManager.getProperty(GuildSettings.WORLDS_WHITELIST_TOGGLE)
             &&
