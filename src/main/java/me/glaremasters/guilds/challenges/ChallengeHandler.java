@@ -211,7 +211,7 @@ public class ChallengeHandler {
             Player player = Bukkit.getPlayer(p);
             if (settingsManager.getProperty(HooksSettings.DUNGEONSXL)
                 &&
-                player.getWorld().toString().contains("DXL_Game_"))
+                player.getWorld().toString().startsWith("DXL_"))
                 return;
 
             if (settingsManager.getProperty(GuildSettings.WORLDS_WHITELIST_TOGGLE)

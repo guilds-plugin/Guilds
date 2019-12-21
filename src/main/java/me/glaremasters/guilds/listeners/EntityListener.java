@@ -119,7 +119,7 @@ public class EntityListener implements Listener {
         // Check if player in dungeon
         if (settingsManager.getProperty(HooksSettings.DUNGEONSXL)
             &&
-            player.getWorld().toString().contains("DXL_Game_"))
+            player.getWorld().toString().startsWith("DXL_"))
             return;
 
         // Check worlds whitelist
@@ -181,7 +181,7 @@ public class EntityListener implements Listener {
         
         if (settingsManager.getProperty(HooksSettings.DUNGEONSXL)
             &&
-            damager.getWorld().toString().contains("DXL_Game_"))
+            damager.getWorld().toString().startsWith("DXL_"))
             return;
 
         if (settingsManager.getProperty(GuildSettings.WORLDS_WHITELIST_TOGGLE)
@@ -228,7 +228,7 @@ public class EntityListener implements Listener {
         
         if (settingsManager.getProperty(HooksSettings.DUNGEONSXL)
             &&
-            damager.getWorld().toString().contains("DXL_Game_"))
+            damager.getWorld().toString().startsWith("DXL_"))
             return;
 
         if (settingsManager.getProperty(GuildSettings.WORLDS_WHITELIST_TOGGLE)
@@ -278,7 +278,7 @@ public class EntityListener implements Listener {
                 
                 if (settingsManager.getProperty(HooksSettings.DUNGEONSXL)
                     &&
-                    shooter.getWorld().toString().contains("DXL_Game_"))
+                    shooter.getWorld().toString().startsWith("DXL_"))
                     return;
 
                 if (settingsManager.getProperty(GuildSettings.WORLDS_WHITELIST_TOGGLE)
