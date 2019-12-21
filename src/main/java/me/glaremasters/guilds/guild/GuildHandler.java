@@ -69,6 +69,7 @@ public class GuildHandler {
     private final List<GuildTier> tiers;
     private final List<Player> spies;
     private final List<Player> guildChat;
+    private final List<World> worldWhiteList;
 
     private Map<Guild, List<Inventory>> cachedVaults;
     private List<Player> openedVault;
@@ -90,6 +91,7 @@ public class GuildHandler {
         guildChat = new ArrayList<>();
         cachedVaults = new HashMap<>();
         openedVault = new ArrayList<>();
+        worldWhiteList = new ArrayList<>();
 
         migrating = false;
 
@@ -955,8 +957,13 @@ public class GuildHandler {
      * Get whitelisted worlds
      * @return worlds list
      */
+    // TODO Use Stream API
     public List<World> getWorldsWhitelist() {
-        return settingsManager.getProperty(GuildSettings.WHITELIST_WORLDS).stream().map(m -> Bukkit.getWorld(m)).collect(Collectors.toList());
+        for (String world : settingsManager.getProperty(GuildSettings.WHITELIST_WORLDS)) {
+            world.split(",");
+            worldWhiteList.add(Bukkit.getWorld(world));
+        }
+        return worldWhiteList;
     }
 
     public List<Guild> getGuilds() {
