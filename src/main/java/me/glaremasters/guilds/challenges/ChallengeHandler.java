@@ -223,7 +223,6 @@ public class ChallengeHandler {
                 finalList.putIfAbsent(p, ACFBukkitUtil.fullLocationToString(player.getLocation()));
             }
         });
-
         if (team.equalsIgnoreCase("challenger")) {
             challenge.setAliveChallengers(finalList);
         } else {

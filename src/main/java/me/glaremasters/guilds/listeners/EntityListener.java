@@ -57,7 +57,7 @@ import java.util.Set;
  * Time: 5:21 PM
  */
 public class EntityListener implements Listener {
-    
+
     private GuildHandler guildHandler;
     private SettingsManager settingsManager;
     private ChallengeHandler challengeHandler;
@@ -68,7 +68,7 @@ public class EntityListener implements Listener {
         this.settingsManager = settingsManager;
         this.challengeHandler = challengeHandler;
     }
-    
+
     /**
      * Handles the extra damage to a mob
      * @param event
@@ -86,7 +86,6 @@ public class EntityListener implements Listener {
             event.setDamage(dmg * multiplier);
         }
     }
-
 
     /**
      * Handles extra XP dropped from mobs

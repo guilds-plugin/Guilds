@@ -24,6 +24,7 @@
 
 package me.glaremasters.guilds.guild;
 
+import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.CommandManager;
 import me.glaremasters.guilds.configuration.sections.GuildSettings;
@@ -39,16 +40,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import ch.jalu.configme.SettingsManager;
-
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class Guild {
-    
+
     private GuildHandler guildHandler;
     private SettingsManager settingsManager;
 

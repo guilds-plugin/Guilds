@@ -69,7 +69,6 @@ public class GuildHandler {
     private final List<GuildTier> tiers;
     private final List<Player> spies;
     private final List<Player> guildChat;
-    private final List<World> worldWhiteList;
 
     private Map<Guild, List<Inventory>> cachedVaults;
     private List<Player> openedVault;
@@ -91,7 +90,6 @@ public class GuildHandler {
         guildChat = new ArrayList<>();
         cachedVaults = new HashMap<>();
         openedVault = new ArrayList<>();
-        worldWhiteList = new ArrayList<>();
 
         migrating = false;
 
