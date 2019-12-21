@@ -955,14 +955,10 @@ public class GuildHandler {
 
     /**
      * Get whitelisted worlds
-     * @return world list
+     * @return worlds list
      */
-    public List<World> getWorldWhitelist() {
-        for (String world : settingsManager.getProperty(GuildSettings.WHITELIST_WORLDS)) {
-            world.split(",");
-            worldWhiteList.add(Bukkit.getWorld(world));
-        }
-        return worldWhiteList;
+    public List<World> getWorldsWhitelist() {
+        return settingsManager.getProperty(GuildSettings.WHITELIST_WORLDS).stream().map(m -> Bukkit.getWorld(m)).collect(Collectors.toList());
     }
 
     public List<Guild> getGuilds() {

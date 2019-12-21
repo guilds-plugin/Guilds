@@ -552,7 +552,7 @@ public class Guild {
         ||
             (settingsManager.getProperty(GuildSettings.WORLDS_WHITELIST_TOGGLE)
             &&
-            !guildHandler.getWorldWhitelist().contains(p.getWorld()))))
+            !guildHandler.getWorldsWhitelist().contains(p.getWorld()))))
         .collect(Collectors.toList());
     }
 

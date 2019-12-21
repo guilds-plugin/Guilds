@@ -123,10 +123,10 @@ public class EntityListener implements Listener {
             player.getWorld().toString().contains("DXL_Game_"))
             return;
 
-        // Check world whitelist
+        // Check worlds whitelist
         if (settingsManager.getProperty(GuildSettings.WORLDS_WHITELIST_TOGGLE)
             &&
-            !guildHandler.getWorldWhitelist().contains(player.getWorld()))
+            !guildHandler.getWorldsWhitelist().contains(player.getWorld()))
             return;
 
         // Make sure that they aren't in a claim that turns off pvp
@@ -187,7 +187,7 @@ public class EntityListener implements Listener {
 
         if (settingsManager.getProperty(GuildSettings.WORLDS_WHITELIST_TOGGLE)
             &&
-            !guildHandler.getWorldWhitelist().contains(damager.getWorld()))
+            !guildHandler.getWorldsWhitelist().contains(damager.getWorld()))
             return;
 
         if (guildHandler.isSameGuild(damagee, damager) && damagee != damager ) {
@@ -234,7 +234,7 @@ public class EntityListener implements Listener {
 
         if (settingsManager.getProperty(GuildSettings.WORLDS_WHITELIST_TOGGLE)
             &&
-            !guildHandler.getWorldWhitelist().contains(damager.getWorld()))
+            !guildHandler.getWorldsWhitelist().contains(damager.getWorld()))
             return;
 
         if (guildHandler.isSameGuild(damagee, damager)) {
@@ -284,7 +284,7 @@ public class EntityListener implements Listener {
 
                 if (settingsManager.getProperty(GuildSettings.WORLDS_WHITELIST_TOGGLE)
                     &&
-                    !guildHandler.getWorldWhitelist().contains(shooter.getWorld())) 
+                    !guildHandler.getWorldsWhitelist().contains(shooter.getWorld())) 
                     return;
                 
                 if (guildHandler.isSameGuild(shooter, player) && potion.getShooter() != player ) {
