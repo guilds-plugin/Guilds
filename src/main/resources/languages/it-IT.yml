@@ -333,11 +333,11 @@ war:
   player-killed-other: "&b{player} &aè stato ucciso per ragioni sconosciute."
   player-killed-quit: "&b{player} &aè stato ucciso per aver lasciato il server."
   teleported-back: "&aHai combattuto duro! Alas, non tutti possono essere i migliori. Sei stato teletrasportato indietro alla tua posizione originale!"
-acf:
-  invalid-syntax: "Uso: <c2>{command}</c2> <c3>{syntax}</c3>"
-  permission-denied: "Mi spiace, ma non hai i permessi per praticare questo comando."
-  unknown-command: "Comando Sconosciuto, sei pregato di digitare <c2>/help</c2>"
-  error-performing: "Mi spiace, c'è stato un errore eseguendo questo comando."
+acf-core:
+  invalid_syntax: "Usage: <c2>{command}</c2> <c3>{syntax}</c3>"
+  permission_denied: "I'm sorry, but you do not have permission to perform this command."
+  unknown_command: "Unknown Command, please type <c2>/help</c2>"
+  error_performing_command: "I'm sorry, but there was an error performing this command."
 migrate:
   invalid-backend: "&cIl backend verso cui hai provato a migrare non è valido."
   connection-failed: "&cConnessione al nuovo backend fallita! Assicurati che la tua autenticazione sia configurata propriamente!"
