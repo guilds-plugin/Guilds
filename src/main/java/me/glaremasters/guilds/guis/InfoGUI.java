@@ -40,15 +40,12 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildTier;
 import me.glaremasters.guilds.messages.Messages;
+import me.glaremasters.guilds.utils.GuiUtils;
 import me.glaremasters.guilds.utils.ItemBuilder;
 import me.glaremasters.guilds.utils.XMaterial;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemFlag;
-import org.bukkit.inventory.ItemStack;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -124,6 +121,7 @@ public class InfoGUI {
 
     /**
      * Create the background panes
+     *
      * @param pane the pane to add to
      */
     private void createBackgroundItems(OutlinePane pane) {
@@ -140,7 +138,8 @@ public class InfoGUI {
 
     /**
      * Create the regular items that will be on the GUI
-     * @param pane the pane to be added to
+     *
+     * @param pane  the pane to be added to
      * @param guild the guild of the player
      */
     private void createForegroundItems(OutlinePane pane, Guild guild, Player player) {
@@ -150,7 +149,7 @@ public class InfoGUI {
 
         // Add the tier button to the GUI
         if (settingsManager.getProperty(GuildInfoSettings.TIER_DISPLAY)) {
-            pane.addItem(new GuiItem(easyItem(settingsManager.getProperty(GuildInfoSettings.TIER_MATERIAL),
+            pane.addItem(new GuiItem(GuiUtils.createItem(settingsManager.getProperty(GuildInfoSettings.TIER_MATERIAL),
                     settingsManager.getProperty(GuildInfoSettings.TIER_NAME),
                     settingsManager.getProperty(GuildInfoSettings.TIER_LORE).stream().map(l ->
                             l.replace("{tier}", tier.getName())).collect(Collectors.toList())),
@@ -158,7 +157,7 @@ public class InfoGUI {
         }
         // Add the bank button to the GUI
         if (settingsManager.getProperty(GuildInfoSettings.BANK_DISPLAY)) {
-            pane.addItem(new GuiItem(easyItem(settingsManager.getProperty(GuildInfoSettings.BANK_MATERIAL),
+            pane.addItem(new GuiItem(GuiUtils.createItem(settingsManager.getProperty(GuildInfoSettings.BANK_MATERIAL),
                     settingsManager.getProperty(GuildInfoSettings.BANK_NAME),
                     settingsManager.getProperty(GuildInfoSettings.BANK_LORE).stream().map(l ->
                             l.replace("{current}", String.valueOf(guild.getBalance())).replace("{max}",
@@ -167,7 +166,7 @@ public class InfoGUI {
         }
         // Add the members button to the GUI
         if (settingsManager.getProperty(GuildInfoSettings.MEMBERS_DISPLAY)) {
-            pane.addItem(new GuiItem(easyItem(settingsManager.getProperty(GuildInfoSettings.MEMBERS_MATERIAL),
+            pane.addItem(new GuiItem(GuiUtils.createItem(settingsManager.getProperty(GuildInfoSettings.MEMBERS_MATERIAL),
                     settingsManager.getProperty(GuildInfoSettings.MEMBERS_NAME),
                     settingsManager.getProperty(GuildInfoSettings.MEMBERS_LORE).stream().map(l ->
                             l.replace("{current}", String.valueOf(guild.getMembers().size()))
@@ -193,7 +192,7 @@ public class InfoGUI {
                 material = settingsManager.getProperty(GuildInfoSettings.STATUS_MATERIAL_PUBLIC);
                 statusString = settingsManager.getProperty(GuildInfoSettings.STATUS_PUBLIC);
             }
-            pane.addItem(new GuiItem(easyItem(material,
+            pane.addItem(new GuiItem(GuiUtils.createItem(material,
                     settingsManager.getProperty(GuildInfoSettings.STATUS_NAME),
                     settingsManager.getProperty(GuildInfoSettings.STATUS_LORE).stream().map(l ->
                             l.replace("{status}", statusString)).collect(Collectors.toList())),
@@ -211,7 +210,7 @@ public class InfoGUI {
                 home = ACFBukkitUtil.blockLocationToString(guild.getHome().getAsLocation());
             }
             // Add the home button to the GUI
-            pane.addItem(new GuiItem(easyItem(settingsManager.getProperty(GuildInfoSettings.HOME_MATERIAL),
+            pane.addItem(new GuiItem(GuiUtils.createItem(settingsManager.getProperty(GuildInfoSettings.HOME_MATERIAL),
                     settingsManager.getProperty(GuildInfoSettings.HOME_NAME),
                     settingsManager.getProperty(GuildInfoSettings.HOME_LORE).stream().map(l ->
                             l.replace("{coords}", home)).collect(Collectors.toList())),
@@ -236,8 +235,7 @@ public class InfoGUI {
                                     Location curr = player.getLocation();
                                     if (initial.distance(curr) > 1) {
                                         guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.HOME__CANCELLED);
-                                    }
-                                    else {
+                                    } else {
                                         player.teleport(guild.getHome().getAsLocation());
                                         guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.HOME__TELEPORTED);
                                     }
@@ -254,13 +252,14 @@ public class InfoGUI {
 
     /**
      * Create the vault item
-     * @param pane the pane to be added to
+     *
+     * @param pane  the pane to be added to
      * @param guild the guild of the player
      */
     private void createVaultItem(OutlinePane pane, Guild guild, Player player) {
         // Add the vault item to the GUI
         if (settingsManager.getProperty(GuildInfoSettings.VAULT_DISPLAY)) {
-            pane.addItem(new GuiItem(easyItem(settingsManager.getProperty(GuildInfoSettings.VAULT_MATERIAL),
+            pane.addItem(new GuiItem(GuiUtils.createItem(settingsManager.getProperty(GuildInfoSettings.VAULT_MATERIAL),
                     settingsManager.getProperty(GuildInfoSettings.VAULT_NAME),
                     settingsManager.getProperty(GuildInfoSettings.VAULT_LORE)),
                     event -> {
@@ -277,47 +276,18 @@ public class InfoGUI {
 
     /**
      * Create the motd itmestack for the GUI
-     * @param pane the pane to add it to
+     *
+     * @param pane  the pane to add it to
      * @param guild the guild that you're getting the motd of
      */
     private void createMotdItem(OutlinePane pane, Guild guild) {
         // Add the MOTD item to the GUI
         if (settingsManager.getProperty(GuildInfoSettings.MOTD_DISPLAY)) {
             String motd = guild.getMotd() == null ? "" : guild.getMotd();
-            pane.addItem(new GuiItem(easyItem(settingsManager.getProperty(GuildInfoSettings.MOTD_MATERIAL),
+            pane.addItem(new GuiItem(GuiUtils.createItem(settingsManager.getProperty(GuildInfoSettings.MOTD_MATERIAL),
                     settingsManager.getProperty(GuildInfoSettings.MOTD_NAME),
                     settingsManager.getProperty(GuildInfoSettings.MOTD_LORE).stream().map(l -> l.replace("{motd}", motd)).collect(Collectors.toList())),
                     event -> event.setCancelled(true)));
         }
     }
-
-    /**
-     * Easily create an item for the GUI
-     * @param material the material of the item
-     * @param name the name of the item
-     * @param lore the lore of the item
-     * @return created itemstack
-     */
-    private ItemStack easyItem(String material, String name, List<String> lore) {
-        Optional<XMaterial> mat = XMaterial.matchXMaterial(material);
-        XMaterial temp = mat.orElse(XMaterial.GLASS_PANE);
-        ItemStack item;
-        if (temp.parseItem() == null) {
-            item = XMaterial.GLASS_PANE.parseItem();
-        }
-        else {
-            item = temp.parseItem();
-        }
-        // Start the itembuilder
-        ItemBuilder builder = new ItemBuilder(item);
-        // Sets the name of the item
-        builder.setName(ACFBukkitUtil.color(name));
-        // Sets the lore of the item
-        builder.setLore(lore.stream().map(ACFBukkitUtil::color).collect(Collectors.toList()));
-        // Hide attributes
-        builder.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-        // Return the created item
-        return builder.build();
-    }
-
 }

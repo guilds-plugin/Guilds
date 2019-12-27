@@ -35,13 +35,11 @@ import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.configuration.sections.VaultPickerSettings;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
+import me.glaremasters.guilds.utils.GuiUtils;
 import me.glaremasters.guilds.utils.ItemBuilder;
 import me.glaremasters.guilds.utils.XMaterial;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -67,7 +65,7 @@ public class VaultGUI {
         // Create the GUI with the desired name from the config
         Gui gui = new Gui(guilds, settingsManager.getProperty(VaultPickerSettings.GUI_SIZE),
                 ACFBukkitUtil.color(settingsManager.getProperty(VaultPickerSettings.GUI_NAME).replace("{name}",
-                guild.getName())));
+                        guild.getName())));
 
         // Prevent players from being able to items into the GUIs
         gui.setOnOutsideClick(event -> {
@@ -83,7 +81,7 @@ public class VaultGUI {
 
         // Add the items to the foreground pane
         createForegroundItems(foregroundPane, guild, player, commandManager);
-        
+
         createBackgroundItems(backgroundPane);
 
         // Set it back to 0
@@ -100,6 +98,7 @@ public class VaultGUI {
 
     /**
      * Create the background panes
+     *
      * @param pane the pane to add to
      */
     private void createBackgroundItems(OutlinePane pane) {
@@ -117,7 +116,8 @@ public class VaultGUI {
 
     /**
      * Create the regular items that will be on the GUI
-     * @param pane the pane to be added to
+     *
+     * @param pane  the pane to be added to
      * @param guild the guild of the player
      */
     private void createForegroundItems(OutlinePane pane, Guild guild, Player player, CommandManager commandManager) {
@@ -129,7 +129,7 @@ public class VaultGUI {
             } else {
                 status = settingsManager.getProperty(VaultPickerSettings.PICKER_LOCKED);
             }
-            pane.addItem(new GuiItem(easyItem(settingsManager.getProperty(VaultPickerSettings.PICKER_MATERIAL),
+            pane.addItem(new GuiItem(GuiUtils.createItem(settingsManager.getProperty(VaultPickerSettings.PICKER_MATERIAL),
                     settingsManager.getProperty(VaultPickerSettings.PICKER_NAME),
                     settingsManager.getProperty(VaultPickerSettings.PICKER_LORE).stream().map(l ->
                             l.replace("{number}", String.valueOf(num + 1))
@@ -145,33 +145,6 @@ public class VaultGUI {
             }));
             num++;
         }
-    }
-
-    /**
-     * Easily create an item for the GUI
-     * @param material the material of the item
-     * @param name the name of the item
-     * @param lore the lore of the item
-     * @return created itemstack
-     */
-    private ItemStack easyItem(String material, String name, List<String> lore) {
-        Optional<XMaterial> mat = XMaterial.matchXMaterial(material);
-        XMaterial temp = mat.orElse(XMaterial.GLASS_PANE);
-        ItemStack item;
-        if (temp.parseItem() == null) {
-            item = XMaterial.GLASS_PANE.parseItem();
-        }
-        else {
-            item = temp.parseItem();
-        }
-        // Start the itembuilder
-        ItemBuilder builder = new ItemBuilder(item);
-        // Sets the name of the item
-        builder.setName(ACFBukkitUtil.color(name));
-        // Sets the lore of the item
-        builder.setLore(lore.stream().map(ACFBukkitUtil::color).collect(Collectors.toList()));
-        // Return the created item
-        return builder.build();
     }
 
 }

@@ -37,17 +37,16 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildMember;
 import me.glaremasters.guilds.guild.GuildRole;
+import me.glaremasters.guilds.utils.GuiUtils;
 import me.glaremasters.guilds.utils.ItemBuilder;
 import me.glaremasters.guilds.utils.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import java.text.SimpleDateFormat;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -109,6 +108,7 @@ public class InfoMembersGUI {
 
     /**
      * Create the background panes
+     *
      * @param pane the pane to add to
      */
     private void createBackgroundItems(OutlinePane pane) {
@@ -125,7 +125,8 @@ public class InfoMembersGUI {
 
     /**
      * Create the regular items that will be on the GUI
-     * @param pane the pane to be added to
+     *
+     * @param pane  the pane to be added to
      * @param guild the guild of the player
      */
     private void createForegroundItems(OutlinePane pane, Guild guild) {
@@ -169,7 +170,7 @@ public class InfoMembersGUI {
                 status = settingsManager.getProperty(GuildInfoMemberSettings.MEMBERS_OFFLINE);
             }
 
-            pane.addItem(new GuiItem(easyItem(settingsManager.getProperty(GuildInfoMemberSettings.MEMBERS_MATERIAL),
+            pane.addItem(new GuiItem(GuiUtils.createItem(settingsManager.getProperty(GuildInfoMemberSettings.MEMBERS_MATERIAL),
                     settingsManager.getProperty(GuildInfoMemberSettings.MEMBERS_NAME).replace("{player}", name),
                     settingsManager.getProperty(GuildInfoMemberSettings.MEMBERS_LORE).stream().map(l ->
                             l.replace("{name}", name)
@@ -180,32 +181,4 @@ public class InfoMembersGUI {
                     event -> event.setCancelled(true)));
         });
     }
-
-    /**
-     * Easily create an item for the GUI
-     * @param material the material of the item
-     * @param name the name of the item
-     * @param lore the lore of the item
-     * @return created itemstack
-     */
-    private ItemStack easyItem(String material, String name, List<String> lore) {
-        Optional<XMaterial> mat = XMaterial.matchXMaterial(material);
-        XMaterial temp = mat.orElse(XMaterial.GLASS_PANE);
-        ItemStack item;
-        if (temp.parseItem() == null) {
-            item = XMaterial.GLASS_PANE.parseItem();
-        }
-        else {
-            item = temp.parseItem();
-        }
-        // Start the itembuilder
-        ItemBuilder builder = new ItemBuilder(item);
-        // Sets the name of the item
-        builder.setName(ACFBukkitUtil.color(name));
-        // Sets the lore of the item
-        builder.setLore(lore.stream().map(ACFBukkitUtil::color).collect(Collectors.toList()));
-        // Return the created item
-        return builder.build();
-    }
-
 }

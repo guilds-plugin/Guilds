@@ -39,14 +39,13 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.EconomyUtils;
-import me.glaremasters.guilds.utils.XMaterial;
+import me.glaremasters.guilds.utils.GuiUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -243,30 +242,23 @@ public class BuffGUI {
 
     /**
      * Set the buff item to the GUI
+     *
      * @param commandManager command manage
-     * @param type the type of potion
-     * @param length the length of the potion
-     * @param amplifier the strength of the potion
-     * @param cost the cost of the potion
-     * @param icon the icon of the potion
-     * @param name the name of the potion
-     * @param lore the lore of the potion
-     * @param pane the pane to add to
-     * @param x The location to add to
-     * @param check check if this should be displayed
+     * @param type           the type of potion
+     * @param length         the length of the potion
+     * @param amplifier      the strength of the potion
+     * @param cost           the cost of the potion
+     * @param icon           the icon of the potion
+     * @param name           the name of the potion
+     * @param lore           the lore of the potion
+     * @param pane           the pane to add to
+     * @param x              The location to add to
+     * @param check          check if this should be displayed
      */
     private void setBuffItem(CommandManager commandManager, String type, int length, int amplifier,
                              double cost, String icon, String name, List<String> lore, StaticPane pane, int x,
                              boolean check, boolean clickerCheck, List<String> clickerCommands, boolean guildCheck, List<String> guildCommands) {
-        Optional<XMaterial> material = XMaterial.matchXMaterial(icon);
-        XMaterial temp = material.orElse(XMaterial.GLASS_PANE);
-        ItemStack item;
-        if (temp.parseItem() == null) {
-            item = XMaterial.GLASS_PANE.parseItem();
-        }
-        else {
-            item = temp.parseItem();
-        }
+        ItemStack item = GuiUtils.createItem(icon, name, lore);
         GuiItem buffItem = new GuiItem(item, event -> {
             event.setCancelled(true);
             Player player = (Player) event.getWhoClicked();
@@ -286,7 +278,8 @@ public class BuffGUI {
                 commandManager.getCommandIssuer(player).sendInfo(Messages.BANK__NOT_ENOUGH_BANK);
                 return;
             }
-            if (!settingsManager.getProperty(GuildBuffSettings.BUFF_STACKING) && !player.getActivePotionEffects().isEmpty()) return;
+            if (!settingsManager.getProperty(GuildBuffSettings.BUFF_STACKING) && !player.getActivePotionEffects().isEmpty())
+                return;
             guild.setBalance(guild.getBalance() - cost);
             guild.addPotion(type, (length * 20), amplifier);
             cooldownHandler.addCooldown(guild, Cooldown.Type.Buffs.name(), mainConfig.getProperty(CooldownSettings.BUFF), TimeUnit.SECONDS);
@@ -304,9 +297,10 @@ public class BuffGUI {
 
     /**
      * Execute a list of commands on the player who bought the buff
-     * @param check if this can run or not
+     *
+     * @param check    if this can run or not
      * @param commands the commands to run
-     * @param player the player to execute them on
+     * @param player   the player to execute them on
      */
     private void executeClickerCommands(boolean check, List<String> commands, Player player) {
         if (check) {
@@ -319,9 +313,10 @@ public class BuffGUI {
 
     /**
      * Execute a list of commands on all players online in a guild
-     * @param check if this can run or not
+     *
+     * @param check    if this can run or not
      * @param commands the commands to run
-     * @param guild the guild of players to run on
+     * @param guild    the guild of players to run on
      */
     private void executeGuildCommands(boolean check, List<String> commands, Guild guild) {
         if (check) {

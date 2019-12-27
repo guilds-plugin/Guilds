@@ -35,18 +35,14 @@ import me.glaremasters.guilds.configuration.sections.GuildInfoSettings;
 import me.glaremasters.guilds.configuration.sections.GuildListSettings;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
-import me.glaremasters.guilds.utils.ItemBuilder;
-import me.glaremasters.guilds.utils.XMaterial;
+import me.glaremasters.guilds.utils.GuiUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.inventory.ItemFlag;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Created by Glare
@@ -97,14 +93,14 @@ public class ListGUI {
 
     private void createButtons(StaticPane pane, PaginatedPane paginatedPane, Gui gui) {
         // Next Button
-        pane.addItem(new GuiItem(easyItem(settingsManager.getProperty(GuildListSettings.GUILD_LIST_NEXT_PAGE_ITEM), settingsManager.getProperty(GuildListSettings.GUILD_LIST_NEXT_PAGE_ITEM_NAME)), event -> {
+        pane.addItem(new GuiItem(GuiUtils.createItem(settingsManager.getProperty(GuildListSettings.GUILD_LIST_NEXT_PAGE_ITEM), settingsManager.getProperty(GuildListSettings.GUILD_LIST_NEXT_PAGE_ITEM_NAME), new ArrayList<>()), event -> {
             if (!((paginatedPane.getPage() + 1) + 1 > paginatedPane.getPages())) {
                 paginatedPane.setPage(paginatedPane.getPage() + 1);
                 gui.update();
             }
         }), 8, 0);
         // Back Button
-        pane.addItem(new GuiItem(easyItem(settingsManager.getProperty(GuildListSettings.GUILD_LIST_PREVIOUS_PAGE_ITEM), settingsManager.getProperty(GuildListSettings.GUILD_LIST_PREVIOUS_PAGE_ITEM_NAME)), event -> {
+        pane.addItem(new GuiItem(GuiUtils.createItem(settingsManager.getProperty(GuildListSettings.GUILD_LIST_PREVIOUS_PAGE_ITEM), settingsManager.getProperty(GuildListSettings.GUILD_LIST_PREVIOUS_PAGE_ITEM_NAME), new ArrayList<>()), event -> {
             if (!((paginatedPane.getPage() - 1) < 0)) {
                 paginatedPane.setPage(paginatedPane.getPage() - 1);
                 gui.update();
@@ -198,33 +194,6 @@ public class ListGUI {
                 .replace("{creation}", sdf.format(guild.getCreationDate()))
                 .replace("{guild-tier-name}", guildHandler.getGuildTier(guild.getTier().getLevel()).getName()))));
         return updated;
-    }
-
-    /**
-     * Easily create an item for the GUI
-     *
-     * @param material the material of the item
-     * @param name     the name of the item
-     * @return created itemstack
-     */
-    private ItemStack easyItem(String material, String name) {
-        Optional<XMaterial> mat = XMaterial.matchXMaterial(material);
-        XMaterial temp = mat.orElse(XMaterial.GLASS_PANE);
-        ItemStack item;
-        if (temp.parseItem() == null) {
-            item = XMaterial.GLASS_PANE.parseItem();
-        }
-        else {
-            item = temp.parseItem();
-        }
-        // Start the itembuilder
-        ItemBuilder builder = new ItemBuilder(item);
-        // Sets the name of the item
-        builder.setName(ACFBukkitUtil.color(name));
-        // Hide attributes
-        builder.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-        // Return the created item
-        return builder.build();
     }
 
 }
