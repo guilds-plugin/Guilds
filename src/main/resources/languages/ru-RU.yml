@@ -333,11 +333,11 @@ war:
   player-killed-other: "&b{player} &aубит по неизвестной причине."
   player-killed-quit: "&b{player} &aвышел с сервера и был убит."
   teleported-back: "&aВы упорно боролись! Увы, не все могут быть лучшими. Вы были телепортированы на исходное местоположение!"
-acf:
-  invalid-syntax: "Использование: <c2>{command}</c2> <c3>{syntax}</c3>"
-  permission-denied: "Извините, но Вам нельзя выполнять данную команду."
-  unknown-command: "Неизвестная команда, используйте: <c2>/help</c2>"
-  error-performing: "Извините, но при выполнении этой команды произошла ошибка."
+acf-core:
+  invalid_syntax: "Usage: <c2>{command}</c2> <c3>{syntax}</c3>"
+  permission_denied: "I'm sorry, but you do not have permission to perform this command."
+  unknown_command: "Unknown Command, please type <c2>/help</c2>"
+  error_performing_command: "I'm sorry, but there was an error performing this command."
 migrate:
   invalid-backend: "&cБэкенд для миграции данных недействителен."
   connection-failed: "&cСоединение с новым бэкендом провалилось! Убедитесь, что аутентификация настроена правильно!"
