@@ -115,6 +115,8 @@ public class PlaceholderAPI extends PlaceholderExpansion {
                 return api.getGuildRole(p).getName();
             case "tier":
                 return String.valueOf(api.getGuild(p).getTier().getLevel());
+            case "tier_name":
+                return api.getGuild(p).getTier().getName();
             case "balance":
                 return df.format(api.getGuild(p).getBalance());
             case "code_amount":
@@ -130,7 +132,7 @@ public class PlaceholderAPI extends PlaceholderExpansion {
             case "challenge_loses":
                 return String.valueOf(api.getGuild(p).getGuildScore().getLoses());
             case "motd":
-                return api.getGuild(p).getMotd();
+                return api.getGuild(p).getMotd() == null ? "" : api.getGuild(p).getMotd();
             default:
                 return "";
         }

@@ -31,7 +31,6 @@ import me.glaremasters.guilds.utils.LoggingUtils;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 
 public class GuildsMigrationService extends PlainMigrationService {
