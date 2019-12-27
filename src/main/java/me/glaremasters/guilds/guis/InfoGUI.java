@@ -48,6 +48,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -298,8 +299,17 @@ public class InfoGUI {
      * @return created itemstack
      */
     private ItemStack easyItem(String material, String name, List<String> lore) {
+        Optional<XMaterial> mat = XMaterial.matchXMaterial(material);
+        XMaterial temp = mat.orElse(XMaterial.GLASS_PANE);
+        ItemStack item;
+        if (temp.parseItem() == null) {
+            item = XMaterial.GLASS_PANE.parseItem();
+        }
+        else {
+            item = temp.parseItem();
+        }
         // Start the itembuilder
-        ItemBuilder builder = new ItemBuilder(new ItemStack(XMaterial.matchXMaterial(material).parseMaterial()));
+        ItemBuilder builder = new ItemBuilder(item);
         // Sets the name of the item
         builder.setName(ACFBukkitUtil.color(name));
         // Sets the lore of the item

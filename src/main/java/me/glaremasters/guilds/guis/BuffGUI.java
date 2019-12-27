@@ -46,6 +46,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -257,7 +258,16 @@ public class BuffGUI {
     private void setBuffItem(CommandManager commandManager, String type, int length, int amplifier,
                              double cost, String icon, String name, List<String> lore, StaticPane pane, int x,
                              boolean check, boolean clickerCheck, List<String> clickerCommands, boolean guildCheck, List<String> guildCommands) {
-        GuiItem buffItem = new GuiItem(new ItemStack(XMaterial.matchXMaterial(icon).parseMaterial()), event -> {
+        Optional<XMaterial> material = XMaterial.matchXMaterial(icon);
+        XMaterial temp = material.orElse(XMaterial.GLASS_PANE);
+        ItemStack item;
+        if (temp.parseItem() == null) {
+            item = XMaterial.GLASS_PANE.parseItem();
+        }
+        else {
+            item = temp.parseItem();
+        }
+        GuiItem buffItem = new GuiItem(item, event -> {
             event.setCancelled(true);
             Player player = (Player) event.getWhoClicked();
             if (guildHandler.getGuild(player) == null) return;
