@@ -25,7 +25,6 @@
 package me.glaremasters.guilds.guis;
 
 import ch.jalu.configme.SettingsManager;
-import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.CommandManager;
 import com.github.stefvanschie.inventoryframework.Gui;
 import com.github.stefvanschie.inventoryframework.GuiItem;
@@ -35,9 +34,8 @@ import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.configuration.sections.VaultPickerSettings;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
+import me.glaremasters.guilds.utils.GuiBuilder;
 import me.glaremasters.guilds.utils.GuiUtils;
-import me.glaremasters.guilds.utils.ItemBuilder;
-import me.glaremasters.guilds.utils.XMaterial;
 import org.bukkit.entity.Player;
 
 import java.util.stream.Collectors;
@@ -61,11 +59,11 @@ public class VaultGUI {
     }
 
     public Gui getVaultGUI(Guild guild, Player player, CommandManager commandManager) {
+        String name = settingsManager.getProperty(VaultPickerSettings.GUI_NAME).replace("{name}",
+                guild.getName());
+        int rows = settingsManager.getProperty(VaultPickerSettings.GUI_SIZE);
 
-        // Create the GUI with the desired name from the config
-        Gui gui = new Gui(guilds, settingsManager.getProperty(VaultPickerSettings.GUI_SIZE),
-                ACFBukkitUtil.color(settingsManager.getProperty(VaultPickerSettings.GUI_NAME).replace("{name}",
-                        guild.getName())));
+        Gui gui = new GuiBuilder(guilds).setName(name).setRows(rows).addBackground(9, rows).blockGlobalClick().build();
 
         // Prevent players from being able to items into the GUIs
         gui.setOnOutsideClick(event -> {
@@ -76,41 +74,17 @@ public class VaultGUI {
         // Create the pane for the main items
         OutlinePane foregroundPane = new OutlinePane(0, 0, 9, settingsManager.getProperty(VaultPickerSettings.GUI_SIZE), Pane.Priority.NORMAL);
 
-        // Create the background pane which will just be stained glass
-        OutlinePane backgroundPane = new OutlinePane(0, 0, 9, settingsManager.getProperty(VaultPickerSettings.GUI_SIZE), Pane.Priority.LOW);
-
         // Add the items to the foreground pane
         createForegroundItems(foregroundPane, guild, player, commandManager);
 
-        createBackgroundItems(backgroundPane);
-
         // Set it back to 0
         num = 0;
-
-        gui.addPane(backgroundPane);
 
         // Add the foreground pane to the GUI
         gui.addPane(foregroundPane);
 
         // Return the create GUI object
         return gui;
-    }
-
-    /**
-     * Create the background panes
-     *
-     * @param pane the pane to add to
-     */
-    private void createBackgroundItems(OutlinePane pane) {
-        // Start the itembuilder with stained glass
-        ItemBuilder builder = new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem());
-        // Set the name to be empty
-        builder.setName(ACFBukkitUtil.color("&r"));
-        // Loop through 27 (three rows)
-        for (int i = 0; i < (pane.getHeight() * 9); i++) {
-            // Add the pane item to the GUI and cancel the click event on it
-            pane.addItem(new GuiItem(builder.build(), event -> event.setCancelled(true)));
-        }
     }
 
 

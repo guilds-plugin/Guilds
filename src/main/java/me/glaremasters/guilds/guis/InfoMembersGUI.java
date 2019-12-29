@@ -25,7 +25,6 @@
 package me.glaremasters.guilds.guis;
 
 import ch.jalu.configme.SettingsManager;
-import co.aikar.commands.ACFBukkitUtil;
 import com.github.stefvanschie.inventoryframework.Gui;
 import com.github.stefvanschie.inventoryframework.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
@@ -37,9 +36,8 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildMember;
 import me.glaremasters.guilds.guild.GuildRole;
+import me.glaremasters.guilds.utils.GuiBuilder;
 import me.glaremasters.guilds.utils.GuiUtils;
-import me.glaremasters.guilds.utils.ItemBuilder;
-import me.glaremasters.guilds.utils.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -67,10 +65,9 @@ public class InfoMembersGUI {
     }
 
     public Gui getInfoMembersGUI(Guild guild) {
+        String name = settingsManager.getProperty(GuildInfoMemberSettings.GUI_NAME).replace("{name}", guild.getName());
 
-        // Create the GUI with the desired name from the config
-        Gui gui = new Gui(guilds, 6, ACFBukkitUtil.color(settingsManager.getProperty(GuildInfoMemberSettings.GUI_NAME).replace("{name}",
-                guild.getName())));
+        Gui gui = new GuiBuilder(guilds).setName(name).setRows(6).addBackground(9, 6).blockGlobalClick().build();
 
         // Prevent players from being able to items into the GUIs
         gui.setOnOutsideClick(event -> {
@@ -87,40 +84,15 @@ public class InfoMembersGUI {
         // Create the pane for the main items
         OutlinePane foregroundPane = new OutlinePane(0, 0, 9, 6, Pane.Priority.NORMAL);
 
-        // Create the background pane which will just be stained glass
-        OutlinePane backgroundPane = new OutlinePane(0, 0, 9, 6, Pane.Priority.LOW);
-
-        // Add the items to the background pane
-        createBackgroundItems(backgroundPane);
-
         // Add the items to the foreground pane
         createForegroundItems(foregroundPane, guild);
 
-        // Add the glass panes to the main GUI background pane
-        gui.addPane(backgroundPane);
 
         // Add the foreground pane to the GUI
         gui.addPane(foregroundPane);
 
         // Return the create GUI object
         return gui;
-    }
-
-    /**
-     * Create the background panes
-     *
-     * @param pane the pane to add to
-     */
-    private void createBackgroundItems(OutlinePane pane) {
-        // Start the itembuilder with stained glass
-        ItemBuilder builder = new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem());
-        // Set the name to be empty
-        builder.setName(ACFBukkitUtil.color("&r"));
-        // Loop through 27 (three rows)
-        for (int i = 0; i < 54; i++) {
-            // Add the pane item to the GUI and cancel the click event on it
-            pane.addItem(new GuiItem(builder.build(), event -> event.setCancelled(true)));
-        }
     }
 
     /**

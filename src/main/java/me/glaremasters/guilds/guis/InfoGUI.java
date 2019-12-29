@@ -40,9 +40,8 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildTier;
 import me.glaremasters.guilds.messages.Messages;
+import me.glaremasters.guilds.utils.GuiBuilder;
 import me.glaremasters.guilds.utils.GuiUtils;
-import me.glaremasters.guilds.utils.ItemBuilder;
-import me.glaremasters.guilds.utils.XMaterial;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -71,16 +70,10 @@ public class InfoGUI {
     }
 
     public Gui getInfoGUI(Guild guild, Player player) {
+        String name = settingsManager.getProperty(GuildInfoSettings.GUI_NAME).replace("{name}",
+                guild.getName()).replace("{prefix}", guild.getPrefix());
 
-        // Create the GUI with the desired name from the config
-        Gui gui = new Gui(guilds, 3, ACFBukkitUtil.color(settingsManager.getProperty(GuildInfoSettings.GUI_NAME).replace("{name}",
-                guild.getName()).replace("{prefix}", guild.getPrefix())));
-
-        // Prevent players from being able to items into the GUIs
-        gui.setOnGlobalClick(event -> event.setCancelled(true));
-
-        // Create the background pane which will just be stained glass
-        OutlinePane backgroundPane = new OutlinePane(0, 0, 9, 3, Pane.Priority.LOW);
+        Gui gui = new GuiBuilder(guilds).setName(name).setRows(3).addBackground(9, 3).blockGlobalClick().build();
 
         // Create the pane for the main items
         OutlinePane foregroundPane = new OutlinePane(2, 1, 5, 1, Pane.Priority.NORMAL);
@@ -91,9 +84,6 @@ public class InfoGUI {
         // Creat the mane for the motd item
         OutlinePane motdPane = new OutlinePane(4, 0, 1, 1, Pane.Priority.HIGH);
 
-        // Add the items to the background pane
-        createBackgroundItems(backgroundPane);
-
         // Add the items to the foreground pane
         createForegroundItems(foregroundPane, guild, player);
 
@@ -102,9 +92,6 @@ public class InfoGUI {
 
         // Add the motd item to the info pane
         createMotdItem(motdPane, guild);
-
-        // Add the glass panes to the main GUI background pane
-        gui.addPane(backgroundPane);
 
         // Add the foreground pane to the GUI
         gui.addPane(foregroundPane);
@@ -117,23 +104,6 @@ public class InfoGUI {
 
         // Return the new info GUI object
         return gui;
-    }
-
-    /**
-     * Create the background panes
-     *
-     * @param pane the pane to add to
-     */
-    private void createBackgroundItems(OutlinePane pane) {
-        // Start the itembuilder with stained glass
-        ItemBuilder builder = new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem());
-        // Set the name to be empty
-        builder.setName(ACFBukkitUtil.color("&r"));
-        // Loop through 27 (three rows)
-        for (int i = 0; i < 27; i++) {
-            // Add the pane item to the GUI and cancel the click event on it
-            pane.addItem(new GuiItem(builder.build(), event -> event.setCancelled(true)));
-        }
     }
 
     /**
