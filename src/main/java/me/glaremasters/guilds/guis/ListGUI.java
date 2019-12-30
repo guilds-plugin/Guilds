@@ -35,6 +35,7 @@ import me.glaremasters.guilds.configuration.sections.GuildInfoSettings;
 import me.glaremasters.guilds.configuration.sections.GuildListSettings;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
+import me.glaremasters.guilds.utils.GuiBuilder;
 import me.glaremasters.guilds.utils.GuiUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -64,12 +65,9 @@ public class ListGUI {
     }
 
     public Gui getListGUI() {
+        String name = settingsManager.getProperty(GuildListSettings.GUILD_LIST_NAME);
 
-        // Create the base GUI
-        Gui gui = new Gui(guilds, 6, ACFBukkitUtil.color(settingsManager.getProperty(GuildListSettings.GUILD_LIST_NAME)));
-
-        // Prevent players from being able to items into the GUIs
-        gui.setOnGlobalClick(event -> event.setCancelled(true));
+        Gui gui = new GuiBuilder(guilds).setName(name).setRows(6).blockGlobalClick().build();
 
         // Prepare a paginated pane
         PaginatedPane paginatedPane = new PaginatedPane(0, 0, 9, 5);

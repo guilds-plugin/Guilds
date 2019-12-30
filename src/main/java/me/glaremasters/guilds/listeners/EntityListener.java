@@ -31,6 +31,7 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildChallenge;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.utils.ClaimUtils;
+import org.bukkit.entity.AbstractArrow;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Monster;
@@ -69,6 +70,7 @@ public class EntityListener implements Listener {
 
     /**
      * Handles the extra damage to a mob
+     *
      * @param event
      */
     @EventHandler
@@ -87,6 +89,7 @@ public class EntityListener implements Listener {
 
     /**
      * Handles extra XP dropped from mobs
+     *
      * @param event
      */
     @EventHandler
@@ -106,6 +109,7 @@ public class EntityListener implements Listener {
 
     /**
      * Guild / Ally damage handlers
+     *
      * @param event handles when damage is done between two players that might be in the same guild or are allies
      */
     @EventHandler
@@ -144,18 +148,15 @@ public class EntityListener implements Listener {
     }
 
     @EventHandler
-    public void onArrow(EntityDamageByEntityEvent event) {
-
-        if (!(event.getEntity() instanceof Player))
+    public void onDamage(EntityDamageByEntityEvent event) {
+        if (!(event.getEntity() instanceof Player) && !(event.getDamager() instanceof AbstractArrow)) {
             return;
+        }
+        AbstractArrow arrow = (AbstractArrow) event.getDamager();
 
-        if (!(event.getDamager() instanceof Arrow))
+        if (!(arrow.getShooter() instanceof Player)) {
             return;
-
-        Arrow arrow = (Arrow) event.getDamager();
-
-        if (!(arrow.getShooter() instanceof Player))
-            return;
+        }
 
         Player damagee = (Player) event.getEntity();
         Player damager = (Player) arrow.getShooter();
@@ -165,7 +166,7 @@ public class EntityListener implements Listener {
             return;
         }
 
-        if (guildHandler.isSameGuild(damagee, damager) && damagee != damager ) {
+        if (guildHandler.isSameGuild(damagee, damager) && damagee != damager) {
             event.setCancelled(!settingsManager.getProperty(GuildSettings.GUILD_DAMAGE));
             return;
         }
@@ -173,11 +174,11 @@ public class EntityListener implements Listener {
         if (guildHandler.isAlly(damagee, damager)) {
             event.setCancelled(!settingsManager.getProperty(GuildSettings.ALLY_DAMAGE));
         }
-
     }
 
     /**
      * Handles flame arrows
+     *
      * @param event
      */
     @EventHandler
@@ -216,6 +217,7 @@ public class EntityListener implements Listener {
 
     /**
      * Handles splash potions+
+     *
      * @param event
      */
     @EventHandler
@@ -239,9 +241,9 @@ public class EntityListener implements Listener {
         Player shooter = (Player) potion.getShooter();
 
         for (LivingEntity entity : event.getAffectedEntities()) {
-            if (entity instanceof Player)  {
+            if (entity instanceof Player) {
                 Player player = (Player) entity;
-                if (guildHandler.isSameGuild(shooter, player) && potion.getShooter() != player ) {
+                if (guildHandler.isSameGuild(shooter, player) && potion.getShooter() != player) {
                     event.setCancelled(!settingsManager.getProperty(GuildSettings.GUILD_DAMAGE));
                     return;
                 }

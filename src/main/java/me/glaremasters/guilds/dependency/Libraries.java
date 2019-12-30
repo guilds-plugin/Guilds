@@ -79,8 +79,7 @@ public class Libraries {
         loader.loadLibrary(Library.builder()
                 .groupId("com{}github{}stefvanschie{}inventoryframework")
                 .artifactId("IF")
-                .version("0.5.8")
-                .checksum("t09sCQxreghG3a3pqA7rYLuFXK/Uf3OL5mhhvCM1yFA=")
+                .version("0.5.15")
                 .relocate("com{}github{}stefvanschie{}inventoryframework", "me.glaremasters.guilds.libs.if")
                 .build());
 

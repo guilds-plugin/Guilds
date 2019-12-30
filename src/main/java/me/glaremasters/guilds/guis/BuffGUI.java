@@ -39,6 +39,7 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.EconomyUtils;
+import me.glaremasters.guilds.utils.GuiBuilder;
 import me.glaremasters.guilds.utils.GuiUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -73,12 +74,9 @@ public class BuffGUI {
     }
 
     public Gui getBuffGUI() {
+        String name = settingsManager.getProperty(GuildBuffSettings.GUILD_BUFF_NAME);
 
-
-        Gui gui = new Gui(guilds, 1, ACFBukkitUtil.color(settingsManager.getProperty(GuildBuffSettings.GUILD_BUFF_NAME)));
-
-        // Prevent players from being able to items into the GUIs
-        gui.setOnGlobalClick(event -> event.setCancelled(true));
+        Gui gui = new GuiBuilder(guilds).setName(name).setRows(1).blockGlobalClick().build();
 
         StaticPane pane = new StaticPane(0, 0, 9, 1);
 
