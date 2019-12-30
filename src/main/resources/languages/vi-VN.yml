@@ -121,8 +121,8 @@ error:
   player-no-exist: "&cXin lỗi, hình như người đó chưa từng vào server trước đây!"
 bank:
   balance: "&aNgân khố của Guild là {amount}."
-  deposit-success: "&a{player} has just deposited {amount} into the Guild Bank. Your new total is {total}."
-  withdrawal-success: "&a{player} has just withdrawn {amount} from the Guild Bank. Your new total is {total}."
+  deposit-success: "&a{player} đã bỏ {amount} vào ngân khố Guild. Tổng mới là {total}."
+  withdrawal-success: "&a{player} đã rút {amount} khỏi ngân khố Guild. Tổng mới là {total}."
   not-enough-bank: "&cGuild Bank không có đủ để làm điều đó"
   over-max: "&cSorry, you can't deposit that much as you would go over your max bank balance!"
 admin:
