@@ -150,7 +150,7 @@ public class EntityListener implements Listener {
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent event) {
 
-        if (!(event.getEntity() instanceof Player) && !(event.getDamager() instanceof Projectile)) {
+        if (!(event.getEntity() instanceof Player) || !(event.getDamager() instanceof Projectile)) {
             return;
         }
 
