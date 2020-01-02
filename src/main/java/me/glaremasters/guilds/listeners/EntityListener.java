@@ -31,11 +31,11 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildChallenge;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.utils.ClaimUtils;
-import org.bukkit.entity.AbstractArrow;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.entity.ThrownPotion;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -149,29 +149,31 @@ public class EntityListener implements Listener {
 
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent event) {
-        if (!(event.getEntity() instanceof Player) && !(event.getDamager() instanceof AbstractArrow)) {
-            return;
-        }
-        AbstractArrow arrow = (AbstractArrow) event.getDamager();
 
-        if (!(arrow.getShooter() instanceof Player)) {
+        if (!(event.getEntity() instanceof Player) || !(event.getDamager() instanceof Projectile)) {
             return;
         }
 
-        Player damagee = (Player) event.getEntity();
-        Player damager = (Player) arrow.getShooter();
+        Projectile projectile = (Projectile) event.getDamager();
+
+        if (!(projectile.getShooter() instanceof Player)) {
+            return;
+        }
+
+        Player damaged = (Player) event.getEntity();
+        Player damager = (Player) projectile.getShooter();
 
         if (settingsManager.getProperty(GuildSettings.RESPECT_WG_PVP_FLAG)) {
-            event.setCancelled(ClaimUtils.checkPvpDisabled(damagee));
+            event.setCancelled(ClaimUtils.checkPvpDisabled(damaged));
             return;
         }
 
-        if (guildHandler.isSameGuild(damagee, damager) && damagee != damager) {
+        if (guildHandler.isSameGuild(damaged, damager) && damaged != damager) {
             event.setCancelled(!settingsManager.getProperty(GuildSettings.GUILD_DAMAGE));
             return;
         }
 
-        if (guildHandler.isAlly(damagee, damager)) {
+        if (guildHandler.isAlly(damaged, damager)) {
             event.setCancelled(!settingsManager.getProperty(GuildSettings.ALLY_DAMAGE));
         }
     }

@@ -30,7 +30,7 @@
 
     <groupId>me.glaremasters</groupId>
     <artifactId>guilds</artifactId>
-    <version>3.5.3.9-RELEASE</version>
+    <version>3.5.3.9.3-RELEASE</version>
     <packaging>jar</packaging>
 
     <name>Guilds</name>
