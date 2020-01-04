@@ -29,6 +29,7 @@ import co.aikar.commands.CommandManager;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.SkullUtils;
+import me.glaremasters.guilds.utils.PlayerCheckUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
@@ -347,6 +348,18 @@ public class Guild {
     }
 
     /**
+     * Get all online members as players passed some checks
+     * @return list of players
+     */
+    public List<Player> getCheckedPlayers() {
+        return getOnlineAsPlayers().stream().filter(m -> 
+            (!PlayerCheckUtils.checkDXLWorld(m)
+            &&
+            PlayerCheckUtils.checkValidWorld(m))
+            ).collect(Collectors.toList());
+    }
+
+    /**
      * Get all online members as UUID
      * @return list of UUIDs
      */
@@ -538,7 +551,7 @@ public class Guild {
      * @param amplifier the strength of the potion
      */
     public void addPotion(String type, int length, int amplifier) {
-        getOnlineAsPlayers().forEach(p -> p.addPotionEffect(new PotionEffect(PotionEffectType.getByName(type), length, amplifier)));
+        getCheckedPlayers().forEach(p -> p.addPotionEffect(new PotionEffect(PotionEffectType.getByName(type), length, amplifier)));
     }
 
     public UUID getId() {

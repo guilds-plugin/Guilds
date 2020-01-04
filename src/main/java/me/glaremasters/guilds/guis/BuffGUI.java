@@ -318,7 +318,7 @@ public class BuffGUI {
      */
     private void executeGuildCommands(boolean check, List<String> commands, Guild guild) {
         if (check) {
-            guild.getOnlineAsPlayers().forEach(p -> commands.forEach(c -> {
+            guild.getCheckedPlayers().forEach(p -> commands.forEach(c -> {
                 String update = c.replace("{player}", p.getName());
                 Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), update);
             }));

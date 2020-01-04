@@ -31,6 +31,8 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildChallenge;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.utils.ClaimUtils;
+import me.glaremasters.guilds.utils.PlayerCheckUtils;
+
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Monster;
@@ -117,8 +119,14 @@ public class EntityListener implements Listener {
         if (!(event.getEntity() instanceof Player) || !(event.getDamager() instanceof Player)) return;
         Player player = (Player) event.getEntity();
         Player damager = (Player) event.getDamager();
+        
+        // Check DungeonsXL game
+        if (PlayerCheckUtils.checkDXLWorld(damager)) return;
+        
+        // Check world
+        if (!PlayerCheckUtils.checkValidWorld(damager)) return;
 
-        // Make sure that they aren't in a claim that turns off pvpv
+        // Make sure that they aren't in a claim that turns off pvp
         if (settingsManager.getProperty(GuildSettings.RESPECT_WG_PVP_FLAG)) {
             event.setCancelled(ClaimUtils.checkPvpDisabled(player));
             return;
@@ -163,6 +171,10 @@ public class EntityListener implements Listener {
         Player damaged = (Player) event.getEntity();
         Player damager = (Player) projectile.getShooter();
 
+        if (PlayerCheckUtils.checkDXLWorld(damager)) return;
+
+        if (!PlayerCheckUtils.checkValidWorld(damager)) return;
+
         if (settingsManager.getProperty(GuildSettings.RESPECT_WG_PVP_FLAG)) {
             event.setCancelled(ClaimUtils.checkPvpDisabled(damaged));
             return;
@@ -199,6 +211,10 @@ public class EntityListener implements Listener {
 
         Player damagee = (Player) event.getEntity();
         Player damager = (Player) arrow.getShooter();
+        
+        if (PlayerCheckUtils.checkDXLWorld(damager)) return;
+        
+        if (!PlayerCheckUtils.checkValidWorld(damager)) return;
 
         if (settingsManager.getProperty(GuildSettings.RESPECT_WG_PVP_FLAG)) {
             event.setCancelled(ClaimUtils.checkPvpDisabled(damagee));
@@ -245,10 +261,16 @@ public class EntityListener implements Listener {
         for (LivingEntity entity : event.getAffectedEntities()) {
             if (entity instanceof Player) {
                 Player player = (Player) entity;
+
+                if (PlayerCheckUtils.checkDXLWorld(shooter)) return;
+
+                if (!PlayerCheckUtils.checkValidWorld(shooter)) return;
+
                 if (guildHandler.isSameGuild(shooter, player) && potion.getShooter() != player) {
                     event.setCancelled(!settingsManager.getProperty(GuildSettings.GUILD_DAMAGE));
                     return;
                 }
+
                 if (guildHandler.isAlly(shooter, player)) {
                     event.setCancelled(!settingsManager.getProperty(GuildSettings.ALLY_DAMAGE));
                 }

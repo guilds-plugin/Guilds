@@ -34,6 +34,8 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildChallenge;
 import me.glaremasters.guilds.guild.GuildMember;
 import me.glaremasters.guilds.messages.Messages;
+import me.glaremasters.guilds.utils.PlayerCheckUtils;
+
 import org.apache.commons.collections4.map.LinkedMap;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -204,6 +206,13 @@ public class ChallengeHandler {
         LinkedMap<UUID, String> finalList = new LinkedMap<>();
         players.forEach(p -> {
             Player player = Bukkit.getPlayer(p);
+
+            // Check DungeonsXL game
+            if (PlayerCheckUtils.checkDXLWorld(player)) return;
+
+            // Check world
+            if (!PlayerCheckUtils.checkValidWorld(player)) return;
+
             if (player != null) {
                 finalList.putIfAbsent(p, ACFBukkitUtil.fullLocationToString(player.getLocation()));
             }
