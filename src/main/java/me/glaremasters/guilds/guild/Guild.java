@@ -352,11 +352,11 @@ public class Guild {
      * @return list of players
      */
     public List<Player> getCheckedPlayers() {
-        return getOnlineAsPlayers().stream().filter(m -> 
-            (!PlayerCheckUtils.checkDXLWorld(m)
+        return getOnlineAsPlayers().stream().filter(m -> (
+            !PlayerCheckUtils.checkDXLWorld(m)
             &&
-            PlayerCheckUtils.checkValidWorld(m))
-            ).collect(Collectors.toList());
+            PlayerCheckUtils.checkValidWorld(m)
+            )).collect(Collectors.toList());
     }
 
     /**
