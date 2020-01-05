@@ -16,7 +16,7 @@ public class WorldsWhitelistSettings implements SettingsHolder {
             newProperty("worlds-whitelist.enabled", false);
     
     @Comment("What worlds would you like to whitelisted")
-    public static final Property<List<String>> WHITELISTED_WORLDS =
+    public static final Property<List<String>> WORLDS =
             newListProperty("worlds-whitelist.worlds", "world", "world_nether", "world_the_end");
     
     private WorldsWhitelistSettings() {

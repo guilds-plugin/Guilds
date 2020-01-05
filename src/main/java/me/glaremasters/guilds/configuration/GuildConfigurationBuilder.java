@@ -44,6 +44,7 @@ import me.glaremasters.guilds.configuration.sections.TicketSettings;
 import me.glaremasters.guilds.configuration.sections.TierSettings;
 import me.glaremasters.guilds.configuration.sections.VaultPickerSettings;
 import me.glaremasters.guilds.configuration.sections.WarSettings;
+import me.glaremasters.guilds.configuration.sections.WorldsWhitelistSettings;
 
 /**
  * Created by GlareMasters
@@ -61,7 +62,8 @@ public class GuildConfigurationBuilder {
                 VaultPickerSettings.class, GuildVaultSettings.class, GuildInfoSettings.class,
                 GuildInfoMemberSettings.class, GuildSettings.class,
                 WarSettings.class, CooldownSettings.class, CostSettings.class,
-                ClaimSettings.class, /*TablistSettings.class,*/ TicketSettings.class, CodeSettings.class
+                ClaimSettings.class, /*TablistSettings.class,*/ TicketSettings.class, CodeSettings.class,
+                WorldsWhitelistSettings.class
         );
     }
 

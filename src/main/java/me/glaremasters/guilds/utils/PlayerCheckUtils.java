@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 public class PlayerCheckUtils {
     
     private static SettingsManager settingsManager;
-    
+
     /**
      * Check if DungeonsXL hook enabled and player in DungeonsXL world
      * @return if hook enabled and player in DXL world
@@ -24,7 +24,7 @@ public class PlayerCheckUtils {
      */
     public static boolean checkValidWorld(Player player) {
         if (settingsManager.getProperty(WorldsWhitelistSettings.WORLDS_WHITELIST)) {
-            return settingsManager.getProperty(WorldsWhitelistSettings.WHITELISTED_WORLDS).contains(player.getWorld().toString());
+            return settingsManager.getProperty(WorldsWhitelistSettings.WORLDS).contains(player.getWorld().toString());
         }
         return true;
     }
