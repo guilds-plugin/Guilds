@@ -60,6 +60,7 @@ public class ChallengeHandler {
 
     private List<GuildChallenge> challenges;
     private Guilds guilds;
+    private SettingsManager settingsManager;
 
     public ChallengeHandler(Guilds guilds) {
         this.guilds = guilds;
@@ -208,10 +209,10 @@ public class ChallengeHandler {
             Player player = Bukkit.getPlayer(p);
 
             // Check DungeonsXL game
-            if (PlayerCheckUtils.checkDXLWorld(player)) return;
+            if (PlayerCheckUtils.checkDXLWorld(player, settingsManager)) return;
 
             // Check world
-            if (!PlayerCheckUtils.checkValidWorld(player)) return;
+            if (!PlayerCheckUtils.checkValidWorld(player, settingsManager)) return;
 
             if (player != null) {
                 finalList.putIfAbsent(p, ACFBukkitUtil.fullLocationToString(player.getLocation()));

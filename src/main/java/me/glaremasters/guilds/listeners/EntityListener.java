@@ -121,10 +121,10 @@ public class EntityListener implements Listener {
         Player damager = (Player) event.getDamager();
         
         // Check DungeonsXL game
-        if (PlayerCheckUtils.checkDXLWorld(damager)) return;
+        if (PlayerCheckUtils.checkDXLWorld(damager, settingsManager)) return;
         
         // Check world
-        if (!PlayerCheckUtils.checkValidWorld(damager)) return;
+        if (!PlayerCheckUtils.checkValidWorld(damager, settingsManager)) return;
 
         // Make sure that they aren't in a claim that turns off pvp
         if (settingsManager.getProperty(GuildSettings.RESPECT_WG_PVP_FLAG)) {
@@ -171,9 +171,9 @@ public class EntityListener implements Listener {
         Player damaged = (Player) event.getEntity();
         Player damager = (Player) projectile.getShooter();
 
-        if (PlayerCheckUtils.checkDXLWorld(damager)) return;
+        if (PlayerCheckUtils.checkDXLWorld(damager, settingsManager)) return;
 
-        if (!PlayerCheckUtils.checkValidWorld(damager)) return;
+        if (!PlayerCheckUtils.checkValidWorld(damager, settingsManager)) return;
 
         if (settingsManager.getProperty(GuildSettings.RESPECT_WG_PVP_FLAG)) {
             event.setCancelled(ClaimUtils.checkPvpDisabled(damaged));
@@ -212,9 +212,9 @@ public class EntityListener implements Listener {
         Player damagee = (Player) event.getEntity();
         Player damager = (Player) arrow.getShooter();
         
-        if (PlayerCheckUtils.checkDXLWorld(damager)) return;
+        if (PlayerCheckUtils.checkDXLWorld(damager, settingsManager)) return;
         
-        if (!PlayerCheckUtils.checkValidWorld(damager)) return;
+        if (!PlayerCheckUtils.checkValidWorld(damager, settingsManager)) return;
 
         if (settingsManager.getProperty(GuildSettings.RESPECT_WG_PVP_FLAG)) {
             event.setCancelled(ClaimUtils.checkPvpDisabled(damagee));
@@ -262,9 +262,9 @@ public class EntityListener implements Listener {
             if (entity instanceof Player) {
                 Player player = (Player) entity;
 
-                if (PlayerCheckUtils.checkDXLWorld(shooter)) return;
+                if (PlayerCheckUtils.checkDXLWorld(shooter, settingsManager)) return;
 
-                if (!PlayerCheckUtils.checkValidWorld(shooter)) return;
+                if (!PlayerCheckUtils.checkValidWorld(shooter, settingsManager)) return;
 
                 if (guildHandler.isSameGuild(shooter, player) && potion.getShooter() != player) {
                     event.setCancelled(!settingsManager.getProperty(GuildSettings.GUILD_DAMAGE));

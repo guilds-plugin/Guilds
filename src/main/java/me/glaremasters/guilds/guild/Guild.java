@@ -38,6 +38,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import ch.jalu.configme.SettingsManager;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -181,6 +183,8 @@ public class Guild {
 
     private long lastDefended;
     private long creationDate;
+
+    private SettingsManager settingsManager;
 
     /**
      * Get a member in the guild
@@ -353,9 +357,9 @@ public class Guild {
      */
     public List<Player> getCheckedPlayers() {
         return getOnlineAsPlayers().stream().filter(p -> (
-            !PlayerCheckUtils.checkDXLWorld(p)
+            !PlayerCheckUtils.checkDXLWorld(p, settingsManager)
             &&
-            PlayerCheckUtils.checkValidWorld(p)
+            PlayerCheckUtils.checkValidWorld(p, settingsManager)
             )).collect(Collectors.toList());
     }
 

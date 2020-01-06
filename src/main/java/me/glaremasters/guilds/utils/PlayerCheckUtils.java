@@ -7,14 +7,12 @@ import me.glaremasters.guilds.configuration.sections.WorldsWhitelistSettings;
 import org.bukkit.entity.Player;
 
 public class PlayerCheckUtils {
-    
-    private static SettingsManager settingsManager;
 
     /**
      * Check if DungeonsXL hook enabled and player in DungeonsXL world
      * @return if hook enabled and player in DXL world
      */
-    public static boolean checkDXLWorld(Player player) {
+    public static boolean checkDXLWorld(Player player, SettingsManager settingsManager) {
         return (settingsManager.getProperty(HooksSettings.DUNGEONSXL) && player.getWorld().toString().contains("DXL_"));
     }
 
@@ -22,7 +20,7 @@ public class PlayerCheckUtils {
      * Check if worlds whitelist enabled and player world
      * @return if worlds whitelist disabled or player in whitelisted world
      */
-    public static boolean checkValidWorld(Player player) {
+    public static boolean checkValidWorld(Player player, SettingsManager settingsManager) {
         if (settingsManager.getProperty(WorldsWhitelistSettings.WORLDS_WHITELIST)) {
             return settingsManager.getProperty(WorldsWhitelistSettings.WORLDS).contains(player.getWorld().toString());
         }
