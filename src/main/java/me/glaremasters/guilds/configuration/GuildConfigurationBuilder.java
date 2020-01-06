@@ -58,12 +58,11 @@ public class GuildConfigurationBuilder {
 
     public static ConfigurationData buildConfigurationData() {
         return ConfigurationDataBuilder.createConfiguration(
-                PluginSettings.class, StorageSettings.class, HooksSettings.class, GuildListSettings.class,
+                PluginSettings.class, StorageSettings.class, HooksSettings.class, WorldsWhitelistSettings.class, GuildListSettings.class,
                 VaultPickerSettings.class, GuildVaultSettings.class, GuildInfoSettings.class,
                 GuildInfoMemberSettings.class, GuildSettings.class,
                 WarSettings.class, CooldownSettings.class, CostSettings.class,
-                ClaimSettings.class, /*TablistSettings.class,*/ TicketSettings.class, CodeSettings.class,
-                WorldsWhitelistSettings.class
+                ClaimSettings.class, /*TablistSettings.class,*/ TicketSettings.class, CodeSettings.class
         );
     }
 
