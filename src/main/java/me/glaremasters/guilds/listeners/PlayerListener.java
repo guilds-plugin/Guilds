@@ -43,6 +43,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -179,5 +180,25 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void permCheck(PlayerJoinEvent event) {
         guildHandler.addPerms(permission, event.getPlayer(), settingsManager.getProperty(PluginSettings.RUN_VAULT_ASYNC));
+    }
+    
+    @EventHandler
+    public void onRespawn(PlayerRespawnEvent event) {
+        Player player = event.getPlayer();
+        Guild guild = guildHandler.getGuild(player);
+
+        if (guild == null) {
+            return;
+        }
+
+        if (guild.getHome() == null) {
+            return;
+        }
+
+        if (!settingsManager.getProperty(GuildSettings.REPSPAWN_AT_HOME)) {
+            return;
+        }
+
+        event.setRespawnLocation(guild.getHome().getAsLocation());
     }
 }
