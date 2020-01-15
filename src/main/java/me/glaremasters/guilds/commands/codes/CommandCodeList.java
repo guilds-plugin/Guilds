@@ -32,6 +32,7 @@ import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.annotation.Syntax;
 import me.glaremasters.guilds.configuration.sections.CodeSettings;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.guild.Guild;
@@ -59,6 +60,7 @@ public class CommandCodeList extends BaseCommand {
     @Subcommand("code list")
     @Description("{@@descriptions.code-list}")
     @CommandPermission(Constants.CODE_PERM + "list")
+    @Syntax("")
     public void execute(Player player, Guild guild) {
         if (guild.getCodes().isEmpty()) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.CODES__EMPTY));

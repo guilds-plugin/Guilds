@@ -31,6 +31,7 @@ import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.annotation.Syntax;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
@@ -56,6 +57,7 @@ public class CommandCodeRedeem extends BaseCommand {
     @Subcommand("code redeem")
     @Description("{@@descriptions.code-redeem}")
     @CommandPermission(Constants.CODE_PERM + "redeem")
+    @Syntax("<code>")
     public void execute(Player player, String code) {
 
         if (guildHandler.getGuild(player) != null) {

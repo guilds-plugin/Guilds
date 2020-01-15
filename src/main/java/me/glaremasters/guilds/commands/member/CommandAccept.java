@@ -72,7 +72,7 @@ public class CommandAccept extends BaseCommand {
     @Description("{@@descriptions.accept}")
     @CommandPermission(Constants.BASE_PERM + "accept")
     @CommandCompletion("@joinableGuilds")
-    @Syntax("<guild name>")
+    @Syntax("<%syntax>")
     public void execute(Player player, @Single String name) {
         if (guildHandler.getGuild(player) != null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__ALREADY_IN_GUILD));

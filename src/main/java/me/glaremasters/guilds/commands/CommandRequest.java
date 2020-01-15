@@ -70,7 +70,7 @@ public class CommandRequest extends BaseCommand {
     @Description("{@@descriptions.request}")
     @CommandPermission(Constants.BASE_PERM + "request")
     @CommandCompletion("@guilds")
-    @Syntax("<guild name>")
+    @Syntax("<%syntax>")
     public void execute(Player player, @Values("@guilds") @Single String name) {
         Guild guild = guildHandler.getGuild(player);
 

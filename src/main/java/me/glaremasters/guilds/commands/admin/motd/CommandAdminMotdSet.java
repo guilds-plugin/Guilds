@@ -35,6 +35,7 @@ import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Flags;
 import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.annotation.Values;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.guild.Guild;
@@ -64,6 +65,7 @@ public class CommandAdminMotdSet extends BaseCommand {
     @Description("{@@descriptions.admin-motd-set}")
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
+    @Syntax("<%syntax> <motd>")
     public void execute(Player player, @Flags("admin") @Values("@guilds") Guild guild, String motd) {
         // Check if target guild is null, throw error
         if (guild == null) {

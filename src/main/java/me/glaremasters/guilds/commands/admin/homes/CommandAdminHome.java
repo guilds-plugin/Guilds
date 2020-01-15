@@ -34,6 +34,7 @@ import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Flags;
 import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.annotation.Values;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.guild.Guild;
@@ -57,6 +58,7 @@ public class CommandAdminHome extends BaseCommand {
     @Description("{@@descriptions.admin-home}")
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
+    @Syntax("<%syntax>")
     public void execute(Player player, @Flags("admin") @Values("@guilds") Guild guild) {
 
         if (guild == null) {

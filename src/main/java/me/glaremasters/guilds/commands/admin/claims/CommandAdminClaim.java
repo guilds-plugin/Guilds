@@ -61,7 +61,7 @@ public class CommandAdminClaim extends BaseCommand {
     @Description("{@@descriptions.admin-claim}")
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
-    @Syntax("<name>")
+    @Syntax("<%syntax>")
     public void execute(Player player, @Flags("admin") @Values("@guilds") Guild guild) {
 
         if (guild == null) {

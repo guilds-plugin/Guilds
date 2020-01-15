@@ -30,6 +30,7 @@ import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.annotation.Syntax;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.utils.Constants;
@@ -42,6 +43,7 @@ public class CommandMembers extends BaseCommand {
 
     @Subcommand("members")
     @Description("{@@descriptions.members}")
+    @Syntax("")
     @CommandPermission(Constants.BASE_PERM + "members")
     public void execute (Player player, Guild guild) {
         guilds.getGuiHandler().getInfoMembersGUI().getInfoMembersGUI(guild).show(player);

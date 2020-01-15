@@ -32,6 +32,7 @@ import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.annotation.Syntax;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.actions.ConfirmAction;
 import me.glaremasters.guilds.api.events.GuildRemoveEvent;
@@ -70,6 +71,7 @@ public class CommandDelete extends BaseCommand {
     @Subcommand("delete")
     @Description("{@@descriptions.delete}")
     @CommandPermission(Constants.BASE_PERM + "delete")
+    @Syntax("")
     public void execute(Player player, Guild guild, GuildRole role) {
         if (!role.isRemoveGuild()) {
             ACFUtil.sneaky(new InvalidPermissionException());

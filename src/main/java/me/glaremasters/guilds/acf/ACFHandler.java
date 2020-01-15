@@ -75,6 +75,7 @@ public class ACFHandler {
         registerDependencyInjections(commandManager);
 
         commandManager.getCommandReplacements().addReplacement("guilds", guilds.getSettingsHandler().getSettingsManager().getProperty(PluginSettings.PLUGIN_ALIASES));
+        commandManager.getCommandReplacements().addReplacement("syntax", guilds.getSettingsHandler().getSettingsManager().getProperty(PluginSettings.SYNTAX_NAME));
 
         registerCommands(commandManager);
     }

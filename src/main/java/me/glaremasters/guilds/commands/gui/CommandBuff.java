@@ -31,6 +31,7 @@ import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.annotation.Syntax;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.exceptions.InvalidPermissionException;
 import me.glaremasters.guilds.exceptions.InvalidTierException;
@@ -57,6 +58,7 @@ public class CommandBuff extends BaseCommand {
      */
     @Subcommand("buff")
     @Description("{@@descriptions.buff}")
+    @Syntax("")
     @CommandPermission(Constants.BASE_PERM + "buff")
     public void execute(Player player, Guild guild, GuildRole role) {
         if (!guild.getTier().isUseBuffs()) {

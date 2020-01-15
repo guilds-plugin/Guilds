@@ -32,6 +32,7 @@ import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.annotation.Syntax;
 import me.glaremasters.guilds.configuration.sections.CooldownSettings;
 import me.glaremasters.guilds.configuration.sections.CostSettings;
 import me.glaremasters.guilds.cooldowns.Cooldown;
@@ -69,6 +70,7 @@ public class CommandSetHome extends BaseCommand {
     @Subcommand("sethome")
     @Description("{@@descriptions.sethome}")
     @CommandPermission(Constants.BASE_PERM + "sethome")
+    @Syntax("")
     public void execute(Player player, Guild guild, GuildRole role) {
         if (!role.isChangeHome()) {
             ACFUtil.sneaky(new InvalidPermissionException());

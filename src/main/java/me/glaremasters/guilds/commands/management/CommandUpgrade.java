@@ -32,6 +32,7 @@ import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.annotation.Syntax;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.actions.ConfirmAction;
@@ -74,6 +75,7 @@ public class CommandUpgrade extends BaseCommand {
     @Subcommand("upgrade")
     @Description("{@@descriptions.upgrade}")
     @CommandPermission(Constants.BASE_PERM + "upgrade")
+    @Syntax("")
     public void execute(Player player, Guild guild, GuildRole role) {
         if (!role.isUpgradeGuild()) {
             ACFUtil.sneaky(new InvalidPermissionException());

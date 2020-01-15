@@ -64,7 +64,7 @@ public class CommandAdminRename extends BaseCommand {
     @Description("{@@descriptions.admin-prefix}")
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
-    @Syntax("<name> <new name>")
+    @Syntax("<%syntax> <new name>")
     public void execute(Player player, @Single @Flags("admin") @Values("@guilds") Guild guild, @Single String newName) {
 
         if (guild == null) {
