@@ -65,7 +65,7 @@ public class CommandAllyDecline extends BaseCommand {
     @Description("{@@descriptions.ally-decline}")
     @CommandPermission(Constants.ALLY_PERM + "decline")
     @CommandCompletion("@allyInvites")
-    @Syntax("<guild name>")
+    @Syntax("<%syntax>")
     public void execute(Player player, Guild guild, GuildRole role, @Values("@allyInvites") @Single String name) {
         if (!role.isRemoveAlly()) {
             ACFUtil.sneaky(new InvalidPermissionException());

@@ -66,6 +66,11 @@ public final class PluginSettings implements SettingsHolder {
     public static final Property<String> PLUGIN_ALIASES =
             newProperty("settings.plugin-aliases", "guild|guilds|g");
 
+    @Comment({"Change this to whatever you change it to above, this will handle the changes within <>",
+             "Keep in mind you should only set it to ONE thing. Such as guild, town, etc."})
+    public static final Property<String> SYNTAX_NAME =
+            newProperty("settings.syntax-name", "guild");
+
     @Comment({"Would you like to run vault permission changes async? (Will be less stress on the main thread and prevent lag)",
     "Async is used by LuckPerms.",
     "Set this to false if you are using PEx.",

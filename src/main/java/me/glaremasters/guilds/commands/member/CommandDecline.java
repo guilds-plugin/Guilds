@@ -61,7 +61,7 @@ public class CommandDecline extends BaseCommand {
     @Description("{@@descriptions.decline}")
     @CommandPermission(Constants.BASE_PERM + "decline")
     @CommandCompletion("@invitedTo")
-    @Syntax("<guild name>")
+    @Syntax("<%syntax>")
     public void execute(Player player, @Values("@invitedTo") @Single String name) {
         Guild guild = guildHandler.getGuild(name);
 

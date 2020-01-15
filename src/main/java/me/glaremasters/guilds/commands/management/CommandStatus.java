@@ -30,6 +30,7 @@ import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.annotation.Syntax;
 import me.glaremasters.guilds.exceptions.InvalidPermissionException;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
@@ -54,6 +55,7 @@ public class CommandStatus extends BaseCommand {
     @Subcommand("status")
     @Description("{@@descriptions.status}")
     @CommandPermission(Constants.BASE_PERM + "status")
+    @Syntax("")
     public void execute(Player player, Guild guild, GuildRole role) {
         if (!role.isChangeStatus()) {
             ACFUtil.sneaky(new InvalidPermissionException());

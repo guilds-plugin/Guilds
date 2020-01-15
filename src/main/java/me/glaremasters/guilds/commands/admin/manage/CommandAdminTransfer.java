@@ -60,7 +60,7 @@ public class CommandAdminTransfer extends BaseCommand {
     @CommandPermission(Constants.ADMIN_PERM)
     @Description("{@@descriptions.admin-transfer}")
     @CommandCompletion("@guilds @members-admin")
-    @Syntax("<guild> <new master>")
+    @Syntax("<%syntax> <new master>")
     public void execute(Player player, @Flags("admin") @Values("@guilds") @Single Guild guild, @Values("@members-admin") @Single String newMaster) {
 
         if (guild == null) {

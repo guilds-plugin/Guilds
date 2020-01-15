@@ -32,6 +32,7 @@ import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.annotation.Syntax;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.configuration.sections.CooldownSettings;
 import me.glaremasters.guilds.cooldowns.Cooldown;
@@ -65,6 +66,7 @@ public class CommandHome extends BaseCommand {
     @Subcommand("home")
     @Description("{@@descriptions.home}")
     @CommandPermission(Constants.BASE_PERM + "home")
+    @Syntax("")
     public void execute(Player player, Guild guild) {
         if (guild.getHome() == null) {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.HOME__NO_HOME_SET));

@@ -32,6 +32,7 @@ import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.annotation.Syntax;
 import me.glaremasters.guilds.configuration.sections.ClaimSettings;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.exceptions.InvalidPermissionException;
@@ -62,6 +63,7 @@ public class CommandUnclaim extends BaseCommand {
     @Subcommand("unclaim")
     @Description("{@@descriptions.unclaim}")
     @CommandPermission(Constants.BASE_PERM + "unclaim")
+    @Syntax("")
     public void execute(Player player, Guild guild, GuildRole role) {
         if (!role.isUnclaimLand()) {
             ACFUtil.sneaky(new InvalidPermissionException());

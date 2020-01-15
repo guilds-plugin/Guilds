@@ -29,6 +29,7 @@ import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.annotation.Syntax;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.Constants;
@@ -51,6 +52,7 @@ public class CommandBankBalance extends BaseCommand {
      */
     @Subcommand("bank balance")
     @Description("{@@descriptions.bank-balance}")
+    @Syntax("")
     @CommandPermission(Constants.BANK_PERM + "balance")
     public void execute(Player player, Guild guild) {
         getCurrentCommandIssuer().sendInfo(Messages.BANK__BALANCE,

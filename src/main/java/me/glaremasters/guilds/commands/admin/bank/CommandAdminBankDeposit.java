@@ -63,7 +63,7 @@ public class CommandAdminBankDeposit extends BaseCommand {
     @Subcommand("admin bank deposit")
     @Description("{@@descriptions.admin-bank-deposit}")
     @CommandPermission(Constants.ADMIN_PERM)
-    @Syntax("<amount>")
+    @Syntax("<%syntax> <amount>")
     @CommandCompletion("@guilds")
     public void execute(CommandIssuer issuer, @Flags("admin") @Values("@guilds") Guild guild, double amount) {
 

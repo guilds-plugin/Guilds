@@ -32,6 +32,7 @@ import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.annotation.Values;
 import me.glaremasters.guilds.exceptions.InvalidPermissionException;
 import me.glaremasters.guilds.guild.Guild;
@@ -58,6 +59,7 @@ public class CommandCodeDelete extends BaseCommand {
     @Subcommand("code delete")
     @Description("{@@descriptions.code-delete}")
     @CommandPermission(Constants.CODE_PERM + "delete")
+    @Syntax("<code>")
     @CommandCompletion("@activeCodes")
     public void execute(Player player, Guild guild, GuildRole role, @Values("@activeCodes") @Single String code) {
         if (!role.isDeleteCode()) {

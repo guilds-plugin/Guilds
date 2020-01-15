@@ -69,7 +69,7 @@ public class CommandAdminRemove extends BaseCommand {
     @Description("{@@descriptions.admin-remove}")
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
-    @Syntax("<guild name>")
+    @Syntax("<%syntax>")
     public void execute(Player player, @Flags("admin") @Values("@guilds") Guild guild) {
 
         if (guild == null) {

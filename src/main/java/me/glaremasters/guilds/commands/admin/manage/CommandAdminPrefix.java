@@ -63,7 +63,7 @@ public class CommandAdminPrefix extends BaseCommand {
     @Description("{@@descriptions.admin-prefix}")
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
-    @Syntax("<name> <prefix>")
+    @Syntax("<%syntax> <prefix>")
     public void execute(Player player, @Flags("admin") @Values("@guilds") Guild guild, String prefix) {
 
         if (guild == null) {

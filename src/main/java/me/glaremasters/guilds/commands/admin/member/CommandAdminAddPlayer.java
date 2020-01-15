@@ -64,7 +64,7 @@ public class CommandAdminAddPlayer extends BaseCommand {
     @Description("{@@descriptions.admin-addplayer}")
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds @online")
-    @Syntax("<guild> <player>")
+    @Syntax("<%syntax> <player>")
     public void execute(CommandIssuer issuer, @Flags("admin") @Values("@guilds") Guild guild, String targetPlayer) {
         OfflinePlayer adding = PlayerUtils.getPlayer(targetPlayer);
 

@@ -33,6 +33,7 @@ import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.annotation.Syntax;
 import me.glaremasters.guilds.configuration.sections.ClaimSettings;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.exceptions.InvalidPermissionException;
@@ -63,6 +64,7 @@ public class CommandClaim extends BaseCommand {
     @Subcommand("claim")
     @Description("{@@descriptions.claim}")
     @CommandPermission(Constants.BASE_PERM + "claim")
+    @Syntax("")
     public void execute(Player player, Guild guild, GuildRole role) {
         if (!role.isClaimLand()) {
             ACFUtil.sneaky(new InvalidPermissionException());

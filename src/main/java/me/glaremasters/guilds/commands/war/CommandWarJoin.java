@@ -32,6 +32,7 @@ import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.annotation.Syntax;
 import me.glaremasters.guilds.challenges.ChallengeHandler;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.guild.Guild;
@@ -55,6 +56,7 @@ public class CommandWarJoin extends BaseCommand {
 
     @Subcommand("war join")
     @Description("{@@descriptions.war-join}")
+    @Syntax("")
     @CommandPermission(Constants.WAR_PERM + "join")
     public void execute(Player player, Guild guild) {
         GuildChallenge challenge = challengeHandler.getChallenge(guild);

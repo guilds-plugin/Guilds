@@ -32,6 +32,7 @@ import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.annotation.Syntax;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.challenges.ChallengeHandler;
 import me.glaremasters.guilds.configuration.sections.WarSettings;
@@ -61,6 +62,7 @@ public class CommandWarAccept extends BaseCommand {
 
     @Subcommand("war accept")
     @Description("{@@descriptions.war-accept}")
+    @Syntax("")
     @CommandPermission(Constants.WAR_PERM + "accept")
     public void execute(Player player, Guild guild, GuildRole role) {
         if (!role.isInitiateWar()) {

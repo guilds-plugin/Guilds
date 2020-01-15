@@ -67,7 +67,7 @@ public class CommandAllyAdd extends BaseCommand {
     @Description("{@@descriptions.ally-add}")
     @CommandPermission(Constants.ALLY_PERM + "add")
     @CommandCompletion("@guilds")
-    @Syntax("<guild name>")
+    @Syntax("<%syntax>")
     public void execute(Player player, Guild guild, GuildRole role, @Values("@guilds") @Single String name) {
         if (!role.isAddAlly()) {
             ACFUtil.sneaky(new InvalidPermissionException());
