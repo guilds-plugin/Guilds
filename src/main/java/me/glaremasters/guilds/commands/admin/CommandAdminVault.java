@@ -63,7 +63,7 @@ public class CommandAdminVault extends BaseCommand {
     @Description("{@@descriptions.admin-vault}")
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
-    @Syntax("<guild> <vault #>")
+    @Syntax("<%syntax> <vault #>")
     public void execute(Player player, @Flags("admin") @Values("@guilds") Guild guild) {
 
         if (guild == null) {

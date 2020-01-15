@@ -30,6 +30,7 @@ import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.annotation.Syntax;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.utils.Constants;
@@ -50,6 +51,7 @@ public class CommandInfo extends BaseCommand {
      */
     @Subcommand("info")
     @Description("{@@descriptions.info}")
+    @Syntax("")
     @CommandPermission(Constants.BASE_PERM + "info")
     public void execute(Player player, Guild guild) {
         guilds.getGuiHandler().getInfoGUI().getInfoGUI(guild, player).show(player);

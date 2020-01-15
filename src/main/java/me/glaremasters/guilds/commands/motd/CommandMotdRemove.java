@@ -32,6 +32,7 @@ import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.annotation.Syntax;
 import me.glaremasters.guilds.exceptions.InvalidPermissionException;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
@@ -60,6 +61,7 @@ public class CommandMotdRemove extends BaseCommand {
     @Subcommand("motd remove")
     @Description("{@@descriptions.motd-remove}")
     @CommandPermission(Constants.MOTD_PERM + "modify")
+    @Syntax("")
     public void execute(Player player, Guild guild, GuildRole role) {
         // Check if role can modify the motd
         if (!role.isModifyMotd()) {

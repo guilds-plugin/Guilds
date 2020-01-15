@@ -67,7 +67,7 @@ public class CommandAllyRemove extends BaseCommand {
     @Description("{@@descriptions.ally-remove}")
     @CommandPermission(Constants.ALLY_PERM + "remove")
     @CommandCompletion("@allies")
-    @Syntax("<guild name>")
+    @Syntax("<%syntax>")
     public void execute(Player player, Guild guild, GuildRole role, @Values("@allies") @Single String name) {
         if (!role.isRemoveAlly()) {
             ACFUtil.sneaky(new InvalidPermissionException());

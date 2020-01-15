@@ -30,6 +30,7 @@ import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.annotation.Syntax;
 import me.glaremasters.guilds.exceptions.InvalidPermissionException;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildRole;
@@ -54,6 +55,7 @@ public class CommandDelHome extends BaseCommand {
     @Subcommand("delhome")
     @Description("{@@descriptions.delhome}")
     @CommandPermission(Constants.BASE_PERM + "delhome")
+    @Syntax("")
     public void execute(Player player, Guild guild, GuildRole role) {
         if (!role.isChangeHome()) {
             ACFUtil.sneaky(new InvalidPermissionException());

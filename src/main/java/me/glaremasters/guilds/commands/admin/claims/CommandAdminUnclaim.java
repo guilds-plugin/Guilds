@@ -65,7 +65,7 @@ public class CommandAdminUnclaim extends BaseCommand {
     @Description("{@@descriptions.admin-unclaim}")
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
-    @Syntax("<name>")
+    @Syntax("<%syntax>")
     public void execute(Player player, @Flags("admin") @Values("@guilds") Guild guild) {
 
         if (guild == null) {

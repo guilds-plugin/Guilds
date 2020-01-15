@@ -31,6 +31,7 @@ import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.annotation.Syntax;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.exceptions.InvalidPermissionException;
 import me.glaremasters.guilds.guild.Guild;
@@ -56,6 +57,7 @@ public class CommandVault extends BaseCommand {
      */
     @Subcommand("vault")
     @Description("{@@descriptions.vault}")
+    @Syntax("")
     @CommandPermission(Constants.BASE_PERM + "vault")
     public void execute(Player player, Guild guild, GuildRole role) {
         if (!role.isOpenVault()) {

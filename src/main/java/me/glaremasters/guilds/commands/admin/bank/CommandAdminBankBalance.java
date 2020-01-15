@@ -35,6 +35,7 @@ import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Flags;
 import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.annotation.Values;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.guild.Guild;
@@ -61,6 +62,7 @@ public class CommandAdminBankBalance extends BaseCommand {
     @Subcommand("admin bank balance")
     @Description("{@@descriptions.admin-bank-balance}")
     @CommandPermission(Constants.ADMIN_PERM)
+    @Syntax("<%syntax>")
     @CommandCompletion("@guilds")
     public void execute(CommandIssuer issuer, @Flags("admin") @Values("@guilds") Guild guild) {
 

@@ -63,7 +63,7 @@ public class CommandWarChallenge extends BaseCommand {
 
     @Subcommand("war challenge")
     @Description("{@@descriptions.war-challenge}")
-    @Syntax("<guild>")
+    @Syntax("<%syntax>")
     @CommandPermission(Constants.WAR_PERM + "challenge")
     @CommandCompletion("@guilds")
     public void execute(Player player, Guild guild, GuildRole role, @Values("@guilds") @Single String target) {
