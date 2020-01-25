@@ -90,9 +90,9 @@ create:
   warning: "&cDas erstellen einer Gilde kostet {amount}. Schreibe /guilds confirm um deine Gilde zu erstellen und /guilds cancel zum abbrechen."
   successful: "&aGilde '{guild}&r&a' erfolgreich erstellt!"
   cancelled: "&cGilden-erstellung abgebrochen!"
-  requirements: "&cDer Name deiner Gilde entspricht nicht den anforderungen! Du kannst nur Alphanummerische Zeichen verwenden und der name darf nicht länger als 64 sein"
+  requirements: "&cDer Name deiner Gilde entspricht nicht den Anforderungen! Du kannst nur alphanumerische Zeichen verwenden und die Länge des Namens darf 64 nicht überschreiten"
   name-too-long: "&cDu hast keinen Präfix angegeben, also wurde der eingegebene Name gegen die Präfixvoraussetzungen getestet und ist gescheitert. Bitte versuche einen kürzeren Namen und verwende einen Präfix bei der Erstellung."
-  prefix-too-long: "&cDer Gilden Präfix der angegeben wurde entstimmt nicht den Voraussetzungen. Vielleicht hat er zu viele Zeichen?"
+  prefix-too-long: "&cDer Gilden Präfix der angegeben wurde entspricht nicht den Voraussetzungen. Vielleicht hat er zu viele Zeichen?"
 chat:
   disabled: "Gilden Chat deaktiviert"
   enabled: "Gilden Chat aktiviert"
