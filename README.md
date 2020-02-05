@@ -1,6 +1,6 @@
 [![Guilds](https://i.imgur.com/KE562QO.png)](https://github.com/guilds-plugin/Guilds)
 
-[![Discord](https://discordapp.com/api/guilds/390942438061113344/widget.png?style=banner2)](https://discord.gg/TWFEY9Y)
+[![Discord](https://discordapp.com/api/guilds/164280494874165248/widget.png?style=banner2)](https://helpch.at/discord)
 
 ### What is Guilds?
 ___
