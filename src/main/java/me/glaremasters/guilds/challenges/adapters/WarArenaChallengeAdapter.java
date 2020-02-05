@@ -46,12 +46,22 @@ public class WarArenaChallengeAdapter extends TypeAdapter<Arena> {
 
     @Override
     public Arena read(JsonReader in) throws IOException {
+        String arenaName = null;
+        String arenaId = null;
         in.beginObject();
-        in.nextName();
-        String id = in.nextString();
-        in.nextName();
-        String name = in.nextString();
+        while(in.hasNext()) {
+            String name = in.nextName();
+            if (name.equals("uuid")) {
+                arenaId = in.nextString();
+            }
+            else if (name.equals("name")) {
+                arenaName = in.nextString();
+            }
+            else {
+                in.skipValue();
+            }
+        }
         in.endObject();
-        return new Arena(UUID.fromString(id), name);
+        return new Arena(UUID.fromString(arenaId), arenaName);
     }
 }
