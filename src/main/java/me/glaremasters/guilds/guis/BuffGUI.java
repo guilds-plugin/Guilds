@@ -41,6 +41,7 @@ import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.EconomyUtils;
 import me.glaremasters.guilds.utils.GuiBuilder;
 import me.glaremasters.guilds.utils.GuiUtils;
+import me.glaremasters.guilds.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -286,8 +287,8 @@ public class BuffGUI {
             executeGuildCommands(guildCheck, guildCommands, guild);
         });
         ItemMeta meta = buffItem.getItem().getItemMeta();
-        meta.setDisplayName(ACFBukkitUtil.color(name));
-        meta.setLore(lore.stream().map(ACFBukkitUtil::color).collect(Collectors.toList()));
+        meta.setDisplayName(StringUtils.color(name));
+        meta.setLore(lore.stream().map(StringUtils::color).collect(Collectors.toList()));
         buffItem.getItem().setItemMeta(meta);
         if (check)
             pane.addItem(buffItem, x, 0);

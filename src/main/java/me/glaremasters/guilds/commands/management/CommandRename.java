@@ -25,7 +25,6 @@
 package me.glaremasters.guilds.commands.management;
 
 import ch.jalu.configme.SettingsManager;
-import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
@@ -44,6 +43,7 @@ import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.ClaimUtils;
 import me.glaremasters.guilds.utils.Constants;
+import me.glaremasters.guilds.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.codemc.worldguardwrapper.WorldGuardWrapper;
@@ -96,7 +96,7 @@ public class CommandRename extends BaseCommand {
             return;
         }
 
-        guild.setName(ACFBukkitUtil.color(name));
+        guild.setName(StringUtils.color(name));
 
          if (ClaimUtils.isEnable(settingsManager)) {
              WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();

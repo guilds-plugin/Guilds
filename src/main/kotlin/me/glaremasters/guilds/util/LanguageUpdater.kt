@@ -36,14 +36,12 @@ class LanguageUpdater(internal val plugin: Guilds) {
         JarFileWalker.walk("/languages")
         { path, stream ->
 
-            if (stream == null)
-            {
+            if (stream == null) {
                 return@walk // do nothing if the stream couldn't be opened
             }
 
             val file = plugin.dataFolder.resolve(path.toString().drop(1)).absoluteFile
-            if (file.exists())
-            {
+            if (file.exists()) {
                 mergeLanguage(stream, file)
                 return@walk // language file was already created
             }

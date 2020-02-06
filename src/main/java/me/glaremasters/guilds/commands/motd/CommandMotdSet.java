@@ -25,7 +25,6 @@
 package me.glaremasters.guilds.commands.motd;
 
 import ch.jalu.configme.SettingsManager;
-import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
@@ -40,6 +39,7 @@ import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.Constants;
+import me.glaremasters.guilds.utils.StringUtils;
 import org.bukkit.entity.Player;
 
 /**
@@ -70,7 +70,7 @@ public class CommandMotdSet extends BaseCommand {
             ACFUtil.sneaky(new InvalidPermissionException());
         }
         // Set the motd
-        guild.setMotd(ACFBukkitUtil.color(motd));
+        guild.setMotd(StringUtils.color(motd));
         // Tell the user they set the motd
         getCurrentCommandIssuer().sendInfo(Messages.MOTD__SUCCESS, "{motd}", guild.getMotd());
     }

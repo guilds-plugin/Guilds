@@ -24,7 +24,6 @@
 
 package me.glaremasters.guilds.utils;
 
-import co.aikar.commands.ACFBukkitUtil;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.Plugin;
 
@@ -53,7 +52,7 @@ public final class LoggingUtils {
      * @param msg the msg you want to log.
      */
     public static void info(String msg) {
-        log(Level.INFO, ACFBukkitUtil.color(msg));
+        log(Level.INFO, StringUtils.color(msg));
     }
 
     /**
@@ -79,12 +78,12 @@ public final class LoggingUtils {
      * Guilds logLogo in console
      */
     public static void logLogo(ConsoleCommandSender sender, Plugin plugin) {
-        sender.sendMessage(ACFBukkitUtil.color("&a  ________ "));
-        sender.sendMessage(ACFBukkitUtil.color("&a /  _____/ "));
-        sender.sendMessage(ACFBukkitUtil.color("&a/   \\  ___ " + "  &3Guilds &8v" + plugin.getDescription().getVersion()));
-        sender.sendMessage(ACFBukkitUtil.color("&a\\    \\_\\  \\" + "  &3Server Version: &8" + plugin.getServer().getVersion()));
-        sender.sendMessage(ACFBukkitUtil.color("&a \\______  /"));
-        sender.sendMessage(ACFBukkitUtil.color("&a        \\/ "));
+        sender.sendMessage(StringUtils.color("&a  ________ "));
+        sender.sendMessage(StringUtils.color("&a /  _____/ "));
+        sender.sendMessage(StringUtils.color("&a/   \\  ___ " + "  &3Guilds &8v" + plugin.getDescription().getVersion()));
+        sender.sendMessage(StringUtils.color("&a\\    \\_\\  \\" + "  &3Server Version: &8" + plugin.getServer().getVersion()));
+        sender.sendMessage(StringUtils.color("&a \\______  /"));
+        sender.sendMessage(StringUtils.color("&a        \\/ "));
     }
 
 }

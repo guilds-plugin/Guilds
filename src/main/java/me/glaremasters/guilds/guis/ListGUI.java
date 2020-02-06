@@ -25,7 +25,6 @@
 package me.glaremasters.guilds.guis;
 
 import ch.jalu.configme.SettingsManager;
-import co.aikar.commands.ACFBukkitUtil;
 import com.github.stefvanschie.inventoryframework.Gui;
 import com.github.stefvanschie.inventoryframework.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
@@ -37,6 +36,7 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.utils.GuiBuilder;
 import me.glaremasters.guilds.utils.GuiUtils;
+import me.glaremasters.guilds.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -156,7 +156,7 @@ public class ListGUI {
             event.setCancelled(true);
         });
         ItemMeta meta = listItem.getItem().getItemMeta();
-        meta.setDisplayName(ACFBukkitUtil.color(settingsManager.getProperty(GuildListSettings.GUILD_LIST_ITEM_NAME).replace("{player}", Bukkit.getOfflinePlayer(guild.getGuildMaster().getUuid()).getName()).replace("{guild}", guild.getName())));
+        meta.setDisplayName(StringUtils.color(settingsManager.getProperty(GuildListSettings.GUILD_LIST_ITEM_NAME).replace("{player}", Bukkit.getOfflinePlayer(guild.getGuildMaster().getUuid()).getName()).replace("{guild}", guild.getName())));
         meta.setLore(updatedLore(guild, settingsManager.getProperty(GuildListSettings.GUILD_LIST_HEAD_LORE)));
         listItem.getItem().setItemMeta(meta);
         items.add(listItem);
@@ -179,7 +179,7 @@ public class ListGUI {
             statusString = settingsManager.getProperty(GuildInfoSettings.STATUS_PUBLIC);
         }
         List<String> updated = new ArrayList<>();
-        lore.forEach(line -> updated.add(ACFBukkitUtil.color(line
+        lore.forEach(line -> updated.add(StringUtils.color(line
                 .replace("{guild-name}", guild.getName())
                 .replace("{guild-prefix}", guild.getPrefix())
                 .replace("{guild-master}", Bukkit.getOfflinePlayer(guild.getGuildMaster().getUuid()).getName())

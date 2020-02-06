@@ -22,32 +22,5 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.utils;
+package me.glaremasters.guilds.exte
 
-import co.aikar.commands.ACFBukkitUtil;
-import org.bukkit.inventory.ItemFlag;
-import org.bukkit.inventory.ItemStack;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-// This is a temp class until I can sort a bunch of shit out
-public class GuiUtils {
-
-    public static ItemStack createItem(String material, String name, List<String> lore) {
-        Optional<XMaterial> tempMaterial = XMaterial.matchXMaterial(material);
-        XMaterial tempCheck = tempMaterial.orElse(XMaterial.GLASS_PANE);
-        ItemStack item = tempCheck.parseItem();
-        if (item == null) {
-            item = XMaterial.GLASS_PANE.parseItem();
-        }
-        ItemBuilder builder = new ItemBuilder(item);
-        builder.setName(StringUtils.color(name));
-        if (!lore.isEmpty()) {
-            builder.setLore(lore.stream().map(StringUtils ::color).collect(Collectors.toList()));
-        }
-        builder.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-        return builder.build();
-    }
-}

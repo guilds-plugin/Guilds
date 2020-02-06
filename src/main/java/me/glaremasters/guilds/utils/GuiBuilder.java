@@ -24,7 +24,6 @@
 
 package me.glaremasters.guilds.utils;
 
-import co.aikar.commands.ACFBukkitUtil;
 import com.github.stefvanschie.inventoryframework.Gui;
 import com.github.stefvanschie.inventoryframework.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
@@ -48,7 +47,7 @@ public class GuiBuilder {
 
     @NotNull
     public GuiBuilder setName(@NotNull String name) {
-        gui.setTitle(ACFBukkitUtil.color(name));
+        gui.setTitle(StringUtils.color(name));
         return this;
     }
 
@@ -62,7 +61,7 @@ public class GuiBuilder {
     public GuiBuilder addBackground(int length, int height) {
         OutlinePane background = new OutlinePane(0, 0, length, height, Pane.Priority.LOW);
         ItemBuilder builder = new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem());
-        builder.setName(ACFBukkitUtil.color("&r"));
+        builder.setName(StringUtils.color("&r"));
         background.addItem(new GuiItem(builder.build()));
         background.setRepeat(true);
         gui.addPane(background);

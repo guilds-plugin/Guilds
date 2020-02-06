@@ -37,6 +37,7 @@ import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.ItemBuilder;
 import me.glaremasters.guilds.utils.LoggingUtils;
 import me.glaremasters.guilds.utils.Serialization;
+import me.glaremasters.guilds.utils.StringUtils;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -619,7 +620,7 @@ public class GuildHandler {
     public boolean nameCheck(String name, SettingsManager settingsManager) {
         String regex = settingsManager.getProperty(GuildSettings.NAME_REQUIREMENTS);
         if (!settingsManager.getProperty(GuildSettings.INCLUDE_COLOR_CODES)) {
-            String tmp = ACFBukkitUtil.color(name);
+            String tmp = StringUtils.color(name);
             return ChatColor.stripColor(tmp).matches(regex);
         }
         return name.matches(regex);
@@ -634,7 +635,7 @@ public class GuildHandler {
     public boolean prefixCheck(String name, SettingsManager settingsManager) {
         String regex = settingsManager.getProperty(GuildSettings.PREFIX_REQUIREMENTS);
         if (!settingsManager.getProperty(GuildSettings.INCLUDE_COLOR_CODES)) {
-            String tmp = ACFBukkitUtil.color(name);
+            String tmp = StringUtils.color(name);
             return ChatColor.stripColor(tmp).matches(regex);
         }
         return name.matches(regex);
@@ -669,7 +670,7 @@ public class GuildHandler {
      * @return new vault
      */
     public Inventory createNewVault(SettingsManager settingsManager) {
-        return Bukkit.createInventory(null, 54, ACFBukkitUtil.color(settingsManager.getProperty(GuildVaultSettings.VAULT_NAME)));
+        return Bukkit.createInventory(null, 54, StringUtils.color(settingsManager.getProperty(GuildVaultSettings.VAULT_NAME)));
     }
 
     /**
@@ -701,8 +702,8 @@ public class GuildHandler {
     public ItemStack getUpgradeTicket(SettingsManager settingsManager, int amount) {
         ItemBuilder builder = new ItemBuilder(Material.valueOf(settingsManager.getProperty(TicketSettings.TICKET_MATERIAL)));
         builder.setAmount(amount);
-        builder.setName(ACFBukkitUtil.color(settingsManager.getProperty(TicketSettings.TICKET_NAME)));
-        builder.setLore(settingsManager.getProperty(TicketSettings.TICKET_LORE).stream().map(ACFBukkitUtil::color).collect(Collectors.toList()));
+        builder.setName(StringUtils.color(settingsManager.getProperty(TicketSettings.TICKET_NAME)));
+        builder.setLore(settingsManager.getProperty(TicketSettings.TICKET_LORE).stream().map(StringUtils::color).collect(Collectors.toList()));
         return builder.build();
     }
 
@@ -714,8 +715,8 @@ public class GuildHandler {
     public ItemStack matchTicket(SettingsManager settingsManager) {
         ItemBuilder builder = new ItemBuilder(Material.valueOf(settingsManager.getProperty(TicketSettings.TICKET_MATERIAL)));
         builder.setAmount(1);
-        builder.setName(ACFBukkitUtil.color(settingsManager.getProperty(TicketSettings.TICKET_NAME)));
-        builder.setLore(settingsManager.getProperty(TicketSettings.TICKET_LORE).stream().map(ACFBukkitUtil::color).collect(Collectors.toList()));
+        builder.setName(StringUtils.color(settingsManager.getProperty(TicketSettings.TICKET_NAME)));
+        builder.setLore(settingsManager.getProperty(TicketSettings.TICKET_LORE).stream().map(StringUtils::color).collect(Collectors.toList()));
         return builder.build();
     }
 
@@ -920,10 +921,10 @@ public class GuildHandler {
      * @param msg the message
      */
     public void handleGuildChat(Guild guild, Player player, String msg) {
-        guild.sendMessage(ACFBukkitUtil.color(settingsManager.getProperty(GuildSettings.GUILD_CHAT_FORMAT).replace("{role}", getGuildRole(guild.getMember(player.getUniqueId()).getRole().getLevel()).getName()).replace("{player}", player.getName()).replace("{display-name}", player.getDisplayName()).replace("{message}", msg)));
-        getSpies().forEach(s -> s.sendMessage(ACFBukkitUtil.color(settingsManager.getProperty(GuildSettings.SPY_CHAT_FORMAT).replace("{role}", getGuildRole(guild.getMember(player.getUniqueId()).getRole().getLevel()).getName()).replace("{player}", player.getName()).replace("{display-name}", player.getDisplayName()).replace("{message}", msg).replace("{guild}", guild.getName()))));
+        guild.sendMessage(StringUtils.color(settingsManager.getProperty(GuildSettings.GUILD_CHAT_FORMAT).replace("{role}", getGuildRole(guild.getMember(player.getUniqueId()).getRole().getLevel()).getName()).replace("{player}", player.getName()).replace("{display-name}", player.getDisplayName()).replace("{message}", msg)));
+        getSpies().forEach(s -> s.sendMessage(StringUtils.color(settingsManager.getProperty(GuildSettings.SPY_CHAT_FORMAT).replace("{role}", getGuildRole(guild.getMember(player.getUniqueId()).getRole().getLevel()).getName()).replace("{player}", player.getName()).replace("{display-name}", player.getDisplayName()).replace("{message}", msg).replace("{guild}", guild.getName()))));
         if (settingsManager.getProperty(GuildSettings.LOG_GUILD_CHAT)) {
-            LoggingUtils.info(ACFBukkitUtil.color(settingsManager.getProperty(GuildSettings.SPY_CHAT_FORMAT).replace("{role}", getGuildRole(guild.getMember(player.getUniqueId()).getRole().getLevel()).getName()).replace("{player}", player.getName()).replace("{display-name}", player.getDisplayName()).replace("{message}", msg).replace("{guild}", guild.getName())));
+            LoggingUtils.info(StringUtils.color(settingsManager.getProperty(GuildSettings.SPY_CHAT_FORMAT).replace("{role}", getGuildRole(guild.getMember(player.getUniqueId()).getRole().getLevel()).getName()).replace("{player}", player.getName()).replace("{display-name}", player.getDisplayName()).replace("{message}", msg).replace("{guild}", guild.getName())));
         }
     }
 
@@ -947,7 +948,7 @@ public class GuildHandler {
         if (guild == null) {
             return noGuild;
         }
-        return ACFBukkitUtil.color(combined.replace("{name}", guild.getName()).replace("{prefix}", guild.getPrefix()));
+        return StringUtils.color(combined.replace("{name}", guild.getName()).replace("{prefix}", guild.getPrefix()));
     }
 
     public List<Guild> getGuilds() {

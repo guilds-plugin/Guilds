@@ -25,7 +25,6 @@
 package me.glaremasters.guilds.listeners;
 
 import ch.jalu.configme.SettingsManager;
-import co.aikar.commands.ACFBukkitUtil;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.configuration.sections.GuildSettings;
 import me.glaremasters.guilds.configuration.sections.PluginSettings;
@@ -90,7 +89,7 @@ public class PlayerListener implements Listener {
                     return;
 
                 try {
-                    JSONMessage.create(ACFBukkitUtil.color("&f[&aGuilds&f]&r Announcements (Hover over me for more information)")).tooltip(StringUtils.getAnnouncements(guilds)).openURL(guilds.getDescription().getWebsite()).send(player);
+                    JSONMessage.create(StringUtils.color("&f[&aGuilds&f]&r Announcements (Hover over me for more information)")).tooltip(StringUtils.getAnnouncements(guilds)).openURL(guilds.getDescription().getWebsite()).send(player);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

@@ -25,7 +25,6 @@
 package me.glaremasters.guilds.commands.management;
 
 import ch.jalu.configme.SettingsManager;
-import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
@@ -43,6 +42,7 @@ import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.Constants;
+import me.glaremasters.guilds.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -97,7 +97,7 @@ public class CommandPrefix extends BaseCommand {
         getCurrentCommandIssuer().sendInfo(Messages.PREFIX__SUCCESSFUL,
                 "{prefix}", prefix);
 
-        guild.setPrefix(ACFBukkitUtil.color(prefix));
+        guild.setPrefix(StringUtils.color(prefix));
 
     }
 
