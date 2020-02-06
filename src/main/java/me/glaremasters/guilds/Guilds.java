@@ -24,7 +24,6 @@
 
 package me.glaremasters.guilds;
 
-import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.PaperCommandManager;
 import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
@@ -66,15 +65,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.JarURLConnection;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
-import java.util.Objects;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 import java.util.stream.Stream;
 
 public final class Guilds extends JavaPlugin {
@@ -139,35 +132,6 @@ public final class Guilds extends JavaPlugin {
         RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
         if (rsp != null) permissions = rsp.getProvider();
     }
-
-    /**
-     * Save and handle new files if needed
-     */
-/*    private void saveData() {
-        File languageFolder = new File(getDataFolder(), "languages");
-        if (!languageFolder.exists()) //noinspection ResultOfMethodCallIgnored
-            languageFolder.mkdirs();
-        try {
-            final JarURLConnection connection = (JarURLConnection) Objects.requireNonNull(getClassLoader().getResource("languages")).openConnection();
-            final JarFile thisJar = connection.getJarFile();
-            final Enumeration<JarEntry> entries = thisJar.entries();
-            while (entries.hasMoreElements()) {
-                final JarEntry current = entries.nextElement();
-                if (!current.getName().startsWith("languages/") || current.getName().length() == "languages/".length()) {
-                    continue;
-                }
-                final String name = current.getName().substring("languages/".length());
-                File langFile = new File(languageFolder, name);
-                if (!langFile.exists()) {
-                    this.saveResource("languages/" + name, false);
-                }
-            }
-
-        } catch (final IOException ex) {
-            ex.printStackTrace();
-        }
-
-    }*/
 
     @Override
     public void onEnable() {
