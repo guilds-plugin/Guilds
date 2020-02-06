@@ -24,6 +24,7 @@
 
 package me.glaremasters.guilds;
 
+import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.PaperCommandManager;
 import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
@@ -122,20 +123,6 @@ public final class Guilds extends JavaPlugin {
         LoggingUtils.info("Database has been shut down.");
     }
 
-    @Override
-    public void onLoad() {
-        BukkitLibraryManager loader = new BukkitLibraryManager(this);
-        Libraries libraries = new Libraries();
-        loader.addRepository("https://repo.glaremasters.me/repository/public/");
-        loader.addMavenCentral();
-        try {
-            libraries.loadDepLibs(loader);
-            successfulLoad = true;
-        } catch (RuntimeException ex) {
-            ex.printStackTrace();
-        }
-    }
-
     /**
      * Implement Vault's Economy API
      */
@@ -186,11 +173,6 @@ public final class Guilds extends JavaPlugin {
        
         LoggingUtils.logLogo(Bukkit.getConsoleSender(), this);
 
-        if (!successfulLoad) {
-            LoggingUtils.warn("Dependencies could not be downloaded, shutting down to prevent file corruption.");
-            Bukkit.getPluginManager().disablePlugin(this);
-            return;
-        }
         // Check if the server is running Vault
         if (!Bukkit.getPluginManager().isPluginEnabled("Vault")) {
             LoggingUtils.warn("It looks like you don't have Vault on your server! Stopping plugin..");
@@ -234,6 +216,8 @@ public final class Guilds extends JavaPlugin {
         LoggingUtils.info("Loading config..");
         settingsHandler = new SettingsHandler(this);
         LoggingUtils.info("Loaded config!");
+
+        downloadOptionalDependencies();
 
         saveData();
 
@@ -347,6 +331,26 @@ public final class Guilds extends JavaPlugin {
         if (settingsHandler.getSettingsManager().getProperty(HooksSettings.WORLDGUARD)) {
             getServer().getPluginManager().registerEvents(new WorldGuardListener(guildHandler), this);
             getServer().getPluginManager().registerEvents(new ClaimSignListener(this, settingsHandler.getSettingsManager(), guildHandler), this);
+        }
+    }
+
+    private void downloadOptionalDependencies() {
+        if (!settingsHandler.getSettingsManager().getProperty(StorageSettings.STORAGE_TYPE).toLowerCase().equals("json")) {
+            boolean success = false;
+            BukkitLibraryManager loader = new BukkitLibraryManager(this);
+            Libraries libraries = new Libraries();
+            loader.addRepository("https://repo.glaremasters.me/repository/public/");
+            loader.addMavenCentral();
+            try {
+                libraries.loadDepLibs(loader);
+                success = true;
+            } catch (RuntimeException ex) {
+                ex.printStackTrace();
+            }
+            if (!success) {
+                LoggingUtils.warn("Dependencies could not be downloaded, shutting down to prevent file corruption.");
+                Bukkit.getPluginManager().disablePlugin(this);
+            }
         }
     }
 
