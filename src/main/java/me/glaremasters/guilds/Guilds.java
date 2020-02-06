@@ -55,6 +55,7 @@ import me.glaremasters.guilds.listeners.VaultBlacklistListener;
 import me.glaremasters.guilds.listeners.WorldGuardListener;
 import me.glaremasters.guilds.placeholders.PlaceholderAPI;
 import me.glaremasters.guilds.updater.UpdateChecker;
+import me.glaremasters.guilds.util.LanguageUpdater;
 import me.glaremasters.guilds.utils.LoggingUtils;
 import me.glaremasters.guilds.utils.StringUtils;
 import net.byteflux.libby.BukkitLibraryManager;
@@ -142,7 +143,7 @@ public final class Guilds extends JavaPlugin {
     /**
      * Save and handle new files if needed
      */
-    private void saveData() {
+/*    private void saveData() {
         File languageFolder = new File(getDataFolder(), "languages");
         if (!languageFolder.exists()) //noinspection ResultOfMethodCallIgnored
             languageFolder.mkdirs();
@@ -166,7 +167,7 @@ public final class Guilds extends JavaPlugin {
             ex.printStackTrace();
         }
 
-    }
+    }*/
 
     @Override
     public void onEnable() {
@@ -219,7 +220,7 @@ public final class Guilds extends JavaPlugin {
 
         downloadOptionalDependencies();
 
-        saveData();
+        new LanguageUpdater(this).saveLang();
 
         // Load data here.
         try {

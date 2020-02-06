@@ -61,7 +61,6 @@ dependencies {
     compile 'com.dumptruckman.minecraft:JsonConfiguration:1.1'
     compile 'net.minidev:json-smart:1.1.1'
     compile 'com.github.stefvanschie.inventoryframework:IF:0.5.15'
-    compile 'net.lingala.zip4j:zip4j:2.1.2'
     compile 'commons-io:commons-io:2.6'
     compile 'org.reflections:reflections:0.9.11'
     compile 'com.google.guava:guava:21.0'
@@ -71,6 +70,7 @@ dependencies {
     compileOnly 'org.jdbi:jdbi3-sqlobject:3.8.2'
     compileOnly 'org.slf4j:slf4j-api:1.7.25'
     compileOnly 'org.mariadb.jdbc:mariadb-java-client:2.4.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 }
 
 sourceSets {
@@ -85,11 +85,11 @@ compileJava {
 }
 
 compileKotlin {
-    kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8
+    kotlinOptions.jvmTarget = "1.8"
     kotlinOptions.javaParameters = true
 }
 compileTestKotlin {
-    kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8
+    kotlinOptions.jvmTarget = "1.8"
 }
 
 publishing {
