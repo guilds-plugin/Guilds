@@ -5,15 +5,42 @@
 plugins {
     id 'java'
     id 'maven-publish'
+    id 'com.github.johnrengelman.shadow' version '5.1.0' apply false
 }
+
+group = 'me.glaremasters'
+version = '3.5.4.2'
+description = 'Guilds'
+sourceCompatibility = '1.8'
 
 repositories {
     mavenCentral()
-    
+
     maven {
         url = 'https://repo.glaremasters.me/repository/public/'
     }
 
+}
+
+apply plugin: 'com.github.johnrengelman.shadow'
+
+shadowJar {
+    minimize()
+    relocate("org.bstats", "me.glaremasters.guilds.libs.bstats")
+    relocate("co.aikar.commands", "me.glaremasters.guilds.libs.acf")
+    relocate("co.aikar.taskchain", "me.glaremasters.guilds.libs.taskchain")
+    relocate("org.yaml.snakeyaml", "me.glaremasters.guilds.libs.snakeyml")
+    relocate("org.apache.commons.io", "me.glaremasters.guilds.libs.commonsio")
+    relocate("org.apache.commons.collections4", "me.glaremasters.guilds.libs.collections")
+    relocate("com.google.common", "me.glaremasters.guilds.libs.guava")
+    relocate("com.github.stefvanschie.inventoryframework", "me.glaremasters.guilds.libs.if")
+    relocate("org.reflections", "me.glaremasters.guilds.libs.reflections")
+    relocate("net.byteflux.libby", "me.glaremasters.guilds.libs.libby")
+    relocate("net.lingala.zip4j", "me.glaremasters.guilds.libs.zip4j")
+    relocate("com.zaxxer.hikari", "me.glaremasters.guilds.libs.hikari")
+    relocate("org.jdbi", "me.glaremasters.guilds.libs.jdbi")
+    relocate("org.mariadb.jdbc", "me.glaremasters.guilds.libs.mariadb")
+    archiveFileName = "Guilds-${project.version}.jar"
 }
 
 dependencies {
@@ -43,11 +70,6 @@ dependencies {
     compileOnly 'org.slf4j:slf4j-api:1.7.25'
     compileOnly 'org.mariadb.jdbc:mariadb-java-client:2.4.0'
 }
-
-group = 'me.glaremasters'
-version = '3.5.4.2'
-description = 'Guilds'
-sourceCompatibility = '1.8'
 
 publishing {
     publications {
