@@ -30,7 +30,7 @@ import me.glaremasters.guilds.guild.Guild
 import java.io.IOException
 import java.util.*
 
-class WarGuildChallengeAdapater : TypeAdapter<Guild>() {
+class WarGuildChallengeAdapter : TypeAdapter<Guild>() {
 
     override fun write(out: JsonWriter, guild: Guild) {
         out.beginObject()

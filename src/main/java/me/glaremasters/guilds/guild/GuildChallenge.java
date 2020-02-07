@@ -26,7 +26,7 @@ package me.glaremasters.guilds.guild;
 import com.google.gson.annotations.JsonAdapter;
 import me.glaremasters.guilds.arena.Arena;
 import me.glaremasters.guilds.challenges.adapters.WarArenaChallengeAdapter;
-import me.glaremasters.guilds.challenges.adapters.WarGuildChallengeAdapater;
+import me.glaremasters.guilds.challenges.adapters.WarGuildChallengeAdapter;
 import org.apache.commons.collections4.map.LinkedMap;
 
 import java.util.List;
@@ -36,9 +36,9 @@ public class GuildChallenge {
 
     private UUID id;
     private long initiateTime;
-    @JsonAdapter(WarGuildChallengeAdapater.class)
+    @JsonAdapter(WarGuildChallengeAdapter.class)
     private Guild challenger;
-    @JsonAdapter(WarGuildChallengeAdapater.class)
+    @JsonAdapter(WarGuildChallengeAdapter.class)
     private Guild defender;
     private transient boolean accepted;
     private transient boolean joinble;
@@ -50,9 +50,9 @@ public class GuildChallenge {
     private List<UUID> defendPlayers;
     @JsonAdapter(WarArenaChallengeAdapter.class)
     private Arena arena;
-    @JsonAdapter(WarGuildChallengeAdapater.class)
+    @JsonAdapter(WarGuildChallengeAdapter.class)
     private Guild winner;
-    @JsonAdapter(WarGuildChallengeAdapater.class)
+    @JsonAdapter(WarGuildChallengeAdapter.class)
     private Guild loser;
 
     private transient LinkedMap<UUID, String> aliveChallengers;
