@@ -23,12 +23,8 @@
  */
 package me.glaremasters.guilds.api.events
 
+import me.glaremasters.guilds.api.events.base.GuildEvent
 import me.glaremasters.guilds.guild.Guild
 import org.bukkit.entity.Player
 
-class GuildJoinEvent
-/**
- * Called when a player joins a guild
- * @param player the player joining a guild
- * @param guild the guild the player will be joining
- */(player: Player?, guild: Guild?) : GuildEvent(player, guild)
+class GuildJoinEvent(player: Player, guild: Guild) : GuildEvent(player, guild)

@@ -23,13 +23,8 @@
  */
 package me.glaremasters.guilds.api.events
 
+import me.glaremasters.guilds.api.events.base.GuildEvent
 import me.glaremasters.guilds.guild.Guild
 import org.bukkit.entity.Player
 
-class GuildRenameEvent
-/**
- * Base guild event
- *
- * @param player player in event
- * @param guild  guild in the event
- */(player: Player?, guild: Guild?, val name: String) : GuildEvent(player, guild) 
+class GuildRenameEvent(player: Player, guild: Guild, val name: String) : GuildEvent(player, guild)

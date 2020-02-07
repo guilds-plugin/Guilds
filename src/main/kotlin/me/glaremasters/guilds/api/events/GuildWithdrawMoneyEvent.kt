@@ -23,13 +23,8 @@
  */
 package me.glaremasters.guilds.api.events
 
+import me.glaremasters.guilds.api.events.base.GuildEvent
 import me.glaremasters.guilds.guild.Guild
 import org.bukkit.entity.Player
 
-class GuildWithdrawMoneyEvent
-/**
- * Base guild event
- * @param player player in event
- * @param guild  guild in the event
- * @param amount the amount to withdraw
- */(player: Player?, guild: Guild?, val amount: Double) : GuildEvent(player, guild)
+class GuildWithdrawMoneyEvent(player: Player, guild: Guild, val amount: Double) : GuildEvent(player, guild)

@@ -23,16 +23,11 @@
  */
 package me.glaremasters.guilds.api.events
 
+import me.glaremasters.guilds.api.events.base.GuildEvent
 import me.glaremasters.guilds.guild.Guild
 import org.bukkit.entity.Player
 
-class GuildLeaveEvent
-/**
- * Called a when a player leaves the guild
- * @param player the player leaving the guild
- * @param guild the guild the player was leaving
- * @param cause the reason the event was called
- */(player: Player?, guild: Guild?, val cause: Cause) : GuildEvent(player, guild) {
+class GuildLeaveEvent(player: Player, guild: Guild, val cause: Cause) : GuildEvent(player, guild) {
 
     enum class Cause {
         PLAYER_LEFT, PLAYER_KICKED, ADMIN_REMOVED

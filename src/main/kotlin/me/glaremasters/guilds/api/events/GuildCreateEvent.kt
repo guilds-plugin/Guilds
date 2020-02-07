@@ -23,12 +23,8 @@
  */
 package me.glaremasters.guilds.api.events
 
+import me.glaremasters.guilds.api.events.base.GuildEvent
 import me.glaremasters.guilds.guild.Guild
 import org.bukkit.entity.Player
 
-class GuildCreateEvent
-/**
- * Called when people create a guild
- * @param player player creating the guild
- * @param guild the guild being created
- */(player: Player?, guild: Guild?) : GuildEvent(player, guild)
+class GuildCreateEvent(player: Player, guild: Guild) : GuildEvent(player, guild)

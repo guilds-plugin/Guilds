@@ -23,13 +23,8 @@
  */
 package me.glaremasters.guilds.api.events
 
+import me.glaremasters.guilds.api.events.base.GuildEvent
 import me.glaremasters.guilds.guild.Guild
 import org.bukkit.entity.Player
 
-class GuildInviteEvent
-/**
- * Called when a player gets invited to a guild
- * @param player the player inviting other to guild
- * @param guild the guild player will be joining
- * @param invitedPlayer the player being invited
- */(player: Player?, guild: Guild?, val invitedPlayer: Player) : GuildEvent(player, guild)
+class GuildInviteEvent(player: Player, guild: Guild, val invitedPlayer: Player) : GuildEvent(player, guild)

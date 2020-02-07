@@ -23,16 +23,11 @@
  */
 package me.glaremasters.guilds.api.events
 
+import me.glaremasters.guilds.api.events.base.GuildEvent
 import me.glaremasters.guilds.guild.Guild
 import org.bukkit.entity.Player
 
-class GuildRemoveEvent
-/**
- * Called when a guild is removed
- * @param player the player removing the guild
- * @param guild the guild getting removed
- * @param cause the reason for the guild being removed
- */(player: Player?, guild: Guild?, val cause: Cause) : GuildEvent(player, guild) {
+class GuildRemoveEvent(player: Player, guild: Guild, val cause: Cause) : GuildEvent(player, guild) {
 
     enum class Cause {
         MASTER_LEFT, PLAYER_DELETED, ADMIN_DELETED

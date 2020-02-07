@@ -23,14 +23,9 @@
  */
 package me.glaremasters.guilds.api.events
 
+import me.glaremasters.guilds.api.events.base.GuildEvent
 import me.glaremasters.guilds.guild.Guild
 import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 
-class GuildTransferEvent
-/**
- * Base guild event
- * @param player player in event
- * @param guild  guild in the event
- * @param newMaster new master of guild
- */(player: Player?, guild: Guild?, val newMaster: OfflinePlayer) : GuildEvent(player, guild)
+class GuildTransferEvent(player: Player, guild: Guild, val newMaster: OfflinePlayer) : GuildEvent(player, guild)

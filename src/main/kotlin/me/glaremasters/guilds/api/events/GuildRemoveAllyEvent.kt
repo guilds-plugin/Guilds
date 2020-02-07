@@ -23,13 +23,8 @@
  */
 package me.glaremasters.guilds.api.events
 
+import me.glaremasters.guilds.api.events.base.GuildEvent
 import me.glaremasters.guilds.guild.Guild
 import org.bukkit.entity.Player
 
-class GuildRemoveAllyEvent
-/**
- * Called when a guild removes an ally
- * @param player the player calling the removal
- * @param guild the guild calling the removal
- * @param ally the guild being removed
- */(player: Player?, guild: Guild?, val ally: Guild) : GuildEvent(player, guild)
+class GuildRemoveAllyEvent(player: Player, guild: Guild, val ally: Guild) : GuildEvent(player, guild)
