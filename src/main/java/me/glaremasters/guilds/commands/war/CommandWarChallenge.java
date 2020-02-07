@@ -77,7 +77,7 @@ public class CommandWarChallenge extends BaseCommand {
         }
 
         // Get an arena
-        Arena arena = arenaHandler.getAvailableArena();
+        Arena arena = arenaHandler.getAvailableArena().get();
 
         // Check if there are any open arenas
         if (arena == null) {

@@ -136,7 +136,7 @@ public class ACFHandler {
             return guildHandler.getGuildRole(guild.getMember(c.getPlayer().getUniqueId()).getRole().getLevel());
         });
 
-        commandManager.getCommandContexts().registerContext(Arena.class, c -> arenaHandler.getArena(c.popFirstArg()));
+        commandManager.getCommandContexts().registerContext(Arena.class, c -> arenaHandler.getArena(c.popFirstArg()).get());
     }
 
 

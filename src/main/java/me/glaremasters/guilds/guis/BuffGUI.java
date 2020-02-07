@@ -25,7 +25,6 @@
 package me.glaremasters.guilds.guis;
 
 import ch.jalu.configme.SettingsManager;
-import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.CommandManager;
 import com.github.stefvanschie.inventoryframework.Gui;
 import com.github.stefvanschie.inventoryframework.GuiItem;

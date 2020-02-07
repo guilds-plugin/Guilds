@@ -22,31 +22,41 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.utils;
+package me.glaremasters.guilds.arena
 
-import org.bukkit.inventory.ItemFlag;
-import org.bukkit.inventory.ItemStack;
+import me.glaremasters.guilds.Guilds
+import java.util.Optional
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+class ArenaHandler(private val guilds: Guilds) {
 
-// This is a temp class until I can sort a bunch of shit out
-public class GuiUtils {
+    private val arenas = mutableMapOf<String, Arena>()
 
-    public static ItemStack createItem(String material, String name, List<String> lore) {
-        Optional<XMaterial> tempMaterial = XMaterial.matchXMaterial(material);
-        XMaterial tempCheck = tempMaterial.orElse(XMaterial.GLASS_PANE);
-        ItemStack item = tempCheck.parseItem();
-        if (item == null) {
-            item = XMaterial.GLASS_PANE.parseItem();
-        }
-        ItemBuilder builder = new ItemBuilder(item);
-        builder.setName(StringUtils.color(name));
-        if (!lore.isEmpty()) {
-            builder.setLore(lore.stream().map(StringUtils ::color).collect(Collectors.toList()));
-        }
-        builder.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-        return builder.build();
+    fun addArena(arena: Arena) {
+        arenas[arena.name.toLowerCase()] = arena
     }
+
+    fun removeArena(arena: Arena) {
+        arenas.remove(arena.name)
+    }
+
+    fun getArenas(): Collection<Arena> {
+        return arenas.values
+    }
+
+    fun getArena(name: String): Optional<Arena> {
+        return Optional.ofNullable(arenas[name.toLowerCase()])
+    }
+
+    fun getAvailableArena(): Optional<Arena> {
+        return Optional.ofNullable(arenas.values.shuffled().firstOrNull { !it.inUse })
+    }
+
+    fun loadArenas() {
+        guilds.database.arenaAdapter.allArenas.forEach(this::addArena)
+    }
+
+    fun saveArenas() {
+        guilds.database.arenaAdapter.saveArenas(arenas.values)
+    }
+
 }

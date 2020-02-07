@@ -34,6 +34,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class ArenaAdapter {
@@ -72,12 +73,12 @@ public class ArenaAdapter {
         return provider.getAllArenas(sqlTablePrefix);
     }
 
-    public void saveArenas(@NotNull List<Arena> arenas) throws IOException {
+    public void saveArenas(@NotNull Collection<Arena> arenas) throws IOException {
         List<String> savedIds = new ArrayList<>();
 
-        for (Arena guild : arenas) {
-            saveArena(guild);
-            savedIds.add(guild.getId().toString());
+        for (Arena arena : arenas) {
+            saveArena(arena);
+            savedIds.add(arena.getId().toString());
         }
 
         for (String arenaId : getAllArenaIds()) {
