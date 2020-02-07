@@ -21,22 +21,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package me.glaremasters.guilds.api.events
 
-package me.glaremasters.guilds.actions;
+import me.glaremasters.guilds.api.events.base.GuildEvent
+import me.glaremasters.guilds.guild.Guild
+import org.bukkit.entity.Player
 
-/**
- * Created by GlareMasters on 6/28/2018.
- */
-public interface ConfirmAction {
+class GuildRemoveEvent(player: Player, guild: Guild, val cause: Cause) : GuildEvent(player, guild) {
 
-    /**
-     * Confirm an action
-     */
-    void accept();
-
-    /**
-     * Decline an action
-     */
-    void decline();
+    enum class Cause {
+        MASTER_LEFT, PLAYER_DELETED, ADMIN_DELETED
+    }
 
 }

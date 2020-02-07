@@ -21,26 +21,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package me.glaremasters.guilds.api
 
-package me.glaremasters.guilds.api;
+import me.glaremasters.guilds.guild.Guild
+import me.glaremasters.guilds.guild.GuildHandler
+import me.glaremasters.guilds.guild.GuildRole
+import org.bukkit.OfflinePlayer
+import org.bukkit.entity.Player
+import org.bukkit.inventory.Inventory
+import java.util.*
 
-import me.glaremasters.guilds.guild.Guild;
-import me.glaremasters.guilds.guild.GuildHandler;
-import me.glaremasters.guilds.guild.GuildRole;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.UUID;
-
-public class GuildsAPI {
-
-    private final GuildHandler guildHandler;
-
-    public GuildsAPI(GuildHandler guildHandler) {
-        this.guildHandler = guildHandler;
-    }
+class GuildsAPI(val guildHandler: GuildHandler) {
 
     /**
      *
@@ -48,8 +39,8 @@ public class GuildsAPI {
      * @param player the players you're getting the guild of
      * @return the guild that the player is in
      */
-    public Guild getGuild(@NotNull OfflinePlayer player) {
-        return guildHandler.getGuild(player);
+    fun getGuild(player: OfflinePlayer): Guild {
+        return guildHandler.getGuild(player)
     }
 
     /**
@@ -57,8 +48,8 @@ public class GuildsAPI {
      * @param uuid uuid of the guild
      * @return the guild the uuid belong to
      */
-    public Guild getGuild(@NotNull UUID uuid) {
-        return guildHandler.getGuild(uuid);
+    fun getGuild(uuid: UUID): Guild {
+        return guildHandler.getGuild(uuid)
     }
 
     /**
@@ -66,8 +57,8 @@ public class GuildsAPI {
      * @param name the name of the guild
      * @return the guild object
      */
-    public Guild getGuild(@NotNull String name) {
-        return guildHandler.getGuild(name);
+    fun getGuild(name: String): Guild {
+        return guildHandler.getGuild(name)
     }
 
     /**
@@ -76,8 +67,8 @@ public class GuildsAPI {
      * @param vaultNumber which vault to get
      * @return guild vault
      */
-    public Inventory getGuildVault(@NotNull Guild guild, int vaultNumber) {
-        return guildHandler.getGuildVault(guild, vaultNumber);
+    fun getGuildVault(guild: Guild, vaultNumber: Int): Inventory {
+        return guildHandler.getGuildVault(guild, vaultNumber)
     }
 
     /**
@@ -85,15 +76,8 @@ public class GuildsAPI {
      * @param player role
      * @return the role of a player
      */
-    public GuildRole getGuildRole(@NotNull Player player) {
-        return getGuild(player).getMember(player.getUniqueId()).getRole();
+    fun getGuildRole(player: Player): GuildRole {
+        return getGuild(player).getMember(player.uniqueId).role
     }
 
-    /**
-     * Get a copy of the guild handler
-     * @return guild handler
-     */
-    public GuildHandler getGuildHandler() {
-        return guildHandler;
-    }
 }

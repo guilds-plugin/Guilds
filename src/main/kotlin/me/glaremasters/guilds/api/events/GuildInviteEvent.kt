@@ -21,41 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package me.glaremasters.guilds.api.events
 
-package me.glaremasters.guilds.guild;
+import me.glaremasters.guilds.api.events.base.GuildEvent
+import me.glaremasters.guilds.guild.Guild
+import org.bukkit.entity.Player
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-
-/**
- * Created by GlareMasters
- * Date: 2/14/2019
- * Time: 9:33 AM
- */
-public class GuildHome {
-
-    private String world;
-    private double x;
-    private double y;
-    private double z;
-    private float yaw;
-    private float pitch;
-
-    public GuildHome(String world, double x, double y, double z, float yaw, float pitch) {
-        this.world = world;
-        this.x = x;
-        this.y = y;
-        this.z = z;
-        this.yaw = yaw;
-        this.pitch = pitch;
-    }
-
-    /**
-     * Get the guild home object as a location
-     * @return new location
-     */
-    public Location getAsLocation() {
-        return new Location(Bukkit.getWorld(world), x, y, z, yaw, pitch);
-    }
-
-}
+class GuildInviteEvent(player: Player, guild: Guild, val invitedPlayer: Player) : GuildEvent(player, guild)

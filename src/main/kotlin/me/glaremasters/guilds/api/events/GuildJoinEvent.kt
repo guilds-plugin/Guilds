@@ -21,30 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package me.glaremasters.guilds.api.events
 
-package me.glaremasters.guilds.api.events;
+import me.glaremasters.guilds.api.events.base.GuildEvent
+import me.glaremasters.guilds.guild.Guild
+import org.bukkit.entity.Player
 
-import me.glaremasters.guilds.api.events.base.GuildEvent;
-import me.glaremasters.guilds.guild.Guild;
-import org.bukkit.entity.Player;
-
-public class GuildAddAllyEvent extends GuildEvent {
-
-    private final Guild ally;
-
-    /**
-     * This event takes place when two guilds ally each other
-     * @param player player who accepted
-     * @param guild guild one
-     * @param ally guild two
-     */
-    public GuildAddAllyEvent(Player player, Guild guild, Guild ally) {
-        super(player, guild);
-
-        this.ally = ally;
-    }
-
-    public Guild getAlly() {
-        return this.ally;
-    }
-}
+class GuildJoinEvent(player: Player, guild: Guild) : GuildEvent(player, guild)

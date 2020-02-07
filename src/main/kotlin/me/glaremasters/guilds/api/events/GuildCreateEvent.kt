@@ -21,33 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package me.glaremasters.guilds.api.events
 
-package me.glaremasters.guilds.challenges.adapters;
+import me.glaremasters.guilds.api.events.base.GuildEvent
+import me.glaremasters.guilds.guild.Guild
+import org.bukkit.entity.Player
 
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import me.glaremasters.guilds.guild.Guild;
-
-import java.io.IOException;
-import java.util.UUID;
-
-public class WarGuildChallengeAdapater extends TypeAdapter<Guild> {
-
-    @Override
-    public void write(JsonWriter out, Guild guild) throws IOException {
-        out.beginObject();
-        out.name("uuid");
-        out.value(guild.getId().toString());
-        out.endObject();
-    }
-
-    @Override
-    public Guild read(JsonReader in) throws IOException {
-        in.beginObject();
-        in.nextName();
-        String id = in.nextString();
-        in.endObject();
-        return new Guild(UUID.fromString(id));
-    }
-}
+class GuildCreateEvent(player: Player, guild: Guild) : GuildEvent(player, guild)

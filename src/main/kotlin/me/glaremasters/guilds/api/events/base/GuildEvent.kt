@@ -21,46 +21,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package me.glaremasters.guilds.api.events.base
 
-package me.glaremasters.guilds.guild;
+import me.glaremasters.guilds.guild.Guild
+import org.bukkit.entity.Player
+import org.bukkit.event.Cancellable
+import org.bukkit.event.HandlerList
+import org.bukkit.event.player.PlayerEvent
 
-public class GuildScore {
+open class GuildEvent(player: Player, val guild: Guild) : PlayerEvent(player), Cancellable {
+    private var cancelled = false
 
-    private int wins;
-    private int loses;
-
-    public GuildScore() {
-        this.wins = 0;
-        this.loses = 0;
+    override fun getHandlers(): HandlerList {
+        return handlerList
     }
 
-    /**
-     * Add a win to a guild
-     */
-    public void addWin() {
-        setWins(getWins() + 1);
+    override fun isCancelled(): Boolean {
+        return cancelled
     }
 
-    /**
-     * Add a loss to a guild
-     */
-    public void addLoss() {
-        setLoses(getLoses() + 1);
+    override fun setCancelled(cancelled: Boolean) {
+        this.cancelled = cancelled
     }
 
-    public int getWins() {
-        return this.wins;
+    companion object {
+        @JvmStatic
+        val handlerList = HandlerList()
     }
 
-    public int getLoses() {
-        return this.loses;
-    }
-
-    public void setWins(int wins) {
-        this.wins = wins;
-    }
-
-    public void setLoses(int loses) {
-        this.loses = loses;
-    }
 }

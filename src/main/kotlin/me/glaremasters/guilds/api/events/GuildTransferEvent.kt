@@ -21,30 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package me.glaremasters.guilds.api.events
 
-package me.glaremasters.guilds.api.events;
+import me.glaremasters.guilds.api.events.base.GuildEvent
+import me.glaremasters.guilds.guild.Guild
+import org.bukkit.OfflinePlayer
+import org.bukkit.entity.Player
 
-import me.glaremasters.guilds.api.events.base.GuildEvent;
-import me.glaremasters.guilds.guild.Guild;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
-
-public class GuildTransferEvent extends GuildEvent {
-
-    private OfflinePlayer newMaster;
-
-    /**
-     * Base guild event
-     *  @param player player in event
-     * @param guild  guild in the event
-     * @param newMaster new master of guild
-     */
-    public GuildTransferEvent(Player player, Guild guild, OfflinePlayer newMaster) {
-        super(player, guild);
-        this.newMaster = newMaster;
-    }
-
-    public OfflinePlayer getNewMaster() {
-        return newMaster;
-    }
-}
+class GuildTransferEvent(player: Player, guild: Guild, val newMaster: OfflinePlayer) : GuildEvent(player, guild)

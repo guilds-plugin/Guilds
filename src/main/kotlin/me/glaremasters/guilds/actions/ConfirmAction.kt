@@ -21,30 +21,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package me.glaremasters.guilds.actions
 
-package me.glaremasters.guilds.api.events;
+/**
+ * Created by GlareMasters on 6/28/2018.
+ */
+interface ConfirmAction {
 
-import me.glaremasters.guilds.api.events.base.GuildEvent;
-import me.glaremasters.guilds.guild.Guild;
-import org.bukkit.entity.Player;
+    fun accept()
 
-public class GuildDepositMoneyEvent extends GuildEvent {
-
-    private final double amount;
-
-
-    /**
-     * Base guild event
-     *  @param player player in event
-     * @param guild  guild in the event
-     * @param amount the amount to deposit
-     */
-    public GuildDepositMoneyEvent(Player player, Guild guild, double amount) {
-        super(player, guild);
-        this.amount = amount;
-    }
-
-    public double getAmount() {
-        return this.amount;
-    }
+    fun decline()
 }

@@ -21,50 +21,45 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package me.glaremasters.guilds.challenges.adapters
 
-package me.glaremasters.guilds.actions;
+import com.google.gson.TypeAdapter
+import com.google.gson.stream.JsonReader
+import com.google.gson.stream.JsonWriter
+import me.glaremasters.guilds.arena.Arena
+import java.io.IOException
+import java.util.*
 
-import org.bukkit.command.CommandSender;
+class WarArenaChallengeAdapter : TypeAdapter<Arena>() {
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class ActionHandler {
-
-    private final Map<CommandSender, ConfirmAction> actions = new HashMap<>();
-
-    /**
-     * Adds an action to the action list
-     * @param sender user
-     * @param action action
-     */
-    public void addAction(CommandSender sender, ConfirmAction action) {
-        actions.put(sender, action);
+    override fun write(out: JsonWriter, arena: Arena) {
+        out.beginObject()
+        out.name("uuid")
+        out.value(arena.id.toString())
+        out.name("name")
+        out.value(arena.name)
+        out.endObject()
     }
 
-    /**
-     * Removes an action from the action list
-     * @param sender user
-     */
-    public void removeAction(CommandSender sender) {
-        actions.remove(sender);
-    }
 
-    /**
-     * Retrieve an action via a CommandSender instance.
-     *
-     * @param sender the commandSender
-     * @return an instance of
-     * @see ConfirmAction
-     * Used to decline or confirm a command request
-     * @see ConfirmAction#accept()
-     * @see ConfirmAction#decline()
-     */
-    public ConfirmAction getAction(CommandSender sender) {
-        return actions.get(sender);
-    }
-
-    public Map<CommandSender, ConfirmAction> getActions() {
-        return this.actions;
+    override fun read(`in`: JsonReader): Arena {
+        var arenaName: String? = null
+        var arenaId: String? = null
+        `in`.beginObject()
+        while (`in`.hasNext()) {
+            when (`in`.nextName()) {
+                "uuid" -> {
+                    arenaId = `in`.nextString()
+                }
+                "name" -> {
+                    arenaName = `in`.nextString()
+                }
+                else -> {
+                    `in`.skipValue()
+                }
+            }
+        }
+        `in`.endObject()
+        return Arena(UUID.fromString(arenaId), arenaName!!)
     }
 }

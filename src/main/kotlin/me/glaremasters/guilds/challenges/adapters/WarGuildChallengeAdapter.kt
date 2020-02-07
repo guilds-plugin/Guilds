@@ -21,21 +21,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package me.glaremasters.guilds.challenges.adapters
 
-package me.glaremasters.guilds.api.events;
+import com.google.gson.TypeAdapter
+import com.google.gson.stream.JsonReader
+import com.google.gson.stream.JsonWriter
+import me.glaremasters.guilds.guild.Guild
+import java.io.IOException
+import java.util.*
 
-import me.glaremasters.guilds.api.events.base.GuildEvent;
-import me.glaremasters.guilds.guild.Guild;
-import org.bukkit.entity.Player;
+class WarGuildChallengeAdapter : TypeAdapter<Guild>() {
 
-public class GuildJoinEvent extends GuildEvent {
+    override fun write(out: JsonWriter, guild: Guild) {
+        out.beginObject()
+        out.name("uuid")
+        out.value(guild.id.toString())
+        out.endObject()
+    }
 
-    /**
-     * Called when a player joins a guild
-     * @param player the player joining a guild
-     * @param guild the guild the player will be joining
-     */
-    public GuildJoinEvent(Player player, Guild guild) {
-        super(player, guild);
+    override fun read(`in`: JsonReader): Guild {
+        `in`.beginObject()
+        `in`.nextName()
+        val id = `in`.nextString()
+        `in`.endObject()
+        return Guild(UUID.fromString(id))
     }
 }

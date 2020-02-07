@@ -21,29 +21,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package me.glaremasters.guilds.api.events
 
-package me.glaremasters.guilds.api.events;
+import me.glaremasters.guilds.api.events.base.GuildEvent
+import me.glaremasters.guilds.guild.Guild
+import org.bukkit.entity.Player
 
-import me.glaremasters.guilds.api.events.base.GuildEvent;
-import me.glaremasters.guilds.guild.Guild;
-import org.bukkit.entity.Player;
+class GuildLeaveEvent(player: Player, guild: Guild, val cause: Cause) : GuildEvent(player, guild) {
 
-public class GuildPrefixEvent extends GuildEvent {
-
-    private String prefix;
-
-    /**
-     * Base guild event
-     *  @param player player in event
-     * @param guild  guild in the event
-     * @param prefix
-     */
-    public GuildPrefixEvent(Player player, Guild guild, String prefix) {
-        super(player, guild);
-        this.prefix = prefix;
+    enum class Cause {
+        PLAYER_LEFT, PLAYER_KICKED, ADMIN_REMOVED
     }
 
-    public String getPrefix() {
-        return prefix;
-    }
 }

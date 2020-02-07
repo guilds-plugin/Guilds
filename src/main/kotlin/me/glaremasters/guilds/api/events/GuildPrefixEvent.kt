@@ -21,30 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package me.glaremasters.guilds.api.events
 
-package me.glaremasters.guilds.api.events;
+import me.glaremasters.guilds.api.events.base.GuildEvent
+import me.glaremasters.guilds.guild.Guild
+import org.bukkit.entity.Player
 
-import me.glaremasters.guilds.api.events.base.GuildEvent;
-import me.glaremasters.guilds.guild.Guild;
-import org.bukkit.entity.Player;
-
-public class GuildRemoveAllyEvent extends GuildEvent {
-
-    private final Guild ally;
-
-    /**
-     * Called when a guild removes an ally
-     * @param player the player calling the removal
-     * @param guild the guild calling the removal
-     * @param ally the guild being removed
-     */
-    public GuildRemoveAllyEvent(Player player, Guild guild, Guild ally) {
-        super(player, guild);
-
-        this.ally = ally;
-    }
-
-    public Guild getAlly() {
-        return this.ally;
-    }
-}
+class GuildPrefixEvent(player: Player, guild: Guild, val prefix: String) : GuildEvent(player, guild)

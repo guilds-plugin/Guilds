@@ -21,35 +21,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package me.glaremasters.guilds.actions
 
-package me.glaremasters.guilds.api.events;
+import org.bukkit.command.CommandSender
+import java.util.*
 
-import me.glaremasters.guilds.api.events.base.GuildEvent;
-import me.glaremasters.guilds.guild.Guild;
-import org.bukkit.entity.Player;
+class ActionHandler {
+    private val actions: MutableMap<CommandSender, ConfirmAction> = HashMap()
 
-public class GuildRemoveEvent extends GuildEvent {
-
-    private final Cause cause;
-
-    /**
-     * Called when a guild is removed
-     * @param player the player removing the guild
-     * @param guild the guild getting removed
-     * @param cause the reason for the guild being removed
-     */
-    public GuildRemoveEvent(Player player, Guild guild, Cause cause) {
-        super(player, guild);
-        this.cause = cause;
+    fun addAction(sender: CommandSender, action: ConfirmAction) {
+        actions[sender] = action
     }
 
-    public Cause getCause() {
-        return this.cause;
+    fun removeAction(sender: CommandSender?) {
+        actions.remove(sender)
     }
 
-    public enum Cause {
-        MASTER_LEFT,
-        PLAYER_DELETED,
-        ADMIN_DELETED
+    fun getAction(sender: CommandSender?): ConfirmAction? {
+        return actions[sender]
+    }
+
+    fun getActions(): Map<CommandSender, ConfirmAction> {
+        return actions
     }
 }
