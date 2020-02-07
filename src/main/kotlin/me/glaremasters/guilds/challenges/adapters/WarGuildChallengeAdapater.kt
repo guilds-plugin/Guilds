@@ -21,22 +21,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package me.glaremasters.guilds.challenges.adapters
 
-package me.glaremasters.guilds.actions;
+import com.google.gson.TypeAdapter
+import com.google.gson.stream.JsonReader
+import com.google.gson.stream.JsonWriter
+import me.glaremasters.guilds.guild.Guild
+import java.io.IOException
+import java.util.*
 
-/**
- * Created by GlareMasters on 6/28/2018.
- */
-public interface ConfirmAction {
+class WarGuildChallengeAdapater : TypeAdapter<Guild>() {
 
-    /**
-     * Confirm an action
-     */
-    void accept();
+    override fun write(out: JsonWriter, guild: Guild) {
+        out.beginObject()
+        out.name("uuid")
+        out.value(guild.id.toString())
+        out.endObject()
+    }
 
-    /**
-     * Decline an action
-     */
-    void decline();
-
+    override fun read(`in`: JsonReader): Guild {
+        `in`.beginObject()
+        `in`.nextName()
+        val id = `in`.nextString()
+        `in`.endObject()
+        return Guild(UUID.fromString(id))
+    }
 }

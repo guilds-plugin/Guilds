@@ -21,33 +21,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package me.glaremasters.guilds.actions
 
-package me.glaremasters.guilds.challenges.adapters;
+import org.bukkit.command.CommandSender
+import java.util.*
 
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import me.glaremasters.guilds.guild.Guild;
+class ActionHandler {
+    private val actions: MutableMap<CommandSender, ConfirmAction> = HashMap()
 
-import java.io.IOException;
-import java.util.UUID;
-
-public class WarGuildChallengeAdapater extends TypeAdapter<Guild> {
-
-    @Override
-    public void write(JsonWriter out, Guild guild) throws IOException {
-        out.beginObject();
-        out.name("uuid");
-        out.value(guild.getId().toString());
-        out.endObject();
+    fun addAction(sender: CommandSender, action: ConfirmAction) {
+        actions[sender] = action
     }
 
-    @Override
-    public Guild read(JsonReader in) throws IOException {
-        in.beginObject();
-        in.nextName();
-        String id = in.nextString();
-        in.endObject();
-        return new Guild(UUID.fromString(id));
+    fun removeAction(sender: CommandSender?) {
+        actions.remove(sender)
+    }
+
+    fun getAction(sender: CommandSender?): ConfirmAction? {
+        return actions[sender]
+    }
+
+    fun getActions(): Map<CommandSender, ConfirmAction> {
+        return actions
     }
 }
