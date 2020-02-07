@@ -26,7 +26,7 @@ package me.glaremasters.guilds.arena
 
 import co.aikar.commands.ACFBukkitUtil
 import org.bukkit.Location
-import java.util.*
+import java.util.UUID
 
 data class Arena(val id: UUID, val name: String, var challenger: String?, var defender: String?, @Transient var inUse: Boolean)
 {
