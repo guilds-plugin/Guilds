@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.util
+package me.glaremasters.guilds.utils
 
 import me.glaremasters.guilds.Guilds
 import org.bukkit.configuration.file.YamlConfiguration

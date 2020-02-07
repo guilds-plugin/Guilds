@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.util
+package me.glaremasters.guilds.utils
 
 import java.io.InputStream
 import java.nio.file.FileSystems
