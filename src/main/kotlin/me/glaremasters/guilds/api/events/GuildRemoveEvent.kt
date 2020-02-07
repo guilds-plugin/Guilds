@@ -21,21 +21,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package me.glaremasters.guilds.api.events
 
-package me.glaremasters.guilds.api.events;
+import me.glaremasters.guilds.guild.Guild
+import org.bukkit.entity.Player
 
-import me.glaremasters.guilds.api.events.base.GuildEvent;
-import me.glaremasters.guilds.guild.Guild;
-import org.bukkit.entity.Player;
+class GuildRemoveEvent
+/**
+ * Called when a guild is removed
+ * @param player the player removing the guild
+ * @param guild the guild getting removed
+ * @param cause the reason for the guild being removed
+ */(player: Player?, guild: Guild?, val cause: Cause) : GuildEvent(player, guild) {
 
-public class GuildJoinEvent extends GuildEvent {
-
-    /**
-     * Called when a player joins a guild
-     * @param player the player joining a guild
-     * @param guild the guild the player will be joining
-     */
-    public GuildJoinEvent(Player player, Guild guild) {
-        super(player, guild);
+    enum class Cause {
+        MASTER_LEFT, PLAYER_DELETED, ADMIN_DELETED
     }
+
 }

@@ -21,36 +21,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package me.glaremasters.guilds.api.events
 
-package me.glaremasters.guilds.api.events;
+import me.glaremasters.guilds.guild.Guild
+import org.bukkit.entity.Player
 
-import me.glaremasters.guilds.api.events.base.GuildEvent;
-import me.glaremasters.guilds.guild.Guild;
-import org.bukkit.entity.Player;
-
-public class GuildLeaveEvent extends GuildEvent {
-
-    private final Cause cause;
-
-
-    /**
-     * Called a when a player leaves the guild
-     * @param player the player leaving the guild
-     * @param guild the guild the player was leaving
-     * @param cause the reason the event was called
-     */
-    public GuildLeaveEvent(Player player, Guild guild, Cause cause) {
-        super(player, guild);
-        this.cause = cause;
-    }
-
-    public Cause getCause() {
-        return this.cause;
-    }
-
-    public enum Cause {
-        PLAYER_LEFT,
-        PLAYER_KICKED,
-        ADMIN_REMOVED
-    }
-}
+class GuildDepositMoneyEvent
+/**
+ * Base guild event
+ * @param player player in event
+ * @param guild  guild in the event
+ * @param amount the amount to deposit
+ */(player: Player?, guild: Guild?, val amount: Double) : GuildEvent(player, guild)
