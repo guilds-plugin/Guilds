@@ -44,6 +44,10 @@ public class GuildVaultSettings implements SettingsHolder {
     "Note: This requires a restart to change the inventory names."})
     public static final Property<String> VAULT_NAME =
             newProperty("guis.vault.name", "&8» &rGuild Vault");
+    
+    @Comment("Must be an integer")
+    public static final Property<Integer> VAULT_ROWS =
+            newProperty("guis.vault.rows", 6);
 
     @Comment("What materials would you like to blacklist from being put into the vaults?")
     public static final Property<List<String>> BLACKLIST_MATERIALS =
