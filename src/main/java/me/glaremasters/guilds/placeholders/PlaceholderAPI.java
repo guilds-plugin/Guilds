@@ -94,8 +94,6 @@ public class PlaceholderAPI extends PlaceholderExpansion {
 
         String lowerArg = arg.toLowerCase();
 
-        if (api.getGuild(p) == null) return "";
-
         switch (lowerArg) {
             case "id":
                 return api.getGuild(p).getId().toString();
