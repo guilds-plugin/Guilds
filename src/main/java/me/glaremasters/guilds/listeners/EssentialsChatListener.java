@@ -53,7 +53,7 @@ public class EssentialsChatListener implements Listener {
         String message = event.getFormat();
 
         if (guild == null) {
-            String regex = "(\\{GUILD(?:.+)?})";
+            String regex = "(\\{GUILD(?:.*?)})";
             String formatted = "(\\\\{GUILD_FORMATTED\\\\})";
 
             event.setFormat(message.replace(formatted, guildHandler.getFormattedPlaceholder(player)));
