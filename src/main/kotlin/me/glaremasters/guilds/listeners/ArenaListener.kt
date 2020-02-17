@@ -73,10 +73,11 @@ class ArenaListener(private val guilds: Guilds, private val challengeHandler: Ch
 
     @EventHandler
     fun PlayerRespawnEvent.onRespawn() {
-        if (playerDeath.containsKey(player.uniqueId)) {
-            respawnLocation = ACFBukkitUtil.stringToLocation(playerDeath[player.uniqueId])
-            playerDeath.remove(player.uniqueId)
+        if (player.uniqueId !in playerDeath) {
+            return
         }
+        respawnLocation = ACFBukkitUtil.stringToLocation(playerDeath[player.uniqueId])
+        playerDeath.remove(player.uniqueId)
     }
 
     @EventHandler
@@ -106,14 +107,15 @@ class ArenaListener(private val guilds: Guilds, private val challengeHandler: Ch
             return
         }
 
-        val challenge = challengeHandler.getChallenge(player)
-        if (challenge != null) {
-            if (player.hasPermission(Constants.ADMIN_PERM)) {
-                return
-            }
-            isCancelled = true
-            guilds.commandManager.getCommandIssuer(player).sendInfo(Messages.WAR__COMMANDS_BLOCKED)
+        val challenge = challengeHandler.getChallenge(player) ?: return
+
+        if (player.hasPermission(Constants.ADMIN_PERM)) {
+            return
         }
+
+        isCancelled = true
+        guilds.commandManager.getCommandIssuer(player).sendInfo(Messages.WAR__COMMANDS_BLOCKED)
+
     }
 
 }

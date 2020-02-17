@@ -27,7 +27,7 @@ import org.bukkit.command.CommandSender
 import java.util.*
 
 class ActionHandler {
-    private val actions: MutableMap<CommandSender, ConfirmAction> = HashMap()
+    private val actions = mutableMapOf<CommandSender, ConfirmAction>()
 
     fun addAction(sender: CommandSender, action: ConfirmAction) {
         actions[sender] = action

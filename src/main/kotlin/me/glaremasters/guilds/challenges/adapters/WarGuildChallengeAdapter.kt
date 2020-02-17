@@ -27,7 +27,6 @@ import com.google.gson.TypeAdapter
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonWriter
 import me.glaremasters.guilds.guild.Guild
-import java.io.IOException
 import java.util.*
 
 class WarGuildChallengeAdapter : TypeAdapter<Guild>() {
@@ -39,11 +38,11 @@ class WarGuildChallengeAdapter : TypeAdapter<Guild>() {
         out.endObject()
     }
 
-    override fun read(`in`: JsonReader): Guild {
-        `in`.beginObject()
-        `in`.nextName()
-        val id = `in`.nextString()
-        `in`.endObject()
+    override fun read(reader: JsonReader): Guild {
+        reader.beginObject()
+        reader.nextName()
+        val id = reader.nextString()
+        reader.endObject()
         return Guild(UUID.fromString(id))
     }
 }

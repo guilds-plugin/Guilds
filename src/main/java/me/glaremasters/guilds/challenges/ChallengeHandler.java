@@ -34,7 +34,6 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildChallenge;
 import me.glaremasters.guilds.guild.GuildMember;
 import me.glaremasters.guilds.messages.Messages;
-import org.apache.commons.collections4.map.LinkedMap;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -42,6 +41,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -96,7 +96,7 @@ public class ChallengeHandler {
                 defender, false, false,
                 false, false, minPlayer, maxPlayers,
                 new ArrayList<>(), new ArrayList<>(), arena,
-                null, null, new LinkedMap<>(), new LinkedMap<>());
+                null, null, new LinkedHashMap<>(), new LinkedHashMap<>());
     }
 
     /**
@@ -201,7 +201,7 @@ public class ChallengeHandler {
      * @param team the team they are on
      */
     public void prepareFinalList(List<UUID> players, GuildChallenge challenge, String team) {
-        LinkedMap<UUID, String> finalList = new LinkedMap<>();
+        LinkedHashMap<UUID, String> finalList = new LinkedHashMap<>();
         players.forEach(p -> {
             Player player = Bukkit.getPlayer(p);
             if (player != null) {
@@ -220,7 +220,7 @@ public class ChallengeHandler {
      * @param players the players to send
      * @param location the location to send them to
      */
-    public void sendToArena(LinkedMap<UUID, String> players, Location location) {
+    public void sendToArena(LinkedHashMap<UUID, String> players, Location location) {
         players.keySet().forEach(p -> {
             Player player = Bukkit.getPlayer(p);
             if (player != null) {
@@ -239,7 +239,7 @@ public class ChallengeHandler {
         if (location != null) {
             player.teleport(ACFBukkitUtil.stringToLocation(location));
             guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.WAR__TELEPORTED_BACK);
-            player.setHealth(20);
+            player.setHealth(player.getMaxHealth());
         }
     }
 

@@ -27,8 +27,8 @@ import com.google.gson.annotations.JsonAdapter;
 import me.glaremasters.guilds.arena.Arena;
 import me.glaremasters.guilds.challenges.adapters.WarArenaChallengeAdapter;
 import me.glaremasters.guilds.challenges.adapters.WarGuildChallengeAdapter;
-import org.apache.commons.collections4.map.LinkedMap;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -54,11 +54,10 @@ public class GuildChallenge {
     private Guild winner;
     @JsonAdapter(WarGuildChallengeAdapter.class)
     private Guild loser;
+    private transient LinkedHashMap<UUID, String> aliveChallengers;
+    private transient LinkedHashMap<UUID, String> aliveDefenders;
 
-    private transient LinkedMap<UUID, String> aliveChallengers;
-    private transient LinkedMap<UUID, String> aliveDefenders;
-
-    public GuildChallenge(UUID id, long initiateTime, Guild challenger, Guild defender, boolean accepted, boolean joinble, boolean started, boolean completed, int minPlayersPerSide, int maxPlayersPerSide, List<UUID> challengePlayers, List<UUID> defendPlayers, Arena arena, Guild winner, Guild loser, LinkedMap<UUID, String> aliveChallengers, LinkedMap<UUID, String> aliveDefenders) {
+    public GuildChallenge(UUID id, long initiateTime, Guild challenger, Guild defender, boolean accepted, boolean joinble, boolean started, boolean completed, int minPlayersPerSide, int maxPlayersPerSide, List<UUID> challengePlayers, List<UUID> defendPlayers, Arena arena, Guild winner, Guild loser, LinkedHashMap<UUID, String> aliveChallengers, LinkedHashMap<UUID, String> aliveDefenders) {
         this.id = id;
         this.initiateTime = initiateTime;
         this.challenger = challenger;
@@ -134,13 +133,6 @@ public class GuildChallenge {
         return this.winner;
     }
 
-    public LinkedMap<UUID, String> getAliveChallengers() {
-        return this.aliveChallengers;
-    }
-
-    public LinkedMap<UUID, String> getAliveDefenders() {
-        return this.aliveDefenders;
-    }
 
     public void setId(UUID id) {
         this.id = id;
@@ -202,13 +194,6 @@ public class GuildChallenge {
         this.loser = loser;
     }
 
-    public void setAliveChallengers(LinkedMap<UUID, String> aliveChallengers) {
-        this.aliveChallengers = aliveChallengers;
-    }
-
-    public void setAliveDefenders(LinkedMap<UUID, String> aliveDefenders) {
-        this.aliveDefenders = aliveDefenders;
-    }
 
     public boolean isCompleted() {
         return completed;
@@ -217,6 +202,23 @@ public class GuildChallenge {
     public void setCompleted(boolean completed) {
         this.completed = completed;
     }
+
+    public LinkedHashMap<UUID, String> getAliveChallengers() {
+        return aliveChallengers;
+    }
+
+    public LinkedHashMap<UUID, String> getAliveDefenders() {
+        return aliveDefenders;
+    }
+
+    public void setAliveChallengers(LinkedHashMap<UUID, String> aliveChallengers) {
+        this.aliveChallengers = aliveChallengers;
+    }
+
+    public void setAliveDefenders(LinkedHashMap<UUID, String> aliveDefenders) {
+        this.aliveDefenders = aliveDefenders;
+    }
+
 
     public static class GuildChallengeBuilder {
         private UUID id;
@@ -234,8 +236,8 @@ public class GuildChallenge {
         private Arena arena;
         private Guild winner;
         private Guild loser;
-        private LinkedMap<UUID, String> aliveChallengers;
-        private LinkedMap<UUID, String> aliveDefenders;
+        private LinkedHashMap<UUID, String> aliveChallengers;
+        private LinkedHashMap<UUID, String> aliveDefenders;
 
         GuildChallengeBuilder() {
         }
@@ -315,12 +317,12 @@ public class GuildChallenge {
             return this;
         }
 
-        public GuildChallenge.GuildChallengeBuilder aliveChallengers(LinkedMap<UUID, String> aliveChallengers) {
+        public GuildChallenge.GuildChallengeBuilder aliveChallengers(LinkedHashMap<UUID, String> aliveChallengers) {
             this.aliveChallengers = aliveChallengers;
             return this;
         }
 
-        public GuildChallenge.GuildChallengeBuilder aliveDefenders(LinkedMap<UUID, String> aliveDefenders) {
+        public GuildChallenge.GuildChallengeBuilder aliveDefenders(LinkedHashMap<UUID, String> aliveDefenders) {
             this.aliveDefenders = aliveDefenders;
             return this;
         }

@@ -10,7 +10,7 @@ plugins {
 }
 
 group = 'me.glaremasters'
-version = '3.5.4.2'
+version = '3.5.4.3'
 sourceCompatibility = JavaVersion.VERSION_1_8
 
 ext {
@@ -54,7 +54,7 @@ dependencies {
     compileOnly 'com.mojang:authlib:1.5.25'
     compile 'co.aikar:taskchain-core:3.7.2'
     compile 'co.aikar:taskchain-bukkit:3.7.2'
-    compile 'org.codemc.worldguardwrapper:worldguardwrapper:1.1.6-SNAPSHOT'
+    compileOnly 'org.codemc.worldguardwrapper:worldguardwrapper:1.1.6-SNAPSHOT'
     compileOnly 'net.milkbowl:vault:1.7'
     compileOnly 'me.clip:placeholderapi:2.10.3'
     compile 'ch.jalu:configme:1.2.0'
@@ -64,7 +64,6 @@ dependencies {
     compile 'commons-io:commons-io:2.6'
     compile 'org.reflections:reflections:0.9.11'
     compile 'com.google.guava:guava:21.0'
-    compile 'org.apache.commons:commons-collections4:4.4'
     compileOnly 'com.zaxxer:HikariCP:3.3.1'
     compileOnly 'org.jdbi:jdbi3-core:3.8.2'
     compileOnly 'org.jdbi:jdbi3-sqlobject:3.8.2'
@@ -85,11 +84,11 @@ compileJava {
 }
 
 compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8
     kotlinOptions.javaParameters = true
 }
 compileTestKotlin {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8
 }
 
 publishing {

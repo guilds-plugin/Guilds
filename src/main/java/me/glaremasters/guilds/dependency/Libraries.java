@@ -30,13 +30,15 @@ import net.byteflux.libby.Library;
 public class Libraries {
 
 
-    /**
-     * Load all the dependencies for the plugin
-     *
-     * @param loader the loader to add to
-     */
-    public void loadDepLibs(BukkitLibraryManager loader) {
+    public void loadWG(BukkitLibraryManager loader) {
+        loader.loadLibrary(Library.builder()
+                .groupId("org.codemc.worldguardwrapper")
+                .artifactId("worldguardwrapper")
+                .version("1.1.6-SNAPSHOT")
+                .build());
+    }
 
+    public void loadSQL(BukkitLibraryManager loader) {
         loader.loadLibrary(Library.builder()
                 .groupId("com.zaxxer")
                 .artifactId("HikariCP")

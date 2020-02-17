@@ -27,7 +27,6 @@ import com.google.gson.TypeAdapter
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonWriter
 import me.glaremasters.guilds.arena.Arena
-import java.io.IOException
 import java.util.*
 
 class WarArenaChallengeAdapter : TypeAdapter<Arena>() {
@@ -42,24 +41,27 @@ class WarArenaChallengeAdapter : TypeAdapter<Arena>() {
     }
 
 
-    override fun read(`in`: JsonReader): Arena {
+    override fun read(reader: JsonReader): Arena {
         var arenaName: String? = null
         var arenaId: String? = null
-        `in`.beginObject()
-        while (`in`.hasNext()) {
-            when (`in`.nextName()) {
+        reader.beginObject()
+        while (reader.hasNext()) {
+            when (reader.nextName()) {
                 "uuid" -> {
-                    arenaId = `in`.nextString()
+                    arenaId = reader.nextString()
                 }
                 "name" -> {
-                    arenaName = `in`.nextString()
+                    arenaName = reader.nextString()
                 }
                 else -> {
-                    `in`.skipValue()
+                    reader.skipValue()
                 }
             }
         }
-        `in`.endObject()
-        return Arena(UUID.fromString(arenaId), arenaName!!)
+        reader.endObject()
+        if (arenaName == null) {
+            arenaName = "Default"
+        }
+        return Arena(UUID.fromString(arenaId), arenaName)
     }
 }

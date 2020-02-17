@@ -88,7 +88,6 @@ public final class Guilds extends JavaPlugin {
     private Economy economy;
     private Permission permissions;
     private List<String> loadedLanguages;
-    private boolean successfulLoad = false;
 
     public static Gson getGson() {
         return gson;
@@ -301,21 +300,23 @@ public final class Guilds extends JavaPlugin {
     }
 
     private void downloadOptionalDependencies() {
+        BukkitLibraryManager loader = new BukkitLibraryManager(this);
+        Libraries libraries = new Libraries();
+        loader.addRepository("https://repo.glaremasters.me/repository/public/");
+        loader.addMavenCentral();
         if (!settingsHandler.getSettingsManager().getProperty(StorageSettings.STORAGE_TYPE).toLowerCase().equals("json")) {
-            boolean success = false;
-            BukkitLibraryManager loader = new BukkitLibraryManager(this);
-            Libraries libraries = new Libraries();
-            loader.addRepository("https://repo.glaremasters.me/repository/public/");
-            loader.addMavenCentral();
             try {
-                libraries.loadDepLibs(loader);
-                success = true;
-            } catch (RuntimeException ex) {
+                libraries.loadSQL(loader);
+            }
+            catch (RuntimeException ex) {
                 ex.printStackTrace();
             }
-            if (!success) {
-                LoggingUtils.warn("Dependencies could not be downloaded, shutting down to prevent file corruption.");
-                Bukkit.getPluginManager().disablePlugin(this);
+        }
+        if (settingsHandler.getSettingsManager().getProperty(HooksSettings.WORLDGUARD)) {
+            try {
+                libraries.loadWG(loader);
+            } catch (RuntimeException ex) {
+                ex.printStackTrace();
             }
         }
     }
@@ -393,9 +394,5 @@ public final class Guilds extends JavaPlugin {
 
     public List<String> getLoadedLanguages() {
         return this.loadedLanguages;
-    }
-
-    public boolean isSuccessfulLoad() {
-        return this.successfulLoad;
     }
 }
