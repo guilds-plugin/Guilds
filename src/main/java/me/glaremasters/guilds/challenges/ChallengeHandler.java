@@ -220,7 +220,7 @@ public class ChallengeHandler {
      * @param players the players to send
      * @param location the location to send them to
      */
-    public void sendToArena(LinkedHashMap<UUID, String> players, Location location) {
+    public void sendToArena(Map<UUID, String> players, Location location) {
         players.keySet().forEach(p -> {
             Player player = Bukkit.getPlayer(p);
             if (player != null) {
