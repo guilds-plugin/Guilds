@@ -134,7 +134,7 @@ public final class Guilds extends JavaPlugin {
 
     @Override
     public void onEnable() {
-       
+
         LoggingUtils.logLogo(Bukkit.getConsoleSender(), this);
 
         // Check if the server is running Vault
@@ -307,14 +307,6 @@ public final class Guilds extends JavaPlugin {
         if (!settingsHandler.getSettingsManager().getProperty(StorageSettings.STORAGE_TYPE).toLowerCase().equals("json")) {
             try {
                 libraries.loadSQL(loader);
-            }
-            catch (RuntimeException ex) {
-                ex.printStackTrace();
-            }
-        }
-        if (settingsHandler.getSettingsManager().getProperty(HooksSettings.WORLDGUARD)) {
-            try {
-                libraries.loadWG(loader);
             } catch (RuntimeException ex) {
                 ex.printStackTrace();
             }
@@ -323,6 +315,7 @@ public final class Guilds extends JavaPlugin {
 
     /**
      * Used to create a new chain of commands
+     *
      * @param <T> the type
      * @return chain
      */
@@ -332,8 +325,9 @@ public final class Guilds extends JavaPlugin {
 
     /**
      * Used to create new shared chain of commands
+     *
      * @param name the name of the chain
-     * @param <T> the type of chain
+     * @param <T>  the type of chain
      * @return shared chain
      */
     public static <T> TaskChain<T> newSharedChain(String name) {

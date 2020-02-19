@@ -54,7 +54,7 @@ dependencies {
     compileOnly 'com.mojang:authlib:1.5.25'
     compile 'co.aikar:taskchain-core:3.7.2'
     compile 'co.aikar:taskchain-bukkit:3.7.2'
-    compileOnly 'org.codemc.worldguardwrapper:worldguardwrapper:1.1.6-SNAPSHOT'
+    compile 'org.codemc.worldguardwrapper:worldguardwrapper:1.1.6-SNAPSHOT'
     compileOnly 'net.milkbowl:vault:1.7'
     compileOnly 'me.clip:placeholderapi:2.10.3'
     compile 'ch.jalu:configme:1.2.0'
@@ -69,7 +69,7 @@ dependencies {
     compileOnly 'org.jdbi:jdbi3-sqlobject:3.8.2'
     compileOnly 'org.slf4j:slf4j-api:1.7.25'
     compileOnly 'org.mariadb.jdbc:mariadb-java-client:2.4.0'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
 }
 
 sourceSets {

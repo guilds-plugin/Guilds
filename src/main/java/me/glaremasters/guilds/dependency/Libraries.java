@@ -29,15 +29,6 @@ import net.byteflux.libby.Library;
 
 public class Libraries {
 
-
-    public void loadWG(BukkitLibraryManager loader) {
-        loader.loadLibrary(Library.builder()
-                .groupId("org.codemc.worldguardwrapper")
-                .artifactId("worldguardwrapper")
-                .version("1.1.6-SNAPSHOT")
-                .build());
-    }
-
     public void loadSQL(BukkitLibraryManager loader) {
         loader.loadLibrary(Library.builder()
                 .groupId("com.zaxxer")
