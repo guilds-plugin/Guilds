@@ -226,6 +226,7 @@ public final class Guilds extends JavaPlugin {
         // Load the ACF command manager
         commandManager = new PaperCommandManager(this);
         acfHandler = new ACFHandler(this, commandManager);
+        acfHandler.load();
 
         guiHandler = new GUIHandler(this, settingsHandler.getSettingsManager(), guildHandler, getCommandManager(), cooldownHandler);
 
