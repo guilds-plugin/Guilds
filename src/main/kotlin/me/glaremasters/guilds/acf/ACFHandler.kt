@@ -146,13 +146,8 @@ class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCo
 
 
     private fun loadCommands() {
-        val classes = ClassPath.from(this.javaClass.classLoader).getTopLevelClassesRecursive("me.glaremasters.guilds.commands").asList()
-        classes.forEach {
-            val clazz = it.load()
-            if (BaseCommand::class.java.isAssignableFrom(clazz)) {
-                commandManager.registerCommand(clazz.newInstance() as BaseCommand)
-            }
-        }
+        val classes = ClassPath.from(this.javaClass.classLoader).getTopLevelClassesRecursive("me.glaremasters.guilds.commands")
+        classes.map(ClassPath.ClassInfo::load).filter(BaseCommand::class.java::isAssignableFrom).map(Class<*>::newInstance).filterIsInstance<BaseCommand>().forEach(commandManager::registerCommand)
     }
 
     private fun loadDI() {
