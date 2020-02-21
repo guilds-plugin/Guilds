@@ -24,7 +24,6 @@
 package me.glaremasters.guilds.actions
 
 import org.bukkit.command.CommandSender
-import java.util.*
 
 class ActionHandler {
     private val actions = mutableMapOf<CommandSender, ConfirmAction>()

@@ -27,7 +27,7 @@ import com.google.gson.TypeAdapter
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonWriter
 import me.glaremasters.guilds.guild.Guild
-import java.util.*
+import java.util.UUID
 
 class WarGuildChallengeAdapter : TypeAdapter<Guild>() {
 

@@ -62,6 +62,7 @@ internal class CommandAlly() : BaseCommand() {
         if (!role.isAddAlly) {
             throw InvalidPermissionException()
         }
+
         val target = guildHandler.getGuild(name) ?: throw ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST)
 
         if (!guild.isAllyPending(target)) {
@@ -84,6 +85,7 @@ internal class CommandAlly() : BaseCommand() {
         if (!role.isAddAlly) {
             throw InvalidPermissionException()
         }
+
         val target = guildHandler.getGuild(name) ?: throw ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST)
 
         if (guild.isAllyPending(target)) {
@@ -119,6 +121,7 @@ internal class CommandAlly() : BaseCommand() {
         if (!role.isRemoveAlly) {
             throw InvalidPermissionException()
         }
+
         val target = guildHandler.getGuild(name) ?: throw ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST)
 
         if (!guild.isAllyPending(target)) {
@@ -151,6 +154,7 @@ internal class CommandAlly() : BaseCommand() {
         if (!role.isRemoveAlly) {
             throw InvalidPermissionException()
         }
+
         val target = guildHandler.getGuild(name) ?: throw ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST)
 
         if (!guildHandler.isAlly(guild, target)) {

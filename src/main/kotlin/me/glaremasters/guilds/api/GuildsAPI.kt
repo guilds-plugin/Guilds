@@ -29,7 +29,7 @@ import me.glaremasters.guilds.guild.GuildRole
 import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
-import java.util.*
+import java.util.UUID
 
 class GuildsAPI(val guildHandler: GuildHandler) {
 

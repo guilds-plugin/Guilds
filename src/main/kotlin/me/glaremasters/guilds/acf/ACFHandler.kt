@@ -25,7 +25,11 @@
 package me.glaremasters.guilds.acf
 
 import ch.jalu.configme.SettingsManager
-import co.aikar.commands.*
+import co.aikar.commands.BaseCommand
+import co.aikar.commands.BukkitCommandCompletionContext
+import co.aikar.commands.BukkitCommandExecutionContext
+import co.aikar.commands.InvalidCommandArgument
+import co.aikar.commands.PaperCommandManager
 import com.google.common.reflect.ClassPath
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.actions.ActionHandler
@@ -35,7 +39,11 @@ import me.glaremasters.guilds.challenges.ChallengeHandler
 import me.glaremasters.guilds.configuration.sections.PluginSettings
 import me.glaremasters.guilds.cooldowns.CooldownHandler
 import me.glaremasters.guilds.database.DatabaseAdapter
-import me.glaremasters.guilds.guild.*
+import me.glaremasters.guilds.guild.Guild
+import me.glaremasters.guilds.guild.GuildCode
+import me.glaremasters.guilds.guild.GuildHandler
+import me.glaremasters.guilds.guild.GuildMember
+import me.glaremasters.guilds.guild.GuildRole
 import me.glaremasters.guilds.messages.Messages
 import net.milkbowl.vault.economy.Economy
 import net.milkbowl.vault.permission.Permission
