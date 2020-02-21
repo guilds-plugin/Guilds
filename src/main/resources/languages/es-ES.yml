@@ -31,7 +31,7 @@ descriptions:
   arena-create: "Crea una nueva arena de guerra"
   arena-defender: "Set the defender location for an arena"
   arena-delete: "Elimina una arena de guerra"
-  arena-list: "List all the created arenas"
+  arena-list: "Lista todas las arenas creadas"
   arena-tp: "Teleport to a location of an arena"
   bank-balance: "Mostrar el saldo bancario de tu guild"
   bank-deposit: "Poner dinero en el banco de tu guild"
