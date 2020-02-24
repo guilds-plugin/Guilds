@@ -145,9 +145,9 @@ admin:
   bank-balance: "&aEl gremio {guild} tiene un balance bancario de {balance}."
   bank-deposit: "&aHas puesto con éxito {amount} en el banco de {guild}. Su nuevo saldo es {total}."
   bank-withdraw: "&aTu haz tomado satisfactoriamente {amount} del banco de {guild}. Su nuevo saldo es {total}."
-  sethome: "&aYou've successfully set a new guild home for {guild}."
-  home: "&aYou've successfully teleported to {guild}'s home."
-  delhome: "&aYou've successfully removed the guild home for {guild}."
+  sethome: "&aHas establecido con éxito una nueva casa de gremio para {guild}."
+  home: "&aTe has teletransportado exitosamente a la casa de {guild}"
+  delhome: "&a Has eliminado con éxito la casa del gremio para{guild}"
 boot:
   player-kicked: "¡&cEl Jugador '{player}' ha sido expulsado del Gremio por {kicker}!"
   successful: "¡&aExpulsaste a {player} del gremio!"
@@ -166,7 +166,7 @@ delete:
   successful: "&aEliminaste el gremio '{guild}&r&a' correctamente!"
   cancelled: "&cEliminacion del gremio cancelada!"
   warning: "&cEscribe /guilds confirm para eliminar tu gremio, escribe /guilds cancel para cancelarlo."
-  notify-allies: "&c{guild} is no longer your ally because it has been deleted."
+  notify-allies: "&c{guild} ya no es tu aliado porque ha sido eliminado."
 leave:
   cancelled: "&cLa deserción del gremio ha sido cancelada!"
   successful: "&aHas dejado el gremio!"
@@ -181,7 +181,7 @@ invite:
   already-invited: "El jugador ya fue invitado a tu Gremio"
   message: "&a{player} te ha invitado a su gremio, '{guild}' escribe /guild join {guild} para unirte!"
   successful: "&aHas invitado al jugador {player} a tu Gremio!"
-  already-in-guild: "&c{player} is already in another guild!"
+  already-in-guild: "&c{player} ya está en otro gremio!"
 upgrade:
   tier-max: "&cNo puedes subir mas, ya ostentas el nivel maximo!"
   money-warning: "&cEstas a punto de gastar {amount} para actualizar tu gremio. (Escribe /guilds confirm para continuar)"
@@ -191,7 +191,7 @@ upgrade:
   not-enough-members: "&cNecesitas al menos {amount} miembros para aumentar tu nivel de gremio!"
 prefix:
   successful: "&aPrefijo del Gremio cambiado a {prefix}!"
-  disabled: "&cThe ability to use prefixes is currently disabled."
+  disabled: "&cLa capacidad de usar prefijos está actualmente deshabilitada."
 status:
   successful: "&aEstado del Gremio cambiado a {status}!"
 rename:
@@ -204,7 +204,7 @@ home:
   cancelled: "&cTe moviste! Teletransportacion cancelada!"
 sethome:
   successful: "&aEstableciste la casa del Gremio!"
-  deleted: "&aYou've successfully deleted your guild home!"
+  deleted: "&a¡Has eliminado con éxito la casa de tu gremio!"
   cooldown: "&cDebes esperar {amount} segundos para hacerlo de nuevo"
 reload:
   reloaded: "&aConfiguracion recargada!"
@@ -234,16 +234,16 @@ accept:
   guild-full: "&cEse Gremio esta lleno!"
   player-joined: "&a{player} se ha unido a tu Gremio!"
   successful: "&aHas entrado a '{guild}&r&a'"
-  cooldown: "&cYou are currently on cooldown from joining a guild. Try again in {amount} seconds."
+  cooldown: "&cActualmente estás enfriando para unirte a un gremio. Inténtalo de nuevo en {amount} segundos."
 claim:
   already-exists: "&cYa tienes tierra. Por favor, elimine su anterior tierra para crear una nueva"
   overlap: "&cNo puedes reclamar tierras porque hay tierras de otro gremio cerca"
   success: "&aHas reclamado nuevas tierras! Van desde {loc1} a {loc2}!"
   hook-disabled: "&cPor favor habilite los reclamos de tierras en la configuracion para utilizar esta caracteristica"
-  sign-not-enabled: "&cThis feature is not enabled. To use it, you must turn it on via the config."
-  sign-no-permission: "&cYou do not have permission to create Claim Sign!"
-  sign-invalid-format: "&cInvalid Claim Sign format! Please try again!"
-  sign-invalid-region: "&cInvalid Worldguard Region!"
+  sign-not-enabled: "&cEsta característica no está activada. Para usarla, debes activarla a través de la configuración."
+  sign-no-permission: "&c¡No tiene permiso para crear una Señal de reclamo!"
+  sign-invalid-format: "&cFormato de Señal de Reclamo no válido! Por favor inténtalo de nuevo!"
+  sign-invalid-region: "&c¡Región inválida de la Guardia Mundial!"
   sign-placed: "&aYou've successfully created a Claim Sign for the region {region} with the price {price}."
   sign-not-enough: "&cYou do not have enough money in your Guild Bank to purchase this Guild Claim."
   sign-forced: "&cYou can only claim land via Claim Signs! Ask a staff member on your server for help!"
