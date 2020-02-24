@@ -251,8 +251,8 @@ claim:
 unclaim:
   success: "&aHas eliminado exitosamente tu reclamo de gremio!"
   not-found: "&cNo puedes abandonar la tierra que no tienes!"
-  all-warning: "&bImportant! &cYou are about to remove ALL claim data. Are you sure you would like to continue? Type /guilds confirm to continue or /guilds cancel to cancel!"
-  all-cancelled: "&aYou've successfully cancelled the removal of all claim data on the server."
+  all-warning: "\n&b ¡Importante! &c Está a punto de eliminar TODOS los datos de reclamos. ¿Estás seguro de que te gustaría continuar? ¡Escriba / guilds confirme para continuar o / guilds cancel para cancelar!"
+  all-cancelled: "&aHas cancelado con éxito la eliminación de todos los datos de reclamos en el servidor."
   all-success: "&aYou've successfully remove all guild claims on the server!"
 pending:
   invites: "&aYou have {number} pending invite(s) from the guild(s): &e{guilds}&r&a . Use /guild accept <name> or /guild decline <name> to join or decline an invite!"
