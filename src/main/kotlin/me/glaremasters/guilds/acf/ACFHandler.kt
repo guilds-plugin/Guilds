@@ -104,43 +104,43 @@ class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCo
     }
 
     private fun loadCompletions(guildHandler: GuildHandler, arenaHandler: ArenaHandler) {
-        commandManager.commandCompletions.registerCompletion("online") { Bukkit.getOnlinePlayers().stream().map { obj: HumanEntity -> obj.name }.collect(Collectors.toList()) }
+        commandManager.commandCompletions.registerCompletion("online") { Bukkit.getOnlinePlayers().map { it.name } }
         commandManager.commandCompletions.registerCompletion("invitedTo") { c: BukkitCommandCompletionContext -> guildHandler.getInvitedGuilds(c.player) }
         commandManager.commandCompletions.registerCompletion("joinableGuilds") { c: BukkitCommandCompletionContext -> guildHandler.getJoinableGuild(c.player) }
         commandManager.commandCompletions.registerCompletion("guilds") { guildHandler.guildNames }
-        commandManager.commandCompletions.registerCompletion("arenas") { arenaHandler.getArenas().stream().map(Arena::name).collect(Collectors.toList()) }
+        commandManager.commandCompletions.registerCompletion("arenas") { arenaHandler.getArenas().map { it.name } }
         commandManager.commandCompletions.registerCompletion("locations") { listOf("challenger", "defender") }
-        commandManager.commandCompletions.registerCompletion("languages") { plugin.loadedLanguages.stream().sorted().collect(Collectors.toList<String>()) }
+        commandManager.commandCompletions.registerCompletion("languages") { plugin.loadedLanguages.sorted() }
         commandManager.commandCompletions.registerCompletion("sources") { listOf("JSON", "MYSQL", "SQLITE", "MARIADB") }
 
         commandManager.commandCompletions.registerCompletion("members") { c: BukkitCommandCompletionContext ->
             val guild = guildHandler.getGuild(c.player) ?: return@registerCompletion null
-            guild.members.stream().map { m: GuildMember -> Bukkit.getOfflinePlayer(m.uuid).name }.collect(Collectors.toList())
+            guild.members.map { it.asOfflinePlayer.name }
         }
         commandManager.commandCompletions.registerCompletion("members-admin") { c: BukkitCommandCompletionContext ->
             val guild = c.getContextValue(Guild::class.java, 1) ?: return@registerCompletion null
-            guild.members.stream().map { m: GuildMember -> Bukkit.getOfflinePlayer(m.uuid).name }.collect(Collectors.toList())
+            guild.members.map { it.asOfflinePlayer.name }
         }
         commandManager.commandCompletions.registerAsyncCompletion("allyInvites") { c: BukkitCommandCompletionContext ->
             val guild = guildHandler.getGuild(c.player) ?: return@registerAsyncCompletion null
             if (!guild.hasPendingAllies()) {
                 return@registerAsyncCompletion null
             }
-            guild.pendingAllies.stream().map { uuid: UUID -> guildHandler.getNameById(uuid) }.collect(Collectors.toList())
+            guild.pendingAllies.map { guildHandler.getNameById(it) }
         }
         commandManager.commandCompletions.registerAsyncCompletion("allies") { c: BukkitCommandCompletionContext ->
             val guild = guildHandler.getGuild(c.player) ?: return@registerAsyncCompletion null
             if (!guild.hasAllies()) {
                 return@registerAsyncCompletion null
             }
-            guild.allies.stream().map { uuid: UUID -> guildHandler.getNameById(uuid) }.collect(Collectors.toList())
+            guild.allies.map { guildHandler.getNameById(it) }
         }
         commandManager.commandCompletions.registerAsyncCompletion("activeCodes") { c: BukkitCommandCompletionContext ->
             val guild = guildHandler.getGuild(c.player) ?: return@registerAsyncCompletion null
             if (guild.codes == null) {
                 return@registerAsyncCompletion null
             }
-            guild.codes.stream().map(GuildCode::id).collect(Collectors.toList())
+            guild.codes.map { it.id }
         }
         commandManager.commandCompletions.registerAsyncCompletion("vaultAmount") { c: BukkitCommandCompletionContext ->
             val guild = guildHandler.getGuild(c.player) ?: return@registerAsyncCompletion null
@@ -148,7 +148,7 @@ class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCo
                 return@registerAsyncCompletion null
             }
             val list = guildHandler.cachedVaults[guild] ?: return@registerAsyncCompletion null
-            IntStream.rangeClosed(1, list.size).mapToObj { o: Int -> Objects.toString(o) }.collect(Collectors.toList())
+            (1 until list.size).map(Any::toString)
         }
     }
 
