@@ -24,6 +24,7 @@
 
 package me.glaremasters.guilds.utils;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.github.stefvanschie.inventoryframework.Gui;
 import com.github.stefvanschie.inventoryframework.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.OutlinePane;

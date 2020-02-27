@@ -62,6 +62,7 @@ dependencies {
     compileOnly 'org.jdbi:jdbi3-sqlobject:3.8.2'
     compileOnly 'org.slf4j:slf4j-api:1.7.25'
     compileOnly 'org.mariadb.jdbc:mariadb-java-client:2.4.0'
+    compile 'com.github.cryptomorin:XSeries:5.3.1'
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
 }
 

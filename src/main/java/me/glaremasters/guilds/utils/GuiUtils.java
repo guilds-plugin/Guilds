@@ -24,6 +24,7 @@
 
 package me.glaremasters.guilds.utils;
 
+import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
@@ -37,6 +38,7 @@ public class GuiUtils {
     public static ItemStack createItem(String material, String name, List<String> lore) {
         Optional<XMaterial> tempMaterial = XMaterial.matchXMaterial(material);
         XMaterial tempCheck = tempMaterial.orElse(XMaterial.GLASS_PANE);
+        System.out.println(tempCheck.isSupported());
         ItemStack item = tempCheck.parseItem();
         if (item == null) {
             item = XMaterial.GLASS_PANE.parseItem();

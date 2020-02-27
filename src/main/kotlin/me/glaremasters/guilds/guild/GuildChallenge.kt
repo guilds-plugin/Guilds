@@ -43,8 +43,8 @@ data class GuildChallenge(val id: UUID,
                           val challengePlayers: MutableList<UUID>,
                           val defendPlayers: MutableList<UUID>,
                           @JsonAdapter(WarArenaChallengeAdapter::class) val arena: Arena,
-                          @JsonAdapter(WarGuildChallengeAdapter::class) var winner: Guild,
-                          @JsonAdapter(WarGuildChallengeAdapter::class) var loser: Guild,
+                          @JsonAdapter(WarGuildChallengeAdapter::class) var winner: Guild?,
+                          @JsonAdapter(WarGuildChallengeAdapter::class) var loser: Guild?,
                           @Transient var aliveChallengers: MutableMap<UUID, String>,
                           @Transient var aliveDefenders: MutableMap<UUID, String>
 )

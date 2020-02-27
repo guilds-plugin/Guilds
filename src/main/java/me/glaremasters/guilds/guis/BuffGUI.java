@@ -238,6 +238,8 @@ public class BuffGUI {
         return gui;
     }
 
+    //TODO Fix some materials just not displaying
+
     /**
      * Set the buff item to the GUI
      *
@@ -285,10 +287,6 @@ public class BuffGUI {
             executeClickerCommands(clickerCheck, clickerCommands, player);
             executeGuildCommands(guildCheck, guildCommands, guild);
         });
-        ItemMeta meta = buffItem.getItem().getItemMeta();
-        meta.setDisplayName(StringUtils.color(name));
-        meta.setLore(lore.stream().map(StringUtils::color).collect(Collectors.toList()));
-        buffItem.getItem().setItemMeta(meta);
         if (check)
             pane.addItem(buffItem, x, 0);
     }
