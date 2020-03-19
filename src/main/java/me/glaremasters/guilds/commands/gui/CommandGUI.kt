@@ -92,6 +92,6 @@ internal class CommandGUI() : BaseCommand() {
             throw InvalidPermissionException()
         }
 
-        guilds.guiHandler.vaultGUI.getVaultGUI(guild, player, currentCommandManager).show(player)
+        guilds.guiHandler.vaultGUI.getVaultGUI(guild, player, guilds.commandManager).show(player)
     }
 }

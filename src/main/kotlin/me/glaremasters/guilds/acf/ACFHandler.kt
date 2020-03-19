@@ -40,20 +40,13 @@ import me.glaremasters.guilds.configuration.sections.PluginSettings
 import me.glaremasters.guilds.cooldowns.CooldownHandler
 import me.glaremasters.guilds.database.DatabaseAdapter
 import me.glaremasters.guilds.guild.Guild
-import me.glaremasters.guilds.guild.GuildCode
 import me.glaremasters.guilds.guild.GuildHandler
-import me.glaremasters.guilds.guild.GuildMember
 import me.glaremasters.guilds.guild.GuildRole
 import me.glaremasters.guilds.messages.Messages
 import net.milkbowl.vault.economy.Economy
 import net.milkbowl.vault.permission.Permission
 import org.bukkit.Bukkit
-import org.bukkit.entity.HumanEntity
 import java.util.Locale
-import java.util.Objects
-import java.util.UUID
-import java.util.stream.Collectors
-import java.util.stream.IntStream
 
 class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCommandManager) {
 
