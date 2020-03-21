@@ -95,19 +95,16 @@ public class CommandUpgrade extends BaseCommand {
         }
 
         if (!EconomyUtils.hasEnough(balance, upgradeCost)) {
-            ACFUtil.sneaky(new ExpectationNotMet(Messages.UPGRADE__NOT_ENOUGH_MONEY, "{needed}",
-                    String.valueOf(NumberFormat.getInstance().format(upgradeCost - balance))));
+            ACFUtil.sneaky(new ExpectationNotMet(Messages.UPGRADE__NOT_ENOUGH_MONEY, "{needed}", EconomyUtils.format(upgradeCost - balance)));
         }
 
-        getCurrentCommandIssuer().sendInfo(Messages.UPGRADE__MONEY_WARNING, "{amount}",
-                String.valueOf(NumberFormat.getInstance().format(upgradeCost)));
+        getCurrentCommandIssuer().sendInfo(Messages.UPGRADE__MONEY_WARNING, "{amount}", EconomyUtils.format(upgradeCost));
 
         actionHandler.addAction(player, new ConfirmAction() {
             @Override
             public void accept() {
                 if (!EconomyUtils.hasEnough(balance, upgradeCost)) {
-                    ACFUtil.sneaky(new ExpectationNotMet(Messages.UPGRADE__NOT_ENOUGH_MONEY, "{needed}",
-                            String.valueOf(NumberFormat.getInstance().format(upgradeCost - balance))));
+                    ACFUtil.sneaky(new ExpectationNotMet(Messages.UPGRADE__NOT_ENOUGH_MONEY, "{needed}", EconomyUtils.format(upgradeCost - balance)));
                 }
 
                 guild.setBalance(balance - upgradeCost);

@@ -135,7 +135,7 @@ public class CommandCreate extends BaseCommand {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__NOT_ENOUGH_MONEY));
         }
 
-        getCurrentCommandIssuer().sendInfo(Messages.CREATE__WARNING, "{amount}", String.valueOf(NumberFormat.getInstance().format(cost)));
+        getCurrentCommandIssuer().sendInfo(Messages.CREATE__WARNING, "{amount}", EconomyUtils.format(cost));
 
         actionHandler.addAction(player, new ConfirmAction() {
             @Override
