@@ -21,6 +21,15 @@ repositories {
     mavenCentral()
 
     maven {
+        name = 'spigotmc-repo'
+        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+    }
+    maven {
+        name = 'sonatype'
+        url = 'https://oss.sonatype.org/content/groups/public/'
+    }
+    maven {
+        name = 'glares-repo'
         url = 'https://repo.glaremasters.me/repository/public/'
     }
 
