@@ -52,6 +52,7 @@ import me.glaremasters.guilds.listeners.PlayerListener;
 import me.glaremasters.guilds.listeners.TicketListener;
 import me.glaremasters.guilds.listeners.VaultBlacklistListener;
 import me.glaremasters.guilds.listeners.WorldGuardListener;
+import me.glaremasters.guilds.placeholders.PlaceholderAPI;
 import me.glaremasters.guilds.updater.UpdateChecker;
 import me.glaremasters.guilds.utils.LanguageUpdater;
 import me.glaremasters.guilds.utils.LoggingUtils;
@@ -63,7 +64,6 @@ import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import me.glaremasters.guilds.placeholders.PlaceholderAPI;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -245,7 +245,7 @@ public final class Guilds extends JavaPlugin {
         // Load all the listeners
         Stream.of(
                 new EntityListener(guildHandler, settingsHandler.getSettingsManager(), challengeHandler),
-                new PlayerListener(guildHandler, settingsHandler.getSettingsManager(), this, permissions),
+                new PlayerListener(this, settingsHandler.getSettingsManager(), guildHandler, permissions),
                 new TicketListener(this, guildHandler, settingsHandler.getSettingsManager()),
                 new VaultBlacklistListener(this, guildHandler, settingsHandler.getSettingsManager()),
                 new ArenaListener(this, challengeHandler, settingsHandler.getSettingsManager()))

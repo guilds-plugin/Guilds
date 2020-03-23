@@ -50,8 +50,6 @@ import me.glaremasters.guilds.utils.EconomyUtils;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.entity.Player;
 
-import java.text.NumberFormat;
-
 /**
  * Created by Glare
  * Date: 4/5/2019
