@@ -51,25 +51,26 @@ class PlaceholderAPI(private val guildHandler: GuildHandler) : PlaceholderExpans
 
     override fun onPlaceholderRequest(p: Player, arg: String): String {
         val api = Guilds.getApi() ?: return ""
+        val guild = api.getGuild(p) ?: return ""
         return when (arg.toLowerCase()) {
-            "id" -> api.getGuild(p).id.toString()
-            "name" -> api.getGuild(p).name
-            "master" -> api.getGuild(p).guildMaster.asOfflinePlayer.name.toString()
-            "member_count" -> api.getGuild(p).members.size.toString()
-            "prefix" -> api.getGuild(p).prefix
-            "members_online" -> api.getGuild(p).onlineMembers.size.toString()
-            "status" -> api.getGuild(p).status.name
-            "role" -> api.getGuildRole(p).name
-            "tier" -> api.getGuild(p).tier.level.toString()
-            "tier_name" -> api.getGuild(p).tier.name
-            "balance" -> df.format(api.getGuild(p).balance)
-            "code_amount" -> api.getGuild(p).codes.size.toString()
-            "max_members" -> api.getGuild(p).tier.maxMembers.toString()
-            "max_balance" -> api.getGuild(p).tier.maxBankBalance.toString()
+            "id" -> guild.id.toString()
+            "name" -> guild.name
+            "master" -> guild.guildMaster.asOfflinePlayer.name.toString()
+            "member_count" -> guild.members.size.toString()
+            "prefix" -> guild.prefix
+            "members_online" -> guild.onlineMembers.size.toString()
+            "status" -> guild.status.name
+            "role" -> guild.getMember(p.uniqueId).role.name
+            "tier" -> guild.tier.level.toString()
+            "tier_name" -> guild.tier.name
+            "balance" -> df.format(guild.balance)
+            "code_amount" -> guild.codes.size.toString()
+            "max_members" -> guild.tier.maxMembers.toString()
+            "max_balance" -> guild.tier.maxBankBalance.toString()
             "formatted" -> guildHandler.getFormattedPlaceholder(p)
-            "challenge_wins" -> java.lang.String.valueOf(api.getGuild(p).guildScore.wins)
-            "challenge_loses" -> java.lang.String.valueOf(api.getGuild(p).guildScore.loses)
-            "motd" -> if (api.getGuild(p).motd == null) "" else api.getGuild(p).motd
+            "challenge_wins" -> guild.guildScore.wins.toString()
+            "challenge_loses" -> guild.guildScore.loses.toString()
+            "motd" -> if (guild.motd == null) "" else guild.motd
             else -> ""
         }
     }

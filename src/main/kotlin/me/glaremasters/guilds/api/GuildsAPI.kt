@@ -39,7 +39,7 @@ class GuildsAPI(val guildHandler: GuildHandler) {
      * @param player the players you're getting the guild of
      * @return the guild that the player is in
      */
-    fun getGuild(player: OfflinePlayer): Guild {
+    fun getGuild(player: OfflinePlayer): Guild? {
         return guildHandler.getGuild(player)
     }
 
@@ -48,7 +48,7 @@ class GuildsAPI(val guildHandler: GuildHandler) {
      * @param uuid uuid of the guild
      * @return the guild the uuid belong to
      */
-    fun getGuild(uuid: UUID): Guild {
+    fun getGuild(uuid: UUID): Guild? {
         return guildHandler.getGuild(uuid)
     }
 
@@ -57,7 +57,7 @@ class GuildsAPI(val guildHandler: GuildHandler) {
      * @param name the name of the guild
      * @return the guild object
      */
-    fun getGuild(name: String): Guild {
+    fun getGuild(name: String): Guild? {
         return guildHandler.getGuild(name)
     }
 
@@ -76,8 +76,8 @@ class GuildsAPI(val guildHandler: GuildHandler) {
      * @param player role
      * @return the role of a player
      */
-    fun getGuildRole(player: Player): GuildRole {
-        return getGuild(player).getMember(player.uniqueId).role
+    fun getGuildRole(player: Player): GuildRole? {
+        return getGuild(player)?.getMember(player.uniqueId)?.role
     }
 
 }
