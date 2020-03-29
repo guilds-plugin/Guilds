@@ -70,7 +70,7 @@ class PlaceholderAPI(private val guildHandler: GuildHandler) : PlaceholderExpans
             "formatted" -> guildHandler.getFormattedPlaceholder(p)
             "challenge_wins" -> guild.guildScore.wins.toString()
             "challenge_loses" -> guild.guildScore.loses.toString()
-            "motd" -> if (guild.motd == null) "" else guild.motd
+            "motd" -> guild.motd ?: ""
             else -> ""
         }
     }
