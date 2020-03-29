@@ -334,10 +334,10 @@ war:
   player-killed-quit: "&bO jogador {player} &afoi morto por ter saído do servidor."
   teleported-back: "&aVocê lutou bastante! Infelizmente, nem todos podem ser o melho. Você foi teleportado de volta para sua localização original!"
 acf-core:
-  invalid_syntax: "Usage: <c2>{command}</c2> <c3>{syntax}</c3>"
-  permission_denied: "I'm sorry, but you do not have permission to perform this command."
-  unknown_command: "Unknown Command, please type <c2>/help</c2>"
-  error_performing_command: "I'm sorry, but there was an error performing this command."
+  invalid_syntax: "Forma de uso: <c2>{command}</c2><c3>{syntax}</c3>"
+  permission_denied: "Desculpe, mas você não tem permissão para usar este comando."
+  unknown_command: "Comando desconhecido, por favor, digite <c2>/help</c2>"
+  error_performing_command: "Desculpe, mas houve um erro ao executar este comando."
 migrate:
   invalid-backend: "&cO backend para o qual você tentou migrar é inválido."
   connection-failed: "&cA conexão para o novo backend falhou! Certifique se sua autenticação está propriamente configurada!"
