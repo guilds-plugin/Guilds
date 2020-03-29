@@ -305,6 +305,7 @@ public final class Guilds extends JavaPlugin {
         Libraries libraries = new Libraries();
         loader.addRepository("https://repo.glaremasters.me/repository/public/");
         loader.addMavenCentral();
+        libraries.loadGuava(loader);
         if (!settingsHandler.getSettingsManager().getProperty(StorageSettings.STORAGE_TYPE).toLowerCase().equals("json")) {
             try {
                 libraries.loadSQL(loader);
