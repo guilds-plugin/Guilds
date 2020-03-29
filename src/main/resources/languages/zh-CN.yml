@@ -71,7 +71,7 @@ descriptions:
   motd-remove: "移除你公会的MOTD"
   prefix: "更改你的公会前缀"
   promote: "升级公会成员位阶"
-  reload: "chongzia"
+  reload: "重载插件配置文件"
   rename: "更改你的公会名"
   request: "申请加入公会"
   sethome: "设置你的公会领地"
@@ -207,7 +207,7 @@ sethome:
   deleted: "&7[&6公会&7]&f你已成功删除你的公会领地!"
   cooldown: "&7[&6公会&7]&f你必须等待{amount}秒后才能执行此操作"
 reload:
-  reloaded: "&7[&6公会&7]&f已重载"
+  reloaded: "&7[&6公会&7]&f已重载/汉化by(Azitate&aliyuchang)"
 cancel:
   error: "&7[&6公会&7]&f你没有需要取消的操作!"
   success: "&7[&6公会&7]&f已取消此操作!"
@@ -334,14 +334,14 @@ war:
   player-killed-quit: "&b{player} &因为离开服务器而被击杀."
   teleported-back: "&a你打得太厉害了! 哎呀， 不是所有人都能做得这么好. 你已被转送到原来的位置!"
 acf-core:
-  invalid_syntax: "Usage: <c2>{command}</c2> <c3>{syntax}</c3>"
-  permission_denied: "I'm sorry, but you do not have permission to perform this command."
-  unknown_command: "Unknown Command, please type <c2>/help</c2>"
-  error_performing_command: "I'm sorry, but there was an error performing this command."
+  invalid_syntax: "用法<c2>{command}</c2><c3>{syntax}</c3>"
+  permission_denied: "你没有权限这么做"
+  unknown_command: "未知指令,请尝试输入<c2>/help</c2>"
+  error_performing_command: "执行命令时出错"
 migrate:
   invalid-backend: "&cThe backend you've attempted to migrate to is invalid."
   connection-failed: "&cConnecting to the new backend failed! Make sure your authentication is properly configured!"
   same-backend: "&cYou can't migrate to the same backend you are already using!"
   complete: "&aMigration of data ({amount} guilds) has been completed and will continue to use this new backend until being rebooted. Make sure to change your backend in the config to what you migrated to before you reboot!"
-  warning: "&bImportant! &cYou are about to migrate ALL your plugin data. It is HIGHLY suggested that you make a backup of ALL data before doing this. If you lose your data, it can NOT be recovered. Are you sure you would like to continue? Type /guilds confirm to continue or /guilds cancel to cancel!"
-  cancelled: "&aYou've successfully cancelled the migration of data!"
+  warning: "&7[&6公会&7]&f重要!你正在准备迁移插件数据,迁移前,我强烈建议你备份插件数据,若途中出现意外数据将无法恢复.输入/g confirm继续,输入/g cancel取消."
+  cancelled: "&7[&6公会&7]&f你已取消数据迁移"
