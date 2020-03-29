@@ -41,6 +41,7 @@ import me.glaremasters.guilds.api.events.GuildCreateEvent;
 import me.glaremasters.guilds.configuration.sections.CostSettings;
 import me.glaremasters.guilds.configuration.sections.GuildListSettings;
 import me.glaremasters.guilds.configuration.sections.GuildSettings;
+import me.glaremasters.guilds.configuration.sections.PluginSettings;
 import me.glaremasters.guilds.cooldowns.Cooldown;
 import me.glaremasters.guilds.cooldowns.CooldownHandler;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
@@ -191,6 +192,8 @@ public class CommandCreate extends BaseCommand {
                 getCurrentCommandIssuer().sendInfo(Messages.CREATE__SUCCESSFUL, "{guild}", guild.getName());
 
                 actionHandler.removeAction(player);
+
+                guildHandler.addPerms(permission, player, settingsManager.getProperty(PluginSettings.RUN_VAULT_ASYNC));
 
                 Guilds.newChain().async(() -> {
                     try {
