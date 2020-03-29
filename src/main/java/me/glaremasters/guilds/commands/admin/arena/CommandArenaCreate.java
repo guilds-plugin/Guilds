@@ -42,7 +42,8 @@ import java.util.UUID;
 @CommandAlias("%guilds")
 public class CommandArenaCreate extends BaseCommand {
 
-    @Dependency ArenaHandler arenaHandler;
+    @Dependency
+    ArenaHandler arenaHandler;
 
     /**
      * Create a new arena

@@ -25,7 +25,6 @@
 package me.glaremasters.guilds.commands.admin.motd;
 
 import ch.jalu.configme.SettingsManager;
-import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
@@ -42,6 +41,7 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.Constants;
+import me.glaremasters.guilds.utils.StringUtils;
 import org.bukkit.entity.Player;
 
 /**
@@ -72,7 +72,7 @@ public class CommandAdminMotdSet extends BaseCommand {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST));
         }
         // Set the MOTD of the guild
-        guild.setMotd(ACFBukkitUtil.color(motd));
+        guild.setMotd(StringUtils.color(motd));
         // Tell the player that they set the motd
         getCurrentCommandIssuer().sendInfo(Messages.ADMIN__MOTD_SUCCESS, "{guild}", guild.getName(), "{motd}", guild.getMotd());
     }

@@ -44,7 +44,8 @@ import org.bukkit.entity.Player;
 @CommandAlias("%guilds")
 public class CommandArenaDelete extends BaseCommand {
 
-    @Dependency ArenaHandler arenaHandler;
+    @Dependency
+    ArenaHandler arenaHandler;
 
     /**
      * Remove an arena from the server

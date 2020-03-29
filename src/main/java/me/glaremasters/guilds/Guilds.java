@@ -54,6 +54,7 @@ import me.glaremasters.guilds.listeners.VaultBlacklistListener;
 import me.glaremasters.guilds.listeners.WorldGuardListener;
 import me.glaremasters.guilds.placeholders.PlaceholderAPI;
 import me.glaremasters.guilds.updater.UpdateChecker;
+import me.glaremasters.guilds.utils.LanguageUpdater;
 import me.glaremasters.guilds.utils.LoggingUtils;
 import me.glaremasters.guilds.utils.StringUtils;
 import net.byteflux.libby.BukkitLibraryManager;
@@ -64,15 +65,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.JarURLConnection;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
-import java.util.Objects;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 import java.util.stream.Stream;
 
 public final class Guilds extends JavaPlugin {
@@ -93,7 +88,6 @@ public final class Guilds extends JavaPlugin {
     private Economy economy;
     private Permission permissions;
     private List<String> loadedLanguages;
-    private boolean successfulLoad = false;
 
     public static Gson getGson() {
         return gson;
@@ -122,20 +116,6 @@ public final class Guilds extends JavaPlugin {
         LoggingUtils.info("Database has been shut down.");
     }
 
-    @Override
-    public void onLoad() {
-        BukkitLibraryManager loader = new BukkitLibraryManager(this);
-        Libraries libraries = new Libraries();
-        loader.addRepository("https://repo.glaremasters.me/repository/public/");
-        loader.addMavenCentral();
-        try {
-            libraries.loadDepLibs(loader);
-            successfulLoad = true;
-        } catch (RuntimeException ex) {
-            ex.printStackTrace();
-        }
-    }
-
     /**
      * Implement Vault's Economy API
      */
@@ -152,45 +132,11 @@ public final class Guilds extends JavaPlugin {
         if (rsp != null) permissions = rsp.getProvider();
     }
 
-    /**
-     * Save and handle new files if needed
-     */
-    private void saveData() {
-        File languageFolder = new File(getDataFolder(), "languages");
-        if (!languageFolder.exists()) //noinspection ResultOfMethodCallIgnored
-            languageFolder.mkdirs();
-        try {
-            final JarURLConnection connection = (JarURLConnection) Objects.requireNonNull(getClassLoader().getResource("languages")).openConnection();
-            final JarFile thisJar = connection.getJarFile();
-            final Enumeration<JarEntry> entries = thisJar.entries();
-            while (entries.hasMoreElements()) {
-                final JarEntry current = entries.nextElement();
-                if (!current.getName().startsWith("languages/") || current.getName().length() == "languages/".length()) {
-                    continue;
-                }
-                final String name = current.getName().substring("languages/".length());
-                File langFile = new File(languageFolder, name);
-                if (!langFile.exists()) {
-                    this.saveResource("languages/" + name, false);
-                }
-            }
-
-        } catch (final IOException ex) {
-            ex.printStackTrace();
-        }
-
-    }
-
     @Override
     public void onEnable() {
-       
+
         LoggingUtils.logLogo(Bukkit.getConsoleSender(), this);
 
-        if (!successfulLoad) {
-            LoggingUtils.warn("Dependencies could not be downloaded, shutting down to prevent file corruption.");
-            Bukkit.getPluginManager().disablePlugin(this);
-            return;
-        }
         // Check if the server is running Vault
         if (!Bukkit.getPluginManager().isPluginEnabled("Vault")) {
             LoggingUtils.warn("It looks like you don't have Vault on your server! Stopping plugin..");
@@ -235,7 +181,9 @@ public final class Guilds extends JavaPlugin {
         settingsHandler = new SettingsHandler(this);
         LoggingUtils.info("Loaded config!");
 
-        saveData();
+        downloadOptionalDependencies();
+
+        new LanguageUpdater(this).saveLang();
 
         // Load data here.
         try {
@@ -249,6 +197,7 @@ public final class Guilds extends JavaPlugin {
             cooldownHandler = new CooldownHandler(this);
             // Load the arena objects
             arenaHandler = new ArenaHandler(this);
+            arenaHandler.loadArenas();
             // Load the challenge handler
             challengeHandler = new ChallengeHandler(this);
             // Load guildhandler with provider
@@ -262,7 +211,7 @@ public final class Guilds extends JavaPlugin {
 
         // If they have placeholderapi, enable it.
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            new PlaceholderAPI(guildHandler).register();
+           new PlaceholderAPI(guildHandler).register();
         }
 
         LoggingUtils.info("Enabling Metrics..");
@@ -277,6 +226,7 @@ public final class Guilds extends JavaPlugin {
         // Load the ACF command manager
         commandManager = new PaperCommandManager(this);
         acfHandler = new ACFHandler(this, commandManager);
+        acfHandler.load();
 
         guiHandler = new GUIHandler(this, settingsHandler.getSettingsManager(), guildHandler, getCommandManager(), cooldownHandler);
 
@@ -295,7 +245,7 @@ public final class Guilds extends JavaPlugin {
         // Load all the listeners
         Stream.of(
                 new EntityListener(guildHandler, settingsHandler.getSettingsManager(), challengeHandler),
-                new PlayerListener(guildHandler, settingsHandler.getSettingsManager(), this, permissions),
+                new PlayerListener(this, settingsHandler.getSettingsManager(), guildHandler, permissions),
                 new TicketListener(this, guildHandler, settingsHandler.getSettingsManager()),
                 new VaultBlacklistListener(this, guildHandler, settingsHandler.getSettingsManager()),
                 new ArenaListener(this, challengeHandler, settingsHandler.getSettingsManager()))
@@ -350,8 +300,23 @@ public final class Guilds extends JavaPlugin {
         }
     }
 
+    private void downloadOptionalDependencies() {
+        BukkitLibraryManager loader = new BukkitLibraryManager(this);
+        Libraries libraries = new Libraries();
+        loader.addRepository("https://repo.glaremasters.me/repository/public/");
+        loader.addMavenCentral();
+        if (!settingsHandler.getSettingsManager().getProperty(StorageSettings.STORAGE_TYPE).toLowerCase().equals("json")) {
+            try {
+                libraries.loadSQL(loader);
+            } catch (RuntimeException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
     /**
      * Used to create a new chain of commands
+     *
      * @param <T> the type
      * @return chain
      */
@@ -361,8 +326,9 @@ public final class Guilds extends JavaPlugin {
 
     /**
      * Used to create new shared chain of commands
+     *
      * @param name the name of the chain
-     * @param <T> the type of chain
+     * @param <T>  the type of chain
      * @return shared chain
      */
     public static <T> TaskChain<T> newSharedChain(String name) {
@@ -423,9 +389,5 @@ public final class Guilds extends JavaPlugin {
 
     public List<String> getLoadedLanguages() {
         return this.loadedLanguages;
-    }
-
-    public boolean isSuccessfulLoad() {
-        return this.successfulLoad;
     }
 }

@@ -1,5 +1,5 @@
 name: Guilds
-version: ${project.version}
+version: @version@
 main: me.glaremasters.guilds.Guilds
 authors: [Glare]
 softdepend: [Vault, MVdWPlaceholderAPI, WorldGuard, PlaceholderAPI, Essentials]

@@ -61,7 +61,7 @@ public class GuildConfigurationBuilder {
                 VaultPickerSettings.class, GuildVaultSettings.class, GuildInfoSettings.class,
                 GuildInfoMemberSettings.class, GuildSettings.class,
                 WarSettings.class, CooldownSettings.class, CostSettings.class,
-                ClaimSettings.class, /*TablistSettings.class,*/ TicketSettings.class, CodeSettings.class
+                ClaimSettings.class, TicketSettings.class, CodeSettings.class
         );
     }
 

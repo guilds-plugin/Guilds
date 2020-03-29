@@ -25,7 +25,6 @@
 package me.glaremasters.guilds.commands.management;
 
 import ch.jalu.configme.SettingsManager;
-import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
@@ -42,6 +41,7 @@ import me.glaremasters.guilds.api.events.GuildCreateEvent;
 import me.glaremasters.guilds.configuration.sections.CostSettings;
 import me.glaremasters.guilds.configuration.sections.GuildListSettings;
 import me.glaremasters.guilds.configuration.sections.GuildSettings;
+import me.glaremasters.guilds.configuration.sections.PluginSettings;
 import me.glaremasters.guilds.cooldowns.Cooldown;
 import me.glaremasters.guilds.cooldowns.CooldownHandler;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
@@ -52,12 +52,12 @@ import me.glaremasters.guilds.guild.GuildSkull;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.Constants;
 import me.glaremasters.guilds.utils.EconomyUtils;
+import me.glaremasters.guilds.utils.StringUtils;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -135,7 +135,7 @@ public class CommandCreate extends BaseCommand {
             ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__NOT_ENOUGH_MONEY));
         }
 
-        getCurrentCommandIssuer().sendInfo(Messages.CREATE__WARNING, "{amount}", String.valueOf(NumberFormat.getInstance().format(cost)));
+        getCurrentCommandIssuer().sendInfo(Messages.CREATE__WARNING, "{amount}", EconomyUtils.format(cost));
 
         actionHandler.addAction(player, new ConfirmAction() {
             @Override
@@ -146,13 +146,13 @@ public class CommandCreate extends BaseCommand {
 
                 Guild.GuildBuilder gb = Guild.builder();
                 gb.id(UUID.randomUUID());
-                gb.name(ACFBukkitUtil.color(name));
+                gb.name(StringUtils.color(name));
                 if (!settingsManager.getProperty(GuildSettings.DISABLE_PREFIX)) {
                     if (prefix == null) {
-                        gb.prefix(ACFBukkitUtil.color(name));
+                        gb.prefix(StringUtils.color(name));
                     }
                     else {
-                        gb.prefix(ACFBukkitUtil.color(prefix));
+                        gb.prefix(StringUtils.color(prefix));
                     }
                 } else {
                     gb.prefix("");
@@ -192,6 +192,8 @@ public class CommandCreate extends BaseCommand {
                 getCurrentCommandIssuer().sendInfo(Messages.CREATE__SUCCESSFUL, "{guild}", guild.getName());
 
                 actionHandler.removeAction(player);
+
+                guildHandler.addPerms(permission, player, settingsManager.getProperty(PluginSettings.RUN_VAULT_ASYNC));
 
                 Guilds.newChain().async(() -> {
                     try {

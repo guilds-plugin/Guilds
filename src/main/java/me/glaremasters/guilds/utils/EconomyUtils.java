@@ -29,6 +29,8 @@ import me.glaremasters.guilds.messages.Messages;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.entity.Player;
 
+import java.text.NumberFormat;
+
 /**
  * Created by Glare
  * Date: 4/4/2019
@@ -60,6 +62,15 @@ public class EconomyUtils {
      */
     public static boolean hasEnough(double val1, double val2) {
         return val1 >= val2;
+    }
+
+
+    public static String format(int input) {
+        return NumberFormat.getInstance().format(input);
+    }
+
+    public static String format(double input) {
+        return NumberFormat.getInstance().format(input);
     }
 
 }

@@ -24,6 +24,7 @@
 
 package me.glaremasters.guilds.utils;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import org.bukkit.inventory.ItemStack;

@@ -24,7 +24,7 @@
 
 package me.glaremasters.guilds.utils;
 
-import co.aikar.commands.ACFBukkitUtil;
+import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
@@ -43,9 +43,9 @@ public class GuiUtils {
             item = XMaterial.GLASS_PANE.parseItem();
         }
         ItemBuilder builder = new ItemBuilder(item);
-        builder.setName(ACFBukkitUtil.color(name));
+        builder.setName(StringUtils.color(name));
         if (!lore.isEmpty()) {
-            builder.setLore(lore.stream().map(ACFBukkitUtil::color).collect(Collectors.toList()));
+            builder.setLore(lore.stream().map(StringUtils ::color).collect(Collectors.toList()));
         }
         builder.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         return builder.build();

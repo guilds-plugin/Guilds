@@ -45,7 +45,8 @@ import org.bukkit.entity.Player;
 @CommandAlias("%guilds")
 public class CommandArenaChallenger extends BaseCommand {
 
-    @Dependency ArenaHandler arenaHandler;
+    @Dependency
+    ArenaHandler arenaHandler;
 
     /**
      * Set the challenger spawn point for an arena

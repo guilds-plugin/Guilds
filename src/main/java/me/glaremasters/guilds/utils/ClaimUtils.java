@@ -25,7 +25,6 @@
 package me.glaremasters.guilds.utils;
 
 import ch.jalu.configme.SettingsManager;
-import co.aikar.commands.ACFBukkitUtil;
 import me.glaremasters.guilds.configuration.sections.ClaimSettings;
 import me.glaremasters.guilds.configuration.sections.HooksSettings;
 import me.glaremasters.guilds.guild.Guild;
@@ -280,7 +279,7 @@ public class ClaimUtils {
      * @param guild the guild to set it for
      */
     public static void setEnterMessage(WorldGuardWrapper wrapper, IWrappedRegion claim, SettingsManager settingsManager, Guild guild) {
-        claim.setFlag(wrapper.getFlag("greeting", String.class).orElse(null), ACFBukkitUtil.color(settingsManager.getProperty(ClaimSettings.ENTER_MESSAGE).replace("{guild}", guild.getName()).replace("{prefix}", guild.getPrefix())));
+        claim.setFlag(wrapper.getFlag("greeting", String.class).orElse(null), StringUtils.color(settingsManager.getProperty(ClaimSettings.ENTER_MESSAGE).replace("{guild}", guild.getName()).replace("{prefix}", guild.getPrefix())));
     }
 
     /**
@@ -291,7 +290,7 @@ public class ClaimUtils {
      * @param guild the guild to set it for
      */
     public static void setExitMessage(WorldGuardWrapper wrapper, IWrappedRegion claim, SettingsManager settingsManager, Guild guild) {
-        claim.setFlag(wrapper.getFlag("farewell", String.class).orElse(null), ACFBukkitUtil.color(settingsManager.getProperty(ClaimSettings.EXIT_MESSAGE).replace("{guild}", guild.getName()).replace("{prefix}", guild.getPrefix())));
+        claim.setFlag(wrapper.getFlag("farewell", String.class).orElse(null), StringUtils.color(settingsManager.getProperty(ClaimSettings.EXIT_MESSAGE).replace("{guild}", guild.getName()).replace("{prefix}", guild.getPrefix())));
     }
 
     /**
