@@ -125,7 +125,7 @@ internal class CommandBank : BaseCommand() {
         }
 
         guild.balance = bal - amount
-        economy.withdrawPlayer(player, amount)
+        economy.depositPlayer(player, amount)
         guild.sendMessage(currentCommandManager, Messages.BANK__WITHDRAWAL_SUCCESS, "{player}", player.name,
                 "{amount}", EconomyUtils.format(amount), "{total}", EconomyUtils.format(guild.balance))
     }
