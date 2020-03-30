@@ -36,6 +36,7 @@ import co.aikar.commands.annotation.Single
 import co.aikar.commands.annotation.Subcommand
 import co.aikar.commands.annotation.Syntax
 import co.aikar.commands.annotation.Values
+import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.configuration.sections.CodeSettings
 import me.glaremasters.guilds.exceptions.ExpectationNotMet
 import me.glaremasters.guilds.exceptions.InvalidPermissionException
@@ -50,6 +51,7 @@ import org.bukkit.entity.Player
 
 @CommandAlias("%guilds")
 internal class CommandCode : BaseCommand() {
+    @Dependency lateinit var guilds: Guilds
     @Dependency lateinit var settingsManager: SettingsManager
     @Dependency lateinit var guildHandler: GuildHandler
 
