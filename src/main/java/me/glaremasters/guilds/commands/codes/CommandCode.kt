@@ -49,11 +49,9 @@ import org.apache.commons.lang.RandomStringUtils
 import org.bukkit.entity.Player
 
 @CommandAlias("%guilds")
-internal class CommandCode() : BaseCommand() {
-    @Dependency
-    lateinit var settingsManager: SettingsManager
-    @Dependency
-    lateinit var guildHandler: GuildHandler
+internal class CommandCode : BaseCommand() {
+    @Dependency lateinit var settingsManager: SettingsManager
+    @Dependency lateinit var guildHandler: GuildHandler
 
     @Subcommand("code create")
     @Description("{@@descriptions.code-create}")
