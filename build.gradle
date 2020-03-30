@@ -63,7 +63,7 @@ dependencies {
     compileOnly 'me.clip:placeholderapi:2.10.3'
     compile 'ch.jalu:configme:1.2.0'
     compile 'com.dumptruckman.minecraft:JsonConfiguration:1.1'
-    compile 'com.github.stefvanschie.inventoryframework:IF:0.5.15'
+    compile 'com.github.stefvanschie.inventoryframework:IF:0.5.19'
     compile 'commons-io:commons-io:2.6'
     compileOnly 'com.google.guava:guava:28.2-jre'
     compileOnly 'com.zaxxer:HikariCP:3.3.1'

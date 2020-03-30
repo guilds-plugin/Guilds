@@ -26,6 +26,7 @@ package me.glaremasters.guilds.commands.codes
 
 import ch.jalu.configme.SettingsManager
 import co.aikar.commands.BaseCommand
+import co.aikar.commands.annotation.CommandAlias
 import co.aikar.commands.annotation.CommandCompletion
 import co.aikar.commands.annotation.CommandPermission
 import co.aikar.commands.annotation.Default
@@ -47,6 +48,7 @@ import me.glaremasters.guilds.utils.PlayerUtils
 import org.apache.commons.lang.RandomStringUtils
 import org.bukkit.entity.Player
 
+@CommandAlias("%guilds")
 internal class CommandCode() : BaseCommand() {
     @Dependency
     lateinit var settingsManager: SettingsManager
