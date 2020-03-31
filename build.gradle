@@ -48,6 +48,7 @@ shadowJar {
     relocate("com.zaxxer.hikari", "${base}hikari")
     relocate("org.jdbi", "${base}jdbi")
     relocate("org.mariadb.jdbc", "${base}mariadb")
+    relocate("me.mattstudios.mfgui", "${base}mfgui")
     archiveFileName = "Guilds-${project.version}.jar"
 }
 
@@ -72,6 +73,7 @@ dependencies {
     compileOnly 'org.slf4j:slf4j-api:1.7.25'
     compileOnly 'org.mariadb.jdbc:mariadb-java-client:2.4.0'
     compile 'com.github.cryptomorin:XSeries:5.3.1'
+    compile 'me.mattstudios.utils:matt-framework-gui:1.2'
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
 }
 

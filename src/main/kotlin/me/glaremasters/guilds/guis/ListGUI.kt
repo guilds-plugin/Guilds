@@ -110,7 +110,7 @@ class ListGUI(private val guilds: Guilds, private val settingsManager: SettingsM
      */
     private fun setListItem(guild: Guild) {
         val listItem = GuiItem(guild.skull, Consumer { event: InventoryClickEvent ->
-            guilds.guiHandler.infoMembersGUI.getInfoMembersGUI(guild).show(event.whoClicked)
+            guilds.guiHandler.infoMembersGUI.getInfoMembersGUI(guild).open(event.whoClicked)
             event.isCancelled = true
         })
         val meta = listItem.item.itemMeta

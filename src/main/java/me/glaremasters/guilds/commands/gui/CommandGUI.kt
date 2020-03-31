@@ -80,7 +80,7 @@ internal class CommandGUI() : BaseCommand() {
     @Syntax("")
     @CommandPermission(Constants.BASE_PERM + "members")
     fun members(player: Player, guild: Guild) {
-        guilds.guiHandler.infoMembersGUI.getInfoMembersGUI(guild).show(player)
+        guilds.guiHandler.infoMembersGUI.getInfoMembersGUI(guild).open(player)
     }
 
     @Subcommand("vault")

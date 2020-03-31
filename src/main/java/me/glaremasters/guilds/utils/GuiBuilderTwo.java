@@ -22,18 +22,35 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.exte
+package me.glaremasters.guilds.utils;
 
-import com.cryptomorin.xseries.XMaterial
-import me.glaremasters.guilds.utils.ItemBuilder
-import me.glaremasters.guilds.utils.StringUtils
-import me.mattstudios.mfgui.gui.guis.Gui
-import me.mattstudios.mfgui.gui.guis.GuiItem
-import org.bukkit.Material
-import org.bukkit.inventory.ItemStack
+import me.mattstudios.mfgui.gui.guis.Gui;
+import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
-internal fun addBackground(gui: Gui) {
-    val builder = ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem() ?: ItemStack(Material.GLASS_PANE))
-    builder.setName(StringUtils.color("&r"))
-    gui.filler.fill(GuiItem(builder.build()))
+public class GuiBuilderTwo {
+    private final Gui gui;
+
+    public GuiBuilderTwo(Plugin plugin) {
+        this.gui = new Gui(plugin, 1, "");
+    }
+
+    @NotNull
+    @Contract(pure = true)
+    public Gui build() {
+        return gui;
+    }
+
+    @NotNull
+    public GuiBuilderTwo setName(@NotNull String name) {
+        gui.updateTitle(StringUtils.color(name));
+        return this;
+    }
+
+    @NotNull
+    public GuiBuilderTwo setRows(int rows) {
+        gui.setRows(rows);
+        return this;
+    }
 }
