@@ -72,7 +72,7 @@ internal class CommandGUI() : BaseCommand() {
     @Syntax("")
     @CommandPermission(Constants.BASE_PERM + "list")
     fun list(player: Player) {
-        guilds.guiHandler.listGUI.listGUI.show(player)
+        guilds.guiHandler.listGUI.listGUI.open(player)
     }
 
     @Subcommand("members")
@@ -92,6 +92,6 @@ internal class CommandGUI() : BaseCommand() {
             throw InvalidPermissionException()
         }
 
-        guilds.guiHandler.vaultGUI.getVaultGUI(guild, player, guilds.commandManager).show(player)
+        guilds.guiHandler.vaultGUI.getVaultGUI(guild, player).open(player)
     }
 }
