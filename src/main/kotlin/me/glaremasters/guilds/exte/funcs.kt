@@ -35,5 +35,9 @@ import org.bukkit.inventory.ItemStack
 internal fun addBackground(gui: Gui) {
     val builder = ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem() ?: ItemStack(Material.GLASS_PANE))
     builder.setName(StringUtils.color("&r"))
-    gui.filler.fill(GuiItem(builder.build()))
+    val item = GuiItem(builder.build())
+    item.setAction { event ->
+        event.isCancelled = true
+    }
+    gui.filler.fill(item)
 }
