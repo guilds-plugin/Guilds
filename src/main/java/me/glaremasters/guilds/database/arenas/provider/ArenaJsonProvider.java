@@ -46,7 +46,6 @@ import java.util.Objects;
 
 public class ArenaJsonProvider implements ArenaProvider {
     private final File dataFolder;
-    private final List<String> ids = new ArrayList<>();
     private Gson gson;
 
     public ArenaJsonProvider(File dataFolder) {

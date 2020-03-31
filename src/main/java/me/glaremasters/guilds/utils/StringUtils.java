@@ -24,6 +24,7 @@
 
 package me.glaremasters.guilds.utils;
 
+import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.BufferedReader;
@@ -38,6 +39,10 @@ public final class StringUtils {
 
     private StringUtils() {
         throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
+    }
+
+    public static String color(String input) {
+        return ChatColor.translateAlternateColorCodes('&', input);
     }
 
     /**

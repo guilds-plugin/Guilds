@@ -25,6 +25,7 @@
 package me.glaremasters.guilds.tasks;
 
 import com.google.common.base.Joiner;
+import com.google.common.collect.Iterables;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.challenges.ChallengeHandler;
 import me.glaremasters.guilds.guild.GuildChallenge;
@@ -88,13 +89,13 @@ public class GuildWarReadyTask extends BukkitRunnable {
             // Make sure both are the same size
             if (challenge.getAliveDefenders().size() > challenge.getAliveChallengers().size()) {
                 do {
-                    UUID last = challenge.getAliveDefenders().lastKey();
+                    UUID last = Iterables.getLast(challenge.getAliveDefenders().entrySet()).getKey();
                     heldBack.add(Bukkit.getPlayer(last).getName());
                     challenge.getAliveDefenders().remove(last);
                 } while (challenge.getAliveDefenders().size() != challenge.getAliveChallengers().size());
             } else if (challenge.getAliveChallengers().size() > challenge.getAliveDefenders().size()) {
                 do {
-                    UUID last = challenge.getAliveChallengers().lastKey();
+                    UUID last = Iterables.getLast(challenge.getAliveChallengers().entrySet()).getKey();
                     heldBack.add(Bukkit.getPlayer(last).getName());
                     challenge.getAliveChallengers().remove(last);
                 } while (challenge.getAliveChallengers().size() != challenge.getAliveDefenders().size());

@@ -25,7 +25,6 @@
 package me.glaremasters.guilds.guis;
 
 import ch.jalu.configme.SettingsManager;
-import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.CommandManager;
 import com.github.stefvanschie.inventoryframework.Gui;
 import com.github.stefvanschie.inventoryframework.GuiItem;
@@ -44,11 +43,9 @@ import me.glaremasters.guilds.utils.GuiUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 /**
  * Created by Glare
@@ -238,6 +235,8 @@ public class BuffGUI {
         return gui;
     }
 
+    //TODO Fix some materials just not displaying
+
     /**
      * Set the buff item to the GUI
      *
@@ -285,10 +284,6 @@ public class BuffGUI {
             executeClickerCommands(clickerCheck, clickerCommands, player);
             executeGuildCommands(guildCheck, guildCommands, guild);
         });
-        ItemMeta meta = buffItem.getItem().getItemMeta();
-        meta.setDisplayName(ACFBukkitUtil.color(name));
-        meta.setLore(lore.stream().map(ACFBukkitUtil::color).collect(Collectors.toList()));
-        buffItem.getItem().setItemMeta(meta);
         if (check)
             pane.addItem(buffItem, x, 0);
     }

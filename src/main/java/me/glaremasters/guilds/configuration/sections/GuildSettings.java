@@ -63,7 +63,7 @@ public class GuildSettings implements SettingsHolder {
             newProperty("guild.disable-prefix", false);
 
     @Comment("Would you like player to respawn at their guild home (if they have one) when they die?")
-    public static final Property<Boolean> REPSPAWN_AT_HOME =
+    public static final Property<Boolean> RESPAWN_AT_HOME =
             newProperty("guild.respawn-at-home", false);
 
     @Comment("Do we want to enable the blacklist?")

@@ -45,7 +45,8 @@ import java.util.stream.Collectors;
 @CommandAlias("%guilds")
 public class CommandArenaList extends BaseCommand {
 
-    @Dependency ArenaHandler arenaHandler;
+    @Dependency
+    ArenaHandler arenaHandler;
 
     /**
      * List all the arenas on the server

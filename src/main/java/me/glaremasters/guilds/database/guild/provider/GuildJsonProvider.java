@@ -51,7 +51,6 @@ import java.util.Objects;
  */
 public class GuildJsonProvider implements GuildProvider {
     private final File dataFolder;
-    private final List<String> ids = new ArrayList<>();
     private Gson gson;
 
     public GuildJsonProvider(File dataFolder) {

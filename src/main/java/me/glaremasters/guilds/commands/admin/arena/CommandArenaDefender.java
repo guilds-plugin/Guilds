@@ -45,7 +45,8 @@ import org.bukkit.entity.Player;
 @CommandAlias("%guilds")
 public class CommandArenaDefender extends BaseCommand {
 
-    @Dependency ArenaHandler arenaHandler;
+    @Dependency
+    ArenaHandler arenaHandler;
 
     /**
      * Set the defender spawn point for an arena

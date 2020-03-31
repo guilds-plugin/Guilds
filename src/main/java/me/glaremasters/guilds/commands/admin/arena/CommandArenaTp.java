@@ -46,7 +46,8 @@ import org.bukkit.entity.Player;
 @CommandAlias("%guilds")
 public class CommandArenaTp extends BaseCommand {
 
-    @Dependency ArenaHandler arenaHandler;
+    @Dependency
+    ArenaHandler arenaHandler;
 
     /**
      * Teleport to the location of a team for an arena
