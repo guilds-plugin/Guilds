@@ -32,6 +32,7 @@ import me.glaremasters.guilds.exte.addBackground
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.guild.GuildMember
+import me.glaremasters.guilds.utils.GuiBuilderTwo
 import me.glaremasters.guilds.utils.GuiUtils
 import me.glaremasters.guilds.utils.StringUtils
 import me.mattstudios.mfgui.gui.guis.Gui
@@ -44,11 +45,7 @@ class InfoMembersGUI(private val guilds: Guilds, private val settingsManager: Se
 
     fun getInfoMembersGUI(guild: Guild): Gui {
         val name = settingsManager.getProperty(GuildInfoMemberSettings.GUI_NAME).replace("{name}", guild.name)
-        val gui = Gui(guilds, 6, StringUtils.color(name))
-
-        gui.setDefaultClickAction { event ->
-            event.isCancelled = true
-        }
+        val gui = GuiBuilderTwo(guilds).setName(name).setRows(6).disableGlobalClicking().build()
 
         gui.setOutsideClickAction { event ->
             event.isCancelled = true

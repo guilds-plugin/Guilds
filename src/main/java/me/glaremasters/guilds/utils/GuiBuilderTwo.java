@@ -53,4 +53,10 @@ public class GuiBuilderTwo {
         gui.setRows(rows);
         return this;
     }
+
+    @NotNull
+    public GuiBuilderTwo disableGlobalClicking() {
+        gui.setDefaultClickAction(event -> event.setCancelled(true));
+        return this;
+    }
 }

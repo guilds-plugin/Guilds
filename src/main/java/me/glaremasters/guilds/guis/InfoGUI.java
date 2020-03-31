@@ -70,8 +70,7 @@ public class InfoGUI {
     }
 
     public Gui getInfoGUI(Guild guild, Player player) {
-        String name = settingsManager.getProperty(GuildInfoSettings.GUI_NAME).replace("{name}",
-                guild.getName()).replace("{prefix}", guild.getPrefix());
+        String name = settingsManager.getProperty(GuildInfoSettings.GUI_NAME).replace("{name}", guild.getName()).replace("{prefix}", guild.getPrefix());
 
         Gui gui = new GuiBuilder(guilds).setName(name).setRows(3).addBackground(9, 3).blockGlobalClick().build();
 
@@ -239,7 +238,7 @@ public class InfoGUI {
                         if (!guild.getMember(player.getUniqueId()).getRole().isOpenVault())
                             return;
                         // Open the new GUI
-                        guilds.getGuiHandler().getVaultGUI().getVaultGUI(guild, player, guilds.getCommandManager()).show(event.getWhoClicked());
+                        guilds.getGuiHandler().getVaultGUI().getVaultGUI(guild, player).open(event.getWhoClicked());
                     }));
         }
     }

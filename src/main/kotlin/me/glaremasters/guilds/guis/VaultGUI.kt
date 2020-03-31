@@ -27,6 +27,7 @@ package me.glaremasters.guilds.guis
 import ch.jalu.configme.SettingsManager
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.configuration.sections.VaultPickerSettings
+import me.glaremasters.guilds.exte.addBackground
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.utils.GuiBuilderTwo
@@ -41,7 +42,7 @@ class VaultGUI(private val guilds: Guilds, private val settingsManager: Settings
     fun getVaultGUI(guild: Guild, player: Player): Gui {
         val name = settingsManager.getProperty(VaultPickerSettings.GUI_NAME).replace("{name}", guild.name)
         val rows = settingsManager.getProperty(VaultPickerSettings.GUI_SIZE)
-        val gui = GuiBuilderTwo(guilds).setName(name).setRows(rows).build()
+        val gui = GuiBuilderTwo(guilds).setName(name).setRows(rows).disableGlobalClicking().build()
 
         // Prevent players from being able to items into the GUIs
         gui.setOutsideClickAction { event ->
@@ -50,6 +51,7 @@ class VaultGUI(private val guilds: Guilds, private val settingsManager: Settings
         }
 
         addItems(gui, guild, player)
+        addBackground(gui)
 
         num = 0
         return gui
