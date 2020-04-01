@@ -42,7 +42,6 @@ import java.util.stream.Collectors;
 public class GuiUtils {
 
     public static Set<Material> problemItems = new HashSet<>(Arrays.asList(Material.valueOf("REDSTONE_TORCH_OFF"), Material.valueOf("BED_BLOCK")));
-    public static List<XMaterial> replacementsItems = new ArrayList<>(Arrays.asList(XMaterial.DIAMOND_AXE, XMaterial.IRON_BLOCK));
 
     public static ItemStack createItem(String material, String name, List<String> lore) {
         Optional<XMaterial> tempMaterial = XMaterial.matchXMaterial(material);
@@ -53,7 +52,8 @@ public class GuiUtils {
         }
         // Extra check
         if (problemItems.contains(item.getType())) {
-            item.setType(getRandom().parseMaterial());
+            LoggingUtils.warn("Problematic Material Type Found! Switching to Barrier.");
+            item.setType(XMaterial.BARRIER.parseMaterial());
         }
         ItemBuilder builder = new ItemBuilder(item);
         builder.setName(StringUtils.color(name));
@@ -62,12 +62,5 @@ public class GuiUtils {
         }
         builder.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         return builder.build();
-    }
-
-    public static XMaterial getRandom() {
-        int length = replacementsItems.size();
-        Random random = new Random();
-        int choice = random.nextInt(length);
-        return replacementsItems.get(choice);
     }
 }
