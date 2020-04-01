@@ -48,7 +48,6 @@ public class GuiUtils {
         Optional<XMaterial> tempMaterial = XMaterial.matchXMaterial(material);
         XMaterial tempCheck = tempMaterial.orElse(XMaterial.GLASS_PANE);
         ItemStack item = tempCheck.parseItem();
-        System.out.println(item);
         if (item == null) {
             item = XMaterial.GLASS_PANE.parseItem();
         }
