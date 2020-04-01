@@ -29,19 +29,17 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 // This is a temp class until I can sort a bunch of shit out
 public class GuiUtils {
 
-    public static Set<Material> problemItems = new HashSet<>(Arrays.asList(Material.valueOf("REDSTONE_TORCH_OFF"), Material.valueOf("BED_BLOCK")));
+    public static Set<Material> problemItems = new HashSet<>(Arrays.asList(XMaterial.REDSTONE_TORCH.parseMaterial(), XMaterial.RED_BED.parseMaterial()));
 
     public static ItemStack createItem(String material, String name, List<String> lore) {
         Optional<XMaterial> tempMaterial = XMaterial.matchXMaterial(material);

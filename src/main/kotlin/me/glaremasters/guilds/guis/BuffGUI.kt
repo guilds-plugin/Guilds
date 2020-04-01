@@ -36,7 +36,7 @@ import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.EconomyUtils
-import me.glaremasters.guilds.utils.GuiBuilderTwo
+import me.glaremasters.guilds.utils.GuiBuilder
 import me.glaremasters.guilds.utils.GuiUtils
 import me.mattstudios.mfgui.gui.guis.Gui
 import me.mattstudios.mfgui.gui.guis.GuiItem
@@ -50,7 +50,7 @@ class BuffGUI(private val guilds: Guilds, private val buffConfig: SettingsManage
     val buffGUI: Gui
         get() {
             val name = buffConfig.getProperty(GuildBuffSettings.GUILD_BUFF_NAME)
-            val gui = GuiBuilderTwo(guilds).setName(name).setRows(1).disableGlobalClicking().build()
+            val gui = GuiBuilder(guilds).setName(name).setRows(1).disableGlobalClicking().build()
 
 
             // Haste

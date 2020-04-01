@@ -36,7 +36,7 @@ import me.glaremasters.guilds.exte.addBackground
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
-import me.glaremasters.guilds.utils.GuiBuilderTwo
+import me.glaremasters.guilds.utils.GuiBuilder
 import me.glaremasters.guilds.utils.GuiUtils
 import me.mattstudios.mfgui.gui.guis.Gui
 import me.mattstudios.mfgui.gui.guis.GuiItem
@@ -47,7 +47,7 @@ class InfoGUI(private val guilds: Guilds, private val settingsManager: SettingsM
 
     fun getInfoGUI(guild: Guild, player: Player) : Gui {
         val name = settingsManager.getProperty(GuildInfoSettings.GUI_NAME).replace("{name}", guild.name).replace("{prefix}", guild.prefix)
-        val gui = GuiBuilderTwo(guilds).setName(name).setRows(3).disableGlobalClicking().build()
+        val gui = GuiBuilder(guilds).setName(name).setRows(3).disableGlobalClicking().build()
 
         addItems(gui, guild, player)
         addBackground(gui)

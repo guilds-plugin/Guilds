@@ -30,7 +30,7 @@ import me.glaremasters.guilds.configuration.sections.VaultPickerSettings
 import me.glaremasters.guilds.exte.addBackground
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
-import me.glaremasters.guilds.utils.GuiBuilderTwo
+import me.glaremasters.guilds.utils.GuiBuilder
 import me.glaremasters.guilds.utils.GuiUtils
 import me.glaremasters.guilds.utils.StringUtils
 import me.mattstudios.mfgui.gui.guis.Gui
@@ -42,7 +42,7 @@ class VaultGUI(private val guilds: Guilds, private val settingsManager: Settings
     fun getVaultGUI(guild: Guild, player: Player): Gui {
         val name = settingsManager.getProperty(VaultPickerSettings.GUI_NAME).replace("{name}", guild.name)
         val rows = settingsManager.getProperty(VaultPickerSettings.GUI_SIZE)
-        val gui = GuiBuilderTwo(guilds).setName(name).setRows(rows).disableGlobalClicking().build()
+        val gui = GuiBuilder(guilds).setName(name).setRows(rows).disableGlobalClicking().build()
 
         // Prevent players from being able to items into the GUIs
         gui.setOutsideClickAction { event ->

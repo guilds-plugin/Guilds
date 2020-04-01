@@ -29,6 +29,7 @@ import me.glaremasters.guilds.utils.ItemBuilder
 import me.glaremasters.guilds.utils.StringUtils
 import me.mattstudios.mfgui.gui.guis.Gui
 import me.mattstudios.mfgui.gui.guis.GuiItem
+import me.mattstudios.mfgui.gui.guis.PaginatedGui
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 
@@ -40,4 +41,14 @@ internal fun addBackground(gui: Gui) {
         event.isCancelled = true
     }
     gui.filler.fill(item)
+}
+
+internal fun addBottom(gui: PaginatedGui) {
+    val builder = ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem() ?: ItemStack(Material.GLASS_PANE))
+    builder.setName(StringUtils.color("&r"))
+    val item = GuiItem(builder.build())
+    item.setAction { event ->
+        event.isCancelled = true
+    }
+    gui.filler.fillBottom(item)
 }
