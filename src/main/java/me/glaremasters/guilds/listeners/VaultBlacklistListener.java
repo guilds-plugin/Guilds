@@ -79,7 +79,7 @@ public class VaultBlacklistListener implements Listener {
             if (guild != null) {
                 if (guildHandler.getOpenedVault().contains(player)) {
                     if (event.getClickedInventory() == null) {
-                        guilds.getGuiHandler().getVaultGUI().getVaultGUI(guild, player, guilds.getCommandManager()).show(event.getWhoClicked());
+                        guilds.getGuiHandler().getVaultGUI().getVaultGUI(guild, player).open(event.getWhoClicked());
                         guildHandler.getOpenedVault().remove(player);
                     }
                 }

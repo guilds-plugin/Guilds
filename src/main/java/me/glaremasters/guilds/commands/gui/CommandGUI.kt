@@ -64,7 +64,7 @@ internal class CommandGUI() : BaseCommand() {
     @Syntax("")
     @CommandPermission(Constants.BASE_PERM + "info")
     fun info(player: Player, guild: Guild) {
-        guilds.guiHandler.infoGUI.getInfoGUI(guild, player).show(player)
+        guilds.guiHandler.infoGUI.getInfoGUI(guild, player).open(player)
     }
 
     @Subcommand("list")

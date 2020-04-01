@@ -25,21 +25,12 @@
 package me.glaremasters.guilds.guis
 
 import ch.jalu.configme.SettingsManager
-import com.github.stefvanschie.inventoryframework.Gui
-import com.github.stefvanschie.inventoryframework.GuiItem
-import com.github.stefvanschie.inventoryframework.pane.PaginatedPane
-import com.github.stefvanschie.inventoryframework.pane.StaticPane
 import me.glaremasters.guilds.Guilds
-import me.glaremasters.guilds.configuration.sections.GuildInfoSettings
 import me.glaremasters.guilds.configuration.sections.GuildListSettings
-import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
-import me.glaremasters.guilds.utils.GuiBuilder
-import me.glaremasters.guilds.utils.GuiUtils
-import me.glaremasters.guilds.utils.StringUtils
-import org.bukkit.event.inventory.InventoryClickEvent
-import java.text.SimpleDateFormat
-import java.util.function.Consumer
+import me.glaremasters.guilds.utils.GuiBuilderTwo
+import me.mattstudios.mfgui.gui.guis.Gui
+import me.mattstudios.mfgui.gui.guis.GuiItem
 
 class ListGUI(private val guilds: Guilds, private val settingsManager: SettingsManager, private val guildHandler: GuildHandler) {
     private val items: MutableList<GuiItem>
@@ -47,8 +38,8 @@ class ListGUI(private val guilds: Guilds, private val settingsManager: SettingsM
     val listGUI: Gui
         get() {
             val name = settingsManager.getProperty(GuildListSettings.GUILD_LIST_NAME)
-            val gui = GuiBuilder(guilds).setName(name).setRows(6).blockGlobalClick().build()
-
+            val gui = GuiBuilderTwo(guilds).setName(name).setRows(6).build()
+/*
             val paginatedPane = PaginatedPane(0, 0, 9, 5)
 
             val pane = StaticPane(0, 5, 9, 1)
@@ -57,12 +48,12 @@ class ListGUI(private val guilds: Guilds, private val settingsManager: SettingsM
             createListItems(paginatedPane)
 
             gui.addPane(paginatedPane)
-            gui.addPane(pane)
+            gui.addPane(pane)*/
 
             return gui
         }
 
-    // Next Button
+/*    // Next Button
     private fun createButtons(pane: StaticPane, paginatedPane: PaginatedPane, gui: Gui) {
         pane.addItem(GuiItem(GuiUtils.createItem(settingsManager.getProperty(GuildListSettings.GUILD_LIST_NEXT_PAGE_ITEM), settingsManager.getProperty(GuildListSettings.GUILD_LIST_NEXT_PAGE_ITEM_NAME), ArrayList()), Consumer {
             if (paginatedPane.page + 1 + 1 <= paginatedPane.pages) {
@@ -78,13 +69,13 @@ class ListGUI(private val guilds: Guilds, private val settingsManager: SettingsM
                 gui.update()
             }
         }), 0, 0)
-    }
-
-    /**
+    }*/
+/*
+    *//**
      * Create all the items for the GUI
      *
      * @param pane the pane to add the items to
-     */
+     *//*
     private fun createListItems(pane: PaginatedPane) {
         val guilds = guildHandler.guilds
         when (settingsManager.getProperty(GuildListSettings.GUILD_LIST_SORT).toUpperCase()) {
@@ -103,11 +94,11 @@ class ListGUI(private val guilds: Guilds, private val settingsManager: SettingsM
         items.clear()
     }
 
-    /**
+    *//**
      * Set the item to the list
      *
      * @param guild the guild of the pane
-     */
+     *//*
     private fun setListItem(guild: Guild) {
         val listItem = GuiItem(guild.skull, Consumer { event: InventoryClickEvent ->
             guilds.guiHandler.infoMembersGUI.getInfoMembersGUI(guild).open(event.whoClicked)
@@ -126,13 +117,13 @@ class ListGUI(private val guilds: Guilds, private val settingsManager: SettingsM
         items.add(listItem)
     }
 
-    /**
+    *//**
      * Update lore with replacements
      *
      * @param guild the guild being edited
      * @param lore  the lore to change
      * @return updated lore
-     */
+     *//*
     private fun updatedLore(guild: Guild, lore: List<String>): List<String> {
         val sdf = SimpleDateFormat(settingsManager.getProperty(GuildListSettings.GUI_TIME_FORMAT))
         val status = if (guild.isPrivate) settingsManager.getProperty(GuildInfoSettings.STATUS_PRIVATE) else settingsManager.getProperty(GuildInfoSettings.STATUS_PUBLIC)
@@ -156,7 +147,7 @@ class ListGUI(private val guilds: Guilds, private val settingsManager: SettingsM
                     .replace("{guild-tier-name}", tierName)))
         })
         return updated
-    }
+    }*/
 
     init {
         items = ArrayList()

@@ -37,6 +37,7 @@ import me.glaremasters.guilds.utils.GuiUtils
 import me.glaremasters.guilds.utils.StringUtils
 import me.mattstudios.mfgui.gui.guis.Gui
 import me.mattstudios.mfgui.gui.guis.GuiItem
+import org.bukkit.entity.Player
 import java.text.SimpleDateFormat
 import java.util.Comparator
 import java.util.Date
@@ -49,9 +50,9 @@ class InfoMembersGUI(private val guilds: Guilds, private val settingsManager: Se
 
         gui.setOutsideClickAction { event ->
             event.isCancelled = true
-/*            val player = event.whoClicked as Player
+            val player = event.whoClicked as Player
             val playerGuild = guildHandler.getGuild(player)
-            if (playerGuild == null) guilds.guiHandler.listGUI.listGUI.open(event.whoClicked) else guilds.guiHandler.infoGUI.getInfoGUI(playerGuild, player).show(event.whoClicked)*/
+            if (playerGuild == null) guilds.guiHandler.listGUI.listGUI.open(event.whoClicked) else guilds.guiHandler.infoGUI.getInfoGUI(playerGuild, player).open(event.whoClicked)
         }
 
         addItems(gui, guild)
