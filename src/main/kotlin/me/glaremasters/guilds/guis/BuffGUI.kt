@@ -45,7 +45,7 @@ import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import java.util.concurrent.TimeUnit
 
-class BuffGUI(private val guilds: Guilds, private val buffConfig: SettingsManager, private val mainConfig: SettingsManager, private val cooldownHandler: CooldownHandler) {
+class BuffGUI(private val guilds: Guilds, private val buffConfig: SettingsManager, private val cooldownHandler: CooldownHandler) {
 
     fun getBuffGUI(player: Player, guild: Guild, manager: PaperCommandManager): Gui {
         val name = buffConfig.getProperty(GuildBuffSettings.GUI_NAME)
@@ -81,7 +81,7 @@ class BuffGUI(private val guilds: Guilds, private val buffConfig: SettingsManage
                 getBuffEffects(buff.effects).forEach { effect ->
                     guild.addPotion(effect)
                 }
-                cooldownHandler.addCooldown(guild, cooldownName, mainConfig.getProperty(CooldownSettings.BUFF), TimeUnit.SECONDS)
+                cooldownHandler.addCooldown(guild, cooldownName, buffConfig.getProperty(GuildBuffSettings.COOLDOWN), TimeUnit.SECONDS)
                 runCommands(buff.clicker.enabled, buff.clicker.commands, listOf(player))
                 runCommands(buff.guild.enabled, buff.guild.commands, guild.onlineAsPlayers)
             }

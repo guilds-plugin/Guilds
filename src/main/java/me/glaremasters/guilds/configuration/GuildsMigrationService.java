@@ -70,7 +70,8 @@ public class GuildsMigrationService extends PlainMigrationService {
                 "settings.player-update-languages",
                 "tiers.list",
                 "roles",
-                "guis.guild-buffs"
+                "guis.guild-buffs",
+                "timers.cooldowns.sethome"
         };
         for (String deprecatedPath : deprecatedProperties) {
             if (reader.contains(deprecatedPath)) {

@@ -41,6 +41,10 @@ internal object GuildBuffSettings : SettingsHolder {
     val GUI_NAME: Property<String> = newProperty("guild-buffs.gui-name", "Guild Buffs")
 
     @JvmField
+    @Comment("How often (in seconds) can a guild buy a buff?")
+    val COOLDOWN = newProperty("guild-buffs.cooldown", 60)
+
+    @JvmField
     @Comment("Do we want to allow users to have more than one buff at a time?")
     val BUFF_STACKING: Property<Boolean> = newProperty("guild-buffs.buff-stacking", false)
 
