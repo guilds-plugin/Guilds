@@ -45,7 +45,7 @@ public class GUIHandler {
 
     public GUIHandler(Guilds guilds, SettingsManager settingsManager, GuildHandler guildHandler, PaperCommandManager commandManager, CooldownHandler cooldownHandler) {
 
-        buffGUI = new BuffGUI(guilds, guilds.getSettingsHandler().getBuffSettings(), settingsManager, guildHandler, commandManager, cooldownHandler);
+        buffGUI = new BuffGUI(guilds, guilds.getSettingsHandler().getBuffSettings(), settingsManager, cooldownHandler);
         listGUI = new ListGUI(guilds, settingsManager, guildHandler);
         infoGUI = new InfoGUI(guilds, settingsManager, guildHandler, cooldownHandler, commandManager);
         infoMembersGUI = new InfoMembersGUI(guilds, settingsManager, guildHandler);

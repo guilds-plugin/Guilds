@@ -33,7 +33,6 @@ import me.glaremasters.guilds.configuration.sections.CooldownSettings
 import me.glaremasters.guilds.cooldowns.Cooldown
 import me.glaremasters.guilds.cooldowns.CooldownHandler
 import me.glaremasters.guilds.guild.Guild
-import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.EconomyUtils
 import me.glaremasters.guilds.utils.GuiBuilder
@@ -46,7 +45,7 @@ import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import java.util.concurrent.TimeUnit
 
-class BuffGUI(private val guilds: Guilds, private val buffConfig: SettingsManager, private val mainConfig: SettingsManager, private val guildHandler: GuildHandler, private val manager: PaperCommandManager, private val cooldownHandler: CooldownHandler) {
+class BuffGUI(private val guilds: Guilds, private val buffConfig: SettingsManager, private val mainConfig: SettingsManager, private val cooldownHandler: CooldownHandler) {
 
     fun getBuffGUI(player: Player, guild: Guild, manager: PaperCommandManager): Gui {
         val name = buffConfig.getProperty(GuildBuffSettings.GUI_NAME)
