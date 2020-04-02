@@ -109,6 +109,10 @@ internal class CommandWar() : BaseCommand() {
             throw InvalidPermissionException()
         }
 
+        if (challengeHandler.getChallenge(guild) != null) {
+            throw ExpectationNotMet(Messages.WAR__ALREADY_CHALLENGING)
+        }
+
         val available = arenaHandler.getAvailableArena().isPresent
 
         if (!available) {
