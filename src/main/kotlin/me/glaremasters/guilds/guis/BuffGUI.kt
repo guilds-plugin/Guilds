@@ -26,6 +26,7 @@ package me.glaremasters.guilds.guis
 
 import ch.jalu.configme.SettingsManager
 import co.aikar.commands.PaperCommandManager
+import com.cryptomorin.xseries.XPotion
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.conf.GuildBuffSettings
 import me.glaremasters.guilds.configuration.sections.CooldownSettings
@@ -93,7 +94,7 @@ class BuffGUI(private val guilds: Guilds, private val buffConfig: SettingsManage
         val potions = mutableSetOf<PotionEffect>()
         effects.forEach {
             val split = it.split(";")
-            val type = PotionEffectType.getByName(split[0]) ?: PotionEffectType.WATER_BREATHING
+            val type = XPotion.matchXPotion(split[0]).get().parsePotionEffectType() ?: PotionEffectType.WATER_BREATHING
             val amp = Integer.parseInt(split[1])
             val length = Integer.parseInt(split[2])
             potions.add(PotionEffect(type, (length * 20), amp))
