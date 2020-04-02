@@ -109,6 +109,12 @@ internal class CommandWar() : BaseCommand() {
             throw InvalidPermissionException()
         }
 
+        val available = arenaHandler.getAvailableArena().isPresent
+
+        if (!available) {
+            throw ExpectationNotMet(Messages.ARENA__ALL_FULL)
+        }
+
         val arena = arenaHandler.getAvailableArena().get()
 
         val targetGuild = guildHandler.getGuild(target) ?: throw ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST)
