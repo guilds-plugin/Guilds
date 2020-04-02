@@ -32,6 +32,7 @@ import me.glaremasters.guilds.configuration.sections.WarSettings
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.Constants
 import org.bukkit.entity.Player
+import org.bukkit.entity.Projectile
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDamageByEntityEvent
@@ -97,6 +98,28 @@ class ArenaListener(private val guilds: Guilds, private val challengeHandler: Ch
 
         isCancelled = true
         challengeHandler.announceDeath(challenge, guilds, entity, killer, ChallengeHandler.Cause.PLAYER_KILLED_PLAYER)
+        challengeHandler.exitArena(entity, challenge, guilds)
+        challengeHandler.handleFinish(guilds, settingsManager, entity, challenge)
+    }
+
+    @EventHandler
+    fun EntityDamageByEntityEvent.onDeathByProjectile() {
+        val entity = entity as? Player ?: return
+        val obj = damager as? Projectile ?: return
+        val shooter = obj.shooter as? Player ?: return
+
+        if (entity.health - finalDamage > 1) {
+            return
+        }
+
+        val challenge = challengeHandler.getChallenge(entity) ?: return
+
+        if (!challenge.isStarted) {
+            return
+        }
+
+        isCancelled = true
+        challengeHandler.announceDeath(challenge, guilds, entity, shooter, ChallengeHandler.Cause.PLAYER_KILLED_PLAYER)
         challengeHandler.exitArena(entity, challenge, guilds)
         challengeHandler.handleFinish(guilds, settingsManager, entity, challenge)
     }
