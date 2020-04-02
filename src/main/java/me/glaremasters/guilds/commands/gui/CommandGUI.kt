@@ -56,7 +56,7 @@ internal class CommandGUI() : BaseCommand() {
             throw InvalidPermissionException()
         }
 
-        guilds.guiHandler.buffGUI.buffGUI.open(player)
+        guilds.guiHandler.buffGUI.getBuffGUI(player, guild, guilds.commandManager).open(player)
     }
 
     @Subcommand("info")

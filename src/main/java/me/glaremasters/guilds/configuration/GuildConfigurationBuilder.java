@@ -26,11 +26,11 @@ package me.glaremasters.guilds.configuration;
 
 import ch.jalu.configme.configurationdata.ConfigurationData;
 import ch.jalu.configme.configurationdata.ConfigurationDataBuilder;
+import me.glaremasters.guilds.conf.GuildBuffSettings;
 import me.glaremasters.guilds.configuration.sections.ClaimSettings;
 import me.glaremasters.guilds.configuration.sections.CodeSettings;
 import me.glaremasters.guilds.configuration.sections.CooldownSettings;
 import me.glaremasters.guilds.configuration.sections.CostSettings;
-import me.glaremasters.guilds.configuration.sections.GuildBuffSettings;
 import me.glaremasters.guilds.configuration.sections.GuildInfoMemberSettings;
 import me.glaremasters.guilds.configuration.sections.GuildInfoSettings;
 import me.glaremasters.guilds.configuration.sections.GuildListSettings;

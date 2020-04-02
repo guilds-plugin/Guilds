@@ -541,6 +541,10 @@ public class Guild {
         getOnlineAsPlayers().forEach(p -> p.addPotionEffect(new PotionEffect(PotionEffectType.getByName(type), length, amplifier)));
     }
 
+    public void addPotion(PotionEffect effect) {
+        getOnlineAsPlayers().forEach(p -> p.addPotionEffect(effect));
+    }
+
     public UUID getId() {
         return this.id;
     }

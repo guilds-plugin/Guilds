@@ -38,15 +38,12 @@ import java.io.File;
  */
 public class SettingsHandler {
 
-    private Guilds guilds;
     private SettingsManager settingsManager;
     private SettingsManager tierSettings;
     private SettingsManager roleSettings;
     private SettingsManager buffSettings;
 
     public SettingsHandler(Guilds guilds) {
-
-        this.guilds = guilds;
 
         settingsManager = SettingsManagerBuilder
                 .withYamlFile(new File(guilds.getDataFolder(), "config.yml"))
@@ -65,7 +62,7 @@ public class SettingsHandler {
                 .create();
 
         buffSettings = SettingsManagerBuilder.withYamlFile(new File(guilds.getDataFolder(), "buffs.yml"))
-                .migrationService(new PlainMigrationService())
+                .migrationService(new BuffsMigrationService())
                 .configurationData(GuildConfigurationBuilder.buildBuffData())
                 .create();
     }
