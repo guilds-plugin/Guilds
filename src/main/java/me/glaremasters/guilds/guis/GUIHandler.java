@@ -25,7 +25,7 @@
 package me.glaremasters.guilds.guis;
 
 import ch.jalu.configme.SettingsManager;
-import co.aikar.commands.CommandManager;
+import co.aikar.commands.PaperCommandManager;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.cooldowns.CooldownHandler;
 import me.glaremasters.guilds.guild.GuildHandler;
@@ -43,24 +43,13 @@ public class GUIHandler {
     private InfoMembersGUI infoMembersGUI;
     private VaultGUI vaultGUI;
 
-    private Guilds guilds;
-    private SettingsManager settingsManager;
-    private GuildHandler guildHandler;
-    private CommandManager commandManager;
-    private CooldownHandler cooldownHandler;
+    public GUIHandler(Guilds guilds, SettingsManager settingsManager, GuildHandler guildHandler, PaperCommandManager commandManager, CooldownHandler cooldownHandler) {
 
-    public GUIHandler(Guilds guilds, SettingsManager settingsManager, GuildHandler guildHandler, CommandManager commandManager, CooldownHandler cooldownHandler) {
-        this.guilds = guilds;
-        this.settingsManager = settingsManager;
-        this.guildHandler = guildHandler;
-        this.commandManager = commandManager;
-        this.cooldownHandler = cooldownHandler;
-
-        buffGUI = new BuffGUI(this.guilds, guilds.getSettingsHandler().getBuffSettings(), this.settingsManager, this.guildHandler, this.commandManager, this.cooldownHandler);
-        listGUI = new ListGUI(this.guilds, this.settingsManager, this.guildHandler);
-        infoGUI = new InfoGUI(this.guilds, this.settingsManager, this.guildHandler, this.cooldownHandler, commandManager);
-        infoMembersGUI = new InfoMembersGUI(this.guilds, this.settingsManager, this.guildHandler);
-        vaultGUI = new VaultGUI(this.guilds, this.settingsManager, this.guildHandler);
+        buffGUI = new BuffGUI(guilds, guilds.getSettingsHandler().getBuffSettings(), settingsManager, guildHandler, commandManager, cooldownHandler);
+        listGUI = new ListGUI(guilds, settingsManager, guildHandler);
+        infoGUI = new InfoGUI(guilds, settingsManager, guildHandler, cooldownHandler, commandManager);
+        infoMembersGUI = new InfoMembersGUI(guilds, settingsManager, guildHandler);
+        vaultGUI = new VaultGUI(guilds, settingsManager, guildHandler);
     }
 
     public BuffGUI getBuffGUI() {

@@ -25,15 +25,21 @@
 package me.glaremasters.guilds.utils;
 
 import com.cryptomorin.xseries.XMaterial;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 // This is a temp class until I can sort a bunch of shit out
 public class GuiUtils {
+
+    public static Set<Material> problemItems = new HashSet<>(Arrays.asList(XMaterial.REDSTONE_TORCH.parseMaterial(), XMaterial.RED_BED.parseMaterial()));
 
     public static ItemStack createItem(String material, String name, List<String> lore) {
         Optional<XMaterial> tempMaterial = XMaterial.matchXMaterial(material);
@@ -41,6 +47,11 @@ public class GuiUtils {
         ItemStack item = tempCheck.parseItem();
         if (item == null) {
             item = XMaterial.GLASS_PANE.parseItem();
+        }
+        // Extra check
+        if (problemItems.contains(item.getType())) {
+            LoggingUtils.warn("Problematic Material Type Found! Switching to Barrier.");
+            item.setType(XMaterial.BARRIER.parseMaterial());
         }
         ItemBuilder builder = new ItemBuilder(item);
         builder.setName(StringUtils.color(name));

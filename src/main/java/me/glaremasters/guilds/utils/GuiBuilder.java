@@ -24,11 +24,7 @@
 
 package me.glaremasters.guilds.utils;
 
-import com.cryptomorin.xseries.XMaterial;
-import com.github.stefvanschie.inventoryframework.Gui;
-import com.github.stefvanschie.inventoryframework.GuiItem;
-import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
-import com.github.stefvanschie.inventoryframework.pane.Pane;
+import me.mattstudios.mfgui.gui.guis.Gui;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -48,7 +44,7 @@ public class GuiBuilder {
 
     @NotNull
     public GuiBuilder setName(@NotNull String name) {
-        gui.setTitle(StringUtils.color(name));
+        gui.updateTitle(StringUtils.color(name));
         return this;
     }
 
@@ -59,19 +55,8 @@ public class GuiBuilder {
     }
 
     @NotNull
-    public GuiBuilder addBackground(int length, int height) {
-        OutlinePane background = new OutlinePane(0, 0, length, height, Pane.Priority.LOW);
-        ItemBuilder builder = new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem());
-        builder.setName(StringUtils.color("&r"));
-        background.addItem(new GuiItem(builder.build()));
-        background.setRepeat(true);
-        gui.addPane(background);
-        return this;
-    }
-
-    @NotNull
-    public GuiBuilder blockGlobalClick() {
-        gui.setOnGlobalClick(event -> event.setCancelled(true));
+    public GuiBuilder disableGlobalClicking() {
+        gui.setDefaultClickAction(event -> event.setCancelled(true));
         return this;
     }
 }
