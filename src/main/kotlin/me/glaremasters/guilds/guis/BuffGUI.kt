@@ -94,6 +94,11 @@ class BuffGUI(private val guilds: Guilds, private val buffConfig: SettingsManage
             val guiItem = GuiItem(item)
             guiItem.setAction { event ->
                 event.isCancelled = true
+
+                if (!access) {
+                    return@setAction
+                }
+                
                 if (cooldownHandler.hasCooldown(cooldownName, guild.id)) {
                     manager.getCommandIssuer(player).sendInfo(Messages.ERROR__BUFF_COOLDOWN, "{amount}", cooldownHandler.getRemaining(cooldownName, guild.id).toString())
                     return@setAction
