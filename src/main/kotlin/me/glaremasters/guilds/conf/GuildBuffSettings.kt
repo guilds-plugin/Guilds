@@ -31,6 +31,8 @@ import ch.jalu.configme.properties.PropertyInitializer.newBeanProperty
 import ch.jalu.configme.properties.PropertyInitializer.newProperty
 import me.glaremasters.guilds.conf.objects.BuffCommand
 import me.glaremasters.guilds.conf.objects.BuffHolder
+import me.glaremasters.guilds.conf.objects.BuffNav
+import me.glaremasters.guilds.conf.objects.BuffNavItem
 import me.glaremasters.guilds.conf.objects.BuffSetting
 import me.glaremasters.guilds.conf.objects.GuildBuff
 
@@ -47,6 +49,10 @@ internal object GuildBuffSettings : SettingsHolder {
     @JvmField
     @Comment("Do we want to allow users to have more than one buff at a time?")
     val BUFF_STACKING: Property<Boolean> = newProperty("guild-buffs.buff-stacking", false)
+
+    @JvmField
+    @Comment("Set the name and material for the navigation buttons")
+    val NAVIGATION: Property<BuffNav> = newBeanProperty(BuffNav::class.java, "guild-buffs.nav", BuffNav(BuffNavItem("EMPTY_MAP", "Next"), BuffNavItem("EMPTY_MAP", "Previous")))
 
     @JvmField
     val BUFFS: Property<BuffHolder> = newBeanProperty(BuffHolder::class.java, "guild-buffs.list", BuffHolder(listOf(

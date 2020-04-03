@@ -30,15 +30,19 @@ import com.cryptomorin.xseries.XPotion
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.conf.GuildBuffSettings
 import me.glaremasters.guilds.configuration.sections.CooldownSettings
+import me.glaremasters.guilds.configuration.sections.GuildListSettings
 import me.glaremasters.guilds.cooldowns.Cooldown
 import me.glaremasters.guilds.cooldowns.CooldownHandler
+import me.glaremasters.guilds.exte.addBottom
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.EconomyUtils
 import me.glaremasters.guilds.utils.GuiBuilder
 import me.glaremasters.guilds.utils.GuiUtils
+import me.glaremasters.guilds.utils.StringUtils
 import me.mattstudios.mfgui.gui.guis.Gui
 import me.mattstudios.mfgui.gui.guis.GuiItem
+import me.mattstudios.mfgui.gui.guis.PaginatedGui
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.potion.PotionEffect
@@ -47,16 +51,40 @@ import java.util.concurrent.TimeUnit
 
 class BuffGUI(private val guilds: Guilds, private val buffConfig: SettingsManager, private val cooldownHandler: CooldownHandler) {
 
-    fun getBuffGUI(player: Player, guild: Guild, manager: PaperCommandManager): Gui {
+    fun getBuffGUI(player: Player, guild: Guild, manager: PaperCommandManager): PaginatedGui {
         val name = buffConfig.getProperty(GuildBuffSettings.GUI_NAME)
-        val gui = GuiBuilder(guilds).setName(name).setRows(3).disableGlobalClicking().build()
+        val gui = PaginatedGui(guilds, 6, 45, StringUtils.color(name))
+
+        gui.setDefaultClickAction { event ->
+            event.isCancelled = true
+        }
 
         setBuffItem(gui, player, guild, manager)
+        addBottom(gui)
+        createButtons(gui)
 
         return gui
     }
 
-    private fun setBuffItem(gui: Gui, player: Player, guild: Guild, manager: PaperCommandManager) {
+    private fun createButtons(gui: PaginatedGui) {
+        val nav = buffConfig.getProperty(GuildBuffSettings.NAVIGATION) ?: return
+
+        val next = GuiItem(GuiUtils.createItem(nav.next.material, nav.next.name, emptyList()))
+        next.setAction {
+            gui.nextPage()
+        }
+
+
+        val back = GuiItem(GuiUtils.createItem(nav.previous.material, nav.previous.name, emptyList()))
+        back.setAction {
+            gui.prevPage()
+        }
+
+        gui.setItem(6, 9, next)
+        gui.setItem(6, 1, back)
+    }
+
+    private fun setBuffItem(gui: PaginatedGui, player: Player, guild: Guild, manager: PaperCommandManager) {
         val settings = buffConfig.getProperty(GuildBuffSettings.BUFFS) ?: return
         val cooldownName = Cooldown.Type.Buffs.name
         settings.buffs.forEach { buff ->
