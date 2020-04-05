@@ -29,18 +29,14 @@ import co.aikar.commands.PaperCommandManager
 import com.cryptomorin.xseries.XPotion
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.conf.GuildBuffSettings
-import me.glaremasters.guilds.configuration.sections.CooldownSettings
-import me.glaremasters.guilds.configuration.sections.GuildListSettings
 import me.glaremasters.guilds.cooldowns.Cooldown
 import me.glaremasters.guilds.cooldowns.CooldownHandler
 import me.glaremasters.guilds.exte.addBottom
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.EconomyUtils
-import me.glaremasters.guilds.utils.GuiBuilder
 import me.glaremasters.guilds.utils.GuiUtils
 import me.glaremasters.guilds.utils.StringUtils
-import me.mattstudios.mfgui.gui.guis.Gui
 import me.mattstudios.mfgui.gui.guis.GuiItem
 import me.mattstudios.mfgui.gui.guis.PaginatedGui
 import org.bukkit.Bukkit
@@ -85,9 +81,9 @@ class BuffGUI(private val guilds: Guilds, private val buffConfig: SettingsManage
     }
 
     private fun setBuffItem(gui: PaginatedGui, player: Player, guild: Guild, manager: PaperCommandManager) {
-        val settings = buffConfig.getProperty(GuildBuffSettings.BUFFS) ?: return
+        val buffs = buffConfig.getProperty(GuildBuffSettings.BUFFS) ?: return
         val cooldownName = Cooldown.Type.Buffs.name
-        settings.buffs.forEach { buff ->
+        buffs.forEach { buff ->
             val access = player.hasPermission(buff.permission)
             val item = if (access) GuiUtils.createItem(buff.unlocked.material, buff.unlocked.name, buff.unlocked.lore) else GuiUtils.createItem(buff.locked.material, buff.locked.name, buff.locked.lore)
             val cost = buff.price
