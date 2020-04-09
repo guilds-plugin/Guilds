@@ -147,10 +147,9 @@ class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCo
 
 
     private fun loadCommands() {
-        ZISScanner().getClasses(Guilds::class.java, "me.glaremasters.guilds.commands").stream()
-                .filter { cls: Class<*> -> BaseCommand::class.java.isAssignableFrom(cls) }
-                .map { clazz: Class<*> -> clazz as Class<out BaseCommand> }
-                .forEach { commandManager.registerCommand(it.newInstance()) }
+        ZISScanner().getClasses(Guilds::class.java, "me.glaremasters.guilds.commands").asSequence()
+                .filter { BaseCommand::class.java.isAssignableFrom(it) }
+                .forEach { commandManager.registerCommand(it.newInstance() as BaseCommand) }
     }
 
     private fun loadDI() {
