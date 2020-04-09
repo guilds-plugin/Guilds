@@ -38,7 +38,7 @@ shadowJar {
     relocate("org.bstats", "${base}bstats")
     relocate("co.aikar.commands", "${base}acf")
     relocate("co.aikar.taskchain", "${base}taskchain")
-    relocate("org.yaml.snakeyaml", "${base}snakeyml")
+    relocate("ch.jalu.configme", "${base}configme")
     relocate("net.byteflux.libby", "${base}libby")
     relocate("com.zaxxer.hikari", "${base}hikari")
     relocate("org.jdbi", "${base}jdbi")
