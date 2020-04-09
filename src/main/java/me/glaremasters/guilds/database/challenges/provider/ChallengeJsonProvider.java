@@ -28,7 +28,6 @@ import com.google.gson.Gson;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.database.challenges.ChallengeProvider;
 import me.glaremasters.guilds.guild.GuildChallenge;
-import org.apache.commons.io.FilenameUtils;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -74,14 +73,14 @@ public class ChallengeJsonProvider implements ChallengeProvider {
     @Override
     public boolean challengeExists(@Nullable String tablePrefix, @NotNull String id) throws IOException {
         return Arrays.stream(Objects.requireNonNull(dataFolder.listFiles()))
-                .map(f -> FilenameUtils.removeExtension(f.getName()))
+                .map(f -> com.google.common.io.Files.getNameWithoutExtension(f.getName()))
                 .anyMatch(n -> n.equals(id));
     }
 
     @Override
     public GuildChallenge getChallenge(@Nullable String tablePrefix, @NotNull String id) throws IOException {
         File data = Arrays.stream(Objects.requireNonNull(dataFolder.listFiles()))
-                .filter(f -> FilenameUtils.removeExtension(f.getName()).equals(id))
+                .filter(f -> com.google.common.io.Files.getNameWithoutExtension(f.getName()).equals(id))
                 .findFirst()
                 .orElse(null);
 

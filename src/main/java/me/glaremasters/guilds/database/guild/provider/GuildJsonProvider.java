@@ -28,7 +28,6 @@ import com.google.gson.Gson;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.database.guild.GuildProvider;
 import me.glaremasters.guilds.guild.Guild;
-import org.apache.commons.io.FilenameUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -68,7 +67,7 @@ public class GuildJsonProvider implements GuildProvider {
     @Override
     public boolean guildExists(@Nullable String tablePrefix, @NotNull String id) {
         return Arrays.stream(Objects.requireNonNull(dataFolder.listFiles()))
-                .map(f -> FilenameUtils.removeExtension(f.getName()))
+                .map(f -> com.google.common.io.Files.getNameWithoutExtension(f.getName()))
                 .anyMatch(n -> n.equals(id));
     }
 
@@ -77,7 +76,7 @@ public class GuildJsonProvider implements GuildProvider {
         List<String> loadedGuildIds = new ArrayList<>();
 
         for (File file : Objects.requireNonNull(dataFolder.listFiles())) {
-            loadedGuildIds.add(FilenameUtils.removeExtension(file.getName()));
+            loadedGuildIds.add(com.google.common.io.Files.getNameWithoutExtension(file.getName()));
         }
 
         return loadedGuildIds;
@@ -97,7 +96,7 @@ public class GuildJsonProvider implements GuildProvider {
     @Override
     public Guild getGuild(@Nullable String tablePrefix, @NotNull String id) throws IOException {
         File data = Arrays.stream(Objects.requireNonNull(dataFolder.listFiles()))
-                .filter(f -> FilenameUtils.removeExtension(f.getName()).equals(id))
+                .filter(f -> com.google.common.io.Files.getNameWithoutExtension(f.getName()).equals(id))
                 .findFirst()
                 .orElse(null);
 

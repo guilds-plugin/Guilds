@@ -28,7 +28,6 @@ import com.google.gson.Gson;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.arena.Arena;
 import me.glaremasters.guilds.database.arenas.ArenaProvider;
-import org.apache.commons.io.FilenameUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -63,7 +62,7 @@ public class ArenaJsonProvider implements ArenaProvider {
     @Override
     public boolean arenaExists(@Nullable String tablePrefix, @NotNull String id) throws IOException {
         return Arrays.stream(Objects.requireNonNull(dataFolder.listFiles()))
-                .map(f -> FilenameUtils.removeExtension(f.getName()))
+                .map(f -> com.google.common.io.Files.getNameWithoutExtension(f.getName()))
                 .anyMatch(n -> n.equals(id));
     }
 
@@ -72,7 +71,7 @@ public class ArenaJsonProvider implements ArenaProvider {
         List<String> loadedArenaIds = new ArrayList<>();
 
         for (File file : Objects.requireNonNull(dataFolder.listFiles())) {
-            loadedArenaIds.add(FilenameUtils.removeExtension(file.getName()));
+            loadedArenaIds.add(com.google.common.io.Files.getNameWithoutExtension(file.getName()));
         }
 
         return loadedArenaIds;
@@ -92,7 +91,7 @@ public class ArenaJsonProvider implements ArenaProvider {
     @Override
     public Arena getArena(@Nullable String tablePrefix, @NotNull String id) throws IOException {
         File data = Arrays.stream(Objects.requireNonNull(dataFolder.listFiles()))
-                .filter(f -> FilenameUtils.removeExtension(f.getName()).equals(id))
+                .filter(f -> com.google.common.io.Files.getNameWithoutExtension(f.getName()).equals(id))
                 .findFirst()
                 .orElse(null);
 
