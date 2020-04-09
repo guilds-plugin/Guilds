@@ -42,7 +42,6 @@ shadowJar {
     relocate("co.aikar.taskchain", "${base}taskchain")
     relocate("org.yaml.snakeyaml", "${base}snakeyml")
     relocate("org.apache.commons.io", "${base}commonsio")
-    relocate("com.google.common", "${base}guava")
     relocate("net.byteflux.libby", "${base}libby")
     relocate("com.zaxxer.hikari", "${base}hikari")
     relocate("org.jdbi", "${base}jdbi")
@@ -64,7 +63,6 @@ dependencies {
     compile 'ch.jalu:configme:1.2.0'
     compile 'com.dumptruckman.minecraft:JsonConfiguration:1.1'
     compile 'commons-io:commons-io:2.6'
-    compileOnly 'com.google.guava:guava:28.2-jre'
     compileOnly 'com.zaxxer:HikariCP:3.3.1'
     compileOnly 'org.jdbi:jdbi3-core:3.8.2'
     compileOnly 'org.jdbi:jdbi3-sqlobject:3.8.2'

@@ -30,7 +30,6 @@ import co.aikar.commands.BukkitCommandCompletionContext
 import co.aikar.commands.BukkitCommandExecutionContext
 import co.aikar.commands.InvalidCommandArgument
 import co.aikar.commands.PaperCommandManager
-import com.google.common.reflect.ClassPath
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.actions.ActionHandler
 import me.glaremasters.guilds.arena.Arena
@@ -43,6 +42,7 @@ import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.guild.GuildRole
 import me.glaremasters.guilds.messages.Messages
+import me.glaremasters.guilds.scanner.ZISScanner
 import net.milkbowl.vault.economy.Economy
 import net.milkbowl.vault.permission.Permission
 import org.bukkit.Bukkit
@@ -147,12 +147,10 @@ class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCo
 
 
     private fun loadCommands() {
-        val classes = ClassPath.from(this.javaClass.classLoader).getTopLevelClassesRecursive("me.glaremasters.guilds.commands")
-        classes.map(ClassPath.ClassInfo::load)
-                .filter(BaseCommand::class.java::isAssignableFrom)
-                .map(Class<*>::newInstance)
-                .filterIsInstance<BaseCommand>()
-                .forEach(commandManager::registerCommand)
+        ZISScanner().getClasses(Guilds::class.java, "me.glaremasters.guilds.commands").stream()
+                .filter { cls: Class<*> -> BaseCommand::class.java.isAssignableFrom(cls) }
+                .map { clazz: Class<*> -> clazz as Class<out BaseCommand> }
+                .forEach { commandManager.registerCommand(it.newInstance()) }
     }
 
     private fun loadDI() {
