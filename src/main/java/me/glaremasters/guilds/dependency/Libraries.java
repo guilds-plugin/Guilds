@@ -29,15 +29,6 @@ import net.byteflux.libby.Library;
 
 public class Libraries {
 
-    public void loadGuava(BukkitLibraryManager loader) {
-        loader.loadLibrary(Library.builder()
-                .groupId("com.google.guava")
-                .artifactId("guava")
-                .version("28.2-jre")
-                .relocate("com{}google{}common", "me.glaremasters.guilds.libs.guava")
-                .build());
-    }
-
     public void loadSQL(BukkitLibraryManager loader) {
         loader.loadLibrary(Library.builder()
                 .groupId("com.zaxxer")
