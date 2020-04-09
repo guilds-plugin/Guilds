@@ -84,7 +84,7 @@ dependencies {
     // MariaDB Support
     compileOnly 'org.mariadb.jdbc:mariadb-java-client:2.4.0'
     // Bukkit Version
-    compileOnly 'org.bukkit:bukkit:1.15.1-R0.1-SNAPSHOT'
+    compileOnly 'org.bukkit:bukkit:1.15.2-R0.1-SNAPSHOT'
     // Mojang Library
     compileOnly 'com.mojang:authlib:1.5.25'
     // PlaceholderAPI
