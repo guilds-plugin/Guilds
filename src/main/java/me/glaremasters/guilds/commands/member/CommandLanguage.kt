@@ -22,46 +22,35 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.commands.member;
+package me.glaremasters.guilds.commands.member
 
-import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.CommandCompletion;
-import co.aikar.commands.annotation.CommandPermission;
-import co.aikar.commands.annotation.Dependency;
-import co.aikar.commands.annotation.Description;
-import co.aikar.commands.annotation.Single;
-import co.aikar.commands.annotation.Subcommand;
-import co.aikar.commands.annotation.Values;
-import me.glaremasters.guilds.Guilds;
-import me.glaremasters.guilds.messages.Messages;
-import me.glaremasters.guilds.utils.Constants;
-import org.bukkit.entity.Player;
+import co.aikar.commands.BaseCommand
+import co.aikar.commands.annotation.CommandAlias
+import co.aikar.commands.annotation.CommandCompletion
+import co.aikar.commands.annotation.CommandPermission
+import co.aikar.commands.annotation.Dependency
+import co.aikar.commands.annotation.Description
+import co.aikar.commands.annotation.Single
+import co.aikar.commands.annotation.Subcommand
+import co.aikar.commands.annotation.Values
+import me.glaremasters.guilds.Guilds
+import me.glaremasters.guilds.guild.GuildHandler
+import me.glaremasters.guilds.messages.Messages
+import me.glaremasters.guilds.utils.Constants
+import org.bukkit.entity.Player
+import java.util.Locale
 
-import java.util.Locale;
-
-/**
- * Created by Glare
- * Date: 4/14/2019
- * Time: 12:39 AM
- */
 @CommandAlias("%guilds")
-public class CommandLanguage extends BaseCommand {
+internal class CommandLanguage : BaseCommand() {
+    @Dependency lateinit var guilds: Guilds
+    @Dependency lateinit var guildHandler: GuildHandler
 
-    @Dependency private Guilds guilds;
-
-    /**
-     * Set the language for the plugin
-     * @param player the player to set the language for
-     * @param language the language to set it as
-     */
     @Subcommand("language")
     @Description("{@@descriptions.language}")
     @CommandPermission(Constants.BASE_PERM + "language")
     @CommandCompletion("@languages")
-    public void execute(Player player, @Values("@languages") @Single String language) {
-        guilds.getCommandManager().setIssuerLocale(player, Locale.forLanguageTag(language));
-        getCurrentCommandIssuer().sendInfo(Messages.LANGUAGES__SET, "{language}", language);
+    fun language(player: Player, @Values("@languages") @Single language: String) {
+        guilds.commandManager.setIssuerLocale(player, Locale.forLanguageTag(language))
+        currentCommandIssuer.sendInfo(Messages.LANGUAGES__SET, "{language}", language)
     }
-
 }

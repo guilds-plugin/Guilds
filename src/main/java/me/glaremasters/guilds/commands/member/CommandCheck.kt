@@ -22,47 +22,36 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.commands.member;
+package me.glaremasters.guilds.commands.member
 
-import co.aikar.commands.ACFUtil;
-import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.CommandPermission;
-import co.aikar.commands.annotation.Dependency;
-import co.aikar.commands.annotation.Description;
-import co.aikar.commands.annotation.Subcommand;
-import me.glaremasters.guilds.exceptions.ExpectationNotMet;
-import me.glaremasters.guilds.guild.Guild;
-import me.glaremasters.guilds.guild.GuildHandler;
-import me.glaremasters.guilds.messages.Messages;
-import me.glaremasters.guilds.utils.Constants;
-import org.bukkit.entity.Player;
+import co.aikar.commands.BaseCommand
+import co.aikar.commands.annotation.CommandAlias
+import co.aikar.commands.annotation.CommandPermission
+import co.aikar.commands.annotation.Dependency
+import co.aikar.commands.annotation.Description
+import co.aikar.commands.annotation.Subcommand
+import me.glaremasters.guilds.Guilds
+import me.glaremasters.guilds.exceptions.ExpectationNotMet
+import me.glaremasters.guilds.guild.GuildHandler
+import me.glaremasters.guilds.messages.Messages
+import me.glaremasters.guilds.utils.Constants
+import org.bukkit.entity.Player
 
-/**
- * Created by Glare
- * Date: 4/5/2019
- * Time: 10:36 PM
- */
 @CommandAlias("%guilds")
-public class CommandCheck extends BaseCommand {
+internal class CommandCheck : BaseCommand() {
+    @Dependency lateinit var guilds: Guilds
+    @Dependency lateinit var guildHandler: GuildHandler
 
-    @Dependency private GuildHandler guildHandler;
-
-    /**
-     * Check if you have any guild invites
-     * @param player the player checking for invites
-     */
     @Subcommand("check")
     @Description("{@@descriptions.check}")
     @CommandPermission(Constants.BASE_PERM + "check")
-    public void execute(Player player) {
-        Guild guild = guildHandler.getGuild(player);
+    fun check(player: Player) {
+        val guild = guildHandler.getGuild(player)
 
         if (guild != null) {
-            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__ALREADY_IN_GUILD));
+            throw ExpectationNotMet(Messages.ERROR__ALREADY_IN_GUILD)
         }
 
-        guildHandler.checkInvites(getCurrentCommandManager(), player);
+        guildHandler.checkInvites(currentCommandManager, player)
     }
-
 }
