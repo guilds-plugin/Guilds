@@ -73,18 +73,22 @@ public class VaultBlacklistListener implements Listener {
 
     @EventHandler
     public void onClick(InventoryClickEvent event) {
-        if (event.getWhoClicked() instanceof Player) {
-            Player player = (Player) event.getWhoClicked();
-            Guild guild = guildHandler.getGuild(player);
-            if (guild != null) {
-                if (guildHandler.getOpenedVault().contains(player)) {
-                    if (event.getClickedInventory() == null) {
-                        guilds.getGuiHandler().getVaultGUI().getVaultGUI(guild, player).open(event.getWhoClicked());
-                        guildHandler.getOpenedVault().remove(player);
-                    }
-                }
-            }
+        if (!(event.getWhoClicked() instanceof Player)) {
+            return;
         }
+        Player player = (Player) event.getWhoClicked();
+        Guild guild = guildHandler.getGuild(player);
+        if (guild == null) {
+            return;
+        }
+        if (!guildHandler.getOpenedVault().contains(player)) {
+            return;
+        }
+        if (event.getClickedInventory() != null) {
+            return;
+        }
+        guilds.getGuiHandler().getVaultGUI().getVaultGUI(guild, player).open(event.getWhoClicked());
+        guildHandler.getOpenedVault().remove(player);
     }
 
     /**
