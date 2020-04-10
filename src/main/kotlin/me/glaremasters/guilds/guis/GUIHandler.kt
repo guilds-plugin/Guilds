@@ -35,9 +35,9 @@ import me.glaremasters.guilds.guild.GuildHandler
  * Time: 10:58 AM
  */
 class GUIHandler(guilds: Guilds, settingsManager: SettingsManager, guildHandler: GuildHandler, commandManager: PaperCommandManager, cooldownHandler: CooldownHandler) {
-    val buffGUI: BuffGUI = BuffGUI(guilds, guilds.settingsHandler.buffSettings, cooldownHandler)
-    val listGUI: ListGUI = ListGUI(guilds, settingsManager, guildHandler)
-    val infoGUI: InfoGUI = InfoGUI(guilds, settingsManager, guildHandler, cooldownHandler, commandManager)
-    val infoMembersGUI: InfoMembersGUI = InfoMembersGUI(guilds, settingsManager, guildHandler)
-    val vaultGUI: VaultGUI = VaultGUI(guilds, settingsManager, guildHandler)
+    val buffGUI = BuffGUI(guilds, guilds.settingsHandler.buffSettings, cooldownHandler)
+    val listGUI = ListGUI(guilds, settingsManager, guildHandler)
+    val infoGUI = InfoGUI(guilds, settingsManager, guildHandler, cooldownHandler, commandManager)
+    val infoMembersGUI = InfoMembersGUI(guilds, settingsManager, guildHandler)
+    val vaultGUI = VaultGUI(guilds, settingsManager, guildHandler)
 }
