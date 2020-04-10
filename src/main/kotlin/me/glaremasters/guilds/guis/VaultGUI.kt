@@ -39,7 +39,7 @@ import org.bukkit.entity.Player
 
 class VaultGUI(private val guilds: Guilds, private val settingsManager: SettingsManager, private val guildHandler: GuildHandler) {
 
-    fun getVaultGUI(guild: Guild, player: Player): Gui {
+    fun get(guild: Guild, player: Player): Gui {
         val name = settingsManager.getProperty(VaultPickerSettings.GUI_NAME).replace("{name}", guild.name)
         val rows = settingsManager.getProperty(VaultPickerSettings.GUI_SIZE)
         val gui = GuiBuilder(guilds).setName(name).setRows(rows).disableGlobalClicking().build()
@@ -47,7 +47,7 @@ class VaultGUI(private val guilds: Guilds, private val settingsManager: Settings
         // Prevent players from being able to items into the GUIs
         gui.setOutsideClickAction { event ->
             event.isCancelled = true
-            guilds.guiHandler.infoGUI.getInfoGUI(guild, player).open(event.whoClicked)
+            guilds.guiHandler.info.get(guild, player).open(event.whoClicked)
         }
 
         addItems(gui, guild, player)

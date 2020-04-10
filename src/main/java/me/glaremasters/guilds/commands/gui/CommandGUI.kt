@@ -56,7 +56,7 @@ internal class CommandGUI() : BaseCommand() {
             throw InvalidPermissionException()
         }
 
-        guilds.guiHandler.buffGUI.getBuffGUI(player, guild, guilds.commandManager).open(player)
+        guilds.guiHandler.buffs.get(player, guild, guilds.commandManager).open(player)
     }
 
     @Subcommand("info")
@@ -64,7 +64,7 @@ internal class CommandGUI() : BaseCommand() {
     @Syntax("")
     @CommandPermission(Constants.BASE_PERM + "info")
     fun info(player: Player, guild: Guild) {
-        guilds.guiHandler.infoGUI.getInfoGUI(guild, player).open(player)
+        guilds.guiHandler.info.get(guild, player).open(player)
     }
 
     @Subcommand("list")
@@ -72,7 +72,7 @@ internal class CommandGUI() : BaseCommand() {
     @Syntax("")
     @CommandPermission(Constants.BASE_PERM + "list")
     fun list(player: Player) {
-        guilds.guiHandler.listGUI.listGUI.open(player)
+        guilds.guiHandler.list.get.open(player)
     }
 
     @Subcommand("members")
@@ -80,7 +80,7 @@ internal class CommandGUI() : BaseCommand() {
     @Syntax("")
     @CommandPermission(Constants.BASE_PERM + "members")
     fun members(player: Player, guild: Guild) {
-        guilds.guiHandler.infoMembersGUI.getInfoMembersGUI(guild).open(player)
+        guilds.guiHandler.members.get(guild).open(player)
     }
 
     @Subcommand("vault")
@@ -92,6 +92,6 @@ internal class CommandGUI() : BaseCommand() {
             throw InvalidPermissionException()
         }
 
-        guilds.guiHandler.vaultGUI.getVaultGUI(guild, player).open(player)
+        guilds.guiHandler.vaults.get(guild, player).open(player)
     }
 }

@@ -45,7 +45,7 @@ import java.util.concurrent.TimeUnit
 
 class InfoGUI(private val guilds: Guilds, private val settingsManager: SettingsManager, private val guildHandler: GuildHandler, private val cooldownHandler: CooldownHandler, private val manager: PaperCommandManager) {
 
-    fun getInfoGUI(guild: Guild, player: Player) : Gui {
+    fun get(guild: Guild, player: Player) : Gui {
         val name = settingsManager.getProperty(GuildInfoSettings.GUI_NAME).replace("{name}", guild.name).replace("{prefix}", guild.prefix)
         val gui = GuiBuilder(guilds).setName(name).setRows(3).disableGlobalClicking().build()
 
@@ -90,7 +90,7 @@ class InfoGUI(private val guilds: Guilds, private val settingsManager: SettingsM
         val item = GuiItem(GuiUtils.createItem(settingsManager.getProperty(GuildInfoSettings.MEMBERS_MATERIAL), settingsManager.getProperty(GuildInfoSettings.MEMBERS_NAME), settingsManager.getProperty(GuildInfoSettings.MEMBERS_LORE).map { l -> l.replace("{current}", guild.members.size.toString()).replace("{max}", tier.maxMembers.toString()).replace("{online}", guild.onlineMembers.size.toString())}))
         item.setAction { event ->
             event.isCancelled = true
-            guilds.guiHandler.infoMembersGUI.getInfoMembersGUI(guild).open(event.whoClicked)
+            guilds.guiHandler.members.get(guild).open(event.whoClicked)
         }
         gui.setItem(2, 5, item)
     }
@@ -147,7 +147,7 @@ class InfoGUI(private val guilds: Guilds, private val settingsManager: SettingsM
             if (!guild.getMember(player.uniqueId).role.isOpenVault) {
                 return@setAction
             }
-            guilds.guiHandler.vaultGUI.getVaultGUI(guild, player).open(event.whoClicked)
+            guilds.guiHandler.vaults.get(guild, player).open(event.whoClicked)
         }
         gui.setItem(3, 5, item)
     }

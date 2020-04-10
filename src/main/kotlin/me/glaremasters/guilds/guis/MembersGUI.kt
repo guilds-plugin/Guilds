@@ -42,9 +42,9 @@ import java.text.SimpleDateFormat
 import java.util.Comparator
 import java.util.Date
 
-class InfoMembersGUI(private val guilds: Guilds, private val settingsManager: SettingsManager, private val guildHandler: GuildHandler) {
+class MembersGUI(private val guilds: Guilds, private val settingsManager: SettingsManager, private val guildHandler: GuildHandler) {
 
-    fun getInfoMembersGUI(guild: Guild): Gui {
+    fun get(guild: Guild): Gui {
         val name = settingsManager.getProperty(GuildInfoMemberSettings.GUI_NAME).replace("{name}", guild.name)
         val gui = GuiBuilder(guilds).setName(name).setRows(6).disableGlobalClicking().build()
 
@@ -52,7 +52,7 @@ class InfoMembersGUI(private val guilds: Guilds, private val settingsManager: Se
             event.isCancelled = true
             val player = event.whoClicked as Player
             val playerGuild = guildHandler.getGuild(player)
-            if (playerGuild == null) guilds.guiHandler.listGUI.listGUI.open(event.whoClicked) else guilds.guiHandler.infoGUI.getInfoGUI(playerGuild, player).open(event.whoClicked)
+            if (playerGuild == null) guilds.guiHandler.list.get.open(event.whoClicked) else guilds.guiHandler.info.get(playerGuild, player).open(event.whoClicked)
         }
 
         addItems(gui, guild)
