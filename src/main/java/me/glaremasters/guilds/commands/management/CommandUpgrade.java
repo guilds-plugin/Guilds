@@ -107,7 +107,7 @@ public class CommandUpgrade extends BaseCommand {
 
                 guild.setBalance(balance - upgradeCost);
 
-                if (!guilds.getSettingsHandler().getTierSettings().getProperty(TierSettings.CARRY_OVER)) {
+                if (!guilds.getSettingsHandler().getTierConf().getProperty(TierSettings.CARRY_OVER)) {
                     guildHandler.removePermsFromAll(permission, guild, settingsManager.getProperty(PluginSettings.RUN_VAULT_ASYNC));
                 }
 

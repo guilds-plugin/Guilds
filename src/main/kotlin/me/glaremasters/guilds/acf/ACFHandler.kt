@@ -59,8 +59,8 @@ class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCo
         loadCompletions(plugin.guildHandler, plugin.arenaHandler)
         loadDI()
 
-        commandManager.commandReplacements.addReplacement("guilds", plugin.settingsHandler.settingsManager.getProperty(PluginSettings.PLUGIN_ALIASES))
-        commandManager.commandReplacements.addReplacement("syntax", plugin.settingsHandler.settingsManager.getProperty(PluginSettings.SYNTAX_NAME))
+        commandManager.commandReplacements.addReplacement("guilds", plugin.settingsHandler.mainConf.getProperty(PluginSettings.PLUGIN_ALIASES))
+        commandManager.commandReplacements.addReplacement("syntax", plugin.settingsHandler.mainConf.getProperty(PluginSettings.SYNTAX_NAME))
 
         loadCommands()
     }
@@ -76,7 +76,7 @@ class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCo
             commandManager.addSupportedLanguage(locale)
             commandManager.locales.loadYamlLanguageFile(it, locale)
         }
-        commandManager.locales.defaultLocale = Locale.forLanguageTag(plugin.settingsHandler.settingsManager.getProperty(PluginSettings.MESSAGES_LANGUAGE))
+        commandManager.locales.defaultLocale = Locale.forLanguageTag(plugin.settingsHandler.mainConf.getProperty(PluginSettings.MESSAGES_LANGUAGE))
     }
 
     private fun loadContexts(guildHandler: GuildHandler, arenaHandler: ArenaHandler) {
@@ -154,7 +154,7 @@ class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCo
 
     private fun loadDI() {
         commandManager.registerDependency(GuildHandler::class.java, plugin.guildHandler)
-        commandManager.registerDependency(SettingsManager::class.java, plugin.settingsHandler.settingsManager)
+        commandManager.registerDependency(SettingsManager::class.java, plugin.settingsHandler.mainConf)
         commandManager.registerDependency(ActionHandler::class.java, plugin.actionHandler)
         commandManager.registerDependency(Economy::class.java, plugin.economy)
         commandManager.registerDependency(Permission::class.java, plugin.permissions)

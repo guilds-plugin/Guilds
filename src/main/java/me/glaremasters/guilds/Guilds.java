@@ -188,7 +188,7 @@ public final class Guilds extends JavaPlugin {
         // Load data here.
         try {
             LoggingUtils.info("Loading Data..");
-            setDatabase(new DatabaseAdapter(this, settingsHandler.getSettingsManager()));
+            setDatabase(new DatabaseAdapter(this, settingsHandler.getMainConf()));
             if (!database.isConnected()) {
                 // Jump down to the catch
                 throw new IOException("Failed to connect to Database.");
@@ -201,7 +201,7 @@ public final class Guilds extends JavaPlugin {
             // Load the challenge handler
             challengeHandler = new ChallengeHandler(this);
             // Load guildhandler with provider
-            guildHandler = new GuildHandler(this, settingsHandler.getSettingsManager());
+            guildHandler = new GuildHandler(this, settingsHandler.getMainConf());
             LoggingUtils.info("Data has been loaded!");
         } catch (IOException e) {
             LoggingUtils.severe("An error occurred loading data! Stopping plugin..");
@@ -228,9 +228,9 @@ public final class Guilds extends JavaPlugin {
         acfHandler = new ACFHandler(this, commandManager);
         acfHandler.load();
 
-        guiHandler = new GUIHandler(this, settingsHandler.getSettingsManager(), guildHandler, getCommandManager(), cooldownHandler);
+        guiHandler = new GUIHandler(this, settingsHandler.getMainConf(), guildHandler, getCommandManager(), cooldownHandler);
 
-        if (settingsHandler.getSettingsManager().getProperty(PluginSettings.ANNOUNCEMENTS_CONSOLE)) {
+        if (settingsHandler.getMainConf().getProperty(PluginSettings.ANNOUNCEMENTS_CONSOLE)) {
             newChain().async(() -> {
                 try {
                     LoggingUtils.info(StringUtils.getAnnouncements(this));
@@ -240,15 +240,15 @@ public final class Guilds extends JavaPlugin {
             }).execute();
         }
 
-        UpdateChecker.runCheck(this, settingsHandler.getSettingsManager());
+        UpdateChecker.runCheck(this, settingsHandler.getMainConf());
 
         // Load all the listeners
         Stream.of(
-                new EntityListener(guildHandler, settingsHandler.getSettingsManager(), challengeHandler),
-                new PlayerListener(this, settingsHandler.getSettingsManager(), guildHandler, permissions),
-                new TicketListener(this, guildHandler, settingsHandler.getSettingsManager()),
-                new VaultBlacklistListener(this, guildHandler, settingsHandler.getSettingsManager()),
-                new ArenaListener(this, challengeHandler, settingsHandler.getSettingsManager()))
+                new EntityListener(guildHandler, settingsHandler.getMainConf(), challengeHandler),
+                new PlayerListener(this, settingsHandler.getMainConf(), guildHandler, permissions),
+                new TicketListener(this, guildHandler, settingsHandler.getMainConf()),
+                new VaultBlacklistListener(this, guildHandler, settingsHandler.getMainConf()),
+                new ArenaListener(this, challengeHandler, settingsHandler.getMainConf()))
                 .forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
         // Load the optional listeners
         optionalListeners();
@@ -271,7 +271,7 @@ public final class Guilds extends JavaPlugin {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }, 20 * 60, (20 * 60) * settingsHandler.getSettingsManager().getProperty(StorageSettings.SAVE_INTERVAL));
+        }, 20 * 60, (20 * 60) * settingsHandler.getMainConf().getProperty(StorageSettings.SAVE_INTERVAL));
 
     }
 
@@ -290,13 +290,13 @@ public final class Guilds extends JavaPlugin {
      * Register optional listeners based off values in the config
      */
     private void optionalListeners() {
-        if (settingsHandler.getSettingsManager().getProperty(HooksSettings.ESSENTIALS)) {
+        if (settingsHandler.getMainConf().getProperty(HooksSettings.ESSENTIALS)) {
             getServer().getPluginManager().registerEvents(new EssentialsChatListener(guildHandler), this);
         }
 
-        if (settingsHandler.getSettingsManager().getProperty(HooksSettings.WORLDGUARD)) {
+        if (settingsHandler.getMainConf().getProperty(HooksSettings.WORLDGUARD)) {
             getServer().getPluginManager().registerEvents(new WorldGuardListener(guildHandler), this);
-            getServer().getPluginManager().registerEvents(new ClaimSignListener(this, settingsHandler.getSettingsManager(), guildHandler), this);
+            getServer().getPluginManager().registerEvents(new ClaimSignListener(this, settingsHandler.getMainConf(), guildHandler), this);
         }
     }
 
@@ -305,7 +305,7 @@ public final class Guilds extends JavaPlugin {
         Libraries libraries = new Libraries();
         loader.addRepository("https://repo.glaremasters.me/repository/public/");
         loader.addMavenCentral();
-        if (!settingsHandler.getSettingsManager().getProperty(StorageSettings.STORAGE_TYPE).toLowerCase().equals("json")) {
+        if (!settingsHandler.getMainConf().getProperty(StorageSettings.STORAGE_TYPE).toLowerCase().equals("json")) {
             try {
                 libraries.loadSQL(loader);
             } catch (RuntimeException ex) {

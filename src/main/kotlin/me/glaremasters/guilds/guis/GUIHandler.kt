@@ -35,7 +35,7 @@ import me.glaremasters.guilds.guild.GuildHandler
  * Time: 10:58 AM
  */
 class GUIHandler(guilds: Guilds, settingsManager: SettingsManager, guildHandler: GuildHandler, commandManager: PaperCommandManager, cooldownHandler: CooldownHandler) {
-    val buffs = BuffGUI(guilds, guilds.settingsHandler.buffSettings, cooldownHandler)
+    val buffs = BuffGUI(guilds, guilds.settingsHandler.buffConf, cooldownHandler)
     val list = ListGUI(guilds, settingsManager, guildHandler)
     val info = InfoGUI(guilds, settingsManager, guildHandler, cooldownHandler, commandManager)
     val members = MembersGUI(guilds, settingsManager, guildHandler)
