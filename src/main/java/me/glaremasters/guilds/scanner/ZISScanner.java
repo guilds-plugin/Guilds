@@ -28,6 +28,7 @@ package me.glaremasters.guilds.scanner;
 import org.jetbrains.annotations.NotNull;
 
 import java.security.CodeSource;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.zip.ZipEntry;
@@ -73,32 +74,30 @@ public final class ZISScanner {
      * @return Set of loaded classes
      */
     public Set<Class<?>> getClasses(@NotNull final Class<?> main, @NotNull String pckg) {
-        final Set<Class<?>> classes = new HashSet<>();
-
         pckg = pckg.replace('.', '/');
 
-        try {
-            final ClassLoader loader = main.getClassLoader();
-            final CodeSource src = main.getProtectionDomain().getCodeSource();
+        final ClassLoader loader = main.getClassLoader();
+        final CodeSource src = main.getProtectionDomain().getCodeSource();
 
-            if (src == null) {
-                return classes;
-            }
+        if (src == null) {
+            return Collections.emptySet();
+        }
 
-            try (final ZipInputStream zip = new ZipInputStream(src.getLocation().openStream())) {
-                ZipEntry entry;
-                while ((entry = zip.getNextEntry()) != null) {
-                    final String name = entry.getName();
+        final Set<Class<?>> classes = new HashSet<>();
 
-                    if (!name.endsWith(".class") || (!name.startsWith(pckg))) {
-                        continue;
-                    }
+        try (final ZipInputStream zip = new ZipInputStream(src.getLocation().openStream())) {
+            ZipEntry entry;
 
-                    try {
-                        classes.add(loader.loadClass(name.replace('/', '.').replace(".class", "")));
-                    } catch (Exception ignored) {
-                    }
+            while ((entry = zip.getNextEntry()) != null) {
+                final String name = entry.getName();
+
+                if (!name.endsWith(".class") || (!name.startsWith(pckg))) {
+                    continue;
                 }
+
+                try {
+                    classes.add(loader.loadClass(name.replace('/', '.').replace(".class", "")));
+                } catch (Exception ignored) {}
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
