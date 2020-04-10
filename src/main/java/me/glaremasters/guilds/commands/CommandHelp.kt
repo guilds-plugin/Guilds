@@ -22,31 +22,28 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.commands;
+package me.glaremasters.guilds.commands
 
-import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.CommandPermission;
-import co.aikar.commands.annotation.Description;
-import co.aikar.commands.annotation.HelpCommand;
-import me.glaremasters.guilds.utils.Constants;
+import co.aikar.commands.BaseCommand
+import co.aikar.commands.CommandHelp
+import co.aikar.commands.annotation.CommandAlias
+import co.aikar.commands.annotation.CommandPermission
+import co.aikar.commands.annotation.Dependency
+import co.aikar.commands.annotation.Description
+import co.aikar.commands.annotation.HelpCommand
+import me.glaremasters.guilds.Guilds
+import me.glaremasters.guilds.guild.GuildHandler
+import me.glaremasters.guilds.utils.Constants
 
-/**
- * Created by Glare
- * Date: 4/5/2019
- * Time: 12:52 AM
- */
 @CommandAlias("%guilds")
-public class CommandHelp extends BaseCommand {
+internal class CommandHelp : BaseCommand() {
+    @Dependency lateinit var guilds: Guilds
+    @Dependency lateinit var guildHandler: GuildHandler
 
-    /**
-     * Help command for the help
-     * @param help display the menu
-     */
     @HelpCommand
     @CommandPermission(Constants.BASE_PERM + "help")
     @Description("{@@descriptions.help}")
-    public void execute(co.aikar.commands.CommandHelp help) {
-        help.showHelp();
+    fun help(help: CommandHelp) {
+        help.showHelp()
     }
 }
