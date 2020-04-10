@@ -53,7 +53,7 @@ import java.util.stream.Collectors
 import java.util.stream.Stream
 
 @CommandAlias("%guilds")
-internal class CommandWar() : BaseCommand() {
+internal class CommandWar : BaseCommand() {
     @Dependency
     lateinit var guildHandler: GuildHandler
     @Dependency

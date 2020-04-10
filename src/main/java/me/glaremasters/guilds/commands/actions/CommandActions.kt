@@ -39,7 +39,7 @@ import me.glaremasters.guilds.utils.Constants
 import org.bukkit.command.CommandSender
 
 @CommandAlias("%guilds")
-internal class CommandActions() : BaseCommand() {
+internal class CommandActions : BaseCommand() {
     @Dependency lateinit var guilds: Guilds
     @Dependency lateinit var actionHandler: ActionHandler
 

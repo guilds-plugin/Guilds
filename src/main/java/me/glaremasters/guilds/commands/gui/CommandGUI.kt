@@ -40,7 +40,7 @@ import me.glaremasters.guilds.utils.Constants
 import org.bukkit.entity.Player
 
 @CommandAlias("%guilds")
-internal class CommandGUI() : BaseCommand() {
+internal class CommandGUI : BaseCommand() {
     @Dependency lateinit var guilds: Guilds
 
     @Subcommand("buff")
