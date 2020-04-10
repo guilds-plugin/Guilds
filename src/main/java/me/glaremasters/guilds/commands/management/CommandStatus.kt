@@ -22,47 +22,39 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.commands.management;
+package me.glaremasters.guilds.commands.management
 
-import co.aikar.commands.ACFUtil;
-import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.CommandPermission;
-import co.aikar.commands.annotation.Description;
-import co.aikar.commands.annotation.Subcommand;
-import co.aikar.commands.annotation.Syntax;
-import me.glaremasters.guilds.exceptions.InvalidPermissionException;
-import me.glaremasters.guilds.guild.Guild;
-import me.glaremasters.guilds.guild.GuildRole;
-import me.glaremasters.guilds.messages.Messages;
-import me.glaremasters.guilds.utils.Constants;
-import org.bukkit.entity.Player;
+import co.aikar.commands.BaseCommand
+import co.aikar.commands.annotation.CommandAlias
+import co.aikar.commands.annotation.CommandPermission
+import co.aikar.commands.annotation.Dependency
+import co.aikar.commands.annotation.Description
+import co.aikar.commands.annotation.Subcommand
+import co.aikar.commands.annotation.Syntax
+import me.glaremasters.guilds.Guilds
+import me.glaremasters.guilds.exceptions.InvalidPermissionException
+import me.glaremasters.guilds.guild.Guild
+import me.glaremasters.guilds.guild.GuildHandler
+import me.glaremasters.guilds.guild.GuildRole
+import me.glaremasters.guilds.messages.Messages
+import me.glaremasters.guilds.utils.Constants
+import org.bukkit.entity.Player
 
-/**
- * Created by Glare
- * Date: 4/5/2019
- * Time: 12:57 AM
- */
 @CommandAlias("%guilds")
-public class CommandStatus extends BaseCommand {
+internal class CommandStatus : BaseCommand() {
+    @Dependency lateinit var guilds: Guilds
+    @Dependency lateinit var guildHandler: GuildHandler
 
-    /**
-     * Toggles Guild Status
-     * @param player the player toggling guild status
-     * @param guild the guild that is getting toggled
-     * @param role the player's role
-     */
     @Subcommand("status")
     @Description("{@@descriptions.status}")
     @CommandPermission(Constants.BASE_PERM + "status")
     @Syntax("")
-    public void execute(Player player, Guild guild, GuildRole role) {
-        if (!role.isChangeStatus()) {
-            ACFUtil.sneaky(new InvalidPermissionException());
+    fun status(player: Player, guild: Guild, role: GuildRole) {
+        if (!role.isChangeStatus) {
+            throw InvalidPermissionException()
         }
-        guild.toggleStatus();
-        getCurrentCommandIssuer().sendInfo(Messages.STATUS__SUCCESSFUL,
-                "{status}", guild.getStatus().name());
-    }
 
+        guild.toggleStatus()
+        currentCommandIssuer.sendInfo(Messages.STATUS__SUCCESSFUL, "{status}", guild.status.name)
+    }
 }

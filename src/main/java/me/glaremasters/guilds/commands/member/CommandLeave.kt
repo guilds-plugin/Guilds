@@ -80,7 +80,7 @@ internal class CommandLeave : BaseCommand() {
 
         actionHandler.addAction(player, object : ConfirmAction {
             override fun accept() {
-                val event = GuildLeaveEvent(player, guild, GuildLeaveEvent.Cause.PLAYER_LEFT)
+                val event = GuildLeaveEvent(player, guild)
                 Bukkit.getPluginManager().callEvent(event)
 
                 if (event.isCancelled) {

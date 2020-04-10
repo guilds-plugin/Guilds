@@ -21,10 +21,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package me.glaremasters.guilds.api.events
 
 import me.glaremasters.guilds.api.events.base.GuildEvent
 import me.glaremasters.guilds.guild.Guild
+import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 
-class GuildLeaveEvent(player: Player, guild: Guild) : GuildEvent(player, guild)
+class GuildKickEvent(player: Player, guild: Guild, val kicked: OfflinePlayer, val cause: Cause) : GuildEvent(player, guild) {
+
+    enum class Cause {
+        PLAYER_KICKED, ADMIN_KICKED
+    }
+}

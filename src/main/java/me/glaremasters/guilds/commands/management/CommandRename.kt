@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.commands.admin.member
+package me.glaremasters.guilds.commands.management
 
 import ch.jalu.configme.SettingsManager
 import co.aikar.commands.BaseCommand
@@ -33,44 +33,69 @@ import co.aikar.commands.annotation.Description
 import co.aikar.commands.annotation.Subcommand
 import co.aikar.commands.annotation.Syntax
 import me.glaremasters.guilds.Guilds
-import me.glaremasters.guilds.api.events.GuildKickEvent
+import me.glaremasters.guilds.api.events.GuildRenameEvent
+import me.glaremasters.guilds.configuration.sections.GuildSettings
 import me.glaremasters.guilds.exceptions.ExpectationNotMet
+import me.glaremasters.guilds.exceptions.InvalidPermissionException
+import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
+import me.glaremasters.guilds.guild.GuildRole
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.ClaimUtils
 import me.glaremasters.guilds.utils.Constants
+import me.glaremasters.guilds.utils.StringUtils
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
+import org.codemc.worldguardwrapper.WorldGuardWrapper
 
-//todo Fix the logic on this because what if you force remove the guild master?
 @CommandAlias("%guilds")
-internal class CommandAdminRemovePlayer : BaseCommand() {
+internal class CommandRename : BaseCommand() {
     @Dependency lateinit var guilds: Guilds
     @Dependency lateinit var guildHandler: GuildHandler
     @Dependency lateinit var settingsManager: SettingsManager
 
-    @Subcommand("admin removeplayer")
-    @Description("{@@descriptions.admin-removeplayer}")
-    @CommandPermission(Constants.ADMIN_PERM)
+    @Subcommand("rename")
+    @Description("{@@descriptions.rename}")
+    @CommandPermission(Constants.BASE_PERM + "rename")
     @Syntax("<name>")
-    fun remove(player: Player, target: String) {
-        val user = Bukkit.getOfflinePlayer(target)
-        val guild = guildHandler.getGuild(user) ?: throw ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST)
-        val event = GuildKickEvent(player, guild, user, GuildKickEvent.Cause.ADMIN_KICKED)
+    fun rename(player: Player, guild: Guild, role: GuildRole, name: String) {
+        if (!role.isChangeName) {
+            throw InvalidPermissionException()
+        }
+
+        if (guildHandler.checkGuildNames(name)) {
+            throw ExpectationNotMet(Messages.CREATE__GUILD_NAME_TAKEN)
+        }
+
+        if (!guildHandler.nameCheck(name, settingsManager)) {
+            throw ExpectationNotMet(Messages.CREATE__REQUIREMENTS)
+        }
+
+        if (settingsManager.getProperty(GuildSettings.BLACKLIST_TOGGLE)) {
+            if (guildHandler.blacklistCheck(name, settingsManager)) {
+                throw ExpectationNotMet(Messages.ERROR__BLACKLIST)
+            }
+        }
+
+        val event = GuildRenameEvent(player, guild, name)
         Bukkit.getPluginManager().callEvent(event)
 
         if (event.isCancelled) {
             return
         }
 
-        ClaimUtils.kickMember(user, player, guild, settingsManager)
-        guild.removeMember(user)
+        guild.name = StringUtils.color(name)
 
-        if (user.isOnline) {
-            currentCommandManager.getCommandIssuer(user).sendInfo(Messages.ADMIN__PLAYER_REMOVED)
+        if (ClaimUtils.isEnable(settingsManager)) {
+            val wrapper = WorldGuardWrapper.getInstance()
+            if (ClaimUtils.checkAlreadyExist(wrapper, guild)) {
+                ClaimUtils.getGuildClaim(wrapper, player, guild).ifPresent { region ->
+                    ClaimUtils.setEnterMessage(wrapper, region, settingsManager, guild)
+                    ClaimUtils.setExitMessage(wrapper, region, settingsManager, guild)
+                }
+            }
         }
 
-        currentCommandIssuer.sendInfo(Messages.ADMIN__ADMIN_PLAYER_REMOVED, "{player}", user.name, "{guild}", guild.name)
-        guild.sendMessage(currentCommandManager, Messages.ADMIN__ADMIN_GUILD_REMOVE, "{player}", user.name)
+        currentCommandIssuer.sendInfo(Messages.RENAME__SUCCESSFUL, "{name}", name)
     }
 }

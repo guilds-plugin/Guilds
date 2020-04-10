@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.commands.admin.member
+package me.glaremasters.guilds.commands.management
 
 import ch.jalu.configme.SettingsManager
 import co.aikar.commands.BaseCommand
@@ -33,44 +33,56 @@ import co.aikar.commands.annotation.Description
 import co.aikar.commands.annotation.Subcommand
 import co.aikar.commands.annotation.Syntax
 import me.glaremasters.guilds.Guilds
-import me.glaremasters.guilds.api.events.GuildKickEvent
+import me.glaremasters.guilds.api.events.GuildPrefixEvent
+import me.glaremasters.guilds.configuration.sections.GuildSettings
 import me.glaremasters.guilds.exceptions.ExpectationNotMet
+import me.glaremasters.guilds.exceptions.InvalidPermissionException
+import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
+import me.glaremasters.guilds.guild.GuildRole
 import me.glaremasters.guilds.messages.Messages
-import me.glaremasters.guilds.utils.ClaimUtils
 import me.glaremasters.guilds.utils.Constants
+import me.glaremasters.guilds.utils.StringUtils
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 
-//todo Fix the logic on this because what if you force remove the guild master?
 @CommandAlias("%guilds")
-internal class CommandAdminRemovePlayer : BaseCommand() {
+internal class CommandPrefix : BaseCommand() {
     @Dependency lateinit var guilds: Guilds
     @Dependency lateinit var guildHandler: GuildHandler
     @Dependency lateinit var settingsManager: SettingsManager
 
-    @Subcommand("admin removeplayer")
-    @Description("{@@descriptions.admin-removeplayer}")
-    @CommandPermission(Constants.ADMIN_PERM)
-    @Syntax("<name>")
-    fun remove(player: Player, target: String) {
-        val user = Bukkit.getOfflinePlayer(target)
-        val guild = guildHandler.getGuild(user) ?: throw ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST)
-        val event = GuildKickEvent(player, guild, user, GuildKickEvent.Cause.ADMIN_KICKED)
+    @Subcommand("prefix")
+    @Description("{@@descriptions.prefix}")
+    @CommandPermission(Constants.BASE_PERM + "prefix")
+    @Syntax("<prefix>")
+    fun prefix(player: Player, guild: Guild, role: GuildRole, prefix: String) {
+        if (!role.isChangePrefix) {
+            throw InvalidPermissionException()
+        }
+
+        if (settingsManager.getProperty(GuildSettings.DISABLE_PREFIX)) {
+            throw ExpectationNotMet(Messages.PREFIX__DISABLED)
+        }
+
+        if (!guildHandler.prefixCheck(prefix, settingsManager)) {
+            throw ExpectationNotMet(Messages.CREATE__PREFIX_TOO_LONG)
+        }
+
+        if (settingsManager.getProperty(GuildSettings.BLACKLIST_TOGGLE)) {
+            if (guildHandler.blacklistCheck(prefix, settingsManager)) {
+                throw ExpectationNotMet(Messages.ERROR__BLACKLIST)
+            }
+        }
+
+        val event = GuildPrefixEvent(player, guild, prefix)
         Bukkit.getPluginManager().callEvent(event)
 
         if (event.isCancelled) {
             return
         }
 
-        ClaimUtils.kickMember(user, player, guild, settingsManager)
-        guild.removeMember(user)
-
-        if (user.isOnline) {
-            currentCommandManager.getCommandIssuer(user).sendInfo(Messages.ADMIN__PLAYER_REMOVED)
-        }
-
-        currentCommandIssuer.sendInfo(Messages.ADMIN__ADMIN_PLAYER_REMOVED, "{player}", user.name, "{guild}", guild.name)
-        guild.sendMessage(currentCommandManager, Messages.ADMIN__ADMIN_GUILD_REMOVE, "{player}", user.name)
+        currentCommandIssuer.sendInfo(Messages.PREFIX__SUCCESSFUL, "{prefix}", prefix)
+        guild.prefix = StringUtils.color(prefix)
     }
 }
