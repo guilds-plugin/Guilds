@@ -22,40 +22,35 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.commands.admin;
+package me.glaremasters.guilds.commands.admin
 
-import ch.jalu.configme.SettingsManager;
-import co.aikar.commands.BaseCommand;
-import co.aikar.commands.CommandIssuer;
-import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.CommandPermission;
-import co.aikar.commands.annotation.Dependency;
-import co.aikar.commands.annotation.Description;
-import co.aikar.commands.annotation.Subcommand;
-import me.glaremasters.guilds.Guilds;
-import me.glaremasters.guilds.messages.Messages;
-import me.glaremasters.guilds.utils.Constants;
+import co.aikar.commands.BaseCommand
+import co.aikar.commands.annotation.CommandAlias
+import co.aikar.commands.annotation.CommandCompletion
+import co.aikar.commands.annotation.CommandPermission
+import co.aikar.commands.annotation.Dependency
+import co.aikar.commands.annotation.Description
+import co.aikar.commands.annotation.Flags
+import co.aikar.commands.annotation.Subcommand
+import co.aikar.commands.annotation.Syntax
+import co.aikar.commands.annotation.Values
+import me.glaremasters.guilds.Guilds
+import me.glaremasters.guilds.guild.Guild
+import me.glaremasters.guilds.guild.GuildHandler
+import me.glaremasters.guilds.utils.Constants
+import org.bukkit.entity.Player
 
-/**
- * Created by Glare
- * Date: 4/8/2019
- * Time: 2:04 PM
- */
 @CommandAlias("%guilds")
-public class CommandReload extends BaseCommand {
+internal class CommandAdminVault : BaseCommand() {
+    @Dependency lateinit var guilds: Guilds
+    @Dependency lateinit var guildHandler: GuildHandler
 
-    @Dependency private SettingsManager settingsManager;
-    @Dependency private Guilds guilds;
-
-    /**
-     * Reloads the config
-     */
-    @Subcommand("reload")
-    @Description("{@@descriptions.reload}")
+    @Subcommand("admin vault")
+    @Description("{@@descriptions.admin-vault}")
     @CommandPermission(Constants.ADMIN_PERM)
-    public void execute(CommandIssuer issuer) {
-        settingsManager.reload();
-        guilds.getSettingsHandler().getBuffConf().reload();
-        issuer.sendInfo(Messages.RELOAD__RELOADED);
+    @CommandCompletion("@guilds")
+    @Syntax("<%syntax> <vault #>")
+    fun vault(player: Player, @Flags("admin") @Values("@guilds") guild: Guild) {
+        guilds.guiHandler.vaults.get(guild, player).open(player)
     }
 }

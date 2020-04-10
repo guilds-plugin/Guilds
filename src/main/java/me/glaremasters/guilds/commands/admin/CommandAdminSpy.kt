@@ -22,36 +22,27 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.commands.admin;
+package me.glaremasters.guilds.commands.admin
 
-import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.CommandPermission;
-import co.aikar.commands.annotation.Dependency;
-import co.aikar.commands.annotation.Description;
-import co.aikar.commands.annotation.Subcommand;
-import me.glaremasters.guilds.guild.GuildHandler;
-import org.bukkit.entity.Player;
+import co.aikar.commands.BaseCommand
+import co.aikar.commands.annotation.CommandAlias
+import co.aikar.commands.annotation.CommandPermission
+import co.aikar.commands.annotation.Dependency
+import co.aikar.commands.annotation.Description
+import co.aikar.commands.annotation.Subcommand
+import me.glaremasters.guilds.Guilds
+import me.glaremasters.guilds.guild.GuildHandler
+import org.bukkit.entity.Player
 
-/**
- * Created by Glare
- * Date: 4/4/2019
- * Time: 9:31 PM
- */
 @CommandAlias("%guilds")
-public class CommandAdminSpy extends BaseCommand {
+internal class CommandAdminSpy : BaseCommand() {
+    @Dependency lateinit var guilds: Guilds
+    @Dependency lateinit var guildHandler: GuildHandler
 
-    @Dependency private GuildHandler guildHandler;
-
-    /**
-     * Admin command to turn on Guild Chat Spy
-     * @param player the player executing the command
-     */
     @Subcommand("admin spy")
     @Description("{@@descriptions.admin-spy}")
     @CommandPermission("guilds.chat.spy")
-    public void execute(Player player) {
-        guildHandler.toggleSpy(getCurrentCommandManager(), player);
+    fun spy(player: Player) {
+        guildHandler.toggleSpy(currentCommandManager, player)
     }
-
 }
