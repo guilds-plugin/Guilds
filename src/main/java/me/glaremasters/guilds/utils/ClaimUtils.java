@@ -304,7 +304,7 @@ public class ClaimUtils {
         if (!flag.isPresent()) {
             return false;
         }
-        WrappedState state = flag.map(f -> wrapper.queryFlag(player, player.getLocation(), f).orElse(WrappedState.DENY)).orElse(WrappedState.DENY);
+        WrappedState state = flag.map(f -> wrapper.queryFlag(player, player.getLocation(), f).get()).orElse(WrappedState.DENY);
         return state == WrappedState.DENY;
     }
 

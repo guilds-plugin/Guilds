@@ -45,7 +45,7 @@ public final class ZISScanner {
     /**
      * Get all the classes in the main class's classloader, which are
      * in a specific package, and aren't in any of the excluded packages.
-     *
+     * <p>
      * Semantics:
      * A class is not loaded if any of the following conditions are true:
      * <i>Filename includes the file name, and it's relative path from the root of the jar</i>
@@ -68,8 +68,8 @@ public final class ZISScanner {
      * it'll be caught and wrapped into a RuntimeException, effectively
      * terminating the program.
      *
-     * @param main       Main class
-     * @param pckg       Package to scan
+     * @param main Main class
+     * @param pckg Package to scan
      * @return Set of loaded classes
      */
     public Set<Class<?>> getClasses(@NotNull final Class<?> main, @NotNull String pckg) {
@@ -85,19 +85,20 @@ public final class ZISScanner {
                 return classes;
             }
 
-            final ZipInputStream zip = new ZipInputStream(src.getLocation().openStream());
-            ZipEntry entry;
+            try (final ZipInputStream zip = new ZipInputStream(src.getLocation().openStream())) {
+                ZipEntry entry;
+                while ((entry = zip.getNextEntry()) != null) {
+                    final String name = entry.getName();
 
-            while ((entry = zip.getNextEntry()) != null) {
-                final String name = entry.getName();
+                    if (!name.endsWith(".class") || (!name.startsWith(pckg))) {
+                        continue;
+                    }
 
-                if (!name.endsWith(".class") || (!name.startsWith(pckg))) {
-                    continue;
+                    try {
+                        classes.add(loader.loadClass(name.replace('/', '.').replace(".class", "")));
+                    } catch (Exception ignored) {
+                    }
                 }
-
-                try {
-                    classes.add(loader.loadClass(name.replace('/', '.').replace(".class", "")));
-                } catch (Exception ignored) {}
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
