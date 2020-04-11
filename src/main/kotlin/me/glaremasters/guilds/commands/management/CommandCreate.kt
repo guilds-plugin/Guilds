@@ -94,10 +94,8 @@ internal class CommandCreate : BaseCommand() {
             throw ExpectationNotMet(Messages.CREATE__GUILD_NAME_TAKEN)
         }
 
-        if (settingsManager.getProperty(GuildSettings.BLACKLIST_TOGGLE)) {
-            if (guildHandler.blacklistCheck(name, settingsManager)) {
-                throw ExpectationNotMet(Messages.ERROR__BLACKLIST)
-            }
+        if (settingsManager.getProperty(GuildSettings.BLACKLIST_TOGGLE) && guildHandler.blacklistCheck(name, settingsManager)) {
+            throw ExpectationNotMet(Messages.ERROR__BLACKLIST)
         }
 
         if (!guildHandler.nameCheck(name, settingsManager)) {
