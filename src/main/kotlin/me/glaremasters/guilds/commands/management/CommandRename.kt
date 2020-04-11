@@ -71,10 +71,8 @@ internal class CommandRename : BaseCommand() {
             throw ExpectationNotMet(Messages.CREATE__REQUIREMENTS)
         }
 
-        if (settingsManager.getProperty(GuildSettings.BLACKLIST_TOGGLE)) {
-            if (guildHandler.blacklistCheck(name, settingsManager)) {
-                throw ExpectationNotMet(Messages.ERROR__BLACKLIST)
-            }
+        if (settingsManager.getProperty(GuildSettings.BLACKLIST_TOGGLE) && guildHandler.blacklistCheck(name, settingsManager)) {
+            throw ExpectationNotMet(Messages.ERROR__BLACKLIST)
         }
 
         val event = GuildRenameEvent(player, guild, name)

@@ -69,10 +69,8 @@ internal class CommandPrefix : BaseCommand() {
             throw ExpectationNotMet(Messages.CREATE__PREFIX_TOO_LONG)
         }
 
-        if (settingsManager.getProperty(GuildSettings.BLACKLIST_TOGGLE)) {
-            if (guildHandler.blacklistCheck(prefix, settingsManager)) {
-                throw ExpectationNotMet(Messages.ERROR__BLACKLIST)
-            }
+        if (settingsManager.getProperty(GuildSettings.BLACKLIST_TOGGLE) && guildHandler.blacklistCheck(prefix, settingsManager)) {
+            throw ExpectationNotMet(Messages.ERROR__BLACKLIST)
         }
 
         val event = GuildPrefixEvent(player, guild, prefix)
