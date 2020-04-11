@@ -147,12 +147,12 @@ internal class CommandCreate : BaseCommand() {
                 gb.balance(0.0)
                 gb.tier(guildHandler.getGuildTier(1))
 
-                gb.invitedMembers(emptyList())
-                gb.allies(emptyList())
-                gb.pendingAllies(emptyList())
+                gb.invitedMembers(arrayListOf())
+                gb.allies(arrayListOf())
+                gb.pendingAllies(arrayListOf())
 
-                gb.vaults(emptyList())
-                gb.codes(emptyList())
+                gb.vaults(arrayListOf())
+                gb.codes(arrayListOf())
 
                 val guild = gb.build()
                 guild.creationDate = System.currentTimeMillis()
