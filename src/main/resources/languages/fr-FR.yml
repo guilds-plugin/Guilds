@@ -2,9 +2,9 @@
 descriptions:
   accept: "Accepter une invitation de guilde"
   admin-addplayer: "Commande admin pour ajouter un joueur dans une guilde"
-  admin-bank-balance: "Admin command to view a guild's bank balance"
-  admin-bank-deposit: "Admin command to put money into a guild's bank"
-  admin-bank-withdraw: "Admin command to take money from a guild's bank"
+  admin-bank-balance: "Commande administrateur pour voir le solde de la banque d'une guilde"
+  admin-bank-deposit: "Commande administrateur pour mettre de l'argent dans la banque d'une guilde"
+  admin-bank-withdraw: "Commande administrateur retirer de l'argent à la banque d'une guilde"
   admin-claim: "Admin command to claim a guild's land"
   admin-delhome: "Admin command to delete the home of a guild"
   admin-home: "Admin command to teleport to the home of a guild"
