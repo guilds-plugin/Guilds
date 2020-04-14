@@ -81,7 +81,7 @@ descriptions:
   upgrade: "Upgrade your Guild tier!"
   vault: "Opens the Guild vault"
   version: "Information about the plugin"
-  war-accept: "Accept a war challenge"
+  war-accept: "Αποδοχή της πρόκλησης πολέμου"
   war-challenge: "Challenge another guild to a war"
   war-deny: "Deny a war challenge"
   war-join: "Join a pending war"
