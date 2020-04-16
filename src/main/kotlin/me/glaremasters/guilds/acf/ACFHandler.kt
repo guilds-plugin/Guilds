@@ -26,8 +26,6 @@ package me.glaremasters.guilds.acf
 
 import ch.jalu.configme.SettingsManager
 import co.aikar.commands.BaseCommand
-import co.aikar.commands.BukkitCommandCompletionContext
-import co.aikar.commands.BukkitCommandExecutionContext
 import co.aikar.commands.InvalidCommandArgument
 import co.aikar.commands.PaperCommandManager
 import me.glaremasters.guilds.Guilds
@@ -66,7 +64,7 @@ class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCo
         loadCommands()
     }
 
-    fun loadLang() {
+    private fun loadLang() {
         plugin.dataFolder.resolve("languages").listFiles()?.filter()
         {
             it.extension.equals("yml", true)
@@ -82,7 +80,7 @@ class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCo
     }
 
     private fun loadContexts(guildHandler: GuildHandler, arenaHandler: ArenaHandler) {
-        commandManager.commandContexts.registerIssuerAwareContext(Guild::class.java) { c: BukkitCommandExecutionContext ->
+        commandManager.commandContexts.registerIssuerAwareContext(Guild::class.java) { c ->
             val guild: Guild = (if (c.hasFlag("admin")) {
                 guildHandler.getGuild(c.popFirstArg())
             } else {
@@ -91,53 +89,53 @@ class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCo
                     ?: throw InvalidCommandArgument(Messages.ERROR__NO_GUILD)
             guild
         }
-        commandManager.commandContexts.registerIssuerOnlyContext(GuildRole::class.java) { c: BukkitCommandExecutionContext ->
+        commandManager.commandContexts.registerIssuerOnlyContext(GuildRole::class.java) { c ->
             val guild = guildHandler.getGuild(c.player) ?: return@registerIssuerOnlyContext null
             guildHandler.getGuildRole(guild.getMember(c.player.uniqueId).role.level)
         }
-        commandManager.commandContexts.registerContext(Arena::class.java) { c: BukkitCommandExecutionContext -> arenaHandler.getArena(c.popFirstArg()).get() }
+        commandManager.commandContexts.registerContext(Arena::class.java) { c -> arenaHandler.getArena(c.popFirstArg()).get() }
     }
 
     private fun loadCompletions(guildHandler: GuildHandler, arenaHandler: ArenaHandler) {
         commandManager.commandCompletions.registerCompletion("online") { Bukkit.getOnlinePlayers().map { it.name } }
-        commandManager.commandCompletions.registerCompletion("invitedTo") { c: BukkitCommandCompletionContext -> guildHandler.getInvitedGuilds(c.player) }
-        commandManager.commandCompletions.registerCompletion("joinableGuilds") { c: BukkitCommandCompletionContext -> guildHandler.getJoinableGuild(c.player) }
+        commandManager.commandCompletions.registerCompletion("invitedTo") { c -> guildHandler.getInvitedGuilds(c.player) }
+        commandManager.commandCompletions.registerCompletion("joinableGuilds") { c -> guildHandler.getJoinableGuild(c.player) }
         commandManager.commandCompletions.registerCompletion("guilds") { guildHandler.guildNames }
         commandManager.commandCompletions.registerCompletion("arenas") { arenaHandler.getArenas().map { it.name } }
         commandManager.commandCompletions.registerAsyncCompletion("locations") { listOf("challenger", "defender") }
         commandManager.commandCompletions.registerCompletion("languages") { languages.sorted() }
         commandManager.commandCompletions.registerAsyncCompletion("sources") { listOf("JSON", "MYSQL", "SQLITE", "MARIADB") }
 
-        commandManager.commandCompletions.registerCompletion("members") { c: BukkitCommandCompletionContext ->
+        commandManager.commandCompletions.registerCompletion("members") { c ->
             val guild = guildHandler.getGuild(c.player) ?: return@registerCompletion null
             guild.members.map { it.asOfflinePlayer.name }
         }
-        commandManager.commandCompletions.registerCompletion("members-admin") { c: BukkitCommandCompletionContext ->
+        commandManager.commandCompletions.registerCompletion("members-admin") { c ->
             val guild = c.getContextValue(Guild::class.java, 1) ?: return@registerCompletion null
             guild.members.map { it.asOfflinePlayer.name }
         }
-        commandManager.commandCompletions.registerAsyncCompletion("allyInvites") { c: BukkitCommandCompletionContext ->
+        commandManager.commandCompletions.registerAsyncCompletion("allyInvites") { c ->
             val guild = guildHandler.getGuild(c.player) ?: return@registerAsyncCompletion null
             if (!guild.hasPendingAllies()) {
                 return@registerAsyncCompletion null
             }
             guild.pendingAllies.map { guildHandler.getNameById(it) }
         }
-        commandManager.commandCompletions.registerAsyncCompletion("allies") { c: BukkitCommandCompletionContext ->
+        commandManager.commandCompletions.registerAsyncCompletion("allies") { c ->
             val guild = guildHandler.getGuild(c.player) ?: return@registerAsyncCompletion null
             if (!guild.hasAllies()) {
                 return@registerAsyncCompletion null
             }
             guild.allies.map { guildHandler.getNameById(it) }
         }
-        commandManager.commandCompletions.registerAsyncCompletion("activeCodes") { c: BukkitCommandCompletionContext ->
+        commandManager.commandCompletions.registerAsyncCompletion("activeCodes") { c ->
             val guild = guildHandler.getGuild(c.player) ?: return@registerAsyncCompletion null
             if (guild.codes == null) {
                 return@registerAsyncCompletion null
             }
             guild.codes.map { it.id }
         }
-        commandManager.commandCompletions.registerAsyncCompletion("vaultAmount") { c: BukkitCommandCompletionContext ->
+        commandManager.commandCompletions.registerAsyncCompletion("vaultAmount") { c ->
             val guild = guildHandler.getGuild(c.player) ?: return@registerAsyncCompletion null
             if (guild.vaults == null) {
                 return@registerAsyncCompletion null
