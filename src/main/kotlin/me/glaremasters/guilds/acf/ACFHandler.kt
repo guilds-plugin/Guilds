@@ -49,6 +49,7 @@ import org.bukkit.Bukkit
 import java.util.Locale
 
 class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCommandManager) {
+    val languages = mutableListOf<String>()
 
     fun load() {
         commandManager.usePerIssuerLocale(true, false)
@@ -75,7 +76,7 @@ class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCo
 
             commandManager.addSupportedLanguage(locale)
             commandManager.locales.loadYamlLanguageFile(it, locale)
-            plugin.loadedLanguages.add(it.nameWithoutExtension)
+            languages.add(it.nameWithoutExtension)
         }
         commandManager.locales.defaultLocale = Locale.forLanguageTag(plugin.settingsHandler.mainConf.getProperty(PluginSettings.MESSAGES_LANGUAGE))
     }
@@ -104,7 +105,7 @@ class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCo
         commandManager.commandCompletions.registerCompletion("guilds") { guildHandler.guildNames }
         commandManager.commandCompletions.registerCompletion("arenas") { arenaHandler.getArenas().map { it.name } }
         commandManager.commandCompletions.registerAsyncCompletion("locations") { listOf("challenger", "defender") }
-        commandManager.commandCompletions.registerCompletion("languages") { plugin.loadedLanguages.sorted() }
+        commandManager.commandCompletions.registerCompletion("languages") { languages.sorted() }
         commandManager.commandCompletions.registerAsyncCompletion("sources") { listOf("JSON", "MYSQL", "SQLITE", "MARIADB") }
 
         commandManager.commandCompletions.registerCompletion("members") { c: BukkitCommandCompletionContext ->

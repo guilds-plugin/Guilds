@@ -87,7 +87,6 @@ public final class Guilds extends JavaPlugin {
     private GUIHandler guiHandler;
     private Economy economy;
     private Permission permissions;
-    private List<String> loadedLanguages;
 
     public static Gson getGson() {
         return gson;
@@ -166,8 +165,6 @@ public final class Guilds extends JavaPlugin {
             LoggingUtils.warn("PermissionsEx is not designed to run permission async. Expect issues with permissions.");
         }
         LoggingUtils.info("Hooked into Vault!");
-
-        loadedLanguages = new ArrayList<>();
 
         // This is really just for shits and giggles
         // A variable for checking how long startup took.
@@ -385,9 +382,5 @@ public final class Guilds extends JavaPlugin {
 
     public Permission getPermissions() {
         return this.permissions;
-    }
-
-    public List<String> getLoadedLanguages() {
-        return this.loadedLanguages;
     }
 }
