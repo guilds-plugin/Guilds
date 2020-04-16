@@ -75,6 +75,7 @@ class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCo
 
             commandManager.addSupportedLanguage(locale)
             commandManager.locales.loadYamlLanguageFile(it, locale)
+            plugin.loadedLanguages.add(it.nameWithoutExtension)
         }
         commandManager.locales.defaultLocale = Locale.forLanguageTag(plugin.settingsHandler.mainConf.getProperty(PluginSettings.MESSAGES_LANGUAGE))
     }
