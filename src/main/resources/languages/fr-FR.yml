@@ -5,7 +5,7 @@ descriptions:
   admin-bank-balance: "Commande administrateur pour voir le solde de la banque d'une guilde"
   admin-bank-deposit: "Commande administrateur pour mettre de l'argent dans la banque d'une guilde"
   admin-bank-withdraw: "Commande administrateur retirer de l'argent à la banque d'une guilde"
-  admin-claim: "Admin command to claim a guild's land"
+  admin-claim: "Commande d'administrateur pour réclamer la propriété d'une guilde"
   admin-delhome: "Commande d'administration pour supprimer le home d'une guilde"
   admin-home: "Commande d'administration pour se téléporter au home d'une guilde"
   admin-motd: "Commande d'administration pour afficher le MOTD d'une guilde"
