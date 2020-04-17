@@ -62,7 +62,7 @@ descriptions:
   info: "Εμφάνιση περιβάλλοντος πληροφοριών ομάδας"
   invite: "Προσκαλέστε έναν άλλο παίκτη στην ομάδα σας"
   kick: "Διώξτε κάποιον από την ομάδα σας"
-  language: "Change the language of the plugin messages for you"
+  language: "Άλλαξε τη γλώσσα των μηνυμάτων προσθέτου για εσένα"
   leave: "Αφήστε την ομάδα σας"
   list: "Λίστα όλων των ομάδων"
   members: "Ανοίγει το GUI της λίστας μελών"
@@ -87,11 +87,11 @@ descriptions:
   war-join: "Λάβετε μέρος σε έναν πόλεμο σε εκκρεμότητα"
 create:
   guild-name-taken: "&cΑυτό το όνομα έχει ήδη χρησιμοποιηθεί αλλού!"
-  warning: "&cThe creation of a Guild cost {amount}. Type /guilds confirm to create your guild, type /guilds cancel to cancel."
-  successful: "&aGuild '{guild}&r&a' created successfully!"
+  warning: "&cΗ δημιουργία μίας ομάδας κοστίζει {amount}. Πληκτρολογήστε /guilds confirm για να δημιουργήσετε την ομάδα σας, πληκτρολογήστε /guilds cancel για ακύρωση."
+  successful: "&aΟμάδα '{guild}&r&a' δημιουργήθηκε με επιτυχία!"
   cancelled: "&cΗ δημιουργία της ομάδας σας έχει ακυρωθεί!"
   requirements: "&cΤο όνομα της ομάδας σας δεν ταιριάζει με τις απαιτήσεις! Μπορείτε να χρησιμοποιήσετε μόνο αλφαριθμητικούς χαρακτήρες και το μήκος του ονόματος δεν μπορεί να υπερβαίνει τα 64"
-  name-too-long: "&cYou didn't provide a prefix so the name you input was tested against the prefix requirements and that failed. Please try a shorter name or input a prefix on creation."
+  name-too-long: "&cΔεν παρέχετε ένα πρόθεμα, έτσι το όνομα που εισαγάγατε δοκιμάστηκε με βάση τις απαιτήσεις προθέματος και αυτό απέτυχε. Δοκιμάστε ένα μικρότερο όνομα ή εισαγάγετε ένα πρόθεμα στη δημιουργία."
   prefix-too-long: "&cThe guild prefix provided did not match the requirements! Perphaps you had too many characters?"
 chat:
   disabled: "Συνομιλία ομάδας απενεργοποιήθηκε"
