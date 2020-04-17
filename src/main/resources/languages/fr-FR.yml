@@ -278,8 +278,8 @@ languages:
 backup:
   started: "&aEn train de sauvegarder toutes les données des guildes!"
   finished: "&aToutes les données des guildes ont été sauvegardées et placées dans le dossier de vos plugins."
-  warning: "&cYou are about to make a backup of all the data for the plugin. Please make sure not to do anything intensive during this. Type /guilds confirm to continue, type /guilds cancel to cancel."
-  cancelled: "aYou've successfully cancelled the backup."
+  warning: "&cVous êtes sur le point de faire une sauvegarde de toutes les données pour le plugin. Veuillez vous assurer de ne rien faire d'exigeant pendant la sauvegarde. Tapez /guilds confirm pour continuer, tapez /guilds cancel pour annuler."
+  cancelled: "&aVous avez annulé la sauvegarde avec succès."
 help:
   header: "<c3>=== </c3><c1>Aide pour </c1><c2>{commandprefix}{command}</c2><c3> ===</c3>"
   detailed-header: "<c3>=== </c3><c1>Aide détaillée pour </c1><c2>{commandprefix}{command}</c2><c3> ===</c3>"
