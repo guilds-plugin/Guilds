@@ -107,7 +107,7 @@ error:
   tier-no-permission: "&cΤο επίπεδο της ομάδας σας δεν είναι αρκέτα υψηλό ώστε να γίνει αυτό!"
   guild-no-exist: "&cΑυτή η ομάδα δεν υπάρχει! (Εαν αύτο συμβαίνει επειδή η ομάδα που θέλετε να μπείτε έχει προσαρμοσμένο έγχρωμο όνομα, μπορείτε να γράψετε /join guild <player who invited you>!"
   player-not-found: "&cΟ παίκτης '{player}&r&c' δεν είναι διαθέσιμος!"
-  player-not-in-guild: "&c{player} is not in your Guild!"
+  player-not-in-guild: "&cΟ {player} δεν βρίσκετε στην ομάδα σου!"
   not-officer: "&cUser must be an Officer in your Guild!"
   blacklist: "&cOne or more of the words in your guild name / guild prefix is on the blacklist!"
   not-enough-money: "&cSorry, you do not have enough money to do that"
