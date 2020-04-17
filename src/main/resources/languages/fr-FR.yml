@@ -245,17 +245,17 @@ claim:
   sign-invalid-format: "&cFormat de panneau de protection invalide ! Veuillez essayer à nouveau !"
   sign-invalid-region: "&cRégion Worldguard invalide !"
   sign-placed: "&aVous avez créé avec succès un panneau de protection pour la région {region} au prix de {price}."
-  sign-not-enough: "&cYou do not have enough money in your Guild Bank to purchase this Guild Claim."
-  sign-forced: "&cYou can only claim land via Claim Signs! Ask a staff member on your server for help!"
-  sign-buy-success: "&aHooray! You have bought this claim!"
+  sign-not-enough: "&cVous n'avez pas assez d'argent dans votre banque de guilde pour acheter ce territoire de guilde."
+  sign-forced: "&cVous ne pouvez réclamer un terrain que via les panneaux de revendication ! Demandez de l'aide à un membre du personnel sur votre serveur !"
+  sign-buy-success: "&aHourra ! Vous venez d'acheter ce territoire!"
 unclaim:
   success: "&aVous avez réussi à supprimer votre demande de guilde !"
   not-found: "&cVous ne pouvez pas claim des terres que vous n'avez pas !"
-  all-warning: "&bImportant! &cYou are about to remove ALL claim data. Are you sure you would like to continue? Type /guilds confirm to continue or /guilds cancel to cancel!"
-  all-cancelled: "&aYou've successfully cancelled the removal of all claim data on the server."
-  all-success: "&aYou've successfully remove all guild claims on the server!"
+  all-warning: "&bImportant! &cVous êtes sur le point d'effacer TOUTES les données de territoire. Êtes-vous sûr de vouloir continuer ? Tapez /guilds confirm pour continuer ou /guilds cancel pour annuler !"
+  all-cancelled: "&aVous venez d'annuler la suppression de toutes les données de territoire sur le serveur."
+  all-success: "&aVous venez de supprimer toutes le territoires de guilde sur le serveur!"
 pending:
-  invites: "&aYou have {number} pending invite(s) from the guild(s): &e{guilds}&r&a . Use /guild accept <name> or /guild decline <name> to join or decline an invite!"
+  invites: "&aVous avez {number} invitation(s) de guilde en attente: &e{guilds}&r&a . Ecrivez /guild accept <name> ou /guild decline <name> pour accepter ou refuser une invitation!"
 codes:
   created: "&aVous avez créé un nouveau code d'invitation: &6{code} &aavec &6{amount} &autilisations !"
   empty: "&cOh non ! Je n'ai pas de codes, essaie d'en faire un premièrement !"
@@ -273,11 +273,11 @@ vaults:
   blacklisted: "&cVous ne pouvez mettre cet item dans votre coffre fort de guilde."
 languages:
   set: "&aVous avez défini avec succès votre langage en {language}"
-  warning: "&cYou are about to update all the language files. This will delete all current language files and recreate them. Type /guilds confirm to continue, type /guilds cancel to cancel."
+  warning: "&cVous allez mettre à jour les fichiers de langue. Cela supprimera les anciens fichiers de langue. Tapez /guilds confirm pour confirmer, /guilds cancel pour annuler."
   updated: "&aLes fichiers de langue ont été recréés et rechargés!"
 backup:
-  started: "&aCurrently backing up all Guilds data!"
-  finished: "&aAll Guilds data has been backed up and placed in your plugins folder."
+  started: "&aEn train de sauvegarder toutes les données des guildes!"
+  finished: "&aToutes les données des guildes ont été sauvegardées et placées dans le dossier de vos plugins."
   warning: "&cYou are about to make a backup of all the data for the plugin. Please make sure not to do anything intensive during this. Type /guilds confirm to continue, type /guilds cancel to cancel."
   cancelled: "aYou've successfully cancelled the backup."
 help:
