@@ -145,26 +145,24 @@ public final class Guilds extends JavaPlugin {
 
         gson = new GsonBuilder().setPrettyPrinting().create();
 
-        // Load Vault
-        LoggingUtils.info("Hooking into Vault..");
-        // Setup Vaults Economy Hook
         setupEconomy();
-        // Setup Vaults Permission Hook
         setupPermissions();
+
         if (economy == null) {
             LoggingUtils.warn("It looks like you don't have an Economy plugin on your server! Stopping plugin..");
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
+
         LoggingUtils.info("Economy Found: " + economy.getName());
         LoggingUtils.info("Permissions Found: " + permissions.getName());
+
         if (permissions.getName().equals("GroupManager")) {
             LoggingUtils.warn("GroupManager is not designed for newer MC versions. Expect issues with permissions.");
         }
         if (permissions.getName().equals("PermissionsEx")) {
             LoggingUtils.warn("PermissionsEx is not designed to run permission async. Expect issues with permissions.");
         }
-        LoggingUtils.info("Hooked into Vault!");
 
         // This is really just for shits and giggles
         // A variable for checking how long startup took.
@@ -173,10 +171,7 @@ public final class Guilds extends JavaPlugin {
         // Load up TaskChain
         taskChainFactory = BukkitTaskChainFactory.create(this);
 
-        // Load the config
-        LoggingUtils.info("Loading config..");
         settingsHandler = new SettingsHandler(this);
-        LoggingUtils.info("Loaded config!");
 
         downloadOptionalDependencies();
 
@@ -184,7 +179,6 @@ public final class Guilds extends JavaPlugin {
 
         // Load data here.
         try {
-            LoggingUtils.info("Loading Data..");
             setDatabase(new DatabaseAdapter(this, settingsHandler.getMainConf()));
             if (!database.isConnected()) {
                 // Jump down to the catch
@@ -199,7 +193,6 @@ public final class Guilds extends JavaPlugin {
             challengeHandler = new ChallengeHandler(this);
             // Load guildhandler with provider
             guildHandler = new GuildHandler(this, settingsHandler.getMainConf());
-            LoggingUtils.info("Data has been loaded!");
         } catch (IOException e) {
             LoggingUtils.severe("An error occurred loading data! Stopping plugin..");
             Bukkit.getPluginManager().disablePlugin(this);
@@ -210,16 +203,12 @@ public final class Guilds extends JavaPlugin {
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
            new PlaceholderAPI(guildHandler).register();
         }
-
-        LoggingUtils.info("Enabling Metrics..");
         // start bstats
         Metrics metrics = new Metrics(this);
         metrics.addCustomChart(new Metrics.SingleLineChart("guilds", () -> getGuildHandler().getGuildsSize()));
-        LoggingUtils.info("Enabled Metrics!");
 
         // Initialize the action handler for actions in the plugin
         actionHandler = new ActionHandler();
-        LoggingUtils.info("Loading Commands and Language Data..");
         // Load the ACF command manager
         commandManager = new PaperCommandManager(this);
         acfHandler = new ACFHandler(this, commandManager);
@@ -250,10 +239,7 @@ public final class Guilds extends JavaPlugin {
         // Load the optional listeners
         optionalListeners();
 
-        LoggingUtils.info("Enabling the Guilds API..");
-        // Initialize the API (probably be placed in different spot?)
         api = new GuildsAPI(getGuildHandler());
-        LoggingUtils.info("Enabled API!");
 
         LoggingUtils.info("Ready to go! That only took " + (System.currentTimeMillis() - startingTime) + "ms");
         getServer().getScheduler().scheduleAsyncRepeatingTask(this, () -> {
