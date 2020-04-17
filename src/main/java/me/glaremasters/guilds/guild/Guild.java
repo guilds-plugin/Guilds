@@ -187,7 +187,7 @@ public class Guild {
      * @return the member which was found
      */
     public GuildMember getMember(UUID uuid) {
-        return getMembers().stream().filter(m -> m.getUuid().equals(uuid)).findFirst().orElse(null);
+        return members.stream().filter(m -> m.getUuid().equals(uuid)).findFirst().orElse(null);
     }
 
     /**
@@ -206,9 +206,9 @@ public class Guild {
      */
     public void addMember(OfflinePlayer player, GuildHandler guildHandler) {
         GuildMember member = new GuildMember(player.getUniqueId(), guildHandler.getLowestGuildRole());
-        if (getMembers().contains(member)) return;
+        if (members.contains(member)) return;
         removeInvitedMember(member.getUuid());
-        getMembers().add(member);
+        members.add(member);
         member.setJoinDate(System.currentTimeMillis());
     }
 
@@ -217,7 +217,7 @@ public class Guild {
      * @param guildMember
      */
     public void addMemberByCode(GuildMember guildMember) {
-        getMembers().add(guildMember);
+        members.add(guildMember);
     }
 
     /**
@@ -225,7 +225,7 @@ public class Guild {
      * @param guildMember the guildmember to remove
      */
     public void removeMember(GuildMember guildMember){
-        getMembers().remove(guildMember);
+        members.remove(guildMember);
     }
 
     /**
@@ -241,7 +241,7 @@ public class Guild {
      * @param guild the guild to remove
      */
     public void removeAlly(Guild guild) {
-        getAllies().remove(guild.getId());
+        allies.remove(guild.getId());
     }
 
     /**
@@ -249,7 +249,7 @@ public class Guild {
      * @param guild the guild to add
      */
     public void addAlly(Guild guild) {
-        getAllies().add(guild.getId());
+        allies.add(guild.getId());
     }
 
     /**
@@ -257,7 +257,7 @@ public class Guild {
      * @return if they have allies or not
      */
     public boolean hasAllies() {
-        return getAllies().size() > 0;
+        return !allies.isEmpty();
     }
 
     /**
@@ -265,7 +265,7 @@ public class Guild {
      * @return if a guild has pending allies or not
      */
     public boolean hasPendingAllies() {
-        return getPendingAllies().size() > 0;
+        return !pendingAllies.isEmpty();
     }
 
     /**
@@ -273,7 +273,7 @@ public class Guild {
      * @param guild the guild to add
      */
     public void addPendingAlly(Guild guild) {
-        getPendingAllies().add(guild.getId());
+        pendingAllies.add(guild.getId());
     }
 
     /**
@@ -282,7 +282,7 @@ public class Guild {
      * @return if they have a pending invite
      */
     public boolean isAllyPending(Guild guild) {
-        return getPendingAllies().contains(guild.getId());
+        return pendingAllies.contains(guild.getId());
     }
 
     /**
@@ -290,7 +290,7 @@ public class Guild {
      * @param guild the guild to remove
      */
     public void removePendingAlly(Guild guild) {
-        getPendingAllies().remove(guild.getId());
+        pendingAllies.remove(guild.getId());
     }
 
     /**
@@ -299,8 +299,8 @@ public class Guild {
      * @param uuid the UUID of the player.
      */
     public void inviteMember(UUID uuid) {
-        if (getInvitedMembers().contains(uuid)) return;
-        getInvitedMembers().add(uuid);
+        if (invitedMembers.contains(uuid)) return;
+        invitedMembers.add(uuid);
     }
 
     /**
@@ -309,7 +309,7 @@ public class Guild {
      * @return invited or not
      */
     public boolean checkIfInvited(Player player) {
-        return getInvitedMembers().contains(player.getUniqueId());
+        return invitedMembers.contains(player.getUniqueId());
     }
 
     /**
@@ -318,7 +318,7 @@ public class Guild {
      * @param uuid the member to remove from the invites.
      */
     public void removeInvitedMember(UUID uuid) {
-        getInvitedMembers().remove(uuid);
+        invitedMembers.remove(uuid);
     }
 
     /**
@@ -326,7 +326,7 @@ public class Guild {
      * @return size of members list.
      */
     public int getSize() {
-        return getMembers().size();
+        return members.size();
     }
 
     /**
@@ -335,7 +335,7 @@ public class Guild {
      * @return a List of online members
      */
     public List<GuildMember> getOnlineMembers() {
-        return getMembers().stream().filter(GuildMember::isOnline).collect(Collectors.toList());
+        return members.stream().filter(GuildMember::isOnline).collect(Collectors.toList());
     }
 
     /**
@@ -359,7 +359,7 @@ public class Guild {
      * @return list of players
      */
     public List<OfflinePlayer> getAllAsPlayers() {
-        return getMembers().stream().map(GuildMember::getAsOfflinePlayer).collect(Collectors.toList());
+        return members.stream().map(GuildMember::getAsOfflinePlayer).collect(Collectors.toList());
     }
 
     /**
@@ -368,7 +368,7 @@ public class Guild {
      * @return if the guild has it or not
      */
     public boolean hasInviteCode(String code) {
-        return getCodes().stream().anyMatch(c -> c.getId().equals(code));
+        return codes.stream().anyMatch(c -> c.getId().equals(code));
     }
 
     /**
@@ -377,7 +377,7 @@ public class Guild {
      * @return the guild code object
      */
     public GuildCode getCode(String code) {
-        return getCodes().stream().filter(c -> c.getId().equals(code)).findFirst().orElse(null);
+        return codes.stream().filter(c -> c.getId().equals(code)).findFirst().orElse(null);
     }
 
     /**
@@ -385,7 +385,7 @@ public class Guild {
      * @return list of active codes
      */
     public List<GuildCode> getActiveCodes() {
-        return getCodes().stream().filter(c -> c.getUses() > 0).collect(Collectors.toList());
+        return codes.stream().filter(c -> c.getUses() > 0).collect(Collectors.toList());
     }
 
     /**
@@ -395,7 +395,7 @@ public class Guild {
      * @param creator the creator of the code
      */
     public void addCode(String code, int uses, Player creator) {
-        getCodes().add(new GuildCode(code, uses, creator.getUniqueId(), new ArrayList<>()));
+        codes.add(new GuildCode(code, uses, creator.getUniqueId(), new ArrayList<>()));
     }
 
     /**
@@ -403,7 +403,7 @@ public class Guild {
      * @param code the code being checked
      */
     public void removeCode(String code) {
-        getCodes().removeIf(s -> s.getId().equals(code));
+        codes.removeIf(s -> s.getId().equals(code));
     }
 
     /**
@@ -453,7 +453,7 @@ public class Guild {
      * Toggle the status of a guild
      */
     public void toggleStatus() {
-        if (getStatus() == Status.Private) {
+        if (status == Status.Private) {
             setStatus(Status.Public);
         } else {
             setStatus(Status.Private);
@@ -481,7 +481,7 @@ public class Guild {
      * @return public or private
      */
     public boolean isPrivate() {
-        return getStatus() == Status.Private;
+        return status == Status.Private;
     }
 
     /**
@@ -490,7 +490,7 @@ public class Guild {
      * @return master or not
      */
     public boolean isMaster(OfflinePlayer player) {
-        return getGuildMaster().getUuid().equals(player.getUniqueId());
+        return guildMaster.getUuid().equals(player.getUniqueId());
     }
 
     /**

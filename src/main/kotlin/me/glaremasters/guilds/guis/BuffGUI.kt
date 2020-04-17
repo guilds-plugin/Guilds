@@ -47,7 +47,7 @@ import java.util.concurrent.TimeUnit
 
 class BuffGUI(private val guilds: Guilds, private val buffConfig: SettingsManager, private val cooldownHandler: CooldownHandler) {
 
-    fun getBuffGUI(player: Player, guild: Guild, manager: PaperCommandManager): PaginatedGui {
+    fun get(player: Player, guild: Guild, manager: PaperCommandManager): PaginatedGui {
         val name = buffConfig.getProperty(GuildBuffSettings.GUI_NAME)
         val gui = PaginatedGui(guilds, 6, 45, StringUtils.color(name))
 

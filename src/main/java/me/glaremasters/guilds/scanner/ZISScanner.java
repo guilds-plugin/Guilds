@@ -28,6 +28,7 @@ package me.glaremasters.guilds.scanner;
 import org.jetbrains.annotations.NotNull;
 
 import java.security.CodeSource;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.zip.ZipEntry;
@@ -45,7 +46,7 @@ public final class ZISScanner {
     /**
      * Get all the classes in the main class's classloader, which are
      * in a specific package, and aren't in any of the excluded packages.
-     *
+     * <p>
      * Semantics:
      * A class is not loaded if any of the following conditions are true:
      * <i>Filename includes the file name, and it's relative path from the root of the jar</i>
@@ -68,24 +69,23 @@ public final class ZISScanner {
      * it'll be caught and wrapped into a RuntimeException, effectively
      * terminating the program.
      *
-     * @param main       Main class
-     * @param pckg       Package to scan
+     * @param main Main class
+     * @param pckg Package to scan
      * @return Set of loaded classes
      */
     public Set<Class<?>> getClasses(@NotNull final Class<?> main, @NotNull String pckg) {
-        final Set<Class<?>> classes = new HashSet<>();
-
         pckg = pckg.replace('.', '/');
 
-        try {
-            final ClassLoader loader = main.getClassLoader();
-            final CodeSource src = main.getProtectionDomain().getCodeSource();
+        final ClassLoader loader = main.getClassLoader();
+        final CodeSource src = main.getProtectionDomain().getCodeSource();
 
-            if (src == null) {
-                return classes;
-            }
+        if (src == null) {
+            return Collections.emptySet();
+        }
 
-            final ZipInputStream zip = new ZipInputStream(src.getLocation().openStream());
+        final Set<Class<?>> classes = new HashSet<>();
+
+        try (final ZipInputStream zip = new ZipInputStream(src.getLocation().openStream())) {
             ZipEntry entry;
 
             while ((entry = zip.getNextEntry()) != null) {

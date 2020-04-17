@@ -40,7 +40,7 @@ import java.text.SimpleDateFormat
 class ListGUI(private val guilds: Guilds, private val settingsManager: SettingsManager, private val guildHandler: GuildHandler) {
     private val items: MutableList<GuiItem>
 
-    val listGUI: PaginatedGui
+    val get: PaginatedGui
         get() {
             val name = settingsManager.getProperty(GuildListSettings.GUILD_LIST_NAME)
             val gui = PaginatedGui(guilds, 6, 45, StringUtils.color(name))
@@ -115,7 +115,7 @@ class ListGUI(private val guilds: Guilds, private val settingsManager: SettingsM
 
         guiItem.setAction { event ->
             event.isCancelled = true
-            guilds.guiHandler.infoMembersGUI.getInfoMembersGUI(guild).open(event.whoClicked)
+            guilds.guiHandler.members.get(guild).open(event.whoClicked)
         }
 
         items.add(guiItem)

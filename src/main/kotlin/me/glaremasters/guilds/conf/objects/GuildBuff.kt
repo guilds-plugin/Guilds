@@ -29,7 +29,7 @@ internal data class GuildBuff(var identifier: String = "",
                               var unlocked: BuffSetting = BuffSetting("Special Buff", "FEATHER", listOf("")),
                               var price: Double = 200.00,
                               var effects: List<String> = listOf("FAST_DIGGING;1;60", "SPEED;2;30"),
-                              var permission: String = "my.special.permission",
+                              var permission: String = "example.perm.here",
                               var clicker: BuffCommand = BuffCommand(true, listOf("")),
                               var guild: BuffCommand = BuffCommand(true, listOf(""))
 )

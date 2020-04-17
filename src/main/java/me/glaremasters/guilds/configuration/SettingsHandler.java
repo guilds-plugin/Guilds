@@ -38,48 +38,48 @@ import java.io.File;
  */
 public class SettingsHandler {
 
-    private SettingsManager settingsManager;
-    private SettingsManager tierSettings;
-    private SettingsManager roleSettings;
-    private SettingsManager buffSettings;
+    private SettingsManager mainConf;
+    private SettingsManager tierConf;
+    private SettingsManager roleConf;
+    private SettingsManager buffConf;
 
     public SettingsHandler(Guilds guilds) {
 
-        settingsManager = SettingsManagerBuilder
+        mainConf = SettingsManagerBuilder
                 .withYamlFile(new File(guilds.getDataFolder(), "config.yml"))
                 .migrationService(new GuildsMigrationService(guilds.getDataFolder()))
                 .configurationData(GuildConfigurationBuilder.buildConfigurationData())
                 .create();
 
-        tierSettings = SettingsManagerBuilder.withYamlFile(new File(guilds.getDataFolder(), "tiers.yml"))
+        tierConf = SettingsManagerBuilder.withYamlFile(new File(guilds.getDataFolder(), "tiers.yml"))
                 .migrationService(new PlainMigrationService())
                 .configurationData(GuildConfigurationBuilder.buildTierData())
                 .create();
 
-        roleSettings = SettingsManagerBuilder.withYamlFile(new File(guilds.getDataFolder(), "roles.yml"))
+        roleConf = SettingsManagerBuilder.withYamlFile(new File(guilds.getDataFolder(), "roles.yml"))
                 .migrationService(new PlainMigrationService())
                 .configurationData(GuildConfigurationBuilder.buildRoleData())
                 .create();
 
-        buffSettings = SettingsManagerBuilder.withYamlFile(new File(guilds.getDataFolder(), "buffs.yml"))
+        buffConf = SettingsManagerBuilder.withYamlFile(new File(guilds.getDataFolder(), "buffs.yml"))
                 .migrationService(new BuffsMigrationService())
                 .configurationData(GuildConfigurationBuilder.buildBuffData())
                 .create();
     }
 
-    public SettingsManager getSettingsManager() {
-        return this.settingsManager;
+    public SettingsManager getMainConf() {
+        return this.mainConf;
     }
 
-    public SettingsManager getTierSettings() {
-        return tierSettings;
+    public SettingsManager getTierConf() {
+        return tierConf;
     }
 
-    public SettingsManager getRoleSettings() {
-        return roleSettings;
+    public SettingsManager getRoleConf() {
+        return roleConf;
     }
 
-    public SettingsManager getBuffSettings() {
-        return buffSettings;
+    public SettingsManager getBuffConf() {
+        return buffConf;
     }
 }

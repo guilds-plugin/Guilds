@@ -27,10 +27,4 @@ import me.glaremasters.guilds.api.events.base.GuildEvent
 import me.glaremasters.guilds.guild.Guild
 import org.bukkit.entity.Player
 
-class GuildLeaveEvent(player: Player, guild: Guild, val cause: Cause) : GuildEvent(player, guild) {
-
-    enum class Cause {
-        PLAYER_LEFT, PLAYER_KICKED, ADMIN_REMOVED
-    }
-
-}
+class GuildLeaveEvent(player: Player, guild: Guild) : GuildEvent(player, guild)
