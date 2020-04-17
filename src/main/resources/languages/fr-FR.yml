@@ -121,8 +121,8 @@ error:
   player-no-exist: "&cDésolé, il ne semble pas que ce joueur ait déjà été sur le serveur !"
 bank:
   balance: "&aVotre guilde possède : {amount}."
-  deposit-success: "&a{player} has just deposited {amount} into the Guild Bank. Your new total is {total}."
-  withdrawal-success: "&a{player} has just withdrawn {amount} from the Guild Bank. Your new total is {total}."
+  deposit-success: "&a{player} vient de déposer {amount} dans la banque de Guilde. Votre nouveau total est de {total}."
+  withdrawal-success: "&a{player} vient de rétirer {amount} de la banque de Guilde. Votre nouveau total est de {total}."
   not-enough-bank: "&cIl n'y a pas assez d'argent en banque pour faire cela"
   over-max: "&cDésolé, vous ne pouvez pas déposer autant, ou vous dépasserez la limite maximum de votre banque !"
 admin:
@@ -143,11 +143,11 @@ admin:
   motd-success: "&aVous avez bien changé le message du jour de la guilde {guild} en {motd}."
   motd-remove: "&aVous avez bien supprimé le message du jour de la guilde {guild}."
   bank-balance: "&aLa guilde {guild} a un solde bancaire de {balance}."
-  bank-deposit: "&aYou've successfully put {amount} into {guild}'s bank. Their new balance is {total}."
-  bank-withdraw: "&aYou've successfully taken {amount} from {guild}'s bank. Their new balance is {total}."
-  sethome: "&aYou've successfully set a new guild home for {guild}."
-  home: "&aYou've successfully teleported to {guild}'s home."
-  delhome: "&aYou've successfully removed the guild home for {guild}."
+  bank-deposit: "&aVous venez d'introduire {amount} dans la banque de {guild}. Leur nouveau solde est de {total}."
+  bank-withdraw: "&aVous venez d' prendre {amount} depuis la banque de {guild}. Leur nouveau solde est de {total}."
+  sethome: "&a Vous venez de définir le nouveau foyer de la guilde {guild}."
+  home: "&a Vous venez de téléporter le foyer de {guild}."
+  delhome: "&a Vous venez d'effacer le foyer de la guilde {guild}."
 boot:
   player-kicked: "&cLe joueur '{player}' a été exclu de la guilde par {kicker}!"
   successful: "&aLe joueur {player} a bien été expulsé de la guilde !"
