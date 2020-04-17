@@ -1,7 +1,7 @@
 ---
 descriptions:
   accept: "Accepter une invitation de guilde"
-  admin-addplayer: "Commande admin pour ajouter un joueur dans une guilde"
+  admin-addplayer: "Commande administrateur pour ajouter un joueur dans une guilde"
   admin-bank-balance: "Commande administrateur pour voir le solde de la banque d'une guilde"
   admin-bank-deposit: "Commande administrateur pour mettre de l'argent dans la banque d'une guilde"
   admin-bank-withdraw: "Commande administrateur retirer de l'argent à la banque d'une guilde"
