@@ -10,7 +10,7 @@ cache:
     - $HOME/.gradle/wrapper/
 script:
   - gradle assemble
-  - gradle shadowJaw
+  - gradle shadowJar
 branches:
   only:
     - master
