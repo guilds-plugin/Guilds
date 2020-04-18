@@ -2,6 +2,7 @@
 
 [![Discord](https://discordapp.com/api/guilds/164280494874165248/widget.png?style=banner2)](https://helpch.at/discord)
 
+[![Crowdin](https://badges.crowdin.net/guilds/localized.svg)](https://crowdin.com/project/guilds)
 ### What is Guilds?
 ___
 
