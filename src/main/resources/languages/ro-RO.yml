@@ -105,7 +105,7 @@ error:
   no-guild: "&cNu esti in nicio breasla!"
   role-no-permission: "&cRolul tau nu poate face acest lucru!"
   tier-no-permission: "&cYour guild tier is not high enough to do that!"
-  guild-no-exist: "&cAceast breasla nu exista! (Daca primesti acest mesaj incercand sa intrii intr-o breasla cu nume colorat propriu, poti incerca /join guild <jucator care te-a invitat> ca sa intrii!"
+  guild-no-exist: "&cThat Guild does not exist! (If you are getting this due to trying to join a guild that has a custom colored name, you can try doing /guild join <player who invited you> to join also!"
   player-not-found: "&cJucatorul '{player}&r&c' nu este online!"
   player-not-in-guild: "&c{player} nu face parte din breasla ta!"
   not-officer: "&cJucatorul trebuie sa fie un Ofiter in breasla ta!"
