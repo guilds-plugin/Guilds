@@ -105,7 +105,7 @@ error:
   no-guild: "&cNem vagy benne semmilyen céhben."
   role-no-permission: "&cA céh rangod nem elég magas ahhoz hogy ezt megtegyed!"
   tier-no-permission: "&cYour guild tier is not high enough to do that!"
-  guild-no-exist: "&cEz a céh nem létezik! (Ha ezt az egyéni színű nevű céhhez való csatlakozás miatt kapja meg, próbálja meg a /join guild <játékos, aki meghívott, hogy csatlakozzon hozzánk is)"
+  guild-no-exist: "&cThat Guild does not exist! (If you are getting this due to trying to join a guild that has a custom colored name, you can try doing /guild join <player who invited you> to join also!"
   player-not-found: "&cJátékos '{player}&r&c' nem online jelenleg!"
   player-not-in-guild: "&c{player} Nincs a céhedben!"
   not-officer: "&cA felhasználónak egy Officer-nek kell lennie a céhedben!"
