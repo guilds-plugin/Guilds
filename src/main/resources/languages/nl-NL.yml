@@ -105,7 +105,7 @@ error:
   no-guild: "&cJe zit niet in een Guild!"
   role-no-permission: "&cJouw rol is niet hoog genoeg om dat te doen!"
   tier-no-permission: "&cDe tier van je Guild is niet hoog genoeg om dat te doen!"
-  guild-no-exist: "&cDie Guild bestaat niet!"
+  guild-no-exist: "&cThat Guild does not exist! (If you are getting this due to trying to join a guild that has a custom colored name, you can try doing /guild join <player who invited you> to join also!"
   player-not-found: "&cSpeler '{player}&r&c' is niet online!"
   player-not-in-guild: "&c{player} zit niet in jouw Guild!"
   not-officer: "&cSpeler moet een Officer zijn in jouw Guild!"
