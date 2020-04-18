@@ -102,9 +102,9 @@ class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCo
         commandManager.commandCompletions.registerCompletion("joinableGuilds") { c -> guildHandler.getJoinableGuild(c.player) }
         commandManager.commandCompletions.registerCompletion("guilds") { guildHandler.guildNames }
         commandManager.commandCompletions.registerCompletion("arenas") { arenaHandler.getArenas().map { it.name } }
-        commandManager.commandCompletions.registerAsyncCompletion("locations") { listOf("challenger", "defender") }
+        commandManager.commandCompletions.registerStaticCompletion("locations") { listOf("challenger", "defender") }
         commandManager.commandCompletions.registerCompletion("languages") { languages.sorted() }
-        commandManager.commandCompletions.registerAsyncCompletion("sources") { listOf("JSON", "MYSQL", "SQLITE", "MARIADB") }
+        commandManager.commandCompletions.registerStaticCompletion("sources") { listOf("JSON", "MYSQL", "SQLITE", "MARIADB") }
 
         commandManager.commandCompletions.registerCompletion("members") { c ->
             val guild = guildHandler.getGuild(c.player) ?: return@registerCompletion null
