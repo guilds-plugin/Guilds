@@ -77,7 +77,7 @@ descriptions:
   sethome: "Ρυθμίστε το σπίτι της ομάδας σας"
   status: "Αλλάξτε την κατάσταση της ομάδας σας"
   transfer: "Μεταφέρετε την ομάδα σας σε άλλο χρήστη"
-  unclaim: "Unclaim your guild land"
+  unclaim: "Ακύρωση κατοχύρωσης όλου του εδάφους της ομάδας"
   upgrade: "Αναβαθμίστε το επίπεδο της ομάδας σας!"
   vault: "Ανοίγει το θησαυροφυλάκιο της ομάδας"
   version: "Πληροφορίες για την προσθήκη"
@@ -128,7 +128,7 @@ bank:
 admin:
   delete-warning: "&cYou are about to delete the guild {guild}. Type /guilds confirm to remove this guild, type /guilds cancel to cancel."
   delete-success: "&aYou have successfully removed {guild}."
-  guild-vault-sign: "Global Guild Vault created!"
+  guild-vault-sign: "Δημόσιο Θησαυροφυλάκιο δημιουργήθηκε!"
   player-added: "&aYou have been added to {guild} by an Admin!"
   admin-player-added: "&aYou have added {player} to {guild}!"
   admin-guild-add: "&a{player} has been added to your guild by an Admin!"
@@ -178,7 +178,7 @@ transfer:
   newmaster: "&aYou are the new Guild Master of your Guild!"
   success: "&aGuild has been transferred!"
 invite:
-  already-invited: "User is already invited to your guild"
+  already-invited: "Ο πλέκτης έχει ήδη προσκληθεί"
   message: "&a{player} has invited you to his/her guild, '{guild}' Type /guild join {guild} to join!"
   successful: "&aYou've successfully invited {player} to your guild!"
   already-in-guild: "&c{player} is already in another guild!"
@@ -337,7 +337,7 @@ acf-core:
   invalid_syntax: "Usage: <c2>{command}</c2> <c3>{syntax}</c3>"
   permission_denied: "I'm sorry, but you do not have permission to perform this command."
   unknown_command: "Unknown Command, please type <c2>/help</c2>"
-  error_performing_command: "I'm sorry, but there was an error performing this command."
+  error_performing_command: "Λυπάμαι, υπήρξε πρόβλημα κατά την εκτέλεση αυτής της εντολής."
 migrate:
   invalid-backend: "&cThe backend you've attempted to migrate to is invalid."
   connection-failed: "&cConnecting to the new backend failed! Make sure your authentication is properly configured!"
