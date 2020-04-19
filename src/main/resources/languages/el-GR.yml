@@ -186,7 +186,7 @@ upgrade:
   tier-max: "&cCannot upgrade again! You're already maxed!"
   money-warning: "&cYou are about to spend {amount} to set upgrade your guild. (Type /guilds confirm to continue)"
   cancel: "&cΑναβάθμιση ακυρώθηκε!"
-  success: "&aYou've successfully upgraded your guild!"
+  success: "&aΑναβαθμίσατε επιτυχώς την ομάδα σας!"
   not-enough-money: "&cSorry! You don't have enough money to upgrade your Guild! You still need {needed}!"
   not-enough-members: "&cSorry! You need at least {amount} members to rank up your Guild Tier!"
 prefix:
@@ -213,9 +213,9 @@ cancel:
   success: "&aAction cancelled!"
 confirm:
   error: "&cYou have no actions to confirm!"
-  success: "&aAction confirmed!"
+  success: "&aΗ ενέργεια επιβεβαιώθηκε!"
 ally:
-  none: "&cYou have no allies!"
+  none: "&cΔεν έχετε συμμάχους!"
   list: "Your Guild has the following allies: {ally-list}"
   current-declined: "&a{guild}'s ally request has been denied!"
   target-declined: "&cYour ally request to {guild} has been denied!"
