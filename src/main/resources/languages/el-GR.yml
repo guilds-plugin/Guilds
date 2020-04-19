@@ -207,7 +207,7 @@ sethome:
   deleted: "&aYou've successfully deleted your guild home!"
   cooldown: "&cYou must wait at least {amount} seconds before doing this again"
 reload:
-  reloaded: "&aConfiguration file reloaded!"
+  reloaded: "&aΦορτώθηκε ξανά το αρχείο διαμόρφωσης!"
 cancel:
   error: "&cΔεν έχετε καμία ενέργεια για ακύρωση!"
   success: "&aΗ ενέργεια ακυρώθηκε!"
