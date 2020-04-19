@@ -209,10 +209,10 @@ sethome:
 reload:
   reloaded: "&aConfiguration file reloaded!"
 cancel:
-  error: "&cYou have no actions to cancel!"
-  success: "&aAction cancelled!"
+  error: "&cΔεν έχετε καμία ενέργεια για ακύρωση!"
+  success: "&aΗ ενέργεια ακυρώθηκε!"
 confirm:
-  error: "&cYou have no actions to confirm!"
+  error: "&cΔεν έχετε καμία ενέργεια για επιβεβαίωση!"
   success: "&aΗ ενέργεια επιβεβαιώθηκε!"
 ally:
   none: "&cΔεν έχετε συμμάχους!"
