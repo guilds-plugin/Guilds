@@ -105,39 +105,20 @@ public class GuildHandler {
         for (String s : roleSection.getKeys(false)) {
             String path = s + ".permissions.";
 
-            roles.add(GuildRole.builder().name(roleSection.getString(s + ".name"))
-                    .node(roleSection.getString(s + ".permission-node"))
-                    .level(Integer.parseInt(s))
-                    .chat(roleSection.getBoolean(path + "chat"))
-                    .allyChat(roleSection.getBoolean(path + "ally-chat"))
-                    .invite(roleSection.getBoolean(path + "invite"))
-                    .kick(roleSection.getBoolean(path + "kick"))
-                    .promote(roleSection.getBoolean(path + "promote"))
-                    .demote(roleSection.getBoolean(path + "demote"))
-                    .addAlly(roleSection.getBoolean(path + "add-ally"))
-                    .removeAlly(roleSection.getBoolean(path + "remove-ally"))
-                    .changePrefix(roleSection.getBoolean(path + "change-prefix"))
-                    .changeName(roleSection.getBoolean(path + "rename"))
-                    .changeHome(roleSection.getBoolean(path + "change-home"))
-                    .removeGuild(roleSection.getBoolean(path + "remove-guild"))
-                    .changeStatus(roleSection.getBoolean(path + "toggle-guild"))
-                    .openVault(roleSection.getBoolean(path + "open-vault"))
-                    .transferGuild(roleSection.getBoolean(path + "transfer-guild"))
-                    .activateBuff(roleSection.getBoolean(path + "activate-buff"))
-                    .upgradeGuild(roleSection.getBoolean(path + "upgrade-guild"))
-                    .depositMoney(roleSection.getBoolean(path + "deposit-money"))
-                    .withdrawMoney(roleSection.getBoolean(path + "withdraw-money"))
-                    .claimLand(roleSection.getBoolean(path + "claim-land"))
-                    .unclaimLand(roleSection.getBoolean(path + "unclaim-land"))
-                    .destroy(roleSection.getBoolean(path + "destroy"))
-                    .place(roleSection.getBoolean(path + "place"))
-                    .interact(roleSection.getBoolean(path + "interact"))
-                    .createCode(roleSection.getBoolean(path + "create-code"))
-                    .deleteCode(roleSection.getBoolean(path + "delete-code"))
-                    .seeCodeRedeemers(roleSection.getBoolean(path + "see-code-redeemers"))
-                    .modifyMotd(roleSection.getBoolean(path + "modify-motd"))
-                    .initiateWar(roleSection.getBoolean(path + "initiate-war"))
-                    .build());
+            String name = roleSection.getString(s + ".name");
+            String perm = roleSection.getString(s + ".permission-node");
+            int level = Integer.parseInt(s);
+
+            GuildRole role = new GuildRole(name, perm, level);
+            GuildRolePerm[] values = GuildRolePerm.values();
+            for (GuildRolePerm rolePerm: values) {
+                final String valuePath = path + rolePerm.name().replace("_", "-").toLowerCase();
+                if (roleSection.getBoolean(valuePath)) {
+                    role.addPerm(rolePerm);
+                }
+            }
+
+            roles.add(role);
         }
 
 
@@ -179,7 +160,6 @@ public class GuildHandler {
                 g.setCreationDate(System.currentTimeMillis());
             }
         })).execute();
-
     }
 
     /**
@@ -681,7 +661,7 @@ public class GuildHandler {
      * @return list of online members
      */
     public List<Player> getOnlineInviters(Guild guild) {
-        List<GuildMember> members = guild.getOnlineMembers().stream().filter(m -> m.getRole().isInvite()).collect(Collectors.toList());
+        List<GuildMember> members = guild.getOnlineMembers().stream().filter(m -> m.getRole().hasPerm(GuildRolePerm.INVITE)).collect(Collectors.toList());
         return members.stream().map(GuildMember::getAsPlayer).collect(Collectors.toList());
     }
 

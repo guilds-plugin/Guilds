@@ -35,7 +35,6 @@ import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.exceptions.InvalidPermissionException
 import me.glaremasters.guilds.exceptions.InvalidTierException
 import me.glaremasters.guilds.guild.Guild
-import me.glaremasters.guilds.guild.GuildRole
 import me.glaremasters.guilds.utils.Constants
 import org.bukkit.entity.Player
 

@@ -42,7 +42,11 @@ import me.glaremasters.guilds.configuration.sections.StorageSettings;
 import me.glaremasters.guilds.cooldowns.CooldownHandler;
 import me.glaremasters.guilds.database.DatabaseAdapter;
 import me.glaremasters.guilds.dependency.Libraries;
+import me.glaremasters.guilds.exceptions.InvalidPermissionException;
+import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
+import me.glaremasters.guilds.guild.GuildRole;
+import me.glaremasters.guilds.guild.GuildRolePerm;
 import me.glaremasters.guilds.guis.GUIHandler;
 import me.glaremasters.guilds.listeners.ArenaListener;
 import me.glaremasters.guilds.listeners.ClaimSignListener;
@@ -368,5 +372,18 @@ public final class Guilds extends JavaPlugin {
 
     public Permission getPermissions() {
         return this.permissions;
+    }
+
+    private void register() {
+        commandManager.getCommandConditions().addCondition(GuildRole.class, "perms", (c, exec, value) -> {
+            if (value == null) {
+                return;
+            }
+            Guild guild = guildHandler.getGuild(exec.getPlayer());
+            GuildRole role = guildHandler.getGuildRole(guild.getMember(exec.getPlayer().getUniqueId()).getRole().getLevel());
+            if (c.hasConfig("perms") && !role.hasPerm(GuildRolePerm.valueOf(c.getConfigValue("perms", "DEFAULT")))) {
+                throw new InvalidPermissionException();
+            }
+        });
     }
 }

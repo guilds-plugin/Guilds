@@ -43,7 +43,6 @@ import me.glaremasters.guilds.exceptions.ExpectationNotMet
 import me.glaremasters.guilds.exceptions.InvalidPermissionException
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
-import me.glaremasters.guilds.guild.GuildRole
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.tasks.GuildWarChallengeCheckTask
 import me.glaremasters.guilds.tasks.GuildWarJoinTask

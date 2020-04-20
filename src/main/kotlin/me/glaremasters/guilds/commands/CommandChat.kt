@@ -37,6 +37,7 @@ import me.glaremasters.guilds.exceptions.InvalidPermissionException
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.guild.GuildRole
+import me.glaremasters.guilds.guild.GuildRolePerm
 import me.glaremasters.guilds.utils.Constants
 import org.bukkit.entity.Player
 
@@ -50,7 +51,7 @@ internal class CommandChat : BaseCommand() {
     @CommandPermission(Constants.BASE_PERM + "chat")
     @Syntax("[msg]")
     fun chat(player: Player, guild: Guild, role: GuildRole, @Optional msg: String?) {
-        if (!role.isChat) {
+        if (!role.hasPerm(GuildRolePerm.CHAT)) {
             throw InvalidPermissionException()
         }
 
