@@ -176,7 +176,7 @@ leave:
   warning-guildmaster: "&cYou're the Guild Master of this guild, leaving the guild will mean that the guild is deleted. Type /guilds confirm to leave and delete your guild, type /guilds cancel to cancel."
 transfer:
   newmaster: "&aYou are the new Guild Master of your Guild!"
-  success: "&aGuild has been transferred!"
+  success: "&aΗ ομάδα έχει μεταφερθεί!"
 invite:
   already-invited: "Ο πλέκτης έχει ήδη προσκληθεί"
   message: "&a{player} has invited you to his/her guild, '{guild}' Type /guild join {guild} to join!"
