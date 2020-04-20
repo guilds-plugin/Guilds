@@ -105,7 +105,7 @@ error:
   no-guild: "&8[&6公會&8] &f你沒有加入公會 ！"
   role-no-permission: "&8[&6公會&8] &f你沒有足夠的權限這麼做 ！"
   tier-no-permission: "&cYour guild tier is not high enough to do that!"
-  guild-no-exist: "&8[&6公會&8] &f該公會不存在（如果你想加入的公會含有自定義顏色，請嘗試與公會管理員溝通邀請你加入）"
+  guild-no-exist: "&cThat Guild does not exist! (If you are getting this due to trying to join a guild that has a custom colored name, you can try doing /guild join <player who invited you> to join also!"
   player-not-found: "&8[&6公會&8] &f玩家 {player} &f不在線"
   player-not-in-guild: "&8[&6公會&8] &f玩家{player} 不在你的公會中"
   not-officer: "&8[&6公會&8] &f只有副會長以上的位階才能使用"

@@ -105,7 +105,7 @@ error:
   no-guild: "&cNie jesteś w gildii!"
   role-no-permission: "&cTwoja rola w gildii nie jest wystarczająco wysoka!"
   tier-no-permission: "&cYour guild tier is not high enough to do that!"
-  guild-no-exist: "&cNie znaleziono takiej gildii! (Jeśli otrzymujesz to z powodu dołączenia do gildii o nazwie niestandardowego koloru, możesz to zrobić używając /join guild <gracz, który cię zaprosił> aby również dołączyć!"
+  guild-no-exist: "&cThat Guild does not exist! (If you are getting this due to trying to join a guild that has a custom colored name, you can try doing /guild join <player who invited you> to join also!"
   player-not-found: "&cGracz '{player}&r&c' jest niedostępny!"
   player-not-in-guild: "&c{player} nie jest w twojej gildii!"
   not-officer: "&cGracz musi być oficerem w twojej gildii!"
