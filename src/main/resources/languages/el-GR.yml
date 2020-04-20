@@ -201,11 +201,11 @@ home:
   teleported: "&aYou've teleported to your guild home!"
   cooldown: "&cYou must wait at least {amount} seconds before doing this again"
   warmup: "&aYou will be teleported in {amount} seconds. Don't move!"
-  cancelled: "&cYou moved! Teleportation cancelled!"
+  cancelled: "&cΚουνηθήκατε! Η τηλεμεταφορά ακυρώθηκε!"
 sethome:
-  successful: "&aYou've set your guild home!"
-  deleted: "&aYou've successfully deleted your guild home!"
-  cooldown: "&cYou must wait at least {amount} seconds before doing this again"
+  successful: "&aΤοποθετήσατε το σπίτι της ομάδας σας!"
+  deleted: "&aΔιαγράψατε με επιτυχία το σπίτι της ομάδας σας!"
+  cooldown: "&cΠρέπει να περιμένετε τουλάχιστον {amount} δευτερόλεπτα για να το ξανακάνετε αυτό"
 reload:
   reloaded: "&aΦορτώθηκε ξανά το αρχείο διαμόρφωσης!"
 cancel:
@@ -216,10 +216,10 @@ confirm:
   success: "&aΗ ενέργεια επιβεβαιώθηκε!"
 ally:
   none: "&cΔεν έχετε συμμάχους!"
-  list: "Your Guild has the following allies: {ally-list}"
-  current-declined: "&a{guild}'s ally request has been denied!"
-  target-declined: "&cYour ally request to {guild} has been denied!"
-  current-accepted: "&aYou've accepted an ally request from {guild}"
+  list: "Η ομάδα σας έχει τους ακόλουθους συμμάχους: {ally-list}"
+  current-declined: "&aΤο αίτημα συμμαχίας της {guild} απορρίφθηκε!"
+  target-declined: "&cΤο αίτημα συμμαχίας σας στο {guild} απορρίφθηκε!"
+  current-accepted: "&aΈχετε αποδεχτεί ένα αίτημα συμμαχίας από {guild}"
   target-accepted: "&aYour ally request to {guild} has been accepted!"
   invite-sent: "&aYou've successfully sent an ally invite to {guild}!"
   incoming-invite: "&aYou have an incoming ally request from {guild}!"
