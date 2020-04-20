@@ -105,7 +105,7 @@ error:
   no-guild: "&cVous n'êtes pas dans une guilde !"
   role-no-permission: "&cVous devez disposer d'un grade plus élevé pour faire ça !"
   tier-no-permission: "&cVous devez disposer d'un rang de guilde plus élevé pour faire ça !"
-  guild-no-exist: "&cThat Guild does not exist! (If you are getting this due to trying to join a guild that has a custom colored name, you can try doing /guild join <player who invited you> to join also!"
+  guild-no-exist: "&cCette guilde n'existe pas ! (Si vous obtenez ceci en essayant de rejoindre une guilde qui a un nom de couleur personnalisée, vous pouvez essayer de faire /guild join <nom de celui qui vous a invité> pour rejoindre aussi!)"
   player-not-found: "&cLe joueur '{player}&r&c' n'est pas en ligne !"
   player-not-in-guild: "&c{player} n'est pas dans votre guilde !"
   not-officer: "&cCe joueur doit être officier dans votre guilde !"
