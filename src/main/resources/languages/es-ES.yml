@@ -105,7 +105,7 @@ error:
   no-guild: "&c¡No estás en una guild!"
   role-no-permission: "&c¡Tu rol no es suficientemente alto para hacer eso!"
   tier-no-permission: "&cTu nivel de hermandad no es lo suficientemente alto para hacer eso!"
-  guild-no-exist: "&cThat Guild does not exist! (If you are getting this due to trying to join a guild that has a custom colored name, you can try doing /guild join <player who invited you> to join also!"
+  guild-no-exist: "&c¡Este equipo no existe! (¡Si estás obteniendo esto al intentar entrar a un equipo que tiene un nombre con colores, puedes intentar hacer /join guild <player who invited you> para entrar al equipo!)!"
   player-not-found: "&c¡El jugador '{player}&r&c' no está conectado!"
   player-not-in-guild: "&c¡{player} no está en tu guild!"
   not-officer: "&c¡El usuario debe ser un Oficial en tu guild!"
