@@ -166,7 +166,7 @@ class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCo
             if (guild.vaults == null) {
                 return@registerAsyncCompletion null
             }
-            val list = guildHandler.cachedVaults[guild] ?: return@registerAsyncCompletion null
+            val list = guildHandler.vaults[guild] ?: return@registerAsyncCompletion null
             (1 until list.size).map(Any::toString)
         }
     }

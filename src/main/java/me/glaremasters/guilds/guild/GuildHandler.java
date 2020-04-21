@@ -65,20 +65,18 @@ import java.util.stream.Stream;
 
 public class GuildHandler {
 
-
-    private List<Guild> guilds;
-    private final List<GuildRole> roles;
-    private final List<GuildTier> tiers;
-    private final List<Player> spies;
-    private final List<Player> guildChat;
-
-    private Map<Guild, List<Inventory>> cachedVaults;
-    private List<Player> openedVault;
-
     private final Guilds guildsPlugin;
     private final SettingsManager settingsManager;
+    private List<Guild> guilds;
+    private final List<GuildRole> roles = new ArrayList<>();
+    private final List<GuildTier> tiers = new ArrayList<>();
+    private final List<Player> spies = new ArrayList<>();
+    private final List<Player> guildChat = new ArrayList<>();
 
-    private boolean migrating;
+    private final Map<Guild, List<Inventory>> vaults = new HashMap<>();
+    private final List<Player> opened = new ArrayList<>();
+
+    private boolean migrating = false;
 
     //as well as guild permissions from tiers using permission field and tiers list.
 
@@ -86,59 +84,8 @@ public class GuildHandler {
         this.guildsPlugin = guildsPlugin;
         this.settingsManager = settingsManager;
 
-        roles = new ArrayList<>();
-        tiers = new ArrayList<>();
-        spies = new ArrayList<>();
-        guildChat = new ArrayList<>();
-        cachedVaults = new HashMap<>();
-        openedVault = new ArrayList<>();
-
-        migrating = false;
-
-        YamlConfiguration tempTierConfig = YamlConfiguration.loadConfiguration(new File(guildsPlugin.getDataFolder(), "tiers.yml"));
-        YamlConfiguration tempRoleConfig = YamlConfiguration.loadConfiguration(new File(guildsPlugin.getDataFolder(), "roles.yml"));
-
-
-        //GuildRoles objects
-        ConfigurationSection roleSection = tempRoleConfig.getConfigurationSection("roles");
-
-        for (String s : roleSection.getKeys(false)) {
-            String path = s + ".permissions.";
-
-            String name = roleSection.getString(s + ".name");
-            String perm = roleSection.getString(s + ".permission-node");
-            int level = Integer.parseInt(s);
-
-            GuildRole role = new GuildRole(name, perm, level);
-            GuildRolePerm[] values = GuildRolePerm.values();
-            for (GuildRolePerm rolePerm: values) {
-                final String valuePath = path + rolePerm.name().replace("_", "-").toLowerCase();
-                if (roleSection.getBoolean(valuePath)) {
-                    role.addPerm(rolePerm);
-                }
-            }
-
-            roles.add(role);
-        }
-
-
-        //GuildTier objects
-        ConfigurationSection tierSection = tempTierConfig.getConfigurationSection("tiers.list");
-        for (String key : tierSection.getKeys(false)) {
-            tiers.add(GuildTier.builder()
-                    .level(tierSection.getInt(key + ".level"))
-                    .name(tierSection.getString(key + ".name"))
-                    .cost(tierSection.getDouble(key + ".cost"))
-                    .maxMembers(tierSection.getInt(key + ".max-members"))
-                    .vaultAmount(tierSection.getInt(key + ".vault-amount"))
-                    .mobXpMultiplier(tierSection.getDouble(key + ".mob-xp-multiplier"))
-                    .damageMultiplier(tierSection.getDouble(key + ".damage-multiplier"))
-                    .maxBankBalance(tierSection.getDouble(key + ".max-bank-balance"))
-                    .membersToRankup(tierSection.getInt(key + ".members-to-rankup"))
-                    .useBuffs(tierSection.getBoolean(key + ".use-buffs"))
-                    .permissions(tierSection.getStringList(key + ".permissions"))
-                    .build());
-        }
+        loadRoles();
+        loadTiers();
 
         Guilds.newChain().async(() -> {
             try {
@@ -160,6 +107,52 @@ public class GuildHandler {
                 g.setCreationDate(System.currentTimeMillis());
             }
         })).execute();
+    }
+
+    /**
+     * Load all the roles
+     */
+    private void loadRoles() {
+        final YamlConfiguration conf = YamlConfiguration.loadConfiguration(new File(guildsPlugin.getDataFolder(), "roles.yml"));
+        final ConfigurationSection roleSec = conf.getConfigurationSection("roles");
+
+        for (String s : roleSec.getKeys(false)) {
+            final String path = s + ".permissions.";
+            final String name = roleSec.getString(s + ".name");
+            final String perm = roleSec.getString(s + ".permission-node");
+            final int level = Integer.parseInt(s);
+
+            final GuildRole role = new GuildRole(name, perm, level);
+
+            for (GuildRolePerm rolePerm: GuildRolePerm.values()) {
+                final String valuePath = path + rolePerm.name().replace("_", "-").toLowerCase();
+                if (roleSec.getBoolean(valuePath)) {
+                    role.addPerm(rolePerm);
+                }
+            }
+            this.roles.add(role);
+        }
+    }
+
+    private void loadTiers() {
+        final YamlConfiguration conf = YamlConfiguration.loadConfiguration(new File(guildsPlugin.getDataFolder(), "tiers.yml"));
+        final ConfigurationSection tierSec = conf.getConfigurationSection("tiers.list");
+
+        for (String key : tierSec.getKeys(false)) {
+            tiers.add(GuildTier.builder()
+                    .level(tierSec.getInt(key + ".level"))
+                    .name(tierSec.getString(key + ".name"))
+                    .cost(tierSec.getDouble(key + ".cost"))
+                    .maxMembers(tierSec.getInt(key + ".max-members"))
+                    .vaultAmount(tierSec.getInt(key + ".vault-amount"))
+                    .mobXpMultiplier(tierSec.getDouble(key + ".mob-xp-multiplier"))
+                    .damageMultiplier(tierSec.getDouble(key + ".damage-multiplier"))
+                    .maxBankBalance(tierSec.getDouble(key + ".max-bank-balance"))
+                    .membersToRankup(tierSec.getInt(key + ".members-to-rankup"))
+                    .useBuffs(tierSec.getBoolean(key + ".use-buffs"))
+                    .permissions(tierSec.getStringList(key + ".permissions"))
+                    .build());
+        }
     }
 
     /**
@@ -187,7 +180,7 @@ public class GuildHandler {
      * @param guild the guild being removed
      */
     public void removeGuild(@NotNull Guild guild) {
-        cachedVaults.remove(guild);
+        vaults.remove(guild);
         guilds.remove(guild);
     }
 
@@ -438,7 +431,7 @@ public class GuildHandler {
                 e.printStackTrace();
             }
         });
-        cachedVaults.put(guild, vaults);
+        this.vaults.put(guild, vaults);
     }
 
     /**
@@ -449,7 +442,7 @@ public class GuildHandler {
     private void saveVaultCache(Guild guild) {
         List<String> vaults = new ArrayList<>();
         if (guild.getVaults() == null) return;
-        cachedVaults.get(guild).forEach(v -> vaults.add(Serialization.serializeInventory(v)));
+        this.vaults.get(guild).forEach(v -> vaults.add(Serialization.serializeInventory(v)));
         guild.setVaults(vaults);
     }
 
@@ -461,7 +454,7 @@ public class GuildHandler {
      * @return the inventory to open
      */
     public Inventory getGuildVault(Guild guild, int vault) {
-        return cachedVaults.get(guild).get(vault - 1);
+        return vaults.get(guild).get(vault - 1);
     }
 
     /**
@@ -950,12 +943,12 @@ public class GuildHandler {
         return this.guildChat;
     }
 
-    public Map<Guild, List<Inventory>> getCachedVaults() {
-        return this.cachedVaults;
+    public Map<Guild, List<Inventory>> getVaults() {
+        return this.vaults;
     }
 
-    public List<Player> getOpenedVault() {
-        return this.openedVault;
+    public List<Player> getOpened() {
+        return this.opened;
     }
 
     public boolean isMigrating() {

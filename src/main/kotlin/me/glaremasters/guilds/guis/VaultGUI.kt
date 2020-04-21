@@ -85,10 +85,10 @@ class VaultGUI(private val guilds: Guilds, private val settingsManager: Settings
                 try {
                     guildHandler.getGuildVault(guild, event.rawSlot + 1)
                 } catch (ex: IndexOutOfBoundsException) {
-                    guildHandler.cachedVaults[guild]?.add(guildHandler.createNewVault(settingsManager))
+                    guildHandler.vaults[guild]?.add(guildHandler.createNewVault(settingsManager))
                 }
                 player.openInventory(guildHandler.getGuildVault(guild, event.rawSlot + 1))
-                guildHandler.openedVault.add(player)
+                guildHandler.opened.add(player)
             }
 
             gui.addItem(item)
