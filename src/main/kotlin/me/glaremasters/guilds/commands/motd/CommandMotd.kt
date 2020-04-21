@@ -62,7 +62,7 @@ internal class CommandMotd : BaseCommand() {
     @Description("{@@descriptions.motd-remove}")
     @CommandPermission(Constants.MOTD_PERM + "modify")
     @Syntax("")
-    fun remove(player: Player, @Conditions("perm=MODIFY_MOTD") guild: Guild) {
+    fun remove(player: Player, @Conditions("perm:perm=MODIFY_MOTD") guild: Guild) {
         guild.motd = null
         currentCommandIssuer.sendInfo(Messages.MOTD__REMOVE)
     }
@@ -71,7 +71,7 @@ internal class CommandMotd : BaseCommand() {
     @Description("{@@descriptions.motd-set}")
     @CommandPermission(Constants.MOTD_PERM + "modify")
     @Syntax("<motd>")
-    fun set(player: Player, @Conditions("perm=MODIFY_MOTD") guild: Guild, motd: String) {
+    fun set(player: Player, @Conditions("perm:perm=MODIFY_MOTD") guild: Guild, motd: String) {
         guild.motd = StringUtils.color(motd)
         currentCommandIssuer.sendInfo(Messages.MOTD__SUCCESS, "{motd}", guild.motd)
     }

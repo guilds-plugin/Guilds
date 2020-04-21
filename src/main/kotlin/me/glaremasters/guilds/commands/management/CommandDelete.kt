@@ -65,7 +65,7 @@ internal class CommandDelete : BaseCommand() {
     @Description("{@@descriptions.delete}")
     @CommandPermission(Constants.BASE_PERM + "delete")
     @Syntax("")
-    fun delete(player: Player, @Conditions("perm=REMOVE_GUILD") guild: Guild) {
+    fun delete(player: Player, @Conditions("perm:perm=REMOVE_GUILD") guild: Guild) {
         if (guildHandler.isMigrating) {
             throw ExpectationNotMet(Messages.ERROR__MIGRATING)
         }

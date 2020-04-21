@@ -65,7 +65,7 @@ internal class CommandHome : BaseCommand() {
     @Description("{@@descriptions.delhome}")
     @CommandPermission(Constants.BASE_PERM + "delhome")
     @Syntax("")
-    fun delete(player: Player, @Conditions("perm=CHANGE_HOME") guild: Guild) {
+    fun delete(player: Player, @Conditions("perm:perm=CHANGE_HOME") guild: Guild) {
         guild.delHome()
         currentCommandIssuer.sendInfo(Messages.SETHOME__DELETED)
     }
@@ -108,7 +108,7 @@ internal class CommandHome : BaseCommand() {
     @Description("{@@descriptions.sethome}")
     @CommandPermission(Constants.BASE_PERM + "sethome")
     @Syntax("")
-    fun set(player: Player, @Conditions("perm=CHANGE_HOME") guild: Guild) {
+    fun set(player: Player, @Conditions("perm:perm=CHANGE_HOME") guild: Guild) {
         val cooldown = Cooldown.Type.SetHome.name
         val id = player.uniqueId
 

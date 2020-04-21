@@ -72,7 +72,7 @@ internal class CommandWar : BaseCommand() {
     @Description("{@@descriptions.war-accept}")
     @Syntax("")
     @CommandPermission(Constants.WAR_PERM + "accept")
-    fun accept(player: Player, @Conditions("perm=INITIATE_WAR") guild: Guild) {
+    fun accept(player: Player, @Conditions("perm:perm=INITIATE_WAR") guild: Guild) {
         val challenge = challengeHandler.getChallenge(guild)
                 ?: throw ExpectationNotMet(Messages.WAR__NO_PENDING_CHALLENGE)
         val challenger = challenge.challenger
@@ -103,7 +103,7 @@ internal class CommandWar : BaseCommand() {
     @Syntax("<%syntax>")
     @CommandPermission(Constants.WAR_PERM + "challenge")
     @CommandCompletion("@guilds")
-    fun challenge(player: Player, @Conditions("perm=INITIATE_WAR") guild: Guild, @Values("@guilds") @Single target: String) {
+    fun challenge(player: Player, @Conditions("perm:perm=INITIATE_WAR") guild: Guild, @Values("@guilds") @Single target: String) {
         if (challengeHandler.getChallenge(guild) != null) {
             throw ExpectationNotMet(Messages.WAR__ALREADY_CHALLENGING)
         }
@@ -154,7 +154,7 @@ internal class CommandWar : BaseCommand() {
     @Description("{@@descriptions.war-deny}")
     @CommandPermission(Constants.WAR_PERM + "deny")
     @Syntax("")
-    fun deny(player: Player, @Conditions("perm=INITIATE_WAR") guild: Guild) {
+    fun deny(player: Player, @Conditions("perm:perm=INITIATE_WAR") guild: Guild) {
         val challenge = challengeHandler.getChallenge(guild)
                 ?: throw ExpectationNotMet(Messages.WAR__NO_PENDING_CHALLENGE)
         val challenger = challenge.challenger

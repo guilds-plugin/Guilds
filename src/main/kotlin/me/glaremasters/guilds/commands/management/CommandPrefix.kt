@@ -58,7 +58,7 @@ internal class CommandPrefix : BaseCommand() {
     @Description("{@@descriptions.prefix}")
     @CommandPermission(Constants.BASE_PERM + "prefix")
     @Syntax("<prefix>")
-    fun prefix(player: Player, @Conditions("perm=CHANGE_PREFIX") guild: Guild, prefix: String) {
+    fun prefix(player: Player, @Conditions("perm:perm=CHANGE_PREFIX") guild: Guild, prefix: String) {
         if (settingsManager.getProperty(GuildSettings.DISABLE_PREFIX)) {
             throw ExpectationNotMet(Messages.PREFIX__DISABLED)
         }

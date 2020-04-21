@@ -51,7 +51,7 @@ internal class CommandChat : BaseCommand() {
     @Description("{@@descriptions.chat}")
     @CommandPermission(Constants.BASE_PERM + "chat")
     @Syntax("[msg]")
-    fun chat(player: Player, @Conditions("perm=CHAT") guild: Guild, @Optional msg: String?) {
+    fun chat(player: Player, @Conditions("perm:perm=CHAT") guild: Guild, @Optional msg: String?) {
         if (msg == null) guildHandler.toggleGuildChat(currentCommandManager, player) else guildHandler.handleGuildChat(guild, player, msg)
     }
 }

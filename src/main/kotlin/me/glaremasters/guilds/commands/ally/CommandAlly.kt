@@ -58,7 +58,7 @@ internal class CommandAlly : BaseCommand() {
     @CommandPermission(Constants.ALLY_PERM + "accept")
     @CommandCompletion("@allyInvites")
     @Syntax("<%syntax>")
-    fun accept(player: Player, @Conditions("perm=ADD_ALLY") guild: Guild, @Values("@allyInvites") @Single name: String) {
+    fun accept(player: Player, @Conditions("perm:perm=ADD_ALLY") guild: Guild, @Values("@allyInvites") @Single name: String) {
         val target = guildHandler.getGuild(name) ?: throw ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST)
 
         if (!guild.isAllyPending(target)) {
@@ -77,7 +77,7 @@ internal class CommandAlly : BaseCommand() {
     @CommandPermission(Constants.ALLY_PERM + "add")
     @CommandCompletion("@guilds")
     @Syntax("<%syntax>")
-    fun add(player: Player, @Conditions("perm=ADD_ALLY") guild: Guild, @Values("@guilds") @Single name: String) {
+    fun add(player: Player, @Conditions("perm:perm=ADD_ALLY") guild: Guild, @Values("@guilds") @Single name: String) {
         val target = guildHandler.getGuild(name) ?: throw ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST)
 
         if (guild.isAllyPending(target)) {
@@ -109,7 +109,7 @@ internal class CommandAlly : BaseCommand() {
     @CommandPermission(Constants.ALLY_PERM + "decline")
     @CommandCompletion("@allyInvites")
     @Syntax("<%syntax>")
-    fun decline(player: Player, @Conditions("perm=REMOVE_ALLY") guild: Guild, @Values("@allyInvites") @Single name: String) {
+    fun decline(player: Player, @Conditions("perm:perm=REMOVE_ALLY") guild: Guild, @Values("@allyInvites") @Single name: String) {
         val target = guildHandler.getGuild(name) ?: throw ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST)
 
         if (!guild.isAllyPending(target)) {
@@ -127,7 +127,7 @@ internal class CommandAlly : BaseCommand() {
     @CommandPermission(Constants.ALLY_PERM + "remove")
     @CommandCompletion("@allies")
     @Syntax("<%syntax>")
-    fun remove(player: Player, @Conditions("perm=REMOVE_ALLY") guild: Guild, @Values("@allies") @Single name: String) {
+    fun remove(player: Player, @Conditions("perm:perm=REMOVE_ALLY") guild: Guild, @Values("@allies") @Single name: String) {
         val target = guildHandler.getGuild(name) ?: throw ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST)
 
         if (!guildHandler.isAlly(guild, target)) {

@@ -47,7 +47,7 @@ internal class CommandGUI : BaseCommand() {
     @Description("{@@descriptions.buff}")
     @Syntax("")
     @CommandPermission(Constants.BASE_PERM + "buff")
-    fun buff(player: Player, @Conditions("perm:ACTIVATE_BUFF") guild: Guild) {
+    fun buff(player: Player, @Conditions("perm:perm=ACTIVATE_BUFF") guild: Guild) {
         if (!guild.tier.isUseBuffs) {
             throw InvalidTierException()
         }
@@ -83,7 +83,7 @@ internal class CommandGUI : BaseCommand() {
     @Description("{@@descriptions.vault}")
     @Syntax("")
     @CommandPermission(Constants.BASE_PERM + "vault")
-    fun vault(player: Player, @Conditions("perm=OPEN_VAULT") guild: Guild) {
+    fun vault(player: Player, @Conditions("perm:perm=OPEN_VAULT") guild: Guild) {
         guilds.guiHandler.vaults.get(guild, player).open(player)
     }
 }

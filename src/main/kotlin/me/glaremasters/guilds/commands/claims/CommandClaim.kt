@@ -58,7 +58,7 @@ internal class CommandClaim : BaseCommand() {
     @Description("{@@descriptions.claim}")
     @CommandPermission(Constants.BASE_PERM + "claim")
     @Syntax("")
-    fun claim(player: Player, @Conditions("perm=CLAIM_LAND") guild: Guild) {
+    fun claim(player: Player, @Conditions("perm:perm=CLAIM_LAND") guild: Guild) {
         if (!ClaimUtils.isEnable(settingsManager)) {
             throw ExpectationNotMet(Messages.CLAIM__HOOK_DISABLED)
         }
@@ -99,7 +99,7 @@ internal class CommandClaim : BaseCommand() {
     @Description("{@@descriptions.unclaim}")
     @CommandPermission(Constants.BASE_PERM + "unclaim")
     @Syntax("")
-    fun unclaim(player: Player, @Conditions("perm=UNCLAIM_LAND") guild: Guild) {
+    fun unclaim(player: Player, @Conditions("perm:perm=UNCLAIM_LAND") guild: Guild) {
         if (!ClaimUtils.isEnable(settingsManager)) {
             throw ExpectationNotMet(Messages.CLAIM__HOOK_DISABLED)
         }

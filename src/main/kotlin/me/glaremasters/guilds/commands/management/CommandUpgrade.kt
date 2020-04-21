@@ -64,7 +64,7 @@ internal class CommandUpgrade : BaseCommand() {
     @Description("{@@descriptions.upgrade}")
     @CommandPermission(Constants.BASE_PERM + "upgrade")
     @Syntax("")
-    fun upgrade(player: Player, @Conditions("perm=UPGRADE_GUILD") guild: Guild) {
+    fun upgrade(player: Player, @Conditions("perm:perm=UPGRADE_GUILD") guild: Guild) {
         if (guildHandler.isMaxTier(guild)) {
             throw ExpectationNotMet(Messages.UPGRADE__TIER_MAX)
         }
