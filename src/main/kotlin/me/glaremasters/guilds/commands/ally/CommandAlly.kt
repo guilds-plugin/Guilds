@@ -31,10 +31,9 @@ import co.aikar.commands.annotation.CommandPermission
 import co.aikar.commands.annotation.Conditions
 import co.aikar.commands.annotation.Dependency
 import co.aikar.commands.annotation.Description
-import co.aikar.commands.annotation.Single
+import co.aikar.commands.annotation.Flags
 import co.aikar.commands.annotation.Subcommand
 import co.aikar.commands.annotation.Syntax
-import co.aikar.commands.annotation.Values
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.api.events.GuildAddAllyEvent
 import me.glaremasters.guilds.api.events.GuildRemoveAllyEvent
@@ -58,9 +57,7 @@ internal class CommandAlly : BaseCommand() {
     @CommandPermission(Constants.ALLY_PERM + "accept")
     @CommandCompletion("@allyInvites")
     @Syntax("<%syntax>")
-    fun accept(player: Player, @Conditions("perm:perm=ADD_ALLY") guild: Guild, @Values("@allyInvites") @Single name: String) {
-        val target = guildHandler.getGuild(name) ?: throw ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST)
-
+    fun accept(player: Player, @Conditions("perm:perm=ADD_ALLY") guild: Guild, @Flags("other") target: Guild) {
         if (!guild.isAllyPending(target)) {
             return
         }
@@ -77,10 +74,8 @@ internal class CommandAlly : BaseCommand() {
     @CommandPermission(Constants.ALLY_PERM + "add")
     @CommandCompletion("@guilds")
     @Syntax("<%syntax>")
-    fun add(player: Player, @Conditions("perm:perm=ADD_ALLY") guild: Guild, @Values("@guilds") @Single name: String) {
-        val target = guildHandler.getGuild(name) ?: throw ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST)
-
-        if (guild.isAllyPending(target)) {
+    fun add(player: Player, @Conditions("perm:perm=ADD_ALLY") guild: Guild, @Flags("other") target: Guild) {
+        if (target.isAllyPending(guild)) {
             throw ExpectationNotMet(Messages.ALLY__ALREADY_REQUESTED)
         }
 
@@ -109,9 +104,7 @@ internal class CommandAlly : BaseCommand() {
     @CommandPermission(Constants.ALLY_PERM + "decline")
     @CommandCompletion("@allyInvites")
     @Syntax("<%syntax>")
-    fun decline(player: Player, @Conditions("perm:perm=REMOVE_ALLY") guild: Guild, @Values("@allyInvites") @Single name: String) {
-        val target = guildHandler.getGuild(name) ?: throw ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST)
-
+    fun decline(player: Player, @Conditions("perm:perm=REMOVE_ALLY") guild: Guild, @Flags("other") target: Guild) {
         if (!guild.isAllyPending(target)) {
             return
         }
@@ -127,9 +120,7 @@ internal class CommandAlly : BaseCommand() {
     @CommandPermission(Constants.ALLY_PERM + "remove")
     @CommandCompletion("@allies")
     @Syntax("<%syntax>")
-    fun remove(player: Player, @Conditions("perm:perm=REMOVE_ALLY") guild: Guild, @Values("@allies") @Single name: String) {
-        val target = guildHandler.getGuild(name) ?: throw ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST)
-
+    fun remove(player: Player, @Conditions("perm:perm=REMOVE_ALLY") guild: Guild, @Flags("other") target: Guild) {
         if (!guildHandler.isAlly(guild, target)) {
             throw ExpectationNotMet(Messages.ALLY__NOT_ALLIED)
         }

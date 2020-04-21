@@ -51,7 +51,7 @@ internal class CommandAdminStatus : BaseCommand() {
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
     @Syntax("<%syntax>")
-    fun status(player: Player, @Flags("admin") @Values("@guilds") guild: Guild) {
+    fun status(player: Player, @Flags("other") @Values("@guilds") guild: Guild) {
         guild.toggleStatus()
         currentCommandIssuer.sendInfo(Messages.STATUS__SUCCESSFUL, "{status}", guild.status.name)
     }

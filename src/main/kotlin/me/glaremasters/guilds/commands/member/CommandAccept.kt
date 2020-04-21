@@ -32,7 +32,7 @@ import co.aikar.commands.annotation.CommandPermission
 import co.aikar.commands.annotation.Conditions
 import co.aikar.commands.annotation.Dependency
 import co.aikar.commands.annotation.Description
-import co.aikar.commands.annotation.Single
+import co.aikar.commands.annotation.Flags
 import co.aikar.commands.annotation.Subcommand
 import co.aikar.commands.annotation.Syntax
 import me.glaremasters.guilds.Guilds
@@ -41,6 +41,7 @@ import me.glaremasters.guilds.configuration.sections.PluginSettings
 import me.glaremasters.guilds.cooldowns.Cooldown
 import me.glaremasters.guilds.cooldowns.CooldownHandler
 import me.glaremasters.guilds.exceptions.ExpectationNotMet
+import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.ClaimUtils
@@ -68,14 +69,12 @@ internal class CommandAccept : BaseCommand() {
     @CommandPermission(Constants.BASE_PERM + "accept")
     @CommandCompletion("@joinableGuilds")
     @Syntax("<%syntax>")
-    fun accept(@Conditions("NoGuild") player: Player, @Single name: String) {
+    fun accept(@Conditions("NoGuild") player: Player, @Flags("other") guild: Guild) {
         val cooldown = Cooldown.Type.Join.name
 
         if (cooldownHandler.hasCooldown(cooldown, player.uniqueId)) {
             throw ExpectationNotMet(Messages.ACCEPT__COOLDOWN, "{amount}", cooldownHandler.getRemaining(cooldown, player.uniqueId).toString())
         }
-
-        val guild = guildHandler.getGuild(name) ?: throw ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST)
 
         if (!guild.checkIfInvited(player) && guild.isPrivate) {
             throw ExpectationNotMet(Messages.ACCEPT__NOT_INVITED)

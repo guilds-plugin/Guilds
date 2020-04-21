@@ -32,15 +32,15 @@ import co.aikar.commands.annotation.CommandPermission
 import co.aikar.commands.annotation.Conditions
 import co.aikar.commands.annotation.Dependency
 import co.aikar.commands.annotation.Description
-import co.aikar.commands.annotation.Single
+import co.aikar.commands.annotation.Flags
 import co.aikar.commands.annotation.Subcommand
 import co.aikar.commands.annotation.Syntax
-import co.aikar.commands.annotation.Values
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.configuration.sections.CooldownSettings
 import me.glaremasters.guilds.cooldowns.Cooldown
 import me.glaremasters.guilds.cooldowns.CooldownHandler
 import me.glaremasters.guilds.exceptions.ExpectationNotMet
+import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.Constants
@@ -59,8 +59,7 @@ internal class CommandRequest : BaseCommand() {
     @CommandPermission(Constants.BASE_PERM + "request")
     @CommandCompletion("@guilds")
     @Syntax("<%syntax>")
-    fun request(@Conditions("NoGuild") player: Player, @Values("@guilds") @Single name: String) {
-        val target = guildHandler.getGuild(name) ?: throw ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST)
+    fun request(@Conditions("NoGuild") player: Player, @Flags("other") target: Guild) {
         val cooldown = Cooldown.Type.Request.name
         val id = player.uniqueId
 

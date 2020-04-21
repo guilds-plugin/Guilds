@@ -60,7 +60,7 @@ internal class CommandAdminRemove : BaseCommand() {
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
     @Syntax("<%syntax>")
-    fun remove(player: Player, @Flags("admin") @Values("@guilds") guild: Guild) {
+    fun remove(player: Player, @Flags("other") @Values("@guilds") guild: Guild) {
         if (guildHandler.isMigrating) {
             throw ExpectationNotMet(Messages.ERROR__MIGRATING)
         }

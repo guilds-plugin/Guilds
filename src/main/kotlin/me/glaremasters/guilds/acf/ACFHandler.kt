@@ -85,7 +85,7 @@ class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCo
 
     private fun loadContexts(guildHandler: GuildHandler, arenaHandler: ArenaHandler) {
         commandManager.commandContexts.registerIssuerAwareContext(Guild::class.java) { c ->
-            val guild: Guild = (if (c.hasFlag("admin")) {
+            val guild: Guild = (if (c.hasFlag("other")) {
                 guildHandler.getGuild(c.popFirstArg())
             } else {
                 guildHandler.getGuild(c.player)

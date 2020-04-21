@@ -53,7 +53,7 @@ internal class CommandAdminRename : BaseCommand() {
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
     @Syntax("<%syntax> <new name>")
-    fun rename(player: Player, @Flags("admin") @Values("@guilds") guild: Guild, @Single name: String) {
+    fun rename(player: Player, @Flags("other") @Values("@guilds") guild: Guild, @Single name: String) {
         guild.name = StringUtils.color(name)
         currentCommandIssuer.sendInfo(Messages.RENAME__SUCCESSFUL, "{name}", guild.name)
     }

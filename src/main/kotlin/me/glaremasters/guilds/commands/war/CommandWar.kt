@@ -32,10 +32,9 @@ import co.aikar.commands.annotation.CommandPermission
 import co.aikar.commands.annotation.Conditions
 import co.aikar.commands.annotation.Dependency
 import co.aikar.commands.annotation.Description
-import co.aikar.commands.annotation.Single
+import co.aikar.commands.annotation.Flags
 import co.aikar.commands.annotation.Subcommand
 import co.aikar.commands.annotation.Syntax
-import co.aikar.commands.annotation.Values
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.arena.ArenaHandler
 import me.glaremasters.guilds.challenges.ChallengeHandler
@@ -102,7 +101,7 @@ internal class CommandWar : BaseCommand() {
     @Syntax("<%syntax>")
     @CommandPermission(Constants.WAR_PERM + "challenge")
     @CommandCompletion("@guilds")
-    fun challenge(player: Player, @Conditions("perm:perm=INITIATE_WAR") guild: Guild, @Values("@guilds") @Single target: String) {
+    fun challenge(player: Player, @Conditions("perm:perm=INITIATE_WAR") guild: Guild, @Flags("other") targetGuild: Guild) {
         if (challengeHandler.getChallenge(guild) != null) {
             throw ExpectationNotMet(Messages.WAR__ALREADY_CHALLENGING)
         }
@@ -114,8 +113,6 @@ internal class CommandWar : BaseCommand() {
         }
 
         val arena = arenaHandler.getAvailableArena().get()
-
-        val targetGuild = guildHandler.getGuild(target) ?: throw ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST)
 
         if (guildHandler.isSameGuild(guild, targetGuild)) {
             throw ExpectationNotMet(Messages.WAR__NO_SELF_CHALLENGE)

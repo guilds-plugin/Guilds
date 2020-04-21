@@ -53,7 +53,7 @@ internal class CommandAdminAddPlayer : BaseCommand() {
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds @online")
     @Syntax("<%syntax> <player>")
-    fun add(issuer: CommandIssuer, @Flags("admin") @Values("@guilds") guild: Guild, target: String) {
+    fun add(issuer: CommandIssuer, @Flags("other") @Values("@guilds") guild: Guild, target: String) {
         val user = Bukkit.getOfflinePlayer(target)
 
         if (!user.hasPlayedBefore()) {
