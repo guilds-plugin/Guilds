@@ -102,13 +102,14 @@ class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCo
     }
 
     private fun loadConditions(guildHandler: GuildHandler) {
-        commandManager.commandConditions.addCondition(Guild::class.java, "perms") { c, exec, value ->
+        commandManager.commandConditions.addCondition(Guild::class.java, "perm") { c, exec, value ->
             if (value == null) {
                 return@addCondition
             }
             val player = exec.player
             val guild = guildHandler.getGuild(player)
-            if (c.hasConfig("perm") && !guild.memberHasPermission(player, c.getConfigValue("perms", "DEFAULT"))) {
+            println(c.getConfigValue("perm", "DEFAULT"))
+            if (!guild.memberHasPermission(player, c.getConfigValue("perm", "DEFAULT"))) {
                 throw InvalidPermissionException()
             }
         }

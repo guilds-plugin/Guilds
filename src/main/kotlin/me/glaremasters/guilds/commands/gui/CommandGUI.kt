@@ -47,7 +47,7 @@ internal class CommandGUI : BaseCommand() {
     @Description("{@@descriptions.buff}")
     @Syntax("")
     @CommandPermission(Constants.BASE_PERM + "buff")
-    fun buff(player: Player, @Conditions("perm=ACTIVATE_BUFF") guild: Guild) {
+    fun buff(player: Player, @Conditions("perm:ACTIVATE_BUFF") guild: Guild) {
         if (!guild.tier.isUseBuffs) {
             throw InvalidTierException()
         }
