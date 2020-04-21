@@ -28,6 +28,7 @@ import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.CommandAlias
 import co.aikar.commands.annotation.CommandCompletion
 import co.aikar.commands.annotation.CommandPermission
+import co.aikar.commands.annotation.Conditions
 import co.aikar.commands.annotation.Dependency
 import co.aikar.commands.annotation.Description
 import co.aikar.commands.annotation.Single
@@ -53,12 +54,8 @@ internal class CommandDecline : BaseCommand() {
     @CommandPermission(Constants.BASE_PERM + "decline")
     @CommandCompletion("@invitedTo")
     @Syntax("<%syntax>")
-    fun decline(player: Player, @Values("@invitedTo") @Single name: String) {
+    fun decline(@Conditions("NoGuild") player: Player, @Values("@invitedTo") @Single name: String) {
         val guild = guildHandler.getGuild(name) ?: throw ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST)
-
-        if (guildHandler.getGuild(player) != null) {
-            throw ExpectationNotMet(Messages.ERROR__ALREADY_IN_GUILD)
-        }
 
         if (!guild.checkIfInvited(player)) {
             throw ExpectationNotMet(Messages.ACCEPT__NOT_INVITED)

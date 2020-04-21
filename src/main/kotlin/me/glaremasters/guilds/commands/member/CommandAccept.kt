@@ -29,6 +29,7 @@ import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.CommandAlias
 import co.aikar.commands.annotation.CommandCompletion
 import co.aikar.commands.annotation.CommandPermission
+import co.aikar.commands.annotation.Conditions
 import co.aikar.commands.annotation.Dependency
 import co.aikar.commands.annotation.Description
 import co.aikar.commands.annotation.Single
@@ -67,11 +68,7 @@ internal class CommandAccept : BaseCommand() {
     @CommandPermission(Constants.BASE_PERM + "accept")
     @CommandCompletion("@joinableGuilds")
     @Syntax("<%syntax>")
-    fun accept(player: Player, @Single name: String) {
-        if (guildHandler.getGuild(player) != null) {
-            throw ExpectationNotMet(Messages.ERROR__ALREADY_IN_GUILD)
-        }
-
+    fun accept(@Conditions("NoGuild") player: Player, @Single name: String) {
         val cooldown = Cooldown.Type.Join.name
 
         if (cooldownHandler.hasCooldown(cooldown, player.uniqueId)) {

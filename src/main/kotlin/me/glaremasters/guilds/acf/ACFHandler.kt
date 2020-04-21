@@ -26,9 +26,6 @@ package me.glaremasters.guilds.acf
 
 import ch.jalu.configme.SettingsManager
 import co.aikar.commands.BaseCommand
-import co.aikar.commands.BukkitCommandExecutionContext
-import co.aikar.commands.BukkitCommandIssuer
-import co.aikar.commands.ConditionContext
 import co.aikar.commands.InvalidCommandArgument
 import co.aikar.commands.PaperCommandManager
 import me.glaremasters.guilds.Guilds
@@ -39,6 +36,7 @@ import me.glaremasters.guilds.challenges.ChallengeHandler
 import me.glaremasters.guilds.configuration.sections.PluginSettings
 import me.glaremasters.guilds.cooldowns.CooldownHandler
 import me.glaremasters.guilds.database.DatabaseAdapter
+import me.glaremasters.guilds.exceptions.ExpectationNotMet
 import me.glaremasters.guilds.exceptions.InvalidPermissionException
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
@@ -48,6 +46,7 @@ import me.glaremasters.guilds.scanner.ZISScanner
 import net.milkbowl.vault.economy.Economy
 import net.milkbowl.vault.permission.Permission
 import org.bukkit.Bukkit
+import org.bukkit.entity.Player
 import java.util.Locale
 
 class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCommandManager) {
@@ -110,6 +109,15 @@ class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCo
             val guild = guildHandler.getGuild(player)
             if (!guild.memberHasPermission(player, c.getConfigValue("perm", "SERVER_OWNER"))) {
                 throw InvalidPermissionException()
+            }
+        }
+        commandManager.commandConditions.addCondition(Player::class.java, "NoGuild") { c, exec, value ->
+            if (value == null) {
+                return@addCondition
+            }
+            val player = exec.player
+            if (guildHandler.getGuild(player) != null) {
+                throw ExpectationNotMet(Messages.ERROR__ALREADY_IN_GUILD)
             }
         }
     }

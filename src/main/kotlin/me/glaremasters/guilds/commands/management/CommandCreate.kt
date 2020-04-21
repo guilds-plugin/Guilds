@@ -28,6 +28,7 @@ import ch.jalu.configme.SettingsManager
 import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.CommandAlias
 import co.aikar.commands.annotation.CommandPermission
+import co.aikar.commands.annotation.Conditions
 import co.aikar.commands.annotation.Dependency
 import co.aikar.commands.annotation.Description
 import co.aikar.commands.annotation.Optional
@@ -72,7 +73,7 @@ internal class CommandCreate : BaseCommand() {
     @Description("{@@descriptions.create}")
     @CommandPermission(Constants.BASE_PERM + "create")
     @Syntax("<name> (optional) <prefix>")
-    fun create(player: Player, name: String, @Optional prefix: String?) {
+    fun create(@Conditions("NoGuild") player: Player, name: String, @Optional prefix: String?) {
         if (guildHandler.isMigrating) {
             throw ExpectationNotMet(Messages.ERROR__MIGRATING)
         }
@@ -85,10 +86,6 @@ internal class CommandCreate : BaseCommand() {
         }
 
         val cost = settingsManager.getProperty(CostSettings.CREATION)
-
-        if (guildHandler.getGuild(player) != null) {
-            throw ExpectationNotMet(Messages.ERROR__ALREADY_IN_GUILD)
-        }
 
         if (guildHandler.checkGuildNames(name)) {
             throw ExpectationNotMet(Messages.CREATE__GUILD_NAME_TAKEN)

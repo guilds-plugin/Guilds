@@ -119,11 +119,7 @@ internal class CommandCode : BaseCommand() {
     @Description("{@@descriptions.code-redeem}")
     @CommandPermission(Constants.CODE_PERM + "redeem")
     @Syntax("<code>")
-    fun redeem(player: Player, code: String) {
-        if (guildHandler.getGuild(player) != null) {
-            throw ExpectationNotMet(Messages.ERROR__ALREADY_IN_GUILD)
-        }
-
+    fun redeem(@Conditions("NoGuild") player: Player, code: String) {
         val guild = guildHandler.getGuildByCode(code) ?: throw ExpectationNotMet(Messages.CODES__INVALID_CODE)
 
         if (guildHandler.checkIfFull(guild)) {

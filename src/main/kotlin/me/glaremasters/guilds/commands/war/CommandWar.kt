@@ -73,8 +73,7 @@ internal class CommandWar : BaseCommand() {
     @Syntax("")
     @CommandPermission(Constants.WAR_PERM + "accept")
     fun accept(player: Player, @Conditions("perm:perm=INITIATE_WAR") guild: Guild) {
-        val challenge = challengeHandler.getChallenge(guild)
-                ?: throw ExpectationNotMet(Messages.WAR__NO_PENDING_CHALLENGE)
+        val challenge = challengeHandler.getChallenge(guild) ?: throw ExpectationNotMet(Messages.WAR__NO_PENDING_CHALLENGE)
         val challenger = challenge.challenger
 
         if (challenge.isAccepted) {
@@ -155,8 +154,7 @@ internal class CommandWar : BaseCommand() {
     @CommandPermission(Constants.WAR_PERM + "deny")
     @Syntax("")
     fun deny(player: Player, @Conditions("perm:perm=INITIATE_WAR") guild: Guild) {
-        val challenge = challengeHandler.getChallenge(guild)
-                ?: throw ExpectationNotMet(Messages.WAR__NO_PENDING_CHALLENGE)
+        val challenge = challengeHandler.getChallenge(guild) ?: throw ExpectationNotMet(Messages.WAR__NO_PENDING_CHALLENGE)
         val challenger = challenge.challenger
 
         challenger.sendMessage(currentCommandManager, Messages.WAR__CHALLENGE_DENIED_CHALLENGER, "{guild}", guild.name)
@@ -172,8 +170,7 @@ internal class CommandWar : BaseCommand() {
     @Syntax("")
     @CommandPermission(Constants.WAR_PERM + "join")
     fun join(player: Player, guild: Guild) {
-        val challenge = challengeHandler.getChallenge(guild)
-                ?: throw ExpectationNotMet(Messages.WAR__NO_PENDING_CHALLENGE)
+        val challenge = challengeHandler.getChallenge(guild) ?: throw ExpectationNotMet(Messages.WAR__NO_PENDING_CHALLENGE)
 
         if (!challenge.isJoinble) {
             throw ExpectationNotMet(Messages.WAR__NOT_JOINABLE)
