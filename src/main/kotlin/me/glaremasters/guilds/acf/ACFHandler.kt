@@ -108,7 +108,7 @@ class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCo
             }
             val player = exec.player
             val guild = guildHandler.getGuild(player)
-            if (!guild.memberHasPermission(player, c.getConfigValue("perm", "DEFAULT"))) {
+            if (!guild.memberHasPermission(player, c.getConfigValue("perm", "SERVER_OWNER"))) {
                 throw InvalidPermissionException()
             }
         }

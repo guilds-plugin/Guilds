@@ -74,8 +74,7 @@ internal class CommandKick : BaseCommand() {
     @Syntax("<name>")
     fun kick(player: Player, @Conditions("perm:perm=KICK") guild: Guild, @Values("@members") @Single name: String) {
         val user = Bukkit.getOfflinePlayer(name)
-        val asMember = guild.getMember(user.uniqueId)
-                ?: throw ExpectationNotMet(Messages.ERROR__PLAYER_NOT_IN_GUILD, "{player}", name)
+        val asMember = guild.getMember(user.uniqueId) ?: throw ExpectationNotMet(Messages.ERROR__PLAYER_NOT_IN_GUILD, "{player}", name)
 
         if (guild.isMaster(user)) {
             throw InvalidPermissionException()

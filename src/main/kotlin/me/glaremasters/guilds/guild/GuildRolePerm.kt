@@ -52,5 +52,6 @@ enum class GuildRolePerm {
     DELETE_CODE,
     SEE_CODE_REDEEMERS,
     MODIFY_MOTD,
-    INITIATE_WAR
+    INITIATE_WAR,
+    SERVER_OWNER
 }
