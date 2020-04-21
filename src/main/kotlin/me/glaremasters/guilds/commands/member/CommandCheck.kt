@@ -39,8 +39,10 @@ import org.bukkit.entity.Player
 
 @CommandAlias("%guilds")
 internal class CommandCheck : BaseCommand() {
-    @Dependency lateinit var guilds: Guilds
-    @Dependency lateinit var guildHandler: GuildHandler
+    @Dependency
+    lateinit var guilds: Guilds
+    @Dependency
+    lateinit var guildHandler: GuildHandler
 
     @Subcommand("check")
     @Description("{@@descriptions.check}")

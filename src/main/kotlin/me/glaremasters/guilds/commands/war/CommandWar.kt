@@ -29,6 +29,7 @@ import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.CommandAlias
 import co.aikar.commands.annotation.CommandCompletion
 import co.aikar.commands.annotation.CommandPermission
+import co.aikar.commands.annotation.Conditions
 import co.aikar.commands.annotation.Dependency
 import co.aikar.commands.annotation.Description
 import co.aikar.commands.annotation.Single
@@ -40,7 +41,6 @@ import me.glaremasters.guilds.arena.ArenaHandler
 import me.glaremasters.guilds.challenges.ChallengeHandler
 import me.glaremasters.guilds.configuration.sections.WarSettings
 import me.glaremasters.guilds.exceptions.ExpectationNotMet
-import me.glaremasters.guilds.exceptions.InvalidPermissionException
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
@@ -55,12 +55,16 @@ import java.util.stream.Stream
 internal class CommandWar : BaseCommand() {
     @Dependency
     lateinit var guildHandler: GuildHandler
+
     @Dependency
     lateinit var settingsManager: SettingsManager
+
     @Dependency
     lateinit var challengeHandler: ChallengeHandler
+
     @Dependency
     lateinit var arenaHandler: ArenaHandler
+
     @Dependency
     lateinit var guilds: Guilds
 
@@ -68,13 +72,9 @@ internal class CommandWar : BaseCommand() {
     @Description("{@@descriptions.war-accept}")
     @Syntax("")
     @CommandPermission(Constants.WAR_PERM + "accept")
-    fun accept(player: Player, guild: Guild, role: GuildRole) {
-        if (!role.isInitiateWar) {
-            throw InvalidPermissionException()
-        }
-
-        val challenge = challengeHandler.getChallenge(guild) ?: throw ExpectationNotMet(Messages.WAR__NO_PENDING_CHALLENGE)
-
+    fun accept(player: Player, @Conditions("perm=INITIATE_WAR") guild: Guild) {
+        val challenge = challengeHandler.getChallenge(guild)
+                ?: throw ExpectationNotMet(Messages.WAR__NO_PENDING_CHALLENGE)
         val challenger = challenge.challenger
 
         if (challenge.isAccepted) {
@@ -103,11 +103,7 @@ internal class CommandWar : BaseCommand() {
     @Syntax("<%syntax>")
     @CommandPermission(Constants.WAR_PERM + "challenge")
     @CommandCompletion("@guilds")
-    fun challenge(player: Player, guild: Guild, role: GuildRole, @Values("@guilds") @Single target: String) {
-        if (!role.isInitiateWar) {
-            throw InvalidPermissionException()
-        }
-
+    fun challenge(player: Player, @Conditions("perm=INITIATE_WAR") guild: Guild, @Values("@guilds") @Single target: String) {
         if (challengeHandler.getChallenge(guild) != null) {
             throw ExpectationNotMet(Messages.WAR__ALREADY_CHALLENGING)
         }
@@ -158,13 +154,9 @@ internal class CommandWar : BaseCommand() {
     @Description("{@@descriptions.war-deny}")
     @CommandPermission(Constants.WAR_PERM + "deny")
     @Syntax("")
-    fun deny(player: Player, guild: Guild, role: GuildRole) {
-        if (!role.isInitiateWar) {
-            throw InvalidPermissionException()
-        }
-
-        val challenge = challengeHandler.getChallenge(guild) ?: throw ExpectationNotMet(Messages.WAR__NO_PENDING_CHALLENGE)
-
+    fun deny(player: Player, @Conditions("perm=INITIATE_WAR") guild: Guild) {
+        val challenge = challengeHandler.getChallenge(guild)
+                ?: throw ExpectationNotMet(Messages.WAR__NO_PENDING_CHALLENGE)
         val challenger = challenge.challenger
 
         challenger.sendMessage(currentCommandManager, Messages.WAR__CHALLENGE_DENIED_CHALLENGER, "{guild}", guild.name)
@@ -180,7 +172,8 @@ internal class CommandWar : BaseCommand() {
     @Syntax("")
     @CommandPermission(Constants.WAR_PERM + "join")
     fun join(player: Player, guild: Guild) {
-        val challenge = challengeHandler.getChallenge(guild) ?: throw ExpectationNotMet(Messages.WAR__NO_PENDING_CHALLENGE)
+        val challenge = challengeHandler.getChallenge(guild)
+                ?: throw ExpectationNotMet(Messages.WAR__NO_PENDING_CHALLENGE)
 
         if (!challenge.isJoinble) {
             throw ExpectationNotMet(Messages.WAR__NOT_JOINABLE)

@@ -51,11 +51,16 @@ import org.codemc.worldguardwrapper.WorldGuardWrapper
 
 @CommandAlias("%guilds")
 internal class CommandAccept : BaseCommand() {
-    @Dependency lateinit var guilds: Guilds
-    @Dependency lateinit var guildHandler: GuildHandler
-    @Dependency lateinit var permission: Permission
-    @Dependency lateinit var settingsManager: SettingsManager
-    @Dependency lateinit var cooldownHandler: CooldownHandler
+    @Dependency
+    lateinit var guilds: Guilds
+    @Dependency
+    lateinit var guildHandler: GuildHandler
+    @Dependency
+    lateinit var permission: Permission
+    @Dependency
+    lateinit var settingsManager: SettingsManager
+    @Dependency
+    lateinit var cooldownHandler: CooldownHandler
 
     @Subcommand("accept|join")
     @Description("{@@descriptions.accept}")

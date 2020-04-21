@@ -28,12 +28,12 @@ import ch.jalu.configme.SettingsManager
 import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.CommandAlias
 import co.aikar.commands.annotation.CommandPermission
+import co.aikar.commands.annotation.Conditions
 import co.aikar.commands.annotation.Dependency
 import co.aikar.commands.annotation.Description
 import co.aikar.commands.annotation.Subcommand
 import co.aikar.commands.annotation.Syntax
 import me.glaremasters.guilds.exceptions.ExpectationNotMet
-import me.glaremasters.guilds.exceptions.InvalidPermissionException
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
@@ -45,6 +45,7 @@ import org.bukkit.entity.Player
 internal class CommandMotd : BaseCommand() {
     @Dependency
     lateinit var guildHandler: GuildHandler
+
     @Dependency
     lateinit var settingsManager: SettingsManager
 
@@ -61,13 +62,8 @@ internal class CommandMotd : BaseCommand() {
     @Description("{@@descriptions.motd-remove}")
     @CommandPermission(Constants.MOTD_PERM + "modify")
     @Syntax("")
-    fun remove(player: Player, guild: Guild, role: GuildRole) {
-        if (!role.isModifyMotd) {
-            throw InvalidPermissionException()
-        }
-
+    fun remove(player: Player, @Conditions("perm=MODIFY_MOTD") guild: Guild) {
         guild.motd = null
-
         currentCommandIssuer.sendInfo(Messages.MOTD__REMOVE)
     }
 
@@ -75,11 +71,7 @@ internal class CommandMotd : BaseCommand() {
     @Description("{@@descriptions.motd-set}")
     @CommandPermission(Constants.MOTD_PERM + "modify")
     @Syntax("<motd>")
-    fun set(player: Player, guild: Guild, role: GuildRole, motd: String) {
-        if (!role.isModifyMotd) {
-            throw InvalidPermissionException()
-        }
-
+    fun set(player: Player, @Conditions("perm=MODIFY_MOTD") guild: Guild, motd: String) {
         guild.motd = StringUtils.color(motd)
         currentCommandIssuer.sendInfo(Messages.MOTD__SUCCESS, "{motd}", guild.motd)
     }

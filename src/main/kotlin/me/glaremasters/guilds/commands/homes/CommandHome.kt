@@ -28,6 +28,7 @@ import ch.jalu.configme.SettingsManager
 import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.CommandAlias
 import co.aikar.commands.annotation.CommandPermission
+import co.aikar.commands.annotation.Conditions
 import co.aikar.commands.annotation.Dependency
 import co.aikar.commands.annotation.Description
 import co.aikar.commands.annotation.Subcommand
@@ -38,7 +39,6 @@ import me.glaremasters.guilds.configuration.sections.CostSettings
 import me.glaremasters.guilds.cooldowns.Cooldown
 import me.glaremasters.guilds.cooldowns.CooldownHandler
 import me.glaremasters.guilds.exceptions.ExpectationNotMet
-import me.glaremasters.guilds.exceptions.InvalidPermissionException
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
@@ -50,21 +50,22 @@ import java.util.concurrent.TimeUnit
 
 @CommandAlias("%guilds")
 internal class CommandHome : BaseCommand() {
-    @Dependency lateinit var guilds: Guilds
-    @Dependency lateinit var guildHandler: GuildHandler
-    @Dependency lateinit var settingsManager: SettingsManager
-    @Dependency lateinit var cooldownHandler: CooldownHandler
-    @Dependency lateinit var economy: Economy
+    @Dependency
+    lateinit var guilds: Guilds
+    @Dependency
+    lateinit var guildHandler: GuildHandler
+    @Dependency
+    lateinit var settingsManager: SettingsManager
+    @Dependency
+    lateinit var cooldownHandler: CooldownHandler
+    @Dependency
+    lateinit var economy: Economy
 
     @Subcommand("delhome")
     @Description("{@@descriptions.delhome}")
     @CommandPermission(Constants.BASE_PERM + "delhome")
     @Syntax("")
-    fun delete(player: Player, guild: Guild, role: GuildRole) {
-        if (!role.isChangeHome) {
-            throw InvalidPermissionException()
-        }
-
+    fun delete(player: Player, @Conditions("perm=CHANGE_HOME") guild: Guild) {
         guild.delHome()
         currentCommandIssuer.sendInfo(Messages.SETHOME__DELETED)
     }
@@ -107,11 +108,7 @@ internal class CommandHome : BaseCommand() {
     @Description("{@@descriptions.sethome}")
     @CommandPermission(Constants.BASE_PERM + "sethome")
     @Syntax("")
-    fun set(player: Player, guild: Guild, role: GuildRole) {
-        if (!role.isChangeHome) {
-            throw InvalidPermissionException()
-        }
-
+    fun set(player: Player, @Conditions("perm=CHANGE_HOME") guild: Guild) {
         val cooldown = Cooldown.Type.SetHome.name
         val id = player.uniqueId
 

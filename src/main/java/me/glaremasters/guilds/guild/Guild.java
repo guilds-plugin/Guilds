@@ -553,6 +553,12 @@ public class Guild {
         return role.hasPerm(GuildRolePerm.valueOf(perm));
     }
 
+    public boolean memberHasPermission(Player player, GuildRolePerm perm) {
+        GuildMember member = getMember(player.getUniqueId());
+        GuildRole role = member.getRole();
+        return role.hasPerm(perm);
+    }
+
     public void addPotion(PotionEffect effect) {
         getOnlineAsPlayers().forEach(p -> p.addPotionEffect(effect));
     }

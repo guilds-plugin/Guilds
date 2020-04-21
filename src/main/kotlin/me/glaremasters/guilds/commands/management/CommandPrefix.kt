@@ -28,6 +28,7 @@ import ch.jalu.configme.SettingsManager
 import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.CommandAlias
 import co.aikar.commands.annotation.CommandPermission
+import co.aikar.commands.annotation.Conditions
 import co.aikar.commands.annotation.Dependency
 import co.aikar.commands.annotation.Description
 import co.aikar.commands.annotation.Subcommand
@@ -36,7 +37,6 @@ import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.api.events.GuildPrefixEvent
 import me.glaremasters.guilds.configuration.sections.GuildSettings
 import me.glaremasters.guilds.exceptions.ExpectationNotMet
-import me.glaremasters.guilds.exceptions.InvalidPermissionException
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
@@ -47,19 +47,18 @@ import org.bukkit.entity.Player
 
 @CommandAlias("%guilds")
 internal class CommandPrefix : BaseCommand() {
-    @Dependency lateinit var guilds: Guilds
-    @Dependency lateinit var guildHandler: GuildHandler
-    @Dependency lateinit var settingsManager: SettingsManager
+    @Dependency
+    lateinit var guilds: Guilds
+    @Dependency
+    lateinit var guildHandler: GuildHandler
+    @Dependency
+    lateinit var settingsManager: SettingsManager
 
     @Subcommand("prefix")
     @Description("{@@descriptions.prefix}")
     @CommandPermission(Constants.BASE_PERM + "prefix")
     @Syntax("<prefix>")
-    fun prefix(player: Player, guild: Guild, role: GuildRole, prefix: String) {
-        if (!role.isChangePrefix) {
-            throw InvalidPermissionException()
-        }
-
+    fun prefix(player: Player, @Conditions("perm=CHANGE_PREFIX") guild: Guild, prefix: String) {
         if (settingsManager.getProperty(GuildSettings.DISABLE_PREFIX)) {
             throw ExpectationNotMet(Messages.PREFIX__DISABLED)
         }

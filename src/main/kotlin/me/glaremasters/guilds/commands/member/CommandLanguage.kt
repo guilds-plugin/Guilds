@@ -38,12 +38,14 @@ import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.Constants
 import org.bukkit.entity.Player
-import java.util.Locale
+import java.util.*
 
 @CommandAlias("%guilds")
 internal class CommandLanguage : BaseCommand() {
-    @Dependency lateinit var guilds: Guilds
-    @Dependency lateinit var guildHandler: GuildHandler
+    @Dependency
+    lateinit var guilds: Guilds
+    @Dependency
+    lateinit var guildHandler: GuildHandler
 
     @Subcommand("language")
     @Description("{@@descriptions.language}")

@@ -43,8 +43,10 @@ import org.bukkit.entity.Player
 
 @CommandAlias("%guilds")
 internal class CommandDecline : BaseCommand() {
-    @Dependency lateinit var guilds: Guilds
-    @Dependency lateinit var guildHandler: GuildHandler
+    @Dependency
+    lateinit var guilds: Guilds
+    @Dependency
+    lateinit var guildHandler: GuildHandler
 
     @Subcommand("decline")
     @Description("{@@descriptions.decline}")

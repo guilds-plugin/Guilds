@@ -55,12 +55,18 @@ import java.util.concurrent.TimeUnit
 
 @CommandAlias("%guilds")
 internal class CommandLeave : BaseCommand() {
-    @Dependency lateinit var guilds: Guilds
-    @Dependency lateinit var guildHandler: GuildHandler
-    @Dependency lateinit var actionHandler: ActionHandler
-    @Dependency lateinit var permission: Permission
-    @Dependency lateinit var settingsManager: SettingsManager
-    @Dependency lateinit var cooldownHandler: CooldownHandler
+    @Dependency
+    lateinit var guilds: Guilds
+    @Dependency
+    lateinit var guildHandler: GuildHandler
+    @Dependency
+    lateinit var actionHandler: ActionHandler
+    @Dependency
+    lateinit var permission: Permission
+    @Dependency
+    lateinit var settingsManager: SettingsManager
+    @Dependency
+    lateinit var cooldownHandler: CooldownHandler
 
     @Subcommand("leave|exit")
     @Description("{@@descriptions.leave}")

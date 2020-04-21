@@ -27,12 +27,12 @@ package me.glaremasters.guilds.commands.gui
 import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.CommandAlias
 import co.aikar.commands.annotation.CommandPermission
+import co.aikar.commands.annotation.Conditions
 import co.aikar.commands.annotation.Dependency
 import co.aikar.commands.annotation.Description
 import co.aikar.commands.annotation.Subcommand
 import co.aikar.commands.annotation.Syntax
 import me.glaremasters.guilds.Guilds
-import me.glaremasters.guilds.exceptions.InvalidPermissionException
 import me.glaremasters.guilds.exceptions.InvalidTierException
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.utils.Constants
@@ -40,19 +40,16 @@ import org.bukkit.entity.Player
 
 @CommandAlias("%guilds")
 internal class CommandGUI : BaseCommand() {
-    @Dependency lateinit var guilds: Guilds
+    @Dependency
+    lateinit var guilds: Guilds
 
     @Subcommand("buff")
     @Description("{@@descriptions.buff}")
     @Syntax("")
     @CommandPermission(Constants.BASE_PERM + "buff")
-    fun buff(player: Player, guild: Guild, role: GuildRole) {
+    fun buff(player: Player, @Conditions("perm=ACTIVATE_BUFF") guild: Guild) {
         if (!guild.tier.isUseBuffs) {
             throw InvalidTierException()
-        }
-
-        if (!role.isActivateBuff) {
-            throw InvalidPermissionException()
         }
 
         guilds.guiHandler.buffs.get(player, guild, guilds.commandManager).open(player)
@@ -86,11 +83,7 @@ internal class CommandGUI : BaseCommand() {
     @Description("{@@descriptions.vault}")
     @Syntax("")
     @CommandPermission(Constants.BASE_PERM + "vault")
-    fun vault(player: Player, guild: Guild, role: GuildRole) {
-        if (!role.isOpenVault) {
-            throw InvalidPermissionException()
-        }
-
+    fun vault(player: Player, @Conditions("perm=OPEN_VAULT") guild: Guild) {
         guilds.guiHandler.vaults.get(guild, player).open(player)
     }
 }

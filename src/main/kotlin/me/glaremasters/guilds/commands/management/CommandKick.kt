@@ -29,6 +29,7 @@ import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.CommandAlias
 import co.aikar.commands.annotation.CommandCompletion
 import co.aikar.commands.annotation.CommandPermission
+import co.aikar.commands.annotation.Conditions
 import co.aikar.commands.annotation.Dependency
 import co.aikar.commands.annotation.Description
 import co.aikar.commands.annotation.Single
@@ -55,24 +56,26 @@ import java.util.concurrent.TimeUnit
 
 @CommandAlias("%guilds")
 internal class CommandKick : BaseCommand() {
-    @Dependency lateinit var guilds: Guilds
-    @Dependency lateinit var guildHandler: GuildHandler
-    @Dependency lateinit var settingsManager: SettingsManager
-    @Dependency lateinit var cooldownHandler: CooldownHandler
-    @Dependency lateinit var permission: Permission
+    @Dependency
+    lateinit var guilds: Guilds
+    @Dependency
+    lateinit var guildHandler: GuildHandler
+    @Dependency
+    lateinit var settingsManager: SettingsManager
+    @Dependency
+    lateinit var cooldownHandler: CooldownHandler
+    @Dependency
+    lateinit var permission: Permission
 
     @Subcommand("boot|kick")
     @Description("{@@descriptions.kick}")
     @CommandPermission(Constants.BASE_PERM + "boot")
     @CommandCompletion("@members")
     @Syntax("<name>")
-    fun kick(player: Player, guild: Guild, role: GuildRole, @Values("@members") @Single name: String) {
-        if (!role.isKick) {
-            throw InvalidPermissionException()
-        }
-
+    fun kick(player: Player, @Conditions("perm=KICK") guild: Guild, @Values("@members") @Single name: String) {
         val user = Bukkit.getOfflinePlayer(name)
-        val asMember = guild.getMember(user.uniqueId) ?: throw ExpectationNotMet(Messages.ERROR__PLAYER_NOT_IN_GUILD, "{player}", name)
+        val asMember = guild.getMember(user.uniqueId)
+                ?: throw ExpectationNotMet(Messages.ERROR__PLAYER_NOT_IN_GUILD, "{player}", name)
 
         if (guild.isMaster(user)) {
             throw InvalidPermissionException()

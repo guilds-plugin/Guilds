@@ -29,6 +29,7 @@ import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.CommandAlias
 import co.aikar.commands.annotation.CommandCompletion
 import co.aikar.commands.annotation.CommandPermission
+import co.aikar.commands.annotation.Conditions
 import co.aikar.commands.annotation.Default
 import co.aikar.commands.annotation.Dependency
 import co.aikar.commands.annotation.Description
@@ -39,7 +40,6 @@ import co.aikar.commands.annotation.Values
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.configuration.sections.CodeSettings
 import me.glaremasters.guilds.exceptions.ExpectationNotMet
-import me.glaremasters.guilds.exceptions.InvalidPermissionException
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
@@ -50,19 +50,18 @@ import org.bukkit.entity.Player
 
 @CommandAlias("%guilds")
 internal class CommandCode : BaseCommand() {
-    @Dependency lateinit var guilds: Guilds
-    @Dependency lateinit var settingsManager: SettingsManager
-    @Dependency lateinit var guildHandler: GuildHandler
+    @Dependency
+    lateinit var guilds: Guilds
+    @Dependency
+    lateinit var settingsManager: SettingsManager
+    @Dependency
+    lateinit var guildHandler: GuildHandler
 
     @Subcommand("code create")
     @Description("{@@descriptions.code-create}")
     @Syntax("<uses>")
     @CommandPermission(Constants.CODE_PERM + "create")
-    fun create(player: Player, guild: Guild, role: GuildRole, @Default("1") uses: Int) {
-        if (!role.isCreateCode) {
-            throw InvalidPermissionException()
-        }
-
+    fun create(player: Player, @Conditions("perm=CREATE_CODE") guild: Guild, @Default("1") uses: Int) {
         if (guild.getActiveCheck(settingsManager.getProperty(CodeSettings.ACTIVE_CODE_AMOUNT))) {
             throw ExpectationNotMet(Messages.CODES__MAX)
         }
@@ -79,13 +78,8 @@ internal class CommandCode : BaseCommand() {
     @CommandPermission(Constants.CODE_PERM + "delete")
     @Syntax("<code>")
     @CommandCompletion("@activeCodes")
-    fun delete(player: Player, guild: Guild, role: GuildRole, @Values("@activeCodes") @Single code: String) {
-        if (!role.isDeleteCode) {
-            throw InvalidPermissionException()
-        }
-
+    fun delete(player: Player, @Conditions("perm=DELETE_CODE") guild: Guild, @Values("@activeCodes") @Single code: String) {
         guild.removeCode(code)
-
         currentCommandIssuer.sendInfo(Messages.CODES__DELETED)
     }
 
@@ -94,11 +88,7 @@ internal class CommandCode : BaseCommand() {
     @CommandPermission(Constants.CODE_PERM + "info")
     @Syntax("<code>")
     @CommandCompletion("@activeCodes")
-    fun info(player: Player, guild: Guild, role: GuildRole, @Values("@activeCodes") @Single code: String) {
-        if (!role.isSeeCodeRedeemers) {
-            throw InvalidPermissionException()
-        }
-
+    fun info(player: Player, @Conditions("perm=SEE_CODE_REDEEMERS") guild: Guild, @Values("@activeCodes") @Single code: String) {
         val guildCode = guild.getCode(code) ?: throw ExpectationNotMet(Messages.CODES__INVALID_CODE)
 
         currentCommandIssuer.sendInfo(Messages.CODES__INFO, "{code}", guildCode.id,

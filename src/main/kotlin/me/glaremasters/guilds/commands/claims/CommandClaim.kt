@@ -29,6 +29,7 @@ import co.aikar.commands.ACFBukkitUtil
 import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.CommandAlias
 import co.aikar.commands.annotation.CommandPermission
+import co.aikar.commands.annotation.Conditions
 import co.aikar.commands.annotation.Dependency
 import co.aikar.commands.annotation.Description
 import co.aikar.commands.annotation.Subcommand
@@ -36,7 +37,6 @@ import co.aikar.commands.annotation.Syntax
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.configuration.sections.ClaimSettings
 import me.glaremasters.guilds.exceptions.ExpectationNotMet
-import me.glaremasters.guilds.exceptions.InvalidPermissionException
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
@@ -47,19 +47,18 @@ import org.codemc.worldguardwrapper.WorldGuardWrapper
 
 @CommandAlias("%guilds")
 internal class CommandClaim : BaseCommand() {
-    @Dependency lateinit var guilds: Guilds
-    @Dependency lateinit var guildHandler: GuildHandler
-    @Dependency lateinit var settingsManager: SettingsManager
+    @Dependency
+    lateinit var guilds: Guilds
+    @Dependency
+    lateinit var guildHandler: GuildHandler
+    @Dependency
+    lateinit var settingsManager: SettingsManager
 
     @Subcommand("claim")
     @Description("{@@descriptions.claim}")
     @CommandPermission(Constants.BASE_PERM + "claim")
     @Syntax("")
-    fun claim(player: Player, guild: Guild, role: GuildRole) {
-        if (!role.isClaimLand) {
-            throw InvalidPermissionException()
-        }
-
+    fun claim(player: Player, @Conditions("perm=CLAIM_LAND") guild: Guild) {
         if (!ClaimUtils.isEnable(settingsManager)) {
             throw ExpectationNotMet(Messages.CLAIM__HOOK_DISABLED)
         }
@@ -100,11 +99,7 @@ internal class CommandClaim : BaseCommand() {
     @Description("{@@descriptions.unclaim}")
     @CommandPermission(Constants.BASE_PERM + "unclaim")
     @Syntax("")
-    fun unclaim(player: Player, guild: Guild, role: GuildRole) {
-        if (!role.isUnclaimLand) {
-            throw InvalidPermissionException()
-        }
-
+    fun unclaim(player: Player, @Conditions("perm=UNCLAIM_LAND") guild: Guild) {
         if (!ClaimUtils.isEnable(settingsManager)) {
             throw ExpectationNotMet(Messages.CLAIM__HOOK_DISABLED)
         }

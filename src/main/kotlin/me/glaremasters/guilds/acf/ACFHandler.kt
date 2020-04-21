@@ -102,7 +102,7 @@ class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCo
     }
 
     private fun loadConditions(guildHandler: GuildHandler) {
-        commandManager.commandConditions.addCondition(GuildRole::class.java, "perms") { c, exec, value ->
+        commandManager.commandConditions.addCondition(Guild::class.java, "perms") { c, exec, value ->
             if (value == null) {
                 return@addCondition
             }

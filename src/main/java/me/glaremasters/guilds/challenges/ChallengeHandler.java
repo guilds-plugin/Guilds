@@ -33,6 +33,7 @@ import me.glaremasters.guilds.configuration.sections.WarSettings;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildChallenge;
 import me.glaremasters.guilds.guild.GuildMember;
+import me.glaremasters.guilds.guild.GuildRolePerm;
 import me.glaremasters.guilds.messages.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -158,7 +159,7 @@ public class ChallengeHandler {
      * @return list of online war people
      */
     public List<Player> getOnlineDefenders(Guild guild) {
-        List<GuildMember> members = guild.getOnlineMembers().stream().filter(m -> m.getRole().isInitiateWar()).collect(Collectors.toList());
+        List<GuildMember> members = guild.getOnlineMembers().stream().filter(m -> m.getRole().hasPerm(GuildRolePerm.INITIATE_WAR)).collect(Collectors.toList());
         return members.stream().map(m -> Bukkit.getPlayer(m.getUuid())).collect(Collectors.toList());
     }
 
