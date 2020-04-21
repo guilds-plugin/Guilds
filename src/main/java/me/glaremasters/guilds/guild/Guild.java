@@ -541,6 +541,18 @@ public class Guild {
         getOnlineAsPlayers().forEach(p -> p.addPotionEffect(new PotionEffect(PotionEffectType.getByName(type), length, amplifier)));
     }
 
+    /**
+     * Check if a member has a specific permission
+     * @param player
+     * @param perm
+     * @return
+     */
+    public boolean memberHasPermission(Player player, String perm) {
+        GuildMember member = getMember(player.getUniqueId());
+        GuildRole role = member.getRole();
+        return role.hasPerm(GuildRolePerm.valueOf(perm));
+    }
+
     public void addPotion(PotionEffect effect) {
         getOnlineAsPlayers().forEach(p -> p.addPotionEffect(effect));
     }

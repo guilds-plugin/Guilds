@@ -26,6 +26,9 @@ package me.glaremasters.guilds.acf
 
 import ch.jalu.configme.SettingsManager
 import co.aikar.commands.BaseCommand
+import co.aikar.commands.BukkitCommandExecutionContext
+import co.aikar.commands.BukkitCommandIssuer
+import co.aikar.commands.ConditionContext
 import co.aikar.commands.InvalidCommandArgument
 import co.aikar.commands.PaperCommandManager
 import me.glaremasters.guilds.Guilds
@@ -36,6 +39,7 @@ import me.glaremasters.guilds.challenges.ChallengeHandler
 import me.glaremasters.guilds.configuration.sections.PluginSettings
 import me.glaremasters.guilds.cooldowns.CooldownHandler
 import me.glaremasters.guilds.database.DatabaseAdapter
+import me.glaremasters.guilds.exceptions.InvalidPermissionException
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.guild.GuildRole
@@ -56,6 +60,7 @@ class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCo
         loadLang()
         loadContexts(plugin.guildHandler, plugin.arenaHandler)
         loadCompletions(plugin.guildHandler, plugin.arenaHandler)
+        loadConditions(plugin.guildHandler)
         loadDI()
 
         commandManager.commandReplacements.addReplacement("guilds", plugin.settingsHandler.mainConf.getProperty(PluginSettings.PLUGIN_ALIASES))
@@ -94,6 +99,19 @@ class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCo
             guildHandler.getGuildRole(guild.getMember(c.player.uniqueId).role.level)
         }
         commandManager.commandContexts.registerContext(Arena::class.java) { c -> arenaHandler.getArena(c.popFirstArg()).get() }
+    }
+
+    private fun loadConditions(guildHandler: GuildHandler) {
+        commandManager.commandConditions.addCondition(GuildRole::class.java, "perms") { c, exec, value ->
+            if (value == null) {
+                return@addCondition
+            }
+            val player = exec.player
+            val guild = guildHandler.getGuild(player)
+            if (c.hasConfig("perm") && !guild.memberHasPermission(player, c.getConfigValue("perms", "DEFAULT"))) {
+                throw InvalidPermissionException()
+            }
+        }
     }
 
     private fun loadCompletions(guildHandler: GuildHandler, arenaHandler: ArenaHandler) {

@@ -28,6 +28,7 @@ import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.CommandAlias
 import co.aikar.commands.annotation.CommandCompletion
 import co.aikar.commands.annotation.CommandPermission
+import co.aikar.commands.annotation.Conditions
 import co.aikar.commands.annotation.Dependency
 import co.aikar.commands.annotation.Description
 import co.aikar.commands.annotation.Single
@@ -41,6 +42,7 @@ import me.glaremasters.guilds.exceptions.ExpectationNotMet
 import me.glaremasters.guilds.exceptions.InvalidPermissionException
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
+import me.glaremasters.guilds.guild.GuildRole
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.Constants
 import org.bukkit.entity.Player
@@ -57,11 +59,7 @@ internal class CommandAlly : BaseCommand() {
     @CommandPermission(Constants.ALLY_PERM + "accept")
     @CommandCompletion("@allyInvites")
     @Syntax("<%syntax>")
-    fun accept(player: Player, guild: Guild, role: GuildRole, @Values("@allyInvites") @Single name: String) {
-        if (!role.isAddAlly) {
-            throw InvalidPermissionException()
-        }
-
+    fun accept(player: Player, guild: Guild, @Conditions("perm=ADD_ALLY") role: GuildRole, @Values("@allyInvites") @Single name: String) {
         val target = guildHandler.getGuild(name) ?: throw ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST)
 
         if (!guild.isAllyPending(target)) {
