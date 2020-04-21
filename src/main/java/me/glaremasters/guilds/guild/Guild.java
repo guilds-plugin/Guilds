@@ -542,17 +542,21 @@ public class Guild {
     }
 
     /**
-     * Check if a member has a specific permission
-     * @param player
-     * @param perm
-     * @return
+     * Determine if a player has role permission
+     * @param player the player to check
+     * @param perm the permission as a string to check
+     * @return has permission or not
      */
     public boolean memberHasPermission(Player player, String perm) {
-        GuildMember member = getMember(player.getUniqueId());
-        GuildRole role = member.getRole();
-        return role.hasPerm(GuildRolePerm.valueOf(perm));
+        return memberHasPermission(player, GuildRolePerm.valueOf(perm));
     }
 
+    /**
+     * Determine if a player has role permission
+     * @param player the player to check
+     * @param perm the permission as an enum value
+     * @return has permission or not
+     */
     public boolean memberHasPermission(Player player, GuildRolePerm perm) {
         GuildMember member = getMember(player.getUniqueId());
         GuildRole role = member.getRole();
