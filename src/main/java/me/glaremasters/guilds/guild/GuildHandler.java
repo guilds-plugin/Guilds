@@ -943,6 +943,14 @@ public class GuildHandler {
         return this.guildChat;
     }
 
+    public List<GuildTier> getTiers() {
+        return this.tiers;
+    }
+
+    public List<GuildRole> getRoles() {
+        return this.roles;
+    }
+
     public Map<Guild, List<Inventory>> getVaults() {
         return this.vaults;
     }

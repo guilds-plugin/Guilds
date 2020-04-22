@@ -204,6 +204,8 @@ public final class Guilds extends JavaPlugin {
         // start bstats
         Metrics metrics = new Metrics(this);
         metrics.addCustomChart(new Metrics.SingleLineChart("guilds", () -> getGuildHandler().getGuildsSize()));
+        metrics.addCustomChart(new Metrics.SingleLineChart("tiers", () -> getGuildHandler().getTiers().size()));
+        metrics.addCustomChart(new Metrics.SingleLineChart("roles", () -> getGuildHandler().getRoles().size()));
 
         // Initialize the action handler for actions in the plugin
         actionHandler = new ActionHandler();
