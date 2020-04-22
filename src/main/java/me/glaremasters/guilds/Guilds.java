@@ -206,6 +206,7 @@ public final class Guilds extends JavaPlugin {
         metrics.addCustomChart(new Metrics.SingleLineChart("guilds", () -> getGuildHandler().getGuildsSize()));
         metrics.addCustomChart(new Metrics.SingleLineChart("tiers", () -> getGuildHandler().getTiers().size()));
         metrics.addCustomChart(new Metrics.SingleLineChart("roles", () -> getGuildHandler().getRoles().size()));
+        metrics.addCustomChart(new Metrics.SimplePie("language", () -> settingsHandler.getMainConf().getProperty(PluginSettings.MESSAGES_LANGUAGE)));
 
         // Initialize the action handler for actions in the plugin
         actionHandler = new ActionHandler();
