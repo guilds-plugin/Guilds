@@ -21,34 +21,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package me.glaremasters.guilds.exceptions
 
-package me.glaremasters.guilds.exceptions;
-
-import co.aikar.commands.InvalidCommandArgument;
-import co.aikar.locales.MessageKeyProvider;
+import co.aikar.commands.InvalidCommandArgument
+import co.aikar.locales.MessageKeyProvider
 
 /**
  * Created by Glare
  * Date: 4/4/2019
  * Time: 5:36 PM
  */
-public class ExpectationNotMet extends InvalidCommandArgument {
-
+class ExpectationNotMet : InvalidCommandArgument {
     /**
      * Exception used when an expectation in the plugin is not being met
      * @param message the message to send to the user
      */
-    public ExpectationNotMet(MessageKeyProvider message) {
-        super(message.getMessageKey(), false);
-    }
+    constructor(message: MessageKeyProvider) : super(message.messageKey, false)
 
     /**
      * Exception used
      * @param key the message to send to the user
      * @param replacements any placeholders to replace
      */
-    public ExpectationNotMet(MessageKeyProvider key, String... replacements) {
-        super (key.getMessageKey(),false, replacements);
-    }
-
+    constructor(key: MessageKeyProvider, vararg replacements: String) : super(key.messageKey, false, *replacements)
 }

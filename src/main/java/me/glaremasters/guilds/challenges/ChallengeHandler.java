@@ -58,7 +58,7 @@ import java.util.stream.Stream;
 public class ChallengeHandler {
 
     private List<GuildChallenge> challenges;
-    private Guilds guilds;
+    private final Guilds guilds;
 
     public ChallengeHandler(Guilds guilds) {
         this.guilds = guilds;

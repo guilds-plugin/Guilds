@@ -21,24 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package me.glaremasters.guilds.exceptions
 
-package me.glaremasters.guilds.exceptions;
+import co.aikar.commands.InvalidCommandArgument
+import me.glaremasters.guilds.messages.Messages
 
-import co.aikar.commands.InvalidCommandArgument;
-import me.glaremasters.guilds.messages.Messages;
 
 /**
- * Created by GlareMasters
- * Date: 4/4/2019
- * Time: 4:42 PM
+ * Thrown when a user's role isn't allowed to do an action.
  */
-public class InvalidTierException extends InvalidCommandArgument {
-
-    /**
-     * Thrown when a user's role isn't allowed to do an action.
-     */
-    public InvalidTierException() {
-        super(Messages.ERROR__TIER_NO_PERMISSION, false);
-    }
-
-}
+class InvalidPermissionException : InvalidCommandArgument(Messages.ERROR__ROLE_NO_PERMISSION, false) 
