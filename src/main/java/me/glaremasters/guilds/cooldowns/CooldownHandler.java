@@ -46,8 +46,8 @@ import java.util.concurrent.TimeUnit;
  * Time: 9:40 AM
  */
 public class CooldownHandler {
-    private ExpiringMap<UUID, Cooldown> cooldowns;
-    private Guilds guilds;
+    private final ExpiringMap<UUID, Cooldown> cooldowns;
+    private final Guilds guilds;
 
     public CooldownHandler(Guilds guilds) {
         this.guilds = guilds;
