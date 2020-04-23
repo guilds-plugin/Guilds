@@ -80,6 +80,7 @@ internal class CommandAdminRemove : BaseCommand() {
 
                 guildHandler.removePermsFromAll(permission, guild, async)
                 guildHandler.removeAlliesOnDelete(guild)
+                guildHandler.notifyAllies(guild, currentCommandManager)
                 ClaimUtils.deleteWithGuild(guild, settingsManager)
                 guild.sendMessage(currentCommandManager, Messages.LEAVE__GUILDMASTER_LEFT, "{player}", guild.guildMaster.name)
                 guildHandler.removeGuild(guild)
