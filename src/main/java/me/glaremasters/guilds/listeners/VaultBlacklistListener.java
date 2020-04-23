@@ -48,9 +48,9 @@ import java.util.stream.Collectors;
  */
 public class VaultBlacklistListener implements Listener {
 
-    private Guilds guilds;
-    private GuildHandler guildHandler;
-    private SettingsManager settingsManager;
+    private final Guilds guilds;
+    private final GuildHandler guildHandler;
+    private final SettingsManager settingsManager;
 
     public VaultBlacklistListener(Guilds guilds, GuildHandler guildHandler, SettingsManager settingsManager) {
         this.guilds = guilds;

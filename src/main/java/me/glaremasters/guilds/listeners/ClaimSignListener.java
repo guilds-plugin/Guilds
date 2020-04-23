@@ -50,9 +50,9 @@ import org.codemc.worldguardwrapper.selection.ICuboidSelection;
  */
 public class ClaimSignListener implements Listener {
 
-    private Guilds guilds;
-    private SettingsManager settingsManager;
-    private GuildHandler guildHandler;
+    private final Guilds guilds;
+    private final SettingsManager settingsManager;
+    private final GuildHandler guildHandler;
     private final WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();
 
     public ClaimSignListener(Guilds guilds, SettingsManager settingsManager, GuildHandler guildHandler) {
