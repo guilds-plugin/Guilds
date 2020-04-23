@@ -74,6 +74,7 @@ internal class CommandAdminRemove : BaseCommand() {
                     return
                 }
 
+                guildHandler.removeAlliesOnDelete(guild)
                 ClaimUtils.deleteWithGuild(guild, settingsManager)
                 guild.sendMessage(currentCommandManager, Messages.LEAVE__GUILDMASTER_LEFT, "{player}", guild.guildMaster.name)
                 guildHandler.removeGuild(guild)
