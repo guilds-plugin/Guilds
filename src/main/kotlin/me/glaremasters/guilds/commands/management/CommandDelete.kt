@@ -38,7 +38,6 @@ import me.glaremasters.guilds.actions.ActionHandler
 import me.glaremasters.guilds.actions.ConfirmAction
 import me.glaremasters.guilds.api.events.GuildRemoveEvent
 import me.glaremasters.guilds.configuration.sections.PluginSettings
-import me.glaremasters.guilds.exceptions.ExpectationNotMet
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
@@ -65,11 +64,8 @@ internal class CommandDelete : BaseCommand() {
     @Description("{@@descriptions.delete}")
     @CommandPermission(Constants.BASE_PERM + "delete")
     @Syntax("")
+    @Conditions("NotMigrating")
     fun delete(player: Player, @Conditions("perm:perm=REMOVE_GUILD") guild: Guild) {
-        if (guildHandler.isMigrating) {
-            throw ExpectationNotMet(Messages.ERROR__MIGRATING)
-        }
-
         currentCommandIssuer.sendInfo(Messages.DELETE__WARNING)
         actionHandler.addAction(player, object : ConfirmAction {
             override fun accept() {

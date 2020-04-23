@@ -120,6 +120,11 @@ class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCo
                 throw ExpectationNotMet(Messages.ERROR__ALREADY_IN_GUILD)
             }
         }
+        commandManager.commandConditions.addCondition("NotMigrating") {
+            if (guildHandler.isMigrating) {
+                throw ExpectationNotMet(Messages.ERROR__MIGRATING)
+            }
+        }
     }
 
     private fun loadCompletions(guildHandler: GuildHandler, arenaHandler: ArenaHandler) {

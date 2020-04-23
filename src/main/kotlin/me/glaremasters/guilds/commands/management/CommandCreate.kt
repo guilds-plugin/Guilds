@@ -73,11 +73,8 @@ internal class CommandCreate : BaseCommand() {
     @Description("{@@descriptions.create}")
     @CommandPermission(Constants.BASE_PERM + "create")
     @Syntax("<name> (optional) <prefix>")
+    @Conditions("NotMigrating")
     fun create(@Conditions("NoGuild") player: Player, name: String, @Optional prefix: String?) {
-        if (guildHandler.isMigrating) {
-            throw ExpectationNotMet(Messages.ERROR__MIGRATING)
-        }
-
         val cooldown = Cooldown.Type.Join.name
         val id = player.uniqueId
 

@@ -28,6 +28,7 @@ import ch.jalu.configme.SettingsManager
 import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.CommandAlias
 import co.aikar.commands.annotation.CommandPermission
+import co.aikar.commands.annotation.Conditions
 import co.aikar.commands.annotation.Dependency
 import co.aikar.commands.annotation.Description
 import co.aikar.commands.annotation.Subcommand
@@ -41,7 +42,6 @@ import me.glaremasters.guilds.configuration.sections.CooldownSettings
 import me.glaremasters.guilds.configuration.sections.PluginSettings
 import me.glaremasters.guilds.cooldowns.Cooldown
 import me.glaremasters.guilds.cooldowns.CooldownHandler
-import me.glaremasters.guilds.exceptions.ExpectationNotMet
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
@@ -72,11 +72,8 @@ internal class CommandLeave : BaseCommand() {
     @Description("{@@descriptions.leave}")
     @Syntax("")
     @CommandPermission(Constants.BASE_PERM + "leave")
+    @Conditions("NotMigrating")
     fun leave(player: Player, guild: Guild) {
-        if (guildHandler.isMigrating) {
-            throw ExpectationNotMet(Messages.ERROR__MIGRATING)
-        }
-
         if (guild.isMaster(player)) currentCommandIssuer.sendInfo(Messages.LEAVE__WARNING_GUILDMASTER) else currentCommandIssuer.sendInfo(Messages.LEAVE__WARNING)
 
         val async = settingsManager.getProperty(PluginSettings.RUN_VAULT_ASYNC)
