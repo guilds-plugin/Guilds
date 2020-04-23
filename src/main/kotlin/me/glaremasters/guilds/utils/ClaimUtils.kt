@@ -27,19 +27,16 @@ import ch.jalu.configme.SettingsManager
 import me.glaremasters.guilds.configuration.sections.ClaimSettings
 import me.glaremasters.guilds.configuration.sections.HooksSettings
 import me.glaremasters.guilds.guild.Guild
-import me.glaremasters.guilds.guild.GuildMember
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 import org.codemc.worldguardwrapper.WorldGuardWrapper
-import org.codemc.worldguardwrapper.flag.IWrappedFlag
 import org.codemc.worldguardwrapper.flag.WrappedState
 import org.codemc.worldguardwrapper.region.IWrappedDomain
 import org.codemc.worldguardwrapper.region.IWrappedRegion
 import org.codemc.worldguardwrapper.selection.ICuboidSelection
 import java.util.Optional
-import java.util.function.Consumer
 
 /**
  * Created by Glare
