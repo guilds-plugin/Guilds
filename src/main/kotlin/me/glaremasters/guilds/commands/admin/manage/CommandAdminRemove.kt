@@ -40,11 +40,13 @@ import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.actions.ActionHandler
 import me.glaremasters.guilds.actions.ConfirmAction
 import me.glaremasters.guilds.api.events.GuildRemoveEvent
+import me.glaremasters.guilds.configuration.sections.PluginSettings
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.ClaimUtils
 import me.glaremasters.guilds.utils.Constants
+import net.milkbowl.vault.permission.Permission
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 
@@ -54,6 +56,7 @@ internal class CommandAdminRemove : BaseCommand() {
     @Dependency lateinit var guildHandler: GuildHandler
     @Dependency lateinit var actionHandler: ActionHandler
     @Dependency lateinit var settingsManager: SettingsManager
+    @Dependency lateinit var permission: Permission
 
     @Subcommand("admin remove")
     @Description("{@@descriptions.admin-remove}")
@@ -63,6 +66,7 @@ internal class CommandAdminRemove : BaseCommand() {
     @Conditions("NotMigrating")
     fun remove(player: Player, @Flags("other") @Values("@guilds") guild: Guild) {
         val name = guild.name
+        val async = settingsManager.getProperty(PluginSettings.RUN_VAULT_ASYNC)
 
         currentCommandIssuer.sendInfo(Messages.ADMIN__DELETE_WARNING, "{guild}", name)
         actionHandler.addAction(player, object : ConfirmAction {
@@ -74,6 +78,7 @@ internal class CommandAdminRemove : BaseCommand() {
                     return
                 }
 
+                guildHandler.removePermsFromAll(permission, guild, async)
                 guildHandler.removeAlliesOnDelete(guild)
                 ClaimUtils.deleteWithGuild(guild, settingsManager)
                 guild.sendMessage(currentCommandManager, Messages.LEAVE__GUILDMASTER_LEFT, "{player}", guild.guildMaster.name)
