@@ -39,6 +39,7 @@ shadowJar {
     relocate("org.jdbi", "${base}jdbi")
     relocate("org.mariadb.jdbc", "${base}mariadb")
     relocate("me.mattstudios.mfgui", "${base}mfgui")
+    relocate("me.rayzr522.jsonmessage", "${base}jsonmessage")
     archiveFileName = "Guilds-${project.version}.jar"
 }
 
@@ -70,6 +71,9 @@ dependencies {
 
     // GUI Lib
     implementation 'me.mattstudios.utils:matt-framework-gui:1.2.1'
+
+    // Json Messages
+    implementation 'me.rayzr522:jsonmessage:1.2.0'
 
     // Kotlin collections
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
