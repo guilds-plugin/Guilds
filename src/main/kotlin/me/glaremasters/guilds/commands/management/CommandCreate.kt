@@ -39,7 +39,6 @@ import me.glaremasters.guilds.actions.ActionHandler
 import me.glaremasters.guilds.actions.ConfirmAction
 import me.glaremasters.guilds.api.events.GuildCreateEvent
 import me.glaremasters.guilds.configuration.sections.CostSettings
-import me.glaremasters.guilds.configuration.sections.GuildListSettings
 import me.glaremasters.guilds.configuration.sections.GuildSettings
 import me.glaremasters.guilds.configuration.sections.PluginSettings
 import me.glaremasters.guilds.cooldowns.Cooldown
@@ -48,7 +47,6 @@ import me.glaremasters.guilds.exceptions.ExpectationNotMet
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.guild.GuildMember
-import me.glaremasters.guilds.guild.GuildSkull
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.Constants
 import me.glaremasters.guilds.utils.EconomyUtils
@@ -163,13 +161,7 @@ internal class CommandCreate : BaseCommand() {
                 currentCommandIssuer.sendInfo(Messages.CREATE__SUCCESSFUL, "{guild}", guild.name)
                 guildHandler.addPerms(permission, player, settingsManager.getProperty(PluginSettings.RUN_VAULT_ASYNC))
 
-                Guilds.newChain<Any>().async {
-                    try {
-                        guild.guildSkull = GuildSkull(player)
-                    } catch (ex: Exception) {
-                        guild.guildSkull = GuildSkull(settingsManager.getProperty(GuildListSettings.GUILD_LIST_HEAD_DEFAULT_URL))
-                    }
-                }.execute()
+                guild.updateGuildSkull(player, settingsManager)
 
                 actionHandler.removeAction(player)
             }

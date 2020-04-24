@@ -24,6 +24,7 @@
 
 package me.glaremasters.guilds.commands.management
 
+import ch.jalu.configme.SettingsManager
 import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.CommandAlias
 import co.aikar.commands.annotation.CommandCompletion
@@ -51,6 +52,8 @@ internal class CommandTransfer : BaseCommand() {
     lateinit var guilds: Guilds
     @Dependency
     lateinit var guildHandler: GuildHandler
+    @Dependency
+    lateinit var settingsManager: SettingsManager
 
     @Subcommand("transfer")
     @Description("{@@descriptions.transfer}")
@@ -71,7 +74,7 @@ internal class CommandTransfer : BaseCommand() {
             return
         }
 
-        guild.transferGuild(player, user)
+        guild.transferGuild(player, user, settingsManager)
         currentCommandIssuer.sendInfo(Messages.TRANSFER__SUCCESS)
 
         if (!user.isOnline) {

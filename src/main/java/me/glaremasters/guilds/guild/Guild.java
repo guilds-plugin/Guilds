@@ -24,8 +24,11 @@
 
 package me.glaremasters.guilds.guild;
 
+import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.CommandManager;
+import me.glaremasters.guilds.Guilds;
+import me.glaremasters.guilds.configuration.sections.GuildListSettings;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.SkullUtils;
@@ -498,7 +501,7 @@ public class Guild {
      * @param oldPlayer old player
      * @param newPlayer new player
      */
-    public void transferGuild(Player oldPlayer, OfflinePlayer newPlayer) {
+    public void transferGuild(Player oldPlayer, OfflinePlayer newPlayer, SettingsManager settingsManager) {
 
         GuildMember oldMaster = getMember(oldPlayer.getUniqueId());
         GuildMember newMaster = getMember(newPlayer.getUniqueId());
@@ -511,6 +514,7 @@ public class Guild {
         oldMaster.setRole(newMaster.getRole());
         newMaster.setRole(gm);
         setGuildMaster(newMaster);
+        updateGuildSkull(newMaster.getAsOfflinePlayer(), settingsManager);
     }
 
     /**
@@ -518,7 +522,7 @@ public class Guild {
      * @param master The new master of the guild
      * @param guildHandler Guild handler
      */
-    public void transferGuildAdmin(OfflinePlayer master, GuildHandler guildHandler) {
+    public void transferGuildAdmin(OfflinePlayer master, GuildHandler guildHandler, SettingsManager settingsManager) {
 
         GuildMember currentMaster = getMember(getGuildMaster().getUuid());
         GuildMember newMaster = getMember(master.getUniqueId());
@@ -529,6 +533,7 @@ public class Guild {
         newMaster.setRole(guildHandler.getGuildRole(0));
 
         setGuildMaster(newMaster);
+        updateGuildSkull(newMaster.getAsOfflinePlayer(), settingsManager);
     }
 
     /**
@@ -561,6 +566,16 @@ public class Guild {
         GuildMember member = getMember(player.getUniqueId());
         GuildRole role = member.getRole();
         return role.hasPerm(perm);
+    }
+
+    public void updateGuildSkull(OfflinePlayer player, SettingsManager settingsManager) {
+        Guilds.newChain().async(() -> {
+            try{
+                guildSkull = new GuildSkull(player);
+            } catch (Exception ex) {
+                guildSkull = new GuildSkull(settingsManager.getProperty(GuildListSettings.GUILD_LIST_HEAD_DEFAULT_URL));
+            }
+        }).execute();
     }
 
     public void addPotion(PotionEffect effect) {

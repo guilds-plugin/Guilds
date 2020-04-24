@@ -27,7 +27,7 @@ package me.glaremasters.guilds.guild;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import me.glaremasters.guilds.utils.SkullUtils;
-import org.bukkit.entity.Player;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.IOException;
@@ -42,14 +42,14 @@ import java.util.UUID;
  */
 
 public class GuildSkull {
-    private String serialized;
+    private final String serialized;
     private transient ItemStack itemStack;
 
     /**
      * Get the Guild Skull of a player
      * @param player the player you're getting the skull of
      */
-    public GuildSkull(Player player) {
+    public GuildSkull(OfflinePlayer player) {
         serialized = SkullUtils.getEncoded(getTextureUrl(player.getUniqueId()));
         itemStack = SkullUtils.getSkull(serialized);
     }

@@ -24,6 +24,7 @@
 
 package me.glaremasters.guilds.commands.admin.manage
 
+import ch.jalu.configme.SettingsManager
 import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.CommandAlias
 import co.aikar.commands.annotation.CommandCompletion
@@ -48,6 +49,7 @@ import org.bukkit.entity.Player
 internal class CommandAdminTransfer : BaseCommand() {
     @Dependency lateinit var guilds: Guilds
     @Dependency lateinit var guildHandler: GuildHandler
+    @Dependency lateinit var settingsManager: SettingsManager
 
     @Subcommand("admin transfer")
     @CommandPermission(Constants.ADMIN_PERM)
@@ -61,7 +63,7 @@ internal class CommandAdminTransfer : BaseCommand() {
             throw ExpectationNotMet(Messages.ERROR__TRANSFER_SAME_PERSON)
         }
 
-        guild.transferGuildAdmin(transfer, guildHandler)
+        guild.transferGuildAdmin(transfer, guildHandler, settingsManager)
         currentCommandIssuer.sendInfo(Messages.TRANSFER__SUCCESS)
     }
 }
