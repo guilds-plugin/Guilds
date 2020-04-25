@@ -84,6 +84,9 @@ enum class Messages : MessageKeyProvider {
     ADMIN__HOME,
     ADMIN__DELHOME,
     ADMIN__MOTD,
+    ADMIN__SCORE_SETWINS,
+    ADMIN__SCORE_SETLOSES,
+    ADMIN__SCORE_RESETALL,
 
     BOOT__PLAYER_KICKED,
     BOOT__SUCCESSFUL,
