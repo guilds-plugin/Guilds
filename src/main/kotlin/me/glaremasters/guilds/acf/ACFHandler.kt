@@ -40,7 +40,6 @@ import me.glaremasters.guilds.exceptions.ExpectationNotMet
 import me.glaremasters.guilds.exceptions.InvalidPermissionException
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
-import me.glaremasters.guilds.guild.GuildRole
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.scanner.ZISScanner
 import net.milkbowl.vault.economy.Economy
@@ -92,10 +91,6 @@ class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCo
             })
                     ?: throw InvalidCommandArgument(Messages.ERROR__NO_GUILD)
             guild
-        }
-        commandManager.commandContexts.registerIssuerOnlyContext(GuildRole::class.java) { c ->
-            val guild = guildHandler.getGuild(c.player) ?: return@registerIssuerOnlyContext null
-            guildHandler.getGuildRole(guild.getMember(c.player.uniqueId).role.level)
         }
         commandManager.commandContexts.registerContext(Arena::class.java) { c -> arenaHandler.getArena(c.popFirstArg()).get() }
     }
