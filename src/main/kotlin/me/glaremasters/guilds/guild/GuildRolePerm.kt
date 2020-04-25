@@ -38,7 +38,7 @@ enum class GuildRolePerm {
     ALLY_CHAT,
     OPEN_VAULT,
     TRANSFER_GUILD,
-    CHANGE_STATUS,
+    TOGGLE_GUILD,
     ACTIVATE_BUFF,
     UPGRADE_GUILD,
     DEPOSIT_MONEY,

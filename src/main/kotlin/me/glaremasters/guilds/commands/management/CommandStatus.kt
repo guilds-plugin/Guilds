@@ -50,7 +50,7 @@ internal class CommandStatus : BaseCommand() {
     @Description("{@@descriptions.status}")
     @CommandPermission(Constants.BASE_PERM + "status")
     @Syntax("")
-    fun status(player: Player, @Conditions("perm:perm=CHANGE_STATUS") guild: Guild) {
+    fun status(player: Player, @Conditions("perm:perm=TOGGLE_GUILD") guild: Guild) {
         guild.toggleStatus()
         currentCommandIssuer.sendInfo(Messages.STATUS__SUCCESSFUL, "{status}", guild.status.name)
     }
