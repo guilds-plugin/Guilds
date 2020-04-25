@@ -30,7 +30,7 @@ enum class GuildRolePerm {
     PROMOTE,
     DEMOTE,
     CHANGE_PREFIX,
-    CHANGE_NAME,
+    RENAME,
     CHANGE_HOME,
     REMOVE_GUILD,
     ADD_ALLY,
