@@ -140,33 +140,33 @@ class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCo
             val guild = c.getContextValue(Guild::class.java, 1) ?: return@registerCompletion null
             guild.members.map { it.asOfflinePlayer.name }
         }
-        commandManager.commandCompletions.registerAsyncCompletion("allyInvites") { c ->
-            val guild = guildHandler.getGuild(c.player) ?: return@registerAsyncCompletion null
+        commandManager.commandCompletions.registerCompletion("allyInvites") { c ->
+            val guild = guildHandler.getGuild(c.player) ?: return@registerCompletion null
             if (!guild.hasPendingAllies()) {
-                return@registerAsyncCompletion null
+                return@registerCompletion null
             }
             guild.pendingAllies.map { guildHandler.getNameById(it) }
         }
-        commandManager.commandCompletions.registerAsyncCompletion("allies") { c ->
-            val guild = guildHandler.getGuild(c.player) ?: return@registerAsyncCompletion null
+        commandManager.commandCompletions.registerCompletion("allies") { c ->
+            val guild = guildHandler.getGuild(c.player) ?: return@registerCompletion null
             if (!guild.hasAllies()) {
-                return@registerAsyncCompletion null
+                return@registerCompletion null
             }
             guild.allies.map { guildHandler.getNameById(it) }
         }
-        commandManager.commandCompletions.registerAsyncCompletion("activeCodes") { c ->
-            val guild = guildHandler.getGuild(c.player) ?: return@registerAsyncCompletion null
+        commandManager.commandCompletions.registerCompletion("activeCodes") { c ->
+            val guild = guildHandler.getGuild(c.player) ?: return@registerCompletion null
             if (guild.codes == null) {
-                return@registerAsyncCompletion null
+                return@registerCompletion null
             }
             guild.codes.map { it.id }
         }
-        commandManager.commandCompletions.registerAsyncCompletion("vaultAmount") { c ->
-            val guild = guildHandler.getGuild(c.player) ?: return@registerAsyncCompletion null
+        commandManager.commandCompletions.registerCompletion("vaultAmount") { c ->
+            val guild = guildHandler.getGuild(c.player) ?: return@registerCompletion null
             if (guild.vaults == null) {
-                return@registerAsyncCompletion null
+                return@registerCompletion null
             }
-            val list = guildHandler.vaults[guild] ?: return@registerAsyncCompletion null
+            val list = guildHandler.vaults[guild] ?: return@registerCompletion null
             (1 until list.size).map(Any::toString)
         }
     }
