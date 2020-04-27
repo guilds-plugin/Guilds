@@ -104,13 +104,11 @@ public class GuildSkull {
      * @return server version
      */
     private String getServerVersion() {
-        String version;
         try {
-            version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
+            return Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
         } catch (ArrayIndexOutOfBoundsException ex) {
             return "unknown";
         }
-        return version;
     }
 
     /**
