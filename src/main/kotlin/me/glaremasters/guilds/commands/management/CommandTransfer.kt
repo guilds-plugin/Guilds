@@ -74,7 +74,7 @@ internal class CommandTransfer : BaseCommand() {
             return
         }
 
-        guild.transferGuild(player, user, settingsManager)
+        guild.transferGuild(player, user)
         currentCommandIssuer.sendInfo(Messages.TRANSFER__SUCCESS)
 
         if (!user.isOnline) {

@@ -93,6 +93,17 @@ class PlayerListener(private val guilds: Guilds, private val settingsManager: Se
         member.lastLogin = System.currentTimeMillis()
     }
 
+    @EventHandler
+    fun PlayerJoinEvent.onUpdateSkullCheck() {
+        val guild = guildHandler.getGuild(player) ?: return
+
+        if (!guild.isMaster(player)) {
+            return
+        }
+
+        guild.updateGuildSkull(player, settingsManager)
+    }
+
     @EventHandler(priority = EventPriority.HIGH)
     fun AsyncPlayerChatEvent.onChat() {
         val guild = guildHandler.getGuild(player) ?: return

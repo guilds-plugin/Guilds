@@ -501,7 +501,7 @@ public class Guild {
      * @param oldPlayer old player
      * @param newPlayer new player
      */
-    public void transferGuild(Player oldPlayer, OfflinePlayer newPlayer, SettingsManager settingsManager) {
+    public void transferGuild(Player oldPlayer, OfflinePlayer newPlayer) {
 
         GuildMember oldMaster = getMember(oldPlayer.getUniqueId());
         GuildMember newMaster = getMember(newPlayer.getUniqueId());
@@ -514,7 +514,6 @@ public class Guild {
         oldMaster.setRole(newMaster.getRole());
         newMaster.setRole(gm);
         setGuildMaster(newMaster);
-        updateGuildSkull(newMaster.getAsOfflinePlayer(), settingsManager);
     }
 
     /**
@@ -522,7 +521,7 @@ public class Guild {
      * @param master The new master of the guild
      * @param guildHandler Guild handler
      */
-    public void transferGuildAdmin(OfflinePlayer master, GuildHandler guildHandler, SettingsManager settingsManager) {
+    public void transferGuildAdmin(OfflinePlayer master, GuildHandler guildHandler) {
 
         GuildMember currentMaster = getMember(getGuildMaster().getUuid());
         GuildMember newMaster = getMember(master.getUniqueId());
@@ -533,7 +532,6 @@ public class Guild {
         newMaster.setRole(guildHandler.getGuildRole(0));
 
         setGuildMaster(newMaster);
-        updateGuildSkull(newMaster.getAsOfflinePlayer(), settingsManager);
     }
 
     /**
@@ -568,7 +566,7 @@ public class Guild {
         return role.hasPerm(perm);
     }
 
-    public void updateGuildSkull(OfflinePlayer player, SettingsManager settingsManager) {
+    public void updateGuildSkull(Player player, SettingsManager settingsManager) {
         Guilds.newChain().async(() -> {
             try{
                 guildSkull = new GuildSkull(player);

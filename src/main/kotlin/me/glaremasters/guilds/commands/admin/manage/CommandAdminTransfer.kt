@@ -63,7 +63,7 @@ internal class CommandAdminTransfer : BaseCommand() {
             throw ExpectationNotMet(Messages.ERROR__TRANSFER_SAME_PERSON)
         }
 
-        guild.transferGuildAdmin(transfer, guildHandler, settingsManager)
+        guild.transferGuildAdmin(transfer, guildHandler)
         currentCommandIssuer.sendInfo(Messages.TRANSFER__SUCCESS)
     }
 }
