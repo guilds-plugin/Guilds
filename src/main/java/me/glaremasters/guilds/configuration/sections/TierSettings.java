@@ -83,6 +83,9 @@ public class TierSettings implements SettingsHolder {
     public static final Property<Integer> ONE_MEMBERS_REQUIRE =
             newProperty(LIST_PATH + "1.members-to-rankup", 0);
 
+    @Comment("What is the max amount of allies a guild with this tier can have?")
+    public static final Property<Integer> ONE_MAX_ALLIES = newProperty(LIST_PATH + "1.max-allies", 5);
+
     @Comment("Would you like this tier to be able to open the buff GUI?")
     public static final Property<Boolean> ONE_BUFFS =
             newProperty(LIST_PATH + "1.use-buffs", true);
@@ -127,6 +130,9 @@ public class TierSettings implements SettingsHolder {
     public static final Property<Integer> TWO_MEMBERS_REQUIRE =
             newProperty(LIST_PATH + "2.members-to-rankup", 0);
 
+    @Comment("What is the max amount of allies a guild with this tier can have?")
+    public static final Property<Integer> TWO_MAX_ALLIES = newProperty(LIST_PATH + "2.max-allies", 10);
+
     @Comment("Would you like this tier to be able to open the buff GUI?")
     public static final Property<Boolean> TWO_BUFFS =
             newProperty(LIST_PATH + "2.use-buffs", true);
@@ -170,6 +176,9 @@ public class TierSettings implements SettingsHolder {
     @Comment("How many members should be in a guild for it to be able to rankup?")
     public static final Property<Integer> THREE_MEMBERS_REQUIRE =
             newProperty(LIST_PATH + "3.members-to-rankup", 0);
+
+    @Comment("What is the max amount of allies a guild with this tier can have?")
+    public static final Property<Integer> THREE_MAX_ALLIES = newProperty(LIST_PATH + "3.max-allies", 15);
 
     @Comment("Would you like this tier to be able to open the buff GUI?")
     public static final Property<Boolean> THREE_BUFFS =

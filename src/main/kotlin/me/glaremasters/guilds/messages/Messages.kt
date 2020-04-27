@@ -157,6 +157,7 @@ enum class Messages : MessageKeyProvider {
     ALLY__SAME_GUILD,
     ALLY__NOT_ALLIED,
     ALLY__ALREADY_REQUESTED,
+    ALLY__MAX_ALLIES,
 
     ACCEPT__GUILD_FULL,
     ACCEPT__NOT_INVITED,

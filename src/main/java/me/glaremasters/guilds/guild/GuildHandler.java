@@ -149,6 +149,7 @@ public class GuildHandler {
                     .damageMultiplier(tierSec.getDouble(key + ".damage-multiplier"))
                     .maxBankBalance(tierSec.getDouble(key + ".max-bank-balance"))
                     .membersToRankup(tierSec.getInt(key + ".members-to-rankup"))
+                    .maxAllies(tierSec.getInt(key + ".max-allies"))
                     .useBuffs(tierSec.getBoolean(key + ".use-buffs"))
                     .permissions(tierSec.getStringList(key + ".permissions"))
                     .build());

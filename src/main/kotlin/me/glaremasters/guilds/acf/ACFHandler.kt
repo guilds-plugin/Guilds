@@ -106,6 +106,16 @@ class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCo
                 throw InvalidPermissionException()
             }
         }
+        commandManager.commandConditions.addCondition(Guild::class.java, "NotMaxedAllies") { c, exec, value ->
+            if (value == null) {
+                return@addCondition
+            }
+            val player = exec.player
+            val guild = guildHandler.getGuild(player)
+            if (guild.allies.size >= guild.tier.maxAllies) {
+                throw ExpectationNotMet(Messages.ALLY__MAX_ALLIES)
+            }
+        }
         commandManager.commandConditions.addCondition(Player::class.java, "NoGuild") { c, exec, value ->
             if (value == null) {
                 return@addCondition

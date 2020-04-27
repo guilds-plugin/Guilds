@@ -57,7 +57,7 @@ internal class CommandAlly : BaseCommand() {
     @CommandPermission(Constants.ALLY_PERM + "accept")
     @CommandCompletion("@allyInvites")
     @Syntax("<%syntax>")
-    fun accept(player: Player, @Conditions("perm:perm=ADD_ALLY") guild: Guild, @Flags("other") target: Guild) {
+    fun accept(player: Player, @Conditions("perm:perm=ADD_ALLY|NotMaxedAllies") guild: Guild, @Flags("other") target: Guild) {
         if (!guild.isAllyPending(target)) {
             return
         }
@@ -74,7 +74,7 @@ internal class CommandAlly : BaseCommand() {
     @CommandPermission(Constants.ALLY_PERM + "add")
     @CommandCompletion("@guilds")
     @Syntax("<%syntax>")
-    fun add(player: Player, @Conditions("perm:perm=ADD_ALLY") guild: Guild, @Flags("other") target: Guild) {
+    fun add(player: Player, @Conditions("perm:perm=ADD_ALLY|NotMaxedAllies") guild: Guild, @Flags("other") target: Guild) {
         if (target.isAllyPending(guild)) {
             throw ExpectationNotMet(Messages.ALLY__ALREADY_REQUESTED)
         }
