@@ -203,7 +203,7 @@ public final class Guilds extends JavaPlugin {
            new PlaceholderAPI(guildHandler).register();
         }
         // start bstats
-        Metrics metrics = new Metrics(this);
+        Metrics metrics = new Metrics(this, 881);
         metrics.addCustomChart(new Metrics.SingleLineChart("guilds", () -> getGuildHandler().getGuildsSize()));
         metrics.addCustomChart(new Metrics.SingleLineChart("tiers", () -> getGuildHandler().getTiers().size()));
         metrics.addCustomChart(new Metrics.SingleLineChart("roles", () -> getGuildHandler().getRoles().size()));

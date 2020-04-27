@@ -50,7 +50,7 @@ dependencies {
     implementation 'co.aikar:acf-paper:0.5.0-SNAPSHOT'
 
     // Bstats Data Collecting
-    implementation 'org.bstats:bstats-bukkit:1.5'
+    implementation 'org.bstats:bstats-bukkit:1.7'
 
     // Runtime Dependency Downloading
     implementation 'net.byteflux:libby-bukkit:0.0.2-SNAPSHOT'
