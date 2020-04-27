@@ -24,10 +24,10 @@
 
 package me.glaremasters.guilds.cooldowns;
 
+import co.aikar.commands.lib.expiringmap.ExpirationPolicy;
+import co.aikar.commands.lib.expiringmap.ExpiringMap;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.guild.Guild;
-import net.jodah.expiringmap.ExpirationPolicy;
-import net.jodah.expiringmap.ExpiringMap;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 

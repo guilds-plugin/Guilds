@@ -32,6 +32,7 @@ shadowJar {
     minimize()
     relocate("org.bstats", "${base}bstats")
     relocate("co.aikar.commands", "${base}acf")
+    relocate("co.aikar.locales", "${base}locales")
     relocate("co.aikar.taskchain", "${base}taskchain")
     relocate("ch.jalu.configme", "${base}configme")
     relocate("net.byteflux.libby", "${base}libby")
