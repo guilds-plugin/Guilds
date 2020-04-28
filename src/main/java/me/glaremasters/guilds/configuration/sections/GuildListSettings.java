@@ -88,6 +88,11 @@ public class GuildListSettings implements SettingsHolder {
     public static final Property<String> GUILD_LIST_HEAD_DEFAULT_URL =
             newProperty(LIST_PATH + "head-default-url", "7a2df315b43583b1896231b77bae1a507dbd7e43ad86c1cfbe3b2b8ef3430e9e");
 
+
+    @Comment("Do we want to try to use skull textures or just ignore them and use the one provided?")
+    public static final Property<Boolean> USE_DEFAULT_TEXTURE =
+            newProperty(LIST_PATH + "use-default-texture", false);
+
     @Comment({"You are free to design this to your liking", "This is just an example of all the available placeholders that you can use for the lore!",
             "Note: With v3.6.7 and on, you can now use {guild-tier-name} for the name of the tier.",
             "Also, from v3.6.7 and on, {guild-status} will now apply from what you set for the guild-info GUI for the status being public or private.",
