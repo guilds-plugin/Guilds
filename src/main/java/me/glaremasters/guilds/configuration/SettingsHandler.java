@@ -38,10 +38,10 @@ import java.io.File;
  */
 public class SettingsHandler {
 
-    private SettingsManager mainConf;
-    private SettingsManager tierConf;
-    private SettingsManager roleConf;
-    private SettingsManager buffConf;
+    private final SettingsManager mainConf;
+    private final SettingsManager tierConf;
+    private final SettingsManager roleConf;
+    private final SettingsManager buffConf;
 
     public SettingsHandler(Guilds guilds) {
 
