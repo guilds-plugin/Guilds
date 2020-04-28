@@ -80,7 +80,7 @@ internal class CommandHome : BaseCommand() {
         val id = player.uniqueId
 
         if (cooldownHandler.hasCooldown(cooldown, id)) {
-            throw ExpectationNotMet(Messages.HOME__COOLDOWN, "{amount}", cooldownHandler.getRemaining(name, id).toString())
+            throw ExpectationNotMet(Messages.HOME__COOLDOWN, "{amount}", cooldownHandler.getRemaining(cooldown, id).toString())
         }
 
         cooldownHandler.addCooldown(player, cooldown, settingsManager.getProperty(CooldownSettings.HOME), TimeUnit.SECONDS)
