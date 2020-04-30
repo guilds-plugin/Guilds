@@ -42,8 +42,10 @@ import java.util.Locale
 
 @CommandAlias("%guilds")
 internal class CommandLanguage : BaseCommand() {
-    @Dependency lateinit var guilds: Guilds
-    @Dependency lateinit var guildHandler: GuildHandler
+    @Dependency
+    lateinit var guilds: Guilds
+    @Dependency
+    lateinit var guildHandler: GuildHandler
 
     @Subcommand("language")
     @Description("{@@descriptions.language}")

@@ -24,8 +24,11 @@
 
 package me.glaremasters.guilds.guild;
 
+import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.CommandManager;
+import me.glaremasters.guilds.Guilds;
+import me.glaremasters.guilds.configuration.sections.GuildListSettings;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.SkullUtils;
@@ -539,6 +542,38 @@ public class Guild {
      */
     public void addPotion(String type, int length, int amplifier) {
         getOnlineAsPlayers().forEach(p -> p.addPotionEffect(new PotionEffect(PotionEffectType.getByName(type), length, amplifier)));
+    }
+
+    /**
+     * Determine if a player has role permission
+     * @param player the player to check
+     * @param perm the permission as a string to check
+     * @return has permission or not
+     */
+    public boolean memberHasPermission(Player player, String perm) {
+        return memberHasPermission(player, GuildRolePerm.valueOf(perm));
+    }
+
+    /**
+     * Determine if a player has role permission
+     * @param player the player to check
+     * @param perm the permission as an enum value
+     * @return has permission or not
+     */
+    public boolean memberHasPermission(Player player, GuildRolePerm perm) {
+        GuildMember member = getMember(player.getUniqueId());
+        GuildRole role = member.getRole();
+        return role.hasPerm(perm);
+    }
+
+    public void updateGuildSkull(Player player, SettingsManager settingsManager) {
+        Guilds.newChain().async(() -> {
+            try{
+                guildSkull = new GuildSkull(player);
+            } catch (Exception ex) {
+                guildSkull = new GuildSkull(settingsManager.getProperty(GuildListSettings.GUILD_LIST_HEAD_DEFAULT_URL));
+            }
+        }).execute();
     }
 
     public void addPotion(PotionEffect effect) {

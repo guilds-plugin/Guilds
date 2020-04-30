@@ -25,6 +25,7 @@
 package me.glaremasters.guilds.listeners
 
 import me.glaremasters.guilds.guild.GuildHandler
+import me.glaremasters.guilds.guild.GuildRolePerm
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
@@ -40,14 +41,11 @@ class WorldGuardListener(private val guildHandler: GuildHandler) : Listener {
     fun BlockPlaceEvent.onPlace() {
         val player = player
         val loc = blockPlaced.location
-
         val guild = guildHandler.getGuild(player) ?: return
-
-        val role = guild.getMember(player.uniqueId).role
 
         for (region in wrapper.getRegions(loc)) {
             if (region.id == guild.id.toString()) {
-                isCancelled = !role.isPlace
+                isCancelled = !guild.memberHasPermission(player, GuildRolePerm.PLACE)
             }
         }
     }
@@ -56,14 +54,11 @@ class WorldGuardListener(private val guildHandler: GuildHandler) : Listener {
     fun BlockBreakEvent.onBreak() {
         val player = player
         val loc = block.location
-
         val guild = guildHandler.getGuild(player) ?: return
-
-        val role = guild.getMember(player.uniqueId).role
 
         for (region in wrapper.getRegions(loc)) {
             if (region.id == guild.id.toString()) {
-                isCancelled = !role.isDestroy
+                isCancelled = !guild.memberHasPermission(player, GuildRolePerm.DESTROY)
             }
         }
     }
@@ -72,14 +67,11 @@ class WorldGuardListener(private val guildHandler: GuildHandler) : Listener {
     fun PlayerInteractEvent.onInteract() {
         val player = player
         val loc = player.location
-
         val guild = guildHandler.getGuild(player) ?: return
-
-        val role = guild.getMember(player.uniqueId).role
 
         for (region in wrapper.getRegions(loc)) {
             if (region.id == guild.id.toString()) {
-                isCancelled = !role.isInteract
+                isCancelled = !guild.memberHasPermission(player, GuildRolePerm.INTERACT)
             }
         }
     }

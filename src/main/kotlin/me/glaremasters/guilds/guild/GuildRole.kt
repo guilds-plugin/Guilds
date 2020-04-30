@@ -21,24 +21,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package me.glaremasters.guilds.guild
 
-package me.glaremasters.guilds.exceptions;
+import com.google.common.collect.Sets
 
-import co.aikar.commands.InvalidCommandArgument;
-import me.glaremasters.guilds.messages.Messages;
+data class GuildRole(@Transient val name: String, @Transient val node: String, val level: Int) {
 
-/**
- * Created by GlareMasters
- * Date: 4/4/2019
- * Time: 4:42 PM
- */
-public class InvalidTierException extends InvalidCommandArgument {
+    @Transient
+    private val perms: MutableSet<GuildRolePerm> = Sets.newHashSet()
 
-    /**
-     * Thrown when a user's role isn't allowed to do an action.
-     */
-    public InvalidTierException() {
-        super(Messages.ERROR__TIER_NO_PERMISSION, false);
+    fun getPerms(): Set<GuildRolePerm> {
+        return perms
+    }
+
+    @Synchronized
+    fun addPerm(perm: GuildRolePerm) {
+        perms.add(perm)
+    }
+
+    @Synchronized
+    fun removePerm(perm: GuildRolePerm) {
+        perms.remove(perm)
+    }
+
+    @Synchronized
+    fun hasPerm(perm: GuildRolePerm): Boolean {
+        return perms.contains(perm)
     }
 
 }

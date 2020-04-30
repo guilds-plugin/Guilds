@@ -26,14 +26,16 @@ package me.glaremasters.guilds.guild;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
+import com.mojang.authlib.properties.PropertyMap;
 import me.glaremasters.guilds.utils.SkullUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.util.UUID;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Base64;
 
 /**
  * Created by GlareMasters
@@ -42,7 +44,7 @@ import java.util.UUID;
  */
 
 public class GuildSkull {
-    private String serialized;
+    private final String serialized;
     private transient ItemStack itemStack;
 
     /**
@@ -50,7 +52,7 @@ public class GuildSkull {
      * @param player the player you're getting the skull of
      */
     public GuildSkull(Player player) {
-        serialized = SkullUtils.getEncoded(getTextureUrl(player.getUniqueId()));
+        serialized = SkullUtils.getEncoded(getTextureUrl(player));
         itemStack = SkullUtils.getSkull(serialized);
     }
 
@@ -64,19 +66,48 @@ public class GuildSkull {
     }
 
     /**
-     * Get the url of a texture
-     * @param uuid the uuid to get the texture of
-     * @return texture of uuid
+     * Get the texture of a player's skin
+     * @param player the player to get the skin from
+     * @return skin texture url
      */
-    private String getTextureUrl(UUID uuid) {
-        try {
-            URL texture = new URL("https://api.minetools.eu/profile/" + uuid.toString().replaceAll("-", ""));
-            InputStreamReader is = new InputStreamReader(texture.openStream());
-            JsonObject textureProperty = new JsonParser().parse(is).getAsJsonObject().get("decoded").getAsJsonObject().get("textures").getAsJsonObject().get("SKIN").getAsJsonObject();
-            return textureProperty.get("url").getAsString();
-        } catch (IOException e) {
-            e.printStackTrace();
+    private String getTextureUrl(Player player) {
+        GameProfile profile = getProfile(player);
+        if (profile == null) {
             return "";
+        }
+        PropertyMap propertyMap = profile.getProperties();
+        for (Property property : propertyMap.get("textures")) {
+            byte[] decoded = Base64.getDecoder().decode(property.getValue());
+            JsonObject texture = new JsonParser().parse(new String(decoded)).getAsJsonObject().get("textures").getAsJsonObject().get("SKIN").getAsJsonObject();
+            return texture.get("url").getAsString();
+        }
+        return "";
+    }
+
+    /**
+     * Try and get the profile of an online player
+     * @param player the player to get the profile from
+     * @return player profile
+     */
+    private GameProfile getProfile(Player player) {
+        try {
+            Class<?> strClass = Class.forName("org.bukkit.craftbukkit." + getServerVersion() + ".entity.CraftPlayer");
+            return (GameProfile) strClass.cast(player).getClass().getMethod("getProfile").invoke(strClass.cast(player));
+        } catch (ClassNotFoundException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Attempt to get the server version
+     * @return server version
+     */
+    private String getServerVersion() {
+        try {
+            return Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            return "unknown";
         }
     }
 

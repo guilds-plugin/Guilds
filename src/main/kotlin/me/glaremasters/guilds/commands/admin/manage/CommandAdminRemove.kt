@@ -29,6 +29,7 @@ import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.CommandAlias
 import co.aikar.commands.annotation.CommandCompletion
 import co.aikar.commands.annotation.CommandPermission
+import co.aikar.commands.annotation.Conditions
 import co.aikar.commands.annotation.Dependency
 import co.aikar.commands.annotation.Description
 import co.aikar.commands.annotation.Flags
@@ -39,12 +40,13 @@ import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.actions.ActionHandler
 import me.glaremasters.guilds.actions.ConfirmAction
 import me.glaremasters.guilds.api.events.GuildRemoveEvent
-import me.glaremasters.guilds.exceptions.ExpectationNotMet
+import me.glaremasters.guilds.configuration.sections.PluginSettings
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.ClaimUtils
 import me.glaremasters.guilds.utils.Constants
+import net.milkbowl.vault.permission.Permission
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 
@@ -54,17 +56,17 @@ internal class CommandAdminRemove : BaseCommand() {
     @Dependency lateinit var guildHandler: GuildHandler
     @Dependency lateinit var actionHandler: ActionHandler
     @Dependency lateinit var settingsManager: SettingsManager
+    @Dependency lateinit var permission: Permission
 
     @Subcommand("admin remove")
     @Description("{@@descriptions.admin-remove}")
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
     @Syntax("<%syntax>")
-    fun remove(player: Player, @Flags("admin") @Values("@guilds") guild: Guild) {
-        if (guildHandler.isMigrating) {
-            throw ExpectationNotMet(Messages.ERROR__MIGRATING)
-        }
+    @Conditions("NotMigrating")
+    fun remove(player: Player, @Flags("other") @Values("@guilds") guild: Guild) {
         val name = guild.name
+        val async = settingsManager.getProperty(PluginSettings.RUN_VAULT_ASYNC)
 
         currentCommandIssuer.sendInfo(Messages.ADMIN__DELETE_WARNING, "{guild}", name)
         actionHandler.addAction(player, object : ConfirmAction {
@@ -76,6 +78,9 @@ internal class CommandAdminRemove : BaseCommand() {
                     return
                 }
 
+                guildHandler.removePermsFromAll(permission, guild, async)
+                guildHandler.removeAlliesOnDelete(guild)
+                guildHandler.notifyAllies(guild, currentCommandManager)
                 ClaimUtils.deleteWithGuild(guild, settingsManager)
                 guild.sendMessage(currentCommandManager, Messages.LEAVE__GUILDMASTER_LEFT, "{player}", guild.guildMaster.name)
                 guildHandler.removeGuild(guild)

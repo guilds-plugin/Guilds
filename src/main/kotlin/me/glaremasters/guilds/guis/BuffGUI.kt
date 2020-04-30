@@ -92,6 +92,7 @@ class BuffGUI(private val guilds: Guilds, private val buffConfig: SettingsManage
                 event.isCancelled = true
 
                 if (!access) {
+                    manager.getCommandIssuer(player).sendInfo(Messages.ERROR__BUFF_NO_PERMISSION)
                     return@setAction
                 }
                 

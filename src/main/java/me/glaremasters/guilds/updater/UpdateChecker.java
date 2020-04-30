@@ -83,7 +83,7 @@ public final class UpdateChecker {
     };
 
     private static final String USER_AGENT = "CHOCO-update-checker";
-    private static final String UPDATE_URL = "https://api.spiget.org/v2/resources/%d/versions?size=1&sort=-releaseDate";
+    private static final String UPDATE_URL = "https://api.spigotmc.org/simple/0.1/index.php?action=getResource&id=%d";
     private static final Pattern DECIMAL_SCHEME_PATTERN = Pattern.compile("\\d+(?:\\.\\d+)*");
 
     private static UpdateChecker instance;
@@ -118,14 +118,11 @@ public final class UpdateChecker {
                 responseCode = connection.getResponseCode();
 
                 JsonElement element = new JsonParser().parse(reader);
-                if (!element.isJsonArray()) {
-                    return new UpdateResult(UpdateReason.INVALID_JSON);
-                }
 
                 reader.close();
 
-                JsonObject versionObject = element.getAsJsonArray().get(0).getAsJsonObject();
-                String current = plugin.getDescription().getVersion(), newest = versionObject.get("name").getAsString();
+                JsonObject versionObject = element.getAsJsonObject();
+                String current = plugin.getDescription().getVersion(), newest = versionObject.get("current_version").getAsString();
                 String latest = versionScheme.compareVersions(current, newest);
 
                 if (latest == null) {

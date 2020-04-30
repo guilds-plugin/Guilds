@@ -12,4 +12,9 @@ class GuildScore {
         loses += 1
     }
 
+    fun reset() {
+        wins = 0
+        loses = 0
+    }
+
 }

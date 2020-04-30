@@ -35,6 +35,7 @@ import me.glaremasters.guilds.cooldowns.CooldownHandler
 import me.glaremasters.guilds.exte.addBackground
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
+import me.glaremasters.guilds.guild.GuildRolePerm
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.GuiBuilder
 import me.glaremasters.guilds.utils.GuiUtils
@@ -144,7 +145,7 @@ class InfoGUI(private val guilds: Guilds, private val settingsManager: SettingsM
         val item = GuiItem(GuiUtils.createItem(settingsManager.getProperty(GuildInfoSettings.VAULT_MATERIAL), settingsManager.getProperty(GuildInfoSettings.VAULT_NAME), settingsManager.getProperty(GuildInfoSettings.VAULT_LORE)))
         item.setAction { event ->
             event.isCancelled = true
-            if (!guild.getMember(player.uniqueId).role.isOpenVault) {
+            if (!guild.memberHasPermission(player, GuildRolePerm.OPEN_VAULT)) {
                 return@setAction
             }
             guilds.guiHandler.vaults.get(guild, player).open(event.whoClicked)

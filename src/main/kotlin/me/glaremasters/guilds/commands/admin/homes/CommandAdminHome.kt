@@ -54,7 +54,7 @@ internal class CommandAdminHome : BaseCommand() {
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
     @Syntax("<%syntax>")
-    fun delete(player: Player, @Flags("admin") @Values("@guilds") guild: Guild) {
+    fun delete(player: Player, @Flags("other") @Values("@guilds") guild: Guild) {
         guild.delHome()
         currentCommandIssuer.sendInfo(Messages.ADMIN__DELHOME, "{guild}", guild.name)
     }
@@ -64,7 +64,7 @@ internal class CommandAdminHome : BaseCommand() {
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
     @Syntax("<%syntax>")
-    fun home(player: Player, @Flags("admin") @Values("@guilds") guild: Guild) {
+    fun home(player: Player, @Flags("other") @Values("@guilds") guild: Guild) {
         val home = guild.home ?: throw ExpectationNotMet(Messages.HOME__NO_HOME_SET)
         player.teleport(home.asLocation)
         currentCommandIssuer.sendInfo(Messages.ADMIN__HOME, "{guild}", guild.name)
@@ -75,7 +75,7 @@ internal class CommandAdminHome : BaseCommand() {
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
     @Syntax("<%syntax>")
-    fun set(player: Player, @Flags("admin") @Values("@guilds") guild: Guild) {
+    fun set(player: Player, @Flags("other") @Values("@guilds") guild: Guild) {
         guild.setNewHome(player)
         currentCommandIssuer.sendInfo(Messages.ADMIN__SETHOME, "{guild}", guild.name)
     }

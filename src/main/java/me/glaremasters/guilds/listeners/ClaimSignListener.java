@@ -29,6 +29,7 @@ import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.configuration.sections.ClaimSettings;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
+import me.glaremasters.guilds.guild.GuildRolePerm;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.ClaimUtils;
 import org.bukkit.block.Block;
@@ -49,9 +50,9 @@ import org.codemc.worldguardwrapper.selection.ICuboidSelection;
  */
 public class ClaimSignListener implements Listener {
 
-    private Guilds guilds;
-    private SettingsManager settingsManager;
-    private GuildHandler guildHandler;
+    private final Guilds guilds;
+    private final SettingsManager settingsManager;
+    private final GuildHandler guildHandler;
     private final WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();
 
     public ClaimSignListener(Guilds guilds, SettingsManager settingsManager, GuildHandler guildHandler) {
@@ -126,7 +127,7 @@ public class ClaimSignListener implements Listener {
             return;
         }
 
-        if (!guildHandler.getGuildRole(guild.getMember(player.getUniqueId()).getRole().getLevel()).isClaimLand()) {
+        if (!guild.memberHasPermission(player, GuildRolePerm.CLAIM_LAND)) {
             guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.ERROR__ROLE_NO_PERMISSION);
             return;
         }

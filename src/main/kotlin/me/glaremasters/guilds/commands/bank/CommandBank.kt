@@ -27,6 +27,7 @@ package me.glaremasters.guilds.commands.bank
 import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.CommandAlias
 import co.aikar.commands.annotation.CommandPermission
+import co.aikar.commands.annotation.Conditions
 import co.aikar.commands.annotation.Dependency
 import co.aikar.commands.annotation.Description
 import co.aikar.commands.annotation.Subcommand
@@ -35,10 +36,8 @@ import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.api.events.GuildDepositMoneyEvent
 import me.glaremasters.guilds.api.events.GuildWithdrawMoneyEvent
 import me.glaremasters.guilds.exceptions.ExpectationNotMet
-import me.glaremasters.guilds.exceptions.InvalidPermissionException
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
-import me.glaremasters.guilds.guild.GuildRole
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.Constants
 import me.glaremasters.guilds.utils.EconomyUtils
@@ -48,9 +47,12 @@ import org.bukkit.entity.Player
 
 @CommandAlias("%guilds")
 internal class CommandBank : BaseCommand() {
-    @Dependency lateinit var guilds: Guilds
-    @Dependency lateinit var guildHandler: GuildHandler
-    @Dependency lateinit var economy: Economy
+    @Dependency
+    lateinit var guilds: Guilds
+    @Dependency
+    lateinit var guildHandler: GuildHandler
+    @Dependency
+    lateinit var economy: Economy
 
     @Subcommand("bank balance")
     @Description("{@@descriptions.bank-balance}")
@@ -64,11 +66,7 @@ internal class CommandBank : BaseCommand() {
     @Description("{@@descriptions.bank-deposit}")
     @CommandPermission(Constants.BANK_PERM + "deposit")
     @Syntax("<amount>")
-    fun deposit(player: Player, guild: Guild, role: GuildRole, amount: Double) {
-        if (!role.isDepositMoney) {
-            throw InvalidPermissionException()
-        }
-
+    fun deposit(player: Player, @Conditions("perm:perm=DEPOSIT_MONEY") guild: Guild, amount: Double) {
         val balance = guild.balance
         val total = amount + balance
         val tier = guild.tier
@@ -95,18 +93,14 @@ internal class CommandBank : BaseCommand() {
         economy.withdrawPlayer(player, amount)
         guild.balance = total
         guild.sendMessage(currentCommandManager, Messages.BANK__DEPOSIT_SUCCESS, "{player}", player.name,
-        "{amount}", EconomyUtils.format(amount), "{total}", EconomyUtils.format(guild.balance))
+                "{amount}", EconomyUtils.format(amount), "{total}", EconomyUtils.format(guild.balance))
     }
 
     @Subcommand("bank withdraw")
     @Description("{@@descriptions.bank-withdraw}")
     @CommandPermission(Constants.BANK_PERM + "withdraw")
     @Syntax("<amount>")
-    fun withdraw(player: Player, guild: Guild, role: GuildRole, amount: Double) {
-        if (!role.isWithdrawMoney) {
-            throw InvalidPermissionException()
-        }
-
+    fun withdraw(player: Player, @Conditions("perm:perm=WITHDRAW_MONEY") guild: Guild, amount: Double) {
         val bal = guild.balance
 
         if (amount < 0) {

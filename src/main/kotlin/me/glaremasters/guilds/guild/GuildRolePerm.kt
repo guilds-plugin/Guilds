@@ -21,34 +21,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package me.glaremasters.guilds.guild
 
-package me.glaremasters.guilds.exceptions;
-
-import co.aikar.commands.InvalidCommandArgument;
-import co.aikar.locales.MessageKeyProvider;
-
-/**
- * Created by Glare
- * Date: 4/4/2019
- * Time: 5:36 PM
- */
-public class ExpectationNotMet extends InvalidCommandArgument {
-
-    /**
-     * Exception used when an expectation in the plugin is not being met
-     * @param message the message to send to the user
-     */
-    public ExpectationNotMet(MessageKeyProvider message) {
-        super(message.getMessageKey(), false);
-    }
-
-    /**
-     * Exception used
-     * @param key the message to send to the user
-     * @param replacements any placeholders to replace
-     */
-    public ExpectationNotMet(MessageKeyProvider key, String... replacements) {
-        super (key.getMessageKey(),false, replacements);
-    }
-
+enum class GuildRolePerm {
+    CHAT,
+    INVITE,
+    KICK,
+    PROMOTE,
+    DEMOTE,
+    CHANGE_PREFIX,
+    RENAME,
+    CHANGE_HOME,
+    REMOVE_GUILD,
+    ADD_ALLY,
+    REMOVE_ALLY,
+    ALLY_CHAT,
+    OPEN_VAULT,
+    TRANSFER_GUILD,
+    TOGGLE_GUILD,
+    ACTIVATE_BUFF,
+    UPGRADE_GUILD,
+    DEPOSIT_MONEY,
+    WITHDRAW_MONEY,
+    CLAIM_LAND,
+    UNCLAIM_LAND,
+    DESTROY,
+    PLACE,
+    INTERACT,
+    CREATE_CODE,
+    DELETE_CODE,
+    SEE_CODE_REDEEMERS,
+    MODIFY_MOTD,
+    INITIATE_WAR,
+    SERVER_OWNER
 }

@@ -28,6 +28,7 @@ import ch.jalu.configme.SettingsManager
 import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.CommandAlias
 import co.aikar.commands.annotation.CommandPermission
+import co.aikar.commands.annotation.Conditions
 import co.aikar.commands.annotation.Dependency
 import co.aikar.commands.annotation.Description
 import co.aikar.commands.annotation.Optional
@@ -38,7 +39,6 @@ import me.glaremasters.guilds.actions.ActionHandler
 import me.glaremasters.guilds.actions.ConfirmAction
 import me.glaremasters.guilds.api.events.GuildCreateEvent
 import me.glaremasters.guilds.configuration.sections.CostSettings
-import me.glaremasters.guilds.configuration.sections.GuildListSettings
 import me.glaremasters.guilds.configuration.sections.GuildSettings
 import me.glaremasters.guilds.configuration.sections.PluginSettings
 import me.glaremasters.guilds.cooldowns.Cooldown
@@ -47,7 +47,6 @@ import me.glaremasters.guilds.exceptions.ExpectationNotMet
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.guild.GuildMember
-import me.glaremasters.guilds.guild.GuildSkull
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.Constants
 import me.glaremasters.guilds.utils.EconomyUtils
@@ -72,11 +71,8 @@ internal class CommandCreate : BaseCommand() {
     @Description("{@@descriptions.create}")
     @CommandPermission(Constants.BASE_PERM + "create")
     @Syntax("<name> (optional) <prefix>")
-    fun create(player: Player, name: String, @Optional prefix: String?) {
-        if (guildHandler.isMigrating) {
-            throw ExpectationNotMet(Messages.ERROR__MIGRATING)
-        }
-
+    @Conditions("NotMigrating")
+    fun create(@Conditions("NoGuild") player: Player, name: String, @Optional prefix: String?) {
         val cooldown = Cooldown.Type.Join.name
         val id = player.uniqueId
 
@@ -85,10 +81,6 @@ internal class CommandCreate : BaseCommand() {
         }
 
         val cost = settingsManager.getProperty(CostSettings.CREATION)
-
-        if (guildHandler.getGuild(player) != null) {
-            throw ExpectationNotMet(Messages.ERROR__ALREADY_IN_GUILD)
-        }
 
         if (guildHandler.checkGuildNames(name)) {
             throw ExpectationNotMet(Messages.CREATE__GUILD_NAME_TAKEN)
@@ -169,13 +161,7 @@ internal class CommandCreate : BaseCommand() {
                 currentCommandIssuer.sendInfo(Messages.CREATE__SUCCESSFUL, "{guild}", guild.name)
                 guildHandler.addPerms(permission, player, settingsManager.getProperty(PluginSettings.RUN_VAULT_ASYNC))
 
-                Guilds.newChain<Any>().async {
-                    try {
-                        guild.guildSkull = GuildSkull(player)
-                    } catch (ex: Exception) {
-                        guild.guildSkull = GuildSkull(settingsManager.getProperty(GuildListSettings.GUILD_LIST_HEAD_DEFAULT_URL))
-                    }
-                }.execute()
+                guild.updateGuildSkull(player, settingsManager)
 
                 actionHandler.removeAction(player)
             }

@@ -24,36 +24,39 @@
 
 package me.glaremasters.guilds.listeners
 
-import ch.jalu.configme.SettingsManager
-import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.guild.GuildHandler
-import me.glaremasters.guilds.messages.Messages
-import org.bukkit.Material
-import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
-import org.bukkit.event.player.PlayerInteractEvent
-import org.bukkit.inventory.ItemStack
+import org.bukkit.event.player.AsyncPlayerChatEvent
 
-class TicketListener(private val guilds: Guilds, private val guildHandler: GuildHandler, private val settingsManager: SettingsManager) : Listener {
+class EssentialsChatListener(private val guildHandler: GuildHandler) : Listener {
 
     @EventHandler
-    fun PlayerInteractEvent.onUpgrade() {
-        val interactItem = item ?: return
-        val interactPlayer = player ?: return
-        val guild = guildHandler.getGuild(interactPlayer) ?: return
+    fun AsyncPlayerChatEvent.onChat() {
+        val guild = guildHandler.getGuild(player)
+        var message = format
 
-        if (!interactItem.isSimilar(guildHandler.matchTicket(settingsManager))) {
+        if (guild == null) {
+            val regex = "(\\{GUILD(?:.*?)})"
+            val formatted = "(\\\\{GUILD_FORMATTED\\\\})"
+
+            format = message.replace(formatted, guildHandler.getFormattedPlaceholder(player))
+            format = message.replace(regex.toRegex(), "")
             return
         }
 
-        if (guildHandler.isMaxTier(guild)) {
-            guilds.commandManager.getCommandIssuer(player).sendInfo(Messages.UPGRADE__TIER_MAX)
-            return
-        }
+        message = message
+                .replace("{GUILD}", guild.name)
+                .replace("{GUILD_PREFIX}", guild.prefix)
+                .replace("{GUILD_MASTER}", guild.guildMaster.name.toString())
+                .replace("{GUILD_STATUS}", guild.status.name)
+                .replace("{GUILD_MEMBER_COUNT}", guild.size.toString())
+                .replace("{GUILD_MEMBERS_ONLINE}", guild.onlineMembers.size.toString())
+                .replace("{GUILD_ROLE}", guild.getMember(player.uniqueId).role.name)
+                .replace("{GUILD_FORMATTED}", guildHandler.getFormattedPlaceholder(player))
+                .replace("{GUILD_CHALLENGE_WINS}", guild.guildScore.wins.toString())
+                .replace("{GUILD_CHALLENGE_LOSES}", guild.guildScore.loses.toString())
 
-        if (interactItem.amount > 1) interactItem.amount = interactItem.amount - 1 else player.inventory.setItemInHand(ItemStack(Material.AIR))
-        guilds.commandManager.getCommandIssuer(player).sendInfo(Messages.UPGRADE__SUCCESS)
-        guildHandler.upgradeTier(guild)
+        format = message
     }
 }

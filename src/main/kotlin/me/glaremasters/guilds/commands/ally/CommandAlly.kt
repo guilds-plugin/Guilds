@@ -28,20 +28,18 @@ import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.CommandAlias
 import co.aikar.commands.annotation.CommandCompletion
 import co.aikar.commands.annotation.CommandPermission
+import co.aikar.commands.annotation.Conditions
 import co.aikar.commands.annotation.Dependency
 import co.aikar.commands.annotation.Description
-import co.aikar.commands.annotation.Single
+import co.aikar.commands.annotation.Flags
 import co.aikar.commands.annotation.Subcommand
 import co.aikar.commands.annotation.Syntax
-import co.aikar.commands.annotation.Values
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.api.events.GuildAddAllyEvent
 import me.glaremasters.guilds.api.events.GuildRemoveAllyEvent
 import me.glaremasters.guilds.exceptions.ExpectationNotMet
-import me.glaremasters.guilds.exceptions.InvalidPermissionException
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
-import me.glaremasters.guilds.guild.GuildRole
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.Constants
 import org.bukkit.entity.Player
@@ -50,6 +48,7 @@ import org.bukkit.entity.Player
 internal class CommandAlly : BaseCommand() {
     @Dependency
     lateinit var guilds: Guilds
+
     @Dependency
     lateinit var guildHandler: GuildHandler
 
@@ -58,13 +57,7 @@ internal class CommandAlly : BaseCommand() {
     @CommandPermission(Constants.ALLY_PERM + "accept")
     @CommandCompletion("@allyInvites")
     @Syntax("<%syntax>")
-    fun accept(player: Player, guild: Guild, role: GuildRole, @Values("@allyInvites") @Single name: String) {
-        if (!role.isAddAlly) {
-            throw InvalidPermissionException()
-        }
-
-        val target = guildHandler.getGuild(name) ?: throw ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST)
-
+    fun accept(player: Player, @Conditions("perm:perm=ADD_ALLY|NotMaxedAllies") guild: Guild, @Flags("other") target: Guild) {
         if (!guild.isAllyPending(target)) {
             return
         }
@@ -81,14 +74,8 @@ internal class CommandAlly : BaseCommand() {
     @CommandPermission(Constants.ALLY_PERM + "add")
     @CommandCompletion("@guilds")
     @Syntax("<%syntax>")
-    fun add(player: Player, guild: Guild, role: GuildRole, @Values("@guilds") @Single name: String) {
-        if (!role.isAddAlly) {
-            throw InvalidPermissionException()
-        }
-
-        val target = guildHandler.getGuild(name) ?: throw ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST)
-
-        if (guild.isAllyPending(target)) {
+    fun add(player: Player, @Conditions("perm:perm=ADD_ALLY|NotMaxedAllies") guild: Guild, @Flags("other") target: Guild) {
+        if (target.isAllyPending(guild)) {
             throw ExpectationNotMet(Messages.ALLY__ALREADY_REQUESTED)
         }
 
@@ -117,13 +104,7 @@ internal class CommandAlly : BaseCommand() {
     @CommandPermission(Constants.ALLY_PERM + "decline")
     @CommandCompletion("@allyInvites")
     @Syntax("<%syntax>")
-    fun decline(player: Player, guild: Guild, role: GuildRole, @Values("@allyInvites") @Single name: String) {
-        if (!role.isRemoveAlly) {
-            throw InvalidPermissionException()
-        }
-
-        val target = guildHandler.getGuild(name) ?: throw ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST)
-
+    fun decline(player: Player, @Conditions("perm:perm=REMOVE_ALLY") guild: Guild, @Flags("other") target: Guild) {
         if (!guild.isAllyPending(target)) {
             return
         }
@@ -134,29 +115,12 @@ internal class CommandAlly : BaseCommand() {
         target.sendMessage(currentCommandManager, Messages.ALLY__TARGET_DECLINED, "{guild}", guild.name)
     }
 
-    @Subcommand("ally list")
-    @Description("{@@descriptions.ally-list}")
-    @Syntax("")
-    @CommandPermission(Constants.ALLY_PERM + "list")
-    fun list(player: Player, guild: Guild) {
-        if (!guild.hasAllies()) {
-            throw ExpectationNotMet(Messages.ALLY__NONE)
-        }
-        currentCommandIssuer.sendInfo(Messages.ALLY__LIST, "{ally-list}", guild.allies.joinToString(", ") { guildHandler.getGuild(it).name })
-    }
-
     @Subcommand("ally remove")
     @Description("{@@descriptions.ally-remove}")
     @CommandPermission(Constants.ALLY_PERM + "remove")
     @CommandCompletion("@allies")
     @Syntax("<%syntax>")
-    fun remove(player: Player, guild: Guild, role: GuildRole, @Values("@allies") @Single name: String) {
-        if (!role.isRemoveAlly) {
-            throw InvalidPermissionException()
-        }
-
-        val target = guildHandler.getGuild(name) ?: throw ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST)
-
+    fun remove(player: Player, @Conditions("perm:perm=REMOVE_ALLY") guild: Guild, @Flags("other") target: Guild) {
         if (!guildHandler.isAlly(guild, target)) {
             throw ExpectationNotMet(Messages.ALLY__NOT_ALLIED)
         }
@@ -172,5 +136,16 @@ internal class CommandAlly : BaseCommand() {
 
         guild.sendMessage(currentCommandManager, Messages.ALLY__CURRENT_REMOVE, "{guild}", target.name)
         target.sendMessage(currentCommandManager, Messages.ALLY__TARGET_REMOVE, "{guild}", guild.name)
+    }
+
+    @Subcommand("ally list")
+    @Description("{@@descriptions.ally-list}")
+    @Syntax("")
+    @CommandPermission(Constants.ALLY_PERM + "list")
+    fun list(player: Player, guild: Guild) {
+        if (!guild.hasAllies()) {
+            throw ExpectationNotMet(Messages.ALLY__NONE)
+        }
+        currentCommandIssuer.sendInfo(Messages.ALLY__LIST, "{ally-list}", guild.allies.joinToString(", ") { guildHandler.getGuild(it).name })
     }
 }
