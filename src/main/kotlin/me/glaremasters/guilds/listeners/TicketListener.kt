@@ -39,12 +39,11 @@ class TicketListener(private val guilds: Guilds, private val guildHandler: Guild
 
     @EventHandler
     fun PlayerInteractEvent.onUpgrade() {
-        val item: ItemStack = item ?: return
+        val interactItem = item ?: return
+        val interactPlayer = player ?: return
+        val guild = guildHandler.getGuild(interactPlayer) ?: return
 
-        val player: Player = player
-        val guild = guildHandler.getGuild(player) ?: return
-
-        if (!item.isSimilar(guildHandler.matchTicket(settingsManager))) {
+        if (!interactItem.isSimilar(guildHandler.matchTicket(settingsManager))) {
             return
         }
 
@@ -53,7 +52,7 @@ class TicketListener(private val guilds: Guilds, private val guildHandler: Guild
             return
         }
 
-        if (item.amount > 1) item.amount = item.amount - 1 else player.inventory.setItemInHand(ItemStack(Material.AIR))
+        if (interactItem.amount > 1) interactItem.amount = interactItem.amount - 1 else player.inventory.setItemInHand(ItemStack(Material.AIR))
         guilds.commandManager.getCommandIssuer(player).sendInfo(Messages.UPGRADE__SUCCESS)
         guildHandler.upgradeTier(guild)
     }
