@@ -74,11 +74,11 @@ object ClaimUtils {
     fun checkAlreadyExist(wrapper: WorldGuardWrapper, guild: Guild): Boolean {
         for (world in Bukkit.getWorlds()) {
             val tempRegion = wrapper.getRegion(world, getClaimName(guild))
-            return try {
+            try {
                 tempRegion.get().id
-                true
+                return true
             } catch (ex: Exception) {
-                false
+                continue
             }
         }
         return false
