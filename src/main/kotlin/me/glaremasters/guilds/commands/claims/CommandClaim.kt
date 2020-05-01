@@ -35,6 +35,7 @@ import co.aikar.commands.annotation.Description
 import co.aikar.commands.annotation.Subcommand
 import co.aikar.commands.annotation.Syntax
 import me.glaremasters.guilds.Guilds
+import me.glaremasters.guilds.claims.GuildClaim
 import me.glaremasters.guilds.configuration.sections.ClaimSettings
 import me.glaremasters.guilds.exceptions.ExpectationNotMet
 import me.glaremasters.guilds.guild.Guild
@@ -53,6 +54,16 @@ internal class CommandClaim : BaseCommand() {
     lateinit var guildHandler: GuildHandler
     @Dependency
     lateinit var settingsManager: SettingsManager
+
+    @Subcommand("newclaim")
+    fun newClaim(player: Player, @Conditions("perm:perm=CLAIM_LAND") guild: Guild) {
+        val chunk = player.location.chunk
+        if (guildHandler.getGuild(chunk) != null) {
+            throw ExpectationNotMet(Messages.CLAIMS__ALREADY_CLAIMED)
+        }
+        guild.addClaim(chunk)
+        currentCommandIssuer.sendInfo(Messages.CLAIMS__SUCCESS, "{x}", chunk.x.toString(), "{z}", chunk.z.toString())
+    }
 
     @Subcommand("claim")
     @Description("{@@descriptions.claim}")

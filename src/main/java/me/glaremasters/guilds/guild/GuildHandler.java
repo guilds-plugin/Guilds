@@ -29,6 +29,7 @@ import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.CommandManager;
 import me.glaremasters.guilds.Guilds;
+import me.glaremasters.guilds.claims.GuildClaim;
 import me.glaremasters.guilds.configuration.sections.GuildSettings;
 import me.glaremasters.guilds.configuration.sections.GuildVaultSettings;
 import me.glaremasters.guilds.configuration.sections.TicketSettings;
@@ -42,6 +43,7 @@ import me.glaremasters.guilds.utils.StringUtils;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
@@ -239,6 +241,10 @@ public class GuildHandler {
      */
     public Guild getGuildByCode(@NotNull String code) {
         return guilds.stream().filter(guild -> guild.hasInviteCode(code)).findFirst().orElse(null);
+    }
+
+    public Guild getGuild(@NotNull Chunk chunk) {
+        return guilds.stream().filter(guild -> guild.getClaim(chunk) != null).findFirst().orElse(null);
     }
 
     /**

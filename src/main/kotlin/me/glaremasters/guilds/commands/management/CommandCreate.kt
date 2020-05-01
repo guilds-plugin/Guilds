@@ -144,6 +144,7 @@ internal class CommandCreate : BaseCommand() {
                 gb.pendingAllies(arrayListOf())
 
                 gb.vaults(arrayListOf())
+                gb.claims(hashSetOf())
                 gb.codes(arrayListOf())
 
                 val guild = gb.build()

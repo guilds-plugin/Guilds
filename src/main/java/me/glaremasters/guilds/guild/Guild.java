@@ -28,11 +28,13 @@ import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.CommandManager;
 import me.glaremasters.guilds.Guilds;
+import me.glaremasters.guilds.claims.GuildClaim;
 import me.glaremasters.guilds.configuration.sections.GuildListSettings;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.SkullUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -41,7 +43,9 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -51,7 +55,7 @@ public class Guild {
         this.id = id;
     }
 
-    public Guild(UUID id, String name, String prefix, String motd, GuildMember guildMaster, GuildHome home, GuildSkull guildSkull, Status status, GuildTier tier, GuildScore guildScore, double balance, List<GuildMember> members, List<UUID> invitedMembers, List<UUID> allies, List<UUID> pendingAllies, List<GuildCode> codes, List<String> vaults, long lastDefended) {
+    public Guild(UUID id, String name, String prefix, String motd, GuildMember guildMaster, GuildHome home, GuildSkull guildSkull, Status status, GuildTier tier, GuildScore guildScore, double balance, List<GuildMember> members, List<UUID> invitedMembers, List<UUID> allies, List<UUID> pendingAllies, List<GuildCode> codes, List<String> vaults, Set<GuildClaim> claims, long lastDefended) {
         this.id = id;
         this.name = name;
         this.prefix = prefix;
@@ -69,6 +73,7 @@ public class Guild {
         this.pendingAllies = pendingAllies;
         this.codes = codes;
         this.vaults = vaults;
+        this.claims = claims;
         this.lastDefended = lastDefended;
     }
 
@@ -180,6 +185,7 @@ public class Guild {
     private List<GuildCode> codes;
 
     private List<String> vaults;
+    private Set<GuildClaim> claims;
 
     private long lastDefended;
     private long creationDate;
@@ -435,6 +441,31 @@ public class Guild {
     }
 
     /**
+     * Get a claim by the chunk
+     * @param chunk the chunk to check
+     * @return the claim if it exists
+     */
+    public GuildClaim getClaim(Chunk chunk) {
+        return claims.stream().filter(claim -> claim.isClaim(chunk)).findFirst().orElse(null);
+    }
+
+    /**
+     * Add a claim to a guild
+     * @param chunk the chunk to add
+     */
+    public void addClaim(Chunk chunk) {
+        claims.add(new GuildClaim(chunk));
+    }
+
+    /**
+     * Remove a claim from a guild
+     * @param chunk the chunk to remove
+     */
+    public void removeClaim(Chunk chunk) {
+        claims.removeIf(claim -> claim.isClaim(chunk));
+    }
+
+    /**
      * Send a message to the guild
      * @param manager get the manager to send custom messages
      * @param key the message to send
@@ -669,6 +700,17 @@ public class Guild {
         return this.vaults;
     }
 
+    public Set<GuildClaim> getClaims() {
+        if (this.claims == null) {
+            this.claims = new HashSet<>();
+        }
+        return this.claims;
+    }
+
+    public void setClaims(Set<GuildClaim> claims) {
+        this.claims = claims;
+    }
+
     public long getLastDefended() {
         return lastDefended;
     }
@@ -691,6 +733,7 @@ public class Guild {
         private List<UUID> pendingAllies;
         private List<GuildCode> codes;
         private List<String> vaults;
+        private Set<GuildClaim> claims;
         private long lastDefended;
 
         GuildBuilder() {
@@ -781,13 +824,18 @@ public class Guild {
             return this;
         }
 
+        public Guild.GuildBuilder claims(Set<GuildClaim> claims) {
+            this.claims = claims;
+            return this;
+        }
+
         public Guild.GuildBuilder lastDefended(long lastDefended) {
             this.lastDefended = lastDefended;
             return this;
         }
 
         public Guild build() {
-            return new Guild(id, name, prefix, motd, guildMaster, home, guildSkull, status, tier, guildScore, balance, members, invitedMembers, allies, pendingAllies, codes, vaults, lastDefended);
+            return new Guild(id, name, prefix, motd, guildMaster, home, guildSkull, status, tier, guildScore, balance, members, invitedMembers, allies, pendingAllies, codes, vaults, claims, lastDefended);
         }
 
         public String toString() {

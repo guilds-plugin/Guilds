@@ -355,3 +355,6 @@ migrate:
   complete: "&aMigration of data ({amount} guilds) has been completed and will continue to use this new backend until being rebooted. Make sure to change your backend in the config to what you migrated to before you reboot!"
   warning: "&bImportant! &cYou are about to migrate ALL your plugin data. It is HIGHLY suggested that you make a backup of ALL data before doing this. If you lose your data, it can NOT be recovered. Are you sure you would like to continue? Type /guilds confirm to continue or /guilds cancel to cancel!"
   cancelled: "&aYou've successfully cancelled the migration of data!"
+claims:
+  success: "&aYou've successfully claimed a chunk at &b{x}&a,&b{z}&a for your guild!"
+  already-claimed: "&cSorry, this chunk has already been claimed by another guild!"
