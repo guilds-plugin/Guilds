@@ -24,6 +24,7 @@
 
 package me.glaremasters.guilds.commands.admin.manage
 
+import ch.jalu.configme.SettingsManager
 import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.CommandAlias
 import co.aikar.commands.annotation.CommandCompletion
@@ -48,13 +49,14 @@ import org.bukkit.entity.Player
 internal class CommandAdminTransfer : BaseCommand() {
     @Dependency lateinit var guilds: Guilds
     @Dependency lateinit var guildHandler: GuildHandler
+    @Dependency lateinit var settingsManager: SettingsManager
 
     @Subcommand("admin transfer")
     @CommandPermission(Constants.ADMIN_PERM)
     @Description("{@@descriptions.admin-transfer}")
     @CommandCompletion("@guilds @members-admin")
     @Syntax("<%syntax> <new master>")
-    fun transfer(player: Player, @Flags("admin") @Values("@guilds") guild: Guild, @Values("@members-admin") @Single master: String) {
+    fun transfer(player: Player, @Flags("other") @Values("@guilds") guild: Guild, @Values("@members-admin") @Single master: String) {
         val transfer = Bukkit.getOfflinePlayer(master)
 
         if (guild.guildMaster.uuid == transfer.uniqueId) {

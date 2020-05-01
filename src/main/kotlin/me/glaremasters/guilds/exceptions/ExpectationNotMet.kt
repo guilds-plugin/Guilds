@@ -21,32 +21,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package me.glaremasters.guilds.exceptions
 
-package me.glaremasters.guilds.commands.member
+import co.aikar.commands.InvalidCommandArgument
+import co.aikar.locales.MessageKeyProvider
 
-import co.aikar.commands.BaseCommand
-import co.aikar.commands.annotation.CommandAlias
-import co.aikar.commands.annotation.CommandPermission
-import co.aikar.commands.annotation.Conditions
-import co.aikar.commands.annotation.Dependency
-import co.aikar.commands.annotation.Description
-import co.aikar.commands.annotation.Subcommand
-import me.glaremasters.guilds.Guilds
-import me.glaremasters.guilds.guild.GuildHandler
-import me.glaremasters.guilds.utils.Constants
-import org.bukkit.entity.Player
+/**
+ * Created by Glare
+ * Date: 4/4/2019
+ * Time: 5:36 PM
+ */
+class ExpectationNotMet : InvalidCommandArgument {
+    /**
+     * Exception used when an expectation in the plugin is not being met
+     * @param message the message to send to the user
+     */
+    constructor(message: MessageKeyProvider) : super(message.messageKey, false)
 
-@CommandAlias("%guilds")
-internal class CommandCheck : BaseCommand() {
-    @Dependency
-    lateinit var guilds: Guilds
-    @Dependency
-    lateinit var guildHandler: GuildHandler
-
-    @Subcommand("check")
-    @Description("{@@descriptions.check}")
-    @CommandPermission(Constants.BASE_PERM + "check")
-    fun check(@Conditions("NoGuild") player: Player) {
-        guildHandler.checkInvites(currentCommandManager, player)
-    }
+    /**
+     * Exception used
+     * @param key the message to send to the user
+     * @param replacements any placeholders to replace
+     */
+    constructor(key: MessageKeyProvider, vararg replacements: String) : super(key.messageKey, false, *replacements)
 }

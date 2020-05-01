@@ -28,6 +28,7 @@ import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.CommandAlias
 import co.aikar.commands.annotation.CommandCompletion
 import co.aikar.commands.annotation.CommandPermission
+import co.aikar.commands.annotation.Conditions
 import co.aikar.commands.annotation.Dependency
 import co.aikar.commands.annotation.Description
 import co.aikar.commands.annotation.Single
@@ -36,10 +37,8 @@ import co.aikar.commands.annotation.Syntax
 import co.aikar.commands.annotation.Values
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.exceptions.ExpectationNotMet
-import me.glaremasters.guilds.exceptions.InvalidPermissionException
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
-import me.glaremasters.guilds.guild.GuildRole
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.Constants
 import me.glaremasters.guilds.utils.RoleUtils
@@ -48,19 +47,17 @@ import org.bukkit.entity.Player
 
 @CommandAlias("%guilds")
 internal class CommandPromote : BaseCommand() {
-    @Dependency lateinit var guilds: Guilds
-    @Dependency lateinit var guildHandler: GuildHandler
+    @Dependency
+    lateinit var guilds: Guilds
+    @Dependency
+    lateinit var guildHandler: GuildHandler
 
     @Subcommand("promote")
     @Description("{@@descriptions.promote}")
     @CommandPermission(Constants.BASE_PERM + "promote")
     @CommandCompletion("@members")
     @Syntax("<player>")
-    fun promote(player: Player, guild: Guild, role: GuildRole, @Values("@members") @Single target: String) {
-        if (!role.isPromote) {
-            throw InvalidPermissionException()
-        }
-
+    fun promote(player: Player, @Conditions("perm:perm=PROMOTE") guild: Guild, @Values("@members") @Single target: String) {
         val user = Bukkit.getOfflinePlayer(target)
 
         if (user.name.equals(player.name)) {

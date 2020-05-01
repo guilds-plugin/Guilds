@@ -31,6 +31,7 @@ import me.glaremasters.guilds.configuration.sections.GuildListSettings
 import me.glaremasters.guilds.exte.addBottom
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
+import me.glaremasters.guilds.guild.GuildSkull
 import me.glaremasters.guilds.utils.GuiUtils
 import me.glaremasters.guilds.utils.StringUtils
 import me.mattstudios.mfgui.gui.guis.GuiItem
@@ -98,7 +99,9 @@ class ListGUI(private val guilds: Guilds, private val settingsManager: SettingsM
     }
 
     private fun setListItem(guild: Guild) {
-        val item = guild.skull
+        val defaultUrl = settingsManager.getProperty(GuildListSettings.GUILD_LIST_HEAD_DEFAULT_URL)
+        val useDefaultUrl = settingsManager.getProperty(GuildListSettings.USE_DEFAULT_TEXTURE)
+        val item = if (!useDefaultUrl) guild.skull else GuildSkull(defaultUrl).itemStack
         val meta = item.itemMeta
         var name = settingsManager.getProperty(GuildListSettings.GUILD_LIST_ITEM_NAME)
 

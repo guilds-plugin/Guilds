@@ -30,7 +30,7 @@ import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.challenges.ChallengeHandler;
 import me.glaremasters.guilds.guild.GuildChallenge;
 import me.glaremasters.guilds.messages.Messages;
-import me.glaremasters.guilds.utils.JSONMessage;
+import me.rayzr522.jsonmessage.JSONMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;

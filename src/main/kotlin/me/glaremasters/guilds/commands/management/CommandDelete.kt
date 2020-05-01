@@ -28,6 +28,7 @@ import ch.jalu.configme.SettingsManager
 import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.CommandAlias
 import co.aikar.commands.annotation.CommandPermission
+import co.aikar.commands.annotation.Conditions
 import co.aikar.commands.annotation.Dependency
 import co.aikar.commands.annotation.Description
 import co.aikar.commands.annotation.Subcommand
@@ -37,11 +38,8 @@ import me.glaremasters.guilds.actions.ActionHandler
 import me.glaremasters.guilds.actions.ConfirmAction
 import me.glaremasters.guilds.api.events.GuildRemoveEvent
 import me.glaremasters.guilds.configuration.sections.PluginSettings
-import me.glaremasters.guilds.exceptions.ExpectationNotMet
-import me.glaremasters.guilds.exceptions.InvalidPermissionException
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
-import me.glaremasters.guilds.guild.GuildRole
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.ClaimUtils
 import me.glaremasters.guilds.utils.Constants
@@ -51,25 +49,23 @@ import org.bukkit.entity.Player
 
 @CommandAlias("%guilds")
 internal class CommandDelete : BaseCommand() {
-    @Dependency lateinit var guilds: Guilds
-    @Dependency lateinit var guildHandler: GuildHandler
-    @Dependency lateinit var permission: Permission
-    @Dependency lateinit var settingsManager: SettingsManager
-    @Dependency lateinit var actionHandler: ActionHandler
+    @Dependency
+    lateinit var guilds: Guilds
+    @Dependency
+    lateinit var guildHandler: GuildHandler
+    @Dependency
+    lateinit var permission: Permission
+    @Dependency
+    lateinit var settingsManager: SettingsManager
+    @Dependency
+    lateinit var actionHandler: ActionHandler
 
     @Subcommand("delete")
     @Description("{@@descriptions.delete}")
     @CommandPermission(Constants.BASE_PERM + "delete")
     @Syntax("")
-    fun delete(player: Player, guild: Guild, role: GuildRole) {
-        if (!role.isRemoveGuild) {
-            throw InvalidPermissionException()
-        }
-
-        if (guildHandler.isMigrating) {
-            throw ExpectationNotMet(Messages.ERROR__MIGRATING)
-        }
-
+    @Conditions("NotMigrating")
+    fun delete(player: Player, @Conditions("perm:perm=REMOVE_GUILD") guild: Guild) {
         currentCommandIssuer.sendInfo(Messages.DELETE__WARNING)
         actionHandler.addAction(player, object : ConfirmAction {
             override fun accept() {

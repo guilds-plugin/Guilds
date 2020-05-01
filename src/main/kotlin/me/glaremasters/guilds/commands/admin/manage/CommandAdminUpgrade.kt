@@ -52,7 +52,7 @@ internal class CommandAdminUpgrade : BaseCommand() {
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
     @Syntax("<%syntax>")
-    fun upgrade(player: Player, @Flags("admin") @Values("@guilds") guild: Guild) {
+    fun upgrade(player: Player, @Flags("other") @Values("@guilds") guild: Guild) {
         if (guildHandler.isMaxTier(guild)) {
             throw ExpectationNotMet(Messages.UPGRADE__TIER_MAX)
         }

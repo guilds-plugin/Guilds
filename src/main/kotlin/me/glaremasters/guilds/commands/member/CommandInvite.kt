@@ -28,6 +28,7 @@ import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.CommandAlias
 import co.aikar.commands.annotation.CommandCompletion
 import co.aikar.commands.annotation.CommandPermission
+import co.aikar.commands.annotation.Conditions
 import co.aikar.commands.annotation.Dependency
 import co.aikar.commands.annotation.Description
 import co.aikar.commands.annotation.Single
@@ -37,10 +38,8 @@ import co.aikar.commands.annotation.Values
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.api.events.GuildInviteEvent
 import me.glaremasters.guilds.exceptions.ExpectationNotMet
-import me.glaremasters.guilds.exceptions.InvalidPermissionException
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
-import me.glaremasters.guilds.guild.GuildRole
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.Constants
 import org.bukkit.Bukkit
@@ -48,19 +47,17 @@ import org.bukkit.entity.Player
 
 @CommandAlias("%guilds")
 internal class CommandInvite : BaseCommand() {
-    @Dependency lateinit var guilds: Guilds
-    @Dependency lateinit var guildHandler: GuildHandler
+    @Dependency
+    lateinit var guilds: Guilds
+    @Dependency
+    lateinit var guildHandler: GuildHandler
 
     @Subcommand("invite")
     @Description("{@@descriptions.invite}")
     @CommandPermission(Constants.BASE_PERM + "invite")
     @CommandCompletion("@online")
     @Syntax("<name>")
-    fun invite(player: Player, guild: Guild, role: GuildRole, @Values("@online") @Single target: String) {
-        if (!role.isInvite) {
-            throw InvalidPermissionException()
-        }
-
+    fun invite(player: Player, @Conditions("perm:perm=INVITE") guild: Guild, @Values("@online") @Single target: String) {
         val user = Bukkit.getPlayer(target)
 
         if (user == null || !user.isOnline) {

@@ -36,14 +36,16 @@ import me.glaremasters.guilds.challenges.ChallengeHandler
 import me.glaremasters.guilds.configuration.sections.PluginSettings
 import me.glaremasters.guilds.cooldowns.CooldownHandler
 import me.glaremasters.guilds.database.DatabaseAdapter
+import me.glaremasters.guilds.exceptions.ExpectationNotMet
+import me.glaremasters.guilds.exceptions.InvalidPermissionException
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
-import me.glaremasters.guilds.guild.GuildRole
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.scanner.ZISScanner
 import net.milkbowl.vault.economy.Economy
 import net.milkbowl.vault.permission.Permission
 import org.bukkit.Bukkit
+import org.bukkit.entity.Player
 import java.util.Locale
 
 class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCommandManager) {
@@ -56,6 +58,7 @@ class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCo
         loadLang()
         loadContexts(plugin.guildHandler, plugin.arenaHandler)
         loadCompletions(plugin.guildHandler, plugin.arenaHandler)
+        loadConditions(plugin.guildHandler)
         loadDI()
 
         commandManager.commandReplacements.addReplacement("guilds", plugin.settingsHandler.mainConf.getProperty(PluginSettings.PLUGIN_ALIASES))
@@ -81,7 +84,7 @@ class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCo
 
     private fun loadContexts(guildHandler: GuildHandler, arenaHandler: ArenaHandler) {
         commandManager.commandContexts.registerIssuerAwareContext(Guild::class.java) { c ->
-            val guild: Guild = (if (c.hasFlag("admin")) {
+            val guild: Guild = (if (c.hasFlag("other")) {
                 guildHandler.getGuild(c.popFirstArg())
             } else {
                 guildHandler.getGuild(c.player)
@@ -89,11 +92,44 @@ class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCo
                     ?: throw InvalidCommandArgument(Messages.ERROR__NO_GUILD)
             guild
         }
-        commandManager.commandContexts.registerIssuerOnlyContext(GuildRole::class.java) { c ->
-            val guild = guildHandler.getGuild(c.player) ?: return@registerIssuerOnlyContext null
-            guildHandler.getGuildRole(guild.getMember(c.player.uniqueId).role.level)
-        }
         commandManager.commandContexts.registerContext(Arena::class.java) { c -> arenaHandler.getArena(c.popFirstArg()).get() }
+    }
+
+    private fun loadConditions(guildHandler: GuildHandler) {
+        commandManager.commandConditions.addCondition(Guild::class.java, "perm") { c, exec, value ->
+            if (value == null) {
+                return@addCondition
+            }
+            val player = exec.player
+            val guild = guildHandler.getGuild(player)
+            if (!guild.memberHasPermission(player, c.getConfigValue("perm", "SERVER_OWNER"))) {
+                throw InvalidPermissionException()
+            }
+        }
+        commandManager.commandConditions.addCondition(Guild::class.java, "NotMaxedAllies") { c, exec, value ->
+            if (value == null) {
+                return@addCondition
+            }
+            val player = exec.player
+            val guild = guildHandler.getGuild(player)
+            if (guild.allies.size >= guild.tier.maxAllies) {
+                throw ExpectationNotMet(Messages.ALLY__MAX_ALLIES)
+            }
+        }
+        commandManager.commandConditions.addCondition(Player::class.java, "NoGuild") { c, exec, value ->
+            if (value == null) {
+                return@addCondition
+            }
+            val player = exec.player
+            if (guildHandler.getGuild(player) != null) {
+                throw ExpectationNotMet(Messages.ERROR__ALREADY_IN_GUILD)
+            }
+        }
+        commandManager.commandConditions.addCondition("NotMigrating") {
+            if (guildHandler.isMigrating) {
+                throw ExpectationNotMet(Messages.ERROR__MIGRATING)
+            }
+        }
     }
 
     private fun loadCompletions(guildHandler: GuildHandler, arenaHandler: ArenaHandler) {
@@ -114,33 +150,33 @@ class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCo
             val guild = c.getContextValue(Guild::class.java, 1) ?: return@registerCompletion null
             guild.members.map { it.asOfflinePlayer.name }
         }
-        commandManager.commandCompletions.registerAsyncCompletion("allyInvites") { c ->
-            val guild = guildHandler.getGuild(c.player) ?: return@registerAsyncCompletion null
+        commandManager.commandCompletions.registerCompletion("allyInvites") { c ->
+            val guild = guildHandler.getGuild(c.player) ?: return@registerCompletion null
             if (!guild.hasPendingAllies()) {
-                return@registerAsyncCompletion null
+                return@registerCompletion null
             }
             guild.pendingAllies.map { guildHandler.getNameById(it) }
         }
-        commandManager.commandCompletions.registerAsyncCompletion("allies") { c ->
-            val guild = guildHandler.getGuild(c.player) ?: return@registerAsyncCompletion null
+        commandManager.commandCompletions.registerCompletion("allies") { c ->
+            val guild = guildHandler.getGuild(c.player) ?: return@registerCompletion null
             if (!guild.hasAllies()) {
-                return@registerAsyncCompletion null
+                return@registerCompletion null
             }
             guild.allies.map { guildHandler.getNameById(it) }
         }
-        commandManager.commandCompletions.registerAsyncCompletion("activeCodes") { c ->
-            val guild = guildHandler.getGuild(c.player) ?: return@registerAsyncCompletion null
+        commandManager.commandCompletions.registerCompletion("activeCodes") { c ->
+            val guild = guildHandler.getGuild(c.player) ?: return@registerCompletion null
             if (guild.codes == null) {
-                return@registerAsyncCompletion null
+                return@registerCompletion null
             }
             guild.codes.map { it.id }
         }
-        commandManager.commandCompletions.registerAsyncCompletion("vaultAmount") { c ->
-            val guild = guildHandler.getGuild(c.player) ?: return@registerAsyncCompletion null
+        commandManager.commandCompletions.registerCompletion("vaultAmount") { c ->
+            val guild = guildHandler.getGuild(c.player) ?: return@registerCompletion null
             if (guild.vaults == null) {
-                return@registerAsyncCompletion null
+                return@registerCompletion null
             }
-            val list = guildHandler.cachedVaults[guild] ?: return@registerAsyncCompletion null
+            val list = guildHandler.vaults[guild] ?: return@registerCompletion null
             (1 until list.size).map(Any::toString)
         }
     }

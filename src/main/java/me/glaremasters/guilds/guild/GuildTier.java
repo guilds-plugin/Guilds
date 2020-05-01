@@ -37,10 +37,11 @@ public class GuildTier {
     private final transient double damageMultiplier;
     private final transient double maxBankBalance;
     private final transient int membersToRankup;
+    private final transient int maxAllies;
     private final transient boolean useBuffs;
     private final transient List<String> permissions;
 
-    public GuildTier(int level, String name, double cost, int maxMembers, int vaultAmount, double mobXpMultiplier, double damageMultiplier, double maxBankBalance, int membersToRankup, boolean useBuffs, List<String> permissions) {
+    public GuildTier(int level, String name, double cost, int maxMembers, int vaultAmount, double mobXpMultiplier, double damageMultiplier, double maxBankBalance, int membersToRankup, int maxAllies, boolean useBuffs, List<String> permissions) {
         this.level = level;
         this.name = name;
         this.cost = cost;
@@ -50,6 +51,7 @@ public class GuildTier {
         this.damageMultiplier = damageMultiplier;
         this.maxBankBalance = maxBankBalance;
         this.membersToRankup = membersToRankup;
+        this.maxAllies = maxAllies;
         this.useBuffs = useBuffs;
         this.permissions = permissions;
     }
@@ -94,6 +96,10 @@ public class GuildTier {
         return this.membersToRankup;
     }
 
+    public int getMaxAllies() {
+        return this.maxAllies;
+    }
+
     public boolean isUseBuffs() {
         return this.useBuffs;
     }
@@ -116,6 +122,7 @@ public class GuildTier {
         private double damageMultiplier;
         private double maxBankBalance;
         private int membersToRankup;
+        private int maxAllies;
         private boolean useBuffs;
         private List<String> permissions;
 
@@ -167,6 +174,11 @@ public class GuildTier {
             return this;
         }
 
+        public GuildTier.GuildTierBuilder maxAllies(int maxAllies) {
+            this.maxAllies = maxAllies;
+            return this;
+        }
+
         public GuildTier.GuildTierBuilder useBuffs(boolean useBuffs) {
             this.useBuffs = useBuffs;
             return this;
@@ -178,7 +190,7 @@ public class GuildTier {
         }
 
         public GuildTier build() {
-            return new GuildTier(level, name, cost, maxMembers, vaultAmount, mobXpMultiplier, damageMultiplier, maxBankBalance, membersToRankup, useBuffs, permissions);
+            return new GuildTier(level, name, cost, maxMembers, vaultAmount, mobXpMultiplier, damageMultiplier, maxBankBalance, membersToRankup, maxAllies, useBuffs, permissions);
         }
 
         public String toString() {

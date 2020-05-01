@@ -35,10 +35,10 @@ import java.util.UUID;
  * Time: 9:27 PM
  */
 public class Cooldown {
-    private UUID cooldownId;
-    private Type cooldownType;
-    private UUID cooldownOwner;
-    private Long cooldownExpiry;
+    private final UUID cooldownId;
+    private final Type cooldownType;
+    private final UUID cooldownOwner;
+    private final Long cooldownExpiry;
 
     public Cooldown(String id, String cooldownType, String cooldownOwner, Long cooldownExpiry) {
         this(UUID.fromString(id), Type.getByTypeName(cooldownType), UUID.fromString(cooldownOwner), cooldownExpiry);
@@ -84,7 +84,7 @@ public class Cooldown {
         Buffs("buffs"),
         Join("join");
 
-        private String typeName;
+        private final String typeName;
 
         Type(String typeName) {
             this.typeName = typeName;

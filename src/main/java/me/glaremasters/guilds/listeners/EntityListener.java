@@ -57,9 +57,9 @@ import java.util.Set;
  */
 public class EntityListener implements Listener {
 
-    private GuildHandler guildHandler;
-    private SettingsManager settingsManager;
-    private ChallengeHandler challengeHandler;
+    private final GuildHandler guildHandler;
+    private final SettingsManager settingsManager;
+    private final ChallengeHandler challengeHandler;
     private final Set<PotionEffectType> bad = new HashSet<>(Arrays.asList(PotionEffectType.BLINDNESS, PotionEffectType.WITHER, PotionEffectType.SLOW_DIGGING, PotionEffectType.WEAKNESS, PotionEffectType.SLOW, PotionEffectType.POISON));
 
     public EntityListener(GuildHandler guildHandler, SettingsManager settingsManager, ChallengeHandler challengeHandler) {
