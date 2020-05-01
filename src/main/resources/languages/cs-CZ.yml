@@ -1,7 +1,7 @@
 ---
 descriptions:
   accept: "Příjmout pozvánku do cechu"
-  admin-addplayer: "Admin příkaz přidat hráče do cechu"
+  admin-addplayer: "Administrátorský příkaz pro přidání hráče do cechu"
   admin-bank-balance: "Admin příkaz pro zobrazení bankovního zůstatku cechu"
   admin-bank-deposit: "Admin příkaz pro vložení peněz do cechu"
   admin-bank-withdraw: "Admin příkaz pro sebrání peněz z banky cechu"
