@@ -32,6 +32,7 @@ import me.glaremasters.guilds.exte.addBottom
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.guild.GuildSkull
+import me.glaremasters.guilds.utils.EconomyUtils
 import me.glaremasters.guilds.utils.GuiUtils
 import me.glaremasters.guilds.utils.StringUtils
 import me.mattstudios.mfgui.gui.guis.GuiItem
@@ -147,7 +148,7 @@ class ListGUI(private val guilds: Guilds, private val settingsManager: SettingsM
                     .replace("{guild-master}", guild.guildMaster.asOfflinePlayer.name.toString())
                     .replace("{guild-status}", status)
                     .replace("{guild-tier}", tier)
-                    .replace("{guild-balance}", guild.balance.toString())
+                    .replace("{guild-balance}", EconomyUtils.format(guild.balance))
                     .replace("{guild-member-count}", guild.size.toString())
                     .replace("{guild-challenge-wins}", guild.guildScore.wins.toString())
                     .replace("{guild-challenge-loses}", guild.guildScore.loses.toString())

@@ -27,11 +27,11 @@ package me.glaremasters.guilds.placeholders
 import me.clip.placeholderapi.expansion.PlaceholderExpansion
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.guild.GuildHandler
+import me.glaremasters.guilds.utils.EconomyUtils
 import org.bukkit.entity.Player
 import java.text.DecimalFormat
 
 class PlaceholderAPI(private val guildHandler: GuildHandler) : PlaceholderExpansion() {
-    private val df = DecimalFormat("###.##")
 
     override fun getIdentifier(): String {
         return "guilds"
@@ -49,9 +49,12 @@ class PlaceholderAPI(private val guildHandler: GuildHandler) : PlaceholderExpans
         return "2.1"
     }
 
-    override fun onPlaceholderRequest(p: Player, arg: String): String {
+    override fun onPlaceholderRequest(player: Player?, arg: String): String {
+        if (player == null) {
+            return ""
+        }
         val api = Guilds.getApi() ?: return ""
-        val guild = api.getGuild(p) ?: return ""
+        val guild = api.getGuild(player) ?: return ""
         return when (arg.toLowerCase()) {
             "id" -> guild.id.toString()
             "name" -> guild.name
@@ -60,14 +63,14 @@ class PlaceholderAPI(private val guildHandler: GuildHandler) : PlaceholderExpans
             "prefix" -> guild.prefix
             "members_online" -> guild.onlineMembers.size.toString()
             "status" -> guild.status.name
-            "role" -> guild.getMember(p.uniqueId).role.name
+            "role" -> guild.getMember(player.uniqueId).role.name
             "tier" -> guild.tier.level.toString()
             "tier_name" -> guild.tier.name
-            "balance" -> df.format(guild.balance)
+            "balance" -> EconomyUtils.format(guild.balance)
             "code_amount" -> guild.codes.size.toString()
             "max_members" -> guild.tier.maxMembers.toString()
             "max_balance" -> guild.tier.maxBankBalance.toString()
-            "formatted" -> guildHandler.getFormattedPlaceholder(p)
+            "formatted" -> guildHandler.getFormattedPlaceholder(player)
             "challenge_wins" -> guild.guildScore.wins.toString()
             "challenge_loses" -> guild.guildScore.loses.toString()
             "motd" -> guild.motd ?: ""
