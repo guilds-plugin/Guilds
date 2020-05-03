@@ -341,6 +341,7 @@ war:
   player-killed-quit: "&b{player} &aè stato ucciso per aver lasciato il server."
   teleported-back: "&aHai combattuto duro! Alas, non tutti possono essere i migliori. Sei stato teletrasportato indietro alla tua posizione originale!"
 acf-core:
+  help_header: "<c3>=== </c3><c1>Showing help for </c1><c2>{commandprefix}{command}</c2><c3> ===</c3>"
   invalid_syntax: "Usage: <c2>{command}</c2> <c3>{syntax}</c3>"
   permission_denied: "I'm sorry, but you do not have permission to perform this command."
   unknown_command: "Unknown Command, please type <c2>/help</c2>"
