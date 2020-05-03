@@ -29,7 +29,7 @@ import me.glaremasters.guilds.messages.Messages;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.entity.Player;
 
-import java.text.NumberFormat;
+import java.text.DecimalFormat;
 
 /**
  * Created by Glare
@@ -38,11 +38,14 @@ import java.text.NumberFormat;
  */
 public class EconomyUtils {
 
+    private static final DecimalFormat df = new DecimalFormat("###,###.##");
+
     /**
      * Check if a player has enough money to do something
+     *
      * @param economy vault economy
-     * @param player the player being checked
-     * @param amount the amount to see that they have
+     * @param player  the player being checked
+     * @param amount  the amount to see that they have
      * @return if they have enough
      */
     public static boolean hasEnough(CommandManager manager, Economy economy, Player player, double amount) {
@@ -56,6 +59,7 @@ public class EconomyUtils {
 
     /**
      * Check if an amount is greater than another
+     *
      * @param val1 the first variable
      * @param val2 the second variable
      * @return if it's greater or not
@@ -66,11 +70,11 @@ public class EconomyUtils {
 
 
     public static String format(int input) {
-        return NumberFormat.getInstance().format(input);
+        return df.format(input);
     }
 
     public static String format(double input) {
-        return NumberFormat.getInstance().format(input);
+        return df.format(input);
     }
 
 }
