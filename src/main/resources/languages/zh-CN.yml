@@ -341,6 +341,7 @@ war:
   player-killed-quit: "&b{player} &因为离开服务器而被击杀."
   teleported-back: "&a你打得太厉害了! 哎呀， 不是所有人都能做得这么好. 你已被转送到原来的位置!"
 acf-core:
+  help_header: "<c3>=== </c3><c1>Showing help for </c1><c2>{commandprefix}{command}</c2><c3> ===</c3>"
   invalid_syntax: "用法<c2>{command}</c2><c3>{syntax}</c3>"
   permission_denied: "你没有权限这么做"
   unknown_command: "未知指令,请尝试输入<c2>/help</c2>"
