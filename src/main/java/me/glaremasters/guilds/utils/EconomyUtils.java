@@ -38,7 +38,7 @@ import java.text.DecimalFormat;
  */
 public class EconomyUtils {
 
-    private static final DecimalFormat df = new DecimalFormat("###.##");
+    private static final DecimalFormat df = new DecimalFormat("###,###.##");
 
     /**
      * Check if a player has enough money to do something

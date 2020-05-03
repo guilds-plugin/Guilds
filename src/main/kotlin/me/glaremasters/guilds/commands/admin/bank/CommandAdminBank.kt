@@ -42,6 +42,7 @@ import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.Constants
+import me.glaremasters.guilds.utils.EconomyUtils
 
 @CommandAlias("%guilds")
 internal class CommandAdminBank : BaseCommand() {
@@ -55,7 +56,7 @@ internal class CommandAdminBank : BaseCommand() {
     @Syntax("<%syntax>")
     @CommandCompletion("@guilds")
     fun balance(issuer: CommandIssuer, @Flags("other") @Values("@guilds") guild: Guild) {
-        currentCommandIssuer.sendInfo(Messages.ADMIN__BANK_BALANCE, "{guild}", guild.name, "{balance}", guild.balance.toString())
+        currentCommandIssuer.sendInfo(Messages.ADMIN__BANK_BALANCE, "{guild}", guild.name, "{balance}", EconomyUtils.format(guild.balance))
     }
 
     @Subcommand("admin bank deposit")
