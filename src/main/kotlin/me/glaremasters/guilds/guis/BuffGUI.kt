@@ -29,6 +29,7 @@ import co.aikar.commands.PaperCommandManager
 import com.cryptomorin.xseries.XPotion
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.conf.GuildBuffSettings
+import me.glaremasters.guilds.conf.objects.GuildBuff
 import me.glaremasters.guilds.cooldowns.Cooldown
 import me.glaremasters.guilds.cooldowns.CooldownHandler
 import me.glaremasters.guilds.exte.addBottom
@@ -112,8 +113,8 @@ class BuffGUI(private val guilds: Guilds, private val buffConfig: SettingsManage
                     guild.addPotion(effect)
                 }
                 cooldownHandler.addCooldown(guild, cooldownName, buffConfig.getProperty(GuildBuffSettings.COOLDOWN), TimeUnit.SECONDS)
-                runCommands(buff.clicker.enabled, buff.clicker.commands, listOf(player))
-                runCommands(buff.guild.enabled, buff.guild.commands, guild.onlineAsPlayers)
+                runCommands(buff.clicker.enabled, buff.clicker.commands, listOf(player), player, buff)
+                runCommands(buff.guild.enabled, buff.guild.commands, guild.onlineAsPlayers, player, buff)
             }
             gui.addItem(guiItem)
         }
@@ -131,13 +132,13 @@ class BuffGUI(private val guilds: Guilds, private val buffConfig: SettingsManage
         return potions
     }
 
-    private fun runCommands(run: Boolean, commands: List<String>, players: List<Player>) {
+    private fun runCommands(run: Boolean, commands: List<String>, players: List<Player>, buyer: Player, buff: GuildBuff) {
         if (!run) {
             return
         }
         players.forEach { player ->
             commands.forEach {
-                val update = it.replace("{player}", player.name)
+                val update = it.replace("{player}", player.name).replace("{buyer}", buyer.name).replace("{buff_name}", buff.unlocked.name)
                 Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), update)
             }
         }
