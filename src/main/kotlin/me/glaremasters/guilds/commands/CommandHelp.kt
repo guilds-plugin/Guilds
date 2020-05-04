@@ -35,6 +35,7 @@ import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.utils.Constants
 
+
 @CommandAlias("%guilds")
 internal class CommandHelp : BaseCommand() {
     @Dependency lateinit var guilds: Guilds
@@ -44,6 +45,7 @@ internal class CommandHelp : BaseCommand() {
     @CommandPermission(Constants.BASE_PERM + "help")
     @Description("{@@descriptions.help}")
     fun help(help: CommandHelp) {
+        help.helpEntries.sortBy { it.command }
         help.showHelp()
     }
 }
