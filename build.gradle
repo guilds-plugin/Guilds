@@ -11,7 +11,7 @@ plugins {
 }
 
 group = 'me.glaremasters'
-version = '3.5.4.8'
+version = '3.5.4.9-BETA'
 sourceCompatibility = JavaVersion.VERSION_1_8
 
 ext {
@@ -98,9 +98,7 @@ dependencies {
     compileOnly 'com.mojang:authlib:1.5.25'
 
     // PlaceholderAPI
-    compileOnly("me.clip:placeholderapi:2.10.5") {
-        exclude group: "org.bstats", module: "bstats-bukkit"
-    }
+    compileOnly 'me.clip:placeholderapi:2.10.6'
 
 }
 

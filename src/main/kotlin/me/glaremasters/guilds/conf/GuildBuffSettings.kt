@@ -87,12 +87,12 @@ internal object GuildBuffSettings : SettingsHolder {
                     "#      - FAST_DIGGING;0;60\n" +
                     "    # The permission required to purchase the buff.\n" +
                     "#      permission: example.perm.here\n" +
-                    "    # Would you like to execute commands on the player that bought the buff for the guild?\n" +
+                    "    # Would you like to execute commands on the player that bought the buff for the guild? Supports {player}, {buyer}, {buff_name}.\n" +
                     "#      clicker:\n" +
                     "#        enabled: false\n" +
                     "#        commands:\n" +
                     "#        - ''\n" +
-                    "    # Would you like to execute commands on the guild that bough the buff?\n" +
+                    "    # Would you like to execute commands on the guild that bough the buff? Supports {player}, {buyer}, {buff_name}.\n" +
                     "#      guild:\n" +
                     "#        enabled: false\n" +
                     "#        commands:\n" +
