@@ -341,7 +341,7 @@ war:
   player-killed-quit: "&b{player} &aвышел с сервера и был убит."
   teleported-back: "&aВы упорно боролись! Увы, не все могут быть лучшими. Вы были телепортированы на исходное местоположение!"
 acf-core:
-  help_header: "<c3>=== </c3><c1>Showing help for </c1><c2>{commandprefix}{command}</c2><c3> ===</c3>"
+  help_header: "<c3>=== </c3><c1>Помощь для </c1><c2>{commandprefix}{command}</c2><c3> ===</c3>"
   invalid_syntax: "Использование: <c2>{command}</c2> <c3>{syntax}</c3>"
   permission_denied: "Извините, но Вам нельзя выполнять данную команду."
   unknown_command: "Неизвестная команда, введите: <c2>/help</c2>"
