@@ -28,6 +28,7 @@ descriptions:
   admin-simulate-vault: "Admin command to trigger player opening their guild vault"
   admin-simulate-bank-deposit: "Admin command to trigger player depositing to their guild bank"
   admin-simulate-bank-withdraw: "Admin command to trigger player withdrawing from their guild bank"
+  admin-simulate-upgrade: "Admin command to trigger player upgrading their guild"
   ally-accept: "Accept an ally invite from another guild"
   ally-add: "Add a Guild as an ally"
   ally-decline: "Decline an ally invite from another Guild"

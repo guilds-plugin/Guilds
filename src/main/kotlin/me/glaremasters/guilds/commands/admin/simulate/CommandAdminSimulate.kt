@@ -37,14 +37,20 @@ import co.aikar.commands.annotation.Syntax
 import co.aikar.commands.annotation.Values
 import co.aikar.commands.bukkit.contexts.OnlinePlayer
 import me.glaremasters.guilds.Guilds
+import me.glaremasters.guilds.actions.ActionHandler
+import me.glaremasters.guilds.actions.ConfirmAction
 import me.glaremasters.guilds.api.events.GuildDepositMoneyEvent
 import me.glaremasters.guilds.api.events.GuildWithdrawMoneyEvent
+import me.glaremasters.guilds.configuration.sections.PluginSettings
+import me.glaremasters.guilds.configuration.sections.TierSettings
+import me.glaremasters.guilds.exceptions.ExpectationNotMet
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.guild.GuildRolePerm
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.Constants
 import me.glaremasters.guilds.utils.EconomyUtils
 import net.milkbowl.vault.economy.Economy
+import net.milkbowl.vault.permission.Permission
 import org.bukkit.Bukkit
 
 @CommandAlias("%guilds")
@@ -52,6 +58,8 @@ internal class CommandAdminSimulate : BaseCommand() {
     @Dependency lateinit var guilds: Guilds
     @Dependency lateinit var guildHandler: GuildHandler
     @Dependency lateinit var settingsManager: SettingsManager
+    @Dependency lateinit var actionHandler: ActionHandler
+    @Dependency lateinit var permission: Permission
     @Dependency lateinit var economy: Economy
 
     @Subcommand("admin simulate bank deposit")
@@ -166,5 +174,58 @@ internal class CommandAdminSimulate : BaseCommand() {
             return
         }
         guilds.guiHandler.vaults.get(guild, player).open(player)
+    }
+
+    @Subcommand("admin simulate upgrade")
+    @Description("{@@descriptions.admin-simulate-upgrade}")
+    @CommandPermission(Constants.ADMIN_PERM)
+    @CommandCompletion("@online")
+    @Syntax("<player>")
+    fun upgrade(issuer: CommandIssuer, @Values("@online") onlinePlayer: OnlinePlayer) {
+
+        val player = onlinePlayer.player
+        val guild = guildHandler.getGuild(player)
+
+        if (guildHandler.isMaxTier(guild)) {
+            throw ExpectationNotMet(Messages.UPGRADE__TIER_MAX)
+        }
+
+        val tier = guildHandler.getGuildTier(guild.tier.level + 1)
+        val bal = guild.balance
+        val cost = tier.cost
+        val async = settingsManager.getProperty(PluginSettings.RUN_VAULT_ASYNC)
+
+        if (guildHandler.memberCheck(guild)) {
+            throw ExpectationNotMet(Messages.UPGRADE__NOT_ENOUGH_MEMBERS, "{amount}", guild.tier.membersToRankup.toString())
+        }
+
+        if (!EconomyUtils.hasEnough(bal, cost)) {
+            throw ExpectationNotMet(Messages.UPGRADE__NOT_ENOUGH_MONEY, "{needed}", EconomyUtils.format(cost - bal))
+        }
+
+        currentCommandIssuer.sendInfo(Messages.UPGRADE__MONEY_WARNING, "{amount}", EconomyUtils.format(cost))
+        actionHandler.addAction(player, object : ConfirmAction {
+            override fun accept() {
+                if (!EconomyUtils.hasEnough(bal, cost)) {
+                    throw ExpectationNotMet(Messages.UPGRADE__NOT_ENOUGH_MONEY, "{needed}", EconomyUtils.format(cost - bal))
+                }
+
+                guild.balance = bal - cost
+
+                if (!guilds.settingsHandler.tierConf.getProperty(TierSettings.CARRY_OVER)) {
+                    guildHandler.removePermsFromAll(permission, guild, async)
+                }
+
+                guildHandler.upgradeTier(guild)
+                guildHandler.addPermsToAll(permission, guild, async)
+                currentCommandIssuer.sendInfo(Messages.UPGRADE__SUCCESS)
+                actionHandler.removeAction(player)
+            }
+
+            override fun decline() {
+                currentCommandIssuer.sendInfo(Messages.UPGRADE__CANCEL)
+                actionHandler.removeAction(player)
+            }
+        })
     }
 }
