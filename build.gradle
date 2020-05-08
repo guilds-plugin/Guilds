@@ -11,7 +11,7 @@ plugins {
 }
 
 group = 'me.glaremasters'
-version = '3.5.4.9'
+version = '3.5.5.0-DEV'
 sourceCompatibility = JavaVersion.VERSION_1_8
 
 ext {
@@ -71,7 +71,7 @@ dependencies {
     implementation 'com.github.cryptomorin:XSeries:5.3.1'
 
     // GUI Lib
-    implementation 'me.mattstudios.utils:matt-framework-gui:1.2.1'
+    implementation 'me.mattstudios.utils:matt-framework-gui:1.2.7'
 
     // Json Messages
     implementation 'me.rayzr522:jsonmessage:1.2.0'
