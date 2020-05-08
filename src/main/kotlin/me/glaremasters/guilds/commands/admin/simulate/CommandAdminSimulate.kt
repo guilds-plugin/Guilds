@@ -196,18 +196,22 @@ internal class CommandAdminSimulate : BaseCommand() {
         val async = settingsManager.getProperty(PluginSettings.RUN_VAULT_ASYNC)
 
         if (guildHandler.memberCheck(guild)) {
-            throw ExpectationNotMet(Messages.UPGRADE__NOT_ENOUGH_MEMBERS, "{amount}", guild.tier.membersToRankup.toString())
+            guilds.commandManager.getCommandIssuer(player).sendInfo(Messages.ERROR__PLAYER_NOT_IN_GUILD, "{amount}", guild.tier.membersToRankup.toString())
+            return
         }
 
         if (!EconomyUtils.hasEnough(bal, cost)) {
-            throw ExpectationNotMet(Messages.UPGRADE__NOT_ENOUGH_MONEY, "{needed}", EconomyUtils.format(cost - bal))
+            guilds.commandManager.getCommandIssuer(player).sendInfo(Messages.UPGRADE__NOT_ENOUGH_MONEY, "{needed}", EconomyUtils.format(cost - bal))
+            return
         }
 
-        currentCommandIssuer.sendInfo(Messages.UPGRADE__MONEY_WARNING, "{amount}", EconomyUtils.format(cost))
+        guilds.commandManager.getCommandIssuer(player).sendInfo(Messages.UPGRADE__MONEY_WARNING,
+            "{amount}", EconomyUtils.format(cost))
         actionHandler.addAction(player, object : ConfirmAction {
             override fun accept() {
                 if (!EconomyUtils.hasEnough(bal, cost)) {
-                    throw ExpectationNotMet(Messages.UPGRADE__NOT_ENOUGH_MONEY, "{needed}", EconomyUtils.format(cost - bal))
+                    guilds.commandManager.getCommandIssuer(player).sendInfo(Messages.UPGRADE__NOT_ENOUGH_MONEY, "{needed}", EconomyUtils.format(cost - bal))
+                    return
                 }
 
                 guild.balance = bal - cost
@@ -218,12 +222,12 @@ internal class CommandAdminSimulate : BaseCommand() {
 
                 guildHandler.upgradeTier(guild)
                 guildHandler.addPermsToAll(permission, guild, async)
-                currentCommandIssuer.sendInfo(Messages.UPGRADE__SUCCESS)
+                guilds.commandManager.getCommandIssuer(player).sendInfo(Messages.UPGRADE__SUCCESS)
                 actionHandler.removeAction(player)
             }
 
             override fun decline() {
-                currentCommandIssuer.sendInfo(Messages.UPGRADE__CANCEL)
+                guilds.commandManager.getCommandIssuer(player).sendInfo(Messages.UPGRADE__CANCEL)
                 actionHandler.removeAction(player)
             }
         })
