@@ -339,11 +339,11 @@ war:
   player-killed-player: "&b{player} &aέχει σκοτωθεί από &b{killer}&a!"
   player-killed-other: "&b{player} &aέχει σκοτώθει για άγνωστους λόγους."
   player-killed-quit: "&b{player} &aέχει σκοτώθει διότι εγκατέλειψε τον server."
-  teleported-back: "&aYou fought hard! Alas, not everyone can be the best. You've been teleported back to your original location!"
+  teleported-back: "&aΠάλεψες σκλήρα! Δεν μπορούν όλοι να είναι τέλειοι, αλίμονο. Τηλεμεταφέρθηκες στην αρχική σου θέση!"
 acf-core:
-  help_header: "<c3>=== </c3><c1>Showing help for </c1><c2>{commandprefix}{command}</c2><c3> ===</c3>"
-  invalid_syntax: "Usage: <c2>{command}</c2> <c3>{syntax}</c3>"
-  permission_denied: "I'm sorry, but you do not have permission to perform this command."
+  help_header: "<c3>=== </c3><c1>Εμφανίζεται βοήθεια για </c1><c2>{commandprefix}{command}</c2><c3> ===</c3>"
+  invalid_syntax: "<c2>{command}</c2> <c3>{syntax}</c3>"
+  permission_denied: "Συγνώμη αλλά δεν έχεις την άδεια να εκτελέσεις αυτή την εντολή."
   unknown_command: "Unknown Command, please type <c2>/help</c2>"
   error_performing_command: "Λυπάμαι, υπήρξε πρόβλημα κατά την εκτέλεση αυτής της εντολής."
 migrate:
