@@ -43,6 +43,7 @@ import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.event.player.PlayerRespawnEvent
 import java.io.IOException
 import java.util.UUID
+import java.util.concurrent.TimeUnit
 
 class PlayerListener(private val guilds: Guilds, private val settingsManager: SettingsManager, private val guildHandler: GuildHandler, private val permission: Permission) : Listener {
     private val informed = mutableSetOf<UUID>()
@@ -58,13 +59,13 @@ class PlayerListener(private val guilds: Guilds, private val settingsManager: Se
         if (informed.contains(player.uniqueId)) {
             return
         }
-        Bukkit.getScheduler().runTaskLaterAsynchronously(guilds, Runnable {
+        Guilds.newChain<Any>().delay(5, TimeUnit.SECONDS).async {
             try {
                 JSONMessage.create(StringUtils.color("&f[&aGuilds&f]&r Announcements (Hover over me for more information)")).tooltip(StringUtils.getAnnouncements(guilds)).openURL(guilds.description.website).send(player)
             } catch (e: IOException) {
                 e.printStackTrace()
             }
-        }, 100L)
+        }.execute()
         informed.add(player.uniqueId)
     }
 

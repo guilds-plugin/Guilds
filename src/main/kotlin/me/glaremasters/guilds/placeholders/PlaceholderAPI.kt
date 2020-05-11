@@ -29,7 +29,6 @@ import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.utils.EconomyUtils
 import org.bukkit.entity.Player
-import java.text.DecimalFormat
 
 class PlaceholderAPI(private val guildHandler: GuildHandler) : PlaceholderExpansion() {
 
