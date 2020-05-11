@@ -280,11 +280,11 @@ vaults:
   blacklisted: "&cΔεν μπορείτε να βάλετε αυτό το αντικείμενο στο σεντούκι της ομάδάς σας διότι βρίσκετε σε μαύρη λίστα!"
 languages:
   set: "&aΑλλάξατε την γλώσσα σας σε {language}"
-  warning: "&cYou are about to update all the language files. This will delete all current language files and recreate them. Type /guilds confirm to continue, type /guilds cancel to cancel."
-  updated: "&aLanguage files have been recreated and reloaded!"
+  warning: "&cΠρόκειτε να ενημερώσετε όλα τα αρχεία γλώσσων. Με αυτή την ενέργεια θα αναδημιουργηθούν ολα τα τρέχοντα αρχεία γλώσσων. Πληκτρολογήστε /guilds confirm για να συνεχίσετε ή /guilds cancel για το ακυρώσετε."
+  updated: "&aΤα αρχεία γλωσσών έχουν αναδημιουργηθεί!"
 backup:
-  started: "&aCurrently backing up all Guilds data!"
-  finished: "&aAll Guilds data has been backed up and placed in your plugins folder."
+  started: "&aΔημιουργούνται αντίγραφα ασφαλείας των αρχείων όλων των ομαδών!"
+  finished: "&aΤα αντίγραφα ασφαλείας των αρχείων όλων των ομαδών έχουν τοποθετηθεί στον plugin φάκελό σας."
   warning: "&cYou are about to make a backup of all the data for the plugin. Please make sure not to do anything intensive during this. Type /guilds confirm to continue, type /guilds cancel to cancel."
   cancelled: "aYou've successfully cancelled the backup."
 help:
