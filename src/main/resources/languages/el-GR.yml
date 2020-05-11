@@ -197,16 +197,16 @@ upgrade:
   not-enough-members: "&cΣυγνώμη! Χρειάζεστε τουλάχιστον {amount} μέλη για να αναβαθμίσετε το επίπεδο ομάδας σας!"
 prefix:
   successful: "&aΤο πρόθυμα της ομάδας άλλαξε επιτυχώς σε {prefix}!"
-  disabled: "&cThe ability to use prefixes is currently disabled."
+  disabled: "&cΗ ικανότητα χρήσης προθέματος είναι απενεργοποιημένη."
 status:
-  successful: "&aGuild status set to {status}!"
+  successful: "&aΗ κατάσταση της ομάδας ορίστικε σε {status}!"
 rename:
-  successful: "&aGuild name changed to {name}!"
+  successful: "&aΤο όνομα της ομάδας άλλαξε σε {name}!"
 home:
-  no-home-set: "&cNo home set! Use &a/guild sethome &cto set a home!"
+  no-home-set: "&cΔεν έχει οριστεί εστία! Πληκτρολογήστε &a/guild sethome &cγια να την ορίσετε!"
   teleported: "&aΤηλεμεταφερθήκατε στην εστία της ομάδάς σας!"
   cooldown: "&cΠρέπει να περιμένετε τουλάχιστον {amount} δευτερόλεπτα για να το ξανακάνετε αυτό"
-  warmup: "&aYou will be teleported in {amount} seconds. Don't move!"
+  warmup: "&aΘα τηλεμεταφερθήτε σε {amount} δευτερόλεπτα. Μην κουνηθήτε!"
   cancelled: "&cΚουνηθήκατε! Η τηλεμεταφορά ακυρώθηκε!"
 sethome:
   successful: "&aΤοποθετήσατε το σπίτι της ομάδας σας!"
@@ -226,7 +226,7 @@ ally:
   current-declined: "&aΤο αίτημα συμμαχίας της {guild} απορρίφθηκε!"
   target-declined: "&cΤο αίτημα συμμαχίας σας στο {guild} απορρίφθηκε!"
   current-accepted: "&aΈχετε αποδεχτεί ένα αίτημα συμμαχίας από {guild}"
-  target-accepted: "&aYour ally request to {guild} has been accepted!"
+  target-accepted: "&aΤο αίτημά σας για συμμαχία στη {guild} έχει γίνει αποδεκτό!"
   invite-sent: "&aYou've successfully sent an ally invite to {guild}!"
   incoming-invite: "&aYou have an incoming ally request from {guild}!"
   current-remove: "&aYou have removed {guild} from your ally list!"
