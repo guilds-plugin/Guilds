@@ -285,7 +285,7 @@ languages:
 backup:
   started: "&aΔημιουργούνται αντίγραφα ασφαλείας των αρχείων όλων των ομαδών!"
   finished: "&aΤα αντίγραφα ασφαλείας των αρχείων όλων των ομαδών έχουν τοποθετηθεί στον plugin φάκελό σας."
-  warning: "&cYou are about to make a backup of all the data for the plugin. Please make sure not to do anything intensive during this. Type /guilds confirm to continue, type /guilds cancel to cancel."
+  warning: "&cΠρόκειτε να δημιουργήσετε αντίγραφα ασφαλείας για όλα τα αρχεία του plugin. Παρακαλώ μην επιβαρύνετε τον υπολογιστή μέχρι να τελιώσει αυτή η διαδικασία. Πληκτρολογήστε /guilds confirm για να συνεχίσετε ή /guilds decline για να το ακυρώσετε."
   cancelled: "aYou've successfully cancelled the backup."
 help:
   header: "<c3>=== </c3><c1>Showing help for </c1><c2>{commandprefix}{command}</c2><c3> ===</c3>"
