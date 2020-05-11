@@ -204,8 +204,8 @@ rename:
   successful: "&aGuild name changed to {name}!"
 home:
   no-home-set: "&cNo home set! Use &a/guild sethome &cto set a home!"
-  teleported: "&aYou've teleported to your guild home!"
-  cooldown: "&cYou must wait at least {amount} seconds before doing this again"
+  teleported: "&aΤηλεμεταφερθήκατε στην εστία της ομάδάς σας!"
+  cooldown: "&cΠρέπει να περιμένετε τουλάχιστον {amount} δευτερόλεπτα για να το ξανακάνετε αυτό"
   warmup: "&aYou will be teleported in {amount} seconds. Don't move!"
   cancelled: "&cΚουνηθήκατε! Η τηλεμεταφορά ακυρώθηκε!"
 sethome:
@@ -277,9 +277,9 @@ codes:
   max: "&cYou already have too many active invite codes in your guild!"
 vaults:
   maxed: "&cYou can't open this vault because you already have the max amount of vaults for your Guild Tier!"
-  blacklisted: "&cYou can't put that item in your Guild Vault because it is blacklisted!"
+  blacklisted: "&cΔεν μπορείτε να βάλετε αυτό το αντικείμενο στο σεντούκι της ομάδάς σας διότι βρίσκετε σε μαύρη λίστα!"
 languages:
-  set: "&aYou've successfully set your language to {language}"
+  set: "&aΑλλάξατε την γλώσσα σας σε {language}"
   warning: "&cYou are about to update all the language files. This will delete all current language files and recreate them. Type /guilds confirm to continue, type /guilds cancel to cancel."
   updated: "&aLanguage files have been recreated and reloaded!"
 backup:
