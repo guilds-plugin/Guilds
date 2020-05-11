@@ -351,5 +351,5 @@ migrate:
   connection-failed: "&cΗ σύνδεση στο νέο παρασκήνιο απέτυχε! Βεβαιωθέιτε ότι η επικύρωση είναι σωστά διαμορφώμενη!"
   same-backend: "&cΔεν μπορείτε να μεταφερθείτε στο παρασκήνιο που χρησιμοποιείτε ήδη!"
   complete: "&aΗ Μεταφορά δεδομένων ({amount} ομαδών) έχει ολοκληρωθεί και θα συνεχίσει να χρησιμοποιεί το νέο παρασκήνιο μέχρι να επανεκινηθεί. Μην ξεχάσετε να αλλάξετε το παρασκήνιο στα config ώστε να ταιριάζει με εκέινο στο οποίο μεταφερθήκατε πρίν επανεκινήσετε!"
-  warning: "&bImportant! &cYou are about to migrate ALL your plugin data. It is HIGHLY suggested that you make a backup of ALL data before doing this. If you lose your data, it can NOT be recovered. Are you sure you would like to continue? Type /guilds confirm to continue or /guilds cancel to cancel!"
-  cancelled: "&aYou've successfully cancelled the migration of data!"
+  warning: "&bΣημαντικό! &cΠρόκειται να μεταφέρετε ΟΛΑ τα δεδομένα των plugin. Προτείνεται η δημιουργία αντιγράφων ασφαλείας. Εάν χαθούν τα δεδομένα, ΔΕΝ θα μπορούν να ανακτηθούν. Θέλετε να συνεχίσετε; Πληκτρολογήστε /guild confirm για να συνεχίσετε ή\n/guilds cancel για να το ακύρωσετε!"
+  cancelled: "&aΈχετε ακυρώσει τη μεταφορά δεδομένων με επιτυχία!"
