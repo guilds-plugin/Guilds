@@ -254,10 +254,10 @@ claim:
   sign-placed: "&aΈχετε δημιουργήσει με επιτυχία ένα σήμειο εδάφους για την περιοχή {region} στη τιμή των {price}."
   sign-not-enough: "&cΔεν έχετε αρκετά χρήματα στο σεντούκι της ομάδας σας για να αγωράσετε αυτό το έδαφος."
   sign-forced: "&cΜπορείτε να αποκτήσετε έδαφος μόνο μέσο των σημείων εδάφους! Για περισσσότερες πληροφορίες επικοινωνήστε με το προσωπικό του server!"
-  sign-buy-success: "&aHooray! You have bought this claim!"
+  sign-buy-success: "&cΣυγχαρητήρια! έχετε αγωράσει αυτό το έδαφος!"
 unclaim:
-  success: "&aYou've successfully remove your guild claim!"
-  not-found: "&cYou can't unclaim land that you don't have!"
+  success: "&aΔιαγράψατε με επιτυχία το έδαφος της ομάδας σας!"
+  not-found: "&cΔεν μπορείτε να διαγράψετε έδαφος που δεν βρίσκεται στην κατοχή σας!"
   all-warning: "&bImportant! &cYou are about to remove ALL claim data. Are you sure you would like to continue? Type /guilds confirm to continue or /guilds cancel to cancel!"
   all-cancelled: "&aYou've successfully cancelled the removal of all claim data on the server."
   all-success: "&aYou've successfully remove all guild claims on the server!"
