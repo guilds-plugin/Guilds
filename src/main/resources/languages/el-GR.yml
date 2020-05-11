@@ -251,9 +251,9 @@ claim:
   sign-no-permission: "&cΔεν έχετε την άδεια για να δημηουργήσετε πινακίδα εδάφους!"
   sign-invalid-format: "&cΤο σημείο εδάφους δεν είναι έγκυρο! Παρακαλώ προσπαθείστε ξανά!"
   sign-invalid-region: "&cΗ περιοχή του Worldguard δεν είναι έγκυρη!"
-  sign-placed: "&aYou've successfully created a Claim Sign for the region {region} with the price {price}."
-  sign-not-enough: "&cΔεν έχετε αρκετά χρήματα στο σεντούκι της ομάδας σας για να αγωράσετε αυτή τη γη."
-  sign-forced: "&cYou can only claim land via Claim Signs! Ask a staff member on your server for help!"
+  sign-placed: "&aΈχετε δημιουργήσει με επιτυχία ένα σήμειο εδάφους για την περιοχή {region} στη τιμή των {price}."
+  sign-not-enough: "&cΔεν έχετε αρκετά χρήματα στο σεντούκι της ομάδας σας για να αγωράσετε αυτό το έδαφος."
+  sign-forced: "&cΜπορείτε να αποκτήσετε έδαφος μόνο μέσο των σημείων εδάφους! Για περισσσότερες πληροφορίες επικοινωνήστε με το προσωπικό του server!"
   sign-buy-success: "&aHooray! You have bought this claim!"
 unclaim:
   success: "&aYou've successfully remove your guild claim!"
