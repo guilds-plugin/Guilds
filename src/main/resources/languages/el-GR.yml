@@ -309,8 +309,8 @@ arena:
   list: "&aΟι ακόλουθες αρένες στον server είναι: &c{arenas}&a."
   list-empty: "&cΔεν υπάρχουν αρένες στον server αυτή τη στιγμή."
   position-not-set: "&cΗ τοποθεσία αυτής της ομάδας δεν έχει ορίστει. Ορίστε την πρίν τηλεμεταφερθήτε!"
-  teleported-to-selection: "&aWooosh! You've teleported to the &c{team}&a spawn point for &c{arena}&a."
-  all-full: "&cSorry, all arenas on the server are currently in use! Try again later!"
+  teleported-to-selection: "&aWooosh! Τηλεμεταφερθήκατε στην &c{team}&a σημέιο spawn για την &c{arena}&a."
+  all-full: "&cΣυγνώμη αλλα όλες οι αρένες του server χρησιμοποιούνται αυτή τη στιγμή! Δοκιμάστε αργότερα!"
 war:
   no-defenders: "&cThe puny guild you challenged has nobody man enough to accept it."
   challenge-sent: "&aA war challenge has been sent to &b{guild}&a! They will have &b{amount} &aseconds to accept it!"
