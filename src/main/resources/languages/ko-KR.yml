@@ -9,7 +9,7 @@ descriptions:
   admin-delhome: "길드의 집을 삭제하기위한 관리자용 명령어"
   admin-home: "길드의 집으로 텔레포트하기위한 관리자용 명령어"
   admin-motd: "길드의 \"오늘의 경기\"를 보기위한 관리자용 명령어"
-  admin-motd-set: "Admin command to set the motd of a guild"
+  admin-motd-set: "길드의 MOTD를 설정하는 관리자용 명령어"
   admin-motd-remove: "Admin command to remove the motd of a guild"
   admin-prefix: "Admin command to change a Guild's prefix"
   admin-rename: "길드의 이름을 바꾸기위한 관리자용 명령어"
