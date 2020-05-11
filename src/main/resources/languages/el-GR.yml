@@ -258,15 +258,15 @@ claim:
 unclaim:
   success: "&aΔιαγράψατε με επιτυχία το έδαφος της ομάδας σας!"
   not-found: "&cΔεν μπορείτε να διαγράψετε έδαφος που δεν βρίσκεται στην κατοχή σας!"
-  all-warning: "&bImportant! &cYou are about to remove ALL claim data. Are you sure you would like to continue? Type /guilds confirm to continue or /guilds cancel to cancel!"
-  all-cancelled: "&aYou've successfully cancelled the removal of all claim data on the server."
-  all-success: "&aYou've successfully remove all guild claims on the server!"
+  all-warning: "&bΣημαντικό! &cΠρόκειτε να διαγράψετε όλα τα δεδομένα του εδάφους. Θέλετε να συνεχίσετε; Πλητρολογήστε /guild confirm για να συνεχίσετε ή /guilds cancel για να το ακυρώσετε!"
+  all-cancelled: "&aΑκυρώσατε με επιτύχια τη διαγραφή των δεδομένων εδάφους στον server."
+  all-success: "&aΔιαγράψατε με επιτυχία όλα τα εδάφη της ομάδας στον server!"
 pending:
-  invites: "&aYou have {number} pending invite(s) from the guild(s): &e{guilds}&r&a . Use /guild accept <name> or /guild decline <name> to join or decline an invite!"
+  invites: "&aΈχετε {number} αιτήματα που εκκρεμούν απο τις ομάδες: &e{guilds}&r&a . Πλητρολογήστε /guild accept <name> ή /guild decline <name> για να αποδεχτείτε ή να απορρίψετε ένα αίτημα!"
 codes:
-  created: "&aYou've created a new invite code: &6{code} &awith &6{amount} &auses!"
-  empty: "&cOh no! I have no codes, try making one first!"
-  list-header: "&aHere are the following active invite codes for your guild:"
+  created: "&aΈχετε δημιοργήσει έναν αριθμό αιτήματος: &6{code} &aμε &6{amount} &αχρήσεις!"
+  empty: "&cΩχ όχι! Δεν υπάρχουν αριθμοί αιτήματος, δημιουργήστε έναν πρώτα!"
+  list-header: "&aΑυτοί είναι οι ακόλουθοι αριθμοί αιτήματος για την ομάδα σας:"
   list-item: "&aID: &6{code} &f| &aUses Remaining: &6{amount} &f| &aCreator: &6{creator}"
   deleted: "&aThat invite code has been removed from your guild!"
   invalid-code: "&cThat invite code does not seem to exist. Please try again!"
