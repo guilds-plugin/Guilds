@@ -58,7 +58,7 @@ class PlayerListener(private val guilds: Guilds, private val settingsManager: Se
         if (informed.contains(player.uniqueId)) {
             return
         }
-        Bukkit.getScheduler().runTaskLater(guilds, Runnable {
+        Bukkit.getScheduler().runTaskLaterAsynchronously(guilds, Runnable {
             try {
                 JSONMessage.create(StringUtils.color("&f[&aGuilds&f]&r Announcements (Hover over me for more information)")).tooltip(StringUtils.getAnnouncements(guilds)).openURL(guilds.description.website).send(player)
             } catch (e: IOException) {
