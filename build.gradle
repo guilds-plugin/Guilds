@@ -21,11 +21,33 @@ ext {
 repositories {
     mavenCentral()
 
-    maven { url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
-    maven { url = 'https://oss.sonatype.org/content/groups/public/' }
-    maven { url = 'https://repo.aikar.co/content/groups/aikar/' }
-    maven { url = 'https://repo.glaremasters.me/repository/public/' }
+    maven {
+        name = "spigot-repo"
+        url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
 
+        content {
+            includeGroup("org.bukkit")
+        }
+    }
+
+    maven {
+        name = "sonatype"
+        url = uri("https://oss.sonatype.org/content/groups/public/")
+    }
+
+    maven {
+        name = "aikar-repo"
+        url = uri("https://repo.aikar.co/content/groups/aikar/")
+
+        content {
+            includeGroup("co.aikar")
+        }
+    }
+
+    maven {
+        name = "glare-repo"
+        url = uri("https://repo.glaremasters.me/repository/public/")
+    }
 }
 
 shadowJar {
