@@ -16,5 +16,4 @@ class GuildScore {
         wins = 0
         loses = 0
     }
-
 }

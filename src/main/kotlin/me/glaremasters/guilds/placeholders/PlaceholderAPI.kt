@@ -76,5 +76,4 @@ class PlaceholderAPI(private val guildHandler: GuildHandler) : PlaceholderExpans
             else -> ""
         }
     }
-
 }

@@ -48,5 +48,4 @@ data class GuildRole(@Transient val name: String, @Transient val node: String, v
     fun hasPerm(perm: GuildRolePerm): Boolean {
         return perms.contains(perm)
     }
-
 }

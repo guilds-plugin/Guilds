@@ -32,10 +32,8 @@ import java.nio.file.Path
 object JarFileWalker {
 
     fun walk(path: String, function: (Path, InputStream?) -> Unit) {
-        FileSystems.newFileSystem(javaClass.getResource(path).toURI(), emptyMap<String, Any>()).use()
-        { files ->
-            Files.walk(files.getPath(path)).forEach()
-            { path ->
+        FileSystems.newFileSystem(javaClass.getResource(path).toURI(), emptyMap<String, Any>()).use() { files ->
+            Files.walk(files.getPath(path)).forEach() { path ->
                 if (Files.isDirectory(path)) {
                     return@forEach // do nothing if this is a directory
                 }
@@ -50,5 +48,4 @@ object JarFileWalker {
             }
         }
     }
-
 }

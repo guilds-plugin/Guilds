@@ -24,6 +24,7 @@
 package me.glaremasters.guilds.utils
 
 import ch.jalu.configme.SettingsManager
+import java.util.Optional
 import me.glaremasters.guilds.configuration.sections.ClaimSettings
 import me.glaremasters.guilds.configuration.sections.HooksSettings
 import me.glaremasters.guilds.guild.Guild
@@ -36,7 +37,6 @@ import org.codemc.worldguardwrapper.flag.WrappedState
 import org.codemc.worldguardwrapper.region.IWrappedDomain
 import org.codemc.worldguardwrapper.region.IWrappedRegion
 import org.codemc.worldguardwrapper.selection.ICuboidSelection
-import java.util.Optional
 
 /**
  * Created by Glare

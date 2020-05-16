@@ -27,6 +27,7 @@ package me.glaremasters.guilds.guis
 import ch.jalu.configme.SettingsManager
 import co.aikar.commands.ACFBukkitUtil
 import co.aikar.commands.PaperCommandManager
+import java.util.concurrent.TimeUnit
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.configuration.sections.CooldownSettings
 import me.glaremasters.guilds.configuration.sections.GuildInfoSettings
@@ -43,11 +44,10 @@ import me.glaremasters.guilds.utils.GuiUtils
 import me.mattstudios.mfgui.gui.guis.Gui
 import me.mattstudios.mfgui.gui.guis.GuiItem
 import org.bukkit.entity.Player
-import java.util.concurrent.TimeUnit
 
 class InfoGUI(private val guilds: Guilds, private val settingsManager: SettingsManager, private val guildHandler: GuildHandler, private val cooldownHandler: CooldownHandler, private val manager: PaperCommandManager) {
 
-    fun get(guild: Guild, player: Player) : Gui {
+    fun get(guild: Guild, player: Player): Gui {
         val name = settingsManager.getProperty(GuildInfoSettings.GUI_NAME).replace("{name}", guild.name).replace("{prefix}", guild.prefix)
         val gui = GuiBuilder(guilds).setName(name).setRows(3).disableGlobalClicking().build()
 
@@ -64,7 +64,7 @@ class InfoGUI(private val guilds: Guilds, private val settingsManager: SettingsM
         val home = if (guild.home == null) settingsManager.getProperty(GuildInfoSettings.HOME_EMPTY) else ACFBukkitUtil.blockLocationToString(guild.home.asLocation)
         val motd = if (guild.motd == null) "" else guild.motd
 
-        generateItem(gui, settingsManager.getProperty(GuildInfoSettings.TIER_DISPLAY), settingsManager.getProperty(GuildInfoSettings.TIER_MATERIAL), settingsManager.getProperty(GuildInfoSettings.TIER_NAME), settingsManager.getProperty(GuildInfoSettings.TIER_LORE).map { l -> l.replace("{tier}", tier.name)}, 2, 3)
+        generateItem(gui, settingsManager.getProperty(GuildInfoSettings.TIER_DISPLAY), settingsManager.getProperty(GuildInfoSettings.TIER_MATERIAL), settingsManager.getProperty(GuildInfoSettings.TIER_NAME), settingsManager.getProperty(GuildInfoSettings.TIER_LORE).map { l -> l.replace("{tier}", tier.name) }, 2, 3)
         generateItem(gui, settingsManager.getProperty(GuildInfoSettings.BANK_DISPLAY), settingsManager.getProperty(GuildInfoSettings.BANK_MATERIAL), settingsManager.getProperty(GuildInfoSettings.BANK_NAME), settingsManager.getProperty(GuildInfoSettings.BANK_LORE).map { l -> l.replace("{current}", EconomyUtils.format(guild.balance)).replace("{max}", tier.maxBankBalance.toString()) }, 2, 4)
         generateMembersItem(gui, guild)
         generateItem(gui, settingsManager.getProperty(GuildInfoSettings.STATUS_DISPLAY), statusMaterial, settingsManager.getProperty(GuildInfoSettings.STATUS_NAME), settingsManager.getProperty(GuildInfoSettings.STATUS_LORE).map { l -> l.replace("{status}", statusString) }, 2, 6)
@@ -89,7 +89,7 @@ class InfoGUI(private val guilds: Guilds, private val settingsManager: SettingsM
             return
         }
         val tier = guildHandler.getGuildTier(guild.tier.level)
-        val item = GuiItem(GuiUtils.createItem(settingsManager.getProperty(GuildInfoSettings.MEMBERS_MATERIAL), settingsManager.getProperty(GuildInfoSettings.MEMBERS_NAME), settingsManager.getProperty(GuildInfoSettings.MEMBERS_LORE).map { l -> l.replace("{current}", guild.members.size.toString()).replace("{max}", tier.maxMembers.toString()).replace("{online}", guild.onlineMembers.size.toString())}))
+        val item = GuiItem(GuiUtils.createItem(settingsManager.getProperty(GuildInfoSettings.MEMBERS_MATERIAL), settingsManager.getProperty(GuildInfoSettings.MEMBERS_NAME), settingsManager.getProperty(GuildInfoSettings.MEMBERS_LORE).map { l -> l.replace("{current}", guild.members.size.toString()).replace("{max}", tier.maxMembers.toString()).replace("{online}", guild.onlineMembers.size.toString()) }))
         item.setAction { event ->
             event.isCancelled = true
             guilds.guiHandler.members.get(guild).open(event.whoClicked)

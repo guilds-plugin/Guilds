@@ -25,6 +25,9 @@
 package me.glaremasters.guilds.guis
 
 import ch.jalu.configme.SettingsManager
+import java.text.SimpleDateFormat
+import java.util.Comparator
+import java.util.Date
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.configuration.sections.GuildInfoMemberSettings
 import me.glaremasters.guilds.configuration.sections.GuildListSettings
@@ -38,9 +41,6 @@ import me.glaremasters.guilds.utils.StringUtils
 import me.mattstudios.mfgui.gui.guis.Gui
 import me.mattstudios.mfgui.gui.guis.GuiItem
 import org.bukkit.entity.Player
-import java.text.SimpleDateFormat
-import java.util.Comparator
-import java.util.Date
 
 class MembersGUI(private val guilds: Guilds, private val settingsManager: SettingsManager, private val guildHandler: GuildHandler) {
 
@@ -63,7 +63,7 @@ class MembersGUI(private val guilds: Guilds, private val settingsManager: Settin
     /**
      * Create the regular items that will be on the GUI
      *
-     * @param pane  the pane to be added to
+     * @param pane the pane to be added to
      * @param guild the guild of the player
      */
     private fun addItems(gui: Gui, guild: Guild) {
@@ -101,5 +101,4 @@ class MembersGUI(private val guilds: Guilds, private val settingsManager: Settin
             gui.addItem(item)
         }
     }
-
 }

@@ -24,8 +24,8 @@
 
 package me.glaremasters.guilds.arena
 
-import me.glaremasters.guilds.Guilds
 import java.util.Optional
+import me.glaremasters.guilds.Guilds
 
 class ArenaHandler(private val guilds: Guilds) {
 
@@ -58,5 +58,4 @@ class ArenaHandler(private val guilds: Guilds) {
     fun saveArenas() {
         guilds.database.arenaAdapter.saveArenas(arenas.values)
     }
-
 }

@@ -32,5 +32,4 @@ class GuildRemoveEvent(player: Player, guild: Guild, val cause: Cause) : GuildEv
     enum class Cause {
         MASTER_LEFT, PLAYER_DELETED, ADMIN_DELETED
     }
-
 }

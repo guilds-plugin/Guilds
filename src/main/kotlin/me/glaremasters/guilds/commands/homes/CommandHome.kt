@@ -33,6 +33,7 @@ import co.aikar.commands.annotation.Dependency
 import co.aikar.commands.annotation.Description
 import co.aikar.commands.annotation.Subcommand
 import co.aikar.commands.annotation.Syntax
+import java.util.concurrent.TimeUnit
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.configuration.sections.CooldownSettings
 import me.glaremasters.guilds.configuration.sections.CostSettings
@@ -46,7 +47,6 @@ import me.glaremasters.guilds.utils.Constants
 import me.glaremasters.guilds.utils.EconomyUtils
 import net.milkbowl.vault.economy.Economy
 import org.bukkit.entity.Player
-import java.util.concurrent.TimeUnit
 
 @CommandAlias("%guilds")
 internal class CommandHome : BaseCommand() {

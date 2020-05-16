@@ -26,6 +26,7 @@ package me.glaremasters.guilds.listeners
 
 import ch.jalu.configme.SettingsManager
 import co.aikar.commands.ACFBukkitUtil
+import java.util.UUID
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.challenges.ChallengeHandler
 import me.glaremasters.guilds.configuration.sections.WarSettings
@@ -40,7 +41,6 @@ import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.player.PlayerCommandPreprocessEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.event.player.PlayerRespawnEvent
-import java.util.UUID
 
 class ArenaListener(private val guilds: Guilds, private val challengeHandler: ChallengeHandler, private val settingsManager: SettingsManager) : Listener {
     private val playerDeath = mutableMapOf<UUID, String>()
@@ -138,7 +138,5 @@ class ArenaListener(private val guilds: Guilds, private val challengeHandler: Ch
 
         isCancelled = true
         guilds.commandManager.getCommandIssuer(player).sendInfo(Messages.WAR__COMMANDS_BLOCKED)
-
     }
-
 }

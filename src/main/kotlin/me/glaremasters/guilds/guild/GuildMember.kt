@@ -1,9 +1,9 @@
 package me.glaremasters.guilds.guild
 
+import java.util.UUID
 import org.bukkit.Bukkit
 import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
-import java.util.UUID
 
 class GuildMember(val uuid: UUID, var role: GuildRole) {
     var joinDate: Long = 0
@@ -20,5 +20,4 @@ class GuildMember(val uuid: UUID, var role: GuildRole) {
 
     val name: String?
         get() = asOfflinePlayer.name
-
 }

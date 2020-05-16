@@ -12,5 +12,4 @@ class GuildHome(private val world: String, private val x: Double, private val y:
 
     val asLocation: Location
         get() = Location(Bukkit.getWorld(world), x, y, z, yaw, pitch)
-
 }

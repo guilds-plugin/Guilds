@@ -23,13 +23,13 @@
  */
 package me.glaremasters.guilds.api
 
+import java.util.UUID
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.guild.GuildRole
 import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
-import java.util.UUID
 
 class GuildsAPI(val guildHandler: GuildHandler) {
 
@@ -79,5 +79,4 @@ class GuildsAPI(val guildHandler: GuildHandler) {
     fun getGuildRole(player: Player): GuildRole? {
         return getGuild(player)?.getMember(player.uniqueId)?.role
     }
-
 }

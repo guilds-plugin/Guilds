@@ -26,8 +26,8 @@ package me.glaremasters.guilds.challenges.adapters
 import com.google.gson.TypeAdapter
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonWriter
-import me.glaremasters.guilds.arena.Arena
 import java.util.UUID
+import me.glaremasters.guilds.arena.Arena
 
 class WarArenaChallengeAdapter : TypeAdapter<Arena>() {
 
@@ -39,7 +39,6 @@ class WarArenaChallengeAdapter : TypeAdapter<Arena>() {
         out.value(arena.name)
         out.endObject()
     }
-
 
     override fun read(reader: JsonReader): Arena {
         var arenaName: String? = null

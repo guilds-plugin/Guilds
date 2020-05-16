@@ -35,6 +35,7 @@ import co.aikar.commands.annotation.Description
 import co.aikar.commands.annotation.Flags
 import co.aikar.commands.annotation.Subcommand
 import co.aikar.commands.annotation.Syntax
+import java.util.concurrent.TimeUnit
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.configuration.sections.CooldownSettings
 import me.glaremasters.guilds.cooldowns.Cooldown
@@ -45,7 +46,6 @@ import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.Constants
 import org.bukkit.entity.Player
-import java.util.concurrent.TimeUnit
 
 @CommandAlias("%guilds")
 internal class CommandRequest : BaseCommand() {

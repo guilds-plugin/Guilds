@@ -25,19 +25,15 @@
 package me.glaremasters.guilds.arena
 
 import co.aikar.commands.ACFBukkitUtil
-import org.bukkit.Location
 import java.util.UUID
+import org.bukkit.Location
 
-data class Arena(val id: UUID, val name: String, var challenger: String?, var defender: String?, @Transient var inUse: Boolean)
-{
+data class Arena(val id: UUID, val name: String, var challenger: String?, var defender: String?, @Transient var inUse: Boolean) {
     constructor(id: UUID, name: String) : this(id, name, null, null, false)
-
 
     val challengerLoc: Location?
         get() = ACFBukkitUtil.stringToLocation(challenger)
 
-
     val defenderLoc: Location?
         get() = ACFBukkitUtil.stringToLocation(defender)
-
 }

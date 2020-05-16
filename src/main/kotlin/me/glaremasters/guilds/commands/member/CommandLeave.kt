@@ -33,6 +33,7 @@ import co.aikar.commands.annotation.Dependency
 import co.aikar.commands.annotation.Description
 import co.aikar.commands.annotation.Subcommand
 import co.aikar.commands.annotation.Syntax
+import java.util.concurrent.TimeUnit
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.actions.ActionHandler
 import me.glaremasters.guilds.actions.ConfirmAction
@@ -51,7 +52,6 @@ import net.milkbowl.vault.permission.Permission
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.codemc.worldguardwrapper.WorldGuardWrapper
-import java.util.concurrent.TimeUnit
 
 @CommandAlias("%guilds")
 internal class CommandLeave : BaseCommand() {
@@ -87,7 +87,7 @@ internal class CommandLeave : BaseCommand() {
                 Bukkit.getPluginManager().callEvent(event)
 
                 if (event.isCancelled) {
-                    return;
+                    return
                 }
 
                 if (guild.isMaster(player)) {
@@ -126,7 +126,6 @@ internal class CommandLeave : BaseCommand() {
                 currentCommandIssuer.sendInfo(Messages.LEAVE__CANCELLED)
                 actionHandler.removeAction(player)
             }
-
         })
     }
 }

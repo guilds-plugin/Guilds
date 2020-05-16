@@ -36,6 +36,7 @@ import co.aikar.commands.annotation.Single
 import co.aikar.commands.annotation.Subcommand
 import co.aikar.commands.annotation.Syntax
 import co.aikar.commands.annotation.Values
+import java.util.concurrent.TimeUnit
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.api.events.GuildKickEvent
 import me.glaremasters.guilds.configuration.sections.CooldownSettings
@@ -52,7 +53,6 @@ import me.glaremasters.guilds.utils.Constants
 import net.milkbowl.vault.permission.Permission
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
-import java.util.concurrent.TimeUnit
 
 @CommandAlias("%guilds")
 internal class CommandKick : BaseCommand() {

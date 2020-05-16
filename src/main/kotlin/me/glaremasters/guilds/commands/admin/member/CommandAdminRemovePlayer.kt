@@ -42,7 +42,7 @@ import me.glaremasters.guilds.utils.Constants
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 
-//todo Fix the logic on this because what if you force remove the guild master?
+// todo Fix the logic on this because what if you force remove the guild master?
 @CommandAlias("%guilds")
 internal class CommandAdminRemovePlayer : BaseCommand() {
     @Dependency lateinit var guilds: Guilds

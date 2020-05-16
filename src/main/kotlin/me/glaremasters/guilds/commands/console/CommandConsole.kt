@@ -34,6 +34,7 @@ import co.aikar.commands.annotation.Dependency
 import co.aikar.commands.annotation.Description
 import co.aikar.commands.annotation.Subcommand
 import co.aikar.commands.annotation.Values
+import java.io.IOException
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.actions.ActionHandler
 import me.glaremasters.guilds.actions.ConfirmAction
@@ -48,7 +49,6 @@ import me.glaremasters.guilds.utils.BackupUtils
 import me.glaremasters.guilds.utils.ClaimUtils
 import me.glaremasters.guilds.utils.Constants
 import org.codemc.worldguardwrapper.WorldGuardWrapper
-import java.io.IOException
 
 @CommandAlias("%guilds")
 internal class CommandConsole : BaseCommand() {

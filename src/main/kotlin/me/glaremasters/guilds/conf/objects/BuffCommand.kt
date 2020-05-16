@@ -25,6 +25,6 @@
 package me.glaremasters.guilds.conf.objects
 
 internal data class BuffCommand(
-        var enabled: Boolean = true,
-        var commands: List<String> = listOf("")
+    var enabled: Boolean = true,
+    var commands: List<String> = listOf("")
 )

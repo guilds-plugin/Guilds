@@ -25,26 +25,27 @@
 package me.glaremasters.guilds.guild
 
 import com.google.gson.annotations.JsonAdapter
+import java.util.UUID
 import me.glaremasters.guilds.arena.Arena
 import me.glaremasters.guilds.challenges.adapters.WarArenaChallengeAdapter
 import me.glaremasters.guilds.challenges.adapters.WarGuildChallengeAdapter
-import java.util.UUID
 
-data class GuildChallenge(val id: UUID,
-                          val initiateTime: Long,
-                          @JsonAdapter(WarGuildChallengeAdapter::class) var challenger: Guild,
-                          @JsonAdapter(WarGuildChallengeAdapter::class) var defender: Guild,
-                          @Transient var isAccepted: Boolean,
-                          @Transient var isJoinble: Boolean,
-                          @Transient var isStarted: Boolean,
-                          var isCompleted: Boolean,
-                          @Transient val minPlayersPerSide: Int,
-                          @Transient val maxPlayersPerSide: Int,
-                          val challengePlayers: MutableList<UUID>,
-                          val defendPlayers: MutableList<UUID>,
-                          @JsonAdapter(WarArenaChallengeAdapter::class) val arena: Arena,
-                          @JsonAdapter(WarGuildChallengeAdapter::class) var winner: Guild?,
-                          @JsonAdapter(WarGuildChallengeAdapter::class) var loser: Guild?,
-                          @Transient var aliveChallengers: MutableMap<UUID, String>,
-                          @Transient var aliveDefenders: MutableMap<UUID, String>
+data class GuildChallenge(
+    val id: UUID,
+    val initiateTime: Long,
+    @JsonAdapter(WarGuildChallengeAdapter::class) var challenger: Guild,
+    @JsonAdapter(WarGuildChallengeAdapter::class) var defender: Guild,
+    @Transient var isAccepted: Boolean,
+    @Transient var isJoinble: Boolean,
+    @Transient var isStarted: Boolean,
+    var isCompleted: Boolean,
+    @Transient val minPlayersPerSide: Int,
+    @Transient val maxPlayersPerSide: Int,
+    val challengePlayers: MutableList<UUID>,
+    val defendPlayers: MutableList<UUID>,
+    @JsonAdapter(WarArenaChallengeAdapter::class) val arena: Arena,
+    @JsonAdapter(WarGuildChallengeAdapter::class) var winner: Guild?,
+    @JsonAdapter(WarGuildChallengeAdapter::class) var loser: Guild?,
+    @Transient var aliveChallengers: MutableMap<UUID, String>,
+    @Transient var aliveDefenders: MutableMap<UUID, String>
 )

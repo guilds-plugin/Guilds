@@ -60,7 +60,7 @@ class VaultGUI(private val guilds: Guilds, private val settingsManager: Settings
     /**
      * Create the regular items that will be on the GUI
      *
-     * @param pane  the pane to be added to
+     * @param pane the pane to be added to
      * @param guild the guild of the player
      */
     private fun addItems(gui: Gui, guild: Guild, player: Player) {
@@ -99,5 +99,4 @@ class VaultGUI(private val guilds: Guilds, private val settingsManager: Settings
     companion object {
         private var num = 0
     }
-
 }

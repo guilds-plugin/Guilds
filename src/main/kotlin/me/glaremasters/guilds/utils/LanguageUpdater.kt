@@ -24,17 +24,15 @@
 
 package me.glaremasters.guilds.utils
 
-import me.glaremasters.guilds.Guilds
-import org.bukkit.configuration.file.YamlConfiguration
 import java.io.File
 import java.io.InputStream
+import me.glaremasters.guilds.Guilds
+import org.bukkit.configuration.file.YamlConfiguration
 
 class LanguageUpdater(internal val plugin: Guilds) {
 
-    fun saveLang()
-    {
-        JarFileWalker.walk("/languages")
-        { path, stream ->
+    fun saveLang() {
+        JarFileWalker.walk("/languages") { path, stream ->
 
             if (stream == null) {
                 return@walk // do nothing if the stream couldn't be opened
@@ -49,21 +47,18 @@ class LanguageUpdater(internal val plugin: Guilds) {
             file.parentFile.mkdirs()
             file.createNewFile()
 
-            file.outputStream().use()
-            {
+            file.outputStream().use() {
                 stream.copyTo(it)
                 stream.close()
             }
         }
     }
 
-    private fun mergeLanguage(stream: InputStream, outside: File)
-    {
+    private fun mergeLanguage(stream: InputStream, outside: File) {
         val new = YamlConfiguration.loadConfiguration(stream.reader())
         val old = YamlConfiguration.loadConfiguration(outside)
 
-        for (path in new.getKeys(false))
-        {
+        for (path in new.getKeys(false)) {
             old.set(path, old.get(path, new.get(path)))
         }
         old.save(outside)

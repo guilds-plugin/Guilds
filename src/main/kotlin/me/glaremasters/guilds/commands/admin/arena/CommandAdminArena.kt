@@ -35,6 +35,7 @@ import co.aikar.commands.annotation.Single
 import co.aikar.commands.annotation.Subcommand
 import co.aikar.commands.annotation.Syntax
 import co.aikar.commands.annotation.Values
+import java.util.UUID
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.arena.Arena
 import me.glaremasters.guilds.arena.ArenaHandler
@@ -43,7 +44,6 @@ import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.Constants
 import org.bukkit.entity.Player
-import java.util.UUID
 
 @CommandAlias("%guilds")
 internal class CommandAdminArena : BaseCommand() {

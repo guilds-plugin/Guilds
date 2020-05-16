@@ -35,7 +35,6 @@ import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.utils.Constants
 
-
 @CommandAlias("%guilds")
 internal class CommandHelp : BaseCommand() {
     @Dependency lateinit var guilds: Guilds

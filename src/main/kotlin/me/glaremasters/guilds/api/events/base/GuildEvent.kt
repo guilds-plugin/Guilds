@@ -48,5 +48,4 @@ open class GuildEvent(player: Player, val guild: Guild) : PlayerEvent(player), C
         @JvmStatic
         val handlerList = HandlerList()
     }
-
 }
