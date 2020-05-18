@@ -29,4 +29,4 @@ import me.glaremasters.guilds.conf.objects.GuildBuff
 import me.glaremasters.guilds.guild.Guild
 import org.bukkit.entity.Player
 
-class GuildBuffEvent(player: Player, guild: Guild, val buff: GuildBuff) : GuildEvent(player, guild)
+class GuildBuffEvent(player: Player, guild: Guild, var buff: GuildBuff) : GuildEvent(player, guild)
