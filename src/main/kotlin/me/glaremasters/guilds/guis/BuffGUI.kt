@@ -29,6 +29,7 @@ import co.aikar.commands.PaperCommandManager
 import com.cryptomorin.xseries.XPotion
 import java.util.concurrent.TimeUnit
 import me.glaremasters.guilds.Guilds
+import me.glaremasters.guilds.api.events.GuildBuffEvent
 import me.glaremasters.guilds.conf.GuildBuffSettings
 import me.glaremasters.guilds.conf.objects.GuildBuff
 import me.glaremasters.guilds.cooldowns.Cooldown
@@ -89,6 +90,13 @@ class BuffGUI(private val guilds: Guilds, private val buffConfig: SettingsManage
             val cost = buff.price
             val guiItem = GuiItem(item)
             guiItem.setAction { event ->
+                val buffEvent = GuildBuffEvent(player, guild, buff)
+                Bukkit.getPluginManager().callEvent(buffEvent)
+
+                if (buffEvent.isCancelled) {
+                    return@setAction
+                }
+
                 event.isCancelled = true
 
                 if (!access) {
