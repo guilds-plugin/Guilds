@@ -242,7 +242,7 @@ public final class Guilds extends JavaPlugin {
         // Load the optional listeners
         optionalListeners();
 
-        api = new GuildsAPI(getGuildHandler());
+        api = new GuildsAPI(guildHandler, cooldownHandler);
 
         LoggingUtils.info("Ready to go! That only took " + (System.currentTimeMillis() - startingTime) + "ms");
         getServer().getScheduler().scheduleAsyncRepeatingTask(this, () -> {
