@@ -24,7 +24,7 @@
 
 package me.glaremasters.guilds.conf.objects
 
-internal data class GuildBuff(
+data class GuildBuff(
     var identifier: String = "",
     var locked: BuffSettings = BuffSettings("Special Buff", "FEATHER", listOf("")),
     var unlocked: BuffSettings = BuffSettings("Special Buff", "FEATHER", listOf("")),

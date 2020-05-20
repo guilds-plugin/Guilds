@@ -23,6 +23,7 @@
  */
 package me.glaremasters.guilds.api
 
+import me.glaremasters.guilds.cooldowns.CooldownHandler
 import java.util.UUID
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
@@ -31,7 +32,7 @@ import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
 
-class GuildsAPI(val guildHandler: GuildHandler) {
+class GuildsAPI(val guildHandler: GuildHandler, val cooldownHandler: CooldownHandler) {
 
     /**
      *

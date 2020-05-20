@@ -22,9 +22,11 @@
  * SOFTWARE.
  */
 
-package me.glaremasters.guilds.conf.objects
+package me.glaremasters.guilds.api.events
 
-data class BuffCommand(
-    var enabled: Boolean = true,
-    var commands: List<String> = listOf("")
-)
+import me.glaremasters.guilds.api.events.base.GuildEvent
+import me.glaremasters.guilds.conf.objects.GuildBuff
+import me.glaremasters.guilds.guild.Guild
+import org.bukkit.entity.Player
+
+class GuildBuffEvent(player: Player, guild: Guild, var buff: GuildBuff) : GuildEvent(player, guild)
