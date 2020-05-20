@@ -23,8 +23,8 @@
  */
 package me.glaremasters.guilds.api
 
-import me.glaremasters.guilds.cooldowns.CooldownHandler
 import java.util.UUID
+import me.glaremasters.guilds.cooldowns.CooldownHandler
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.guild.GuildRole
