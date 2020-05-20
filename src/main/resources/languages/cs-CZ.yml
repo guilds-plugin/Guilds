@@ -102,11 +102,11 @@ chat:
 request:
   success: "&aPožádal/a jsi cech {guild} o členství"
   incoming-request: "&a{player} zažádal/a o členství ve vašem cechu. Do cechu jej můžeš přizvat pomocí /guild invite {player}!"
-  cooldown: "Nemůžete odeslat další požadavek během {time} sekund."
+  cooldown: "Před odesláním další žádosti o členství musíš počkat {time} sekund."
 error:
-  already-in-guild: "&cUž jsi v cechu!"
-  no-guild: "&cNejsi v cechu!"
-  role-no-permission: "&cVaše role není dostatečně vysoká!"
+  already-in-guild: "&cJiž jsi členem jiného cechu!"
+  no-guild: "&cNejsi členem žádného cechu!"
+  role-no-permission: "&cNa toto nemáš dostatečnou hodnost!"
   tier-no-permission: "&cVáš cechovní stupeň(tier) není dostatečně vysoký!"
   guild-no-exist: "&cTenhle cech neexistuje! Pokuď to děláte kvůli snaze připojit se k cechu, který má vlastní barevné jméno, můžete zkusit příkaz /guild accept <hráč, který vás pozval>, abyste se připojili také!"
   player-not-found: "&cHráč '{player}&r&c' není online!"
