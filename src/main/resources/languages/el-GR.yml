@@ -346,7 +346,7 @@ acf-core:
   permission_denied: "Συγνώμη αλλά δεν έχεις την άδεια να εκτελέσεις αυτή την εντολή."
   unknown_command: "Άγνωστη Εντολή, παρακαλώ πληκτρολογήστε <c2>/help</c2>"
   error_performing_command: "Λυπάμαι, υπήρξε πρόβλημα κατά την εκτέλεση αυτής της εντολής."
-  help_format: "<c1>/{command}</c1> <c2>{parameters}</c2> <c3>{separator} {description}</c3>"
+  help_format: "<c1>/{command}</c1><c2>{parameters}</c2><c3>{separator}{description}</c3>"
 migrate:
   invalid-backend: "&cΤο παρασκήνιο στο οποίο προσπαθήσατε να μεταφερθείτε δεν είναι έγκυρο."
   connection-failed: "&cΗ σύνδεση στο νέο παρασκήνιο απέτυχε! Βεβαιωθέιτε ότι η επικύρωση είναι σωστά διαμορφώμενη!"
