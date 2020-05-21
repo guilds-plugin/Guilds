@@ -346,6 +346,7 @@ acf-core:
   permission_denied: "Désolé, mais vous n'avez pas la permission d'exécuter cette commande."
   unknown_command: "Commande inconnue, tapez <c2>/help</c2>"
   error_performing_command: "Désolé, mais il y a eu une erreur lors de l'exécution de cette commande."
+  help_format: "<c1>/{command}</c1> <c2>{parameters}</c2> <c3>{separator} {description}</c3>"
 migrate:
   invalid-backend: "&cLe backend vers lequel vous avez tenté de migrer est invalide."
   connection-failed: "&cLa connexion au nouveau backend a échoué ! Assurez-vous que votre authentification est correctement configurée !"
