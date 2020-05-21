@@ -346,6 +346,7 @@ acf-core:
   permission_denied: "Извините, но Вам нельзя выполнять данную команду."
   unknown_command: "Неизвестная команда, введите: <c2>/help</c2>"
   error_performing_command: "Извините, но при выполнении этой команды произошла ошибка."
+  help_format: "<c1>/{command}</c1> <c2>{parameters}</c2> <c3>{separator} {description}</c3>"
 migrate:
   invalid-backend: "&cБэкенд для миграции данных недействителен."
   connection-failed: "&cСоединение с новым бэкендом провалилось! Убедитесь, что аутентификация настроена правильно!"
