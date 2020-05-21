@@ -346,6 +346,7 @@ acf-core:
   permission_denied: "Jag är ledsen, men du har inte behörighet att utföra detta kommando."
   unknown_command: "Okänt kommando, skriv <c2>/help</c2>"
   error_performing_command: "Jag är ledsen, men det uppstod ett fel vid utförandet av detta kommando."
+  help_format: "<c1>/{command}</c1> <c2>{parameters}</c2> <c3>{separator} {description}</c3>"
 migrate:
   invalid-backend: "&cBackend du har försökt migrera till är ogiltig."
   connection-failed: "&cAnslutning till den nya backend misslyckades! Kontrollera att din autentisering är korrekt konfigurerad!"
