@@ -346,6 +346,7 @@ acf-core:
   permission_denied: "你没有权限这么做"
   unknown_command: "未知指令,请尝试输入<c2>/help</c2>"
   error_performing_command: "执行命令时出错"
+  help_format: "<c1>/{command}</c1> <c2>{parameters}</c2> <c3>{separator} {description}</c3>"
 migrate:
   invalid-backend: "&c您尝试迁移到的后端无效。"
   connection-failed: "&c连接到新后端失败！请确保您的身份验证已正确配置！"
