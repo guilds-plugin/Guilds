@@ -28,6 +28,7 @@ import com.google.gson.Gson;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.database.guild.GuildProvider;
 import me.glaremasters.guilds.guild.Guild;
+import me.glaremasters.guilds.utils.LoggingUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -87,7 +88,14 @@ public class GuildJsonProvider implements GuildProvider {
         List<Guild> loadedGuilds = new ArrayList<>();
 
         for (File file : Objects.requireNonNull(dataFolder.listFiles())) {
-            loadedGuilds.add(gson.fromJson(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8), Guild.class));
+            Guild guild = gson.fromJson(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8), Guild.class);
+            try {
+                guild.getId();
+                loadedGuilds.add(guild);
+            } catch (Exception ex) {
+                LoggingUtils.severe("There was an error loading a Guild from the following file: " + file.getAbsolutePath());
+                LoggingUtils.severe("To prevent data loss in the plugin, this Guild has been prevented from loading.");
+            }
         }
 
         return loadedGuilds;

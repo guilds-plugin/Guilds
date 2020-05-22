@@ -67,7 +67,7 @@ public class GuildHandler {
 
     private final Guilds guildsPlugin;
     private final SettingsManager settingsManager;
-    private List<Guild> guilds;
+    private final List<Guild> guilds = new ArrayList<>();
     private final List<GuildRole> roles = new ArrayList<>();
     private final List<GuildTier> tiers = new ArrayList<>();
     private final List<Player> spies = new ArrayList<>();
@@ -86,27 +86,46 @@ public class GuildHandler {
 
         loadRoles();
         loadTiers();
+        try {
+            loadGuilds();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-        Guilds.newChain().async(() -> {
-            try {
-                guilds = guildsPlugin.getDatabase().getGuildAdapter().getAllGuilds();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }).sync(() -> guilds.forEach(this::createVaultCache)).sync(() -> guilds.forEach(g -> {
-            GuildTier tempTier = getGuildTier(g.getTier().getLevel());
-            if (tempTier != null) {
-                g.setTier(tempTier);
+    private void loadGuilds() throws IOException {
+        // Add to the list
+        guilds.addAll(guildsPlugin.getDatabase().getGuildAdapter().getAllGuilds());
+        // Loop through each guild and set the data needed
+        for (Guild guild : guilds) {
+            // Create the vault cache
+            createVaultCache(guild);
+            // Create a temp tier object for the guild
+            GuildTier tier = getGuildTier(guild.getTier().getLevel());
+            if (tier != null) {
+                // Set the tier object
+                guild.setTier(tier);
             } else {
-                g.setTier(getLowestGuildTier());
-                LoggingUtils.severe("The guild (" + g.getName() + ") had a tier level that doesn't exist on the server anymore. "
-                + "To prevent issues, they've been automatically set the the lowest tier level on the server.");
+                guild.setTier(getLowestGuildTier());
+                LoggingUtils.severe("The guild (" + guild.getName() + ") had a tier level that doesn't exist on the server anymore. To prevent issues, they've been automatically set the the lowest tier level on the server.");
             }
-            g.getMembers().forEach(m -> m.setRole(getGuildRole(m.getRole().getLevel())));
-            if (g.getCreationDate() == 0) {
-                g.setCreationDate(System.currentTimeMillis());
+            // Check creation date
+            if (guild.getCreationDate() == 0) {
+                guild.setCreationDate(System.currentTimeMillis());
             }
-        })).execute();
+            // Loop through each member.
+            for (GuildMember member : guild.getMembers()) {
+                // Create a temp role
+                GuildRole role = getGuildRole(member.getRole().getLevel());
+                if (role != null) {
+                    // Set each member to their role
+                    member.setRole(role);
+                } else {
+                    member.setRole(getLowestGuildRole());
+                    LoggingUtils.severe("The player (" + member.getName() + ") had a role level that doesn't exist on the server anymore. To prevent issues, they've been automatically set the the lowest role level on the server.");
+                }
+            }
+        }
     }
 
     /**
