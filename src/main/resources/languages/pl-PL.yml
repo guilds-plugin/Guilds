@@ -8,7 +8,7 @@ descriptions:
   admin-claim: "Komenda administratorska by przejąć ziemie gildii"
   admin-delhome: "Komenda administratorska by usunąć dom gildii"
   admin-home: "Komenda administratorska by teleportować się do domu gildii"
-  admin-motd: "Admin command to view the MOTD of a guild"
+  admin-motd: "Komenda administratora by wyświetlić MOTD gildii"
   admin-motd-set: "Admin command to set the motd of a guild"
   admin-motd-remove: "Admin command to remove the motd of a guild"
   admin-prefix: "Komenda administratora aby zmienić prefix gildi"
