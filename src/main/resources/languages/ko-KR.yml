@@ -93,8 +93,8 @@ create:
   warning: "&c길드 창립을 위해선 {amount} 만큼 필요합니다. 킬드를 창립하려면 /guilds 를, 취소하려면 /guilds cancel 을 치세요"
   successful: "&a길드'{guild}&r&a' 가(이) 성공적으로 생성되었습니다!"
   cancelled: "&c길드 생성이 취소되었습니다!"
-  requirements: "&cYour guild's name does not match the requirements! You can only use alphanumeric characters and the length of the name cannot exceed 64"
-  name-too-long: "&cYou didn't provide a prefix so the name you input was tested against the prefix requirements and that failed. Please try a shorter name or input a prefix on creation."
+  requirements: "&c길드의 이름이 요구사항에 부합하지 않습니다! 64자를 넘지않으면서 알파벳으로만 구성되어야합니다"
+  name-too-long: "&c접두사를 제공하지않았기에 접두사 요구사항에 부합하지 못하였습니다. 생성시 더 짧은 이름이나 접두사를 포함해주세요."
   prefix-too-long: "&cThe guild prefix provided did not match the requirements! Perphaps you had too many characters?"
 chat:
   disabled: "Guild Chat Disabled"
