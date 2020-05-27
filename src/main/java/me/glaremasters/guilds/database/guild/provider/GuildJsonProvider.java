@@ -84,12 +84,12 @@ public class GuildJsonProvider implements GuildProvider {
     }
 
     @Override
-    public List<Guild> getAllGuilds(@Nullable String tablePrefix) throws IOException {
+    public List<Guild> getAllGuilds(@Nullable String tablePrefix) {
         List<Guild> loadedGuilds = new ArrayList<>();
 
         for (File file : Objects.requireNonNull(dataFolder.listFiles())) {
-            Guild guild = gson.fromJson(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8), Guild.class);
             try {
+                Guild guild = gson.fromJson(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8), Guild.class);
                 guild.getId();
                 loadedGuilds.add(guild);
             } catch (Exception ex) {
