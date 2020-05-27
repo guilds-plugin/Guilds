@@ -98,6 +98,10 @@ public class VaultBlacklistListener implements Listener {
      */
     @EventHandler
     public void onItemClick(InventoryClickEvent event) {
+        // Check if the event was already cancelled before going through this all
+        if (event.isCancelled()) {
+            return;
+        }
 
         // get the player who is clicking
         Player player = (Player) event.getWhoClicked();
