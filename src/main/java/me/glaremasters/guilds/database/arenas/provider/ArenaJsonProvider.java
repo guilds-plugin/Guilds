@@ -28,6 +28,7 @@ import com.google.gson.Gson;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.arena.Arena;
 import me.glaremasters.guilds.database.arenas.ArenaProvider;
+import me.glaremasters.guilds.utils.LoggingUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -82,7 +83,14 @@ public class ArenaJsonProvider implements ArenaProvider {
         List<Arena> loadedArenas = new ArrayList<>();
 
         for (File file : Objects.requireNonNull(dataFolder.listFiles())) {
-            loadedArenas.add(gson.fromJson(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8), Arena.class));
+            try {
+                Arena arena = gson.fromJson(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8), Arena.class);
+                arena.getId();
+                loadedArenas.add(arena);
+            } catch (Exception ex) {
+                LoggingUtils.severe("There was an error loading an Arena from the following file: " + file.getAbsolutePath());
+                LoggingUtils.severe("To prevent data loss in the plugin, this Arena has been prevented from loading.");
+            }
         }
 
         return loadedArenas;
