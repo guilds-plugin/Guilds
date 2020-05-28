@@ -28,6 +28,7 @@ import com.google.gson.Gson;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.database.challenges.ChallengeProvider;
 import me.glaremasters.guilds.guild.GuildChallenge;
+import me.glaremasters.guilds.utils.LoggingUtils;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -64,7 +65,14 @@ public class ChallengeJsonProvider implements ChallengeProvider {
         List<GuildChallenge> loadedChallenges = new ArrayList<>();
 
         for (File file : Objects.requireNonNull(dataFolder.listFiles())) {
-            loadedChallenges.add(gson.fromJson(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8), GuildChallenge.class));
+            try {
+                GuildChallenge challenge = gson.fromJson(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8), GuildChallenge.class);
+                challenge.getId();
+                loadedChallenges.add(challenge);
+            } catch (Exception ex) {
+                LoggingUtils.severe("There was an error loading a GuildChallenge from the following file: " + file.getAbsolutePath());
+                LoggingUtils.severe("To prevent data loss in the plugin, this GuildChallenge has been prevented from loading.");
+            }
         }
 
         return loadedChallenges;
