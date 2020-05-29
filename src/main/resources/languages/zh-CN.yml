@@ -333,6 +333,7 @@ war:
   action-bar-ready: "还有&b{amount}&a秒开始战争! 准备好!"
   winner: "&a炮火轰鸣，硝烟弥漫，遮云蔽日，惨不忍睹, 最终, &b{guild} &a的勇士们赢得了这场战争!"
   already-accepted: "&c你已经接受过了这场战争! 耐心点!"
+  already-joined: "&cYou have already joined this war! Wait for it to start!"
   removed-for-size: "&a下列玩家被移除出战争以维持两边的平衡: {players}"
   defend-cooldown: "&b{guild} &c最近已经防御过一次挑战了. 让他们休息一下以重整旗鼓吧!"
   commands-blocked: "&c抱歉, 战争中无法执行此命令!"
