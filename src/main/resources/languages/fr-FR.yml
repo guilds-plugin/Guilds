@@ -333,6 +333,7 @@ war:
   action-bar-ready: "&b{amount} &asecondes restantes pour que la guerre commence! Préparez-vous !"
   winner: "&aLa bataille fût rude... du sang fût versé... les larmes étaient présentes... mais à la fin, les puissants guerriers de &b{guild} &aont gagné la bataille !"
   already-accepted: "&cVous ne pouvez pas accepter un défi déjà accepté ! Soyez patient !"
+  already-joined: "&cYou have already joined this war! Wait for it to start!"
   removed-for-size: "&aLe(s) joueur(s) suivant(s) a/ont été retiré(s) de la guerre afin de garder chaque camp pair: {players}"
   defend-cooldown: "&b{guild} &chse sont déjà défendus dans l'arène récemment. Laissez-les retrouver leur force et défiez-les une autre fois!"
   commands-blocked: "&cDésolé ! Vous ne pouvez pas exécuter de commandes pendant une guerre !"
