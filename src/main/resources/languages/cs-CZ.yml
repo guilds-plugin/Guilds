@@ -333,6 +333,7 @@ war:
   action-bar-ready: "&b{amount}&a sekund do začátku války! Připravte se!"
   winner: "&a Bitva byla drsná... krev byla prolita... byly přítomny slzy... ale nakonec, mocní válečníci &b{guild} &a vyhráli válku!"
   already-accepted: "&cNemůžute příjmout výzvu, kterou jste již přijali! Budťe trpělivý!"
+  already-joined: "&cYou have already joined this war! Wait for it to start!"
   removed-for-size: "&a Následující hráči byli z války odstraněni, aby zůstali obě strany vyrovnané: {players}"
   defend-cooldown: "&b {guild} &již v aréně v poslední době válčili. Nechte je znovu získat sílu a vyzvěte je jindy!"
   commands-blocked: "&cPromiňte! Během války nemůžete spouštět příkazy!"
