@@ -174,11 +174,17 @@ internal class CommandWar : BaseCommand() {
         }
 
         if (challenge.defender == guild) {
+            if (challenge.defendPlayers.contains(player.uniqueId)) {
+                throw ExpectationNotMet(Messages.WAR__ALREADY_JOINED)
+            }
             if (challenge.defendPlayers.size == challenge.maxPlayersPerSide) {
                 throw ExpectationNotMet(Messages.WAR__ALREADY_AT_MAX)
             }
             challenge.defendPlayers.add(player.uniqueId)
         } else {
+            if (challenge.challengePlayers.contains(player.uniqueId)) {
+                throw ExpectationNotMet(Messages.WAR__ALREADY_JOINED)
+            }
             if (challenge.challengePlayers.size == challenge.maxPlayersPerSide) {
                 throw ExpectationNotMet(Messages.WAR__ALREADY_AT_MAX)
             }
