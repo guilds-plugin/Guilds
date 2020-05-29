@@ -53,6 +53,12 @@ class PlaceholderAPI(private val guildHandler: GuildHandler) : PlaceholderExpans
             return ""
         }
         val api = Guilds.getApi() ?: return ""
+
+        // Check formatted here because this needs to return before we check the guild
+        if (arg.toLowerCase() == "formatted") {
+            return guildHandler.getFormattedPlaceholder(player)
+        }
+
         val guild = api.getGuild(player) ?: return ""
         return when (arg.toLowerCase()) {
             "id" -> guild.id.toString()
@@ -69,7 +75,6 @@ class PlaceholderAPI(private val guildHandler: GuildHandler) : PlaceholderExpans
             "code_amount" -> guild.codes.size.toString()
             "max_members" -> guild.tier.maxMembers.toString()
             "max_balance" -> guild.tier.maxBankBalance.toString()
-            "formatted" -> guildHandler.getFormattedPlaceholder(player)
             "challenge_wins" -> guild.guildScore.wins.toString()
             "challenge_loses" -> guild.guildScore.loses.toString()
             "motd" -> guild.motd ?: ""
