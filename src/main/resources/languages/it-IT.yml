@@ -333,6 +333,7 @@ war:
   action-bar-ready: "&b{amount} &asecondi rimasti prima che la guerra inizi! Preparati!"
   winner: "&aLa battaglia è stata dura... sangue era stato versato... le lacrime erano presenti... ma alla fine, i potenti guerrieri di &b{guild} &a hanno vinto la battaglia!"
   already-accepted: "&cNon puoi accettare una sfida che hai già accettato! Sii paziente!"
+  already-joined: "&cYou have already joined this war! Wait for it to start!"
   removed-for-size: "&aI seguenti giocatori sono stati rimossi dalla guerra per mantenere uniforme ogni lato: {players}"
   defend-cooldown: "&b{guild} &csi è già difeso recentemente nell'arena. Fagli riguadagnare la loro forza e sfidali un'altra volta!"
   commands-blocked: "&cSpiacenti! Non puoi eseguire comandi mentre sei in una guerra!"
