@@ -333,6 +333,7 @@ war:
   action-bar-ready: "&b{amount} &asekunder kvar tills kriget börjar! Förbered er!"
   winner: "&aStriden var grov... blod skjutits... tårar... men i slutändan, de mäktiga krigarna av &b{guild} &avann striden!"
   already-accepted: "&cDu kan inte acceptera en utmaning som du redan har accepterat! Ha tålamod!"
+  already-joined: "&cYou have already joined this war! Wait for it to start!"
   removed-for-size: "&aFöljande spelare har tagits bort från kriget för att hålla varje sida jämn: {players}"
   defend-cooldown: "&b{guild} &char försvarat sig redan på arenan nyligen. Låt dem återfå sin styrka och utmana dem en annan gång!"
   commands-blocked: "&cTyvärr! Du kan inte köra kommandon under ett krig!"
@@ -346,6 +347,7 @@ acf-core:
   permission_denied: "Jag är ledsen, men du har inte behörighet att utföra detta kommando."
   unknown_command: "Okänt kommando, skriv <c2>/help</c2>"
   error_performing_command: "Jag är ledsen, men det uppstod ett fel vid utförandet av detta kommando."
+  help_format: "<c1>/{command}</c1> <c2>{parameters}</c2> <c3>{separator} {description}</c3>"
 migrate:
   invalid-backend: "&cBackend du har försökt migrera till är ogiltig."
   connection-failed: "&cAnslutning till den nya backend misslyckades! Kontrollera att din autentisering är korrekt konfigurerad!"

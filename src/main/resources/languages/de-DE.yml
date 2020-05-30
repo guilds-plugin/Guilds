@@ -333,6 +333,7 @@ war:
   action-bar-ready: "&b{amount} &aSekunden bis der Gildenkrieg beginnt! Macht euch bereit!"
   winner: "&aEs war ein harter Kampf, aber am Ende sind die mutigen Krieger von &b{guild} &aals Sieger aus der Schlacht hervorgegangen!"
   already-accepted: "&cDu kannst keine Herausforderung annehmen, welche du bereits angenommen hast! Sei geduldig!"
+  already-joined: "&cYou have already joined this war! Wait for it to start!"
   removed-for-size: "&aDie folgenden Spieler wurden fairnesshalber aus dem Gildenkrieg entfernt: {players}"
   defend-cooldown: "&b{guild} &chat erst kürzlich in einem Gildenkrieg gekämpft. Versuche es später noch einmal!"
   commands-blocked: "&cEntschuldigung! Du kannst keine Befehle verwenden während du im Krieg bist!"
@@ -346,6 +347,7 @@ acf-core:
   permission_denied: "Entschuldigung, aber du hast keine Berechtigung diesen Befehl zu verwenden."
   unknown_command: "Unbekannter Befehl, tippe <c2>/help</c2>"
   error_performing_command: "Entschuldigung, bei der Ausführung des Befehls ist ein Fehler aufgetreten."
+  help_format: "<c1>/{command}</c1> <c2>{parameters}</c2> <c3>{separator} {description}</c3>"
 migrate:
   invalid-backend: "&cDas Backend, welches du migrieren möchtest ist ungültig."
   connection-failed: "&cVerbindung zum neuen Backend fehlgeschlagen. Stelle sicher dass die Authentifizierung korrekt konfiguriert ist!"
