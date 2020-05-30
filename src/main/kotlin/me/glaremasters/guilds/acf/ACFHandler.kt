@@ -67,10 +67,11 @@ class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCo
         loadCommands()
     }
 
-    private fun loadLang() {
-        plugin.dataFolder.resolve("languages").listFiles()?.filter() {
+    fun loadLang() {
+        languages.clear()
+        plugin.dataFolder.resolve("languages").listFiles()?.filter {
             it.extension.equals("yml", true)
-        }?.forEach() {
+        }?.forEach {
             val locale = Locale.forLanguageTag(it.nameWithoutExtension)
 
             commandManager.addSupportedLanguage(locale)

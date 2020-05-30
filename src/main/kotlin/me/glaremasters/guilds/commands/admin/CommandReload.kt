@@ -49,6 +49,7 @@ internal class CommandReload : BaseCommand() {
     fun reload(issuer: CommandIssuer) {
         settingsManager.reload()
         guilds.settingsHandler.buffConf.reload()
+        guilds.acfHandler.loadLang()
         currentCommandIssuer.sendInfo(Messages.RELOAD__RELOADED)
     }
 }
