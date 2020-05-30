@@ -289,8 +289,8 @@ public final class Guilds extends JavaPlugin {
     private void downloadOptionalDependencies() {
         BukkitLibraryManager loader = new BukkitLibraryManager(this);
         Libraries libraries = new Libraries();
-        loader.addRepository("https://repo.glaremasters.me/repository/public/");
         loader.addMavenCentral();
+        loader.addRepository("https://repo.glaremasters.me/repository/public/");
         if (!settingsHandler.getMainConf().getProperty(StorageSettings.STORAGE_TYPE).toLowerCase().equals("json")) {
             try {
                 libraries.loadSQL(loader);
