@@ -65,7 +65,7 @@ class InfoGUI(private val guilds: Guilds, private val settingsManager: SettingsM
         val motd = if (guild.motd == null) "" else guild.motd
 
         generateItem(gui, settingsManager.getProperty(GuildInfoSettings.TIER_DISPLAY), settingsManager.getProperty(GuildInfoSettings.TIER_MATERIAL), settingsManager.getProperty(GuildInfoSettings.TIER_NAME), settingsManager.getProperty(GuildInfoSettings.TIER_LORE).map { l -> l.replace("{tier}", tier.name) }, 2, 3)
-        generateItem(gui, settingsManager.getProperty(GuildInfoSettings.BANK_DISPLAY), settingsManager.getProperty(GuildInfoSettings.BANK_MATERIAL), settingsManager.getProperty(GuildInfoSettings.BANK_NAME), settingsManager.getProperty(GuildInfoSettings.BANK_LORE).map { l -> l.replace("{current}", EconomyUtils.format(guild.balance)).replace("{max}", tier.maxBankBalance.toString()) }, 2, 4)
+        generateItem(gui, settingsManager.getProperty(GuildInfoSettings.BANK_DISPLAY), settingsManager.getProperty(GuildInfoSettings.BANK_MATERIAL), settingsManager.getProperty(GuildInfoSettings.BANK_NAME), settingsManager.getProperty(GuildInfoSettings.BANK_LORE).map { l -> l.replace("{current}", EconomyUtils.format(guild.balance)).replace("{max}", EconomyUtils.format(tier.maxBankBalance)) }, 2, 4)
         generateMembersItem(gui, guild)
         generateItem(gui, settingsManager.getProperty(GuildInfoSettings.STATUS_DISPLAY), statusMaterial, settingsManager.getProperty(GuildInfoSettings.STATUS_NAME), settingsManager.getProperty(GuildInfoSettings.STATUS_LORE).map { l -> l.replace("{status}", statusString) }, 2, 6)
         generateHomeItem(gui, guild, player, home)
