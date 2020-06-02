@@ -333,7 +333,7 @@ war:
   action-bar-ready: "&b{amount} &aSekunden bis der Gildenkrieg beginnt! Macht euch bereit!"
   winner: "&aEs war ein harter Kampf, aber am Ende sind die mutigen Krieger von &b{guild} &aals Sieger aus der Schlacht hervorgegangen!"
   already-accepted: "&cDu kannst keine Herausforderung annehmen, welche du bereits angenommen hast! Sei geduldig!"
-  already-joined: "&cYou have already joined this war! Wait for it to start!"
+  already-joined: "&cDu bist diesem Krieg bereits beigetreten! Warte darauf, dass er beginnt!"
   removed-for-size: "&aDie folgenden Spieler wurden fairnesshalber aus dem Gildenkrieg entfernt: {players}"
   defend-cooldown: "&b{guild} &chat erst kürzlich in einem Gildenkrieg gekämpft. Versuche es später noch einmal!"
   commands-blocked: "&cEntschuldigung! Du kannst keine Befehle verwenden während du im Krieg bist!"
