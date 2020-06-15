@@ -38,6 +38,10 @@ import co.aikar.commands.annotation.Syntax
 import java.util.stream.Collectors
 import java.util.stream.Stream
 import me.glaremasters.guilds.Guilds
+import me.glaremasters.guilds.api.events.GuildInviteEvent
+import me.glaremasters.guilds.api.events.challenges.GuildWarAcceptEvent
+import me.glaremasters.guilds.api.events.challenges.GuildWarChallengeEvent
+import me.glaremasters.guilds.api.events.challenges.GuildWarDeclineEvent
 import me.glaremasters.guilds.arena.ArenaHandler
 import me.glaremasters.guilds.challenges.ChallengeHandler
 import me.glaremasters.guilds.configuration.sections.WarSettings
@@ -48,6 +52,7 @@ import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.tasks.GuildWarChallengeCheckTask
 import me.glaremasters.guilds.tasks.GuildWarJoinTask
 import me.glaremasters.guilds.utils.Constants
+import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 
 @CommandAlias("%guilds")
@@ -78,6 +83,9 @@ internal class CommandWar : BaseCommand() {
         if (challenge.isAccepted) {
             throw ExpectationNotMet(Messages.WAR__ALREADY_ACCEPTED)
         }
+
+        val event = GuildWarAcceptEvent(player, guild)
+        Bukkit.getPluginManager().callEvent(event)
 
         val joinTime = settingsManager.getProperty(WarSettings.JOIN_TIME)
         val readyTime = settingsManager.getProperty(WarSettings.READY_TIME)
@@ -126,6 +134,13 @@ internal class CommandWar : BaseCommand() {
             throw ExpectationNotMet(Messages.WAR__NO_DEFENDERS)
         }
 
+        val event = GuildWarChallengeEvent(player, guild, targetGuild)
+        Bukkit.getPluginManager().callEvent(event)
+
+        if (event.isCancelled) {
+            return
+        }
+
         val minPlayers = settingsManager.getProperty(WarSettings.MIN_PLAYERS)
         val maxPlayers = settingsManager.getProperty(WarSettings.MAX_PLAYERS)
         val acceptTime = settingsManager.getProperty(WarSettings.ACCEPT_TIME)
@@ -153,6 +168,9 @@ internal class CommandWar : BaseCommand() {
     fun deny(player: Player, @Conditions("perm:perm=INITIATE_WAR") guild: Guild) {
         val challenge = challengeHandler.getChallenge(guild) ?: throw ExpectationNotMet(Messages.WAR__NO_PENDING_CHALLENGE)
         val challenger = challenge.challenger
+
+        val event = GuildWarDeclineEvent(player, guild)
+        Bukkit.getPluginManager().callEvent(event)
 
         challenger.sendMessage(currentCommandManager, Messages.WAR__CHALLENGE_DENIED_CHALLENGER, "{guild}", guild.name)
         guild.sendMessage(currentCommandManager, Messages.WAR__CHALLENGE_DENIED_DEFENDER, "{guild}", challenger.name)
