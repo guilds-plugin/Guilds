@@ -56,7 +56,7 @@ internal class CommandAdminAddPlayer : BaseCommand() {
     fun add(issuer: CommandIssuer, @Flags("other") @Values("@guilds") guild: Guild, target: String) {
         val user = Bukkit.getOfflinePlayer(target)
 
-        if (!user.hasPlayedBefore()) {
+        if (!user.hasPlayedBefore() && !user.isOnline) {
             throw ExpectationNotMet(Messages.ERROR__PLAYER_NO_EXIST)
         }
 
