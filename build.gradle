@@ -63,7 +63,6 @@ shadowJar {
     relocate("org.jdbi", "${base}jdbi")
     relocate("org.mariadb.jdbc", "${base}mariadb")
     relocate("me.mattstudios.mfgui", "${base}mfgui")
-    relocate("me.rayzr522.jsonmessage", "${base}jsonmessage")
     archiveFileName = "Guilds-${project.version}.jar"
 }
 
@@ -91,13 +90,10 @@ dependencies {
     implementation("com.dumptruckman.minecraft:JsonConfiguration:1.1")
 
     // Cross-Version Support
-    implementation("com.github.cryptomorin:XSeries:5.3.1")
+    implementation("com.github.cryptomorin:XSeries:6.0.1")
 
     // GUI Lib
     implementation("me.mattstudios.utils:matt-framework-gui:1.2.7")
-
-    // Json Messages
-    implementation("me.rayzr522:jsonmessage:1.2.0")
 
     // Kotlin collections
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
@@ -115,7 +111,7 @@ dependencies {
     compileOnly("org.slf4j:slf4j-api:1.7.25")
 
     // Bukkit Version
-    compileOnly("org.bukkit:bukkit:1.15.2-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot-api:1.16.1-R0.1-SNAPSHOT")
 
     // Mojang Library
     compileOnly("com.mojang:authlib:1.5.25")

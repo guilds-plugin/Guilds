@@ -33,8 +33,8 @@ import me.glaremasters.guilds.configuration.sections.GuildSettings
 import me.glaremasters.guilds.configuration.sections.PluginSettings
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
+import me.glaremasters.guilds.utils.JSONMessage
 import me.glaremasters.guilds.utils.StringUtils
-import me.rayzr522.jsonmessage.JSONMessage
 import net.milkbowl.vault.permission.Permission
 import org.bukkit.Bukkit
 import org.bukkit.event.EventHandler
