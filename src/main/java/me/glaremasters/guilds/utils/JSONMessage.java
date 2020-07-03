@@ -29,6 +29,7 @@ import java.util.Vector;
  *
  * @author Rayzr
  */
+
 @SuppressWarnings({"WeakerAccess", "unused"})
 public class JSONMessage {
     private static final BiMap<ChatColor, String> stylesToNames;
