@@ -66,7 +66,7 @@ class InfoGUI(private val guilds: Guilds, private val settingsManager: SettingsM
 
         generateItem(gui, settingsManager.getProperty(GuildInfoSettings.TIER_DISPLAY), settingsManager.getProperty(GuildInfoSettings.TIER_MATERIAL), settingsManager.getProperty(GuildInfoSettings.TIER_NAME), settingsManager.getProperty(GuildInfoSettings.TIER_LORE).map { l -> l.replace("{tier}", tier.name) }, 2, 3)
         generateItem(gui, settingsManager.getProperty(GuildInfoSettings.BANK_DISPLAY), settingsManager.getProperty(GuildInfoSettings.BANK_MATERIAL), settingsManager.getProperty(GuildInfoSettings.BANK_NAME), settingsManager.getProperty(GuildInfoSettings.BANK_LORE).map { l -> l.replace("{current}", EconomyUtils.format(guild.balance)).replace("{max}", EconomyUtils.format(tier.maxBankBalance)) }, 2, 4)
-        generateMembersItem(gui, guild)
+        generateMembersItem(gui, guild, player)
         generateItem(gui, settingsManager.getProperty(GuildInfoSettings.STATUS_DISPLAY), statusMaterial, settingsManager.getProperty(GuildInfoSettings.STATUS_NAME), settingsManager.getProperty(GuildInfoSettings.STATUS_LORE).map { l -> l.replace("{status}", statusString) }, 2, 6)
         generateHomeItem(gui, guild, player, home)
         generateVaultItem(gui, guild, player)
@@ -84,7 +84,7 @@ class InfoGUI(private val guilds: Guilds, private val settingsManager: SettingsM
         gui.setItem(x, y, item)
     }
 
-    private fun generateMembersItem(gui: Gui, guild: Guild) {
+    private fun generateMembersItem(gui: Gui, guild: Guild, player: Player) {
         if (!settingsManager.getProperty(GuildInfoSettings.MEMBERS_DISPLAY)) {
             return
         }
@@ -92,7 +92,7 @@ class InfoGUI(private val guilds: Guilds, private val settingsManager: SettingsM
         val item = GuiItem(GuiUtils.createItem(settingsManager.getProperty(GuildInfoSettings.MEMBERS_MATERIAL), settingsManager.getProperty(GuildInfoSettings.MEMBERS_NAME), settingsManager.getProperty(GuildInfoSettings.MEMBERS_LORE).map { l -> l.replace("{current}", guild.members.size.toString()).replace("{max}", tier.maxMembers.toString()).replace("{online}", guild.onlineMembers.size.toString()) }))
         item.setAction { event ->
             event.isCancelled = true
-            guilds.guiHandler.members.get(guild).open(event.whoClicked)
+            guilds.guiHandler.members.get(guild, player).open(event.whoClicked)
         }
         gui.setItem(2, 5, item)
     }

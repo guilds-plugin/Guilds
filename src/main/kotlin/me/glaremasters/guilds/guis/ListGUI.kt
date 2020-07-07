@@ -38,12 +38,12 @@ import me.glaremasters.guilds.utils.GuiUtils
 import me.glaremasters.guilds.utils.StringUtils
 import me.mattstudios.mfgui.gui.guis.GuiItem
 import me.mattstudios.mfgui.gui.guis.PaginatedGui
+import org.bukkit.entity.Player
 
 class ListGUI(private val guilds: Guilds, private val settingsManager: SettingsManager, private val guildHandler: GuildHandler) {
     private val items: MutableList<GuiItem>
 
-    val get: PaginatedGui
-        get() {
+    fun get(player: Player): PaginatedGui {
             val name = settingsManager.getProperty(GuildListSettings.GUILD_LIST_NAME)
             val gui = PaginatedGui(guilds, 6, 45, StringUtils.color(name))
 
@@ -51,7 +51,7 @@ class ListGUI(private val guilds: Guilds, private val settingsManager: SettingsM
                 event.isCancelled = true
             }
 
-            createListItems(gui)
+            createListItems(gui, player)
             addBottom(gui)
             createButtons(gui)
 
@@ -73,7 +73,7 @@ class ListGUI(private val guilds: Guilds, private val settingsManager: SettingsM
         gui.setItem(6, 1, back)
     }
 
-    private fun createListItems(gui: PaginatedGui) {
+    private fun createListItems(gui: PaginatedGui, player: Player) {
         val guilds = guildHandler.guilds
 
         when (settingsManager.getProperty(GuildListSettings.GUILD_LIST_SORT).toUpperCase()) {
@@ -88,7 +88,7 @@ class ListGUI(private val guilds: Guilds, private val settingsManager: SettingsM
         }
 
         guilds.forEach { guild ->
-            setListItem(guild)
+            setListItem(guild, player)
         }
 
         items.forEach { item ->
@@ -98,7 +98,7 @@ class ListGUI(private val guilds: Guilds, private val settingsManager: SettingsM
         items.clear()
     }
 
-    private fun setListItem(guild: Guild) {
+    private fun setListItem(guild: Guild, player: Player) {
         val defaultUrl = settingsManager.getProperty(GuildListSettings.GUILD_LIST_HEAD_DEFAULT_URL)
         val useDefaultUrl = settingsManager.getProperty(GuildListSettings.USE_DEFAULT_TEXTURE)
         val item = if (!useDefaultUrl) guild.skull else GuildSkull(defaultUrl).itemStack
@@ -118,7 +118,7 @@ class ListGUI(private val guilds: Guilds, private val settingsManager: SettingsM
 
         guiItem.setAction { event ->
             event.isCancelled = true
-            guilds.guiHandler.members.get(guild).open(event.whoClicked)
+            guilds.guiHandler.members.get(guild, player).open(event.whoClicked)
         }
 
         items.add(guiItem)
