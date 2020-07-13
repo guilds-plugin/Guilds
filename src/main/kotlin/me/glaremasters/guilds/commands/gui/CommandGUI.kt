@@ -68,7 +68,7 @@ internal class CommandGUI : BaseCommand() {
     @Syntax("")
     @CommandPermission(Constants.BASE_PERM + "list")
     fun list(player: Player) {
-        guilds.guiHandler.list.get.open(player)
+        guilds.guiHandler.list.get(player).open(player)
     }
 
     @Subcommand("members")
@@ -76,7 +76,7 @@ internal class CommandGUI : BaseCommand() {
     @Syntax("")
     @CommandPermission(Constants.BASE_PERM + "members")
     fun members(player: Player, guild: Guild) {
-        guilds.guiHandler.members.get(guild).open(player)
+        guilds.guiHandler.members.get(guild, player).open(player)
     }
 
     @Subcommand("vault")

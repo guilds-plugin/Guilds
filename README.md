@@ -10,6 +10,8 @@ The Guilds Project was created to offer a RPG type system to servers.
 It was inspired by players like you who enjoy creating a fun and exciting environment for your server.
 Guilds allows players to join interactive groups of other players, forge their own communities on your server, and compete with other guilds for dominance and control.
 
+This plugin is for Minecraft Servers!
+
 For more information, you can check out the [wiki](https://wiki.helpch.at/)!  
 Looking for the javadocs? You can see them [here](https://guilds-plugin.github.io/javadocs/)!
 
