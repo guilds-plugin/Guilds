@@ -46,6 +46,15 @@ repositories {
     }
 
     maven {
+        name = "codemc-repo"
+        url = uri("https://repo.codemc.org/repository/maven-public/")
+
+        content {
+            includeGroup("org.codemc.worldguardwrapper")
+        }
+    }
+
+    maven {
         name = "glare-repo"
         url = uri("https://repo.glaremasters.me/repository/public/")
     }
@@ -81,7 +90,7 @@ dependencies {
     implementation("co.aikar:taskchain-bukkit:3.7.2")
 
     // Worldguard Claim Handling
-    implementation("org.codemc.worldguardwrapper:worldguardwrapper:1.1.6-SNAPSHOT")
+    implementation("org.codemc.worldguardwrapper:worldguardwrapper:1.1.9-SNAPSHOT")
 
     // Configuration Lib
     implementation("ch.jalu:configme:1.2.0")
