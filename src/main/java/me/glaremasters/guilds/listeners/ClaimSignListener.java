@@ -65,7 +65,7 @@ public class ClaimSignListener implements Listener {
     public void onSignChange(SignChangeEvent event) {
         Player player = event.getPlayer();
 
-        if (!event.getLine(0).equalsIgnoreCase("[Guild Claim]"))
+        if (!event.getLine(0).equalsIgnoreCase(settingsManager.getProperty(ClaimSettings.CLAIM_SIGN_TEXT)))
             return;
 
         if (!player.hasPermission("guilds.claimsigns.place") && !player.hasPermission("worldguard.region.redefine.*")) {

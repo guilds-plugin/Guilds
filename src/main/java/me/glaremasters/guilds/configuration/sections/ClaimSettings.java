@@ -68,6 +68,10 @@ public class ClaimSettings implements SettingsHolder {
     public static final Property<Boolean> CLAIM_SIGNS =
             newProperty("claims.claim-signs", false);
 
+    @Comment("The text to look for on a sign for the guild claims")
+    public static final Property<String> CLAIM_SIGN_TEXT =
+            newProperty("claims.claim-sign-text", "[Guild Claim]");
+
     @Comment({"Would you like to make it so that claims can only be aquired through the purchasing with signs?",
             "This will disable the regular claim commands."})
     public static final Property<Boolean> FORCE_CLAIM_SIGNS =
