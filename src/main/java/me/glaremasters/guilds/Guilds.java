@@ -30,6 +30,7 @@ import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import me.bristermitten.pdm.PluginDependencyManager;
 import me.glaremasters.guilds.acf.ACFHandler;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.api.GuildsAPI;
@@ -133,6 +134,9 @@ public final class Guilds extends JavaPlugin {
     @Override
     public void onEnable() {
 
+        PluginDependencyManager pdm = new PluginDependencyManager(this);
+        pdm.loadAllDependencies().join();
+
         LoggingUtils.logLogo(Bukkit.getConsoleSender(), this);
 
         // Check if the server is running Vault
@@ -172,7 +176,7 @@ public final class Guilds extends JavaPlugin {
 
         settingsHandler = new SettingsHandler(this);
 
-        downloadOptionalDependencies();
+//        downloadOptionalDependencies();
 
         new LanguageUpdater(this).saveLang();
 
