@@ -65,9 +65,15 @@ class WorldGuardListener(private val guildHandler: GuildHandler) : Listener {
 
     @EventHandler
     fun PlayerInteractEvent.onInteract() {
+
+        if (clickedBlock == null) {
+            return
+        }
+        
         val player = player
         val loc = player.location
         val guild = guildHandler.getGuild(player) ?: return
+
 
         for (region in wrapper.getRegions(loc)) {
             if (region.id == guild.id.toString()) {
