@@ -114,13 +114,6 @@ public class GuildSettings implements SettingsHolder {
     public static final Property<Boolean> ALLY_DAMAGE =
             newProperty("guild.damage.ally", false);
 
-    @Comment({"Do we want to respect WorldGuard flags for PVP deny?",
-            "This will be checked first before checking same guild and ally.",
-            "This is ONLY needed if you have either of the above two options to set true.",
-    "ONLY PUT THIS ON TRUE IF YOU HAVE WORLDGUARD INSTALLED OR YOU WILL BREAK STUFF"})
-    public static final Property<Boolean> RESPECT_WG_PVP_FLAG =
-            newProperty("guild.damage.respect-wg-pvp-flag", false);
-
     @Comment("Would you like to send players their guild's motd on login?")
     public static final Property<Boolean> MOTD_ON_LOGIN =
             newProperty("guild.motd-on-login", true);

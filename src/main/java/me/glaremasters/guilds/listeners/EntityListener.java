@@ -114,15 +114,13 @@ public class EntityListener implements Listener {
      */
     @EventHandler
     public void onEntityDamage(EntityDamageByEntityEvent event) {
+        if (event.isCancelled()) {
+            return;
+        }
+
         if (!(event.getEntity() instanceof Player) || !(event.getDamager() instanceof Player)) return;
         Player player = (Player) event.getEntity();
         Player damager = (Player) event.getDamager();
-
-        // Make sure that they aren't in a claim that turns off pvpv
-        if (settingsManager.getProperty(GuildSettings.RESPECT_WG_PVP_FLAG)) {
-            event.setCancelled(ClaimUtils.checkPvpDisabled(player));
-            return;
-        }
 
         // Check if they are the same guild
         if (guildHandler.isSameGuild(player, damager)) {
@@ -149,6 +147,9 @@ public class EntityListener implements Listener {
 
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent event) {
+        if (event.isCancelled()) {
+            return;
+        }
 
         if (!(event.getEntity() instanceof Player) || !(event.getDamager() instanceof Projectile)) {
             return;
@@ -162,11 +163,6 @@ public class EntityListener implements Listener {
 
         Player damaged = (Player) event.getEntity();
         Player damager = (Player) projectile.getShooter();
-
-        if (settingsManager.getProperty(GuildSettings.RESPECT_WG_PVP_FLAG)) {
-            event.setCancelled(ClaimUtils.checkPvpDisabled(damaged));
-            return;
-        }
 
         if (guildHandler.isSameGuild(damaged, damager) && damaged != damager) {
             event.setCancelled(!settingsManager.getProperty(GuildSettings.GUILD_DAMAGE));
@@ -185,6 +181,9 @@ public class EntityListener implements Listener {
      */
     @EventHandler
     public void onFlameArrow(EntityCombustByEntityEvent event) {
+        if (event.isCancelled()) {
+            return;
+        }
 
         if (!(event.getEntity() instanceof Player))
             return;
@@ -199,11 +198,6 @@ public class EntityListener implements Listener {
 
         Player damagee = (Player) event.getEntity();
         Player damager = (Player) arrow.getShooter();
-
-        if (settingsManager.getProperty(GuildSettings.RESPECT_WG_PVP_FLAG)) {
-            event.setCancelled(ClaimUtils.checkPvpDisabled(damagee));
-            return;
-        }
 
         if (guildHandler.isSameGuild(damagee, damager)) {
             arrow.setFireTicks(0);
