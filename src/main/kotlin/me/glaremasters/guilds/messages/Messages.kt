@@ -275,7 +275,15 @@ enum class Messages : MessageKeyProvider {
     MIGRATE__SAME_BACKEND,
     MIGRATE__COMPLETE,
     MIGRATE__WARNING,
-    MIGRATE__CANCELLED;
+    MIGRATE__CANCELLED,
+
+    HELPMENU__DETAILED_HEADER,
+    HELPMENU__SEARCH_HEADER,
+    HELPMENU__HELP_HEADER,
+    HELPMENU__PREVIOUS_PAGE,
+    HELPMENU__CURRENT_PAGE,
+    HELPMENU__NEXT_PAGE,
+    HELPMENU__COMMAND_CLICK;
 
     /**
      * Message keys that grab from the config to send messages

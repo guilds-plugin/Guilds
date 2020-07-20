@@ -8,42 +8,43 @@ import co.aikar.commands.CommandIssuer
 import co.aikar.commands.HelpEntry
 import co.aikar.commands.PaperCommandManager
 import me.glaremasters.guilds.Guilds
+import me.glaremasters.guilds.messages.Messages
+import me.glaremasters.guilds.utils.StringUtils
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.Bukkit
 import org.bukkit.command.ConsoleCommandSender
 import java.util.HashMap
 
 
-class HelpFormatter(val guilds: Guilds, val manager: PaperCommandManager) : CommandHelpFormatter(manager) {
+class HelpFormatter(val guilds: Guilds, private val manager: PaperCommandManager) : CommandHelpFormatter(manager) {
     var loaded = false
-    private var color = "#00ADFF"
 
     override fun printDetailedHelpHeader(help: CommandHelp, issuer: CommandIssuer, entry: HelpEntry) {
-        issuer.send(replacePlaceholders("<color:$color>=====<white>[</white> {commandprefix}{command} <white>Detailed Help ]</white>=====", arrayToMap(getHeaderFooterFormatReplacements(help)), false, null))
+        issuer.send(replacePlaceholders(StringUtils.msgAsString(issuer, Messages.HELPMENU__DETAILED_HEADER), arrayToMap(getHeaderFooterFormatReplacements(help)), false, null))
     }
 
     override fun printSearchHeader(help: CommandHelp, issuer: CommandIssuer) {
-        issuer.send(replacePlaceholders("<color:$color>=====<white>[</white> {commandprefix}{command} <italic>{search}</italic> <white>Search Results ]</white>=====", arrayToMap(getHeaderFooterFormatReplacements(help)), false, null))
+        issuer.send(replacePlaceholders(StringUtils.msgAsString(issuer, Messages.HELPMENU__SEARCH_HEADER), arrayToMap(getHeaderFooterFormatReplacements(help)), false, null))
     }
 
     override fun printHelpHeader(help: CommandHelp, issuer: CommandIssuer) {
-        issuer.send(replacePlaceholders("<color:$color>=====<white>[</white> {commandprefix}{command} <white>Help ]</white>=====", arrayToMap(getHeaderFooterFormatReplacements(help)), false, null))
+        issuer.send(replacePlaceholders(StringUtils.msgAsString(issuer, Messages.HELPMENU__HELP_HEADER), arrayToMap(getHeaderFooterFormatReplacements(help)), false, null))
     }
 
-    private fun getFooter(help: CommandHelp): String {
+    private fun getFooter(help: CommandHelp, issuer: CommandIssuer): String {
         val builder = StringBuilder()
         if (help.page > 1) {
-            builder.append("<color:$color><bold><click:run_command:/guild help ${listToSpaceSeparatedString(help.search)} ${help.page - 1}><hover:show_text:'<italic>Click for previous page'><<</bold></click></hover> </color:$color>")
+            builder.append(StringUtils.msgAsString(issuer, Messages.HELPMENU__PREVIOUS_PAGE).replace("{word}", listToSpaceSeparatedString(help.search)).replace("{page}", (help.page - 1).toString()))
         }
-        builder.append("Page <color:$color>{page}</color:$color> of <color:$color>{totalpages}</color:$color> (<color:$color>{results} results<white>)</white> ============")
+        builder.append(StringUtils.msgAsString(issuer, Messages.HELPMENU__CURRENT_PAGE))
         if (help.page < help.totalPages && !help.isOnlyPage) {
-            builder.append("<white><bold><click:run_command:/guild help ${listToSpaceSeparatedString(help.search)} ${help.page + 1}><hover:show_text:'<italic>Click for next page'> >></bold></click></hover></white>")
+            builder.append(StringUtils.msgAsString(issuer, Messages.HELPMENU__NEXT_PAGE).replace("{word}", listToSpaceSeparatedString(help.search)).replace("{page}", (help.page + 1).toString()))
         }
         return builder.toString()
     }
 
     override fun printSearchFooter(help: CommandHelp, issuer: CommandIssuer) {
-        val msg = listOf(replacePlaceholders(getFooter(help), arrayToMap(getHeaderFooterFormatReplacements(help)), false, null), "")
+        val msg = listOf(replacePlaceholders(getFooter(help, issuer), arrayToMap(getHeaderFooterFormatReplacements(help)), false, null), "")
         issuer.send(msg)
     }
 
@@ -57,7 +58,7 @@ class HelpFormatter(val guilds: Guilds, val manager: PaperCommandManager) : Comm
         finalMessage = manager.commandReplacements.replace(finalMessage)
         finalMessage = manager.locales.replaceI18NStrings(finalMessage)
         finalMessage = manager.defaultFormatter.format(finalMessage)
-        issuer.send(replacePlaceholders(" <white><click:suggest_command:/{command} ><hover:show_text:'<italic>Click to suggest'>/</white><color:$color>{command}</color:$color> <gray>{parameters}</gray></hover></click> <color:$color>{separator}</color:$color> {description}", arrayToMap(getEntryFormatReplacements(help, entry)), false, finalMessage))
+        issuer.send(replacePlaceholders(StringUtils.msgAsString(issuer, Messages.HELPMENU__COMMAND_CLICK), arrayToMap(getEntryFormatReplacements(help, entry)), false, finalMessage))
     }
 
     override fun printHelpCommand(help: CommandHelp, issuer: CommandIssuer, entry: HelpEntry) {

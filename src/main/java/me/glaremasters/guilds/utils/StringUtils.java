@@ -24,6 +24,8 @@
 
 package me.glaremasters.guilds.utils;
 
+import co.aikar.commands.CommandIssuer;
+import co.aikar.locales.MessageKeyProvider;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -43,6 +45,10 @@ public final class StringUtils {
 
     public static String color(String input) {
         return ChatColor.translateAlternateColorCodes('&', input);
+    }
+
+    public static String msgAsString(final CommandIssuer issuer, final MessageKeyProvider key) {
+        return issuer.getManager().getLocales().getMessage(issuer, key);
     }
 
     /**

@@ -355,3 +355,11 @@ migrate:
   complete: "&aMigration of data ({amount} guilds) has been completed and will continue to use this new backend until being rebooted. Make sure to change your backend in the config to what you migrated to before you reboot!"
   warning: "&bImportant! &cYou are about to migrate ALL your plugin data. It is HIGHLY suggested that you make a backup of ALL data before doing this. If you lose your data, it can NOT be recovered. Are you sure you would like to continue? Type /guilds confirm to continue or /guilds cancel to cancel!"
   cancelled: "&aYou've successfully cancelled the migration of data!"
+helpmenu:
+  detailed-header: "<color:#00ADFF>=====<white>[</white> {commandprefix}{command} <white>Detailed Help ]</white>====="
+  search-header: "<color:#00ADFF>=====<white>[</white> {commandprefix}{command} <italic>{search}</italic> <white>Search Results ]</white>====="
+  help-header: "<color:#00ADFF>=====<white>[</white> {commandprefix}{command} <white>Help ]</white>====="
+  previous-page: "<color:#00ADFF><bold><click:run_command:/guild help {word} {page}><hover:show_text:'<italic>Click for previous page'><<</bold></click></hover> </color:#00ADFF>"
+  current-page: "Page <color:#00ADFF>{page}</color:#00ADFF> of <color:#00ADFF>{totalpages}</color:#00ADFF> (<color:#00ADFF>{results} results<white>)</white> ============"
+  next-page: "<white><bold><click:run_command:/guild help {word} {page}><hover:show_text:'<italic>Click for next page'> >></bold></click></hover></white>"
+  command-click: " <white><click:suggest_command:/{command} ><hover:show_text:'<italic>Click to suggest'>/</white><color:#00ADFF>{command}</color:#00ADFF> <gray>{parameters}</gray></hover></click> <color:#00ADFF>{separator}</color:#00ADFF> {description}"
