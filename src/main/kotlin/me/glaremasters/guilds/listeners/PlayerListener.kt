@@ -105,7 +105,7 @@ class PlayerListener(private val guilds: Guilds, private val settingsManager: Se
         guild.updateGuildSkull(player, settingsManager)
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.LOWEST)
     fun AsyncPlayerChatEvent.onChat() {
         val guild = guildHandler.getGuild(player) ?: return
 
