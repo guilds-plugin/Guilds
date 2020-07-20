@@ -50,10 +50,16 @@ import org.bukkit.entity.Player
 
 class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCommandManager) {
     val languages = mutableListOf<String>()
+    private val helpFormatter = HelpFormatter(plugin, commandManager)
 
     fun load() {
         commandManager.usePerIssuerLocale(true, false)
         commandManager.enableUnstableAPI("help")
+        commandManager.defaultHelpPerPage = 5
+        commandManager.helpFormatter = helpFormatter
+        plugin.server.scheduler.runTaskLater(plugin, Runnable {
+            helpFormatter.loaded = true
+        }, 1L)
 
         loadLang()
         loadContexts(plugin.guildHandler, plugin.arenaHandler)
