@@ -75,6 +75,9 @@ public class EntityListener implements Listener {
      */
     @EventHandler
     public void onMobDamage(EntityDamageByEntityEvent event) {
+        if (event.isCancelled()) {
+            return;
+        }
         if (event.getDamager() instanceof Player) {
             Player player = (Player) event.getDamager();
             Guild guild = guildHandler.getGuild(player);
@@ -218,6 +221,9 @@ public class EntityListener implements Listener {
      */
     @EventHandler
     public void onSplash(PotionSplashEvent event) {
+        if (event.isCancelled()) {
+            return;
+        }
         boolean isHarming = false;
         for (PotionEffect effect : event.getPotion().getEffects()) {
             if (bad.contains(effect.getType())) {

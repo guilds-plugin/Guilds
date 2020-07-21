@@ -104,6 +104,9 @@ class ArenaListener(private val guilds: Guilds, private val challengeHandler: Ch
 
     @EventHandler
     fun EntityDamageByEntityEvent.onDeathByProjectile() {
+        if (isCancelled) {
+            return
+        }
         val entity = entity as? Player ?: return
         val obj = damager as? Projectile ?: return
         val shooter = obj.shooter as? Player ?: return
