@@ -231,6 +231,10 @@ public class GuildHandler {
         return guilds.stream().filter(guild -> guild.getId().equals(uuid)).findFirst().orElse(null);
     }
 
+    public Guild getGuildByPlayerId(@NotNull final UUID uuid) {
+        return guilds.stream().filter(guild -> guild.getMember(uuid) != null).findFirst().orElse(null);
+    }
+
     /**
      * Check the guild based on the invite code
      *

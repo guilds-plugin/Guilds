@@ -28,6 +28,7 @@ import co.aikar.commands.PaperCommandManager;
 import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
+import com.djrapitops.plan.extension.ExtensionService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import me.glaremasters.guilds.acf.ACFHandler;
@@ -43,6 +44,8 @@ import me.glaremasters.guilds.configuration.sections.StorageSettings;
 import me.glaremasters.guilds.cooldowns.CooldownHandler;
 import me.glaremasters.guilds.database.DatabaseAdapter;
 import me.glaremasters.guilds.dependency.Libraries;
+import me.glaremasters.guilds.extension.GuildsExtension;
+import me.glaremasters.guilds.extension.GuildsExtensionFactory;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guis.GUIHandler;
 import me.glaremasters.guilds.listeners.ArenaListener;
@@ -259,6 +262,9 @@ public final class Guilds extends JavaPlugin {
             }
         }, 20 * 60, (20 * 60) * settingsHandler.getMainConf().getProperty(StorageSettings.SAVE_INTERVAL));
 
+
+        final GuildsExtensionFactory guildsExtensionFactory = new GuildsExtensionFactory();
+        guildsExtensionFactory.createExtension().ifPresent(dataExtension -> ExtensionService.getInstance().register(dataExtension));
     }
 
     /**

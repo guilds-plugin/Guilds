@@ -53,6 +53,10 @@ class GuildsAPI(val guildHandler: GuildHandler, val cooldownHandler: CooldownHan
         return guildHandler.getGuild(uuid)
     }
 
+    fun getGuildByPlayerId(uuid: UUID): Guild? {
+        return guildHandler.getGuildByPlayerId(uuid)
+    }
+
     /**
      * Get a guild by it's name
      * @param name the name of the guild

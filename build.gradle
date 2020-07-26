@@ -46,6 +46,10 @@ repositories {
     }
 
     maven {
+        url = 'https://dl.bintray.com/rsl1122/Plan-repository/'
+    }
+
+    maven {
         name = "codemc-repo"
         url = uri("https://repo.codemc.org/repository/maven-public/")
 
@@ -109,6 +113,8 @@ dependencies {
 
     // Vault Support
     compileOnly("net.milkbowl:vault:1.7")
+
+    compileOnly 'com.djrapitops:Plan-api:5.1-R0.4'
 
     // Database Stuff
     compileOnly("com.zaxxer:HikariCP:3.3.1")
