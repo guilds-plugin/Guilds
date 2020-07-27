@@ -99,10 +99,10 @@ dependencies {
     implementation("com.dumptruckman.minecraft:JsonConfiguration:1.1")
 
     // Cross-Version Support
-    implementation("com.github.cryptomorin:XSeries:6.3.1")
+    implementation("com.github.cryptomorin:XSeries:6.3.3")
 
     // GUI Lib
-    implementation("me.mattstudios.utils:matt-framework-gui:1.2.7")
+    implementation("me.mattstudios.utils:matt-framework-gui:2.0.2")
 
     // Kotlin collections
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
