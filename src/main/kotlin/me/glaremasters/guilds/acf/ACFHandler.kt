@@ -142,26 +142,26 @@ class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCo
         commandManager.commandCompletions.registerStaticCompletion("sources") { listOf("JSON", "MYSQL", "SQLITE", "MARIADB") }
 
         commandManager.commandCompletions.registerCompletion("members") { c ->
-            val guild = guildHandler.getGuild(c.player) ?: return@registerCompletion null
-            guild.members.map { it.asOfflinePlayer.name }
+            val guild = guildHandler.getGuild(c.player) ?: return@registerCompletion emptyList()
+            guild.members.mapNotNull { it.asOfflinePlayer.name }
         }
         commandManager.commandCompletions.registerCompletion("members-admin") { c ->
             val guild = c.getContextValue(Guild::class.java, 1) ?: return@registerCompletion null
-            guild.members.map { it.asOfflinePlayer.name }
+            guild.members.mapNotNull { it.asOfflinePlayer.name }
         }
         commandManager.commandCompletions.registerCompletion("allyInvites") { c ->
             val guild = guildHandler.getGuild(c.player) ?: return@registerCompletion null
             if (!guild.hasPendingAllies()) {
                 return@registerCompletion null
             }
-            guild.pendingAllies.map { guildHandler.getNameById(it) }
+            guild.pendingAllies.mapNotNull { guildHandler.getNameById(it) }
         }
         commandManager.commandCompletions.registerCompletion("allies") { c ->
             val guild = guildHandler.getGuild(c.player) ?: return@registerCompletion null
             if (!guild.hasAllies()) {
                 return@registerCompletion null
             }
-            guild.allies.map { guildHandler.getNameById(it) }
+            guild.allies.mapNotNull { guildHandler.getNameById(it) }
         }
         commandManager.commandCompletions.registerCompletion("activeCodes") { c ->
             val guild = guildHandler.getGuild(c.player) ?: return@registerCompletion null
