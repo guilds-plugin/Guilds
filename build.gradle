@@ -102,7 +102,7 @@ dependencies {
     implementation("com.github.cryptomorin:XSeries:6.3.3")
 
     // GUI Lib
-    implementation("me.mattstudios.utils:matt-framework-gui:2.0.2")
+    implementation("me.mattstudios.utils:matt-framework-gui:2.0.3")
 
     // Kotlin collections
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
