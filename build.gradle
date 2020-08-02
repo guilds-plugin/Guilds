@@ -114,7 +114,7 @@ dependencies {
     compileOnly("com.zaxxer:HikariCP:3.3.1")
     compileOnly("org.jdbi:jdbi3-core:3.8.2")
     compileOnly("org.jdbi:jdbi3-sqlobject:3.8.2")
-    compileOnly("org.mariadb.jdbc:mariadb-java-client:2.4.0")
+    compileOnly("org.mariadb.jdbc:mariadb-java-client:2.6.2")
 
     // Logger
     compileOnly("org.slf4j:slf4j-api:1.7.25")
