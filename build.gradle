@@ -111,7 +111,7 @@ dependencies {
     compileOnly("net.milkbowl:vault:1.7")
 
     // Database Stuff
-    compileOnly("com.zaxxer:HikariCP:3.3.1")
+    compileOnly("com.zaxxer:HikariCP:3.4.5")
     compileOnly("org.jdbi:jdbi3-core:3.8.2")
     compileOnly("org.jdbi:jdbi3-sqlobject:3.8.2")
     compileOnly("org.mariadb.jdbc:mariadb-java-client:2.4.0")
