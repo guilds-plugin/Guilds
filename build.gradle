@@ -113,7 +113,7 @@ dependencies {
     // Database Stuff
     compileOnly("com.zaxxer:HikariCP:3.3.1")
     compileOnly("org.jdbi:jdbi3-core:3.8.2")
-    compileOnly("org.jdbi:jdbi3-sqlobject:3.8.2")
+    compileOnly("org.jdbi:jdbi3-sqlobject:3.14.3")
     compileOnly("org.mariadb.jdbc:mariadb-java-client:2.4.0")
 
     // Logger
