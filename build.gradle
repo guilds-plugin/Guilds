@@ -93,7 +93,7 @@ dependencies {
     implementation("com.github.cryptomorin:XSeries:7.2.1")
 
     // GUI Lib
-    implementation("me.mattstudios.utils:matt-framework-gui:2.0.3")
+    implementation("me.mattstudios.utils:matt-framework-gui:2.0.3.1")
 
     // Vault Support
     compileOnly("net.milkbowl:vault:1.7")
