@@ -30,6 +30,8 @@ import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import me.bristermitten.pdm.PDMBuilder;
+import me.bristermitten.pdm.PluginDependencyManager;
 import me.glaremasters.guilds.acf.ACFHandler;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.api.GuildsAPI;
@@ -42,7 +44,6 @@ import me.glaremasters.guilds.configuration.sections.PluginSettings;
 import me.glaremasters.guilds.configuration.sections.StorageSettings;
 import me.glaremasters.guilds.cooldowns.CooldownHandler;
 import me.glaremasters.guilds.database.DatabaseAdapter;
-import me.glaremasters.guilds.dependency.Libraries;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guis.GUIHandler;
 import me.glaremasters.guilds.listeners.ArenaListener;
@@ -58,7 +59,6 @@ import me.glaremasters.guilds.updater.UpdateChecker;
 import me.glaremasters.guilds.utils.LanguageUpdater;
 import me.glaremasters.guilds.utils.LoggingUtils;
 import me.glaremasters.guilds.utils.StringUtils;
-import net.byteflux.libby.BukkitLibraryManager;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bstats.bukkit.Metrics;
@@ -131,8 +131,13 @@ public final class Guilds extends JavaPlugin {
     }
 
     @Override
-    public void onEnable() {
+    public void onLoad() {
+        final PluginDependencyManager pdm = new PDMBuilder(this).build();
+        pdm.loadAllDependencies().join();
+    }
 
+    @Override
+    public void onEnable() {
         LoggingUtils.logLogo(Bukkit.getConsoleSender(), this);
 
         // Check if the server is running Vault
@@ -171,8 +176,6 @@ public final class Guilds extends JavaPlugin {
         taskChainFactory = BukkitTaskChainFactory.create(this);
 
         settingsHandler = new SettingsHandler(this);
-
-        downloadOptionalDependencies();
 
         new LanguageUpdater(this).saveLang();
 
@@ -283,20 +286,6 @@ public final class Guilds extends JavaPlugin {
         if (settingsHandler.getMainConf().getProperty(HooksSettings.WORLDGUARD)) {
             getServer().getPluginManager().registerEvents(new WorldGuardListener(guildHandler), this);
             getServer().getPluginManager().registerEvents(new ClaimSignListener(this, settingsHandler.getMainConf(), guildHandler), this);
-        }
-    }
-
-    private void downloadOptionalDependencies() {
-        BukkitLibraryManager loader = new BukkitLibraryManager(this);
-        Libraries libraries = new Libraries();
-        loader.addMavenCentral();
-        loader.addRepository("https://repo.glaremasters.me/repository/public/");
-        if (!settingsHandler.getMainConf().getProperty(StorageSettings.STORAGE_TYPE).toLowerCase().equals("json")) {
-            try {
-                libraries.loadSQL(loader);
-            } catch (RuntimeException ex) {
-                ex.printStackTrace();
-            }
         }
     }
 
