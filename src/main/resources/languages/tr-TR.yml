@@ -108,7 +108,7 @@ error:
   no-guild: "&cLoncaya girmedin!"
   role-no-permission: "&cRolün bunu yapacak kadar yüksek değil!"
   tier-no-permission: "&cLonca aşaması bunu yapacak kadar yüksek değil!"
-  guild-no-exist: "&cThat Guild does not exist! (If you are getting this due to trying to join a guild that has a custom colored name, you can try doing /guild join <player who invited you> to join also!"
+  guild-no-exist: "&cBu Lonca yok! (Özel renkli bir isme sahip olan bir loncaya katılmaya çalıştığınız için bunu alıyorsanız, siz de /join guild <seni davet eden oyuncu adını yazarak> katılabilirsiniz!"
   player-not-found: "&cOyuncu '{player}&r&c' çevrimiçi değil!"
   player-not-in-guild: "&c{player} Loncanda yok!"
   not-officer: "&cKullanıcı Loncanzda Subay olmalı!"
@@ -119,7 +119,7 @@ error:
   buff-no-permission: "&cSorry, you do not have permission to buy this buff!"
   no-pending-invites: "&cSorry, you currently do not have any pending guild invites!"
   migrating: "&cSorry, this action can't be done. Data is currently migrating! Try again a few minutes."
-  console-command: "&cSorry, this command can only be preformed by the console."
+  console-command: "&cÜzgünüz, bu komut sadece konsoldan çalıştırılabilir."
   transfer-same-person: "&cSorry, you can't transfer a guild to the same person that is already the leader of that guild!"
   player-no-exist: "&cSorry, it doesn't look like that player has ever been on the server before!"
 bank:
