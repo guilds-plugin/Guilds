@@ -97,15 +97,15 @@ create:
   name-too-long: "&c접두사를 제공하지않았기에 접두사 요구사항에 부합하지 못하였습니다. 생성시 더 짧은 이름이나 접두사를 포함해주세요."
   prefix-too-long: "&cThe guild prefix provided did not match the requirements! Perphaps you had too many characters?"
 chat:
-  disabled: "Guild Chat Disabled"
-  enabled: "Guild Chat Enabled"
+  disabled: "길드 채팅 비활성화됨"
+  enabled: "길드 채팅 활성화됨"
 request:
-  success: "&aYou've successfully requested an invite from {guild}"
+  success: "&a당신은 성공적으로 {guild} 의 초대 요청을 수락하였습니다"
   incoming-request: "&a{player} is requesting to join the guild. Send them an invite by doing /guild invite {player}!"
   cooldown: "You can't send another request for {time} seconds."
 error:
-  already-in-guild: "&cYou're already in a guild!"
-  no-guild: "&cYou're not in a guild!"
+  already-in-guild: "&c당신은 이미 길드에 있습니다!"
+  no-guild: "&c당신은 길드에 참여하고 있지 않습니다!"
   role-no-permission: "&cYour role is not high enough to do that!"
   tier-no-permission: "&cYour guild tier is not high enough to do that!"
   guild-no-exist: "&cThat Guild does not exist! (If you are getting this due to trying to join a guild that has a custom colored name, you can try doing /guild join <player who invited you> to join also!"
