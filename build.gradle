@@ -99,10 +99,10 @@ dependencies {
     compileOnly("net.milkbowl:vault:1.7")
 
     // Database Stuff
-    implementation("com.zaxxer:HikariCP:3.4.5")
-    implementation("org.jdbi:jdbi3-core:3.14.4")
-    implementation("org.jdbi:jdbi3-sqlobject:3.14.4")
-    implementation("org.mariadb.jdbc:mariadb-java-client:2.6.2")
+    implementation("com.zaxxer:HikariCP:3.3.1")
+    implementation("org.jdbi:jdbi3-core:3.8.2")
+    implementation("org.jdbi:jdbi3-sqlobject:3.8.2")
+    implementation("org.mariadb.jdbc:mariadb-java-client:2.4.0")
 
     // Logger
     implementation("org.slf4j:slf4j-api:1.7.25")
