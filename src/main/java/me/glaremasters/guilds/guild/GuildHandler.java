@@ -242,12 +242,12 @@ public class GuildHandler {
     }
 
     /**
-     * Get a guild's name by it's ID
+     * Get a guild's name by it's IDd
      * @param uuid the input ID
      * @return the output guild
      */
     public String getNameById(@NotNull UUID uuid) {
-        return getGuild(uuid).getName();
+        return ACFBukkitUtil.removeColors(getGuild(uuid).getName());
     }
 
     /**
