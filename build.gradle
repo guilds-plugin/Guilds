@@ -7,7 +7,7 @@ plugins {
     id "maven-publish"
     id "org.jetbrains.kotlin.jvm" version "1.4.10"
     id "me.bristermitten.pdm" version "0.0.28"
-    id "com.github.johnrengelman.shadow" version "6.0.0"
+    id "com.github.johnrengelman.shadow" version "6.1.0"
 }
 
 group = "me.glaremasters"
