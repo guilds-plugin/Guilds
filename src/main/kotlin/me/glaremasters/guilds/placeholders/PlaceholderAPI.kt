@@ -41,7 +41,7 @@ class PlaceholderAPI(private val guildHandler: GuildHandler) : PlaceholderExpans
     }
 
     override fun getAuthor(): String {
-        return "blockslayer22"
+        return "Glare"
     }
 
     override fun getVersion(): String {

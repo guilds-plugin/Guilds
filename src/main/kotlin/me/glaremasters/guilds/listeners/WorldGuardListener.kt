@@ -26,6 +26,7 @@ package me.glaremasters.guilds.listeners
 
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.guild.GuildRolePerm
+import org.bukkit.event.Event
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
@@ -66,7 +67,7 @@ class WorldGuardListener(private val guildHandler: GuildHandler) : Listener {
     @EventHandler
     fun PlayerInteractEvent.onInteract() {
 
-        if (clickedBlock == null) {
+        if (useInteractedBlock() == Event.Result.DENY) {
             return
         }
         
@@ -76,8 +77,8 @@ class WorldGuardListener(private val guildHandler: GuildHandler) : Listener {
 
 
         for (region in wrapper.getRegions(loc)) {
-            if (region.id == guild.id.toString()) {
-                isCancelled = !guild.memberHasPermission(player, GuildRolePerm.INTERACT)
+            if (region.id == guild.id.toString() && !guild.memberHasPermission(player, GuildRolePerm.INTERACT)) {
+                setUseInteractedBlock(Event.Result.DENY)
             }
         }
     }
