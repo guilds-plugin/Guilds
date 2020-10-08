@@ -90,7 +90,7 @@ dependencies {
     implementation("com.dumptruckman.minecraft:JsonConfiguration:1.1")
 
     // Cross-Version Support
-    implementation("com.github.cryptomorin:XSeries:7.4.0")
+    implementation("com.github.cryptomorin:XSeries:7.5.3")
 
     // GUI Lib
     implementation("me.mattstudios.utils:matt-framework-gui:2.0.3.3")
