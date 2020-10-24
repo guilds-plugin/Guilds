@@ -93,7 +93,7 @@ create:
   warning: "&cThe creation of a Guild cost {amount}. Type /guilds confirm to create your guild, type /guilds cancel to cancel."
   successful: "&aGuild '{guild}&r&a' created successfully!"
   cancelled: "&cGuild oprettelse annulleret!"
-  requirements: "&cYour guild's name does not match the requirements! You can only use alphanumeric characters and the length of the name cannot exceed 64"
+  requirements: "&cDin guilds navn matcher ikke kravene! Du kan kun bruge alfanumeriske tegn, og længden af navnet kan ikke overstige 64"
   name-too-long: "&cYou didn't provide a prefix so the name you input was tested against the prefix requirements and that failed. Please try a shorter name or input a prefix on creation."
   prefix-too-long: "&cThe guild prefix provided did not match the requirements! Perphaps you had too many characters?"
 chat:
@@ -130,7 +130,7 @@ bank:
   over-max: "&cSorry, you can't deposit that much as you would go over your max bank balance!"
 admin:
   delete-warning: "&cDu er ved at slette guilden {guild}. Skriv /guilds confirm for at fjerne denne guild, skriv /guilds cancel for at annullere."
-  delete-success: "&aYou have successfully removed {guild}."
+  delete-success: "&aYou har fjernet {guild}."
   guild-vault-sign: "Global Guild Vault created!"
   player-added: "&aDu er blevet tilføjet til {guild} af en administrator!"
   admin-player-added: "&aDu har tilføjet {player} til {guild}!"
@@ -216,14 +216,14 @@ reload:
   reloaded: "&aConfiguration file reloaded!"
 cancel:
   error: "&cYou have no actions to cancel!"
-  success: "&aAction cancelled!"
+  success: "&aHandling annulleret!"
 confirm:
-  error: "&cYou have no actions to confirm!"
-  success: "&aAction confirmed!"
+  error: "&cDu har ingen handlinger at bekræfte!"
+  success: "&aHandling bekræftet!"
 ally:
-  none: "&cYou have no allies!"
-  list: "Your Guild has the following allies: {ally-list}"
-  current-declined: "&a{guild}'s ally request has been denied!"
+  none: "&cDu har ingen allierede!"
+  list: "Din Guild har følgende allierede: {ally-list}"
+  current-declined: "&a{guild}'s alliance forespørgsel er blevet afvist!"
   target-declined: "&cYour ally request to {guild} has been denied!"
   current-accepted: "&aYou've accepted an ally request from {guild}"
   target-accepted: "&aYour ally request to {guild} has been accepted!"
