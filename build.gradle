@@ -5,7 +5,7 @@
 plugins {
     id "java"
     id "maven-publish"
-    id "org.jetbrains.kotlin.jvm" version "1.4.10"
+    id "org.jetbrains.kotlin.jvm" version "1.4.21"
     id "me.bristermitten.pdm" version "0.0.28"
     id "com.github.johnrengelman.shadow" version "6.1.0"
 }
@@ -90,7 +90,7 @@ dependencies {
     implementation("com.dumptruckman.minecraft:JsonConfiguration:1.1")
 
     // Cross-Version Support
-    implementation("com.github.cryptomorin:XSeries:7.5.5")
+    implementation("com.github.cryptomorin:XSeries:7.6.1")
 
     // GUI Lib
     implementation("me.mattstudios.utils:matt-framework-gui:2.0.3.3")
