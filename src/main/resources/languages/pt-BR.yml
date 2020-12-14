@@ -333,7 +333,7 @@ war:
   action-bar-ready: "&b{amount} &asegundos restantes para a guerra iniciar! Preparem-se!"
   winner: "&aA batalha foi difícil... sangue foi derramado... lágrimas caíram... mas no final, os poderosos guerreiros da guilda &b{guild} &avenceram a batalha!"
   already-accepted: "&cVocê não pode aceitar um desafio que você já aceitou! Seja paciente!"
-  already-joined: "&cYou have already joined this war! Wait for it to start!"
+  already-joined: "&cVocê já entrou nessa guerra! Aguarde ela iniciar!"
   removed-for-size: "&aO(s) seguinte(s) jogador(es) foram removidos da guerra para manter ambos os lados iguais: {players}"
   defend-cooldown: "&bA guilda {guild} &cdefendeu-se na arena recentemente. Deixe-os recuperar suas forças e desafie-os mais tarde!"
   commands-blocked: "&cDesculpe! Você não pode executar comandos estando em guerra!"
@@ -342,7 +342,7 @@ war:
   player-killed-quit: "&bO jogador {player} &afoi morto por ter saído do servidor."
   teleported-back: "&aVocê lutou bastante! Infelizmente, nem todos podem ser o melho. Você foi teleportado de volta para sua localização original!"
 acf-core:
-  help_header: "<c3>=== </c3><c1>Showing help for </c1><c2>{commandprefix}{command}</c2><c3> ===</c3>"
+  help_header: "<c3>===</c3><c1>Mostrando ajuda para\n</c1><c2>{commandprefix}{command}</c2><c3>===</c3>"
   invalid_syntax: "Forma de uso: <c2>{command}</c2><c3>{syntax}</c3>"
   permission_denied: "Desculpe, mas você não tem permissão para usar este comando."
   unknown_command: "Comando desconhecido, por favor, digite <c2>/help</c2>"
