@@ -6,7 +6,7 @@ plugins {
     id "java"
     id "maven-publish"
     id "org.jetbrains.kotlin.jvm" version "1.4.21"
-    id "me.bristermitten.pdm" version "0.0.28"
+    id "me.bristermitten.pdm" version "0.0.30"
     id "com.github.johnrengelman.shadow" version "6.1.0"
 }
 
