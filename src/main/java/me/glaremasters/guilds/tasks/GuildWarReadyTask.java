@@ -28,8 +28,10 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.Iterables;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.challenges.ChallengeHandler;
+import me.glaremasters.guilds.configuration.sections.WarSettings;
 import me.glaremasters.guilds.guild.GuildChallenge;
 import me.glaremasters.guilds.messages.Messages;
+import me.glaremasters.guilds.utils.WarUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -46,12 +48,13 @@ import java.util.UUID;
  */
 public class GuildWarReadyTask extends BukkitRunnable {
 
-    private Guilds guilds;
+    private final Guilds guilds;
     private int timeLeft;
-    private List<UUID> players;
-    private String message;
-    private GuildChallenge challenge;
-    private ChallengeHandler challengeHandler;
+    private final List<UUID> players;
+    private final String message;
+    private final GuildChallenge challenge;
+    private final ChallengeHandler challengeHandler;
+    private final String notifyType;
 
     public GuildWarReadyTask(Guilds guilds, int timeLeft, List<UUID> players, String message, GuildChallenge challenge, ChallengeHandler challengeHandler) {
         this.guilds = guilds;
@@ -60,14 +63,15 @@ public class GuildWarReadyTask extends BukkitRunnable {
         this.message = message;
         this.challenge = challenge;
         this.challengeHandler = challengeHandler;
+        this.notifyType = guilds.getSettingsHandler().getMainConf().getProperty(WarSettings.NOTIFY_TYPE);
     }
 
     @Override
     public void run() {
         players.forEach(p -> {
-            Player player = Bukkit.getPlayer(p);
+            final Player player = Bukkit.getPlayer(p);
             if (player != null) {
-                guilds.getAdventure().sender(player).sendActionBar(Component.text(message.replace("{amount}", String.valueOf(timeLeft))));
+                WarUtils.notify(notifyType, message.replace("{amount}", String.valueOf(timeLeft)), guilds.getAdventure().player(player));
             }
         });
         timeLeft--;

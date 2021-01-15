@@ -65,6 +65,9 @@ public class WarSettings implements SettingsHolder {
     public static final Property<Integer> READY_TIME =
             newProperty("war.ready-time", 60);
 
+    @Comment({"How would you like to notify the player about joining the war and the countdowns?", "Options: [actionbar, title, subtitle, none]"})
+    public static final Property<String> NOTIFY_TYPE = newProperty("war.notify-type", "actionbar");
+
     @Comment("Would you like to enable running commands after a challenge ends? (such as broadcasting)")
     public static final Property<Boolean> ENABLE_POST_CHALLENGE_COMMANDS =
             newProperty("war.post-challenge-commands.enabled", false);

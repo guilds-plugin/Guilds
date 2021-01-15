@@ -26,8 +26,10 @@ package me.glaremasters.guilds.tasks;
 
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.challenges.ChallengeHandler;
+import me.glaremasters.guilds.configuration.sections.WarSettings;
 import me.glaremasters.guilds.guild.GuildChallenge;
 import me.glaremasters.guilds.messages.Messages;
+import me.glaremasters.guilds.utils.WarUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -45,14 +47,15 @@ import java.util.stream.Stream;
  */
 public class GuildWarJoinTask extends BukkitRunnable {
 
-    private Guilds guilds;
+    private final Guilds guilds;
     private int timeLeft;
-    private int readyTime;
-    private List<UUID> players;
-    private String joinMsg;
-    private String readyMsg;
-    private GuildChallenge challenge;
-    private ChallengeHandler challengeHandler;
+    private final int readyTime;
+    private final List<UUID> players;
+    private final String joinMsg;
+    private final String readyMsg;
+    private final GuildChallenge challenge;
+    private final ChallengeHandler challengeHandler;
+    private final String notifyType;
 
     public GuildWarJoinTask(Guilds guilds, int timeLeft, int readyTime, List<UUID> players, String joinMsg, String readyMsg, GuildChallenge challenge, ChallengeHandler challengeHandler) {
         this.guilds = guilds;
@@ -63,15 +66,16 @@ public class GuildWarJoinTask extends BukkitRunnable {
         this.readyMsg = readyMsg;
         this.challenge = challenge;
         this.challengeHandler = challengeHandler;
+        this.notifyType = guilds.getSettingsHandler().getMainConf().getProperty(WarSettings.NOTIFY_TYPE);
     }
 
 
     @Override
     public void run() {
         players.forEach(p -> {
-            Player player = Bukkit.getPlayer(p);
+            final Player player = Bukkit.getPlayer(p);
             if (player != null) {
-                guilds.getAdventure().sender(player).sendActionBar(Component.text(joinMsg.replace("{amount}", String.valueOf(timeLeft))));
+                WarUtils.notify(notifyType, joinMsg.replace("{amount}", String.valueOf(timeLeft)), guilds.getAdventure().player(player));
             }
         });
         timeLeft--;
