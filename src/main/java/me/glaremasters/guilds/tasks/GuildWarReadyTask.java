@@ -30,7 +30,7 @@ import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.challenges.ChallengeHandler;
 import me.glaremasters.guilds.guild.GuildChallenge;
 import me.glaremasters.guilds.messages.Messages;
-import me.glaremasters.guilds.utils.JSONMessage;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -67,7 +67,7 @@ public class GuildWarReadyTask extends BukkitRunnable {
         players.forEach(p -> {
             Player player = Bukkit.getPlayer(p);
             if (player != null) {
-                JSONMessage.actionbar(message.replace("{amount}", String.valueOf(timeLeft)), player);
+                guilds.getAdventure().sender(player).sendActionBar(Component.text(message.replace("{amount}", String.valueOf(timeLeft))));
             }
         });
         timeLeft--;

@@ -59,6 +59,7 @@ import me.glaremasters.guilds.updater.UpdateChecker;
 import me.glaremasters.guilds.utils.LanguageUpdater;
 import me.glaremasters.guilds.utils.LoggingUtils;
 import me.glaremasters.guilds.utils.StringUtils;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bstats.bukkit.Metrics;
@@ -86,6 +87,7 @@ public final class Guilds extends JavaPlugin {
     private GUIHandler guiHandler;
     private Economy economy;
     private Permission permissions;
+    private BukkitAudiences adventure;
 
     public static Gson getGson() {
         return gson;
@@ -148,6 +150,8 @@ public final class Guilds extends JavaPlugin {
         }
 
         gson = new GsonBuilder().setPrettyPrinting().create();
+
+        this.adventure = BukkitAudiences.create(this);
 
         setupEconomy();
         setupPermissions();
@@ -360,5 +364,9 @@ public final class Guilds extends JavaPlugin {
 
     public Permission getPermissions() {
         return this.permissions;
+    }
+
+    public BukkitAudiences getAdventure() {
+        return adventure;
     }
 }

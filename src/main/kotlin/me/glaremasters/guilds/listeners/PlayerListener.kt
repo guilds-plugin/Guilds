@@ -33,8 +33,10 @@ import me.glaremasters.guilds.configuration.sections.GuildSettings
 import me.glaremasters.guilds.configuration.sections.PluginSettings
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
-import me.glaremasters.guilds.utils.JSONMessage
 import me.glaremasters.guilds.utils.StringUtils
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.event.ClickEvent
+import net.kyori.adventure.text.event.HoverEvent
 import net.milkbowl.vault.permission.Permission
 import org.bukkit.Bukkit
 import org.bukkit.event.EventHandler
@@ -61,7 +63,10 @@ class PlayerListener(private val guilds: Guilds, private val settingsManager: Se
         }
         Guilds.newChain<Any>().delay(5, TimeUnit.SECONDS).async {
             try {
-                JSONMessage.create(StringUtils.color("&f[&aGuilds&f]&r Announcements (Hover over me for more information)")).tooltip(StringUtils.getAnnouncements(guilds)).openURL(guilds.description.website).send(player)
+                val hover = HoverEvent.showText(Component.text(StringUtils.getAnnouncements(guilds)))
+                val click = ClickEvent.openUrl(guilds.description.website.toString())
+                val announcement = Component.text(StringUtils.color("&f[&aGuilds&f]&r Announcements (Hover over me for more information)")).clickEvent(click).hoverEvent(hover)
+                guilds.adventure.sender(player).sendMessage(announcement)
             } catch (e: IOException) {
                 e.printStackTrace()
             }

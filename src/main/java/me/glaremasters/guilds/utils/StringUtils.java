@@ -60,6 +60,7 @@ public final class StringUtils {
             announcement = StringUtils.convert_html(result);
             con.disconnect();
         } catch (Exception ex) {
+            ex.printStackTrace();
             announcement = "Could not fetch announcements!";
         }
         return announcement;
