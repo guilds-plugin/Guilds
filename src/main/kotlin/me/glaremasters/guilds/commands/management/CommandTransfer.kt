@@ -67,6 +67,10 @@ internal class CommandTransfer : BaseCommand() {
             throw ExpectationNotMet(Messages.ERROR__TRANSFER_SAME_PERSON)
         }
 
+        if (guild.getMember(user.uniqueId) == null) {
+            throw ExpectationNotMet(Messages.ERROR__PLAYER_NOT_IN_GUILD, "{player}", user.name.toString())
+        }
+
         val event = GuildTransferEvent(player, guild, user)
         Bukkit.getPluginManager().callEvent(event)
 
