@@ -6,7 +6,7 @@ plugins {
     id "java"
     id "maven-publish"
     id "org.jetbrains.kotlin.jvm" version "1.4.21"
-    id "me.bristermitten.pdm" version "0.0.28"
+    id "me.bristermitten.pdm" version "0.0.30"
     id "com.github.johnrengelman.shadow" version "6.1.0"
 }
 
@@ -115,7 +115,7 @@ dependencies {
     pdm("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
     // Bukkit Version
-    compileOnly("org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT")
 
     // Mojang Library
     compileOnly("com.mojang:authlib:1.5.25")

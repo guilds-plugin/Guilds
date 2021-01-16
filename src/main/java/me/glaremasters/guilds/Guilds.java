@@ -30,7 +30,6 @@ import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import me.bristermitten.pdm.PDMBuilder;
 import me.bristermitten.pdm.PluginDependencyManager;
 import me.glaremasters.guilds.acf.ACFHandler;
 import me.glaremasters.guilds.actions.ActionHandler;
@@ -134,7 +133,7 @@ public final class Guilds extends JavaPlugin {
 
     @Override
     public void onLoad() {
-        final PluginDependencyManager pdm = new PDMBuilder(this).build();
+        final PluginDependencyManager pdm = PluginDependencyManager.of(this);
         pdm.loadAllDependencies().join();
     }
 
