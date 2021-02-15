@@ -76,7 +76,7 @@ dependencies {
     implementation("co.aikar:acf-paper:0.5.0-SNAPSHOT")
 
     // Bstats Data Collecting
-    implementation("org.bstats:bstats-bukkit:1.7")
+    implementation("org.bstats:bstats-bukkit:2.2.1")
 
     // Taskchain Scheduling
     implementation("co.aikar:taskchain-bukkit:3.7.2")
