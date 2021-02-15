@@ -50,6 +50,7 @@ import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.ClaimUtils
 import me.glaremasters.guilds.utils.Constants
+import me.glaremasters.guilds.utils.RoleUtils
 import net.milkbowl.vault.permission.Permission
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
@@ -77,6 +78,10 @@ internal class CommandKick : BaseCommand() {
         val asMember = guild.getMember(user.uniqueId) ?: throw ExpectationNotMet(Messages.ERROR__PLAYER_NOT_IN_GUILD, "{player}", name)
 
         if (guild.isMaster(user)) {
+            throw InvalidPermissionException()
+        }
+
+        if (RoleUtils.isLower(asMember, guild.getMember(player.uniqueId))) {
             throw InvalidPermissionException()
         }
 
