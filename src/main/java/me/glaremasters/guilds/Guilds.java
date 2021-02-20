@@ -31,6 +31,7 @@ import co.aikar.taskchain.TaskChainFactory;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import me.bristermitten.pdm.PluginDependencyManager;
+import me.bristermitten.pdm.SpigotDependencyManager;
 import me.glaremasters.guilds.acf.ACFHandler;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.api.GuildsAPI;
@@ -62,6 +63,8 @@ import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bstats.bukkit.Metrics;
+import org.bstats.charts.SimplePie;
+import org.bstats.charts.SingleLineChart;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -133,7 +136,7 @@ public final class Guilds extends JavaPlugin {
 
     @Override
     public void onLoad() {
-        final PluginDependencyManager pdm = PluginDependencyManager.of(this);
+        final PluginDependencyManager pdm = SpigotDependencyManager.of(this);
         pdm.loadAllDependencies().join();
     }
 
@@ -210,11 +213,11 @@ public final class Guilds extends JavaPlugin {
         }
         // start bstats
         Metrics metrics = new Metrics(this, 881);
-        metrics.addCustomChart(new Metrics.SingleLineChart("guilds", () -> getGuildHandler().getGuildsSize()));
-        metrics.addCustomChart(new Metrics.SingleLineChart("tiers", () -> getGuildHandler().getTiers().size()));
-        metrics.addCustomChart(new Metrics.SingleLineChart("roles", () -> getGuildHandler().getRoles().size()));
-        metrics.addCustomChart(new Metrics.SingleLineChart("buffs", () -> settingsHandler.getBuffConf().getProperty(GuildBuffSettings.BUFFS).size()));
-        metrics.addCustomChart(new Metrics.SimplePie("language", () -> settingsHandler.getMainConf().getProperty(PluginSettings.MESSAGES_LANGUAGE)));
+        metrics.addCustomChart(new SingleLineChart("guilds", () -> getGuildHandler().getGuildsSize()));
+        metrics.addCustomChart(new SingleLineChart("tiers", () -> getGuildHandler().getTiers().size()));
+        metrics.addCustomChart(new SingleLineChart("roles", () -> getGuildHandler().getRoles().size()));
+        metrics.addCustomChart(new SingleLineChart("buffs", () -> settingsHandler.getBuffConf().getProperty(GuildBuffSettings.BUFFS).size()));
+        metrics.addCustomChart(new SimplePie("language", () -> settingsHandler.getMainConf().getProperty(PluginSettings.MESSAGES_LANGUAGE)));
 
         // Initialize the action handler for actions in the plugin
         actionHandler = new ActionHandler();

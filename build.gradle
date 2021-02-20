@@ -5,8 +5,8 @@
 plugins {
     id "java"
     id "maven-publish"
-    id "org.jetbrains.kotlin.jvm" version "1.4.21"
-    id "me.bristermitten.pdm" version "0.0.30"
+    id "org.jetbrains.kotlin.jvm" version "1.4.30"
+    id "me.bristermitten.pdm" version "0.0.33"
     id "com.github.johnrengelman.shadow" version "6.1.0"
 }
 
@@ -76,7 +76,7 @@ dependencies {
     implementation("co.aikar:acf-paper:0.5.0-SNAPSHOT")
 
     // Bstats Data Collecting
-    implementation("org.bstats:bstats-bukkit:1.7")
+    implementation("org.bstats:bstats-bukkit:2.2.1")
 
     // Taskchain Scheduling
     implementation("co.aikar:taskchain-bukkit:3.7.2")
