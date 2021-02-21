@@ -110,21 +110,6 @@ class PlayerListener(private val guilds: Guilds, private val settingsManager: Se
         guild.updateGuildSkull(player, settingsManager)
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
-    fun AsyncPlayerChatEvent.onChat() {
-        val guild = guildHandler.getGuild(player) ?: return
-
-        if (guildHandler.checkGuildChat(player)) {
-            guildHandler.handleGuildChat(guild, player, message)
-            isCancelled = true
-        }
-    }
-
-    @EventHandler
-    fun PlayerQuitEvent.onChatLeave() {
-        guildHandler.chatLogout(player)
-    }
-
     @EventHandler
     fun PlayerJoinEvent.onPermCheck() {
         guildHandler.addPerms(permission, player, settingsManager.getProperty(PluginSettings.RUN_VAULT_ASYNC))

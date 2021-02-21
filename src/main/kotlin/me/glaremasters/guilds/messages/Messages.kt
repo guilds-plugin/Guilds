@@ -140,8 +140,8 @@ enum class Messages : MessageKeyProvider {
     CONFIRM__ERROR,
     CONFIRM__SUCCESS,
 
-    CHAT__ENABLED,
-    CHAT__DISABLED,
+    CHAT__TOGGLED_ON,
+    CHAT__TOGGLED_OFF,
 
     ALLY__NONE,
     ALLY__LIST,

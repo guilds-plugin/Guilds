@@ -36,6 +36,7 @@ import co.aikar.commands.annotation.Syntax
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
+import me.glaremasters.guilds.listeners.ChatListener
 import me.glaremasters.guilds.utils.Constants
 import org.bukkit.entity.Player
 
@@ -47,11 +48,27 @@ internal class CommandChat : BaseCommand() {
     @Dependency
     lateinit var guildHandler: GuildHandler
 
-    @Subcommand("chat|c")
+    @Subcommand("gc")
     @Description("{@@descriptions.chat}")
     @CommandPermission(Constants.BASE_PERM + "chat")
     @Syntax("[msg]")
-    fun chat(player: Player, @Conditions("perm:perm=CHAT") guild: Guild, @Optional msg: String?) {
-        if (msg == null) guildHandler.toggleGuildChat(currentCommandManager, player) else guildHandler.handleGuildChat(guild, player, msg)
+    fun guildChat(player: Player, @Conditions("perm:perm=CHAT") guild: Guild, @Optional msg: String?) {
+        if (msg == null) {
+            guilds.chatListener.handleToggle(player, ChatListener.ChatType.GUILD)
+        } else {
+            guildHandler.handleGuildChat(guild, player, msg)
+        }
+    }
+
+    @Subcommand("ac")
+    @Description("{@@descriptions.ally-chat}")
+    @CommandPermission(Constants.BASE_PERM + "chat")
+    @Syntax("[msg]")
+    fun chat(player: Player, @Conditions("perm:perm=ALLY_CHAT") guild: Guild, @Optional msg: String?) {
+        if (msg == null) {
+            guilds.chatListener.handleToggle(player, ChatListener.ChatType.ALLY)
+        } else {
+            guildHandler.handleAllyChat(guild, player, msg)
+        }
     }
 }

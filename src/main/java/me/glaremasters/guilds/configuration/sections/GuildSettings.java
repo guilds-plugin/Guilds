@@ -82,6 +82,10 @@ public class GuildSettings implements SettingsHolder {
     public static final Property<String> GUILD_CHAT_FORMAT =
             newProperty("guild.format.chat", "&7&l[Guild Chat]&r &b[{role}&b]&r &b {player}: {message}");
 
+    @Comment("This is the style used when a message is sent to ally chat")
+    public static final Property<String> ALLY_CHAT_FORMAT =
+            newProperty("guild.format.ally-chat", "&7&l[Ally Chat]&r &b[{guild}&b]&r &b {player}: {message}");
+
     @Comment("Similar to the one above, just for the admins spying.")
     public static final Property<String> SPY_CHAT_FORMAT =
             newProperty("guild.format.spy", "&7&l[Guild Spy]&r &b[{guild}&b]&r &b[{role}&b]&r &b {player}: {message}");

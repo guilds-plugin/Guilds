@@ -62,5 +62,6 @@ class LanguageUpdater(internal val plugin: Guilds) {
             old.set(path, old.get(path, new.get(path)))
         }
         old.save(outside)
+        stream.close()
     }
 }

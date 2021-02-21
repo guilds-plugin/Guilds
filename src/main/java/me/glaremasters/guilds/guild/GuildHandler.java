@@ -71,7 +71,6 @@ public class GuildHandler {
     private final List<GuildRole> roles = new ArrayList<>();
     private final List<GuildTier> tiers = new ArrayList<>();
     private final List<Player> spies = new ArrayList<>();
-    private final List<Player> guildChat = new ArrayList<>();
 
     private final Map<Guild, List<Inventory>> vaults = new HashMap<>();
     private final List<Player> opened = new ArrayList<>();
@@ -531,55 +530,12 @@ public class GuildHandler {
     }
 
     /**
-     * Check if a player is in guild chat mode or not
-     *
-     * @param player the player being checked
-     * @return if they are in the mode or not
-     */
-    public boolean checkGuildChat(Player player) {
-        return guildChat.contains(player);
-    }
-
-    /**
-     * Add a player to guild chat mode
-     *
-     * @param player the player being checked
-     */
-    private void addGuildChat(CommandManager manager, Player player) {
-        guildChat.add(player);
-        manager.getCommandIssuer(player).sendInfo(Messages.CHAT__ENABLED);
-    }
-
-    /**
-     * Remove a player from guild chat mode
-     *
-     * @param player the player being checked
-     */
-    public void removeGuildChat(CommandManager manager, Player player) {
-        guildChat.remove(player);
-        manager.getCommandIssuer(player).sendInfo(Messages.CHAT__DISABLED);
-    }
-
-    /**
-     * Handler for taking players in and out of guild chat
-     *
-     * @param player the player being toggled
-     */
-    public void toggleGuildChat(CommandManager manager, Player player) {
-        if (checkGuildChat(player)) {
-            removeGuildChat(manager, player);
-        } else {
-            addGuildChat(manager, player);
-        }
-    }
-
-    /**
      * This method is ran when a player logs out to ensure they aren't in the list.
      * @param player player being removed
      */
     public void chatLogout(Player player) {
         spies.remove(player);
-        guildChat.remove(player);
+        guildsPlugin.getChatListener().getPlayerChatMap().remove(player.getUniqueId());
     }
 
     /**
@@ -587,7 +543,7 @@ public class GuildHandler {
      */
     public void chatLogout() {
         spies.clear();
-        guildChat.clear();
+        guildsPlugin.getChatListener().getPlayerChatMap().clear();
     }
 
     /**
@@ -947,6 +903,17 @@ public class GuildHandler {
         }
     }
 
+    public void handleAllyChat(Guild guild, Player player, String msg) {
+        guild.sendMessage(StringUtils.color(settingsManager.getProperty(GuildSettings.ALLY_CHAT_FORMAT).replace("{guild}", guild.getName()).replace("{player}", player.getName()).replace("{display-name}", player.getDisplayName()).replace("{message}", msg)));
+        guild.getAllies().forEach(ally -> {
+            getGuild(ally).sendMessage(StringUtils.color(settingsManager.getProperty(GuildSettings.ALLY_CHAT_FORMAT).replace("{guild}", guild.getName()).replace("{player}", player.getName()).replace("{display-name}", player.getDisplayName()).replace("{message}", msg)));
+        });
+        getSpies().forEach(s -> s.sendMessage(StringUtils.color(settingsManager.getProperty(GuildSettings.SPY_CHAT_FORMAT).replace("{role}", getGuildRole(guild.getMember(player.getUniqueId()).getRole().getLevel()).getName()).replace("{player}", player.getName()).replace("{display-name}", player.getDisplayName()).replace("{message}", msg).replace("{guild}", guild.getName()))));
+        if (settingsManager.getProperty(GuildSettings.LOG_GUILD_CHAT)) {
+            LoggingUtils.info(StringUtils.color(settingsManager.getProperty(GuildSettings.SPY_CHAT_FORMAT).replace("{role}", getGuildRole(guild.getMember(player.getUniqueId()).getRole().getLevel()).getName()).replace("{player}", player.getName()).replace("{display-name}", player.getDisplayName()).replace("{message}", msg).replace("{guild}", guild.getName())));
+        }
+    }
+
     /**
      * Helper method to process guild chat input and apply replacements for output
      *
@@ -1000,10 +967,6 @@ public class GuildHandler {
 
     public List<Player> getSpies() {
         return this.spies;
-    }
-
-    public List<Player> getGuildChat() {
-        return this.guildChat;
     }
 
     public List<GuildTier> getTiers() {

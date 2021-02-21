@@ -27,6 +27,7 @@ descriptions:
   admin-vault: "Admin command to view a guild's vault"
   ally-accept: "Accept an ally invite from another guild"
   ally-add: "Add a Guild as an ally"
+  ally-chat: "Toggles ally chat"
   ally-decline: "Decline an ally invite from another Guild"
   ally-list: "List all the allies of your Guild"
   ally-remove: "Remove a Guild as an ally"
@@ -97,8 +98,8 @@ create:
   name-too-long: "&cYou didn't provide a prefix so the name you input was tested against the prefix requirements and that failed. Please try a shorter name or input a prefix on creation."
   prefix-too-long: "&cThe guild prefix provided did not match the requirements! Perphaps you had too many characters?"
 chat:
-  disabled: "Guild Chat Disabled"
-  enabled: "Guild Chat Enabled"
+  toggled-on: "{type} chat toggled on."
+  toggled-off: "{type} chat toggled off."
 request:
   success: "&aYou've successfully requested an invite from {guild}"
   incoming-request: "&a{player} is requesting to join the guild. Send them an invite by doing /guild invite {player}!"
