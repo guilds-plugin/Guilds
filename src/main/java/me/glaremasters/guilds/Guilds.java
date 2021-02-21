@@ -283,7 +283,6 @@ public final class Guilds extends JavaPlugin {
                 new TicketListener(this, guildHandler, settingsHandler.getMainConf()),
                 new VaultBlacklistListener(this, guildHandler, settingsHandler.getMainConf()),
                 new ArenaListener(this, challengeHandler, settingsHandler.getMainConf()),
-                new ChatListener(this))
                 .forEach(l -> Bukkit.getPluginManager().registerEvents(l, this));
         // Load the optional listeners
         optionalListeners();
