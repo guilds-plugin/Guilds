@@ -182,10 +182,10 @@ leave:
   warning-guildmaster: "&cВы являетесь Гильд-мастером этой гильдии, и Ваш уход будет означать её расформирование. Введите /guilds confirm для подтверждения или /guilds cancel для отмены ухода из гильдии и её дальнейшего расформирования."
 transfer:
   newmaster: "&aОтныне Вы новый Гильд-мастер Вашей гильдии!"
-  success: "&aВласть над гильдией была успешно передана!"
+  success: "&aГильдия была успешно передана!"
 invite:
-  already-invited: "&cЭтот игрок уже приглашен!"
-  message: "&aИгрок {player} пригласил Вас в свою гильдию {guild}&r&a"
+  already-invited: "&cПользователь уже приглашен в Вашу гильдию"
+  message: "&a{player} пригласил Вас в гильдию {guild}. Используйте /guild join {guild} для вступления!"
   successful: "&aВы успешно пригласили {player} в Вашу гильдию!"
   already-in-guild: "&c{player} уже состоит в другой гильдии!"
 upgrade:
@@ -215,7 +215,7 @@ sethome:
 reload:
   reloaded: "&aФайл конфигураций перезагружен!"
 cancel:
-  error: "&cУ Вас нет действий для их отмены!"
+  error: "&cУ Вас нет действий для отмены!"
   success: "&aДействие отменено!"
 confirm:
   error: "&cУ Вас нет действий для подтверждения!"
@@ -224,10 +224,10 @@ ally:
   none: "&cУ Вас нет союзников!"
   list: "Ваша гильдия имеет следующих союзников: {ally-list}"
   current-declined: "&aЗапрос на союз с гильдией {guild} был отклонен!"
-  target-declined: "&cВаш запрос на союз с гильдией {guild} был отклонен!"
-  current-accepted: "&aВы приняли запрос на союз с {guild}"
-  target-accepted: "&aВаш запрос на союз с гильдией {guild} был принят!"
-  invite-sent: "&aВы отправили запрос на союз с гильдией {guild}!"
+  target-declined: "&cВаш запрос на союз с {guild} был отклонен!"
+  current-accepted: "&aВы приняли запрос на союз от {guild}"
+  target-accepted: "&aВаш запрос на союз с {guild} был принят!"
+  invite-sent: "&aВы успешно отправили запрос на союз с {guild}!"
   incoming-invite: "&aВам предложен союз от гильдии {guild}!"
   current-remove: "&aВы разорвали союз с гильдией {guild}!"
   target-remove: "&c{guild} разорвала союз с Вашей гильдией!"
