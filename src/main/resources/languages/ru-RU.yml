@@ -339,7 +339,7 @@ war:
   commands-blocked: "Извините! Вы не можете выполнять команды во время войны!"
   player-killed-player: "&b{player} &aбыл убит &b{killer}&a!"
   player-killed-other: "&b{player} &aубит по неизвестной причине."
-  player-killed-quit: "&b{player} &aвышел с сервера и был убит."
+  player-killed-quit: "&b{player} &aубит по причине выхода с сервера."
   teleported-back: "&aВы упорно боролись! Увы, не все могут быть лучшими. Вы были телепортированы на исходное местоположение!"
 acf-core:
   help_header: "<c3>=== </c3><c1>Помощь для </c1><c2>{commandprefix}{command}</c2><c3> ===</c3>"
