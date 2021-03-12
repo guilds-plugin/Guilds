@@ -109,7 +109,7 @@ error:
   role-no-permission: "&cВашей роли недостаточно, чтобы сделать это!"
   tier-no-permission: "&cУровня Вашей гильдии недостаточно, чтобы сделать это!"
   guild-no-exist: "&cЭтой гильдии не существует! (Если вы попытались присоединится к гильдии с цветным названием, можете попробовать использовать /guild join <игрок, который Вас пригласил>)"
-  player-not-found: "&cИгрок '{player}&r&c' не в сети!"
+  player-not-found: "&cИгрок {player}&r&c не в сети!"
   player-not-in-guild: "&c{player} не состоит в Вашей гильдии!"
   not-officer: "&cПользователь должен быть офицером в Вашей гильдии!"
   blacklist: "&cВ названии или префиксе Вашей гильдии обнаружены запрещённые слова!"
@@ -131,7 +131,7 @@ bank:
 admin:
   delete-warning: "&cВы собираетесь расформировать гильдию {guild}. Введите /guilds confirm для подтверждения или /guilds cancel для отмены расформирования."
   delete-success: "&aВы успешно расформировали {guild}."
-  guild-vault-sign: "Хранилище гильдии создано!"
+  guild-vault-sign: "Глобальное хранилище гильдии создано!"
   player-added: "&aВы были добавлены в {guild} администратором!"
   admin-player-added: "&aВы добавили {player} в {guild}!"
   admin-guild-add: "&a{player} добавлен в Вашу гильдию администратором!"
@@ -156,8 +156,8 @@ admin:
   delhome: "&aВы успешно удалили дом гильдии для {guild}."
 boot:
   player-kicked: "&c{kicker} выгнал игрока {player} из гильдии!"
-  successful: "&aВы успешно выгнали {player} из Вашей гильдии!"
-  kicked: "&c{kicker} выгнал Вас из гильдии!"
+  successful: "&a{player} успешно выгнан из Вашей гильдии!"
+  kicked: "&c{kicker} выгнал Вас из Вашей гильдии!"
 decline:
   success: "&aПриглашение в гильдию отклонено!"
 demote:
@@ -166,17 +166,17 @@ demote:
   you-were-demoted: "&cВы были понижены с {old} до {new}"
 promote:
   cant-promote: "&cЭтот игрок не может быть повышен!"
-  promote-successful: "&aВы повысили игрока {player} с {old} до {new}"
+  promote-successful: "&aВы успешно повысили {player} с {old} до {new}"
   you-were-promoted: "&aВы были повышены с {old} до {new}"
 delete:
-  successful: "&aГильдия {guild}&r&a успешно расформирована!"
+  successful: "&a{guild}&r&a успешно расформирована!"
   cancelled: "&cРасформирование гильдии отменено!"
   warning: "&cВведите /guilds confirm для подтверждения или /guilds cancel для отмены расформирования."
   notify-allies: "&c{guild} больше не является Вашим союзником, поскольку была расформирована."
 leave:
   cancelled: "&cВыход из гильдии отменен!"
   successful: "&aВы успешно покинули гильдию!"
-  player-left: "&cИгрок {player} покинул гильдию!"
+  player-left: "&cИгрок {player} покинул Вашу гильдию!"
   guildmaster-left: "&cГильд-мастер {player} покинул гильдию. Гильдия расформирована."
   warning: "&cВведите /guilds confirm для подтверждения или /guilds cancel для отмены выхода из гильдии."
   warning-guildmaster: "&cВы являетесь Гильд-мастером этой гильдии, и Ваш уход будет означать её расформирование. Введите /guilds confirm для подтверждения или /guilds cancel для отмены ухода из гильдии и её дальнейшего расформирования."
