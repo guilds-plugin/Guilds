@@ -122,7 +122,7 @@ public class ChallengeHandler {
      * @return the challenge
      */
     public GuildChallenge getChallenge(@NotNull UUID uuid) {
-        return challenges.stream().filter(c -> c.getId() == uuid).findAny().orElse(null);
+        return challenges.stream().filter(c -> c.getId().equals(uuid)).findAny().orElse(null);
     }
 
     /**
