@@ -166,14 +166,15 @@ public final class Guilds extends JavaPlugin {
             return;
         }
 
+        settingsHandler = new SettingsHandler(this);
+
         LoggingUtils.info("Economy Found: " + economy.getName());
         LoggingUtils.info("Permissions Found: " + permissions.getName());
 
-        if (permissions.getName().equals("GroupManager")) {
-            LoggingUtils.warn("GroupManager is not designed for newer MC versions. Expect issues with permissions.");
-        }
-        if (permissions.getName().equals("PermissionsEx")) {
-            LoggingUtils.warn("PermissionsEx is not designed to run permission async. Expect issues with permissions.");
+        if (permissions.getName().equals("GroupManager") || permissions.getName().equals("PermissionsEx")) {
+            LoggingUtils.warn(permissions.getName() + " is not designed to run permissions async. Expect some possible issues");
+            settingsHandler.getMainConf().setProperty(PluginSettings.RUN_VAULT_ASYNC, false);
+            settingsHandler.getMainConf().save();
         }
 
         // This is really just for shits and giggles
@@ -182,8 +183,6 @@ public final class Guilds extends JavaPlugin {
 
         // Load up TaskChain
         taskChainFactory = BukkitTaskChainFactory.create(this);
-
-        settingsHandler = new SettingsHandler(this);
 
         new LanguageUpdater(this).saveLang();
 
