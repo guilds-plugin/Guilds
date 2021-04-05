@@ -258,7 +258,11 @@ public class ChallengeHandler {
      * @param challenge the challenge to check
      */
     public void teleportRemaining(GuildChallenge challenge) {
-        getAllPlayersAlive(challenge).forEach((key, value) -> Bukkit.getPlayer(key).teleport(ACFBukkitUtil.stringToLocation(value)));
+        getAllPlayersAlive(challenge).forEach((key, value) -> {
+            final Location location = ACFBukkitUtil.stringToLocation(value);
+            final Player player = Bukkit.getPlayer(key);
+            Bukkit.getScheduler().runTaskLater(guilds, () -> player.teleport(location), 1L);
+        });
     }
 
     /**

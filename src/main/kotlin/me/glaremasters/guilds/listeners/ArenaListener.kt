@@ -32,6 +32,7 @@ import me.glaremasters.guilds.challenges.ChallengeHandler
 import me.glaremasters.guilds.configuration.sections.WarSettings
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.Constants
+import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.entity.Projectile
 import org.bukkit.event.EventHandler
@@ -77,54 +78,11 @@ class ArenaListener(private val guilds: Guilds, private val challengeHandler: Ch
         if (player.uniqueId !in playerDeath) {
             return
         }
-        respawnLocation = ACFBukkitUtil.stringToLocation(playerDeath[player.uniqueId])
-        playerDeath.remove(player.uniqueId)
-    }
-
-    @EventHandler
-    fun EntityDamageByEntityEvent.onDeathByPlayer() {
-        val entity = entity as? Player ?: return
-        val killer = damager as? Player ?: return
-
-        if (entity.health - finalDamage > 1) {
-            return
-        }
-
-        val challenge = challengeHandler.getChallenge(entity) ?: return
-
-        if (!challenge.isStarted) {
-            return
-        }
-
-        isCancelled = true
-        challengeHandler.announceDeath(challenge, guilds, entity, killer, ChallengeHandler.Cause.PLAYER_KILLED_PLAYER)
-        challengeHandler.exitArena(entity, challenge, guilds)
-        challengeHandler.handleFinish(guilds, settingsManager, entity, challenge)
-    }
-
-    @EventHandler
-    fun EntityDamageByEntityEvent.onDeathByProjectile() {
-        if (isCancelled) {
-            return
-        }
-        val entity = entity as? Player ?: return
-        val obj = damager as? Projectile ?: return
-        val shooter = obj.shooter as? Player ?: return
-
-        if (entity.health - finalDamage > 1) {
-            return
-        }
-
-        val challenge = challengeHandler.getChallenge(entity) ?: return
-
-        if (!challenge.isStarted) {
-            return
-        }
-
-        isCancelled = true
-        challengeHandler.announceDeath(challenge, guilds, entity, shooter, ChallengeHandler.Cause.PLAYER_KILLED_PLAYER)
-        challengeHandler.exitArena(entity, challenge, guilds)
-        challengeHandler.handleFinish(guilds, settingsManager, entity, challenge)
+        Bukkit.getScheduler().runTaskLater(guilds, Runnable {
+            val loc = ACFBukkitUtil.stringToLocation(playerDeath[player.uniqueId])
+            player.teleport(loc)
+            playerDeath.remove(player)
+        }, 1L)
     }
 
     @EventHandler
