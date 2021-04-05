@@ -113,9 +113,11 @@ public final class Guilds extends JavaPlugin {
             commandManager.unregisterCommands();
         }
 
-        LoggingUtils.info("Shutting down database...");
-        database.close();
-        LoggingUtils.info("Database has been shut down.");
+        if (database != null) {
+            LoggingUtils.info("Shutting down database...");
+            database.close();
+            LoggingUtils.info("Database has been shut down.");
+        }
     }
 
     /**
