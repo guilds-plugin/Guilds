@@ -30,6 +30,8 @@ import net.milkbowl.vault.economy.Economy;
 import org.bukkit.entity.Player;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 /**
  * Created by Glare
@@ -38,7 +40,7 @@ import java.text.DecimalFormat;
  */
 public class EconomyUtils {
 
-    private static final DecimalFormat df = new DecimalFormat("###,###.##");
+    private static final DecimalFormat df = new DecimalFormat("###,###.##", new DecimalFormatSymbols(Locale.US));
 
     /**
      * Check if a player has enough money to do something
