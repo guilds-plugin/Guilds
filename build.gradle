@@ -169,9 +169,7 @@ tasks.withType(JavaCompile) {
 import org.apache.tools.ant.filters.ReplaceTokens
 
 processResources {
-    from(sourceSets.main.resources.srcDirs) {
-        filter ReplaceTokens, tokens: [version: version]
-    }
+    filter ReplaceTokens, tokens: [version: version]
 }
 
 shadowJar.dependsOn project.tasks.getByName('pdm')
