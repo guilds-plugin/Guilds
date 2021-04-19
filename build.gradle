@@ -11,7 +11,7 @@ plugins {
 }
 
 group = "me.glaremasters"
-version = "3.5.5.7"
+version = "3.5.5.8-DEV"
 sourceCompatibility = JavaVersion.VERSION_1_8
 
 ext {

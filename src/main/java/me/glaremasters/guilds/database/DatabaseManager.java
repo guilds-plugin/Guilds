@@ -34,6 +34,7 @@ import org.jdbi.v3.sqlobject.SqlObjectPlugin;
 public class DatabaseManager {
     private Jdbi jdbi = null;
     private HikariDataSource hikari = null;
+    private String dataSourceName;
 
     public DatabaseManager(SettingsManager settingsManager, DatabaseBackend backend) {
         HikariConfig config = new HikariConfig();
@@ -47,7 +48,13 @@ public class DatabaseManager {
         switch (backend) {
             case MYSQL:
                 config.setPoolName("Guilds MySQL Connection Pool");
-                config.setDataSourceClassName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
+                if (dataSourceName == null) {
+                    tryDataSourceName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
+                }
+                if (dataSourceName == null) {
+                    tryDataSourceName("com.mysql.cj.jdbc.MysqlDataSource");
+                }
+                config.setDataSourceClassName(dataSourceName);
                 config.addDataSourceProperty("serverName", settingsManager.getProperty(StorageSettings.SQL_HOST));
                 config.addDataSourceProperty("port", settingsManager.getProperty(StorageSettings.SQL_PORT));
                 config.addDataSourceProperty("databaseName", databaseName);
@@ -84,6 +91,29 @@ public class DatabaseManager {
         jdbi.installPlugin(new SqlObjectPlugin());
 
         this.hikari = hikari;
+    }
+
+    /**
+     * Helper method to try a data source until the right one is found
+     * @param className the class to try
+     */
+    public void tryDataSourceName(final String className) {
+        try {
+            dataSourceName(className);
+        } catch (Exception ignored) {}
+    }
+
+    /**
+     * Helper method to check if a class exists to use for mysql data sourcing
+     * @param className the class to check
+     */
+    private void dataSourceName(final String className) {
+        try {
+            Class.forName(className);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        this.dataSourceName = className;
     }
 
     public final boolean isConnected() {
