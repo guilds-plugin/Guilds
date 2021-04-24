@@ -90,7 +90,7 @@ descriptions:
   war-join: "Bekleyen bir savaşa katılın"
 create:
   guild-name-taken: "&cBu isim zaten alınmış!"
-  warning: "&cThe creation of a Guild cost {amount}. Type /guilds confirm to create your guild, type /guilds cancel to cancel."
+  warning: "&cLonca oluşturma bedeli {amount}'dur. Onaylamak için /guilds confirm yazabilir, iptal etmek için /guilds cancel yazabilirsiniz."
   successful: "&aLonca '{guild}&r&a' başarıyla oluşturuldu!"
   cancelled: "&cLonca oluşturma iptal edildi!"
   requirements: "&cLoncanın adı şartlara uymuyor! Yalnızca alfanümerik karakterleri kullanabilirsiniz ve adın uzunluğu 64'ü aşamaz"
@@ -124,8 +124,8 @@ error:
   player-no-exist: "&cÜzgünüz, görünüşe göre bu oyuncu daha önce sunucuya girmemiş!"
 bank:
   balance: "&aLoncanın bankasının bakiyesi {amount}."
-  deposit-success: "&a{player} has just deposited {amount} into the Guild Bank. Your new total is {total}."
-  withdrawal-success: "&a{player} has just withdrawn {amount} from the Guild Bank. Your new total is {total}."
+  deposit-success: "&a{player} isimli oyuncu {amount} miktarında parayı Lonca Bankası'na yatırdı. Toplamda mevcut yeni değer {total}'dir."
+  withdrawal-success: "&a{player} isimli oyuncu Lonca Bankası'ndan {amount} miktarında para aldı. Toplamda mevcut yeni değer {total}'dir."
   not-enough-bank: "&cLonca Bankası'nda bunu yapmak için yeterli değil"
   over-max: "&cMaalesef, maksimum banka bakiyenizi aşacağınız kadar para yatıramazsınız!"
 admin:
