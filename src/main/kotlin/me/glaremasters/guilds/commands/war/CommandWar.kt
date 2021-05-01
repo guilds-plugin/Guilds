@@ -90,8 +90,8 @@ internal class CommandWar : BaseCommand() {
 
         val online = Stream.concat(guild.onlineAsUUIDs.stream(), challenger.onlineAsUUIDs.stream()).collect(Collectors.toList())
 
-        val joinMsg = currentCommandManager.getLocales().getMessage(currentCommandIssuer, Messages.WAR__ACTION_BAR_JOIN.messageKey)
-        val readyMsg = currentCommandManager.getLocales().getMessage(currentCommandIssuer, Messages.WAR__ACTION_BAR_READY.messageKey)
+        val joinMsg = currentCommandManager.locales.getMessage(currentCommandIssuer, Messages.WAR__ACTION_BAR_JOIN.messageKey)
+        val readyMsg = currentCommandManager.locales.getMessage(currentCommandIssuer, Messages.WAR__ACTION_BAR_READY.messageKey)
 
         GuildWarJoinTask(guilds, joinTime, readyTime, online, joinMsg, readyMsg, challenge, challengeHandler).runTaskTimer(guilds, 0L, 20L)
     }
@@ -126,6 +126,15 @@ internal class CommandWar : BaseCommand() {
             throw ExpectationNotMet(Messages.WAR__NO_DEFENDERS)
         }
 
+        if (arena.challengerLoc == null) {
+            throw ExpectationNotMet(Messages.ARENA__LOCATION_ISSUE__CHALLENGER, "{arena}", arena.name)
+        }
+
+        if (arena.defenderLoc == null) {
+            throw ExpectationNotMet(Messages.ARENA__LOCATION_ISSUE__DEFENDER, "{arena}", arena.name)
+        }
+
+
         val minPlayers = settingsManager.getProperty(WarSettings.MIN_PLAYERS)
         val maxPlayers = settingsManager.getProperty(WarSettings.MAX_PLAYERS)
         val acceptTime = settingsManager.getProperty(WarSettings.ACCEPT_TIME)
@@ -141,7 +150,7 @@ internal class CommandWar : BaseCommand() {
 
         currentCommandIssuer.sendInfo(Messages.WAR__CHALLENGE_SENT, "{guild}", targetGuild.name, "{amount}", acceptTime.toString())
 
-        challengeHandler.pingOnlineDefenders(targetGuild, currentCommandManager, guild.name, acceptTime)
+        challengeHandler.pingOnlineDefenders(targetGuild, guilds.commandManager, guild.name, acceptTime)
 
         GuildWarChallengeCheckTask(guilds, challenge, challengeHandler).runTaskLater(guilds, (acceptTime * 20).toLong())
     }

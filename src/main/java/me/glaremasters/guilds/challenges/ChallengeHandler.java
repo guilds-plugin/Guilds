@@ -27,6 +27,7 @@ package me.glaremasters.guilds.challenges;
 import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.CommandManager;
+import co.aikar.commands.PaperCommandManager;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.arena.Arena;
 import me.glaremasters.guilds.configuration.sections.WarSettings;
@@ -39,6 +40,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -92,7 +94,7 @@ public class ChallengeHandler {
      * @param maxPlayers the amount of players
      * @return new challenge
      */
-    public GuildChallenge createNewChallenge(Guild challenger, Guild defender, int minPlayer, int maxPlayers, Arena arena) {
+    public GuildChallenge createNewChallenge(@NotNull Guild challenger, @NotNull Guild defender, int minPlayer, int maxPlayers, @NotNull Arena arena) {
         return new GuildChallenge(UUID.randomUUID(), System.currentTimeMillis(), challenger,
                 defender, false, false,
                 false, false, minPlayer, maxPlayers,
@@ -158,7 +160,7 @@ public class ChallengeHandler {
      * @param guild the guild to check
      * @return list of online war people
      */
-    public List<Player> getOnlineDefenders(Guild guild) {
+    public List<Player> getOnlineDefenders(@NotNull Guild guild) {
         List<GuildMember> members = guild.getOnlineMembers().stream().filter(m -> m.getRole().hasPerm(GuildRolePerm.INITIATE_WAR)).collect(Collectors.toList());
         return members.stream().map(m -> Bukkit.getPlayer(m.getUuid())).collect(Collectors.toList());
     }
@@ -170,7 +172,7 @@ public class ChallengeHandler {
      * @param challenger the guild challenging
      * @param acceptTime
      */
-    public void pingOnlineDefenders(Guild guild, CommandManager commandManager, String challenger, int acceptTime) {
+    public void pingOnlineDefenders(@NotNull Guild guild, @NotNull PaperCommandManager commandManager, @NotNull String challenger, int acceptTime) {
         getOnlineDefenders(guild).forEach(m -> commandManager.getCommandIssuer(m).sendInfo(Messages.WAR__INCOMING_CHALLENGE, "{guild}", challenger, "{amount}", String.valueOf(acceptTime)));
     }
 
@@ -181,7 +183,7 @@ public class ChallengeHandler {
      * @param amount amount to check
      * @return enough players online
      */
-    public boolean checkEnoughOnline(Guild challenger, Guild defender, int amount) {
+    public boolean checkEnoughOnline(@NotNull Guild challenger, @NotNull Guild defender, int amount) {
         return challenger.getOnlineAsPlayers().size() >= amount && defender.getOnlineAsPlayers().size() >= amount;
     }
 
@@ -190,7 +192,7 @@ public class ChallengeHandler {
      * @param challenge the challenge to check
      * @return enough joined or not
      */
-    public boolean checkEnoughJoined(GuildChallenge challenge) {
+    public boolean checkEnoughJoined(@NotNull GuildChallenge challenge) {
         return challenge.getChallengePlayers().size() >= challenge.getMinPlayersPerSide()
                 && challenge.getDefendPlayers().size() >= challenge.getMinPlayersPerSide();
     }
@@ -201,8 +203,8 @@ public class ChallengeHandler {
      * @param challenge the challenge this is for
      * @param team the team they are on
      */
-    public void prepareFinalList(List<UUID> players, GuildChallenge challenge, String team) {
-        LinkedHashMap<UUID, String> finalList = new LinkedHashMap<>();
+    public void prepareFinalList(@NotNull List<UUID> players, @NotNull GuildChallenge challenge, @NotNull String team) {
+        final LinkedHashMap<UUID, String> finalList = new LinkedHashMap<>();
         players.forEach(p -> {
             Player player = Bukkit.getPlayer(p);
             if (player != null) {
@@ -221,7 +223,7 @@ public class ChallengeHandler {
      * @param players the players to send
      * @param location the location to send them to
      */
-    public void sendToArena(Map<UUID, String> players, Location location) {
+    public void sendToArena(@NotNull Map<UUID, String> players, @Nullable Location location) {
         players.keySet().forEach(p -> {
             Player player = Bukkit.getPlayer(p);
             if (player != null) {
@@ -249,7 +251,7 @@ public class ChallengeHandler {
      * @param challenge the challenge to get alive left of
      * @return compiled map
      */
-    public Map<UUID, String> getAllPlayersAlive(GuildChallenge challenge) {
+    public Map<UUID, String> getAllPlayersAlive(@NotNull GuildChallenge challenge) {
         return Stream.of(challenge.getAliveChallengers(), challenge.getAliveDefenders()).flatMap(m -> m.entrySet().stream()).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
@@ -257,7 +259,7 @@ public class ChallengeHandler {
      * Teleport the remaining players back to their original location
      * @param challenge the challenge to check
      */
-    public void teleportRemaining(GuildChallenge challenge) {
+    public void teleportRemaining(@NotNull GuildChallenge challenge) {
         getAllPlayersAlive(challenge).forEach((key, value) -> {
             final Location location = ACFBukkitUtil.stringToLocation(value);
             final Player player = Bukkit.getPlayer(key);
@@ -269,7 +271,7 @@ public class ChallengeHandler {
      * Remove a player from a challenge
      * @param player player to remove
      */
-    public void removePlayer(Player player) {
+    public void removePlayer(@NotNull Player player) {
         GuildChallenge c = getChallenge(player);
         if (c != null) {
             c.getAliveDefenders().remove(player.getUniqueId());
@@ -282,7 +284,7 @@ public class ChallengeHandler {
      * @param challenge the challenge to check
      * @return if it's over or not
      */
-    public boolean checkIfOver(GuildChallenge challenge) {
+    public boolean checkIfOver(@NotNull GuildChallenge challenge) {
         if (challenge.getAliveChallengers().keySet().size() == 0) {
             challenge.setWinner(challenge.getDefender());
             challenge.setLoser(challenge.getChallenger());
@@ -305,7 +307,7 @@ public class ChallengeHandler {
      * @param challenge the challenge to check
      * @param commandManager the command manager
      */
-    public void announceWinner(GuildChallenge challenge, CommandManager commandManager) {
+    public void announceWinner(@NotNull GuildChallenge challenge, @NotNull PaperCommandManager commandManager) {
         challenge.getDefender().sendMessage(commandManager, Messages.WAR__WINNER,
                 "{guild}", challenge.getWinner().getName());
         challenge.getChallenger().sendMessage(commandManager, Messages.WAR__WINNER,
@@ -320,7 +322,7 @@ public class ChallengeHandler {
      * @param killer possible killer
      * @param cause the reason they died
      */
-    public void announceDeath(GuildChallenge challenge, Guilds guilds, Player player, Player killer, Cause cause) {
+    public void announceDeath(@NotNull GuildChallenge challenge, @NotNull Guilds guilds, @NotNull Player player, @NotNull Player killer, @NotNull Cause cause) {
         Messages message;
         switch (cause.toString()) {
             case "PLAYER_KILLED_PLAYER":
@@ -345,7 +347,7 @@ public class ChallengeHandler {
      * @param settingsManager the settings manager
      * @param challenge the challenge
      */
-    public void giveRewards(SettingsManager settingsManager, GuildChallenge challenge) {
+    public void giveRewards(@NotNull SettingsManager settingsManager, @NotNull GuildChallenge challenge) {
         List<UUID> winners;
         UUID teamWinner = challenge.getWinner().getId();
         if (teamWinner == challenge.getChallenger().getId()) {
@@ -373,7 +375,7 @@ public class ChallengeHandler {
      * @param settingsManager the settings manager
      * @return if they can be challenge or not
      */
-    public boolean notOnCooldown(Guild guild, SettingsManager settingsManager) {
+    public boolean notOnCooldown(@NotNull Guild guild, @NotNull SettingsManager settingsManager) {
         long cooldownTime = TimeUnit.MINUTES.toMillis(settingsManager.getProperty(WarSettings.DEFEND_COOLDOWN));
         long lastDefended = guild.getLastDefended();
         long currentTime = System.currentTimeMillis();
@@ -392,7 +394,7 @@ public class ChallengeHandler {
      * @param player player to remove
      * @param challenge the challenge being checked
      */
-    public void handleFinish(Guilds guilds, SettingsManager settingsManager, Player player, GuildChallenge challenge) {
+    public void handleFinish(@NotNull Guilds guilds, @NotNull SettingsManager settingsManager, @NotNull Player player, @NotNull GuildChallenge challenge) {
         removePlayer(player);
         if (checkIfOver(challenge)) {
             // Specify the war is over

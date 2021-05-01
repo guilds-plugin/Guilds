@@ -11,7 +11,7 @@ plugins {
 }
 
 group = "me.glaremasters"
-version = "3.5.5.8"
+version = "3.5.5.9-DEV"
 sourceCompatibility = JavaVersion.VERSION_1_8
 
 ext {
@@ -27,7 +27,7 @@ repositories {
             includeGroup("org.bukkit")
         }
     }
-    
+
     maven {
         url = "https://oss.sonatype.org/content/groups/public/"
     }
