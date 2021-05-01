@@ -311,6 +311,8 @@ arena:
   position-not-set: "&cO takımın yeri henüz belirlenmedi. Işınlamadan önce ayarlamayı deneyin!"
   teleported-to-selection: "&aWooosh! You've teleported to the &c{team}&a spawn point for &c{arena}&a."
   all-full: "&cÜzgünüz, sunucudaki tüm arenalar şu anda kullanımda! Daha sonra tekrar deneyin!"
+  location-issue-challenger: "&cThere seems to be a problem with the &achallenger &clocation for arena &a{arena}&c. Please inform your server administrator."
+  location-issue-defender: "&cThere seems to be a problem with the &adefender &clocation for arena &a{arena}&c. Please inform your server administrator."
 war:
   no-defenders: "&cMeydan okuduğun cılız lonca, bunu kabul edecek kadar erkeğe sahip değil."
   challenge-sent: "&aA war challenge has been sent to &b{guild}&a! They will have &b{amount} &aseconds to accept it!"
