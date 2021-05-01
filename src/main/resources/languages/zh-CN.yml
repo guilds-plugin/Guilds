@@ -311,6 +311,8 @@ arena:
   position-not-set: "&c此队伍的位置还没有被设置. 请在传送前先设置好次队伍的位置!"
   teleported-to-selection: "&a成功地传送至 &c{arena}&a 中 &c{team}&a 的出生点."
   all-full: "&c抱歉, 服务器上所有的竞技场都在使用中! 请稍后再试!"
+  location-issue-challenger: "&cThere seems to be a problem with the &achallenger &clocation for arena &a{arena}&c. Please inform your server administrator."
+  location-issue-defender: "&cThere seems to be a problem with the &adefender &clocation for arena &a{arena}&c. Please inform your server administrator."
 war:
   no-defenders: "&c对面的弱鸡公会人不够, 无法接受挑战."
   challenge-sent: "&a挑战书已发送至 &b{guild}&a! 他们有&b{amount}&a秒来接受此次挑战!"
