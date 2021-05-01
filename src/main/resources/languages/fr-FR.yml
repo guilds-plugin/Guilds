@@ -1,7 +1,7 @@
 ---
 descriptions:
   accept: "Accepter une invitation de guilde"
-  admin-addplayer: "Commande administrateur pour ajouter un joueur dans une guilde"
+  admin-addplayer: "Commande admin pour ajouter un joueur dans une guilde"
   admin-bank-balance: "Commande administrateur pour voir le solde de la banque d'une guilde"
   admin-bank-deposit: "Commande administrateur pour mettre de l'argent dans la banque d'une guilde"
   admin-bank-withdraw: "Commande administrateur pour retirer de l'argent à la banque d'une guilde"
@@ -311,6 +311,8 @@ arena:
   position-not-set: "&cL'emplacement de cette équipe n'a pas encore été défini. Essayez de le définir avant de le téléporter!"
   teleported-to-selection: "&aWooosh! Vous avez téléporté au &c{team}&a point d'apparition pour &c{arena}&a."
   all-full: "&cToutes les arènes du serveur sont actuellement en cours d'utilisation ! Réessayez plus tard !"
+  location-issue-challenger: "&cThere seems to be a problem with the &achallenger &clocation for arena &a{arena}&c. Please inform your server administrator."
+  location-issue-defender: "&cThere seems to be a problem with the &adefender &clocation for arena &a{arena}&c. Please inform your server administrator."
 war:
   no-defenders: "&cLa faible guilde que vous avez défié n'a personne d'assez brave pour accepter le défi."
   challenge-sent: "&aUne déclaration de guerre a été envoyé à &b{guild}&a! Ils auront &b{amount} &asecondes pour l'accepter !"
