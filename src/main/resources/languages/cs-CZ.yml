@@ -311,6 +311,8 @@ arena:
   position-not-set: "&cLokace pro tenhle tým právě nebyl nastaven. Zkuste nastavit předtím, než se tam teleportujete!"
   teleported-to-selection: "&aPáááni! Právě jste se teleportoval do týmu &c{team}&a na místo zrodu v aréně &c{arena}&a."
   all-full: "&c Promiňtě, všechny arény na serveru jsou právě použity! Zkuste později!"
+  location-issue-challenger: "&cThere seems to be a problem with the &achallenger &clocation for arena &a{arena}&c. Please inform your server administrator."
+  location-issue-defender: "&cThere seems to be a problem with the &adefender &clocation for arena &a{arena}&c. Please inform your server administrator."
 war:
   no-defenders: "&cDrobný cech, který jste vyzval, nemá nikoho, kdo by přijal výzvu."
   challenge-sent: "&aVálečná výzva byla odeslána cechu &b {guild} &a! Budou muset do &b {amount} &asekund příjmout výzvu!"

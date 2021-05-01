@@ -311,6 +311,8 @@ arena:
   position-not-set: "&cLa posizione per quel team non è ancora stata impostata. Prova ad impostarla prima di teletrasportarti ad essa!"
   teleported-to-selection: "&aWooosh! Ti sei teletrasportato al &c{team}&a punto di spawn per &c{arena}&a."
   all-full: "&cSpiacenti, tutte le arene sul server sono attualmente in uso! Riprova più tardi!"
+  location-issue-challenger: "&cThere seems to be a problem with the &achallenger &clocation for arena &a{arena}&c. Please inform your server administrator."
+  location-issue-defender: "&cThere seems to be a problem with the &adefender &clocation for arena &a{arena}&c. Please inform your server administrator."
 war:
   no-defenders: "&cLa gracile gilda che hai sfidato non ha abbastanza uomini per accettarla."
   challenge-sent: "&aUna sfida guerra è stata inviata a &b{guild}&a! Avranno &b{amount} &asecondi per accettarla!"
