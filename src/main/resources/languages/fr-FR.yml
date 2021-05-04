@@ -312,7 +312,7 @@ arena:
   teleported-to-selection: "&aWooosh! Vous avez téléporté au &c{team}&a point d'apparition pour &c{arena}&a."
   all-full: "&cToutes les arènes du serveur sont actuellement en cours d'utilisation ! Réessayez plus tard !"
   location-issue-challenger: "&c Il semble y avoir un problème avec le lieu de l'arène &a{arena} &cdu &achallenger&c. Veuillez informer l'administrateur du serveur."
-  location-issue-defender: "&cThere seems to be a problem with the &adefender &clocation for arena &a{arena}&c. Please inform your server administrator."
+  location-issue-defender: "&c Il semble y avoir un problème avec le lieu de l'arène &a{arena} &cdu &adéfenseur&c. Veuillez informer l'administrateur du serveur."
 war:
   no-defenders: "&cLa faible guilde que vous avez défié n'a personne d'assez brave pour accepter le défi."
   challenge-sent: "&aUne déclaration de guerre a été envoyé à &b{guild}&a! Ils auront &b{amount} &asecondes pour l'accepter !"
