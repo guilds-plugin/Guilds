@@ -81,7 +81,7 @@ class ArenaListener(private val guilds: Guilds, private val challengeHandler: Ch
         Bukkit.getScheduler().runTaskLater(guilds, Runnable {
             val loc = ACFBukkitUtil.stringToLocation(playerDeath[player.uniqueId])
             player.teleport(loc)
-            playerDeath.remove(player)
+            playerDeath.remove(player.uniqueId)
         }, 1L)
     }
 
