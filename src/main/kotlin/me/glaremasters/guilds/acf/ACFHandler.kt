@@ -141,8 +141,8 @@ class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCo
         commandManager.commandCompletions.registerCompletion("languages") { languages.sorted() }
         commandManager.commandCompletions.registerStaticCompletion("sources") { listOf("JSON", "MYSQL", "SQLITE", "MARIADB") }
 
-        commandManager.commandCompletions.registerCompletion("members") { c ->
-            val guild = guildHandler.getGuild(c.player) ?: return@registerCompletion emptyList()
+        commandManager.commandCompletions.registerAsyncCompletion("members") { c ->
+            val guild = guildHandler.getGuild(c.player) ?: return@registerAsyncCompletion emptyList()
             guild.members.mapNotNull { it.asOfflinePlayer.name }
         }
         commandManager.commandCompletions.registerCompletion("members-admin") { c ->
