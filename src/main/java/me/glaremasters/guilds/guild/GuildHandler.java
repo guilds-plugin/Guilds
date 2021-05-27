@@ -76,6 +76,8 @@ public class GuildHandler {
     private final Map<Guild, List<Inventory>> vaults = new HashMap<>();
     private final List<Player> opened = new ArrayList<>();
 
+    private final Map<UUID, String> lookupCache = new HashMap<>();
+
     private boolean migrating = false;
 
     //as well as guild permissions from tiers using permission field and tiers list.
@@ -985,5 +987,9 @@ public class GuildHandler {
 
     public void setMigrating(boolean migrating) {
         this.migrating = migrating;
+    }
+
+    public Map<UUID, String> getLookupCache() {
+        return lookupCache;
     }
 }

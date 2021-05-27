@@ -30,8 +30,6 @@ import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import me.bristermitten.pdm.PluginDependencyManager;
-import me.bristermitten.pdm.SpigotDependencyManager;
 import me.glaremasters.guilds.acf.ACFHandler;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.api.GuildsAPI;
@@ -110,6 +108,7 @@ public final class Guilds extends JavaPlugin {
                 e.printStackTrace();
             }
             guildHandler.chatLogout();
+            guildHandler.getLookupCache().clear();
             commandManager.unregisterCommands();
         }
 
@@ -134,12 +133,6 @@ public final class Guilds extends JavaPlugin {
     private void setupPermissions() {
         RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
         if (rsp != null) permissions = rsp.getProvider();
-    }
-
-    @Override
-    public void onLoad() {
-        final PluginDependencyManager pdm = SpigotDependencyManager.of(this);
-        pdm.loadAllDependencies().join();
     }
 
     @Override
@@ -268,7 +261,6 @@ public final class Guilds extends JavaPlugin {
                 e.printStackTrace();
             }
         }, 20 * 60, (20 * 60) * settingsHandler.getMainConf().getProperty(StorageSettings.SAVE_INTERVAL));
-
     }
 
     /**
