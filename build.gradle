@@ -7,6 +7,7 @@ plugins {
     id "maven-publish"
     id "org.jetbrains.kotlin.jvm" version "1.4.32"
     id "com.github.johnrengelman.shadow" version "6.1.0"
+    id "io.github.slimjar" version "1.2.0"
 }
 
 group = "me.glaremasters"
@@ -56,6 +57,10 @@ repositories {
 
 shadowJar {
     minimize()
+    archiveFileName = "Guilds-${project.version}.jar"
+}
+
+slimJar {
     relocate("org.bstats", "${base}bstats")
     relocate("co.aikar.commands", "${base}acf")
     relocate("co.aikar.locales", "${base}locales")
@@ -66,7 +71,6 @@ shadowJar {
     relocate("org.mariadb.jdbc", "${base}mariadb")
     relocate("me.mattstudios.mfgui", "${base}mfgui")
     relocate("net.kyori", "${base}kyori")
-    archiveFileName = "Guilds-${project.version}.jar"
 }
 
 dependencies {
@@ -111,7 +115,7 @@ dependencies {
     implementation("org.slf4j:slf4j-api:1.7.25")
 
     // Kotlin collections
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    slim("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
     // Bukkit Version
     compileOnly("org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT")
