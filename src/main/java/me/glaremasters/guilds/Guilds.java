@@ -30,6 +30,7 @@ import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import io.github.slimjar.app.builder.ApplicationBuilder;
 import me.glaremasters.guilds.acf.ACFHandler;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.api.GuildsAPI;
@@ -67,7 +68,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.security.NoSuchAlgorithmException;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 public final class Guilds extends JavaPlugin {
@@ -95,6 +103,28 @@ public final class Guilds extends JavaPlugin {
 
     public static GuildsAPI getApi() {
         return Guilds.api;
+    }
+
+    @Override
+    public void onLoad() {
+        final Logger logger = getLogger();
+        final File dependencyDirectory = new File(getDataFolder(), "Libraries");
+        logger.log(Level.INFO, "Loading Libraries...");
+        logger.log(Level.INFO, "Note: This might take a few minutes on first run. Kindly ensure internet connectivity.");
+        final Instant startInstant = Instant.now();
+        try {
+            ApplicationBuilder
+                    .appending("Guilds")
+                    .downloadDirectoryPath(dependencyDirectory.toPath())
+                    .build();
+            final Instant endInstant = Instant.now();
+            final long timeTaken = Duration.between(startInstant, endInstant).toMillis();
+            final double timeTakenSeconds = timeTaken / 1000.0;
+            logger.log(Level.INFO, "Loaded libraries in {0} seconds", timeTakenSeconds);
+        } catch (IOException | ReflectiveOperationException | URISyntaxException | NoSuchAlgorithmException exception) {
+            logger.log(Level.SEVERE, "Unable to load dependencies... Please ensure an active Internet connection on first run!");
+            exception.printStackTrace();
+        }
     }
 
     @Override
