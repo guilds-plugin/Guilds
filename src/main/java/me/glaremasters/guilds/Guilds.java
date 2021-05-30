@@ -218,6 +218,7 @@ public final class Guilds extends JavaPlugin {
             }
             // Load the cooldown objects
             cooldownHandler = new CooldownHandler(this);
+            cooldownHandler.loadCooldowns();
             // Load the arena objects
             arenaHandler = new ArenaHandler(this);
             arenaHandler.loadArenas();

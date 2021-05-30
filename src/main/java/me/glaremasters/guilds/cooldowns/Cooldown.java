@@ -40,18 +40,6 @@ public class Cooldown {
     private final UUID cooldownOwner;
     private final Long cooldownExpiry;
 
-    public Cooldown(String id, String cooldownType, String cooldownOwner, Long cooldownExpiry) {
-        this(UUID.fromString(id), Type.getByTypeName(cooldownType), UUID.fromString(cooldownOwner), cooldownExpiry);
-    }
-
-    public Cooldown(String cooldownType, String cooldownOwner, Long cooldownExpiry) {
-        this(Type.getByTypeName(cooldownType), UUID.fromString(cooldownOwner), cooldownExpiry);
-    }
-
-    public Cooldown(Type cooldownType, UUID cooldownOwner, Long cooldownExpiry) {
-        this(UUID.randomUUID(), cooldownType, cooldownOwner, cooldownExpiry);
-    }
-
     public Cooldown(UUID cooldownId, Type cooldownType, UUID cooldownOwner, Long cooldownExpiry) {
         Preconditions.checkNotNull(cooldownType, "cooldown type");
         Preconditions.checkNotNull(cooldownOwner, "cooldown owner");

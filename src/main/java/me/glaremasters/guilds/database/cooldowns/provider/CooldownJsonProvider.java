@@ -43,6 +43,7 @@ import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class CooldownJsonProvider implements CooldownProvider {
     private final File dataFolder;
@@ -87,7 +88,7 @@ public class CooldownJsonProvider implements CooldownProvider {
     public void createCooldown(@Nullable String tablePrefix, @NotNull String id, @NotNull String cooldownType, @NotNull String cooldownOwner, @NotNull Timestamp cooldownExpiry) throws IOException {
         List<Cooldown> current = getAllCooldowns(tablePrefix);
         if (cooldownExists(cooldownType, cooldownOwner, current)) return;
-        current.add(new Cooldown(id, cooldownType, cooldownOwner, cooldownExpiry.getTime()));
+        current.add(new Cooldown(UUID.fromString(id), Cooldown.Type.getByTypeName(cooldownType), UUID.fromString(cooldownOwner), cooldownExpiry.getTime()));
         writeCooldownFile(cooldownFile, current);
     }
 
