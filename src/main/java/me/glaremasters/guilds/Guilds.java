@@ -224,6 +224,7 @@ public final class Guilds extends JavaPlugin {
             arenaHandler.loadArenas();
             // Load the challenge handler
             challengeHandler = new ChallengeHandler(this);
+            challengeHandler.loadChallenges();
             // Load guildhandler with provider
             guildHandler = new GuildHandler(this, settingsHandler.getMainConf());
         } catch (IOException e) {

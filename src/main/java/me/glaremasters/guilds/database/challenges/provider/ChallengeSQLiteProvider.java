@@ -36,6 +36,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 public interface ChallengeSQLiteProvider extends ChallengeProvider {
 
@@ -56,7 +57,7 @@ public interface ChallengeSQLiteProvider extends ChallengeProvider {
     @Override
     @SqlQuery("SELECT * FROM <prefix>challenge")
     @RegisterRowMapper(ChallengeRowMapper.class)
-    List<GuildChallenge> getAllChallenges(@Define("prefix") @NotNull String prefix);
+    Set<GuildChallenge> getAllChallenges(@Define("prefix") @NotNull String prefix);
 
     @Override
     @SqlQuery("SELECT * FROM <prefix>challenge WHERE id = :id")

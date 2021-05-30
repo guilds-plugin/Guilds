@@ -26,7 +26,6 @@ package me.glaremasters.guilds.challenges;
 
 import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFBukkitUtil;
-import co.aikar.commands.CommandManager;
 import co.aikar.commands.PaperCommandManager;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.arena.Arena;
@@ -44,9 +43,11 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -59,23 +60,28 @@ import java.util.stream.Stream;
  */
 public class ChallengeHandler {
 
-    private List<GuildChallenge> challenges;
+    private final Set<GuildChallenge> challenges = new HashSet<>();
     private final Guilds guilds;
 
     public ChallengeHandler(Guilds guilds) {
         this.guilds = guilds;
+    }
 
-        Guilds.newChain().async(() -> {
-            try {
-                challenges = guilds.getDatabase().getChallengeAdapter().getAllChallenges();
-            } catch (IOException e) {
-                e.printStackTrace();
+    /**
+     * Called when the plugin is first enabled to load all the challenges
+     */
+    public void loadChallenges() {
+        try {
+            final Set<GuildChallenge> loaded = guilds.getDatabase().getChallengeAdapter().getAllChallenges();
+            for (final GuildChallenge challenge : loaded) {
+                if (!challenge.isCompleted()) {
+                    challenge.setCompleted(true);
+                }
+                challenges.add(challenge);
             }
-        }).sync(() -> challenges.forEach(c -> {
-            if (!c.isCompleted()) {
-                c.setCompleted(true);
-            }
-        })).execute();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     /**
@@ -434,7 +440,7 @@ public class ChallengeHandler {
     }
 
 
-    public List<GuildChallenge> getChallenges() {
+    public Set<GuildChallenge> getChallenges() {
         return this.challenges;
     }
 }

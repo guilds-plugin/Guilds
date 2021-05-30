@@ -34,6 +34,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 public class ChallengeAdapter {
     private final ChallengeProvider provider;
@@ -64,7 +65,7 @@ public class ChallengeAdapter {
         return provider.challengeExists(sqlTablePrefix, id);
     }
 
-   public List<GuildChallenge> getAllChallenges() throws IOException {
+   public Set<GuildChallenge> getAllChallenges() throws IOException {
         return provider.getAllChallenges(sqlTablePrefix);
    }
 
@@ -72,7 +73,7 @@ public class ChallengeAdapter {
         return provider.getChallenge(sqlTablePrefix, id);
    }
 
-   public void saveChallenges(@NotNull List<GuildChallenge> challenges) throws IOException {
+   public void saveChallenges(@NotNull Set<GuildChallenge> challenges) throws IOException {
         for (GuildChallenge challenge : challenges) {
             saveChallenge(challenge);
         }

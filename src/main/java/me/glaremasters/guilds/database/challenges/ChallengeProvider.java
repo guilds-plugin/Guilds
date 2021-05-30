@@ -30,6 +30,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 public interface ChallengeProvider {
 
@@ -45,7 +46,7 @@ public interface ChallengeProvider {
      * @param tablePrefix the prefix, if any, to use
      * @return a list of challenges
      */
-    List<GuildChallenge> getAllChallenges(@Nullable String tablePrefix) throws IOException;
+    Set<GuildChallenge> getAllChallenges(@Nullable String tablePrefix) throws IOException;
 
     /**
      * Checks whether or not a guild with the specified id exists

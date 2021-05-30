@@ -39,14 +39,11 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class ChallengeJsonProvider implements ChallengeProvider {
     private final File dataFolder;
-    private Gson gson;
+    private final Gson gson;
 
     public ChallengeJsonProvider(File dataFolder) {
         this.dataFolder = dataFolder;
@@ -61,25 +58,25 @@ public class ChallengeJsonProvider implements ChallengeProvider {
     }
 
     @Override
-    public List<GuildChallenge> getAllChallenges(@Nullable String tablePrefix) throws IOException {
-        List<GuildChallenge> loadedChallenges = new ArrayList<>();
+    public Set<GuildChallenge> getAllChallenges(@Nullable String tablePrefix) {
+        final Set<GuildChallenge> challenges = new HashSet<>();
 
         for (File file : Objects.requireNonNull(dataFolder.listFiles())) {
             try {
                 GuildChallenge challenge = gson.fromJson(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8), GuildChallenge.class);
                 challenge.getId();
-                loadedChallenges.add(challenge);
+                challenges.add(challenge);
             } catch (Exception ex) {
                 LoggingUtils.severe("There was an error loading a GuildChallenge from the following file: " + file.getAbsolutePath());
                 LoggingUtils.severe("To prevent data loss in the plugin, this GuildChallenge has been prevented from loading.");
             }
         }
 
-        return loadedChallenges;
+        return challenges;
     }
 
     @Override
-    public boolean challengeExists(@Nullable String tablePrefix, @NotNull String id) throws IOException {
+    public boolean challengeExists(@Nullable String tablePrefix, @NotNull String id) {
         return Arrays.stream(Objects.requireNonNull(dataFolder.listFiles()))
                 .map(f -> com.google.common.io.Files.getNameWithoutExtension(f.getName()))
                 .anyMatch(n -> n.equals(id));
@@ -110,7 +107,7 @@ public class ChallengeJsonProvider implements ChallengeProvider {
     }
 
     @Override
-    public void deleteChallenge(@Nullable String tablePrefix, @NotNull String id) throws IOException {
+    public void deleteChallenge(@Nullable String tablePrefix, @NotNull String id) {
         deleteChallenge(new File(dataFolder, id + ".json"));
     }
 
