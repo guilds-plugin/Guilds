@@ -101,7 +101,7 @@ chat:
   enabled: "길드 채팅 활성화됨"
 request:
   success: "&a당신은 성공적으로 {guild} 의 초대 요청을 수락하였습니다"
-  incoming-request: "&a{player} is requesting to join the guild. Send them an invite by doing /guild invite {player}!"
+  incoming-request: "&a{player}님이 길드 가입을 요청했습니다. /guild invite  {player} 로  길드 가입 권유를 할수있습니다!"
   cooldown: "You can't send another request for {time} seconds."
 error:
   already-in-guild: "&c당신은 이미 길드에 있습니다!"

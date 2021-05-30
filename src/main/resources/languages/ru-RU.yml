@@ -233,7 +233,7 @@ ally:
   target-remove: "&c{guild} разорвала союз с Вашей гильдией!"
   already-ally: "&cЭта гильдия уже является Вашим союзником!"
   same-guild: "&cВы не можете отправить приглашение на союз себе!"
-  not-allied: "&cВы не можете удалить гильдию не являющуюся вашим союзником!"
+  not-allied: "&cВы не можете удалить гильдию, не являющуюся Вашим союзником!"
   already-requested: "&cУ Вас уже есть ожидающий запрос на союз с этой гильдией!"
   max-allies: "&cВы не можете отправить или принять запрос на союз, потому что Вы уже имеете максимальное количество союзников для уровня Вашей гильдии!"
 accept:
@@ -311,8 +311,8 @@ arena:
   position-not-set: "&cЛокация для этой команды ещё не установлена. Попробуйте установить её, прежде чем телепортироваться на неё!"
   teleported-to-selection: "&aВжух! Вы телепортированы на точку появления &c{team}&a на &c{arena}&a."
   all-full: "&cИзвините, все арены на сервере в данный момент заняты! Попробуйте снова позже!"
-  location-issue-challenger: "&cThere seems to be a problem with the &achallenger &clocation for arena &a{arena}&c. Please inform your server administrator."
-  location-issue-defender: "&cThere seems to be a problem with the &adefender &clocation for arena &a{arena}&c. Please inform your server administrator."
+  location-issue-challenger: "&cПохоже, возникла проблема с локацией &aатакующего&c на арене &a{arena}&c. Пожалуйста, сообщите об этом администрации сервера."
+  location-issue-defender: "&cПохоже, возникла проблема с локацией &aзащищающегося&c на арене &a{arena}&c. Пожалуйста, сообщите об этом администрации сервера."
 war:
   no-defenders: "&cУ вызываемой гильдии недостаточно участников для подтверждения вызова."
   challenge-sent: "&aВызов на войну был отправлен &b{guild}&a! У них есть &b{amount}&a секунд, чтобы подтвердить его!"
