@@ -27,6 +27,7 @@ package me.glaremasters.guilds.tasks;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Iterables;
 import me.glaremasters.guilds.Guilds;
+import me.glaremasters.guilds.api.events.challenges.GuildWarStartEvent;
 import me.glaremasters.guilds.challenges.ChallengeHandler;
 import me.glaremasters.guilds.configuration.sections.WarSettings;
 import me.glaremasters.guilds.guild.GuildChallenge;
@@ -111,12 +112,13 @@ public class GuildWarReadyTask extends BukkitRunnable {
                 challenge.getDefender().sendMessage(guilds.getCommandManager(), Messages.WAR__REMOVED_FOR_SIZE, "{players}", heldBackMessage);
             }
             heldBack.clear();
-            
+
             // Send them both to the arena
             challengeHandler.sendToArena(challenge.getAliveChallengers(), challenge.getArena().getChallengerLoc());
             challengeHandler.sendToArena(challenge.getAliveDefenders(), challenge.getArena().getDefenderLoc());
             challenge.setStarted(true);
             challenge.getDefender().setLastDefended(System.currentTimeMillis());
+            Bukkit.getPluginManager().callEvent(new GuildWarStartEvent(challenge.getChallenger(), challenge.getDefender()));
             cancel();
         }
     }
