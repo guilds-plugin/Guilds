@@ -28,6 +28,7 @@ import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.PaperCommandManager;
 import me.glaremasters.guilds.Guilds;
+import me.glaremasters.guilds.api.events.challenges.GuildWarEndEvent;
 import me.glaremasters.guilds.arena.Arena;
 import me.glaremasters.guilds.configuration.sections.WarSettings;
 import me.glaremasters.guilds.guild.Guild;
@@ -424,6 +425,7 @@ public class ChallengeHandler {
                         Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), c);
                 });
             }
+            Bukkit.getPluginManager().callEvent(new GuildWarEndEvent(challenge.getChallenger(), challenge.getDefender(), challenge.getWinner()));
             try {
                 // Save the details about the challenge
                saveData();
