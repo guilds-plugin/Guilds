@@ -32,11 +32,11 @@ import co.aikar.commands.annotation.Dependency
 import co.aikar.commands.annotation.Description
 import co.aikar.commands.annotation.Subcommand
 import co.aikar.commands.annotation.Syntax
+import dev.triumphteam.gui.guis.PaginatedGui
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.exceptions.InvalidTierException
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.utils.Constants
-import me.mattstudios.mfgui.gui.guis.PaginatedGui
 import org.bukkit.entity.Player
 
 @CommandAlias("%guilds")

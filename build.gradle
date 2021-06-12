@@ -12,7 +12,7 @@ plugins {
 
 archivesBaseName = "Guilds"
 group = "me.glaremasters"
-version = "3.5.5.9"
+version = "3.5.6.0-DEV"
 sourceCompatibility = JavaVersion.VERSION_1_8
 
 ext {
@@ -45,6 +45,10 @@ repositories {
     }
 
     maven {
+        url = "https://repo.mattstudios.me/artifactory/public/"
+    }
+
+    maven {
         url = "https://repo.codemc.org/repository/maven-public/"
         content {
             includeGroup("org.codemc.worldguardwrapper")
@@ -70,7 +74,7 @@ slimJar {
     relocate("com.zaxxer.hikari", "${base}hikari")
     relocate("org.jdbi", "${base}jdbi")
     relocate("org.mariadb.jdbc", "${base}mariadb")
-    relocate("me.mattstudios.mfgui", "${base}mfgui")
+    relocate("dev.triumphteam.gui", "${base}gui")
     relocate("net.kyori", "${base}kyori")
 }
 
@@ -95,13 +99,13 @@ dependencies {
     implementation("com.dumptruckman.minecraft:JsonConfiguration:1.1")
 
     // Cross-Version Support
-    implementation("com.github.cryptomorin:XSeries:7.9.1.1")
+    implementation("com.github.cryptomorin:XSeries:8.0.0")
 
     // Adventure
     implementation ("net.kyori:adventure-platform-bukkit:4.0.0-SNAPSHOT")
 
     // GUI Lib
-    implementation("me.mattstudios.utils:matt-framework-gui:2.0.3.3")
+    implementation("dev.triumphteam:triumph-gui:3.0.0")
 
     // Vault Support
     compileOnly("net.milkbowl:vault:1.7")
@@ -119,7 +123,7 @@ dependencies {
     slim("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
     // Bukkit Version
-    compileOnly("org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot-api:1.17-R0.1-SNAPSHOT")
 
     // Mojang Library
     compileOnly("com.mojang:authlib:1.5.25")

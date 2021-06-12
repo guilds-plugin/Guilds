@@ -25,11 +25,11 @@
 package me.glaremasters.guilds.exte
 
 import com.cryptomorin.xseries.XMaterial
+import dev.triumphteam.gui.guis.Gui
+import dev.triumphteam.gui.guis.GuiItem
+import dev.triumphteam.gui.guis.PaginatedGui
 import me.glaremasters.guilds.utils.ItemBuilder
 import me.glaremasters.guilds.utils.StringUtils
-import me.mattstudios.mfgui.gui.guis.Gui
-import me.mattstudios.mfgui.gui.guis.GuiItem
-import me.mattstudios.mfgui.gui.guis.PaginatedGui
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 
