@@ -105,7 +105,7 @@ dependencies {
     implementation ("net.kyori:adventure-platform-bukkit:4.0.0-SNAPSHOT")
 
     // GUI Lib
-    implementation("dev.triumphteam:triumph-gui:3.0.0")
+    implementation("dev.triumphteam:triumph-gui:3.0.1")
 
     // Vault Support
     compileOnly("net.milkbowl:vault:1.7")
