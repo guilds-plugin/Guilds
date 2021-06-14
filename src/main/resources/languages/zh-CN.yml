@@ -316,7 +316,7 @@ arena:
 war:
   no-defenders: "&c对面的弱鸡公会人不够, 无法接受挑战."
   challenge-sent: "&a挑战书已发送至 &b{guild}&a! 他们有&b{amount}&a秒来接受此次挑战!"
-  incoming-challenge: "&a注意! &b{guild} &a发来了一封挑战书! 输入 /guild war accept 来证明你们是最强公会或输入 /guild war deny 来证明你们是嘴强公会. 你有&b{amount}&a秒来决定!"
+  incoming-challenge: "&a注意! &b{guild} &a发来了一封挑战书! 输入 /guild war accept 来证明你们是最强公会或输入 /guild war deny 来证明你们是最強公会. 你有&b{amount}&a秒来决定!"
   no-pending-challenge: "&c抱歉, 暂时没有待处理的挑战."
   already-challenging: "&c抱歉, 已经有一个挑战在处理中. 请先取消它或等待它超时."
   no-self-challenge: "&cmdzz, 你想自己打自己?"
