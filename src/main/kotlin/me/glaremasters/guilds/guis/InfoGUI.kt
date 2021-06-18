@@ -27,7 +27,8 @@ package me.glaremasters.guilds.guis
 import ch.jalu.configme.SettingsManager
 import co.aikar.commands.ACFBukkitUtil
 import co.aikar.commands.PaperCommandManager
-import java.util.concurrent.TimeUnit
+import dev.triumphteam.gui.guis.Gui
+import dev.triumphteam.gui.guis.GuiItem
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.configuration.sections.CooldownSettings
 import me.glaremasters.guilds.configuration.sections.GuildInfoSettings
@@ -39,17 +40,20 @@ import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.guild.GuildRolePerm
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.EconomyUtils
-import me.glaremasters.guilds.utils.GuiBuilder
 import me.glaremasters.guilds.utils.GuiUtils
-import me.mattstudios.mfgui.gui.guis.Gui
-import me.mattstudios.mfgui.gui.guis.GuiItem
+import me.glaremasters.guilds.utils.StringUtils
 import org.bukkit.entity.Player
+import java.util.concurrent.TimeUnit
 
 class InfoGUI(private val guilds: Guilds, private val settingsManager: SettingsManager, private val guildHandler: GuildHandler, private val cooldownHandler: CooldownHandler, private val manager: PaperCommandManager) {
 
     fun get(guild: Guild, player: Player): Gui {
         val name = settingsManager.getProperty(GuildInfoSettings.GUI_NAME).replace("{name}", guild.name).replace("{prefix}", guild.prefix)
-        val gui = GuiBuilder(guilds).setName(name).setRows(3).disableGlobalClicking().build()
+        val gui = Gui(3, StringUtils.color(name))
+
+        gui.setDefaultClickAction {
+            it.isCancelled = true
+        }
 
         addItems(gui, guild, player)
         addBackground(gui)

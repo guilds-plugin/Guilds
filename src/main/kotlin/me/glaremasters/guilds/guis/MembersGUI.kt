@@ -25,6 +25,8 @@
 package me.glaremasters.guilds.guis
 
 import ch.jalu.configme.SettingsManager
+import dev.triumphteam.gui.guis.Gui
+import dev.triumphteam.gui.guis.GuiItem
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.configuration.sections.GuildInfoMemberSettings
 import me.glaremasters.guilds.configuration.sections.GuildListSettings
@@ -32,21 +34,21 @@ import me.glaremasters.guilds.exte.addBackground
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.guild.GuildMember
-import me.glaremasters.guilds.utils.GuiBuilder
 import me.glaremasters.guilds.utils.GuiUtils
 import me.glaremasters.guilds.utils.StringUtils
-import me.mattstudios.mfgui.gui.guis.Gui
-import me.mattstudios.mfgui.gui.guis.GuiItem
 import org.bukkit.entity.Player
 import java.text.SimpleDateFormat
-import java.util.Comparator
-import java.util.Date
+import java.util.*
 
 class MembersGUI(private val guilds: Guilds, private val settingsManager: SettingsManager, private val guildHandler: GuildHandler) {
 
     fun get(guild: Guild, player: Player): Gui {
         val name = settingsManager.getProperty(GuildInfoMemberSettings.GUI_NAME).replace("{name}", guild.name)
-        val gui = GuiBuilder(guilds).setName(name).setRows(6).disableGlobalClicking().build()
+        val gui = Gui(6, StringUtils.color(name))
+
+        gui.setDefaultClickAction { event ->
+            event.isCancelled = true
+        }
 
         gui.setOutsideClickAction { event ->
             event.isCancelled = true

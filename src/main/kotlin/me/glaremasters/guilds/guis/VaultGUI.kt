@@ -25,16 +25,15 @@
 package me.glaremasters.guilds.guis
 
 import ch.jalu.configme.SettingsManager
+import dev.triumphteam.gui.guis.Gui
+import dev.triumphteam.gui.guis.GuiItem
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.configuration.sections.VaultPickerSettings
 import me.glaremasters.guilds.exte.addBackground
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
-import me.glaremasters.guilds.utils.GuiBuilder
 import me.glaremasters.guilds.utils.GuiUtils
 import me.glaremasters.guilds.utils.StringUtils
-import me.mattstudios.mfgui.gui.guis.Gui
-import me.mattstudios.mfgui.gui.guis.GuiItem
 import org.bukkit.entity.Player
 
 class VaultGUI(private val guilds: Guilds, private val settingsManager: SettingsManager, private val guildHandler: GuildHandler) {
@@ -42,7 +41,7 @@ class VaultGUI(private val guilds: Guilds, private val settingsManager: Settings
     fun get(guild: Guild, player: Player): Gui {
         val name = settingsManager.getProperty(VaultPickerSettings.GUI_NAME).replace("{name}", guild.name)
         val rows = settingsManager.getProperty(VaultPickerSettings.GUI_SIZE)
-        val gui = GuiBuilder(guilds).setName(name).setRows(rows).disableGlobalClicking().build()
+        val gui = Gui(rows, StringUtils.color(name))
 
         // Prevent players from being able to items into the GUIs
         gui.setOutsideClickAction { event ->

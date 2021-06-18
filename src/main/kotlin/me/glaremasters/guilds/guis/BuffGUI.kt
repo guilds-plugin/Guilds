@@ -27,8 +27,8 @@ package me.glaremasters.guilds.guis
 import ch.jalu.configme.SettingsManager
 import co.aikar.commands.PaperCommandManager
 import com.cryptomorin.xseries.XPotion
-import java.util.concurrent.TimeUnit
-import me.glaremasters.guilds.Guilds
+import dev.triumphteam.gui.guis.GuiItem
+import dev.triumphteam.gui.guis.PaginatedGui
 import me.glaremasters.guilds.api.events.GuildBuffEvent
 import me.glaremasters.guilds.conf.GuildBuffSettings
 import me.glaremasters.guilds.conf.objects.GuildBuff
@@ -40,18 +40,17 @@ import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.EconomyUtils
 import me.glaremasters.guilds.utils.GuiUtils
 import me.glaremasters.guilds.utils.StringUtils
-import me.mattstudios.mfgui.gui.guis.GuiItem
-import me.mattstudios.mfgui.gui.guis.PaginatedGui
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
+import java.util.concurrent.TimeUnit
 
-class BuffGUI(private val guilds: Guilds, private val buffConfig: SettingsManager, private val cooldownHandler: CooldownHandler) {
+class BuffGUI(private val buffConfig: SettingsManager, private val cooldownHandler: CooldownHandler) {
 
     fun get(player: Player, guild: Guild, manager: PaperCommandManager): PaginatedGui {
         val name = buffConfig.getProperty(GuildBuffSettings.GUI_NAME)
-        val gui = PaginatedGui(guilds, 6, 45, StringUtils.color(name))
+        val gui = PaginatedGui( 6, 45, StringUtils.color(name))
 
         gui.setDefaultClickAction { event ->
             event.isCancelled = true
@@ -69,12 +68,12 @@ class BuffGUI(private val guilds: Guilds, private val buffConfig: SettingsManage
 
         val next = GuiItem(GuiUtils.createItem(nav.next.material, nav.next.name, emptyList()))
         next.setAction {
-            gui.nextPage()
+            gui.next()
         }
 
         val back = GuiItem(GuiUtils.createItem(nav.previous.material, nav.previous.name, emptyList()))
         back.setAction {
-            gui.prevPage()
+            gui.previous()
         }
 
         gui.setItem(6, 9, next)
