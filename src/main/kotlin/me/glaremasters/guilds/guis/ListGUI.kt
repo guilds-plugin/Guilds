@@ -27,7 +27,6 @@ package me.glaremasters.guilds.guis
 import ch.jalu.configme.SettingsManager
 import dev.triumphteam.gui.guis.GuiItem
 import dev.triumphteam.gui.guis.PaginatedGui
-import java.text.SimpleDateFormat
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.configuration.sections.GuildInfoSettings
 import me.glaremasters.guilds.configuration.sections.GuildListSettings
@@ -38,15 +37,15 @@ import me.glaremasters.guilds.guild.GuildSkull
 import me.glaremasters.guilds.utils.EconomyUtils
 import me.glaremasters.guilds.utils.GuiUtils
 import me.glaremasters.guilds.utils.StringUtils
-import net.kyori.adventure.text.Component
 import org.bukkit.entity.Player
+import java.text.SimpleDateFormat
 
 class ListGUI(private val guilds: Guilds, private val settingsManager: SettingsManager, private val guildHandler: GuildHandler) {
     private val items: MutableList<GuiItem>
 
     fun get(player: Player): PaginatedGui {
             val name = settingsManager.getProperty(GuildListSettings.GUILD_LIST_NAME)
-            val gui = PaginatedGui(6, 45, Component.text(StringUtils.color(name)))
+            val gui = PaginatedGui(6, 45, StringUtils.color(name))
 
             gui.setDefaultClickAction { event ->
                 event.isCancelled = true

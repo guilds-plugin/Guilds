@@ -40,7 +40,6 @@ import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.EconomyUtils
 import me.glaremasters.guilds.utils.GuiUtils
 import me.glaremasters.guilds.utils.StringUtils
-import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.potion.PotionEffect
@@ -51,7 +50,7 @@ class BuffGUI(private val buffConfig: SettingsManager, private val cooldownHandl
 
     fun get(player: Player, guild: Guild, manager: PaperCommandManager): PaginatedGui {
         val name = buffConfig.getProperty(GuildBuffSettings.GUI_NAME)
-        val gui = PaginatedGui( 6, 45, Component.text(StringUtils.color(name)))
+        val gui = PaginatedGui( 6, 45, StringUtils.color(name))
 
         gui.setDefaultClickAction { event ->
             event.isCancelled = true

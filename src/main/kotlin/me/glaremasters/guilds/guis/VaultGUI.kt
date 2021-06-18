@@ -34,7 +34,6 @@ import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.utils.GuiUtils
 import me.glaremasters.guilds.utils.StringUtils
-import net.kyori.adventure.text.Component
 import org.bukkit.entity.Player
 
 class VaultGUI(private val guilds: Guilds, private val settingsManager: SettingsManager, private val guildHandler: GuildHandler) {
@@ -42,7 +41,7 @@ class VaultGUI(private val guilds: Guilds, private val settingsManager: Settings
     fun get(guild: Guild, player: Player): Gui {
         val name = settingsManager.getProperty(VaultPickerSettings.GUI_NAME).replace("{name}", guild.name)
         val rows = settingsManager.getProperty(VaultPickerSettings.GUI_SIZE)
-        val gui = Gui.gui().title(Component.text(StringUtils.color(name))).rows(rows).create()
+        val gui = Gui(rows, StringUtils.color(name))
 
         // Prevent players from being able to items into the GUIs
         gui.setOutsideClickAction { event ->

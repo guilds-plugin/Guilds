@@ -148,7 +148,7 @@ class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCo
         }
         commandManager.commandCompletions.registerAsyncCompletion("members-admin") { c ->
             val guild = c.getContextValue(Guild::class.java, 1) ?: return@registerAsyncCompletion emptyList()
-            guild.members.mapNotNull { it.asOfflinePlayer.name }
+            guild.members.mapNotNull { guildHandler.lookupCache[it.uuid] ?: it.name }
         }
         commandManager.commandCompletions.registerCompletion("allyInvites") { c ->
             val guild = guildHandler.getGuild(c.player) ?: return@registerCompletion null

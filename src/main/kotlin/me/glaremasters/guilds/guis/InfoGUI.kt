@@ -42,7 +42,6 @@ import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.EconomyUtils
 import me.glaremasters.guilds.utils.GuiUtils
 import me.glaremasters.guilds.utils.StringUtils
-import net.kyori.adventure.text.Component
 import org.bukkit.entity.Player
 import java.util.concurrent.TimeUnit
 
@@ -50,7 +49,7 @@ class InfoGUI(private val guilds: Guilds, private val settingsManager: SettingsM
 
     fun get(guild: Guild, player: Player): Gui {
         val name = settingsManager.getProperty(GuildInfoSettings.GUI_NAME).replace("{name}", guild.name).replace("{prefix}", guild.prefix)
-        val gui = Gui.gui().title(Component.text(StringUtils.color(name))).rows(3).create()
+        val gui = Gui(3, StringUtils.color(name))
 
         gui.setDefaultClickAction {
             it.isCancelled = true

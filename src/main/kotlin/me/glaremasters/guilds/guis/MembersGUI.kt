@@ -36,17 +36,15 @@ import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.guild.GuildMember
 import me.glaremasters.guilds.utils.GuiUtils
 import me.glaremasters.guilds.utils.StringUtils
-import net.kyori.adventure.text.Component
 import org.bukkit.entity.Player
 import java.text.SimpleDateFormat
-import java.util.Comparator
-import java.util.Date
+import java.util.*
 
 class MembersGUI(private val guilds: Guilds, private val settingsManager: SettingsManager, private val guildHandler: GuildHandler) {
 
     fun get(guild: Guild, player: Player): Gui {
         val name = settingsManager.getProperty(GuildInfoMemberSettings.GUI_NAME).replace("{name}", guild.name)
-        val gui = Gui.gui().title(Component.text(StringUtils.color(name))).rows(6).create()
+        val gui = Gui(6, StringUtils.color(name))
 
         gui.setDefaultClickAction { event ->
             event.isCancelled = true

@@ -74,9 +74,10 @@ slimJar {
     relocate("com.zaxxer.hikari", "${base}hikari")
     relocate("org.jdbi", "${base}jdbi")
     relocate("org.mariadb.jdbc", "${base}mariadb")
-    relocate("dev.triumphteam.gui", "${base}gui")
+    relocate("dev.triumphteam.gui", "${base}triumph-gui")
     relocate("net.kyori", "${base}kyori")
 }
+
 
 dependencies {
 
@@ -105,7 +106,7 @@ dependencies {
     implementation ("net.kyori:adventure-platform-bukkit:4.0.0-SNAPSHOT")
 
     // GUI Lib
-    implementation("dev.triumphteam:triumph-gui:3.0.1")
+    implementation("dev.triumphteam:triumph-gui:3.0.2")
 
     // Vault Support
     compileOnly("net.milkbowl:vault:1.7")
