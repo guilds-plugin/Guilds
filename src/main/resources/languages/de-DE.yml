@@ -311,8 +311,8 @@ arena:
   position-not-set: "&cDie Position für das Team wurde noch nicht gesetzt. Versuche es zu setzen, bevor du teleportierst!"
   teleported-to-selection: "&aZack! Du wurdes zu dem &c{team}&a Spaw-Punkt in &c{arena}&a teleportiert."
   all-full: "&cEntschuldigung, alle Arenen auf dem Server sind derzeit in Benutzung! Versuche es später nochmal!"
-  location-issue-challenger: "&cThere seems to be a problem with the &achallenger &clocation for arena &a{arena}&c. Please inform your server administrator."
-  location-issue-defender: "&cThere seems to be a problem with the &adefender &clocation for arena &a{arena}&c. Please inform your server administrator."
+  location-issue-challenger: "&cEs scheint ein Problem mit der &aHerausforderer &cPosition für Arena &a{arena}&c zu geben. Bitte informiere den Serveradministrator."
+  location-issue-defender: "&cEs scheint ein Problem mit der &aVerteidiger &cPosition für Arena &a{arena}&c zu geben. Bitte informiere den Serveradministrator."
 war:
   no-defenders: "&cDie Gilde, die du herausgefordert hast, traut sich wohl nicht. Was für Schwächlinge..."
   challenge-sent: "&aEine Herausforderung wurde an &b{guild}&a versandt! Die Gilde hat nun &b{amount} &aSekunden Zeit um diese anzunehmen!"
