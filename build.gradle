@@ -113,7 +113,7 @@ dependencies {
     implementation("org.mariadb.jdbc:mariadb-java-client:2.7.2")
 
     // Logger
-    implementation("org.slf4j:slf4j-api:1.7.25")
+    implementation("org.slf4j:slf4j-api:1.7.31")
 
     // Kotlin collections
     slim("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
