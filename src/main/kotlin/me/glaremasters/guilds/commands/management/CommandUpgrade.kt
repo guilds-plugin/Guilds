@@ -70,7 +70,6 @@ internal class CommandUpgrade : BaseCommand() {
         }
 
         val tier = guildHandler.getGuildTier(guild.tier.level + 1)
-        val bal = guild.balance
         val cost = tier.cost
         val async = settingsManager.getProperty(PluginSettings.RUN_VAULT_ASYNC)
 
@@ -78,18 +77,18 @@ internal class CommandUpgrade : BaseCommand() {
             throw ExpectationNotMet(Messages.UPGRADE__NOT_ENOUGH_MEMBERS, "{amount}", guild.tier.membersToRankup.toString())
         }
 
-        if (!EconomyUtils.hasEnough(bal, cost)) {
-            throw ExpectationNotMet(Messages.UPGRADE__NOT_ENOUGH_MONEY, "{needed}", EconomyUtils.format(cost - bal))
+        if (!EconomyUtils.hasEnough(guild.balance, cost)) {
+            throw ExpectationNotMet(Messages.UPGRADE__NOT_ENOUGH_MONEY, "{needed}", EconomyUtils.format(cost - guild.balance))
         }
 
         currentCommandIssuer.sendInfo(Messages.UPGRADE__MONEY_WARNING, "{amount}", EconomyUtils.format(cost))
         actionHandler.addAction(player, object : ConfirmAction {
             override fun accept() {
-                if (!EconomyUtils.hasEnough(bal, cost)) {
-                    throw ExpectationNotMet(Messages.UPGRADE__NOT_ENOUGH_MONEY, "{needed}", EconomyUtils.format(cost - bal))
+                if (!EconomyUtils.hasEnough(guild.balance, cost)) {
+                    throw ExpectationNotMet(Messages.UPGRADE__NOT_ENOUGH_MONEY, "{needed}", EconomyUtils.format(cost - guild.balance))
                 }
 
-                guild.balance = bal - cost
+                guild.balance = guild.balance - cost
 
                 if (!guilds.settingsHandler.tierConf.getProperty(TierSettings.CARRY_OVER)) {
                     guildHandler.removePermsFromAll(permission, guild, async)
