@@ -311,7 +311,7 @@ arena:
   position-not-set: "&cLokalizacja dla tego zespołu nie została jeszcze ustawiona. Spróbuj ustawić ją przed teleportacją!"
   teleported-to-selection: "&aWoooosh! Przeteleportowałeś się na Spawn gildii &c{team}&a na &c{arena}&a."
   all-full: "&cWybacz, wszystkie areny są aktualnie zajęte. Spróbuj później!"
-  location-issue-challenger: "&cThere seems to be a problem with the &achallenger &clocation for arena &a{arena}&c. Please inform your server administrator."
+  location-issue-challenger: "&cWygląda na to, że wystąpił problem z &clocation dla areny &a{arena}&c. Powiadom administratora serwera."
   location-issue-defender: "&cWygląda na to, że wystąpił problem z &clocation dla areny &a{arena}&c. Powiadom administratora serwera."
 war:
   no-defenders: "&cMocna gildia, którą wyzwałeś, nie ma nikogo wystarczającego aby ją zaakceptować."
