@@ -63,6 +63,7 @@ repositories {
 shadowJar {
     minimize()
     archiveFileName = "Guilds-${project.version}.jar"
+    relocate("io.github.slimjar", "${base}slimjar")
 }
 
 slimJar {
