@@ -75,7 +75,7 @@ slimJar {
     relocate("com.zaxxer.hikari", "${base}hikari")
     relocate("org.jdbi", "${base}jdbi")
     relocate("org.mariadb.jdbc", "${base}mariadb")
-    relocate("dev.triumphteam.gui", "${base}triumph-gui")
+    relocate("dev.triumphteam.gui", "${base}triumphgui")
     relocate("net.kyori", "${base}kyori")
 }
 
