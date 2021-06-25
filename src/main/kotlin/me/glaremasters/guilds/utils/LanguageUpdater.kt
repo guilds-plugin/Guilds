@@ -51,6 +51,8 @@ class LanguageUpdater(internal val plugin: Guilds) {
                 stream.copyTo(it)
                 stream.close()
             }
+
+            stream.close()
         }
     }
 
