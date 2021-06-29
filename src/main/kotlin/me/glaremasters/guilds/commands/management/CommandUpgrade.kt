@@ -36,6 +36,7 @@ import co.aikar.commands.annotation.Syntax
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.actions.ActionHandler
 import me.glaremasters.guilds.actions.ConfirmAction
+import me.glaremasters.guilds.api.events.GuildUpgradeEvent
 import me.glaremasters.guilds.configuration.sections.PluginSettings
 import me.glaremasters.guilds.configuration.sections.TierSettings
 import me.glaremasters.guilds.exceptions.ExpectationNotMet
@@ -45,6 +46,7 @@ import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.Constants
 import me.glaremasters.guilds.utils.EconomyUtils
 import net.milkbowl.vault.permission.Permission
+import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 
 @CommandAlias("%guilds")
@@ -97,6 +99,11 @@ internal class CommandUpgrade : BaseCommand() {
                 guildHandler.upgradeTier(guild)
                 guildHandler.addPermsToAll(permission, guild, async)
                 currentCommandIssuer.sendInfo(Messages.UPGRADE__SUCCESS)
+
+
+                val event = GuildUpgradeEvent(player, guild, guild.tier)
+                Bukkit.getPluginManager().callEvent(event)
+
                 actionHandler.removeAction(player)
             }
 
