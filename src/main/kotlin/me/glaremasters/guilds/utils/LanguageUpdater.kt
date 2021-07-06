@@ -47,7 +47,7 @@ class LanguageUpdater(internal val plugin: Guilds) {
             file.parentFile.mkdirs()
             file.createNewFile()
 
-            file.outputStream().use() {
+            file.outputStream().use {
                 stream.copyTo(it)
                 stream.close()
             }
@@ -58,7 +58,7 @@ class LanguageUpdater(internal val plugin: Guilds) {
         val new = YamlConfiguration.loadConfiguration(stream.reader())
         val old = YamlConfiguration.loadConfiguration(outside)
 
-        for (path in new.getKeys(false)) {
+        for (path in new.getKeys(true)) {
             old.set(path, old.get(path, new.get(path)))
         }
         old.save(outside)
