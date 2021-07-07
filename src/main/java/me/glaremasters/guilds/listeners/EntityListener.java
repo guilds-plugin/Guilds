@@ -126,7 +126,7 @@ public class EntityListener implements Listener {
         Player damager = (Player) event.getDamager();
 
         // Check if they are the same guild
-        if (guildHandler.isSameGuild(player, damager)) {
+        if (guildHandler.isSameGuild(player, damager) && !player.hasPermission("guilds.ffa")) {
             event.setCancelled(!settingsManager.getProperty(GuildSettings.GUILD_DAMAGE));
             return;
         }
@@ -167,7 +167,7 @@ public class EntityListener implements Listener {
         Player damaged = (Player) event.getEntity();
         Player damager = (Player) projectile.getShooter();
 
-        if (guildHandler.isSameGuild(damaged, damager) && damaged != damager) {
+        if (guildHandler.isSameGuild(damaged, damager) && damaged != damager && !damaged.hasPermission("guilds.ffa")) {
             event.setCancelled(!settingsManager.getProperty(GuildSettings.GUILD_DAMAGE));
             return;
         }
@@ -202,7 +202,7 @@ public class EntityListener implements Listener {
         Player damagee = (Player) event.getEntity();
         Player damager = (Player) arrow.getShooter();
 
-        if (guildHandler.isSameGuild(damagee, damager)) {
+        if (guildHandler.isSameGuild(damagee, damager) && !damagee.hasPermission("guilds.ffa")) {
             arrow.setFireTicks(0);
             event.setCancelled(!settingsManager.getProperty(GuildSettings.GUILD_DAMAGE));
             return;
@@ -245,7 +245,7 @@ public class EntityListener implements Listener {
         for (LivingEntity entity : event.getAffectedEntities()) {
             if (entity instanceof Player) {
                 Player player = (Player) entity;
-                if (guildHandler.isSameGuild(shooter, player) && potion.getShooter() != player) {
+                if (guildHandler.isSameGuild(shooter, player) && potion.getShooter() != player && !shooter.hasPermission("guilds.ffa")) {
                     event.setCancelled(!settingsManager.getProperty(GuildSettings.GUILD_DAMAGE));
                     return;
                 }
