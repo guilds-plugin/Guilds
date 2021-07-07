@@ -79,6 +79,7 @@ public class GuildHandler {
     private final Map<UUID, String> lookupCache = new HashMap<>();
 
     private boolean migrating = false;
+    public boolean papi = false;
 
     //as well as guild permissions from tiers using permission field and tiers list.
 
@@ -917,17 +918,50 @@ public class GuildHandler {
     }
 
     /**
-     * Handle the guild chat messages
-     * @param guild the guild the player is in
-     * @param player the player running the message
-     * @param msg the message
+     * Handles sending guild chat messages to the proper locations
+     *
+     * @param guild the guild of the player
+     * @param player the player sending the message
+     * @param message the message the player is sending
      */
-    public void handleGuildChat(Guild guild, Player player, String msg) {
-        guild.sendMessage(StringUtils.color(settingsManager.getProperty(GuildSettings.GUILD_CHAT_FORMAT).replace("{role}", getGuildRole(guild.getMember(player.getUniqueId()).getRole().getLevel()).getName()).replace("{player}", player.getName()).replace("{display-name}", player.getDisplayName()).replace("{message}", msg)));
-        getSpies().forEach(s -> s.sendMessage(StringUtils.color(settingsManager.getProperty(GuildSettings.SPY_CHAT_FORMAT).replace("{role}", getGuildRole(guild.getMember(player.getUniqueId()).getRole().getLevel()).getName()).replace("{player}", player.getName()).replace("{display-name}", player.getDisplayName()).replace("{message}", msg).replace("{guild}", guild.getName()))));
-        if (settingsManager.getProperty(GuildSettings.LOG_GUILD_CHAT)) {
-            LoggingUtils.info(StringUtils.color(settingsManager.getProperty(GuildSettings.SPY_CHAT_FORMAT).replace("{role}", getGuildRole(guild.getMember(player.getUniqueId()).getRole().getLevel()).getName()).replace("{player}", player.getName()).replace("{display-name}", player.getDisplayName()).replace("{message}", msg).replace("{guild}", guild.getName())));
+    public void handleGuildChat(final Guild guild, final Player player, final String message) {
+        final String chatFormat = settingsManager.getProperty(GuildSettings.GUILD_CHAT_FORMAT);
+        final String spyFormat = settingsManager.getProperty(GuildSettings.SPY_CHAT_FORMAT);
+        final boolean logChat = settingsManager.getProperty(GuildSettings.LOG_GUILD_CHAT);
+
+        guild.sendMessage(chatGenerator(guild, player, chatFormat, message));
+
+        for (final Player spy : spies) {
+            spy.sendMessage(chatGenerator(guild, player, spyFormat, message));
         }
+
+        if (logChat) {
+            LoggingUtils.info(chatGenerator(guild, player, spyFormat, message));
+        }
+    }
+
+    /**
+     * Helper method to process guild chat input and apply replacements for output
+     *
+     * @param guild the guild of the player
+     * @param player the player sending the message
+     * @param format the format of the chat
+     * @param content the content of the chat
+     * @return processes  chat message
+     */
+    private String chatGenerator(final Guild guild, final Player player, final String format, final String content) {
+        final GuildRole playerRole = getGuildRole(guild.getMember(player.getUniqueId()).getRole().getLevel());
+        String original = StringUtils.color(format
+                .replace("{role}", playerRole.getName())
+                .replace("{player}", player.getName())
+                .replace("{display-name}", player.getDisplayName())
+                .replace("{message}", content)
+                .replace("{guild}", guild.getName()));
+
+        if (hasPapi()) {
+            original = me.clip.placeholderapi.PlaceholderAPI.setPlaceholders(player, original);
+        }
+        return original;
     }
 
     /**
@@ -991,5 +1025,13 @@ public class GuildHandler {
 
     public Map<UUID, String> getLookupCache() {
         return lookupCache;
+    }
+
+    public boolean hasPapi() {
+        return papi;
+    }
+
+    public void setPapi(boolean papi) {
+        this.papi = papi;
     }
 }
