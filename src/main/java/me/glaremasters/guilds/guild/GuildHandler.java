@@ -209,6 +209,7 @@ public class GuildHandler {
         try {
             guildsPlugin.getDatabase().getGuildAdapter().deleteGuild(guild.getId().toString());
         } catch (IOException e) {
+            LoggingUtils.warn("There was an error deleting a guild with the following uuid: " + guild.getId());
             e.printStackTrace();
         }
     }
