@@ -156,18 +156,18 @@ admin:
   delhome: "&a{guild} 길드 홈을 성공적으로 제거했습니다."
 boot:
   player-kicked: "&c길드원 '{kicker}' 가 길드에서 {player} 을 추방 했습니다."
-  successful: "&aSuccessfully kicked {player} from your guild!"
+  successful: "&a길드에서 성공적으로 {player} 를 추방 시켰어요!"
   kicked: "&cYou have been kicked from your guild by {kicker}!"
 decline:
-  success: "&aGuild Invite Declined!"
+  success: "&a길드 초대가 거절되었습니다!"
 demote:
-  cant-demote: "&cThat player can not be demoted!"
-  demote-successful: "&aYou've successfully demoted {player} from {old} to {new}"
-  you-were-demoted: "&cYou've been demoted from {old} to {new}"
+  cant-demote: "&c그 선수는 강등될 수 없다!"
+  demote-successful: "&a{player} 을(를) {old} 에서 {new}(으) 로 성공적으로 강등했습니다."
+  you-were-demoted: "&c{old} 에서 {new}(으) 로 강등되었습니다."
 promote:
-  cant-promote: "&cThat player can not be promoted!"
-  promote-successful: "&aYou've successfully promoted {player} from {old} to {new}"
-  you-were-promoted: "&aYou've been promoted from {old} to {new}"
+  cant-promote: "&c그 선수는 승진할 수 없다!"
+  promote-successful: "&a{player} 을(를) {old} 에서 {new}(으) 로 성공적으로 승격했습니다."
+  you-were-promoted: "&a {old} 에서 {new}(으) 로 승격되었습니다."
 delete:
   successful: "&aDeleted '{guild}&r&a' successfully!"
   cancelled: "&cGuild deletion cancelled!"
