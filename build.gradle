@@ -92,7 +92,7 @@ dependencies {
     implementation("co.aikar:taskchain-bukkit:3.7.2")
 
     // Worldguard Claim Handling
-    implementation("org.codemc.worldguardwrapper:worldguardwrapper:1.1.9-SNAPSHOT")
+    implementation("org.codemc.worldguardwrapper:worldguardwrapper:1.2.0-SNAPSHOT")
 
     // Configuration Lib
     implementation("ch.jalu:configme:1.2.0")
