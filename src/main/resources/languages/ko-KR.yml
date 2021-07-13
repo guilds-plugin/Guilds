@@ -126,7 +126,7 @@ bank:
   balance: "&c길드의 은행은 잔고가 {amount} 있습니다."
   deposit-success: "&a{player} 방금 길드뱅크에 {amount} 입금했어요. 새 총계는 {total} 예요."
   withdrawal-success: "&a{player} 방금 길드뱅크에 {amount} 입출했어요. 새 총계는 {total} 예요."
-  not-enough-bank: "&cThere isn't enough in the Guild Bank to do that"
+  not-enough-bank: "&c길드 은행은 그렇게 할만큼 충분하지 않습니다"
   over-max: "&cSorry, you can't deposit that much as you would go over your max bank balance!"
 admin:
   delete-warning: "&cYou are about to delete the guild {guild}. Type /guilds confirm to remove this guild, type /guilds cancel to cancel."
