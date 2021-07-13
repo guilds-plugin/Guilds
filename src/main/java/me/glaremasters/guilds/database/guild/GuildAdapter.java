@@ -78,21 +78,9 @@ public class GuildAdapter {
     }
 
     public void saveGuilds(@NotNull List<Guild> guilds) throws IOException {
-        List<String> savedIds = new ArrayList<>();
-
         for (Guild guild : guilds) {
             saveGuild(guild);
-            savedIds.add(guild.getId().toString());
         }
-
-        for (String guildId : getAllGuildIds()) { // This may be slow on SQL-based backends, need benchmarking
-            boolean keep = savedIds.stream().anyMatch(id -> id.equals(guildId));
-            if (!keep) {
-                deleteGuild(guildId);
-            }
-        }
-
-        savedIds.clear();
     }
 
     public void saveGuild(@NotNull Guild guild) throws IOException {

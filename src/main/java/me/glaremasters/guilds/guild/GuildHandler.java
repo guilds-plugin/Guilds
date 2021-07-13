@@ -205,6 +205,12 @@ public class GuildHandler {
     public void removeGuild(@NotNull Guild guild) {
         vaults.remove(guild);
         guilds.remove(guild);
+
+        try {
+            guildsPlugin.getDatabase().getGuildAdapter().deleteGuild(guild.getId().toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
