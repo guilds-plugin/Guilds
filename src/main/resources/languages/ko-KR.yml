@@ -157,7 +157,7 @@ admin:
 boot:
   player-kicked: "&c길드원 '{kicker}' 가 길드에서 {player} 을 추방 했습니다."
   successful: "&a길드에서 성공적으로 {player} 를 추방 시켰어요!"
-  kicked: "&cYou have been kicked from your guild by {kicker}!"
+  kicked: "&c{kicker} 에 의해 길드에서 추방되었습니다!"
 decline:
   success: "&a길드 초대가 거절되었습니다!"
 demote:
@@ -169,10 +169,10 @@ promote:
   promote-successful: "&a{player} 을(를) {old} 에서 {new}(으) 로 성공적으로 승격했습니다."
   you-were-promoted: "&a {old} 에서 {new}(으) 로 승격되었습니다."
 delete:
-  successful: "&aDeleted '{guild}&r&a' successfully!"
-  cancelled: "&cGuild deletion cancelled!"
-  warning: "&cType /guilds confirm to delete your guild, type /guilds cancel to cancel."
-  notify-allies: "&c{guild} is no longer your ally because it has been deleted."
+  successful: "&a'{guild}&r&a'삭제 성공!"
+  cancelled: "&c길드 삭제 취소!"
+  warning: "&c길드를 삭제하려면 /guilds confirm 을 입력하고 취소하려면 /guilds cancel 을 입력합니다."
+  notify-allies: "&c{guild} 길드는 삭제되었으므로 더 이상 동맹이 아닙니다."
 leave:
   cancelled: "&cLeaving guild cancelled!"
   successful: "&aYou've successfully left your guild!"
