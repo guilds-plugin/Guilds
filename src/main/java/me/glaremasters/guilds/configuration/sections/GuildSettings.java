@@ -94,6 +94,10 @@ public class GuildSettings implements SettingsHolder {
     public static final Property<Boolean> LOG_GUILD_CHAT =
             newProperty("guild.format.log-guild-chat", false);
 
+    @Comment("Would you like to log the ally chat to console?")
+    public static final Property<Boolean> LOG_ALLY_CHAT =
+            newProperty("guild.format.log-ally-chat", false);
+
     @Comment("The left bracket in the placeholder")
     public static final Property<String> FORMAT_BRACKET_LEFT =
             newProperty("guild.format.placeholder-design.left-bracket", "[");

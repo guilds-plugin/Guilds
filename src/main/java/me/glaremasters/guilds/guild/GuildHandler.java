@@ -145,7 +145,7 @@ public class GuildHandler {
 
             final GuildRole role = new GuildRole(name, perm, level);
 
-            for (GuildRolePerm rolePerm: GuildRolePerm.values()) {
+            for (GuildRolePerm rolePerm : GuildRolePerm.values()) {
                 final String valuePath = path + rolePerm.name().replace("_", "-").toLowerCase();
                 if (roleSec.getBoolean(valuePath)) {
                     role.addPerm(rolePerm);
@@ -233,6 +233,7 @@ public class GuildHandler {
 
     /**
      * Gets a guild by it's uuid
+     *
      * @param uuid the input
      * @return the output
      */
@@ -252,6 +253,7 @@ public class GuildHandler {
 
     /**
      * Get a guild's name by it's IDd
+     *
      * @param uuid the input ID
      * @return the output guild
      */
@@ -293,7 +295,8 @@ public class GuildHandler {
 
     /**
      * Simple method to check if two guilds are allies
-     * @param guild the first guild
+     *
+     * @param guild  the first guild
      * @param target the second guild
      * @return allies or not
      */
@@ -303,6 +306,7 @@ public class GuildHandler {
 
     /**
      * Check if players are allies
+     *
      * @param player the player
      * @param target the target
      * @return allies or not
@@ -317,6 +321,7 @@ public class GuildHandler {
 
     /**
      * Simple method to check if players are in the same guild
+     *
      * @param player the player being checked
      * @param target the target being checked
      * @return if same guild or not
@@ -331,6 +336,7 @@ public class GuildHandler {
 
     /**
      * Compare two guilds to see if they are the same
+     *
      * @param g1 guild 1
      * @param g2 guild 2
      * @return same or not
@@ -393,6 +399,7 @@ public class GuildHandler {
 
     /**
      * Simple method to check if guild is max tier
+     *
      * @param guild the guild to check
      * @return if they are max or not
      */
@@ -411,6 +418,7 @@ public class GuildHandler {
 
     /**
      * Get the lowest guild tier
+     *
      * @return the lowest guild tier
      */
     public GuildTier getLowestGuildTier() {
@@ -531,6 +539,7 @@ public class GuildHandler {
 
     /**
      * This method is ran when a player logs out to ensure they aren't in the list.
+     *
      * @param player player being removed
      */
     public void chatLogout(Player player) {
@@ -548,8 +557,9 @@ public class GuildHandler {
 
     /**
      * Simple method to check a player has any invites
+     *
      * @param manager the command manager
-     * @param player the player being checked
+     * @param player  the player being checked
      */
     public void checkInvites(CommandManager manager, Player player) {
         List<String> list = getInvitedGuilds(player);
@@ -564,6 +574,7 @@ public class GuildHandler {
 
     /**
      * Basically check if they can upgrade with the member check
+     *
      * @param guild the guild being checked
      * @return if they pass the check or not
      */
@@ -574,7 +585,8 @@ public class GuildHandler {
 
     /**
      * Check in a input name for the guild is proper
-     * @param name the name input
+     *
+     * @param name            the name input
      * @param settingsManager setting manager
      * @return valid or not
      */
@@ -589,7 +601,8 @@ public class GuildHandler {
 
     /**
      * Simple method to check in a prefix is valid or not
-     * @param name the prefix
+     *
+     * @param name            the prefix
      * @param settingsManager setting manager
      * @return valid or not
      */
@@ -604,19 +617,21 @@ public class GuildHandler {
 
     /**
      * Check if a word is in the blacklist or not
-     * @param name name to check
+     *
+     * @param name            name to check
      * @param settingsManager settings manager
      * @return blacklisted or not
      */
     public boolean blacklistCheck(String name, SettingsManager settingsManager) {
-    	if (settingsManager.getProperty(GuildSettings.BLACKLIST_SENSITIVE))
-    		return settingsManager.getProperty(GuildSettings.BLACKLIST_WORDS).stream().anyMatch(s -> s.toLowerCase().contains(name));
-    	else
-    		return settingsManager.getProperty(GuildSettings.BLACKLIST_WORDS).stream().anyMatch(s -> s.equalsIgnoreCase(name));
+        if (settingsManager.getProperty(GuildSettings.BLACKLIST_SENSITIVE))
+            return settingsManager.getProperty(GuildSettings.BLACKLIST_WORDS).stream().anyMatch(s -> s.toLowerCase().contains(name));
+        else
+            return settingsManager.getProperty(GuildSettings.BLACKLIST_WORDS).stream().anyMatch(s -> s.equalsIgnoreCase(name));
     }
 
     /**
      * Check if a guild has a specific vault unlocked
+     *
      * @param vault the vault being opened
      * @param guild the guild opening the vault
      * @return if they can open it or not
@@ -627,6 +642,7 @@ public class GuildHandler {
 
     /**
      * Method to create new vault
+     *
      * @param settingsManager settings manager
      * @return new vault
      */
@@ -636,6 +652,7 @@ public class GuildHandler {
 
     /**
      * Get a list of the online members that can invite people
+     *
      * @param guild the guild to check
      * @return list of online members
      */
@@ -646,9 +663,10 @@ public class GuildHandler {
 
     /**
      * Simple method to inform all online inviters that someone wants to join
-     * @param guild guild to be requested
+     *
+     * @param guild          guild to be requested
      * @param commandManager command manager
-     * @param player player requesting
+     * @param player         player requesting
      */
     public void pingOnlineInviters(Guild guild, CommandManager commandManager, Player player) {
         getOnlineInviters(guild).forEach(m -> commandManager.getCommandIssuer(m).sendInfo(Messages.REQUEST__INCOMING_REQUEST, "{player}", player.getName()));
@@ -656,8 +674,9 @@ public class GuildHandler {
 
     /**
      * Create a guild upgrade ticket
+     *
      * @param settingsManager the settings manager
-     * @param amount the amount of tickets to give
+     * @param amount          the amount of tickets to give
      * @return the guild upgrade ticket
      */
     public ItemStack getUpgradeTicket(SettingsManager settingsManager, int amount) {
@@ -670,6 +689,7 @@ public class GuildHandler {
 
     /**
      * Check the guild ticket itemstack
+     *
      * @param settingsManager settings manager
      * @return the itemstack
      */
@@ -684,6 +704,7 @@ public class GuildHandler {
 
     /**
      * Simple method to check if a guild is full or not
+     *
      * @return full or not
      */
     public boolean checkIfFull(Guild guild) {
@@ -692,8 +713,9 @@ public class GuildHandler {
 
     /**
      * Remove perms from a single player
+     *
      * @param permission the permission to remove
-     * @param player the player to remove from
+     * @param player     the player to remove from
      */
     public void removePerms(Permission permission, OfflinePlayer player, boolean async) {
         Guild guild = getGuild(player);
@@ -720,8 +742,9 @@ public class GuildHandler {
 
     /**
      * Add perms to a single player
+     *
      * @param permission the permission to add
-     * @param player the player to add to
+     * @param player     the player to add to
      */
     public void addPerms(Permission permission, OfflinePlayer player, boolean async) {
         Guild guild = getGuild(player);
@@ -748,8 +771,9 @@ public class GuildHandler {
 
     /**
      * Add all the perms to a player for the guild
+     *
      * @param permission permission to add
-     * @param guild the guild being modified
+     * @param guild      the guild being modified
      */
     public void addPermsToAll(Permission permission, Guild guild, boolean async) {
         GuildTier tier = getGuildTier(guild.getTier().getLevel());
@@ -773,8 +797,9 @@ public class GuildHandler {
 
     /**
      * Remove all perms from a player for the guild
+     *
      * @param permission permission to remove
-     * @param guild the guild being modified
+     * @param guild      the guild being modified
      */
     public void removePermsFromAll(Permission permission, Guild guild, boolean async) {
         GuildTier tier = getGuildTier(guild.getTier().getLevel());
@@ -798,10 +823,11 @@ public class GuildHandler {
 
     /**
      * Handle inviting player when redeeming a code
+     *
      * @param manager command manager
-     * @param player the player redeeming the code
-     * @param guild the guild they are trying to join
-     * @param code the code being redeemed
+     * @param player  the player redeeming the code
+     * @param guild   the guild they are trying to join
+     * @param code    the code being redeemed
      */
     public void handleInvite(CommandManager manager, Player player, Guild guild, GuildCode code) {
         if (code.getUses() <= 0)
@@ -822,9 +848,10 @@ public class GuildHandler {
 
     /**
      * Handle sending code list message to prevent DRY
+     *
      * @param commandManager command manager
-     * @param player player to send list to
-     * @param codes list of codes
+     * @param player         player to send list to
+     * @param codes          list of codes
      */
     public void handleCodeList(CommandManager commandManager, Player player, List<GuildCode> codes) {
         codes.forEach(c -> commandManager.getCommandIssuer(player).sendInfo(Messages.CODES__LIST_ITEM,
@@ -835,6 +862,7 @@ public class GuildHandler {
 
     /**
      * Remove a guild from all other guilds allies or pending allies when deleted
+     *
      * @param guild the guild to check
      */
     public void removeAlliesOnDelete(Guild guild) {
@@ -844,7 +872,8 @@ public class GuildHandler {
 
     /**
      * Notify all allies of a guild that's being deleted.
-     * @param guild the guild being deleted
+     *
+     * @param guild          the guild being deleted
      * @param commandManager the command manager
      */
     public void notifyAllies(Guild guild, CommandManager commandManager) {
@@ -853,6 +882,7 @@ public class GuildHandler {
 
     /**
      * Get a list of all public guilds on the server
+     *
      * @return list of public guilds
      */
     public List<String> getPublicGuilds() {
@@ -861,6 +891,7 @@ public class GuildHandler {
 
     /**
      * Get a total list of all joinable guilds to a player
+     *
      * @param player the player to check
      * @return list of all guilds
      */
@@ -873,6 +904,7 @@ public class GuildHandler {
 
     /**
      * Check if a guild name already exists
+     *
      * @param name name to check
      * @return exists or not
      */
@@ -883,8 +915,8 @@ public class GuildHandler {
     /**
      * Handles sending guild chat messages to the proper locations
      *
-     * @param guild the guild of the player
-     * @param player the player sending the message
+     * @param guild   the guild of the player
+     * @param player  the player sending the message
      * @param message the message the player is sending
      */
     public void handleGuildChat(final Guild guild, final Player player, final String message) {
@@ -903,23 +935,40 @@ public class GuildHandler {
         }
     }
 
-    public void handleAllyChat(Guild guild, Player player, String msg) {
-        guild.sendMessage(StringUtils.color(settingsManager.getProperty(GuildSettings.ALLY_CHAT_FORMAT).replace("{guild}", guild.getName()).replace("{player}", player.getName()).replace("{display-name}", player.getDisplayName()).replace("{message}", msg)));
-        guild.getAllies().forEach(ally -> {
-            getGuild(ally).sendMessage(StringUtils.color(settingsManager.getProperty(GuildSettings.ALLY_CHAT_FORMAT).replace("{guild}", guild.getName()).replace("{player}", player.getName()).replace("{display-name}", player.getDisplayName()).replace("{message}", msg)));
-        });
-        getSpies().forEach(s -> s.sendMessage(StringUtils.color(settingsManager.getProperty(GuildSettings.SPY_CHAT_FORMAT).replace("{role}", getGuildRole(guild.getMember(player.getUniqueId()).getRole().getLevel()).getName()).replace("{player}", player.getName()).replace("{display-name}", player.getDisplayName()).replace("{message}", msg).replace("{guild}", guild.getName()))));
-        if (settingsManager.getProperty(GuildSettings.LOG_GUILD_CHAT)) {
-            LoggingUtils.info(StringUtils.color(settingsManager.getProperty(GuildSettings.SPY_CHAT_FORMAT).replace("{role}", getGuildRole(guild.getMember(player.getUniqueId()).getRole().getLevel()).getName()).replace("{player}", player.getName()).replace("{display-name}", player.getDisplayName()).replace("{message}", msg).replace("{guild}", guild.getName())));
+    /**
+     * Handles sending a chat message to all allies of a guild
+     *
+     * @param guild   the guild sending the message
+     * @param player  the player sending the message
+     * @param message the message the player is sending
+     */
+    public void handleAllyChat(final Guild guild, final Player player, final String message) {
+        final String chatFormat = settingsManager.getProperty(GuildSettings.ALLY_CHAT_FORMAT);
+        final String spyFormat = settingsManager.getProperty(GuildSettings.SPY_CHAT_FORMAT);
+        final boolean logChat = settingsManager.getProperty(GuildSettings.LOG_ALLY_CHAT);
+
+        guild.sendMessage(chatGenerator(guild, player, chatFormat, message));
+
+        for (final UUID ally : guild.getAllies()) {
+            final Guild alliedGuild = getGuild(ally);
+            alliedGuild.sendMessage(chatGenerator(guild, player, chatFormat, message));
+        }
+
+        for (final Player spy : spies) {
+            spy.sendMessage(chatGenerator(guild, player, spyFormat, message));
+        }
+
+        if (logChat) {
+            LoggingUtils.info(chatGenerator(guild, player, spyFormat, message));
         }
     }
 
     /**
      * Helper method to process guild chat input and apply replacements for output
      *
-     * @param guild the guild of the player
-     * @param player the player sending the message
-     * @param format the format of the chat
+     * @param guild   the guild of the player
+     * @param player  the player sending the message
+     * @param format  the format of the chat
      * @param content the content of the chat
      * @return processes  chat message
      */
@@ -940,6 +989,7 @@ public class GuildHandler {
 
     /**
      * Get the formatted placeholder that uses brackets
+     *
      * @param player the player to check
      * @return formatted placeholder
      */
