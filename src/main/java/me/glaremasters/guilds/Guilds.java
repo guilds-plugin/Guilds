@@ -244,8 +244,8 @@ public final class Guilds extends JavaPlugin {
 
         // If they have placeholderapi, enable it.
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-           new PlaceholderAPI(guildHandler).register();
-           guildHandler.setPapi(true);
+            new PlaceholderAPI(guildHandler).register();
+            guildHandler.setPapi(true);
         }
         // start bstats
         Metrics metrics = new Metrics(this, 881);
