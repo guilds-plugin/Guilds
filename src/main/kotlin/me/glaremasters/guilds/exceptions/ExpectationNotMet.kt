@@ -32,6 +32,9 @@ import co.aikar.locales.MessageKeyProvider
  * Time: 5:36 PM
  */
 class ExpectationNotMet : InvalidCommandArgument {
+
+    constructor(message: String) : super(message, false)
+
     /**
      * Exception used when an expectation in the plugin is not being met
      * @param message the message to send to the user
