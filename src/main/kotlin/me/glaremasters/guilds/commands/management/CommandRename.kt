@@ -35,6 +35,7 @@ import co.aikar.commands.annotation.Subcommand
 import co.aikar.commands.annotation.Syntax
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.api.events.GuildRenameEvent
+import me.glaremasters.guilds.configuration.sections.CostSettings
 import me.glaremasters.guilds.configuration.sections.GuildSettings
 import me.glaremasters.guilds.exceptions.ExpectationNotMet
 import me.glaremasters.guilds.guild.Guild
@@ -42,6 +43,7 @@ import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.ClaimUtils
 import me.glaremasters.guilds.utils.Constants
+import me.glaremasters.guilds.utils.EconomyUtils
 import me.glaremasters.guilds.utils.StringUtils
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
@@ -73,12 +75,21 @@ internal class CommandRename : BaseCommand() {
             throw ExpectationNotMet(Messages.ERROR__BLACKLIST)
         }
 
+        val renameCost = settingsManager.getProperty(CostSettings.RENAME)
+        val charge = renameCost != 0.0
+
+        if (charge && !EconomyUtils.hasEnough(guild.balance, renameCost)) {
+            throw ExpectationNotMet(Messages.BANK__NOT_ENOUGH_BANK)
+        }
+
         val event = GuildRenameEvent(player, guild, name)
         Bukkit.getPluginManager().callEvent(event)
 
         if (event.isCancelled) {
             return
         }
+
+        guild.balance = guild.balance - renameCost
 
         guild.name = StringUtils.color(name)
 
