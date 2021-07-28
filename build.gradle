@@ -133,7 +133,7 @@ dependencies {
     compileOnly("com.mojang:authlib:1.5.25")
 
     // PlaceholderAPI
-    compileOnly("me.clip:placeholderapi:2.10.9")
+    compileOnly("me.clip:placeholderapi:2.10.10")
 
 }
 
