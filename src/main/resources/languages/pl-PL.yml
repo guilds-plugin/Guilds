@@ -27,6 +27,7 @@ descriptions:
   admin-vault: "Komenda administratora aby pokazać skarbiec gildii"
   ally-accept: "Zaakceptowanie sojuszu od innej gildii"
   ally-add: "Dodanie gildii jako sojusznika"
+  ally-chat: "Toggles ally chat"
   ally-decline: "Odrzucenie zaproszenia do sojuszu od innej gildii"
   ally-list: "Lista wszystkich sojuszów z twoją gildią"
   ally-remove: "Usunięcie gildii jako sojusznika"
@@ -97,8 +98,8 @@ create:
   name-too-long: "&cNie podałeś przedrostka, z tego powodu twoja nazwa nie mogła zostać sprawdzona na podstawie wymagań. Spróbuj użyć krótszej nazwy lub dodaj przedrostek przy tworzeniu prefixu."
   prefix-too-long: "&cPodany prefix gildii nie spełnia wymagań! Możliwe że ma zbyt wiele znaków?"
 chat:
-  disabled: "Chat Gildii wyłączony"
-  enabled: "Chat Gildii włączony"
+  toggled-on: "{type} chat toggled on."
+  toggled-off: "{type} chat toggled off."
 request:
   success: "&aPomyślnie wysłano prośbę o dołączenie do {guild}"
   incoming-request: "&a{player} chcę dołączyć do gildii. Wyślij mu zaproszenie używając /guild invite {player}!"
