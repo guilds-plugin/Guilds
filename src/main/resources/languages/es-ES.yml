@@ -27,6 +27,7 @@ descriptions:
   admin-vault: "Comando de administrador para ver la bóveda del equipo"
   ally-accept: "Aceptar una invitación de alianza de otra equipo"
   ally-add: "Agregar un equipo como aliado"
+  ally-chat: "Toggles ally chat"
   ally-decline: "Rechazar una invitación de alianza de otro equipo"
   ally-list: "Lista de todas las alianzas de tu equipo"
   ally-remove: "Remover un equipo como aliado"
@@ -97,8 +98,8 @@ create:
   name-too-long: "&cNo proporcionó un prefijo, por lo que el nombre que ingresó se probó con los requisitos del prefijo y eso falló. Por favor intente con un nombre más corto o ingrese un prefijo en la creación."
   prefix-too-long: "&c¡El prefijo del gremio proporcionado no cumplía con los requisitos! ¿Quizás tenías demasiados personajes?"
 chat:
-  disabled: "Chat de la guild desactivado"
-  enabled: "Chat de la guild activado"
+  toggled-on: "{type} chat toggled on."
+  toggled-off: "{type} chat toggled off."
 request:
   success: "&aHas solicitado una invitación de la guild {guild} exitosamente"
   incoming-request: "&a{player} está pidiendo entrar a la guild. ¡Envíale una invitación usando /guild invite {player}!"
