@@ -227,7 +227,7 @@ ally:
   target-declined: "&c您請求 {guild} 的同盟申請已被否決!"
   current-accepted: "&a您已同意來自 {guild} 的同盟邀請"
   target-accepted: "&a您請求 {guild} 的同盟申請已被同意!"
-  invite-sent: "&a您已成功的寄送邀請至 {guild}!"
+  invite-sent: "&a您已成功的寄送同盟邀請至 {guild}!"
   incoming-invite: "&a您有個來自 {guild} 的同盟邀請!"
   current-remove: "&a您已移除 {guild} 自盟軍名單!"
   target-remove: "&c{guild} 已將您從盟軍名單中移除!"
