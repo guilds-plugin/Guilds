@@ -33,7 +33,7 @@ descriptions:
   arena-challenger: "Set the challenger location for an arena"
   arena-create: "創建新的戰場"
   arena-defender: "Set the defender location for an arena"
-  arena-delete: "Delete a war arena"
+  arena-delete: "刪除戰場"
   arena-list: "List all the created arenas"
   arena-tp: "Teleport to a location of an arena"
   bank-balance: "顯示公會銀行"
