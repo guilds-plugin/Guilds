@@ -27,6 +27,7 @@ descriptions:
   admin-vault: "[管理用功能] 查看公會金庫"
   ally-accept: "接受來自另一個公會的結盟邀請"
   ally-add: "添加與自己公會結盟的盟友"
+  ally-chat: "Toggles ally chat"
   ally-decline: "拒絕來自另一個公會的結盟邀請"
   ally-list: "列出盟友公會列表"
   ally-remove: "將一個公會從盟友公會中移除"
@@ -97,8 +98,8 @@ create:
   name-too-long: "&cYou didn't provide a prefix so the name you input was tested against the prefix requirements and that failed. Please try a shorter name or input a prefix on creation."
   prefix-too-long: "&cThe guild prefix provided did not match the requirements! Perphaps you had too many characters?"
 chat:
-  disabled: "&8[&6公會&8] &f已關閉公會聊天頻道"
-  enabled: "&8[&6公會&8] &f已開啟公會聊天頻道"
+  toggled-on: "{type} chat toggled on."
+  toggled-off: "{type} chat toggled off."
 request:
   success: "&8[&6公會&8] &f對公會[《 {guild} 》&f]的申請已發出，請等待處理"
   incoming-request: "&8[&6公會&8] &f{player}請求加入公會， 請輸入/guild invite {player} 來確認"
