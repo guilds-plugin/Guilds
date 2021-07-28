@@ -27,6 +27,7 @@ descriptions:
   admin-vault: "Admin command til at se en guilds bankboks"
   ally-accept: "Acceptér en invitation til alliance med en anden guild"
   ally-add: "Tilføj en guild som allieret"
+  ally-chat: "Toggles ally chat"
   ally-decline: "Afvis en invitation til alliance med en anden guild"
   ally-list: "Liste over alle din guilds alliancer"
   ally-remove: "Fjern alliancen med en guild"
@@ -97,8 +98,8 @@ create:
   name-too-long: "&cYou didn't provide a prefix so the name you input was tested against the prefix requirements and that failed. Please try a shorter name or input a prefix on creation."
   prefix-too-long: "&cThe guild prefix provided did not match the requirements! Perphaps you had too many characters?"
 chat:
-  disabled: "Guild Chat Deaktiveret"
-  enabled: "Guild Chat Aktiveret"
+  toggled-on: "{type} chat toggled on."
+  toggled-off: "{type} chat toggled off."
 request:
   success: "&aDu har anmodet om en invitation fra {guild}"
   incoming-request: "&a{player} is requesting to join the guild. Send them an invite by doing /guild invite {player}!"
