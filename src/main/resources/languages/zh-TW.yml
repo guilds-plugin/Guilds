@@ -136,7 +136,7 @@ admin:
   admin-player-added: "&a您已經將 {player} 加入至 {guild} 公會!"
   admin-guild-add: "&a{player} 已被管理員加入至您的公會!"
   player-removed: "&c您已被管理員從 {guild} 移除!"
-  admin-player-removed: "&a您已從 {guild} 移除 {player}!"
+  admin-player-removed: "&a您已從 {guild} 踢出 {player}!"
   admin-guild-remove: "&a{player} 已被管理員踢出您的公會!"
   admin-upgrade: "&a您已成功升級 {guild}至下一個階級!"
   admin-guild-upgrade: "&a您的公會階級已由管理員升級!"
@@ -162,11 +162,11 @@ decline:
   success: "&a公會邀請遭到拒絕!"
 demote:
   cant-demote: "&c無法降級該玩家位階!"
-  demote-successful: "&a您成功降級 {player} 從 {old} 到 {new}"
+  demote-successful: "&a您成功將 {player} 降級 從 {old} 到 {new}"
   you-were-demoted: "&c您已被降級 {old} 到 {new}"
 promote:
   cant-promote: "&c無法升級該玩家位階!"
-  promote-successful: "&a您成功升級 {player} 從 {old} 到 {new}"
+  promote-successful: "&a您成功將 {player} 升級從 {old} 到 {new}"
   you-were-promoted: "&c您已被升級 {old} 到 {new}"
 delete:
   successful: "&a成功刪除 '{guild}&r&a' !"
@@ -177,14 +177,14 @@ leave:
   cancelled: "&c取消離開公會!"
   successful: "&a您已成功離開公會!"
   player-left: "&c玩家 '{player}' 已離開公會!"
-  guildmaster-left: "&c工會長, '{player}' 已離開公會。 此公會宣布解散。"
-  warning: "&c輸入 /guilds confirm 來離開您的工會，輸入 /guilds cancel 以取消動作"
+  guildmaster-left: "&c公會長, '{player}' 已離開公會。 此公會宣布解散。"
+  warning: "&c輸入 /guilds confirm 來離開您的公會，輸入 /guilds cancel 以取消動作"
   warning-guildmaster: "&c您是公會的公會長，警告！要是您離開公會，公會將會解散並無法返回此動作。輸入 /guilds confirm 來確認離開您的工會，輸入 /guilds cancel 以取消此動作"
 transfer:
   newmaster: "&a您已接任成為新公會長!"
   success: "&a公會已成功轉移!"
 invite:
-  already-invited: "已成功邀請玩家至您的工會"
+  already-invited: "已成功邀請玩家至您的公會"
   message: "&a{player} 邀情您加入公會， '{guild}' 輸入 /guild join {guild} 即可加入!"
   successful: "&a您已成功邀請玩家 {player} 至您的公會!"
   already-in-guild: "&c{player} is already in another guild!"
