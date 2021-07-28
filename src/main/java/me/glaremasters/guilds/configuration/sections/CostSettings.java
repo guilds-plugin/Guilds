@@ -41,6 +41,10 @@ public class CostSettings implements SettingsHolder {
     public static final Property<Double> CREATION =
             newProperty("cost.creation", 0.0);
 
+    @Comment("How much should it cost to rename a guild? (Leave at 0.0 to disable)")
+    public static final Property<Double> RENAME =
+            newProperty("cost.rename", 0.0);
+
     @Comment("How much should it cost to set the cost of the guild home?")
     public static final Property<Double> SETHOME =
             newProperty("cost.sethome", 0.0);
