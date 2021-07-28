@@ -27,6 +27,7 @@ descriptions:
   admin-vault: "Administrátorský příkaz pro náhled do cechovního trezoru"
   ally-accept: "Přijmout žádost o spojenectví"
   ally-add: "Odeslat žádost o spojenectví"
+  ally-chat: "Toggles ally chat"
   ally-decline: "Odmítnout žádost o spojenectví"
   ally-list: "Seznam všech spojenců vašeho cechu"
   ally-remove: "Zrušit spojenectví s cechem"
@@ -97,8 +98,8 @@ create:
   name-too-long: "&cNezvolil/a jsi vlastní prefix cechu. Název cechu je příliš dlouhý pro automatické vygenerování prefixu. Zadej kratší název, nebo při vytváření cechu zadej požadovaný prefix s maximální délkou 4 znaky."
   prefix-too-long: "&cPrefix cechu nesplňuje požadavky! Neobsahuje moc znaků?"
 chat:
-  disabled: "Cechovní chat je vypnutý."
-  enabled: "Cechovní chat je zapnutý."
+  toggled-on: "{type} chat toggled on."
+  toggled-off: "{type} chat toggled off."
 request:
   success: "&aPožádal/a jsi cech {guild} o členství"
   incoming-request: "&a{player} zažádal/a o členství ve vašem cechu. Do cechu jej můžeš přizvat pomocí /guild invite {player}!"

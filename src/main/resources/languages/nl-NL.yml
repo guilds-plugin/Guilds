@@ -27,6 +27,7 @@ descriptions:
   admin-vault: "Admin command om een Guild's kluis te bekijken"
   ally-accept: "Accepteer een bondgenoot uitnodiging van een andere Guild"
   ally-add: "Voeg een Guild toe als bondgenoot"
+  ally-chat: "Toggles ally chat"
   ally-decline: "Weiger een bondgenoot uitnodiging van een andere Guild"
   ally-list: "Zie alle bondgenoten van jouw Guild"
   ally-remove: "Verwijder een Guild als bondgenoot"
@@ -97,8 +98,8 @@ create:
   name-too-long: "&cJe hebt geen prefix ingevuld en de Guild naam voldoet niet aan de prefix vereisten. Probeer het opnieuw met een kortere naam of vul een prefix in tijdens creatie."
   prefix-too-long: "&cDe guild prefix voeldoet niet aan de vereisten! Misschien had je te veel tekens?"
 chat:
-  disabled: "Guild Chat Uitgezet"
-  enabled: "Guild Chat Aangezet"
+  toggled-on: "{type} chat toggled on."
+  toggled-off: "{type} chat toggled off."
 request:
   success: "&aJe hebt een uitnodiging aangevraagd voor {guild}"
   incoming-request: "&a{player} vraagt om een Guild uitnodiging. Stuur een uitnodiging met /guild invite {player}!"

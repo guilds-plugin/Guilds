@@ -27,6 +27,7 @@ descriptions:
   admin-vault: "Bir lonca'nın kasasını görüntülemek için yönetici komutu"
   ally-accept: "Başka bir loncadan gelen müttefik davetini kabul et"
   ally-add: "Bir müttefik olarak Lonca ekleyin"
+  ally-chat: "Toggles ally chat"
   ally-decline: "Bir müttefik davetini başka bir Loncadan reddet"
   ally-list: "Loncadaki tüm müttefikleri listele"
   ally-remove: "Bir Lonca'yı müttefiki olarak sil"
@@ -97,8 +98,8 @@ create:
   name-too-long: "&cBir önek belirtmediniz, bu nedenle girdiğiniz ad önek gereksinimlerine karşı test edildi ve başarısız oldu. Lütfen daha kısa bir ad deneyin veya oluştururken önek girin."
   prefix-too-long: "&cSağlanan guild öneki gereksinimleri karşılamadı! Çok fazla karakterin var mı?"
 chat:
-  disabled: "Lonca sohbet devre dışı"
-  enabled: "Lonca sohbet aktif"
+  toggled-on: "{type} chat toggled on."
+  toggled-off: "{type} chat toggled off."
 request:
   success: "&a{guild} loncasından başarıyla bir davet istediniz"
   incoming-request: "&a{player} loncaya katılmak istiyor. /guild invite {player} yazarak ona bir davet gönder!"

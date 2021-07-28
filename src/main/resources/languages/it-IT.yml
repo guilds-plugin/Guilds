@@ -27,6 +27,7 @@ descriptions:
   admin-vault: "Comando amministratore per visualizzare il caveau"
   ally-accept: "Accetta un invito di alleanza da un'altra gilda"
   ally-add: "Aggiungi una gilda come alleata"
+  ally-chat: "Toggles ally chat"
   ally-decline: "Rifiuta un invito di alleanza da un'altra gilda"
   ally-list: "Elenca tutti gli alleati della tua gilda"
   ally-remove: "Rimuovi una gilda da alleata"
@@ -97,8 +98,8 @@ create:
   name-too-long: "&cNon hai fornito un prefisso quindi il nome che hai inserito è stato testato contro i requisiti prefisso ed ha fallito. Per favore prova un nome più breve o inserisci un prefisso sulla creazione."
   prefix-too-long: "&cIl prefisso della gilda fornito non corrisponde ai requisiti! Forse avevi troppi caratteri?"
 chat:
-  disabled: "Chat della gilda Disabilitata"
-  enabled: "Chat della gilda Abilitata"
+  toggled-on: "{type} chat toggled on."
+  toggled-off: "{type} chat toggled off."
 request:
   success: "&aHai richiesto un invito da {guild}"
   incoming-request: "&a{player} sta richiedendo di unirsi alla gilda. Inviagli un invito scrivendo /guild invite {player}!"

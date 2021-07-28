@@ -27,6 +27,7 @@ descriptions:
   admin-vault: "Admin kommando for å vise en guilds vault"
   ally-accept: "Aksepter en allierts invitasjon til annen guild"
   ally-add: "Ligg til en guild som en alliert"
+  ally-chat: "Toggles ally chat"
   ally-decline: "Bruk får å ikke akseptere en alliert invitasjon fra en annen guild"
   ally-list: "Liste over alle dine allierte guild"
   ally-remove: "Fjern en guild som alliert"
@@ -97,8 +98,8 @@ create:
   name-too-long: "&cDu oppga ikke et prefiks slik at navnet du skrev inn ble testet mot kravene i prefiks og det mislyktes. Vennligst prøv et kortere navn eller skriv inn et prefiks ved oppretting."
   prefix-too-long: "&cKlan-prefikset ga ikke samsvarer med kravene! Kansje du hadde for mange tegn?"
 chat:
-  disabled: "Guild samtale deaktivert"
-  enabled: "Guild samtale aktivert"
+  toggled-on: "{type} chat toggled on."
+  toggled-off: "{type} chat toggled off."
 request:
   success: "&Du har bedt om en invitasjon fra {guild}"
   incoming-request: "&a{player} ber om å delta i guilden. Send dem en invitasjon ved å gjøre /guild invitasjon {player}!"

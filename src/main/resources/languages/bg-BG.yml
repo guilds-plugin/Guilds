@@ -27,6 +27,7 @@ descriptions:
   admin-vault: "Администраторска команда, с която да видите трезора на Гилдия"
   ally-accept: "Администраторска команда, с която да приемете съюзническа покана от друга Гилдия"
   ally-add: "Добавяте Гилдия като съюзник"
+  ally-chat: "Toggles ally chat"
   ally-decline: "Отказвате покана за съюзничество от друга Гилдия"
   ally-list: "Показва всички съюзници на вашата Гилдия"
   ally-remove: "Прекъсвате съюза със съюзническа Гилдия"
@@ -97,8 +98,8 @@ create:
   name-too-long: "&cYou didn't provide a prefix so the name you input was tested against the prefix requirements and that failed. Please try a shorter name or input a prefix on creation."
   prefix-too-long: "&cThe guild prefix provided did not match the requirements! Perphaps you had too many characters?"
 chat:
-  disabled: "Guild Chat Disabled"
-  enabled: "Guild Chat Enabled"
+  toggled-on: "{type} chat toggled on."
+  toggled-off: "{type} chat toggled off."
 request:
   success: "&aYou've successfully requested an invite from {guild}"
   incoming-request: "&a{player} is requesting to join the guild. Send them an invite by doing /guild invite {player}!"
