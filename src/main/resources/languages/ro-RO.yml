@@ -27,6 +27,7 @@ descriptions:
   admin-vault: "Comanda pentru Administratori pentru a vizualiza seiful unei Bresle"
   ally-accept: "Accepta o cerere de alianta de la o breasla"
   ally-add: "Formeaza alianta cu o breasla"
+  ally-chat: "Toggles ally chat"
   ally-decline: "Respinge o cerere de alianta cu o breasla"
   ally-list: "Arata toti aliatii breslei"
   ally-remove: "Elimitati o breasla din alianta"
@@ -97,8 +98,8 @@ create:
   name-too-long: "&cYou didn't provide a prefix so the name you input was tested against the prefix requirements and that failed. Please try a shorter name or input a prefix on creation."
   prefix-too-long: "&cThe guild prefix provided did not match the requirements! Perphaps you had too many characters?"
 chat:
-  disabled: "Chat-ul Breslei dezactivat"
-  enabled: "Chat-ul Breslei activat"
+  toggled-on: "{type} chat toggled on."
+  toggled-off: "{type} chat toggled off."
 request:
   success: "&aAi solocitati cu succest o invitatie de la {guild}"
   incoming-request: "&a{player} cere sa se alature breslei. Trimite-i o invitatie folosind /guild invite {player}!"
