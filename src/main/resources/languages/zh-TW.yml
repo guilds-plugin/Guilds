@@ -74,7 +74,7 @@ descriptions:
   motd-remove: "Remove your Guild's MOTD"
   prefix: "更改您的公會前綴"
   promote: "升級公會成員位階"
-  reload: "重新讀檔公會插件"
+  reload: "重新載入公會插件設定檔"
   rename: "更改公會名稱"
   request: "申請加入公會"
   sethome: "設定您的公會領地傳送點"
@@ -93,7 +93,7 @@ create:
   warning: "&cThe creation of a Guild cost {amount}. Type /guilds confirm to create your guild, type /guilds cancel to cancel."
   successful: "&a公會 '{guild}&r&a' 成功創建!"
   cancelled: "&c公會創建已取消!"
-  requirements: "&c公會名有無效字符 字符請設定在64位元內"
+  requirements: "&c公會名有無效字符 字符請設定在64字元內"
   name-too-long: "&cYou didn't provide a prefix so the name you input was tested against the prefix requirements and that failed. Please try a shorter name or input a prefix on creation."
   prefix-too-long: "&cThe guild prefix provided did not match the requirements! Perphaps you had too many characters?"
 chat:
