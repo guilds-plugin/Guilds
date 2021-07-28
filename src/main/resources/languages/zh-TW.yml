@@ -62,7 +62,7 @@ descriptions:
   give: "給予玩家公會升級券"
   help: "開啟幫助列表"
   home: "前往公會領地傳送點"
-  info: "打開公會資訊 GUI"
+  info: "打開公會資訊選單"
   invite: "邀請一名玩家到您的公會"
   kick: "將一個玩家從您的公會踢除"
   language: "Change the language of the plugin messages for you"
