@@ -27,6 +27,7 @@ descriptions:
   admin-vault: "Comando de administrador para ver o cofre da guild"
   ally-accept: "Aceitar convite de aliança de outra guild"
   ally-add: "Adicionar uma guild como aliada"
+  ally-chat: "Toggles ally chat"
   ally-decline: "Recusar um convite de aliança de outra guild"
   ally-list: "Lista de aliados de sua guild"
   ally-remove: "Remover uma guild como aliada"
@@ -97,8 +98,8 @@ create:
   name-too-long: "&c Você não forneceu um prefixo, então o nome que você colocou foi testado contra as exigências de prefixo e falhou. Por favor, tente um nome curto ou colocar um prefixo na criação."
   prefix-too-long: "&cO prefixo da guilda fornecido não corresponde as exigências! Talvez você tenha muitos caracteres?"
 chat:
-  disabled: "Chat da guild desativado"
-  enabled: "Chat da guild ativado"
+  toggled-on: "{type} chat toggled on."
+  toggled-off: "{type} chat toggled off."
 request:
   success: "&aVocê pediu para entrar em {guild} com sucesso"
   incoming-request: "&a{player} está solicitando participar da guild, Mande um convite para eles utilizando o comando /guild invite {player}!"
