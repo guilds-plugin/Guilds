@@ -27,6 +27,7 @@ descriptions:
   admin-vault: "Lệnh cho quản trị viên để xem kho của Guild"
   ally-accept: "Chấp nhận lời mời liên minh từ một guild khác"
   ally-add: "Thêm một Guild như là một đồng minh"
+  ally-chat: "Toggles ally chat"
   ally-decline: "Từ chối lời mời làm đồng minh từ một Guild khác"
   ally-list: "Danh sách tất cả các đồng mình của Guild bạn"
   ally-remove: "Xóa một Guild như là một đồng minh"
@@ -97,8 +98,8 @@ create:
   name-too-long: "&cBạn không đưa ra lời đầu đề nên tên bạn vừa nhập đã được kiểm tra với yêu cầu lời đầu đề và đã thất bại. Vui lòng thử một tên ngắn hơn hoặc nhập vào lời đầu đề khi tạo."
   prefix-too-long: "&cLời đầu đề của guild không trùng với yêu cầu! Có lẽ bạn đã nhập quá nhiều ký tự?"
 chat:
-  disabled: "Vô hiệu hoá Guild chat"
-  enabled: "Kích hoạt Guild chat"
+  toggled-on: "{type} chat toggled on."
+  toggled-off: "{type} chat toggled off."
 request:
   success: "&aThành công gửi yêu cầu lời mời từ {guild}"
   incoming-request: "&a{player} đang yêu cần tham gia Guild. Gửi họ lời mời bằng cách dùng /guild invite {player}!"
