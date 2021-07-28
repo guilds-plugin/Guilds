@@ -213,7 +213,7 @@ sethome:
   deleted: "&aYou've successfully deleted your guild home!"
   cooldown: "&cYou must wait at least {amount} seconds before doing this again"
 reload:
-  reloaded: "&a已完成重讀文件檔!"
+  reloaded: "&a已經重新讀取設定檔!"
 cancel:
   error: "&c您沒有需要取消的動作!"
   success: "&a已成功取消此動作!"
