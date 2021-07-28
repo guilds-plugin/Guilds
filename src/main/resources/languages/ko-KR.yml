@@ -27,6 +27,7 @@ descriptions:
   admin-vault: "길드의 창고를 보기위한 관리자용 명령어"
   ally-accept: "다른 길드로부터 온 동맹 신청을 수락"
   ally-add: "어느 한 길드를 동맹으로서 수락"
+  ally-chat: "Toggles ally chat"
   ally-decline: "다른 길드로부터 온 동맹 신청을 거절"
   ally-list: "자신의 길드와 동맹을 맺은 모든 길드의 리스트를 띄웁니다"
   ally-remove: "동맹중인 어느 한 길드와의 동맹을 취소"
@@ -97,8 +98,8 @@ create:
   name-too-long: "&c접두사를 제공하지않았기에 접두사 요구사항에 부합하지 못하였습니다. 생성시 더 짧은 이름이나 접두사를 포함해주세요."
   prefix-too-long: "&c제공된 길드 접두사가 요구 사항과 일치하지 않았습니다! 너무 많은 문자를 가지고 있었습니까?"
 chat:
-  disabled: "길드 채팅 비활성화됨"
-  enabled: "길드 채팅 활성화됨"
+  toggled-on: "{type} chat toggled on."
+  toggled-off: "{type} chat toggled off."
 request:
   success: "&a당신은 성공적으로 {guild} 의 초대 요청을 수락하였습니다"
   incoming-request: "&a{player}님이 길드 가입을 요청했습니다. /guild invite  {player} 로  길드 가입 권유를 할수있습니다!"
