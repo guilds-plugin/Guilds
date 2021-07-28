@@ -27,6 +27,7 @@ descriptions:
   admin-vault: "Admin parancs céhszéf megtekintéséhez"
   ally-accept: "Elfogadása egy szövetséges meghívásnak egy másik céhtől"
   ally-add: "Céh hozzáadása szövetségesként"
+  ally-chat: "Toggles ally chat"
   ally-decline: "Elutasítása egy szövetséges meghívásnak egy másik céhtől"
   ally-list: "Az összes szövetségese felsorolása"
   ally-remove: "Távolítson el egy céhet szövetségesként"
@@ -97,8 +98,8 @@ create:
   name-too-long: "&cYou didn't provide a prefix so the name you input was tested against the prefix requirements and that failed. Please try a shorter name or input a prefix on creation."
   prefix-too-long: "&cThe guild prefix provided did not match the requirements! Perphaps you had too many characters?"
 chat:
-  disabled: "Céh chat kikapcsolva"
-  enabled: "Céh chat bekapcsolva"
+  toggled-on: "{type} chat toggled on."
+  toggled-off: "{type} chat toggled off."
 request:
   success: "&aTe sikeresen kérvényeztél egy meghívást az alábbi céhbe: {guild}"
   incoming-request: "&a{player} kérvényezi a csatlakozást a céhhez. Ahhoz hgy csatlakozhasson, írd be az alábbi parancsot /guild invite {player}"
