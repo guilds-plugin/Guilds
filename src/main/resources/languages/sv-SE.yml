@@ -27,6 +27,7 @@ descriptions:
   admin-vault: "Admin-kommando för att se en guilds valv"
   ally-accept: "Acceptera en alliering ansökan från en annan guild"
   ally-add: "Lägg till en guild som allierad"
+  ally-chat: "Toggles ally chat"
   ally-decline: "Neka en allieringsförfrågan från en annan guild"
   ally-list: "Lista alla allierade i din guild"
   ally-remove: "Ta bort en guild som allierad"
@@ -97,8 +98,8 @@ create:
   name-too-long: "&cDu gav inte ett prefix så namnet du matade in testades mot prefixkraven och det misslyckades. Försök med ett kortare namn eller skriv in ett prefix vid skapandet."
   prefix-too-long: "&cTGuildprefixet som angavs stämde inte med kraven! Har du för många karaktärer?"
 chat:
-  disabled: "Guild-chatt inaktiverat"
-  enabled: "Guild-chatt aktiverad"
+  toggled-on: "{type} chat toggled on."
+  toggled-off: "{type} chat toggled off."
 request:
   success: "&aDu har lyckats begära en inbjudan från {guild}"
   incoming-request: "&a{player} begär att gå med i guilden. Skicka en inbjudan till dem genom att göra /guild bjuda in {player}!"
