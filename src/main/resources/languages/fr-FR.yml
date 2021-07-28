@@ -27,6 +27,7 @@ descriptions:
   admin-vault: "Commande administrateur pour voir le coffre fort d'une guilde"
   ally-accept: "Accepter une proposition d'alliance d'une autre guilde"
   ally-add: "Ajouter une guilde en alliée"
+  ally-chat: "Toggles ally chat"
   ally-decline: "Refuser une invitation d'alliance d'une autre guilde"
   ally-list: "Lister des alliés de votre guilde"
   ally-remove: "Supprimer une alliance avec une guilde"
@@ -97,8 +98,8 @@ create:
   name-too-long: "&cVous n'avez spécifié aucun prefix et le nom entré ne pouvais pas être utilisé comme prefix. Essayez d'entrer un nom plus court ou entrez un prefix."
   prefix-too-long: "&cLe préfixe de guilde fourni ne correspond pas aux exigences ! Peu-être vous avez utilisé trop de caractères ?"
 chat:
-  disabled: "Chat de guilde désactivé"
-  enabled: "Chat de guilde activé"
+  toggled-on: "{type} chat toggled on."
+  toggled-off: "{type} chat toggled off."
 request:
   success: "&aVous avez demandé une invitation à la guilde {guild}"
   incoming-request: "&a{player} demande à rejoindre la guilde. Envoyez lui une invitation en faisant /guild invite {player}!"
