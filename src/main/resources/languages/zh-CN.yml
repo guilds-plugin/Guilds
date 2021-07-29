@@ -1,6 +1,6 @@
 ---
 descriptions:
-  accept: "同意公会邀请"
+  accept: "接受公会邀请"
   admin-addplayer: "以管理员身份强制将玩家添加到公会"
   admin-bank-balance: "以管理员身份查看公会财产"
   admin-bank-deposit: "以管理员身份为公会银行增加钱款"
@@ -27,7 +27,7 @@ descriptions:
   admin-vault: "以管理员身份强制查看公会金库"
   ally-accept: "接受来自另一个公会的结盟邀请"
   ally-add: "与一个公会结盟"
-  ally-chat: "Toggles ally chat"
+  ally-chat: "切换队列聊天"
   ally-decline: "拒绝来自另一个公会的结盟邀请"
   ally-list: "列出盟友公会列表"
   ally-remove: "与一个公会取消结盟"
@@ -98,8 +98,8 @@ create:
   name-too-long: "&7[&6公会&7]&c你没有设置公会前缀, 请尝试输入更短的名称或创建时输入公会前缀"
   prefix-too-long: "&c公会前缀不满足要求! 可能是字符超出限制？"
 chat:
-  toggled-on: "{type} chat toggled on."
-  toggled-off: "{type} chat toggled off."
+  toggled-on: "{type} 聊天已开启"
+  toggled-off: "{type} 聊天已关闭"
 request:
   success: "&7[&6公会&7]&f对公会[{guild}&f]的申请已发出，请等待处理"
   incoming-request: "&7[&6公会&7]&a{player} 请求加入公会, 请输入&6/guild invite {player} &a给他们发送邀请"
