@@ -36,7 +36,7 @@ descriptions:
   arena-defender: "設定防守方戰場重生點"
   arena-delete: "刪除戰場"
   arena-list: "列出所有已經創建的戰場"
-  arena-tp: "Teleport to a location of an arena"
+  arena-tp: "傳送至戰場中的隨機位置"
   bank-balance: "顯示公會銀行"
   bank-deposit: "將金錢存入公會銀行"
   bank-withdraw: "將金錢從公會銀行領出"
