@@ -128,7 +128,7 @@ bank:
   deposit-success: "&a{player} 剛剛在公會銀行中存入了 {amount} 元。目前銀行總額是 {total}。"
   withdrawal-success: "&a{player} 剛剛在公會銀行中提領了 {amount} 元。目前銀行總額是 {total}。"
   not-enough-bank: "&c公會銀行裡並沒有足夠的金錢"
-  over-max: "&cSorry, you can't deposit that much as you would go over your max bank balance!"
+  over-max: "&c抱歉，您存入的金錢不能大於公會銀行可容納的最大金額!"
 admin:
   delete-warning: "&c如果您想要刪除 {guild} 公會。請輸入 /guilds confirm 來確認刪除公會，或是輸入 /guilds cancel 來取消刪除"
   delete-success: "&a您已成功的刪除 {guild}"
@@ -143,7 +143,7 @@ admin:
   admin-guild-upgrade: "&a您的公會階級已由管理員升級!"
   spy-on: "&a開啟監察公會聊天頻道!"
   spy-off: "&c關閉監察工會聊天頻道!"
-  motd: "&a{guild}'s MOTD is: {motd}"
+  motd: "&a{guild}的訊息: {motd}"
   motd-success: "&aYou've successfully set the MOTD for {guild} to {motd}."
   motd-remove: "&aYou've successfully removed the MOTD for {guild}."
   bank-balance: "&aThe guild {guild} has a bank balance of {balance}."
