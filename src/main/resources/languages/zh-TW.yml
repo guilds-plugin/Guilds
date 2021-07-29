@@ -173,7 +173,7 @@ delete:
   successful: "&a成功刪除 '{guild}&r&a' !"
   cancelled: "&c已取消公會刪除動作!"
   warning: "&c輸入 /guilds confirm 來刪除公會，輸入 /guilds cancel 以取消此動作"
-  notify-allies: "&c{guild} is no longer your ally because it has been deleted."
+  notify-allies: "&c與 {guild} 已經不再是同盟，因為他已經被移除"
 leave:
   cancelled: "&c取消離開公會!"
   successful: "&a您已成功離開公會!"
