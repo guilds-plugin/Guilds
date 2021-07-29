@@ -98,8 +98,8 @@ create:
   name-too-long: "&cYou didn't provide a prefix so the name you input was tested against the prefix requirements and that failed. Please try a shorter name or input a prefix on creation."
   prefix-too-long: "&cThe guild prefix provided did not match the requirements! Perphaps you had too many characters?"
 chat:
-  toggled-on: "{type} chat toggled on."
-  toggled-off: "{type} chat toggled off."
+  toggled-on: "{type} 訊息切換為開啟"
+  toggled-off: "{type} 訊息切換為關閉"
 request:
   success: "&a您已成功發出對 {guild} 的申請"
   incoming-request: "&a{player} 正在請求加入公會 使用 /guild invite {player} 來接受他們的請求!"
