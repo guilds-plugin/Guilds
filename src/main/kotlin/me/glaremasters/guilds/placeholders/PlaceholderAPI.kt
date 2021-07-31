@@ -72,6 +72,7 @@ class PlaceholderAPI(private val guildHandler: GuildHandler) : PlaceholderExpans
             "tier" -> guild.tier.level.toString()
             "tier_name" -> guild.tier.name
             "balance" -> EconomyUtils.format(guild.balance)
+            "balance_raw" -> guild.balance.toString()
             "code_amount" -> guild.codes.size.toString()
             "max_members" -> guild.tier.maxMembers.toString()
             "max_balance" -> EconomyUtils.format(guild.tier.maxBankBalance)
