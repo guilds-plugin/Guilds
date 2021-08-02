@@ -274,8 +274,8 @@ codes:
   joined: "&aYou've successfully joined &6{guild} &ausing an invite code!"
   guild-message: "&6{player} &ahas joined the guild using an invite code from &6{creator}&a!"
   out: "&cThat invite code is all out of uses! Please try another one!"
-  info: "&aInvite Code Information:\n&aID: &6{code}\n&aUses: &6{amount}\n&aCreator: &6{creator}\n&aRedeemers: &6{redeemers}"
-  max: "&cYou already have too many active invite codes in your guild!"
+  info: "&a邀請碼資訊:\n&aID: &6{code}\n&a已使用: &6{amount}\n&a創建者: &6{creator}\n&a使用者: &6{redeemers}"
+  max: "&c你公會中的邀請碼已達上限"
 vaults:
   maxed: "&cYou can't open this vault because you already have the max amount of vaults for your Guild Tier!"
   blacklisted: "&cYou can't put that item in your Guild Vault because it is blacklisted!"
