@@ -7,7 +7,7 @@ plugins {
     id "maven-publish"
     id "org.jetbrains.kotlin.jvm" version "1.5.21"
     id "com.github.johnrengelman.shadow" version "7.0.0"
-    id "io.github.slimjar" version "1.2.1"
+    id "io.github.slimjar" version "1.2.2"
 }
 
 archivesBaseName = "Guilds"
@@ -48,6 +48,10 @@ repositories {
     }
 
     maven {
+        url = "https://repo.vshnv.tech/"
+    }
+
+    maven {
         url = "https://repo.codemc.org/repository/maven-public/"
         content {
             includeGroup("org.codemc.worldguardwrapper")
@@ -81,6 +85,9 @@ slimJar {
 
 
 dependencies {
+
+    // Slimjar
+    implementation slimjar("1.2.5")
 
     // Command Handling
     implementation("co.aikar:acf-paper:0.5.0-SNAPSHOT")
