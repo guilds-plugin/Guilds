@@ -46,6 +46,6 @@ data class GuildChallenge(
     @JsonAdapter(WarArenaChallengeAdapter::class) val arena: Arena,
     @JsonAdapter(WarGuildChallengeAdapter::class) var winner: Guild?,
     @JsonAdapter(WarGuildChallengeAdapter::class) var loser: Guild?,
-    @Transient var aliveChallengers: MutableMap<UUID, String>,
-    @Transient var aliveDefenders: MutableMap<UUID, String>
+    @Transient var aliveChallengers: MutableMap<UUID, String>?,
+    @Transient var aliveDefenders: MutableMap<UUID, String>?
 )
