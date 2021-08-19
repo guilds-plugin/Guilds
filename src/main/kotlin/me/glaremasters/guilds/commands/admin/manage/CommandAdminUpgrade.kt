@@ -24,29 +24,26 @@
 
 package me.glaremasters.guilds.commands.admin.manage
 
+import ch.jalu.configme.SettingsManager
 import co.aikar.commands.BaseCommand
 import co.aikar.commands.CommandIssuer
-import co.aikar.commands.annotation.CommandAlias
-import co.aikar.commands.annotation.CommandCompletion
-import co.aikar.commands.annotation.CommandPermission
-import co.aikar.commands.annotation.Dependency
-import co.aikar.commands.annotation.Description
-import co.aikar.commands.annotation.Flags
-import co.aikar.commands.annotation.Subcommand
-import co.aikar.commands.annotation.Syntax
-import co.aikar.commands.annotation.Values
+import co.aikar.commands.annotation.*
 import me.glaremasters.guilds.Guilds
+import me.glaremasters.guilds.configuration.sections.PluginSettings
+import me.glaremasters.guilds.configuration.sections.TierSettings
 import me.glaremasters.guilds.exceptions.ExpectationNotMet
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.Constants
-import org.bukkit.entity.Player
+import net.milkbowl.vault.permission.Permission
 
 @CommandAlias("%guilds")
 internal class CommandAdminUpgrade : BaseCommand() {
     @Dependency lateinit var guilds: Guilds
     @Dependency lateinit var guildHandler: GuildHandler
+    @Dependency lateinit var permission: Permission
+    @Dependency lateinit var settingsManager: SettingsManager
 
     @Subcommand("admin upgrade")
     @Description("{@@descriptions.admin-upgrade}")
@@ -58,7 +55,15 @@ internal class CommandAdminUpgrade : BaseCommand() {
             throw ExpectationNotMet(Messages.UPGRADE__TIER_MAX)
         }
 
+        val async = settingsManager.getProperty(PluginSettings.RUN_VAULT_ASYNC)
+
+        if (!guilds.settingsHandler.tierConf.getProperty(TierSettings.CARRY_OVER)) {
+            guildHandler.removePermsFromAll(permission, guild, async)
+        }
+
         guildHandler.upgradeTier(guild)
+        guildHandler.addPermsToAll(permission, guild, async)
+
         currentCommandIssuer.sendInfo(Messages.ADMIN__ADMIN_UPGRADE, "{guild}", guild.name)
         guild.sendMessage(currentCommandManager, Messages.ADMIN__ADMIN_GUILD_UPGRADE)
     }
