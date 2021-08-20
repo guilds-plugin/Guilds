@@ -101,7 +101,7 @@ internal class CommandLeave : BaseCommand() {
                     currentCommandIssuer.sendInfo(Messages.LEAVE__SUCCESSFUL)
                     guildHandler.removeGuildPermsFromAll(permission, guild)
                     guildHandler.removeAlliesOnDelete(guild)
-                    guildHandler.notifyAllies(guild, currentCommandManager)
+                    guildHandler.notifyAllies(guild, guilds.commandManager)
                     cooldownHandler.addCooldown(player, cooldownName, cooldownTime, TimeUnit.SECONDS)
                     ClaimUtils.deleteWithGuild(guild, settingsManager)
                     guildHandler.removeGuild(guild)

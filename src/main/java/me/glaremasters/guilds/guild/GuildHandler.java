@@ -28,6 +28,7 @@ import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.CommandManager;
+import co.aikar.commands.PaperCommandManager;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.configuration.sections.GuildSettings;
 import me.glaremasters.guilds.configuration.sections.GuildVaultSettings;
@@ -322,18 +323,18 @@ public class GuildHandler {
     }
 
     /**
-     * Simple method to check if players are in the same guild
-     *
-     * @param player the player being checked
-     * @param target the target being checked
-     * @return if same guild or not
+     * Check is two players are in the same guild or not
+     * @param player the first player to check
+     * @param target the second player to check
+     * @return if the first and second player are in the same guild or not
      */
-    public boolean isSameGuild(Player player, Player target) {
-        Guild pGuild = getGuild(player);
-        Guild tGuild = getGuild(target);
-        if (pGuild == null || tGuild == null)
+    public boolean isSameGuild(final Player player, final Player target) {
+        final Guild playerGuild = getGuild(player);
+        final Guild targetGuild = getGuild(target);
+        if (playerGuild == null || targetGuild == null) {
             return false;
-        return pGuild.getId().toString().equals(tGuild.getId().toString());
+        }
+        return playerGuild.getId().equals(targetGuild.getId());
     }
 
     /**
@@ -344,7 +345,7 @@ public class GuildHandler {
      * @return same or not
      */
     public boolean isSameGuild(Guild g1, Guild g2) {
-        return g1.getId() == g2.getId();
+        return g1.getId().equals(g2.getId());
     }
 
 
@@ -511,7 +512,7 @@ public class GuildHandler {
      *
      * @param player player being added
      */
-    private void addSpy(CommandManager manager, Player player) {
+    private void addSpy(PaperCommandManager manager, Player player) {
         spies.add(player);
         manager.getCommandIssuer(player).sendInfo(Messages.ADMIN__SPY_ON);
     }
@@ -521,7 +522,7 @@ public class GuildHandler {
      *
      * @param player player being removed
      */
-    public void removeSpy(CommandManager manager, Player player) {
+    public void removeSpy(PaperCommandManager manager, Player player) {
         spies.remove(player);
         manager.getCommandIssuer(player).sendInfo(Messages.ADMIN__SPY_OFF);
     }
@@ -531,7 +532,7 @@ public class GuildHandler {
      *
      * @param player the player being modified
      */
-    public void toggleSpy(CommandManager manager, Player player) {
+    public void toggleSpy(PaperCommandManager manager, Player player) {
         if (isSpy(player)) {
             removeSpy(manager, player);
         } else {
@@ -563,7 +564,7 @@ public class GuildHandler {
      * @param manager the command manager
      * @param player  the player being checked
      */
-    public void checkInvites(CommandManager manager, Player player) {
+    public void checkInvites(PaperCommandManager manager, Player player) {
         List<String> list = getInvitedGuilds(player);
 
         if (list.isEmpty()) {
@@ -670,7 +671,7 @@ public class GuildHandler {
      * @param commandManager command manager
      * @param player         player requesting
      */
-    public void pingOnlineInviters(Guild guild, CommandManager commandManager, Player player) {
+    public void pingOnlineInviters(Guild guild, PaperCommandManager commandManager, Player player) {
         getOnlineInviters(guild).forEach(m -> commandManager.getCommandIssuer(m).sendInfo(Messages.REQUEST__INCOMING_REQUEST, "{player}", player.getName()));
     }
 
@@ -863,7 +864,7 @@ public class GuildHandler {
      * @param guild   the guild they are trying to join
      * @param code    the code being redeemed
      */
-    public void handleInvite(CommandManager manager, Player player, Guild guild, GuildCode code) {
+    public void handleInvite(PaperCommandManager manager, Player player, Guild guild, GuildCode code) {
         if (code.getUses() <= 0)
             ACFUtil.sneaky(new ExpectationNotMet(Messages.CODES__OUT));
 
@@ -887,7 +888,7 @@ public class GuildHandler {
      * @param player         player to send list to
      * @param codes          list of codes
      */
-    public void handleCodeList(CommandManager commandManager, Player player, List<GuildCode> codes) {
+    public void handleCodeList(PaperCommandManager commandManager, Player player, List<GuildCode> codes) {
         codes.forEach(c -> commandManager.getCommandIssuer(player).sendInfo(Messages.CODES__LIST_ITEM,
                 "{code}", c.getId(),
                 "{amount}", String.valueOf(c.getUses()),
@@ -910,7 +911,7 @@ public class GuildHandler {
      * @param guild          the guild being deleted
      * @param commandManager the command manager
      */
-    public void notifyAllies(Guild guild, CommandManager commandManager) {
+    public void notifyAllies(Guild guild, PaperCommandManager commandManager) {
         guild.getAllies().forEach(g -> getGuild(g).sendMessage(commandManager, Messages.DELETE__NOTIFY_ALLIES, "{guild}", guild.getName()));
     }
 

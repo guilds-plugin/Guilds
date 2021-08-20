@@ -109,9 +109,9 @@ internal class CommandCode : BaseCommand() {
         currentCommandIssuer.sendInfo(Messages.CODES__LIST_HEADER)
 
         if (settingsManager.getProperty(CodeSettings.LIST_INACTIVE_CODES)) {
-            guildHandler.handleCodeList(currentCommandManager, player, guild.codes)
+            guildHandler.handleCodeList(guilds.commandManager, player, guild.codes)
         } else {
-            guildHandler.handleCodeList(currentCommandManager, player, guild.activeCodes)
+            guildHandler.handleCodeList(guilds.commandManager, player, guild.activeCodes)
         }
     }
 
@@ -126,6 +126,6 @@ internal class CommandCode : BaseCommand() {
             throw ExpectationNotMet(Messages.ACCEPT__GUILD_FULL)
         }
 
-        guildHandler.handleInvite(currentCommandManager, player, guild, guild.getCode(code))
+        guildHandler.handleInvite(guilds.commandManager, player, guild, guild.getCode(code))
     }
 }

@@ -47,6 +47,6 @@ internal class CommandCheck : BaseCommand() {
     @Description("{@@descriptions.check}")
     @CommandPermission(Constants.BASE_PERM + "check")
     fun check(@Conditions("NoGuild") player: Player) {
-        guildHandler.checkInvites(currentCommandManager, player)
+        guildHandler.checkInvites(guilds.commandManager, player)
     }
 }

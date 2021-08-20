@@ -68,7 +68,7 @@ internal class CommandRequest : BaseCommand() {
         }
 
         cooldownHandler.addCooldown(player, cooldown, settingsManager.getProperty(CooldownSettings.REQUEST), TimeUnit.SECONDS)
-        guildHandler.pingOnlineInviters(target, currentCommandManager, player)
+        guildHandler.pingOnlineInviters(target, guilds.commandManager, player)
         currentCommandIssuer.sendInfo(Messages.REQUEST__SUCCESS, "{guild}", target.name)
     }
 }

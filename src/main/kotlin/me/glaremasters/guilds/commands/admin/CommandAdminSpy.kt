@@ -43,6 +43,6 @@ internal class CommandAdminSpy : BaseCommand() {
     @Description("{@@descriptions.admin-spy}")
     @CommandPermission("guilds.chat.spy")
     fun spy(player: Player) {
-        guildHandler.toggleSpy(currentCommandManager, player)
+        guildHandler.toggleSpy(guilds.commandManager, player)
     }
 }
