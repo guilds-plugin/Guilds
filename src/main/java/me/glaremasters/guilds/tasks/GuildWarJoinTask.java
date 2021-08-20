@@ -30,7 +30,6 @@ import me.glaremasters.guilds.configuration.sections.WarSettings;
 import me.glaremasters.guilds.guild.GuildChallenge;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.WarUtils;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -85,7 +84,7 @@ public class GuildWarJoinTask extends BukkitRunnable {
                 challenge.getChallenger().sendMessage(guilds.getCommandManager(), Messages.WAR__NOT_ENOUGH_JOINED);
                 challenge.getDefender().sendMessage(guilds.getCommandManager(), Messages.WAR__NOT_ENOUGH_JOINED);
                 challenge.getArena().setInUse(false);
-                challengeHandler.removeChallenge(challenge);
+                challengeHandler.removeChallenge(challenge.getId());
                 cancel();
                 return;
             }

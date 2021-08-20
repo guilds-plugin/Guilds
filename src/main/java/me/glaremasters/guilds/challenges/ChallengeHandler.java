@@ -126,6 +126,14 @@ public class ChallengeHandler {
     }
 
     /**
+     * Removes a challenge from the list by the uuid
+     * @param uuid the uuid of the channel to remove
+     */
+    public void removeChallenge(@NotNull final UUID uuid) {
+        challenges.removeIf(challenge -> challenge.getId().equals(uuid));
+    }
+
+    /**
      * Get a challenge by it's uuid
      * @param uuid the uuid of the challenge
      * @return the challenge
