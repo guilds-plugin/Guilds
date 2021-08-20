@@ -747,24 +747,36 @@ public class GuildHandler {
      * @param player     the player to add to
      */
     public void addPerms(Permission permission, OfflinePlayer player, boolean async) {
-        Guild guild = getGuild(player);
-        if (guild == null)
+        final Guild guild = getGuild(player);
+        if (guild == null) {
             return;
-        GuildTier tier = getGuildTier(guild.getTier().getLevel());
-        if (tier.getPermissions().isEmpty())
+        }
+        final GuildTier tier = getGuildTier(guild.getTier().getLevel());
+        if (tier.getPermissions().isEmpty()) {
             return;
+        }
+        final GuildMember member = guild.getMember(player.getUniqueId());
+        final GuildRole role = member.getRole();
         if (async) {
-            Guilds.newChain().async(() -> tier.getPermissions().forEach(perm -> {
-                if (!perm.equals("")) {
-                    permission.playerAdd(null, player, perm);
+            Guilds.newChain().async(() -> {
+                tier.getPermissions().forEach(perm -> {
+                    if (!perm.equals("")) {
+                        permission.playerAdd(null, player, perm);
+                    }
+                });
+                if (!role.getNode().equals("")) {
+                    permission.playerAdd(null, player, role.getNode());
                 }
-            })).execute();
+            }).execute();
         } else {
             tier.getPermissions().forEach(perm -> {
                 if (!perm.equals("")) {
                     permission.playerAdd(null, player, perm);
                 }
             });
+            if (!role.getNode().equals("")) {
+                permission.playerAdd(null, player, role.getNode());
+            }
         }
 
     }
