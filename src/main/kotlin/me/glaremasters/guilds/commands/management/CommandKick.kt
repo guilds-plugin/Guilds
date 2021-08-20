@@ -92,7 +92,7 @@ internal class CommandKick : BaseCommand() {
             return
         }
 
-        guildHandler.removePerms(permission, user, settingsManager.getProperty(PluginSettings.RUN_VAULT_ASYNC))
+        guildHandler.removeGuildPerms(permission, user)
         cooldownHandler.addCooldown(user, Cooldown.Type.Join.name, settingsManager.getProperty(CooldownSettings.JOIN), TimeUnit.SECONDS)
         ClaimUtils.kickMember(user, player, guild, settingsManager)
         guild.removeMember(asMember)

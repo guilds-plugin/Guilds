@@ -159,7 +159,7 @@ internal class CommandCreate : BaseCommand() {
                 guildHandler.addGuild(guild)
                 economy.withdrawPlayer(player, cost)
                 currentCommandIssuer.sendInfo(Messages.CREATE__SUCCESSFUL, "{guild}", guild.name)
-                guildHandler.addPerms(permission, player, settingsManager.getProperty(PluginSettings.RUN_VAULT_ASYNC))
+                guildHandler.addGuildPerms(permission, player)
 
                 guild.updateGuildSkull(player, settingsManager)
 

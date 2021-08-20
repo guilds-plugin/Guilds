@@ -56,12 +56,10 @@ class TicketListener(private val guilds: Guilds, private val guildHandler: Guild
         if (interactItem.amount > 1) interactItem.amount = interactItem.amount - 1 else player.inventory.setItemInHand(ItemStack(Material.AIR))
         guilds.commandManager.getCommandIssuer(player).sendInfo(Messages.UPGRADE__SUCCESS)
 
-        val async = settingsManager.getProperty(PluginSettings.RUN_VAULT_ASYNC)
-
         if (!guilds.settingsHandler.tierConf.getProperty(TierSettings.CARRY_OVER)) {
-            guildHandler.removePermsFromAll(guilds.permissions, guild, async)
+            guildHandler.removeGuildPermsFromAll(guilds.permissions, guild)
         }
         guildHandler.upgradeTier(guild)
-        guildHandler.addPermsToAll(guilds.permissions, guild, async)
+        guildHandler.addGuildPermsToAll(guilds.permissions, guild)
     }
 }

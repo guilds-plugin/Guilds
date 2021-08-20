@@ -27,6 +27,7 @@ package me.glaremasters.guilds.utils;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildMember;
+import net.milkbowl.vault.permission.Permission;
 import org.bukkit.OfflinePlayer;
 
 /**
@@ -94,9 +95,12 @@ public class RoleUtils {
      * @param guild the guild of the player
      * @param player the player
      */
-    public static void promote(GuildHandler guildHandler, Guild guild, OfflinePlayer player) {
+    public static void promote(final GuildHandler guildHandler, final Guild guild, final OfflinePlayer player) {
+        final Permission permission = guildHandler.getGuildsPlugin().getPermissions();
         GuildMember member = guild.getMember(player.getUniqueId());
+        guildHandler.removeRolePerm(permission, player);
         member.setRole(guildHandler.getGuildRole(member.getRole().getLevel() - 1));
+        guildHandler.addRolePerm(permission, player);
     }
 
     /**
@@ -105,9 +109,12 @@ public class RoleUtils {
      * @param guild the guild they are in
      * @param player the player being demoted
      */
-    public static void demote(GuildHandler guildHandler, Guild guild, OfflinePlayer player) {
+    public static void demote(final GuildHandler guildHandler, final Guild guild, final OfflinePlayer player) {
+        final Permission permission = guildHandler.getGuildsPlugin().getPermissions();
         GuildMember member = guild.getMember(player.getUniqueId());
+        guildHandler.removeRolePerm(permission, player);
         member.setRole(guildHandler.getGuildRole(member.getRole().getLevel() + 1));
+        guildHandler.addRolePerm(permission, player);
     }
 
     /**

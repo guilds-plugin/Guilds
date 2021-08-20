@@ -55,14 +55,12 @@ internal class CommandAdminUpgrade : BaseCommand() {
             throw ExpectationNotMet(Messages.UPGRADE__TIER_MAX)
         }
 
-        val async = settingsManager.getProperty(PluginSettings.RUN_VAULT_ASYNC)
-
         if (!guilds.settingsHandler.tierConf.getProperty(TierSettings.CARRY_OVER)) {
-            guildHandler.removePermsFromAll(permission, guild, async)
+            guildHandler.removeGuildPermsFromAll(permission, guild)
         }
 
         guildHandler.upgradeTier(guild)
-        guildHandler.addPermsToAll(permission, guild, async)
+        guildHandler.addGuildPermsToAll(permission, guild)
 
         currentCommandIssuer.sendInfo(Messages.ADMIN__ADMIN_UPGRADE, "{guild}", guild.name)
         guild.sendMessage(currentCommandManager, Messages.ADMIN__ADMIN_GUILD_UPGRADE)

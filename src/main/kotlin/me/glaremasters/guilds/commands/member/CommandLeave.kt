@@ -76,7 +76,6 @@ internal class CommandLeave : BaseCommand() {
     fun leave(player: Player, guild: Guild) {
         if (guild.isMaster(player)) currentCommandIssuer.sendInfo(Messages.LEAVE__WARNING_GUILDMASTER) else currentCommandIssuer.sendInfo(Messages.LEAVE__WARNING)
 
-        val async = settingsManager.getProperty(PluginSettings.RUN_VAULT_ASYNC)
         val cooldownName = Cooldown.Type.Join.name
         val cooldownTime = settingsManager.getProperty(CooldownSettings.JOIN)
         val name = player.name
@@ -100,14 +99,14 @@ internal class CommandLeave : BaseCommand() {
 
                     guild.sendMessage(currentCommandManager, Messages.LEAVE__GUILDMASTER_LEFT, "{player}", name)
                     currentCommandIssuer.sendInfo(Messages.LEAVE__SUCCESSFUL)
-                    guildHandler.removePermsFromAll(permission, guild, async)
+                    guildHandler.removeGuildPermsFromAll(permission, guild)
                     guildHandler.removeAlliesOnDelete(guild)
                     guildHandler.notifyAllies(guild, currentCommandManager)
                     cooldownHandler.addCooldown(player, cooldownName, cooldownTime, TimeUnit.SECONDS)
                     ClaimUtils.deleteWithGuild(guild, settingsManager)
                     guildHandler.removeGuild(guild)
                 } else {
-                    guildHandler.removePerms(permission, player, async)
+                    guildHandler.removeGuildPerms(permission, player)
                     cooldownHandler.addCooldown(player, cooldownName, cooldownTime, TimeUnit.SECONDS)
 
                     if (ClaimUtils.isEnable(settingsManager)) {

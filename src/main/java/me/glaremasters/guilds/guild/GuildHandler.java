@@ -31,6 +31,7 @@ import co.aikar.commands.CommandManager;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.configuration.sections.GuildSettings;
 import me.glaremasters.guilds.configuration.sections.GuildVaultSettings;
+import me.glaremasters.guilds.configuration.sections.PluginSettings;
 import me.glaremasters.guilds.configuration.sections.TicketSettings;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.messages.Messages;
@@ -56,6 +57,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -712,41 +714,59 @@ public class GuildHandler {
     }
 
     /**
-     * Remove perms from a single player
-     *
-     * @param permission the permission to remove
-     * @param player     the player to remove from
+     * Removes a set of permissions from a player
+     * @param permission vault permissions
+     * @param offlinePlayer the player to modify
+     * @param nodes the permission nodes to remove
      */
-    public void removePerms(Permission permission, OfflinePlayer player, boolean async) {
-        Guild guild = getGuild(player);
-        if (guild == null)
-            return;
-        GuildTier tier = getGuildTier(guild.getTier().getLevel());
-        if (tier.getPermissions().isEmpty())
-            return;
-        if (async) {
-            Guilds.newChain().async(() -> tier.getPermissions().forEach(perm -> {
-                if (!perm.equals("")) {
-                    permission.playerRemove(null, player, perm);
+    public void removePerms(final Permission permission, final OfflinePlayer offlinePlayer, final List<String> nodes) {
+        if (settingsManager.getProperty(PluginSettings.RUN_VAULT_ASYNC)) {
+            Guilds.newChain().async(() -> {
+                for (final String node : nodes) {
+                    if (!node.equals("")) {
+                        permission.playerRemove(null, offlinePlayer, node);
+                    }
                 }
-            })).execute();
+            }).execute();
         } else {
-            tier.getPermissions().forEach(perm -> {
-                if (!perm.equals("")) {
-                    permission.playerRemove(null, player, perm);
+            for (final String node : nodes) {
+                if (!node.equals("")) {
+                    permission.playerRemove(null, offlinePlayer, node);
                 }
-            });
+            }
         }
-
     }
 
     /**
-     * Add perms to a single player
-     *
-     * @param permission the permission to add
-     * @param player     the player to add to
+     * Adds a set of permissions to a player
+     * @param permission vault permissions
+     * @param offlinePlayer the player to modify
+     * @param nodes the permission nodes to add
      */
-    public void addPerms(Permission permission, OfflinePlayer player, boolean async) {
+    public void addPerms(final Permission permission, final OfflinePlayer offlinePlayer, final List<String> nodes) {
+        if (settingsManager.getProperty(PluginSettings.RUN_VAULT_ASYNC)) {
+            Guilds.newChain().async(() -> {
+                for (final String node : nodes) {
+                    if (!node.equals("")) {
+                        permission.playerAdd(null, offlinePlayer, node);
+                    }
+                }
+            }).execute();
+        } else {
+            for (final String node : nodes) {
+                if (!node.equals("")) {
+                    permission.playerAdd(null, offlinePlayer, node);
+                }
+            }
+        }
+    }
+
+    /**
+     * Add guild perms to a specific player
+     * @param permission vault permissions
+     * @param player the player to modify
+     */
+    public void addGuildPerms(final Permission permission, final OfflinePlayer player) {
         final Guild guild = getGuild(player);
         if (guild == null) {
             return;
@@ -755,82 +775,84 @@ public class GuildHandler {
         if (tier.getPermissions().isEmpty()) {
             return;
         }
+        addPerms(permission, player, tier.getPermissions());
+    }
+
+    /**
+     * Remove guild perms from a specific player
+     * @param permission vault permissions
+     * @param player the player to modify
+     */
+    public void removeGuildPerms(final Permission permission, final OfflinePlayer player) {
+        final Guild guild = getGuild(player);
+        if (guild == null) {
+            return;
+        }
+        final GuildTier tier = getGuildTier(guild.getTier().getLevel());
+        if (tier.getPermissions().isEmpty()) {
+            return;
+        }
+        removePerms(permission, player, tier.getPermissions());
+    }
+
+    /**
+     * Adds a role perm to a player
+     * @param permission vault permissions
+     * @param player the player to modify
+     */
+    public void addRolePerm(final Permission permission, final OfflinePlayer player) {
+        final Guild guild = getGuild(player);
+        if (guild == null) {
+            return;
+        }
         final GuildMember member = guild.getMember(player.getUniqueId());
         final GuildRole role = member.getRole();
-        if (async) {
-            Guilds.newChain().async(() -> {
-                tier.getPermissions().forEach(perm -> {
-                    if (!perm.equals("")) {
-                        permission.playerAdd(null, player, perm);
-                    }
-                });
-                if (!role.getNode().equals("")) {
-                    permission.playerAdd(null, player, role.getNode());
-                }
-            }).execute();
-        } else {
-            tier.getPermissions().forEach(perm -> {
-                if (!perm.equals("")) {
-                    permission.playerAdd(null, player, perm);
-                }
-            });
-            if (!role.getNode().equals("")) {
-                permission.playerAdd(null, player, role.getNode());
-            }
-        }
-
+        addPerms(permission, player, Collections.singletonList(role.getNode()));
     }
 
     /**
-     * Add all the perms to a player for the guild
-     *
-     * @param permission permission to add
-     * @param guild      the guild being modified
+     * Removes a role perm from a player
+     * @param permission vault permissions
+     * @param player the player to modify
      */
-    public void addPermsToAll(Permission permission, Guild guild, boolean async) {
-        GuildTier tier = getGuildTier(guild.getTier().getLevel());
-        if (tier.getPermissions().isEmpty())
+    public void removeRolePerm(final Permission permission, final OfflinePlayer player) {
+        final Guild guild = getGuild(player);
+        if (guild == null) {
             return;
-        if (async) {
-            Guilds.newChain().async(() -> guild.getAllAsPlayers().forEach(player -> getGuildTier(guild.getTier().getLevel()).getPermissions().forEach(perm -> {
-                if (!perm.equals("")) {
-                    permission.playerAdd(null, player, perm);
-                }
-            }))).execute();
-        } else {
-            guild.getAllAsPlayers().forEach(player -> getGuildTier(guild.getTier().getLevel()).getPermissions().forEach(perm -> {
-                if (!perm.equals("")) {
-                    permission.playerAdd(null, player, perm);
-                }
-            }));
         }
-
+        final GuildMember member = guild.getMember(player.getUniqueId());
+        final GuildRole role = member.getRole();
+        removePerms(permission, player, Collections.singletonList(role.getNode()));
     }
 
     /**
-     * Remove all perms from a player for the guild
-     *
-     * @param permission permission to remove
-     * @param guild      the guild being modified
+     * Add all guild permissions to all players in the guild
+     * @param permission vault permissions
+     * @param guild the guild to modify
      */
-    public void removePermsFromAll(Permission permission, Guild guild, boolean async) {
-        GuildTier tier = getGuildTier(guild.getTier().getLevel());
-        if (tier.getPermissions().isEmpty())
+    public void addGuildPermsToAll(final Permission permission, final Guild guild) {
+        final GuildTier tier = getGuildTier(guild.getTier().getLevel());
+        if (tier.getPermissions().isEmpty()) {
             return;
-        if (async) {
-            Guilds.newChain().async(() -> guild.getAllAsPlayers().forEach(player -> getGuildTier(guild.getTier().getLevel()).getPermissions().forEach(perm -> {
-                if (!perm.equals("")) {
-                    permission.playerRemove(null, player, perm);
-                }
-            }))).execute();
-        } else {
-            guild.getAllAsPlayers().forEach(player -> getGuildTier(guild.getTier().getLevel()).getPermissions().forEach(perm -> {
-                if (!perm.equals("")) {
-                    permission.playerRemove(null, player, perm);
-                }
-            }));
         }
+        for (final OfflinePlayer player : guild.getAllAsPlayers()) {
+            addPerms(permission, player, tier.getPermissions());
+        }
+    }
 
+    /**
+     * Remove all guild permissions from all players in the guild
+     * @param permission vault permissions
+     * @param guild the guild to modify
+     */
+    public void removeGuildPermsFromAll(final Permission permission, final Guild guild) {
+        final GuildTier tier = getGuildTier(guild.getTier().getLevel());
+        if (tier.getPermissions().isEmpty()) {
+            return;
+        }
+        for (final OfflinePlayer player : guild.getAllAsPlayers()) {
+            removePerms(permission, player, tier.getPermissions());
+        }
     }
 
     /**
@@ -1021,6 +1043,10 @@ public class GuildHandler {
             return noGuild;
         }
         return StringUtils.color(combined.replace("{name}", guild.getName()).replace("{prefix}", guild.getPrefix()));
+    }
+
+    public Guilds getGuildsPlugin() {
+        return this.guildsPlugin;
     }
 
     public List<Guild> getGuilds() {

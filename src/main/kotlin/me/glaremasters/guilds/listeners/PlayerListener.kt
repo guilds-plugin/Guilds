@@ -40,11 +40,8 @@ import net.kyori.adventure.text.event.HoverEvent
 import net.milkbowl.vault.permission.Permission
 import org.bukkit.Bukkit
 import org.bukkit.event.EventHandler
-import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
-import org.bukkit.event.player.AsyncPlayerChatEvent
 import org.bukkit.event.player.PlayerJoinEvent
-import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.event.player.PlayerRespawnEvent
 
 class PlayerListener(private val guilds: Guilds, private val settingsManager: SettingsManager, private val guildHandler: GuildHandler, private val permission: Permission) : Listener {
@@ -112,7 +109,8 @@ class PlayerListener(private val guilds: Guilds, private val settingsManager: Se
 
     @EventHandler
     fun PlayerJoinEvent.onPermCheck() {
-        guildHandler.addPerms(permission, player, settingsManager.getProperty(PluginSettings.RUN_VAULT_ASYNC))
+        guildHandler.addGuildPerms(permission, player)
+        guildHandler.addRolePerm(permission, player)
     }
 
     @EventHandler

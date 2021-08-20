@@ -66,7 +66,6 @@ internal class CommandAdminRemove : BaseCommand() {
     @Conditions("NotMigrating")
     fun remove(player: Player, @Flags("other") @Values("@guilds") guild: Guild) {
         val name = guild.name
-        val async = settingsManager.getProperty(PluginSettings.RUN_VAULT_ASYNC)
 
         currentCommandIssuer.sendInfo(Messages.ADMIN__DELETE_WARNING, "{guild}", name)
         actionHandler.addAction(player, object : ConfirmAction {
@@ -78,7 +77,7 @@ internal class CommandAdminRemove : BaseCommand() {
                     return
                 }
 
-                guildHandler.removePermsFromAll(permission, guild, async)
+                guildHandler.removeGuildPermsFromAll(permission, guild)
                 guildHandler.removeAlliesOnDelete(guild)
                 guildHandler.notifyAllies(guild, currentCommandManager)
                 ClaimUtils.deleteWithGuild(guild, settingsManager)

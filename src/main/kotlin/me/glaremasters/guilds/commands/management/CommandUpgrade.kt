@@ -73,7 +73,6 @@ internal class CommandUpgrade : BaseCommand() {
 
         val tier = guildHandler.getGuildTier(guild.tier.level + 1)
         val cost = tier.cost
-        val async = settingsManager.getProperty(PluginSettings.RUN_VAULT_ASYNC)
 
         if (guildHandler.memberCheck(guild)) {
             throw ExpectationNotMet(Messages.UPGRADE__NOT_ENOUGH_MEMBERS, "{amount}", guild.tier.membersToRankup.toString())
@@ -93,11 +92,11 @@ internal class CommandUpgrade : BaseCommand() {
                 guild.balance = guild.balance - cost
 
                 if (!guilds.settingsHandler.tierConf.getProperty(TierSettings.CARRY_OVER)) {
-                    guildHandler.removePermsFromAll(permission, guild, async)
+                    guildHandler.removeGuildPermsFromAll(permission, guild)
                 }
 
                 guildHandler.upgradeTier(guild)
-                guildHandler.addPermsToAll(permission, guild, async)
+                guildHandler.addGuildPermsToAll(permission, guild)
                 currentCommandIssuer.sendInfo(Messages.UPGRADE__SUCCESS)
 
 
