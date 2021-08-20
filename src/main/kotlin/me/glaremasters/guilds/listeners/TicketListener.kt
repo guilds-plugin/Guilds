@@ -26,6 +26,8 @@ package me.glaremasters.guilds.listeners
 
 import ch.jalu.configme.SettingsManager
 import me.glaremasters.guilds.Guilds
+import me.glaremasters.guilds.configuration.sections.PluginSettings
+import me.glaremasters.guilds.configuration.sections.TierSettings
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
 import org.bukkit.Material
@@ -53,6 +55,13 @@ class TicketListener(private val guilds: Guilds, private val guildHandler: Guild
 
         if (interactItem.amount > 1) interactItem.amount = interactItem.amount - 1 else player.inventory.setItemInHand(ItemStack(Material.AIR))
         guilds.commandManager.getCommandIssuer(player).sendInfo(Messages.UPGRADE__SUCCESS)
+
+        val async = settingsManager.getProperty(PluginSettings.RUN_VAULT_ASYNC)
+
+        if (!guilds.settingsHandler.tierConf.getProperty(TierSettings.CARRY_OVER)) {
+            guildHandler.removePermsFromAll(guilds.permissions, guild, async)
+        }
         guildHandler.upgradeTier(guild)
+        guildHandler.addPermsToAll(guilds.permissions, guild, async)
     }
 }
