@@ -41,7 +41,7 @@ import me.glaremasters.guilds.exceptions.ExpectationNotMet
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
-import me.glaremasters.guilds.utils.ClaimUtils
+import me.glaremasters.guilds.claim.ClaimUtils
 import me.glaremasters.guilds.utils.Constants
 import me.glaremasters.guilds.utils.EconomyUtils
 import me.glaremasters.guilds.utils.StringUtils
@@ -95,10 +95,10 @@ internal class CommandRename : BaseCommand() {
 
         if (ClaimUtils.isEnable(settingsManager)) {
             val wrapper = WorldGuardWrapper.getInstance()
-            if (ClaimUtils.checkAlreadyExist(wrapper, guild)) {
-                ClaimUtils.getGuildClaim(wrapper, player, guild).ifPresent { region ->
-                    ClaimUtils.setEnterMessage(wrapper, region, settingsManager, guild)
-                    ClaimUtils.setExitMessage(wrapper, region, settingsManager, guild)
+            if (ClaimUtils.checkIfHaveClaims(wrapper, guild)) {
+                for (claim in guild.claimedLand) {
+                    ClaimUtils.setEnterMessage(wrapper, claim, settingsManager, guild)
+                    ClaimUtils.setExitMessage(wrapper, claim, settingsManager, guild)
                 }
             }
         }

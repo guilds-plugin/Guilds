@@ -37,7 +37,7 @@ import me.glaremasters.guilds.api.events.GuildKickEvent
 import me.glaremasters.guilds.exceptions.ExpectationNotMet
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
-import me.glaremasters.guilds.utils.ClaimUtils
+import me.glaremasters.guilds.claim.ClaimUtils
 import me.glaremasters.guilds.utils.Constants
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
@@ -63,7 +63,10 @@ internal class CommandAdminRemovePlayer : BaseCommand() {
             return
         }
 
-        ClaimUtils.kickMember(user, player, guild, settingsManager)
+        if (ClaimUtils.isEnable(settingsManager)) {
+            ClaimUtils.kickMember(user, player, guild)
+        }
+
         guild.removeMember(user)
 
         if (user.isOnline) {

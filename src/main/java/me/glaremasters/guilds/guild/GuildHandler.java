@@ -27,16 +27,16 @@ package me.glaremasters.guilds.guild;
 import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.ACFUtil;
-import co.aikar.commands.CommandManager;
 import co.aikar.commands.PaperCommandManager;
 import me.glaremasters.guilds.Guilds;
+import me.glaremasters.guilds.claim.GuildClaim;
 import me.glaremasters.guilds.configuration.sections.GuildSettings;
 import me.glaremasters.guilds.configuration.sections.GuildVaultSettings;
 import me.glaremasters.guilds.configuration.sections.PluginSettings;
 import me.glaremasters.guilds.configuration.sections.TicketSettings;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.messages.Messages;
-import me.glaremasters.guilds.utils.ClaimUtils;
+import me.glaremasters.guilds.claim.ClaimUtils;
 import me.glaremasters.guilds.utils.ItemBuilder;
 import me.glaremasters.guilds.utils.LoggingUtils;
 import me.glaremasters.guilds.utils.Serialization;
@@ -53,16 +53,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.codemc.worldguardwrapper.WorldGuardWrapper;
+import org.codemc.worldguardwrapper.region.IWrappedRegion;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -176,6 +172,7 @@ public class GuildHandler {
                     .maxAllies(tierSec.getInt(key + ".max-allies", 10))
                     .useBuffs(tierSec.getBoolean(key + ".use-buffs", true))
                     .permissions(tierSec.getStringList(key + ".permissions"))
+                    .claimableLand(tierSec.getInt(key + ".claimableLand", 5))
                     .build());
         }
     }
@@ -874,7 +871,9 @@ public class GuildHandler {
 
         if (ClaimUtils.isEnable(settingsManager)) {
             WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();
-            ClaimUtils.getGuildClaim(wrapper, player, guild).ifPresent(region -> ClaimUtils.addMember(region, player));
+            for (GuildClaim claim : guild.getClaimedLand()) {
+                ClaimUtils.addMember(claim, player);
+            }
         }
 
         manager.getCommandIssuer(player).sendInfo(Messages.CODES__JOINED, "{guild}", guild.getName());

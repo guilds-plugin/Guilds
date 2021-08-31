@@ -31,7 +31,7 @@ import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRolePerm;
 import me.glaremasters.guilds.messages.Messages;
-import me.glaremasters.guilds.utils.ClaimUtils;
+import me.glaremasters.guilds.claim.ClaimUtils;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
@@ -61,6 +61,8 @@ public class ClaimSignListener implements Listener {
         this.guildHandler = guildHandler;
     }
 
+    //TODO Fix all of this because Claim Signs...
+
     @EventHandler
     public void onSignChange(SignChangeEvent event) {
         Player player = event.getPlayer();
@@ -68,14 +70,14 @@ public class ClaimSignListener implements Listener {
         if (!event.getLine(0).equalsIgnoreCase(settingsManager.getProperty(ClaimSettings.CLAIM_SIGN_TEXT)))
             return;
 
-        if (!player.hasPermission("guilds.claimsigns.place") && !player.hasPermission("worldguard.region.redefine.*")) {
-            guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.CLAIM__SIGN_NO_PERMISSION);
+        if (!settingsManager.getProperty(ClaimSettings.CLAIM_SIGNS)) {
+            guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.CLAIM__SIGN_NOT_ENABLED);
             event.setCancelled(true);
             return;
         }
 
-        if (!settingsManager.getProperty(ClaimSettings.CLAIM_SIGNS)) {
-            guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.CLAIM__SIGN_NOT_ENABLED);
+        if (!player.hasPermission("guilds.claimsigns.place") && !player.hasPermission("worldguard.region.redefine.*")) {
+            guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.CLAIM__SIGN_NO_PERMISSION);
             event.setCancelled(true);
             return;
         }
@@ -132,32 +134,34 @@ public class ClaimSignListener implements Listener {
             return;
         }
 
-        if (ClaimUtils.checkAlreadyExist(wrapper, guild)) {
+        if (ClaimUtils.checkMaxAlreadyExist(wrapper, guild)) {
             guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.CLAIM__ALREADY_EXISTS);
             return;
         }
 
-        if (guild.getBalance() < Double.valueOf(sign.getLine(2))) {
+        if (guild.getBalance() < Double.parseDouble(sign.getLine(2))) {
             guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.CLAIM__SIGN_NOT_ENOUGH);
             return;
         }
 
-        ClaimUtils.getClaim(wrapper, player, sign.getLine(1)).ifPresent(region -> {
+        ClaimUtils.getClaim(wrapper, player, sign.getLine(1), guild).ifPresent(region -> {
             ICuboidSelection selection = ClaimUtils.getSelection(wrapper, player, region.getId());
             wrapper.removeRegion(player.getWorld(), region.getId());
             ClaimUtils.createClaim(wrapper, guild, selection);
         });
 
-        ClaimUtils.getGuildClaim(wrapper, player, guild).ifPresent(region -> {
-            ClaimUtils.addOwner(region, guild);
-            ClaimUtils.addMembers(region, guild);
-            ClaimUtils.setEnterMessage(wrapper, region, settingsManager, guild);
-            ClaimUtils.setExitMessage(wrapper, region, settingsManager, guild);
+        ClaimUtils.getGuildClaim(wrapper, player, guild).forEach(claim -> {
+            claim.ifPresent(region -> {
+                ClaimUtils.addOwner(region, guild);
+                ClaimUtils.addMembers(region, guild);
+                ClaimUtils.setEnterMessage(wrapper, region, settingsManager, guild);
+                ClaimUtils.setExitMessage(wrapper, region, settingsManager, guild);
+            });
         });
 
         player.getWorld().getBlockAt(block.getLocation()).breakNaturally();
 
-        guild.setBalance(guild.getBalance() - Double.valueOf(sign.getLine(2)));
+        guild.setBalance(guild.getBalance() - Double.parseDouble(sign.getLine(2)));
 
         guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.CLAIM__SIGN_BUY_SUCCESS);
     }

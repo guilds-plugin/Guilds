@@ -46,7 +46,7 @@ import me.glaremasters.guilds.exceptions.ExpectationNotMet
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.BackupUtils
-import me.glaremasters.guilds.utils.ClaimUtils
+import me.glaremasters.guilds.claim.ClaimUtils
 import me.glaremasters.guilds.utils.Constants
 import org.codemc.worldguardwrapper.WorldGuardWrapper
 
@@ -158,8 +158,8 @@ internal class CommandConsole : BaseCommand() {
             override fun accept() {
                 val wrapper = WorldGuardWrapper.getInstance()
                 guildHandler.guilds.forEach { guild ->
-                    if (ClaimUtils.checkAlreadyExist(wrapper, guild)) {
-                        ClaimUtils.removeClaim(wrapper, guild)
+                    for (claim in ClaimUtils.findRegionClaims(wrapper, guild)) {
+                        ClaimUtils.removeAllClaims(wrapper, guild)
                     }
                 }
                 currentCommandIssuer.sendInfo(Messages.UNCLAIM__ALL_SUCCESS)

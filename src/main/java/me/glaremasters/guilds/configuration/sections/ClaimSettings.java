@@ -41,14 +41,6 @@ import static ch.jalu.configme.properties.PropertyInitializer.newProperty;
  */
 public class ClaimSettings implements SettingsHolder {
 
-    @Comment({"This is the number of blocks around the player it will try to create the region.",
-            "Keep in mind this is the RADIUS, it will go this many blocks in both directions.",
-            "For example, if you take the default 15, it'll do 30 total as it will go 15 blocks in both directions.",
-            "This is a CUBOID region, not SPHERE."
-    })
-    public static final Property<Integer> RADIUS =
-            newProperty("claims.radius", 15);
-
     @Comment({"Customize the entrance and exit message of joining claims.",
             "Supports {prefix} for guild prefix and {guild} for guild name.",
             "Also supports color codes!"

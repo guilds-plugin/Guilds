@@ -40,7 +40,7 @@ import me.glaremasters.guilds.exceptions.ExpectationNotMet
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
-import me.glaremasters.guilds.utils.ClaimUtils
+import me.glaremasters.guilds.claim.ClaimUtils
 import me.glaremasters.guilds.utils.Constants
 import org.bukkit.entity.Player
 import org.codemc.worldguardwrapper.WorldGuardWrapper
@@ -73,26 +73,25 @@ internal class CommandClaim : BaseCommand() {
 
         val wrapper = WorldGuardWrapper.getInstance()
 
-        if (ClaimUtils.checkAlreadyExist(wrapper, guild)) {
+        if (ClaimUtils.checkMaxAlreadyExist(wrapper, guild)) {
             throw ExpectationNotMet(Messages.CLAIM__ALREADY_EXISTS)
         }
 
-        if (ClaimUtils.checkOverlap(wrapper, player, settingsManager)) {
+        if (ClaimUtils.checkOverlap(wrapper, player)) {
             throw ExpectationNotMet(Messages.CLAIM__OVERLAP)
         }
 
-        ClaimUtils.createClaim(wrapper, guild, player, settingsManager)
+        val claim = ClaimUtils.createClaim(wrapper, guild, player)
+        guild.addGuildClaim(claim)
 
-        ClaimUtils.getGuildClaim(wrapper, player, guild).ifPresent { region ->
-            ClaimUtils.addOwner(region, guild)
-            ClaimUtils.addMembers(region, guild)
-            ClaimUtils.setEnterMessage(wrapper, region, settingsManager, guild)
-            ClaimUtils.setExitMessage(wrapper, region, settingsManager, guild)
-        }
+        ClaimUtils.addOwner(claim, guild)
+        ClaimUtils.addMembers(claim, guild)
+        ClaimUtils.setEnterMessage(wrapper, claim, settingsManager, guild)
+        ClaimUtils.setExitMessage(wrapper, claim, settingsManager, guild)
 
         currentCommandIssuer.sendInfo(Messages.CLAIM__SUCCESS,
-                "{loc1}", ACFBukkitUtil.formatLocation(ClaimUtils.claimPointOne(player, settingsManager)),
-                "{loc2}", ACFBukkitUtil.formatLocation(ClaimUtils.claimPointTwo(player, settingsManager)))
+                "{loc1}", ACFBukkitUtil.formatLocation(ClaimUtils.claimPointOne(player)),
+                "{loc2}", ACFBukkitUtil.formatLocation(ClaimUtils.claimPointTwo(player)))
     }
 
     @Subcommand("unclaim")
@@ -114,11 +113,17 @@ internal class CommandClaim : BaseCommand() {
 
         val wrapper = WorldGuardWrapper.getInstance()
 
-        if (!ClaimUtils.checkAlreadyExist(wrapper, guild)) {
+        if (!ClaimUtils.checkIfHaveClaims(wrapper, guild)) {
             throw ExpectationNotMet(Messages.UNCLAIM__NOT_FOUND)
         }
 
-        ClaimUtils.removeClaim(wrapper, guild)
+        if (ClaimUtils.checkOverlap(wrapper, player)) {
+            val claim = ClaimUtils.getStandingOnClaim(wrapper, player, guild)
+            if (claim != null) {
+                ClaimUtils.removeClaim(wrapper, claim, guild)
+                guild.removeGuildClaim(claim)
+            }
+        }
         currentCommandIssuer.sendInfo(Messages.UNCLAIM__SUCCESS)
     }
 }
