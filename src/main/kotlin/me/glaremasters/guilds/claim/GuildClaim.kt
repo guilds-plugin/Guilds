@@ -24,14 +24,16 @@
 package me.glaremasters.guilds.claim
 
 import me.glaremasters.guilds.guild.Guild
+import me.glaremasters.guilds.guild.GuildHandler
+import org.codemc.worldguardwrapper.WorldGuardWrapper
 import org.codemc.worldguardwrapper.region.IWrappedRegion
 import java.util.*
+import kotlin.properties.Delegates
 
 class GuildClaim (
-    @field:Transient var name: String?,
-    @field:Transient var num: Int,
-    @field:Transient var guildID: UUID,
-    @field:Transient var region: Optional<IWrappedRegion>) {
+    @field:Transient var name: String,
+    @field:Transient var number: Int,
+    @field:Transient var guildId: UUID) {
 
     fun changeName(name: String) {
         this.name = name
@@ -39,61 +41,57 @@ class GuildClaim (
     }
 
     fun changeNumber(num: Int) {
-        this.num = num
+        this.number = num
         return
     }
 
-    fun changeRegion(region: Optional<IWrappedRegion>) {
-        this.region = region
+    fun changeGuildId(guildID: UUID) {
+        this.guildId = guildID
         return
     }
 
-    fun changeGuildID(guildID: UUID) {
-        this.guildID = guildID
-        return
+    fun getRegion(wrapper: WorldGuardWrapper): IWrappedRegion {
+        return ClaimUtils.getRegionFromName(wrapper, name)!!
+    }
+
+    fun getGuild(guildHandler: GuildHandler): Guild {
+        return guildHandler.getGuild(guildId)
     }
 
     override fun toString(): String {
-        return "GuildClaim(name=" + name + ", num=" + num + ", region=" + region?.get()?.id + ", guildID=" + guildID + ")"
+        return "GuildClaim(name=$name, number=$number, guildId=$guildId)"
     }
 
     class GuildClaimBuilder internal constructor() {
-        private var name: String? = null
-        private var num = 0
-        private lateinit var guildID: UUID
-        private lateinit var region: Optional<IWrappedRegion>
+        private lateinit var name: String
+        private var number by Delegates.notNull<Int>()
+        private lateinit var guildId: UUID
 
-        fun name(name: String?): GuildClaimBuilder {
+        fun name(name: String): GuildClaimBuilder {
             this.name = name
             return this
         }
 
-        fun num(num: Int): GuildClaimBuilder {
-            this.num = num
+        fun number(number: Int): GuildClaimBuilder {
+            this.number = number
             return this
         }
 
-        fun region(region: Optional<IWrappedRegion>): GuildClaimBuilder {
-            this.region = region
-            return this
-        }
-
-        fun guildID(guildID: UUID): GuildClaimBuilder {
-            this.guildID = guildID
+        fun guildId(guildId: UUID): GuildClaimBuilder {
+            this.guildId = guildId
             return this
         }
 
         fun build(): GuildClaim {
             return GuildClaim(
                 name,
-                num,
-                guildID,
-                region
+                number,
+                guildId
             )
         }
 
         override fun toString(): String {
-            return "GuildClaim.GuildClaimBuilder(name=" + name + ", num=" + num + ", region=" + region.get().id + ", guildID=" + guildID + ")"
+            return "GuildClaim.GuildClaimBuilder(name=$name, number=$number, guildId=$guildId)"
         }
     }
 

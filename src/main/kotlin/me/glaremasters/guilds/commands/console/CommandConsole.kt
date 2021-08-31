@@ -40,6 +40,7 @@ import me.glaremasters.guilds.actions.ActionHandler
 import me.glaremasters.guilds.actions.ConfirmAction
 import me.glaremasters.guilds.arena.ArenaHandler
 import me.glaremasters.guilds.challenges.ChallengeHandler
+import me.glaremasters.guilds.claim.ClaimRegionHandler
 import me.glaremasters.guilds.cooldowns.CooldownHandler
 import me.glaremasters.guilds.database.DatabaseBackend
 import me.glaremasters.guilds.exceptions.ExpectationNotMet
@@ -157,10 +158,8 @@ internal class CommandConsole : BaseCommand() {
         actionHandler.addAction(issuer.getIssuer(), object : ConfirmAction {
             override fun accept() {
                 val wrapper = WorldGuardWrapper.getInstance()
-                guildHandler.guilds.forEach { guild ->
-                    for (claim in ClaimUtils.findRegionClaims(wrapper, guild)) {
-                        ClaimUtils.removeAllClaims(wrapper, guild)
-                    }
+                for (guild in guildHandler.guilds) {
+                    ClaimRegionHandler.removeAllClaims(wrapper, guild)
                 }
                 currentCommandIssuer.sendInfo(Messages.UNCLAIM__ALL_SUCCESS)
             }

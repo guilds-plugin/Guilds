@@ -37,6 +37,7 @@ import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.actions.ActionHandler
 import me.glaremasters.guilds.actions.ConfirmAction
 import me.glaremasters.guilds.api.events.GuildRemoveEvent
+import me.glaremasters.guilds.claim.ClaimRegionHandler
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
@@ -45,6 +46,7 @@ import me.glaremasters.guilds.utils.Constants
 import net.milkbowl.vault.permission.Permission
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
+import org.codemc.worldguardwrapper.WorldGuardWrapper
 
 @CommandAlias("%guilds")
 internal class CommandDelete : BaseCommand() {
@@ -80,7 +82,9 @@ internal class CommandDelete : BaseCommand() {
                 guildHandler.notifyAllies(guild, guilds.commandManager)
                 guild.sendMessage(currentCommandManager, Messages.LEAVE__GUILDMASTER_LEFT, "{player}", player.name)
                 if (ClaimUtils.isEnable(settingsManager)) {
-                    ClaimUtils.deleteWithGuild(guild)
+                    val wrapper = WorldGuardWrapper.getInstance()
+
+                    ClaimRegionHandler.deleteWithGuild(wrapper, guild)
                 }
                 guildHandler.removeGuild(guild)
                 currentCommandIssuer.sendInfo(Messages.DELETE__SUCCESSFUL, "{guild}", guild.name)

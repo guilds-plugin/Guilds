@@ -26,6 +26,9 @@ package me.glaremasters.guilds.listeners;
 
 import ch.jalu.configme.SettingsManager;
 import me.glaremasters.guilds.Guilds;
+import me.glaremasters.guilds.claim.ClaimPermissions;
+import me.glaremasters.guilds.claim.ClaimRegionHandler;
+import me.glaremasters.guilds.claim.GuildClaim;
 import me.glaremasters.guilds.configuration.sections.ClaimSettings;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
@@ -41,6 +44,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.codemc.worldguardwrapper.WorldGuardWrapper;
+import org.codemc.worldguardwrapper.region.IWrappedRegion;
 import org.codemc.worldguardwrapper.selection.ICuboidSelection;
 
 /**
@@ -88,11 +92,13 @@ public class ClaimSignListener implements Listener {
             return;
         }
 
-        if (!ClaimUtils.checkAlreadyExist(wrapper, player, event.getLine(1))) {
+
+        if (!ClaimUtils.checkOverlap(wrapper, player)) {
             guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.CLAIM__SIGN_INVALID_REGION);
             event.setCancelled(true);
             return;
         }
+
         guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.CLAIM__SIGN_PLACED, "{region}", event.getLine(1), "{price}", event.getLine(2));
     }
 
@@ -144,20 +150,23 @@ public class ClaimSignListener implements Listener {
             return;
         }
 
-        ClaimUtils.getClaim(wrapper, player, sign.getLine(1), guild).ifPresent(region -> {
-            ICuboidSelection selection = ClaimUtils.getSelection(wrapper, player, region.getId());
-            wrapper.removeRegion(player.getWorld(), region.getId());
-            ClaimUtils.createClaim(wrapper, guild, selection);
-        });
+        IWrappedRegion region = ClaimUtils.getRegionFromName(wrapper, sign.getLine(1));
 
-        ClaimUtils.getGuildClaim(wrapper, player, guild).forEach(claim -> {
-            claim.ifPresent(region -> {
-                ClaimUtils.addOwner(region, guild);
-                ClaimUtils.addMembers(region, guild);
-                ClaimUtils.setEnterMessage(wrapper, region, settingsManager, guild);
-                ClaimUtils.setExitMessage(wrapper, region, settingsManager, guild);
-            });
-        });
+        if (region == null) {
+            guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.CLAIM__SIGN_INVALID_REGION);
+            return;
+        }
+
+        ICuboidSelection selection = ClaimUtils.getSelection(wrapper, player, region.getId());
+        wrapper.removeRegion(player.getWorld(), region.getId());
+
+        GuildClaim claim = ClaimRegionHandler.createClaim(wrapper, guild, selection);
+        guild.addGuildClaim(claim);
+
+        ClaimPermissions.addOwner(wrapper, claim, guild);
+        ClaimPermissions.addMembers(wrapper, claim, guild);
+        ClaimPermissions.setEnterMessage(wrapper, claim, settingsManager, guild);
+        ClaimPermissions.setExitMessage(wrapper, claim, settingsManager, guild);
 
         player.getWorld().getBlockAt(block.getLocation()).breakNaturally();
 

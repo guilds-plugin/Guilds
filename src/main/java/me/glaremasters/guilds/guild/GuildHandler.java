@@ -29,6 +29,7 @@ import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.PaperCommandManager;
 import me.glaremasters.guilds.Guilds;
+import me.glaremasters.guilds.claim.ClaimPermissions;
 import me.glaremasters.guilds.claim.GuildClaim;
 import me.glaremasters.guilds.configuration.sections.GuildSettings;
 import me.glaremasters.guilds.configuration.sections.GuildVaultSettings;
@@ -872,7 +873,7 @@ public class GuildHandler {
         if (ClaimUtils.isEnable(settingsManager)) {
             WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();
             for (GuildClaim claim : guild.getClaimedLand()) {
-                ClaimUtils.addMember(claim, player);
+                ClaimPermissions.addMember(wrapper, claim, player);
             }
         }
 

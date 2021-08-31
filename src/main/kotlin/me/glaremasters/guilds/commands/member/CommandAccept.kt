@@ -37,6 +37,7 @@ import co.aikar.commands.annotation.Subcommand
 import co.aikar.commands.annotation.Syntax
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.api.events.GuildJoinEvent
+import me.glaremasters.guilds.claim.ClaimPermissions
 import me.glaremasters.guilds.cooldowns.Cooldown
 import me.glaremasters.guilds.cooldowns.CooldownHandler
 import me.glaremasters.guilds.exceptions.ExpectationNotMet
@@ -96,8 +97,9 @@ internal class CommandAccept : BaseCommand() {
 
         if (ClaimUtils.isEnable(settingsManager)) {
             val wrapper = WorldGuardWrapper.getInstance()
+
             for (claim in guild.claimedLand) {
-                ClaimUtils.addMember(claim, player)
+                ClaimPermissions.addMember(wrapper, claim, player)
             }
         }
 

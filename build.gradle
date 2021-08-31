@@ -85,7 +85,6 @@ slimJar {
 
 
 dependencies {
-
     // Slimjar
     implementation slimjar("1.2.6")
 

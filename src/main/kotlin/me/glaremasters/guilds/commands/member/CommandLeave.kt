@@ -39,6 +39,8 @@ import me.glaremasters.guilds.actions.ActionHandler
 import me.glaremasters.guilds.actions.ConfirmAction
 import me.glaremasters.guilds.api.events.GuildLeaveEvent
 import me.glaremasters.guilds.api.events.GuildRemoveEvent
+import me.glaremasters.guilds.claim.ClaimPermissions
+import me.glaremasters.guilds.claim.ClaimRegionHandler
 import me.glaremasters.guilds.configuration.sections.CooldownSettings
 import me.glaremasters.guilds.cooldowns.Cooldown
 import me.glaremasters.guilds.cooldowns.CooldownHandler
@@ -102,17 +104,23 @@ internal class CommandLeave : BaseCommand() {
                     guildHandler.removeAlliesOnDelete(guild)
                     guildHandler.notifyAllies(guild, guilds.commandManager)
                     cooldownHandler.addCooldown(player, cooldownName, cooldownTime, TimeUnit.SECONDS)
+
                     if (ClaimUtils.isEnable(settingsManager)) {
-                        ClaimUtils.deleteWithGuild(guild)
+                        val wrapper = WorldGuardWrapper.getInstance()
+
+                        ClaimRegionHandler.deleteWithGuild(wrapper, guild)
                     }
+
                     guildHandler.removeGuild(guild)
                 } else {
                     guildHandler.removeGuildPerms(permission, player)
                     cooldownHandler.addCooldown(player, cooldownName, cooldownTime, TimeUnit.SECONDS)
 
                     if (ClaimUtils.isEnable(settingsManager)) {
+                        val wrapper = WorldGuardWrapper.getInstance()
+
                         for (claim in guild.claimedLand) {
-                            ClaimUtils.removeMember(claim, player)
+                            ClaimPermissions.removeMember(wrapper, claim, player)
                         }
                     }
 

@@ -38,6 +38,8 @@ import co.aikar.commands.annotation.Syntax
 import co.aikar.commands.annotation.Values
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.api.events.GuildTransferEvent
+import me.glaremasters.guilds.claim.ClaimPermissions
+import me.glaremasters.guilds.claim.ClaimUtils
 import me.glaremasters.guilds.exceptions.ExpectationNotMet
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
@@ -45,6 +47,7 @@ import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.Constants
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
+import org.codemc.worldguardwrapper.WorldGuardWrapper
 
 @CommandAlias("%guilds")
 internal class CommandTransfer : BaseCommand() {
@@ -62,6 +65,7 @@ internal class CommandTransfer : BaseCommand() {
     @Syntax("<player>")
     fun transfer(player: Player, @Conditions("perm:perm=TRANSFER_GUILD") guild: Guild, @Values("@members") @Single target: String) {
         val user = Bukkit.getOfflinePlayer(target)
+        val wrapper = WorldGuardWrapper.getInstance();
 
         if (guild.guildMaster.uuid == user.uniqueId) {
             throw ExpectationNotMet(Messages.ERROR__TRANSFER_SAME_PERSON)
@@ -76,6 +80,12 @@ internal class CommandTransfer : BaseCommand() {
 
         if (event.isCancelled) {
             return
+        }
+
+        if (ClaimUtils.isEnable(settingsManager)) {
+            for (claim in guild.claimedLand) {
+                ClaimPermissions.transferOwner(wrapper, claim, guild)
+            }
         }
 
         guild.transferGuild(player, user)

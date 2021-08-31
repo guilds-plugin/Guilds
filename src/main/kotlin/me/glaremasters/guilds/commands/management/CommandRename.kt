@@ -35,6 +35,7 @@ import co.aikar.commands.annotation.Subcommand
 import co.aikar.commands.annotation.Syntax
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.api.events.GuildRenameEvent
+import me.glaremasters.guilds.claim.ClaimPermissions
 import me.glaremasters.guilds.configuration.sections.CostSettings
 import me.glaremasters.guilds.configuration.sections.GuildSettings
 import me.glaremasters.guilds.exceptions.ExpectationNotMet
@@ -95,10 +96,11 @@ internal class CommandRename : BaseCommand() {
 
         if (ClaimUtils.isEnable(settingsManager)) {
             val wrapper = WorldGuardWrapper.getInstance()
+
             if (ClaimUtils.checkIfHaveClaims(wrapper, guild)) {
                 for (claim in guild.claimedLand) {
-                    ClaimUtils.setEnterMessage(wrapper, claim, settingsManager, guild)
-                    ClaimUtils.setExitMessage(wrapper, claim, settingsManager, guild)
+                    ClaimPermissions.setEnterMessage(wrapper, claim, settingsManager, guild)
+                    ClaimPermissions.setExitMessage(wrapper, claim, settingsManager, guild)
                 }
             }
         }

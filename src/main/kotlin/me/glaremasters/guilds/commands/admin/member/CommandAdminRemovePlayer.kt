@@ -34,6 +34,7 @@ import co.aikar.commands.annotation.Subcommand
 import co.aikar.commands.annotation.Syntax
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.api.events.GuildKickEvent
+import me.glaremasters.guilds.claim.ClaimPermissions
 import me.glaremasters.guilds.exceptions.ExpectationNotMet
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
@@ -41,6 +42,7 @@ import me.glaremasters.guilds.claim.ClaimUtils
 import me.glaremasters.guilds.utils.Constants
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
+import org.codemc.worldguardwrapper.WorldGuardWrapper
 
 // todo Fix the logic on this because what if you force remove the guild master?
 @CommandAlias("%guilds")
@@ -64,7 +66,11 @@ internal class CommandAdminRemovePlayer : BaseCommand() {
         }
 
         if (ClaimUtils.isEnable(settingsManager)) {
-            ClaimUtils.kickMember(user, player, guild)
+            val wrapper = WorldGuardWrapper.getInstance()
+
+            for (claim in guild.claimedLand) {
+                ClaimPermissions.kickMember(wrapper, claim, user)
+            }
         }
 
         guild.removeMember(user)

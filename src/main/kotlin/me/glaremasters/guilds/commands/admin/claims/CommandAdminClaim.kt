@@ -27,16 +27,10 @@ package me.glaremasters.guilds.commands.admin.claims
 import ch.jalu.configme.SettingsManager
 import co.aikar.commands.ACFBukkitUtil
 import co.aikar.commands.BaseCommand
-import co.aikar.commands.annotation.CommandAlias
-import co.aikar.commands.annotation.CommandCompletion
-import co.aikar.commands.annotation.CommandPermission
-import co.aikar.commands.annotation.Dependency
-import co.aikar.commands.annotation.Description
-import co.aikar.commands.annotation.Flags
-import co.aikar.commands.annotation.Subcommand
-import co.aikar.commands.annotation.Syntax
-import co.aikar.commands.annotation.Values
+import co.aikar.commands.annotation.*
 import me.glaremasters.guilds.Guilds
+import me.glaremasters.guilds.claim.ClaimPermissions
+import me.glaremasters.guilds.claim.ClaimRegionHandler
 import me.glaremasters.guilds.exceptions.ExpectationNotMet
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
@@ -72,14 +66,13 @@ internal class CommandAdminClaim : BaseCommand() {
             throw ExpectationNotMet(Messages.CLAIM__OVERLAP)
         }
 
-        val claim = ClaimUtils.createClaim(wrapper, guild, player)
+        val claim = ClaimRegionHandler.createClaim(wrapper, guild, player)
         guild.addGuildClaim(claim)
 
-
-        ClaimUtils.addOwner(claim, guild)
-        ClaimUtils.addMembers(claim, guild)
-        ClaimUtils.setEnterMessage(wrapper, claim, settingsManager, guild)
-        ClaimUtils.setExitMessage(wrapper, claim, settingsManager, guild)
+        ClaimPermissions.addOwner(wrapper, claim, guild)
+        ClaimPermissions.addMembers(wrapper, claim, guild)
+        ClaimPermissions.setEnterMessage(wrapper, claim, settingsManager, guild)
+        ClaimPermissions.setExitMessage(wrapper, claim, settingsManager, guild)
 
         currentCommandIssuer.sendInfo(Messages.CLAIM__SUCCESS,
                 "{loc1}", ACFBukkitUtil.formatLocation(ClaimUtils.claimPointOne(player)),
@@ -89,9 +82,9 @@ internal class CommandAdminClaim : BaseCommand() {
     @Subcommand("admin unclaim")
     @Description("{@@descriptions.admin-unclaim}")
     @CommandPermission(Constants.ADMIN_PERM)
-    @CommandCompletion("@guilds")
-    @Syntax("<%syntax>")
-    fun unclaim(player: Player, @Flags("other") @Values("@guilds") guild: Guild) {
+    @CommandCompletion("@guilds @claimed")
+    @Syntax("<%syntax> <claim>")
+    fun unclaim(player: Player, @Flags("other") @Values("@guilds") guild: Guild, @Values("@claimed") @Single option: String) {
         if (!ClaimUtils.isEnable(settingsManager)) {
             throw ExpectationNotMet(Messages.CLAIM__HOOK_DISABLED)
         }
@@ -102,11 +95,19 @@ internal class CommandAdminClaim : BaseCommand() {
             throw (ExpectationNotMet(Messages.UNCLAIM__NOT_FOUND))
         }
 
-        if (ClaimUtils.checkOverlap(wrapper, player)) {
-            val claim = ClaimUtils.getStandingOnClaim(wrapper, player, guild)
-            if (claim != null) {
-                ClaimUtils.removeClaim(wrapper, claim, guild)
-                guild.removeGuildClaim(claim)
+        when (option) {
+            "all" -> {
+                ClaimRegionHandler.removeAllClaims(wrapper, guild)
+                guild.clearGuildClaims()
+            }
+            "this" -> {
+                if (ClaimUtils.checkOverlap(wrapper, player)) {
+                    val standingClaim = ClaimUtils.getStandingOnClaim(wrapper, player, guild)
+                    if (standingClaim != null) {
+                        ClaimRegionHandler.removeClaim(wrapper, standingClaim)
+                        guild.removeGuildClaim(standingClaim)
+                    }
+                }
             }
         }
         currentCommandIssuer.sendInfo(Messages.UNCLAIM__SUCCESS)

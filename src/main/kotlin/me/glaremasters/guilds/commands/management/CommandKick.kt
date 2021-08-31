@@ -39,6 +39,7 @@ import co.aikar.commands.annotation.Values
 import java.util.concurrent.TimeUnit
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.api.events.GuildKickEvent
+import me.glaremasters.guilds.claim.ClaimPermissions
 import me.glaremasters.guilds.configuration.sections.CooldownSettings
 import me.glaremasters.guilds.cooldowns.Cooldown
 import me.glaremasters.guilds.cooldowns.CooldownHandler
@@ -53,6 +54,7 @@ import me.glaremasters.guilds.utils.RoleUtils
 import net.milkbowl.vault.permission.Permission
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
+import org.codemc.worldguardwrapper.WorldGuardWrapper
 
 @CommandAlias("%guilds")
 internal class CommandKick : BaseCommand() {
@@ -93,9 +95,15 @@ internal class CommandKick : BaseCommand() {
 
         guildHandler.removeGuildPerms(permission, user)
         cooldownHandler.addCooldown(user, Cooldown.Type.Join.name, settingsManager.getProperty(CooldownSettings.JOIN), TimeUnit.SECONDS)
+
         if (ClaimUtils.isEnable(settingsManager)) {
-            ClaimUtils.kickMember(user, player, guild)
+            val wrapper = WorldGuardWrapper.getInstance()
+
+            for (claim in guild.claimedLand) {
+                ClaimPermissions.kickMember(wrapper, claim, player)
+            }
         }
+
         guild.removeMember(asMember)
         currentCommandIssuer.sendInfo(Messages.BOOT__SUCCESSFUL, "{player}", user.name)
         guild.sendMessage(currentCommandManager, Messages.BOOT__PLAYER_KICKED, "{player}", user.name, "{kicker}", player.name)

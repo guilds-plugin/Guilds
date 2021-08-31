@@ -587,9 +587,8 @@ public class Guild {
 
     /**
      * Clear all the guild claims in list
-     * @param claim the claims to clear
      */
-    public void clearGuildClaims(GuildClaim claim) {
+    public void clearGuildClaims() {
         claimedLand.clear();
     }
 
