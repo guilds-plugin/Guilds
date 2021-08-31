@@ -65,7 +65,6 @@ internal class CommandTransfer : BaseCommand() {
     @Syntax("<player>")
     fun transfer(player: Player, @Conditions("perm:perm=TRANSFER_GUILD") guild: Guild, @Values("@members") @Single target: String) {
         val user = Bukkit.getOfflinePlayer(target)
-        val wrapper = WorldGuardWrapper.getInstance();
 
         if (guild.guildMaster.uuid == user.uniqueId) {
             throw ExpectationNotMet(Messages.ERROR__TRANSFER_SAME_PERSON)
@@ -83,6 +82,8 @@ internal class CommandTransfer : BaseCommand() {
         }
 
         if (ClaimUtils.isEnable(settingsManager)) {
+            val wrapper = WorldGuardWrapper.getInstance();
+
             for (claim in guild.claimedLand) {
                 ClaimPermissions.transferOwner(wrapper, claim, guild)
             }
