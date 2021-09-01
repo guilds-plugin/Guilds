@@ -36,7 +36,6 @@ object ClaimRegionHandler {
     fun createClaim(wrapper: WorldGuardWrapper, guild: Guild, player: Player): GuildClaim {
         val name = ClaimUtils.getNextAvailableClaimName()
         wrapper.addCuboidRegion(name.toString(), ClaimUtils.claimPointOne(player), ClaimUtils.claimPointTwo(player))
-        println(GuildClaim.builder().name(name).guildId(guild.id).build())
         return GuildClaim.builder().name(name).guildId(guild.id).build()
     }
 

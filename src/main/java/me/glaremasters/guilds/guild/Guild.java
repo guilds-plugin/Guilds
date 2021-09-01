@@ -572,7 +572,6 @@ public class Guild {
      * @param claim the claim to add
      */
     public void addGuildClaim(GuildClaim claim) {
-        System.out.println(claim);
         claimedLand.add(claim);
     }
 

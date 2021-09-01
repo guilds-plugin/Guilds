@@ -97,9 +97,11 @@ object ClaimUtils {
 
     @JvmStatic
     fun getStandingOnClaim(wrapper: WorldGuardWrapper, player: Player, guild: Guild): GuildClaim? {
-        for (region in findRegionClaims(wrapper, guild)) {
-            if (regions(wrapper, player).contains(region.get())) {
-                return getGuildClaimFromRegion(wrapper, region, guild)
+        for (claim in guild.claimedLand) {
+            for (region in regions(wrapper, player)) {
+                if (region.id.toString().equals(claim.getRegion(wrapper).id.toString())) {
+                    return claim
+                }
             }
         }
         return null

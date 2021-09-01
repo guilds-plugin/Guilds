@@ -78,7 +78,6 @@ internal class CommandClaim : BaseCommand() {
         }
 
         val claim = ClaimRegionHandler.createClaim(wrapper, guild, player)
-        println(claim)
         guild.addGuildClaim(claim)
 
         ClaimPermissions.addOwner(wrapper, claim, guild)
@@ -119,17 +118,22 @@ internal class CommandClaim : BaseCommand() {
             "all" -> {
                 ClaimRegionHandler.removeAllClaims(wrapper, guild)
                 guild.clearGuildClaims()
+                currentCommandIssuer.sendInfo(Messages.UNCLAIM__SUCCESS)
             }
             "this" -> {
-                if (ClaimUtils.checkOverlap(wrapper, player)) {
-                    val standingClaim = ClaimUtils.getStandingOnClaim(wrapper, player, guild)
-                    if (standingClaim != null) {
-                        ClaimRegionHandler.removeClaim(wrapper, standingClaim)
-                        guild.removeGuildClaim(standingClaim)
-                    }
+                val standingClaim = ClaimUtils.getStandingOnClaim(wrapper, player, guild)
+                if (standingClaim != null) {
+                    ClaimRegionHandler.removeClaim(wrapper, standingClaim)
+                    guild.removeGuildClaim(standingClaim)
+                    currentCommandIssuer.sendInfo(Messages.UNCLAIM__SUCCESS)
+                }
+                else {
+                    currentCommandIssuer.sendInfo(Messages.UNCLAIM__NOT_FOUND)
                 }
             }
+            else -> {
+                currentCommandIssuer.sendInfo(Messages.UNCLAIM__NOT_FOUND)
+            }
         }
-        currentCommandIssuer.sendInfo(Messages.UNCLAIM__SUCCESS)
     }
 }
