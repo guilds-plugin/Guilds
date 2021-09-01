@@ -78,6 +78,7 @@ internal class CommandClaim : BaseCommand() {
         }
 
         val claim = ClaimRegionHandler.createClaim(wrapper, guild, player)
+        println(claim)
         guild.addGuildClaim(claim)
 
         ClaimPermissions.addOwner(wrapper, claim, guild)

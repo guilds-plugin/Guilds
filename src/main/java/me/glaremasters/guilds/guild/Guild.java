@@ -152,8 +152,6 @@ public class Guild {
 
     public void setClaimedLand(List<GuildClaim> newClaimedLand) { this.claimedLand = newClaimedLand; }
 
-    public List<GuildClaim> getClaimedLand() { return claimedLand; }
-
     public enum Status {
         Public("Public"),
         Private("Private");
@@ -574,6 +572,7 @@ public class Guild {
      * @param claim the claim to add
      */
     public void addGuildClaim(GuildClaim claim) {
+        System.out.println(claim);
         claimedLand.add(claim);
     }
 
@@ -697,6 +696,13 @@ public class Guild {
 
     public long getLastDefended() {
         return lastDefended;
+    }
+
+    public List<GuildClaim> getClaimedLand() {
+        if (this.claimedLand == null) {
+            this.claimedLand = new ArrayList<>();
+        }
+        return this.claimedLand;
     }
 
     public static class GuildBuilder {

@@ -30,18 +30,10 @@ import org.codemc.worldguardwrapper.region.IWrappedRegion
 import java.util.*
 import kotlin.properties.Delegates
 
-class GuildClaim (
-    @field:Transient var name: String,
-    @field:Transient var number: Int,
-    @field:Transient var guildId: UUID) {
+class GuildClaim (var name: UUID, var guildId: UUID) {
 
-    fun changeName(name: String) {
+    fun changeName(name: UUID) {
         this.name = name
-        return
-    }
-
-    fun changeNumber(num: Int) {
-        this.number = num
         return
     }
 
@@ -59,21 +51,15 @@ class GuildClaim (
     }
 
     override fun toString(): String {
-        return "GuildClaim(name=$name, number=$number, guildId=$guildId)"
+        return "GuildClaim(name=$name, guildId=$guildId)"
     }
 
     class GuildClaimBuilder internal constructor() {
-        private lateinit var name: String
-        private var number by Delegates.notNull<Int>()
+        private lateinit var name: UUID
         private lateinit var guildId: UUID
 
-        fun name(name: String): GuildClaimBuilder {
+        fun name(name: UUID): GuildClaimBuilder {
             this.name = name
-            return this
-        }
-
-        fun number(number: Int): GuildClaimBuilder {
-            this.number = number
             return this
         }
 
@@ -83,15 +69,11 @@ class GuildClaim (
         }
 
         fun build(): GuildClaim {
-            return GuildClaim(
-                name,
-                number,
-                guildId
-            )
+            return GuildClaim( name, guildId)
         }
 
         override fun toString(): String {
-            return "GuildClaim.GuildClaimBuilder(name=$name, number=$number, guildId=$guildId)"
+            return "GuildClaim.GuildClaimBuilder(name=$name, guildId=$guildId)"
         }
     }
 

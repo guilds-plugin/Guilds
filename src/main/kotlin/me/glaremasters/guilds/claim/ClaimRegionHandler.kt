@@ -28,43 +28,39 @@ import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.codemc.worldguardwrapper.WorldGuardWrapper
 import org.codemc.worldguardwrapper.selection.ICuboidSelection
+import java.util.*
 
 object ClaimRegionHandler {
 
     @JvmStatic
     fun createClaim(wrapper: WorldGuardWrapper, guild: Guild, player: Player): GuildClaim {
-        ClaimUtils.getNextAvailableClaimName(guild).also {
-            wrapper.addCuboidRegion(it, ClaimUtils.claimPointOne(player), ClaimUtils.claimPointTwo(player))
-            return GuildClaim.builder().guildId(guild.id).number(ClaimUtils.getNumFromName(it)).name(it).build()
-        }
+        val name = ClaimUtils.getNextAvailableClaimName()
+        wrapper.addCuboidRegion(name.toString(), ClaimUtils.claimPointOne(player), ClaimUtils.claimPointTwo(player))
+        println(GuildClaim.builder().name(name).guildId(guild.id).build())
+        return GuildClaim.builder().name(name).guildId(guild.id).build()
     }
 
     @JvmStatic
     fun createClaim(wrapper: WorldGuardWrapper, guild: Guild, selection: ICuboidSelection): GuildClaim {
-        ClaimUtils.getNextAvailableClaimName(guild).also {
-            wrapper.addCuboidRegion(it, selection.minimumPoint, selection.maximumPoint)
-            return GuildClaim.builder().guildId(guild.id).number(ClaimUtils.getNumFromName(it)).name(it).build()
-        }
+        val name = ClaimUtils.getNextAvailableClaimName()
+
+        wrapper.addCuboidRegion(name.toString(), selection.minimumPoint, selection.maximumPoint)
+        return GuildClaim.builder().name(name).guildId(guild.id).build()
+
     }
 
-    @JvmStatic
-    fun removeClaim(wrapper: WorldGuardWrapper, num: Int, guild: Guild) {
-        for (world in Bukkit.getWorlds()) {
-            wrapper.removeRegion(world, ClaimUtils.getClaimNameFormat(guild, num))
-        }
-    }
 
     @JvmStatic
-    fun removeClaim(wrapper: WorldGuardWrapper, name: String) {
+    fun removeClaim(wrapper: WorldGuardWrapper, name: UUID) {
         for (world in Bukkit.getWorlds()) {
-            wrapper.removeRegion(world, name)
+            wrapper.removeRegion(world, name.toString())
         }
     }
 
     @JvmStatic
     fun removeClaim(wrapper: WorldGuardWrapper, claim: GuildClaim) {
         for (world in Bukkit.getWorlds()) {
-            wrapper.removeRegion(world, claim.getRegion(wrapper).id)
+            wrapper.removeRegion(world, claim.name.toString())
         }
     }
 
@@ -72,7 +68,7 @@ object ClaimRegionHandler {
     fun removeAllClaims(wrapper: WorldGuardWrapper, guild: Guild) {
         for (world in Bukkit.getWorlds()) {
             for (claim in guild.claimedLand) {
-                wrapper.removeRegion(world, claim.getRegion(wrapper).id)
+                wrapper.removeRegion(world, claim.name.toString())
             }
         }
     }

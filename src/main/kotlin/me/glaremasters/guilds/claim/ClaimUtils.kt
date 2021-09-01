@@ -24,7 +24,6 @@
 package me.glaremasters.guilds.claim
 
 import ch.jalu.configme.SettingsManager
-import java.util.Optional
 import me.glaremasters.guilds.configuration.sections.ClaimSettings
 import me.glaremasters.guilds.configuration.sections.HooksSettings
 import me.glaremasters.guilds.guild.Guild
@@ -35,6 +34,7 @@ import org.bukkit.entity.Player
 import org.codemc.worldguardwrapper.WorldGuardWrapper
 import org.codemc.worldguardwrapper.region.IWrappedRegion
 import org.codemc.worldguardwrapper.selection.ICuboidSelection
+import java.util.*
 
 /**
  * Created by Glare
@@ -61,25 +61,18 @@ object ClaimUtils {
     }
 
     @JvmStatic
-    fun getNextAvailableClaimName(guild: Guild): String {
-        val num = getClaimAmount(guild) + 1
-        return "${guild.id}-${num}"
+    fun getNextAvailableClaimName(): UUID {
+        return UUID.randomUUID()
         //return guild.id.toString()
     }
 
     @JvmStatic
-    fun getNumFromName(name: String): Int {
-        return name.substringAfterLast("-").toInt()
-    }
-
-    @JvmStatic
-    fun getClaimNameFormat(guild: Guild, int: Int): String {
-        return "${guild.id}-${int}"
-    }
-
-    @JvmStatic
     fun getClaimAmount(guild: Guild): Int {
-        return guild.claimedLand.size
+        return if (!guild.claimedLand.isNullOrEmpty()) {
+            guild.claimedLand.size
+        } else {
+            0
+        }
     }
 
     @JvmStatic
@@ -113,27 +106,27 @@ object ClaimUtils {
     }
 
 
-    @JvmStatic
-    fun findRegionClaims(wrapper: WorldGuardWrapper, world: World, guild: Guild): List<Optional<IWrappedRegion>> {
-        val claims = mutableListOf<Optional<IWrappedRegion>>()
-        for (claim in guild.claimedLand) {
-            val tempRegion = wrapper.getRegion(world, getClaimNameFormat(guild, claim.number))
-            try {
-                tempRegion.get().id
-                claims.add(tempRegion)
-            } catch (ex: Exception) {
-                continue
-            }
-        }
-        return claims
-    }
+//    @JvmStatic
+//    fun findRegionClaims(wrapper: WorldGuardWrapper, world: World, guild: Guild): List<Optional<IWrappedRegion>> {
+//        val claims = mutableListOf<Optional<IWrappedRegion>>()
+//        for (claim in guild.claimedLand) {
+//            val tempRegion = wrapper.getRegion(world, claim.name.toString())
+//            try {
+//                tempRegion.get().id
+//                claims.add(tempRegion)
+//            } catch (ex: Exception) {
+//                continue
+//            }
+//        }
+//        return claims
+//    }
 
     @JvmStatic
     fun findRegionClaims(wrapper: WorldGuardWrapper, guild: Guild): List<Optional<IWrappedRegion>> {
         val claims = mutableListOf<Optional<IWrappedRegion>>()
         for (world in Bukkit.getWorlds()) {
             for (claim in guild.claimedLand) {
-                val tempRegion = wrapper.getRegion(world, getClaimNameFormat(guild, claim.number))
+                val tempRegion = wrapper.getRegion(world, claim.name.toString())
                 try {
                     tempRegion.get().id
                     claims.add(tempRegion)
@@ -160,6 +153,20 @@ object ClaimUtils {
         for (claim in guild.claimedLand) {
             if (claim.getRegion(wrapper).equals(region)) {
                 return claim
+            }
+        }
+        return null
+    }
+
+    @JvmStatic
+    fun getRegionFromName(wrapper: WorldGuardWrapper, name: UUID): IWrappedRegion? {
+        for (world in Bukkit.getWorlds()) {
+            val tempRegion = wrapper.getRegion(world, name.toString())
+            return try {
+                tempRegion.get().id
+                tempRegion.get()
+            } catch (ex: Exception) {
+                null
             }
         }
         return null
@@ -207,7 +214,11 @@ object ClaimUtils {
 
     @JvmStatic
     fun checkMaxAlreadyExist(wrapper: WorldGuardWrapper, guild: Guild): Boolean {
-        return guild.claimedLand.size >= 10
+        return if (!guild.claimedLand.isNullOrEmpty()) {
+            guild.claimedLand.size >= 10
+        } else {
+            false
+        }
 //        for (world in Bukkit.getWorlds()) {
 //            val tempRegion = wrapper.getRegion(world, getClaimNameFormat(guild, guild.tier.claimableLand))
 //            try {
