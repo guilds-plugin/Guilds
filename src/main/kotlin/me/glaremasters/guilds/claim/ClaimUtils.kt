@@ -245,4 +245,25 @@ object ClaimUtils {
         }
         return null
     }
+
+
+
+
+
+
+
+
+
+
+    @JvmStatic
+    fun reload(guilds: Guilds, settingsManager: SettingsManager) {
+        val wrapper = WorldGuardWrapper.getInstance()
+
+        for (guild in guilds.guildHandler.guilds) {
+            for (claim in guild.claimedLand) {
+                ClaimPermissions.setEnterMessage(wrapper, claim, settingsManager, guild)
+                ClaimPermissions.setExitMessage(wrapper, claim, settingsManager, guild)
+            }
+        }
+    }
 }
