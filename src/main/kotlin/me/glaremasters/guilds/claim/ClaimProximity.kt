@@ -1,16 +1,11 @@
 package me.glaremasters.guilds.claim
 
-import co.aikar.commands.ACFBukkitUtil
-import com.cryptomorin.xseries.XBlock
-import com.cryptomorin.xseries.XMaterial
+import ch.jalu.configme.SettingsManager
 import me.glaremasters.guilds.Guilds
+import me.glaremasters.guilds.configuration.sections.ClaimSettings
 import me.glaremasters.guilds.guild.Guild
-import org.bukkit.Bukkit
 import org.bukkit.Chunk
 import org.bukkit.Location
-import org.bukkit.Material
-import org.bukkit.block.Block
-import org.bukkit.block.data.BlockData
 import org.bukkit.entity.Player
 import org.codemc.worldguardwrapper.WorldGuardWrapper
 import org.codemc.worldguardwrapper.region.IWrappedRegion
@@ -35,7 +30,7 @@ object ClaimProximity {
                 val tempRegions = wrapper.getRegions(locBoundOne, locBoundTwo)
 
                 for (tempRegion in tempRegions) {
-                    val claim = ifIsAndGetGuildsRegion(guilds, tempRegion)
+                    val claim = ClaimUtils.getGuildsRegion(guilds, tempRegion)
                     if (claim != null) {
                         row.add(claim)
                         haveAdded = true
@@ -51,17 +46,7 @@ object ClaimProximity {
     }
 
 
-    @JvmStatic
-    fun ifIsAndGetGuildsRegion(guilds: Guilds, iWrappedRegion: IWrappedRegion): GuildClaim? {
-        for (guild in guilds.guildHandler.guilds) {
-            for (claim in guild.claimedLand) {
-                if (claim.name.toString() == iWrappedRegion.id.toString()) {
-                    return claim
-                }
-            }
-        }
-        return null
-    }
+
 
     @JvmStatic
     fun getBottomChunk(player: Player): Chunk {
@@ -124,5 +109,94 @@ object ClaimProximity {
     @JvmStatic
     fun getTopCorner(player: Player, chunk: Chunk): Location {
         return chunk.getBlock(15, player.world.maxHeight, 15).location
+    }
+
+
+
+
+
+
+
+
+
+
+    @JvmStatic
+    fun isInProximity(wrapper: WorldGuardWrapper, player: Player, settingsManager: SettingsManager, guild: Guild, guilds: Guilds): Boolean {
+
+        if (settingsManager.getProperty(ClaimSettings.CLAIM_PROXIMITY) <= 0) {
+            return false
+        }
+        else {
+            val chunk = player.location.chunk
+            val proximity = settingsManager.getProperty(ClaimSettings.CLAIM_PROXIMITY)
+
+            val bottomChunk = player.world.getChunkAt(chunk.x-proximity, chunk.z-proximity)
+            val topChunk = player.world.getChunkAt(chunk.x+proximity, chunk.z+proximity)
+
+            val bottomLocation = bottomChunk.getBlock(0, player.world.minHeight, 0).location
+            val topLocation = topChunk.getBlock(0, player.world.maxHeight, 0).location
+
+            val regions = wrapper.getRegions(bottomLocation, topLocation)
+
+            if (!guild.claimedLand.isNullOrEmpty()) {
+                return !setContainsOnlyGuildClaims(regions, guild, guilds)
+            }
+            else {
+                return !wrapper.getRegions(bottomLocation, topLocation).isNullOrEmpty()
+            }
+        }
+    }
+
+    @JvmStatic
+    fun setContainsOnlyGuildClaims(regions: MutableSet<IWrappedRegion>, guild: Guild, guilds: Guilds): Boolean {
+        for (region in regions) {
+            val claim = ClaimUtils.getGuildsRegion(guilds, region)
+            if (claim != null) {
+                if (!claim.getGuild(guilds.guildHandler).equals(guild)) {
+                    return false
+                }
+            } else {
+                return false
+            }
+        }
+        return true
+    }
+
+
+
+
+
+
+
+
+
+    @JvmStatic
+    fun isAdjacent(wrapper: WorldGuardWrapper, player: Player, settingsManager: SettingsManager, guild: Guild): Boolean {
+        if (settingsManager.getProperty(ClaimSettings.CLAIM_ADJACENT)) {
+            val chunk = player.location.chunk
+
+            val bottomChunk = player.world.getChunkAt(chunk.x-1, chunk.z-1)
+            val topChunk = player.world.getChunkAt(chunk.x+1, chunk.z+1)
+
+            val bottomLocation = bottomChunk.getBlock(0, player.world.minHeight, 0).location
+            val topLocation = topChunk.getBlock(0, player.world.maxHeight, 0).location
+
+            val regions = wrapper.getRegions(bottomLocation, topLocation)
+
+            for (region in regions) {
+                for (claim in guild.claimedLand) {
+                    if (claim.name.toString().equals(region.id.toString())) {
+                        return true
+                    }
+                }
+            }
+            if (guild.claimedLand.isNullOrEmpty()) {
+                return true
+            }
+            return false
+        }
+        else {
+            return true
+        }
     }
 }

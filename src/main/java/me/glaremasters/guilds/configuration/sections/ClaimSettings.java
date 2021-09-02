@@ -69,6 +69,14 @@ public class ClaimSettings implements SettingsHolder {
     public static final Property<Boolean> FORCE_CLAIM_SIGNS =
             newProperty("claims.force-claim-signs", false);
 
+    @Comment({"Would you like to require claims to be made next to other claimed land?"})
+    public static final Property<Boolean> CLAIM_ADJACENT =
+            newProperty("claims.claim-adjacent", true);
+
+    @Comment({"How far would you like claims from different guilds to be apart? e.g as a buffer."})
+    public static final Property<Integer> CLAIM_PROXIMITY =
+            newProperty("claims.claim-proximity", 5);
+
     private ClaimSettings() {
     }
 

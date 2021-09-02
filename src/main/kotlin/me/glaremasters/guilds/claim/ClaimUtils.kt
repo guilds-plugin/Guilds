@@ -24,6 +24,7 @@
 package me.glaremasters.guilds.claim
 
 import ch.jalu.configme.SettingsManager
+import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.configuration.sections.ClaimSettings
 import me.glaremasters.guilds.configuration.sections.HooksSettings
 import me.glaremasters.guilds.guild.Guild
@@ -231,5 +232,17 @@ object ClaimUtils {
 //            }
 //        }
 //        return false
+    }
+
+    @JvmStatic
+    fun getGuildsRegion(guilds: Guilds, iWrappedRegion: IWrappedRegion): GuildClaim? {
+        for (guild in guilds.guildHandler.guilds) {
+            for (claim in guild.claimedLand) {
+                if (claim.name.toString() == iWrappedRegion.id.toString()) {
+                    return claim
+                }
+            }
+        }
+        return null
     }
 }

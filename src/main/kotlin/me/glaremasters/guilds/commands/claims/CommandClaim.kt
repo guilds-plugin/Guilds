@@ -30,6 +30,7 @@ import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.*
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.claim.ClaimPermissions
+import me.glaremasters.guilds.claim.ClaimProximity
 import me.glaremasters.guilds.claim.ClaimRegionHandler
 import me.glaremasters.guilds.configuration.sections.ClaimSettings
 import me.glaremasters.guilds.exceptions.ExpectationNotMet
@@ -70,11 +71,19 @@ internal class CommandClaim : BaseCommand() {
         val wrapper = WorldGuardWrapper.getInstance()
 
         if (ClaimUtils.checkMaxAlreadyExist(wrapper, guild)) {
-            throw ExpectationNotMet(Messages.CLAIM__ALREADY_EXISTS)
+            throw ExpectationNotMet(Messages.CLAIM__TOO_MANY_CLAIMS)
         }
 
         if (ClaimUtils.checkOverlap(wrapper, player)) {
             throw ExpectationNotMet(Messages.CLAIM__OVERLAP)
+        }
+
+        if (ClaimProximity.isInProximity(wrapper, player, settingsManager, guild, guilds)) {
+            throw ExpectationNotMet(Messages.CLAIM__IS_IN_PROXIMITY)
+        }
+
+        if (!ClaimProximity.isAdjacent(wrapper, player, settingsManager, guild)) {
+            throw ExpectationNotMet(Messages.CLAIM__MUST_BE_ADJACENT)
         }
 
         val claim = ClaimRegionHandler.createClaim(wrapper, guild, player)
