@@ -172,8 +172,8 @@ public class GuildHandler {
                     .membersToRankup(tierSec.getInt(key + ".members-to-rankup", 5))
                     .maxAllies(tierSec.getInt(key + ".max-allies", 10))
                     .useBuffs(tierSec.getBoolean(key + ".use-buffs", true))
+                    .claimableLand(tierSec.getInt(key + ".claimable-land", 5))
                     .permissions(tierSec.getStringList(key + ".permissions"))
-                    .claimableLand(tierSec.getInt(key + ".claimableLand", 5))
                     .build());
         }
     }

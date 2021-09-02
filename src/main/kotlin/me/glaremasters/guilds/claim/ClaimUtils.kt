@@ -217,7 +217,7 @@ object ClaimUtils {
     @JvmStatic
     fun checkMaxAlreadyExist(wrapper: WorldGuardWrapper, guild: Guild): Boolean {
         return if (!guild.claimedLand.isNullOrEmpty()) {
-            guild.claimedLand.size >= 10
+            guild.claimedLand.size >= guild.tier.claimableLand
         } else {
             false
         }

@@ -85,7 +85,7 @@ internal class CommandTransfer : BaseCommand() {
             val wrapper = WorldGuardWrapper.getInstance();
 
             for (claim in guild.claimedLand) {
-                ClaimPermissions.transferOwner(wrapper, claim, guild)
+                ClaimPermissions.transferOwner(wrapper, claim, user.uniqueId, guild.guildMaster.uuid)
             }
         }
 

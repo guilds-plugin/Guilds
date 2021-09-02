@@ -67,22 +67,17 @@ object ClaimPermissions {
         region.owners.removePlayer(uuid)
     }
 
+
     @JvmStatic
-    fun clearOwners(wrapper: WorldGuardWrapper, claim: GuildClaim) {
-        val region = claim.getRegion(wrapper)
-        region.owners.players.clear()
+    fun transferOwner(wrapper: WorldGuardWrapper, claim: GuildClaim, playerGive: Player, playerTake: Player) {
+        removeOwner(wrapper, claim, playerTake)
+        addOwner(wrapper, claim, playerGive)
     }
 
     @JvmStatic
-    fun transferOwner(wrapper: WorldGuardWrapper, claim: GuildClaim, guild: Guild) {
-        clearOwners(wrapper, claim)
-        addOwner(wrapper, claim, guild)
-    }
-
-    @JvmStatic
-    fun transferOwner(wrapper: WorldGuardWrapper, claim: GuildClaim, player: Player) {
-        clearOwners(wrapper, claim)
-        addOwner(wrapper, claim, player)
+    fun transferOwner(wrapper: WorldGuardWrapper, claim: GuildClaim, playerGive: UUID, playerTake: UUID) {
+        removeOwner(wrapper, claim, playerTake)
+        addOwner(wrapper, claim, playerGive)
     }
 
 

@@ -40,4 +40,5 @@ class GUIHandler(guilds: Guilds, settingsManager: SettingsManager, guildHandler:
     val info = InfoGUI(guilds, settingsManager, guildHandler, cooldownHandler, commandManager)
     val members = MembersGUI(guilds, settingsManager, guildHandler)
     val vaults = VaultGUI(guilds, settingsManager, guildHandler)
+    val map = MapGUI(guilds, settingsManager, guildHandler)
 }
