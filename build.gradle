@@ -108,7 +108,7 @@ dependencies {
     implementation("com.dumptruckman.minecraft:JsonConfiguration:1.1")
 
     // Cross-Version Support
-    implementation("com.github.cryptomorin:XSeries:8.3.0")
+    implementation('com.github.cryptomorin:XSeries:8.4.0')
 
     // Adventure
     implementation("net.kyori:adventure-platform-bukkit:4.0.0-SNAPSHOT")
