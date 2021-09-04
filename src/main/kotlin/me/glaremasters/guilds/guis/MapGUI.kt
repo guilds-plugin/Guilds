@@ -29,20 +29,17 @@ import com.cryptomorin.xseries.SkullUtils
 import com.cryptomorin.xseries.XMaterial
 import dev.triumphteam.gui.guis.Gui
 import dev.triumphteam.gui.guis.GuiItem
-import dev.triumphteam.gui.guis.PaginatedGui
 import me.glaremasters.guilds.Guilds
-import me.glaremasters.guilds.claim.ClaimProximity
+import me.glaremasters.guilds.claim.ClaimRelations
 import me.glaremasters.guilds.configuration.sections.GuildInfoSettings
 import me.glaremasters.guilds.configuration.sections.GuildListSettings
 import me.glaremasters.guilds.configuration.sections.GuildMapSettings
 
 import me.glaremasters.guilds.exte.addBackground
-import me.glaremasters.guilds.exte.addBottom
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.guild.GuildSkull
 import me.glaremasters.guilds.utils.EconomyUtils
-import me.glaremasters.guilds.utils.GuiUtils
 import me.glaremasters.guilds.utils.ItemBuilder
 import me.glaremasters.guilds.utils.StringUtils
 import org.bukkit.Material
@@ -102,7 +99,7 @@ class MapGUI(private val guilds: Guilds, private val settingsManager: SettingsMa
     private fun populateMap(gui: Gui, player: Player) {
         val wrapper = WorldGuardWrapper.getInstance()
 
-        val claims = ClaimProximity.getMap(wrapper, player, guilds)
+        val claims = ClaimRelations.getMap(wrapper, player, guilds)
 
 
         val defaultUrl = settingsManager.getProperty(GuildMapSettings.GUILD_MAP_HEAD_DEFAULT_URL)

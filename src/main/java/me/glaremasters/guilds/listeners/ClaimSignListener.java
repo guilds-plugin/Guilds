@@ -26,7 +26,7 @@ package me.glaremasters.guilds.listeners;
 
 import ch.jalu.configme.SettingsManager;
 import me.glaremasters.guilds.Guilds;
-import me.glaremasters.guilds.claim.ClaimPermissions;
+import me.glaremasters.guilds.claim.ClaimEditor;
 import me.glaremasters.guilds.claim.ClaimRegionHandler;
 import me.glaremasters.guilds.claim.GuildClaim;
 import me.glaremasters.guilds.configuration.sections.ClaimSettings;
@@ -163,10 +163,10 @@ public class ClaimSignListener implements Listener {
         GuildClaim claim = ClaimRegionHandler.createClaim(wrapper, guild, selection);
         guild.addGuildClaim(claim);
 
-        ClaimPermissions.addOwner(wrapper, claim, guild);
-        ClaimPermissions.addMembers(wrapper, claim, guild);
-        ClaimPermissions.setEnterMessage(wrapper, claim, settingsManager, guild);
-        ClaimPermissions.setExitMessage(wrapper, claim, settingsManager, guild);
+        ClaimEditor.addOwner(wrapper, claim, guild);
+        ClaimEditor.addMembers(wrapper, claim, guild);
+        ClaimEditor.setEnterMessage(wrapper, claim, settingsManager, guild);
+        ClaimEditor.setExitMessage(wrapper, claim, settingsManager, guild);
 
         player.getWorld().getBlockAt(block.getLocation()).breakNaturally();
 

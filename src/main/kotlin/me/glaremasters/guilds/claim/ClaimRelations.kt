@@ -10,7 +10,7 @@ import org.bukkit.entity.Player
 import org.codemc.worldguardwrapper.WorldGuardWrapper
 import org.codemc.worldguardwrapper.region.IWrappedRegion
 
-object ClaimProximity {
+object ClaimRelations {
 
     @JvmStatic
     fun getMap(wrapper: WorldGuardWrapper, player: Player, guilds: Guilds): List<ArrayList<GuildClaim?>> {

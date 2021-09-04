@@ -37,7 +37,7 @@ import co.aikar.commands.annotation.Subcommand
 import co.aikar.commands.annotation.Syntax
 import co.aikar.commands.annotation.Values
 import me.glaremasters.guilds.Guilds
-import me.glaremasters.guilds.claim.ClaimPermissions
+import me.glaremasters.guilds.claim.ClaimEditor
 import me.glaremasters.guilds.claim.ClaimUtils
 import me.glaremasters.guilds.exceptions.ExpectationNotMet
 import me.glaremasters.guilds.guild.Guild
@@ -70,7 +70,7 @@ internal class CommandAdminTransfer : BaseCommand() {
             val wrapper = WorldGuardWrapper.getInstance()
 
             for (claim in guild.claimedLand) {
-                ClaimPermissions.transferOwner(wrapper, claim, transfer.uniqueId, guild.guildMaster.uuid)
+                ClaimEditor.transferOwner(wrapper, claim, transfer.uniqueId, guild.guildMaster.uuid)
             }
         }
 

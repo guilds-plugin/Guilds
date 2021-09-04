@@ -39,7 +39,7 @@ import me.glaremasters.guilds.actions.ActionHandler
 import me.glaremasters.guilds.actions.ConfirmAction
 import me.glaremasters.guilds.api.events.GuildLeaveEvent
 import me.glaremasters.guilds.api.events.GuildRemoveEvent
-import me.glaremasters.guilds.claim.ClaimPermissions
+import me.glaremasters.guilds.claim.ClaimEditor
 import me.glaremasters.guilds.claim.ClaimRegionHandler
 import me.glaremasters.guilds.configuration.sections.CooldownSettings
 import me.glaremasters.guilds.cooldowns.Cooldown
@@ -120,7 +120,7 @@ internal class CommandLeave : BaseCommand() {
                         val wrapper = WorldGuardWrapper.getInstance()
 
                         for (claim in guild.claimedLand) {
-                            ClaimPermissions.removeMember(wrapper, claim, player)
+                            ClaimEditor.removeMember(wrapper, claim, player)
                         }
                     }
 

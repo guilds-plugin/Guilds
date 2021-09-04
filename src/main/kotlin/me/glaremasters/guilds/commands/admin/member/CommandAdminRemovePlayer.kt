@@ -34,7 +34,7 @@ import co.aikar.commands.annotation.Subcommand
 import co.aikar.commands.annotation.Syntax
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.api.events.GuildKickEvent
-import me.glaremasters.guilds.claim.ClaimPermissions
+import me.glaremasters.guilds.claim.ClaimEditor
 import me.glaremasters.guilds.exceptions.ExpectationNotMet
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
@@ -69,7 +69,7 @@ internal class CommandAdminRemovePlayer : BaseCommand() {
             val wrapper = WorldGuardWrapper.getInstance()
 
             for (claim in guild.claimedLand) {
-                ClaimPermissions.kickMember(wrapper, claim, user)
+                ClaimEditor.kickMember(wrapper, claim, user)
             }
         }
 

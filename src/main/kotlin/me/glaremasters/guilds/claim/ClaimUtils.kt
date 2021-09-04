@@ -30,7 +30,6 @@ import me.glaremasters.guilds.configuration.sections.HooksSettings
 import me.glaremasters.guilds.guild.Guild
 import org.bukkit.Bukkit
 import org.bukkit.Location
-import org.bukkit.World
 import org.bukkit.entity.Player
 import org.codemc.worldguardwrapper.WorldGuardWrapper
 import org.codemc.worldguardwrapper.region.IWrappedRegion
@@ -261,8 +260,8 @@ object ClaimUtils {
 
         for (guild in guilds.guildHandler.guilds) {
             for (claim in guild.claimedLand) {
-                ClaimPermissions.setEnterMessage(wrapper, claim, settingsManager, guild)
-                ClaimPermissions.setExitMessage(wrapper, claim, settingsManager, guild)
+                ClaimEditor.setEnterMessage(wrapper, claim, settingsManager, guild)
+                ClaimEditor.setExitMessage(wrapper, claim, settingsManager, guild)
             }
         }
     }

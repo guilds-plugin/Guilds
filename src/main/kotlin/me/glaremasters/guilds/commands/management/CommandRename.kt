@@ -35,7 +35,7 @@ import co.aikar.commands.annotation.Subcommand
 import co.aikar.commands.annotation.Syntax
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.api.events.GuildRenameEvent
-import me.glaremasters.guilds.claim.ClaimPermissions
+import me.glaremasters.guilds.claim.ClaimEditor
 import me.glaremasters.guilds.configuration.sections.CostSettings
 import me.glaremasters.guilds.configuration.sections.GuildSettings
 import me.glaremasters.guilds.exceptions.ExpectationNotMet
@@ -99,8 +99,8 @@ internal class CommandRename : BaseCommand() {
 
             if (ClaimUtils.checkIfHaveClaims(wrapper, guild)) {
                 for (claim in guild.claimedLand) {
-                    ClaimPermissions.setEnterMessage(wrapper, claim, settingsManager, guild)
-                    ClaimPermissions.setExitMessage(wrapper, claim, settingsManager, guild)
+                    ClaimEditor.setEnterMessage(wrapper, claim, settingsManager, guild)
+                    ClaimEditor.setExitMessage(wrapper, claim, settingsManager, guild)
                 }
             }
         }

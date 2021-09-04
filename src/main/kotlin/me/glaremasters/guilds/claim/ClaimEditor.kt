@@ -34,7 +34,7 @@ import org.codemc.worldguardwrapper.flag.WrappedState
 import org.codemc.worldguardwrapper.region.IWrappedDomain
 import java.util.*
 
-object ClaimPermissions {
+object ClaimEditor {
 
     // Owner handlers
     @JvmStatic

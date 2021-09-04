@@ -29,7 +29,7 @@ import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.PaperCommandManager;
 import me.glaremasters.guilds.Guilds;
-import me.glaremasters.guilds.claim.ClaimPermissions;
+import me.glaremasters.guilds.claim.ClaimEditor;
 import me.glaremasters.guilds.claim.GuildClaim;
 import me.glaremasters.guilds.configuration.sections.GuildSettings;
 import me.glaremasters.guilds.configuration.sections.GuildVaultSettings;
@@ -54,7 +54,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.codemc.worldguardwrapper.WorldGuardWrapper;
-import org.codemc.worldguardwrapper.region.IWrappedRegion;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -873,7 +872,7 @@ public class GuildHandler {
         if (ClaimUtils.isEnable(settingsManager)) {
             WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();
             for (GuildClaim claim : guild.getClaimedLand()) {
-                ClaimPermissions.addMember(wrapper, claim, player);
+                ClaimEditor.addMember(wrapper, claim, player);
             }
         }
 

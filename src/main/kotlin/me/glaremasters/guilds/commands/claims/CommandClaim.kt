@@ -29,8 +29,8 @@ import co.aikar.commands.ACFBukkitUtil
 import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.*
 import me.glaremasters.guilds.Guilds
-import me.glaremasters.guilds.claim.ClaimPermissions
-import me.glaremasters.guilds.claim.ClaimProximity
+import me.glaremasters.guilds.claim.ClaimEditor
+import me.glaremasters.guilds.claim.ClaimRelations
 import me.glaremasters.guilds.claim.ClaimRegionHandler
 import me.glaremasters.guilds.configuration.sections.ClaimSettings
 import me.glaremasters.guilds.exceptions.ExpectationNotMet
@@ -78,21 +78,21 @@ internal class CommandClaim : BaseCommand() {
             throw ExpectationNotMet(Messages.CLAIM__OVERLAP)
         }
 
-        if (ClaimProximity.isInProximity(wrapper, player, settingsManager, guild, guilds)) {
+        if (ClaimRelations.isInProximity(wrapper, player, settingsManager, guild, guilds)) {
             throw ExpectationNotMet(Messages.CLAIM__IS_IN_PROXIMITY)
         }
 
-        if (!ClaimProximity.isAdjacent(wrapper, player, settingsManager, guild)) {
+        if (!ClaimRelations.isAdjacent(wrapper, player, settingsManager, guild)) {
             throw ExpectationNotMet(Messages.CLAIM__MUST_BE_ADJACENT)
         }
 
         val claim = ClaimRegionHandler.createClaim(wrapper, guild, player)
         guild.addGuildClaim(claim)
 
-        ClaimPermissions.addOwner(wrapper, claim, guild)
-        ClaimPermissions.addMembers(wrapper, claim, guild)
-        ClaimPermissions.setEnterMessage(wrapper, claim, settingsManager, guild)
-        ClaimPermissions.setExitMessage(wrapper, claim, settingsManager, guild)
+        ClaimEditor.addOwner(wrapper, claim, guild)
+        ClaimEditor.addMembers(wrapper, claim, guild)
+        ClaimEditor.setEnterMessage(wrapper, claim, settingsManager, guild)
+        ClaimEditor.setExitMessage(wrapper, claim, settingsManager, guild)
 
         currentCommandIssuer.sendInfo(Messages.CLAIM__SUCCESS,
                 "{loc1}", ACFBukkitUtil.formatLocation(ClaimUtils.claimPointOne(player)),

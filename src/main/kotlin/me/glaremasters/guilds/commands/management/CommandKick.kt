@@ -39,7 +39,7 @@ import co.aikar.commands.annotation.Values
 import java.util.concurrent.TimeUnit
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.api.events.GuildKickEvent
-import me.glaremasters.guilds.claim.ClaimPermissions
+import me.glaremasters.guilds.claim.ClaimEditor
 import me.glaremasters.guilds.configuration.sections.CooldownSettings
 import me.glaremasters.guilds.cooldowns.Cooldown
 import me.glaremasters.guilds.cooldowns.CooldownHandler
@@ -100,7 +100,7 @@ internal class CommandKick : BaseCommand() {
             val wrapper = WorldGuardWrapper.getInstance()
 
             for (claim in guild.claimedLand) {
-                ClaimPermissions.kickMember(wrapper, claim, player)
+                ClaimEditor.kickMember(wrapper, claim, player)
             }
         }
 
