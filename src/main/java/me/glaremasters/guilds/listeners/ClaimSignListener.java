@@ -26,6 +26,7 @@ package me.glaremasters.guilds.listeners;
 
 import ch.jalu.configme.SettingsManager;
 import me.glaremasters.guilds.Guilds;
+import me.glaremasters.guilds.api.events.GuildClaimEvent;
 import me.glaremasters.guilds.claim.ClaimEditor;
 import me.glaremasters.guilds.claim.ClaimRegionHandler;
 import me.glaremasters.guilds.claim.GuildClaim;
@@ -35,10 +36,12 @@ import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRolePerm;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.claim.ClaimUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
@@ -171,6 +174,9 @@ public class ClaimSignListener implements Listener {
         player.getWorld().getBlockAt(block.getLocation()).breakNaturally();
 
         guild.setBalance(guild.getBalance() - Double.parseDouble(sign.getLine(2)));
+
+        Event firedEvent = new GuildClaimEvent(player, guild, claim);
+        Bukkit.getPluginManager().callEvent(firedEvent);
 
         guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.CLAIM__SIGN_BUY_SUCCESS);
     }

@@ -29,16 +29,17 @@ import co.aikar.commands.ACFBukkitUtil
 import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.*
 import me.glaremasters.guilds.Guilds
-import me.glaremasters.guilds.claim.ClaimEditor
-import me.glaremasters.guilds.claim.ClaimRelations
-import me.glaremasters.guilds.claim.ClaimRegionHandler
+import me.glaremasters.guilds.api.events.GuildClaimEvent
+import me.glaremasters.guilds.api.events.GuildUnclaimAllEvent
+import me.glaremasters.guilds.api.events.GuildUnclaimEvent
+import me.glaremasters.guilds.claim.*
 import me.glaremasters.guilds.configuration.sections.ClaimSettings
 import me.glaremasters.guilds.exceptions.ExpectationNotMet
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
-import me.glaremasters.guilds.claim.ClaimUtils
 import me.glaremasters.guilds.utils.Constants
+import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.codemc.worldguardwrapper.WorldGuardWrapper
 
@@ -94,6 +95,9 @@ internal class CommandClaim : BaseCommand() {
         ClaimEditor.setEnterMessage(wrapper, claim, settingsManager, guild)
         ClaimEditor.setExitMessage(wrapper, claim, settingsManager, guild)
 
+        val event = GuildClaimEvent(player, guild, claim)
+        Bukkit.getPluginManager().callEvent(event)
+
         currentCommandIssuer.sendInfo(Messages.CLAIM__SUCCESS,
                 "{loc1}", ACFBukkitUtil.formatLocation(ClaimUtils.claimPointOne(player)),
                 "{loc2}", ACFBukkitUtil.formatLocation(ClaimUtils.claimPointTwo(player)))
@@ -127,6 +131,10 @@ internal class CommandClaim : BaseCommand() {
             "all" -> {
                 ClaimRegionHandler.removeAllClaims(wrapper, guild)
                 guild.clearGuildClaims()
+
+                val event = GuildUnclaimAllEvent(player, guild)
+                Bukkit.getPluginManager().callEvent(event)
+
                 currentCommandIssuer.sendInfo(Messages.UNCLAIM__SUCCESS)
             }
             "this" -> {
@@ -134,6 +142,10 @@ internal class CommandClaim : BaseCommand() {
                 if (standingClaim != null) {
                     ClaimRegionHandler.removeClaim(wrapper, standingClaim)
                     guild.removeGuildClaim(standingClaim)
+
+                    val event = GuildClaimEvent(player, guild, standingClaim)
+                    Bukkit.getPluginManager().callEvent(event)
+
                     currentCommandIssuer.sendInfo(Messages.UNCLAIM__SUCCESS)
                 }
                 else {

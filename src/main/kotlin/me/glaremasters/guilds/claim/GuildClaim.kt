@@ -25,8 +25,10 @@ package me.glaremasters.guilds.claim
 
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
+import org.bukkit.Location
 import org.codemc.worldguardwrapper.WorldGuardWrapper
 import org.codemc.worldguardwrapper.region.IWrappedRegion
+import org.codemc.worldguardwrapper.selection.ICuboidSelection
 import java.util.*
 import kotlin.properties.Delegates
 
@@ -48,6 +50,22 @@ class GuildClaim (var name: UUID, var guildId: UUID) {
 
     fun getGuild(guildHandler: GuildHandler): Guild {
         return guildHandler.getGuild(guildId)
+    }
+
+    fun getClaimFirstCorner(): Location {
+        val wrapper = WorldGuardWrapper.getInstance()
+
+        val selection = ClaimUtils.getSelection(wrapper, name.toString())
+
+        return selection?.minimumPoint!!
+    }
+
+    fun getClaimSecondCorner(): Location {
+        val wrapper = WorldGuardWrapper.getInstance()
+
+        val selection = ClaimUtils.getSelection(wrapper, name.toString())
+
+        return selection?.maximumPoint!!
     }
 
     override fun toString(): String {

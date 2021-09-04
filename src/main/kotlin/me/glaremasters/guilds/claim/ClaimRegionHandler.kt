@@ -23,6 +23,8 @@
  */
 package me.glaremasters.guilds.claim
 
+import me.glaremasters.guilds.api.events.GuildClaimEvent
+import me.glaremasters.guilds.api.events.GuildUnclaimAllEvent
 import me.glaremasters.guilds.guild.Guild
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
@@ -77,7 +79,9 @@ object ClaimRegionHandler {
         if (!ClaimUtils.checkIfHaveClaims(wrapper, guild)) {
             return
         }
+
         removeAllClaims(wrapper, guild)
+
         guild.claimedLand.clear()
     }
 }

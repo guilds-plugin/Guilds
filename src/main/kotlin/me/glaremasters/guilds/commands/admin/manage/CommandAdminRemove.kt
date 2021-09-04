@@ -39,7 +39,9 @@ import co.aikar.commands.annotation.Values
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.actions.ActionHandler
 import me.glaremasters.guilds.actions.ConfirmAction
+import me.glaremasters.guilds.api.events.GuildClaimEvent
 import me.glaremasters.guilds.api.events.GuildRemoveEvent
+import me.glaremasters.guilds.api.events.GuildUnclaimAllEvent
 import me.glaremasters.guilds.claim.ClaimRegionHandler
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
@@ -87,6 +89,10 @@ internal class CommandAdminRemove : BaseCommand() {
                     val wrapper = WorldGuardWrapper.getInstance()
 
                     ClaimRegionHandler.deleteWithGuild(wrapper, guild)
+
+                    val firedEvent = GuildUnclaimAllEvent(player, guild)
+                    Bukkit.getPluginManager().callEvent(firedEvent)
+
                 }
 
                 guild.sendMessage(currentCommandManager, Messages.LEAVE__GUILDMASTER_LEFT, "{player}", guild.guildMaster.name)

@@ -26,26 +26,23 @@ package me.glaremasters.guilds.commands.management
 
 import ch.jalu.configme.SettingsManager
 import co.aikar.commands.BaseCommand
-import co.aikar.commands.annotation.CommandAlias
-import co.aikar.commands.annotation.CommandPermission
-import co.aikar.commands.annotation.Conditions
-import co.aikar.commands.annotation.Dependency
-import co.aikar.commands.annotation.Description
-import co.aikar.commands.annotation.Subcommand
-import co.aikar.commands.annotation.Syntax
+import co.aikar.commands.annotation.*
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.actions.ActionHandler
 import me.glaremasters.guilds.actions.ConfirmAction
+import me.glaremasters.guilds.api.events.GuildClaimEvent
 import me.glaremasters.guilds.api.events.GuildRemoveEvent
+import me.glaremasters.guilds.api.events.GuildUnclaimAllEvent
 import me.glaremasters.guilds.claim.ClaimRegionHandler
+import me.glaremasters.guilds.claim.ClaimUtils
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
-import me.glaremasters.guilds.claim.ClaimUtils
 import me.glaremasters.guilds.utils.Constants
 import net.milkbowl.vault.permission.Permission
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
+import org.bukkit.event.Event
 import org.codemc.worldguardwrapper.WorldGuardWrapper
 
 @CommandAlias("%guilds")
@@ -83,6 +80,9 @@ internal class CommandDelete : BaseCommand() {
                 guild.sendMessage(currentCommandManager, Messages.LEAVE__GUILDMASTER_LEFT, "{player}", player.name)
                 if (ClaimUtils.isEnable(settingsManager)) {
                     val wrapper = WorldGuardWrapper.getInstance()
+
+                    val firedEvent = GuildUnclaimAllEvent(player, guild)
+                    Bukkit.getPluginManager().callEvent(firedEvent)
 
                     ClaimRegionHandler.deleteWithGuild(wrapper, guild)
                 }

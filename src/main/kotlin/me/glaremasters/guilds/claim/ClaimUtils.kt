@@ -81,6 +81,17 @@ object ClaimUtils {
     }
 
     @JvmStatic
+    fun getSelection(wrapper: WorldGuardWrapper, name: String): ICuboidSelection? {
+        for (world in Bukkit.getWorlds()) {
+            val tempSelection =  wrapper.getRegion(world, name).get().selection as ICuboidSelection
+            if (tempSelection != null) {
+                return tempSelection
+            }
+        }
+        return null
+    }
+
+    @JvmStatic
     fun regions(wrapper: WorldGuardWrapper, player: Player): Set<IWrappedRegion> {
         return wrapper.getRegions(claimPointOne(player), claimPointTwo(player))
     }
