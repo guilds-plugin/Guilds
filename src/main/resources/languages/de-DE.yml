@@ -27,7 +27,7 @@ descriptions:
   admin-vault: "Admin-Befehl zum Anzeigen des Tresors einer Gilde"
   ally-accept: "Eine Verbündeteneinladung einer anderen Gilde annehmen"
   ally-add: "Füge eine Gilde als Verbündete hinzu"
-  ally-chat: "Toggles ally chat"
+  ally-chat: "Verbündeten-Chat ein-/ausschalten"
   ally-decline: "Eine Verbündeteneinladung einer anderen Gilde ablehnen"
   ally-list: "Zeige alle Verbündeten deiner Gilde an"
   ally-remove: "Entferne eine Gilde als Verbündete"
@@ -98,10 +98,10 @@ create:
   name-too-long: "&cDu hast keinen Präfix angegeben, also wurde der eingegebene Name gegen die Präfixvoraussetzungen getestet und ist gescheitert. Bitte versuche einen kürzeren Namen und verwende einen Präfix bei der Erstellung."
   prefix-too-long: "&cDer angegebene Gilden Präfix entspricht nicht den Voraussetzungen! Vielleicht hat er zu viele Zeichen?"
 chat:
-  toggled-on: "{type} chat toggled on."
-  toggled-off: "{type} chat toggled off."
-  type-guild: "Guild"
-  type-ally: "Ally"
+  toggled-on: "{type}-Chat eingeschaltet."
+  toggled-off: "{type}-Chat ausgeschaltet."
+  type-guild: "Gilde"
+  type-ally: "Verbündeten"
 request:
   success: "&aDu hast erfolgreich eine Einladung für die Gilde {guild} angefordert"
   incoming-request: "&a{player} möchte der Gilde beitreten. Sende Ihm eine Einladung mit /guild invite {player}!"
