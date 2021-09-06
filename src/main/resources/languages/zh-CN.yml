@@ -100,6 +100,8 @@ create:
 chat:
   toggled-on: "{type} 聊天已开启"
   toggled-off: "{type} 聊天已关闭"
+  type-guild: "Guild"
+  type-ally: "Ally"
 request:
   success: "&7[&6公会&7]&f对公会[{guild}&f]的申请已发出，请等待处理"
   incoming-request: "&7[&6公会&7]&a{player} 请求加入公会, 请输入&6/guild invite {player} &a给他们发送邀请"
