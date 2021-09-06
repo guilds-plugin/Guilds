@@ -100,6 +100,8 @@ create:
 chat:
   toggled-on: "{type} chat toggled on."
   toggled-off: "{type} chat toggled off."
+  type-guild: "Guild"
+  type-ally: "Ally"
 request:
   success: "&aTe sikeresen kérvényeztél egy meghívást az alábbi céhbe: {guild}"
   incoming-request: "&a{player} kérvényezi a csatlakozást a céhhez. Ahhoz hgy csatlakozhasson, írd be az alábbi parancsot /guild invite {player}"
