@@ -142,6 +142,8 @@ enum class Messages : MessageKeyProvider {
 
     CHAT__TOGGLED_ON,
     CHAT__TOGGLED_OFF,
+    CHAT__TYPE_GUILD,
+    CHAT__TYPE_ALLY,
 
     ALLY__NONE,
     ALLY__LIST,

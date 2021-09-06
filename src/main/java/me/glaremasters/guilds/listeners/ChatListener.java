@@ -6,6 +6,7 @@ import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.messages.Messages;
+import me.glaremasters.guilds.utils.MessageUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -72,24 +73,34 @@ public class ChatListener implements Listener {
         if (playerChatMap.containsKey(player.getUniqueId())) {
             final ChatType type = playerChatMap.remove(player.getUniqueId());
             if (type == chatType) {
-                issuer.sendInfo(Messages.CHAT__TOGGLED_OFF, "{type}", chatType.name());
+                issuer.sendInfo(Messages.CHAT__TOGGLED_OFF, "{type}", chatType.translate(player, guilds));
                 return;
             }
 
-            issuer.sendInfo(Messages.CHAT__TOGGLED_OFF, "{type}", chatType.name());
-            issuer.sendInfo(Messages.CHAT__TOGGLED_ON, "{type}", chatType.name());
+            issuer.sendInfo(Messages.CHAT__TOGGLED_OFF, "{type}", type.translate(player, guilds));
+            issuer.sendInfo(Messages.CHAT__TOGGLED_ON, "{type}", chatType.translate(player, guilds));
             playerChatMap.put(player.getUniqueId(), chatType);
             return;
         }
 
-        issuer.sendInfo(Messages.CHAT__TOGGLED_ON, "{type}", chatType.name());
+        issuer.sendInfo(Messages.CHAT__TOGGLED_ON, "{type}", chatType.translate(player, guilds));
         playerChatMap.put(player.getUniqueId(), chatType);
     }
 
 
     public enum ChatType {
-        GUILD,
-        ALLY
+        GUILD(Messages.CHAT__TYPE_GUILD),
+        ALLY(Messages.CHAT__TYPE_ALLY);
+
+        private final Messages messageKey;
+
+        ChatType(Messages messageKey) {
+            this.messageKey = messageKey;
+        }
+
+        public String translate(final Player player, final Guilds guilds) {
+            return MessageUtils.asString(player, guilds.getCommandManager(), messageKey);
+        }
     }
 
     public Map<UUID, ChatType> getPlayerChatMap() {
