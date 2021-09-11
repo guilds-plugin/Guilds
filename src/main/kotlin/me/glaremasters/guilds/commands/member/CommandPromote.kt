@@ -36,6 +36,7 @@ import co.aikar.commands.annotation.Subcommand
 import co.aikar.commands.annotation.Syntax
 import co.aikar.commands.annotation.Values
 import me.glaremasters.guilds.Guilds
+import me.glaremasters.guilds.api.events.GuildClaimEvent
 import me.glaremasters.guilds.exceptions.ExpectationNotMet
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler

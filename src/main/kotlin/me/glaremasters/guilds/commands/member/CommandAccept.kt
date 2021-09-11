@@ -37,14 +37,14 @@ import co.aikar.commands.annotation.Subcommand
 import co.aikar.commands.annotation.Syntax
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.api.events.GuildJoinEvent
-import me.glaremasters.guilds.configuration.sections.PluginSettings
+import me.glaremasters.guilds.claim.ClaimEditor
 import me.glaremasters.guilds.cooldowns.Cooldown
 import me.glaremasters.guilds.cooldowns.CooldownHandler
 import me.glaremasters.guilds.exceptions.ExpectationNotMet
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
-import me.glaremasters.guilds.utils.ClaimUtils
+import me.glaremasters.guilds.claim.ClaimUtils
 import me.glaremasters.guilds.utils.Constants
 import net.milkbowl.vault.permission.Permission
 import org.bukkit.Bukkit
@@ -97,7 +97,10 @@ internal class CommandAccept : BaseCommand() {
 
         if (ClaimUtils.isEnable(settingsManager)) {
             val wrapper = WorldGuardWrapper.getInstance()
-            ClaimUtils.getGuildClaim(wrapper, player, guild).ifPresent { region -> ClaimUtils.addMember(region, player) }
+
+            for (claim in guild.claimedLand) {
+                ClaimEditor.addMember(wrapper, claim, player)
+            }
         }
 
         currentCommandIssuer.sendInfo(Messages.ACCEPT__SUCCESSFUL, "{guild}", guild.name)

@@ -40,13 +40,14 @@ import me.glaremasters.guilds.actions.ActionHandler
 import me.glaremasters.guilds.actions.ConfirmAction
 import me.glaremasters.guilds.arena.ArenaHandler
 import me.glaremasters.guilds.challenges.ChallengeHandler
+import me.glaremasters.guilds.claim.ClaimRegionHandler
 import me.glaremasters.guilds.cooldowns.CooldownHandler
 import me.glaremasters.guilds.database.DatabaseBackend
 import me.glaremasters.guilds.exceptions.ExpectationNotMet
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.BackupUtils
-import me.glaremasters.guilds.utils.ClaimUtils
+import me.glaremasters.guilds.claim.ClaimUtils
 import me.glaremasters.guilds.utils.Constants
 import org.codemc.worldguardwrapper.WorldGuardWrapper
 
@@ -157,10 +158,8 @@ internal class CommandConsole : BaseCommand() {
         actionHandler.addAction(issuer.getIssuer(), object : ConfirmAction {
             override fun accept() {
                 val wrapper = WorldGuardWrapper.getInstance()
-                guildHandler.guilds.forEach { guild ->
-                    if (ClaimUtils.checkAlreadyExist(wrapper, guild)) {
-                        ClaimUtils.removeClaim(wrapper, guild)
-                    }
+                for (guild in guildHandler.guilds) {
+                    ClaimRegionHandler.removeAllClaims(wrapper, guild)
                 }
                 currentCommandIssuer.sendInfo(Messages.UNCLAIM__ALL_SUCCESS)
             }

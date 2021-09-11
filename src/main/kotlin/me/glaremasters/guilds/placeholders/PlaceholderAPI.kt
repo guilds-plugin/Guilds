@@ -71,6 +71,7 @@ class PlaceholderAPI(private val guildHandler: GuildHandler) : PlaceholderExpans
             "role" -> guild.getMember(player.uniqueId).role.name
             "tier" -> guild.tier.level.toString()
             "tier_name" -> guild.tier.name
+            "claimed_land_count" -> guild.claimedLand.size.toString()
             "balance" -> EconomyUtils.format(guild.balance)
             "balance_raw" -> guild.balance.toString()
             "code_amount" -> guild.codes.size.toString()

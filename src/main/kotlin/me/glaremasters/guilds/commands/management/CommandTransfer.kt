@@ -38,6 +38,8 @@ import co.aikar.commands.annotation.Syntax
 import co.aikar.commands.annotation.Values
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.api.events.GuildTransferEvent
+import me.glaremasters.guilds.claim.ClaimEditor
+import me.glaremasters.guilds.claim.ClaimUtils
 import me.glaremasters.guilds.exceptions.ExpectationNotMet
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
@@ -45,6 +47,7 @@ import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.Constants
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
+import org.codemc.worldguardwrapper.WorldGuardWrapper
 
 @CommandAlias("%guilds")
 internal class CommandTransfer : BaseCommand() {
@@ -76,6 +79,14 @@ internal class CommandTransfer : BaseCommand() {
 
         if (event.isCancelled) {
             return
+        }
+
+        if (ClaimUtils.isEnable(settingsManager)) {
+            val wrapper = WorldGuardWrapper.getInstance();
+
+            for (claim in guild.claimedLand) {
+                ClaimEditor.transferOwner(wrapper, claim, user.uniqueId, guild.guildMaster.uuid)
+            }
         }
 
         guild.transferGuild(player, user)

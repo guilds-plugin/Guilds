@@ -28,6 +28,7 @@ import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.CommandManager;
 import me.glaremasters.guilds.Guilds;
+import me.glaremasters.guilds.claim.GuildClaim;
 import me.glaremasters.guilds.configuration.sections.GuildListSettings;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.messages.Messages;
@@ -51,7 +52,7 @@ public class Guild {
         this.id = id;
     }
 
-    public Guild(UUID id, String name, String prefix, String motd, GuildMember guildMaster, GuildHome home, GuildSkull guildSkull, Status status, GuildTier tier, GuildScore guildScore, double balance, List<GuildMember> members, List<UUID> invitedMembers, List<UUID> allies, List<UUID> pendingAllies, List<GuildCode> codes, List<String> vaults, long lastDefended) {
+    public Guild(UUID id, String name, String prefix, String motd, GuildMember guildMaster, GuildHome home, GuildSkull guildSkull, Status status, GuildTier tier, GuildScore guildScore, double balance, List<GuildMember> members, List<UUID> invitedMembers, List<UUID> allies, List<UUID> pendingAllies, List<GuildCode> codes, List<String> vaults, long lastDefended, List<GuildClaim> claimedLand) {
         this.id = id;
         this.name = name;
         this.prefix = prefix;
@@ -70,6 +71,7 @@ public class Guild {
         this.codes = codes;
         this.vaults = vaults;
         this.lastDefended = lastDefended;
+        this.claimedLand = claimedLand;
     }
 
     public static GuildBuilder builder() {
@@ -132,9 +134,7 @@ public class Guild {
         this.pendingAllies = pendingAllies;
     }
 
-    public void setCodes(List<GuildCode> codes) {
-        this.codes = codes;
-    }
+    public void setCodes(List<GuildCode> codes) {this.codes = codes;}
 
     public void setVaults(List<String> vaults) {
         this.vaults = vaults;
@@ -148,9 +148,9 @@ public class Guild {
         return creationDate;
     }
 
-    public void setCreationDate(long creationDate) {
-        this.creationDate = creationDate;
-    }
+    public void setCreationDate(long creationDate) {this.creationDate = creationDate; }
+
+    public void setClaimedLand(List<GuildClaim> newClaimedLand) { this.claimedLand = newClaimedLand; }
 
     public enum Status {
         Public("Public"),
@@ -184,6 +184,7 @@ public class Guild {
     private long lastDefended;
     private long creationDate;
 
+    private List<GuildClaim> claimedLand;
     /**
      * Get a member in the guild
      * @param uuid the uuid of the member
@@ -566,6 +567,29 @@ public class Guild {
         return role.hasPerm(perm);
     }
 
+    /**
+     * Add a guild claim to the list of claims
+     * @param claim the claim to add
+     */
+    public void addGuildClaim(GuildClaim claim) {
+        claimedLand.add(claim);
+    }
+
+    /**
+     * Remove a guild claim from the list of claims
+     * @param claim the claim to remove
+     */
+    public void removeGuildClaim(GuildClaim claim) {
+        claimedLand.remove(claim);
+    }
+
+    /**
+     * Clear all the guild claims in list
+     */
+    public void clearGuildClaims() {
+        claimedLand.clear();
+    }
+
     public void updateGuildSkull(Player player, SettingsManager settingsManager) {
         Guilds.newChain().async(() -> {
             try{
@@ -673,6 +697,13 @@ public class Guild {
         return lastDefended;
     }
 
+    public List<GuildClaim> getClaimedLand() {
+        if (this.claimedLand == null) {
+            this.claimedLand = new ArrayList<>();
+        }
+        return this.claimedLand;
+    }
+
     public static class GuildBuilder {
         private UUID id;
         private String name;
@@ -692,6 +723,7 @@ public class Guild {
         private List<GuildCode> codes;
         private List<String> vaults;
         private long lastDefended;
+        private List<GuildClaim> claimedLand;
 
         GuildBuilder() {
         }
@@ -786,12 +818,17 @@ public class Guild {
             return this;
         }
 
+        public Guild.GuildBuilder claimedLand(List<GuildClaim> claimedLand) {
+            this.claimedLand = claimedLand;
+            return this;
+        }
+
         public Guild build() {
-            return new Guild(id, name, prefix, motd, guildMaster, home, guildSkull, status, tier, guildScore, balance, members, invitedMembers, allies, pendingAllies, codes, vaults, lastDefended);
+            return new Guild(id, name, prefix, motd, guildMaster, home, guildSkull, status, tier, guildScore, balance, members, invitedMembers, allies, pendingAllies, codes, vaults, lastDefended, claimedLand);
         }
 
         public String toString() {
-            return "Guild.GuildBuilder(id=" + this.id + ", name=" + this.name + ", prefix=" + this.prefix + ", motd=" + this.motd + ", guildMaster=" + this.guildMaster + ", home=" + this.home + ", guildSkull=" + this.guildSkull + ", status=" + this.status + ", tier=" + this.tier + ", guildScore=" + this.guildScore + ", balance=" + this.balance + ", members=" + this.members + ", invitedMembers=" + this.invitedMembers + ", allies=" + this.allies + ", pendingAllies=" + this.pendingAllies + ", codes=" + this.codes + ", vaults=" + this.vaults + ", lastDefended=" + this.lastDefended + ")";
+            return "Guild.GuildBuilder(id=" + this.id + ", name=" + this.name + ", prefix=" + this.prefix + ", motd=" + this.motd + ", guildMaster=" + this.guildMaster + ", home=" + this.home + ", guildSkull=" + this.guildSkull + ", status=" + this.status + ", tier=" + this.tier + ", guildScore=" + this.guildScore + ", balance=" + this.balance + ", members=" + this.members + ", invitedMembers=" + this.invitedMembers + ", allies=" + this.allies + ", pendingAllies=" + this.pendingAllies + ", codes=" + this.codes + ", vaults=" + this.vaults + ", lastDefended=" + this.lastDefended + ", claimedLand=" + this.claimedLand.toString() + ")";
         }
     }
 }

@@ -39,6 +39,7 @@ import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.api.GuildsAPI;
 import me.glaremasters.guilds.arena.ArenaHandler;
 import me.glaremasters.guilds.challenges.ChallengeHandler;
+import me.glaremasters.guilds.claim.ClaimUtils;
 import me.glaremasters.guilds.conf.GuildBuffSettings;
 import me.glaremasters.guilds.configuration.SettingsHandler;
 import me.glaremasters.guilds.configuration.sections.HooksSettings;
@@ -290,6 +291,10 @@ public final class Guilds extends JavaPlugin {
         api = new GuildsAPI(guildHandler, cooldownHandler);
 
         chatListener = new ChatListener(this);
+
+        if (ClaimUtils.isEnable(settingsHandler.getMainConf())) {
+            ClaimUtils.reload(this, settingsHandler.getMainConf());
+        }
 
         LoggingUtils.info("Ready to go! That only took " + (System.currentTimeMillis() - startingTime) + "ms");
         getServer().getScheduler().scheduleAsyncRepeatingTask(this, () -> {

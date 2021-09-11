@@ -39,16 +39,19 @@ import co.aikar.commands.annotation.Values
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.actions.ActionHandler
 import me.glaremasters.guilds.actions.ConfirmAction
+import me.glaremasters.guilds.api.events.GuildClaimEvent
 import me.glaremasters.guilds.api.events.GuildRemoveEvent
-import me.glaremasters.guilds.configuration.sections.PluginSettings
+import me.glaremasters.guilds.api.events.GuildUnclaimAllEvent
+import me.glaremasters.guilds.claim.ClaimRegionHandler
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
-import me.glaremasters.guilds.utils.ClaimUtils
+import me.glaremasters.guilds.claim.ClaimUtils
 import me.glaremasters.guilds.utils.Constants
 import net.milkbowl.vault.permission.Permission
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
+import org.codemc.worldguardwrapper.WorldGuardWrapper
 
 @CommandAlias("%guilds")
 internal class CommandAdminRemove : BaseCommand() {
@@ -71,6 +74,7 @@ internal class CommandAdminRemove : BaseCommand() {
         actionHandler.addAction(player, object : ConfirmAction {
             override fun accept() {
                 val event = GuildRemoveEvent(player, guild, GuildRemoveEvent.Cause.ADMIN_DELETED)
+
                 Bukkit.getPluginManager().callEvent(event)
 
                 if (event.isCancelled) {
@@ -80,7 +84,17 @@ internal class CommandAdminRemove : BaseCommand() {
                 guildHandler.removeGuildPermsFromAll(permission, guild)
                 guildHandler.removeAlliesOnDelete(guild)
                 guildHandler.notifyAllies(guild, guilds.commandManager)
-                ClaimUtils.deleteWithGuild(guild, settingsManager)
+
+                if (ClaimUtils.isEnable(settingsManager)) {
+                    val wrapper = WorldGuardWrapper.getInstance()
+
+                    ClaimRegionHandler.deleteWithGuild(wrapper, guild)
+
+                    val firedEvent = GuildUnclaimAllEvent(player, guild)
+                    Bukkit.getPluginManager().callEvent(firedEvent)
+
+                }
+
                 guild.sendMessage(currentCommandManager, Messages.LEAVE__GUILDMASTER_LEFT, "{player}", guild.guildMaster.name)
                 guildHandler.removeGuild(guild)
                 currentCommandIssuer.sendInfo(Messages.ADMIN__DELETE_SUCCESS, "{guild}", name)

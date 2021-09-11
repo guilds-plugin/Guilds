@@ -39,14 +39,15 @@ import me.glaremasters.guilds.actions.ActionHandler
 import me.glaremasters.guilds.actions.ConfirmAction
 import me.glaremasters.guilds.api.events.GuildLeaveEvent
 import me.glaremasters.guilds.api.events.GuildRemoveEvent
+import me.glaremasters.guilds.claim.ClaimEditor
+import me.glaremasters.guilds.claim.ClaimRegionHandler
 import me.glaremasters.guilds.configuration.sections.CooldownSettings
-import me.glaremasters.guilds.configuration.sections.PluginSettings
 import me.glaremasters.guilds.cooldowns.Cooldown
 import me.glaremasters.guilds.cooldowns.CooldownHandler
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
-import me.glaremasters.guilds.utils.ClaimUtils
+import me.glaremasters.guilds.claim.ClaimUtils
 import me.glaremasters.guilds.utils.Constants
 import net.milkbowl.vault.permission.Permission
 import org.bukkit.Bukkit
@@ -103,7 +104,13 @@ internal class CommandLeave : BaseCommand() {
                     guildHandler.removeAlliesOnDelete(guild)
                     guildHandler.notifyAllies(guild, guilds.commandManager)
                     cooldownHandler.addCooldown(player, cooldownName, cooldownTime, TimeUnit.SECONDS)
-                    ClaimUtils.deleteWithGuild(guild, settingsManager)
+
+                    if (ClaimUtils.isEnable(settingsManager)) {
+                        val wrapper = WorldGuardWrapper.getInstance()
+
+                        ClaimRegionHandler.deleteWithGuild(wrapper, guild)
+                    }
+
                     guildHandler.removeGuild(guild)
                 } else {
                     guildHandler.removeGuildPerms(permission, player)
@@ -111,7 +118,10 @@ internal class CommandLeave : BaseCommand() {
 
                     if (ClaimUtils.isEnable(settingsManager)) {
                         val wrapper = WorldGuardWrapper.getInstance()
-                        ClaimUtils.getGuildClaim(wrapper, player, guild).ifPresent { region -> ClaimUtils.removeMember(region, player) }
+
+                        for (claim in guild.claimedLand) {
+                            ClaimEditor.removeMember(wrapper, claim, player)
+                        }
                     }
 
                     guild.removeMember(player)

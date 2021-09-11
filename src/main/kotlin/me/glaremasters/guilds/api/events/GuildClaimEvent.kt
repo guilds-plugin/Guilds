@@ -21,24 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package me.glaremasters.guilds.guis
+package me.glaremasters.guilds.api.events
 
-import ch.jalu.configme.SettingsManager
-import co.aikar.commands.PaperCommandManager
-import me.glaremasters.guilds.Guilds
-import me.glaremasters.guilds.cooldowns.CooldownHandler
-import me.glaremasters.guilds.guild.GuildHandler
+import me.glaremasters.guilds.api.events.base.GuildEvent
+import me.glaremasters.guilds.claim.GuildClaim
+import me.glaremasters.guilds.guild.Guild
+import org.bukkit.entity.Player
 
-/**
- * Created by Glare
- * Date: 5/15/2019
- * Time: 10:58 AM
- */
-class GUIHandler(guilds: Guilds, settingsManager: SettingsManager, guildHandler: GuildHandler, commandManager: PaperCommandManager, cooldownHandler: CooldownHandler) {
-    val buffs = BuffGUI(guilds.settingsHandler.buffConf, cooldownHandler)
-    val list = ListGUI(guilds, settingsManager, guildHandler)
-    val info = InfoGUI(guilds, settingsManager, guildHandler, cooldownHandler, commandManager)
-    val members = MembersGUI(guilds, settingsManager, guildHandler)
-    val vaults = VaultGUI(guilds, settingsManager, guildHandler)
-    val map = MapGUI(guilds, settingsManager, guildHandler)
-}
+class GuildClaimEvent(player: Player, guild: Guild, var claim: GuildClaim) : GuildEvent(player, guild)

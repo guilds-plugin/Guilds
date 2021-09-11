@@ -27,21 +27,19 @@ package me.glaremasters.guilds.commands.claims
 import ch.jalu.configme.SettingsManager
 import co.aikar.commands.ACFBukkitUtil
 import co.aikar.commands.BaseCommand
-import co.aikar.commands.annotation.CommandAlias
-import co.aikar.commands.annotation.CommandPermission
-import co.aikar.commands.annotation.Conditions
-import co.aikar.commands.annotation.Dependency
-import co.aikar.commands.annotation.Description
-import co.aikar.commands.annotation.Subcommand
-import co.aikar.commands.annotation.Syntax
+import co.aikar.commands.annotation.*
 import me.glaremasters.guilds.Guilds
+import me.glaremasters.guilds.api.events.GuildClaimEvent
+import me.glaremasters.guilds.api.events.GuildUnclaimAllEvent
+import me.glaremasters.guilds.api.events.GuildUnclaimEvent
+import me.glaremasters.guilds.claim.*
 import me.glaremasters.guilds.configuration.sections.ClaimSettings
 import me.glaremasters.guilds.exceptions.ExpectationNotMet
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
-import me.glaremasters.guilds.utils.ClaimUtils
 import me.glaremasters.guilds.utils.Constants
+import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.codemc.worldguardwrapper.WorldGuardWrapper
 
@@ -73,33 +71,44 @@ internal class CommandClaim : BaseCommand() {
 
         val wrapper = WorldGuardWrapper.getInstance()
 
-        if (ClaimUtils.checkAlreadyExist(wrapper, guild)) {
-            throw ExpectationNotMet(Messages.CLAIM__ALREADY_EXISTS)
+        if (ClaimUtils.checkMaxAlreadyExist(wrapper, guild)) {
+            throw ExpectationNotMet(Messages.CLAIM__TOO_MANY_CLAIMS)
         }
 
-        if (ClaimUtils.checkOverlap(wrapper, player, settingsManager)) {
+        if (ClaimUtils.checkOverlap(wrapper, player)) {
             throw ExpectationNotMet(Messages.CLAIM__OVERLAP)
         }
 
-        ClaimUtils.createClaim(wrapper, guild, player, settingsManager)
-
-        ClaimUtils.getGuildClaim(wrapper, player, guild).ifPresent { region ->
-            ClaimUtils.addOwner(region, guild)
-            ClaimUtils.addMembers(region, guild)
-            ClaimUtils.setEnterMessage(wrapper, region, settingsManager, guild)
-            ClaimUtils.setExitMessage(wrapper, region, settingsManager, guild)
+        if (ClaimRelations.isInProximity(wrapper, player, settingsManager, guild, guilds)) {
+            throw ExpectationNotMet(Messages.CLAIM__IS_IN_PROXIMITY)
         }
 
+        if (!ClaimRelations.isAdjacent(wrapper, player, settingsManager, guild)) {
+            throw ExpectationNotMet(Messages.CLAIM__MUST_BE_ADJACENT)
+        }
+
+        val claim = ClaimRegionHandler.createClaim(wrapper, guild, player)
+        guild.addGuildClaim(claim)
+
+        ClaimEditor.addOwner(wrapper, claim, guild)
+        ClaimEditor.addMembers(wrapper, claim, guild)
+        ClaimEditor.setEnterMessage(wrapper, claim, settingsManager, guild)
+        ClaimEditor.setExitMessage(wrapper, claim, settingsManager, guild)
+
+        val event = GuildClaimEvent(player, guild, claim)
+        Bukkit.getPluginManager().callEvent(event)
+
         currentCommandIssuer.sendInfo(Messages.CLAIM__SUCCESS,
-                "{loc1}", ACFBukkitUtil.formatLocation(ClaimUtils.claimPointOne(player, settingsManager)),
-                "{loc2}", ACFBukkitUtil.formatLocation(ClaimUtils.claimPointTwo(player, settingsManager)))
+                "{loc1}", ACFBukkitUtil.formatLocation(ClaimUtils.claimPointOne(player)),
+                "{loc2}", ACFBukkitUtil.formatLocation(ClaimUtils.claimPointTwo(player)))
     }
 
     @Subcommand("unclaim")
     @Description("{@@descriptions.unclaim}")
     @CommandPermission(Constants.BASE_PERM + "unclaim")
-    @Syntax("")
-    fun unclaim(player: Player, @Conditions("perm:perm=UNCLAIM_LAND") guild: Guild) {
+    @CommandCompletion("@claimed")
+    @Syntax("<claim>")
+    fun unclaim(player: Player, @Conditions("perm:perm=UNCLAIM_LAND") guild: Guild, @Values("@claimed") @Single option: String) {
         if (!ClaimUtils.isEnable(settingsManager)) {
             throw ExpectationNotMet(Messages.CLAIM__HOOK_DISABLED)
         }
@@ -114,11 +123,38 @@ internal class CommandClaim : BaseCommand() {
 
         val wrapper = WorldGuardWrapper.getInstance()
 
-        if (!ClaimUtils.checkAlreadyExist(wrapper, guild)) {
+        if (!ClaimUtils.checkIfHaveClaims(wrapper, guild)) {
             throw ExpectationNotMet(Messages.UNCLAIM__NOT_FOUND)
         }
 
-        ClaimUtils.removeClaim(wrapper, guild)
-        currentCommandIssuer.sendInfo(Messages.UNCLAIM__SUCCESS)
+        when (option) {
+            "all" -> {
+                ClaimRegionHandler.removeAllClaims(wrapper, guild)
+                guild.clearGuildClaims()
+
+                val event = GuildUnclaimAllEvent(player, guild)
+                Bukkit.getPluginManager().callEvent(event)
+
+                currentCommandIssuer.sendInfo(Messages.UNCLAIM__SUCCESS)
+            }
+            "this" -> {
+                val standingClaim = ClaimUtils.getStandingOnClaim(wrapper, player, guild)
+                if (standingClaim != null) {
+                    ClaimRegionHandler.removeClaim(wrapper, standingClaim)
+                    guild.removeGuildClaim(standingClaim)
+
+                    val event = GuildClaimEvent(player, guild, standingClaim)
+                    Bukkit.getPluginManager().callEvent(event)
+
+                    currentCommandIssuer.sendInfo(Messages.UNCLAIM__SUCCESS)
+                }
+                else {
+                    currentCommandIssuer.sendInfo(Messages.UNCLAIM__NOT_FOUND)
+                }
+            }
+            else -> {
+                currentCommandIssuer.sendInfo(Messages.UNCLAIM__NOT_FOUND)
+            }
+        }
     }
 }

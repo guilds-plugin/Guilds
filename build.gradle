@@ -85,7 +85,6 @@ slimJar {
 
 
 dependencies {
-
     // Slimjar
     implementation slimjar("1.2.6")
 
@@ -110,8 +109,9 @@ dependencies {
     // Cross-Version Support
     implementation('com.github.cryptomorin:XSeries:8.4.0')
 
-    // Adventure
+    // Adventure and MiniMessage
     implementation("net.kyori:adventure-platform-bukkit:4.0.0-SNAPSHOT")
+    //implementation("net.kyori:adventure-text-minimessage:4.2.0-SNAPSHOT")
 
     // GUI Lib
     implementation("dev.triumphteam:triumph-gui:3.0.3")

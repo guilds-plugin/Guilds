@@ -26,21 +26,28 @@ package me.glaremasters.guilds.listeners;
 
 import ch.jalu.configme.SettingsManager;
 import me.glaremasters.guilds.Guilds;
+import me.glaremasters.guilds.api.events.GuildClaimEvent;
+import me.glaremasters.guilds.claim.ClaimEditor;
+import me.glaremasters.guilds.claim.ClaimRegionHandler;
+import me.glaremasters.guilds.claim.GuildClaim;
 import me.glaremasters.guilds.configuration.sections.ClaimSettings;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRolePerm;
 import me.glaremasters.guilds.messages.Messages;
-import me.glaremasters.guilds.utils.ClaimUtils;
+import me.glaremasters.guilds.claim.ClaimUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.codemc.worldguardwrapper.WorldGuardWrapper;
+import org.codemc.worldguardwrapper.region.IWrappedRegion;
 import org.codemc.worldguardwrapper.selection.ICuboidSelection;
 
 /**
@@ -61,6 +68,8 @@ public class ClaimSignListener implements Listener {
         this.guildHandler = guildHandler;
     }
 
+    //TODO Fix all of this because Claim Signs...
+
     @EventHandler
     public void onSignChange(SignChangeEvent event) {
         Player player = event.getPlayer();
@@ -68,14 +77,14 @@ public class ClaimSignListener implements Listener {
         if (!event.getLine(0).equalsIgnoreCase(settingsManager.getProperty(ClaimSettings.CLAIM_SIGN_TEXT)))
             return;
 
-        if (!player.hasPermission("guilds.claimsigns.place") && !player.hasPermission("worldguard.region.redefine.*")) {
-            guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.CLAIM__SIGN_NO_PERMISSION);
+        if (!settingsManager.getProperty(ClaimSettings.CLAIM_SIGNS)) {
+            guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.CLAIM__SIGN_NOT_ENABLED);
             event.setCancelled(true);
             return;
         }
 
-        if (!settingsManager.getProperty(ClaimSettings.CLAIM_SIGNS)) {
-            guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.CLAIM__SIGN_NOT_ENABLED);
+        if (!player.hasPermission("guilds.claimsigns.place") && !player.hasPermission("worldguard.region.redefine.*")) {
+            guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.CLAIM__SIGN_NO_PERMISSION);
             event.setCancelled(true);
             return;
         }
@@ -86,11 +95,13 @@ public class ClaimSignListener implements Listener {
             return;
         }
 
-        if (!ClaimUtils.checkAlreadyExist(wrapper, player, event.getLine(1))) {
+
+        if (!ClaimUtils.checkOverlap(wrapper, player)) {
             guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.CLAIM__SIGN_INVALID_REGION);
             event.setCancelled(true);
             return;
         }
+
         guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.CLAIM__SIGN_PLACED, "{region}", event.getLine(1), "{price}", event.getLine(2));
     }
 
@@ -132,32 +143,40 @@ public class ClaimSignListener implements Listener {
             return;
         }
 
-        if (ClaimUtils.checkAlreadyExist(wrapper, guild)) {
+        if (ClaimUtils.checkMaxAlreadyExist(wrapper, guild)) {
             guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.CLAIM__ALREADY_EXISTS);
             return;
         }
 
-        if (guild.getBalance() < Double.valueOf(sign.getLine(2))) {
+        if (guild.getBalance() < Double.parseDouble(sign.getLine(2))) {
             guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.CLAIM__SIGN_NOT_ENOUGH);
             return;
         }
 
-        ClaimUtils.getClaim(wrapper, player, sign.getLine(1)).ifPresent(region -> {
-            ICuboidSelection selection = ClaimUtils.getSelection(wrapper, player, region.getId());
-            wrapper.removeRegion(player.getWorld(), region.getId());
-            ClaimUtils.createClaim(wrapper, guild, selection);
-        });
+        IWrappedRegion region = ClaimUtils.getRegionFromName(wrapper, sign.getLine(1));
 
-        ClaimUtils.getGuildClaim(wrapper, player, guild).ifPresent(region -> {
-            ClaimUtils.addOwner(region, guild);
-            ClaimUtils.addMembers(region, guild);
-            ClaimUtils.setEnterMessage(wrapper, region, settingsManager, guild);
-            ClaimUtils.setExitMessage(wrapper, region, settingsManager, guild);
-        });
+        if (region == null) {
+            guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.CLAIM__SIGN_INVALID_REGION);
+            return;
+        }
+
+        ICuboidSelection selection = ClaimUtils.getSelection(wrapper, player, region.getId());
+        wrapper.removeRegion(player.getWorld(), region.getId());
+
+        GuildClaim claim = ClaimRegionHandler.createClaim(wrapper, guild, selection);
+        guild.addGuildClaim(claim);
+
+        ClaimEditor.addOwner(wrapper, claim, guild);
+        ClaimEditor.addMembers(wrapper, claim, guild);
+        ClaimEditor.setEnterMessage(wrapper, claim, settingsManager, guild);
+        ClaimEditor.setExitMessage(wrapper, claim, settingsManager, guild);
 
         player.getWorld().getBlockAt(block.getLocation()).breakNaturally();
 
-        guild.setBalance(guild.getBalance() - Double.valueOf(sign.getLine(2)));
+        guild.setBalance(guild.getBalance() - Double.parseDouble(sign.getLine(2)));
+
+        Event firedEvent = new GuildClaimEvent(player, guild, claim);
+        Bukkit.getPluginManager().callEvent(firedEvent);
 
         guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.CLAIM__SIGN_BUY_SUCCESS);
     }

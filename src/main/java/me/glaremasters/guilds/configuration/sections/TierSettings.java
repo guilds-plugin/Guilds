@@ -90,6 +90,10 @@ public class TierSettings implements SettingsHolder {
     public static final Property<Boolean> ONE_BUFFS =
             newProperty(LIST_PATH + "1.use-buffs", true);
 
+    @Comment("How many claims would you like this tier to be able to use?")
+    public static final Property<Integer> ONE_CLAIMABLE =
+            newProperty(LIST_PATH + "1.claimable-land", 1);
+
     @Comment("If you wish to give this tier extra permissions, put them here.")
     public static final Property<List<String>> ONE_PERMS =
             newListProperty(LIST_PATH + "1.permissions", "example.perm.here");
@@ -137,6 +141,10 @@ public class TierSettings implements SettingsHolder {
     public static final Property<Boolean> TWO_BUFFS =
             newProperty(LIST_PATH + "2.use-buffs", true);
 
+    @Comment("How many claims would you like this tier to be able to use?")
+    public static final Property<Integer> TWO_CLAIMABLE =
+            newProperty(LIST_PATH + "2.claimable-land", 5);
+
     @Comment("If you wish to give this tier extra permissions, put them here.")
     public static final Property<List<String>> TWO_PERMS =
             newListProperty(LIST_PATH + "2.permissions", "example.perm.here");
@@ -183,6 +191,10 @@ public class TierSettings implements SettingsHolder {
     @Comment("Would you like this tier to be able to open the buff GUI?")
     public static final Property<Boolean> THREE_BUFFS =
             newProperty(LIST_PATH + "3.use-buffs", true);
+
+    @Comment("How many claims would you like this tier to be able to use?")
+    public static final Property<Integer> THREE_CLAIMABLE =
+            newProperty(LIST_PATH + "3.claimable-land", 10);
 
     @Comment("If you wish to give this tier extra permissions, put them here.")
     public static final Property<List<String>> THREE_PERMS =

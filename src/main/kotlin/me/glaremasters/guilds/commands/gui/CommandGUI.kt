@@ -24,6 +24,7 @@
 
 package me.glaremasters.guilds.commands.gui
 
+import ch.jalu.configme.SettingsManager
 import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.CommandAlias
 import co.aikar.commands.annotation.CommandPermission
@@ -34,8 +35,11 @@ import co.aikar.commands.annotation.Subcommand
 import co.aikar.commands.annotation.Syntax
 import dev.triumphteam.gui.guis.PaginatedGui
 import me.glaremasters.guilds.Guilds
+import me.glaremasters.guilds.claim.ClaimUtils
+import me.glaremasters.guilds.exceptions.ExpectationNotMet
 import me.glaremasters.guilds.exceptions.InvalidTierException
 import me.glaremasters.guilds.guild.Guild
+import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.Constants
 import org.bukkit.entity.Player
 
@@ -43,6 +47,8 @@ import org.bukkit.entity.Player
 internal class CommandGUI : BaseCommand() {
     @Dependency
     lateinit var guilds: Guilds
+    @Dependency
+    lateinit var settingsManager: SettingsManager
 
     @Subcommand("buff")
     @Description("{@@descriptions.buff}")
@@ -91,5 +97,20 @@ internal class CommandGUI : BaseCommand() {
     @CommandPermission(Constants.BASE_PERM + "vault")
     fun vault(player: Player, @Conditions("perm:perm=OPEN_VAULT") guild: Guild) {
         guilds.guiHandler.vaults.get(guild, player).open(player)
+    }
+
+    @Subcommand("map")
+    @Description("{@@descriptions.map}")
+    @Syntax("")
+    @CommandPermission(Constants.BASE_PERM + "map")    fun map(player: Player) {
+        if (!ClaimUtils.isEnable(settingsManager)) {
+            throw ExpectationNotMet(Messages.CLAIM__HOOK_DISABLED)
+        }
+
+        if (ClaimUtils.isInDisabledWorld(player, settingsManager)) {
+            throw ExpectationNotMet(Messages.CLAIM__HOOK_DISABLED)
+        }
+
+        guilds.guiHandler.map.get(player).open(player)
     }
 }

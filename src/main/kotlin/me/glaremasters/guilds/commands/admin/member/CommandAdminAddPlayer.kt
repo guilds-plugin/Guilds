@@ -24,6 +24,7 @@
 
 package me.glaremasters.guilds.commands.admin.member
 
+import ch.jalu.configme.SettingsManager
 import co.aikar.commands.BaseCommand
 import co.aikar.commands.CommandIssuer
 import co.aikar.commands.annotation.CommandAlias
@@ -36,17 +37,21 @@ import co.aikar.commands.annotation.Subcommand
 import co.aikar.commands.annotation.Syntax
 import co.aikar.commands.annotation.Values
 import me.glaremasters.guilds.Guilds
+import me.glaremasters.guilds.claim.ClaimEditor
+import me.glaremasters.guilds.claim.ClaimUtils
 import me.glaremasters.guilds.exceptions.ExpectationNotMet
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.Constants
 import org.bukkit.Bukkit
+import org.codemc.worldguardwrapper.WorldGuardWrapper
 
 @CommandAlias("%guilds")
 internal class CommandAdminAddPlayer : BaseCommand() {
     @Dependency lateinit var guilds: Guilds
     @Dependency lateinit var guildHandler: GuildHandler
+    @Dependency lateinit var settingsManager: SettingsManager
 
     @Subcommand("admin addplayer")
     @Description("{@@descriptions.admin-addplayer}")
@@ -70,6 +75,14 @@ internal class CommandAdminAddPlayer : BaseCommand() {
 
         if (user.isOnline) {
             currentCommandManager.getCommandIssuer(user).sendInfo(Messages.ADMIN__PLAYER_ADDED, "{guild}", name)
+        }
+
+        if (ClaimUtils.isEnable(settingsManager)) {
+            val wrapper = WorldGuardWrapper.getInstance()
+
+            for (claim in guild.claimedLand) {
+                ClaimEditor.addMember(wrapper, claim, user.uniqueId)
+            }
         }
 
         currentCommandIssuer.sendInfo(Messages.ADMIN__ADMIN_PLAYER_ADDED, "{player}", user.name, "{guild}", name)
