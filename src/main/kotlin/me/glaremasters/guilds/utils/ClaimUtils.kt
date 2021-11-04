@@ -172,6 +172,20 @@ object ClaimUtils {
     }
 
     @JvmStatic
+    fun setFlags(claim: IWrappedRegion, settingsManager: SettingsManager) {
+        if (isEnable(settingsManager)) {
+            val wrapper = WorldGuardWrapper.getInstance()
+            val flags = settingsManager.getProperty(ClaimSettings.FLAGS).map {
+                val split = it.split("=")
+                split[0] to split[1]
+            }
+            flags.forEach {
+                claim.setFlag(wrapper.getFlag(it.first, WrappedState::class.java).orElse(null), WrappedState.valueOf(it.second))
+            }
+        }
+    }
+
+    @JvmStatic
     fun setEnterMessage(wrapper: WorldGuardWrapper, claim: IWrappedRegion, settingsManager: SettingsManager, guild: Guild) {
         claim.setFlag(wrapper.getFlag("greeting", String::class.java).orElse(null), StringUtils.color(settingsManager.getProperty(ClaimSettings.ENTER_MESSAGE).replace("{guild}", guild.name).replace("{prefix}", guild.prefix)))
     }

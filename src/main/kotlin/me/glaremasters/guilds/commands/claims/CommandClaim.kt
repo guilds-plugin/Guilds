@@ -88,6 +88,7 @@ internal class CommandClaim : BaseCommand() {
             ClaimUtils.addMembers(region, guild)
             ClaimUtils.setEnterMessage(wrapper, region, settingsManager, guild)
             ClaimUtils.setExitMessage(wrapper, region, settingsManager, guild)
+            ClaimUtils.setFlags(region, settingsManager)
         }
 
         currentCommandIssuer.sendInfo(Messages.CLAIM__SUCCESS,

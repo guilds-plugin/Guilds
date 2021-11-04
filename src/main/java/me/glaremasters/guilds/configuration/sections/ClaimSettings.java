@@ -29,6 +29,8 @@ import ch.jalu.configme.SettingsHolder;
 import ch.jalu.configme.configurationdata.CommentsConfiguration;
 import ch.jalu.configme.properties.Property;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static ch.jalu.configme.properties.PropertyInitializer.newListProperty;
@@ -58,6 +60,9 @@ public class ClaimSettings implements SettingsHolder {
 
     public static final Property<String> EXIT_MESSAGE =
             newProperty("claims.exit-message", "&aNow leaving &d{guild}'s &aclaim!");
+
+    @Comment("What flags would you like to set on this? //todo")
+    public static final Property<List<String>> FLAGS = newListProperty("claims.flags", Arrays.asList("sleep=DENY"));
 
     @Comment("Would you like to disable guild claiming in specific worlds?")
     public static final Property<List<String>> DISABLED_WORLDS =
