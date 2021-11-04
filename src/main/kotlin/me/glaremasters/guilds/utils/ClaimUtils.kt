@@ -175,12 +175,12 @@ object ClaimUtils {
     fun setFlags(claim: IWrappedRegion, settingsManager: SettingsManager) {
         if (isEnable(settingsManager)) {
             val wrapper = WorldGuardWrapper.getInstance()
-            val flags = settingsManager.getProperty(ClaimSettings.FLAGS).map {
-                val split = it.split("=")
-                split[0] to split[1]
+            val flags = settingsManager.getProperty(ClaimSettings.FLAGS).associate {
+                val (first, second) = it.split("=")
+                first to second
             }
             flags.forEach {
-                claim.setFlag(wrapper.getFlag(it.first, WrappedState::class.java).orElse(null), WrappedState.valueOf(it.second))
+                claim.setFlag(wrapper.getFlag(it.key, WrappedState::class.java).orElse(null), WrappedState.valueOf(it.value))
             }
         }
     }
