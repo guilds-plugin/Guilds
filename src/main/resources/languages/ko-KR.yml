@@ -100,6 +100,8 @@ create:
 chat:
   toggled-on: "{type} chat toggled on."
   toggled-off: "{type} chat toggled off."
+  type-guild: "Guild"
+  type-ally: "Ally"
 request:
   success: "&a당신은 성공적으로 {guild} 의 초대 요청을 수락하였습니다"
   incoming-request: "&a{player}님이 길드 가입을 요청했습니다. /guild invite  {player} 로  길드 가입 권유를 할수있습니다!"

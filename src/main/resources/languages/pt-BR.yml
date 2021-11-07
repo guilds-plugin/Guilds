@@ -100,6 +100,8 @@ create:
 chat:
   toggled-on: "{type} chat toggled on."
   toggled-off: "{type} chat toggled off."
+  type-guild: "Guild"
+  type-ally: "Ally"
 request:
   success: "&aVocê pediu para entrar em {guild} com sucesso"
   incoming-request: "&a{player} está solicitando participar da guild, Mande um convite para eles utilizando o comando /guild invite {player}!"
