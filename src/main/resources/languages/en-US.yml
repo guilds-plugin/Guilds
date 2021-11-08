@@ -353,6 +353,7 @@ acf-core:
   unknown_command: "Unknown Command, please type <c2>/help</c2>"
   error_performing_command: "I'm sorry, but there was an error performing this command."
   help_format: "<c1>/{command}</c1> <c2>{parameters}</c2> <c3>{separator} {description}</c3>"
+  help_page_information: "Showing page <c2>{page}</c2> of <c2>{totalpages}</c2> (<c3>{results}</c3> results)."
 migrate:
   invalid-backend: "&cThe backend you've attempted to migrate to is invalid."
   connection-failed: "&cConnecting to the new backend failed! Make sure your authentication is properly configured!"
