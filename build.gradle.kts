@@ -39,68 +39,31 @@ repositories {
         content { includeGroup("org.codemc.worldguardwrapper") }
     }
     maven("https://repo.glaremasters.me/repository/public/")
-
 }
 
-
 dependencies {
-
-    // Slimjar
     implementation("io.github.slimjar:slimjar:1.2.6")
-
-    // Command Handling
     implementation("co.aikar:acf-paper:0.5.0-SNAPSHOT")
-
-    // Bstats Data Collecting
     implementation("org.bstats:bstats-bukkit:2.2.1")
-
-    // Taskchain Scheduling
     implementation("co.aikar:taskchain-bukkit:3.7.2")
-
-    // Worldguard Claim Handling
     implementation("org.codemc.worldguardwrapper:worldguardwrapper:1.1.9-SNAPSHOT")
-
-    // Configuration Lib
     implementation("ch.jalu:configme:1.3.0")
-
-    // Serializing Inventories via JSON
     implementation("com.dumptruckman.minecraft:JsonConfiguration:1.1")
-
-    // Cross-Version Support
     implementation("com.github.cryptomorin:XSeries:8.4.0")
-
-    // Adventure
     implementation("net.kyori:adventure-platform-bukkit:4.0.0")
-
-    // GUI Lib
     implementation("dev.triumphteam:triumph-gui:3.0.4")
-
-    // Vault Support
-    compileOnly("net.milkbowl:vault:1.7")
-
-    // Database Stuff
     implementation("com.zaxxer:HikariCP:4.0.3")
     implementation("org.jdbi:jdbi3-core:3.8.2")
     implementation("org.jdbi:jdbi3-sqlobject:3.8.2")
     implementation("org.mariadb.jdbc:mariadb-java-client:2.7.2")
-
-
-
-    // Logger
     implementation("org.slf4j:slf4j-api:1.7.25")
 
-    // Kotlin collections
-    slim("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-
-    // Bukkit Version
     compileOnly("org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT")
-
-    // Mojang Library
+    compileOnly("net.milkbowl:vault:1.7")
     compileOnly("com.mojang:authlib:1.5.25")
-
-    // PlaceholderAPI
     compileOnly("me.clip:placeholderapi:2.10.10")
 
+    slim("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 }
 
 tasks {
