@@ -69,7 +69,6 @@ public class CooldownHandler {
 
     /**
      * Save the cooldowns
-     * @throws IOException
      */
     public void saveCooldowns() {
         guilds.getDatabase().getCooldownAdapter().saveCooldowns(cooldowns.values());
