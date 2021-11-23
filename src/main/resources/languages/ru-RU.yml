@@ -100,8 +100,8 @@ create:
 chat:
   toggled-on: "Чат {type} включен."
   toggled-off: "Чат {type} выключен."
-  type-guild: "Гильдия"
-  type-ally: "Союзник"
+  type-guild: "гильдии"
+  type-ally: "союзников"
 request:
   success: "&aВы успешно запросили приглашение от {guild}"
   incoming-request: "&a{player} просит вступить в гильдию. Отправьте ему приглашение используя /guild invite {player}!"
