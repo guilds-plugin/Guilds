@@ -1,17 +1,18 @@
 import com.github.jengelman.gradle.plugins.shadow.ShadowPlugin
 import net.kyori.indra.IndraPlugin
+import net.kyori.indra.IndraPublishingPlugin
 
 plugins {
     id("java")
-    id("maven-publish")
     id("org.jetbrains.kotlin.jvm") version "1.6.10"
     id("net.kyori.indra") version "2.0.6"
+    id("net.kyori.indra.publishing") version "2.0.6"
     id("com.github.johnrengelman.shadow") version "7.1.1"
     id("io.github.slimjar") version "1.3.0"
 }
 
 group = "me.glaremasters"
-version = "3.5.6.3-DEV"
+version = "3.5.6.3-SNAPSHOT"
 
 base {
     archivesBaseName = "Guilds"
@@ -20,6 +21,7 @@ base {
 apply {
     plugin<ShadowPlugin>()
     plugin<IndraPlugin>()
+    plugin<IndraPublishingPlugin>()
 }
 
 repositories {
@@ -61,7 +63,7 @@ dependencies {
     compileOnly("org.spigotmc:spigot-api:1.18.1-R0.1-SNAPSHOT")
     compileOnly("net.milkbowl:vault:1.7")
     compileOnly("com.mojang:authlib:1.5.25")
-    compileOnly("me.clip:placeholderapi:2.10.10")
+    compileOnly("me.clip:placeholderapi:2.11.0")
 
     slim("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 }
@@ -79,7 +81,11 @@ tasks {
             target(8)
         }
 
-        github("guilds-plugin", "guilds")
+        github("guilds-plugin", "guilds") {
+            publishing(true)
+        }
+
+        publishAllTo("guilds", "https://repo.glaremasters.me/repository/guilds/")
     }
 
     compileKotlin {
