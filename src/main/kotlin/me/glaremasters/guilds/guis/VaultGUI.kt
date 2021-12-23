@@ -63,7 +63,7 @@ class VaultGUI(private val guilds: Guilds, private val settingsManager: Settings
      * @param guild the guild of the player
      */
     private fun addItems(gui: Gui, guild: Guild, player: Player) {
-        val max = guildHandler.getGuildTier(guild.tier.level).vaultAmount
+        val max = guildHandler.getGuildTier(guild.tier.level)?.vaultAmount!!
         for (i in 0 until max) {
             val status = if (guildHandler.hasVaultUnlocked(i + 1, guild)) settingsManager.getProperty(VaultPickerSettings.PICKER_UNLOCKED) else settingsManager.getProperty(VaultPickerSettings.PICKER_LOCKED)
 

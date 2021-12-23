@@ -61,7 +61,7 @@ class InfoGUI(private val guilds: Guilds, private val settingsManager: SettingsM
     }
 
     private fun addItems(gui: Gui, guild: Guild, player: Player) {
-        val tier = guildHandler.getGuildTier(guild.tier.level)
+        val tier = guildHandler.getGuildTier(guild.tier.level)!!
 
         val statusMaterial = if (guild.isPrivate) settingsManager.getProperty(GuildInfoSettings.STATUS_MATERIAL_PRIVATE) else settingsManager.getProperty(GuildInfoSettings.STATUS_MATERIAL_PUBLIC)
         val statusString = if (guild.isPrivate) settingsManager.getProperty(GuildInfoSettings.STATUS_PRIVATE) else settingsManager.getProperty(GuildInfoSettings.STATUS_PUBLIC)
@@ -92,7 +92,7 @@ class InfoGUI(private val guilds: Guilds, private val settingsManager: SettingsM
         if (!settingsManager.getProperty(GuildInfoSettings.MEMBERS_DISPLAY)) {
             return
         }
-        val tier = guildHandler.getGuildTier(guild.tier.level)
+        val tier = guildHandler.getGuildTier(guild.tier.level)!!
         val item = GuiItem(GuiUtils.createItem(settingsManager.getProperty(GuildInfoSettings.MEMBERS_MATERIAL), settingsManager.getProperty(GuildInfoSettings.MEMBERS_NAME), settingsManager.getProperty(GuildInfoSettings.MEMBERS_LORE).map { l -> l.replace("{current}", guild.members.size.toString()).replace("{max}", tier.maxMembers.toString()).replace("{online}", guild.onlineMembers.size.toString()) }))
         item.setAction { event ->
             event.isCancelled = true

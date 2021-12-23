@@ -101,7 +101,7 @@ class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCo
                 return@addCondition
             }
             val player = exec.player
-            val guild = guildHandler.getGuild(player)
+            val guild = guildHandler.getGuild(player) ?: throw ExpectationNotMet(Messages.ERROR__PLAYER_NOT_IN_GUILD)
             if (!guild.memberHasPermission(player, c.getConfigValue("perm", "SERVER_OWNER"))) {
                 throw InvalidPermissionException()
             }
@@ -111,7 +111,7 @@ class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCo
                 return@addCondition
             }
             val player = exec.player
-            val guild = guildHandler.getGuild(player)
+            val guild = guildHandler.getGuild(player) ?: throw ExpectationNotMet(Messages.ERROR__PLAYER_NOT_IN_GUILD)
             if (guild.allies.size >= guild.tier.maxAllies) {
                 throw ExpectationNotMet(Messages.ALLY__MAX_ALLIES)
             }

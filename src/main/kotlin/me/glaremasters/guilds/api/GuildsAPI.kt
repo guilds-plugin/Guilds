@@ -27,6 +27,7 @@ import java.util.UUID
 import me.glaremasters.guilds.cooldowns.CooldownHandler
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
+import me.glaremasters.guilds.guild.GuildMember
 import me.glaremasters.guilds.guild.GuildRole
 import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
@@ -54,12 +55,32 @@ class GuildsAPI(val guildHandler: GuildHandler, val cooldownHandler: CooldownHan
     }
 
     /**
+     * Get a guild by a player's uuid
+     *
+     * @param uuid the uuid of the player
+     * @return the guild of the player or null
+     */
+    fun getGuildByPlayerId(uuid: UUID): Guild? {
+        return guildHandler.getGuildByPlayerId(uuid)
+    }
+
+    /**
      * Get a guild by it's name
      * @param name the name of the guild
      * @return the guild object
      */
     fun getGuild(name: String): Guild? {
         return guildHandler.getGuild(name)
+    }
+
+    /**
+     * Get a guild member by their uuid
+     *
+     * @param uuid the uuid of the player
+     * @return the guild member instance or null
+     */
+    fun getGuildMember(uuid: UUID): GuildMember? {
+        return guildHandler.getGuildMember(uuid)
     }
 
     /**

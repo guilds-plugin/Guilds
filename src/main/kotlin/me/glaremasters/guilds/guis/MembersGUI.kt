@@ -89,7 +89,7 @@ class MembersGUI(private val guilds: Guilds, private val settingsManager: Settin
                 false
             }
             val status = if (online) settingsManager.getProperty(GuildInfoMemberSettings.MEMBERS_ONLINE) else settingsManager.getProperty(GuildInfoMemberSettings.MEMBERS_OFFLINE)
-            val role = guildHandler.getGuildRole(member.role.level)
+            val role = guildHandler.getGuildRole(member.role.level)!!
             val name = member.name
             val updated = mutableListOf<String>()
 

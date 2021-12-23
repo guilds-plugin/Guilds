@@ -27,7 +27,6 @@ package me.glaremasters.guilds.guild;
 import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.ACFUtil;
-import co.aikar.commands.CommandManager;
 import co.aikar.commands.PaperCommandManager;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.configuration.sections.GuildSettings;
@@ -54,6 +53,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.codemc.worldguardwrapper.WorldGuardWrapper;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
@@ -221,6 +221,7 @@ public class GuildHandler {
      *
      * @return the guild object with given name
      */
+    @Nullable
     public Guild getGuild(@NotNull String name) {
         return guilds.stream().filter(guild -> ACFBukkitUtil.removeColors(guild.getName()).equals(name)).findFirst().orElse(null);
     }
@@ -230,8 +231,9 @@ public class GuildHandler {
      *
      * @return the guild object by player
      */
+    @Nullable
     public Guild getGuild(@NotNull OfflinePlayer p) {
-        return guilds.stream().filter(guild -> guild.getMember(p.getUniqueId()) != null).findFirst().orElse(null);
+        return getGuildByPlayerId(p.getUniqueId());
     }
 
     /**
@@ -240,8 +242,20 @@ public class GuildHandler {
      * @param uuid the input
      * @return the output
      */
+    @Nullable
     public Guild getGuild(@NotNull UUID uuid) {
         return guilds.stream().filter(guild -> guild.getId().equals(uuid)).findFirst().orElse(null);
+    }
+
+    /**
+     * Get a guild by a player's uuid
+     *
+     * @param uuid the uuid of the player
+     * @return the guild the player is in or null
+     */
+    @Nullable
+    public Guild getGuildByPlayerId(@NotNull final UUID uuid) {
+        return guilds.stream().filter(guild -> guild.getMember(uuid) != null).findFirst().orElse(null);
     }
 
     /**
@@ -250,8 +264,21 @@ public class GuildHandler {
      * @param code the invite code being used
      * @return the guild who the code belong to
      */
+    @Nullable
     public Guild getGuildByCode(@NotNull String code) {
         return guilds.stream().filter(guild -> guild.hasInviteCode(code)).findFirst().orElse(null);
+    }
+
+    /**
+     * Get an instance of the guild member object via their uuid
+     *
+     * @param uuid the uuid of the player
+     * @return the guild member object of the player or null
+     */
+    @Nullable
+    public GuildMember getGuildMember(@NotNull final UUID uuid) {
+        final Guild guild = getGuildByPlayerId(uuid);
+        return guild == null ? null : guild.getMember(uuid);
     }
 
     /**
@@ -270,6 +297,7 @@ public class GuildHandler {
      * @param level the level of the tier
      * @return the tier object if found
      */
+    @Nullable
     public GuildTier getGuildTier(int level) {
         return tiers.stream().filter(tier -> tier.getLevel() == level).findFirst().orElse(null);
     }
@@ -280,6 +308,7 @@ public class GuildHandler {
      * @param level the level of the role
      * @return the role object if found
      */
+    @Nullable
     public GuildRole getGuildRole(int level) {
         return roles.stream().filter(guildRole -> guildRole.getLevel() == level).findFirst().orElse(null);
     }

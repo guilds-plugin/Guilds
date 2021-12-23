@@ -128,7 +128,7 @@ internal class CommandCreate : BaseCommand() {
                 }
 
                 gb.status(Guild.Status.Private)
-                val master = GuildMember(id, guildHandler.getGuildRole(0))
+                val master = GuildMember(id, guildHandler.getGuildRole(0)!!)
                 master.joinDate = System.currentTimeMillis()
                 gb.guildMaster(master)
 

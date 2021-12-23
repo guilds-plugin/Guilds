@@ -71,7 +71,7 @@ internal class CommandUpgrade : BaseCommand() {
             throw ExpectationNotMet(Messages.UPGRADE__TIER_MAX)
         }
 
-        val tier = guildHandler.getGuildTier(guild.tier.level + 1)
+        val tier = guildHandler.getGuildTier(guild.tier.level + 1)!!
         val cost = tier.cost
 
         if (guildHandler.memberCheck(guild)) {

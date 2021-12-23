@@ -146,6 +146,6 @@ internal class CommandAlly : BaseCommand() {
         if (!guild.hasAllies()) {
             throw ExpectationNotMet(Messages.ALLY__NONE)
         }
-        currentCommandIssuer.sendInfo(Messages.ALLY__LIST, "{ally-list}", guild.allies.joinToString(", ") { guildHandler.getGuild(it).name })
+        currentCommandIssuer.sendInfo(Messages.ALLY__LIST, "{ally-list}", guild.allies.joinToString(", ") { guildHandler.getGuild(it)?.name!! })
     }
 }

@@ -35,6 +35,7 @@ import co.aikar.commands.annotation.Subcommand
 import co.aikar.commands.annotation.Syntax
 import java.util.concurrent.TimeUnit
 import me.glaremasters.guilds.Guilds
+import me.glaremasters.guilds.api.events.GuildSetHomeEvent
 import me.glaremasters.guilds.configuration.sections.CooldownSettings
 import me.glaremasters.guilds.configuration.sections.CostSettings
 import me.glaremasters.guilds.cooldowns.Cooldown
@@ -46,6 +47,7 @@ import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.Constants
 import me.glaremasters.guilds.utils.EconomyUtils
 import net.milkbowl.vault.economy.Economy
+import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 
 @CommandAlias("%guilds")
@@ -120,6 +122,13 @@ internal class CommandHome : BaseCommand() {
 
         if (!EconomyUtils.hasEnough(guild.balance, cost)) {
             throw ExpectationNotMet(Messages.BANK__NOT_ENOUGH_BANK)
+        }
+
+        val event = GuildSetHomeEvent(player, guild, player.location)
+        Bukkit.getPluginManager().callEvent(event)
+
+        if (event.isCancelled) {
+            return
         }
 
         cooldownHandler.addCooldown(player, cooldown, settingsManager.getProperty(CooldownSettings.SETHOME), TimeUnit.SECONDS)
