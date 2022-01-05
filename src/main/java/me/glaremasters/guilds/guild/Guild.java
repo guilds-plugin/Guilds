@@ -508,9 +508,6 @@ public class Guild {
 
         GuildRole gm = oldMaster.getRole();
 
-        if (newMaster.getRole().getLevel() != 1)
-            ACFUtil.sneaky(new ExpectationNotMet(Messages.ERROR__NOT_OFFICER));
-
         oldMaster.setRole(newMaster.getRole());
         newMaster.setRole(gm);
         setGuildMaster(newMaster);
