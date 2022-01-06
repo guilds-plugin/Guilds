@@ -7,7 +7,7 @@ plugins {
     id("org.jetbrains.kotlin.jvm") version "1.6.10"
     id("net.kyori.indra") version "2.0.6"
     id("net.kyori.indra.publishing") version "2.0.6"
-    id("com.github.johnrengelman.shadow") version "7.1.1"
+    id("com.github.johnrengelman.shadow") version "7.1.2"
     id("io.github.slimjar") version "1.3.0"
     id("xyz.jpenilla.run-paper") version "1.0.6"
 }
@@ -35,7 +35,6 @@ repositories {
         content { includeGroup("co.aikar") }
     }
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
-    maven("https://repo.mattstudios.me/artifactory/public/")
     maven("https://repo.mattstudios.me/artifactory/public/")
     maven("https://repo.vshnv.tech/")
     maven("https://repo.codemc.org/repository/maven-public/") {
