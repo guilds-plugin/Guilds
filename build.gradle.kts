@@ -9,6 +9,7 @@ plugins {
     id("net.kyori.indra.publishing") version "2.0.6"
     id("com.github.johnrengelman.shadow") version "7.1.1"
     id("io.github.slimjar") version "1.3.0"
+    id("xyz.jpenilla.run-paper") version "1.0.6"
 }
 
 group = "me.glaremasters"
@@ -95,6 +96,10 @@ tasks {
 
     compileJava {
         options.compilerArgs = listOf("-parameters")
+    }
+
+    runServer {
+        minecraftVersion("1.18.1")
     }
 
     shadowJar {

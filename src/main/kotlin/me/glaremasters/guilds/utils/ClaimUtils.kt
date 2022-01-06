@@ -57,7 +57,7 @@ object ClaimUtils {
 
     @JvmStatic
     fun claimPointOne(player: Player, settingsManager: SettingsManager): Location {
-        return player.location.subtract(getRadius(settingsManager).toDouble(), player.location.y, getRadius(settingsManager).toDouble())
+        return player.location.subtract(getRadius(settingsManager).toDouble(), player.location.y - player.world.minHeight, getRadius(settingsManager).toDouble())
     }
 
     @JvmStatic
