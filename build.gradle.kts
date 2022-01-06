@@ -53,7 +53,7 @@ dependencies {
     implementation("com.dumptruckman.minecraft:JsonConfiguration:1.1")
     implementation("com.github.cryptomorin:XSeries:8.5.0.1")
     implementation("net.kyori:adventure-platform-bukkit:4.0.1")
-    implementation("dev.triumphteam:triumph-gui:3.0.4")
+    implementation("dev.triumphteam:triumph-gui:3.0.5")
     implementation("com.zaxxer:HikariCP:4.0.3")
     implementation("org.jdbi:jdbi3-core:3.8.2")
     implementation("org.jdbi:jdbi3-sqlobject:3.8.2")
@@ -63,7 +63,7 @@ dependencies {
     compileOnly("org.spigotmc:spigot-api:1.18.1-R0.1-SNAPSHOT")
     compileOnly("net.milkbowl:vault:1.7")
     compileOnly("com.mojang:authlib:1.5.25")
-    compileOnly("me.clip:placeholderapi:2.10.10")
+    compileOnly("me.clip:placeholderapi:2.11.1")
 
     slim("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 }
