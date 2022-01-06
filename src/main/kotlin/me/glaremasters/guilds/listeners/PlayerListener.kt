@@ -34,9 +34,9 @@ import me.glaremasters.guilds.configuration.sections.PluginSettings
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.StringUtils
-import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.event.ClickEvent
 import net.kyori.adventure.text.event.HoverEvent
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
 import net.milkbowl.vault.permission.Permission
 import org.bukkit.Bukkit
 import org.bukkit.event.EventHandler
@@ -46,6 +46,7 @@ import org.bukkit.event.player.PlayerRespawnEvent
 
 class PlayerListener(private val guilds: Guilds, private val settingsManager: SettingsManager, private val guildHandler: GuildHandler, private val permission: Permission) : Listener {
     private val informed = mutableSetOf<UUID>()
+    private val serializer = LegacyComponentSerializer.legacySection()
 
     @EventHandler
     fun PlayerJoinEvent.onJoin() {
@@ -60,9 +61,9 @@ class PlayerListener(private val guilds: Guilds, private val settingsManager: Se
         }
         Guilds.newChain<Any>().delay(5, TimeUnit.SECONDS).async {
             try {
-                val hover = HoverEvent.showText(Component.text(StringUtils.getAnnouncements(guilds)))
+                val hover = HoverEvent.showText(serializer.deserialize(StringUtils.getAnnouncements(guilds)))
                 val click = ClickEvent.openUrl(guilds.description.website.toString())
-                val announcement = Component.text(StringUtils.color("&f[&aGuilds&f]&r Announcements (Hover over me for more information)")).clickEvent(click).hoverEvent(hover)
+                val announcement = serializer.deserialize("§f[§aGuilds§f]§r Announcements (Hover over me for more information)").clickEvent(click).hoverEvent(hover)
                 guilds.adventure.sender(player).sendMessage(announcement)
             } catch (e: IOException) {
                 e.printStackTrace()
