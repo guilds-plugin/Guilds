@@ -33,6 +33,7 @@ import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.codemc.worldguardwrapper.WorldGuardWrapper
+import org.codemc.worldguardwrapper.flag.WrappedState
 
 class WorldGuardListener(private val guildHandler: GuildHandler) : Listener {
 
@@ -40,27 +41,33 @@ class WorldGuardListener(private val guildHandler: GuildHandler) : Listener {
 
     @EventHandler
     fun BlockPlaceEvent.onPlace() {
-        val player = player
-        val loc = blockPlaced.location
         val guild = guildHandler.getGuild(player) ?: return
+        val region = wrapper.getRegions(block.location).firstOrNull { region -> region.id == guild.id.toString() } ?: return
+        val flagToCheck = wrapper.getFlag("block-place", WrappedState::class.java)
+        val blockPlace = flagToCheck.flatMap { region.getFlag(it) }
 
-        for (region in wrapper.getRegions(loc)) {
-            if (region.id == guild.id.toString()) {
-                isCancelled = !guild.memberHasPermission(player, GuildRolePerm.PLACE)
-            }
+        if (blockPlace.isPresent && blockPlace.get() == WrappedState.DENY) {
+            return
+        }
+
+        if (!guild.memberHasPermission(player, GuildRolePerm.PLACE)) {
+            isCancelled = true
         }
     }
 
     @EventHandler
     fun BlockBreakEvent.onBreak() {
-        val player = player
-        val loc = block.location
         val guild = guildHandler.getGuild(player) ?: return
+        val region = wrapper.getRegions(block.location).firstOrNull { region -> region.id == guild.id.toString() } ?: return
+        val flagToCheck = wrapper.getFlag("block-break", WrappedState::class.java)
+        val blockBreak = flagToCheck.flatMap { region.getFlag(it) }
 
-        for (region in wrapper.getRegions(loc)) {
-            if (region.id == guild.id.toString()) {
-                isCancelled = !guild.memberHasPermission(player, GuildRolePerm.DESTROY)
-            }
+        if (blockBreak.isPresent && blockBreak.get() == WrappedState.DENY) {
+            return
+        }
+
+        if (!guild.memberHasPermission(player, GuildRolePerm.DESTROY)) {
+            isCancelled = true
         }
     }
 
@@ -70,16 +77,12 @@ class WorldGuardListener(private val guildHandler: GuildHandler) : Listener {
         if (useInteractedBlock() == Event.Result.DENY) {
             return
         }
-        
-        val player = player
-        val loc = player.location
+
         val guild = guildHandler.getGuild(player) ?: return
+        val region = wrapper.getRegions(player.location).firstOrNull { region -> region.id == guild.id.toString() } ?: return
 
-
-        for (region in wrapper.getRegions(loc)) {
-            if (region.id == guild.id.toString() && !guild.memberHasPermission(player, GuildRolePerm.INTERACT)) {
-                setUseInteractedBlock(Event.Result.DENY)
-            }
+        if (!guild.memberHasPermission(player, GuildRolePerm.INTERACT)) {
+            setUseInteractedBlock(Event.Result.DENY)
         }
     }
 }
