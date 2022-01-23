@@ -2,7 +2,7 @@ name: Guilds
 version: ${version}
 main: me.glaremasters.guilds.Guilds
 authors: [Glare]
-softdepend: [Vault, MVdWPlaceholderAPI, WorldGuard, PlaceholderAPI, Essentials]
+softdepend: [Vault, WorldGuard, PlaceholderAPI, Essentials]
 api-version: 1.13
 description: Guilds
 website: https://glaremasters.me/discord
