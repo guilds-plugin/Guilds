@@ -56,7 +56,7 @@ dependencies {
     implementation("dev.triumphteam:triumph-gui:3.1.1")
     implementation("com.zaxxer:HikariCP:4.0.3")
     implementation("org.jdbi:jdbi3-core:3.8.2")
-    implementation("org.jdbi:jdbi3-sqlobject:3.8.2")
+    implementation("org.jdbi:jdbi3-sqlobject:3.27.1")
     implementation("org.mariadb.jdbc:mariadb-java-client:2.7.2")
     implementation("org.slf4j:slf4j-api:1.7.25")
 
