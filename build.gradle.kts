@@ -7,6 +7,7 @@ plugins {
     id("org.jetbrains.kotlin.jvm") version "1.6.10"
     id("net.kyori.indra") version "2.0.6"
     id("net.kyori.indra.publishing") version "2.0.6"
+    id("net.kyori.indra.license-header") version "2.0.6"
     id("com.github.johnrengelman.shadow") version "7.1.2"
     id("io.github.slimjar") version "1.3.0"
     id("xyz.jpenilla.run-paper") version "1.0.6"
@@ -101,6 +102,13 @@ tasks {
         minecraftVersion("1.18.1")
     }
 
+    license {
+        header.set(resources.text.fromFile(rootProject.file("LICENSE")))
+        exclude("me/glaremasters/guilds/scanner/ZISScanner.java")
+        exclude("me/glaremasters/guilds/updater/UpdateChecker.java")
+        exclude("me/glaremasters/guilds/utils/PremiumFun.java")
+    }
+
     shadowJar {
         fun relocates(vararg dependencies: String) {
             dependencies.forEach {
@@ -140,6 +148,7 @@ tasks {
             "org.jdbi",
             "org.mariadb.jdbc",
             "dev.triumphteam.gui",
+            "net.kyori"
         )
     }
 
