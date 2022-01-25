@@ -129,7 +129,7 @@ class BuffGUI(private val buffConfig: SettingsManager, private val cooldownHandl
         val potions = mutableSetOf<PotionEffect>()
         effects.forEach {
             val split = it.split(";")
-            val type = XPotion.matchXPotion(split[0]).get().parsePotionEffectType() ?: PotionEffectType.WATER_BREATHING
+            val type = XPotion.matchXPotion(split[0]).get().potionEffectType ?: PotionEffectType.WATER_BREATHING
             val amp = Integer.parseInt(split[1])
             val length = Integer.parseInt(split[2])
             potions.add(PotionEffect(type, (length * 20), amp))

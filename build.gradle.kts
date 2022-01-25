@@ -36,7 +36,6 @@ repositories {
         content { includeGroup("co.aikar") }
     }
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
-    maven("https://repo.mattstudios.me/artifactory/public/")
     maven("https://repo.vshnv.tech/")
     maven("https://repo.codemc.org/repository/maven-public/") {
         content { includeGroup("org.codemc.worldguardwrapper") }
@@ -52,9 +51,9 @@ dependencies {
     implementation("org.codemc.worldguardwrapper:worldguardwrapper:1.1.9-SNAPSHOT")
     implementation("ch.jalu:configme:1.3.0")
     implementation("com.dumptruckman.minecraft:JsonConfiguration:1.1")
-    implementation("com.github.cryptomorin:XSeries:8.5.0.1")
+    implementation("com.github.cryptomorin:XSeries:8.6.0.0.1")
     implementation("net.kyori:adventure-platform-bukkit:4.0.1")
-    implementation("dev.triumphteam:triumph-gui:3.0.5")
+    implementation("dev.triumphteam:triumph-gui:3.1.1")
     implementation("com.zaxxer:HikariCP:4.0.3")
     implementation("org.jdbi:jdbi3-core:3.8.2")
     implementation("org.jdbi:jdbi3-sqlobject:3.8.2")
