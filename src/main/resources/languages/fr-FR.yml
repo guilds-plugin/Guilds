@@ -27,7 +27,7 @@ descriptions:
   admin-vault: "Commande administrateur pour voir le coffre fort d'une guilde"
   ally-accept: "Accepter une proposition d'alliance d'une autre guilde"
   ally-add: "Ajouter une guilde en alliée"
-  ally-chat: "Toggles ally chat"
+  ally-chat: "Afficher le chat de guilde"
   ally-decline: "Refuser une invitation d'alliance d'une autre guilde"
   ally-list: "Lister des alliés de votre guilde"
   ally-remove: "Supprimer une alliance avec une guilde"
