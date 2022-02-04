@@ -57,7 +57,8 @@ dependencies {
     implementation("com.zaxxer:HikariCP:4.0.3")
     implementation("org.jdbi:jdbi3-core:3.8.2")
     implementation("org.jdbi:jdbi3-sqlobject:3.8.2")
-    implementation("org.mariadb.jdbc:mariadb-java-client:2.7.2")
+    implementation("org.mariadb.jdbc:mariadb-java-client:2.7.4")
+    slim("mysql:mysql-connector-java:8.0.26")
     implementation("org.slf4j:slf4j-api:1.7.25")
 
     compileOnly("org.spigotmc:spigot-api:1.18.1-R0.1-SNAPSHOT")
@@ -121,7 +122,9 @@ tasks {
             "io.github.slimjar"
         )
 
-        minimize()
+       minimize {
+           exclude(dependency("org.mariadb.jdbc:mariadb-java-client:2.7.4"))
+       }
 
         archiveClassifier.set(null as String?)
         archiveFileName.set("Guilds-${project.version}.jar")
@@ -146,6 +149,7 @@ tasks {
             "com.zaxxer.hikari",
             "org.jdbi",
             "org.mariadb.jdbc",
+            "com.mysql",
             "dev.triumphteam.gui",
             "net.kyori"
         )

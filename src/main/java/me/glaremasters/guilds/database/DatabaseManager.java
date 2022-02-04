@@ -24,95 +24,57 @@
 package me.glaremasters.guilds.database;
 
 import ch.jalu.configme.SettingsManager;
-import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import me.glaremasters.guilds.configuration.sections.StorageSettings;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.sqlobject.SqlObjectPlugin;
 
 public class DatabaseManager {
-    private Jdbi jdbi = null;
-    private HikariDataSource hikari = null;
-    private String dataSourceName;
+    private final Jdbi jdbi;
+    private final HikariDataSource hikari;
 
     public DatabaseManager(SettingsManager settingsManager, DatabaseBackend backend) {
-        HikariConfig config = new HikariConfig();
+        this.hikari = new HikariDataSource();
 
-        config.setMaximumPoolSize(settingsManager.getProperty(StorageSettings.SQL_POOL_SIZE));
-        config.setMinimumIdle(settingsManager.getProperty(StorageSettings.SQL_POOL_IDLE));
-        config.setMaxLifetime(settingsManager.getProperty(StorageSettings.SQL_POOL_LIFETIME));
-        config.setConnectionTimeout(settingsManager.getProperty(StorageSettings.SQL_POOL_TIMEOUT));
+        final String databaseName = settingsManager.getProperty(StorageSettings.SQL_DATABASE);
 
-        String databaseName = settingsManager.getProperty(StorageSettings.SQL_DATABASE);
-        switch (backend) {
-            case MYSQL:
-                config.setPoolName("Guilds MySQL Connection Pool");
-                if (dataSourceName == null) {
-                    tryDataSourceName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
-                }
-                if (dataSourceName == null) {
-                    tryDataSourceName("com.mysql.cj.jdbc.MysqlDataSource");
-                }
-                config.setDataSourceClassName(dataSourceName);
-                config.addDataSourceProperty("serverName", settingsManager.getProperty(StorageSettings.SQL_HOST));
-                config.addDataSourceProperty("port", settingsManager.getProperty(StorageSettings.SQL_PORT));
-                config.addDataSourceProperty("databaseName", databaseName);
-                config.addDataSourceProperty("user", settingsManager.getProperty(StorageSettings.SQL_USERNAME));
-                config.addDataSourceProperty("password", settingsManager.getProperty(StorageSettings.SQL_PASSWORD));
-                config.addDataSourceProperty("useSSL", settingsManager.getProperty(StorageSettings.SQL_ENABLE_SSL));
-                break;
-            case SQLITE:
-                config.setPoolName("Guilds SQLite Connection Pool");
-                config.setJdbcUrl("jdbc:sqlite:plugins/Guilds/guilds.db");
-                break;
-            case MARIADB:
-                config.setPoolName("Guilds MariaDB Connection Pool");
-                config.setDataSourceClassName("org.mariadb.jdbc.MariaDbDataSource");
-                config.addDataSourceProperty("serverName", settingsManager.getProperty(StorageSettings.SQL_HOST));
-                config.addDataSourceProperty("port", settingsManager.getProperty(StorageSettings.SQL_PORT));
-                config.addDataSourceProperty("databaseName", databaseName);
-                config.addDataSourceProperty("user", settingsManager.getProperty(StorageSettings.SQL_USERNAME));
-                config.addDataSourceProperty("password", settingsManager.getProperty(StorageSettings.SQL_PASSWORD));
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid backend for DatabaseManager setup: " + backend.getBackendName());
+        hikari.setMaximumPoolSize(settingsManager.getProperty(StorageSettings.SQL_POOL_SIZE));
+        hikari.setMinimumIdle(settingsManager.getProperty(StorageSettings.SQL_POOL_IDLE));
+        hikari.setMaxLifetime(settingsManager.getProperty(StorageSettings.SQL_POOL_LIFETIME));
+        hikari.setConnectionTimeout(settingsManager.getProperty(StorageSettings.SQL_POOL_TIMEOUT));
+
+        if (backend == DatabaseBackend.SQLITE) {
+            hikari.setPoolName("Guilds SQLite Connection Pool");
+            hikari.setJdbcUrl("jdbc:sqlite:plugins/Guilds/guilds.db");
+        } else {
+            hikari.setPoolName("Guilds MySQL Pool");
+            hikari.setJdbcUrl("jdbc:mysql://" + settingsManager.getProperty(StorageSettings.SQL_HOST) + ":" + settingsManager.getProperty(StorageSettings.SQL_PORT) + "/" + databaseName);
+            hikari.setUsername(settingsManager.getProperty(StorageSettings.SQL_USERNAME));
+            hikari.setPassword(settingsManager.getProperty(StorageSettings.SQL_PASSWORD));
+            hikari.addDataSourceProperty("useSSL", settingsManager.getProperty(StorageSettings.SQL_ENABLE_SSL));
+            hikari.addDataSourceProperty("characterEncoding", "utf8");
+            hikari.addDataSourceProperty("encoding", "UTF-8");
+            hikari.addDataSourceProperty("useUnicode", "true");
+
+            // Random stuff
+            hikari.addDataSourceProperty("rewriteBatchedStatements", "true");
+            hikari.addDataSourceProperty("jdbcCompliantTruncation", "false");
+
+            // Caching
+            hikari.addDataSourceProperty("cachePrepStmts", "true");
+            hikari.addDataSourceProperty("prepStmtCacheSize", "275");
+            hikari.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+
+            hikari.addDataSourceProperty("allowPublicKeyRetrieval", true);
+
+            if (backend == DatabaseBackend.MYSQL) {
+                hikari.setDriverClassName("me.glaremasters.guilds.libs.mysql.cj.jdbc.Driver");
+            } else if (backend == DatabaseBackend.MARIADB) {
+                hikari.setDriverClassName("me.glaremasters.guilds.libs.jdbc.Driver");
+            }
         }
 
-        HikariDataSource hikari;
-        try {
-            hikari = new HikariDataSource(config);
-        } catch (Exception ex) {
-            // TODO: send that the database connection has failed; probably must check 1) their host or 2) the settings
-            return;
-        }
-
-        jdbi = Jdbi.create(hikari);
-        jdbi.installPlugin(new SqlObjectPlugin());
-
-        this.hikari = hikari;
-    }
-
-    /**
-     * Helper method to try a data source until the right one is found
-     * @param className the class to try
-     */
-    public void tryDataSourceName(final String className) {
-        try {
-            dataSourceName(className);
-        } catch (Exception ignored) {}
-    }
-
-    /**
-     * Helper method to check if a class exists to use for mysql data sourcing
-     * @param className the class to check
-     */
-    private void dataSourceName(final String className) {
-        try {
-            Class.forName(className);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        this.dataSourceName = className;
+        this.jdbi = Jdbi.create(hikari).installPlugin(new SqlObjectPlugin());
     }
 
     public final boolean isConnected() {

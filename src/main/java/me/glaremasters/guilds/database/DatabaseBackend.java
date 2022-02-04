@@ -25,22 +25,18 @@ package me.glaremasters.guilds.database;
 
 import me.glaremasters.guilds.database.arenas.ArenaProvider;
 import me.glaremasters.guilds.database.arenas.provider.ArenaJsonProvider;
-import me.glaremasters.guilds.database.arenas.provider.ArenaMariaDBProvider;
 import me.glaremasters.guilds.database.arenas.provider.ArenaMySQLProvider;
 import me.glaremasters.guilds.database.arenas.provider.ArenaSQLiteProvider;
 import me.glaremasters.guilds.database.challenges.ChallengeProvider;
 import me.glaremasters.guilds.database.challenges.provider.ChallengeJsonProvider;
-import me.glaremasters.guilds.database.challenges.provider.ChallengeMariaDBProvider;
 import me.glaremasters.guilds.database.challenges.provider.ChallengeMySQLProvider;
 import me.glaremasters.guilds.database.challenges.provider.ChallengeSQLiteProvider;
 import me.glaremasters.guilds.database.cooldowns.CooldownProvider;
 import me.glaremasters.guilds.database.cooldowns.provider.CooldownJsonProvider;
-import me.glaremasters.guilds.database.cooldowns.provider.CooldownMariaDBProvider;
 import me.glaremasters.guilds.database.cooldowns.provider.CooldownMySQLProvider;
 import me.glaremasters.guilds.database.cooldowns.provider.CooldownSQLiteProvider;
 import me.glaremasters.guilds.database.guild.GuildProvider;
 import me.glaremasters.guilds.database.guild.provider.GuildJsonProvider;
-import me.glaremasters.guilds.database.guild.provider.GuildMariaDBProvider;
 import me.glaremasters.guilds.database.guild.provider.GuildMySQLProvider;
 import me.glaremasters.guilds.database.guild.provider.GuildSQLiteProvider;
 
@@ -50,7 +46,7 @@ public enum DatabaseBackend {
     JSON("json", GuildJsonProvider.class, ChallengeJsonProvider.class, ArenaJsonProvider.class, CooldownJsonProvider.class),
     MYSQL("mysql", GuildMySQLProvider.class, ChallengeMySQLProvider.class, ArenaMySQLProvider.class, CooldownMySQLProvider.class),
     SQLITE("sqlite", GuildSQLiteProvider.class, ChallengeSQLiteProvider.class, ArenaSQLiteProvider.class, CooldownSQLiteProvider.class),
-    MARIADB("mariadb", GuildMariaDBProvider.class, ChallengeMariaDBProvider.class, ArenaMariaDBProvider.class, CooldownMariaDBProvider.class);
+    MARIADB("mariadb", GuildMySQLProvider.class, ChallengeMySQLProvider.class, ArenaMySQLProvider.class, CooldownMySQLProvider.class);
     private final String backendName;
     private final Class<? extends GuildProvider> guildProvider;
     private final Class<? extends ChallengeProvider> challengeProvider;
