@@ -45,7 +45,7 @@ repositories {
 
 dependencies {
     implementation("io.github.slimjar:slimjar:1.2.7")
-    implementation("co.aikar:acf-paper:0.5.0-SNAPSHOT")
+    implementation("co.aikar:acf-paper:0.5.1-SNAPSHOT")
     implementation("org.bstats:bstats-bukkit:3.0.0")
     implementation("co.aikar:taskchain-bukkit:3.7.2")
     implementation("org.codemc.worldguardwrapper:worldguardwrapper:1.1.9-SNAPSHOT")
