@@ -4,7 +4,7 @@ import net.kyori.indra.IndraPublishingPlugin
 
 plugins {
     id("java")
-    id("org.jetbrains.kotlin.jvm") version "1.6.10"
+    id("org.jetbrains.kotlin.jvm") version "1.6.20"
     id("net.kyori.indra") version "2.1.0"
     id("net.kyori.indra.publishing") version "2.1.0"
     id("net.kyori.indra.license-header") version "2.1.0"
@@ -45,13 +45,13 @@ repositories {
 
 dependencies {
     implementation("io.github.slimjar:slimjar:1.2.7")
-    implementation("co.aikar:acf-paper:0.5.0-SNAPSHOT")
+    implementation("co.aikar:acf-paper:0.5.1-SNAPSHOT")
     implementation("org.bstats:bstats-bukkit:3.0.0")
     implementation("co.aikar:taskchain-bukkit:3.7.2")
     implementation("org.codemc.worldguardwrapper:worldguardwrapper:1.1.9-SNAPSHOT")
     implementation("ch.jalu:configme:1.3.0")
     implementation("com.dumptruckman.minecraft:JsonConfiguration:1.1")
-    implementation("com.github.cryptomorin:XSeries:8.6.2")
+    implementation("com.github.cryptomorin:XSeries:8.7.1")
     implementation("net.kyori:adventure-platform-bukkit:4.1.0")
     implementation("dev.triumphteam:triumph-gui:3.1.2")
     implementation("com.zaxxer:HikariCP:4.0.3")
