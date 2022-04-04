@@ -5,7 +5,7 @@ import net.kyori.indra.IndraPublishingPlugin
 plugins {
     id("java")
     id("org.jetbrains.kotlin.jvm") version "1.6.20"
-    id("net.kyori.indra") version "2.1.0"
+    id("net.kyori.indra") version "2.1.1"
     id("net.kyori.indra.publishing") version "2.1.0"
     id("net.kyori.indra.license-header") version "2.1.0"
     id("com.github.johnrengelman.shadow") version "7.1.2"
