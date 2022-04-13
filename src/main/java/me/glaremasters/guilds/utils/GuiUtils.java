@@ -23,10 +23,13 @@
  */
 package me.glaremasters.guilds.utils;
 
+import com.cryptomorin.xseries.SkullUtils;
 import com.cryptomorin.xseries.XMaterial;
+import me.glaremasters.guilds.guild.GuildMember;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -55,9 +58,32 @@ public class GuiUtils {
         ItemBuilder builder = new ItemBuilder(item);
         builder.setName(StringUtils.color(name));
         if (!lore.isEmpty()) {
-            builder.setLore(lore.stream().map(StringUtils ::color).collect(Collectors.toList()));
+            builder.setLore(lore.stream().map(StringUtils::color).collect(Collectors.toList()));
         }
         builder.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+
         return builder.build();
+    }
+
+    /**
+     * Creates a skull item of the player in the guild
+     *
+     * @param member the GuildMember instace of a player
+     * @param name   the name for the item
+     * @param lore   the lore for the item
+     * @return formatted skull texture of a member
+     */
+    public static ItemStack createSkullItem(GuildMember member, String name, List<String> lore) {
+        final ItemStack head = XMaterial.PLAYER_HEAD.parseItem();
+        final ItemMeta meta = head.getItemMeta();
+        SkullUtils.applySkin(meta, member.getTexture());
+
+        meta.setDisplayName(StringUtils.color(name));
+        if (!lore.isEmpty()) {
+            meta.setLore(lore.stream().map(StringUtils::color).collect(Collectors.toList()));
+        }
+        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        head.setItemMeta(meta);
+        return head;
     }
 }

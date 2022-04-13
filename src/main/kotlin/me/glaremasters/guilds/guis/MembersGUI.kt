@@ -101,7 +101,12 @@ class MembersGUI(private val guilds: Guilds, private val settingsManager: Settin
                         .replace("{status}", status))
             }
 
-            val item = GuiItem(GuiUtils.createItem(settingsManager.getProperty(GuildInfoMemberSettings.MEMBERS_MATERIAL), settingsManager.getProperty(GuildInfoMemberSettings.MEMBERS_NAME).replace("{player}", name.toString()), updated))
+            val item = if (!member.texture.isNullOrEmpty()) {
+                GuiItem(GuiUtils.createSkullItem(member, settingsManager.getProperty(GuildInfoMemberSettings.MEMBERS_NAME).replace("{player}", name.toString()), updated))
+            } else {
+                GuiItem(GuiUtils.createItem(settingsManager.getProperty(GuildInfoMemberSettings.MEMBERS_MATERIAL), settingsManager.getProperty(GuildInfoMemberSettings.MEMBERS_NAME).replace("{player}", name.toString()), updated))
+            }
+
             item.setAction { event ->
                 event.isCancelled = true
             }

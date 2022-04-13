@@ -24,10 +24,12 @@
 package me.glaremasters.guilds.listeners
 
 import ch.jalu.configme.SettingsManager
+import com.cryptomorin.xseries.SkullUtils
 import java.io.IOException
 import java.util.UUID
 import java.util.concurrent.TimeUnit
 import me.glaremasters.guilds.Guilds
+import me.glaremasters.guilds.configuration.sections.GuildListSettings
 import me.glaremasters.guilds.configuration.sections.GuildSettings
 import me.glaremasters.guilds.configuration.sections.PluginSettings
 import me.glaremasters.guilds.guild.GuildHandler
@@ -105,6 +107,17 @@ class PlayerListener(private val guilds: Guilds, private val settingsManager: Se
         }
 
         guild.updateGuildSkull(player, settingsManager)
+    }
+
+    @EventHandler
+    fun PlayerJoinEvent.onMemberSkullUpdate() {
+        if (!settingsManager.getProperty(GuildListSettings.USE_DEFAULT_TEXTURE)) {
+            val guild = guildHandler.getGuild(player) ?: return
+            val member = guild.getMember(player.uniqueId)
+            val skull = SkullUtils.getSkull(member.uuid)
+            val texture = SkullUtils.getSkinValue(skull.itemMeta!!)
+            member.texture = texture!!
+        }
     }
 
     @EventHandler
