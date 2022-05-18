@@ -1,6 +1,6 @@
 ---
 descriptions:
-  accept: "Accept a guild invite"
+  accept: "接受公會邀請"
   admin-addplayer: "Admin command to add a player to a Guild"
   admin-bank-balance: "Admin command to view a guild's bank balance"
   admin-bank-deposit: "以管理员身份为公会银行增加钱款"
