@@ -1,8 +1,8 @@
 ---
 descriptions:
-  accept: "接受公会邀请"
-  admin-addplayer: "以管理员身份强制将玩家添加到公会"
-  admin-bank-balance: "以管理员身份查看公会财产"
+  accept: "接受公會邀請"
+  admin-addplayer: "Admin command to add a player to a Guild"
+  admin-bank-balance: "Admin command to view a guild's bank balance"
   admin-bank-deposit: "以管理员身份为公会银行增加钱款"
   admin-bank-withdraw: "以管理员身份从公会银行拿出钱款"
   admin-claim: "以管理员身份为公会占地"
