@@ -44,7 +44,7 @@ import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.Constants
 import me.glaremasters.guilds.utils.PlayerUtils
-import org.apache.commons.lang.RandomStringUtils
+import org.apache.commons.lang3.RandomStringUtils
 import org.bukkit.entity.Player
 
 @CommandAlias("%guilds")

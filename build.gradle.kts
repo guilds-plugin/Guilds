@@ -4,7 +4,7 @@ import net.kyori.indra.IndraPublishingPlugin
 
 plugins {
     id("java")
-    id("org.jetbrains.kotlin.jvm") version "1.6.20"
+    id("org.jetbrains.kotlin.jvm") version "1.7.0"
     id("net.kyori.indra") version "2.1.1"
     id("net.kyori.indra.publishing") version "2.1.1"
     id("net.kyori.indra.license-header") version "2.1.1"
@@ -51,16 +51,17 @@ dependencies {
     implementation("org.codemc.worldguardwrapper:worldguardwrapper:1.1.9-SNAPSHOT")
     implementation("ch.jalu:configme:1.3.0")
     implementation("com.dumptruckman.minecraft:JsonConfiguration:1.1")
-    implementation("com.github.cryptomorin:XSeries:8.7.1")
-    implementation("net.kyori:adventure-platform-bukkit:4.1.0")
+    implementation("com.github.cryptomorin:XSeries:8.8.0")
+    implementation("net.kyori:adventure-platform-bukkit:4.1.1")
     implementation("dev.triumphteam:triumph-gui:3.1.2")
     implementation("com.zaxxer:HikariCP:4.0.3")
     implementation("org.jdbi:jdbi3-core:3.8.2")
     implementation("org.jdbi:jdbi3-sqlobject:3.8.2")
     implementation("org.mariadb.jdbc:mariadb-java-client:2.7.2")
     implementation("org.slf4j:slf4j-api:1.7.25")
+    implementation("org.apache.commons:commons-lang3:3.12.0")
 
-    compileOnly("org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot-api:1.19-R0.1-SNAPSHOT")
     compileOnly("net.milkbowl:vault:1.7")
     compileOnly("com.mojang:authlib:1.5.25")
     compileOnly("me.clip:placeholderapi:2.11.1")
