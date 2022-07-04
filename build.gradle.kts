@@ -64,7 +64,7 @@ dependencies {
     compileOnly("org.spigotmc:spigot-api:1.19-R0.1-SNAPSHOT")
     compileOnly("net.milkbowl:vault:1.7")
     compileOnly("com.mojang:authlib:1.5.25")
-    compileOnly("me.clip:placeholderapi:2.11.1")
+    compileOnly("me.clip:placeholderapi:2.11.2")
 
     slim("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 }
