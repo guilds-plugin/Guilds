@@ -32,9 +32,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 public final class StringUtils {
+
+    private static final String ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
     private StringUtils() {
         throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
@@ -63,6 +66,17 @@ public final class StringUtils {
             announcement = "Could not fetch announcements!";
         }
         return announcement;
+    }
+
+    public static String generateString(int length) {
+        final Random random = new Random();
+        final StringBuilder builder = new StringBuilder(length);
+
+        for (int i = 0; i < length; i++) {
+            builder.append(ALPHABET.charAt(random.nextInt(ALPHABET.length())));
+        }
+
+        return builder.toString();
     }
 
     /**
