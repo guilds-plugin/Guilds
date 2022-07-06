@@ -70,9 +70,9 @@ public class ChatListener implements Listener {
         event.setCancelled(true);
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onChatMonitor(final AsyncPlayerChatEvent event) {
-        if (!event.isCancelled()) { //Event should already be cancelled in Lowest Priority
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onChatHighest(final AsyncPlayerChatEvent event) {
+        if (event.isCancelled()) { //Event should already be cancelled in Lowest Priority
             return;
         }
 
