@@ -8,7 +8,6 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.configuration.sections.PluginSettings;
-import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
@@ -40,7 +39,7 @@ public final class UpdateChecker {
         if (firstSplit == null || secondSplit == null) return null;
 
         for (int i = 0; i < Math.min(firstSplit.length, secondSplit.length); i++) {
-            int currentValue = NumberUtils.toInt(firstSplit[i]), newestValue = NumberUtils.toInt(secondSplit[i]);
+            int currentValue = toInt(firstSplit[i], 0), newestValue = toInt(secondSplit[i], 0);
 
             if (newestValue > currentValue) {
                 return second;
@@ -307,6 +306,17 @@ public final class UpdateChecker {
             return newestVersion;
         }
 
+    }
+
+    public static int toInt(final String str, final int defaultValue) {
+        if (str == null) {
+            return defaultValue;
+        }
+        try {
+            return Integer.parseInt(str);
+        } catch (final NumberFormatException nfe) {
+            return defaultValue;
+        }
     }
 
     /**

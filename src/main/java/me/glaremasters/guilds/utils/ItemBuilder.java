@@ -23,7 +23,7 @@
  */
 package me.glaremasters.guilds.utils;
 
-import org.apache.commons.lang.Validate;
+import com.google.common.base.Preconditions;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
@@ -52,7 +52,7 @@ public class ItemBuilder {
     public ItemBuilder(@NotNull ItemStack item) {
         this.item = item;
         meta = item.getItemMeta();
-        Validate.notNull(meta, "Item/material must have ItemMeta");
+        Preconditions.checkArgument(meta != null, "Item/material must have ItemMeta");
     }
 
     /**

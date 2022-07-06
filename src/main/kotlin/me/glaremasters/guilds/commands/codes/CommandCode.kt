@@ -44,7 +44,7 @@ import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.Constants
 import me.glaremasters.guilds.utils.PlayerUtils
-import org.apache.commons.lang.RandomStringUtils
+import me.glaremasters.guilds.utils.StringUtils
 import org.bukkit.entity.Player
 
 @CommandAlias("%guilds")
@@ -65,7 +65,7 @@ internal class CommandCode : BaseCommand() {
             throw ExpectationNotMet(Messages.CODES__MAX)
         }
 
-        val code = RandomStringUtils.randomAlphabetic(settingsManager.getProperty(CodeSettings.CODE_LENGTH))
+        val code = StringUtils.generateString(settingsManager.getProperty(CodeSettings.CODE_LENGTH))
 
         guild.addCode(code, uses, player)
 

@@ -125,7 +125,7 @@ public class EntityListener implements Listener {
         Player damager = (Player) event.getDamager();
 
         // Check if they are the same guild
-        if (guildHandler.isSameGuild(player, damager) && !player.hasPermission("guilds.ffa")) {
+        if (guildHandler.isSameGuild(player, damager) && !player.hasPermission("guilds.ffa.guild")) {
             event.setCancelled(!settingsManager.getProperty(GuildSettings.GUILD_DAMAGE));
             return;
         }
@@ -142,7 +142,7 @@ public class EntityListener implements Listener {
             }
         }
 
-        if (guildHandler.isAlly(player, damager)) {
+        if (guildHandler.isAlly(player, damager) && !player.hasPermission("guilds.ffa.ally")) {
             event.setCancelled(!settingsManager.getProperty(GuildSettings.ALLY_DAMAGE));
         }
     }
@@ -166,12 +166,12 @@ public class EntityListener implements Listener {
         Player damaged = (Player) event.getEntity();
         Player damager = (Player) projectile.getShooter();
 
-        if (guildHandler.isSameGuild(damaged, damager) && damaged != damager && !damaged.hasPermission("guilds.ffa")) {
+        if (guildHandler.isSameGuild(damaged, damager) && damaged != damager && !damaged.hasPermission("guilds.ffa.guild")) {
             event.setCancelled(!settingsManager.getProperty(GuildSettings.GUILD_DAMAGE));
             return;
         }
 
-        if (guildHandler.isAlly(damaged, damager)) {
+        if (guildHandler.isAlly(damaged, damager) && !damaged.hasPermission("guilds.ffa.ally")) {
             event.setCancelled(!settingsManager.getProperty(GuildSettings.ALLY_DAMAGE));
         }
     }
@@ -201,13 +201,13 @@ public class EntityListener implements Listener {
         Player damagee = (Player) event.getEntity();
         Player damager = (Player) arrow.getShooter();
 
-        if (guildHandler.isSameGuild(damagee, damager) && !damagee.hasPermission("guilds.ffa")) {
+        if (guildHandler.isSameGuild(damagee, damager) && !damagee.hasPermission("guilds.ffa.guild")) {
             arrow.setFireTicks(0);
             event.setCancelled(!settingsManager.getProperty(GuildSettings.GUILD_DAMAGE));
             return;
         }
 
-        if (guildHandler.isAlly(damagee, damager)) {
+        if (guildHandler.isAlly(damagee, damager) && !damagee.hasPermission("guilds.ffa.ally")) {
             arrow.setFireTicks(0);
             event.setCancelled(!settingsManager.getProperty(GuildSettings.ALLY_DAMAGE));
         }
@@ -244,11 +244,11 @@ public class EntityListener implements Listener {
         for (LivingEntity entity : event.getAffectedEntities()) {
             if (entity instanceof Player) {
                 Player player = (Player) entity;
-                if (guildHandler.isSameGuild(shooter, player) && potion.getShooter() != player && !shooter.hasPermission("guilds.ffa")) {
+                if (guildHandler.isSameGuild(shooter, player) && potion.getShooter() != player && !shooter.hasPermission("guilds.ffa.guild")) {
                     event.setCancelled(!settingsManager.getProperty(GuildSettings.GUILD_DAMAGE));
                     return;
                 }
-                if (guildHandler.isAlly(shooter, player)) {
+                if (guildHandler.isAlly(shooter, player) && !shooter.hasPermission("guilds.ffa.ally")) {
                     event.setCancelled(!settingsManager.getProperty(GuildSettings.ALLY_DAMAGE));
                 }
             }
