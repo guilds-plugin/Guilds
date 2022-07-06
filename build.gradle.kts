@@ -98,7 +98,7 @@ tasks {
     }
 
     runServer {
-        minecraftVersion("1.18.1")
+        minecraftVersion("1.19")
     }
 
     license {
