@@ -59,7 +59,23 @@ public class ChatListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
-    public void onChat(final AsyncPlayerChatEvent event) {
+    public void onChatLowest(final AsyncPlayerChatEvent event) {
+        final Player player = event.getPlayer();
+        final ChatType chatType = playerChatMap.get(player.getUniqueId());
+
+        if (chatType == null) {
+            return;
+        }
+
+        event.setCancelled(true);
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onChatHighest(final AsyncPlayerChatEvent event) {
+        if (event.isCancelled()) { //Event should already be cancelled in Lowest Priority
+            return;
+        }
+
         final Player player = event.getPlayer();
         final ChatType chatType = playerChatMap.get(player.getUniqueId());
         final String message = event.getMessage();
@@ -67,8 +83,6 @@ public class ChatListener implements Listener {
         if (chatType == null) {
             return;
         }
-
-        event.setCancelled(true);
 
         final Guild guild = guildHandler.getGuild(player);
 
