@@ -60,7 +60,7 @@ dependencies {
     implementation("org.mariadb.jdbc:mariadb-java-client:2.7.2")
     implementation("org.slf4j:slf4j-api:1.7.25")
 
-    compileOnly("org.spigotmc:spigot-api:1.19-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot-api:1.19.2-R0.1-SNAPSHOT")
     compileOnly("net.milkbowl:vault:1.7")
     compileOnly("com.mojang:authlib:1.5.25")
     compileOnly("me.clip:placeholderapi:2.11.2")
