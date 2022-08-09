@@ -53,8 +53,11 @@ public final class StringUtils {
      * @throws IOException
      */
     public static String getAnnouncements(JavaPlugin plugin) throws IOException {
+        final String ver = plugin.getDescription().getVersion();
         String announcement;
-        URL url = new URL("https://glaremasters.me/api/guilds/?id=" + plugin.getDescription().getVersion());
+        final String reg = String.format("https://glaremasters.me/api/guilds/?id=%s", ver);
+        final String prem = String.format("https://glaremasters.me/api/guilds/?id=%s&u=%s&d=%s", ver, PremiumFun.getUserID(), PremiumFun.getDownloadID());
+        URL url = new URL(PremiumFun.isPremium() ? prem : reg);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestProperty("User-Agent", Constants.USER_AGENT);
         try (InputStream in = con.getInputStream()) {
