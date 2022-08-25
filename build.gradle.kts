@@ -52,7 +52,7 @@ dependencies {
     implementation("ch.jalu:configme:1.3.0")
     implementation("com.dumptruckman.minecraft:JsonConfiguration:1.1")
     implementation("com.github.cryptomorin:XSeries:9.0.0")
-    implementation("net.kyori:adventure-platform-bukkit:4.1.1")
+    implementation("net.kyori:adventure-platform-bukkit:4.1.2")
     implementation("dev.triumphteam:triumph-gui:3.1.2")
     implementation("com.zaxxer:HikariCP:4.0.3")
     implementation("org.jdbi:jdbi3-core:3.8.2")
