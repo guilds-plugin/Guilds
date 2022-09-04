@@ -58,6 +58,108 @@ class PlaceholderAPI(private val guildHandler: GuildHandler) : PlaceholderExpans
             return guildHandler.getFormattedPlaceholder(player)
         }
 
+        // %guilds_top_wins_name_#1%
+        if (arg.startsWith("top_wins_name_")) {
+            val updated = try {
+                arg.replace("top_wins_name_", "").toInt()
+            } catch (ex: NumberFormatException) {
+                return ""
+            }
+
+            val guild = try {
+                api.guildHandler.guilds.sortedBy { it.guildScore.wins }.reversed()[updated - 1]
+            } catch (ex: IndexOutOfBoundsException) {
+                return ""
+            }
+
+            return guild.name
+        }
+
+        // %guilds_top_wins_amount_#%
+        if (arg.startsWith("top_wins_amount_")) {
+            val updated = try {
+                arg.replace("top_wins_amount_", "").toInt()
+            } catch (ex: NumberFormatException) {
+                return ""
+            }
+
+            val guild = try {
+                api.guildHandler.guilds.sortedBy { it.guildScore.wins }.reversed()[updated - 1]
+            } catch (ex: IndexOutOfBoundsException) {
+                return ""
+            }
+
+            return guild.guildScore.wins.toString()
+        }
+
+        // %guilds_top_losses_name_1%
+        if (arg.startsWith("top_losses_name_")) {
+            val updated = try {
+                arg.replace("top_losses_name_", "").toInt()
+            } catch (ex: NumberFormatException) {
+                return ""
+            }
+
+            val guild = try {
+                api.guildHandler.guilds.sortedBy { it.guildScore.loses }.reversed()[updated - 1]
+            } catch (ex: IndexOutOfBoundsException) {
+                return ""
+            }
+
+            return guild.name
+        }
+
+        // %guilds_top_losses_amount_#%
+        if (arg.startsWith("top_losses_amount_")) {
+            val updated = try {
+                arg.replace("top_losses_amount_", "").toInt()
+            } catch (ex: NumberFormatException) {
+                return ""
+            }
+
+            val guild = try {
+                api.guildHandler.guilds.sortedBy { it.guildScore.loses }.reversed()[updated - 1]
+            } catch (ex: IndexOutOfBoundsException) {
+                return ""
+            }
+
+            return guild.guildScore.loses.toString()
+        }
+
+        // %guilds_top_wlr_name_#%
+        if (arg.startsWith("top_wlr_name_")) {
+            val updated = try {
+                arg.replace("top_wlr_name_", "").toInt()
+            } catch (ex: NumberFormatException) {
+                return ""
+            }
+
+            val guild = try {
+                api.guildHandler.guilds.sortedBy { (it.guildScore.wins / it.guildScore.loses) }.reversed()[updated - 1]
+            } catch (ex: IndexOutOfBoundsException) {
+                return ""
+            }
+
+            return guild.name
+        }
+
+        // %guilds_top_wlr_amount_#%
+        if (arg.startsWith("top_wlr_amount_")) {
+            val updated = try {
+                arg.replace("top_wlr_amount_", "").toInt()
+            } catch (ex: NumberFormatException) {
+                return ""
+            }
+
+            val guild = try {
+                api.guildHandler.guilds.sortedBy { (it.guildScore.wins / it.guildScore.loses) }.reversed()[updated - 1]
+            } catch (ex: IndexOutOfBoundsException) {
+                return ""
+            }
+
+            return (guild.guildScore.wins / guild.guildScore.loses).toString()
+        }
+
         val guild = api.getGuild(player) ?: return ""
         return when (arg.toLowerCase()) {
             "id" -> guild.id.toString()
