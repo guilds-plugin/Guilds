@@ -40,12 +40,14 @@ import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.Constants
+import net.milkbowl.vault.permission.Permission
 import org.bukkit.Bukkit
 
 @CommandAlias("%guilds")
 internal class CommandAdminAddPlayer : BaseCommand() {
     @Dependency lateinit var guilds: Guilds
     @Dependency lateinit var guildHandler: GuildHandler
+    @Dependency lateinit var permission: Permission
 
     @Subcommand("admin addplayer")
     @Description("{@@descriptions.admin-addplayer}")
@@ -66,6 +68,9 @@ internal class CommandAdminAddPlayer : BaseCommand() {
         val name = guild.name
 
         guild.addMember(user, guildHandler)
+
+        guildHandler.addGuildPerms(permission, user)
+        guildHandler.addRolePerm(permission, user)
 
         if (user.isOnline) {
             currentCommandManager.getCommandIssuer(user).sendInfo(Messages.ADMIN__PLAYER_ADDED, "{guild}", name)

@@ -99,6 +99,7 @@ internal class CommandLeave : BaseCommand() {
                     guild.sendMessage(currentCommandManager, Messages.LEAVE__GUILDMASTER_LEFT, "{player}", name)
                     currentCommandIssuer.sendInfo(Messages.LEAVE__SUCCESSFUL)
                     guildHandler.removeGuildPermsFromAll(permission, guild)
+                    guildHandler.removeRolePermsFromAll(permission, guild)
                     guildHandler.removeAlliesOnDelete(guild)
                     guildHandler.notifyAllies(guild, guilds.commandManager)
                     cooldownHandler.addCooldown(player, cooldownName, cooldownTime, TimeUnit.SECONDS)
@@ -106,6 +107,7 @@ internal class CommandLeave : BaseCommand() {
                     guildHandler.removeGuild(guild)
                 } else {
                     guildHandler.removeGuildPerms(permission, player)
+                    guildHandler.removeRolePerm(permission, player)
                     cooldownHandler.addCooldown(player, cooldownName, cooldownTime, TimeUnit.SECONDS)
 
                     if (ClaimUtils.isEnable(settingsManager)) {

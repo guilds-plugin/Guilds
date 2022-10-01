@@ -885,6 +885,18 @@ public class GuildHandler {
     }
 
     /**
+     * Remove the role permission from all members when the guild is disbanded
+     * @param permission the permission to remove
+     * @param guild the guild to remove the perms from
+     */
+    public void removeRolePermsFromAll(final Permission permission, final Guild guild) {
+        for (final OfflinePlayer player : guild.getAllAsPlayers()) {
+            final GuildRole role = guild.getMember(player.getUniqueId()).getRole();
+            removePerms(permission, player, Collections.singletonList(role.getNode()));
+        }
+    }
+
+    /**
      * Handle inviting player when redeeming a code
      *
      * @param manager command manager

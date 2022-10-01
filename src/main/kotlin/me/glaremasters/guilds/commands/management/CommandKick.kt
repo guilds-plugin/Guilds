@@ -92,6 +92,7 @@ internal class CommandKick : BaseCommand() {
         }
 
         guildHandler.removeGuildPerms(permission, user)
+        guildHandler.removeRolePerm(permission, user)
         cooldownHandler.addCooldown(user, Cooldown.Type.Join.name, settingsManager.getProperty(CooldownSettings.JOIN), TimeUnit.SECONDS)
         ClaimUtils.kickMember(user, player, guild, settingsManager)
         guild.removeMember(asMember)

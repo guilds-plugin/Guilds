@@ -93,6 +93,7 @@ internal class CommandAccept : BaseCommand() {
         guild.sendMessage(currentCommandManager, Messages.ACCEPT__PLAYER_JOINED, "{player}", player.name)
         guild.addMember(player, guildHandler)
         guildHandler.addGuildPerms(permission, player)
+        guildHandler.addRolePerm(permission, player)
 
         if (ClaimUtils.isEnable(settingsManager)) {
             val wrapper = WorldGuardWrapper.getInstance()

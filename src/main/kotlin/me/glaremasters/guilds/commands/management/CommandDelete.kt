@@ -76,6 +76,7 @@ internal class CommandDelete : BaseCommand() {
                 }
 
                 guildHandler.removeGuildPermsFromAll(permission, guild)
+                guildHandler.removeRolePermsFromAll(permission, guild)
                 guildHandler.removeAlliesOnDelete(guild)
                 guildHandler.notifyAllies(guild, guilds.commandManager)
                 guild.sendMessage(currentCommandManager, Messages.LEAVE__GUILDMASTER_LEFT, "{player}", player.name)

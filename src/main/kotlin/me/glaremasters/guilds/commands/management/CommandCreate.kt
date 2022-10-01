@@ -159,8 +159,10 @@ internal class CommandCreate : BaseCommand() {
                 economy.withdrawPlayer(player, cost)
                 currentCommandIssuer.sendInfo(Messages.CREATE__SUCCESSFUL, "{guild}", guild.name)
                 guildHandler.addGuildPerms(permission, player)
+                guildHandler.addRolePerm(permission, player)
 
                 guild.updateGuildSkull(player, settingsManager)
+
 
                 actionHandler.removeAction(player)
             }
