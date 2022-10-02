@@ -42,6 +42,7 @@ import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.Constants
+import net.milkbowl.vault.permission.Permission
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 
@@ -53,6 +54,7 @@ internal class CommandTransfer : BaseCommand() {
     lateinit var guildHandler: GuildHandler
     @Dependency
     lateinit var settingsManager: SettingsManager
+    @Dependency lateinit var permission: Permission
 
     @Subcommand("transfer")
     @Description("{@@descriptions.transfer}")
@@ -77,7 +79,7 @@ internal class CommandTransfer : BaseCommand() {
             return
         }
 
-        guild.transferGuild(player, user)
+        guild.transferGuild(player, user, guildHandler, permission)
         currentCommandIssuer.sendInfo(Messages.TRANSFER__SUCCESS)
 
         if (!user.isOnline) {

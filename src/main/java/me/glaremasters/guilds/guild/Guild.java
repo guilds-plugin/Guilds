@@ -31,6 +31,7 @@ import me.glaremasters.guilds.configuration.sections.GuildListSettings;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.SkullUtils;
+import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
@@ -496,38 +497,69 @@ public class Guild {
     }
 
     /**
-     * Transfer a guild from one player to another
-     * @param oldPlayer old player
-     * @param newPlayer new player
+     * Transfer the guild from one user to another
+     * @param current the current guild master
+     * @param newPlayer the new guild master
+     * @param handler the handler to handle the transfer
+     * @param permission the permission to check for
      */
-    public void transferGuild(Player oldPlayer, OfflinePlayer newPlayer) {
+    public void transferGuild(final OfflinePlayer current, final OfflinePlayer newPlayer, final GuildHandler handler,
+                              final Permission permission) {
+        // Get the current and new guild master
+        final GuildMember currentGuildMaster = getMember(current.getUniqueId());
+        final GuildMember newGuildMaster = getMember(newPlayer.getUniqueId());
 
-        GuildMember oldMaster = getMember(oldPlayer.getUniqueId());
-        GuildMember newMaster = getMember(newPlayer.getUniqueId());
+        // Get the current master's guild role
+        final GuildRole guildMasterRole = currentGuildMaster.getRole();
 
-        GuildRole gm = oldMaster.getRole();
+        // Remove old role perms from both players
+        handler.removeRolePerm(permission, current);
+        handler.removeRolePerm(permission, newPlayer);
 
-        oldMaster.setRole(newMaster.getRole());
-        newMaster.setRole(gm);
-        setGuildMaster(newMaster);
+        // Set current master to new master's role
+        currentGuildMaster.setRole(newGuildMaster.getRole());
+
+        // Set new master to current master role
+        newGuildMaster.setRole(guildMasterRole);
+
+        // Set updated role perms for both players
+        handler.addRolePerm(permission, current);
+        handler.addRolePerm(permission, newPlayer);
+
+        // Set the guild master to the new player
+        setGuildMaster(newGuildMaster);
     }
 
+
     /**
-     * Transfer a guild to another player via admin command
-     * @param master The new master of the guild
-     * @param guildHandler Guild handler
+     * Administration method to move a guild to a new user
+     * @param master the new leader of the guild
+     * @param handler guild handler
+     * @param permission vault permissions
      */
-    public void transferGuildAdmin(OfflinePlayer master, GuildHandler guildHandler) {
+    public void transferGuildAdmin(final OfflinePlayer master, final GuildHandler handler, final Permission permission) {
+        // Get the current and new guild master
+        final GuildMember currentGuildMaster = getMember(getGuildMaster().getUuid());
+        final GuildMember newGuildMaster = getMember(master.getUniqueId());
 
-        GuildMember currentMaster = getMember(getGuildMaster().getUuid());
-        GuildMember newMaster = getMember(master.getUniqueId());
+        // Get the current master's guild role
+        final GuildRole guildMasterRole = currentGuildMaster.getRole();
 
-        GuildRole masterRole = currentMaster.getRole();
+        // Remove old role perms from both players
+        handler.removeRolePerm(permission, currentGuildMaster.getAsOfflinePlayer());
+        handler.removeRolePerm(permission, newGuildMaster.getAsOfflinePlayer());
 
-        currentMaster.setRole(guildHandler.getGuildRole(masterRole.getLevel() + 1));
-        newMaster.setRole(guildHandler.getGuildRole(0));
+        // Set current master to new master's role
+        currentGuildMaster.setRole(handler.getGuildRole(guildMasterRole.getLevel() + 1));
 
-        setGuildMaster(newMaster);
+        // Set new master to current master role
+        newGuildMaster.setRole(handler.getGuildRole(0));
+
+        // Set updated role perms for both players
+        handler.addRolePerm(permission, currentGuildMaster.getAsOfflinePlayer());
+        handler.addRolePerm(permission, newGuildMaster.getAsOfflinePlayer());
+
+        setGuildMaster(newGuildMaster);
     }
 
     /**

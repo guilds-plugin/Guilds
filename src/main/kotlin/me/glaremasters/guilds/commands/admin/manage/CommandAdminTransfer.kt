@@ -41,6 +41,7 @@ import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.Constants
+import net.milkbowl.vault.permission.Permission
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 
@@ -49,6 +50,7 @@ internal class CommandAdminTransfer : BaseCommand() {
     @Dependency lateinit var guilds: Guilds
     @Dependency lateinit var guildHandler: GuildHandler
     @Dependency lateinit var settingsManager: SettingsManager
+    @Dependency lateinit var permission: Permission
 
     @Subcommand("admin transfer")
     @CommandPermission(Constants.ADMIN_PERM)
@@ -62,7 +64,7 @@ internal class CommandAdminTransfer : BaseCommand() {
             throw ExpectationNotMet(Messages.ERROR__TRANSFER_SAME_PERSON)
         }
 
-        guild.transferGuildAdmin(transfer, guildHandler)
+        guild.transferGuildAdmin(transfer, guildHandler, permission)
         currentCommandIssuer.sendInfo(Messages.TRANSFER__SUCCESS)
     }
 }
