@@ -77,6 +77,7 @@ internal class CommandAdminRemove : BaseCommand() {
                 }
 
                 guildHandler.removeGuildPermsFromAll(permission, guild)
+                guildHandler.removeRolePermsFromAll(permission, guild)
                 guildHandler.removeAlliesOnDelete(guild)
                 guildHandler.notifyAllies(guild, guilds.commandManager)
                 ClaimUtils.deleteWithGuild(guild, settingsManager)
