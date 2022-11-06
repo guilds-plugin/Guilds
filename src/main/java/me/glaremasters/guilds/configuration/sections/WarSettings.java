@@ -44,6 +44,14 @@ public class WarSettings implements SettingsHolder {
     public static final Property<Boolean> DISABLE_COMMANDS =
             newProperty("war.disable-commands", false);
 
+    @Comment("Would you like to have the players keep their inventory when they die in the arena?")
+    public static final Property<Boolean> KEEP_INVENTORY =
+            newProperty("war.keep-inventory", true);
+
+    @Comment("Would you like to have the players keep their experience when they die in the arena?")
+    public static final Property<Boolean> KEEP_EXP =
+            newProperty("war.keep-exp", true);
+
     @Comment("How long does a defending guild have to accept a war challenge? (In seconds)")
     public static final Property<Integer> ACCEPT_TIME =
             newProperty("war.accept-time", 120);

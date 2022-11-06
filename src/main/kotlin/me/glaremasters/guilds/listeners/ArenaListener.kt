@@ -61,9 +61,15 @@ class ArenaListener(private val guilds: Guilds, private val challengeHandler: Ch
             return
         }
 
-        keepInventory = true
+        if (settingsManager.getProperty(WarSettings.KEEP_INVENTORY)) {
+            keepInventory = true
+        }
+
         drops.clear()
-        keepLevel = true
+
+        if (settingsManager.getProperty(WarSettings.KEEP_EXP)) {
+            keepLevel = true
+        }
 
         val death = challengeHandler.getAllPlayersAlive(challenge)[entity.uniqueId] ?: return
 
