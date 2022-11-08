@@ -52,6 +52,11 @@ public class WarSettings implements SettingsHolder {
     public static final Property<Boolean> KEEP_EXP =
             newProperty("war.keep-exp", true);
 
+    @Comment({"Would you like to clear the drops when a player dies in the arena?",
+            "This is typically paired with keeping inventory true so that you can prevent duplication."})
+    public static final Property<Boolean> CLEAR_DROPS =
+            newProperty("war.clear-drops", true);
+
     @Comment("How long does a defending guild have to accept a war challenge? (In seconds)")
     public static final Property<Integer> ACCEPT_TIME =
             newProperty("war.accept-time", 120);

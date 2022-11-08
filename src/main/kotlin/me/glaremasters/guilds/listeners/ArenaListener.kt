@@ -65,7 +65,9 @@ class ArenaListener(private val guilds: Guilds, private val challengeHandler: Ch
             keepInventory = true
         }
 
-        drops.clear()
+        if (settingsManager.getProperty(WarSettings.CLEAR_DROPS)) {
+            drops.clear()
+        }
 
         if (settingsManager.getProperty(WarSettings.KEEP_EXP)) {
             keepLevel = true
