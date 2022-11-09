@@ -27,7 +27,7 @@ descriptions:
   admin-vault: "Bir lonca'nın kasasını görüntülemek için yönetici komutu"
   ally-accept: "Başka bir loncadan gelen müttefik davetini kabul et"
   ally-add: "Bir müttefik olarak Lonca ekleyin"
-  ally-chat: "Toggles ally chat"
+  ally-chat: "Lonca Sohbetini aç/kapat"
   ally-decline: "Bir müttefik davetini başka bir Loncadan reddet"
   ally-list: "Loncadaki tüm müttefikleri listele"
   ally-remove: "Bir Lonca'yı müttefiki olarak sil"
@@ -100,7 +100,7 @@ create:
 chat:
   toggled-on: "{type} chat toggled on."
   toggled-off: "{type} chat toggled off."
-  type-guild: "Guild"
+  type-guild: "Lonca"
   type-ally: "Ally"
 request:
   success: "&a{guild} loncasından başarıyla bir davet istediniz"
