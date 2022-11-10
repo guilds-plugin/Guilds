@@ -27,7 +27,7 @@ descriptions:
   admin-vault: "Comando de administrador para ver o cofre da guild"
   ally-accept: "Aceitar convite de aliança de outra guild"
   ally-add: "Adicionar uma guild como aliada"
-  ally-chat: "Toggles ally chat"
+  ally-chat: "Ativa/Desativa o bate-papo do aliado"
   ally-decline: "Recusar um convite de aliança de outra guild"
   ally-list: "Lista de aliados de sua guild"
   ally-remove: "Remover uma guild como aliada"
