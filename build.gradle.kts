@@ -4,7 +4,7 @@ import net.kyori.indra.IndraPublishingPlugin
 
 plugins {
     id("java")
-    id("org.jetbrains.kotlin.jvm") version "1.7.20"
+    id("org.jetbrains.kotlin.jvm") version "1.7.21"
     id("net.kyori.indra") version "2.1.1"
     id("net.kyori.indra.publishing") version "2.1.1"
     id("net.kyori.indra.license-header") version "2.1.1"
@@ -14,7 +14,7 @@ plugins {
 }
 
 group = "me.glaremasters"
-version = "3.5.6.6-SNAPSHOT"
+version = "3.5.6.6"
 
 base {
     archivesBaseName = "Guilds"
@@ -98,7 +98,7 @@ tasks {
     }
 
     runServer {
-        minecraftVersion("1.19")
+        minecraftVersion("1.19.2")
     }
 
     license {
