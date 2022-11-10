@@ -50,7 +50,7 @@ internal class CommandChat : BaseCommand() {
     @Subcommand("gc")
     @Description("{@@descriptions.chat}")
     @CommandPermission(Constants.BASE_PERM + "chat")
-    @Syntax("[msg]")
+    @Syntax("[%msg]")
     fun guildChat(player: Player, @Conditions("perm:perm=CHAT") guild: Guild, @Optional msg: String?) {
         if (msg == null) {
             guilds.chatListener.handleToggle(player, ChatListener.ChatType.GUILD)
@@ -62,7 +62,7 @@ internal class CommandChat : BaseCommand() {
     @Subcommand("ac")
     @Description("{@@descriptions.ally-chat}")
     @CommandPermission(Constants.BASE_PERM + "chat")
-    @Syntax("[msg]")
+    @Syntax("[%msg]")
     fun chat(player: Player, @Conditions("perm:perm=ALLY_CHAT") guild: Guild, @Optional msg: String?) {
         if (msg == null) {
             guilds.chatListener.handleToggle(player, ChatListener.ChatType.ALLY)

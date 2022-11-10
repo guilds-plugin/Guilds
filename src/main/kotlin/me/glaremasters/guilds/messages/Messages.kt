@@ -32,6 +32,22 @@ import co.aikar.locales.MessageKeyProvider
  * Time: 5:00 PM
  */
 enum class Messages : MessageKeyProvider {
+    SYNTAX__MSG,
+    SYNTAX__NAME,
+    SYNTAX__PLAYER,
+    SYNTAX__AMOUNT,
+    SYNTAX__GUILD,
+    SYNTAX__NEW_NAME,
+    SYNTAX__MOTD,
+    SYNTAX__PREFIX,
+    SYNTAX__VAULT_NUMBER,
+    SYNTAX__ARENA,
+    SYNTAX__POSITION,
+    SYNTAX__CODE,
+    SYNTAX__USES,
+    SYNTAX__LANGUAGE,
+    SYNTAX__NEW_BACKEND,
+
     CREATE__SUCCESSFUL,
     CREATE__REQUIREMENTS,
     CREATE__WARNING,

@@ -73,7 +73,7 @@ internal class CommandAdminMotd : BaseCommand() {
     @Description("{@@descriptions.admin-motd-set}")
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
-    @Syntax("<%syntax> <motd>")
+    @Syntax("<%syntax> <%motd>")
     fun set(issuer: CommandIssuer, @Flags("other") @Values("@guilds") guild: Guild, motd: String) {
         guild.motd = StringUtils.color(motd)
         currentCommandIssuer.sendInfo(Messages.ADMIN__MOTD_SUCCESS, "{guild}", guild.name, "{motd}", guild.motd)

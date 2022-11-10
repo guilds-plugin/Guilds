@@ -31,6 +31,7 @@ import co.aikar.commands.annotation.Dependency
 import co.aikar.commands.annotation.Description
 import co.aikar.commands.annotation.Single
 import co.aikar.commands.annotation.Subcommand
+import co.aikar.commands.annotation.Syntax
 import co.aikar.commands.annotation.Values
 import java.util.Locale
 import me.glaremasters.guilds.Guilds
@@ -49,6 +50,7 @@ internal class CommandLanguage : BaseCommand() {
     @Subcommand("language")
     @Description("{@@descriptions.language}")
     @CommandPermission(Constants.BASE_PERM + "language")
+    @Syntax("<%language>")
     @CommandCompletion("@languages")
     fun language(player: Player, @Values("@languages") @Single language: String) {
         guilds.commandManager.setIssuerLocale(player, Locale.forLanguageTag(language))

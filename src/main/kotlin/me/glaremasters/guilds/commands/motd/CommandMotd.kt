@@ -69,7 +69,7 @@ internal class CommandMotd : BaseCommand() {
     @Subcommand("motd set")
     @Description("{@@descriptions.motd-set}")
     @CommandPermission(Constants.MOTD_PERM + "modify")
-    @Syntax("<motd>")
+    @Syntax("<%motd>")
     fun set(player: Player, @Conditions("perm:perm=MODIFY_MOTD") guild: Guild, motd: String) {
         guild.motd = StringUtils.color(motd)
         currentCommandIssuer.sendInfo(Messages.MOTD__SUCCESS, "{motd}", guild.motd)

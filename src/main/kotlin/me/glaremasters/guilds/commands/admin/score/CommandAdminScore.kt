@@ -49,7 +49,7 @@ internal class CommandAdminScore : BaseCommand() {
     @Description("{@@descriptions.admin-score-setwins}")
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
-    @Syntax("<%syntax> <amount>")
+    @Syntax("<%syntax> <%amount>")
     fun setWins(issuer: CommandIssuer, @Flags("other") @Values("@guilds") guild: Guild, amount: Int) {
         guild.guildScore.wins = amount
         currentCommandIssuer.sendInfo(Messages.ADMIN__SCORE_SETWINS, "{guild}", guild.name, "{amount}", amount.toString())
@@ -59,7 +59,7 @@ internal class CommandAdminScore : BaseCommand() {
     @Description("{@@descriptions.admin-score-setloses}")
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
-    @Syntax("<%syntax> <amount>")
+    @Syntax("<%syntax> <%amount>")
     fun setLoses(issuer: CommandIssuer, @Flags("other") @Values("@guilds") guild: Guild, amount: Int) {
         guild.guildScore.loses = amount
         currentCommandIssuer.sendInfo(Messages.ADMIN__SCORE_SETLOSES, "{guild}", guild.name, "{amount}", amount.toString())

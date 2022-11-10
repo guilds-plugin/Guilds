@@ -61,7 +61,7 @@ internal class CommandAdminBank : BaseCommand() {
     @Subcommand("admin bank deposit")
     @Description("{@@descriptions.admin-bank-deposit}")
     @CommandPermission(Constants.ADMIN_PERM)
-    @Syntax("<%syntax> <amount>")
+    @Syntax("<%syntax> <%amount>")
     @CommandCompletion("@guilds")
     fun deposit(issuer: CommandIssuer, @Flags("other") @Values("@guilds") guild: Guild, amount: Double) {
         if (amount < 0) {
@@ -77,7 +77,7 @@ internal class CommandAdminBank : BaseCommand() {
     @Subcommand("admin bank withdraw")
     @Description("{@@descriptions.admin-bank-withdraw}")
     @CommandPermission(Constants.ADMIN_PERM)
-    @Syntax("<%syntax> <amount>")
+    @Syntax("<%syntax> <%amount>")
     @CommandCompletion("@guilds")
     fun withdraw(issuer: CommandIssuer, @Flags("other") @Values("@guilds") guild: Guild, amount: Double) {
         if (amount < 0) {

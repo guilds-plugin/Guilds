@@ -26,13 +26,7 @@ package me.glaremasters.guilds.commands.console
 import ch.jalu.configme.SettingsManager
 import co.aikar.commands.BaseCommand
 import co.aikar.commands.CommandIssuer
-import co.aikar.commands.annotation.CommandAlias
-import co.aikar.commands.annotation.CommandCompletion
-import co.aikar.commands.annotation.CommandPermission
-import co.aikar.commands.annotation.Dependency
-import co.aikar.commands.annotation.Description
-import co.aikar.commands.annotation.Subcommand
-import co.aikar.commands.annotation.Values
+import co.aikar.commands.annotation.*
 import java.io.IOException
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.actions.ActionHandler
@@ -91,6 +85,7 @@ internal class CommandConsole : BaseCommand() {
     @Subcommand("console migrate")
     @Description("{@@descriptions.console-migrate}")
     @CommandPermission(Constants.ADMIN_PERM)
+    @Syntax("<%new-backend>")
     @CommandCompletion("@sources")
     fun migrate(issuer: CommandIssuer, @Values("@sources") toBackend: String) {
         if (issuer.isPlayer) {

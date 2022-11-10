@@ -50,7 +50,7 @@ internal class CommandAdminPrefix : BaseCommand() {
     @Description("{@@descriptions.admin-prefix}")
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
-    @Syntax("<%syntax> <prefix>")
+    @Syntax("<%syntax> <%prefix>")
     fun prefix(player: Player, @Flags("other") @Values("@guilds") guild: Guild, prefix: String) {
         guild.prefix = StringUtils.color(prefix)
         currentCommandIssuer.sendInfo(Messages.PREFIX__SUCCESSFUL, "{prefix}", guild.prefix)

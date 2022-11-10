@@ -55,7 +55,7 @@ internal class CommandPromote : BaseCommand() {
     @Description("{@@descriptions.promote}")
     @CommandPermission(Constants.BASE_PERM + "promote")
     @CommandCompletion("@members")
-    @Syntax("<player>")
+    @Syntax("<%player>")
     fun promote(player: Player, @Conditions("perm:perm=PROMOTE") guild: Guild, @Values("@members") @Single target: String) {
         val user = Bukkit.getOfflinePlayer(target)
 

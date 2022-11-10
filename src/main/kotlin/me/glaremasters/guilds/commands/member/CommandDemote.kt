@@ -55,7 +55,7 @@ internal class CommandDemote : BaseCommand() {
     @Description("{@@descriptions.demote}")
     @CommandPermission(Constants.BASE_PERM + "demote")
     @CommandCompletion("@members")
-    @Syntax("<player>")
+    @Syntax("<%player>")
     fun demote(player: Player, @Conditions("perm:perm=DEMOTE") guild: Guild, @Values("@members") @Single target: String) {
         val user = Bukkit.getOfflinePlayer(target)
 
