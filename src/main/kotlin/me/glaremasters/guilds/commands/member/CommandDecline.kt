@@ -52,7 +52,7 @@ internal class CommandDecline : BaseCommand() {
     @Description("{@@descriptions.decline}")
     @CommandPermission(Constants.BASE_PERM + "decline")
     @CommandCompletion("@invitedTo")
-    @Syntax("<%syntax>")
+    @Syntax("%guild")
     fun decline(@Conditions("NoGuild") player: Player, @Flags("other") guild: Guild) {
         if (!guild.checkIfInvited(player)) {
             throw ExpectationNotMet(Messages.ACCEPT__NOT_INVITED)

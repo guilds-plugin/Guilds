@@ -48,7 +48,7 @@ internal class CommandAdminVault : BaseCommand() {
     @Description("{@@descriptions.admin-vault}")
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
-    @Syntax("<%syntax> %vault-number")
+    @Syntax("%guild %vault-number")
     fun vault(player: Player, @Flags("other") @Values("@guilds") guild: Guild) {
         guilds.guiHandler.vaults.get(guild, player).open(player)
     }

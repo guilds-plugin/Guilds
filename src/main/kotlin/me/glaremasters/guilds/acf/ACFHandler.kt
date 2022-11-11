@@ -69,7 +69,6 @@ class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCo
 
     private fun loadSyntaxReplacements() {
         commandManager.commandReplacements.addReplacement("guilds", plugin.settingsHandler.mainConf.getProperty(PluginSettings.PLUGIN_ALIASES))
-        commandManager.commandReplacements.addReplacement("syntax", plugin.settingsHandler.mainConf.getProperty(PluginSettings.SYNTAX_NAME))
 
         commandManager.commandReplacements.addReplacement("msg", MessageUtils.asString(commandManager, Messages.SYNTAX__MSG))
         commandManager.commandReplacements.addReplacement("name", MessageUtils.asString(commandManager, Messages.SYNTAX__NAME))

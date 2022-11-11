@@ -55,7 +55,7 @@ internal class CommandAlly : BaseCommand() {
     @Description("{@@descriptions.ally-accept}")
     @CommandPermission(Constants.ALLY_PERM + "accept")
     @CommandCompletion("@allyInvites")
-    @Syntax("<%syntax>")
+    @Syntax("%guild")
     fun accept(player: Player, @Conditions("perm:perm=ADD_ALLY|NotMaxedAllies") guild: Guild, @Flags("other") target: Guild) {
         if (!guild.isAllyPending(target)) {
             return
@@ -72,7 +72,7 @@ internal class CommandAlly : BaseCommand() {
     @Description("{@@descriptions.ally-add}")
     @CommandPermission(Constants.ALLY_PERM + "add")
     @CommandCompletion("@guilds")
-    @Syntax("<%syntax>")
+    @Syntax("%guild")
     fun add(player: Player, @Conditions("perm:perm=ADD_ALLY|NotMaxedAllies") guild: Guild, @Flags("other") target: Guild) {
         if (target.isAllyPending(guild)) {
             throw ExpectationNotMet(Messages.ALLY__ALREADY_REQUESTED)
@@ -102,7 +102,7 @@ internal class CommandAlly : BaseCommand() {
     @Description("{@@descriptions.ally-decline}")
     @CommandPermission(Constants.ALLY_PERM + "decline")
     @CommandCompletion("@allyInvites")
-    @Syntax("<%syntax>")
+    @Syntax("%guild")
     fun decline(player: Player, @Conditions("perm:perm=REMOVE_ALLY") guild: Guild, @Flags("other") target: Guild) {
         if (!guild.isAllyPending(target)) {
             return
@@ -118,7 +118,7 @@ internal class CommandAlly : BaseCommand() {
     @Description("{@@descriptions.ally-remove}")
     @CommandPermission(Constants.ALLY_PERM + "remove")
     @CommandCompletion("@allies")
-    @Syntax("<%syntax>")
+    @Syntax("%guild")
     fun remove(player: Player, @Conditions("perm:perm=REMOVE_ALLY") guild: Guild, @Flags("other") target: Guild) {
         if (!guildHandler.isAlly(guild, target)) {
             throw ExpectationNotMet(Messages.ALLY__NOT_ALLIED)

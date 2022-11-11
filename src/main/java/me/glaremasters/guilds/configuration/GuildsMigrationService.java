@@ -71,7 +71,8 @@ public class GuildsMigrationService extends PlainMigrationService {
                 "roles",
                 "guis.guild-buffs",
                 "timers.cooldowns.sethome",
-                "guild.damage.respect-wg-pvp-flag"
+                "guild.damage.respect-wg-pvp-flag",
+                "settings.syntax-name"
         };
         for (String deprecatedPath : deprecatedProperties) {
             if (reader.contains(deprecatedPath)) {

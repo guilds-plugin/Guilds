@@ -104,7 +104,7 @@ internal class CommandWar : BaseCommand() {
 
     @Subcommand("war challenge")
     @Description("{@@descriptions.war-challenge}")
-    @Syntax("<%syntax>")
+    @Syntax("%guild")
     @CommandPermission(Constants.WAR_PERM + "challenge")
     @CommandCompletion("@guilds")
     fun challenge(player: Player, @Conditions("perm:perm=INITIATE_WAR") guild: Guild, @Flags("other") targetGuild: Guild) {
