@@ -51,7 +51,7 @@ internal class CommandAdminGive : BaseCommand() {
     @Description("{@@descriptions.give}")
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@online")
-    @Syntax("<%player> <%amount>")
+    @Syntax("%player %amount")
     fun give(issuer: CommandIssuer, @Values("@online") player: OnlinePlayer, @Default("1") amount: Int) {
         player.player.inventory.addItem(guildHandler.getUpgradeTicket(settingsManager, amount))
         currentCommandIssuer.sendInfo(Messages.CONFIRM__SUCCESS)

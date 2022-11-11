@@ -47,6 +47,8 @@ enum class Messages : MessageKeyProvider {
     SYNTAX__USES,
     SYNTAX__LANGUAGE,
     SYNTAX__NEW_BACKEND,
+    SYNTAX__NEW_MASTER,
+    SYNTAX__OPTIONAL,
 
     CREATE__SUCCESSFUL,
     CREATE__REQUIREMENTS,

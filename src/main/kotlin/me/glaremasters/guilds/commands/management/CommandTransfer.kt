@@ -60,7 +60,7 @@ internal class CommandTransfer : BaseCommand() {
     @Description("{@@descriptions.transfer}")
     @CommandPermission(Constants.BASE_PERM + "transfer")
     @CommandCompletion("@members")
-    @Syntax("<%player>")
+    @Syntax("%player")
     fun transfer(player: Player, @Conditions("perm:perm=TRANSFER_GUILD") guild: Guild, @Values("@members") @Single target: String) {
         val user = Bukkit.getOfflinePlayer(target)
 

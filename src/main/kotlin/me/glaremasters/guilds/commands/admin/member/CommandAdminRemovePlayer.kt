@@ -53,7 +53,7 @@ internal class CommandAdminRemovePlayer : BaseCommand() {
     @Subcommand("admin removeplayer")
     @Description("{@@descriptions.admin-removeplayer}")
     @CommandPermission(Constants.ADMIN_PERM)
-    @Syntax("<%name>")
+    @Syntax("%name")
     fun remove(player: Player, target: String) {
         val user = Bukkit.getOfflinePlayer(target)
         val guild = guildHandler.getGuild(user) ?: throw ExpectationNotMet(Messages.ERROR__GUILD_NO_EXIST)

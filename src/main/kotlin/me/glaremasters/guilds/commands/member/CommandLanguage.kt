@@ -50,7 +50,7 @@ internal class CommandLanguage : BaseCommand() {
     @Subcommand("language")
     @Description("{@@descriptions.language}")
     @CommandPermission(Constants.BASE_PERM + "language")
-    @Syntax("<%language>")
+    @Syntax("%language")
     @CommandCompletion("@languages")
     fun language(player: Player, @Values("@languages") @Single language: String) {
         guilds.commandManager.setIssuerLocale(player, Locale.forLanguageTag(language))

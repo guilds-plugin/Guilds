@@ -58,7 +58,7 @@ internal class CommandCode : BaseCommand() {
 
     @Subcommand("code create")
     @Description("{@@descriptions.code-create}")
-    @Syntax("<%uses>")
+    @Syntax("%uses")
     @CommandPermission(Constants.CODE_PERM + "create")
     fun create(player: Player, @Conditions("perm:perm=CREATE_CODE") guild: Guild, @Default("1") uses: Int) {
         if (guild.getActiveCheck(settingsManager.getProperty(CodeSettings.ACTIVE_CODE_AMOUNT))) {
@@ -75,7 +75,7 @@ internal class CommandCode : BaseCommand() {
     @Subcommand("code delete")
     @Description("{@@descriptions.code-delete}")
     @CommandPermission(Constants.CODE_PERM + "delete")
-    @Syntax("<%code>")
+    @Syntax("%code")
     @CommandCompletion("@activeCodes")
     fun delete(player: Player, @Conditions("perm:perm=DELETE_CODE") guild: Guild, @Values("@activeCodes") @Single code: String) {
         guild.removeCode(code)
@@ -85,7 +85,7 @@ internal class CommandCode : BaseCommand() {
     @Subcommand("code info")
     @Description("{@@descriptions.code-info}")
     @CommandPermission(Constants.CODE_PERM + "info")
-    @Syntax("<%code>")
+    @Syntax("%code")
     @CommandCompletion("@activeCodes")
     fun info(player: Player, @Conditions("perm:perm=SEE_CODE_REDEEMERS") guild: Guild, @Values("@activeCodes") @Single code: String) {
         val guildCode = guild.getCode(code) ?: throw ExpectationNotMet(Messages.CODES__INVALID_CODE)
@@ -117,7 +117,7 @@ internal class CommandCode : BaseCommand() {
     @Subcommand("code redeem")
     @Description("{@@descriptions.code-redeem}")
     @CommandPermission(Constants.CODE_PERM + "redeem")
-    @Syntax("<%code>")
+    @Syntax("%code")
     fun redeem(@Conditions("NoGuild") player: Player, code: String) {
         val guild = guildHandler.getGuildByCode(code) ?: throw ExpectationNotMet(Messages.CODES__INVALID_CODE)
 

@@ -86,6 +86,8 @@ class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCo
         commandManager.commandReplacements.addReplacement("uses", MessageUtils.asString(commandManager, Messages.SYNTAX__USES))
         commandManager.commandReplacements.addReplacement("language", MessageUtils.asString(commandManager, Messages.SYNTAX__LANGUAGE))
         commandManager.commandReplacements.addReplacement("new-backend", MessageUtils.asString(commandManager, Messages.SYNTAX__NEW_BACKEND))
+        commandManager.commandReplacements.addReplacement("new-master", MessageUtils.asString(commandManager, Messages.SYNTAX__NEW_MASTER))
+        commandManager.commandReplacements.addReplacement("optional", MessageUtils.asString(commandManager, Messages.SYNTAX__OPTIONAL))
     }
 
     fun loadLang() {

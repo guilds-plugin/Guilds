@@ -85,7 +85,7 @@ internal class CommandConsole : BaseCommand() {
     @Subcommand("console migrate")
     @Description("{@@descriptions.console-migrate}")
     @CommandPermission(Constants.ADMIN_PERM)
-    @Syntax("<%new-backend>")
+    @Syntax("%new-backend")
     @CommandCompletion("@sources")
     fun migrate(issuer: CommandIssuer, @Values("@sources") toBackend: String) {
         if (issuer.isPlayer) {

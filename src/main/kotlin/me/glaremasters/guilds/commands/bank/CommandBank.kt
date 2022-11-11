@@ -64,7 +64,7 @@ internal class CommandBank : BaseCommand() {
     @Subcommand("bank deposit")
     @Description("{@@descriptions.bank-deposit}")
     @CommandPermission(Constants.BANK_PERM + "deposit")
-    @Syntax("<%amount>")
+    @Syntax("%amount")
     fun deposit(player: Player, @Conditions("perm:perm=DEPOSIT_MONEY") guild: Guild, amount: Double) {
         val balance = guild.balance
         val total = amount + balance
@@ -98,7 +98,7 @@ internal class CommandBank : BaseCommand() {
     @Subcommand("bank withdraw")
     @Description("{@@descriptions.bank-withdraw}")
     @CommandPermission(Constants.BANK_PERM + "withdraw")
-    @Syntax("<%amount>")
+    @Syntax("%amount")
     fun withdraw(player: Player, @Conditions("perm:perm=WITHDRAW_MONEY") guild: Guild, amount: Double) {
         val bal = guild.balance
 
