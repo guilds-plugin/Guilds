@@ -57,7 +57,7 @@ internal class CommandRequest : BaseCommand() {
     @Description("{@@descriptions.request}")
     @CommandPermission(Constants.BASE_PERM + "request")
     @CommandCompletion("@guilds")
-    @Syntax("<%syntax>")
+    @Syntax("%guild")
     fun request(@Conditions("NoGuild") player: Player, @Flags("other") target: Guild) {
         val cooldown = Cooldown.Type.Request.name
         val id = player.uniqueId

@@ -61,7 +61,7 @@ internal class CommandAdminRemove : BaseCommand() {
     @Description("{@@descriptions.admin-remove}")
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
-    @Syntax("<%syntax>")
+    @Syntax("%guild")
     @Conditions("NotMigrating")
     fun remove(player: Player, @Flags("other") @Values("@guilds") guild: Guild) {
         val name = guild.name

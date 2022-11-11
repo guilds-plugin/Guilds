@@ -55,7 +55,7 @@ internal class CommandInvite : BaseCommand() {
     @Description("{@@descriptions.invite}")
     @CommandPermission(Constants.BASE_PERM + "invite")
     @CommandCompletion("@online")
-    @Syntax("<name>")
+    @Syntax("%name")
     fun invite(player: Player, @Conditions("perm:perm=INVITE") guild: Guild, @Values("@online") @Single target: String) {
         val user = Bukkit.getPlayer(target)
 

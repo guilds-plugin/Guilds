@@ -53,7 +53,7 @@ internal class CommandAdminMotd : BaseCommand() {
     @Description("{@@descriptions.admin-motd}")
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
-    @Syntax("<%syntax>")
+    @Syntax("%guild")
     fun get(issuer: CommandIssuer, @Flags("other") @Values("@guilds") guild: Guild) {
         val motd = guild.motd ?: throw ExpectationNotMet(Messages.MOTD__NOT_SET)
         currentCommandIssuer.sendInfo(Messages.ADMIN__MOTD, "{guild}", guild.name, "{motd}", motd)
@@ -63,7 +63,7 @@ internal class CommandAdminMotd : BaseCommand() {
     @Description("{@@descriptions.admin-motd-remove}")
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
-    @Syntax("<%syntax>")
+    @Syntax("%guild")
     fun remove(issuer: CommandIssuer, @Flags("other") @Values("@guilds") guild: Guild) {
         guild.motd = null
         currentCommandIssuer.sendInfo(Messages.ADMIN__MOTD_REMOVE, "{guild}", guild.name)
@@ -73,7 +73,7 @@ internal class CommandAdminMotd : BaseCommand() {
     @Description("{@@descriptions.admin-motd-set}")
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
-    @Syntax("<%syntax> <motd>")
+    @Syntax("%guild %motd")
     fun set(issuer: CommandIssuer, @Flags("other") @Values("@guilds") guild: Guild, motd: String) {
         guild.motd = StringUtils.color(motd)
         currentCommandIssuer.sendInfo(Messages.ADMIN__MOTD_SUCCESS, "{guild}", guild.name, "{motd}", guild.motd)

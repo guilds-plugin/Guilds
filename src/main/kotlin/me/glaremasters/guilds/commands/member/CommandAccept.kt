@@ -67,7 +67,7 @@ internal class CommandAccept : BaseCommand() {
     @Description("{@@descriptions.accept}")
     @CommandPermission(Constants.BASE_PERM + "accept")
     @CommandCompletion("@joinableGuilds")
-    @Syntax("<%syntax>")
+    @Syntax("%guild")
     fun accept(@Conditions("NoGuild") player: Player, @Flags("other") guild: Guild) {
         val cooldown = Cooldown.Type.Join.name
 

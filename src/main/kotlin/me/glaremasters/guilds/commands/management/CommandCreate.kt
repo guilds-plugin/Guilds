@@ -69,7 +69,7 @@ internal class CommandCreate : BaseCommand() {
     @Subcommand("create")
     @Description("{@@descriptions.create}")
     @CommandPermission(Constants.BASE_PERM + "create")
-    @Syntax("<name> (optional) <prefix>")
+    @Syntax("%name %optional %prefix")
     @Conditions("NotMigrating")
     fun create(@Conditions("NoGuild") player: Player, name: String, @Optional prefix: String?) {
         val cooldown = Cooldown.Type.Join.name

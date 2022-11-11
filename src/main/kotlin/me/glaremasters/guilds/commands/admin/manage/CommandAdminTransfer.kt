@@ -56,7 +56,7 @@ internal class CommandAdminTransfer : BaseCommand() {
     @CommandPermission(Constants.ADMIN_PERM)
     @Description("{@@descriptions.admin-transfer}")
     @CommandCompletion("@guilds @members-admin")
-    @Syntax("<%syntax> <new master>")
+    @Syntax("%guild %new-master")
     fun transfer(player: Player, @Flags("other") @Values("@guilds") guild: Guild, @Values("@members-admin") @Single master: String) {
         val transfer = Bukkit.getOfflinePlayer(master)
 

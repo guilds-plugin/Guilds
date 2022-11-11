@@ -42,6 +42,7 @@ import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.scanner.ZISScanner
+import me.glaremasters.guilds.utils.MessageUtils
 import net.milkbowl.vault.economy.Economy
 import net.milkbowl.vault.permission.Permission
 import org.bukkit.Bukkit
@@ -60,11 +61,32 @@ class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCo
         loadConditions(plugin.guildHandler)
         loadDI()
 
-        commandManager.commandReplacements.addReplacement("guilds", plugin.settingsHandler.mainConf.getProperty(PluginSettings.PLUGIN_ALIASES))
-        commandManager.commandReplacements.addReplacement("syntax", plugin.settingsHandler.mainConf.getProperty(PluginSettings.SYNTAX_NAME))
+        loadSyntaxReplacements()
 
         loadCommands()
         loadCompletionCache()
+    }
+
+    private fun loadSyntaxReplacements() {
+        commandManager.commandReplacements.addReplacement("guilds", plugin.settingsHandler.mainConf.getProperty(PluginSettings.PLUGIN_ALIASES))
+
+        commandManager.commandReplacements.addReplacement("msg", MessageUtils.asString(commandManager, Messages.SYNTAX__MSG))
+        commandManager.commandReplacements.addReplacement("name", MessageUtils.asString(commandManager, Messages.SYNTAX__NAME))
+        commandManager.commandReplacements.addReplacement("player", MessageUtils.asString(commandManager, Messages.SYNTAX__PLAYER))
+        commandManager.commandReplacements.addReplacement("amount", MessageUtils.asString(commandManager, Messages.SYNTAX__AMOUNT))
+        commandManager.commandReplacements.addReplacement("guild", MessageUtils.asString(commandManager, Messages.SYNTAX__GUILD))
+        commandManager.commandReplacements.addReplacement("new-name", MessageUtils.asString(commandManager, Messages.SYNTAX__NEW_NAME))
+        commandManager.commandReplacements.addReplacement("motd", MessageUtils.asString(commandManager, Messages.SYNTAX__MOTD))
+        commandManager.commandReplacements.addReplacement("prefix", MessageUtils.asString(commandManager, Messages.SYNTAX__PREFIX))
+        commandManager.commandReplacements.addReplacement("vault-number", MessageUtils.asString(commandManager, Messages.SYNTAX__VAULT_NUMBER))
+        commandManager.commandReplacements.addReplacement("arena", MessageUtils.asString(commandManager, Messages.SYNTAX__ARENA))
+        commandManager.commandReplacements.addReplacement("position", MessageUtils.asString(commandManager, Messages.SYNTAX__POSITION))
+        commandManager.commandReplacements.addReplacement("code", MessageUtils.asString(commandManager, Messages.SYNTAX__CODE))
+        commandManager.commandReplacements.addReplacement("uses", MessageUtils.asString(commandManager, Messages.SYNTAX__USES))
+        commandManager.commandReplacements.addReplacement("language", MessageUtils.asString(commandManager, Messages.SYNTAX__LANGUAGE))
+        commandManager.commandReplacements.addReplacement("new-backend", MessageUtils.asString(commandManager, Messages.SYNTAX__NEW_BACKEND))
+        commandManager.commandReplacements.addReplacement("new-master", MessageUtils.asString(commandManager, Messages.SYNTAX__NEW_MASTER))
+        commandManager.commandReplacements.addReplacement("optional", MessageUtils.asString(commandManager, Messages.SYNTAX__OPTIONAL))
     }
 
     fun loadLang() {

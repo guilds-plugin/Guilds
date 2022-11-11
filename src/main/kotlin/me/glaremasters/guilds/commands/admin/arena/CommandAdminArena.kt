@@ -53,7 +53,7 @@ internal class CommandAdminArena : BaseCommand() {
     @Subcommand("arena set challenger")
     @CommandPermission(Constants.ADMIN_PERM)
     @Description("{@@descriptions.arena-challenger}")
-    @Syntax("<arena>")
+    @Syntax("%arena")
     @CommandCompletion("@arenas")
     fun challenger(player: Player, @Values("@arenas") arena: Arena) {
         arena.challenger = ACFBukkitUtil.fullLocationToString(player.location)
@@ -63,7 +63,7 @@ internal class CommandAdminArena : BaseCommand() {
     @Subcommand("arena create")
     @CommandPermission(Constants.ADMIN_PERM)
     @Description("{@@descriptions.arena-create}")
-    @Syntax("<name>")
+    @Syntax("%name")
     fun create(player: Player, name: String) {
         val arena = Arena(UUID.randomUUID(), name, null, null, false)
         arenaHandler.addArena(arena)
@@ -73,7 +73,7 @@ internal class CommandAdminArena : BaseCommand() {
     @Subcommand("arena set defender")
     @CommandPermission(Constants.ADMIN_PERM)
     @Description("{@@descriptions.arena-defender}")
-    @Syntax("<arena>")
+    @Syntax("%arena")
     @CommandCompletion("@arenas")
     fun defender(player: Player, @Values("@arenas") arena: Arena) {
         arena.defender = ACFBukkitUtil.fullLocationToString(player.location)
@@ -84,7 +84,7 @@ internal class CommandAdminArena : BaseCommand() {
     @CommandPermission(Constants.ADMIN_PERM)
     @Description("{@@descriptions.arena-delete}")
     @CommandCompletion("@arenas")
-    @Syntax("<name>")
+    @Syntax("%name")
     fun delete(player: Player, @Values("@arenas") arena: Arena) {
         val name = arena.name
         arenaHandler.removeArena(arena)
@@ -106,7 +106,7 @@ internal class CommandAdminArena : BaseCommand() {
     @Subcommand("arena tp")
     @CommandPermission(Constants.ADMIN_PERM)
     @Description("{@@descriptions.arena-tp}")
-    @Syntax("<arena> <position>")
+    @Syntax("%arena %position")
     @CommandCompletion("@arenas @locations")
     fun teleport(player: Player, @Values("@arenas") arena: Arena, @Values("@locations") @Single location: String) {
         if (location.equals("challenger", ignoreCase = true)) {
