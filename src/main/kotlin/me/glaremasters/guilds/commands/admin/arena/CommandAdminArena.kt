@@ -100,7 +100,8 @@ internal class CommandAdminArena : BaseCommand() {
         if (arenas.isEmpty()) {
             throw ExpectationNotMet(Messages.ARENA__LIST_EMPTY)
         }
-        currentCommandIssuer.sendInfo(Messages.ARENA__LIST, "{arenas}", arenas.joinToString { ", " })
+
+        currentCommandIssuer.sendInfo(Messages.ARENA__LIST, "{arenas}", arenaHandler.arenaNames().joinToString(", "))
     }
 
     @Subcommand("arena tp")

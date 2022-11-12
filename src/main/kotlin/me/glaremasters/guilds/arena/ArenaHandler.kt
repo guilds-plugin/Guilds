@@ -50,6 +50,11 @@ class ArenaHandler(private val guilds: Guilds) {
         return Optional.ofNullable(arenas.values.shuffled().firstOrNull { !it.inUse })
     }
 
+    // Idc if this is not the proper way, Kotlin was giving me problems.
+    fun arenaNames(): List<String> {
+        return getArenas().map { it.name }
+    }
+
     fun loadArenas() {
         guilds.database.arenaAdapter.allArenas.forEach(this::addArena)
     }

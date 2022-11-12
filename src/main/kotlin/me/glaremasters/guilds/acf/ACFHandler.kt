@@ -158,7 +158,7 @@ class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCo
         commandManager.commandCompletions.registerCompletion("invitedTo") { c -> guildHandler.getInvitedGuilds(c.player) }
         commandManager.commandCompletions.registerCompletion("joinableGuilds") { c -> guildHandler.getJoinableGuild(c.player) }
         commandManager.commandCompletions.registerCompletion("guilds") { guildHandler.guildNames }
-        commandManager.commandCompletions.registerCompletion("arenas") { arenaHandler.getArenas().map { it.name } }
+        commandManager.commandCompletions.registerCompletion("arenas") { arenaHandler.arenaNames() }
         commandManager.commandCompletions.registerStaticCompletion("locations") { listOf("challenger", "defender") }
         commandManager.commandCompletions.registerCompletion("languages") { languages.sorted() }
         commandManager.commandCompletions.registerStaticCompletion("sources") { listOf("JSON", "MYSQL", "SQLITE", "MARIADB") }
