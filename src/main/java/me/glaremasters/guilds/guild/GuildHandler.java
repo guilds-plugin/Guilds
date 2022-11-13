@@ -1086,6 +1086,15 @@ public class GuildHandler {
         return StringUtils.color(combined.replace("{name}", guild.getName()).replace("{prefix}", guild.getPrefix()));
     }
 
+    /**
+     * Remove a player from the chat list
+     *
+     * @param uuid the uuid of the player
+     */
+    public void removeFromChat(final UUID uuid) {
+        guildsPlugin.getChatListener().getPlayerChatMap().remove(uuid);
+    }
+
     public Guilds getGuildsPlugin() {
         return this.guildsPlugin;
     }

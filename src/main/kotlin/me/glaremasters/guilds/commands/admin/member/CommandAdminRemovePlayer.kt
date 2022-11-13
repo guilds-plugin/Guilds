@@ -75,6 +75,8 @@ internal class CommandAdminRemovePlayer : BaseCommand() {
             currentCommandManager.getCommandIssuer(user).sendInfo(Messages.ADMIN__PLAYER_REMOVED)
         }
 
+        guildHandler.removeFromChat(user.uniqueId)
+
         currentCommandIssuer.sendInfo(Messages.ADMIN__ADMIN_PLAYER_REMOVED, "{player}", user.name, "{guild}", guild.name)
         guild.sendMessage(currentCommandManager, Messages.ADMIN__ADMIN_GUILD_REMOVE, "{player}", user.name, "{guild}", guild.name)
     }

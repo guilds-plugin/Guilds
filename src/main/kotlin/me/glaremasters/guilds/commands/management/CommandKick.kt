@@ -103,6 +103,8 @@ internal class CommandKick : BaseCommand() {
             return
         }
 
+        guildHandler.removeFromChat(user.uniqueId)
+
         currentCommandManager.getCommandIssuer(user).sendInfo(Messages.BOOT__KICKED, "{kicker}", player.name)
     }
 }

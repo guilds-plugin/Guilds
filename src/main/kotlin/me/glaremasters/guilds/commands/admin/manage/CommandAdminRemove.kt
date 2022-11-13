@@ -76,6 +76,10 @@ internal class CommandAdminRemove : BaseCommand() {
                     return
                 }
 
+                guild.members.forEach { member ->
+                    guildHandler.removeFromChat(member.uuid)
+                }
+
                 guildHandler.removeGuildPermsFromAll(permission, guild)
                 guildHandler.removeRolePermsFromAll(permission, guild)
                 guildHandler.removeAlliesOnDelete(guild)
