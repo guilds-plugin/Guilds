@@ -68,6 +68,7 @@ public class GuildsMigrationService extends PlainMigrationService {
                 "settings.save-interval",
                 "settings.player-update-languages",
                 "tiers.list",
+                "tiers.carry-over",
                 "roles",
                 "guis.guild-buffs",
                 "timers.cooldowns.sethome",

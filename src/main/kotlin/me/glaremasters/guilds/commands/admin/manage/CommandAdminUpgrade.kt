@@ -54,10 +54,7 @@ internal class CommandAdminUpgrade : BaseCommand() {
             throw ExpectationNotMet(Messages.UPGRADE__TIER_MAX)
         }
 
-        if (!guilds.settingsHandler.tierConf.getProperty(TierSettings.CARRY_OVER)) {
-            guildHandler.removeGuildPermsFromAll(permission, guild)
-        }
-
+        guildHandler.removeGuildPermsFromAll(permission, guild)
         guildHandler.upgradeTier(guild)
         guildHandler.addGuildPermsToAll(permission, guild)
 

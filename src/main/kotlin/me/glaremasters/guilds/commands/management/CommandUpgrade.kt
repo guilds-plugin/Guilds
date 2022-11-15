@@ -90,10 +90,7 @@ internal class CommandUpgrade : BaseCommand() {
 
                 guild.balance = guild.balance - cost
 
-                if (!guilds.settingsHandler.tierConf.getProperty(TierSettings.CARRY_OVER)) {
-                    guildHandler.removeGuildPermsFromAll(permission, guild)
-                }
-
+                guildHandler.removeGuildPermsFromAll(permission, guild)
                 guildHandler.upgradeTier(guild)
                 guildHandler.addGuildPermsToAll(permission, guild)
                 currentCommandIssuer.sendInfo(Messages.UPGRADE__SUCCESS)

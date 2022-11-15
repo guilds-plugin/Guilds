@@ -42,10 +42,6 @@ public class TierSettings implements SettingsHolder {
 
     private static final String LIST_PATH = "tiers.list.";
 
-    @Comment("Should permissions carry over between tiers?")
-    public static final Property<Boolean> CARRY_OVER =
-            newProperty("tiers.carry-over", true);
-
     @Comment("Which level tier is this? 1 is the default.")
     public static final Property<Integer> ONE_LEVEL =
             newProperty(LIST_PATH + "1.level", 1);
