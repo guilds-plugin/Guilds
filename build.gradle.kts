@@ -10,7 +10,8 @@ plugins {
     id("net.kyori.indra.license-header") version "2.1.1"
     id("com.github.johnrengelman.shadow") version "7.1.2"
     id("io.github.slimjar") version "1.3.0"
-    id("xyz.jpenilla.run-paper") version "1.0.6"
+    id("xyz.jpenilla.run-paper") version "2.0.0"
+    id("com.github.ben-manes.versions") version "0.44.0"
 }
 
 group = "me.glaremasters"
@@ -51,7 +52,7 @@ dependencies {
     implementation("org.codemc.worldguardwrapper:worldguardwrapper:1.1.9-SNAPSHOT")
     implementation("ch.jalu:configme:1.3.0")
     implementation("com.dumptruckman.minecraft:JsonConfiguration:1.1")
-    implementation("com.github.cryptomorin:XSeries:9.0.0")
+    implementation("com.github.cryptomorin:XSeries:9.1.0")
     implementation("net.kyori:adventure-platform-bukkit:4.1.2")
     implementation("dev.triumphteam:triumph-gui:3.1.2")
     implementation("com.zaxxer:HikariCP:4.0.3")
