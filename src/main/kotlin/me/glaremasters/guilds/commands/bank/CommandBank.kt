@@ -35,6 +35,7 @@ import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.api.events.GuildDepositMoneyEvent
 import me.glaremasters.guilds.api.events.GuildWithdrawMoneyEvent
 import me.glaremasters.guilds.exceptions.ExpectationNotMet
+import me.glaremasters.guilds.exte.rounded
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
@@ -67,14 +68,15 @@ internal class CommandBank : BaseCommand() {
     @Syntax("%amount")
     fun deposit(player: Player, @Conditions("perm:perm=DEPOSIT_MONEY") guild: Guild, amount: Double) {
         val balance = guild.balance
-        val total = amount + balance
+        val rounded = amount.rounded()
+        val total = rounded + balance
         val tier = guild.tier
 
-        if (amount < 0) {
+        if (rounded < 0) {
             throw ExpectationNotMet(Messages.ERROR__NOT_ENOUGH_MONEY)
         }
 
-        if (!EconomyUtils.hasEnough(currentCommandManager, economy, player, amount)) {
+        if (!EconomyUtils.hasEnough(currentCommandManager, economy, player, rounded)) {
             throw ExpectationNotMet(Messages.ERROR__NOT_ENOUGH_MONEY)
         }
 
@@ -82,17 +84,17 @@ internal class CommandBank : BaseCommand() {
             throw ExpectationNotMet(Messages.BANK__OVER_MAX)
         }
 
-        val event = GuildDepositMoneyEvent(player, guild, amount)
+        val event = GuildDepositMoneyEvent(player, guild, rounded)
         Bukkit.getPluginManager().callEvent(event)
 
         if (event.isCancelled) {
             return
         }
 
-        economy.withdrawPlayer(player, amount)
+        economy.withdrawPlayer(player, rounded)
         guild.balance = total
         guild.sendMessage(currentCommandManager, Messages.BANK__DEPOSIT_SUCCESS, "{player}", player.name,
-                "{amount}", EconomyUtils.format(amount), "{total}", EconomyUtils.format(guild.balance))
+                "{amount}", EconomyUtils.format(rounded), "{total}", EconomyUtils.format(guild.balance))
     }
 
     @Subcommand("bank withdraw")
@@ -101,25 +103,26 @@ internal class CommandBank : BaseCommand() {
     @Syntax("%amount")
     fun withdraw(player: Player, @Conditions("perm:perm=WITHDRAW_MONEY") guild: Guild, amount: Double) {
         val bal = guild.balance
+        val rounded = amount.rounded()
 
-        if (amount < 0) {
+        if (rounded < 0) {
             throw ExpectationNotMet(Messages.ERROR__NOT_ENOUGH_MONEY)
         }
 
-        if (bal < amount) {
+        if (bal < rounded) {
             throw ExpectationNotMet(Messages.BANK__NOT_ENOUGH_BANK)
         }
 
-        val event = GuildWithdrawMoneyEvent(player, guild, amount)
+        val event = GuildWithdrawMoneyEvent(player, guild, rounded)
         Bukkit.getPluginManager().callEvent(event)
 
         if (event.isCancelled) {
             return
         }
 
-        guild.balance = bal - amount
-        economy.depositPlayer(player, amount)
+        guild.balance = bal - rounded
+        economy.depositPlayer(player, rounded)
         guild.sendMessage(currentCommandManager, Messages.BANK__WITHDRAWAL_SUCCESS, "{player}", player.name,
-                "{amount}", EconomyUtils.format(amount), "{total}", EconomyUtils.format(guild.balance))
+                "{amount}", EconomyUtils.format(rounded), "{total}", EconomyUtils.format(guild.balance))
     }
 }

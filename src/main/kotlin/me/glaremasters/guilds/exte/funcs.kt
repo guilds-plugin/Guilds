@@ -51,3 +51,7 @@ internal fun addBottom(gui: PaginatedGui) {
     }
     gui.filler.fillBottom(item)
 }
+
+fun Double.rounded(): Double {
+    return String.format("%.2f", this).toDouble()
+}

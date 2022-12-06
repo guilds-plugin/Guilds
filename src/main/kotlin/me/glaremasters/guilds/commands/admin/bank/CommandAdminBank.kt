@@ -37,6 +37,7 @@ import co.aikar.commands.annotation.Syntax
 import co.aikar.commands.annotation.Values
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.exceptions.ExpectationNotMet
+import me.glaremasters.guilds.exte.rounded
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
@@ -68,10 +69,12 @@ internal class CommandAdminBank : BaseCommand() {
             return
         }
 
-        val total = guild.balance + amount
+        val rounded = amount.rounded()
+
+        val total = guild.balance + rounded
 
         guild.balance = total
-        currentCommandIssuer.sendInfo(Messages.ADMIN__BANK_DEPOSIT, "{amount}", amount.toString(), "{guild}", guild.name, "{total}", total.toString())
+        currentCommandIssuer.sendInfo(Messages.ADMIN__BANK_DEPOSIT, "{amount}", rounded.toString(), "{guild}", guild.name, "{total}", total.toString())
     }
 
     @Subcommand("admin bank withdraw")
@@ -84,13 +87,15 @@ internal class CommandAdminBank : BaseCommand() {
             return
         }
 
-        val total = guild.balance - amount
+        val rounded = amount.rounded()
+
+        val total = guild.balance - rounded
 
         if (guild.balance < total) {
             throw ExpectationNotMet(Messages.BANK__NOT_ENOUGH_BANK)
         }
 
         guild.balance = total
-        currentCommandIssuer.sendInfo(Messages.ADMIN__BANK_WITHDRAW, "{amount}", amount.toString(), "{guild}", guild.name, "{total}", total.toString())
+        currentCommandIssuer.sendInfo(Messages.ADMIN__BANK_WITHDRAW, "{amount}", rounded.toString(), "{guild}", guild.name, "{total}", total.toString())
     }
 }
