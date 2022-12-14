@@ -104,9 +104,9 @@ syntax:
   code: "<kod>"
   uses: "<używa>"
   language: "<język>"
-  new-backend: "<new backend>"
-  new-master: "<new master>"
-  optional: "[optional]"
+  new-backend: "<nowy beckend>"
+  new-master: "<nowy przywódca>"
+  optional: "[opcjonalnie]"
 create:
   guild-name-taken: "&cTa nazwa jest już w użyciu!"
   warning: "&cStworzenie gildii kosztuje: {amount}. Wpisz /guilds confirm aby stworzyć gildię, lub /guilds cancel aby anulować."
@@ -116,10 +116,10 @@ create:
   name-too-long: "&cNie podałeś przedrostka, z tego powodu twoja nazwa nie mogła zostać sprawdzona na podstawie wymagań. Spróbuj użyć krótszej nazwy lub dodaj przedrostek przy tworzeniu prefixu."
   prefix-too-long: "&cPodany prefix gildii nie spełnia wymagań! Możliwe że ma zbyt wiele znaków?"
 chat:
-  toggled-on: "{type} chat toggled on."
-  toggled-off: "{type} chat toggled off."
-  type-guild: "Guild"
-  type-ally: "Ally"
+  toggled-on: "Czat {type} został włączony."
+  toggled-off: "Czat {type} został wyłączony."
+  type-guild: "Gildia"
+  type-ally: "Sojusznik"
 request:
   success: "&aPomyślnie wysłano prośbę o dołączenie do {guild}"
   incoming-request: "&a{player} chcę dołączyć do gildii. Wyślij mu zaproszenie używając /guild invite {player}!"
