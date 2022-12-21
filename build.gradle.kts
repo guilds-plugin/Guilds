@@ -55,7 +55,7 @@ dependencies {
     implementation("com.github.cryptomorin:XSeries:9.2.0")
     implementation("net.kyori:adventure-platform-bukkit:4.2.0")
     implementation("dev.triumphteam:triumph-gui:3.1.2")
-    implementation("com.zaxxer:HikariCP:4.0.3")
+    implementation("com.zaxxer:HikariCP:5.0.1")
     implementation("org.jdbi:jdbi3-core:3.8.2")
     implementation("org.jdbi:jdbi3-sqlobject:3.8.2")
     implementation("org.mariadb.jdbc:mariadb-java-client:2.7.2")
