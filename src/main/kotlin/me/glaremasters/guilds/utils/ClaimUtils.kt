@@ -56,24 +56,50 @@ object ClaimUtils {
     }
 
     @JvmStatic
-    fun claimPointOne(player: Player, settingsManager: SettingsManager): Location {
+    fun claimPointOne(player: Player, settingsManager: SettingsManager) : Location {
+        val radius = getRadius(settingsManager).toDouble()
+        val x = player.location.x - radius
         val y = try {
-            player.world.minHeight
+            player.world.maxHeight.toDouble()
         } catch (error: NoSuchMethodError) {
-            0
+            0.0
         }
-        return player.location.subtract(getRadius(settingsManager).toDouble(), player.location.y - y, getRadius(settingsManager).toDouble())
+        val z = player.location.z - radius
+        return Location(player.world, x, y, z)
     }
 
     @JvmStatic
-    fun claimPointTwo(player: Player, settingsManager: SettingsManager): Location {
+    fun claimPointTwo(player: Player, settingsManager: SettingsManager) : Location {
+        val radius = getRadius(settingsManager).toDouble()
+        val x = player.location.x + radius
         val y = try {
-            player.world.minHeight
+            player.world.minHeight.toDouble()
         } catch (error: NoSuchMethodError) {
-            0
+            0.0
         }
-        return player.location.add(getRadius(settingsManager).toDouble(), y - player.location.y, getRadius(settingsManager).toDouble())
+        val z = player.location.z + radius
+        return Location(player.world, x, y, z)
     }
+
+//    @JvmStatic
+//    fun claimPointOne(player: Player, settingsManager: SettingsManager): Location {
+//        val y = try {
+//            player.world.minHeight
+//        } catch (error: NoSuchMethodError) {
+//            0
+//        }
+//        return player.location.subtract(getRadius(settingsManager).toDouble(), player.location.y - y, getRadius(settingsManager).toDouble())
+//    }
+
+//    @JvmStatic
+//    fun claimPointTwo(player: Player, settingsManager: SettingsManager): Location {
+//        val y = try {
+//            player.world.minHeight
+//        } catch (error: NoSuchMethodError) {
+//            0
+//        }
+//        return player.location.add(getRadius(settingsManager).toDouble(), y - player.location.y, getRadius(settingsManager).toDouble())
+//    }
 
     @JvmStatic
     fun getClaimName(guild: Guild): String {
