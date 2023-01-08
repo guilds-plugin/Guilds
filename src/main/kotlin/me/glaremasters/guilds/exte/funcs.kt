@@ -31,6 +31,7 @@ import me.glaremasters.guilds.utils.ItemBuilder
 import me.glaremasters.guilds.utils.StringUtils
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
+import java.util.*
 
 internal fun addBackground(gui: Gui) {
     val builder = ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem() ?: ItemStack(Material.GLASS_PANE))
@@ -53,5 +54,5 @@ internal fun addBottom(gui: PaginatedGui) {
 }
 
 fun Double.rounded(): Double {
-    return String.format("%.2f", this).toDouble()
+    return String.format(Locale.ENGLISH, "%.2f", this).toDouble()
 }
