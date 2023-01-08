@@ -31,6 +31,7 @@ import java.util.UUID
 class GuildMember(val uuid: UUID, var role: GuildRole) {
     var joinDate: Long = 0
     var lastLogin: Long = 0
+    var texture: String = ""
 
     val isOnline: Boolean
         get() = asOfflinePlayer.isOnline
