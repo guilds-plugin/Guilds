@@ -60,6 +60,10 @@ public class DatabaseManager {
                 config.addDataSourceProperty("user", settingsManager.getProperty(StorageSettings.SQL_USERNAME));
                 config.addDataSourceProperty("password", settingsManager.getProperty(StorageSettings.SQL_PASSWORD));
                 config.addDataSourceProperty("useSSL", settingsManager.getProperty(StorageSettings.SQL_ENABLE_SSL));
+
+                if (settingsManager.getProperty(StorageSettings.UTF8)) {
+                    config.addDataSourceProperty("characterEncoding", "utf8");
+                }
                 break;
             case SQLITE:
                 config.setPoolName("Guilds SQLite Connection Pool");
@@ -73,6 +77,10 @@ public class DatabaseManager {
                 config.addDataSourceProperty("databaseName", databaseName);
                 config.addDataSourceProperty("user", settingsManager.getProperty(StorageSettings.SQL_USERNAME));
                 config.addDataSourceProperty("password", settingsManager.getProperty(StorageSettings.SQL_PASSWORD));
+
+                if (settingsManager.getProperty(StorageSettings.UTF8)) {
+                    config.addDataSourceProperty("characterEncoding", "utf8");
+                }
                 break;
             default:
                 throw new IllegalArgumentException("Invalid backend for DatabaseManager setup: " + backend.getBackendName());

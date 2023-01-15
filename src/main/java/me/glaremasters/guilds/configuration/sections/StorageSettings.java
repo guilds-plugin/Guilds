@@ -62,6 +62,9 @@ public class StorageSettings implements SettingsHolder {
     public static final Property<String> SQL_PASSWORD =
             newProperty("storage.sql.password", "");
 
+    public static final Property<Boolean> UTF8 =
+            newProperty("storage.sql.utf8", true);
+
     @Comment("Sets whether or not to use SSL for the remote SQL database connection (Doesn't apply to SQLite)")
     public static final Property<Boolean> SQL_ENABLE_SSL =
             newProperty("storage.sql.enable-ssl", false);
