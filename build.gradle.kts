@@ -4,7 +4,7 @@ import net.kyori.indra.IndraPublishingPlugin
 
 plugins {
     id("java")
-    id("org.jetbrains.kotlin.jvm") version "1.7.22"
+    id("org.jetbrains.kotlin.jvm") version "1.8.0"
     id("net.kyori.indra") version "2.1.1"
     id("net.kyori.indra.publishing") version "2.1.1"
     id("net.kyori.indra.license-header") version "2.1.1"
@@ -66,7 +66,7 @@ dependencies {
     compileOnly("com.mojang:authlib:1.5.25")
     compileOnly("me.clip:placeholderapi:2.11.2")
 
-    slim("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    slim("org.jetbrains.kotlin:kotlin-stdlib")
 }
 
 tasks {
