@@ -25,6 +25,7 @@ package me.glaremasters.guilds.placeholders
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion
 import me.glaremasters.guilds.Guilds
+import me.glaremasters.guilds.exte.rounded
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.utils.EconomyUtils
 import org.bukkit.entity.Player
@@ -134,8 +135,10 @@ class PlaceholderAPI(private val guildHandler: GuildHandler) : PlaceholderExpans
                 return ""
             }
 
+            val filterValid = api.guildHandler.guilds.filter { it.guildScore.wins > 0 && it.guildScore.loses > 0 }
+
             val guild = try {
-                api.guildHandler.guilds.sortedBy { (it.guildScore.wins / it.guildScore.loses) }.reversed()[updated - 1]
+                filterValid.sortedBy { (it.guildScore.wins.toDouble() / it.guildScore.loses.toDouble()) }.reversed()[updated - 1]
             } catch (ex: IndexOutOfBoundsException) {
                 return ""
             }
@@ -151,13 +154,15 @@ class PlaceholderAPI(private val guildHandler: GuildHandler) : PlaceholderExpans
                 return ""
             }
 
+            val filterValid = api.guildHandler.guilds.filter { it.guildScore.wins > 0 && it.guildScore.loses > 0 }
+
             val guild = try {
-                api.guildHandler.guilds.sortedBy { (it.guildScore.wins / it.guildScore.loses) }.reversed()[updated - 1]
+                filterValid.sortedBy  { (it.guildScore.wins.toDouble() / it.guildScore.loses.toDouble()) }.reversed()[updated - 1]
             } catch (ex: IndexOutOfBoundsException) {
                 return ""
             }
 
-            return (guild.guildScore.wins / guild.guildScore.loses).toString()
+            return (guild.guildScore.wins.toDouble() / guild.guildScore.loses.toDouble()).rounded().toString()
         }
 
         val guild = api.getGuild(player) ?: return ""
