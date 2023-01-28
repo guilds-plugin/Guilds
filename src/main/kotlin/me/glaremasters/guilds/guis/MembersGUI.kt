@@ -24,13 +24,16 @@
 package me.glaremasters.guilds.guis
 
 import ch.jalu.configme.SettingsManager
+import com.cryptomorin.xseries.SkullUtils
 import dev.triumphteam.gui.guis.Gui
 import dev.triumphteam.gui.guis.GuiItem
 import dev.triumphteam.gui.guis.PaginatedGui
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.conf.GuildBuffSettings
+import me.glaremasters.guilds.configuration.sections.ExperimentalSettings
 import me.glaremasters.guilds.configuration.sections.GuildInfoMemberSettings
 import me.glaremasters.guilds.configuration.sections.GuildListSettings
+import me.glaremasters.guilds.configuration.sections.PluginSettings
 import me.glaremasters.guilds.exte.addBackground
 import me.glaremasters.guilds.exte.addBottom
 import me.glaremasters.guilds.guild.Guild
@@ -122,7 +125,12 @@ class MembersGUI(private val guilds: Guilds, private val settingsManager: Settin
                         .replace("{status}", status))
             }
 
-            val item = GuiItem(GuiUtils.createItem(settingsManager.getProperty(GuildInfoMemberSettings.MEMBERS_MATERIAL), settingsManager.getProperty(GuildInfoMemberSettings.MEMBERS_NAME).replace("{player}", name.toString()), updated))
+            val item = if (settingsManager.getProperty(ExperimentalSettings.MEMBER_HEAD_SKILLS)) {
+                GuiItem(GuiUtils.createSkullItem(member, settingsManager.getProperty(GuildInfoMemberSettings.MEMBERS_NAME).replace("{player}", name.toString()), updated))
+            } else {
+                GuiItem(GuiUtils.createItem(settingsManager.getProperty(GuildInfoMemberSettings.MEMBERS_MATERIAL), settingsManager.getProperty(GuildInfoMemberSettings.MEMBERS_NAME).replace("{player}", name.toString()), updated))
+            }
+
             item.setAction { event ->
                 event.isCancelled = true
             }
