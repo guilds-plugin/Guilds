@@ -27,11 +27,12 @@ import ch.jalu.configme.Comment;
 import ch.jalu.configme.SettingsHolder;
 import ch.jalu.configme.configurationdata.CommentsConfiguration;
 import ch.jalu.configme.properties.Property;
+import me.glaremasters.guilds.conf.objects.MemberNav;
+import me.glaremasters.guilds.conf.objects.MemberNavItem;
 
 import java.util.List;
 
-import static ch.jalu.configme.properties.PropertyInitializer.newListProperty;
-import static ch.jalu.configme.properties.PropertyInitializer.newProperty;
+import static ch.jalu.configme.properties.PropertyInitializer.*;
 
 /**
  * Created by Glare
@@ -73,7 +74,9 @@ public class GuildInfoMemberSettings implements SettingsHolder {
     public static final Property<String> MEMBERS_OFFLINE =
             newProperty(INFO_PATH + "item.offline", "&cOffline");
 
-
+    @Comment("Set the name and material for the navigation buttons")
+    public static final Property<MemberNav> MEMBER_NAV =
+            newBeanProperty(MemberNav.class, INFO_PATH + "nav", new MemberNav(new MemberNavItem("EMPTY_MAP", "Next"), new MemberNavItem("EMPTY_MAP", "Previous")));
 
 
     private GuildInfoMemberSettings() {

@@ -26,10 +26,13 @@ package me.glaremasters.guilds.guis
 import ch.jalu.configme.SettingsManager
 import dev.triumphteam.gui.guis.Gui
 import dev.triumphteam.gui.guis.GuiItem
+import dev.triumphteam.gui.guis.PaginatedGui
 import me.glaremasters.guilds.Guilds
+import me.glaremasters.guilds.conf.GuildBuffSettings
 import me.glaremasters.guilds.configuration.sections.GuildInfoMemberSettings
 import me.glaremasters.guilds.configuration.sections.GuildListSettings
 import me.glaremasters.guilds.exte.addBackground
+import me.glaremasters.guilds.exte.addBottom
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.guild.GuildMember
@@ -41,9 +44,9 @@ import java.util.*
 
 class MembersGUI(private val guilds: Guilds, private val settingsManager: SettingsManager, private val guildHandler: GuildHandler) {
 
-    fun get(guild: Guild, player: Player): Gui {
+    fun get(guild: Guild, player: Player): PaginatedGui {
         val name = settingsManager.getProperty(GuildInfoMemberSettings.GUI_NAME).replace("{name}", guild.name)
-        val gui = Gui(6, StringUtils.color(name))
+        val gui = PaginatedGui(6, 45, StringUtils.color(name))
 
         gui.setDefaultClickAction { event ->
             event.isCancelled = true
@@ -57,8 +60,26 @@ class MembersGUI(private val guilds: Guilds, private val settingsManager: Settin
         }
 
         addItems(gui, guild, player)
-        addBackground(gui)
+        addBottom(gui)
+        createButtons(gui)
         return gui
+    }
+
+    private fun createButtons(gui: PaginatedGui) {
+        val nav = settingsManager.getProperty(GuildInfoMemberSettings.MEMBER_NAV) ?: return
+
+        val next = GuiItem(GuiUtils.createItem(nav.next.material, nav.next.name, emptyList()))
+        next.setAction {
+            gui.next()
+        }
+
+        val back = GuiItem(GuiUtils.createItem(nav.previous.material, nav.previous.name, emptyList()))
+        back.setAction {
+            gui.previous()
+        }
+
+        gui.setItem(6, 9, next)
+        gui.setItem(6, 1, back)
     }
 
     /**
@@ -67,7 +88,7 @@ class MembersGUI(private val guilds: Guilds, private val settingsManager: Settin
      * @param pane the pane to be added to
      * @param guild the guild of the player
      */
-    private fun addItems(gui: Gui, guild: Guild, player: Player) {
+    private fun addItems(gui: PaginatedGui, guild: Guild, player: Player) {
         val members = guild.members
 
         when (settingsManager.getProperty(GuildInfoMemberSettings.SORT_ORDER).toUpperCase()) {
