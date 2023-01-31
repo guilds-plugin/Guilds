@@ -1,7 +1,7 @@
 ---
 descriptions:
   accept: "Accepter en guild-invitation"
-  admin-addplayer: "Admin command til at tilføje en spiller til en guild"
+  admin-addplayer: "Administrator kommando til at tilføje en spiller til en guild"
   admin-bank-balance: "Admin command til at se saldoen på en guilds bankkonto"
   admin-bank-deposit: "Admin command til at sætte penge ind på en guilds bankkonto"
   admin-bank-withdraw: "Admin command til at hæve penge fra en guilds bankkonto"
