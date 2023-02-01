@@ -27,20 +27,15 @@ import co.aikar.commands.PaperCommandManager;
 import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
-import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import io.github.slimjar.app.builder.ApplicationBuilder;
 import io.github.slimjar.app.builder.InjectingApplicationBuilder;
 import io.github.slimjar.logging.ProcessLogger;
-import io.github.slimjar.resolver.data.Repository;
-import io.github.slimjar.resolver.mirrors.SimpleMirrorSelector;
 import me.glaremasters.guilds.acf.ACFHandler;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.api.GuildsAPI;
 import me.glaremasters.guilds.arena.ArenaHandler;
 import me.glaremasters.guilds.challenges.ChallengeHandler;
-import me.glaremasters.guilds.conf.GuildBuffSettings;
 import me.glaremasters.guilds.configuration.SettingsHandler;
 import me.glaremasters.guilds.configuration.sections.HooksSettings;
 import me.glaremasters.guilds.configuration.sections.PluginSettings;
@@ -60,23 +55,19 @@ import me.glaremasters.guilds.listeners.VaultBlacklistListener;
 import me.glaremasters.guilds.listeners.WorldGuardListener;
 import me.glaremasters.guilds.placeholders.PlaceholderAPI;
 import me.glaremasters.guilds.updater.UpdateChecker;
+import me.glaremasters.guilds.utils.BstatsUtils;
 import me.glaremasters.guilds.utils.LanguageUpdater;
 import me.glaremasters.guilds.utils.LoggingUtils;
 import me.glaremasters.guilds.utils.StringUtils;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
-import org.bstats.bukkit.Metrics;
-import org.bstats.charts.SimplePie;
-import org.bstats.charts.SingleLineChart;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.time.Instant;
@@ -114,11 +105,18 @@ public final class Guilds extends JavaPlugin {
 
     @Override
     public void onLoad() {
+        final Logger logger = getLogger();
+        logger.log(Level.INFO, "Loading Libraries...");
+        logger.log(Level.INFO, "Note: This might take a few minutes on first run. Kindly ensure internet connectivity.");
+        final Instant startInstant = Instant.now();
         try {
             loadLibraries();
+            final Instant endInstant = Instant.now();
+            final long timeTaken = Duration.between(startInstant, endInstant).toMillis();
+            final double timeTakenSeconds = timeTaken / 1000.0;
+            logger.log(Level.INFO, "Loaded libraries in {0} seconds", timeTakenSeconds);
         } catch (Exception ex) {
-            getLogger().log(Level.SEVERE, "Failed to load libraries", ex);
-            ex.printStackTrace();
+            logger.log(Level.SEVERE, "Unable to load dependencies... Please ensure an active Internet connection on first run!");
             Bukkit.getPluginManager().disablePlugin(this);
         }
     }
@@ -234,13 +232,9 @@ public final class Guilds extends JavaPlugin {
             new PlaceholderAPI(guildHandler).register();
             guildHandler.setPapi(true);
         }
-        // start bstats
-        Metrics metrics = new Metrics(this, 881);
-        metrics.addCustomChart(new SingleLineChart("guilds", () -> getGuildHandler().getGuildsSize()));
-        metrics.addCustomChart(new SingleLineChart("tiers", () -> getGuildHandler().getTiers().size()));
-        metrics.addCustomChart(new SingleLineChart("roles", () -> getGuildHandler().getRoles().size()));
-        metrics.addCustomChart(new SingleLineChart("buffs", () -> settingsHandler.getBuffConf().getProperty(GuildBuffSettings.BUFFS).size()));
-        metrics.addCustomChart(new SimplePie("language", () -> settingsHandler.getMainConf().getProperty(PluginSettings.MESSAGES_LANGUAGE)));
+
+        // BStats
+        new BstatsUtils().initialize(this, guildHandler, settingsHandler);
 
         // Initialize the action handler for actions in the plugin
         actionHandler = new ActionHandler();
@@ -402,17 +396,7 @@ public final class Guilds extends JavaPlugin {
 
     private void loadLibraries() throws ReflectiveOperationException, IOException, URISyntaxException, NoSuchAlgorithmException, InterruptedException {
         InjectingApplicationBuilder.createAppending("Guilds", getClassLoader())
-                .downloadDirectoryPath(getDataFolder().toPath().resolve(".libs"))
-                .logger(new ProcessLogger() {
-                    @Override
-                    public void log(String s, Object... objects) {
-                        getLogger().info(String.format(s, objects));
-                    }
-
-                    @Override
-                    public void debug(String message, Object... args) {
-                        getLogger().info(String.format(message, args));
-                    }
-                }).build();
+                .downloadDirectoryPath(getDataFolder().toPath().resolve("Libraries"))
+                .build();
     }
 }

@@ -37,24 +37,13 @@ slimJar {
 }
 
 repositories {
-    maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/") {
-        content { includeGroup("org.bukkit") }
-    }
+    maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
     maven("https://oss.sonatype.org/content/groups/public/")
-    maven("https://repo.aikar.co/content/groups/aikar/") {
-        content { includeGroup("co.aikar") }
-    }
+    maven("https://repo.aikar.co/content/groups/aikar/")
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
-
-    maven("https://repo.codemc.org/repository/maven-public/") {
-        content { includeGroup("org.codemc.worldguardwrapper") }
-    }
+    maven("https://repo.codemc.org/repository/maven-public/")
     maven("https://repo.glaremasters.me/repository/public/")
-
-    maven("https://repo.racci.dev/releases") {
-        name = "RacciRepo"
-        mavenContent { releasesOnly() }
-    }
+    maven("https://repo.racci.dev/releases")
 }
 
 dependencies {
@@ -104,20 +93,6 @@ tasks {
         dependsOn(shadowJar)
     }
 
-//    indra {
-//        mitLicense()
-//
-//        javaVersions {
-//            target(8)
-//        }
-//
-//        github("guilds-plugin", "guilds") {
-//            publishing(true)
-//        }
-//
-//        publishAllTo("guilds", "https://repo.glaremasters.me/repository/guilds/")
-//    }
-
     compileKotlin {
         kotlinOptions.javaParameters = true
         kotlinOptions.jvmTarget = "1.8"
@@ -131,13 +106,6 @@ tasks {
         minecraftVersion("1.19.3")
     }
 
-//    license {
-//        header.set(resources.text.fromFile(rootProject.file("LICENSE")))
-//        exclude("me/glaremasters/guilds/scanner/ZISScanner.java")
-//        exclude("me/glaremasters/guilds/updater/UpdateChecker.java")
-//        exclude("me/glaremasters/guilds/utils/PremiumFun.java")
-//    }
-
     shadowJar {
         dependencies {
             project.configurations.implementation.get().dependencies.forEach {
@@ -146,26 +114,6 @@ tasks {
             relocate("io.github.slimjar", "me.glaremasters.guilds.libs.slimjar")
         }
     }
-
-//    shadowJar {
-//        fun relocates(vararg dependencies: String) {
-//            dependencies.forEach {
-//                val split = it.split(".")
-//                val name = split.last()
-//                relocate(it, "me.glaremasters.guilds.libs.$name")
-//            }
-//        }
-//
-//        relocates(
-//            "io.github.slimjar"
-//        )
-//
-//        minimize()
-//
-//        archiveClassifier.set(null as String?)
-//        archiveFileName.set("Guilds-${project.version}.jar")
-//        destinationDirectory.set(rootProject.tasks.shadowJar.get().destinationDirectory.get())
-//    }
 
     processResources {
         expand("version" to rootProject.version)
