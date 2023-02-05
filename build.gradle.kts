@@ -5,7 +5,6 @@ import java.net.URL
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     id("java-library")
-    id("maven-publish")
     alias(libMinix.plugins.kotlin.jvm)
     alias(libMinix.plugins.shadow)
     alias(libMinix.plugins.minecraft.runPaper)
@@ -14,6 +13,18 @@ plugins {
 }
 
 slimJar {
+    globalRepositories.set(
+        listOf(
+            "https://repo.glaremasters.me/repository/public/",
+            "https://repo.aikar.co/content/groups/aikar/",
+            "https://repo1.maven.org/maven2/",
+            "https://oss.sonatype.org/content/groups/public/"
+        )
+    )
+
+    requirePreResolve.set(true)
+    requireChecksum.set(true)
+
     fun relocates(vararg dependencies: String) {
         dependencies.forEach {
             val split = it.split(".")
@@ -37,7 +48,12 @@ slimJar {
 }
 
 repositories {
-    maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
+    maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/") {
+        content {
+            includeGroup("org.spigotmc")
+            includeGroup("org.bukkit")
+        }
+    }
     maven("https://oss.sonatype.org/content/groups/public/")
     maven("https://repo.aikar.co/content/groups/aikar/")
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
@@ -89,10 +105,6 @@ tasks.withType<DokkaTask>().configureEach {
 }
 
 tasks {
-    build {
-        dependsOn(shadowJar)
-    }
-
     compileKotlin {
         kotlinOptions.javaParameters = true
         kotlinOptions.jvmTarget = "1.8"
@@ -106,6 +118,14 @@ tasks {
         minecraftVersion("1.19.3")
     }
 
+    processResources {
+        expand("version" to rootProject.version)
+    }
+
+    build {
+        dependsOn(shadowJar)
+    }
+
     shadowJar {
         dependencies {
             project.configurations.implementation.get().dependencies.forEach {
@@ -113,9 +133,5 @@ tasks {
             }
             relocate("io.github.slimjar", "me.glaremasters.guilds.libs.slimjar")
         }
-    }
-
-    processResources {
-        expand("version" to rootProject.version)
     }
 }
