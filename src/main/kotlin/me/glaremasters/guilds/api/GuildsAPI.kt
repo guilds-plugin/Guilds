@@ -33,70 +33,80 @@ import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
 
+/**
+ * The `GuildsAPI` class provides functions for accessing information about guilds.
+ *
+ * @param guildHandler: an instance of the `GuildHandler` class
+ * @param cooldownHandler: an instance of the `CooldownHandler` class
+ */
 class GuildsAPI(val guildHandler: GuildHandler, val cooldownHandler: CooldownHandler) {
 
     /**
+     * Get the guild of a player.
      *
-     * Get the guild of a player
-     * @param player the players you're getting the guild of
-     * @return the guild that the player is in
+     * @param player: the player whose guild you want to retrieve
+     * @return the guild that the player is in, or `null` if the player is not in a guild
      */
     fun getGuild(player: OfflinePlayer): Guild? {
         return guildHandler.getGuild(player)
     }
 
     /**
-     * Get a guild by it's uuid
-     * @param uuid uuid of the guild
-     * @return the guild the uuid belong to
+     * Get a guild by its UUID.
+     *
+     * @param uuid: the UUID of the guild
+     * @return the guild with the given UUID, or `null` if no such guild exists
      */
     fun getGuild(uuid: UUID): Guild? {
         return guildHandler.getGuild(uuid)
     }
 
     /**
-     * Get a guild by a player's uuid
+     * Get a guild by its name.
      *
-     * @param uuid the uuid of the player
-     * @return the guild of the player or null
-     */
-    fun getGuildByPlayerId(uuid: UUID): Guild? {
-        return guildHandler.getGuildByPlayerId(uuid)
-    }
-
-    /**
-     * Get a guild by it's name
-     * @param name the name of the guild
-     * @return the guild object
+     * @param name: the name of the guild
+     * @return the guild with the given name, or `null` if no such guild exists
      */
     fun getGuild(name: String): Guild? {
         return guildHandler.getGuild(name)
     }
 
     /**
-     * Get a guild member by their uuid
+     * Get a guild by the UUID of a player.
      *
-     * @param uuid the uuid of the player
-     * @return the guild member instance or null
+     * @param uuid: the UUID of the player
+     * @return the guild of the player with the given UUID, or `null` if the player is not in a guild
+     */
+    fun getGuildByPlayerId(uuid: UUID): Guild? {
+        return guildHandler.getGuildByPlayerId(uuid)
+    }
+
+    /**
+     * Get a guild member by their UUID.
+     *
+     * @param uuid: the UUID of the player
+     * @return the `GuildMember` instance of the player with the given UUID, or `null` if the player is not in a guild
      */
     fun getGuildMember(uuid: UUID): GuildMember? {
         return guildHandler.getGuildMember(uuid)
     }
 
     /**
-     * Get a copy of one of a guild's vaults
-     * @param guild the guild to get the vault of
-     * @param vaultNumber which vault to get
-     * @return guild vault
+     * Get a copy of one of a guild's vaults.
+     *
+     * @param guild: the guild to retrieve the vault from
+     * @param vaultNumber: the number of the vault to retrieve
+     * @return a copy of the specified guild vault
      */
     fun getGuildVault(guild: Guild, vaultNumber: Int): Inventory {
         return guildHandler.getGuildVault(guild, vaultNumber)
     }
 
     /**
-     * Get the role of a player
-     * @param player role
-     * @return the role of a player
+     * Get the role of a player.
+     *
+     * @param player: the player whose role you want to retrieve
+     * @return the `GuildRole` of the player, or `null` if the player is not in a guild
      */
     fun getGuildRole(player: Player): GuildRole? {
         return getGuild(player)?.getMember(player.uniqueId)?.role

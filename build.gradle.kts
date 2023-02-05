@@ -1,6 +1,8 @@
 import com.github.jengelman.gradle.plugins.shadow.ShadowPlugin
 import net.kyori.indra.IndraPlugin
 import net.kyori.indra.IndraPublishingPlugin
+import org.jetbrains.dokka.gradle.DokkaTask
+import java.net.URL
 
 plugins {
     id("java")
@@ -12,6 +14,7 @@ plugins {
     id("io.github.slimjar") version "1.3.0"
     id("xyz.jpenilla.run-paper") version "2.0.1"
     id("com.github.ben-manes.versions") version "0.44.0"
+    id("org.jetbrains.dokka") version "1.7.20"
 }
 
 group = "me.glaremasters"
@@ -67,6 +70,22 @@ dependencies {
     compileOnly("me.clip:placeholderapi:2.11.2")
 
     slim("org.jetbrains.kotlin:kotlin-stdlib")
+}
+
+tasks.withType<DokkaTask>().configureEach {
+    dokkaSourceSets {
+        named("main") {
+            moduleName.set("Guilds")
+
+            includes.from(project.files(), "Module.md")
+
+            sourceLink {
+                localDirectory.set(projectDir.resolve("src"))
+                remoteUrl.set(URL("https://github.com/guilds-plugin/Guilds/tree/master/src"))
+                remoteLineSuffix.set("#L")
+            }
+        }
+    }
 }
 
 tasks {
