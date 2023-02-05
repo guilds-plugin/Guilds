@@ -1,7 +1,7 @@
 ---
 descriptions:
   accept: "Accepter en guild-invitation"
-  admin-addplayer: "Admin command til at tilføje en spiller til en guild"
+  admin-addplayer: "Administrator kommando til at tilføje en spiller til en guild"
   admin-bank-balance: "Admin command til at se saldoen på en guilds bankkonto"
   admin-bank-deposit: "Admin command til at sætte penge ind på en guilds bankkonto"
   admin-bank-withdraw: "Admin command til at hæve penge fra en guilds bankkonto"
@@ -89,6 +89,24 @@ descriptions:
   war-challenge: "Udfordre en anden guild til en krig"
   war-deny: "Afvis udfordring"
   war-join: "Deltag i en afventende udfordring"
+syntax:
+  msg: "[msg]"
+  name: "<name>"
+  player: "<player>"
+  amount: "<amount>"
+  guild: "<guild>"
+  new-name: "<new name>"
+  motd: "<motd>"
+  prefix: "[prefix]"
+  vault-number: "<vault #>"
+  arena: "<arena>"
+  position: "<position>"
+  code: "<code>"
+  uses: "<uses>"
+  language: "<language>"
+  new-backend: "<new backend>"
+  new-master: "<new master>"
+  optional: "[optional]"
 create:
   guild-name-taken: "&cDette navn er allerede i brug!"
   warning: "&cThe creation of a Guild cost {amount}. Type /guilds confirm to create your guild, type /guilds cancel to cancel."
