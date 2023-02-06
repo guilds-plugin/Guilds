@@ -24,11 +24,16 @@
 package me.glaremasters.guilds.actions
 
 /**
- * Created by GlareMasters on 6/28/2018.
+ * Interface for representing a confirmable action.
  */
 interface ConfirmAction {
-
+    /**
+     * Accept the action.
+     */
     fun accept()
 
+    /**
+     * Decline the action.
+     */
     fun decline()
 }

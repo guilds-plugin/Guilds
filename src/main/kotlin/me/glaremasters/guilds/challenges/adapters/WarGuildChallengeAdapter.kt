@@ -26,11 +26,21 @@ package me.glaremasters.guilds.challenges.adapters
 import com.google.gson.TypeAdapter
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonWriter
-import java.util.UUID
 import me.glaremasters.guilds.guild.Guild
+import java.util.*
 
+/**
+ * WarGuildChallengeAdapter is a [TypeAdapter] for [Guild]. It allows for serializing and deserializing [Guild]
+ * objects to and from JSON.
+ */
 class WarGuildChallengeAdapter : TypeAdapter<Guild>() {
 
+    /**
+     * Writes the given [Guild] to a [JsonWriter].
+     *
+     * @param out The [JsonWriter] to write the [Guild] to.
+     * @param guild The [Guild] to write.
+     */
     override fun write(out: JsonWriter, guild: Guild) {
         out.beginObject()
         out.name("uuid")
@@ -38,6 +48,12 @@ class WarGuildChallengeAdapter : TypeAdapter<Guild>() {
         out.endObject()
     }
 
+    /**
+     * Reads a [Guild] from a [JsonReader].
+     *
+     * @param reader The [JsonReader] to read the [Guild] from.
+     * @return The [Guild] that was read from the [JsonReader].
+     */
     override fun read(reader: JsonReader): Guild {
         reader.beginObject()
         reader.nextName()

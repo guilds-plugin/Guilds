@@ -27,12 +27,44 @@ import co.aikar.commands.ACFBukkitUtil
 import java.util.UUID
 import org.bukkit.Location
 
-data class Arena(val id: UUID, val name: String, var challenger: String?, var defender: String?, @Transient var inUse: Boolean) {
+/**
+ * Represents an Arena with unique id and name.
+ *
+ * @property id the unique id of the arena.
+ * @property name the name of the arena.
+ * @property challenger the challenger location string representation, can be null.
+ * @property defender the defender location string representation, can be null.
+ * @property inUse boolean flag indicating whether the arena is currently in use.
+ */
+data class Arena(
+    val id: UUID,
+    val name: String,
+    var challenger: String?,
+    var defender: String?,
+    @Transient var inUse: Boolean
+) {
+
+    /**
+     * Constructs a new Arena with id and name.
+     *
+     * @param id the unique id of the arena.
+     * @param name the name of the arena.
+     */
     constructor(id: UUID, name: String) : this(id, name, null, null, false)
 
+    /**
+     * Returns the Location object for the challenger.
+     *
+     * @return the Location object for the challenger, null if the string representation is null.
+     */
     val challengerLoc: Location?
         get() = ACFBukkitUtil.stringToLocation(challenger)
 
+    /**
+     * Returns the Location object for the defender.
+     *
+     * @return the Location object for the defender, null if the string representation is null.
+     */
     val defenderLoc: Location?
         get() = ACFBukkitUtil.stringToLocation(defender)
 }

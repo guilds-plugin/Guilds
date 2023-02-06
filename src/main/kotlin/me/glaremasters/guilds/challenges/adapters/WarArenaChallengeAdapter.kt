@@ -26,11 +26,21 @@ package me.glaremasters.guilds.challenges.adapters
 import com.google.gson.TypeAdapter
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonWriter
-import java.util.UUID
 import me.glaremasters.guilds.arena.Arena
+import java.util.*
 
+/**
+ * TypeAdapter for [Arena] objects, using Google's GSON library. This adapter is used for serializing and
+ * deserializing Arena objects to/from JSON.
+ */
 class WarArenaChallengeAdapter : TypeAdapter<Arena>() {
 
+    /**
+     * Writes an [Arena] object to the [JsonWriter].
+     *
+     * @param out the [JsonWriter] to write to.
+     * @param arena the [Arena] object to write.
+     */
     override fun write(out: JsonWriter, arena: Arena) {
         out.beginObject()
         out.name("uuid")
@@ -40,6 +50,12 @@ class WarArenaChallengeAdapter : TypeAdapter<Arena>() {
         out.endObject()
     }
 
+    /**
+     * Reads an [Arena] object from the [JsonReader].
+     *
+     * @param reader the [JsonReader] to read from.
+     * @return the [Arena] object read from the [JsonReader].
+     */
     override fun read(reader: JsonReader): Arena {
         var arenaName: String? = null
         var arenaId: String? = null
@@ -49,9 +65,11 @@ class WarArenaChallengeAdapter : TypeAdapter<Arena>() {
                 "uuid" -> {
                     arenaId = reader.nextString()
                 }
+
                 "name" -> {
                     arenaName = reader.nextString()
                 }
+
                 else -> {
                     reader.skipValue()
                 }
