@@ -39,7 +39,6 @@ import me.glaremasters.guilds.actions.ConfirmAction
 import me.glaremasters.guilds.api.events.GuildLeaveEvent
 import me.glaremasters.guilds.api.events.GuildRemoveEvent
 import me.glaremasters.guilds.configuration.sections.CooldownSettings
-import me.glaremasters.guilds.configuration.sections.PluginSettings
 import me.glaremasters.guilds.cooldowns.Cooldown
 import me.glaremasters.guilds.cooldowns.CooldownHandler
 import me.glaremasters.guilds.guild.Guild
@@ -110,7 +109,7 @@ internal class CommandLeave : BaseCommand() {
                     guildHandler.removeRolePerm(permission, player)
                     cooldownHandler.addCooldown(player, cooldownName, cooldownTime, TimeUnit.SECONDS)
 
-                    if (ClaimUtils.isEnable(settingsManager)) {
+                    if (ClaimUtils.isEnabled(settingsManager)) {
                         val wrapper = WorldGuardWrapper.getInstance()
                         ClaimUtils.getGuildClaim(wrapper, player, guild).ifPresent { region -> ClaimUtils.removeMember(region, player) }
                     }

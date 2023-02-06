@@ -57,7 +57,7 @@ internal class CommandAdminClaim : BaseCommand() {
     @CommandCompletion("@guilds")
     @Syntax("%guild")
     fun claim(player: Player, @Flags("other") @Values("@guilds") guild: Guild) {
-        if (!ClaimUtils.isEnable(settingsManager)) {
+        if (!ClaimUtils.isEnabled(settingsManager)) {
             throw ExpectationNotMet(Messages.CLAIM__HOOK_DISABLED)
         }
 
@@ -91,7 +91,7 @@ internal class CommandAdminClaim : BaseCommand() {
     @CommandCompletion("@guilds")
     @Syntax("%guild")
     fun unclaim(player: Player, @Flags("other") @Values("@guilds") guild: Guild) {
-        if (!ClaimUtils.isEnable(settingsManager)) {
+        if (!ClaimUtils.isEnabled(settingsManager)) {
             throw ExpectationNotMet(Messages.CLAIM__HOOK_DISABLED)
         }
 

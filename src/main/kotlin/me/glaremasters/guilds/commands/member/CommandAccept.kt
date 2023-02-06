@@ -36,7 +36,6 @@ import co.aikar.commands.annotation.Subcommand
 import co.aikar.commands.annotation.Syntax
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.api.events.GuildJoinEvent
-import me.glaremasters.guilds.configuration.sections.PluginSettings
 import me.glaremasters.guilds.cooldowns.Cooldown
 import me.glaremasters.guilds.cooldowns.CooldownHandler
 import me.glaremasters.guilds.exceptions.ExpectationNotMet
@@ -95,7 +94,7 @@ internal class CommandAccept : BaseCommand() {
         guildHandler.addGuildPerms(permission, player)
         guildHandler.addRolePerm(permission, player)
 
-        if (ClaimUtils.isEnable(settingsManager)) {
+        if (ClaimUtils.isEnabled(settingsManager)) {
             val wrapper = WorldGuardWrapper.getInstance()
             ClaimUtils.getGuildClaim(wrapper, player, guild).ifPresent { region -> ClaimUtils.addMember(region, player) }
         }

@@ -32,60 +32,71 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Provides methods for accessing and manipulating cooldowns in the database.
+ */
 public interface CooldownProvider {
 
     /**
-     * Creates the container that will hold cooldowns
-     * @param tablePrefix the prefix, if any, to use
-     * @throws IOException
+     * Creates the container that will hold the cooldowns.
+     *
+     * @param tablePrefix the prefix to be used for the table name, if any
+     * @throws IOException if there is an error creating the container
      */
     void createContainer(@Nullable String tablePrefix) throws IOException;
 
     /**
-     * Checks if a cooldown exists in the database
-     * @oaram tablePrefix the prefix, if any, to use
-     * @param cooldownType the cooldown type
-     * @param cooldownOwner the owner UUID of the cooldown
-     * @return true or false
+     * Checks if a cooldown with the given type and owner exists in the database.
+     *
+     * @param tablePrefix   the prefix to be used for the table name, if any
+     * @param cooldownType  the type of the cooldown
+     * @param cooldownOwner the owner of the cooldown as a UUID
+     * @return `true` if a cooldown with the given type and owner exists, `false` otherwise
+     * @throws IOException if there is an error checking for the cooldown
      */
     boolean cooldownExists(@Nullable String tablePrefix, @NotNull String cooldownType, @NotNull String cooldownOwner) throws IOException;
 
     /**
-     * Gets all cooldowns from the database
-     * @param tablePrefix the prefix, if any, to use
-     * @return a list of cooldowns
+     * Retrieves all cooldowns from the database.
+     *
+     * @param tablePrefix the prefix to be used for the table name, if any
+     * @return a list of all the cooldowns in the database
+     * @throws IOException if there is an error retrieving the cooldowns
      */
     List<Cooldown> getAllCooldowns(@Nullable String tablePrefix) throws IOException;
 
     /**
-     * Create a new cooldown (with a random ID) in the database
-     * @param tablePrefix the table prefix
-     * @param cooldownType the cooldown type
-     * @param cooldownOwner the owner UUID of the cooldown
-     * @param cooldownExpiry when the cooldown expires in milliseconds
-     * @throws IOException
+     * Creates a new cooldown with a random UUID in the database.
+     *
+     * @param tablePrefix    the prefix to be used for the table name, if any
+     * @param cooldownType   the type of the cooldown
+     * @param cooldownOwner  the owner of the cooldown as a UUID
+     * @param cooldownExpiry the time when the cooldown will expire in milliseconds since the epoch
+     * @throws IOException if there is an error creating the cooldown
      */
     default void createCooldown(@Nullable String tablePrefix, @NotNull String cooldownType, @NotNull String cooldownOwner, @NotNull Timestamp cooldownExpiry) throws IOException {
         createCooldown(tablePrefix, UUID.randomUUID().toString(), cooldownType, cooldownOwner, cooldownExpiry);
     }
 
     /**
-     * Create a new cooldown in the database
-     * @param tablePrefix the table prefix
-     * @param id the UUID id for the cooldown
-     * @param cooldownType the cooldown type
-     * @param cooldownOwner the owner UUID of the cooldown
-     * @param cooldownExpiry when the cooldown expires in milliseconds
-     * @throws IOException
+     * Creates a new cooldown with the given UUID in the database.
+     *
+     * @param tablePrefix    the prefix to be used for the table name, if any
+     * @param id             the UUID for the cooldown
+     * @param cooldownType   the type of the cooldown
+     * @param cooldownOwner  the owner of the cooldown as a UUID
+     * @param cooldownExpiry the time when the cooldown will expire in milliseconds since the epoch
+     * @throws IOException if there is an error creating the cooldown
      */
     void createCooldown(@Nullable String tablePrefix, @NotNull String id, @NotNull String cooldownType, @NotNull String cooldownOwner, @NotNull Timestamp cooldownExpiry) throws IOException;
 
     /**
      * Delete a cooldown from the database
-     * @param tablePrefix the table prefix
-     * @param cooldownType the type of cooldown
+     *
+     * @param tablePrefix   the table prefix
+     * @param cooldownType  the type of cooldown
      * @param cooldownOwner the owner UUID of the cooldown
-     * @throws IOException
+     * @throws IOException if there is an error when deleting the cooldown from the database
      */
     void deleteCooldown(@Nullable String tablePrefix, @NotNull String cooldownType, @NotNull String cooldownOwner) throws IOException;
 }

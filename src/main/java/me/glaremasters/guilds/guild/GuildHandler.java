@@ -912,7 +912,7 @@ public class GuildHandler {
 
         guild.addMemberByCode(new GuildMember(player.getUniqueId(), getLowestGuildRole()));
 
-        if (ClaimUtils.isEnable(settingsManager)) {
+        if (ClaimUtils.isEnabled(settingsManager)) {
             WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();
             ClaimUtils.getGuildClaim(wrapper, player, guild).ifPresent(region -> ClaimUtils.addMember(region, player));
         }

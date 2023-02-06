@@ -143,7 +143,7 @@ internal class CommandConsole : BaseCommand() {
             throw ExpectationNotMet(Messages.ERROR__CONSOLE_COMMAND)
         }
 
-        if (!ClaimUtils.isEnable(settingsManager)) {
+        if (!ClaimUtils.isEnabled(settingsManager)) {
             throw ExpectationNotMet(Messages.CLAIM__HOOK_DISABLED)
         }
 
