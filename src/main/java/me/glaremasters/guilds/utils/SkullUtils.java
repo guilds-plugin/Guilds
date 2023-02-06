@@ -30,6 +30,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.UUID;
 
@@ -41,19 +42,21 @@ import java.util.UUID;
 public class SkullUtils {
 
     /**
-     * Get the encoded skin url
-     * @param skinUrl the url of the skin
-     * @return encoded
+     * Get the encoded skin URL
+     *
+     * @param skinUrl the URL of the skin
+     * @return encoded URL
      */
     public static String getEncoded(String skinUrl) {
-        byte[] encodedData = Base64.getEncoder().encode(String.format("{textures:{SKIN:{url:\"%s\"}}}", skinUrl).getBytes());
-        return new String(encodedData);
+        return Base64.getEncoder().encodeToString(
+                String.format("{textures:{SKIN:{url:\"%s\"}}}", skinUrl).getBytes(StandardCharsets.UTF_8));
     }
 
     /**
-     * Create a game profile object
-     * @param url the url to use
-     * @return game profile
+     * Create a GameProfile object
+     *
+     * @param url the URL to use for the texture
+     * @return the created GameProfile object
      */
     public static GameProfile getGameProfile(String url) {
         GameProfile profile = new GameProfile(UUID.randomUUID(), null);
@@ -62,26 +65,29 @@ public class SkullUtils {
     }
 
     /**
-     * Get the skull from a url
-     * @param skinUrl url to use
-     * @return skull
+     * Get a custom skull ItemStack with the specified skin URL
+     *
+     * @param skinUrl the URL of the skin to use
+     * @return the custom skull ItemStack
      */
     public static ItemStack getSkull(String skinUrl) {
         ItemStack head = XMaterial.PLAYER_HEAD.parseItem();
-        if (skinUrl.isEmpty()) return head;
+        if (skinUrl.isEmpty()) {
+            return head;
+        }
 
         SkullMeta headMeta = (SkullMeta) head.getItemMeta();
         GameProfile profile = getGameProfile(skinUrl);
-        Field profileField;
+
         try {
-            profileField = headMeta.getClass().getDeclaredField("profile");
+            Field profileField = headMeta.getClass().getDeclaredField("profile");
             profileField.setAccessible(true);
             profileField.set(headMeta, profile);
-        } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e1) {
-            e1.printStackTrace();
+        } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e) {
+            e.printStackTrace();
         }
+
         head.setItemMeta(headMeta);
         return head;
     }
-
 }

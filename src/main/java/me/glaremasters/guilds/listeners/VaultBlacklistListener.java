@@ -58,7 +58,7 @@ public class VaultBlacklistListener implements Listener {
     }
 
     /**
-     * Helps determine if a player has a Guild vault open
+     * Helps determine if a player has a Guild vault open by removing the player from the list of opened vaults.
      *
      * @param event the close event
      */
@@ -75,15 +75,9 @@ public class VaultBlacklistListener implements Listener {
         if (!(event.getWhoClicked() instanceof Player)) {
             return;
         }
-        Player player = (Player) event.getWhoClicked();
-        Guild guild = guildHandler.getGuild(player);
-        if (guild == null) {
-            return;
-        }
-        if (!guildHandler.getOpened().contains(player)) {
-            return;
-        }
-        if (event.getClickedInventory() != null) {
+        final Player player = (Player) event.getWhoClicked();
+        final Guild guild = guildHandler.getGuild(player);
+        if (guild == null || !guildHandler.getOpened().contains(player) || event.getClickedInventory() != null) {
             return;
         }
         guilds.getGuiHandler().getVaults().get(guild, player).open(event.getWhoClicked());

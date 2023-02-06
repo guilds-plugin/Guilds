@@ -29,8 +29,8 @@ import me.glaremasters.guilds.configuration.sections.GuildSettings;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildChallenge;
 import me.glaremasters.guilds.guild.GuildHandler;
-import me.glaremasters.guilds.utils.ClaimUtils;
 import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
@@ -68,51 +68,61 @@ public class EntityListener implements Listener {
     }
 
     /**
-     * Handles the extra damage to a mob
+     * Handles the extra damage to a mob.
      *
-     * @param event
+     * @param event The EntityDamageByEntityEvent that triggered the method.
      */
     @EventHandler
     public void onMobDamage(EntityDamageByEntityEvent event) {
         if (event.isCancelled()) {
             return;
         }
-        if (event.getDamager() instanceof Player) {
-            Player player = (Player) event.getDamager();
-            Guild guild = guildHandler.getGuild(player);
-            if (guild == null) {
-                return;
-            }
-            double dmg = event.getDamage();
-            double multiplier = guild.getTier().getDamageMultiplier();
-            event.setDamage(dmg * multiplier);
+
+        final Entity damager = event.getDamager();
+        if (!(damager instanceof Player)) {
+            return;
         }
+
+        final Player player = (Player) damager;
+        final Guild guild = guildHandler.getGuild(player);
+        if (guild == null) {
+            return;
+        }
+
+        final double damage = event.getDamage();
+        final double multiplier = guild.getTier().getDamageMultiplier();
+        event.setDamage(damage * multiplier);
     }
 
     /**
      * Handles extra XP dropped from mobs
      *
-     * @param event
+     * @param event The EntityDeathEvent that triggered the method.
      */
-    @EventHandler
     public void onMobDeath(EntityDeathEvent event) {
-        if (!(event.getEntity() instanceof Monster)) return;
-        Monster monster = (Monster) event.getEntity();
-        Player killer = monster.getKiller();
-        if (killer == null) return;
-        Guild guild = guildHandler.getGuild(killer);
+        if (!(event.getEntity() instanceof Monster)) {
+            return;
+        }
+
+        final Player killer = event.getEntity().getKiller();
+        if (killer == null) {
+            return;
+        }
+
+        final Guild guild = guildHandler.getGuild(killer);
         if (guild == null) {
             return;
         }
-        double xp = event.getDroppedExp();
-        double multiplier = guild.getTier().getMobXpMultiplier();
+
+        final double xp = event.getDroppedExp();
+        final double multiplier = guild.getTier().getMobXpMultiplier();
         event.setDroppedExp((int) Math.round(xp * multiplier));
     }
 
     /**
-     * Guild / Ally damage handlers
+     * Handles restrictions on player vs player damage based on guild affiliation.
      *
-     * @param event handles when damage is done between two players that might be in the same guild or are allies
+     * @param event the event triggered by player vs player damage
      */
     @EventHandler
     public void onEntityDamage(EntityDamageByEntityEvent event) {
@@ -120,33 +130,39 @@ public class EntityListener implements Listener {
             return;
         }
 
-        if (!(event.getEntity() instanceof Player) || !(event.getDamager() instanceof Player)) return;
-        Player player = (Player) event.getEntity();
-        Player damager = (Player) event.getDamager();
+        if (!(event.getEntity() instanceof Player) || !(event.getDamager() instanceof Player)) {
+            return;
+        }
 
-        // Check if they are the same guild
+        final Player player = (Player) event.getEntity();
+        final Player damager = (Player) event.getDamager();
+
+        // Check if they are in the same guild and have permission to damage their guild members
         if (guildHandler.isSameGuild(player, damager) && !player.hasPermission("guilds.ffa.guild")) {
             event.setCancelled(!settingsManager.getProperty(GuildSettings.GUILD_DAMAGE));
             return;
         }
 
-        // Get the challenge object
-        GuildChallenge challenge = challengeHandler.getChallenge(player);
+        // Get the challenge object for the player
+        final GuildChallenge challenge = challengeHandler.getChallenge(player);
 
         // Check if they are in a challenge
-        if (challenge != null) {
-            // Check if the challenge has started
-            if (challenge.isStarted()) {
-                // Cancel the rest of the checks in case they are battling allies
-                return;
-            }
+        if (challenge != null && challenge.isStarted()) {
+            // Cancel the rest of the checks in case they are battling allies
+            return;
         }
 
+        // Check if they are allies and have permission to damage allies
         if (guildHandler.isAlly(player, damager) && !player.hasPermission("guilds.ffa.ally")) {
             event.setCancelled(!settingsManager.getProperty(GuildSettings.ALLY_DAMAGE));
         }
     }
 
+    /**
+     * Handles damage caused by Projectile (e.g. arrow)
+     *
+     * @param event the event that holds information about the damage caused by a projectile
+     */
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent event) {
         if (event.isCancelled()) {
@@ -157,56 +173,54 @@ public class EntityListener implements Listener {
             return;
         }
 
-        Projectile projectile = (Projectile) event.getDamager();
+        final Projectile projectile = (Projectile) event.getDamager();
 
         if (!(projectile.getShooter() instanceof Player)) {
             return;
         }
 
-        Player damaged = (Player) event.getEntity();
-        Player damager = (Player) projectile.getShooter();
+        final Player damaged = (Player) event.getEntity();
+        final Player damager = (Player) projectile.getShooter();
 
+        // Check if they are in the same guild
         if (guildHandler.isSameGuild(damaged, damager) && damaged != damager && !damaged.hasPermission("guilds.ffa.guild")) {
             event.setCancelled(!settingsManager.getProperty(GuildSettings.GUILD_DAMAGE));
             return;
         }
 
+        // Check if they are allies
         if (guildHandler.isAlly(damaged, damager) && !damaged.hasPermission("guilds.ffa.ally")) {
             event.setCancelled(!settingsManager.getProperty(GuildSettings.ALLY_DAMAGE));
         }
     }
 
     /**
-     * Handles flame arrows
+     * Handles flame arrow damage between players
      *
-     * @param event
+     * @param event the EntityCombustByEntityEvent fired when a player is set on fire by an arrow
      */
     @EventHandler
     public void onFlameArrow(EntityCombustByEntityEvent event) {
-        if (event.isCancelled()) {
+        if (event.isCancelled() || !(event.getEntity() instanceof Player) || !(event.getCombuster() instanceof Arrow)) {
             return;
         }
 
-        if (!(event.getEntity() instanceof Player))
+        final Arrow arrow = (Arrow) event.getCombuster();
+        if (!(arrow.getShooter() instanceof Player)) {
             return;
+        }
 
-        if (!(event.getCombuster() instanceof Arrow))
-            return;
+        final Player damagee = (Player) event.getEntity();
+        final Player damager = (Player) arrow.getShooter();
 
-        Arrow arrow = (Arrow) event.getCombuster();
-
-        if (!(arrow.getShooter() instanceof Player))
-            return;
-
-        Player damagee = (Player) event.getEntity();
-        Player damager = (Player) arrow.getShooter();
-
+        // Check if they are in the same guild
         if (guildHandler.isSameGuild(damagee, damager) && !damagee.hasPermission("guilds.ffa.guild")) {
             arrow.setFireTicks(0);
             event.setCancelled(!settingsManager.getProperty(GuildSettings.GUILD_DAMAGE));
             return;
         }
 
+        // Check if they are allies
         if (guildHandler.isAlly(damagee, damager) && !damagee.hasPermission("guilds.ffa.ally")) {
             arrow.setFireTicks(0);
             event.setCancelled(!settingsManager.getProperty(GuildSettings.ALLY_DAMAGE));
@@ -214,37 +228,58 @@ public class EntityListener implements Listener {
     }
 
     /**
-     * Handles splash potions+
+     * Handles harm causing splash potions.
      *
-     * @param event
+     * @param event The event fired when a splash potion affects entities
      */
     @EventHandler
     public void onSplash(PotionSplashEvent event) {
         if (event.isCancelled()) {
             return;
         }
-        boolean isHarming = false;
-        for (PotionEffect effect : event.getPotion().getEffects()) {
-            if (bad.contains(effect.getType())) {
-                isHarming = true;
-                break;
-            }
+
+        final boolean isHarming = isHarmfulPotion(event.getPotion());
+
+        if (!isHarming) {
+            return;
         }
 
-        if (!isHarming)
+        final ThrownPotion potion = event.getPotion();
+
+        if (!(potion.getShooter() instanceof Player)) {
             return;
+        }
 
-        ThrownPotion potion = event.getPotion();
+        final Player shooter = (Player) potion.getShooter();
+        handleSplashDamage(shooter, event);
+    }
 
-        if (!(potion.getShooter() instanceof Player))
-            return;
+    /**
+     * Check if the given potion is a harmful potion
+     *
+     * @param potion the potion to check
+     * @return true if the potion is harmful, false otherwise
+     */
+    private boolean isHarmfulPotion(final ThrownPotion potion) {
+        for (final PotionEffect effect : potion.getEffects()) {
+            if (bad.contains(effect.getType())) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-        Player shooter = (Player) potion.getShooter();
-
-        for (LivingEntity entity : event.getAffectedEntities()) {
+    /**
+     * Handle the damage caused by a harmful splash potion
+     *
+     * @param shooter the shooter of the splash potion
+     * @param event the splash potion event
+     */
+    private void handleSplashDamage(final Player shooter, final PotionSplashEvent event) {
+        for (final LivingEntity entity : event.getAffectedEntities()) {
             if (entity instanceof Player) {
-                Player player = (Player) entity;
-                if (guildHandler.isSameGuild(shooter, player) && potion.getShooter() != player && !shooter.hasPermission("guilds.ffa.guild")) {
+                final Player player = (Player) entity;
+                if (guildHandler.isSameGuild(shooter, player) && shooter != player && !shooter.hasPermission("guilds.ffa.guild")) {
                     event.setCancelled(!settingsManager.getProperty(GuildSettings.GUILD_DAMAGE));
                     return;
                 }
@@ -253,8 +288,5 @@ public class EntityListener implements Listener {
                 }
             }
         }
-
     }
-
-
 }

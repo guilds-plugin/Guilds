@@ -36,20 +36,24 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by Glare
- * Date: 5/15/2019
- * Time: 9:40 AM
+ * Handles cooldowns for players and guilds.
  */
 public class CooldownHandler {
-    private final ExpiringMap<UUID, Cooldown> cooldowns = ExpiringMap.builder().variableExpiration().expirationListener((key, cooldown) -> {}).build();
+    private final ExpiringMap<UUID, Cooldown> cooldowns = ExpiringMap.builder().variableExpiration().expirationListener((key, cooldown) -> {
+    }).build();
     private final Guilds guilds;
 
+    /**
+     * Creates a new instance of the {@code CooldownHandler} class.
+     *
+     * @param guilds the {@code Guilds} instance.
+     */
     public CooldownHandler(Guilds guilds) {
         this.guilds = guilds;
     }
 
     /**
-     * Called when the plugin first enables to load all the data
+     * Loads all the cooldowns from the database when the plugin first enables.
      */
     public void loadCooldowns() {
         try {
@@ -67,27 +71,29 @@ public class CooldownHandler {
     }
 
     /**
-     * Save the cooldowns
+     * Saves all the cooldowns to the database.
      */
     public void saveCooldowns() {
         guilds.getDatabase().getCooldownAdapter().saveCooldowns(cooldowns.values());
     }
 
     /**
-     * Get a cooldown from the list
-     * @param cooldownType the cooldown type
-     * @param cooldownOwner the owner UUID of the cooldown
-     * @return cooldown
+     * Gets a cooldown from the list.
+     *
+     * @param cooldownType  the type of cooldown.
+     * @param cooldownOwner the owner UUID of the cooldown.
+     * @return the {@code Cooldown} object if found, otherwise {@code null}.
      */
     public Cooldown getCooldown(@NotNull final Cooldown.Type cooldownType, @NotNull final UUID cooldownOwner) {
         return cooldowns.values().stream().filter(c -> c.getCooldownType() == cooldownType && c.getCooldownOwner().equals(cooldownOwner)).findFirst().orElse(null);
     }
 
     /**
-     * Check if a cooldown is still valid
-     * @param cooldownType the cooldown type name
-     * @param cooldownOwner the owner UUID of the cooldown
-     * @return true or false
+     * Checks if a cooldown is still valid.
+     *
+     * @param cooldownType  the name of the cooldown type.
+     * @param cooldownOwner the owner UUID of the cooldown.
+     * @return {@code true} if the cooldown is still valid, otherwise {@code false}.
      */
     public boolean hasCooldown(@NotNull final String cooldownType, @NotNull final UUID cooldownOwner) {
         return hasCooldown(Cooldown.Type.getByTypeName(cooldownType), cooldownOwner);
@@ -95,24 +101,33 @@ public class CooldownHandler {
 
     /**
      * Check if a cooldown is still valid
-     * @param cooldownType the cooldown type
-     * @param cooldownOwner the owner UUID of the cooldown
-     * @return true or false
+     *
+     * @param cooldownType  The type of cooldown to check.
+     * @param cooldownOwner The owner UUID of the cooldown.
+     * @return `true` if the cooldown is still valid, `false` otherwise.
      */
     public boolean hasCooldown(@NotNull final Cooldown.Type cooldownType, @NotNull final UUID cooldownOwner) {
         final Cooldown cooldown = getCooldown(cooldownType, cooldownOwner);
         return cooldown != null && cooldown.getCooldownExpiry() > System.currentTimeMillis();
     }
 
+    /**
+     * Get the remaining time of the cooldown.
+     *
+     * @param cooldownType  The string representation of the type of the cooldown.
+     * @param cooldownOwner The UUID of the owner of the cooldown.
+     * @return The remaining time of the cooldown in seconds.
+     */
     public int getRemaining(@NotNull final String cooldownType, @NotNull final UUID cooldownOwner) {
         return getRemaining(Cooldown.Type.getByTypeName(cooldownType), cooldownOwner);
     }
 
     /**
-     * Get the time remaining in seconds
-     * @param cooldownType the type of cooldown
-     * @param cooldownOwner the uuid to check
-     * @return time left
+     * Get the remaining time of the cooldown in seconds.
+     *
+     * @param cooldownType  The type of cooldown to check.
+     * @param cooldownOwner The owner UUID of the cooldown.
+     * @return The remaining time in seconds.
      */
     public int getRemaining(@NotNull final Cooldown.Type cooldownType, @NotNull final UUID cooldownOwner) {
         final int int1 = Integer.parseInt(String.format("%d", TimeUnit.MILLISECONDS.toSeconds(getCooldown(cooldownType, cooldownOwner).getCooldownExpiry())));
@@ -121,38 +136,48 @@ public class CooldownHandler {
     }
 
     /**
-     * Add a player to the cooldown
-     * @param player the player to add
-     * @param type the type of cooldown
-     * @param length how long to put them
+     * Adds a player to the cooldown.
+     *
+     * @param player   The player to add to the cooldown.
+     * @param type     The type of cooldown to add.
+     * @param length   The length of the cooldown in the specified time unit.
+     * @param timeUnit The time unit of the `length` parameter.
      */
     public void addCooldown(@NotNull final OfflinePlayer player, @NotNull final String type, final int length, @NotNull final TimeUnit timeUnit) {
         addCooldown(Cooldown.Type.getByTypeName(type), player.getUniqueId(), length, timeUnit);
     }
 
     /**
-     * Add a guild to a cooldown
-     * @param guild the guild to add
-     * @param type the type of cooldown
-     * @param length thje length of the cooldown
+     * Adds a guild to the cooldown.
+     *
+     * @param guild    The guild to add to the cooldown.
+     * @param type     The type of cooldown to add.
+     * @param length   The length of the cooldown in the specified time unit.
+     * @param timeUnit The time unit of the `length` parameter.
      */
     public void addCooldown(@NotNull final Guild guild, @NotNull final String type, final int length, @NotNull final TimeUnit timeUnit) {
         addCooldown(Cooldown.Type.getByTypeName(type), guild.getId(), length, timeUnit);
     }
 
     /**
-     * Add a cooldown
-     * @param cooldownType the cooldown type
-     * @param cooldownOwner the cooldown owner UUID
-     * @param length length of time
-     * @param timeUnit unit of time
+     * Adds a cooldown.
+     *
+     * @param cooldownType  The type of cooldown to add.
+     * @param cooldownOwner The owner UUID of the cooldown.
+     * @param length        The length of the cooldown in the specified time unit.
+     * @param timeUnit      The time unit of the `length` parameter.
      */
     public void addCooldown(@NotNull final Cooldown.Type cooldownType, @NotNull final UUID cooldownOwner, final int length, @NotNull final TimeUnit timeUnit) {
         final Cooldown cooldown = new Cooldown(UUID.randomUUID(), cooldownType, cooldownOwner, (System.currentTimeMillis() + timeUnit.toMillis(length)));
         cooldowns.put(cooldown.getCooldownId(), cooldown, ExpirationPolicy.CREATED, length, timeUnit);
     }
 
-    private void addCooldown(@NotNull final  Cooldown cooldown) {
+    /**
+     * Adds a cooldown.
+     *
+     * @param cooldown The cooldown to add.
+     */
+    private void addCooldown(@NotNull final Cooldown cooldown) {
         final long remainingSeconds = cooldown.getCooldownExpiry() - System.currentTimeMillis();
         if (remainingSeconds < 0) return;
         cooldowns.put(cooldown.getCooldownId(), cooldown, ExpirationPolicy.CREATED, TimeUnit.MILLISECONDS.toSeconds(remainingSeconds), TimeUnit.SECONDS);

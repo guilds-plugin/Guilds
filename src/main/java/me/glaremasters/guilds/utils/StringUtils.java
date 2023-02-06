@@ -35,6 +35,10 @@ import java.net.URL;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+
+/**
+ * A collection of string utility methods.
+ */
 public final class StringUtils {
 
     private static final String ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
@@ -43,14 +47,22 @@ public final class StringUtils {
         throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
     }
 
+    /**
+     * Translates alternate color codes in a string.
+     *
+     * @param input the string to be translated
+     * @return the translated string
+     */
     public static String color(String input) {
         return ChatColor.translateAlternateColorCodes('&', input);
     }
 
     /**
-     * Get the announcements for the plugin
-     * @return announcements
-     * @throws IOException
+     * Get the announcements for the plugin.
+     *
+     * @param plugin the plugin for which the announcements are to be fetched
+     * @return the announcements for the plugin
+     * @throws IOException if an I/O error occurs while fetching the announcements
      */
     public static String getAnnouncements(JavaPlugin plugin) throws IOException {
         final String ver = plugin.getDescription().getVersion();
@@ -71,6 +83,12 @@ public final class StringUtils {
         return announcement;
     }
 
+    /**
+     * Generates a random string with the specified length.
+     *
+     * @param length the length of the generated string
+     * @return the generated string
+     */
     public static String generateString(int length) {
         final Random random = new Random();
         final StringBuilder builder = new StringBuilder(length);
@@ -84,6 +102,7 @@ public final class StringUtils {
 
     /**
      * Converts HTML
+     *
      * @param html the html string
      * @return a new converted string
      * Side note: No clue who made this
@@ -278,7 +297,7 @@ public final class StringUtils {
                                 (ch >= 'A' && ch <= 'F')
                         )
                         ) {
-                            return(String.format(
+                            return (String.format(
                                     "illegal hex digit #%d '%c' in \\x", ch, ch));
                         }
 
@@ -332,7 +351,7 @@ public final class StringUtils {
                     for (j = 0; j < 8; j++) {
                         /* this also handles the surrogate issue */
                         if (html.charAt(i + j) > 127) {
-                            return"illegal non-ASCII hex digit in \\U escape";
+                            return "illegal non-ASCII hex digit in \\U escape";
                         }
                     }
                     int value;

@@ -35,23 +35,29 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by GlareMasters
- * Date: 3/19/2019
- * Time: 11:49 PM
+ * A utility class for serializing and deserializing Minecraft inventories.
  */
 public class Serialization {
 
-    private Serialization() {}
+    private Serialization() {
+    }
 
+    /**
+     * Serialize an Inventory to a JSON string.
+     *
+     * @param inventory the Inventory to be serialized
+     * @return the serialized JSON string
+     */
     public static String serializeInventory(Inventory inventory) {
         return serializeInventory(inventory.getSize(), inventory.getContents());
     }
 
     /**
-     * Serialize the inventory to JSON
-     * @param size size of inventory
-     * @param items the items to be serialized
-     * @return serialized inventory
+     * Serialize an Inventory to a JSON string.
+     *
+     * @param size  size of the Inventory
+     * @param items the ItemStacks in the Inventory
+     * @return the serialized JSON string
      */
     public static String serializeInventory(int size, ItemStack[] items) {
         JsonConfiguration json = new JsonConfiguration();
@@ -66,15 +72,25 @@ public class Serialization {
         return json.saveToString();
     }
 
+    /**
+     * Deserialize an Inventory from a JSON string.
+     *
+     * @param jsons           the JSON string
+     * @param settingsManager the SettingsManager to retrieve the title
+     * @return the deserialized Inventory
+     * @throws InvalidConfigurationException
+     */
     public static Inventory deserializeInventory(String jsons, SettingsManager settingsManager) throws InvalidConfigurationException {
         return deserializeInventory(jsons, null, settingsManager);
     }
 
     /**
-     * Deserialize the inventory from JSON
-     * @param jsons the JSON string
-     * @param title the name of the inventory
-     * @return the deserialized string
+     * Deserialize an Inventory from a JSON string.
+     *
+     * @param jsons           the JSON string
+     * @param title           the title of the Inventory
+     * @param settingsManager the SettingsManager to retrieve the title if none is provided
+     * @return the deserialized Inventory
      * @throws InvalidConfigurationException
      */
     public static Inventory deserializeInventory(String jsons, String title, SettingsManager settingsManager) throws InvalidConfigurationException {
@@ -98,7 +114,6 @@ public class Serialization {
             return null;
         }
     }
-
 
 
 }

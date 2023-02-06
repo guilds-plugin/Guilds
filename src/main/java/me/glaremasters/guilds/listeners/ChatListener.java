@@ -105,6 +105,12 @@ public class ChatListener implements Listener {
         guildHandler.chatLogout(event.getPlayer());
     }
 
+    /**
+     * Handle toggling the chat type for a player.
+     *
+     * @param player   The player to toggle the chat type for.
+     * @param chatType The chat type to toggle.
+     */
     public void handleToggle(final Player player, final ChatType chatType) {
         final BukkitCommandIssuer issuer = guilds.getCommandManager().getCommandIssuer(player);
         if (playerChatMap.containsKey(player.getUniqueId())) {
@@ -125,16 +131,37 @@ public class ChatListener implements Listener {
     }
 
 
+    /**
+     * Enum representing the different types of chat available in the game.
+     */
     public enum ChatType {
+        /**
+         * Represents the guild chat type.
+         */
         GUILD(Messages.CHAT__TYPE_GUILD),
+        /**
+         * Represents the ally chat type.
+         */
         ALLY(Messages.CHAT__TYPE_ALLY);
 
         private final Messages messageKey;
 
+        /**
+         * Constructs a new instance of the `ChatType` enum.
+         *
+         * @param messageKey the message key used to translate the chat type
+         */
         ChatType(Messages messageKey) {
             this.messageKey = messageKey;
         }
 
+        /**
+         * Translates the chat type to a string.
+         *
+         * @param player the player for which the chat type should be translated
+         * @param guilds the guilds object used for translation
+         * @return the translated string for the chat type
+         */
         public String translate(final Player player, final Guilds guilds) {
             return MessageUtils.asString(player, guilds.getCommandManager(), messageKey);
         }

@@ -29,37 +29,37 @@ import org.bukkit.OfflinePlayer;
 import java.util.UUID;
 
 /**
- * Created by Glare
- * Date: 4/4/2019
- * Time: 11:38 PM
+ * Utility class for working with players in Minecraft.
  */
 public class PlayerUtils {
 
     /**
-     * Check if a player exists
-     * @param target the player to check
-     * @return if they exist or not
+     * Check if a player exists with the specified name.
+     *
+     * @param target the name of the player to check
+     * @return {@code true} if the player exists, {@code false} otherwise
      */
     public static boolean doesExist(String target) {
         return Bukkit.getOfflinePlayer(target) != null;
     }
 
     /**
-     * Simple object from string
+     * Retrieve a player object from their name.
+     *
      * @param target the name of the player
-     * @return player object
+     * @return the player object for the specified name
      */
     public static OfflinePlayer getPlayer(String target) {
         return Bukkit.getOfflinePlayer(target);
     }
 
     /**
-     * Simple object from uuid
-     * @param uuid the uuid of the player
-     * @return player object
+     * Retrieve a player object from their UUID.
+     *
+     * @param uuid the UUID of the player
+     * @return the player object for the specified UUID
      */
     public static OfflinePlayer getPlayer(UUID uuid) {
         return Bukkit.getOfflinePlayer(uuid);
     }
-
 }

@@ -33,21 +33,20 @@ import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
 /**
- * Created by Glare
- * Date: 4/4/2019
- * Time: 11:04 PM
+ * A utility class to perform economy-related operations, such as checking player balances and formatting money values.
  */
 public class EconomyUtils {
 
     private static final DecimalFormat df = new DecimalFormat("###,###.##", new DecimalFormatSymbols(Locale.US));
 
     /**
-     * Check if a player has enough money to do something
+     * Checks if a player has enough money to perform an action.
      *
-     * @param economy vault economy
+     * @param manager the CommandManager instance
+     * @param economy the vault economy
      * @param player  the player being checked
-     * @param amount  the amount to see that they have
-     * @return if they have enough
+     * @param amount  the amount required
+     * @return `true` if the player has enough money, `false` otherwise
      */
     public static boolean hasEnough(CommandManager manager, Economy economy, Player player, double amount) {
         try {
@@ -58,22 +57,34 @@ public class EconomyUtils {
         }
     }
 
+
     /**
-     * Check if an amount is greater than another
+     * Checks if the first amount is greater than or equal to the second amount.
      *
-     * @param val1 the first variable
-     * @param val2 the second variable
-     * @return if it's greater or not
+     * @param val1 the first amount
+     * @param val2 the second amount
+     * @return `true` if `val1` is greater than or equal to `val2`, `false` otherwise
      */
     public static boolean hasEnough(double val1, double val2) {
         return val1 >= val2;
     }
 
-
+    /**
+     * Formats an integer value as a string with a currency-style comma separator.
+     *
+     * @param input the integer value to format
+     * @return the formatted string
+     */
     public static String format(int input) {
         return df.format(input);
     }
 
+    /**
+     * Formats a double value as a string with a currency-style comma separator.
+     *
+     * @param input the double value to format
+     * @return the formatted string
+     */
     public static String format(double input) {
         return df.format(input);
     }

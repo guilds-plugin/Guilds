@@ -35,6 +35,11 @@ import org.bukkit.Bukkit;
 
 import java.io.IOException;
 
+/**
+ * A class that implements the DatabaseAdapter interface.
+ * This class is responsible for creating and managing various adapters to access the data stored in the backend database.
+ * The backend database can be either JSON or SQL (MySQL, SQLite, MariaDB).
+ */
 public final class DatabaseAdapter implements AutoCloseable {
     private final Guilds guilds;
     private final SettingsManager settings;
@@ -46,10 +51,25 @@ public final class DatabaseAdapter implements AutoCloseable {
     private DatabaseManager databaseManager;
     private String sqlTablePrefix;
 
+    /**
+     * Creates a new instance of the DatabaseAdapter class.
+     *
+     * @param guilds   The Guilds instance that will use this database adapter.
+     * @param settings The SettingsManager instance that stores the settings for this database adapter.
+     * @throws IOException if there is an issue setting up the backend database.
+     */
     public DatabaseAdapter(Guilds guilds, SettingsManager settings) throws IOException {
         this(guilds, settings, true);
     }
 
+    /**
+     * Creates a new instance of the DatabaseAdapter class.
+     *
+     * @param guilds    The Guilds instance that will use this database adapter.
+     * @param settings  The SettingsManager instance that stores the settings for this database adapter.
+     * @param doConnect Specifies whether the database connection should be established immediately or not.
+     * @throws IOException if there is an issue setting up the backend database.
+     */
     public DatabaseAdapter(Guilds guilds, SettingsManager settings, boolean doConnect) throws IOException {
         String backendName = settings.getProperty(StorageSettings.STORAGE_TYPE).toLowerCase();
         DatabaseBackend backend = DatabaseBackend.getByBackendName(backendName);
@@ -66,11 +86,19 @@ public final class DatabaseAdapter implements AutoCloseable {
         }
     }
 
+    /**
+     * Returns whether the database connection is established or not.
+     *
+     * @return true if the database connection is established, false otherwise.
+     */
     public boolean isConnected() {
         return getBackend() == DatabaseBackend.JSON ||
                 (databaseManager != null && databaseManager.isConnected());
     }
 
+    /**
+     * Establishes the database connection if it's not already established.
+     */
     public void open() {
         String backendName = settings.getProperty(StorageSettings.STORAGE_TYPE).toLowerCase();
         DatabaseBackend backend = DatabaseBackend.getByBackendName(backendName);
@@ -79,6 +107,9 @@ public final class DatabaseAdapter implements AutoCloseable {
         }
     }
 
+    /**
+     * Closes the database connection if it's established.
+     */
     @Override
     public void close() {
         if (databaseManager != null && databaseManager.isConnected()) {
@@ -115,6 +146,14 @@ public final class DatabaseAdapter implements AutoCloseable {
         return sqlTablePrefix;
     }
 
+    /**
+     * Creates a clone of the current `DatabaseAdapter` with the given `DatabaseBackend`.
+     *
+     * @param backend the backend to clone the adapter with
+     * @return a cloned instance of `DatabaseAdapter` with the given backend
+     * @throws IllegalArgumentException if the given backend matches the current backend
+     * @throws IOException              if an I/O error occurs during setup
+     */
     public DatabaseAdapter cloneWith(DatabaseBackend backend) throws IllegalArgumentException, IOException {
         if (this.backend.equals(backend)) {
             throw new IllegalArgumentException("Given backend matches current backend. Use this backend.");
@@ -125,6 +164,12 @@ public final class DatabaseAdapter implements AutoCloseable {
         return cloned;
     }
 
+    /**
+     * Sets up the database backend.
+     *
+     * @param backend the backend to set up
+     * @throws IOException if an I/O error occurs during setup
+     */
     private void setUpBackend(DatabaseBackend backend) throws IOException {
         if (isConnected()) return;
 

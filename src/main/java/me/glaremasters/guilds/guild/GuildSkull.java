@@ -37,18 +37,16 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Base64;
 
 /**
- * Created by GlareMasters
- * Date: 2/15/2019
- * Time: 1:34 PM
+ * Represents a guild skull, which is a player head in Minecraft that has a custom texture.
  */
-
 public class GuildSkull {
     private final String serialized;
     private transient ItemStack itemStack;
 
     /**
-     * Get the Guild Skull of a player
-     * @param player the player you're getting the skull of
+     * Creates a guild skull from a player.
+     *
+     * @param player the player whose head will be used for the guild skull
      */
     public GuildSkull(Player player) {
         serialized = SkullUtils.getEncoded(getTextureUrl(player));
@@ -56,8 +54,9 @@ public class GuildSkull {
     }
 
     /**
-     * Get the Guild Skull from a sting
-     * @param texture the texture you want to use
+     * Creates a guild skull from a texture string.
+     *
+     * @param texture the texture string, which should be a Minecraft resource location string
      */
     public GuildSkull(String texture) {
         serialized = SkullUtils.getEncoded("https://textures.minecraft.net/texture/" + texture);
@@ -65,9 +64,10 @@ public class GuildSkull {
     }
 
     /**
-     * Get the texture of a player's skin
-     * @param player the player to get the skin from
-     * @return skin texture url
+     * Gets the texture URL of a player's skin.
+     *
+     * @param player the player whose skin will be used for the guild skull
+     * @return the skin texture URL
      */
     private String getTextureUrl(Player player) {
         GameProfile profile = getProfile(player);
@@ -84,23 +84,26 @@ public class GuildSkull {
     }
 
     /**
-     * Try and get the profile of an online player
-     * @param player the player to get the profile from
-     * @return player profile
+     * Gets the profile of an online player.
+     *
+     * @param player the player whose profile will be retrieved
+     * @return the player's profile
      */
     private GameProfile getProfile(Player player) {
         try {
             Class<?> strClass = Class.forName("org.bukkit.craftbukkit." + getServerVersion() + ".entity.CraftPlayer");
             return (GameProfile) strClass.cast(player).getClass().getMethod("getProfile").invoke(strClass.cast(player));
-        } catch (ClassNotFoundException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+        } catch (ClassNotFoundException | IllegalAccessException | InvocationTargetException |
+                 NoSuchMethodException e) {
             e.printStackTrace();
         }
         return null;
     }
 
     /**
-     * Attempt to get the server version
-     * @return server version
+     * Gets the version of the server.
+     *
+     * @return the server version
      */
     private String getServerVersion() {
         try {
@@ -111,8 +114,9 @@ public class GuildSkull {
     }
 
     /**
-     * Get the skull as an item stack
-     * @return item stack
+     * Gets the guild skull as an item stack.
+     *
+     * @return the guild skull as an item stack
      */
     public ItemStack getItemStack() {
         return itemStack;
@@ -120,6 +124,7 @@ public class GuildSkull {
 
     /**
      * Get the serialized string
+     *
      * @return serialized string
      */
     public String getSerialized() {
