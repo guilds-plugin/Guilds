@@ -43,7 +43,8 @@ slimJar {
         "org.jdbi",
         "org.mariadb.jdbc",
         "dev.triumphteam.gui",
-        "net.kyori"
+        "net.kyori",
+        "kotlin"
     )
 }
 

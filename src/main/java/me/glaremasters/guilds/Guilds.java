@@ -30,7 +30,6 @@ import co.aikar.taskchain.TaskChainFactory;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import io.github.slimjar.app.builder.InjectingApplicationBuilder;
-import io.github.slimjar.logging.ProcessLogger;
 import me.glaremasters.guilds.acf.ACFHandler;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.api.GuildsAPI;
