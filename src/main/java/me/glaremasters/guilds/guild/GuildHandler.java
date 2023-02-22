@@ -407,12 +407,12 @@ public class GuildHandler {
 
 
     /**
-     * Removes an ally.
+     * Removes an ally of a guild.
      *
-     * @param guild       the guild to remove as ally
-     * @param targetGuild the guild to remove as ally
+     * @param guild the guild whose ally is being removed
+     * @param targetGuild the ally guild being removed
      */
-    public void removeAlly(Guild guild, Guild targetGuild) {
+    public void removeAlly(@NotNull final Guild guild, @NotNull final Guild targetGuild) {
         guild.removeAlly(targetGuild);
         targetGuild.removeAlly(guild);
     }
@@ -458,47 +458,47 @@ public class GuildHandler {
     }
 
     /**
-     * Simple method to check if guild is max tier
+     * Checks if a guild has reached the maximum tier level.
      *
      * @param guild the guild to check
-     * @return if they are max or not
+     * @return true if the guild has reached the maximum tier level, false otherwise
      */
     public boolean isMaxTier(Guild guild) {
         return guild.getTier().getLevel() >= getMaxTierLevel();
     }
 
     /**
-     * Returns the lowest guild role
+     * Retrieves the lowest role in the guild hierarchy.
      *
-     * @return guild role
+     * @return the lowest role in the hierarchy
      */
     public GuildRole getLowestGuildRole() {
         return roles.get(roles.size() - 1);
     }
 
     /**
-     * Get the lowest guild tier
+     * Returns the lowest guild tier.
      *
-     * @return the lowest guild tier
+     * @return The lowest guild tier object.
      */
     public GuildTier getLowestGuildTier() {
         return tiers.get(0);
     }
 
     /**
-     * Upgrades the tier of a guild
+     * Upgrades the tier of a guild.
      *
-     * @param guild the guild upgrading
+     * @param guild the guild whose tier will be upgraded
      */
     public void upgradeTier(Guild guild) {
         guild.setTier(getGuildTier(guild.getTier().getLevel() + 1));
     }
 
     /**
-     * Returns a string list of all the guilds that a member is invited to
+     * Returns a list of the names of all the guilds that an offline player has been invited to.
      *
-     * @param player the uuid of the member
-     * @return a string list of guilds's names.
+     * @param player the offline player
+     * @return a list of the names of the invited guilds, or an empty list if the player has not been invited to any guilds
      */
     public List<String> getInvitedGuilds(OfflinePlayer player) {
         return guilds.stream().filter(guild -> guild.getInvitedMembers().contains(player.getUniqueId())).map(Guild::getName).collect(Collectors.toList());
@@ -514,13 +514,16 @@ public class GuildHandler {
     }
 
     /**
-     * Create the cache of a vault for the guild
+     * Creates a cache of the vaults of a guild
      *
-     * @param guild the guild being cached
+     * @param guild the guild for which to create the cache
      */
-    private void createVaultCache(Guild guild) {
-        List<Inventory> vaults = new ArrayList<>();
-        if (guild.getVaults() == null) return;
+    private void createVaultCache(@NotNull final Guild guild) {
+        final List<Inventory> vaults = new ArrayList<>();
+        if (guild.getVaults() == null) {
+            return;
+        }
+        // Deserialize the vaults and add them to the list
         guild.getVaults().forEach(v -> {
             try {
                 vaults.add(Serialization.deserializeInventory(v, settingsManager));
@@ -528,46 +531,51 @@ public class GuildHandler {
                 e.printStackTrace();
             }
         });
+        // Add the guild's vaults to the cache
         this.vaults.put(guild, vaults);
     }
 
     /**
-     * Save the vaults of a guild
+     * Save the cached inventories of the vaults belonging to a guild.
      *
-     * @param guild the guild being saved
+     * @param guild The guild whose vaults are being saved.
      */
-    private void saveVaultCache(Guild guild) {
-        List<String> vaults = new ArrayList<>();
+    private void saveVaultCache(@NotNull final Guild guild) {
+        final List<String> vaults = new ArrayList<>();
         if (guild.getVaults() == null) return;
+        // Serialize the inventory objects in the cache and add them to a list.
         this.vaults.get(guild).forEach(v -> vaults.add(Serialization.serializeInventory(v)));
+        // Set the serialized inventory data to the guild's vaults list.
         guild.setVaults(vaults);
     }
 
     /**
-     * Open a guild vault
+     * Get the inventory of a specified guild vault.
      *
-     * @param guild the owner of the vault
-     * @param vault which vault to open
-     * @return the inventory to open
+     * @param guild The guild which owns the vault.
+     * @param vault The number of the vault to be opened.
+     * @return The inventory of the specified guild vault.
      */
     public Inventory getGuildVault(Guild guild, int vault) {
         return vaults.get(guild).get(vault - 1);
     }
 
     /**
-     * Check if player is a spy
+     * Checks if a player is a spy.
      *
      * @param player the player being checked
-     * @return if they are a spy
+     * @return {@code true} if the player is a spy, {@code false} otherwise
      */
-    private boolean isSpy(Player player) {
+    private boolean isSpy(@NotNull final Player player) {
         return spies.contains(player);
     }
 
     /**
-     * Add a player to the list of spies
+     * Add a player to the list of spies.
+     * A spy is a player who is able to see messages and events from all guilds, regardless of their membership status.
      *
-     * @param player player being added
+     * @param manager the PaperCommandManager instance to use for sending feedback to the player
+     * @param player the player being added as a spy
      */
     private void addSpy(PaperCommandManager manager, Player player) {
         spies.add(player);
@@ -575,9 +583,10 @@ public class GuildHandler {
     }
 
     /**
-     * Remove a player from the list of spies
+     * Removes a player from the list of spies.
      *
-     * @param player player being removed
+     * @param manager the PaperCommandManager instance
+     * @param player the player being removed from the list of spies
      */
     public void removeSpy(PaperCommandManager manager, Player player) {
         spies.remove(player);
@@ -585,9 +594,10 @@ public class GuildHandler {
     }
 
     /**
-     * This method handles combining all the spy methods together to make a simple, clean method.
+     * Toggles the spy mode of a player, which allows them to spy on guild chats.
      *
-     * @param player the player being modified
+     * @param manager the command manager for sending messages to the player
+     * @param player the player whose spy mode is being toggled
      */
     public void toggleSpy(PaperCommandManager manager, Player player) {
         if (isSpy(player)) {
@@ -598,9 +608,9 @@ public class GuildHandler {
     }
 
     /**
-     * This method is ran when a player logs out to ensure they aren't in the list.
+     * Removes a player from the list of spies and the chat map when they log out of the server.
      *
-     * @param player player being removed
+     * @param player the player being removed
      */
     public void chatLogout(Player player) {
         spies.remove(player);
@@ -616,10 +626,10 @@ public class GuildHandler {
     }
 
     /**
-     * Simple method to check a player has any invites
+     * Checks if a player has any pending guild invites and sends them a message with the list of guilds they have been invited to.
      *
      * @param manager the command manager
-     * @param player  the player being checked
+     * @param player  the player to check for invites
      */
     public void checkInvites(PaperCommandManager manager, Player player) {
         List<String> list = getInvitedGuilds(player);
@@ -633,10 +643,10 @@ public class GuildHandler {
     }
 
     /**
-     * Basically check if they can upgrade with the member check
+     * Checks whether a guild satisfies the member requirement to upgrade to the next tier.
      *
-     * @param guild the guild being checked
-     * @return if they pass the check or not
+     * @param guild the guild to be checked
+     * @return true if the guild's member count is less than the required amount for the current tier, false otherwise
      */
     public boolean memberCheck(Guild guild) {
         GuildTier tier = guild.getTier();
@@ -644,15 +654,16 @@ public class GuildHandler {
     }
 
     /**
-     * Check in a input name for the guild is proper
+     * Check if the input name for a guild is valid.
      *
-     * @param name            the name input
-     * @param settingsManager setting manager
-     * @return valid or not
+     * @param name            the name input to be checked
+     * @param settingsManager the settings manager to retrieve name requirements from
+     * @return true if the name is valid, false otherwise
      */
     public boolean nameCheck(String name, SettingsManager settingsManager) {
         String regex = settingsManager.getProperty(GuildSettings.NAME_REQUIREMENTS);
         if (!settingsManager.getProperty(GuildSettings.INCLUDE_COLOR_CODES)) {
+            // Remove color codes if they are not allowed
             String tmp = StringUtils.color(name);
             return ChatColor.stripColor(tmp).matches(regex);
         }
@@ -660,11 +671,11 @@ public class GuildHandler {
     }
 
     /**
-     * Simple method to check in a prefix is valid or not
+     * Checks if a prefix is valid or not based on guild settings.
      *
-     * @param name            the prefix
-     * @param settingsManager setting manager
-     * @return valid or not
+     * @param name the prefix to be checked
+     * @param settingsManager the guild settings manager
+     * @return true if the prefix is valid, false otherwise
      */
     public boolean prefixCheck(String name, SettingsManager settingsManager) {
         String regex = settingsManager.getProperty(GuildSettings.PREFIX_REQUIREMENTS);
