@@ -442,9 +442,28 @@ public class ChallengeHandler {
         }
     }
 
+    /**
+     * An enumeration representing the cause of a player's death in a game.
+     *
+     * Possible causes include:
+     * - [PLAYER_KILLED_PLAYER]: The player was killed by another player.
+     * - [PLAYER_KILLED_UNKNOWN]: The player's killer is unknown.
+     * - [PLAYER_KILLED_QUIT]: The player died due to voluntarily quitting the game.
+     */
     public enum Cause {
+        /**
+         * The player was killed by another player.
+         */
         PLAYER_KILLED_PLAYER,
+
+        /**
+         * The player's killer is unknown.
+         */
         PLAYER_KILLED_UNKNOWN,
+
+        /**
+         * The player died due to voluntarily quitting the game.
+         */
         PLAYER_KILLED_QUIT
     }
 
