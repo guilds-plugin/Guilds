@@ -29,15 +29,21 @@ import me.glaremasters.guilds.conf.GuildBuffSettings;
 import me.glaremasters.guilds.configuration.sections.*;
 
 /**
- * Created by GlareMasters
- * Date: 1/17/2019
- * Time: 12:45 PM
+ * A builder class that provides static methods for building different types of guild configuration data.
  */
 public class GuildConfigurationBuilder {
 
+    /**
+     * Private constructor to prevent instantiation.
+     */
     private GuildConfigurationBuilder() {
     }
 
+    /**
+     * Builds the main guild configuration data, including settings for various features.
+     *
+     * @return A ConfigurationData object containing the main guild configuration settings.
+     */
     public static ConfigurationData buildConfigurationData() {
         return ConfigurationDataBuilder.createConfiguration(
                 PluginSettings.class, ExperimentalSettings.class, StorageSettings.class, HooksSettings.class, GuildListSettings.class,
@@ -48,17 +54,30 @@ public class GuildConfigurationBuilder {
         );
     }
 
+    /**
+     * Builds the guild configuration data for tiers.
+     *
+     * @return A ConfigurationData object containing the guild tier configuration settings.
+     */
     public static ConfigurationData buildTierData() {
         return ConfigurationDataBuilder.createConfiguration(TierSettings.class);
     }
 
+    /**
+     * Builds the guild configuration data for roles.
+     *
+     * @return A ConfigurationData object containing the guild role configuration settings.
+     */
     public static ConfigurationData buildRoleData() {
         return ConfigurationDataBuilder.createConfiguration(RoleSettings.class);
     }
 
+    /**
+     * Builds the guild configuration data for buffs.
+     *
+     * @return A ConfigurationData object containing the guild buff configuration settings.
+     */
     public static ConfigurationData buildBuffData() {
         return ConfigurationDataBuilder.createConfiguration(GuildBuffSettings.class);
     }
-
-
 }
