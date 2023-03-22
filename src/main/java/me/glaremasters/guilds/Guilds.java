@@ -58,6 +58,7 @@ import me.glaremasters.guilds.listeners.VaultBlacklistListener;
 import me.glaremasters.guilds.listeners.WorldGuardListener;
 import me.glaremasters.guilds.placeholders.PlaceholderAPI;
 import me.glaremasters.guilds.updater.UpdateChecker;
+import me.glaremasters.guilds.utils.BackupUtils;
 import me.glaremasters.guilds.utils.LanguageUpdater;
 import me.glaremasters.guilds.utils.LoggingUtils;
 import me.glaremasters.guilds.utils.StringUtils;
@@ -206,6 +207,17 @@ public final class Guilds extends JavaPlugin {
             LoggingUtils.warn(permissions.getName() + " is not designed to run permissions async. Expect some possible issues");
             settingsHandler.getMainConf().setProperty(PluginSettings.RUN_VAULT_ASYNC, false);
             settingsHandler.getMainConf().save();
+        }
+
+        if (settingsHandler.getMainConf().getProperty(StorageSettings.STORAGE_TYPE).equalsIgnoreCase("json")) {
+            try {
+                LoggingUtils.info("Creating a backup of your data...");
+                BackupUtils.zipDir("guilds-backup-" + System.currentTimeMillis() + ".zip", this.getDataFolder().getPath());
+                LoggingUtils.info("Backup created!");
+            } catch (Exception e) {
+                LoggingUtils.severe("Failed to create a backup of your data!");
+                throw new RuntimeException(e);
+            }
         }
 
         // This is really just for shits and giggles
