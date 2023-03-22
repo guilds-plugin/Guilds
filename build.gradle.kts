@@ -6,15 +6,15 @@ import java.net.URL
 
 plugins {
     id("java")
-    id("org.jetbrains.kotlin.jvm") version "1.8.0"
-    id("net.kyori.indra") version "2.1.1"
-    id("net.kyori.indra.publishing") version "2.1.1"
-    id("net.kyori.indra.license-header") version "2.1.1"
-    id("com.github.johnrengelman.shadow") version "7.1.2"
+    id("org.jetbrains.kotlin.jvm") version "1.8.10"
+    id("net.kyori.indra") version "3.0.1"
+    id("net.kyori.indra.publishing") version "3.0.1"
+    id("net.kyori.indra.license-header") version "3.0.1"
+    id("com.github.johnrengelman.shadow") version "8.1.1"
     id("io.github.slimjar") version "1.3.0"
     id("xyz.jpenilla.run-paper") version "2.0.1"
-    id("com.github.ben-manes.versions") version "0.44.0"
-    id("org.jetbrains.dokka") version "1.7.20"
+    id("com.github.ben-manes.versions") version "0.46.0"
+    id("org.jetbrains.dokka") version "1.8.10"
 }
 
 group = "me.glaremasters"
@@ -50,24 +50,23 @@ repositories {
 dependencies {
     implementation("io.github.slimjar:slimjar:1.2.7")
     implementation("co.aikar:acf-paper:0.5.1-SNAPSHOT")
-    implementation("org.bstats:bstats-bukkit:3.0.0")
+    implementation("org.bstats:bstats-bukkit:3.0.1")
     implementation("co.aikar:taskchain-bukkit:3.7.2")
     implementation("org.codemc.worldguardwrapper:worldguardwrapper:1.1.9-SNAPSHOT")
     implementation("ch.jalu:configme:1.3.0")
     implementation("com.dumptruckman.minecraft:JsonConfiguration:1.1")
-    implementation("com.github.cryptomorin:XSeries:9.2.0")
-    implementation("net.kyori:adventure-platform-bukkit:4.2.0")
-    implementation("dev.triumphteam:triumph-gui:3.1.2")
+    implementation("com.github.cryptomorin:XSeries:9.3.1")
+    implementation("net.kyori:adventure-platform-bukkit:4.3.0")
+    implementation("dev.triumphteam:triumph-gui:3.1.4")
     implementation("com.zaxxer:HikariCP:4.0.3")
     implementation("org.jdbi:jdbi3-core:3.8.2")
     implementation("org.jdbi:jdbi3-sqlobject:3.8.2")
     implementation("org.mariadb.jdbc:mariadb-java-client:2.7.2")
-    implementation("org.slf4j:slf4j-api:1.7.25")
 
-    compileOnly("org.spigotmc:spigot-api:1.19.3-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot-api:1.19.4-R0.1-SNAPSHOT")
     compileOnly("net.milkbowl:vault:1.7")
     compileOnly("com.mojang:authlib:1.5.25")
-    compileOnly("me.clip:placeholderapi:2.11.2")
+    compileOnly("me.clip:placeholderapi:2.11.3")
 
     slim("org.jetbrains.kotlin:kotlin-stdlib")
 }
