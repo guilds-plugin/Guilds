@@ -102,10 +102,10 @@ syntax:
   arena: "<竞技场>"
   position: "<位置>"
   code: "<代码>"
-  uses: "<uses>"
+  uses: "<用法>"
   language: "<语言>"
   new-backend: "<新后端>"
-  new-master: "<new master>"
+  new-master: "<新主人>"
   optional: "[可选的]"
 create:
   guild-name-taken: "&7[&6公会&7]&c此公会名已被他人使用!"
