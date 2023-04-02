@@ -55,6 +55,7 @@ class EssentialsChatListener(private val guildHandler: GuildHandler) : Listener 
                 .replace("{GUILD_FORMATTED}", guildHandler.getFormattedPlaceholder(player))
                 .replace("{GUILD_CHALLENGE_WINS}", guild.guildScore.wins.toString())
                 .replace("{GUILD_CHALLENGE_LOSES}", guild.guildScore.loses.toString())
+                .replace("{GUILD_TIER_NAME}", guild.tier.name)
 
         format = message
     }
