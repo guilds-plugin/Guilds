@@ -52,7 +52,7 @@ internal class CommandAdminAddPlayer : BaseCommand() {
     @Subcommand("admin addplayer")
     @Description("{@@descriptions.admin-addplayer}")
     @CommandPermission(Constants.ADMIN_PERM)
-    @CommandCompletion("@guilds @online")
+    @CommandCompletion("@guilds @players")
     @Syntax("%guild %player")
     fun add(issuer: CommandIssuer, @Flags("other") @Values("@guilds") guild: Guild, target: String) {
         val user = Bukkit.getOfflinePlayer(target)
