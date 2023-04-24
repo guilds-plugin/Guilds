@@ -96,6 +96,7 @@ internal class CommandKick : BaseCommand() {
         cooldownHandler.addCooldown(user, Cooldown.Type.Join.name, settingsManager.getProperty(CooldownSettings.JOIN), TimeUnit.SECONDS)
         ClaimUtils.kickMember(user, player, guild, settingsManager)
         guild.removeMember(asMember)
+        guildHandler.removeFromMemberCache(user.uniqueId)
         currentCommandIssuer.sendInfo(Messages.BOOT__SUCCESSFUL, "{player}", user.name)
         guild.sendMessage(currentCommandManager, Messages.BOOT__PLAYER_KICKED, "{player}", user.name, "{kicker}", player.name)
 

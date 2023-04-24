@@ -73,7 +73,7 @@ class ListGUI(private val guilds: Guilds, private val settingsManager: SettingsM
     }
 
     private fun createListItems(gui: PaginatedGui, player: Player) {
-        val guilds = guildHandler.guilds
+        val guilds = guildHandler.guilds.values.toMutableList()
 
         when (settingsManager.getProperty(GuildListSettings.GUILD_LIST_SORT).toUpperCase()) {
             "TIER" -> guilds.sortWith(Comparator.comparingInt { g: Guild -> g.tier.level }.reversed())

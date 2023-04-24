@@ -115,6 +115,7 @@ internal class CommandLeave : BaseCommand() {
                     }
 
                     guild.removeMember(player)
+                    guildHandler.removeFromMemberCache(player.uniqueId)
                     currentCommandIssuer.sendInfo(Messages.LEAVE__SUCCESSFUL)
                     guild.sendMessage(currentCommandManager, Messages.LEAVE__PLAYER_LEFT, "{player}", name)
                 }

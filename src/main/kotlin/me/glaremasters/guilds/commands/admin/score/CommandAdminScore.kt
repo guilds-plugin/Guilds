@@ -69,7 +69,7 @@ internal class CommandAdminScore : BaseCommand() {
     @Description("{@@descriptions.admin-score-resetall}")
     @CommandPermission(Constants.ADMIN_PERM)
     fun resetAll(issuer: CommandIssuer) {
-        guildHandler.guilds.forEach { guild ->
+        guildHandler.guilds.values.forEach { guild ->
             guild.guildScore.reset()
         }
         currentCommandIssuer.sendInfo(Messages.ADMIN__SCORE_RESETALL)

@@ -163,6 +163,8 @@ internal class CommandCreate : BaseCommand() {
 
                 guild.updateGuildSkull(player, settingsManager)
 
+                guildHandler.addToMemberCache(player.uniqueId, guild.id)
+
 
                 actionHandler.removeAction(player)
             }

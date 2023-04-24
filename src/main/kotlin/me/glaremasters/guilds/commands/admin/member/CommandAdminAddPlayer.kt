@@ -68,6 +68,7 @@ internal class CommandAdminAddPlayer : BaseCommand() {
         val name = guild.name
 
         guild.addMember(user, guildHandler)
+        guildHandler.addToMemberCache(user.uniqueId, guild.id)
 
         guildHandler.addGuildPerms(permission, user)
         guildHandler.addRolePerm(permission, user)

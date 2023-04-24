@@ -69,7 +69,7 @@ public class GuildHandler {
 
     private final Guilds guildsPlugin;
     private final SettingsManager settingsManager;
-    private final List<Guild> guilds = new ArrayList<>();
+    private final Map<UUID, Guild> guilds = new HashMap<>();
     private final List<GuildRole> roles = new ArrayList<>();
     private final List<GuildTier> tiers = new ArrayList<>();
     private final List<Player> spies = new ArrayList<>();
@@ -78,6 +78,7 @@ public class GuildHandler {
     private final List<Player> opened = new ArrayList<>();
 
     private final Map<UUID, String> lookupCache = new HashMap<>();
+    private final Map<UUID, UUID> memberCache = new HashMap<>();
 
     private boolean migrating = false;
     public boolean papi = false;
@@ -103,10 +104,11 @@ public class GuildHandler {
      * @throws IOException if there is an error while loading guilds from the database.
      */
     private void loadGuilds() throws IOException {
-        // Add to the list
-        guilds.addAll(guildsPlugin.getDatabase().getGuildAdapter().getAllGuilds());
+        final List<Guild> loaded = guildsPlugin.getDatabase().getGuildAdapter().getAllGuilds();
+        loaded.forEach(guild -> guilds.put(guild.getId(), guild));
+
         // Loop through each guild and set the data needed
-        for (Guild guild : guilds) {
+        for (Guild guild : guilds.values()) {
             // Create the vault cache
             createVaultCache(guild);
             // Create a temp tier object for the guild
@@ -133,6 +135,7 @@ public class GuildHandler {
                     member.setRole(getLowestGuildRole());
                     LoggingUtils.severe("The player (" + member.getName() + ") had a role level that doesn't exist on the server anymore. To prevent issues, they've been automatically set the the lowest role level on the server.");
                 }
+                addToMemberCache(member.getUuid(), guild.getId());
             }
         }
     }
@@ -208,8 +211,8 @@ public class GuildHandler {
      * @throws IOException if an I/O error occurs during the save process.
      */
     public void saveData() throws IOException {
-        guilds.forEach(this::saveVaultCache);
-        guildsPlugin.getDatabase().getGuildAdapter().saveGuilds(guilds);
+        guilds.values().forEach(this::saveVaultCache);
+        guildsPlugin.getDatabase().getGuildAdapter().saveGuilds(guilds.values());
     }
 
 
@@ -220,7 +223,7 @@ public class GuildHandler {
      * @throws NullPointerException if the specified [guild] is null
      */
     public void addGuild(@NotNull Guild guild) {
-        guilds.add(guild);
+        guilds.put(guild.getId(), guild);
         createVaultCache(guild);
     }
 
@@ -231,7 +234,8 @@ public class GuildHandler {
      */
     public void removeGuild(@NotNull Guild guild) {
         vaults.remove(guild);
-        guilds.remove(guild);
+        guild.getMembers().forEach(member -> removeFromMemberCache(member.getUuid()));
+        guilds.remove(guild.getId());
 
         try {
             guildsPlugin.getDatabase().getGuildAdapter().deleteGuild(guild.getId().toString());
@@ -249,7 +253,7 @@ public class GuildHandler {
      */
     @Nullable
     public Guild getGuild(@NotNull String name) {
-        return guilds.stream().filter(guild -> ACFBukkitUtil.removeColors(guild.getName()).equals(name)).findFirst().orElse(null);
+        return guilds.values().stream().filter(guild -> ACFBukkitUtil.removeColors(guild.getName()).equals(name)).findFirst().orElse(null);
     }
 
     /**
@@ -271,7 +275,7 @@ public class GuildHandler {
      */
     @Nullable
     public Guild getGuild(@NotNull UUID uuid) {
-        return guilds.stream().filter(guild -> guild.getId().equals(uuid)).findFirst().orElse(null);
+        return guilds.get(uuid);
     }
 
     /**
@@ -282,7 +286,8 @@ public class GuildHandler {
      */
     @Nullable
     public Guild getGuildByPlayerId(@NotNull final UUID uuid) {
-        return guilds.stream().filter(guild -> guild.getMember(uuid) != null).findFirst().orElse(null);
+        final UUID guildID = memberCache.get(uuid);
+        return guildID == null ? null : guilds.get(guildID);
     }
 
     /**
@@ -293,7 +298,7 @@ public class GuildHandler {
      */
     @Nullable
     public Guild getGuildByCode(@NotNull String code) {
-        return guilds.stream().filter(guild -> guild.hasInviteCode(code)).findFirst().orElse(null);
+        return guilds.values().stream().filter(guild -> guild.hasInviteCode(code)).findFirst().orElse(null);
     }
 
     /**
@@ -501,7 +506,7 @@ public class GuildHandler {
      * @return a list of the names of the invited guilds, or an empty list if the player has not been invited to any guilds
      */
     public List<String> getInvitedGuilds(OfflinePlayer player) {
-        return guilds.stream().filter(guild -> guild.getInvitedMembers().contains(player.getUniqueId())).map(Guild::getName).collect(Collectors.toList());
+        return guilds.values().stream().filter(guild -> guild.getInvitedMembers().contains(player.getUniqueId())).map(Guild::getName).collect(Collectors.toList());
     }
 
     /**
@@ -510,7 +515,7 @@ public class GuildHandler {
      * @return a string list of guild names
      */
     public List<String> getGuildNames() {
-        return guilds.stream().map(Guild::getName).map(ACFBukkitUtil::removeColors).collect(Collectors.toList());
+        return guilds.values().stream().map(Guild::getName).map(ACFBukkitUtil::removeColors).collect(Collectors.toList());
     }
 
     /**
@@ -951,6 +956,7 @@ public class GuildHandler {
         code.addRedeemer(player);
 
         guild.addMemberByCode(new GuildMember(player.getUniqueId(), getLowestGuildRole()));
+        addToMemberCache(player.getUniqueId(), guild.getId());
 
         if (ClaimUtils.isEnabled(settingsManager)) {
             WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();
@@ -981,8 +987,8 @@ public class GuildHandler {
      * @param guild the guild to check
      */
     public void removeAlliesOnDelete(Guild guild) {
-        getGuilds().forEach(g -> g.getPendingAllies().removeIf(x -> x.equals(guild.getId())));
-        getGuilds().forEach(g -> g.getAllies().removeIf(x -> x.equals(guild.getId())));
+        getGuilds().values().forEach(g -> g.getPendingAllies().removeIf(x -> x.equals(guild.getId())));
+        getGuilds().values().forEach(g -> g.getAllies().removeIf(x -> x.equals(guild.getId())));
     }
 
     /**
@@ -1001,7 +1007,7 @@ public class GuildHandler {
      * @return list of public guilds
      */
     public List<String> getPublicGuilds() {
-        return guilds.stream().filter(g -> !g.isPrivate()).map(Guild::getName).collect(Collectors.toList());
+        return guilds.values().stream().filter(g -> !g.isPrivate()).map(Guild::getName).collect(Collectors.toList());
     }
 
     /**
@@ -1024,7 +1030,7 @@ public class GuildHandler {
      * @return exists or not
      */
     public boolean checkGuildNames(String name) {
-        return guilds.stream().anyMatch(g -> g.getName().equalsIgnoreCase(name));
+        return guilds.values().stream().anyMatch(g -> g.getName().equalsIgnoreCase(name));
     }
 
     /**
@@ -1135,11 +1141,30 @@ public class GuildHandler {
         guildsPlugin.getChatListener().getPlayerChatMap().remove(uuid);
     }
 
+    /**
+     * Add a player to the member cache
+     *
+     * @param player the player to add
+     * @param guild the guild that the player is in
+     */
+    public void addToMemberCache(final UUID player, final UUID guild) {
+        memberCache.put(player, guild);
+    }
+
+    /**
+     * Remove a player from the member cache
+     *
+     * @param player the player to remove
+     */
+    public void removeFromMemberCache(final UUID player) {
+        memberCache.remove(player);
+    }
+
     public Guilds getGuildsPlugin() {
         return this.guildsPlugin;
     }
 
-    public List<Guild> getGuilds() {
+    public Map<UUID, Guild> getGuilds() {
         return this.guilds;
     }
 
