@@ -6,7 +6,7 @@ import java.net.URL
 
 plugins {
     id("java")
-    id("org.jetbrains.kotlin.jvm") version "1.8.10"
+    id("org.jetbrains.kotlin.jvm") version "1.8.20"
     id("net.kyori.indra") version "3.0.1"
     id("net.kyori.indra.publishing") version "3.0.1"
     id("net.kyori.indra.license-header") version "3.0.1"

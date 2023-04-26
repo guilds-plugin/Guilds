@@ -154,7 +154,6 @@ class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCo
     }
 
     private fun loadCompletions(guildHandler: GuildHandler, arenaHandler: ArenaHandler) {
-        commandManager.commandCompletions.registerCompletion("online") { Bukkit.getOnlinePlayers().map { it.name } }
         commandManager.commandCompletions.registerCompletion("invitedTo") { c -> guildHandler.getInvitedGuilds(c.player) }
         commandManager.commandCompletions.registerCompletion("joinableGuilds") { c -> guildHandler.getJoinableGuild(c.player) }
         commandManager.commandCompletions.registerCompletion("guilds") { guildHandler.guildNames }
@@ -211,7 +210,7 @@ class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCo
     private fun loadCompletionCache() {
         val handler = plugin.guildHandler
 
-        handler.guilds.forEach { guild ->
+        handler.guilds.values.forEach { guild ->
             guild.members.filterNotNull().forEach { member ->
                 handler.lookupCache.putIfAbsent(member.uuid, member.name)
             }

@@ -33,6 +33,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class GuildAdapter {
@@ -76,7 +77,7 @@ public class GuildAdapter {
         return provider.getGuild(sqlTablePrefix, id);
     }
 
-    public void saveGuilds(@NotNull List<Guild> guilds) throws IOException {
+    public void saveGuilds(@NotNull Collection<Guild> guilds) throws IOException {
         for (Guild guild : guilds) {
             saveGuild(guild);
         }

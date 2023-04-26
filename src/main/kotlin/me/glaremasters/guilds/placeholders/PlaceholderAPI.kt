@@ -68,7 +68,7 @@ class PlaceholderAPI(private val guildHandler: GuildHandler) : PlaceholderExpans
             }
 
             val guild = try {
-                api.guildHandler.guilds.sortedBy { it.guildScore.wins }.reversed()[updated - 1]
+                api.guildHandler.guilds.values.sortedBy { it.guildScore.wins }.reversed()[updated - 1]
             } catch (ex: IndexOutOfBoundsException) {
                 return ""
             }
@@ -85,7 +85,7 @@ class PlaceholderAPI(private val guildHandler: GuildHandler) : PlaceholderExpans
             }
 
             val guild = try {
-                api.guildHandler.guilds.sortedBy { it.guildScore.wins }.reversed()[updated - 1]
+                api.guildHandler.guilds.values.sortedBy { it.guildScore.wins }.reversed()[updated - 1]
             } catch (ex: IndexOutOfBoundsException) {
                 return ""
             }
@@ -102,7 +102,7 @@ class PlaceholderAPI(private val guildHandler: GuildHandler) : PlaceholderExpans
             }
 
             val guild = try {
-                api.guildHandler.guilds.sortedBy { it.guildScore.loses }.reversed()[updated - 1]
+                api.guildHandler.guilds.values.sortedBy { it.guildScore.loses }.reversed()[updated - 1]
             } catch (ex: IndexOutOfBoundsException) {
                 return ""
             }
@@ -119,7 +119,7 @@ class PlaceholderAPI(private val guildHandler: GuildHandler) : PlaceholderExpans
             }
 
             val guild = try {
-                api.guildHandler.guilds.sortedBy { it.guildScore.loses }.reversed()[updated - 1]
+                api.guildHandler.guilds.values.sortedBy { it.guildScore.loses }.reversed()[updated - 1]
             } catch (ex: IndexOutOfBoundsException) {
                 return ""
             }
@@ -135,7 +135,7 @@ class PlaceholderAPI(private val guildHandler: GuildHandler) : PlaceholderExpans
                 return ""
             }
 
-            val filterValid = api.guildHandler.guilds.filter { it.guildScore.wins > 0 && it.guildScore.loses > 0 }
+            val filterValid = api.guildHandler.guilds.values.filter { it.guildScore.wins > 0 && it.guildScore.loses > 0 }
 
             val guild = try {
                 filterValid.sortedBy { (it.guildScore.wins.toDouble() / it.guildScore.loses.toDouble()) }.reversed()[updated - 1]
@@ -154,7 +154,7 @@ class PlaceholderAPI(private val guildHandler: GuildHandler) : PlaceholderExpans
                 return ""
             }
 
-            val filterValid = api.guildHandler.guilds.filter { it.guildScore.wins > 0 && it.guildScore.loses > 0 }
+            val filterValid = api.guildHandler.guilds.values.filter { it.guildScore.wins > 0 && it.guildScore.loses > 0 }
 
             val guild = try {
                 filterValid.sortedBy  { (it.guildScore.wins.toDouble() / it.guildScore.loses.toDouble()) }.reversed()[updated - 1]

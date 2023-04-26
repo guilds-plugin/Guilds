@@ -70,6 +70,7 @@ internal class CommandAdminRemovePlayer : BaseCommand() {
         guildHandler.removeGuildPerms(permission, user)
 
         guild.removeMember(user)
+        guildHandler.removeFromMemberCache(user.uniqueId)
 
         if (user.isOnline) {
             currentCommandManager.getCommandIssuer(user).sendInfo(Messages.ADMIN__PLAYER_REMOVED)

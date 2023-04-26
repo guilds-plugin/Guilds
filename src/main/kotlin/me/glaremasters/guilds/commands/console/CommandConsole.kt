@@ -105,7 +105,7 @@ internal class CommandConsole : BaseCommand() {
                             throw ExpectationNotMet(Messages.MIGRATE__CONNECTION_FAILED)
                         }
 
-                        resolvedAdapter.guildAdapter.saveGuilds(guildHandler.guilds)
+                        resolvedAdapter.guildAdapter.saveGuilds(guildHandler.guilds.values)
                         resolvedAdapter.arenaAdapter.saveArenas(arenaHandler.getArenas())
                         resolvedAdapter.cooldownAdapter.saveCooldowns(cooldownHandler.cooldowns.values)
                         resolvedAdapter.challengeAdapter.saveChallenges(challengeHandler.challenges)
@@ -151,7 +151,7 @@ internal class CommandConsole : BaseCommand() {
         actionHandler.addAction(issuer.getIssuer(), object : ConfirmAction {
             override fun accept() {
                 val wrapper = WorldGuardWrapper.getInstance()
-                guildHandler.guilds.forEach { guild ->
+                guildHandler.guilds.values.forEach { guild ->
                     if (ClaimUtils.checkAlreadyExist(wrapper, guild)) {
                         ClaimUtils.removeClaim(wrapper, guild)
                     }
