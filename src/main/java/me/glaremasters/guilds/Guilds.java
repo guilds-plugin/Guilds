@@ -209,17 +209,6 @@ public final class Guilds extends JavaPlugin {
             settingsHandler.getMainConf().save();
         }
 
-        if (settingsHandler.getMainConf().getProperty(StorageSettings.STORAGE_TYPE).equalsIgnoreCase("json")) {
-            try {
-                LoggingUtils.info("Creating a backup of your data...");
-                BackupUtils.zipDir("guilds-backup-" + System.currentTimeMillis() + ".zip", this.getDataFolder().getPath());
-                LoggingUtils.info("Backup created!");
-            } catch (Exception e) {
-                LoggingUtils.severe("Failed to create a backup of your data!");
-                throw new RuntimeException(e);
-            }
-        }
-
         // This is really just for shits and giggles
         // A variable for checking how long startup took.
         long startingTime = System.currentTimeMillis();

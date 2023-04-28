@@ -26,6 +26,7 @@ package me.glaremasters.guilds.listeners
 import ch.jalu.configme.SettingsManager
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.configuration.sections.PluginSettings
+import me.glaremasters.guilds.configuration.sections.TicketSettings
 import me.glaremasters.guilds.configuration.sections.TierSettings
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
@@ -41,6 +42,11 @@ class TicketListener(private val guilds: Guilds, private val guildHandler: Guild
     fun PlayerInteractEvent.onUpgrade() {
         val interactItem = item ?: return
         val interactPlayer = player ?: return
+
+        if (!settingsManager.getProperty(TicketSettings.TICKET_ENABLED)) {
+            return
+        }
+
         val guild = guildHandler.getGuild(interactPlayer) ?: return
 
         if (!interactItem.isSimilar(guildHandler.matchTicket(settingsManager))) {

@@ -39,6 +39,10 @@ import static ch.jalu.configme.properties.PropertyInitializer.newProperty;
  */
 public class TicketSettings implements SettingsHolder {
 
+    @Comment("Do you want to enable guild upgrade tickets?")
+    public static final Property<Boolean> TICKET_ENABLED =
+            newProperty("tickets.enabled", true);
+
     @Comment("What do you want the name of the upgrade ticket to be?")
     public static final Property<String> TICKET_NAME =
             newProperty("tickets.name", "&bGuild Upgrade Ticket");
