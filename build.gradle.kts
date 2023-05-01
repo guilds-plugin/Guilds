@@ -18,7 +18,7 @@ plugins {
 }
 
 group = "me.glaremasters"
-version = "3.5.6.9-SNAPSHOT"
+version = "3.5.6.9"
 
 base {
     archivesBaseName = "Guilds"
@@ -117,7 +117,7 @@ tasks {
     }
 
     runServer {
-        minecraftVersion("1.19.3")
+        minecraftVersion("1.19.4")
     }
 
     license {
