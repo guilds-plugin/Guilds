@@ -92,7 +92,7 @@ descriptions:
 syntax:
   msg: "[msg]"
   name: "<name>"
-  player: "<player>"
+  player: "<speler>"
   amount: "<amount>"
   guild: "<guild>"
   new-name: "<new name>"
