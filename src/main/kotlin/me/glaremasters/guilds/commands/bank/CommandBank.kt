@@ -49,8 +49,10 @@ import org.bukkit.entity.Player
 internal class CommandBank : BaseCommand() {
     @Dependency
     lateinit var guilds: Guilds
+
     @Dependency
     lateinit var guildHandler: GuildHandler
+
     @Dependency
     lateinit var economy: Economy
 
@@ -67,6 +69,10 @@ internal class CommandBank : BaseCommand() {
     @CommandPermission(Constants.BANK_PERM + "deposit")
     @Syntax("%amount")
     fun deposit(player: Player, @Conditions("perm:perm=DEPOSIT_MONEY") guild: Guild, amount: Double) {
+        if (amount.isNaN()) {
+            throw ExpectationNotMet(Messages.SYNTAX__AMOUNT)
+        }
+
         val balance = guild.balance
         val rounded = amount.rounded()
         val total = rounded + balance
@@ -102,6 +108,9 @@ internal class CommandBank : BaseCommand() {
     @CommandPermission(Constants.BANK_PERM + "withdraw")
     @Syntax("%amount")
     fun withdraw(player: Player, @Conditions("perm:perm=WITHDRAW_MONEY") guild: Guild, amount: Double) {
+        if (amount.isNaN()) {
+            throw ExpectationNotMet(Messages.SYNTAX__AMOUNT)
+        }
         val bal = guild.balance
         val rounded = amount.rounded()
 
