@@ -14,7 +14,7 @@ plugins {
     id("io.github.slimjar") version "1.3.0"
     id("xyz.jpenilla.run-paper") version "2.0.1"
     id("com.github.ben-manes.versions") version "0.47.0"
-    id("org.jetbrains.dokka") version "1.8.10"
+    id("org.jetbrains.dokka") version "1.8.20"
 }
 
 group = "me.glaremasters"
