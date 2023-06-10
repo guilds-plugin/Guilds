@@ -9,7 +9,7 @@ plugins {
     id("org.jetbrains.kotlin.jvm") version "1.8.22"
     id("net.kyori.indra") version "3.0.1"
     id("net.kyori.indra.publishing") version "3.0.1"
-    id("net.kyori.indra.license-header") version "3.0.1"
+    id("net.kyori.indra.license-header") version "3.1.1"
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("io.github.slimjar") version "1.3.0"
     id("xyz.jpenilla.run-paper") version "2.0.1"
