@@ -18,7 +18,7 @@ plugins {
 }
 
 group = "me.glaremasters"
-version = "3.5.7.0"
+version = "3.5.7.1-SNAPSHOT"
 
 base {
     archivesBaseName = "Guilds"
