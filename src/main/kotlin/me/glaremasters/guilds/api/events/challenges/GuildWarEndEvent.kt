@@ -52,6 +52,7 @@ class GuildWarEndEvent(val challenger: Guild, val defender: Guild, val winner: G
         /**
          * The static list of event handlers for this event type.
          */
+        @JvmStatic
         val handlerList = HandlerList()
     }
 }

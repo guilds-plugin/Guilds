@@ -50,6 +50,7 @@ class GuildWarStartEvent(val challenger: Guild, val defender: Guild) : Event() {
         /**
          * The static list of event handlers for this event type.
          */
+        @JvmStatic
         val handlerList = HandlerList()
     }
 }
