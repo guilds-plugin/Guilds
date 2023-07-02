@@ -40,6 +40,7 @@ import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.api.events.challenges.GuildWarAcceptEvent
 import me.glaremasters.guilds.api.events.challenges.GuildWarChallengeEvent
 import me.glaremasters.guilds.api.events.challenges.GuildWarDeclineEvent
+import me.glaremasters.guilds.api.events.challenges.GuildWarPlayerJoinEvent
 import me.glaremasters.guilds.arena.ArenaHandler
 import me.glaremasters.guilds.challenges.ChallengeHandler
 import me.glaremasters.guilds.configuration.sections.WarSettings
@@ -198,6 +199,8 @@ internal class CommandWar : BaseCommand() {
             throw ExpectationNotMet(Messages.WAR__NOT_JOINABLE)
         }
 
+        var side = ""
+
         if (challenge.defender == guild) {
             if (challenge.defendPlayers.contains(player.uniqueId)) {
                 throw ExpectationNotMet(Messages.WAR__ALREADY_JOINED)
@@ -206,6 +209,7 @@ internal class CommandWar : BaseCommand() {
                 throw ExpectationNotMet(Messages.WAR__ALREADY_AT_MAX)
             }
             challenge.defendPlayers.add(player.uniqueId)
+            side = "challenger"
         } else {
             if (challenge.challengePlayers.contains(player.uniqueId)) {
                 throw ExpectationNotMet(Messages.WAR__ALREADY_JOINED)
@@ -214,7 +218,11 @@ internal class CommandWar : BaseCommand() {
                 throw ExpectationNotMet(Messages.WAR__ALREADY_AT_MAX)
             }
             challenge.challengePlayers.add(player.uniqueId)
+            side = "defender"
         }
+
+        val event = GuildWarPlayerJoinEvent(challenge.challenger, challenge.defender, player, side)
+        Bukkit.getPluginManager().callEvent(event)
 
         guild.sendMessage(currentCommandManager, Messages.WAR__WAR_JOINED, "{player}", player.name)
     }
