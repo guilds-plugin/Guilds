@@ -46,6 +46,7 @@ import me.glaremasters.guilds.configuration.sections.StorageSettings;
 import me.glaremasters.guilds.cooldowns.CooldownHandler;
 import me.glaremasters.guilds.database.DatabaseAdapter;
 import me.glaremasters.guilds.guild.GuildHandler;
+import me.glaremasters.guilds.guild.GuildLogManager;
 import me.glaremasters.guilds.guis.GUIHandler;
 import me.glaremasters.guilds.listeners.ArenaListener;
 import me.glaremasters.guilds.listeners.ChatListener;
@@ -102,6 +103,7 @@ public final class Guilds extends JavaPlugin {
     private Permission permissions;
     private BukkitAudiences adventure;
     private ChatListener chatListener;
+    private GuildLogManager guildLogManager;
 
     public static Gson getGson() {
         return gson;
@@ -143,6 +145,7 @@ public final class Guilds extends JavaPlugin {
                 guildHandler.saveData();
                 cooldownHandler.saveCooldowns();
                 arenaHandler.saveArenas();
+                guildLogManager.saveData();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -236,6 +239,7 @@ public final class Guilds extends JavaPlugin {
             challengeHandler.loadChallenges();
             // Load guildhandler with provider
             guildHandler = new GuildHandler(this, settingsHandler.getMainConf());
+            guildLogManager = new GuildLogManager(this);
         } catch (IOException e) {
             LoggingUtils.severe("An error occurred loading data! Stopping plugin..");
             Bukkit.getPluginManager().disablePlugin(this);
@@ -411,5 +415,9 @@ public final class Guilds extends JavaPlugin {
 
     public ChatListener getChatListener() {
         return chatListener;
+    }
+
+    public GuildLogManager getGuildLogManager() {
+        return guildLogManager;
     }
 }

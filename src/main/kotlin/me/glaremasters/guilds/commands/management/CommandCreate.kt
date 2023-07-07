@@ -46,6 +46,7 @@ import me.glaremasters.guilds.cooldowns.CooldownHandler
 import me.glaremasters.guilds.exceptions.ExpectationNotMet
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
+import me.glaremasters.guilds.guild.GuildLog
 import me.glaremasters.guilds.guild.GuildMember
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.Constants
@@ -160,6 +161,8 @@ internal class CommandCreate : BaseCommand() {
                 currentCommandIssuer.sendInfo(Messages.CREATE__SUCCESSFUL, "{guild}", guild.name)
                 guildHandler.addGuildPerms(permission, player)
                 guildHandler.addRolePerm(permission, player)
+
+                guilds.guildLogManager.getOrCreateGuildLog(guild.id.toString())
 
                 guild.updateGuildSkull(player, settingsManager)
 

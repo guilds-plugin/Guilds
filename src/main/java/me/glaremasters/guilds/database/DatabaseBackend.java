@@ -43,26 +43,29 @@ import me.glaremasters.guilds.database.guild.provider.GuildJsonProvider;
 import me.glaremasters.guilds.database.guild.provider.GuildMariaDBProvider;
 import me.glaremasters.guilds.database.guild.provider.GuildMySQLProvider;
 import me.glaremasters.guilds.database.guild.provider.GuildSQLiteProvider;
+import me.glaremasters.guilds.database.logs.LogProvider;
 
 import java.util.Arrays;
 
 public enum DatabaseBackend {
-    JSON("json", GuildJsonProvider.class, ChallengeJsonProvider.class, ArenaJsonProvider.class, CooldownJsonProvider.class),
-    MYSQL("mysql", GuildMySQLProvider.class, ChallengeMySQLProvider.class, ArenaMySQLProvider.class, CooldownMySQLProvider.class),
-    SQLITE("sqlite", GuildSQLiteProvider.class, ChallengeSQLiteProvider.class, ArenaSQLiteProvider.class, CooldownSQLiteProvider.class),
-    MARIADB("mariadb", GuildMariaDBProvider.class, ChallengeMariaDBProvider.class, ArenaMariaDBProvider.class, CooldownMariaDBProvider.class);
+    JSON("json", GuildJsonProvider.class, ChallengeJsonProvider.class, ArenaJsonProvider.class, CooldownJsonProvider.class, LogProvider.class),
+    MYSQL("mysql", GuildMySQLProvider.class, ChallengeMySQLProvider.class, ArenaMySQLProvider.class, CooldownMySQLProvider.class, null),
+    SQLITE("sqlite", GuildSQLiteProvider.class, ChallengeSQLiteProvider.class, ArenaSQLiteProvider.class, CooldownSQLiteProvider.class, null),
+    MARIADB("mariadb", GuildMariaDBProvider.class, ChallengeMariaDBProvider.class, ArenaMariaDBProvider.class, CooldownMariaDBProvider.class, null);
     private final String backendName;
     private final Class<? extends GuildProvider> guildProvider;
     private final Class<? extends ChallengeProvider> challengeProvider;
     private final Class<? extends ArenaProvider> arenaProvider;
     private final Class<? extends CooldownProvider> cooldownProvider;
+    private final Class<? extends LogProvider> logProvider;
 
-    DatabaseBackend(String backendName, Class<? extends GuildProvider> guildProvider, Class<? extends ChallengeProvider> challengeProvider, Class<? extends ArenaProvider> arenaProvider, Class<? extends CooldownProvider> cooldownProvider) {
+    DatabaseBackend(String backendName, Class<? extends GuildProvider> guildProvider, Class<? extends ChallengeProvider> challengeProvider, Class<? extends ArenaProvider> arenaProvider, Class<? extends CooldownProvider> cooldownProvider, Class<? extends LogProvider> logProvider) {
         this.backendName = backendName;
         this.guildProvider = guildProvider;
         this.challengeProvider = challengeProvider;
         this.arenaProvider = arenaProvider;
         this.cooldownProvider = cooldownProvider;
+        this.logProvider = logProvider;
     }
 
     public String getBackendName() {
@@ -83,6 +86,10 @@ public enum DatabaseBackend {
 
     public Class<? extends CooldownProvider> getCooldownProvider() {
         return cooldownProvider;
+    }
+
+    public Class<? extends LogProvider> getLogProvider() {
+        return logProvider;
     }
 
     public static DatabaseBackend getByBackendName(String backendName) {

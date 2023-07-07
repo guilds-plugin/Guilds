@@ -30,6 +30,7 @@ import me.glaremasters.guilds.database.arenas.ArenaAdapter;
 import me.glaremasters.guilds.database.challenges.ChallengeAdapter;
 import me.glaremasters.guilds.database.cooldowns.CooldownAdapter;
 import me.glaremasters.guilds.database.guild.GuildAdapter;
+import me.glaremasters.guilds.database.logs.LogAdapter;
 import me.glaremasters.guilds.utils.LoggingUtils;
 import org.bukkit.Bukkit;
 
@@ -48,6 +49,7 @@ public final class DatabaseAdapter implements AutoCloseable {
     private ChallengeAdapter challengeAdapter;
     private ArenaAdapter arenaAdapter;
     private CooldownAdapter cooldownAdapter;
+    private LogAdapter logAdapter;
     private DatabaseManager databaseManager;
     private String sqlTablePrefix;
 
@@ -195,10 +197,17 @@ public final class DatabaseAdapter implements AutoCloseable {
 
             this.cooldownAdapter = new CooldownAdapter(guilds, this);
             this.cooldownAdapter.createContainer();
+
+            this.logAdapter = new LogAdapter(guilds, this);
+            this.logAdapter.createContainer();
         } catch (Exception ex) {
             LoggingUtils.severe("There was an issue setting up the backend database. Shutting down to prevent further issues. If you are using MySQL, make sure your database server is on the latest version!");
             ex.printStackTrace();
             Bukkit.getServer().getPluginManager().disablePlugin(guilds);
         }
+    }
+
+    public LogAdapter getLogAdapter() {
+        return logAdapter;
     }
 }

@@ -23,6 +23,7 @@
  */
 package me.glaremasters.guilds.commands.bank
 
+import co.aikar.commands.ACFBukkitUtil
 import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.CommandAlias
 import co.aikar.commands.annotation.CommandPermission
@@ -38,6 +39,8 @@ import me.glaremasters.guilds.exceptions.ExpectationNotMet
 import me.glaremasters.guilds.exte.rounded
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
+import me.glaremasters.guilds.guild.GuildLogEntry
+import me.glaremasters.guilds.guild.GuildLogType
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.Constants
 import me.glaremasters.guilds.utils.EconomyUtils
@@ -101,6 +104,34 @@ internal class CommandBank : BaseCommand() {
         guild.balance = total
         guild.sendMessage(currentCommandManager, Messages.BANK__DEPOSIT_SUCCESS, "{player}", player.name,
                 "{amount}", EconomyUtils.format(rounded), "{total}", EconomyUtils.format(guild.balance))
+
+        guilds.guildLogManager.getOrCreateGuildLog(guild.id.toString()).addEntry(
+                GuildLogEntry(
+                    GuildLogType.DEPOSIT,
+                    player.name,
+                    rounded,
+                    System.currentTimeMillis()
+                )
+        )
+    }
+
+    @Subcommand("bank logs")
+    fun logs(player: Player, guild: Guild) {
+        val guildLog = guilds.guildLogManager.getOrCreateGuildLog(guild.id.toString())
+        val entries = guildLog.content
+        val log = StringBuilder()
+        for (entry in entries) {
+            // Append saying that <player> has <type> <amount> at <time>
+            val s = "&7- &f{player} &7has &f{type} &7{amount} &7at &f{time}\n"
+                .replace("{player}", entry.player)
+                .replace("{type}", entry.type.name.toLowerCase())
+                .replace("{amount}", EconomyUtils.format(entry.amount))
+                .replace("{time}", entry.time.toString())
+
+            val toAdd = ACFBukkitUtil.color(s)
+            log.append(toAdd)
+        }
+        player.sendMessage(log.toString())
     }
 
     @Subcommand("bank withdraw")
