@@ -185,6 +185,7 @@ class PlaceholderAPI(private val guildHandler: GuildHandler) : PlaceholderExpans
             "challenge_wins" -> guild.guildScore.wins.toString()
             "challenge_loses" -> guild.guildScore.loses.toString()
             "motd" -> guild.motd ?: ""
+            "spying" -> guildHandler.isSpy(player).toString()
             else -> ""
         }
     }
