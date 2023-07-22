@@ -33,6 +33,7 @@ import me.glaremasters.guilds.messages.Messages;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
@@ -102,6 +103,12 @@ public class VaultBlacklistListener implements Listener {
         // check if they are in the list of open vaults
         if (!guildHandler.getOpened().contains(player))
             return;
+
+        // Prevent hot swapping
+        if (event.getClick() == ClickType.NUMBER_KEY) {
+            event.setCancelled(true);
+            return;
+        }
 
         // get the item clicked
         ItemStack item = event.getCurrentItem();
