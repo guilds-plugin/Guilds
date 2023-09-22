@@ -1,6 +1,6 @@
 ---
 descriptions:
-  accept: "Aceptar una invitación de gremio"
+  accept: "Aceptar una invitación de equipo"
   admin-addplayer: "Comando administrativo para agregar un jugador a un equipo"
   admin-bank-balance: "Comando administrativo para ver el saldo bancario de un equipo"
   admin-bank-deposit: "Comando administrativo para colocar dinero en el banco del equipo"
