@@ -24,13 +24,11 @@
 package me.glaremasters.guilds.guild;
 
 import ch.jalu.configme.SettingsManager;
-import co.aikar.commands.ACFUtil;
 import co.aikar.commands.CommandManager;
+import com.cryptomorin.xseries.SkullUtils;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.configuration.sections.GuildListSettings;
-import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.messages.Messages;
-import me.glaremasters.guilds.utils.SkullUtils;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -198,7 +196,7 @@ public class Guild {
      * @return itemstack of skull
      */
     public ItemStack getSkull() {
-        return SkullUtils.getSkull(guildSkull.getSerialized());
+        return guildSkull.createSkull();
     }
 
 

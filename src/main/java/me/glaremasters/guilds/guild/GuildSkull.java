@@ -23,18 +23,13 @@
  */
 package me.glaremasters.guilds.guild;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
-import com.mojang.authlib.properties.PropertyMap;
-import me.glaremasters.guilds.utils.SkullUtils;
-import org.bukkit.Bukkit;
+import com.cryptomorin.xseries.SkullUtils;
+import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.Base64;
+import java.util.Objects;
 
 /**
  * Represents a guild skull, which is a player head in Minecraft that has a custom texture.
@@ -49,8 +44,8 @@ public class GuildSkull {
      * @param player the player whose head will be used for the guild skull
      */
     public GuildSkull(Player player) {
-        serialized = SkullUtils.getEncoded(getTextureUrl(player));
-        itemStack = SkullUtils.getSkull(serialized);
+        itemStack = SkullUtils.getSkull(player.getUniqueId());
+        serialized = SkullUtils.getSkinValue(Objects.requireNonNull(itemStack.getItemMeta()));
     }
 
     /**
@@ -59,58 +54,21 @@ public class GuildSkull {
      * @param texture the texture string, which should be a Minecraft resource location string
      */
     public GuildSkull(String texture) {
-        serialized = SkullUtils.getEncoded("https://textures.minecraft.net/texture/" + texture);
-        itemStack = SkullUtils.getSkull(serialized);
+        serialized = SkullUtils.encodeTexturesURL(texture);
+        itemStack = createSkull();
     }
 
     /**
-     * Gets the texture URL of a player's skin.
+     * Creates a guild skull from a serialized string.
      *
-     * @param player the player whose skin will be used for the guild skull
-     * @return the skin texture URL
+     * @return the guild skull
      */
-    private String getTextureUrl(Player player) {
-        GameProfile profile = getProfile(player);
-        if (profile == null) {
-            return "";
-        }
-        PropertyMap propertyMap = profile.getProperties();
-        for (Property property : propertyMap.get("textures")) {
-            byte[] decoded = Base64.getDecoder().decode(property.getValue());
-            JsonObject texture = new JsonParser().parse(new String(decoded)).getAsJsonObject().get("textures").getAsJsonObject().get("SKIN").getAsJsonObject();
-            return texture.get("url").getAsString();
-        }
-        return "";
-    }
-
-    /**
-     * Gets the profile of an online player.
-     *
-     * @param player the player whose profile will be retrieved
-     * @return the player's profile
-     */
-    private GameProfile getProfile(Player player) {
-        try {
-            Class<?> strClass = Class.forName("org.bukkit.craftbukkit." + getServerVersion() + ".entity.CraftPlayer");
-            return (GameProfile) strClass.cast(player).getClass().getMethod("getProfile").invoke(strClass.cast(player));
-        } catch (ClassNotFoundException | IllegalAccessException | InvocationTargetException |
-                 NoSuchMethodException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    /**
-     * Gets the version of the server.
-     *
-     * @return the server version
-     */
-    private String getServerVersion() {
-        try {
-            return Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
-        } catch (ArrayIndexOutOfBoundsException ex) {
-            return "unknown";
-        }
+    public ItemStack createSkull() {
+        final ItemStack head = XMaterial.PLAYER_HEAD.parseItem();
+        SkullMeta meta = (SkullMeta) head.getItemMeta();
+        meta = SkullUtils.applySkin(meta, serialized);
+        head.setItemMeta(meta);
+        return head;
     }
 
     /**

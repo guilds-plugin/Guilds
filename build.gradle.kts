@@ -58,7 +58,7 @@ dependencies {
     implementation("org.codemc.worldguardwrapper:worldguardwrapper:1.1.9-SNAPSHOT")
     implementation("ch.jalu:configme:1.3.0")
     implementation("com.dumptruckman.minecraft:JsonConfiguration:1.1")
-    implementation("com.github.cryptomorin:XSeries:9.6.0")
+    implementation("com.github.cryptomorin:XSeries:9.6.1")
     implementation("net.kyori:adventure-platform-bukkit:4.3.1")
     implementation("dev.triumphteam:triumph-gui:3.1.5")
     implementation("com.zaxxer:HikariCP:4.0.3")
@@ -68,7 +68,6 @@ dependencies {
 
     compileOnly("org.spigotmc:spigot-api:1.20.2-R0.1-SNAPSHOT")
     compileOnly("net.milkbowl:vault:1.7")
-    compileOnly("com.mojang:authlib:1.5.25")
     compileOnly("me.clip:placeholderapi:2.11.4")
 
     slim("org.jetbrains.kotlin:kotlin-stdlib")
