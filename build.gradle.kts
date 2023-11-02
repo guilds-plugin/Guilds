@@ -6,13 +6,13 @@ import java.net.URL
 
 plugins {
     id("java")
-    id("org.jetbrains.kotlin.jvm") version "1.9.10"
+    id("org.jetbrains.kotlin.jvm") version "1.9.20"
     id("net.kyori.indra") version "3.1.3"
     id("net.kyori.indra.publishing") version "3.1.3"
     id("net.kyori.indra.license-header") version "3.1.3"
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("io.github.slimjar") version "1.3.0"
-    id("xyz.jpenilla.run-paper") version "2.1.0"
+    id("xyz.jpenilla.run-paper") version "2.2.0"
     id("com.github.ben-manes.versions") version "0.48.0"
     id("org.jetbrains.dokka") version "1.9.0"
 }
