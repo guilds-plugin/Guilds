@@ -58,17 +58,17 @@ dependencies {
     implementation("org.codemc.worldguardwrapper:worldguardwrapper:1.1.9-SNAPSHOT")
     implementation("ch.jalu:configme:1.3.0")
     implementation("com.dumptruckman.minecraft:JsonConfiguration:1.1")
-    implementation("com.github.cryptomorin:XSeries:9.8.0")
-    implementation("net.kyori:adventure-platform-bukkit:4.3.1")
+    implementation("com.github.cryptomorin:XSeries:9.8.1")
+    implementation("net.kyori:adventure-platform-bukkit:4.3.2")
     implementation("dev.triumphteam:triumph-gui:3.1.5")
     implementation("com.zaxxer:HikariCP:4.0.3")
     implementation("org.jdbi:jdbi3-core:3.8.2")
     implementation("org.jdbi:jdbi3-sqlobject:3.8.2")
     implementation("org.mariadb.jdbc:mariadb-java-client:2.7.2")
 
-    compileOnly("org.spigotmc:spigot-api:1.20.2-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot-api:1.20.4-R0.1-SNAPSHOT")
     compileOnly("net.milkbowl:vault:1.7")
-    compileOnly("me.clip:placeholderapi:2.11.4")
+    compileOnly("me.clip:placeholderapi:2.11.5")
 
     slim("org.jetbrains.kotlin:kotlin-stdlib")
 }
