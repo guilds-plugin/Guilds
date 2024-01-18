@@ -100,7 +100,13 @@ class ListGUI(private val guilds: Guilds, private val settingsManager: SettingsM
     private fun setListItem(guild: Guild, player: Player) {
         val defaultUrl = settingsManager.getProperty(GuildListSettings.GUILD_LIST_HEAD_DEFAULT_URL)
         val useDefaultUrl = settingsManager.getProperty(GuildListSettings.USE_DEFAULT_TEXTURE)
-        val item = if (!useDefaultUrl) guild.skull else GuildSkull(defaultUrl).itemStack
+
+        val item = if (!useDefaultUrl && guild.skull !== null && guild.guildSkull !== null) {
+            guild.skull
+        } else {
+            GuildSkull(defaultUrl).itemStack
+        }
+
         val meta = item.itemMeta
         var name = settingsManager.getProperty(GuildListSettings.GUILD_LIST_ITEM_NAME)
 
