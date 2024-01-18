@@ -101,7 +101,7 @@ class ListGUI(private val guilds: Guilds, private val settingsManager: SettingsM
         val defaultUrl = settingsManager.getProperty(GuildListSettings.GUILD_LIST_HEAD_DEFAULT_URL)
         val useDefaultUrl = settingsManager.getProperty(GuildListSettings.USE_DEFAULT_TEXTURE)
 
-        val item = if (!useDefaultUrl && guild.skull !== null && guild.guildSkull !== null) {
+        val item = if (!useDefaultUrl && guild.skull != null && guild.guildSkull != null) {
             guild.skull
         } else {
             GuildSkull(defaultUrl).itemStack
