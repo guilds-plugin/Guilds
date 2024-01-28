@@ -302,10 +302,10 @@ vaults:
 languages:
   set: "&a你已成功將你的語言設置為{language}。"
   warning: "&a你即將更新所有語言文件。這將刪除所有當前的語言文件並重新創建它們。請輸入/guilds confirm以繼續，輸入/guilds cancel以取消。"
-  updated: "&aLanguage files have been recreated and reloaded!"
+  updated: "&a语言文件已重新创建和加载"
 backup:
-  started: "&aCurrently backing up all Guilds data!"
-  finished: "&aAll Guilds data has been backed up and placed in your plugins folder."
+  started: "&a目前正在备份所有公会数据"
+  finished: "&a所有公会数据均已备份并放入插件文件夹中"
   warning: "&cYou are about to make a backup of all the data for the plugin. Please make sure not to do anything intensive during this. Type /guilds confirm to continue, type /guilds cancel to cancel."
   cancelled: "aYou've successfully cancelled the backup."
 help:
@@ -340,7 +340,7 @@ war:
   incoming-challenge: "&aBeware! The guild &b{guild} &ahas just sent you a war challenge! Show them you are the best in all the lands by doing /guild war accept or be a little scary cat and run away by doing /guild war deny! You have &b{amount} &atime to decide!"
   no-pending-challenge: "&cSorry! You don't have a pending war challenge to accept."
   already-challenging: "&cSorry, you already have a pending challenge. Please cancel it or wait for it to expire."
-  no-self-challenge: "&cSilly person, you can't challenge yourself to a war!"
+  no-self-challenge: "&c笨蛋，你不能自己挑战自己"
   guild-expired-challenge: "&cYour challenge against &b{guild} &ahas timed out because they failed to accept it in time."
   target-expired-challenge: "&cSeems like you punny weaklings were too scared to make a decision in time. The challenge has been cancelled."
   challenge-denied-defender: "&aWe understand, war isn't for everyone. You've denied the challenge from &b{guild}&a."
