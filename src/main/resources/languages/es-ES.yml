@@ -1,6 +1,6 @@
 ---
 descriptions:
-  accept: "Aceptar una invitación de gremio"
+  accept: "Aceptar una invitación de equipo"
   admin-addplayer: "Comando administrativo para agregar un jugador a un equipo"
   admin-bank-balance: "Comando administrativo para ver el saldo bancario de un equipo"
   admin-bank-deposit: "Comando administrativo para colocar dinero en el banco del equipo"
@@ -27,7 +27,7 @@ descriptions:
   admin-vault: "Comando de administrador para ver la bóveda del equipo"
   ally-accept: "Aceptar una invitación de alianza de otra equipo"
   ally-add: "Agregar un equipo como aliado"
-  ally-chat: "Toggles ally chat"
+  ally-chat: "Activa o desactiva el chat de alianza"
   ally-decline: "Rechazar una invitación de alianza de otro equipo"
   ally-list: "Lista de todas las alianzas de tu equipo"
   ally-remove: "Remover un equipo como aliado"
@@ -116,10 +116,10 @@ create:
   name-too-long: "&cNo proporcionó un prefijo, por lo que el nombre que ingresó se probó con los requisitos del prefijo y eso falló. Por favor intente con un nombre más corto o ingrese un prefijo en la creación."
   prefix-too-long: "&c¡El prefijo del gremio proporcionado no cumplía con los requisitos! ¿Quizás tenías demasiados personajes?"
 chat:
-  toggled-on: "{type} chat toggled on."
-  toggled-off: "{type} chat toggled off."
-  type-guild: "Guild"
-  type-ally: "Ally"
+  toggled-on: "Chat de {type} activado."
+  toggled-off: "Chat de {type} desactivado."
+  type-guild: "Equipo"
+  type-ally: "Alianza"
 request:
   success: "&aHas solicitado una invitación de la guild {guild} exitosamente"
   incoming-request: "&a{player} está pidiendo entrar a la guild. ¡Envíale una invitación usando /guild invite {player}!"
@@ -332,8 +332,8 @@ arena:
   position-not-set: "&cLa ubicación de ese equipo todavía no ha sido establecida. ¡Intenta configurarla antes de teletransportarte a ella!"
   teleported-to-selection: "&aWooosh! Has sido teletransportado al punto de aparición de &c{team}&a para &c{arena}&a."
   all-full: "&cLo sentimos, todas las arenas del servidor están ocupadas! Inténtalo de nuevo más tarde!"
-  location-issue-challenger: "&cThere seems to be a problem with the &achallenger &clocation for arena &a{arena}&c. Please inform your server administrator."
-  location-issue-defender: "&cThere seems to be a problem with the &adefender &clocation for arena &a{arena}&c. Please inform your server administrator."
+  location-issue-challenger: "&cParece que hay un problema con la ubicación del &aretador &cpara la arena &a{arena}&c. Por favor, informa al administrador de tu servidor."
+  location-issue-defender: "&cParece que hay un problema con la ubicación del &adefensor &cpara la arena &a{arena}&c. Por favor, informa al administrador de tu servidor."
 war:
   no-defenders: "&cEl equipo que has desafiado no tiene suficientes jugadores para aceptarla."
   challenge-sent: "&aUn reto de guerra ha sido enviada a &b{guild}&a! Tendrán &b{amount} &asegundos para aceptarla!"
