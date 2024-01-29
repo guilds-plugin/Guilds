@@ -6,7 +6,7 @@ import java.net.URL
 
 plugins {
     id("java")
-    id("org.jetbrains.kotlin.jvm") version "1.9.20"
+    id("org.jetbrains.kotlin.jvm") version "1.9.22"
     id("net.kyori.indra") version "3.1.3"
     id("net.kyori.indra.publishing") version "3.1.3"
     id("net.kyori.indra.license-header") version "3.1.3"
@@ -14,7 +14,7 @@ plugins {
     id("io.github.slimjar") version "1.3.0"
     id("xyz.jpenilla.run-paper") version "2.2.0"
     id("com.github.ben-manes.versions") version "0.48.0"
-    id("org.jetbrains.dokka") version "1.9.0"
+    id("org.jetbrains.dokka") version "1.9.10"
 }
 
 group = "me.glaremasters"
@@ -119,7 +119,7 @@ tasks {
     }
 
     runServer {
-        minecraftVersion("1.20")
+        minecraftVersion("1.20.4")
     }
 
     license {
