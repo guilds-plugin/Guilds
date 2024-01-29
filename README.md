@@ -31,6 +31,11 @@ If you'd like to support our work and buy us a coffee, you could join our [Patre
 * Are you a person who speaks more than one language? Check out our translations page [here](https://crowdin.com/project/guilds) and see if you can help with your language!
 * Are you a person who also likes to program? If so, you could look through the open [issues](https://github.com/guilds-plugin/Guilds/issues) and see if there's anything you'd ike to PR into the project.
 
+### Community Made Addons
+___
+
+* [GuildClaimAddons](https://github.com/Nerumir/GuildClaimsAddon) - An alternative addon for the claiming system in the plugin
+
 ## Special Thanks
 ![YourKit](https://www.yourkit.com/images/yklogo.png)
 
