@@ -24,6 +24,7 @@
 package me.glaremasters.guilds.commands.admin.manage
 
 import co.aikar.commands.BaseCommand
+import co.aikar.commands.CommandIssuer
 import co.aikar.commands.annotation.CommandAlias
 import co.aikar.commands.annotation.CommandCompletion
 import co.aikar.commands.annotation.CommandPermission
@@ -52,7 +53,7 @@ internal class CommandAdminRename : BaseCommand() {
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
     @Syntax("%guild %new-name")
-    fun rename(player: Player, @Flags("other") @Values("@guilds") guild: Guild, @Single name: String) {
+    fun rename(issuer: CommandIssuer, @Flags("other") @Values("@guilds") guild: Guild, @Single name: String) {
         guild.name = StringUtils.color(name)
         currentCommandIssuer.sendInfo(Messages.RENAME__SUCCESSFUL, "{name}", guild.name)
     }
