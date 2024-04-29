@@ -27,7 +27,7 @@ descriptions:
   admin-vault: "使用管理員指令查看此公會金錢"
   ally-accept: "接受來自另一個公會的盟友邀請"
   ally-add: "添加公會作為盟友"
-  ally-chat: "切換成友邦的訊息"
+  ally-chat: "對盟友發送訊息"
   ally-decline: "拒絕來自另一個公會的盟友邀請"
   ally-list: "列出盟友公會列表"
   ally-remove: "將一個盟友公會移除"
