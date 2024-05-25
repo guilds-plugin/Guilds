@@ -6,15 +6,15 @@ import java.net.URL
 
 plugins {
     id("java")
-    id("org.jetbrains.kotlin.jvm") version "1.9.22"
+    id("org.jetbrains.kotlin.jvm") version "2.0.0"
     id("net.kyori.indra") version "3.1.3"
     id("net.kyori.indra.publishing") version "3.1.3"
     id("net.kyori.indra.license-header") version "3.1.3"
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("io.github.slimjar") version "1.3.0"
-    id("xyz.jpenilla.run-paper") version "2.2.0"
-    id("com.github.ben-manes.versions") version "0.48.0"
-    id("org.jetbrains.dokka") version "1.9.10"
+    id("xyz.jpenilla.run-paper") version "2.3.0"
+    id("com.github.ben-manes.versions") version "0.51.0"
+    id("org.jetbrains.dokka") version "1.9.20"
 }
 
 group = "me.glaremasters"
@@ -58,9 +58,9 @@ dependencies {
     implementation("org.codemc.worldguardwrapper:worldguardwrapper:1.1.9-SNAPSHOT")
     implementation("ch.jalu:configme:1.3.0")
     implementation("com.dumptruckman.minecraft:JsonConfiguration:1.1")
-    implementation("com.github.cryptomorin:XSeries:9.8.1")
+    implementation("com.github.cryptomorin:XSeries:11.0.0-beta")
     implementation("net.kyori:adventure-platform-bukkit:4.3.2")
-    implementation("dev.triumphteam:triumph-gui:3.1.5")
+    implementation("dev.triumphteam:triumph-gui:3.1.7")
     implementation("com.zaxxer:HikariCP:4.0.3")
     implementation("org.jdbi:jdbi3-core:3.8.2")
     implementation("org.jdbi:jdbi3-sqlobject:3.8.2")
@@ -68,7 +68,7 @@ dependencies {
 
     compileOnly("org.spigotmc:spigot-api:1.20.4-R0.1-SNAPSHOT")
     compileOnly("net.milkbowl:vault:1.7")
-    compileOnly("me.clip:placeholderapi:2.11.5")
+    compileOnly("me.clip:placeholderapi:2.11.6")
 
     slim("org.jetbrains.kotlin:kotlin-stdlib")
 }
@@ -119,7 +119,7 @@ tasks {
     }
 
     runServer {
-        minecraftVersion("1.20.4")
+        minecraftVersion("1.20.6")
     }
 
     license {

@@ -24,6 +24,7 @@
 package me.glaremasters.guilds.commands.admin.manage
 
 import co.aikar.commands.BaseCommand
+import co.aikar.commands.CommandIssuer
 import co.aikar.commands.annotation.CommandAlias
 import co.aikar.commands.annotation.CommandCompletion
 import co.aikar.commands.annotation.CommandPermission
@@ -50,7 +51,7 @@ internal class CommandAdminStatus : BaseCommand() {
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
     @Syntax("%guild")
-    fun status(player: Player, @Flags("other") @Values("@guilds") guild: Guild) {
+    fun status(issuer: CommandIssuer, @Flags("other") @Values("@guilds") guild: Guild) {
         guild.toggleStatus()
         currentCommandIssuer.sendInfo(Messages.STATUS__SUCCESSFUL, "{status}", guild.status.name)
     }

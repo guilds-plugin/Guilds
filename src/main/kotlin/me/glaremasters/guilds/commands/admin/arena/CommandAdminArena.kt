@@ -25,6 +25,7 @@ package me.glaremasters.guilds.commands.admin.arena
 
 import co.aikar.commands.ACFBukkitUtil
 import co.aikar.commands.BaseCommand
+import co.aikar.commands.CommandIssuer
 import co.aikar.commands.annotation.CommandAlias
 import co.aikar.commands.annotation.CommandCompletion
 import co.aikar.commands.annotation.CommandPermission
@@ -64,7 +65,7 @@ internal class CommandAdminArena : BaseCommand() {
     @CommandPermission(Constants.ADMIN_PERM)
     @Description("{@@descriptions.arena-create}")
     @Syntax("%name")
-    fun create(player: Player, name: String) {
+    fun create(issuer: CommandIssuer, name: String) {
         val arena = Arena(UUID.randomUUID(), name, null, null, false)
         arenaHandler.addArena(arena)
         currentCommandIssuer.sendInfo(Messages.ARENA__CREATED, "{arena}", name)
@@ -85,7 +86,7 @@ internal class CommandAdminArena : BaseCommand() {
     @Description("{@@descriptions.arena-delete}")
     @CommandCompletion("@arenas")
     @Syntax("%name")
-    fun delete(player: Player, @Values("@arenas") arena: Arena) {
+    fun delete(issuer: CommandIssuer, @Values("@arenas") arena: Arena) {
         val name = arena.name
         arenaHandler.removeArena(arena)
         currentCommandIssuer.sendInfo(Messages.ARENA__DELETED, "{arena}", name)
@@ -94,7 +95,7 @@ internal class CommandAdminArena : BaseCommand() {
     @Subcommand("arena list")
     @CommandPermission(Constants.ADMIN_PERM)
     @Description("{@@descriptions.arena-list}")
-    fun list(player: Player) {
+    fun list(issuer: CommandIssuer) {
         val arenas = arenaHandler.getArenas()
 
         if (arenas.isEmpty()) {
