@@ -11,7 +11,7 @@ plugins {
     id("net.kyori.indra.publishing") version "3.1.3"
     id("net.kyori.indra.license-header") version "3.1.3"
     id("com.github.johnrengelman.shadow") version "8.1.1"
-//    id("io.github.slimjar") version "1.3.0"
+    id("io.github.slimjar") version "1.3.0"
     id("xyz.jpenilla.run-paper") version "2.3.0"
     id("com.github.ben-manes.versions") version "0.51.0"
     id("org.jetbrains.dokka") version "1.9.20"
@@ -70,7 +70,7 @@ dependencies {
     compileOnly("net.milkbowl:vault:1.7")
     compileOnly("me.clip:placeholderapi:2.11.6")
 
-//    slim("org.jetbrains.kotlin:kotlin-stdlib")
+    slim("org.jetbrains.kotlin:kotlin-stdlib")
 }
 
 tasks.withType<DokkaTask>().configureEach {
@@ -92,7 +92,7 @@ tasks.withType<DokkaTask>().configureEach {
 tasks {
     build {
         dependsOn(named("shadowJar"))
-//        dependsOn(named("slimJar"))
+        dependsOn(named("slimJar"))
     }
 
     indra {
@@ -149,29 +149,29 @@ tasks {
         destinationDirectory.set(rootProject.tasks.shadowJar.get().destinationDirectory.get())
     }
 
-//    slimJar {
-//        fun relocates(vararg dependencies: String) {
-//            dependencies.forEach {
-//                val split = it.split(".")
-//                val name = split.last()
-//                relocate(it, "me.glaremasters.guilds.libs.$name")
-//            }
-//        }
-//
-//        relocates(
-//            "org.bstats",
-//            "co.aikar.commands",
-//            "co.aikar.locales",
-//            "co.aikar.taskchain",
-//            "ch.jalu.configme",
-//            "com.zaxxer.hikari",
-//            "org.jdbi",
-//            "org.mariadb.jdbc",
-//            "dev.triumphteam.gui",
-//            "net.kyori",
-//            "kotlin"
-//        )
-//    }
+    slimJar {
+        fun relocates(vararg dependencies: String) {
+            dependencies.forEach {
+                val split = it.split(".")
+                val name = split.last()
+                relocate(it, "me.glaremasters.guilds.libs.$name")
+            }
+        }
+
+        relocates(
+            "org.bstats",
+            "co.aikar.commands",
+            "co.aikar.locales",
+            "co.aikar.taskchain",
+            "ch.jalu.configme",
+            "com.zaxxer.hikari",
+            "org.jdbi",
+            "org.mariadb.jdbc",
+            "dev.triumphteam.gui",
+            "net.kyori",
+            "kotlin"
+        )
+    }
 
     processResources {
         expand("version" to rootProject.version)
