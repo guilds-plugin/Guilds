@@ -23,8 +23,8 @@
  */
 package me.glaremasters.guilds.utils;
 
-import com.cryptomorin.xseries.SkullUtils;
 import com.cryptomorin.xseries.XMaterial;
+import com.cryptomorin.xseries.XSkull;
 import me.glaremasters.guilds.guild.GuildMember;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
@@ -73,7 +73,7 @@ public class GuiUtils {
      * @return the skull item
      */
     public static ItemStack createSkullItem(final GuildMember member, final String name, final List<String> lore) {
-        final ItemStack skull = SkullUtils.getSkull(member.getUuid());
+        final ItemStack skull = XSkull.getSkull(member.getUuid());
         final ItemMeta meta = skull.getItemMeta();
 
         meta.setDisplayName(StringUtils.color(name));
