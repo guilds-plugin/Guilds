@@ -24,6 +24,7 @@
 package me.glaremasters.guilds.listeners;
 
 import ch.jalu.configme.SettingsManager;
+import com.cryptomorin.xseries.XPotion;
 import me.glaremasters.guilds.challenges.ChallengeHandler;
 import me.glaremasters.guilds.configuration.sections.GuildSettings;
 import me.glaremasters.guilds.guild.Guild;
@@ -43,11 +44,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created by GlareMasters
@@ -59,7 +55,6 @@ public class EntityListener implements Listener {
     private final GuildHandler guildHandler;
     private final SettingsManager settingsManager;
     private final ChallengeHandler challengeHandler;
-    private final Set<PotionEffectType> bad = new HashSet<>(Arrays.asList(PotionEffectType.BLINDNESS, PotionEffectType.WITHER, PotionEffectType.SLOW_DIGGING, PotionEffectType.WEAKNESS, PotionEffectType.SLOW, PotionEffectType.POISON));
 
     public EntityListener(GuildHandler guildHandler, SettingsManager settingsManager, ChallengeHandler challengeHandler) {
         this.guildHandler = guildHandler;
@@ -262,7 +257,7 @@ public class EntityListener implements Listener {
      */
     private boolean isHarmfulPotion(final ThrownPotion potion) {
         for (final PotionEffect effect : potion.getEffects()) {
-            if (bad.contains(effect.getType())) {
+            if (XPotion.DEBUFFS.contains(XPotion.matchXPotion(effect.getType()))) {
                 return true;
             }
         }

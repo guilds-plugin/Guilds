@@ -73,15 +73,20 @@ public class GuiUtils {
      * @return the skull item
      */
     public static ItemStack createSkullItem(final GuildMember member, final String name, final List<String> lore) {
-        final ItemStack skull = XSkull.getSkull(member.getUuid());
-        final ItemMeta meta = skull.getItemMeta();
+        final XSkull.SkullInstruction<ItemStack> skullInstruction = XSkull.create();
+        final XSkull.SkullAction<ItemStack> skullAction = skullInstruction.profile(member.getUuid());
+
+        final ItemStack itemStack = skullAction.apply();
+        final ItemMeta meta = itemStack.getItemMeta();
 
         meta.setDisplayName(StringUtils.color(name));
         if (!lore.isEmpty()) {
             meta.setLore(lore.stream().map(StringUtils::color).collect(Collectors.toList()));
         }
+
         meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-        skull.setItemMeta(meta);
-        return skull;
+        itemStack.setItemMeta(meta);
+
+        return itemStack;
     }
 }

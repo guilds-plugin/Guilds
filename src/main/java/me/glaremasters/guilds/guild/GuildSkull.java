@@ -23,12 +23,11 @@
  */
 package me.glaremasters.guilds.guild;
 
-import com.cryptomorin.xseries.XMaterial;
 import com.cryptomorin.xseries.XSkull;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.SkullMeta;
 
+import java.util.Base64;
 import java.util.Objects;
 
 /**
@@ -44,7 +43,10 @@ public class GuildSkull {
      * @param player the player whose head will be used for the guild skull
      */
     public GuildSkull(Player player) {
-        itemStack = XSkull.getSkull(player.getUniqueId());
+        final XSkull.SkullInstruction<ItemStack> skullInstruction = XSkull.create();
+        final XSkull.SkullAction<ItemStack> skullAction = skullInstruction.profile(player);
+
+        itemStack = skullAction.apply();
         serialized = XSkull.getSkinValue(Objects.requireNonNull(itemStack.getItemMeta()));
     }
 
@@ -54,8 +56,10 @@ public class GuildSkull {
      * @param texture the texture string, which should be a Minecraft resource location string
      */
     public GuildSkull(String texture) {
-        serialized = XSkull.encodeTexturesURL(texture);
-        itemStack = createSkull();
+        final String encoded = Base64.getEncoder().encodeToString(texture.getBytes());
+        this.serialized = encoded;
+
+        this.itemStack = createSkull();
     }
 
     /**
@@ -64,11 +68,10 @@ public class GuildSkull {
      * @return the guild skull
      */
     public ItemStack createSkull() {
-        final ItemStack head = XMaterial.PLAYER_HEAD.parseItem();
-        SkullMeta meta = (SkullMeta) head.getItemMeta();
-        meta = XSkull.applySkin(meta, serialized);
-        head.setItemMeta(meta);
-        return head;
+        final XSkull.SkullInstruction<ItemStack> skullInstruction = XSkull.create();
+        final XSkull.SkullAction<ItemStack> skullAction = skullInstruction.profile(serialized);
+
+        return skullAction.apply();
     }
 
     /**
