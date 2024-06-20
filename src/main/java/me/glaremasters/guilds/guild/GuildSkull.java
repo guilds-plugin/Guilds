@@ -23,7 +23,9 @@
  */
 package me.glaremasters.guilds.guild;
 
-import com.cryptomorin.xseries.XSkull;
+import com.cryptomorin.xseries.profiles.builder.XSkull;
+import com.cryptomorin.xseries.profiles.objects.ProfileInputType;
+import com.cryptomorin.xseries.profiles.objects.Profileable;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -43,11 +45,10 @@ public class GuildSkull {
      * @param player the player whose head will be used for the guild skull
      */
     public GuildSkull(Player player) {
-        final XSkull.SkullInstruction<ItemStack> skullInstruction = XSkull.create();
-        final XSkull.SkullAction<ItemStack> skullAction = skullInstruction.profile(player);
+        final Profileable playerProfile = Profileable.of(player);
 
-        itemStack = skullAction.apply();
-        serialized = XSkull.getSkinValue(Objects.requireNonNull(itemStack.getItemMeta()));
+        itemStack = XSkull.createItem().profile(playerProfile).apply();
+        serialized = XSkull.of(itemStack.getItemMeta()).getProfileString();
     }
 
     /**
@@ -56,8 +57,13 @@ public class GuildSkull {
      * @param texture the texture string, which should be a Minecraft resource location string
      */
     public GuildSkull(String texture) {
-        final String encoded = Base64.getEncoder().encodeToString(texture.getBytes());
-        this.serialized = encoded;
+        final ProfileInputType type = ProfileInputType.get(texture);
+
+        if (type == null) {
+            this.serialized = Base64.getEncoder().encodeToString(Objects.requireNonNull(texture).getBytes());
+        } else {
+            this.serialized = texture;
+        }
 
         this.itemStack = createSkull();
     }
@@ -68,10 +74,15 @@ public class GuildSkull {
      * @return the guild skull
      */
     public ItemStack createSkull() {
-        final XSkull.SkullInstruction<ItemStack> skullInstruction = XSkull.create();
-        final XSkull.SkullAction<ItemStack> skullAction = skullInstruction.profile(serialized);
+        final ProfileInputType type = ProfileInputType.get(serialized);
 
-        return skullAction.apply();
+        if (type == null) {
+            return XSkull.createItem().apply();
+        }
+
+        final Profileable playerProfile = Profileable.of(type, serialized);
+
+        return XSkull.createItem().profile(playerProfile).apply();
     }
 
     /**

@@ -24,7 +24,8 @@
 package me.glaremasters.guilds.utils;
 
 import com.cryptomorin.xseries.XMaterial;
-import com.cryptomorin.xseries.XSkull;
+import com.cryptomorin.xseries.profiles.builder.XSkull;
+import com.cryptomorin.xseries.profiles.objects.Profileable;
 import me.glaremasters.guilds.guild.GuildMember;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
@@ -73,10 +74,8 @@ public class GuiUtils {
      * @return the skull item
      */
     public static ItemStack createSkullItem(final GuildMember member, final String name, final List<String> lore) {
-        final XSkull.SkullInstruction<ItemStack> skullInstruction = XSkull.create();
-        final XSkull.SkullAction<ItemStack> skullAction = skullInstruction.profile(member.getUuid());
-
-        final ItemStack itemStack = skullAction.apply();
+        final Profileable playerProfile = Profileable.of(member.getUuid());
+        final ItemStack itemStack = XSkull.createItem().profile(playerProfile).apply();
         final ItemMeta meta = itemStack.getItemMeta();
 
         meta.setDisplayName(StringUtils.color(name));

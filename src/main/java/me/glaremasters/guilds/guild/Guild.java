@@ -593,7 +593,7 @@ public class Guild {
 
     public void updateGuildSkull(Player player, SettingsManager settingsManager) {
         Guilds.newChain().async(() -> {
-            try{
+            try {
                 guildSkull = new GuildSkull(player);
             } catch (Exception ex) {
                 guildSkull = new GuildSkull(settingsManager.getProperty(GuildListSettings.GUILD_LIST_HEAD_DEFAULT_URL));
