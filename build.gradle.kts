@@ -58,7 +58,7 @@ dependencies {
     implementation("org.codemc.worldguardwrapper:worldguardwrapper:1.1.9-SNAPSHOT")
     implementation("ch.jalu:configme:1.3.0")
     implementation("com.dumptruckman.minecraft:JsonConfiguration:1.1")
-    implementation("com.github.cryptomorin:XSeries:11.0.0")
+    implementation("com.github.cryptomorin:XSeries:11.1.0")
     implementation("net.kyori:adventure-platform-bukkit:4.3.3")
     implementation("dev.triumphteam:triumph-gui:3.1.7")
     implementation("com.zaxxer:HikariCP:4.0.3")
