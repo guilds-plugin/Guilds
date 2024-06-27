@@ -57,7 +57,7 @@ public class GuildSkull {
      * @param texture the texture string, which should be a Minecraft resource location string
      */
     public GuildSkull(String texture) {
-        final ProfileInputType type = ProfileInputType.get(texture);
+        final ProfileInputType type = ProfileInputType.typeOf(texture);
 
         if (type == null) {
             this.serialized = Base64.getEncoder().encodeToString(Objects.requireNonNull(texture).getBytes());
@@ -74,7 +74,7 @@ public class GuildSkull {
      * @return the guild skull
      */
     public ItemStack createSkull() {
-        final ProfileInputType type = ProfileInputType.get(serialized);
+        final ProfileInputType type = ProfileInputType.typeOf(serialized);
 
         if (type == null) {
             return XSkull.createItem().apply();
