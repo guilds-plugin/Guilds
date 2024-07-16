@@ -77,7 +77,10 @@ public class GuildSkull {
         final ProfileInputType type = ProfileInputType.typeOf(serialized);
 
         if (type == null) {
-            return XSkull.createItem().apply();
+            final ProfileInputType backupType = ProfileInputType.typeOf("c10591e6909e6a281b371836e462d67a2c78fa0952e910f32b41a26c48c1757c");
+            final Profileable backupProfile = Profileable.of(backupType, serialized);
+
+            return XSkull.createItem().profile(backupProfile).apply();
         }
 
         final Profileable playerProfile = Profileable.of(type, serialized);
