@@ -62,7 +62,7 @@ dependencies {
     implementation("net.kyori:adventure-platform-bukkit:4.3.3")
     implementation("dev.triumphteam:triumph-gui:3.1.10")
     implementation("com.zaxxer:HikariCP:4.0.3")
-    implementation("org.jdbi:jdbi3-core:3.8.2")
+    implementation("org.jdbi:jdbi3-core:3.45.3")
     implementation("org.jdbi:jdbi3-sqlobject:3.8.2")
     implementation("org.mariadb.jdbc:mariadb-java-client:2.7.2")
 
