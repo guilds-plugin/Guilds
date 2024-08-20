@@ -63,7 +63,7 @@ dependencies {
     implementation("dev.triumphteam:triumph-gui:3.1.10")
     implementation("com.zaxxer:HikariCP:4.0.3")
     implementation("org.jdbi:jdbi3-core:3.8.2")
-    implementation("org.jdbi:jdbi3-sqlobject:3.8.2")
+    implementation("org.jdbi:jdbi3-sqlobject:3.45.4")
     implementation("org.mariadb.jdbc:mariadb-java-client:2.7.2")
 
     compileOnly("org.spigotmc:spigot-api:1.21-R0.1-SNAPSHOT")
