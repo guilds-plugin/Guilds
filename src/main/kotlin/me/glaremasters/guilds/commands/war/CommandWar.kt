@@ -134,11 +134,11 @@ internal class CommandWar : BaseCommand() {
         }
 
         if (arena.challengerLoc == null) {
-            throw ExpectationNotMet(Messages.ARENA__LOCATION__ISSUE__CHALLENGER, "{arena}", arena.name)
+            throw ExpectationNotMet(Messages.ARENA__LOCATION_ISSUE_CHALLENGER, "{arena}", arena.name)
         }
 
         if (arena.defenderLoc == null) {
-            throw ExpectationNotMet(Messages.ARENA__LOCATION__ISSUE__DEFENDER, "{arena}", arena.name)
+            throw ExpectationNotMet(Messages.ARENA__LOCATION_ISSUE_DEFENDER, "{arena}", arena.name)
         }
 
         val event = GuildWarChallengeEvent(player, guild, targetGuild)
