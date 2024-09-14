@@ -64,7 +64,7 @@ dependencies {
     implementation("com.zaxxer:HikariCP:4.0.3")
     implementation("org.jdbi:jdbi3-core:3.8.2")
     implementation("org.jdbi:jdbi3-sqlobject:3.8.2")
-    implementation("org.mariadb.jdbc:mariadb-java-client:2.7.2")
+    implementation("org.mariadb.jdbc:mariadb-java-client:3.4.1")
 
     compileOnly("org.spigotmc:spigot-api:1.21-R0.1-SNAPSHOT")
     compileOnly("net.milkbowl:vault:1.7")
