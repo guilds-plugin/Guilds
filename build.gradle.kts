@@ -6,7 +6,7 @@ import java.net.URL
 
 plugins {
     id("java")
-    id("org.jetbrains.kotlin.jvm") version "2.0.0"
+    id("org.jetbrains.kotlin.jvm") version "2.0.20"
     id("net.kyori.indra") version "3.1.3"
     id("net.kyori.indra.publishing") version "3.1.3"
     id("net.kyori.indra.license-header") version "3.1.3"
@@ -58,15 +58,15 @@ dependencies {
     implementation("org.codemc.worldguardwrapper:worldguardwrapper:1.1.9-SNAPSHOT")
     implementation("ch.jalu:configme:1.3.0")
     implementation("com.dumptruckman.minecraft:JsonConfiguration:1.1")
-    implementation("com.github.cryptomorin:XSeries:11.2.0.1")
-    implementation("net.kyori:adventure-platform-bukkit:4.3.3")
+    implementation("com.github.cryptomorin:XSeries:11.2.1")
+    implementation("net.kyori:adventure-platform-bukkit:4.3.4")
     implementation("dev.triumphteam:triumph-gui:3.1.10")
     implementation("com.zaxxer:HikariCP:4.0.3")
     implementation("org.jdbi:jdbi3-core:3.8.2")
     implementation("org.jdbi:jdbi3-sqlobject:3.8.2")
     implementation("org.mariadb.jdbc:mariadb-java-client:2.7.2")
 
-    compileOnly("org.spigotmc:spigot-api:1.21-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot-api:1.21.1-R0.1-SNAPSHOT")
     compileOnly("net.milkbowl:vault:1.7")
     compileOnly("me.clip:placeholderapi:2.11.6")
     compileOnly("com.mojang:authlib:1.5.21")
@@ -120,7 +120,7 @@ tasks {
     }
 
     runServer {
-        minecraftVersion("1.21")
+        minecraftVersion("1.21.1")
     }
 
     license {
