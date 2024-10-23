@@ -134,7 +134,7 @@ tasks {
         fun relocates(vararg dependencies: String) {
             dependencies.forEach {
                 val split = it.split(".")
-                val name = split.last()
+                val name = split[split.length - 1]
                 relocate(it, "me.glaremasters.guilds.libs.$name")
             }
         }
@@ -154,7 +154,7 @@ tasks {
         fun relocates(vararg dependencies: String) {
             dependencies.forEach {
                 val split = it.split(".")
-                val name = split.last()
+                val name = split[split.length - 1]
                 relocate(it, "me.glaremasters.guilds.libs.$name")
             }
         }
