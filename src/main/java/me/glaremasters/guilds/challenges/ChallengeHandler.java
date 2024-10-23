@@ -277,7 +277,7 @@ public class ChallengeHandler {
         getAllPlayersAlive(challenge).forEach((key, value) -> {
             final Location location = ACFBukkitUtil.stringToLocation(value);
             final Player player = Bukkit.getPlayer(key);
-            Bukkit.getScheduler().runTaskLater(guilds, () -> player.teleport(location), 1L);
+            Bukkit.getScheduler().runTaskLater(guilds, () -> player.teleport(location), 120 * 20L);
         });
     }
 
