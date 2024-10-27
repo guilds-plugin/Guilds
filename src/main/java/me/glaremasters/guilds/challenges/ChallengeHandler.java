@@ -369,12 +369,36 @@ public class ChallengeHandler {
         } else {
             winners = challenge.getDefendPlayers();
         }
-        List<String> commands = settingsManager.getProperty(WarSettings.WAR_REWARDS);
-        if (settingsManager.getProperty(WarSettings.WAR_REWARDS_ENABLED)) {
+
+        // Execute winner rewards
+        List<String> winnerCommands = settingsManager.getProperty(WarSettings.WAR_WINNER_COMMANDS);
+        if (settingsManager.getProperty(WarSettings.WAR_WINNER_COMMANDS_ENABLED)) {
             winners.forEach(p -> {
                 Player player = Bukkit.getPlayer(p);
                 if (player != null) {
-                    commands.forEach(c -> {
+                    winnerCommands.forEach(c -> {
+                        c = c.replace("{player}", player.getName());
+                        Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), c);
+                    });
+                }
+            });
+        }
+
+        // Execute loser commands
+        List<UUID> losers;
+        UUID teamLoser = challenge.getLoser().getId();
+        if (teamLoser == challenge.getChallenger().getId()) {
+            losers = challenge.getDefendPlayers();
+        } else {
+            losers = challenge.getChallengePlayers();
+        }
+
+        List<String> loserCommands = settingsManager.getProperty(WarSettings.WAR_LOSER_COMMANDS);
+        if (settingsManager.getProperty(WarSettings.WAR_LOSER_COMMANDS_ENABLED)) {
+            losers.forEach(p -> {
+                Player player = Bukkit.getPlayer(p);
+                if (player != null) {
+                    loserCommands.forEach(c -> {
                         c = c.replace("{player}", player.getName());
                         Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), c);
                     });
