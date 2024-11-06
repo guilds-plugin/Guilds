@@ -105,7 +105,7 @@ public class WarSettings implements SettingsHolder {
     public static final Property<Boolean> WAR_LOSER_COMMANDS_ENABLED =
             newProperty("war.loserCommands.enabled", false);
 
-    @Comment({"What rewards (commands) would you like to run for the winning Guild?",
+    @Comment({"What rewards (commands) would you like to run for the losing Guild?",
             "Current supports {player}."})
     public static final Property<List<String>> WAR_LOSER_COMMANDS =
             newListProperty("war.loserCommands.commands", "");
