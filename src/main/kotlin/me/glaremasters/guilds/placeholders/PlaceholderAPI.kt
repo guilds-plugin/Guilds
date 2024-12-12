@@ -166,6 +166,18 @@ class PlaceholderAPI(private val guildHandler: GuildHandler) : PlaceholderExpans
         }
 
         val guild = api.getGuild(player) ?: return ""
+
+        if (arg.startsWith("member_")) {
+            val updated = try {
+                arg.replace("member_", "").toInt()
+            } catch (ex: NumberFormatException) {
+                return ""
+            }
+
+            val member = guild.members.toList().getOrNull(updated - 1) ?: return ""
+            return member.name ?: ""
+        }
+
         return when (arg.toLowerCase()) {
             "id" -> guild.id.toString()
             "name" -> guild.name
