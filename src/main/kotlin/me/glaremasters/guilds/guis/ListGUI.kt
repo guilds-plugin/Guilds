@@ -38,6 +38,9 @@ import me.glaremasters.guilds.utils.GuiUtils
 import me.glaremasters.guilds.utils.StringUtils
 import org.bukkit.entity.Player
 import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.Comparator
+import kotlin.collections.ArrayList
 
 class ListGUI(private val guilds: Guilds, private val settingsManager: SettingsManager, private val guildHandler: GuildHandler) {
     private val items: MutableList<GuiItem>
@@ -75,7 +78,7 @@ class ListGUI(private val guilds: Guilds, private val settingsManager: SettingsM
     private fun createListItems(gui: PaginatedGui, player: Player) {
         val guilds = guildHandler.guilds.values.toMutableList()
 
-        when (settingsManager.getProperty(GuildListSettings.GUILD_LIST_SORT).toUpperCase()) {
+        when (settingsManager.getProperty(GuildListSettings.GUILD_LIST_SORT).uppercase(Locale.getDefault())) {
             "TIER" -> guilds.sortWith(Comparator.comparingInt { g: Guild -> g.tier.level }.reversed())
             "MEMBERS" -> guilds.sortWith(Comparator.comparingInt { g: Guild -> g.members.size }.reversed())
             "BALANCE" -> guilds.sortWith(Comparator.comparingDouble { obj: Guild -> obj.balance }.reversed())

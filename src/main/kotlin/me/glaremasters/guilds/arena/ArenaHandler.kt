@@ -42,7 +42,7 @@ class ArenaHandler(private val guilds: Guilds) {
      * @param arena The [Arena] to be added.
      */
     fun addArena(arena: Arena) {
-        arenas[arena.name.toLowerCase()] = arena
+        arenas[arena.name.lowercase(Locale.getDefault())] = arena
     }
 
     /**
@@ -70,7 +70,7 @@ class ArenaHandler(private val guilds: Guilds) {
      * @return An [Optional] object containing the [Arena] object.
      */
     fun getArena(name: String): Optional<Arena> {
-        return Optional.ofNullable(arenas[name.toLowerCase()])
+        return Optional.ofNullable(arenas[name.lowercase(Locale.getDefault())])
     }
 
     /**

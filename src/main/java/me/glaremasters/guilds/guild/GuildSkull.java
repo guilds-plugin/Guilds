@@ -48,7 +48,7 @@ public class GuildSkull {
         final Profileable playerProfile = Profileable.of(player);
 
         itemStack = XSkull.createItem().profile(playerProfile).apply();
-        serialized = XSkull.of(itemStack.getItemMeta()).getProfileString();
+        serialized = XSkull.of(itemStack.getItemMeta()).getProfileValue();
     }
 
     /**

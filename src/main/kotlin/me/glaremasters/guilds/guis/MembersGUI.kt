@@ -89,7 +89,7 @@ class MembersGUI(private val guilds: Guilds, private val settingsManager: Settin
     private fun addItems(gui: PaginatedGui, guild: Guild, player: Player) {
         val members = guild.members
 
-        when (settingsManager.getProperty(GuildInfoMemberSettings.SORT_ORDER).toUpperCase()) {
+        when (settingsManager.getProperty(GuildInfoMemberSettings.SORT_ORDER).uppercase(Locale.getDefault())) {
             "ROLE" -> members.sortWith(Comparator.comparingInt { g: GuildMember -> g.role.level })
             "NAME" -> members.sortWith(compareBy(GuildMember::name))
             "AGE" -> members.sortWith(Comparator.comparingLong(GuildMember::joinDate))

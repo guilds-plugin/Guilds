@@ -29,6 +29,7 @@ import me.glaremasters.guilds.exte.rounded
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.utils.EconomyUtils
 import org.bukkit.entity.Player
+import java.util.*
 
 class PlaceholderAPI(private val guildHandler: GuildHandler) : PlaceholderExpansion() {
 
@@ -55,7 +56,7 @@ class PlaceholderAPI(private val guildHandler: GuildHandler) : PlaceholderExpans
         val api = Guilds.getApi() ?: return ""
 
         // Check formatted here because this needs to return before we check the guild
-        if (arg.toLowerCase() == "formatted") {
+        if (arg.lowercase(Locale.getDefault()) == "formatted") {
             return guildHandler.getFormattedPlaceholder(player)
         }
 
@@ -178,7 +179,7 @@ class PlaceholderAPI(private val guildHandler: GuildHandler) : PlaceholderExpans
             return member.name ?: ""
         }
 
-        return when (arg.toLowerCase()) {
+        return when (arg.lowercase(Locale.getDefault())) {
             "id" -> guild.id.toString()
             "name" -> guild.name
             "master" -> guild.guildMaster.asOfflinePlayer.name.toString()
