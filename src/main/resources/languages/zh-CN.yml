@@ -50,7 +50,7 @@ descriptions:
   code-info: "查看邀请码的信息"
   code-list: "列出公会中的所有邀请码"
   code-redeem: "使用邀请码加入公会"
-  confirm: "确认"
+  confirm: "确认一项操作。"
   console-backup: "备份此插件的数据"
   console-migrate: "迁移存储数据"
   console-unclaim-all: "以管理员身份取消全服所有公会的领地"
