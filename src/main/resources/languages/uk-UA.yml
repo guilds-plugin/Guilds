@@ -44,7 +44,7 @@ descriptions:
   cancel: "Cancel an action"
   chat: "Toggles guild chat"
   check: "Check pending guild invites"
-  claim: "Claim land for your Guild"
+  claim: "Вимога землі для вашої Гільдії"
   code-create: "Create an invite code for your guild"
   code-delete: "Delete an invite code from the guild"
   code-info: "Get the information about an invite code"
