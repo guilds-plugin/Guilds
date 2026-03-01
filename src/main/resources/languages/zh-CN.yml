@@ -1,6 +1,6 @@
 ---
 descriptions:
-  accept: "Accept a guild invite"
+  accept: "接受公会邀请"
   admin-addplayer: "以管理员身份强制从公会中删除玩家"
   admin-bank-balance: "以管理员身份查看公会财产。"
   admin-bank-deposit: "以管理员身份为公会银行增加钱款。"
