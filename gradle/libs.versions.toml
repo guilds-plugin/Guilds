@@ -9,9 +9,7 @@ spotless = "8.5.1"
 jsr305 = "3.0.2"
 
 minecraft-spigot-api = "26.1.2-R0.1-SNAPSHOT"
-minecraft-run = "26.1.2"
 
-slimjar = "1.2.7"
 acf = "0.5.1-SNAPSHOT"
 bstats = "3.2.1"
 taskchain = "3.7.2"
