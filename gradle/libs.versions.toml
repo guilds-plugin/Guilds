@@ -18,7 +18,7 @@ taskchain = "3.7.2"
 worldguardwrapper = "1.1.9-SNAPSHOT"
 configme = "1.4.1"
 jsonconfiguration = "1.1"
-xseries = "12.1.0"
+xseries = "13.7.0"
 adventure-platform-bukkit = "4.4.1"
 # 3.1.13 changes GUI constructor compatibility; current GUI classes still extend old constructors.
 triumph-gui = "3.1.11"
