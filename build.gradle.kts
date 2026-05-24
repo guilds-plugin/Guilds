@@ -1,4 +1,7 @@
+import com.diffplug.gradle.spotless.FormatExtension
+import com.diffplug.gradle.spotless.SpotlessExtension
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import net.kyori.indra.licenser.spotless.IndraSpotlessLicenserExtension
 import org.gradle.language.jvm.tasks.ProcessResources
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
@@ -8,8 +11,8 @@ plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.indra)
     alias(libs.plugins.indra.publishing)
-    // TODO: Reintroduce license header enforcement with a Gradle 9-compatible plugin.
-    // alias(libs.plugins.indra.license.header)
+    alias(libs.plugins.spotless)
+    alias(libs.plugins.indra.licenser.spotless)
     alias(libs.plugins.shadow)
     alias(libs.plugins.versions)
     alias(libs.plugins.dokka)
@@ -63,7 +66,67 @@ dependencies {
     compileOnly(libs.spigot.api)
     compileOnly(libs.vault)
     compileOnly(libs.placeholderapi)
-    compileOnly(libs.authlib)
+    compileOnly(libs.jsr305)
+    compileOnly(libs.authlib) {
+        isTransitive = false
+    }
+}
+
+extensions.configure<SpotlessExtension> {
+    fun FormatExtension.standardOptions() {
+        endWithNewline()
+        trimTrailingWhitespace()
+        leadingTabsToSpaces(4)
+        toggleOffOn("@formatter:off", "@formatter:on")
+    }
+
+    java {
+        target("src/**/*.java")
+
+        targetExclude(
+            "src/**/me/glaremasters/guilds/scanner/ZISScanner.java",
+            "src/**/me/glaremasters/guilds/updater/UpdateChecker.java",
+            "src/**/me/glaremasters/guilds/utils/PremiumFun.java"
+        )
+
+        standardOptions()
+        formatAnnotations()
+        removeUnusedImports()
+    }
+
+    kotlin {
+        target("src/**/*.kt")
+
+        standardOptions()
+    }
+
+    kotlinGradle {
+        target("*.gradle.kts", "gradle/**/*.gradle.kts")
+
+        standardOptions()
+    }
+}
+
+extensions.configure<IndraSpotlessLicenserExtension> {
+    /*
+     * Create HEADER.txt at the project root.
+     *
+     * Example:
+     *
+     * /*
+     *  * This file is part of Guilds.
+     *  *
+     *  * Guilds is free software: you can redistribute it and/or modify
+     *  * it under the terms of the MIT License.
+     *  *
+     *  * Copyright (c) GlareMasters
+     *  */
+     */
+    licenseHeaderFile(rootProject.file("HEADER.txt"))
+
+    property("name", "Guilds")
+    property("organization", "GlareMasters")
+    property("url", "https://github.com/guilds-plugin/guilds")
 }
 
 tasks.withType<KotlinCompile>().configureEach {
@@ -98,7 +161,7 @@ tasks.named<ProcessResources>("processResources") {
      * - capture only this map in the CopySpec action
      */
     val resourceTokens = mapOf(
-        "version" to version.toString()
+        "version" to pluginVersion
     )
 
     inputs.properties(resourceTokens)
@@ -259,9 +322,12 @@ tasks.named("build") {
     dependsOn(tasks.named("shadowJar"))
 }
 
+tasks.named("check") {
+    dependsOn(tasks.named("spotlessCheck"))
+}
+
 indra {
-    // TODO: Re-enable after replacing legacy license-header enforcement.
-    // mitLicense()
+    mitLicense()
 
     javaVersions {
         target(8)
@@ -273,11 +339,3 @@ indra {
 
     publishAllTo("guilds", "https://repo.glaremasters.me/repository/guilds/")
 }
-
-// TODO: Reintroduce license header enforcement with a Gradle 9-compatible plugin.
-// license {
-//     header.set(resources.text.fromFile(rootProject.file("LICENSE")))
-//     exclude("me/glaremasters/guilds/scanner/ZISScanner.java")
-//     exclude("me/glaremasters/guilds/updater/UpdateChecker.java")
-//     exclude("me/glaremasters/guilds/utils/PremiumFun.java")
-// }
