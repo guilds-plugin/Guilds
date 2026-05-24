@@ -342,22 +342,35 @@ indra {
     publishAllTo("guilds", "https://repo.glaremasters.me/repository/guilds/")
 }
 
-val supportedMinecraftVersions = listOf(
-    "1.16.5",
-    "1.18.2",
-    "1.19.4",
-    "1.20.6",
-    "1.21.1",
-    "1.21.4",
-    "1.21.8"
+val javaToolchains = extensions.getByType<JavaToolchainService>()
+
+data class MinecraftRunTarget(
+    val minecraftVersion: String,
+    val javaVersion: Int,
+    val directoryName: String = minecraftVersion
 )
 
-fun RunServer.configureGuildsRunServer(
-    minecraftVersion: String,
-    directoryName: String
-) {
-    minecraftVersion(minecraftVersion)
-    runDirectory.set(layout.projectDirectory.dir("run/$directoryName"))
+val supportedMinecraftVersions = listOf(
+    MinecraftRunTarget("1.8.8", 8),
+    MinecraftRunTarget("1.16.5", 16),
+    MinecraftRunTarget("1.18.2", 17),
+    MinecraftRunTarget("1.19.4", 17),
+    MinecraftRunTarget("1.20.6", 21),
+    MinecraftRunTarget("1.21.1", 21),
+    MinecraftRunTarget("1.21.4", 21),
+    MinecraftRunTarget("1.21.8", 21),
+    MinecraftRunTarget("26.1.2", 25)
+)
+
+fun RunServer.configureGuildsRunServer(target: MinecraftRunTarget) {
+    minecraftVersion(target.minecraftVersion)
+    runDirectory.set(layout.projectDirectory.dir("run/${target.directoryName}"))
+
+    javaLauncher.set(
+        javaToolchains.launcherFor {
+            languageVersion.set(JavaLanguageVersion.of(target.javaVersion))
+        }
+    )
 
     pluginJars.from(tasks.named<ShadowJar>("shadowJar").flatMap { it.archiveFile })
     dependsOn(tasks.named("shadowJar"))
@@ -368,12 +381,7 @@ fun RunServer.configureGuildsRunServer(
          * Hangar marks this release as an external download, so run-task's
          * Hangar downloader returns 404. Use GitHub Releases instead.
          */
-        github(
-            "EssentialsX",
-            "Essentials",
-            "2.21.2",
-            "EssentialsX-2.21.2.jar"
-        )
+        url("https://ci.ender.zone/job/EssentialsX/lastSuccessfulBuild/artifact/jars/EssentialsX-2.22.0-dev+112-5baf239.jar")
 
         /*
          * LuckPerms:
@@ -406,22 +414,19 @@ fun RunServer.configureGuildsRunServer(
 tasks {
     runServer {
         configureGuildsRunServer(
-            minecraftVersion = supportedMinecraftVersions.last(),
-            directoryName = "latest"
+            supportedMinecraftVersions.last().copy(directoryName = "latest")
         )
     }
 
-    supportedMinecraftVersions.forEach { minecraftVersion ->
-        val taskSuffix = minecraftVersion.replace(".", "_")
+    supportedMinecraftVersions.forEach { target ->
+        val taskSuffix = target.minecraftVersion.replace(".", "_")
 
         register<RunServer>("runServer$taskSuffix") {
             group = "run paper"
-            description = "Runs a Paper test server for Minecraft $minecraftVersion."
+            description =
+                "Runs a Paper test server for Minecraft ${target.minecraftVersion} using Java ${target.javaVersion}."
 
-            configureGuildsRunServer(
-                minecraftVersion = minecraftVersion,
-                directoryName = minecraftVersion
-            )
+            configureGuildsRunServer(target)
         }
     }
 }
