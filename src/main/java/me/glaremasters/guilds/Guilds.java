@@ -27,12 +27,8 @@ import co.aikar.commands.PaperCommandManager;
 import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
-import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import io.github.slimjar.app.builder.ApplicationBuilder;
-import io.github.slimjar.resolver.data.Repository;
-import io.github.slimjar.resolver.mirrors.SimpleMirrorSelector;
 import me.glaremasters.guilds.acf.ACFHandler;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.api.GuildsAPI;
@@ -70,16 +66,9 @@ import org.bstats.charts.SingleLineChart;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bxteam.quark.bukkit.BukkitLibraryManager;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.security.NoSuchAlgorithmException;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 public final class Guilds extends JavaPlugin {
@@ -101,6 +90,7 @@ public final class Guilds extends JavaPlugin {
     private Permission permissions;
     private BukkitAudiences adventure;
     private ChatListener chatListener;
+    private BukkitLibraryManager libraryManager;
 
     public static Gson getGson() {
         return gson;
@@ -112,27 +102,8 @@ public final class Guilds extends JavaPlugin {
 
     @Override
     public void onLoad() {
-        final Logger logger = getLogger();
-        final File dependencyDirectory = new File(getDataFolder(), "Libraries");
-        logger.log(Level.INFO, "Loading Libraries...");
-        logger.log(Level.INFO, "Note: This might take a few minutes on first run. Kindly ensure internet connectivity.");
-        final Instant startInstant = Instant.now();
-        try {
-            ApplicationBuilder
-                    .appending("Guilds")
-                    .downloadDirectoryPath(dependencyDirectory.toPath())
-                    .internalRepositories(Lists.newArrayList(
-                            new Repository(new URL("https://repo.glaremasters.me/repository/public/")),
-                            new Repository(new URL(SimpleMirrorSelector.DEFAULT_CENTRAL_MIRROR_URL))))
-                    .build();
-            final Instant endInstant = Instant.now();
-            final long timeTaken = Duration.between(startInstant, endInstant).toMillis();
-            final double timeTakenSeconds = timeTaken / 1000.0;
-            logger.log(Level.INFO, "Loaded libraries in {0} seconds", timeTakenSeconds);
-        } catch (IOException | ReflectiveOperationException | URISyntaxException | NoSuchAlgorithmException exception) {
-            logger.log(Level.SEVERE, "Unable to load dependencies... Please ensure an active Internet connection on first run!");
-            exception.printStackTrace();
-        }
+        libraryManager = new BukkitLibraryManager(this);
+        libraryManager.loadFromGradle();
     }
 
     @Override
