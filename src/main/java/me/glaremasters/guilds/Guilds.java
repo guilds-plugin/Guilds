@@ -27,7 +27,6 @@ import co.aikar.commands.PaperCommandManager;
 import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
-import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import me.glaremasters.guilds.acf.ACFHandler;
@@ -67,16 +66,9 @@ import org.bstats.charts.SingleLineChart;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bxteam.quark.bukkit.BukkitLibraryManager;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.security.NoSuchAlgorithmException;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 public final class Guilds extends JavaPlugin {
@@ -98,6 +90,7 @@ public final class Guilds extends JavaPlugin {
     private Permission permissions;
     private BukkitAudiences adventure;
     private ChatListener chatListener;
+    private BukkitLibraryManager libraryManager;
 
     public static Gson getGson() {
         return gson;
@@ -105,6 +98,12 @@ public final class Guilds extends JavaPlugin {
 
     public static GuildsAPI getApi() {
         return Guilds.api;
+    }
+
+    @Override
+    public void onLoad() {
+        libraryManager = new BukkitLibraryManager(this);
+        libraryManager.loadFromGradle();
     }
 
     @Override

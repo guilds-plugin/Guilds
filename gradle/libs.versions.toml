@@ -7,6 +7,7 @@ versions-plugin = "0.54.0"
 dokka = "2.2.0"
 spotless = "8.5.1"
 jsr305 = "3.0.2"
+quark = "1.3.0"
 
 minecraft-spigot-api = "26.1.2-R0.1-SNAPSHOT"
 
@@ -48,6 +49,7 @@ vault = { module = "net.milkbowl:vault", version.ref = "vault" }
 placeholderapi = { module = "me.clip:placeholderapi", version.ref = "placeholderapi" }
 authlib = { module = "com.mojang:authlib", version.ref = "authlib" }
 jsr305 = { module = "com.google.code.findbugs:jsr305", version.ref = "jsr305" }
+quark-bukkit = { module = "org.bxteam.quark:bukkit", version.ref = "quark" }
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
@@ -59,3 +61,4 @@ run-paper = { id = "xyz.jpenilla.run-paper", version.ref = "run-paper" }
 versions = { id = "com.github.ben-manes.versions", version.ref = "versions-plugin" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
+quark = { id = "org.bxteam.quark", version.ref = "quark" }

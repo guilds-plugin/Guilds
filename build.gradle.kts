@@ -18,6 +18,7 @@ plugins {
     alias(libs.plugins.versions)
     alias(libs.plugins.dokka)
     alias(libs.plugins.run.paper)
+    alias(libs.plugins.quark)
 }
 
 group = "me.glaremasters"
@@ -42,6 +43,18 @@ kotlin {
     jvmToolchain(21)
 }
 
+quark {
+    /*
+     * Use Bukkit for the main SpigotMC artifact.
+     * Paper can run Bukkit plugins, but Spigot cannot run Paper-specific loaders.
+     */
+    platform = "bukkit"
+
+    repositories {
+        maven("https://repo.maven.apache.org/maven2/")
+    }
+}
+
 dependencies {
     /*
      * Bundled into the final plugin jar by shadowJar.
@@ -59,7 +72,14 @@ dependencies {
     implementation(libs.jdbi.core)
     implementation(libs.jdbi.sqlobject)
     implementation(libs.mariadb.client)
-    implementation(libs.kotlin.stdlib)
+    implementation(libs.quark.bukkit)
+
+    /*
+     * Kotlin is compiled against locally, but downloaded and loaded at runtime
+     * by Quark to reduce the SpigotMC upload jar size.
+     */
+    compileOnly(libs.kotlin.stdlib)
+    quark(libs.kotlin.stdlib)
 
     /*
      * Provided by the server or by other plugins at runtime.
@@ -134,12 +154,12 @@ extensions.configure<IndraSpotlessLicenserExtension> {
 tasks.withType<KotlinCompile>().configureEach {
     compilerOptions {
         javaParameters.set(true)
-        jvmTarget.set(JvmTarget.JVM_1_8)
+        jvmTarget.set(JvmTarget.JVM_11)
     }
 }
 
 tasks.withType<JavaCompile>().configureEach {
-    options.release.set(8)
+    options.release.set(11)
     options.encoding = "UTF-8"
     options.compilerArgs.addAll(
         listOf(
@@ -174,6 +194,8 @@ tasks.named<ProcessResources>("processResources") {
 }
 
 tasks.named<ShadowJar>("shadowJar") {
+    minimize()
+
     archiveClassifier.set("")
     archiveBaseName.set("Guilds")
     archiveVersion.set(pluginVersion)
@@ -332,7 +354,7 @@ indra {
     mitLicense()
 
     javaVersions {
-        target(8)
+        target(11)
     }
 
     github("guilds-plugin", "guilds") {
@@ -351,7 +373,7 @@ data class MinecraftRunTarget(
 )
 
 val supportedMinecraftVersions = listOf(
-    MinecraftRunTarget("1.8.8", 8),
+    MinecraftRunTarget("1.8.8", 11),
     MinecraftRunTarget("1.16.5", 16),
     MinecraftRunTarget("1.18.2", 17),
     MinecraftRunTarget("1.19.4", 17),

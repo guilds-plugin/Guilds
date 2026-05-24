@@ -51,6 +51,14 @@ dependencyResolutionManagement {
                 ignoreGradleMetadataRedirection()
             }
         }
+
+        maven("https://repo.bxteam.org/releases") {
+            name = "bxteam-releases"
+
+            content {
+                includeGroup("org.bxteam.quark")
+            }
+        }
     }
 }
 
