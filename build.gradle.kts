@@ -22,7 +22,7 @@ plugins {
 }
 
 group = "me.glaremasters"
-version = "3.5.7.2-SNAPSHOT"
+version = "3.5.7.2"
 
 val pluginVersion = version.toString()
 
