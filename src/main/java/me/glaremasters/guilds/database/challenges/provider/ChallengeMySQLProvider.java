@@ -34,7 +34,6 @@ import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Set;
 
 public interface ChallengeMySQLProvider extends ChallengeProvider {

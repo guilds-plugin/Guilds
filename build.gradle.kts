@@ -1,7 +1,6 @@
 import com.diffplug.gradle.spotless.FormatExtension
 import com.diffplug.gradle.spotless.SpotlessExtension
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-import net.kyori.indra.licenser.spotless.IndraSpotlessLicenserExtension
 import org.gradle.language.jvm.tasks.ProcessResources
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
@@ -13,7 +12,6 @@ plugins {
     alias(libs.plugins.indra)
     alias(libs.plugins.indra.publishing)
     alias(libs.plugins.spotless)
-    alias(libs.plugins.indra.licenser.spotless)
     alias(libs.plugins.shadow)
     alias(libs.plugins.versions)
     alias(libs.plugins.dokka)
@@ -127,28 +125,6 @@ extensions.configure<SpotlessExtension> {
 
         standardOptions()
     }
-}
-
-extensions.configure<IndraSpotlessLicenserExtension> {
-    /*
-     * Create HEADER.txt at the project root.
-     *
-     * Example:
-     *
-     * /*
-     *  * This file is part of Guilds.
-     *  *
-     *  * Guilds is free software: you can redistribute it and/or modify
-     *  * it under the terms of the MIT License.
-     *  *
-     *  * Copyright (c) GlareMasters
-     *  */
-     */
-    licenseHeaderFile(rootProject.file("HEADER.txt"))
-
-    property("name", "Guilds")
-    property("organization", "GlareMasters")
-    property("url", "https://github.com/guilds-plugin/guilds")
 }
 
 tasks.withType<KotlinCompile>().configureEach {

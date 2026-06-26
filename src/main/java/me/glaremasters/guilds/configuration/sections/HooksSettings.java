@@ -47,4 +47,3 @@ public class HooksSettings implements SettingsHolder {
     private HooksSettings() {
     }
 }
-
