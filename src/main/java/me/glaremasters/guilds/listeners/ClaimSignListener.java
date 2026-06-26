@@ -42,6 +42,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.codemc.worldguardwrapper.WorldGuardWrapper;
 import org.codemc.worldguardwrapper.selection.ICuboidSelection;
 
+import java.util.OptionalDouble;
+
 /**
  * Created by Glare
  * Date: 5/29/2019
@@ -52,12 +54,13 @@ public class ClaimSignListener implements Listener {
     private final Guilds guilds;
     private final SettingsManager settingsManager;
     private final GuildHandler guildHandler;
-    private final WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();
+    private final WorldGuardWrapper wrapper;
 
-    public ClaimSignListener(Guilds guilds, SettingsManager settingsManager, GuildHandler guildHandler) {
+    public ClaimSignListener(Guilds guilds, SettingsManager settingsManager, GuildHandler guildHandler, WorldGuardWrapper wrapper) {
         this.guilds = guilds;
         this.settingsManager = settingsManager;
         this.guildHandler = guildHandler;
+        this.wrapper = wrapper;
     }
 
     @EventHandler
@@ -79,7 +82,7 @@ public class ClaimSignListener implements Listener {
             return;
         }
 
-        if (event.getLine(1).isEmpty() || event.getLine(2).isEmpty()) {
+        if (event.getLine(1).isEmpty() || !parseClaimPrice(event.getLine(2)).isPresent()) {
             guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.CLAIM__SIGN_INVALID_FORMAT);
             event.setCancelled(true);
             return;
@@ -136,7 +139,14 @@ public class ClaimSignListener implements Listener {
             return;
         }
 
-        if (guild.getBalance() < Double.valueOf(sign.getLine(2))) {
+        OptionalDouble parsedPrice = parseClaimPrice(sign.getLine(2));
+        if (!parsedPrice.isPresent()) {
+            guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.CLAIM__SIGN_INVALID_FORMAT);
+            return;
+        }
+
+        double claimPrice = parsedPrice.getAsDouble();
+        if (guild.getBalance() < claimPrice) {
             guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.CLAIM__SIGN_NOT_ENOUGH);
             return;
         }
@@ -156,9 +166,30 @@ public class ClaimSignListener implements Listener {
 
         player.getWorld().getBlockAt(block.getLocation()).breakNaturally();
 
-        guild.setBalance(guild.getBalance() - Double.valueOf(sign.getLine(2)));
+        guild.setBalance(guild.getBalance() - claimPrice);
 
         guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.CLAIM__SIGN_BUY_SUCCESS);
+    }
+
+    private OptionalDouble parseClaimPrice(String raw) {
+        if (raw == null) {
+            return OptionalDouble.empty();
+        }
+
+        String trimmed = raw.trim();
+        if (trimmed.isEmpty()) {
+            return OptionalDouble.empty();
+        }
+
+        try {
+            double price = Double.parseDouble(trimmed);
+            if (Double.isNaN(price) || Double.isInfinite(price) || price < 0) {
+                return OptionalDouble.empty();
+            }
+            return OptionalDouble.of(price);
+        } catch (NumberFormatException ignored) {
+            return OptionalDouble.empty();
+        }
     }
 
 }

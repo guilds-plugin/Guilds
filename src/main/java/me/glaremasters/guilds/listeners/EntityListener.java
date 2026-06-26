@@ -73,6 +73,10 @@ public class EntityListener implements Listener {
             return;
         }
 
+        if (!(event.getEntity() instanceof Monster)) {
+            return;
+        }
+
         final Entity damager = event.getDamager();
         if (!(damager instanceof Player)) {
             return;
@@ -94,6 +98,7 @@ public class EntityListener implements Listener {
      *
      * @param event The EntityDeathEvent that triggered the method.
      */
+    @EventHandler
     public void onMobDeath(EntityDeathEvent event) {
         if (!(event.getEntity() instanceof Monster)) {
             return;
