@@ -67,8 +67,7 @@ public class ItemBuilder {
      * Build an item
      * @return itemstack
      */
-    @NotNull
-    @Contract(pure = true)
+    @NotNull @Contract(pure = true)
     public ItemStack build() {
         item.setItemMeta(meta);
         return item;
@@ -79,8 +78,7 @@ public class ItemBuilder {
      * @param amount the amount of an item
      * @return amounted item
      */
-    @NotNull
-    public ItemBuilder setAmount(int amount) {
+    @NotNull public ItemBuilder setAmount(int amount) {
         item.setAmount(amount);
         return this;
     }
@@ -90,8 +88,7 @@ public class ItemBuilder {
      * @param name the name of the item
      * @return item with name
      */
-    @NotNull
-    public ItemBuilder setName(@NotNull String name) {
+    @NotNull public ItemBuilder setName(@NotNull String name) {
         meta.setDisplayName(name);
         return this;
     }
@@ -101,8 +98,7 @@ public class ItemBuilder {
      * @param lore the lore to add
      * @return item with lore
      */
-    @NotNull
-    public ItemBuilder setLore(@NotNull List<String> lore) {
+    @NotNull public ItemBuilder setLore(@NotNull List<String> lore) {
         meta.setLore(lore);
         return this;
     }
@@ -112,8 +108,7 @@ public class ItemBuilder {
      * @param lore the lore to add
      * @return item with lore
      */
-    @NotNull
-    public ItemBuilder setLore(@NotNull String... lore) {
+    @NotNull public ItemBuilder setLore(@NotNull String... lore) {
         meta.setLore(Arrays.asList(lore));
         return this;
     }
@@ -124,8 +119,7 @@ public class ItemBuilder {
      * @param level the level of the enchant
      * @return the item with enchantments
      */
-    @NotNull
-    public ItemBuilder addEnchantment(@NotNull Enchantment enchantment, int level) {
+    @NotNull public ItemBuilder addEnchantment(@NotNull Enchantment enchantment, int level) {
         meta.addEnchant(enchantment, level, true);
         return this;
     }
@@ -135,8 +129,7 @@ public class ItemBuilder {
      * @param flags the flags to add
      * @return itembuilder item with custom flags
      */
-    @NotNull
-    public ItemBuilder addItemFlags(@NotNull ItemFlag... flags) {
+    @NotNull public ItemBuilder addItemFlags(@NotNull ItemFlag... flags) {
         meta.addItemFlags(flags);
         return this;
     }
@@ -146,8 +139,7 @@ public class ItemBuilder {
      * @param unbreakable the option
      * @return itembuilder with unbreakable option
      */
-    @NotNull
-    public ItemBuilder setUnbreakable(boolean unbreakable) {
+    @NotNull public ItemBuilder setUnbreakable(boolean unbreakable) {
         meta.setUnbreakable(unbreakable);
         return this;
     }
@@ -159,8 +151,7 @@ public class ItemBuilder {
      * @param <T> the type to add
      * @return itembuilder with custom meta
      */
-    @NotNull
-    public <T extends ItemMeta> ItemBuilder applyCustomMeta(@NotNull Class<T> type, @NotNull Consumer<T> applier) {
+    @NotNull public <T extends ItemMeta> ItemBuilder applyCustomMeta(@NotNull Class<T> type, @NotNull Consumer<T> applier) {
         applier.accept(type.cast(meta));
         return this;
     }
