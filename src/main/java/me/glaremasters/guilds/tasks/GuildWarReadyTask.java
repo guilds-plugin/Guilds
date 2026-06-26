@@ -93,18 +93,18 @@ public class GuildWarReadyTask extends BukkitRunnable {
             if (challenge.getAliveDefenders().size() > challenge.getAliveChallengers().size()) {
                 do {
                     UUID last = Iterables.getLast(challenge.getAliveDefenders().entrySet()).getKey();
-                    heldBack.add(Bukkit.getPlayer(last).getName());
+                    heldBack.add(getPlayerName(last));
                     challenge.getAliveDefenders().remove(last);
                 } while (challenge.getAliveDefenders().size() != challenge.getAliveChallengers().size());
             } else if (challenge.getAliveChallengers().size() > challenge.getAliveDefenders().size()) {
                 do {
                     UUID last = Iterables.getLast(challenge.getAliveChallengers().entrySet()).getKey();
-                    heldBack.add(Bukkit.getPlayer(last).getName());
+                    heldBack.add(getPlayerName(last));
                     challenge.getAliveChallengers().remove(last);
                 } while (challenge.getAliveChallengers().size() != challenge.getAliveDefenders().size());
             }
 
-            if (heldBack.size() > 0) {
+            if (!heldBack.isEmpty()) {
                 String heldBackMessage = Joiner.on(", ").join(heldBack);
                 challenge.getChallenger().sendMessage(guilds.getCommandManager(), Messages.WAR__REMOVED_FOR_SIZE, "{players}", heldBackMessage);
                 challenge.getDefender().sendMessage(guilds.getCommandManager(), Messages.WAR__REMOVED_FOR_SIZE, "{players}", heldBackMessage);
@@ -120,4 +120,10 @@ public class GuildWarReadyTask extends BukkitRunnable {
             cancel();
         }
     }
+
+    private String getPlayerName(UUID uuid) {
+        final Player player = Bukkit.getPlayer(uuid);
+        return player == null ? uuid.toString() : player.getName();
+    }
+
 }

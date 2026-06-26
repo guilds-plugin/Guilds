@@ -48,6 +48,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -177,7 +178,7 @@ public class ChallengeHandler {
      */
     public List<Player> getOnlineDefenders(@NotNull Guild guild) {
         List<GuildMember> members = guild.getOnlineMembers().stream().filter(m -> m.getRole().hasPerm(GuildRolePerm.INITIATE_WAR)).collect(Collectors.toList());
-        return members.stream().map(m -> Bukkit.getPlayer(m.getUuid())).collect(Collectors.toList());
+        return members.stream().map(m -> Bukkit.getPlayer(m.getUuid())).filter(Objects::nonNull).collect(Collectors.toList());
     }
 
     /**
@@ -239,6 +240,11 @@ public class ChallengeHandler {
      * @param location the location to send them to
      */
     public void sendToArena(@NotNull Map<UUID, String> players, @Nullable Location location) {
+        if (location == null) {
+            LoggingUtils.warn("Unable to send war players to an arena because the arena location is not configured.");
+            return;
+        }
+
         players.keySet().forEach(p -> {
             Player player = Bukkit.getPlayer(p);
             if (player != null) {
@@ -277,8 +283,17 @@ public class ChallengeHandler {
     public void teleportRemaining(@NotNull GuildChallenge challenge) {
         getAllPlayersAlive(challenge).forEach((key, value) -> {
             final Location location = ACFBukkitUtil.stringToLocation(value);
-            final Player player = Bukkit.getPlayer(key);
-            Bukkit.getScheduler().runTaskLater(guilds, () -> player.teleport(location), 1L);
+            if (location == null) {
+                LoggingUtils.warn("Unable to teleport war player " + key + " back because their saved location is invalid.");
+                return;
+            }
+
+            Bukkit.getScheduler().runTaskLater(guilds, () -> {
+                final Player player = Bukkit.getPlayer(key);
+                if (player != null) {
+                    player.teleport(location);
+                }
+            }, 1L);
         });
     }
 
@@ -353,8 +368,13 @@ public class ChallengeHandler {
                 message = Messages.WAR__PLAYER_KILLED_OTHER;
                 break;
         }
-        getAllPlayersAlive(challenge).keySet().forEach(p -> guilds.getCommandManager().getCommandIssuer(Bukkit.getPlayer(p))
-                .sendInfo(message, "{player}", player.getName(), "{killer}", killer.getName()));
+        getAllPlayersAlive(challenge).keySet().forEach(p -> {
+            final Player target = Bukkit.getPlayer(p);
+            if (target != null) {
+                guilds.getCommandManager().getCommandIssuer(target)
+                        .sendInfo(message, "{player}", player.getName(), "{killer}", killer.getName());
+            }
+        });
     }
 
     /**
