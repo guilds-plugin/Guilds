@@ -31,9 +31,9 @@ import me.glaremasters.guilds.database.challenges.ChallengeAdapter;
 import me.glaremasters.guilds.database.cooldowns.CooldownAdapter;
 import me.glaremasters.guilds.database.guild.GuildAdapter;
 import me.glaremasters.guilds.utils.LoggingUtils;
-import org.bukkit.Bukkit;
 
 import java.io.IOException;
+import java.util.Locale;
 
 /**
  * A class that implements the DatabaseAdapter interface.
@@ -71,18 +71,11 @@ public final class DatabaseAdapter implements AutoCloseable {
      * @throws IOException if there is an issue setting up the backend database.
      */
     public DatabaseAdapter(Guilds guilds, SettingsManager settings, boolean doConnect) throws IOException {
-        String backendName = settings.getProperty(StorageSettings.STORAGE_TYPE).toLowerCase();
-        DatabaseBackend backend = DatabaseBackend.getByBackendName(backendName);
-
-        if (backend == null) {
-            backend = DatabaseBackend.JSON;
-        }
-
         this.guilds = guilds;
         this.settings = settings;
 
         if (doConnect) {
-            setUpBackend(backend);
+            setUpBackend(getConfiguredBackend());
         }
     }
 
@@ -100,10 +93,19 @@ public final class DatabaseAdapter implements AutoCloseable {
      * Establishes the database connection if it's not already established.
      */
     public void open() {
-        String backendName = settings.getProperty(StorageSettings.STORAGE_TYPE).toLowerCase();
-        DatabaseBackend backend = DatabaseBackend.getByBackendName(backendName);
-        if (databaseManager != null && !databaseManager.isConnected()) {
-            databaseManager = new DatabaseManager(settings, backend);
+        DatabaseBackend configuredBackend = getConfiguredBackend();
+
+        if (configuredBackend == DatabaseBackend.JSON || isConnected()) {
+            return;
+        }
+
+        try {
+            databaseManager = new DatabaseManager(settings, configuredBackend);
+        } catch (IOException ex) {
+            LoggingUtils.severe(
+                    "Failed to reopen the " + configuredBackend.getBackendName() + " database connection.",
+                    ex
+            );
         }
     }
 
@@ -171,16 +173,18 @@ public final class DatabaseAdapter implements AutoCloseable {
      * @throws IOException if an I/O error occurs during setup
      */
     private void setUpBackend(DatabaseBackend backend) throws IOException {
-        if (isConnected()) return;
-
-        if (backend != DatabaseBackend.JSON) {
-            this.databaseManager = new DatabaseManager(settings, backend);
-            this.sqlTablePrefix = this.settings.getProperty(StorageSettings.SQL_TABLE_PREFIX).toLowerCase();
+        if (this.backend == backend && isConnected()) {
+            return;
         }
 
         this.backend = backend;
 
         try {
+            if (backend != DatabaseBackend.JSON) {
+                this.databaseManager = new DatabaseManager(settings, backend);
+                this.sqlTablePrefix = this.settings.getProperty(StorageSettings.SQL_TABLE_PREFIX).toLowerCase(Locale.ROOT);
+            }
+
             // You may wish to create container(s) elsewhere, but this is an OK spot.
             // In JSON mode, this is equivalent to making the file.
             // In SQL mode, this is equivalent to creating the table.
@@ -196,9 +200,27 @@ public final class DatabaseAdapter implements AutoCloseable {
             this.cooldownAdapter = new CooldownAdapter(guilds, this);
             this.cooldownAdapter.createContainer();
         } catch (Exception ex) {
-            LoggingUtils.severe("There was an issue setting up the backend database. Shutting down to prevent further issues. If you are using MySQL, make sure your database server is on the latest version!");
-            ex.printStackTrace();
-            Bukkit.getServer().getPluginManager().disablePlugin(guilds);
+            throw new IOException(
+                    "There was an issue setting up the " + backend.getBackendName() +
+                            " backend. Shutting down to prevent further issues.",
+                    ex
+            );
         }
+    }
+
+    /**
+     * Gets the configured storage backend, defaulting to JSON if the configured value is invalid.
+     *
+     * @return the configured database backend
+     */
+    private DatabaseBackend getConfiguredBackend() {
+        String backendName = settings.getProperty(StorageSettings.STORAGE_TYPE);
+
+        if (backendName == null) {
+            return DatabaseBackend.JSON;
+        }
+
+        DatabaseBackend configuredBackend = DatabaseBackend.getByBackendName(backendName.toLowerCase(Locale.ROOT));
+        return configuredBackend == null ? DatabaseBackend.JSON : configuredBackend;
     }
 }

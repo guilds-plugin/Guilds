@@ -27,6 +27,7 @@ import co.aikar.commands.lib.expiringmap.ExpirationPolicy;
 import co.aikar.commands.lib.expiringmap.ExpiringMap;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.guild.Guild;
+import me.glaremasters.guilds.utils.LoggingUtils;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 
@@ -66,7 +67,7 @@ public class CooldownHandler {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            LoggingUtils.severe("An error occurred while loading cooldown data.", e);
         }
     }
 

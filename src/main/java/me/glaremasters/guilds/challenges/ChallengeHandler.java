@@ -35,6 +35,7 @@ import me.glaremasters.guilds.guild.GuildChallenge;
 import me.glaremasters.guilds.guild.GuildMember;
 import me.glaremasters.guilds.guild.GuildRolePerm;
 import me.glaremasters.guilds.messages.Messages;
+import me.glaremasters.guilds.utils.LoggingUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -80,7 +81,7 @@ public class ChallengeHandler {
                 challenges.add(challenge);
             }
         } catch (IOException ex) {
-            ex.printStackTrace();
+            LoggingUtils.severe("An error occurred while loading guild challenges.", ex);
         }
     }
 
@@ -437,7 +438,7 @@ public class ChallengeHandler {
                 // Save the details about the challenge
                saveData();
             } catch (IOException e) {
-                e.printStackTrace();
+                LoggingUtils.severe("An error occurred while saving guild challenge data after a war ended.", e);
             }
         }
     }

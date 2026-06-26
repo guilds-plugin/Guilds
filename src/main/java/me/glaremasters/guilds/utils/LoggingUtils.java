@@ -31,6 +31,8 @@ import java.util.logging.Logger;
 
 public final class LoggingUtils {
 
+    private static final Logger LOGGER = Logger.getLogger("Guilds");
+
     private LoggingUtils() {
         throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
     }
@@ -42,7 +44,23 @@ public final class LoggingUtils {
      * @param msg   the message to log.
      */
     public static void log(Level level, String msg) {
-        Logger.getLogger("Guilds").log(level, msg);
+        log(level, msg, null);
+    }
+
+    /**
+     * Log any message and optional exception to console with any level.
+     *
+     * @param level     the log level to log on.
+     * @param msg       the message to log.
+     * @param throwable the exception to log, or null if there is no exception.
+     */
+    public static void log(Level level, String msg, Throwable throwable) {
+        if (throwable == null) {
+            LOGGER.log(level, msg);
+            return;
+        }
+
+        LOGGER.log(level, msg, throwable);
     }
 
     /**
@@ -60,7 +78,17 @@ public final class LoggingUtils {
      * @param msg the msg you want to log.
      */
     public static void warn(String msg) {
-        log(Level.WARNING, msg);
+        warn(msg, null);
+    }
+
+    /**
+     * Log a message and optional exception to console on WARNING level.
+     *
+     * @param msg       the msg you want to log.
+     * @param throwable the exception to log, or null if there is no exception.
+     */
+    public static void warn(String msg, Throwable throwable) {
+        log(Level.WARNING, msg, throwable);
     }
 
     /**
@@ -69,18 +97,30 @@ public final class LoggingUtils {
      * @param msg the msg you want to log.
      */
     public static void severe(String msg) {
-        log(Level.SEVERE, msg);
+        severe(msg, null);
     }
 
+    /**
+     * Log a message and optional exception to console on SEVERE level.
+     *
+     * @param msg       the msg you want to log.
+     * @param throwable the exception to log, or null if there is no exception.
+     */
+    public static void severe(String msg, Throwable throwable) {
+        log(Level.SEVERE, msg, throwable);
+    }
 
     /**
-     * Guilds logLogo in console
+     * Guilds logLogo in console.
+     *
+     * @param sender the console command sender.
+     * @param plugin the plugin instance.
      */
     public static void logLogo(ConsoleCommandSender sender, Plugin plugin) {
         sender.sendMessage(StringUtils.color("&a  ________ "));
         sender.sendMessage(StringUtils.color("&a /  _____/ "));
-        sender.sendMessage(StringUtils.color("&a/   \\  ___ " + "  &3Guilds &8v" + plugin.getDescription().getVersion()));
-        sender.sendMessage(StringUtils.color("&a\\    \\_\\  \\" + "  &3Server Version: &8" + plugin.getServer().getVersion()));
+        sender.sendMessage(StringUtils.color("&a/   \\  ___   &3Guilds &8v" + plugin.getDescription().getVersion()));
+        sender.sendMessage(StringUtils.color("&a\\    \\_\\  \\  &3Server Version: &8" + plugin.getServer().getVersion()));
         sender.sendMessage(StringUtils.color("&a \\______  /"));
         sender.sendMessage(StringUtils.color("&a        \\/ "));
     }

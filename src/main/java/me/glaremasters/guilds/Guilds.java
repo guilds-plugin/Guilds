@@ -120,7 +120,7 @@ public final class Guilds extends JavaPlugin {
                     arenaHandler.saveArenas();
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                LoggingUtils.severe("An error occurred while saving plugin data during shutdown.", e);
             }
             guildHandler.chatLogout();
             guildHandler.getLookupCache().clear();
@@ -231,7 +231,7 @@ public final class Guilds extends JavaPlugin {
             // Load guildhandler with provider
             guildHandler = new GuildHandler(this, settingsHandler.getMainConf());
         } catch (IOException e) {
-            LoggingUtils.severe("An error occurred loading data! Stopping plugin..");
+            LoggingUtils.severe("An error occurred loading data! Stopping plugin..", e);
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
@@ -263,7 +263,7 @@ public final class Guilds extends JavaPlugin {
                 try {
                     LoggingUtils.info(StringUtils.getAnnouncements(this));
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    LoggingUtils.warn("Unable to fetch console announcements.", e);
                 }
             }).execute();
         }
@@ -296,7 +296,7 @@ public final class Guilds extends JavaPlugin {
                 arenaHandler.saveArenas();
                 challengeHandler.saveData();
             } catch (IOException e) {
-                e.printStackTrace();
+                LoggingUtils.severe("An error occurred while saving plugin data during the scheduled save task.", e);
             }
         }, 20 * 60, (20 * 60) * settingsHandler.getMainConf().getProperty(StorageSettings.SAVE_INTERVAL));
     }
