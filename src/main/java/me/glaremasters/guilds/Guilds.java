@@ -66,6 +66,7 @@ import org.bstats.charts.SingleLineChart;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.codemc.worldguardwrapper.WorldGuardWrapper;
 import org.bxteam.quark.bukkit.BukkitLibraryManager;
 
 import java.io.IOException;
@@ -321,9 +322,34 @@ public final class Guilds extends JavaPlugin {
         }
 
         if (settingsHandler.getMainConf().getProperty(HooksSettings.WORLDGUARD)) {
-            getServer().getPluginManager().registerEvents(new WorldGuardListener(guildHandler), this);
-            getServer().getPluginManager().registerEvents(new ClaimSignListener(this, settingsHandler.getMainConf(), guildHandler), this);
+            registerWorldGuardListeners();
         }
+    }
+
+    /**
+     * Register WorldGuard-backed listeners only when the optional hook is available.
+     */
+    private void registerWorldGuardListeners() {
+        if (!Bukkit.getPluginManager().isPluginEnabled("WorldGuard")) {
+            LoggingUtils.warn("WorldGuard hook is enabled in config, but WorldGuard is not installed or enabled. Skipping WorldGuard claim listeners.");
+            return;
+        }
+
+        final WorldGuardWrapper wrapper;
+        try {
+            wrapper = WorldGuardWrapper.getInstance();
+        } catch (RuntimeException | LinkageError e) {
+            LoggingUtils.warn("WorldGuard hook is enabled, but WorldGuardWrapper could not initialize. Skipping WorldGuard claim listeners.", e);
+            return;
+        }
+
+        if (wrapper == null) {
+            LoggingUtils.warn("WorldGuard hook is enabled, but WorldGuardWrapper returned no instance. Skipping WorldGuard claim listeners.");
+            return;
+        }
+
+        getServer().getPluginManager().registerEvents(new WorldGuardListener(guildHandler, wrapper), this);
+        getServer().getPluginManager().registerEvents(new ClaimSignListener(this, settingsHandler.getMainConf(), guildHandler, wrapper), this);
     }
 
     /**

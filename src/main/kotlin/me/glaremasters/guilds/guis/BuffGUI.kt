@@ -38,11 +38,11 @@ import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.EconomyUtils
 import me.glaremasters.guilds.utils.GuiUtils
+import me.glaremasters.guilds.utils.LoggingUtils
 import me.glaremasters.guilds.utils.StringUtils
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.potion.PotionEffect
-import org.bukkit.potion.PotionEffectType
 import java.util.concurrent.TimeUnit
 
 class BuffGUI(private val buffConfig: SettingsManager, private val cooldownHandler: CooldownHandler) {
@@ -113,7 +113,7 @@ class BuffGUI(private val buffConfig: SettingsManager, private val cooldownHandl
                 if (!buffConfig.getProperty(GuildBuffSettings.BUFF_STACKING) && !player.activePotionEffects.isEmpty()) {
                     return@setAction
                 }
-                guild.balance = guild.balance - cost
+                guild.balance -= cost
                 getBuffEffects(buff.effects).forEach { effect ->
                     guild.addPotion(effect)
                 }
@@ -127,12 +127,27 @@ class BuffGUI(private val buffConfig: SettingsManager, private val cooldownHandl
 
     private fun getBuffEffects(effects: List<String>): Set<PotionEffect> {
         val potions = mutableSetOf<PotionEffect>()
-        effects.forEach {
-            val split = it.split(";")
-            val type = XPotion.matchXPotion(split[0]).get().potionEffectType ?: PotionEffectType.WATER_BREATHING
-            val amp = Integer.parseInt(split[1])
-            val length = Integer.parseInt(split[2])
-            potions.add(PotionEffect(type, (length * 20), amp))
+        effects.forEach { rawEffect ->
+            val split = rawEffect.split(";").map { it.trim() }
+            if (split.size != 3 || split[0].isEmpty() || split[1].isEmpty() || split[2].isEmpty()) {
+                LoggingUtils.warn("Invalid guild buff effect configured at guild-buffs.buffs.effects: '$rawEffect'. Expected EFFECT_TYPE;AMPLIFICATION;LENGTH. Skipping effect.")
+                return@forEach
+            }
+
+            val type = XPotion.of(split[0]).orElse(null)?.potionEffectType
+            if (type == null) {
+                LoggingUtils.warn("Invalid guild buff potion effect configured at guild-buffs.buffs.effects: '${split[0]}'. Skipping effect.")
+                return@forEach
+            }
+
+            val amp = split[1].toIntOrNull()
+            val length = split[2].toIntOrNull()
+            if (amp == null || amp < 0 || length == null || length <= 0 || length > Int.MAX_VALUE / 20) {
+                LoggingUtils.warn("Invalid guild buff duration/amplifier configured at guild-buffs.buffs.effects: '$rawEffect'. Skipping effect.")
+                return@forEach
+            }
+
+            potions.add(PotionEffect(type, length * 20, amp))
         }
         return potions
     }

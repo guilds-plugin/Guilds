@@ -34,9 +34,7 @@ import org.bukkit.event.player.PlayerInteractEvent
 import org.codemc.worldguardwrapper.WorldGuardWrapper
 import org.codemc.worldguardwrapper.flag.WrappedState
 
-class WorldGuardListener(private val guildHandler: GuildHandler) : Listener {
-
-    private val wrapper = WorldGuardWrapper.getInstance()
+class WorldGuardListener(private val guildHandler: GuildHandler, private val wrapper: WorldGuardWrapper) : Listener {
 
     @EventHandler
     fun BlockPlaceEvent.onPlace() {

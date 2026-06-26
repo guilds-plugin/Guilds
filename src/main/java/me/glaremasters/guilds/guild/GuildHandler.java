@@ -24,6 +24,7 @@
 package me.glaremasters.guilds.guild;
 
 import ch.jalu.configme.SettingsManager;
+import com.cryptomorin.xseries.XMaterial;
 import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.PaperCommandManager;
@@ -61,6 +62,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -747,7 +749,7 @@ public class GuildHandler {
      * @return the guild upgrade ticket
      */
     public ItemStack getUpgradeTicket(SettingsManager settingsManager, int amount) {
-        ItemBuilder builder = new ItemBuilder(Material.valueOf(settingsManager.getProperty(TicketSettings.TICKET_MATERIAL)));
+        ItemBuilder builder = new ItemBuilder(resolveTicketMaterial(settingsManager));
         builder.setAmount(amount);
         builder.setName(StringUtils.color(settingsManager.getProperty(TicketSettings.TICKET_NAME)));
         builder.setLore(settingsManager.getProperty(TicketSettings.TICKET_LORE).stream().map(StringUtils::color).collect(Collectors.toList()));
@@ -761,13 +763,35 @@ public class GuildHandler {
      * @return the itemstack
      */
     public ItemStack matchTicket(SettingsManager settingsManager) {
-        ItemBuilder builder = new ItemBuilder(Material.valueOf(settingsManager.getProperty(TicketSettings.TICKET_MATERIAL)));
+        ItemBuilder builder = new ItemBuilder(resolveTicketMaterial(settingsManager));
         builder.setAmount(1);
         builder.setName(StringUtils.color(settingsManager.getProperty(TicketSettings.TICKET_NAME)));
         builder.setLore(settingsManager.getProperty(TicketSettings.TICKET_LORE).stream().map(StringUtils::color).collect(Collectors.toList()));
         return builder.build();
     }
 
+    /**
+     * Resolve the configured ticket material safely across Bukkit versions.
+     *
+     * @param settingsManager settings manager
+     * @return configured material or PAPER if invalid
+     */
+    private Material resolveTicketMaterial(SettingsManager settingsManager) {
+        final String rawMaterial = settingsManager.getProperty(TicketSettings.TICKET_MATERIAL);
+        if (rawMaterial != null && !rawMaterial.trim().isEmpty()) {
+            final Optional<XMaterial> matchedMaterial = XMaterial.matchXMaterial(rawMaterial.trim());
+
+            if (matchedMaterial.isPresent()) {
+                final Material material = matchedMaterial.get().get();
+                if (material != null && new ItemStack(material).getItemMeta() != null) {
+                    return material;
+                }
+            }
+        }
+
+        LoggingUtils.warn("Invalid or non-item ticket material configured at tickets.material: '" + rawMaterial + "'. Falling back to PAPER.");
+        return Material.PAPER;
+    }
 
     /**
      * Simple method to check if a guild is full or not
