@@ -125,7 +125,7 @@ public final class UpdateChecker {
     }
 
     private static String readNewestVersion(InputStreamReader reader) {
-        JsonElement element = JsonParser.parseReader(reader);
+        JsonElement element = new JsonParser().parse(reader);
         if (element == null || !element.isJsonObject()) {
             throw new JsonSyntaxException("Update response was not a JSON object");
         }
