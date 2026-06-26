@@ -39,6 +39,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -343,7 +344,7 @@ public class Guild {
      * @return list of players
      */
     public List<Player> getOnlineAsPlayers() {
-        return getOnlineMembers().stream().map(m -> Bukkit.getPlayer(m.getUuid())).collect(Collectors.toList());
+        return getOnlineMembers().stream().map(m -> Bukkit.getPlayer(m.getUuid())).filter(Objects::nonNull).collect(Collectors.toList());
     }
 
     /**
@@ -438,7 +439,12 @@ public class Guild {
      * @param replacements any args we need to handle
      */
     public void sendMessage(CommandManager manager, Messages key, String... replacements) {
-        getOnlineMembers().forEach(m -> manager.getCommandIssuer(Bukkit.getPlayer(m.getUuid())).sendInfo(key, replacements));
+        getOnlineMembers().forEach(m -> {
+            final Player player = Bukkit.getPlayer(m.getUuid());
+            if (player != null) {
+                manager.getCommandIssuer(player).sendInfo(key, replacements);
+            }
+        });
     }
 
     /**
