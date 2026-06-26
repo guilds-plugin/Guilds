@@ -4,6 +4,7 @@ import ch.jalu.configme.SettingsManager;
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import me.glaremasters.guilds.Guilds;
@@ -14,7 +15,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.CompletableFuture;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,7 +25,7 @@ import java.util.regex.Pattern;
  * A utility class to assist in checking for updates for plugins uploaded to
  * <a href="https://spigotmc.org/resources/">SpigotMC</a>. Before any members of this
  * class are accessed, {@link #init(JavaPlugin, int)} must be invoked by the plugin,
- * preferrably in its {@link JavaPlugin#onEnable()} method, though that is not a
+ * preferably in its {@link JavaPlugin#onEnable()} method, though that is not a
  * requirement.
  * <p>
  * This class performs asynchronous queries to <a href="https://spiget.org">SpiGet</a>,
@@ -34,25 +37,11 @@ import java.util.regex.Pattern;
  */
 public final class UpdateChecker {
 
-    public static final VersionScheme VERSION_SCHEME_DECIMAL = (first, second) -> {
-        String[] firstSplit = splitVersionInfo(first), secondSplit = splitVersionInfo(second);
-        if (firstSplit == null || secondSplit == null) return null;
-
-        for (int i = 0; i < Math.min(firstSplit.length, secondSplit.length); i++) {
-            int currentValue = toInt(firstSplit[i], 0), newestValue = toInt(secondSplit[i], 0);
-
-            if (newestValue > currentValue) {
-                return second;
-            } else if (newestValue < currentValue) {
-                return first;
-            }
-        }
-
-        return (secondSplit.length > firstSplit.length) ? second : first;
-    };
+    public static final VersionScheme VERSION_SCHEME_DECIMAL = UpdateChecker::compareDecimalVersions;
 
     private static final String USER_AGENT = "CHOCO-update-checker";
     private static final String UPDATE_URL = "https://api.spigotmc.org/simple/0.1/index.php?action=getResource&id=%d";
+    private static final String CURRENT_VERSION_KEY = "current_version";
     private static final Pattern DECIMAL_SCHEME_PATTERN = Pattern.compile("\\d+(?:\\.\\d+)*");
 
     private static UpdateChecker instance;
@@ -77,37 +66,33 @@ public final class UpdateChecker {
      */
     public CompletableFuture<UpdateResult> requestUpdateCheck() {
         return CompletableFuture.supplyAsync(() -> {
-            int responseCode = -1;
+            HttpURLConnection connection = null;
+
             try {
                 URL url = new URL(String.format(UPDATE_URL, pluginID));
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection = (HttpURLConnection) url.openConnection();
                 connection.addRequestProperty("User-Agent", USER_AGENT);
 
-                InputStreamReader reader = new InputStreamReader(connection.getInputStream());
-                responseCode = connection.getResponseCode();
+                int responseCode = connection.getResponseCode();
+                if (responseCode != HttpURLConnection.HTTP_OK) {
+                    return new UpdateResult(responseCode == HttpURLConnection.HTTP_UNAUTHORIZED ?
+                            UpdateReason.UNAUTHORIZED_QUERY : UpdateReason.UNKNOWN_ERROR);
+                }
 
-                JsonElement element = new JsonParser().parse(reader);
-
-                reader.close();
-
-                JsonObject versionObject = element.getAsJsonObject();
-                String current = plugin.getDescription().getVersion(), newest = versionObject.get("current_version").getAsString();
-                String latest = versionScheme.compareVersions(current, newest);
-
-                if (latest == null) {
-                    return new UpdateResult(UpdateReason.UNSUPPORTED_VERSION_SCHEME);
-                } else if (latest.equals(current)) {
-                    return new UpdateResult(current.equals(newest) ? UpdateReason.UP_TO_DATE : UpdateReason.UNRELEASED_VERSION);
-                } else if (latest.equals(newest)) {
-                    return new UpdateResult(UpdateReason.NEW_UPDATE, latest);
+                try (InputStreamReader reader = new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8)) {
+                    String current = plugin.getDescription().getVersion();
+                    String newest = readNewestVersion(reader);
+                    return createUpdateResult(current, newest);
                 }
             } catch (IOException e) {
                 return new UpdateResult(UpdateReason.COULD_NOT_CONNECT);
-            } catch (JsonSyntaxException e) {
+            } catch (JsonParseException | IllegalStateException | UnsupportedOperationException e) {
                 return new UpdateResult(UpdateReason.INVALID_JSON);
+            } finally {
+                if (connection != null) {
+                    connection.disconnect();
+                }
             }
-
-            return new UpdateResult(responseCode == 401 ? UpdateReason.UNAUTHORIZED_QUERY : UpdateReason.UNKNOWN_ERROR);
         });
     }
 
@@ -121,7 +106,61 @@ public final class UpdateChecker {
         return lastResult;
     }
 
+    private UpdateResult createUpdateResult(String current, String newest) {
+        String latest = versionScheme.compareVersions(current, newest);
+
+        if (latest == null) {
+            return new UpdateResult(UpdateReason.UNSUPPORTED_VERSION_SCHEME);
+        }
+
+        if (latest.equals(current)) {
+            return new UpdateResult(current.equals(newest) ? UpdateReason.UP_TO_DATE : UpdateReason.UNRELEASED_VERSION);
+        }
+
+        if (latest.equals(newest)) {
+            return new UpdateResult(UpdateReason.NEW_UPDATE, latest);
+        }
+
+        return new UpdateResult(UpdateReason.UNKNOWN_ERROR);
+    }
+
+    private static String readNewestVersion(InputStreamReader reader) {
+        JsonElement element = JsonParser.parseReader(reader);
+        if (element == null || !element.isJsonObject()) {
+            throw new JsonSyntaxException("Update response was not a JSON object");
+        }
+
+        JsonObject versionObject = element.getAsJsonObject();
+        JsonElement currentVersionElement = versionObject.get(CURRENT_VERSION_KEY);
+        if (currentVersionElement == null || !currentVersionElement.isJsonPrimitive()) {
+            throw new JsonSyntaxException("Update response did not contain a valid " + CURRENT_VERSION_KEY + " value");
+        }
+
+        return currentVersionElement.getAsString();
+    }
+
+    private static String compareDecimalVersions(String first, String second) {
+        String[] firstSplit = splitVersionInfo(first);
+        String[] secondSplit = splitVersionInfo(second);
+        if (firstSplit == null || secondSplit == null) return null;
+
+        for (int i = 0; i < Math.min(firstSplit.length, secondSplit.length); i++) {
+            int currentValue = toInt(firstSplit[i], 0);
+            int newestValue = toInt(secondSplit[i], 0);
+
+            if (newestValue > currentValue) {
+                return second;
+            } else if (newestValue < currentValue) {
+                return first;
+            }
+        }
+
+        return (secondSplit.length > firstSplit.length) ? second : first;
+    }
+
     private static String[] splitVersionInfo(String version) {
+        if (version == null) return null;
+
         Matcher matcher = DECIMAL_SCHEME_PATTERN.matcher(version);
         if (!matcher.find()) return null;
 
@@ -327,20 +366,25 @@ public final class UpdateChecker {
     public static void runCheck(Guilds guilds, SettingsManager settingsManager) {
         if (settingsManager.getProperty(PluginSettings.UPDATE_CHECK)) {
             UpdateChecker.init(guilds, 66176).requestUpdateCheck().whenComplete((result, exception) -> {
+                if (exception != null || result == null) {
+                    guilds.getLogger().log(Level.WARNING, "Could not check for a new version of Guilds.", exception);
+                    return;
+                }
+
                 if (result.requiresUpdate()) {
                     guilds.getLogger().info(String.format("An update is available! Guilds %s may be downloaded on SpigotMC", result.getNewestVersion()));
                     return;
                 }
-                String reason = result.getReason().toString();
-                switch (reason) {
-                    case "UP_TO_DATE":
+
+                switch (result.getReason()) {
+                    case UP_TO_DATE:
                         guilds.getLogger().info(String.format("Your version of Guilds (%s) is up to date!", result.getNewestVersion()));
                         break;
-                    case "UNRELEASED_VERSION":
+                    case UNRELEASED_VERSION:
                         guilds.getLogger().info(String.format("Your version of Guilds (%s) is more recent than the one publicly available. Are you on a development build?", result.getNewestVersion()));
                         break;
                     default:
-                        guilds.getLogger().warning("Could not check for a new version of Guilds. Reason: " + reason);
+                        guilds.getLogger().warning("Could not check for a new version of Guilds. Reason: " + result.getReason());
                         break;
                 }
             });
