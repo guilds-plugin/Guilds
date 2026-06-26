@@ -59,7 +59,7 @@ public class DatabaseManager {
         switch (backend) {
             case MYSQL:
                 config.setPoolName("Guilds MySQL Connection Pool");
-                config.setDataSourceClassName(requireDataSourceName(
+                config.setDataSourceClassName(requireDataSourceClassName(
                         backend,
                         "com.mysql.cj.jdbc.MysqlDataSource",
                         "com.mysql.jdbc.jdbc2.optional.MysqlDataSource"
@@ -77,11 +77,12 @@ public class DatabaseManager {
                 break;
             case SQLITE:
                 config.setPoolName("Guilds SQLite Connection Pool");
+                config.setDriverClassName(requireDriverClassName(backend, "org.sqlite.JDBC"));
                 config.setJdbcUrl("jdbc:sqlite:plugins/Guilds/guilds.db");
                 break;
             case MARIADB:
                 config.setPoolName("Guilds MariaDB Connection Pool");
-                config.setDataSourceClassName(requireDataSourceName(
+                config.setDataSourceClassName(requireDataSourceClassName(
                         backend,
                         "org.mariadb.jdbc.MariaDbDataSource"
                 ));
@@ -130,7 +131,15 @@ public class DatabaseManager {
         return hikari;
     }
 
-    private static String requireDataSourceName(DatabaseBackend backend, String... classNames) throws IOException {
+    private static String requireDataSourceClassName(DatabaseBackend backend, String... classNames) throws IOException {
+        return requireClassName("datasource", backend, classNames);
+    }
+
+    private static String requireDriverClassName(DatabaseBackend backend, String... classNames) throws IOException {
+        return requireClassName("driver", backend, classNames);
+    }
+
+    private static String requireClassName(String classType, DatabaseBackend backend, String... classNames) throws IOException {
         for (String className : classNames) {
             if (isClassAvailable(className)) {
                 return className;
@@ -138,14 +147,25 @@ public class DatabaseManager {
         }
 
         throw new IOException(
-                "No datasource class is available for the " + backend.getBackendName() +
-                        " backend. Tried: " + Arrays.toString(classNames)
+                "No " + classType + " class is available for the " + backend.getBackendName() +
+                        " backend. Tried: " + Arrays.toString(classNames) +
+                        ". Ensure the selected backend's JDBC driver is available to the server/plugin runtime."
         );
     }
 
     private static boolean isClassAvailable(String className) {
+        return isClassAvailable(className, DatabaseManager.class.getClassLoader()) ||
+                isClassAvailable(className, Thread.currentThread().getContextClassLoader()) ||
+                isClassAvailable(className, ClassLoader.getSystemClassLoader());
+    }
+
+    private static boolean isClassAvailable(String className, ClassLoader classLoader) {
+        if (classLoader == null) {
+            return false;
+        }
+
         try {
-            Class.forName(className);
+            Class.forName(className, false, classLoader);
             return true;
         } catch (ClassNotFoundException ignored) {
             return false;
@@ -158,7 +178,8 @@ public class DatabaseManager {
             HikariConfig config
     ) {
         if (backend == DatabaseBackend.SQLITE) {
-            return "jdbcUrl=" + config.getJdbcUrl();
+            return "jdbcUrl=" + config.getJdbcUrl() +
+                    ", driver=" + config.getDriverClassName();
         }
 
         return "host=" + settingsManager.getProperty(StorageSettings.SQL_HOST) +
