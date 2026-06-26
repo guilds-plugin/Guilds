@@ -66,18 +66,26 @@ dependencies {
     implementation(libs.xseries)
     implementation(libs.adventure.platform.bukkit)
     implementation(libs.triumph.gui)
-    implementation(libs.hikaricp)
-    implementation(libs.jdbi.core)
-    implementation(libs.jdbi.sqlobject)
-    implementation(libs.mariadb.client)
     implementation(libs.quark.bukkit)
 
     /*
-     * Kotlin is compiled against locally, but downloaded and loaded at runtime
-     * by Quark to reduce the SpigotMC upload jar size.
+     * Large runtime libraries are compiled against locally, but downloaded and loaded
+     * by Quark to keep the file size slim.
      */
     compileOnly(libs.kotlin.stdlib)
     quark(libs.kotlin.stdlib)
+
+    compileOnly(libs.hikaricp)
+    quark(libs.hikaricp)
+
+    compileOnly(libs.jdbi.core)
+    quark(libs.jdbi.core)
+
+    compileOnly(libs.jdbi.sqlobject)
+    quark(libs.jdbi.sqlobject)
+
+    compileOnly(libs.mariadb.client)
+    quark(libs.mariadb.client)
 
     /*
      * Provided by the server or by other plugins at runtime.
@@ -284,20 +292,7 @@ tasks.named<ShadowJar>("shadowJar") {
     }
 
     /*
-     * Database stack
-     */
-    relocate("com.zaxxer.hikari", "$relocationRoot.hikari") {
-        skipStringConstants = true
-    }
-    relocate("org.jdbi", "$relocationRoot.jdbi") {
-        skipStringConstants = true
-    }
-    relocate("org.mariadb.jdbc", "$relocationRoot.mariadb") {
-        skipStringConstants = true
-    }
-
-    /*
-     * Common transitive libraries pulled by the database/config stack.
+     * Common transitive libraries pulled by shaded dependencies.
      * These are intentionally narrow to avoid relocating server/plugin APIs.
      */
     relocate("org.antlr", "$relocationRoot.antlr") {
@@ -376,10 +371,8 @@ fun RunServer.configureGuildsRunServer(target: MinecraftRunTarget) {
     downloadPlugins {
         /*
          * EssentialsX:
-         * Hangar marks this release as an external download, so run-task's
-         * Hangar downloader returns 404. Use GitHub Releases instead.
          */
-        url("https://ci.ender.zone/job/EssentialsX/lastSuccessfulBuild/artifact/jars/EssentialsX-2.22.0-dev+112-5baf239.jar")
+        github("EssentialsX", "Essentials", "2.22.0", "EssentialsX-2.22.0.jar")
 
         /*
          * LuckPerms:
