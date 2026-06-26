@@ -110,21 +110,39 @@ public final class Guilds extends JavaPlugin {
     public void onDisable() {
         if (checkVault() && economy != null) {
             try {
-                guildHandler.saveData();
-                cooldownHandler.saveCooldowns();
-                arenaHandler.saveArenas();
+                if (guildHandler != null) {
+                    guildHandler.saveData();
+                }
+                if (cooldownHandler != null) {
+                    cooldownHandler.saveCooldowns();
+                }
+                if (arenaHandler != null) {
+                    arenaHandler.saveArenas();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
             guildHandler.chatLogout();
             guildHandler.getLookupCache().clear();
             commandManager.unregisterCommands();
+            if (guildHandler != null) {
+                guildHandler.chatLogout();
+                guildHandler.getLookupCache().clear();
+            }
+            if (commandManager != null) {
+                commandManager.unregisterCommands();
+            }
         }
 
         if (database != null) {
             LoggingUtils.info("Shutting down database...");
             database.close();
             LoggingUtils.info("Database has been shut down.");
+        }
+
+        if (adventure != null) {
+            adventure.close();
+            adventure = null;
         }
     }
 
@@ -164,6 +182,12 @@ public final class Guilds extends JavaPlugin {
 
         if (economy == null) {
             LoggingUtils.warn("It looks like you don't have an Economy plugin on your server! Stopping plugin..");
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
+
+        if (permissions == null) {
+            LoggingUtils.warn("It looks like you don't have a Permissions plugin hooked into Vault on your server! Stopping plugin..");
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
