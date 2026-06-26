@@ -21,7 +21,7 @@ xseries = "13.7.1"
 adventure-platform-bukkit = "4.4.1"
 # 3.1.13 changes GUI constructor compatibility; current GUI classes still extend old constructors.
 triumph-gui = "3.1.11"
-hikaricp = "4.0.3"
+hikaricp = "7.1.0"
 jdbi = "3.53.0"
 mariadb = "3.5.9"
 vault = "1.7"
