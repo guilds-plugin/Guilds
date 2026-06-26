@@ -101,7 +101,7 @@ public class GuildsMigrationService extends PlainMigrationService {
                 try {
                     newFile.createNewFile();
                 } catch (IOException ex) {
-                    ex.printStackTrace();
+                    LoggingUtils.severe("Unable to create migrated config file: " + newFile.getAbsolutePath(), ex);
                     return false;
                 }
                 YamlConfiguration config = YamlConfiguration.loadConfiguration(newFile);
@@ -118,7 +118,7 @@ public class GuildsMigrationService extends PlainMigrationService {
                     config.save(newFile);
                     LoggingUtils.info("&3Converting done!");
                 } catch (IOException ex) {
-                    ex.printStackTrace();
+                    LoggingUtils.severe("Unable to save migrated config file: " + newFile.getAbsolutePath(), ex);
                 }
             }
             return true;

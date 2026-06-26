@@ -32,6 +32,7 @@ import me.glaremasters.guilds.configuration.sections.GuildSettings
 import me.glaremasters.guilds.configuration.sections.PluginSettings
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
+import me.glaremasters.guilds.utils.LoggingUtils
 import me.glaremasters.guilds.utils.StringUtils
 import net.kyori.adventure.text.event.ClickEvent
 import net.kyori.adventure.text.event.HoverEvent
@@ -65,7 +66,7 @@ class PlayerListener(private val guilds: Guilds, private val settingsManager: Se
                 val announcement = serializer.deserialize("§f[§aGuilds§f]§r Announcements (Hover over me for more information)").clickEvent(click).hoverEvent(hover)
                 guilds.adventure.sender(player).sendMessage(announcement)
             } catch (e: IOException) {
-                e.printStackTrace()
+                LoggingUtils.warn("Unable to fetch in-game announcements for ${player.name}.", e)
             }
         }.execute()
         informed.add(player.uniqueId)

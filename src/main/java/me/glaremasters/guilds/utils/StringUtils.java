@@ -77,7 +77,7 @@ public final class StringUtils {
             announcement = StringUtils.convert_html(result);
             con.disconnect();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            LoggingUtils.warn("Could not fetch Guilds announcements.", ex);
             announcement = "Could not fetch announcements!";
         }
         return announcement;

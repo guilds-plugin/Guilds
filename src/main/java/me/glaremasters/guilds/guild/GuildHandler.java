@@ -94,7 +94,7 @@ public class GuildHandler {
         try {
             loadGuilds();
         } catch (IOException e) {
-            e.printStackTrace();
+            LoggingUtils.severe("An error occurred while loading guild data.", e);
         }
     }
 
@@ -240,8 +240,7 @@ public class GuildHandler {
         try {
             guildsPlugin.getDatabase().getGuildAdapter().deleteGuild(guild.getId().toString());
         } catch (IOException e) {
-            LoggingUtils.warn("There was an error deleting a guild with the following uuid: " + guild.getId());
-            e.printStackTrace();
+            LoggingUtils.warn("There was an error deleting a guild with the following uuid: " + guild.getId(), e);
         }
     }
 
@@ -525,7 +524,7 @@ public class GuildHandler {
             try {
                 vaults.add(Serialization.deserializeInventory(v, settingsManager));
             } catch (InvalidConfigurationException e) {
-                e.printStackTrace();
+                LoggingUtils.warn("Unable to deserialize a vault inventory for guild " + guild.getId() + ". The invalid vault entry will be skipped.", e);
             }
         });
         // Add the guild's vaults to the cache

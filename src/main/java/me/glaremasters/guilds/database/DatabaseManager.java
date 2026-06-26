@@ -30,22 +30,24 @@ import me.glaremasters.guilds.configuration.sections.StorageSettings;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.sqlobject.SqlObjectPlugin;
 
+import java.io.IOException;
+import java.util.Arrays;
+
 /**
  * A class for managing the database connection using JDBI and HikariDataSource.
  */
 public class DatabaseManager {
     private Jdbi jdbi;
     private HikariDataSource hikari;
-    private String dataSourceName;
 
     /**
      * Constructs a DatabaseManager object and sets up a database connection using the given settings manager and backend.
      *
      * @param settingsManager the settings manager that provides the database connection information
      * @param backend         the type of database backend to use
+     * @throws IOException if the database connection cannot be configured or opened
      */
-    public DatabaseManager(SettingsManager settingsManager, DatabaseBackend backend) {
-        // Create a new HikariConfig object
+    public DatabaseManager(SettingsManager settingsManager, DatabaseBackend backend) throws IOException {
         HikariConfig config = new HikariConfig();
         config.setMaximumPoolSize(settingsManager.getProperty(StorageSettings.SQL_POOL_SIZE));
         config.setMinimumIdle(settingsManager.getProperty(StorageSettings.SQL_POOL_IDLE));
@@ -53,16 +55,15 @@ public class DatabaseManager {
         config.setConnectionTimeout(settingsManager.getProperty(StorageSettings.SQL_POOL_TIMEOUT));
 
         String databaseName = settingsManager.getProperty(StorageSettings.SQL_DATABASE);
+
         switch (backend) {
             case MYSQL:
                 config.setPoolName("Guilds MySQL Connection Pool");
-                if (dataSourceName == null) {
-                    tryDataSourceName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
-                }
-                if (dataSourceName == null) {
-                    tryDataSourceName("com.mysql.cj.jdbc.MysqlDataSource");
-                }
-                config.setDataSourceClassName(dataSourceName);
+                config.setDataSourceClassName(requireDataSourceName(
+                        backend,
+                        "com.mysql.cj.jdbc.MysqlDataSource",
+                        "com.mysql.jdbc.jdbc2.optional.MysqlDataSource"
+                ));
                 config.addDataSourceProperty("serverName", settingsManager.getProperty(StorageSettings.SQL_HOST));
                 config.addDataSourceProperty("port", settingsManager.getProperty(StorageSettings.SQL_PORT));
                 config.addDataSourceProperty("databaseName", databaseName);
@@ -80,7 +81,10 @@ public class DatabaseManager {
                 break;
             case MARIADB:
                 config.setPoolName("Guilds MariaDB Connection Pool");
-                config.setDataSourceClassName("org.mariadb.jdbc.MariaDbDataSource");
+                config.setDataSourceClassName(requireDataSourceName(
+                        backend,
+                        "org.mariadb.jdbc.MariaDbDataSource"
+                ));
                 config.addDataSourceProperty("serverName", settingsManager.getProperty(StorageSettings.SQL_HOST));
                 config.addDataSourceProperty("port", settingsManager.getProperty(StorageSettings.SQL_PORT));
                 config.addDataSourceProperty("databaseName", databaseName);
@@ -95,48 +99,22 @@ public class DatabaseManager {
                 throw new IllegalArgumentException("Invalid backend for DatabaseManager setup: " + backend.getBackendName());
         }
 
-        HikariDataSource hikari;
         try {
             hikari = new HikariDataSource(config);
         } catch (Exception ex) {
-            // TODO: send that the database connection has failed; probably must check 1) their host or 2) the settings
-            return;
+            throw new IOException(
+                    "Failed to open " + backend.getBackendName() + " database connection. " +
+                            getConnectionDetails(settingsManager, backend, config),
+                    ex
+            );
         }
 
-        jdbi = Jdbi.create(hikari);
-        jdbi.installPlugin(new SqlObjectPlugin());
-
-        this.hikari = hikari;
+        this.jdbi = Jdbi.create(hikari);
+        this.jdbi.installPlugin(new SqlObjectPlugin());
     }
 
     /**
-     * Helper method to try a data source until the right one is found
-     *
-     * @param className the class to try
-     */
-    public void tryDataSourceName(final String className) {
-        try {
-            dataSourceName(className);
-        } catch (Exception ignored) {
-        }
-    }
-
-    /**
-     * Helper method to check if a class exists to use for mysql data sourcing
-     *
-     * @param className the class to check
-     */
-    private void dataSourceName(final String className) {
-        try {
-            Class.forName(className);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        this.dataSourceName = className;
-    }
-
-    /**
-     * Returns the status of the connection to the MySQL database.
+     * Returns the status of the connection to the SQL database.
      *
      * @return true if connected, false otherwise
      */
@@ -150,5 +128,43 @@ public class DatabaseManager {
 
     public HikariDataSource getHikari() {
         return hikari;
+    }
+
+    private static String requireDataSourceName(DatabaseBackend backend, String... classNames) throws IOException {
+        for (String className : classNames) {
+            if (isClassAvailable(className)) {
+                return className;
+            }
+        }
+
+        throw new IOException(
+                "No datasource class is available for the " + backend.getBackendName() +
+                        " backend. Tried: " + Arrays.toString(classNames)
+        );
+    }
+
+    private static boolean isClassAvailable(String className) {
+        try {
+            Class.forName(className);
+            return true;
+        } catch (ClassNotFoundException ignored) {
+            return false;
+        }
+    }
+
+    private static String getConnectionDetails(
+            SettingsManager settingsManager,
+            DatabaseBackend backend,
+            HikariConfig config
+    ) {
+        if (backend == DatabaseBackend.SQLITE) {
+            return "jdbcUrl=" + config.getJdbcUrl();
+        }
+
+        return "host=" + settingsManager.getProperty(StorageSettings.SQL_HOST) +
+                ", port=" + settingsManager.getProperty(StorageSettings.SQL_PORT) +
+                ", database=" + settingsManager.getProperty(StorageSettings.SQL_DATABASE) +
+                ", username=" + settingsManager.getProperty(StorageSettings.SQL_USERNAME) +
+                ", datasource=" + config.getDataSourceClassName();
     }
 }
