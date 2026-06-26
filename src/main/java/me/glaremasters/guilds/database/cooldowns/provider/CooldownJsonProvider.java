@@ -27,18 +27,15 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.cooldowns.Cooldown;
+import me.glaremasters.guilds.database.JsonFileUtils;
 import me.glaremasters.guilds.database.cooldowns.CooldownProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.lang.reflect.Type;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,9 +56,7 @@ public class CooldownJsonProvider implements CooldownProvider {
 
     @Override
     public void createContainer(@Nullable String tablePrefix) throws IOException {
-        if (!this.dataFolder.exists()) {
-            this.dataFolder.mkdir();
-        }
+        Files.createDirectories(this.dataFolder.toPath());
 
         if (!this.cooldownFile.exists()) {
             this.cooldownFile.createNewFile();
@@ -75,10 +70,7 @@ public class CooldownJsonProvider implements CooldownProvider {
 
     @Override
     public List<Cooldown> getAllCooldowns(@Nullable String tablePrefix) throws IOException {
-        List<Cooldown> loadedCooldowns = gson.fromJson(
-                new InputStreamReader(new FileInputStream(cooldownFile), StandardCharsets.UTF_8),
-                cooldownCollectionType
-        );
+        List<Cooldown> loadedCooldowns = JsonFileUtils.readJson(cooldownFile, gson, cooldownCollectionType, "cooldowns");
 
         return loadedCooldowns == null ? new ArrayList<>() : loadedCooldowns;
     }
@@ -100,7 +92,7 @@ public class CooldownJsonProvider implements CooldownProvider {
     }
 
     private void writeCooldownFile(File file, List<Cooldown> cooldowns) throws IOException {
-        Files.write(Paths.get(file.getPath()), gson.toJson(cooldowns, cooldownCollectionType).getBytes(StandardCharsets.UTF_8));
+        JsonFileUtils.writeAtomically(file, gson.toJson(cooldowns, cooldownCollectionType));
     }
 
     private boolean cooldownExists(@NotNull String cooldownType, @NotNull String cooldownOwner, @NotNull List<Cooldown> current) throws IOException {

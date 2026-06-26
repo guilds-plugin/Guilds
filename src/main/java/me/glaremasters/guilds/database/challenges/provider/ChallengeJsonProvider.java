@@ -25,6 +25,7 @@ package me.glaremasters.guilds.database.challenges.provider;
 
 import com.google.gson.Gson;
 import me.glaremasters.guilds.Guilds;
+import me.glaremasters.guilds.database.JsonFileUtils;
 import me.glaremasters.guilds.database.challenges.ChallengeProvider;
 import me.glaremasters.guilds.guild.GuildChallenge;
 import me.glaremasters.guilds.utils.LoggingUtils;
@@ -32,13 +33,12 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 public class ChallengeJsonProvider implements ChallengeProvider {
     private final File dataFolder;
@@ -51,9 +51,7 @@ public class ChallengeJsonProvider implements ChallengeProvider {
 
     @Override
     public void createContainer(@Nullable String tablePrefix) throws IOException {
-        if (!this.dataFolder.exists()) {
-            this.dataFolder.mkdir();
-        }
+        Files.createDirectories(this.dataFolder.toPath());
     }
 
     @Override
@@ -62,11 +60,11 @@ public class ChallengeJsonProvider implements ChallengeProvider {
 
         for (File file : Objects.requireNonNull(dataFolder.listFiles())) {
             try {
-                GuildChallenge challenge = gson.fromJson(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8), GuildChallenge.class);
+                GuildChallenge challenge = JsonFileUtils.readJson(file, gson, GuildChallenge.class, "GuildChallenge");
                 challenge.getId();
                 challenges.add(challenge);
             } catch (Exception ex) {
-                LoggingUtils.severe("There was an error loading a GuildChallenge from the following file: " + file.getAbsolutePath());
+                LoggingUtils.severe("There was an error loading a GuildChallenge from the following file: " + file.getAbsolutePath(), ex);
                 LoggingUtils.severe("To prevent data loss in the plugin, this GuildChallenge has been prevented from loading.");
             }
         }
@@ -90,7 +88,7 @@ public class ChallengeJsonProvider implements ChallengeProvider {
 
         if (data == null) return null;
 
-        return gson.fromJson(new InputStreamReader(new FileInputStream(data), StandardCharsets.UTF_8), GuildChallenge.class);
+        return JsonFileUtils.readJson(data, gson, GuildChallenge.class, "GuildChallenge");
     }
 
     @Override
@@ -100,9 +98,7 @@ public class ChallengeJsonProvider implements ChallengeProvider {
 
     @Override
     public void updateChallenge(@Nullable String tablePrefix, @NotNull String id, @NotNull String data) throws IOException {
-        File file = new File(dataFolder, id + ".json");
-        deleteChallenge(file);
-        writeChallengeFile(file, data);
+        writeChallengeFile(new File(dataFolder, id + ".json"), data);
     }
 
     @Override
@@ -111,7 +107,7 @@ public class ChallengeJsonProvider implements ChallengeProvider {
     }
 
     private void writeChallengeFile(File file, String data) throws IOException {
-        Files.write(Paths.get(file.getPath()), data.getBytes(StandardCharsets.UTF_8));
+        JsonFileUtils.writeAtomically(file, data);
     }
 
     private void deleteChallenge(File file) {

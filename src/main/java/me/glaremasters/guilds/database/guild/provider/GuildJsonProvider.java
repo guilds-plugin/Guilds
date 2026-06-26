@@ -25,6 +25,7 @@ package me.glaremasters.guilds.database.guild.provider;
 
 import com.google.gson.Gson;
 import me.glaremasters.guilds.Guilds;
+import me.glaremasters.guilds.database.JsonFileUtils;
 import me.glaremasters.guilds.database.guild.GuildProvider;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.utils.LoggingUtils;
@@ -32,12 +33,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -58,10 +55,8 @@ public class GuildJsonProvider implements GuildProvider {
     }
 
     @Override
-    public void createContainer(@Nullable String tablePrefix) {
-        if (!this.dataFolder.exists()) {
-            this.dataFolder.mkdir();
-        }
+    public void createContainer(@Nullable String tablePrefix) throws IOException {
+        Files.createDirectories(this.dataFolder.toPath());
     }
 
     @Override
@@ -88,11 +83,11 @@ public class GuildJsonProvider implements GuildProvider {
 
         for (File file : Objects.requireNonNull(dataFolder.listFiles())) {
             try {
-                Guild guild = gson.fromJson(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8), Guild.class);
+                Guild guild = JsonFileUtils.readJson(file, gson, Guild.class, "Guild");
                 guild.getId();
                 loadedGuilds.add(guild);
             } catch (Exception ex) {
-                LoggingUtils.severe("There was an error loading a Guild from the following file: " + file.getAbsolutePath());
+                LoggingUtils.severe("There was an error loading a Guild from the following file: " + file.getAbsolutePath(), ex);
                 LoggingUtils.severe("To prevent data loss in the plugin, this Guild has been prevented from loading.");
             }
         }
@@ -109,7 +104,7 @@ public class GuildJsonProvider implements GuildProvider {
 
         if (data == null) return null;
 
-        return gson.fromJson(new InputStreamReader(new FileInputStream(data), StandardCharsets.UTF_8), Guild.class);
+        return JsonFileUtils.readJson(data, gson, Guild.class, "Guild");
     }
 
     @Override
@@ -120,13 +115,11 @@ public class GuildJsonProvider implements GuildProvider {
 
     @Override
     public void updateGuild(@Nullable String tablePrefix, @NotNull String id, @NotNull String data) throws IOException {
-        File file = new File(dataFolder, id + ".json");
-        deleteGuild(file);
-        writeGuildFile(file, data);
+        writeGuildFile(new File(dataFolder, id + ".json"), data);
     }
 
     private void writeGuildFile(File file, String data) throws IOException {
-        Files.write(Paths.get(file.getPath()), data.getBytes(StandardCharsets.UTF_8));
+        JsonFileUtils.writeAtomically(file, data);
     }
 
     @Override

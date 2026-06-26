@@ -26,18 +26,15 @@ package me.glaremasters.guilds.database.arenas.provider;
 import com.google.gson.Gson;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.arena.Arena;
+import me.glaremasters.guilds.database.JsonFileUtils;
 import me.glaremasters.guilds.database.arenas.ArenaProvider;
 import me.glaremasters.guilds.utils.LoggingUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -54,9 +51,7 @@ public class ArenaJsonProvider implements ArenaProvider {
 
     @Override
     public void createContainer(@Nullable String tablePrefix) throws IOException {
-        if (!this.dataFolder.exists()) {
-            this.dataFolder.mkdir();
-        }
+        Files.createDirectories(this.dataFolder.toPath());
     }
 
     @Override
@@ -83,11 +78,11 @@ public class ArenaJsonProvider implements ArenaProvider {
 
         for (File file : Objects.requireNonNull(dataFolder.listFiles())) {
             try {
-                Arena arena = gson.fromJson(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8), Arena.class);
+                Arena arena = JsonFileUtils.readJson(file, gson, Arena.class, "Arena");
                 arena.getId();
                 loadedArenas.add(arena);
             } catch (Exception ex) {
-                LoggingUtils.severe("There was an error loading an Arena from the following file: " + file.getAbsolutePath());
+                LoggingUtils.severe("There was an error loading an Arena from the following file: " + file.getAbsolutePath(), ex);
                 LoggingUtils.severe("To prevent data loss in the plugin, this Arena has been prevented from loading.");
             }
         }
@@ -104,7 +99,7 @@ public class ArenaJsonProvider implements ArenaProvider {
 
         if (data == null) return null;
 
-        return gson.fromJson(new InputStreamReader(new FileInputStream(data), StandardCharsets.UTF_8), Arena.class);
+        return JsonFileUtils.readJson(data, gson, Arena.class, "Arena");
     }
 
     @Override
@@ -115,13 +110,11 @@ public class ArenaJsonProvider implements ArenaProvider {
 
     @Override
     public void updateArena(@Nullable String tablePrefix, @NotNull String id, @NotNull String data) throws IOException {
-        File file = new File(dataFolder, id + ".json");
-        deleteArena(file);
-        writeArenaFile(file, data);
+        writeArenaFile(new File(dataFolder, id + ".json"), data);
     }
 
     private void writeArenaFile(File file, String data) throws IOException {
-        Files.write(Paths.get(file.getPath()), data.getBytes(StandardCharsets.UTF_8));
+        JsonFileUtils.writeAtomically(file, data);
     }
 
     @Override
