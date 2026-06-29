@@ -26,7 +26,7 @@ jdbi = "3.53.0"
 mariadb = "3.5.9"
 vault = "1.7"
 placeholderapi = "2.12.2"
-authlib = "1.5.21"
+authlib = "1.11"
 
 [libraries]
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
