@@ -82,7 +82,7 @@ internal class CommandCreate : BaseCommand() {
 
         val cost = settingsManager.getProperty(CostSettings.CREATION)
 
-        if (guildHandler.checkGuildNames(name)) {
+        if (GuildInputValidator.isNameTaken(name, guildHandler.guilds.values)) {
             throw ExpectationNotMet(Messages.CREATE__GUILD_NAME_TAKEN)
         }
 
