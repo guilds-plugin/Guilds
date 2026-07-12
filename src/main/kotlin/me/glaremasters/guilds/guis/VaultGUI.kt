@@ -51,27 +51,50 @@ class VaultGUI(private val guilds: Guilds, private val settingsManager: Settings
         addItems(gui, guild, player)
         addBackground(gui)
 
-        num = 0
         return gui
+    }
+
+    /**
+     * Opens a specific guild vault, creating any missing cached vaults up to that number.
+     *
+     * @param guild the guild that owns the vault
+     * @param player the player opening the vault
+     * @param vaultNumber the one-based vault number
+     * @return true when the vault was valid and opened, otherwise false
+     */
+    fun open(guild: Guild, player: Player, vaultNumber: Int): Boolean {
+        if (vaultNumber < 1 || !guildHandler.hasVaultUnlocked(vaultNumber, guild)) {
+            return false
+        }
+
+        val vaults = guildHandler.vaults[guild] ?: return false
+        while (vaults.size < vaultNumber) {
+            vaults.add(guildHandler.createNewVault(settingsManager))
+        }
+
+        player.openInventory(guildHandler.getGuildVault(guild, vaultNumber))
+        guildHandler.opened.add(player)
+        return true
     }
 
     /**
      * Create the regular items that will be on the GUI
      *
-     * @param pane the pane to be added to
+     * @param gui the GUI to add items to
      * @param guild the guild of the player
      */
     private fun addItems(gui: Gui, guild: Guild, player: Player) {
         val max = guildHandler.getGuildTier(guild.tier.level)?.vaultAmount!!
         for (i in 0 until max) {
-            val status = if (guildHandler.hasVaultUnlocked(i + 1, guild)) settingsManager.getProperty(VaultPickerSettings.PICKER_UNLOCKED) else settingsManager.getProperty(VaultPickerSettings.PICKER_LOCKED)
+            val vaultNumber = i + 1
+            val status = if (guildHandler.hasVaultUnlocked(vaultNumber, guild)) settingsManager.getProperty(VaultPickerSettings.PICKER_UNLOCKED) else settingsManager.getProperty(VaultPickerSettings.PICKER_LOCKED)
 
             val lore = settingsManager.getProperty(VaultPickerSettings.PICKER_LORE)
             val updated = mutableListOf<String>()
 
             lore.forEach { line ->
                 updated.add(StringUtils.color(line
-                        .replace("{number}", (num + 1).toString())
+                        .replace("{number}", vaultNumber.toString())
                         .replace("{status}", status)
                 ))
             }
@@ -80,21 +103,10 @@ class VaultGUI(private val guilds: Guilds, private val settingsManager: Settings
 
             item.setAction { event ->
                 event.isCancelled = true
-                try {
-                    guildHandler.getGuildVault(guild, event.rawSlot + 1)
-                } catch (ex: IndexOutOfBoundsException) {
-                    guildHandler.vaults[guild]?.add(guildHandler.createNewVault(settingsManager))
-                }
-                player.openInventory(guildHandler.getGuildVault(guild, event.rawSlot + 1))
-                guildHandler.opened.add(player)
+                open(guild, player, vaultNumber)
             }
 
             gui.addItem(item)
-            num++
         }
-    }
-
-    companion object {
-        private var num = 0
     }
 }
