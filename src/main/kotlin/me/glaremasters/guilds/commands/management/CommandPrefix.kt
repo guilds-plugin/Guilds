@@ -40,6 +40,7 @@ import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.Constants
+import me.glaremasters.guilds.utils.GuildInputValidator
 import me.glaremasters.guilds.utils.StringUtils
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
@@ -62,7 +63,7 @@ internal class CommandPrefix : BaseCommand() {
             throw ExpectationNotMet(Messages.PREFIX__DISABLED)
         }
 
-        if (!guildHandler.prefixCheck(prefix, settingsManager)) {
+        if (!GuildInputValidator.isValidPrefix(prefix, settingsManager)) {
             throw ExpectationNotMet(Messages.CREATE__PREFIX_TOO_LONG)
         }
 
