@@ -43,6 +43,7 @@ import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.ClaimUtils
 import me.glaremasters.guilds.utils.Constants
 import me.glaremasters.guilds.utils.EconomyUtils
+import me.glaremasters.guilds.utils.GuildInputValidator
 import me.glaremasters.guilds.utils.StringUtils
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
@@ -66,7 +67,7 @@ internal class CommandRename : BaseCommand() {
             throw ExpectationNotMet(Messages.CREATE__GUILD_NAME_TAKEN)
         }
 
-        if (!guildHandler.nameCheck(name, settingsManager)) {
+        if (!GuildInputValidator.isValidName(name, settingsManager)) {
             throw ExpectationNotMet(Messages.CREATE__REQUIREMENTS)
         }
 
