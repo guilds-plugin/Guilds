@@ -29,12 +29,15 @@ import co.aikar.commands.annotation.CommandPermission
 import co.aikar.commands.annotation.Conditions
 import co.aikar.commands.annotation.Dependency
 import co.aikar.commands.annotation.Description
+import co.aikar.commands.annotation.Optional
 import co.aikar.commands.annotation.Subcommand
 import co.aikar.commands.annotation.Syntax
 import dev.triumphteam.gui.guis.PaginatedGui
 import me.glaremasters.guilds.Guilds
+import me.glaremasters.guilds.exceptions.ExpectationNotMet
 import me.glaremasters.guilds.exceptions.InvalidTierException
 import me.glaremasters.guilds.guild.Guild
+import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.Constants
 import org.bukkit.entity.Player
 
@@ -86,9 +89,16 @@ internal class CommandGUI : BaseCommand() {
 
     @Subcommand("vault")
     @Description("{@@descriptions.vault}")
-    @Syntax("")
+    @Syntax("%optional %vault-number")
     @CommandPermission(Constants.BASE_PERM + "vault")
-    fun vault(player: Player, @Conditions("perm:perm=OPEN_VAULT") guild: Guild) {
-        guilds.guiHandler.vaults.get(guild, player).open(player)
+    fun vault(player: Player, @Conditions("perm:perm=OPEN_VAULT") guild: Guild, @Optional vaultNumber: Int?) {
+        if (vaultNumber == null) {
+            guilds.guiHandler.vaults.get(guild, player).open(player)
+            return
+        }
+
+        if (!guilds.guiHandler.vaults.open(guild, player, vaultNumber)) {
+            throw ExpectationNotMet(Messages.VAULTS__MAXED)
+        }
     }
 }
