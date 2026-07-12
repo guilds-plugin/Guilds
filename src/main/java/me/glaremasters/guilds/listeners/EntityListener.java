@@ -138,7 +138,7 @@ public class EntityListener implements Listener {
         final Player damager = (Player) event.getDamager();
 
         // Check if they are in the same guild and have permission to damage their guild members
-        if (guildHandler.isSameGuild(player, damager) && !player.hasPermission("guilds.ffa.guild")) {
+        if (guildHandler.isSameGuild(player, damager) && !damager.hasPermission("guilds.ffa.guild")) {
             event.setCancelled(!settingsManager.getProperty(GuildSettings.GUILD_DAMAGE));
             return;
         }
@@ -153,7 +153,7 @@ public class EntityListener implements Listener {
         }
 
         // Check if they are allies and have permission to damage allies
-        if (guildHandler.isAlly(player, damager) && !player.hasPermission("guilds.ffa.ally")) {
+        if (guildHandler.isAlly(player, damager) && !damager.hasPermission("guilds.ffa.ally")) {
             event.setCancelled(!settingsManager.getProperty(GuildSettings.ALLY_DAMAGE));
         }
     }
@@ -183,13 +183,13 @@ public class EntityListener implements Listener {
         final Player damager = (Player) projectile.getShooter();
 
         // Check if they are in the same guild
-        if (guildHandler.isSameGuild(damaged, damager) && damaged != damager && !damaged.hasPermission("guilds.ffa.guild")) {
+        if (guildHandler.isSameGuild(damaged, damager) && damaged != damager && !damager.hasPermission("guilds.ffa.guild")) {
             event.setCancelled(!settingsManager.getProperty(GuildSettings.GUILD_DAMAGE));
             return;
         }
 
         // Check if they are allies
-        if (guildHandler.isAlly(damaged, damager) && !damaged.hasPermission("guilds.ffa.ally")) {
+        if (guildHandler.isAlly(damaged, damager) && !damager.hasPermission("guilds.ffa.ally")) {
             event.setCancelled(!settingsManager.getProperty(GuildSettings.ALLY_DAMAGE));
         }
     }
@@ -214,14 +214,14 @@ public class EntityListener implements Listener {
         final Player damager = (Player) arrow.getShooter();
 
         // Check if they are in the same guild
-        if (guildHandler.isSameGuild(damagee, damager) && !damagee.hasPermission("guilds.ffa.guild")) {
+        if (guildHandler.isSameGuild(damagee, damager) && !damager.hasPermission("guilds.ffa.guild")) {
             arrow.setFireTicks(0);
             event.setCancelled(!settingsManager.getProperty(GuildSettings.GUILD_DAMAGE));
             return;
         }
 
         // Check if they are allies
-        if (guildHandler.isAlly(damagee, damager) && !damagee.hasPermission("guilds.ffa.ally")) {
+        if (guildHandler.isAlly(damagee, damager) && !damager.hasPermission("guilds.ffa.ally")) {
             arrow.setFireTicks(0);
             event.setCancelled(!settingsManager.getProperty(GuildSettings.ALLY_DAMAGE));
         }
