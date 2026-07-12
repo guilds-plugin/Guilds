@@ -24,8 +24,11 @@
 package me.glaremasters.guilds.utils;
 
 import ch.jalu.configme.SettingsManager;
+import co.aikar.commands.ACFBukkitUtil;
 import me.glaremasters.guilds.configuration.sections.GuildSettings;
+import me.glaremasters.guilds.guild.Guild;
 
+import java.util.Collection;
 import java.util.regex.Pattern;
 
 /**
@@ -72,6 +75,21 @@ public final class GuildInputValidator {
         );
     }
 
+    /**
+     * Check whether a guild name is already used, ignoring color formatting and case.
+     *
+     * @param input the raw proposed guild name
+     * @param guilds the existing guilds
+     * @return true when an existing guild has the same visible name
+     */
+    public static boolean isNameTaken(String input, Collection<Guild> guilds) {
+        final String normalizedInput = normalizeName(input);
+        return guilds.stream()
+                .map(Guild::getName)
+                .map(GuildInputValidator::normalizeName)
+                .anyMatch(normalizedInput::equalsIgnoreCase);
+    }
+
     private static boolean matchesRequirements(String input, String regex, boolean includeColorCodes) {
         if (includeColorCodes) {
             return input.matches(regex);
@@ -89,6 +107,10 @@ public final class GuildInputValidator {
 
         return !SECTION_COLOR_CODE.matcher(input).find()
                 || regexAcceptsCharacter(visibleInput, regex, SECTION_SIGN);
+    }
+
+    private static String normalizeName(String input) {
+        return ACFBukkitUtil.removeColors(StringUtils.color(input));
     }
 
     private static boolean regexAcceptsCharacter(String validInput, String regex, char character) {
