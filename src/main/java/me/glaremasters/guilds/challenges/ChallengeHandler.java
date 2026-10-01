@@ -44,6 +44,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -489,7 +490,18 @@ public class ChallengeHandler {
     }
 
 
+    /**
+     * Read only view of every tracked challenge, completed ones included.
+     *
+     * <p>This is a live view, not a copy: reads follow later changes, and iteration is only as safe
+     * as the underlying collection is. What it does stop is writes. Pushing a challenge into this set
+     * behind the handler's back skips the arena reservation and the expiry task that
+     * {@code /guild war challenge} sets up around {@link #addChallenge(GuildChallenge)}, which leaves
+     * an arena marked as in use for the rest of the session with nothing scheduled to release it.
+     *
+     * @return unmodifiable view of the tracked challenges
+     */
     public Set<GuildChallenge> getChallenges() {
-        return this.challenges;
+        return Collections.unmodifiableSet(challenges);
     }
 }

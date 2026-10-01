@@ -47,4 +47,30 @@ data class GuildChallenge(
     @JsonAdapter(WarGuildChallengeAdapter::class) var loser: Guild?,
     @Transient var aliveChallengers: MutableMap<UUID, String>?,
     @Transient var aliveDefenders: MutableMap<UUID, String>?
-)
+) {
+
+    /**
+     * Identity is the challenge id and nothing else.
+     *
+     * A challenge is mutated constantly while a war runs: the joinable and started flags flip, the
+     * rosters grow, the alive maps are swapped and trimmed, a winner and loser are recorded, and the
+     * arena it holds has its own `inUse` flag toggled. The data class generated `equals`/`hashCode`
+     * hash all of those fields, so mutating a challenge that was already stored changed the hash it
+     * was filed under. Once that happened the challenge could no longer be found or removed through
+     * a hash based lookup, even though it was still physically in the collection: a war that was
+     * denied, or abandoned while players were joining, left its challenge behind and the two guilds
+     * could not challenge each other again for the rest of the session.
+     *
+     * The id is generated once and never reassigned, so it is the only field that can carry identity.
+     */
+    override fun equals(other: Any?): Boolean = this === other || (other is GuildChallenge && id == other.id)
+
+    /**
+     * Must stay in step with [equals]. Only the immutable id contributes.
+     *
+     * Deliberately not defensive about a missing id. A challenge record whose id was lost cannot be
+     * written, looked up or removed by id anyway, and treating every such record as one and the same
+     * challenge would quietly drop one of them. Failing here is the louder, more useful outcome.
+     */
+    override fun hashCode(): Int = id.hashCode()
+}
