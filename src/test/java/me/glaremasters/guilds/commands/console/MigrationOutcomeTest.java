@@ -208,6 +208,25 @@ class MigrationOutcomeTest {
         assertTrue(gate.tryAcquireWriter(), "no permit should have been taken");
     }
 
+    @Test
+    @DisplayName("a migration onto the storage already in use is refused before anything is opened")
+    void aMigrationOntoTheStorageAlreadyInUseIsRefusedBeforeAnythingIsOpened() throws IOException {
+        // `MYSQL` and `MARIADB` are built from one set of properties, so this is the same tables twice. The
+        // migration would write over the rows it is reading, and a failure partway through would have
+        // deleted cooldowns out of the live tables with no second copy to restore from. Refused before the
+        // pool is opened, so there is nothing to clean up either.
+        Mockito.when(source.sharesStorageWith(DatabaseBackend.MYSQL)).thenReturn(true);
+
+        final MigrationOutcome outcome = new MigrationOutcome();
+        write(outcome);
+        publish(outcome);
+        outcome.closeUnpublished();
+
+        Mockito.verify(source, Mockito.never()).cloneWith(Mockito.any());
+        assertEquals(Messages.MIGRATE__FAILED, reportedMessage());
+        assertTrue(gate.tryAcquireWriter(), "no permit should have been taken");
+    }
+
     // ---------------------------------------------------------------------------------------
     // Permit
     // ---------------------------------------------------------------------------------------

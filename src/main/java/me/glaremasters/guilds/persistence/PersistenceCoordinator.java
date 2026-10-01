@@ -40,10 +40,14 @@ import org.jetbrains.annotations.Nullable;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -86,6 +90,21 @@ public final class PersistenceCoordinator {
      * difference between an operator waiting and a watchdog kill.
      */
     static final int MAX_RECONCILED_ROWS = 500;
+
+    /**
+     * Guilds disbanded since the last write finished, by id string.
+     *
+     * <p>Concurrent because the main thread adds to it while a worker reads it. Pruned at the end of every
+     * guild write, which is the only point at which pruning is safe: a capture does <em>not</em> hold the
+     * write permit, because a migration captures before it takes one, so clearing on capture would erase a
+     * disband that an autosave write already in flight was about to read and put the row back. The write is
+     * the right place — the gate admits one writer at a time, so nothing else is reading the set when it ends.
+     *
+     * <p>Entries left behind by an abandoned capture are harmless rather than harmful. The guild is out of the
+     * live map, so no later snapshot contains it, and the worst an entry can do is one redundant
+     * {@code deleteGuild} per save.
+     */
+    private final Set<String> guildsDisbandedDuringSave = ConcurrentHashMap.newKeySet();
 
     /** Whether the calling thread is the one that owns mutable plugin state. Overridden in tests. */
     private final java.util.function.BooleanSupplier onMainThread;
@@ -145,6 +164,21 @@ public final class PersistenceCoordinator {
      */
     @NotNull public CaptureSession beginCapture() {
         return new CaptureSession(guildHandler, arenaHandler, challengeHandler, cooldownHandler, plugin.getDatabase());
+    }
+
+    /**
+     * Records that a guild was disbanded, so a save already in flight cannot write it back.
+     *
+     * <p>Must be called on the main thread, before or with the removal from the live map.
+     *
+     * <p>{@code GuildAdapter} has no delete pass, so a stale snapshot does not merely fail to delete a
+     * disbanded guild, it puts the row back: the disband's own delete lands first and the worker's write
+     * recreates the row afterwards, leaving it in storage permanently.
+     *
+     * @param guildId the guild that was disbanded
+     */
+    public void noteGuildDisbanded(@NotNull UUID guildId) {
+        guildsDisbandedDuringSave.add(guildId.toString());
     }
 
     /**
@@ -300,7 +334,30 @@ public final class PersistenceCoordinator {
         }
 
         publishBackend(destination);
+
+        // The destination now holds the snapshot, not the plugin's current state. A guild created or edited
+        // after the capture is not in it, and the autosave is gated off until the migration flag clears, so
+        // without this the gap would last a whole save interval. Making the save due now closes it on the
+        // next tick rather than the next interval.
+        markSaveDue();
+
+        if (guildHandler != null && snapshot.getGuilds().size() != guildHandler.getGuilds().size()) {
+            LoggingUtils.info("Guilds were created or removed while the migration ran ("
+                    + snapshot.getGuilds().size() + " in the snapshot, " + guildHandler.getGuilds().size()
+                    + " now). The next save brings the new backend level.");
+        }
+
         return true;
+    }
+
+    /**
+     * Makes the next tick start a capture, by forgetting when the last one finished.
+     *
+     * <p>Must be called on the main thread, like the rest of the autosave state. Zero is the coordinator's
+     * "never captured" marker, so this reads as overdue rather than as a timestamp in the past.
+     */
+    public void markSaveDue() {
+        lastCaptureFinishedNanos = 0L;
     }
 
     /**
@@ -323,22 +380,39 @@ public final class PersistenceCoordinator {
         final List<String> stale = new ArrayList<>();
 
         try {
-            for (String id : adapter.getAllGuildIds()) {
+            final List<String> ids = adapter.getAllGuildIds();
+
+            // Bounded rather than proportional to the destination, because this runs on the main thread.
+            // At most `live + MAX` rows can be worth reading: past that, the stale count alone already
+            // exceeds the cap and the migration is going to refuse, so the per-row parse and map lookup are
+            // skipped along with the delete loop that would have followed.
+            //
+            // The fetch itself is the provider's, and is not bounded here — a SQL backend answers this with
+            // a full scan of the guild table. Pushing a limit down into the providers is the fix for that,
+            // and is not in this change.
+            final int live = guildHandler.getGuilds().size();
+            if (ids.size() > live + MAX_RECONCILED_ROWS) {
+                // An upper bound rather than a count: it assumes every live guild is also in the
+                // destination, so the true number of stale rows is at least this and possibly all of them.
+                atLeastTooManyRows("guilds", ids.size() - live, failures);
+                return null;
+            }
+
+            for (String id : ids) {
                 final UUID guildId = parseGuildId(id, destination, failures);
                 if (guildId == null) {
                     return null;
                 }
                 if (guildHandler.getGuilds().get(guildId) == null) {
                     stale.add(id);
+                    if (stale.size() > MAX_RECONCILED_ROWS) {
+                        tooManyRows("guilds", stale.size(), failures);
+                        return null;
+                    }
                 }
             }
         } catch (IOException | RuntimeException e) {
             failed("guild reconciliation", failures, e);
-            return null;
-        }
-
-        if (stale.size() > MAX_RECONCILED_ROWS) {
-            tooManyRows("guilds", stale.size(), failures);
             return null;
         }
 
@@ -362,6 +436,26 @@ public final class PersistenceCoordinator {
                 + " more than " + MAX_RECONCILED_ROWS + ". Empty that backend, or migrate to a different one, and"
                 + " run the migration again. The previous backend is still in use and is what the plugin is"
                 + " reading and writing.";
+        return refuse(message, failures);
+    }
+
+    /**
+     * Refuses where only a lower bound on the stale count is known, and says so.
+     *
+     * @param what     the kind of row
+     * @param atLeast  a lower bound on how many the plugin no longer has
+     * @param failures collects the message, or null
+     * @return false, so a caller accumulating results can use it directly
+     */
+    private boolean atLeastTooManyRows(@NotNull String what, int atLeast, @Nullable List<String> failures) {
+        final String message = "the destination holds at least " + atLeast + " " + what + " the plugin no longer"
+                + " has, which is more than " + MAX_RECONCILED_ROWS + ". Empty that backend, or migrate to a"
+                + " different one, and run the migration again. The previous backend is still in use and is what"
+                + " the plugin is reading and writing.";
+        return refuse(message, failures);
+    }
+
+    private boolean refuse(@NotNull String message, @Nullable List<String> failures) {
         LoggingUtils.severe(message);
         if (failures != null) {
             failures.add(message);
@@ -439,11 +533,8 @@ public final class PersistenceCoordinator {
      * and both sides of the comparison are detached, the destination's rows and the snapshot's. So this runs
      * on the worker, before the main-thread step that reconciles guilds and publishes.
      *
-     * <p>One caveat on "the destination's rows are detached". True for a destination that is a different
-     * backend. {@code MYSQL} and {@code MARIADB} are configured from the same host, database and table
-     * prefix, so migrating between them opens a second pool onto the same physical tables and these rows are
-     * the live ones. The pass is still safe there — it only ever writes rows the snapshot describes — but the
-     * reassurance does not rest on detachment in that case.
+     * <p>Detachment holds because a destination on the same tables as the source is refused before a pool is
+     * opened — see {@link me.glaremasters.guilds.database.DatabaseAdapter#sharesStorageWith}.
      *
      * <p>Reproduces the snapshot's expiry rather than leaving whatever the destination had. The destination
      * is keyed by type and owner, and {@code CooldownAdapter#saveCooldowns} only ever creates, so a
@@ -463,14 +554,17 @@ public final class PersistenceCoordinator {
 
         try {
             final List<Cooldown> stored = adapter.getAllCooldowns();
+            // Keyed for lookup, because a linear scan per stored row makes the comparison quadratic in the
+            // two collections at once — and this runs over a destination that may hold thousands.
+            final Map<CooldownKey, Cooldown> captured = indexBy(snapshot.getCooldowns());
 
             for (Cooldown row : stored) {
-                final Cooldown captured = findCooldown(snapshot, row);
+                final Cooldown match = captured.get(new CooldownKey(row.getCooldownType(), row.getCooldownOwner()));
 
-                if (captured == null) {
+                if (match == null) {
                     stale.add(row);
-                } else if (!captured.getCooldownExpiry().equals(row.getCooldownExpiry())) {
-                    wrongExpiry.put(row, captured);
+                } else if (!match.getCooldownExpiry().equals(row.getCooldownExpiry())) {
+                    wrongExpiry.put(row, match);
                 }
             }
 
@@ -478,11 +572,12 @@ public final class PersistenceCoordinator {
                 return tooManyCooldowns(stale.size(), wrongExpiry.size(), failures);
             }
 
-            // The rewrite cost is what makes a large destination a problem, and it is quadratic: a JSON
-            // delete re-reads, filters and rewrites the whole file, so a wrong-expiry row costs two full
-            // rewrites. The count of rows to change is capped above; this caps what each rewrite is over,
-            // which is the other half of the bound.
-            if (!wrongExpiry.isEmpty() && stored.size() > MAX_RECONCILED_ROWS) {
+            // A JSON cooldown delete re-reads, filters and rewrites the whole file, so every row changed
+            // costs a pass over every row stored. The bound is on that product rather than on either factor,
+            // which keeps a one-row trim of a large destination allowed: that is one pass, and it is the case
+            // a destination that outlived a restart mostly needs.
+            final long rewrites = (long) (stale.size() + 2L * wrongExpiry.size()) * (long) stored.size();
+            if (rewrites > (long) MAX_RECONCILED_ROWS * MAX_RECONCILED_ROWS) {
                 return tooManyCooldowns(stale.size(), wrongExpiry.size(), failures);
             }
 
@@ -504,14 +599,46 @@ public final class PersistenceCoordinator {
         return true;
     }
 
-    @Nullable private Cooldown findCooldown(@NotNull PluginSnapshot snapshot, @NotNull Cooldown stored) {
-        for (Cooldown captured : snapshot.getCooldowns()) {
-            if (captured.getCooldownType() == stored.getCooldownType()
-                    && captured.getCooldownOwner().equals(stored.getCooldownOwner())) {
-                return captured;
-            }
+    /** The identity a cooldown is stored under: one per type and owner. */
+    private static final class CooldownKey {
+        private final Cooldown.Type type;
+        private final UUID owner;
+
+        private CooldownKey(@NotNull Cooldown.Type type, @NotNull UUID owner) {
+            this.type = type;
+            this.owner = owner;
         }
-        return null;
+
+        @Override
+        public boolean equals(Object other) {
+            if (this == other) {
+                return true;
+            }
+            if (!(other instanceof CooldownKey)) {
+                return false;
+            }
+            final CooldownKey that = (CooldownKey) other;
+            return type == that.type && owner.equals(that.owner);
+        }
+
+        @Override
+        public int hashCode() {
+            return 31 * type.hashCode() + owner.hashCode();
+        }
+    }
+
+    /**
+     * Indexes cooldowns by the identity the destination stores them under.
+     *
+     * @param cooldowns the captured cooldowns
+     * @return each cooldown, keyed by type and owner
+     */
+    @NotNull private static Map<CooldownKey, Cooldown> indexBy(@NotNull List<Cooldown> cooldowns) {
+        final Map<CooldownKey, Cooldown> index = new HashMap<>();
+        for (Cooldown cooldown : cooldowns) {
+            index.put(new CooldownKey(cooldown.getCooldownType(), cooldown.getCooldownOwner()), cooldown);
+        }
+        return index;
     }
 
     /** The spread autosave capture in progress, if any. At most one exists. */
@@ -775,15 +902,69 @@ public final class PersistenceCoordinator {
     }
 
     private boolean saveGuilds(@NotNull DatabaseAdapter database, @NotNull PluginSnapshot snapshot, @Nullable List<String> failures) {
-        if (snapshot.getGuilds().isEmpty()) {
-            return true;
-        }
         try {
-            database.getGuildAdapter().saveSerialized(snapshot.getGuilds());
-            return true;
-        } catch (IOException | RuntimeException e) {
-            return failed("guild", failures, e);
+            if (snapshot.getGuilds().isEmpty()) {
+                return true;
+            }
+
+            // Read once. A guild disbanded after this point is not in the map below, so the pass that
+            // follows the write is what catches it.
+            final Set<String> excluded = new HashSet<>(guildsDisbandedDuringSave);
+
+            Map<String, String> written = snapshot.getGuilds();
+            if (!excluded.isEmpty()) {
+                written = new LinkedHashMap<>(written);
+                written.keySet().removeAll(excluded);
+                if (written.isEmpty()) {
+                    return true;
+                }
+            }
+
+            boolean complete = true;
+            try {
+                database.getGuildAdapter().saveSerialized(written);
+            } catch (IOException | RuntimeException e) {
+                complete = failed("guild", failures, e);
+            } finally {
+                // A guild disbanded while the write was running is not covered by the filter above, and the
+                // row the write put there still has to go. In a `finally` because the write throwing is
+                // exactly when a resurrected row is most likely, including when what it throws is an `Error`.
+                complete &= removeGuildsDisbandedDuringWrite(database, excluded, failures);
+            }
+            return complete;
+        } finally {
+            guildsDisbandedDuringSave.clear();
         }
+    }
+
+    /**
+     * Deletes the rows of guilds disbanded after the guild write had already chosen what to write.
+     *
+     * @param database the backend that was written to
+     * @param excluded ids already left out of the write, which need no second look
+     * @param failures collects a description of what went wrong, or null
+     * @return true when every row was deleted without throwing
+     */
+    private boolean removeGuildsDisbandedDuringWrite(
+            @NotNull DatabaseAdapter database,
+            @NotNull Set<String> excluded,
+            @Nullable List<String> failures
+    ) {
+        final Set<String> late = new HashSet<>(guildsDisbandedDuringSave);
+        late.removeAll(excluded);
+        if (late.isEmpty()) {
+            return true;
+        }
+
+        boolean complete = true;
+        for (String id : late) {
+            try {
+                database.getGuildAdapter().deleteGuild(id);
+            } catch (IOException | RuntimeException e) {
+                complete &= failed("guild", failures, e);
+            }
+        }
+        return complete;
     }
 
     private boolean saveArenas(@NotNull DatabaseAdapter database, @NotNull PluginSnapshot snapshot, @Nullable List<String> failures) {

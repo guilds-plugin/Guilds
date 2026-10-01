@@ -87,22 +87,37 @@ class GuildSnapshotRemovalTest {
      * @return the handler
      */
     static GuildHandler newHandler(int count, Path folder) throws IOException {
+        return newHandler(count, folder, null);
+    }
+
+    /**
+     * Builds a real {@link GuildHandler} holding {@code count} guilds, against a caller-supplied plugin.
+     *
+     * <p>The plugin is passed in rather than built here so a test can have the handler talk to its own
+     * collaborators — the persistence coordinator, in particular, which {@code removeGuild} reports to.
+     *
+     * @param count  how many guilds to add
+     * @param folder where to write roles.yml and tiers.yml, or null for a temporary directory
+     * @param plugin the plugin to build the handler against, or null for a mock
+     * @return the handler
+     */
+    static GuildHandler newHandler(int count, Path folder, Guilds plugin) throws IOException {
         final Path folderToUse = folder == null
                 ? Files.createTempDirectory("guilds-handler")
                 : folder;
 
         writeConfigFiles(folderToUse);
 
-        final Guilds plugin = Mockito.mock(Guilds.class);
-        Mockito.when(plugin.getDataFolder()).thenReturn(folderToUse.toFile());
+        final Guilds pluginToUse = plugin == null ? Mockito.mock(Guilds.class) : plugin;
+        Mockito.when(pluginToUse.getDataFolder()).thenReturn(folderToUse.toFile());
 
         final DatabaseAdapter database = Mockito.mock(DatabaseAdapter.class);
         final GuildAdapter adapter = Mockito.mock(GuildAdapter.class);
         Mockito.when(adapter.getAllGuilds()).thenReturn(new ArrayList<Guild>());
         Mockito.when(database.getGuildAdapter()).thenReturn(adapter);
-        Mockito.when(plugin.getDatabase()).thenReturn(database);
+        Mockito.when(pluginToUse.getDatabase()).thenReturn(database);
 
-        final GuildHandler handler = new GuildHandler(plugin, null);
+        final GuildHandler handler = new GuildHandler(pluginToUse, null);
 
         final ArrayList<Guild> guilds = new ArrayList<Guild>();
         for (int i = 0; i < count; i++) {

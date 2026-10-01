@@ -34,6 +34,7 @@ import me.glaremasters.guilds.utils.LoggingUtils;
 
 import java.io.IOException;
 import java.util.Locale;
+import java.util.Objects;
 
 /**
  * A class that implements the DatabaseAdapter interface.
@@ -50,6 +51,9 @@ public final class DatabaseAdapter implements AutoCloseable {
     private CooldownAdapter cooldownAdapter;
     private DatabaseManager databaseManager;
     private String sqlTablePrefix;
+    private String sqlHost;
+    private String sqlPort;
+    private String sqlDatabase;
 
     /**
      * Creates a new instance of the DatabaseAdapter class.
@@ -114,9 +118,10 @@ public final class DatabaseAdapter implements AutoCloseable {
      */
     @Override
     public void close() {
-        if (databaseManager != null && databaseManager.isConnected()) {
-            // TODO: do you want to save the guilds here?
-            databaseManager.getHikari().close();
+        // The field is left in place. `DatabaseManager#close` is idempotent, and keeping the reference means
+        // a read after a close fails with the pool's own error rather than with a bare null dereference.
+        if (databaseManager != null) {
+            databaseManager.close();
         }
     }
 
@@ -162,8 +167,63 @@ public final class DatabaseAdapter implements AutoCloseable {
         }
 
         DatabaseAdapter cloned = new DatabaseAdapter(this.guilds, this.settings, false);
-        cloned.setUpBackend(backend);
+        try {
+            cloned.setUpBackend(backend);
+        } catch (IOException | RuntimeException e) {
+            // `setUpBackend` closes the pool it opened, but the clone is discarded either way and must not
+            // be left holding one if that ever stops being true.
+            cloned.close();
+            throw e;
+        }
         return cloned;
+    }
+
+    /**
+     * Whether migrating to {@code backend} would write to the same physical storage this adapter already
+     * uses.
+     *
+     * <p>{@code MYSQL} and {@code MARIADB} are both built from one set of properties, so switching between
+     * them can put two pools on one set of tables. The migration would then read and write the rows it is
+     * running against, which is a no-op at best. If it fails partway it is worse than a no-op: the cooldown
+     * reconciliation has already deleted rows out of the live tables, and there is no second copy to fall
+     * back on.
+     *
+     * <p>Compared on where this adapter's pool was actually opened, not on which backend was asked for. An
+     * operator who repoints {@code storage-host} and reloads, then migrates between the two, is moving to a
+     * different server and must not be refused. {@code SQLITE} is a fixed file and {@code JSON} is the
+     * plugin folder, so neither can collide with a server SQL backend.
+     *
+     * @param backend the backend being migrated to
+     * @return true when both backends address the same tables
+     */
+    public boolean sharesStorageWith(DatabaseBackend backend) {
+        if (!isServerSql(this.backend) || !isServerSql(backend)) {
+            return false;
+        }
+        return Objects.equals(this.sqlHost, settings.getProperty(StorageSettings.SQL_HOST))
+                && Objects.equals(this.sqlPort, settings.getProperty(StorageSettings.SQL_PORT))
+                && Objects.equals(this.sqlDatabase, settings.getProperty(StorageSettings.SQL_DATABASE))
+                && Objects.equals(this.sqlTablePrefix, tablePrefixSetting());
+    }
+
+    /**
+     * The configured table prefix, normalised the way {@link #setUpBackend} normalises it.
+     *
+     * @return the lower-cased prefix
+     */
+    private String tablePrefixSetting() {
+        return settings.getProperty(StorageSettings.SQL_TABLE_PREFIX).toLowerCase(Locale.ROOT);
+    }
+
+    /**
+     * Whether a backend stores its data in the configured SQL server's tables, which every such backend
+     * shares with the others.
+     *
+     * @param backend the backend to classify
+     * @return true for {@code MYSQL} and {@code MARIADB}
+     */
+    private static boolean isServerSql(DatabaseBackend backend) {
+        return backend == DatabaseBackend.MYSQL || backend == DatabaseBackend.MARIADB;
     }
 
     /**
@@ -182,7 +242,10 @@ public final class DatabaseAdapter implements AutoCloseable {
         try {
             if (backend != DatabaseBackend.JSON) {
                 this.databaseManager = new DatabaseManager(settings, backend);
-                this.sqlTablePrefix = this.settings.getProperty(StorageSettings.SQL_TABLE_PREFIX).toLowerCase(Locale.ROOT);
+                this.sqlTablePrefix = tablePrefixSetting();
+                this.sqlHost = this.settings.getProperty(StorageSettings.SQL_HOST);
+                this.sqlPort = this.settings.getProperty(StorageSettings.SQL_PORT);
+                this.sqlDatabase = this.settings.getProperty(StorageSettings.SQL_DATABASE);
             }
 
             // You may wish to create container(s) elsewhere, but this is an OK spot.
@@ -200,6 +263,11 @@ public final class DatabaseAdapter implements AutoCloseable {
             this.cooldownAdapter = new CooldownAdapter(guilds, this);
             this.cooldownAdapter.createContainer();
         } catch (Exception ex) {
+            // The pool is already open by the time the first `createContainer` runs, and a failure from
+            // there on — a table the database user cannot create, a missing driver — would otherwise abandon
+            // it. Both callers discard the adapter when this throws, `cloneWith` and the constructor, so
+            // nothing is left that could close it.
+            close();
             throw new IOException(
                     "There was an issue setting up the " + backend.getBackendName() +
                             " backend. Shutting down to prevent further issues.",

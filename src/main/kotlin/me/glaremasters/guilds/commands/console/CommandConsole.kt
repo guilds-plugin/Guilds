@@ -96,8 +96,9 @@ internal class CommandConsole : BaseCommand() {
      * worked. So every collection is confirmed written, and the reconciliation that follows confirms the
      * destination matches the live plugin rather than the snapshot.
      *
-     * <p>A failure must not leave a destructive action armed. The {@code ConfirmAction} is removed here
-     * rather than at the end of the chain, because TaskChain skips the trailing steps when one throws.
+     * <p>A failure must not leave a destructive action armed. The {@code ConfirmAction} is removed as the
+     * first thing {@code accept} does, because every check after it throws and TaskChain skips the trailing
+     * steps when one does.
      */
     @Subcommand("console migrate")
     @Description("{@@descriptions.console-migrate}")
@@ -112,6 +113,12 @@ internal class CommandConsole : BaseCommand() {
         currentCommandIssuer.sendInfo(Messages.MIGRATE__WARNING)
         actionHandler.addAction(issuer.getIssuer(), object : ConfirmAction {
             override fun accept() {
+                // First statement, before anything that can throw. Every one of the checks below throws
+                // `ExpectationNotMet`, and TaskChain runs the rest of the chain only when a step returns
+                // normally, so an action left armed here would sit waiting for a `/guilds confirm` and
+                // re-run the whole migration with a stale capture behind it.
+                actionHandler.removeAction(issuer.getIssuer())
+
                 val resolvedBackend = DatabaseBackend.getByBackendName(toBackend)
                     ?: throw ExpectationNotMet(Messages.MIGRATE__INVALID_BACKEND)
                 val coordinator = guilds.persistenceCoordinator
@@ -128,11 +135,6 @@ internal class CommandConsole : BaseCommand() {
                     gate.endMigration()
                     throw ExpectationNotMet(Messages.MIGRATE__FAILED)
                 }
-
-                // Removed here rather than in the trailing step. TaskChain skips the rest of a chain when a
-                // step throws, so an action removed at the end would survive a failure and silently re-run
-                // the whole migration on the next `/guilds confirm`.
-                actionHandler.removeAction(issuer.getIssuer())
 
                 val commandIssuer = guilds.commandManager.getCommandIssuer(issuer.getIssuer())
 

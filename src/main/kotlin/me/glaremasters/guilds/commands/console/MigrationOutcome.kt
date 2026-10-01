@@ -90,6 +90,26 @@ internal class MigrationOutcome {
         backend: DatabaseBackend,
         snapshot: PluginSnapshot
     ) {
+        // Before anything is opened, and before the storage check, so a backend the operator already has
+        // gets the message that names it rather than one about storage.
+        if (guilds.database.backend == backend) {
+            fail(Messages.MIGRATE__SAME_BACKEND, null, "the destination is the backend already in use")
+            return
+        }
+
+        // Refused before the pool opens. See `DatabaseAdapter#sharesStorageWith` for what counts as the
+        // same tables.
+        if (guilds.database.sharesStorageWith(backend)) {
+            LoggingUtils.severe(
+                "Migration from ${guilds.database.backend.backendName} to ${backend.backendName} was refused:" +
+                    " both are configured against the same host, database and table prefix, so they are the" +
+                    " same rows. Point the storage settings at a different database or server, reload, and" +
+                    " migrate again.",
+            )
+            fail(Messages.MIGRATE__FAILED, null, "the destination is the storage already in use")
+            return
+        }
+
         val adapter = try {
             guilds.database.cloneWith(backend)
         } catch (ex: IllegalArgumentException) {

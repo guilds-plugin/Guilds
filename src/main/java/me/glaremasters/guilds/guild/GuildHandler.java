@@ -37,6 +37,7 @@ import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.ClaimUtils;
 import me.glaremasters.guilds.utils.ItemBuilder;
+import me.glaremasters.guilds.persistence.PersistenceCoordinator;
 import me.glaremasters.guilds.utils.LoggingUtils;
 import me.glaremasters.guilds.utils.Serialization;
 import me.glaremasters.guilds.utils.StringUtils;
@@ -71,6 +72,12 @@ public class GuildHandler {
 
     private final Guilds guildsPlugin;
     private final SettingsManager settingsManager;
+    /**
+     * The live guilds.
+     *
+     * <p>Every removal goes through {@link #removeGuild}, which is what tells the persistence coordinator a
+     * save in flight must not write that guild back. A direct {@code remove} here would break that silently.
+     */
     private final Map<UUID, Guild> guilds = new HashMap<>();
     private final List<GuildRole> roles = new ArrayList<>();
     private final List<GuildTier> tiers = new ArrayList<>();
@@ -259,6 +266,15 @@ public class GuildHandler {
      * @param guild the guild to remove
      */
     public void removeGuild(@NotNull Guild guild) {
+        // Before the map removal and the delete, so a save already in flight cannot put the row back after
+        // them. `GuildAdapter` has no delete pass, so a stale snapshot resurrects the guild rather than
+        // failing to remove it. A disband that lands entirely inside a write is the one case left, which the
+        // coordinator's post-write pass covers.
+        final PersistenceCoordinator coordinator = guildsPlugin.getPersistenceCoordinator();
+        if (coordinator != null) {
+            coordinator.noteGuildDisbanded(guild.getId());
+        }
+
         vaults.remove(guild);
         guild.getMembers().forEach(member -> removeFromMemberCache(member.getUuid()));
         guilds.remove(guild.getId());

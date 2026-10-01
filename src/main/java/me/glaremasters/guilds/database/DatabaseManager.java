@@ -131,6 +131,22 @@ public class DatabaseManager {
         return hikari;
     }
 
+    /**
+     * Closes the connection pool, if one was opened.
+     *
+     * <p>Owned here rather than left to the adapter so that a half-built manager can be closed without the
+     * caller having to know how the pool is held. Idempotent, because the setup failure path and the caller
+     * that triggered it both close.
+     */
+    public void close() {
+        if (hikari != null) {
+            hikari.close();
+            // Only the pool is dropped. `jdbi` is left alone so that a read after a close fails with the
+            // pool's own "HikariDataSource has been closed" rather than with a bare null dereference.
+            hikari = null;
+        }
+    }
+
     private static String requireDataSourceClassName(DatabaseBackend backend, String... classNames) throws IOException {
         return requireClassName("datasource", backend, classNames);
     }

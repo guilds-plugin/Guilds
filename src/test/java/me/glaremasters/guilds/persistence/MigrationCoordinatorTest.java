@@ -50,9 +50,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -358,7 +360,7 @@ class MigrationCoordinatorTest {
     void aCooldownIOExceptionRefusesTheMigration() throws IOException {
         // A swallowed cooldown IOException would read as success, and migration would publish an empty cooldown
         // table.
-        cooldownHandler.addCooldown(Cooldown.Type.Home, UUID.randomUUID(), 10, java.util.concurrent.TimeUnit.MINUTES);
+        cooldownHandler.addCooldown(Cooldown.Type.Home, UUID.randomUUID(), 10, TimeUnit.MINUTES);
         final PersistenceCoordinator migrating = withRealGuilds(2);
         final PluginSnapshot captured = migrating.capture();
         assertFalse(captured.getCooldowns().isEmpty(), "the fixture needs a cooldown for this to mean anything");
@@ -382,7 +384,7 @@ class MigrationCoordinatorTest {
     @Test
     @DisplayName("a cooldown RuntimeException refuses the migration")
     void aCooldownRuntimeExceptionRefusesTheMigration() throws IOException {
-        cooldownHandler.addCooldown(Cooldown.Type.Home, UUID.randomUUID(), 10, java.util.concurrent.TimeUnit.MINUTES);
+        cooldownHandler.addCooldown(Cooldown.Type.Home, UUID.randomUUID(), 10, TimeUnit.MINUTES);
         final PersistenceCoordinator migrating = withRealGuilds(2);
         final PluginSnapshot captured = migrating.capture();
         assertFalse(captured.getCooldowns().isEmpty());
@@ -398,7 +400,7 @@ class MigrationCoordinatorTest {
     void aFailedCooldownStillLetsTheOtherCollectionsBeWritten() throws IOException {
         // One backend problem should not cost every other kind of data, so the guilds land on the destination even
         // though the migration is refused and a retry does not start from nothing.
-        cooldownHandler.addCooldown(Cooldown.Type.Home, UUID.randomUUID(), 10, java.util.concurrent.TimeUnit.MINUTES);
+        cooldownHandler.addCooldown(Cooldown.Type.Home, UUID.randomUUID(), 10, TimeUnit.MINUTES);
         final PersistenceCoordinator migrating = withRealGuilds(3);
         final PluginSnapshot captured = migrating.capture();
 
@@ -629,7 +631,7 @@ class MigrationCoordinatorTest {
 
         final PluginSnapshot captured = migrating.capture();
 
-        final ArgumentCaptor<java.util.Map<String, String>> captor = ArgumentCaptor.forClass(java.util.Map.class);
+        final ArgumentCaptor<Map<String, String>> captor = ArgumentCaptor.forClass(Map.class);
         migrate(migrating, captured, new ArrayList<String>());
         Mockito.verify(destinationArenas).saveSerialized(captor.capture());
 
@@ -652,7 +654,7 @@ class MigrationCoordinatorTest {
 
         migrate(migrating, captured, new ArrayList<String>());
 
-        final ArgumentCaptor<java.util.Map<String, String>> captor = ArgumentCaptor.forClass(java.util.Map.class);
+        final ArgumentCaptor<Map<String, String>> captor = ArgumentCaptor.forClass(Map.class);
         Mockito.verify(destinationArenas).saveSerialized(captor.capture());
 
         assertTrue(captor.getValue().containsKey(doomed.getId().toString()),
@@ -719,6 +721,135 @@ class MigrationCoordinatorTest {
     }
 
     // -------------------------------------------------------------------------------------------
+    // 7. Bounded reconciliation
+    // -------------------------------------------------------------------------------------------
+
+    @Test
+    @DisplayName("a trim too large to rewrite in reasonable time is refused before any change")
+    void aTrimTooLargeToRewriteInReasonableTimeIsRefusedBeforeAnyChange() throws IOException {
+        // The bound is on the rewrites, not on either factor, because a JSON cooldown delete re-reads and
+        // rewrites the whole file whichever row it removes. Under the change cap, over what the rewrites cost.
+        final PersistenceCoordinator migrating = withRealGuilds(2);
+
+        final List<Cooldown> capturedCooldowns = cooldownsStoredAndCaptured(4500);
+        final Cooldown stale = new Cooldown(UUID.randomUUID(), Cooldown.Type.Join, UUID.randomUUID(),
+                System.currentTimeMillis() + 600000L);
+        final List<Cooldown> stored = new ArrayList<>(capturedCooldowns);
+        for (int i = 0; i < PersistenceCoordinator.MAX_RECONCILED_ROWS; i++) {
+            stored.add(new Cooldown(UUID.randomUUID(), Cooldown.Type.Join, UUID.randomUUID(),
+                    System.currentTimeMillis() + 600000L));
+        }
+
+        final PluginSnapshot captured = new PluginSnapshot(Collections.emptyMap(), Collections.emptyMap(),
+                Collections.emptyMap(), capturedCooldowns, destination);
+        Mockito.when(destinationCooldowns.getAllCooldowns()).thenReturn(stored);
+
+        final List<String> failures = new ArrayList<>();
+        assertFalse(migrating.reconcileCooldowns(destination, captured, failures));
+
+        Mockito.verify(destinationCooldowns, Mockito.never()).deleteCooldown(Mockito.any(Cooldown.class));
+    }
+
+    @Test
+    @DisplayName("one stale row on a large destination is removed rather than refused")
+    void oneStaleRowOnALargeDestinationIsRemovedRatherThanRefused() throws IOException {
+        // The false-positive direction. Bounding the rewrite size on its own refused this, which is one pass
+        // over the file, and trimming a stale row is most of what reconciling a destination that has been
+        // used before consists of.
+        final PersistenceCoordinator migrating = withRealGuilds(2);
+
+        final List<Cooldown> capturedCooldowns = cooldownsStoredAndCaptured(4999);
+        final Cooldown stale = new Cooldown(UUID.randomUUID(), Cooldown.Type.Join, UUID.randomUUID(),
+                System.currentTimeMillis() + 600000L);
+        final List<Cooldown> stored = new ArrayList<>(capturedCooldowns);
+        stored.add(stale);
+
+        final PluginSnapshot captured = new PluginSnapshot(Collections.emptyMap(), Collections.emptyMap(),
+                Collections.emptyMap(), capturedCooldowns, destination);
+        Mockito.when(destinationCooldowns.getAllCooldowns()).thenReturn(stored);
+
+        final List<String> failures = new ArrayList<>();
+        assertTrue(migrating.reconcileCooldowns(destination, captured, failures), failures.toString());
+
+        Mockito.verify(destinationCooldowns).deleteCooldown(stale);
+    }
+
+    /** {@code count} cooldowns, returned as the captured half of a matching destination. */
+    private static List<Cooldown> cooldownsStoredAndCaptured(int count) {
+        final List<Cooldown> cooldowns = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            cooldowns.add(new Cooldown(UUID.randomUUID(), Cooldown.Type.Home, UUID.randomUUID(),
+                    System.currentTimeMillis() + 600000L));
+        }
+        return cooldowns;
+    }
+
+    @Test
+    @DisplayName("a destination holding more guilds than could ever be reconciled is refused unread")
+    void aDestinationHoldingMoreGuildsThanCouldEverBeReconciledIsRefusedUnread() throws IOException {
+        // This scan runs on the main thread inside a tick, and the old version walked every row before
+        // deciding. A destination with a hundred thousand guilds cost a hundred thousand row reads to reach
+        // the same refusal.
+        //
+        // The malformed id is what makes the ordering observable: parsed first, the row is named as the
+        // problem; refused on size first, the count is. Only the second one bounds the work.
+        final PersistenceCoordinator migrating = withRealGuilds(2);
+
+        // First, so the two orders disagree: parsed first, the row is named as the problem; refused on size
+        // first, the count is. And well over the threshold, so the cap is what decides rather than the last
+        // stale row the walk happens to reach.
+        final List<String> ids = new ArrayList<>();
+        ids.add("not-a-uuid");
+        for (int i = 0; i < PersistenceCoordinator.MAX_RECONCILED_ROWS + 100; i++) {
+            ids.add(UUID.randomUUID().toString());
+        }
+        Mockito.when(destinationGuilds.getAllGuildIds()).thenReturn(ids);
+
+        final PluginSnapshot captured = migrating.capture();
+        final List<String> failures = new ArrayList<>();
+        assertFalse(migrating.reconcileAndPublish(destination, captured, failures));
+
+        assertEquals(1, failures.size(), failures.toString());
+        assertTrue(failures.get(0).contains("more than " + PersistenceCoordinator.MAX_RECONCILED_ROWS),
+                failures.toString());
+        assertFalse(failures.get(0).contains("not-a-uuid"), failures.toString());
+        Mockito.verify(destinationGuilds, Mockito.never()).deleteGuild(Mockito.anyString());
+    }
+
+    @Test
+    @DisplayName("publishing a destination makes the next save due straight away")
+    void publishingADestinationMakesTheNextSaveDueStraightAway() throws IOException {
+        // The destination holds the snapshot, not the plugin's current state, and the autosave is gated off
+        // for the length of the migration. Left alone, a guild created or edited during it would sit
+        // unwritten for a whole save interval after the operator was told the migration finished.
+        final PersistenceCoordinator migrating = withRealGuilds(2);
+        Mockito.when(plugin.getDatabase()).thenReturn(source);
+
+        final PluginSnapshot captured = migrating.capture();
+        final long interval = TimeUnit.DAYS.toNanos(1L);
+        final AtomicInteger writes = new AtomicInteger();
+
+        migrating.tick(Long.MAX_VALUE / 4L, interval, write -> {
+            write.run();
+            writes.incrementAndGet();
+        });
+        assertEquals(1, writes.get(), "the first save should have run");
+
+        migrating.tick(Long.MAX_VALUE / 4L, interval, write -> {
+            write.run();
+            writes.incrementAndGet();
+        });
+        assertEquals(1, writes.get(), "a save interval has not elapsed, so this one should have been skipped");
+
+        assertTrue(migrating.reconcileAndPublish(destination, captured, new ArrayList<String>()));
+
+        migrating.tick(Long.MAX_VALUE / 4L, interval, write -> {
+            write.run();
+            writes.incrementAndGet();
+        });
+        assertEquals(2, writes.get(), "the save after a migration should not wait for the interval");
+    }
+
     // 7. Cross-collection ordering
     // -------------------------------------------------------------------------------------------
 
