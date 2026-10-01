@@ -48,6 +48,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
@@ -125,6 +126,7 @@ class MigrationCoordinatorTest {
      */
     private boolean migrate(PersistenceCoordinator coordinator, PluginSnapshot snapshot, List<String> failures) {
         return coordinator.writeTo(destination, snapshot, failures)
+                && coordinator.reconcileCooldowns(destination, snapshot, failures)
                 && coordinator.reconcileAndPublish(destination, snapshot, failures);
     }
 
@@ -655,6 +657,162 @@ class MigrationCoordinatorTest {
 
         assertTrue(captor.getValue().containsKey(doomed.getId().toString()),
                 "the snapshot is what migration writes; the stale row is corrected by the next save");
+    }
+
+    @Test
+    @DisplayName("a destination cooldown with the wrong expiry is corrected to the snapshot's")
+    void aDestinationCooldownWithTheWrongExpiryIsCorrectedToTheSnapshots() throws IOException {
+        // The destination is keyed by type and owner, and `saveCooldowns` only ever creates, so a row that
+        // already matched kept its own expiry. After migrating, the operator would have a set-home cooldown
+        // that outlives the snapshot by a week, or one that lapsed days ago.
+        final PersistenceCoordinator migrating = withRealGuilds(2);
+        final UUID owner = UUID.randomUUID();
+        cooldownHandler.addCooldown(Cooldown.Type.SetHome, owner, 30, TimeUnit.MINUTES);
+
+        final PluginSnapshot captured = migrating.capture();
+        final long wanted = captured.getCooldowns().get(0).getCooldownExpiry();
+        final long wrong = wanted + TimeUnit.DAYS.toMillis(7L);
+        assertTrue(wrong != wanted, "the fixture needs two different expiries to mean anything");
+
+        final Cooldown stale = new Cooldown(UUID.randomUUID(), Cooldown.Type.SetHome, owner, wrong);
+        Mockito.when(destinationCooldowns.getAllCooldowns()).thenReturn(Collections.singletonList(stale));
+
+        assertTrue(migrate(migrating, captured, new ArrayList<String>()));
+
+        final InOrder order = Mockito.inOrder(destinationCooldowns);
+        order.verify(destinationCooldowns).deleteCooldown(stale);
+        order.verify(destinationCooldowns).createCooldown(Mockito.argThat(
+                cooldown -> cooldown.getCooldownExpiry() == wanted));
+    }
+
+    @Test
+    @DisplayName("a destination cooldown with the right expiry is left alone")
+    void aDestinationCooldownWithTheRightExpiryIsLeftAlone() throws IOException {
+        final PersistenceCoordinator migrating = withRealGuilds(2);
+        final UUID owner = UUID.randomUUID();
+        cooldownHandler.addCooldown(Cooldown.Type.Home, owner, 10, TimeUnit.MINUTES);
+
+        final PluginSnapshot captured = migrating.capture();
+        Mockito.when(destinationCooldowns.getAllCooldowns()).thenReturn(Collections.singletonList(
+                new Cooldown(UUID.randomUUID(), Cooldown.Type.Home, owner,
+                        captured.getCooldowns().get(0).getCooldownExpiry())));
+
+        assertTrue(migrate(migrating, captured, new ArrayList<String>()));
+
+        Mockito.verify(destinationCooldowns, Mockito.never()).deleteCooldown(Mockito.any(Cooldown.class));
+        Mockito.verify(destinationCooldowns, Mockito.never()).createCooldown(Mockito.any(Cooldown.class));
+    }
+
+    @Test
+    @DisplayName("a cooldown the plugin no longer has is removed and not recreated")
+    void aCooldownThePluginNoLongerHasIsRemovedAndNotRecreated() throws IOException {
+        final PersistenceCoordinator migrating = withRealGuilds(2);
+        Mockito.when(destinationCooldowns.getAllCooldowns()).thenReturn(Collections.singletonList(
+                new Cooldown(UUID.randomUUID(), Cooldown.Type.Home, UUID.randomUUID(),
+                        System.currentTimeMillis() + 600000L)));
+
+        assertTrue(migrate(migrating, migrating.capture(), new ArrayList<String>()));
+
+        Mockito.verify(destinationCooldowns).deleteCooldown(Mockito.argThat(
+                cooldown -> cooldown.getCooldownType() == Cooldown.Type.Home));
+        Mockito.verify(destinationCooldowns, Mockito.never()).createCooldown(Mockito.any(Cooldown.class));
+    }
+
+    // -------------------------------------------------------------------------------------------
+    // 7. Cross-collection ordering
+    // -------------------------------------------------------------------------------------------
+
+    @Test
+    @DisplayName("a guild reconciliation refusal deletes no guild")
+    void aGuildReconciliationRefusalDeletesNoGuild() throws IOException {
+        // `complete &= pruneCooldowns(...)` evaluated its right operand regardless, so a guild pass that had
+        // already given up was still followed by the destructive half of the other one. Gathering and
+        // validating before the delete loop means every way this refuses, it refuses before touching a row.
+        final PersistenceCoordinator migrating = withRealGuilds(2);
+        final PluginSnapshot captured = migrating.capture();
+        migrating.writeTo(destination, captured, null);
+        migrating.reconcileCooldowns(destination, captured, null);
+
+        final Guild disbanded = new ArrayList<>(guildHandler.getGuilds().values()).get(0);
+        guildHandler.getGuilds().remove(disbanded.getId());
+        Mockito.when(destinationGuilds.getAllGuildIds()).thenReturn(Collections.singletonList("not-a-uuid"));
+
+        assertFalse(migrating.reconcileAndPublish(destination, captured, new ArrayList<String>()));
+
+        Mockito.verify(destinationGuilds, Mockito.never()).deleteGuild(Mockito.anyString());
+        Mockito.verify(plugin, Mockito.never()).setDatabase(Mockito.any());
+    }
+
+    @Test
+    @DisplayName("a cooldown refusal leaves the destination untouched and unpublished")
+    void aCooldownRefusalLeavesTheDestinationUntouchedAndUnpublished() throws IOException {
+        final PersistenceCoordinator migrating = withRealGuilds(2);
+        final PluginSnapshot captured = migrating.capture();
+        migrating.writeTo(destination, captured, null);
+
+        Mockito.when(destinationCooldowns.getAllCooldowns()).thenReturn(Collections.singletonList(
+                new Cooldown(UUID.randomUUID(), Cooldown.Type.Home, UUID.randomUUID(),
+                        System.currentTimeMillis() + 600000L)));
+        Mockito.doThrow(new IOException("cooldowns table is gone"))
+                .when(destinationCooldowns).deleteCooldown(Mockito.any(Cooldown.class));
+
+        assertFalse(migrating.reconcileCooldowns(destination, captured, new ArrayList<String>()));
+
+        // The reconcile failed on the first delete, so nothing was removed and nothing was published.
+        Mockito.verify(destinationCooldowns, Mockito.never()).createCooldown(Mockito.any(Cooldown.class));
+        Mockito.verify(plugin, Mockito.never()).setDatabase(Mockito.any());
+    }
+
+    @Test
+    @DisplayName("a destination too large to rewrite is refused before any change")
+    void aDestinationTooLargeToRewriteIsRefusedBeforeAnyChange() throws IOException {
+        // The count of rows to change is capped, and so is what each rewrite is over, because a JSON delete
+        // rewrites the whole file. Capping only the first leaves the quadratic term unbounded on a backend
+        // that has been used before.
+        final PersistenceCoordinator migrating = withRealGuilds(2);
+        cooldownHandler.addCooldown(Cooldown.Type.Home, UUID.randomUUID(), 10, TimeUnit.MINUTES);
+        final PluginSnapshot captured = migrating.capture();
+        migrating.writeTo(destination, captured, null);
+
+        final List<Cooldown> large = new ArrayList<>();
+        for (int i = 0; i <= PersistenceCoordinator.MAX_RECONCILED_ROWS; i++) {
+            large.add(new Cooldown(UUID.randomUUID(), Cooldown.Type.Join, UUID.randomUUID(),
+                    System.currentTimeMillis() + 600000L + i));
+        }
+        Mockito.when(destinationCooldowns.getAllCooldowns()).thenReturn(large);
+
+        final List<String> failures = new ArrayList<>();
+        assertFalse(migrating.reconcileCooldowns(destination, captured, failures));
+
+        assertEquals(1, failures.size(), failures.toString());
+        Mockito.verify(destinationCooldowns, Mockito.never()).deleteCooldown(Mockito.any(Cooldown.class));
+    }
+
+    @Test
+    @DisplayName("too many stale guilds refuses before deleting any of them")
+    void tooManyStaleGuildsRefusesBeforeDeletingAnyOfThem() throws IOException {
+        // The cap has to be checked against the whole set, not per row, or the destination ends up with the
+        // first N reconciled and the rest not, and the operator has no way to tell which.
+        final PersistenceCoordinator migrating = withRealGuilds(3);
+        final PluginSnapshot captured = migrating.capture();
+        migrating.writeTo(destination, captured, null);
+
+        final List<String> stored = new ArrayList<>();
+        for (Guild guild : new ArrayList<>(guildHandler.getGuilds().values())) {
+            guildHandler.getGuilds().remove(guild.getId());
+            stored.add(guild.getId().toString());
+        }
+        while (stored.size() <= PersistenceCoordinator.MAX_RECONCILED_ROWS) {
+            stored.add(UUID.randomUUID().toString());
+        }
+        Mockito.when(destinationGuilds.getAllGuildIds()).thenReturn(stored);
+
+        final List<String> failures = new ArrayList<>();
+        assertFalse(migrating.reconcileAndPublish(destination, captured, failures));
+
+        assertEquals(1, failures.size(), failures.toString());
+        assertTrue(failures.get(0).contains(String.valueOf(PersistenceCoordinator.MAX_RECONCILED_ROWS)), failures.get(0));
+        Mockito.verify(destinationGuilds, Mockito.never()).deleteGuild(Mockito.anyString());
     }
 
     // -------------------------------------------------------------------------------------------

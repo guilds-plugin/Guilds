@@ -185,6 +185,25 @@ class PluginSnapshotTest {
     }
 
     @Test
+    @DisplayName("a cooldown has no mutable state, which is what makes copying the list enough")
+    void aCooldownHasNoMutableStateWhichIsWhatMakesCopyingTheListEnough() {
+        // A worker thread reconciles a migration destination's cooldowns against this snapshot while the
+        // main thread keeps ticking, so a `Cooldown` that could change under it would make the whole
+        // snapshot claim false for that collection. The javadoc says so; this makes it enforced.
+        for (java.lang.reflect.Field field : me.glaremasters.guilds.cooldowns.Cooldown.class.getDeclaredFields()) {
+            if (!java.lang.reflect.Modifier.isStatic(field.getModifiers())) {
+                assertTrue(java.lang.reflect.Modifier.isFinal(field.getModifiers()),
+                        "Cooldown." + field.getName() + " must be final, or the snapshot is not detached");
+            }
+        }
+
+        for (java.lang.reflect.Method method : me.glaremasters.guilds.cooldowns.Cooldown.class.getDeclaredMethods()) {
+            assertFalse(method.getName().startsWith("set"),
+                    "Cooldown." + method.getName() + " would let a cooldown change after capture");
+        }
+    }
+
+    @Test
     @DisplayName("the snapshot keeps the backend it was captured against")
     void theSnapshotKeepsTheBackendItWasCapturedAgainst() {
         final me.glaremasters.guilds.database.DatabaseAdapter captured = org.mockito.Mockito

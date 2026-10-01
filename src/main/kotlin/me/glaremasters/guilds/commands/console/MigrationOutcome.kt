@@ -122,6 +122,17 @@ internal class MigrationOutcome {
         if (!coordinator.writeTo(adapter, snapshot, failures)) {
             LoggingUtils.severe("Migration to ${backend.backendName} could not write every collection: ${failures.joinToString("; ")}")
             fail(Messages.MIGRATE__FAILED, null, "writing the destination")
+            return
+        }
+
+        // Here rather than in `publish`, because it is the superlinear part of a migration and does not
+        // need the main thread. See `PersistenceCoordinator#reconcileCooldowns`.
+        if (!coordinator.reconcileCooldowns(adapter, snapshot, failures)) {
+            LoggingUtils.severe(
+                "Migration to ${backend.backendName} could not reconcile cooldowns: ${failures.joinToString("; ")}",
+            )
+            fail(Messages.MIGRATE__FAILED, null, "reconciling the destination's cooldowns")
+            return
         }
     }
 

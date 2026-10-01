@@ -39,6 +39,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -82,7 +85,7 @@ public final class PersistenceCoordinator {
      * thousands. This runs on the main thread inside an explicit console command, so a cap is the
      * difference between an operator waiting and a watchdog kill.
      */
-    private static final int MAX_RECONCILED_ROWS = 500;
+    static final int MAX_RECONCILED_ROWS = 500;
 
     /** Whether the calling thread is the one that owns mutable plugin state. Overridden in tests. */
     private final java.util.function.BooleanSupplier onMainThread;
@@ -272,52 +275,74 @@ public final class PersistenceCoordinator {
             return false;
         }
 
-        boolean complete = pruneGuilds(destination, failures);
-        complete &= pruneCooldowns(destination, snapshot.getCooldowns(), failures);
-
-        if (!complete) {
+        // Validated before anything is deleted here. Not `complete &= ...` across two passes: a bitwise and
+        // evaluates its right operand regardless, so a guild pass that had given up would still be followed
+        // by the destructive half of the other one.
+        //
+        // The cooldown pass has already run by this point, on the worker, so a refusal below has not left the
+        // destination untouched. It has left the previous backend in use, which is the part that matters.
+        final List<String> staleGuilds = findStaleGuilds(destination, failures);
+        if (staleGuilds == null) {
             return false;
+        }
+
+        for (String id : staleGuilds) {
+            try {
+                destination.getGuildAdapter().deleteGuild(id);
+            } catch (IOException | RuntimeException e) {
+                return failed("guild reconciliation", failures, e);
+            }
+        }
+
+        if (!staleGuilds.isEmpty()) {
+            LoggingUtils.info("Migration removed " + staleGuilds.size()
+                    + " guild(s) disbanded while it was running.");
         }
 
         publishBackend(destination);
         return true;
     }
 
-    private boolean pruneGuilds(@NotNull DatabaseAdapter destination, @Nullable List<String> failures) {
+    /**
+     * Works out which of the destination's guilds the plugin no longer has, without deleting anything.
+     *
+     * <p>Separated from the delete loop so that every way this can refuse, it refuses before the first
+     * row is touched. A half-applied reconciliation leaves the destination inconsistent, and the operator
+     * has no way to tell which half ran.
+     *
+     * @param destination the backend being migrated into
+     * @param failures    collects a description of what went wrong, or null
+     * @return the ids to delete, or null when the migration must not proceed
+     */
+    @Nullable private List<String> findStaleGuilds(@NotNull DatabaseAdapter destination, @Nullable List<String> failures) {
         if (guildHandler == null) {
-            return true;
+            return Collections.emptyList();
         }
 
         final GuildAdapter adapter = destination.getGuildAdapter();
-        final List<String> pruned = new ArrayList<>();
+        final List<String> stale = new ArrayList<>();
 
         try {
             for (String id : adapter.getAllGuildIds()) {
                 final UUID guildId = parseGuildId(id, destination, failures);
                 if (guildId == null) {
-                    return false;
+                    return null;
                 }
                 if (guildHandler.getGuilds().get(guildId) == null) {
-                    pruned.add(id);
+                    stale.add(id);
                 }
             }
-
-            if (pruned.size() > MAX_RECONCILED_ROWS) {
-                return tooManyRows("guilds", pruned.size());
-            }
-
-            for (String id : pruned) {
-                adapter.deleteGuild(id);
-            }
         } catch (IOException | RuntimeException e) {
-            return failed("guild reconciliation", failures, e);
+            failed("guild reconciliation", failures, e);
+            return null;
         }
 
-        if (!pruned.isEmpty()) {
-            LoggingUtils.info("Migration removed " + pruned.size()
-                    + " guild(s) disbanded while it was running.");
+        if (stale.size() > MAX_RECONCILED_ROWS) {
+            tooManyRows("guilds", stale.size(), failures);
+            return null;
         }
-        return true;
+
+        return stale;
     }
 
     /**
@@ -327,15 +352,44 @@ public final class PersistenceCoordinator {
      * destination inconsistent, and publishing an inconsistent destination is the failure this pass exists
      * to prevent.
      *
-     * @param what  the kind of row
-     * @param count how many there are
+     * @param what     the kind of row
+     * @param count    how many there are
+     * @param failures collects the message, or null
      * @return false, so a caller accumulating results can use it directly
      */
-    private boolean tooManyRows(@NotNull String what, int count) {
+    private boolean tooManyRows(@NotNull String what, int count, @Nullable List<String> failures) {
         final String message = "the destination holds " + count + " " + what + " the plugin no longer has, which is"
                 + " more than " + MAX_RECONCILED_ROWS + ". Empty that backend, or migrate to a different one, and"
-                + " run the migration again. Nothing was changed and the previous backend is still in use.";
+                + " run the migration again. The previous backend is still in use and is what the plugin is"
+                + " reading and writing.";
         LoggingUtils.severe(message);
+        if (failures != null) {
+            failures.add(message);
+        }
+        return false;
+    }
+
+    /**
+     * Refuses a cooldown reconciliation that would take longer than an operator can be expected to wait.
+     *
+     * <p>Separate from {@link #tooManyRows} because the two need different advice. Rows with a wrong expiry
+     * are rows the plugin does have, so telling the operator to empty their cooldown table over them would be
+     * both wrong and destructive.
+     *
+     * @param stale        rows the plugin no longer has
+     * @param wrongExpiry  rows that match but expire at the wrong time
+     * @param failures     collects the message, or null
+     * @return false, so a caller accumulating results can use it directly
+     */
+    private boolean tooManyCooldowns(int stale, int wrongExpiry, @Nullable List<String> failures) {
+        final String message = "the destination's cooldowns could not be reconciled in reasonable time: "
+                + stale + " the plugin no longer has and " + wrongExpiry + " with the wrong expiry, against a"
+                + " limit of " + MAX_RECONCILED_ROWS + " changes or rows. Migrating to a fresh backend avoids"
+                + " this. The previous backend is still in use and is what the plugin is reading and writing.";
+        LoggingUtils.severe(message);
+        if (failures != null) {
+            failures.add(message);
+        }
         return false;
     }
 
@@ -371,51 +425,93 @@ public final class PersistenceCoordinator {
     }
 
     /**
-     * Removes destination cooldowns the plugin no longer has.
+     * Brings a migration destination's cooldowns into line with the snapshot, on any thread.
      *
-     * <p>{@code CooldownAdapter#saveCooldowns} only creates, so without this a destination that already
-     * held cooldowns keeps every one of them. That is reachable: the destination is a real backend the
-     * operator may have used before, and a failed earlier migration attempt leaves its rows behind.
+     * <p>Off the main thread on purpose. Two reasons, and the second is the one that matters.
+     *
+     * <p>A JSON cooldown delete re-reads, filters and rewrites the whole cooldown file, so deleting one row
+     * is O(rows) and a destination that has been used before can hold thousands. That is superlinear, and
+     * it has no business on the tick thread.
+     *
+     * <p>Nor does it need to be there. Guild disbanding is the only mutation the main thread has to be
+     * near, because {@code GuildAdapter} has no delete pass and a guild caught in a window would be
+     * resurrected in the destination permanently. Cooldowns have no such hazard: they expire on their own,
+     * and both sides of the comparison are detached, the destination's rows and the snapshot's. So this runs
+     * on the worker, before the main-thread step that reconciles guilds and publishes.
+     *
+     * <p>One caveat on "the destination's rows are detached". True for a destination that is a different
+     * backend. {@code MYSQL} and {@code MARIADB} are configured from the same host, database and table
+     * prefix, so migrating between them opens a second pool onto the same physical tables and these rows are
+     * the live ones. The pass is still safe there — it only ever writes rows the snapshot describes — but the
+     * reassurance does not rest on detachment in that case.
+     *
+     * <p>Reproduces the snapshot's expiry rather than leaving whatever the destination had. The destination
+     * is keyed by type and owner, and {@code CooldownAdapter#saveCooldowns} only ever creates, so a
+     * destination that already held a matching cooldown kept its own expiry. After a migration the operator
+     * would have cooldowns that expire at the wrong time: a set-home cooldown that outlives the snapshot by
+     * a week, or one that has already lapsed. A matching row with a different expiry is deleted and recreated.
      *
      * @param destination the backend to reconcile
+     * @param snapshot    the state the destination was written from
      * @param failures    collects a description of what went wrong, or null
      * @return true when the destination's cooldowns match the snapshot
      */
-    private boolean pruneCooldowns(@NotNull DatabaseAdapter destination, @NotNull List<Cooldown> snapshotCooldowns, @Nullable List<String> failures) {
+    public boolean reconcileCooldowns(@NotNull DatabaseAdapter destination, @NotNull PluginSnapshot snapshot, @Nullable List<String> failures) {
         final CooldownAdapter adapter = destination.getCooldownAdapter();
-        final List<Cooldown> pruned = new ArrayList<>();
+        final List<Cooldown> stale = new ArrayList<>();
+        final Map<Cooldown, Cooldown> wrongExpiry = new LinkedHashMap<>();
 
         try {
-            for (Cooldown cooldown : adapter.getAllCooldowns()) {
-                boolean present = false;
-                for (Cooldown captured : snapshotCooldowns) {
-                    if (captured.getCooldownType() == cooldown.getCooldownType()
-                            && captured.getCooldownOwner().equals(cooldown.getCooldownOwner())) {
-                        present = true;
-                        break;
-                    }
-                }
-                if (!present) {
-                    pruned.add(cooldown);
+            final List<Cooldown> stored = adapter.getAllCooldowns();
+
+            for (Cooldown row : stored) {
+                final Cooldown captured = findCooldown(snapshot, row);
+
+                if (captured == null) {
+                    stale.add(row);
+                } else if (!captured.getCooldownExpiry().equals(row.getCooldownExpiry())) {
+                    wrongExpiry.put(row, captured);
                 }
             }
 
-            if (pruned.size() > MAX_RECONCILED_ROWS) {
-                return tooManyRows("cooldowns", pruned.size());
+            if (stale.size() + wrongExpiry.size() > MAX_RECONCILED_ROWS) {
+                return tooManyCooldowns(stale.size(), wrongExpiry.size(), failures);
             }
 
-            for (Cooldown cooldown : pruned) {
+            // The rewrite cost is what makes a large destination a problem, and it is quadratic: a JSON
+            // delete re-reads, filters and rewrites the whole file, so a wrong-expiry row costs two full
+            // rewrites. The count of rows to change is capped above; this caps what each rewrite is over,
+            // which is the other half of the bound.
+            if (!wrongExpiry.isEmpty() && stored.size() > MAX_RECONCILED_ROWS) {
+                return tooManyCooldowns(stale.size(), wrongExpiry.size(), failures);
+            }
+
+            for (Cooldown cooldown : stale) {
                 adapter.deleteCooldown(cooldown);
+            }
+            for (Map.Entry<Cooldown, Cooldown> entry : wrongExpiry.entrySet()) {
+                adapter.deleteCooldown(entry.getKey());
+                adapter.createCooldown(entry.getValue());
             }
         } catch (IOException | RuntimeException e) {
             return failed("cooldown reconciliation", failures, e);
         }
 
-        if (!pruned.isEmpty()) {
-            LoggingUtils.info("Migration removed " + pruned.size()
-                    + " cooldown(s) the destination held that the plugin no longer has.");
+        if (!stale.isEmpty() || !wrongExpiry.isEmpty()) {
+            LoggingUtils.info("Migration reconciled " + stale.size() + " stale cooldown(s) and "
+                    + wrongExpiry.size() + " with the wrong expiry.");
         }
         return true;
+    }
+
+    @Nullable private Cooldown findCooldown(@NotNull PluginSnapshot snapshot, @NotNull Cooldown stored) {
+        for (Cooldown captured : snapshot.getCooldowns()) {
+            if (captured.getCooldownType() == stored.getCooldownType()
+                    && captured.getCooldownOwner().equals(stored.getCooldownOwner())) {
+                return captured;
+            }
+        }
+        return null;
     }
 
     /** The spread autosave capture in progress, if any. At most one exists. */
