@@ -78,13 +78,18 @@ dependencies {
     compileOnly(libs.hikaricp)
     quark(libs.hikaricp)
 
-    // The three below are already shipped at runtime above. They are on the test classpath as well
-    // because `DatabaseAdapterSetupTest` asserts that a failed backend setup closes the pool it opened, and
-    // loading `DatabaseManager` needs its field types present. No SQL driver is needed: the manager's
-    // constructor is mocked, so it never runs.
+    /*
+     * HikariCP and jdbi are downloaded by Quark at runtime, and are on the test classpath because the SQL
+     * tests load `DatabaseManager` and open a real pool. jdbi3-sqlobject is here for the same reason: the
+     * providers are SqlObject interfaces, so it is needed to compile against anything that builds one.
+     *
+     * `sqlite-jdbc` is test-only. The plugin has never bundled a SQLite driver, and the smoke test needs one
+     * to open a real database without a server. slf4j comes in transitively with HikariCP and jdbi.
+     */
     testImplementation(libs.hikaricp)
-    testImplementation(libs.slf4j)
     testImplementation(libs.jdbi.core)
+    testImplementation(libs.jdbi.sqlobject)
+    testImplementation(libs.sqlite.jdbc)
 
     compileOnly(libs.jdbi.core)
     quark(libs.jdbi.core)
@@ -175,16 +180,6 @@ tasks.withType<KotlinCompile>().configureEach {
  * `configureEach`, which would also apply it to the `benchmark` task that exists to include them.
  */
 val benchmarkTag = "benchmark"
-
-/**
- * Tests that cannot run on a Java 11 JVM, kept out of `testJava11` only.
- *
- * `DatabaseAdapterSetupTest` covers the connection pool a failed backend setup has to give back, and doing
- * that means loading `DatabaseManager`. Its `Jdbi` field type comes from jdbi3-core, which ships Java 17
- * bytecode, so a Java 11 JVM cannot load the class at all. The same reason the test classpath pins the older
- * Spigot API. Excluded by name rather than through `configureEach`, for the reason given above.
- */
-val java17ClasspathTag = "java17classpath"
 
 tasks.withType<Test>().configureEach {
     useJUnitPlatform()
@@ -629,6 +624,5 @@ afterEvaluate {
         if (!project.hasProperty("runBenchmarks")) {
             useJUnitPlatform { excludeTags(benchmarkTag) }
         }
-        useJUnitPlatform { excludeTags(java17ClasspathTag) }
     }
 }

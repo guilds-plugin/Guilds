@@ -28,7 +28,6 @@ import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.configuration.sections.StorageSettings;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedConstruction;
 import org.mockito.Mockito;
@@ -63,8 +62,8 @@ class DatabaseAdapterSetupTest {
     /**
      * An adapter whose pool was opened against the settings as they currently stand.
      *
-     * <p>Set by field rather than by connecting, so these tests need no SQL driver and no
-     * {@link DatabaseManager}, which a Java 11 JVM cannot load.
+     * <p>Set by field rather than by connecting, so these tests need no database. {@link SqliteSmokeTest}
+     * covers what a real one does; these cover the identity comparison, which needs none.
      */
     private DatabaseAdapter adapterOn(DatabaseBackend backend) throws Exception {
         final DatabaseAdapter adapter = new DatabaseAdapter(plugin, settings, false);
@@ -149,7 +148,6 @@ class DatabaseAdapterSetupTest {
     // ---------------------------------------------------------------------------------------
 
     @Test
-    @Tag("java17classpath")
     @DisplayName("a setup that fails partway closes the pool it had already opened")
     void aSetupThatFailsPartwayClosesThePoolItHadAlreadyOpened() throws Exception {
         // The pool is open before the first `createContainer`, and a failure from there on — a table the
@@ -170,7 +168,6 @@ class DatabaseAdapterSetupTest {
     }
 
     @Test
-    @Tag("java17classpath")
     @DisplayName("closing an adapter twice is safe")
     void closingAnAdapterTwiceIsSafe() throws Exception {
         // An adapter that really holds a manager: closing one that never had a pool would pass against a
