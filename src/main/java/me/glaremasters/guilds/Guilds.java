@@ -137,32 +137,28 @@ public final class Guilds extends JavaPlugin {
         savePluginData();
 
         /*
-         * Every field below can legitimately be null: onEnable() bails out early when Vault, an
-         * economy provider, a permissions provider, or the database is missing. Dereferencing them
-         * unconditionally threw a NullPointerException that buried the original startup error and
-         * skipped the database and Adventure cleanup. See #777.
+         * Teardown, one step at a time.
+         *
+         * Every step below can be missing after a partial onEnable, and each one is wrapped so a
+         * failure is logged rather than thrown. A step that threw here would skip every step after
+         * it, including closing the database, and would bury the original startup error underneath
+         * a shutdown stack trace. See #777.
+         *
+         * The chat listener is the awkward one: it is created near the end of onEnable, so a guild
+         * handler can exist while it does not, and GuildHandler#chatLogout() reads through it.
          */
-        if (guildHandler != null) {
-            guildHandler.chatLogout();
-            guildHandler.getLookupCache().clear();
-        }
-
-        if (commandManager != null) {
-            commandManager.unregisterCommands();
-        }
+        runCleanup(chatListener == null ? null : () -> guildHandler.chatLogout(), "guild chat");
+        runCleanup(guildHandler == null ? null : () -> guildHandler.getLookupCache().clear(), "the guild lookup cache");
+        runCleanup(commandManager == null ? null : commandManager::unregisterCommands, "commands");
 
         if (database != null) {
             LoggingUtils.info("Shutting down database...");
-            try {
-                database.close();
-            } catch (RuntimeException e) {
-                LoggingUtils.severe("An error occurred while closing the database during shutdown.", e);
-            }
+            runCleanup(database::close, "the database");
             LoggingUtils.info("Database has been shut down.");
         }
 
         if (adventure != null) {
-            adventure.close();
+            runCleanup(() -> adventure.close(), "adventure audiences");
             adventure = null;
         }
     }
@@ -170,32 +166,30 @@ public final class Guilds extends JavaPlugin {
     /**
      * Flushes every data handler to its storage backend.
      *
-     * <p>Failures are logged rather than propagated, so a save error during {@link #onDisable()}
-     * cannot mask whatever failure brought the plugin down. Each handler is saved independently, so
-     * one bad record does not cost the server owner every other kind of data.
+     * <p>Each handler is saved independently, so one bad record does not cost the server owner
+     * every other kind of data.
      */
     private void savePluginData() {
-        saveData(guildHandler, guildHandler == null ? null : guildHandler::saveData, "guild");
-        saveData(cooldownHandler, cooldownHandler == null ? null : cooldownHandler::saveCooldowns, "cooldown");
-        saveData(arenaHandler, arenaHandler == null ? null : arenaHandler::saveArenas, "arena");
+        runCleanup(guildHandler == null ? null : guildHandler::saveData, "guild data");
+        runCleanup(cooldownHandler == null ? null : cooldownHandler::saveCooldowns, "cooldown data");
+        runCleanup(arenaHandler == null ? null : arenaHandler::saveArenas, "arena data");
     }
 
     /**
-     * Runs a single save routine, logging (never rethrowing) whatever it throws.
+     * Runs one shutdown step, logging (never rethrowing) whatever it throws.
      *
-     * @param handler the handler being saved, may be null when startup never got that far
-     * @param save    the save routine
-     * @param label   short name of the data type, used in log messages
+     * @param step  the routine, or null when the object it needs was never created
+     * @param label what is being saved or cleaned up, used in log messages
      */
-    private void saveData(@Nullable Object handler, @Nullable SaveRoutine save, String label) {
-        if (handler == null || save == null) {
+    private void runCleanup(@Nullable SaveRoutine step, String label) {
+        if (step == null) {
             return;
         }
 
         try {
-            save.run();
+            step.run();
         } catch (IOException | RuntimeException e) {
-            LoggingUtils.severe("An error occurred while saving " + label + " data.", e);
+            LoggingUtils.severe("An error occurred while saving or cleaning up " + label + ".", e);
         }
     }
 

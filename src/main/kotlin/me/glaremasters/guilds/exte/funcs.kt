@@ -30,7 +30,6 @@ import dev.triumphteam.gui.guis.PaginatedGui
 import me.glaremasters.guilds.utils.ItemBuilder
 import me.glaremasters.guilds.utils.LoggingUtils
 import me.glaremasters.guilds.utils.StringUtils
-import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 import java.util.*
 
@@ -44,20 +43,25 @@ import java.util.*
  * time anybody opens a GUI on an old server. XSeries's [XMaterial.GLASS_PANE] maps to `THIN_GLASS`
  * on 1.8.8 and `GLASS_PANE` on 1.12+.
  *
- * Resolved once, with a fresh [ItemStack] per call: [ItemBuilder] mutates the stack it is handed
- * and two GUIs must never share one instance.
+ * This resolves an [ItemStack] rather than a [org.bukkit.Material] on purpose. On pre-flattening
+ * versions the grey pane is a stained pane carrying a data value, so taking the Material and
+ * building a fresh `ItemStack` from it would drop the grey and hand back a white pane. Only XSeries
+ * knows the data value for the running version.
+ *
+ * Resolved once and cloned per call: [ItemBuilder] mutates the stack it is handed, and two GUIs must
+ * never share one instance.
  */
-private val fillerPane: Material? by lazy {
-    val material = XMaterial.GRAY_STAINED_GLASS_PANE.parseMaterial() ?: XMaterial.GLASS_PANE.parseMaterial()
+private val fillerPane: ItemStack? by lazy {
+    val pane = XMaterial.GRAY_STAINED_GLASS_PANE.parseItem() ?: XMaterial.GLASS_PANE.parseItem()
 
-    if (material == null) {
+    if (pane == null) {
         LoggingUtils.warn("Could not resolve a glass pane material on this server. Guilds GUI fillers will be skipped.")
     }
 
-    material
+    pane
 }
 
-private fun fillerItem(): ItemStack? = fillerPane?.let { ItemStack(it) }
+private fun fillerItem(): ItemStack? = fillerPane?.clone()
 
 internal fun addBackground(gui: Gui) {
     val item = fillerItem() ?: return

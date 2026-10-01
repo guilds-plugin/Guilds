@@ -39,6 +39,12 @@ import org.jetbrains.annotations.Nullable;
 public class RoleUtils {
 
     /**
+     * Role level of the guild master, the top of the hierarchy. Promotion never grants it; the seat
+     * changes hands through transfer instead.
+     */
+    private static final int MASTER_LEVEL = 0;
+
+    /**
      * Simple method to check if a user is in the same guild
      * @param guild the guild being checked
      * @param player the player being checked
@@ -86,21 +92,30 @@ public class RoleUtils {
     }
 
     /**
-     * Check if you a user can promote another user
+     * Check if a user is allowed to promote another user.
+     *
+     * <p>A promotion moves the target up exactly one rank. The result has to land strictly below
+     * the actor, so nobody can hand out a rank equal to or above their own, and it can never be the
+     * guild master role: that is a single seat handed over by transfer, not something promotion
+     * grants. With the shipped hierarchy (master 0, officer 1, veteran 2, member 3) this means a
+     * master may promote a veteran to officer, an officer may promote a member to veteran, and a
+     * master may not promote an officer.
+     *
      * @param guild the guild they are in
-     * @param target the target to check
-     * @param player the player to check
-     * @return if they can promote or not
+     * @param target the member being promoted
+     * @param actor the member doing the promoting
+     * @return if the promotion is allowed
      */
-    public static boolean checkPromote(Guild guild, OfflinePlayer target, OfflinePlayer player) {
+    public static boolean checkPromote(Guild guild, OfflinePlayer target, OfflinePlayer actor) {
         final GuildMember targetMember = guild.getMember(target.getUniqueId());
-        final GuildMember playerMember = guild.getMember(player.getUniqueId());
+        final GuildMember actorMember = guild.getMember(actor.getUniqueId());
 
-        if (targetMember == null || playerMember == null) {
+        if (targetMember == null || actorMember == null) {
             return false;
         }
 
-        return (targetMember.getRole().getLevel() - 1) == playerMember.getRole().getLevel();
+        final int newLevel = targetMember.getRole().getLevel() - 1;
+        return newLevel > actorMember.getRole().getLevel() && newLevel > MASTER_LEVEL;
     }
 
     /**
@@ -156,13 +171,29 @@ public class RoleUtils {
     }
 
     /**
-     * Simple method to promote a user
+     * Simple method to promote a user.
+     *
+     * <p>Does nothing when the member is not in the guild or has no rank above them. Callers that
+     * need to tell the user why should check {@link #checkPromote} first, or use
+     * {@link #tryPromote}.
+     *
      * @param guildHandler the guild handler
      * @param guild the guild of the player
      * @param player the player being promoted
-     * @return true when the role was changed, false when there is no higher role to move to
      */
-    public static boolean promote(final GuildHandler guildHandler, final Guild guild, final OfflinePlayer player) {
+    public static void promote(final GuildHandler guildHandler, final Guild guild, final OfflinePlayer player) {
+        tryPromote(guildHandler, guild, player);
+    }
+
+    /**
+     * Promote a user, reporting whether the role actually changed.
+     *
+     * @param guildHandler the guild handler
+     * @param guild the guild of the player
+     * @param player the player being promoted
+     * @return true when the role was changed, false when there was no higher role to move to
+     */
+    public static boolean tryPromote(final GuildHandler guildHandler, final Guild guild, final OfflinePlayer player) {
         final GuildMember member = guild.getMember(player.getUniqueId());
         final GuildRole nextRole = getNextHigherRole(guildHandler, member);
 
@@ -178,13 +209,28 @@ public class RoleUtils {
     }
 
     /**
-     * Demote a player
+     * Demote a player.
+     *
+     * <p>Does nothing when the member is not in the guild or has no rank below them. Callers that
+     * need to tell the user why should check first, or use {@link #tryDemote}.
+     *
      * @param guildHandler guild handler
      * @param guild the guild they are in
      * @param player the player being demoted
-     * @return true when the role was changed, false when there is no lower role to move to
      */
-    public static boolean demote(final GuildHandler guildHandler, final Guild guild, final OfflinePlayer player) {
+    public static void demote(final GuildHandler guildHandler, final Guild guild, final OfflinePlayer player) {
+        tryDemote(guildHandler, guild, player);
+    }
+
+    /**
+     * Demote a player, reporting whether the role actually changed.
+     *
+     * @param guildHandler guild handler
+     * @param guild the guild they are in
+     * @param player the player being demoted
+     * @return true when the role was changed, false when there was no lower role to move to
+     */
+    public static boolean tryDemote(final GuildHandler guildHandler, final Guild guild, final OfflinePlayer player) {
         final GuildMember member = guild.getMember(player.getUniqueId());
         final GuildRole nextRole = getNextLowerRole(guildHandler, member);
 

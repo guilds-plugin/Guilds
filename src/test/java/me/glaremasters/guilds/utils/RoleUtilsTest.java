@@ -101,25 +101,39 @@ class RoleUtilsTest {
     }
 
     @Test
-    @DisplayName("checkPromote only allows promoting one rank up, and only to your own rank")
-    void checkPromoteWalksTheHierarchy() {
+    @DisplayName("a superior may promote a subordinate one rank at a time")
+    void aSuperiorMayPromoteASubordinate() {
+        final GuildMember master = TestFixtures.member(TestFixtures.MASTER);
         final GuildMember officer = TestFixtures.member(TestFixtures.OFFICER);
         final GuildMember veteran = TestFixtures.member(TestFixtures.VETERAN);
         final GuildMember member = TestFixtures.member(TestFixtures.MEMBER);
+        withMembers(master, officer, veteran, member);
+
+        // Master promotes veteran to officer. The result (level 1) is strictly below the master.
+        assertTrue(RoleUtils.checkPromote(guild, asPlayer(veteran), asPlayer(master)));
+
+        // Officer promotes a plain member to veteran. The result (level 2) is strictly below the
+        // officer. This is the case the old rule missed, since it only allowed the exact rank
+        // below the actor and so left the master able to promote nobody at all.
+        assertTrue(RoleUtils.checkPromote(guild, asPlayer(member), asPlayer(officer)));
+    }
+
+    @Test
+    @DisplayName("a promotion may not land on a rank equal to or above the actor's")
+    void aPromotionMayNotEqualOrOutrankTheActor() {
         final GuildMember master = TestFixtures.member(TestFixtures.MASTER);
-        withMembers(officer, veteran, member, master);
+        final GuildMember officer = TestFixtures.member(TestFixtures.OFFICER);
+        final GuildMember veteran = TestFixtures.member(TestFixtures.VETERAN);
+        withMembers(master, officer, veteran);
 
-        final OfflinePlayer officerPlayer = asPlayer(officer);
+        // Promoting the veteran would make them an officer, the same rank the actor already holds.
+        assertFalse(RoleUtils.checkPromote(guild, asPlayer(veteran), asPlayer(officer)));
 
-        // An officer may promote a veteran up to officer.
-        assertTrue(RoleUtils.checkPromote(guild, asPlayer(veteran), officerPlayer));
+        // An officer can never reach the master.
+        assertFalse(RoleUtils.checkPromote(guild, asPlayer(master), asPlayer(officer)));
 
-        // An officer may not skip past a veteran and promote a plain member.
-        assertFalse(RoleUtils.checkPromote(guild, asPlayer(member), officerPlayer));
-
-        // An officer may not promote anyone at or above their own rank.
-        assertFalse(RoleUtils.checkPromote(guild, asPlayer(master), officerPlayer));
-        assertFalse(RoleUtils.checkPromote(guild, officerPlayer, officerPlayer));
+        // Nor can the master reach a second master.
+        assertFalse(RoleUtils.checkPromote(guild, asPlayer(master), asPlayer(master)));
     }
 
     @Test
@@ -127,10 +141,10 @@ class RoleUtilsTest {
     void officerIsNotPromotable() {
         withMembers(TestFixtures.member(TestFixtures.MASTER), TestFixtures.member(TestFixtures.OFFICER));
 
-        // Level 1 promotes to level 0, which is the guild master role. That transfer is what
-        // /guild transfer is for, so CommandPromote refuses it before the role is resolved.
+        // Level 1 promotes to level 0, which is the guild master role. That seat changes hands
+        // through /guild transfer, so promotion must never hand it out.
         assertTrue(RoleUtils.isOfficer(guild, asPlayer(members.get(1))));
-        assertTrue(RoleUtils.checkPromote(guild, asPlayer(members.get(1)), asPlayer(members.get(0))));
+        assertFalse(RoleUtils.checkPromote(guild, asPlayer(members.get(1)), asPlayer(members.get(0))));
     }
 
     @Test

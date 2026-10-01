@@ -102,12 +102,18 @@ dependencies {
     /*
      * Tests run without a server, so spigot-api and vault have to be on the test classpath even
      * though the server provides them at runtime.
+     *
+     * The API is 1.16.5 rather than the one the plugin compiles against. The current Spigot API
+     * ships Java 17+ bytecode, which a Java 11 JVM cannot load, so the testJava11 run would fail
+     * before reaching a single assertion. The tests only touch API that has been stable since 1.8.
      */
     testImplementation(platform(libs.junit.bom))
     testImplementation(libs.junit.jupiter)
     testImplementation(libs.mockito.core)
-    testImplementation(libs.spigot.api)
+    testImplementation(libs.spigot.api.test)
     testImplementation(libs.vault)
+    // compileOnly above, because Quark loads it at plugin startup. Tests run as plain JVM code.
+    testImplementation(libs.kotlin.stdlib)
     testRuntimeOnly(libs.junit.platform.launcher)
 }
 
@@ -555,5 +561,21 @@ tasks {
 
             configureGuildsRunServer(target)
         }
+    }
+}
+
+/*
+ * Indra registers testJava11 and wires it into check, but it does not give the task a launcher, so
+ * the task runs on whatever JVM Gradle runs on. Java 11 is the documented runtime floor, so point
+ * it at a real Java 11 toolchain.
+ *
+ * afterEvaluate, because indra registers the task from its extension block further down, and
+ * tasks.named(...) would not resolve before that.
+ */
+afterEvaluate {
+    tasks.named<Test>("testJava11") {
+        javaLauncher.set(javaToolchains.launcherFor {
+            languageVersion.set(JavaLanguageVersion.of(11))
+        })
     }
 }

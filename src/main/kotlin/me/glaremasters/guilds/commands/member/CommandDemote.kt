@@ -76,13 +76,9 @@ internal class CommandDemote : BaseCommand() {
             throw ExpectationNotMet(Messages.DEMOTE__CANT_DEMOTE)
         }
 
-        if (RoleUtils.getNextLowerRole(guildHandler, asMember) == null) {
-            throw ExpectationNotMet(Messages.DEMOTE__CANT_DEMOTE)
-        }
-
         val oldRole = asMember.role.name
 
-        if (!RoleUtils.demote(guildHandler, guild, user)) {
+        if (!RoleUtils.tryDemote(guildHandler, guild, user)) {
             throw ExpectationNotMet(Messages.DEMOTE__CANT_DEMOTE)
         }
 

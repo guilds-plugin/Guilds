@@ -72,20 +72,9 @@ internal class CommandPromote : BaseCommand() {
             throw ExpectationNotMet(Messages.PROMOTE__CANT_PROMOTE)
         }
 
-        // Promoting an officer would create a second guild master, which is what transfer is for.
-        if (RoleUtils.isOfficer(guild, user)) {
-            throw ExpectationNotMet(Messages.PROMOTE__CANT_PROMOTE)
-        }
-
-        // Refuse before mutating anything: there is no role above the top of the hierarchy, and
-        // writing that missing role leaves the member with a null role.
-        if (RoleUtils.getNextHigherRole(guildHandler, targetMember) == null) {
-            throw ExpectationNotMet(Messages.PROMOTE__CANT_PROMOTE)
-        }
-
         val oldRole = targetMember.role.name
 
-        if (!RoleUtils.promote(guildHandler, guild, user)) {
+        if (!RoleUtils.tryPromote(guildHandler, guild, user)) {
             throw ExpectationNotMet(Messages.PROMOTE__CANT_PROMOTE)
         }
 
