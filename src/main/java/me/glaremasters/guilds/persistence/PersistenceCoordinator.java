@@ -864,6 +864,17 @@ public final class PersistenceCoordinator {
             // that is corruption, and corruption is worse than a save that did not happen. Closing the pool
             // under a running writer has the same character. So the flush is skipped and the pool is left
             // for the JVM shutdown hook, and the operator is told plainly that the last save did not happen.
+            if (gate.isMigrating()) {
+                // Said separately because the usual explanation is wrong in this case, and so is the usual
+                // remedy. It was a migration holding the permit, not a wedged save on a dead connection, and
+                // "the last autosave" is on the previous backend — which publication has already closed.
+                LoggingUtils.severe("A migration was still running after " + SHUTDOWN_DRAIN_TIMEOUT_MILLIS
+                        + "ms and did not finish. Skipping the final save. The new backend is already in use"
+                        + " and the previous one is closed, so the last autosave is not somewhere to roll back"
+                        + " to; check the console for how far the migration got, and set storage-backend in"
+                        + " the config to match the new backend before the next start.");
+                return;
+            }
             LoggingUtils.severe("A save was still running after " + SHUTDOWN_DRAIN_TIMEOUT_MILLIS
                     + "ms and did not finish. Skipping the final save and leaving the database open; the last"
                     + " autosave is what is on disk. This means a save was wedged, usually on a dead database"

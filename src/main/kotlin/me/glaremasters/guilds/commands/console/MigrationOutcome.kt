@@ -52,6 +52,15 @@ internal class MigrationOutcome {
     private var persistedGuildCount = 0
 
     /**
+     * Whether the changes made while the migration ran have reached the published destination.
+     *
+     * <p>Set only by a catch-up write that returned success, and required by [report], so completion is
+     * claimed only when the outstanding state is genuinely on the destination. It is a total function of
+     * "did a write succeed", so no future path that skips the catch-up can produce a false "complete".
+     */
+    private var catchUpPersisted = false
+
+    /**
      * Opens the destination and writes the snapshot into it. Runs on a worker.
      *
      * <p>Never throws. TaskChain skips the rest of a chain when a step throws, and the rest of this chain is
@@ -213,14 +222,22 @@ internal class MigrationOutcome {
             return
         }
         if (gate.isShuttingDown) {
-            // `shutdownFlush` writes the live backend, which is the published destination, so this would be
-            // the same write twice, against a shutdown that is already waiting on the permit.
+            // Unavoidable, not a choice. `shutdownFlush` has set the flag and is on the main thread waiting
+            // for the permit this migration still holds, so there is nowhere to capture from. A second,
+            // independent reason: TaskChain's `postToMain` runs a task inline on the calling thread once the
+            // plugin is disabled, so this step is not on the main thread either, which is what the guard below
+            // enforces.
+            //
+            // `report` reports the post-publish failure, so nothing has to be recorded here. The shutdown
+            // save writes the live state to the published destination if its drain succeeds, which is where
+            // those changes would end up, and that is the hedge the message carries.
+            LoggingUtils.severe(
+                "The server started shutting down with a migration in flight. The new backend is in use but" +
+                    " does not have the changes made during the migration; the shutdown save will write them" +
+                    " if its drain succeeds.",
+            )
             return
         }
-        // Insurance rather than a reachable path: the two are adjacent sync steps, so a capture here is on
-        // the main thread by construction. Kept because TaskChain's `postToMain` runs a task inline on the
-        // calling thread when the plugin is disabled, and "by construction" is the kind of thing that
-        // changes.
         if (!coordinator.isOnMainThread) {
             LoggingUtils.severe(
                 "Migration could not save the changes made while it ran: the capture would not have been on" +
@@ -246,10 +263,17 @@ internal class MigrationOutcome {
      */
     fun writeCatchUp(coordinator: PersistenceCoordinator, gate: PersistenceGate) {
         val snapshot = catchUpSnapshot
-        if (!published || snapshot == null || gate.isShuttingDown) {
+        if (!published || snapshot == null) {
             return
         }
-        persistedGuildCount = snapshot.guilds.size
+        if (gate.isShuttingDown) {
+            // Same reasoning as the guard in `catchUp`, and same reporting: `catchUpPersisted` is what stops
+            // `report` calling this complete.
+            LoggingUtils.severe(
+                "The server started shutting down before the changes made during the migration were saved.",
+            )
+            return
+        }
         try {
             val failures = ArrayList<String>()
             if (!coordinator.writeTo(destination!!, snapshot, failures)) {
@@ -257,7 +281,10 @@ internal class MigrationOutcome {
                     "Migration could not save the changes made while it ran: ${failures.joinToString("; ")}",
                 )
                 failAfterPublish("saving the changes made during the migration")
+                return
             }
+            persistedGuildCount = snapshot.guilds.size
+            catchUpPersisted = true
         } catch (ex: Throwable) {
             failAfterPublish("saving the changes made during the migration")
         }
@@ -266,6 +293,11 @@ internal class MigrationOutcome {
     /**
      * Tells the operator how it went. Main thread, and only after the changes made during the migration have
      * been written.
+     *
+     * <p>Completion is claimed only when the catch-up actually landed. The steps that skip it — a shutdown
+     * landing between publication and the write — would otherwise have the operator told a migration
+     * succeeded while the destination was still missing everything the migration window changed, and the
+     * plugin already switched over to it.
      *
      * @param issuer  told what happened
      * @param backend the backend migrated to, for the log
@@ -278,6 +310,10 @@ internal class MigrationOutcome {
         }
         if (!published) {
             issuer.sendInfo(Messages.MIGRATE__FAILED)
+            return
+        }
+        if (!catchUpPersisted) {
+            issuer.sendInfo(Messages.MIGRATE__PUBLISHED_UNSAVED)
             return
         }
         LoggingUtils.info("Migration to ${backend.backendName} completed.")

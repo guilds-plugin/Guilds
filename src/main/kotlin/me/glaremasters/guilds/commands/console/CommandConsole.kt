@@ -163,7 +163,15 @@ internal class CommandConsole : BaseCommand() {
                     outcome.catchUp(coordinator, gate)
                 }.async {
                     outcome.writeCatchUp(coordinator, gate)
-                }.sync {
+                }.async {
+                    // Async, not sync, and that is the point of it. A `sync` step is queued through
+                    // `scheduleSyncDelayedTask`, and Bukkit cancels a task belonging to a plugin that has just
+                    // been disabled, so a `/stop` landing in the same tick as the catch-up would cancel this
+                    // step: the permit would never be released, the migration flag would stay set, and the
+                    // operator would be told nothing at all. An `async` step goes to the chain's own executor,
+                    // which is never shut down because `registerShutdownHandler` is unreachable from
+                    // `BukkitTaskChainFactory.create`.
+                    //
                     // Reached only after the catch-up write returned, so "complete" means the changes made
                     // during the migration are on the new backend. `finish` in a `finally` because every
                     // step above is total, and this is the one place the permit and the flag come back.

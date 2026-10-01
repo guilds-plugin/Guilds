@@ -39,6 +39,9 @@ import org.mockito.Mockito;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.Map;
 import java.util.UUID;
 
@@ -332,6 +335,150 @@ class MigrationOutcomeTest {
     // ---------------------------------------------------------------------------------------
     // Permit
     // ---------------------------------------------------------------------------------------
+
+    @Test
+    @DisplayName("a shutdown landing after publication does not get a completion")
+    void aShutdownLandingAfterPublicationDoesNotGetACompletion() throws IOException {
+        // The ordering, arranged rather than raced: the destination is published, then the server starts
+        // stopping, which is `shutdownFlush` on the main thread waiting for the permit this migration holds.
+        // The catch-up is then skipped, so nothing is persisted — and saying "complete" anyway would have
+        // told the operator the migration saved everything while the new backend is already the live one
+        // and is missing it. The separate off-main-thread case has its own test.
+        final PersistenceCoordinator spy = spyWithSevenGuilds();
+        stubWorkingDestination();
+        final MigrationOutcome outcome = new MigrationOutcome();
+
+        write(outcome);
+        outcome.publish(spy, snapshot, DatabaseBackend.MYSQL);
+
+        gate.beginShutdown();
+        outcome.catchUp(spy, gate);
+        outcome.writeCatchUp(spy, gate);
+        outcome.report(issuer, DatabaseBackend.MYSQL);
+        outcome.finish(gate);
+
+        assertEquals(Messages.MIGRATE__PUBLISHED_UNSAVED, reportedMessage());
+        Mockito.verify(issuer, Mockito.never())
+                .sendInfo(Mockito.eq(Messages.MIGRATE__COMPLETE), Mockito.any(), Mockito.any());
+
+        // And the permit comes back, so `shutdownFlush`'s drain is not left waiting on us.
+        assertTrue(gate.tryAcquireWriter(), "finish must return the permit even when a shutdown intervened");
+        gate.releaseWriter();
+    }
+
+    @Test
+    @DisplayName("a shutdown landing before the catch-up write does not get a completion")
+    void aShutdownLandingBeforeTheCatchUpWriteDoesNotGetACompletion() throws IOException {
+        // The same ordering one step later: the capture got as far as running, then the server stopped. The
+        // snapshot exists but was never written, which is a different failure from never having taken one.
+        final PersistenceCoordinator spy = spyWithSevenGuilds();
+        stubWorkingDestination();
+        final MigrationOutcome outcome = new MigrationOutcome();
+
+        write(outcome);
+        outcome.publish(spy, snapshot, DatabaseBackend.MYSQL);
+        outcome.catchUp(spy, gate);
+
+        gate.beginShutdown();
+        outcome.writeCatchUp(spy, gate);
+        outcome.report(issuer, DatabaseBackend.MYSQL);
+        outcome.finish(gate);
+
+        assertEquals(Messages.MIGRATE__PUBLISHED_UNSAVED, reportedMessage());
+        Mockito.verify(spy, Mockito.never()).writeTo(Mockito.any(), Mockito.any(), Mockito.any());
+        assertTrue(gate.tryAcquireWriter());
+        gate.releaseWriter();
+    }
+
+    @Test
+    @DisplayName("a shutdown landing during the catch-up write still reports completion")
+    void aShutdownLandingDuringTheCatchUpWriteStillReportsCompletion() throws Exception {
+        // The other side of the guard, and the ordering the branch exists for. `writeCatchUp` does not
+        // re-check the shutdown flag mid-write, so a write already under way finishes and is reported as
+        // what it is: done. Refusing here would be the same false claim in the other direction.
+        final PersistenceCoordinator spy = spyWithSevenGuilds();
+        final CountDownLatch writeStarted = new CountDownLatch(1);
+        final CountDownLatch releaseWrite = new CountDownLatch(1);
+        Mockito.doAnswer(invocation -> {
+            writeStarted.countDown();
+            releaseWrite.await(20, TimeUnit.SECONDS);
+            return true;
+        }).when(spy).writeTo(Mockito.any(), Mockito.any(), Mockito.any());
+
+        stubWorkingDestination();
+        final MigrationOutcome outcome = new MigrationOutcome();
+
+        write(outcome);
+        outcome.publish(spy, snapshot, DatabaseBackend.MYSQL);
+        outcome.catchUp(spy, gate);
+
+        final AtomicReference<Boolean> written = new AtomicReference<>();
+        final Thread worker = new Thread(
+                () -> {
+                    written.set(Boolean.TRUE);
+                    outcome.writeCatchUp(spy, gate);
+                },
+                "catch-up-under-test");
+        worker.setDaemon(true);
+        worker.start();
+
+        // The flag goes up while the write is in flight, not before: `writeCatchUp` checks it before
+        // starting, and that is the branch the previous two tests cover.
+        assertTrue(writeStarted.await(20, TimeUnit.SECONDS), "the catch-up write never started");
+        gate.beginShutdown();
+        releaseWrite.countDown();
+        worker.join(TimeUnit.SECONDS.toMillis(20));
+
+        assertTrue(written.get());
+        outcome.report(issuer, DatabaseBackend.MYSQL);
+        outcome.finish(gate);
+
+        assertEquals(Messages.MIGRATE__COMPLETE, reportedMessage());
+    }
+
+    @Test
+    @DisplayName("a capture that throws reports a failure rather than a completion")
+    void aCaptureThatThrowsReportsAFailureRatherThanACompletion() throws IOException {
+        // The branch the off-main-thread guard sits next to, which had no coverage: a capture that blows up
+        // leaves the destination holding the state from the start of the migration and nothing after it.
+        final PersistenceCoordinator spy = spyWithSevenGuilds();
+        Mockito.when(spy.capture()).thenThrow(new IllegalStateException("a vault could not be serialised"));
+
+        stubWorkingDestination();
+        final MigrationOutcome outcome = new MigrationOutcome();
+
+        write(outcome);
+        outcome.publish(spy, snapshot, DatabaseBackend.MYSQL);
+        outcome.catchUp(spy, gate);
+        outcome.writeCatchUp(spy, gate);
+        outcome.report(issuer, DatabaseBackend.MYSQL);
+        outcome.finish(gate);
+
+        assertEquals(Messages.MIGRATE__PUBLISHED_UNSAVED, reportedMessage());
+        assertTrue(gate.tryAcquireWriter());
+        gate.releaseWriter();
+    }
+
+    @Test
+    @DisplayName("a catch-up that landed before the shutdown still reports completion")
+    void aCatchUpThatLandedBeforeTheShutdownStillReportsCompletion() throws IOException {
+        // The other direction, so the previous two are not just a stricter rule applied to everything: a
+        // migration whose outstanding state is already on the destination has nothing left to report.
+        final PersistenceCoordinator spy = spyWithSevenGuilds();
+        stubWorkingDestination();
+        final MigrationOutcome outcome = new MigrationOutcome();
+
+        write(outcome);
+        outcome.publish(spy, snapshot, DatabaseBackend.MYSQL);
+        outcome.catchUp(spy, gate);
+        outcome.writeCatchUp(spy, gate);
+
+        gate.beginShutdown();
+        outcome.report(issuer, DatabaseBackend.MYSQL);
+        outcome.finish(gate);
+
+        assertEquals(Messages.MIGRATE__COMPLETE, reportedMessage());
+    }
 
     @Test
     @DisplayName("an Error from the reconciliation still returns the permit and reports a failure")
