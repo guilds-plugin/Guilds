@@ -69,10 +69,29 @@ class ArenaHandler(private val guilds: Guilds) {
     /**
      * Returns a collection of all the [Arena] objects in the map.
      *
+     * <p>This is a live view, not a copy, and it stays that way for the GUI and command callers that
+     * read it on the main thread. Do not hand it to a background thread: iterating it while
+     * `/guilds arena create` or `delete` runs a structural change throws, and
+     * `ArenaAdapter#saveArenas` deletes every stored arena missing from the collection it is given, so
+     * a short read is data loss. Use [getArenasForSnapshot] for anything that leaves the main thread.
+     *
      * @return The collection of [Arena] objects.
      */
     fun getArenas(): Collection<Arena> {
         return arenas.values
+    }
+
+    /**
+     * Returns every arena in a list safe to iterate once the caller has left the main thread's
+     * exclusive ownership.
+     *
+     * <p>The [Arena] instances are still live and mutable. This is only safe because the caller
+     * serialises them here, on the main thread, and then works from the resulting strings.
+     *
+     * @return a detached list of the arenas
+     */
+    fun getArenasForSnapshot(): List<Arena> {
+        return ArrayList(arenas.values)
     }
 
     /**
@@ -112,8 +131,17 @@ class ArenaHandler(private val guilds: Guilds) {
 
     /**
      * Saves all the [Arena] objects in the map to the database.
+     *
+     * <p>Serialises on the calling thread and hands the adapter strings rather than live arenas. It
+     * used to pass `arenas.values` straight through, which is a live view: a save running while an
+     * arena was created or deleted either threw `ConcurrentModificationException` or, in the delete
+     * pass, deleted an arena it had never seen.
      */
     fun saveArenas() {
-        guilds.database.arenaAdapter.saveArenas(arenas.values)
+        val serialized = LinkedHashMap<String, String>()
+        for (arena in getArenasForSnapshot()) {
+            serialized[arena.id.toString()] = Guilds.getGson().toJson(arena, Arena::class.java)
+        }
+        guilds.database.arenaAdapter.saveSerialized(serialized)
     }
 }

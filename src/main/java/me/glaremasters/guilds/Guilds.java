@@ -52,6 +52,8 @@ import me.glaremasters.guilds.listeners.PlayerListener;
 import me.glaremasters.guilds.listeners.TicketListener;
 import me.glaremasters.guilds.listeners.VaultBlacklistListener;
 import me.glaremasters.guilds.listeners.WorldGuardListener;
+import me.glaremasters.guilds.persistence.PersistenceCoordinator;
+import me.glaremasters.guilds.persistence.PersistenceGate;
 import me.glaremasters.guilds.placeholders.PlaceholderAPI;
 import me.glaremasters.guilds.updater.UpdateChecker;
 import me.glaremasters.guilds.utils.LanguageUpdater;
@@ -66,6 +68,7 @@ import org.bstats.charts.SingleLineChart;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
 import org.codemc.worldguardwrapper.WorldGuardWrapper;
 import org.bxteam.quark.bukkit.BukkitLibraryManager;
 import org.jetbrains.annotations.Nullable;
@@ -83,6 +86,16 @@ public final class Guilds extends JavaPlugin {
 
     /** Smallest autosave period the scheduler will accept, in whole minutes. */
     private static final int MINIMUM_SAVE_INTERVAL_MINUTES = 1;
+
+    /**
+     * How long a capture may spend on the main thread per tick, in milliseconds.
+     *
+     * <p>A tick is 50ms and the server budget for one tick is well under that, so this is deliberately a
+     * small fraction of it. Measured worst case for a fully stocked vault is about 175us, so the budget
+     * is spent on roughly a dozen guilds per tick before it is checked, which keeps the overshoot per tick
+     * to a single guild.
+     */
+    private static final long CAPTURE_BUDGET_MILLIS = 3L;
 
     /**
      * A save routine that is allowed to throw {@link IOException}.
@@ -103,7 +116,23 @@ public final class Guilds extends JavaPlugin {
     private ArenaHandler arenaHandler;
     private ChallengeHandler challengeHandler;
     private static TaskChainFactory taskChainFactory;
-    private DatabaseAdapter database;
+
+    /**
+     * Volatile because migration replaces it from a worker thread.
+     *
+     * <p>A reader on the autosave thread or the main thread was otherwise permitted to keep observing
+     * the pre-migration adapter, and would then write to a pool that migration had already closed.
+     */
+    private volatile DatabaseAdapter database;
+
+    /**
+     * The gate every writer shares. Replaced on each enable rather than being a field initialiser, because
+     * the gate latches {@code shuttingDown} for the life of the plugin and a `/reload` re-enables this
+     * same instance. Reusing it would mean every save silently skipped forever after the first reload.
+     */
+    private PersistenceGate persistenceGate = new PersistenceGate();
+    private PersistenceCoordinator persistenceCoordinator;
+    private BukkitTask autosaveTask;
     private SettingsHandler settingsHandler;
     private PaperCommandManager commandManager;
     private ActionHandler actionHandler;
@@ -133,6 +162,11 @@ public final class Guilds extends JavaPlugin {
         /*
          * Persist first, and unconditionally. This sat behind a `checkVault() && economy != null`
          * guard, so a server that lost its Vault economy provider saved nothing at all.
+         *
+         * The coordinator drains any in-flight save before writing and closes the database afterwards,
+         * so the final flush cannot interleave with a running autosave or lose the race to close the
+         * connection pool. Bukkit has already cancelled the autosave schedule by this point, but that
+         * only stops future runs; a worker that is already going keeps going.
          */
         savePluginData();
 
@@ -151,13 +185,6 @@ public final class Guilds extends JavaPlugin {
         runCleanup(guildHandler == null ? null : () -> guildHandler.getLookupCache().clear(), "the guild lookup cache");
         runCleanup(commandManager == null ? null : commandManager::unregisterCommands, "commands");
 
-        if (database != null) {
-            LoggingUtils.info("Shutting down database...");
-            if (runCleanup(database::close, "the database")) {
-                LoggingUtils.info("Database has been shut down.");
-            }
-        }
-
         if (adventure != null) {
             runCleanup(() -> adventure.close(), "adventure audiences");
             adventure = null;
@@ -165,15 +192,63 @@ public final class Guilds extends JavaPlugin {
     }
 
     /**
-     * Flushes every data handler to its storage backend.
+     * Flushes every data handler to its storage backend and then closes it.
      *
-     * <p>Each handler is saved independently, so one bad record does not cost the server owner
-     * every other kind of data.
+     * <p>Drain, write, close, in that order. Each handler is written independently inside the
+     * coordinator, so one bad record does not cost the server owner every other kind of data.
      */
     private void savePluginData() {
-        runCleanup(guildHandler == null ? null : guildHandler::saveData, "guild data");
-        runCleanup(cooldownHandler == null ? null : cooldownHandler::saveCooldowns, "cooldown data");
-        runCleanup(arenaHandler == null ? null : arenaHandler::saveArenas, "arena data");
+        final DatabaseAdapter toClose = this.database;
+
+        // Cancel the autosave before flushing. Bukkit does cancel a plugin's tasks when it is disabled, but
+        // it does so after `onDisable` returns, so without this the timer is still nominally live while the
+        // flush runs. It cannot actually fire, because the main thread is in here, but relying on that is
+        // an assumption about CraftScheduler internals rather than something this code establishes.
+        if (autosaveTask != null) {
+            getServer().getScheduler().cancelTask(autosaveTask.getTaskId());
+            autosaveTask = null;
+        }
+
+        if (persistenceCoordinator == null) {
+            /*
+             * A partial onEnable can reach here without a coordinator, which means one of the loaders
+             * threw and the handlers may be only partly populated.
+             *
+             * Only the two collections whose writes cannot destroy anything are saved here. Guilds are
+             * skipped because there is no snapshot path to reach them, and arenas are deliberately skipped
+             * because `ArenaAdapter` deletes every stored arena missing from the collection it is given:
+             * writing a half-loaded arena map would delete every arena whose load had failed. Losing a
+             * shutdown save is recoverable; deleting live arenas is not.
+             */
+            LoggingUtils.warn("Startup did not complete, so guild and arena data was not saved on shutdown."
+                    + " Whatever is in storage from the last successful save is what will be loaded.");
+            runCleanup(cooldownHandler == null ? null : cooldownHandler::saveCooldowns, "cooldown data");
+            runCleanup(challengeHandler == null ? null : challengeHandler::saveData, "challenge data");
+            closeDatabase(toClose);
+            return;
+        }
+
+        persistenceCoordinator.shutdownFlush(() -> closeDatabase(toClose));
+
+        // Drop the reference so a second onDisable, which a failed re-enable can produce, does not flush
+        // the previous session's coordinator through an adapter that is already closed.
+        persistenceCoordinator = null;
+    }
+
+    /**
+     * Closes the storage backend, if there is one.
+     *
+     * @param adapter the adapter to close
+     */
+    private void closeDatabase(@Nullable DatabaseAdapter adapter) {
+        if (adapter == null) {
+            return;
+        }
+
+        LoggingUtils.info("Shutting down database...");
+        if (runCleanup(adapter::close, "the database")) {
+            LoggingUtils.info("Database has been shut down.");
+        }
     }
 
     /**
@@ -287,6 +362,11 @@ public final class Guilds extends JavaPlugin {
             return;
         }
 
+        // One coordinator and one gate for every writer: autosave, migration and shutdown.
+        persistenceGate = new PersistenceGate();
+        persistenceCoordinator = new PersistenceCoordinator(
+                this, persistenceGate, guildHandler, arenaHandler, challengeHandler, cooldownHandler);
+
         // If they have placeholderapi, enable it.
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             new PlaceholderAPI(guildHandler).register();
@@ -337,19 +417,43 @@ public final class Guilds extends JavaPlugin {
         chatListener = new ChatListener(this);
 
         LoggingUtils.info("Ready to go! That only took " + (System.currentTimeMillis() - startingTime) + "ms");
-        getServer().getScheduler().scheduleAsyncRepeatingTask(this, () -> {
-            try {
-                if (guildHandler.isMigrating()) {
-                    return;
-                }
-                guildHandler.saveData();
-                //cooldownHandler.saveCooldowns(); We are going to save on shutdown only, no need for runtime saving
-                arenaHandler.saveArenas();
-                challengeHandler.saveData();
-            } catch (IOException | RuntimeException e) {
-                LoggingUtils.severe("An error occurred while saving plugin data during the scheduled save task.", e);
-            }
-        }, SAVE_TASK_INITIAL_DELAY_TICKS, resolveSaveIntervalTicks());
+        startAutosaveTask();
+    }
+
+    /**
+     * Schedules the periodic save.
+     *
+     * <p>Two timers, and the split is the point.
+     *
+     * <p>The trigger is a synchronous timer. The whole save used to run under
+     * {@code scheduleAsyncRepeatingTask}, which meant it both read mutable state off the main thread and
+     * could overlap itself: that method re-arms its timer as soon as it dispatches a run, so a save that
+     * outlasted the interval put two threads in the same body. A synchronous timer cannot re-enter,
+     * because the main thread runs one tick at a time.
+     *
+     * <p>The timer runs every tick and the coordinator decides what to do with the tick. That is a
+     * deliberate shape: the coordinator starts a new capture when the configured interval has elapsed, and
+     * spends a tick's budget finishing one that is already running. Deciding when to start inside the
+     * coordinator keeps the timer to a single task. An earlier version started a second per-tick timer
+     * from the first, which needed the first one to notice that a capture was pending and left a task to
+     * cancel.
+     *
+     * <p>Capturing a thousand guilds costs about 400ms and a tick is 50ms, so a capture cannot finish in
+     * one tick without stalling the server. Each pass spends at most {@link #CAPTURE_BUDGET_MILLIS}
+     * milliseconds and picks the rest up next tick.
+     *
+     * <p>The write, which is the expensive half in wall-clock terms on a real server, is still handed to a
+     * worker and never blocks a tick.
+     */
+    private void startAutosaveTask() {
+        final long intervalNanos = resolveSaveIntervalTicks() * 50_000_000L;
+
+        autosaveTask = getServer().getScheduler().runTaskTimer(this, () -> persistenceCoordinator.tick(
+                        CAPTURE_BUDGET_MILLIS * 1_000_000L,
+                        intervalNanos,
+                        write -> getServer().getScheduler().runTaskAsynchronously(this, write)
+                ),
+                SAVE_TASK_INITIAL_DELAY_TICKS, 1L);
     }
 
     /**
@@ -462,6 +566,24 @@ public final class Guilds extends JavaPlugin {
 
     public void setDatabase(DatabaseAdapter database) {
         this.database = database;
+    }
+
+    /**
+     * The gate that serialises every write to storage.
+     *
+     * @return the shared persistence gate
+     */
+    public PersistenceGate getPersistenceGate() {
+        return persistenceGate;
+    }
+
+    /**
+     * The coordinator that captures state and writes it.
+     *
+     * @return the coordinator, or null if startup failed before it was built
+     */
+    @Nullable public PersistenceCoordinator getPersistenceCoordinator() {
+        return persistenceCoordinator;
     }
 
     public SettingsHandler getSettingsHandler() {

@@ -147,7 +147,7 @@ class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCo
             }
         }
         commandManager.commandConditions.addCondition("NotMigrating") {
-            if (guildHandler.isMigrating) {
+            if (plugin.persistenceGate.isMigrating) {
                 throw ExpectationNotMet(Messages.ERROR__MIGRATING)
             }
         }

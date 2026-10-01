@@ -32,6 +32,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 import java.util.Set;
 
 public class ChallengeAdapter {
@@ -71,19 +72,34 @@ public class ChallengeAdapter {
         return provider.getChallenge(sqlTablePrefix, id);
    }
 
-   public void saveChallenges(@NotNull Set<GuildChallenge> challenges) throws IOException {
-        for (GuildChallenge challenge : challenges) {
-            saveChallenge(challenge);
-        }
-   }
-
-   public void saveChallenge(@NotNull GuildChallenge challenge) throws IOException {
+    public void saveChallenge(@NotNull GuildChallenge challenge) throws IOException {
        if (!challengeExists(challenge.getId().toString())) {
            createChallenge(challenge);
        } else {
            updateChallenge(challenge);
        }
-   }
+    }
+
+    /**
+     * Writes already-serialised challenge records.
+     *
+     * <p>The write half of a main-thread snapshot. A {@link GuildChallenge} has seventeen mutable
+     * properties and a war mutates most of them at once, so serialising one on a write thread could
+     * capture a challenge that was mid-transition and was never in that state at any instant.
+     * Serialising on the main thread fixes the bytes once and hands the writer only strings.
+     *
+     * @param serialized challenge id to serialised challenge JSON
+     * @throws IOException if an I/O error occurs
+     */
+    public void saveSerialized(@NotNull Map<String, String> serialized) throws IOException {
+        for (Map.Entry<String, String> entry : serialized.entrySet()) {
+            if (!challengeExists(entry.getKey())) {
+                provider.createChallenge(sqlTablePrefix, entry.getKey(), entry.getValue());
+            } else {
+                provider.updateChallenge(sqlTablePrefix, entry.getKey(), entry.getValue());
+            }
+        }
+    }
 
    public void createChallenge(@NotNull GuildChallenge challenge) throws IOException {
         provider.createChallenge(sqlTablePrefix, challenge.getId().toString(), Guilds.getGson().toJson(challenge, GuildChallenge.class));

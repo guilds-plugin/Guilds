@@ -89,10 +89,32 @@ public class ChallengeHandler {
 
     /**
      * Save the data of challenges
-     * @throws IOException
+     *
+     * <p>Serialises on the calling thread. It used to hand the adapter the {@code challenges} field
+     * itself, so a save on a background thread iterated a {@link HashSet} that war tasks and
+     * {@code /guild war} were adding to and removing from.
+     *
+     * @throws IOException if an I/O error occurs
      */
     public void saveData() throws IOException {
-        guilds.getDatabase().getChallengeAdapter().saveChallenges(challenges);
+        final Map<String, String> serialized = new LinkedHashMap<>();
+        for (GuildChallenge challenge : getChallengesForSnapshot()) {
+            serialized.put(challenge.getId().toString(), Guilds.getGson().toJson(challenge, GuildChallenge.class));
+        }
+        guilds.getDatabase().getChallengeAdapter().saveSerialized(serialized);
+    }
+
+    /**
+     * Returns every tracked challenge in a list that is safe to iterate once the caller has left the
+     * main thread's exclusive ownership.
+     *
+     * <p>The challenges themselves are still the live, mutable instances. This is only safe because
+     * the caller serialises them here, where nothing else can be mutating them.
+     *
+     * @return a detached list of the live challenges
+     */
+    @NotNull public List<GuildChallenge> getChallengesForSnapshot() {
+        return new ArrayList<>(challenges);
     }
 
     /**

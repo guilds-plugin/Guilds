@@ -82,7 +82,6 @@ public class GuildHandler {
     private final Map<UUID, String> lookupCache = new HashMap<>();
     private final Map<UUID, UUID> memberCache = new HashMap<>();
 
-    private boolean migrating = false;
     public boolean papi = false;
 
     //as well as guild permissions from tiers using permission field and tiers list.
@@ -204,17 +203,42 @@ public class GuildHandler {
     }
 
     /**
-     * Saves the data of all guilds to the database.
+     * Returns a detached copy of the guild map's values.
      *
-     * This method saves the data of all guilds to the database, including their vault cache. The method iterates through
-     * the `guilds` list and calls the `saveVaultCache` method for each guild to save their vault cache. After that, the
-     * `saveGuilds` method of the database's `GuildAdapter` is called to save all guilds to the database.
+     * <p>A cheap first step, for callers that need a stable set of guilds to work through over several
+     * ticks. Copying the map cannot fail here because the caller holds the main thread and nothing else
+     * can be writing to it.
      *
-     * @throws IOException if an I/O error occurs during the save process.
+     * <p>These are still the live {@link Guild} instances, so this is not a snapshot of anything on its
+     * own. A caller must serialise each guild before yielding the thread, and must not hand the list to
+     * another thread. {@link #serializeGuild(Guild)} does the serialising half.
+     *
+     * @return a detached list of the live guilds
      */
-    public void saveData() throws IOException {
-        guilds.values().forEach(this::saveVaultCache);
-        guildsPlugin.getDatabase().getGuildAdapter().saveGuilds(guilds.values());
+    @NotNull public List<Guild> getGuildsForSnapshot() {
+        return new ArrayList<>(guilds.values());
+    }
+
+    /**
+     * Serialises one guild, including the current contents of its vaults, to a string.
+     *
+     * <p>Must be called on the main thread. Serialising the vaults reads live Bukkit inventories through
+     * {@code Inventory#getContents()} and writes {@code ItemStack#serialize()}, which calls into
+     * {@code Bukkit.getUnsafe()} and {@code Bukkit.getItemFactory()}. Both were being done from a save
+     * thread, which was an off-thread Bukkit access as well as a race against a player clicking in an
+     * open vault.
+     *
+     * <p>Serialising here, rather than copying the models and serialising them later, is what makes the
+     * result detached. The returned string cannot change underneath whoever holds it, which a copy of the
+     * {@link Guild} would not be: Gson reading it on a worker while the main thread changed the same
+     * object's member list is how a half-updated record got written.
+     *
+     * @param guild the guild to serialise
+     * @return the guild as it exists at this instant
+     */
+    @NotNull public String serializeGuild(@NotNull Guild guild) {
+        saveVaultCache(guild);
+        return Guilds.getGson().toJson(guild, Guild.class);
     }
 
 
@@ -225,8 +249,10 @@ public class GuildHandler {
      * @throws NullPointerException if the specified [guild] is null
      */
     public void addGuild(@NotNull Guild guild) {
-        guilds.put(guild.getId(), guild);
+        // Cache first, then publish. The other order let a save that ran between the two statements
+        // find a guild with no cache, and the lookup in `saveVaultCache` would return null.
         createVaultCache(guild);
+        guilds.put(guild.getId(), guild);
     }
 
     /**
@@ -539,10 +565,26 @@ public class GuildHandler {
      * @param guild The guild whose vaults are being saved.
      */
     private void saveVaultCache(@NotNull final Guild guild) {
-        final List<String> vaults = new ArrayList<>();
-        if (guild.getVaults() == null) return;
-        // Serialize the inventory objects in the cache and add them to a list.
-        this.vaults.get(guild).forEach(v -> vaults.add(Serialization.serializeInventory(v)));
+        // `getVaults()` lazily allocates and never returns null, so the old null check here never fired
+        // and the cache lookup below was reached for every guild on every save.
+        final List<Inventory> cached = this.vaults.get(guild);
+        if (cached == null) {
+            // The guild is in the guild map but has no vault cache yet. `addGuild` builds the cache and
+            // then puts the guild, and both now happen on the main thread, so this should not be
+            // reachable during a save. It is guarded anyway: an NPE here would abort the whole save
+            // and cost every other guild its write.
+            LoggingUtils.warn("No vault cache for guild " + guild.getId() + "; its vault contents were not saved.");
+            return;
+        }
+
+        // Every vault, every time. A dirty-flag scheme was tried and dropped: skipping a vault that had
+        // actually changed loses items, and the flag had to be set from the inventory listeners, so every
+        // path that can mutate a vault without firing those events became a way to lose data. The cost of
+        // serialising everything is handled by spreading the capture across ticks instead.
+        final List<String> vaults = new ArrayList<>(cached.size());
+        for (Inventory vault : cached) {
+            vaults.add(Serialization.serializeInventory(vault));
+        }
         // Set the serialized inventory data to the guild's vaults list.
         guild.setVaults(vaults);
     }
@@ -1203,12 +1245,19 @@ public class GuildHandler {
         return this.opened;
     }
 
+    /**
+     * Whether a storage backend migration is running.
+     *
+     * <p>Delegates to the shared {@link me.glaremasters.guilds.persistence.PersistenceGate}. The flag
+     * used to live here as a plain {@code boolean}: written on a TaskChain thread, read by the
+     * autosave worker and by the ACF {@code NotMigrating} condition, with no happens-before edge
+     * between the writers and the readers. A stale read there is not a cosmetic problem, because the
+     * autosave skips while the flag is set.
+     *
+     * @return true while a migration holds the gate
+     */
     public boolean isMigrating() {
-        return migrating;
-    }
-
-    public void setMigrating(boolean migrating) {
-        this.migrating = migrating;
+        return guildsPlugin.getPersistenceGate().isMigrating();
     }
 
     public Map<UUID, String> getLookupCache() {

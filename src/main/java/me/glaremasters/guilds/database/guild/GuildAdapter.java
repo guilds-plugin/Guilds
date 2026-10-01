@@ -32,8 +32,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 public class GuildAdapter {
     private final GuildProvider provider;
@@ -76,9 +76,24 @@ public class GuildAdapter {
         return provider.getGuild(sqlTablePrefix, id);
     }
 
-    public void saveGuilds(@NotNull Collection<Guild> guilds) throws IOException {
-        for (Guild guild : guilds) {
-            saveGuild(guild);
+    /**
+     * Writes already-serialised guild records.
+     *
+     * <p>This is the write half of a snapshot taken on the main thread. It takes the JSON rather than
+     * a {@link Guild} so that the writer cannot observe a guild being mutated: the payload was fixed
+     * when the main thread serialised it, and everything after this point is I/O against an immutable
+     * string. The providers take a {@code String} either way, so the bytes on disk are unchanged.
+     *
+     * @param serialized guild id to serialised guild JSON
+     * @throws IOException if an I/O error occurs
+     */
+    public void saveSerialized(@NotNull Map<String, String> serialized) throws IOException {
+        for (Map.Entry<String, String> entry : serialized.entrySet()) {
+            if (!guildExists(entry.getKey())) {
+                provider.createGuild(sqlTablePrefix, entry.getKey(), entry.getValue());
+            } else {
+                provider.updateGuild(sqlTablePrefix, entry.getKey(), entry.getValue());
+            }
         }
     }
 

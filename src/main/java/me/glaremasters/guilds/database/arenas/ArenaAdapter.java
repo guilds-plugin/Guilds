@@ -32,9 +32,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This class serves as an adapter between the {@link Arena} and the underlying data storage mechanism (either JSON or SQL)
@@ -106,31 +105,6 @@ public class ArenaAdapter {
     }
 
     /**
-     * Saves all the arenas in the collection to the data storage backend.
-     * Any arena in the data storage backend that is not present in the collection will be deleted.
-     *
-     * @param arenas a collection of arenas to be saved
-     * @throws IOException if an I/O error occurs
-     */
-    public void saveArenas(@NotNull Collection<Arena> arenas) throws IOException {
-        List<String> savedIds = new ArrayList<>();
-
-        for (Arena arena : arenas) {
-            saveArena(arena);
-            savedIds.add(arena.getId().toString());
-        }
-
-        for (String arenaId : getAllArenaIds()) {
-            boolean keep = savedIds.stream().anyMatch(id -> id.equals(arenaId));
-            if (!keep) {
-                deleteArena(arenaId);
-            }
-        }
-
-        savedIds.clear();
-    }
-
-    /**
      * Saves an arena to the data storage backend. If the arena already exists, it will be updated.
      * If not, a new arena will be created.
      *
@@ -142,6 +116,34 @@ public class ArenaAdapter {
             createArena(arena);
         } else {
             updateArena(arena);
+        }
+    }
+
+    /**
+     * Writes already-serialised arena records, then deletes any stored arena missing from the set.
+     *
+     * <p>The write half of a main-thread snapshot. Taking ids and payloads together matters more here
+     * than for the other collections: the delete pass below treats "not in the collection" as "no
+     * longer exists", so a snapshot that lost an entry, or an {@link java.util.Collection} that was
+     * still a live view when the delete pass read it, deletes a live arena. Both are avoided by
+     * passing an immutable map captured in one pass.
+     *
+     * @param serialized arena id to serialised arena JSON
+     * @throws IOException if an I/O error occurs
+     */
+    public void saveSerialized(@NotNull Map<String, String> serialized) throws IOException {
+        for (Map.Entry<String, String> entry : serialized.entrySet()) {
+            if (!arenaExists(entry.getKey())) {
+                provider.createArena(sqlTablePrefix, entry.getKey(), entry.getValue());
+            } else {
+                provider.updateArena(sqlTablePrefix, entry.getKey(), entry.getValue());
+            }
+        }
+
+        for (String storedId : getAllArenaIds()) {
+            if (!serialized.containsKey(storedId)) {
+                deleteArena(storedId);
+            }
         }
     }
 
