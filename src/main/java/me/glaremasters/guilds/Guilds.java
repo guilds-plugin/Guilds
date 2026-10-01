@@ -337,7 +337,7 @@ public final class Guilds extends JavaPlugin {
         chatListener = new ChatListener(this);
 
         LoggingUtils.info("Ready to go! That only took " + (System.currentTimeMillis() - startingTime) + "ms");
-        getServer().getScheduler().scheduleAsyncRepeatingTask(this, () -> {
+        getServer().getScheduler().scheduleSyncRepeatingTask(this, () -> {
             try {
                 if (guildHandler.isMigrating()) {
                     return;
@@ -355,7 +355,7 @@ public final class Guilds extends JavaPlugin {
     /**
      * Resolves the configured autosave interval into a period Bukkit will accept.
      *
-     * <p>{@code scheduleAsyncRepeatingTask} rejects a non-positive period, and {@code 0} is a
+     * <p>{@code scheduleSyncRepeatingTask} rejects a non-positive period, and {@code 0} is a
      * natural thing to write to mean "only on shutdown". A large interval also overflows the
      * {@code int} tick count. Both used to escape {@link #onEnable()} as a stack trace that never
      * named the config key.
