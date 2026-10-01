@@ -46,14 +46,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Covers a capture that spans several ticks.
  *
- * <p>Spreading the capture is what keeps the save off the tick budget, but it introduces hazards a
- * single-pass capture cannot have: the guild map can change between one tick and the next, and the
- * snapshot is only written once every guild has been visited. Each test below mutates the live state
- * while a capture is part-way through and checks what the finished snapshot contains.
+ * <p>Spreading the capture keeps the save off the tick budget, but it introduces hazards a single-pass
+ * capture cannot have: the guild map can change between one tick and the next. Each test below mutates
+ * the live state while a capture is part-way through and checks what the finished snapshot contains.
  *
- * <p>The one that matters most is {@code ArenaAdapter}'s delete-by-absence. If an arena is created or
- * removed while the capture is spread out, the key set the adapter reconciles against decides whether a
- * live arena is deleted from storage or a dead one is written back.
+ * <p>The one that matters most is {@code ArenaAdapter}'s delete-by-absence: the key set the adapter
+ * reconciles against decides whether a live arena is deleted from storage or a dead one is written back.
  */
 class CaptureSessionTest {
 
@@ -74,9 +72,7 @@ class CaptureSessionTest {
         installGson();
     }
 
-    /**
-     * Publishes the real Gson instance, which {@code capture()} needs and {@code onEnable} normally sets.
-     */
+/** Publishes the real Gson instance, which {@code onEnable} normally sets and has no setter for. */
     private static void installGson() {
         try {
             final java.lang.reflect.Field field = Guilds.class.getDeclaredField("gson");
@@ -128,12 +124,9 @@ class CaptureSessionTest {
         @Timeout(30)
         @DisplayName("a one-nanosecond budget still finishes, one guild per step")
         void aOneNanosecondBudgetStillFinishesOneGuildPerStep() throws Exception {
-            // The property the budget relies on. `step` checks the deadline after each guild, so a budget
-            // that has already expired still advances by one and the loop always terminates. A check placed
-            // before the work instead would make a small enough budget loop forever, and a check that
-            // returned early would leave the capture unable to finish.
-            //
-            // Needs a real handler: with no guilds the loop body never runs and any deadline handling passes.
+            // `step` checks the deadline after each guild, so an expired budget still advances by one and the loop
+            // always terminates. Checking before the work instead would let a small enough budget spin
+            // forever.
             final GuildHandler handler = GuildSnapshotRemovalTest.newHandler(32, dataFolder);
             final CaptureSession started = new CaptureSession(handler, arenaHandler, null, null, null);
 
@@ -155,13 +148,10 @@ class CaptureSessionTest {
         @Test
         @DisplayName("an arena created during the capture is written, not deleted")
         void anArenaCreatedDuringTheCaptureIsWrittenNotDeleted() {
-            // The safe direction. Because arenas are read in `finish()`, an arena created while the
-            // guilds were being serialised is included, so it is written rather than deleted.
-            //
-            // Had arenas been read in the constructor, this arena would have been absent from the key
-            // set. That is harmless on its own, because the delete pass only removes ids storage already
-            // holds and a new arena is not in storage yet, so it would simply have been saved a minute
-            // later. Including it is better than that, and it is what falls out of reading arenas last.
+            // The safe direction. Reading arenas in `finish()` includes one created while the guilds were being
+            // serialised, so it is written rather than deleted. Had arenas been read in the constructor it
+            // would be absent from the key set, which is harmless here, since the delete pass only removes
+            // ids storage already holds.
             arenaHandler.addArena(new Arena(UUID.randomUUID(), "before"));
             final CaptureSession started = begin();
 
@@ -178,10 +168,8 @@ class CaptureSessionTest {
         @Test
         @DisplayName("an arena removed during the capture is not written back")
         void anArenaRemovedDuringTheCaptureIsNotWrittenBack() {
-            // This is the dangerous direction. ArenaAdapter deletes stored arenas missing from the map,
-            // so a snapshot that still lists a removed arena does not delete it, and the removed arena
-            // stays in storage until something else removes it. Capturing arenas in `finish()`, after the
-            // guilds, is what keeps this window to a tick rather than the whole capture.
+            // This is the dangerous direction. Capturing arenas in `finish()`, after the guilds, is what keeps the
+            // window for this to a tick rather than the whole capture.
             final Arena doomed = new Arena(UUID.randomUUID(), "doomed");
             arenaHandler.addArena(new Arena(UUID.randomUUID(), "survivor"));
             arenaHandler.addArena(doomed);
@@ -199,8 +187,8 @@ class CaptureSessionTest {
         @Test
         @DisplayName("the arena key set is built in one pass")
         void theArenaKeySetIsBuiltInOnePass() {
-            // The property that makes the previous test hold: every arena is read at the same instant,
-            // so there is no tick during which the key set is half old and half new.
+            // Every arena is read at the same instant, so there is no tick during which the key set is half old and
+            // half new.
             arenaHandler.addArena(new Arena(UUID.randomUUID(), "a"));
             arenaHandler.addArena(new Arena(UUID.randomUUID(), "b"));
             arenaHandler.addArena(new Arena(UUID.randomUUID(), "c"));
@@ -216,8 +204,8 @@ class CaptureSessionTest {
         @Test
         @DisplayName("removing every arena gives an empty key set, not a stale one")
         void removingEveryArenaGivesAnEmptyKeySetNotAStaleOne() throws Exception {
-            // With real guilds to spread over, so the arena removal happens part-way through a capture
-            // rather than before it starts. That is the window the "captured last" design exists for.
+            // Real guilds to spread over, so the removal happens part-way through a capture. That is the window the
+            // "captured last" design exists for.
             final GuildHandler handler = GuildSnapshotRemovalTest.newHandler(16, dataFolder);
             arenaHandler.addArena(new Arena(UUID.randomUUID(), "a"));
             arenaHandler.addArena(new Arena(UUID.randomUUID(), "b"));
@@ -248,9 +236,7 @@ class CaptureSessionTest {
         @Test
         @DisplayName("a handler with no guilds yields no pending work")
         void aHandlerWithNoGuildsYieldsNoPendingWork() {
-            // A guild vanishing mid-capture needs a real GuildHandler, which is not constructible without
-            // a data folder and a database. Those cases live in GuildSnapshotRemovalTest, which builds
-            // one for real. What is checked here is the empty shape.
+            // Mid-capture guild removal needs a real GuildHandler; those cases live in GuildSnapshotRemovalTest.
             final CaptureSession started = begin();
 
             assertFalse(started.hasWork());
@@ -267,8 +253,7 @@ class CaptureSessionTest {
         @Test
         @DisplayName("arenas are captured when finish is called, not in the constructor")
         void arenasAreCapturedWhenFinishIsCalledNotInTheConstructor() {
-            // Pins the design decision. If arenas were captured in the constructor, an arena created or
-            // removed during a spread capture would be reconciled against a stale key set.
+            // Capturing arenas in the constructor would reconcile them against a stale key set.
             arenaHandler.addArena(new Arena(UUID.randomUUID(), "before"));
             final CaptureSession started = begin();
 
@@ -300,8 +285,7 @@ class CaptureSessionTest {
     @Timeout(30)
     @DisplayName("a spread capture of a real guild set produces a complete snapshot")
     void aSpreadCaptureOfARealGuildSetProducesACompleteSnapshot() throws Exception {
-        // The end-to-end shape: a real GuildHandler, a one-nanosecond budget so every guild takes its own
-        // tick, and a check that every guild ends up in the snapshot exactly once.
+        // A real GuildHandler and a one-nanosecond budget, so every guild takes its own tick.
         final GuildHandler handler = GuildSnapshotRemovalTest.newHandler(64, dataFolder);
 
         final CaptureSession started = new CaptureSession(handler, arenaHandler, null, null, null);
@@ -316,10 +300,8 @@ class CaptureSessionTest {
 
         assertEquals(64, snapshot.getGuilds().size(), "every guild should appear exactly once");
         assertEquals(64, handler.getGuilds().size());
-        // One guild per step. Every step returns false, including the one that serialises the last guild,
-        // because the deadline is checked after the work rather than before it, so the count equals the
-        // guild count. That is the guarantee the budget rests on: a check before the work would allow a
-        // small enough budget to never advance at all.
+        // Every step returns false, including the one that serialises the last guild, because the deadline is
+        // checked after the work rather than before it.
         assertEquals(64, ticks, "a one-nanosecond budget must not do more than one guild per tick");
         for (Map.Entry<String, String> entry : snapshot.getGuilds().entrySet()) {
             assertTrue(entry.getValue().contains("\"id\""), "each guild should be serialised in full");

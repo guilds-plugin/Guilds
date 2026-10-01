@@ -74,31 +74,27 @@ public class CooldownHandler {
 
     /**
      * Saves all the cooldowns to the database.
+     *
+     * @throws IOException if the cooldowns could not be written
      */
-    public void saveCooldowns() {
+    public void saveCooldowns() throws IOException {
         guilds.getDatabase().getCooldownAdapter().saveCooldowns(getCooldownsForSnapshot());
     }
 
     /**
      * Returns the live cooldowns in a list that is safe to iterate off the main thread.
      *
-     * <p>{@code ExpiringMap} does not throw here, and it is worth being precise about why, because the
-     * obvious explanation is wrong. Built without {@code variableExpiration()} it keeps its entries in
-     * a {@code LinkedHashMap} and hands out a fail-fast iterator, so iterating {@code values()} while
-     * another thread puts or removes really does throw {@link java.util.ConcurrentModificationException}
-     * (measured at roughly 50,000 throws per million iterations on a saturated map). This handler
-     * calls {@code variableExpiration()}, which selects a different internal map whose iterator walks
-     * a {@link java.util.concurrent.ConcurrentSkipListSet}. That iteration is weakly consistent, so it
-     * cannot throw.
+     * <p>{@code ExpiringMap} hands out a view, and the map is written by both {@code put} and its own
+     * expiry thread. Iterating the copy cannot throw: {@code variableExpiration()}, which is how this
+     * handler builds the map, routes iteration through a {@link java.util.concurrent.ConcurrentSkipListSet}
+     * and so is weakly consistent. Built the default way the iterator is fail-fast and the same loop throws
+     * roughly 50,000 times per million iterations against concurrent modification.
      *
-     * <p>Weakly consistent is not the same as a snapshot. An entry expiring mid-iteration may be
-     * skipped or briefly included, and the map's own expiry thread is what removes it, not the main
-     * thread. For cooldowns that is the right trade: they are short-lived and self-correcting, and a
-     * stale entry is dropped when it expires anyway.
+     * <p>Weakly consistent is not a point-in-time snapshot: a cooldown expiring mid-copy may be skipped or
+     * briefly included. For cooldowns that is the right trade. They are short-lived and self-correcting.
      *
-     * <p>The copy also detaches the list, which is what the write path needs. The {@link Cooldown}
-     * elements need no further copying, since all four of their fields are final and there are no
-     * setters.
+     * <p>The {@link Cooldown} elements need no further copying. All four of their fields are final and
+     * there are no setters.
      *
      * @return a detached list of the live cooldowns
      */

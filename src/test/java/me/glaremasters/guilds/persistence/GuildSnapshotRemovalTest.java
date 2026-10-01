@@ -49,14 +49,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Covers what a spread capture does when a guild is deleted while it is running.
  *
- * <p>{@code GuildHandler#removeGuild} deletes the guild from the database. A capture that serialises the
- * guild afterwards puts it straight back, so the owner disbands a guild and it reappears on the next
- * save. With a single-pass capture the window was the length of the capture; spread over ticks it is
- * however long the capture takes, which at a thousand guilds is most of a second.
+ * <p>{@code GuildHandler#removeGuild} deletes the guild from the database, and {@code GuildAdapter} has no
+ * delete pass of its own, so a capture that serialises the guild afterwards puts it straight back and
+ * nothing later removes it. Spread over ticks, the window is however long the capture takes.
  *
- * <p>GuildHandler is constructed for real here, because it is not otherwise testable: its constructor
- * reads roles.yml and tiers.yml off the plugin data folder and queries the database. Both are satisfied
- * with real files and a stubbed adapter.
+ * <p>GuildHandler is constructed for real here, because it is not otherwise testable: its constructor reads
+ * roles.yml and tiers.yml off the plugin data folder and queries the database.
  */
 class GuildSnapshotRemovalTest {
 
@@ -71,7 +69,8 @@ class GuildSnapshotRemovalTest {
     }
 
     /**
-     * Builds a real {@link GuildHandler} holding {@code count} guilds.
+     * Builds a real {@link GuildHandler} holding {@code count} guilds, with its config files in a
+     * temporary directory.
      *
      * @param count how many guilds to add
      * @return the handler
@@ -113,9 +112,8 @@ class GuildSnapshotRemovalTest {
         }
 
         for (Guild guild : guilds) {
-            // addGuild deserialises whatever vault strings the guild carries, and
-            // Serialization#deserializeInventory calls Bukkit.createInventory, which needs a server. So the
-            // guilds arrive with no vault strings.
+            // Serialization#deserializeInventory calls Bukkit.createInventory, which needs a server, so the guilds
+            // arrive with no vault strings.
             guild.setVaults(new ArrayList<String>());
             handler.addGuild(guild);
         }
@@ -130,7 +128,7 @@ class GuildSnapshotRemovalTest {
 
         final CaptureSession started = new CaptureSession(handler, null, null, null, null);
 
-        // One tick's worth, on a one-nanosecond budget, so the capture is part-way through.
+        // One guild in, so the capture is part-way through.
         started.step(1L);
         assertTrue(started.hasWork(), "the capture should not have finished yet");
 
@@ -154,21 +152,14 @@ class GuildSnapshotRemovalTest {
     @Test
     @DisplayName("a guild removed after the capture passed it is dropped at finish")
     void aGuildRemovedAfterTheCapturePassedItIsDroppedAtFinish() throws IOException {
-        // The other order, and the one that used to be a permanent data-loss bug.
-        //
-        // `step` re-reads each guild before serialising it, which covers a guild removed before its turn.
-        // This covers a guild serialised on tick one and disbanded on tick two: the record was a true
-        // snapshot when taken, but `removeGuild` deleted the row and the write would put it straight back.
-        //
-        // Nothing self-corrects that. `GuildAdapter` upserts by id and has no delete pass, so a guild a
-        // later save does not mention is left alone. Resurrecting it would restore the balance, the vault
-        // contents and the home, permanently, with no way to clear them from inside the plugin. Hence the
-        // re-validation in `finish`.
+        // The other order, and the one that needs the re-validation in `finish`: a record that was a true snapshot
+        // when taken is still written back, and nothing self-corrects it because `GuildAdapter` has no delete
+        // pass.
         final GuildHandler handler = newHandler(4);
 
         final CaptureSession started = new CaptureSession(handler, null, null, null, null);
 
-        // Drain the first guild, then remove it. It is already in the snapshot's guild map at this point.
+        // Drain the first guild, then remove it. It is already in the snapshot's guild map.
         started.step(1L);
         final Guild removed = handler.getGuilds().values().iterator().next();
         handler.removeGuild(removed);
@@ -189,8 +180,7 @@ class GuildSnapshotRemovalTest {
     @Test
     @DisplayName("removing every guild mid-capture yields an empty snapshot")
     void removingEveryGuildMidCaptureYieldsAnEmptySnapshot() throws IOException {
-        // One guild has already been serialised by the time the removals happen. `finish` drops it along
-        // with the rest, so a guild disbanded at any point during a spread capture is never written back.
+        // One guild has already been serialised by the time the removals happen; `finish` drops it too.
         final GuildHandler handler = newHandler(6);
 
         final CaptureSession started = new CaptureSession(handler, null, null, null, null);

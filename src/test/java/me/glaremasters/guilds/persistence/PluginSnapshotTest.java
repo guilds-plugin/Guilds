@@ -43,11 +43,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Covers that a snapshot is genuinely detached.
  *
- * <p>The claim being tested is the one the whole change rests on: once a snapshot exists, no mutation
- * of the live plugin state can change what gets written. A test that only checked "no
- * {@link java.util.ConcurrentModificationException}" would pass against a shallow copy of the live
- * models, and that copy is not safe. Gson would still be reading {@code guild.getMembers()} while the
- * main thread changed it.
+ * <p>The claim being tested is the one the whole change rests on: once a snapshot exists, no mutation of
+ * the live plugin state can change what gets written. A test that only checked "no
+ * {@link java.util.ConcurrentModificationException}" would pass against a shallow copy of the live models,
+ * which is not safe: Gson would still be reading {@code guild.getMembers()} while the main thread changed
+ * it.
  */
 class PluginSnapshotTest {
 
@@ -93,9 +93,7 @@ class PluginSnapshotTest {
     @Test
     @DisplayName("a truncated snapshot keeps exactly the arenas it was given")
     void aTruncatedSnapshotKeepsExactlyTheArenasItWasGiven() {
-        // ArenaAdapter#saveArenas deletes every stored arena missing from the collection it is handed,
-        // so the key set is the difference between "this arena was not saved" and "this arena does not
-        // exist". A snapshot that silently lost an entry during the copy would delete a live arena.
+        // A snapshot that silently lost an entry during the copy would let the arena adapter delete a live arena.
         final Map<String, String> arenas = new HashMap<>();
         arenas.put("one", "{}");
         arenas.put("two", "{}");
@@ -138,8 +136,8 @@ class PluginSnapshotTest {
     @Test
     @DisplayName("a cooldown carries its own values, so a reader cannot see a different one later")
     void aCooldownCarriesItsOwnValuesSoAReaderCannotSeeADifferentOneLater() {
-        // Cooldown has four final fields and no setters, which is why the snapshot does not re-serialise
-        // them. If a setter ever appears, this test is the one that would notice.
+        // Cooldown has four final fields and no setters, which is why the snapshot does not re-serialise them. If
+        // a setter ever appears, this test is the one that would notice.
         final UUID owner = UUID.randomUUID();
         final long expiry = System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(5);
         final Cooldown cooldown = new Cooldown(UUID.randomUUID(), Cooldown.Type.Home, owner, expiry);

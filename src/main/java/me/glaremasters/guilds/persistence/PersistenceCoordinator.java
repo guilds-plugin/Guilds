@@ -26,41 +26,41 @@ package me.glaremasters.guilds.persistence;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.arena.ArenaHandler;
 import me.glaremasters.guilds.challenges.ChallengeHandler;
+import me.glaremasters.guilds.cooldowns.Cooldown;
 import me.glaremasters.guilds.cooldowns.CooldownHandler;
 import me.glaremasters.guilds.database.DatabaseAdapter;
+import me.glaremasters.guilds.database.DatabaseBackend;
+import me.glaremasters.guilds.database.cooldowns.CooldownAdapter;
+import me.glaremasters.guilds.database.guild.GuildAdapter;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.utils.LoggingUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 /**
  * Captures plugin state on the main thread and writes it off it.
  *
- * <p>The split exists because the two halves have opposite requirements. Reading state needs the main
- * thread: the guild map, the arena map and the challenge set are plain {@link java.util.HashMap} and
- * {@link java.util.HashSet} fields written by command handlers and war tasks, and guild vaults are live
- * Bukkit {@link org.bukkit.inventory.Inventory} objects a player may be clicking in while a save
- * runs. Writing needs any thread but the main one: a save is a serialisation per guild plus a file
- * write or a database round trip, and doing that inline stalls the tick.
- *
- * <p>So {@link #capture} runs on the main thread and produces a {@link PluginSnapshot} of serialised
- * bytes, and {@link #write} runs on a worker and only moves those bytes to storage.
+ * <p>Reading needs the main thread: the guild, arena and challenge collections are plain maps written
+ * by command handlers and war tasks, and guild vaults are live Bukkit inventories a player may be
+ * clicking in while a save runs. Writing needs any thread but the main one. So {@link #capture}
+ * produces a {@link PluginSnapshot} of serialised bytes and {@link #write} only moves those bytes.
  *
  * <p>The four collections are written independently, so a backend that throws for one of them costs
- * the operator that kind of data and not the rest. That is the behaviour
- * {@code Guilds#savePluginData} already documented for shutdown.
+ * the operator that kind of data and not the rest.
  */
 public final class PersistenceCoordinator {
 
     /**
      * How long the shutdown flush waits for an in-flight save before writing anyway.
      *
-     * <p>Bounded on purpose. A save wedged on a dead database connection must not stop the server from
-     * stopping, and an unbounded block inside {@code onDisable} is how a plugin hangs a shutdown.
+     * <p>Bounded on purpose: an unbounded block inside {@code onDisable} is how a plugin hangs a
+     * shutdown.
      */
     private static final long SHUTDOWN_DRAIN_TIMEOUT_MILLIS = 5000L;
 
@@ -69,10 +69,23 @@ public final class PersistenceCoordinator {
      *
      * <p>Deliberately not {@code Long.MAX_VALUE}: {@code CaptureSession#step} adds this to
      * {@code System.nanoTime()}, which would overflow to a negative deadline, expire immediately, and turn
-     * the capture into a hard failure. A day is about 292 years of budget, which is the same as unbounded
-     * for any capture that will finish and cannot overflow for another century.
+     * the capture into a hard failure.
      */
     private static final long UNBOUNDED_BUDGET_NANOS = TimeUnit.DAYS.toNanos(1L);
+
+    /**
+     * The most rows a single migration will reconcile away before refusing.
+     *
+     * <p>Both reconcile passes delete one row at a time, and on the JSON backend a cooldown delete re-reads
+     * and rewrites the whole cooldown file. So the cost is superlinear in the number of stale rows, and a
+     * destination that had been used before, or one that failed an earlier migration attempt, can hold
+     * thousands. This runs on the main thread inside an explicit console command, so a cap is the
+     * difference between an operator waiting and a watchdog kill.
+     */
+    private static final int MAX_RECONCILED_ROWS = 500;
+
+    /** Whether the calling thread is the one that owns mutable plugin state. Overridden in tests. */
+    private final java.util.function.BooleanSupplier onMainThread;
 
     private final Guilds plugin;
     private final PersistenceGate gate;
@@ -89,6 +102,20 @@ public final class PersistenceCoordinator {
             @Nullable ChallengeHandler challengeHandler,
             @Nullable CooldownHandler cooldownHandler
     ) {
+        this(plugin, gate, guildHandler, arenaHandler, challengeHandler, cooldownHandler,
+                PersistenceCoordinator::isBukkitMainThread);
+    }
+
+    public PersistenceCoordinator(
+            @NotNull Guilds plugin,
+            @NotNull PersistenceGate gate,
+            @Nullable GuildHandler guildHandler,
+            @Nullable ArenaHandler arenaHandler,
+            @Nullable ChallengeHandler challengeHandler,
+            @Nullable CooldownHandler cooldownHandler,
+            @NotNull java.util.function.BooleanSupplier onMainThread
+    ) {
+        this.onMainThread = onMainThread;
         this.plugin = plugin;
         this.gate = gate;
         this.guildHandler = guildHandler;
@@ -109,8 +136,7 @@ public final class PersistenceCoordinator {
     /**
      * Starts a capture that can be spread over several ticks.
      *
-     * <p>Must be called on the main thread. Captures the small collections immediately and returns a
-     * session holding the guild ids to work through.
+     * <p>Must be called on the main thread.
      *
      * @return a resumable capture
      */
@@ -121,22 +147,18 @@ public final class PersistenceCoordinator {
     /**
      * Serialises every collection in one pass on the calling thread.
      *
-     * <p>Must be called on the main thread. This is the single-pass capture, kept for shutdown and for
-     * migration, where there is no tick budget to respect: the server is stopping, or an admin is waiting
-     * on a console command that is not going to tick again. It runs the same {@link CaptureSession}
-     * steps with an effectively unlimited budget, so both paths produce identical snapshots.
+     * <p>Must be called on the main thread. Kept for shutdown and migration, where there is no tick
+     * budget to respect: neither caller gets another tick. Runs the same {@link CaptureSession} steps
+     * with an effectively unlimited budget, so both paths produce identical snapshots.
      *
      * @return a snapshot that later mutations cannot affect
      */
     @NotNull public PluginSnapshot capture() {
         final CaptureSession session = beginCapture();
 
-        // Unbounded. One tick's budget would be wrong here: this runs from `onDisable` and from a console
-        // command, neither of which gets another tick, so a budgeted capture could never finish and the
-        // server would stop with no final save at all.
-        //
-        // At 5000 guilds with stocked vaults this is around two seconds of main-thread stall. Paper's
-        // watchdog is sixty seconds, and both callers are rare, so paying it is the right trade.
+        // Unbounded: one tick's budget would mean a budgeted capture never finishes and the server stops
+        // with no final save. At 5000 guilds with stocked vaults this is around two seconds of stall, which
+        // is well inside Paper's sixty-second watchdog.
         if (!session.step(UNBOUNDED_BUDGET_NANOS)) {
             // Unreachable: `step` stops only when it runs out of guilds, and the budget cannot run out.
             // Treated as a hard failure rather than looping, because a loop here would hang the shutdown.
@@ -166,9 +188,8 @@ public final class PersistenceCoordinator {
     /**
      * Writes a snapshot to a specific backend.
      *
-     * <p>Migration uses this directly rather than {@link #write}, because it has to hold the write
-     * permit across the write <em>and</em> the backend swap that follows it, and because it writes to
-     * the new backend rather than the captured one.
+     * <p>Migration uses this rather than {@link #write} because it has to hold the write permit across
+     * the write <em>and</em> the backend swap that follows it.
      *
      * @param database the backend to write to
      * @param snapshot the snapshot to write
@@ -180,10 +201,9 @@ public final class PersistenceCoordinator {
     /**
      * Writes a snapshot to a specific backend, reporting whether everything was written.
      *
-     * <p>Migration needs the second form. The autosave can afford to swallow a failure per collection,
-     * because the next one will try again and nothing depends on the outcome. Migration cannot: it is about
-     * to swap the plugin over to this backend and close the old one, so a failure it does not notice means
-     * an empty new backend, a closed old pool, and an operator who was told it worked.
+     * <p>Migration needs the reporting form because it is about to swap the plugin over to this backend
+     * and close the old one. An unnoticed failure means an empty new backend and an operator who was
+     * told it worked.
      *
      * @param database the backend to write to
      * @param snapshot the snapshot to write
@@ -200,42 +220,227 @@ public final class PersistenceCoordinator {
     }
 
     /**
-     * The state of a spread autosave capture that is in progress.
+     * Whether the calling thread is the Bukkit main thread.
      *
-     * <p>At most one exists. {@link #tick} creates it, ticks it forward, and hands the
-     * finished snapshot to the write.
+     * <p>{@code Bukkit.isPrimaryThread()} delegates to a static server reference that is null in a unit
+     * test, so this reports false rather than throwing when there is no server.
      */
+    private static boolean isBukkitMainThread() {
+        try {
+            return org.bukkit.Bukkit.isPrimaryThread();
+        } catch (RuntimeException | LinkageError e) {
+            return false;
+        }
+    }
+
+    /**
+     * Reconciles a migration's destination against live state and publishes it.
+     *
+     * <p>Must be called on the main thread, and that is checked rather than assumed. Guild disbanding
+     * happens on the main thread, so reconciling and publishing adjacently there leaves no point at which
+     * the main thread can run between them. The alternative, reconciling after the write on a worker,
+     * leaves a window: the destination would be brought into line and then a guild disbanded before the
+     * swap, and {@code GuildAdapter} has no delete pass, so that disband would be undone permanently.
+     *
+     * <p>Assumed rather than checked is not good enough here, because TaskChain does not guarantee it.
+     * Its {@code postToMain} runs the task inline on the calling thread when the plugin is disabled,
+     * rather than scheduling it, so a migration in flight when the server stops would reconcile against
+     * live state from a pool thread while the main thread ran the shutdown flush over the same map.
+     *
+     * <p>Deliberately not part of {@link #writeTo}, which runs on a worker and is also the autosave path.
+     * A regular save that pruned would delete a guild whose row simply had not been written yet.
+     *
+     * <p>The destination is reconciled for guilds and cooldowns, the two collections whose writes cannot
+     * bring the destination into line on their own. Arenas are not touched: {@code ArenaAdapter} already
+     * deletes by absence and reads its key set as late as it can, so its residual window is a stale row for
+     * one save interval, which the next autosave removes. Touching arenas here as well would give two passes
+     * authority over one collection.
+     *
+     * @param destination the backend to reconcile and then publish
+     * @param failures    collects a description of what went wrong, or null
+     * @return true when the destination was published
+     */
+    public boolean reconcileAndPublish(@NotNull DatabaseAdapter destination, @NotNull PluginSnapshot snapshot, @Nullable List<String> failures) {
+        if (!onMainThread.getAsBoolean()) {
+            final String message = "the migration could not be published because the step that reconciles the"
+                    + " new backend did not run on the server's main thread. Nothing was changed; the"
+                    + " previous backend is still in use.";
+            LoggingUtils.severe(message);
+            if (failures != null) {
+                failures.add(message);
+            }
+            return false;
+        }
+
+        boolean complete = pruneGuilds(destination, failures);
+        complete &= pruneCooldowns(destination, snapshot.getCooldowns(), failures);
+
+        if (!complete) {
+            return false;
+        }
+
+        publishBackend(destination);
+        return true;
+    }
+
+    private boolean pruneGuilds(@NotNull DatabaseAdapter destination, @Nullable List<String> failures) {
+        if (guildHandler == null) {
+            return true;
+        }
+
+        final GuildAdapter adapter = destination.getGuildAdapter();
+        final List<String> pruned = new ArrayList<>();
+
+        try {
+            for (String id : adapter.getAllGuildIds()) {
+                final UUID guildId = parseGuildId(id, destination, failures);
+                if (guildId == null) {
+                    return false;
+                }
+                if (guildHandler.getGuilds().get(guildId) == null) {
+                    pruned.add(id);
+                }
+            }
+
+            if (pruned.size() > MAX_RECONCILED_ROWS) {
+                return tooManyRows("guilds", pruned.size());
+            }
+
+            for (String id : pruned) {
+                adapter.deleteGuild(id);
+            }
+        } catch (IOException | RuntimeException e) {
+            return failed("guild reconciliation", failures, e);
+        }
+
+        if (!pruned.isEmpty()) {
+            LoggingUtils.info("Migration removed " + pruned.size()
+                    + " guild(s) disbanded while it was running.");
+        }
+        return true;
+    }
+
+    /**
+     * Refuses a reconciliation that would take longer than the operator can be expected to wait.
+     *
+     * <p>Refusing rather than truncating is the point. Reconciling only some of the rows would leave the
+     * destination inconsistent, and publishing an inconsistent destination is the failure this pass exists
+     * to prevent.
+     *
+     * @param what  the kind of row
+     * @param count how many there are
+     * @return false, so a caller accumulating results can use it directly
+     */
+    private boolean tooManyRows(@NotNull String what, int count) {
+        final String message = "the destination holds " + count + " " + what + " the plugin no longer has, which is"
+                + " more than " + MAX_RECONCILED_ROWS + ". Empty that backend, or migrate to a different one, and"
+                + " run the migration again. Nothing was changed and the previous backend is still in use.";
+        LoggingUtils.severe(message);
+        return false;
+    }
+
+    /**
+     * Parses a guild id from the destination, or reports why it could not.
+     *
+     * <p>A destination can hold an id the plugin did not write: a hand-edited JSON filename, a leftover
+     * from an older plugin version, a truncated row. It cannot be matched against the live guilds, and it
+     * cannot be deleted safely either, because a guild this plugin does not recognise is not necessarily a
+     * guild the operator wants gone. So the migration stops and names the row instead of guessing.
+     *
+     * @param id       the id as stored
+     * @param failures collects a description, or null
+     * @return the parsed id, or null when it is malformed
+     */
+    @Nullable private UUID parseGuildId(@NotNull String id, @NotNull DatabaseAdapter destination, @Nullable List<String> failures) {
+        try {
+            return UUID.fromString(id);
+        } catch (IllegalArgumentException e) {
+            // Resolved here rather than on the happy path, so a backend that cannot report its own name
+            // does not stop a migration that would otherwise have succeeded.
+            final DatabaseBackend backend = destination.getBackend();
+            final String where = backend == null ? "new backend" : backend.getBackendName() + " backend";
+            final String message = "the destination holds a guild with the malformed id '" + id
+                    + "'. Delete that guild's data file or row from the " + where
+                    + " and run the migration again.";
+            LoggingUtils.severe("Migration cannot continue: " + message);
+            if (failures != null) {
+                failures.add(message);
+            }
+            return null;
+        }
+    }
+
+    /**
+     * Removes destination cooldowns the plugin no longer has.
+     *
+     * <p>{@code CooldownAdapter#saveCooldowns} only creates, so without this a destination that already
+     * held cooldowns keeps every one of them. That is reachable: the destination is a real backend the
+     * operator may have used before, and a failed earlier migration attempt leaves its rows behind.
+     *
+     * @param destination the backend to reconcile
+     * @param failures    collects a description of what went wrong, or null
+     * @return true when the destination's cooldowns match the snapshot
+     */
+    private boolean pruneCooldowns(@NotNull DatabaseAdapter destination, @NotNull List<Cooldown> snapshotCooldowns, @Nullable List<String> failures) {
+        final CooldownAdapter adapter = destination.getCooldownAdapter();
+        final List<Cooldown> pruned = new ArrayList<>();
+
+        try {
+            for (Cooldown cooldown : adapter.getAllCooldowns()) {
+                boolean present = false;
+                for (Cooldown captured : snapshotCooldowns) {
+                    if (captured.getCooldownType() == cooldown.getCooldownType()
+                            && captured.getCooldownOwner().equals(cooldown.getCooldownOwner())) {
+                        present = true;
+                        break;
+                    }
+                }
+                if (!present) {
+                    pruned.add(cooldown);
+                }
+            }
+
+            if (pruned.size() > MAX_RECONCILED_ROWS) {
+                return tooManyRows("cooldowns", pruned.size());
+            }
+
+            for (Cooldown cooldown : pruned) {
+                adapter.deleteCooldown(cooldown);
+            }
+        } catch (IOException | RuntimeException e) {
+            return failed("cooldown reconciliation", failures, e);
+        }
+
+        if (!pruned.isEmpty()) {
+            LoggingUtils.info("Migration removed " + pruned.size()
+                    + " cooldown(s) the destination held that the plugin no longer has.");
+        }
+        return true;
+    }
+
+    /** The spread autosave capture in progress, if any. At most one exists. */
     private CaptureSession pendingCapture;
 
     /**
-     * When the last capture finished, in {@link System#nanoTime()} terms, or zero if none has.
-     *
-     * <p>Zero is a usable "never" because the scheduler's own clock is an arbitrary origin, but a capture
-     * at exactly zero is not a thing that happens.
+     * When the last capture finished, in {@link System#nanoTime()} terms, or zero if none has. Zero is a
+     * usable "never" because the scheduler's own clock is an arbitrary origin.
      */
     private long lastCaptureFinishedNanos;
 
     /**
-     * When the "skipped because busy" message was last logged, or zero if it never has been.
-     *
-     * <p>Exists only to rate-limit that message. The timer runs every tick, so without it a save that
-     * takes thirty seconds logs six hundred identical lines.
+     * When the "skipped because busy" message was last logged, or zero if it never has been. Exists only to
+     * rate-limit that message, which would otherwise log once per tick for as long as a slow save takes.
      */
     private long lastSkipLoggedNanos;
 
     /**
-     * Runs one tick of the autosave state machine.
+     * Runs one tick of the autosave state machine: start a capture if one is due and none is running, spend
+     * this tick's budget on a capture that is running, or do nothing.
      *
-     * <p>Called from a per-tick synchronous timer on the main thread, and does one of three things:
-     * starts a capture if the interval has elapsed and none is running, spends this tick's budget on a
-     * capture that is already running, or does nothing at all.
-     *
-     * <p>Doing nothing is the common case. The timer runs every tick because a capture has to be able to
-     * continue within a tick of finishing, but a save is only due once per configured interval, so almost
-     * every tick is spent before the interval is up.
+     * <p>Called from a per-tick synchronous timer on the main thread, so doing nothing is the common case.
      *
      * <p>If the gate is held, or shutdown has begun, no capture is started. A capture already running is
-     * carried to completion rather than abandoned: the permit is released by the write, and abandoning
+     * carried to completion rather than abandoned: the permit is released by the write, so abandoning
      * would mean the write never happens and the permit never comes back.
      *
      * @param budgetNanos how long this tick may spend capturing
@@ -249,9 +454,7 @@ public final class PersistenceCoordinator {
             }
 
             if (!gate.tryAcquireWriter()) {
-                // The timer runs every tick, so without a latch this logs once per tick for as long as the
-                // other writer takes. A slow SQL write would bury the console in hundreds of identical
-                // lines.
+                // Without a latch this logs once per tick for as long as the other writer takes.
                 if (lastSkipLoggedNanos == 0L || System.nanoTime() - lastSkipLoggedNanos >= intervalNanos) {
                     lastSkipLoggedNanos = System.nanoTime();
                     LoggingUtils.info("Skipping autosave: another save or migration is still running.");
@@ -342,8 +545,8 @@ public final class PersistenceCoordinator {
      * <p>Without this, a capture that threw would hold the write permit until the process ended, and every
      * later save, including the one on shutdown, would skip.
      *
-     * <p>Only ever releases a permit this coordinator took. A double release would put the gate back to
-     * two permits and let two writers run at once, which is the whole thing it prevents.
+     * <p>Only ever releases a permit this coordinator took: a double release would let two writers run at
+     * once, which is the whole thing the gate prevents.
      */
     private void abandonPendingCapture() {
         if (pendingCapture == null) {
@@ -374,15 +577,13 @@ public final class PersistenceCoordinator {
         try {
             asyncWriter.execute(write);
         } catch (RuntimeException e) {
-            // The scheduler refuses to queue a task for a disabled plugin, and that surfaces here as an
-            // IllegalPluginAccessException before the write ever runs. Either way the permit has to come
-            // back, or every later save skips for the rest of the session.
+            // Either way the permit has to come back, or every later save skips for the rest of the session.
             //
-            // Whether to write inline depends on why. Mid-session a reload that did not fully disable the
-            // plugin, say, the write is the only thing standing between the operator and a lost save, so it
-            // runs inline even though that means blocking a tick. During shutdown it does not: the
-            // synchronous flush is about to write the same data anyway, and doing it twice would put a
-            // full database write on the main thread of a server that is trying to stop.
+            // Whether to write inline depends on why. Mid-session the write is the only thing standing
+            // between the operator and a lost save, so it runs inline even though that blocks a tick.
+            // During shutdown it does not: the synchronous flush is about to write the same data anyway,
+            // and doing it twice would put a full database write on the main thread of a server that is
+            // trying to stop.
             LoggingUtils.severe("An error occurred while scheduling " + context + ".", e);
             if (gate.isShuttingDown()) {
                 gate.releaseWriter();
@@ -393,37 +594,53 @@ public final class PersistenceCoordinator {
     }
 
     /**
+     * Points the plugin at a new backend and closes the one it was using.
+     *
+     * <p>Publish before closing, and never let the close escape. The reverse order means an exception from
+     * close leaves the plugin holding a reference to a pool that is being torn down, so every later write
+     * fails with "HikariDataSource has been closed". Once the new backend is published the close is a
+     * cleanup step rather than part of the transition, so a close that fails costs nothing.
+     *
+     * @param destination the backend to publish
+     */
+    public void publishBackend(@NotNull DatabaseAdapter destination) {
+        final DatabaseAdapter previous = plugin.getDatabase();
+        plugin.setDatabase(destination);
+
+        try {
+            previous.close();
+        } catch (RuntimeException e) {
+            LoggingUtils.severe("Published the new database backend, but closing the previous one failed.", e);
+        }
+    }
+
+    /**
      * The final save on shutdown.
      *
-     * <p>The ordering is the fix. Bukkit has already cancelled the autosave schedule by the time this
-     * runs, but cancelling a schedule does not interrupt a run that is already going, so a worker may
-     * still hold the write permit; draining first means this flush cannot interleave with it. Writing
-     * next means the connection pool is still open. Closing last means the flush had a database to
-     * write to.
+     * <p>Drain, write, close, in that order. Bukkit has already cancelled the autosave schedule by the time
+     * this runs, but cancelling a schedule does not interrupt a run that is already going, so a worker may
+     * still hold the write permit.
      *
      * @param closeDatabase closes the backend, called even when the save throws
      */
     public void shutdownFlush(@NotNull Runnable closeDatabase) {
         gate.beginShutdown();
 
-        // A spread capture can only advance on the main thread, and this method is running on the main
-        // thread. Waiting for one to finish would therefore wait forever, so it is abandoned instead: the
-        // permit comes back, the snapshot is discarded, and the synchronous capture below does the whole
-        // job in one pass. A half-finished capture has no value on its own, and it is the only writer that
-        // the drain below could not have waited out.
+        // A spread capture only advances on the main thread, so waiting for one here would wait forever. It
+        // is abandoned instead: the permit comes back and the synchronous capture below does the whole job
+        // in one pass.
         abandonPendingCapture();
 
         final boolean drained = gate.acquireWriter(SHUTDOWN_DRAIN_TIMEOUT_MILLIS);
         if (!drained) {
-            // Something is holding the permit and is not a capture, so it is a write already in flight,
-            // possibly on a dead connection.
+            // Something is holding the permit and is not a capture, so it is a write already in flight, possibly on a
+            // dead connection.
             //
             // Neither writing nor closing is safe here. Writing means two threads writing the same
-            // `<uuid>.json` files at once, which interleaves into JSON that will not parse on the next
-            // boot; that is corruption, and corruption is worse than a save that did not happen. Closing
-            // the connection pool under a running writer has the same character. So the flush is skipped
-            // and the pool is left for the JVM shutdown hook, and the operator is told plainly that the
-            // last save did not happen.
+            // `<uuid>.json` files at once, which interleaves into JSON that will not parse on the next boot;
+            // that is corruption, and corruption is worse than a save that did not happen. Closing the pool
+            // under a running writer has the same character. So the flush is skipped and the pool is left
+            // for the JVM shutdown hook, and the operator is told plainly that the last save did not happen.
             LoggingUtils.severe("A save was still running after " + SHUTDOWN_DRAIN_TIMEOUT_MILLIS
                     + "ms and did not finish. Skipping the final save and leaving the database open; the last"
                     + " autosave is what is on disk. This means a save was wedged, usually on a dead database"
@@ -434,8 +651,7 @@ public final class PersistenceCoordinator {
         try {
             write(capture());
         } catch (RuntimeException e) {
-            // Each collection is written inside its own try, so this only fires for something outside
-            // them: a capture that threw, or a failure in the database close below.
+            // Each collection is written inside its own try, so this only fires for a capture that threw.
             LoggingUtils.severe("An error occurred while saving plugin data during shutdown.", e);
         } finally {
             try {
@@ -449,8 +665,8 @@ public final class PersistenceCoordinator {
     /**
      * Hands a write to a background thread.
      *
-     * <p>An interface rather than a direct scheduler call so the coordinator does not depend on Bukkit
-     * and so tests can run a write inline or on a thread they control.
+     * <p>An interface rather than a scheduler call so the coordinator does not depend on Bukkit and so
+     * tests can run a write inline or on a thread they control.
      */
     @FunctionalInterface
     public interface AsyncWrite {
@@ -479,9 +695,9 @@ public final class PersistenceCoordinator {
         //
         // `ArenaAdapter#saveSerialized` deletes every stored arena whose id is absent from the map it is
         // given, and that delete pass is the only thing that persists an arena deletion: `removeArena`
-        // only touches the in-memory map. Skipping the call when the map is empty therefore means the
-        // last arena an admin deletes is never removed from storage, comes back on the next restart, and
-        // can never be deleted again because the map is now permanently empty.
+        // only touches the in-memory map. Skipping the call on an empty map means the last arena an admin
+        // deletes is never removed from storage, and can never be deleted again because the map is now
+        // permanently empty.
         try {
             database.getArenaAdapter().saveSerialized(snapshot.getArenas());
             return true;
@@ -507,13 +723,9 @@ public final class PersistenceCoordinator {
             return true;
         }
         try {
-            // Last, and guarded, unlike the three above. `CooldownAdapter#saveCooldowns` swallows
-            // IOException itself but lets a RuntimeException through, and a stale Hikari connection
-            // raises exactly that. Sequenced after the others, one such exception cost challenges their
-            // write too.
             database.getCooldownAdapter().saveCooldowns(snapshot.getCooldowns());
             return true;
-        } catch (RuntimeException e) {
+        } catch (IOException | RuntimeException e) {
             return failed("cooldown", failures, e);
         }
     }
@@ -521,9 +733,6 @@ public final class PersistenceCoordinator {
     /**
      * Logs a failed collection write and records it when the caller is tracking failures.
      *
-     * @param label    what kind of data, used in the log message
-     * @param failures the collector, or null when the caller does not care
-     * @param e        what was thrown
      * @return false, so a caller accumulating results can use it directly
      */
     private boolean failed(@NotNull String label, @Nullable List<String> failures, @NotNull Exception e) {

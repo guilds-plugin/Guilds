@@ -79,10 +79,10 @@ public class GuildAdapter {
     /**
      * Writes already-serialised guild records.
      *
-     * <p>This is the write half of a snapshot taken on the main thread. It takes the JSON rather than
-     * a {@link Guild} so that the writer cannot observe a guild being mutated: the payload was fixed
-     * when the main thread serialised it, and everything after this point is I/O against an immutable
-     * string. The providers take a {@code String} either way, so the bytes on disk are unchanged.
+     * <p>Takes the JSON rather than a {@link Guild} so that the writer cannot observe a guild being
+     * mutated: the payload was fixed when the main thread serialised it, and everything after this point
+     * is I/O against an immutable string. The providers take a {@code String} either way, so the bytes on
+     * disk are unchanged.
      *
      * @param serialized guild id to serialised guild JSON
      * @throws IOException if an I/O error occurs

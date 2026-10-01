@@ -90,9 +90,9 @@ public class ChallengeHandler {
     /**
      * Save the data of challenges
      *
-     * <p>Serialises on the calling thread. It used to hand the adapter the {@code challenges} field
-     * itself, so a save on a background thread iterated a {@link HashSet} that war tasks and
-     * {@code /guild war} were adding to and removing from.
+     * <p>Serialises on the calling thread. Handing the adapter the {@code challenges} field itself would
+     * have a background save iterating a {@link HashSet} that war tasks and {@code /guild war} are adding
+     * to and removing from.
      *
      * @throws IOException if an I/O error occurs
      */
@@ -105,11 +105,11 @@ public class ChallengeHandler {
     }
 
     /**
-     * Returns every tracked challenge in a list that is safe to iterate once the caller has left the
-     * main thread's exclusive ownership.
+     * Returns every tracked challenge in a list that is safe to iterate once the caller has left the main
+     * thread's exclusive ownership.
      *
-     * <p>The challenges themselves are still the live, mutable instances. This is only safe because
-     * the caller serialises them here, where nothing else can be mutating them.
+     * <p>The challenges themselves are still the live, mutable instances. This is only safe because the
+     * caller serialises them here, where nothing else can be mutating them.
      *
      * @return a detached list of the live challenges
      */

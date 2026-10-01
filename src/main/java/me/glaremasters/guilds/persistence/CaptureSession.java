@@ -46,49 +46,24 @@ import java.util.UUID;
  * A capture in progress, resumable across ticks.
  *
  * <p>A capture has to read mutable state on the main thread, because guild vault inventories are live
- * Bukkit objects. It also has to fit in a tick, because capturing a thousand guilds costs roughly 400ms
- * and a tick is 50ms. Those two requirements conflict, so the work is spread: {@link #step} does as
- * much as fits in the budget it is given and returns, and the caller calls it again next tick until it
- * reports the capture is finished.
+ * Bukkit objects, and it also has to fit in a tick, because capturing a thousand guilds costs roughly
+ * 400ms and a tick is 50ms. Those two requirements conflict, so {@link #step} does as much as fits in
+ * the budget it is given and the caller calls it again next tick.
  *
- * <h2>Guilds and challenges are spread</h2>
+ * <p>What is spread, and why:
  *
- * <p>Guilds are the expensive part: about 65us each with empty vaults, 420us with three full ones. And
- * a guild record is written by upsert, so a guild serialised ten ticks late is a slightly older version
- * of a guild that changed during those ten ticks. Nothing is destroyed by that, and the next save
- * corrects it.
- *
- * <h2>Arenas are captured last, in one pass</h2>
- *
- * <p>This is the part that needs care. {@code ArenaAdapter} deletes every stored arena whose id is
- * missing from the collection it is given, so the arena key set is a claim about which arenas exist.
- * Capturing it at the start of a spread capture would mean an arena deleted ten ticks later is written
- * back to storage, resurrecting it. Capturing it as late as possible shrinks that window to the hop
- * between capture and write, which is the same window a single-pass save always had.
- *
- * <p>It is not eliminated, and cannot be: the write happens on another thread, so there is always a gap.
- * The residual window is about a tick, and an arena deleted inside it is written back once and removed
- * by the following save. That is a stale row for one interval, not a lost arena, which is the right way
- * round to fail.
- *
- * <p>Arenas are also few, so capturing them costs microseconds. There is nothing to gain by spreading
- * them.
- *
- * <p>Challenges are spread too, for the same reason guilds are: a {@link GuildChallenge} carries seventeen
- * properties and the set holds one entry per live war, so serialising them all in one unbudgeted pass
- * would put an unbounded amount of work in whichever tick started the capture. They are upsert-only, so
- * spreading them costs nothing in correctness.
- *
- * <p>Cooldowns are captured in the constructor. They are four immutable fields each, the count is bounded
- * by the number of players who have used a command recently, and the copy is the only work, so there is
- * nothing to gain by spreading them and a window to lose.
- *
- * <h2>Guild removal</h2>
+ * <ul>
+ *   <li>Guilds and challenges are the expensive collections and both are written by upsert, so a record
+ *       serialised a few ticks late is merely an older version of something the next save corrects.</li>
+ *   <li>Arenas are captured last, in one pass. See {@link #finish()}.</li>
+ *   <li>Cooldowns are four immutable fields each and the copy is the only work, so there is nothing to
+ *       gain by spreading them and a window to lose.</li>
+ * </ul>
  *
  * <p>A guild deleted while its capture is pending must not be written back, or {@code removeGuild}'s
- * database delete is undone by this save. Each guild is re-read from the handler immediately before it
- * is serialised, and skipped if it has gone. Because both the check and the serialisation run on the
- * main thread, and {@code removeGuild} only ever runs there, nothing can interleave between them.
+ * database delete is undone by this save. Each guild is re-read immediately before it is serialised, and
+ * skipped if it has gone. Because both the check and the serialisation run on the main thread, and
+ * {@code removeGuild} only ever runs there, nothing can interleave between them.
  */
 public final class CaptureSession {
 
@@ -110,11 +85,9 @@ public final class CaptureSession {
     /**
      * The challenges still to serialise.
      *
-     * <p>Spread for the same reason guilds are, and for the same order of cost. A {@link GuildChallenge}
-     * has seventeen properties and the set holds one entry per live war, so a server running a few hundred
-     * concurrent wars would otherwise serialise all of them in whichever tick happened to start the
-     * capture, unbudgeted. Challenges are written by upsert, so serialising one late is no more harmful
-     * than serialising a guild late.
+     * <p>{@link GuildChallenge} carries seventeen properties and the set holds one entry per live war,
+     * so a server running hundreds of concurrent wars would otherwise serialise all of them in whichever
+     * tick happened to start the capture, unbudgeted.
      */
     private final List<GuildChallenge> pendingChallenges = new ArrayList<>();
 
@@ -186,8 +159,9 @@ public final class CaptureSession {
      * <p>Must be called on the main thread.
      *
      * <p>At least one guild is always serialised, even when that overshoots the budget, so a capture
-     * always makes progress and always terminates. A guild costs at most about half a millisecond with
-     * full vaults, which bounds the overshoot.
+     * always makes progress and always terminates. The deadline is therefore checked after the work, not
+     * before it. A guild costs at most about half a millisecond with full vaults, which bounds the
+     * overshoot.
      *
      * @param budgetNanos the time budget for this call
      * @return true when every guild has been serialised and {@link #finish()} can be called
@@ -227,9 +201,17 @@ public final class CaptureSession {
     /**
      * Captures the arenas and returns the finished snapshot.
      *
-     * <p>Must be called on the main thread, once {@link #step} has reported the guilds are done. This is
-     * deliberately last rather than first: see the class javadoc on why the arena key set has to be as
-     * close to the write as possible.
+     * <p>Must be called on the main thread, once {@link #step} has reported the guilds are done.
+     *
+     * <p>Arenas are captured here, last, rather than up front. {@code ArenaAdapter} deletes every stored
+     * arena whose id is missing from the collection it is given, so the arena key set is a claim about
+     * which arenas exist. Capturing it at the start of a spread capture would mean an arena deleted later
+     * in the capture is written back to storage, resurrecting it. Capturing it last shrinks that window
+     * to the hop between capture and write, which is the window a single-pass save always had.
+     *
+     * <p>It is not eliminated and cannot be: the write happens on another thread, so there is always a
+     * gap. An arena deleted inside it is written back once and removed by the following save, which is a
+     * stale row for one interval rather than a lost arena.
      *
      * @return the captured state, detached from everything that changes after this call
      */
@@ -244,18 +226,15 @@ public final class CaptureSession {
 
         // Drop any guild that was serialised earlier in this capture and has since been deleted.
         //
-        // `step` already re-reads each guild before serialising it, which covers a guild removed before its
-        // turn. This covers the other order: a guild serialised on tick two and disbanded on tick three was
-        // a true snapshot when it was taken, but `removeGuild` deleted the row and this capture would write
+        // `step` re-reads each guild before serialising it, which covers a guild removed before its turn.
+        // This covers the other order: a guild serialised on tick two and disbanded on tick three was a
+        // true snapshot when it was taken, but `removeGuild` deleted the row and this capture would write
         // it straight back a second later.
         //
         // That is not self-correcting. `GuildAdapter` upserts by id and has no delete pass, so a record a
         // save does not mention is left alone rather than removed. Resurrecting a disbanded guild would
         // therefore be permanent: its balance, vaults and home would come back and there would be no way
         // to clear them from inside the plugin.
-        //
-        // The window this closes is the whole capture, which at a large guild count is several seconds
-        // rather than the fraction of a second a single-pass save had.
         if (guildHandler != null) {
             guilds.keySet().removeIf(id -> guildHandler.getGuilds().get(UUID.fromString(id)) == null);
         }

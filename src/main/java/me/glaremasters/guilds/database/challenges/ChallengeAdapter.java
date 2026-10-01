@@ -83,10 +83,9 @@ public class ChallengeAdapter {
     /**
      * Writes already-serialised challenge records.
      *
-     * <p>The write half of a main-thread snapshot. A {@link GuildChallenge} has seventeen mutable
-     * properties and a war mutates most of them at once, so serialising one on a write thread could
-     * capture a challenge that was mid-transition and was never in that state at any instant.
-     * Serialising on the main thread fixes the bytes once and hands the writer only strings.
+     * <p>A {@link GuildChallenge} has seventeen mutable properties and a war mutates most of them at once,
+     * so serialising one on a write thread could capture a challenge that was mid-transition and was never
+     * in that state at any instant. Serialising on the main thread fixes the bytes once.
      *
      * @param serialized challenge id to serialised challenge JSON
      * @throws IOException if an I/O error occurs

@@ -122,11 +122,9 @@ public class ArenaAdapter {
     /**
      * Writes already-serialised arena records, then deletes any stored arena missing from the set.
      *
-     * <p>The write half of a main-thread snapshot. Taking ids and payloads together matters more here
-     * than for the other collections: the delete pass below treats "not in the collection" as "no
-     * longer exists", so a snapshot that lost an entry, or an {@link java.util.Collection} that was
-     * still a live view when the delete pass read it, deletes a live arena. Both are avoided by
-     * passing an immutable map captured in one pass.
+     * <p>Taking ids and payloads together matters more here than for the other collections: the delete pass
+     * below treats "not in the collection" as "no longer exists", so a snapshot that lost an entry, or a
+     * collection still a live view when the delete pass read it, deletes a live arena.
      *
      * @param serialized arena id to serialised arena JSON
      * @throws IOException if an I/O error occurs

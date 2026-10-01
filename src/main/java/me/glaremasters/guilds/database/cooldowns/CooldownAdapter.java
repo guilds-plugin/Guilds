@@ -28,7 +28,6 @@ import me.glaremasters.guilds.cooldowns.Cooldown;
 import me.glaremasters.guilds.database.DatabaseAdapter;
 import me.glaremasters.guilds.database.DatabaseBackend;
 import me.glaremasters.guilds.database.cooldowns.provider.CooldownJsonProvider;
-import me.glaremasters.guilds.utils.LoggingUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -90,15 +89,21 @@ public class CooldownAdapter {
         provider.deleteCooldown(sqlTablePrefix, cooldownType.getTypeName(), cooldownOwner.toString());
     }
 
-    public void saveCooldowns(Collection<Cooldown> cooldowns) {
-        try {
-            for (Cooldown cooldown : cooldowns) {
-                if (!cooldownExists(cooldown)) {
-                    createCooldown(cooldown);
-                }
+    /**
+     * Writes any cooldown that is not already in storage.
+     *
+     * <p>Propagates its failures, so that a partial cooldown save is distinguishable from a complete one.
+     * Migration depends on the difference: it publishes a destination backend and discards the old one, so
+     * it has to be able to tell that the cooldown table did not get written rather than assume it did.
+     *
+     * @param cooldowns the cooldowns to write
+     * @throws IOException if any cooldown could not be written
+     */
+    public void saveCooldowns(Collection<Cooldown> cooldowns) throws IOException {
+        for (Cooldown cooldown : cooldowns) {
+            if (!cooldownExists(cooldown)) {
+                createCooldown(cooldown);
             }
-        } catch (IOException ex) {
-            LoggingUtils.warn("Failed to save cooldowns");
         }
     }
 }

@@ -74,6 +74,7 @@ import org.bxteam.quark.bukkit.BukkitLibraryManager;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 public final class Guilds extends JavaPlugin {
@@ -92,8 +93,7 @@ public final class Guilds extends JavaPlugin {
      *
      * <p>A tick is 50ms and the server budget for one tick is well under that, so this is deliberately a
      * small fraction of it. Measured worst case for a fully stocked vault is about 175us, so the budget
-     * is spent on roughly a dozen guilds per tick before it is checked, which keeps the overshoot per tick
-     * to a single guild.
+     * lasts roughly a dozen guilds before it is checked, which keeps the overshoot to a single guild.
      */
     private static final long CAPTURE_BUDGET_MILLIS = 3L;
 
@@ -127,8 +127,8 @@ public final class Guilds extends JavaPlugin {
 
     /**
      * The gate every writer shares. Replaced on each enable rather than being a field initialiser, because
-     * the gate latches {@code shuttingDown} for the life of the plugin and a `/reload` re-enables this
-     * same instance. Reusing it would mean every save silently skipped forever after the first reload.
+     * the gate latches {@code shuttingDown} and a `/reload` re-enables this same instance. Reusing it
+     * would mean every save silently skipped forever after the first reload.
      */
     private PersistenceGate persistenceGate = new PersistenceGate();
     private PersistenceCoordinator persistenceCoordinator;
@@ -160,13 +160,9 @@ public final class Guilds extends JavaPlugin {
     @Override
     public void onDisable() {
         /*
-         * Persist first, and unconditionally. This sat behind a `checkVault() && economy != null`
-         * guard, so a server that lost its Vault economy provider saved nothing at all.
-         *
-         * The coordinator drains any in-flight save before writing and closes the database afterwards,
-         * so the final flush cannot interleave with a running autosave or lose the race to close the
-         * connection pool. Bukkit has already cancelled the autosave schedule by this point, but that
-         * only stops future runs; a worker that is already going keeps going.
+         * Persist first, and unconditionally: the coordinator drains any in-flight save before writing
+         * and closes the database afterwards, so the final flush cannot interleave with a running autosave
+         * or lose the race to close the connection pool.
          */
         savePluginData();
 
@@ -198,12 +194,8 @@ public final class Guilds extends JavaPlugin {
      * coordinator, so one bad record does not cost the server owner every other kind of data.
      */
     private void savePluginData() {
-        final DatabaseAdapter toClose = this.database;
-
-        // Cancel the autosave before flushing. Bukkit does cancel a plugin's tasks when it is disabled, but
-        // it does so after `onDisable` returns, so without this the timer is still nominally live while the
-        // flush runs. It cannot actually fire, because the main thread is in here, but relying on that is
-        // an assumption about CraftScheduler internals rather than something this code establishes.
+        // Cancel the autosave before flushing. Bukkit cancels a plugin's tasks when it is disabled, but only
+        // after `onDisable` returns, so the timer is still nominally live while the flush runs.
         if (autosaveTask != null) {
             getServer().getScheduler().cancelTask(autosaveTask.getTaskId());
             autosaveTask = null;
@@ -214,21 +206,26 @@ public final class Guilds extends JavaPlugin {
              * A partial onEnable can reach here without a coordinator, which means one of the loaders
              * threw and the handlers may be only partly populated.
              *
-             * Only the two collections whose writes cannot destroy anything are saved here. Guilds are
-             * skipped because there is no snapshot path to reach them, and arenas are deliberately skipped
-             * because `ArenaAdapter` deletes every stored arena missing from the collection it is given:
-             * writing a half-loaded arena map would delete every arena whose load had failed. Losing a
-             * shutdown save is recoverable; deleting live arenas is not.
+             * Only the two collections whose writes cannot destroy anything are saved. Guilds are skipped
+             * because there is no snapshot path to reach them, and arenas because `ArenaAdapter` deletes
+             * every stored arena missing from the collection it is given: writing a half-loaded arena map
+             * would delete every arena whose load had failed. Losing a shutdown save is recoverable;
+             * deleting live arenas is not.
              */
             LoggingUtils.warn("Startup did not complete, so guild and arena data was not saved on shutdown."
                     + " Whatever is in storage from the last successful save is what will be loaded.");
             runCleanup(cooldownHandler == null ? null : cooldownHandler::saveCooldowns, "cooldown data");
             runCleanup(challengeHandler == null ? null : challengeHandler::saveData, "challenge data");
-            closeDatabase(toClose);
+            closeDatabase(this.database);
             return;
         }
 
-        persistenceCoordinator.shutdownFlush(() -> closeDatabase(toClose));
+        /*
+         * The adapter is read inside the callback rather than captured beforehand, on purpose: the flush
+         * drains first, and a migration holding the write permit may publish a new backend during that
+         * drain. Reading the field beforehand would close whichever adapter was current at entry.
+         */
+        persistenceCoordinator.shutdownFlush(() -> closeDatabase(this.database));
 
         // Drop the reference so a second onDisable, which a failed re-enable can produce, does not flush
         // the previous session's coordinator through an adapter that is already closed.
@@ -423,30 +420,20 @@ public final class Guilds extends JavaPlugin {
     /**
      * Schedules the periodic save.
      *
-     * <p>Two timers, and the split is the point.
+     * <p>The trigger is a synchronous per-tick timer; the write is still handed to a worker. The trigger
+     * cannot re-enter, because the main thread runs one tick at a time, whereas
+     * {@code scheduleAsyncRepeatingTask} re-arms its timer as soon as it dispatches a run, so a save that
+     * outlasted the interval would put two threads in the same body.
      *
-     * <p>The trigger is a synchronous timer. The whole save used to run under
-     * {@code scheduleAsyncRepeatingTask}, which meant it both read mutable state off the main thread and
-     * could overlap itself: that method re-arms its timer as soon as it dispatches a run, so a save that
-     * outlasted the interval put two threads in the same body. A synchronous timer cannot re-enter,
-     * because the main thread runs one tick at a time.
-     *
-     * <p>The timer runs every tick and the coordinator decides what to do with the tick. That is a
-     * deliberate shape: the coordinator starts a new capture when the configured interval has elapsed, and
-     * spends a tick's budget finishing one that is already running. Deciding when to start inside the
-     * coordinator keeps the timer to a single task. An earlier version started a second per-tick timer
-     * from the first, which needed the first one to notice that a capture was pending and left a task to
-     * cancel.
-     *
-     * <p>Capturing a thousand guilds costs about 400ms and a tick is 50ms, so a capture cannot finish in
-     * one tick without stalling the server. Each pass spends at most {@link #CAPTURE_BUDGET_MILLIS}
-     * milliseconds and picks the rest up next tick.
-     *
-     * <p>The write, which is the expensive half in wall-clock terms on a real server, is still handed to a
-     * worker and never blocks a tick.
+     * <p>Every tick is offered to the coordinator, which decides whether to start a capture or spend the
+     * tick's budget finishing one. Capturing a thousand guilds costs about 400ms and a tick is 50ms, so a
+     * capture cannot finish in one tick without stalling the server.
      */
     private void startAutosaveTask() {
-        final long intervalNanos = resolveSaveIntervalTicks() * 50_000_000L;
+        // `resolveSaveIntervalTicks` already defends the configured value against a scheduler that rejects
+        // a non-positive period; this defends the conversion to nanoseconds, which overflows to a negative
+        // interval at an absurd `storage.save-interval` and would make every tick look like it was due.
+        final long intervalNanos = Math.min(resolveSaveIntervalTicks() * 50_000_000L, TimeUnit.DAYS.toNanos(7L));
 
         autosaveTask = getServer().getScheduler().runTaskTimer(this, () -> persistenceCoordinator.tick(
                         CAPTURE_BUDGET_MILLIS * 1_000_000L,

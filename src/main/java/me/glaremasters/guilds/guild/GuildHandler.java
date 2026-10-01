@@ -206,8 +206,8 @@ public class GuildHandler {
      * Returns a detached copy of the guild map's values.
      *
      * <p>A cheap first step, for callers that need a stable set of guilds to work through over several
-     * ticks. Copying the map cannot fail here because the caller holds the main thread and nothing else
-     * can be writing to it.
+     * ticks. Copying cannot fail here because the caller holds the main thread and nothing else can be
+     * writing to the map.
      *
      * <p>These are still the live {@link Guild} instances, so this is not a snapshot of anything on its
      * own. A caller must serialise each guild before yielding the thread, and must not hand the list to
@@ -224,14 +224,12 @@ public class GuildHandler {
      *
      * <p>Must be called on the main thread. Serialising the vaults reads live Bukkit inventories through
      * {@code Inventory#getContents()} and writes {@code ItemStack#serialize()}, which calls into
-     * {@code Bukkit.getUnsafe()} and {@code Bukkit.getItemFactory()}. Both were being done from a save
-     * thread, which was an off-thread Bukkit access as well as a race against a player clicking in an
-     * open vault.
+     * {@code Bukkit.getUnsafe()} and {@code Bukkit.getItemFactory()}. Doing that off-thread was both an
+     * illegal Bukkit access and a race against a player clicking in an open vault.
      *
      * <p>Serialising here, rather than copying the models and serialising them later, is what makes the
      * result detached. The returned string cannot change underneath whoever holds it, which a copy of the
-     * {@link Guild} would not be: Gson reading it on a worker while the main thread changed the same
-     * object's member list is how a half-updated record got written.
+     * {@link Guild} would not be.
      *
      * @param guild the guild to serialise
      * @return the guild as it exists at this instant
@@ -249,8 +247,8 @@ public class GuildHandler {
      * @throws NullPointerException if the specified [guild] is null
      */
     public void addGuild(@NotNull Guild guild) {
-        // Cache first, then publish. The other order let a save that ran between the two statements
-        // find a guild with no cache, and the lookup in `saveVaultCache` would return null.
+        // Cache first, then publish. The other order let a save that ran between the two statements find a
+        // guild with no cache, and the lookup in `saveVaultCache` would return null.
         createVaultCache(guild);
         guilds.put(guild.getId(), guild);
     }
@@ -565,27 +563,24 @@ public class GuildHandler {
      * @param guild The guild whose vaults are being saved.
      */
     private void saveVaultCache(@NotNull final Guild guild) {
-        // `getVaults()` lazily allocates and never returns null, so the old null check here never fired
-        // and the cache lookup below was reached for every guild on every save.
+        // The old `getVaults() == null` check here never fired: it lazily allocates and never returns null.
         final List<Inventory> cached = this.vaults.get(guild);
         if (cached == null) {
-            // The guild is in the guild map but has no vault cache yet. `addGuild` builds the cache and
-            // then puts the guild, and both now happen on the main thread, so this should not be
-            // reachable during a save. It is guarded anyway: an NPE here would abort the whole save
-            // and cost every other guild its write.
+            // The guild is in the guild map but has no vault cache. `addGuild` builds the cache and then
+            // puts the guild, both on the main thread, so this should be unreachable during a save. It is
+            // guarded anyway: an NPE here would abort the whole save.
             LoggingUtils.warn("No vault cache for guild " + guild.getId() + "; its vault contents were not saved.");
             return;
         }
 
-        // Every vault, every time. A dirty-flag scheme was tried and dropped: skipping a vault that had
-        // actually changed loses items, and the flag had to be set from the inventory listeners, so every
-        // path that can mutate a vault without firing those events became a way to lose data. The cost of
-        // serialising everything is handled by spreading the capture across ticks instead.
+        // Every vault, every time. Skipping a vault that had actually changed loses items, and any dirty
+        // flag would have to be set from the inventory listeners, so every path that can mutate a vault
+        // without firing those events becomes a way to lose data. The cost is handled by spreading the
+        // capture across ticks instead.
         final List<String> vaults = new ArrayList<>(cached.size());
         for (Inventory vault : cached) {
             vaults.add(Serialization.serializeInventory(vault));
         }
-        // Set the serialized inventory data to the guild's vaults list.
         guild.setVaults(vaults);
     }
 
@@ -1248,11 +1243,8 @@ public class GuildHandler {
     /**
      * Whether a storage backend migration is running.
      *
-     * <p>Delegates to the shared {@link me.glaremasters.guilds.persistence.PersistenceGate}. The flag
-     * used to live here as a plain {@code boolean}: written on a TaskChain thread, read by the
-     * autosave worker and by the ACF {@code NotMigrating} condition, with no happens-before edge
-     * between the writers and the readers. A stale read there is not a cosmetic problem, because the
-     * autosave skips while the flag is set.
+     * <p>Delegates to the shared {@link me.glaremasters.guilds.persistence.PersistenceGate}, which owns
+     * the flag because its readers are on other threads.
      *
      * @return true while a migration holds the gate
      */

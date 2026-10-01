@@ -53,20 +53,19 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Covers that a snapshot holds what was there when it was taken, not what is there when it is read.
  *
- * <p>The old code handed the adapters live views: {@code arenas.values}, the challenge
- * {@code HashSet} itself, and {@code ExpiringMap#values()}. A save that iterated one of those while
- * the main thread changed the underlying map either threw {@link java.util.ConcurrentModificationException}
- * or, worse, produced a collection that had never existed at any single instant. The adapters read
- * those collections long after the capture point, on a worker thread.
+ * <p>The old code handed the adapters live views: {@code arenas.values}, the challenge {@code HashSet}
+ * itself, and {@code ExpiringMap#values()}. A save that iterated one of those while the main thread
+ * changed the underlying map either threw {@link java.util.ConcurrentModificationException} or, worse,
+ * produced a collection that had never existed at any single instant.
  *
- * <p>These tests take the snapshot, then mutate, then check the snapshot. That is the ordering a save
- * actually has, and it is deterministic: no second mutator thread is needed, because the new design
- * has exactly one mutator (the main thread) and one reader (the write worker), and the snapshot is the
- * thing that separates them.
+ * <p>These tests take the snapshot, then mutate, then check the snapshot: the ordering a save actually has,
+ * and deterministic without a second mutator thread.
  *
- * <p>The last two tests are characterisation tests for the hazard itself. They pin down that copying
- * a map while another thread writes to it is genuinely unsafe, which is why the copy has to happen on
- * the main thread rather than merely "somewhere".
+ * <p>Why the copy has to happen on the main thread rather than merely somewhere else is argued where the
+ * decision is taken, in {@code GuildHandler#getGuildsForSnapshot} and the {@code CaptureSession} class
+ * comment. It was also covered here by a test asserting that a concurrent {@code HashMap} copy throws,
+ * which was removed: it asserted a property of the JDK rather than of this plugin, so it could not fail
+ * when the plugin was wrong, and it depended on a writer thread being scheduled inside a fixed window.
  */
 class SnapshotIsolationTest {
 
@@ -86,7 +85,6 @@ class SnapshotIsolationTest {
         final List<Arena> snapshot = handler.getArenasForSnapshot();
         assertEquals(2, snapshot.size());
 
-        // What `/guilds arena delete` does, between the capture and the write.
         handler.removeArena(drop);
 
         assertEquals(2, snapshot.size(), "the snapshot must still hold both arenas");
@@ -118,7 +116,6 @@ class SnapshotIsolationTest {
         handler.removeArena(handler.getArenas().iterator().next());
 
         assertEquals(1, snapshot.size());
-        // The live view, by contrast, tracks the change. This is the difference the write depends on.
         assertEquals(0, handler.getArenas().size());
     }
 
@@ -174,9 +171,8 @@ class SnapshotIsolationTest {
     @Test
     @DisplayName("a cooldown snapshot is unaffected by the expiry thread")
     void aCooldownSnapshotIsUnaffectedByTheExpiryThread() throws InterruptedException {
-        // `ExpiringMap` removes expired entries from its own scheduler thread. Once the snapshot is a
-        // list, that thread can empty the map without the snapshot noticing, which is what makes it
-        // safe to iterate on the write thread afterwards.
+        // `ExpiringMap` removes expired entries from its own scheduler thread, which can empty the map without the
+        // snapshot noticing.
         final CooldownHandler handler = new CooldownHandler(Mockito.mock(Guilds.class));
         handler.addCooldown(Cooldown.Type.Home, UUID.randomUUID(), 30, TimeUnit.MINUTES);
 
@@ -185,9 +181,8 @@ class SnapshotIsolationTest {
 
         handler.addCooldown(Cooldown.Type.SetHome, UUID.randomUUID(), 0, TimeUnit.SECONDS);
 
-        // Wait for the expiry thread to actually remove it, rather than sleeping a fixed interval and
-        // asserting nothing. Without this the test passed even if nothing had expired, so it was not
-        // covering the thing it claimed to.
+        // Wait for the expiry thread to actually remove it, rather than sleeping a fixed interval and asserting
+        // nothing: otherwise the test passes even if nothing expired.
         final long deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(10L);
         while (handler.getCooldowns().size() > 1 && System.nanoTime() < deadline) {
             Thread.sleep(25L);
@@ -203,14 +198,9 @@ class SnapshotIsolationTest {
     @Timeout(60)
     @DisplayName("iterating the cooldown snapshot while the expiry thread runs does not throw")
     void iteratingTheCooldownSnapshotWhileTheExpiryThreadRunsDoesNotThrow() throws InterruptedException {
-        // The part that is genuinely in doubt. Built without `variableExpiration()` an `ExpiringMap` hands
-        // out a fail-fast iterator, and iterating it while entries are being removed throws. This handler
-        // uses `variableExpiration()`, which routes iteration through a `ConcurrentSkipListSet`, so it does
-        // not. Measured on the other configuration, the same loop throws roughly 50,000 times per million
-        // iterations, so this would not be a marginal difference if the configuration changed.
-        //
-        // If someone drops `variableExpiration()` from CooldownHandler, this fails and the copy has to be
-        // taken under the gate instead.
+        // This handler uses `variableExpiration()`, which routes iteration through a `ConcurrentSkipListSet`. Built
+        // the default way the same loop throws roughly 50,000 times per million iterations, so dropping
+        // that call from CooldownHandler fails here and the copy has to be taken under the gate instead.
         final CooldownHandler handler = new CooldownHandler(Mockito.mock(Guilds.class));
         final AtomicBoolean running = new AtomicBoolean(true);
         final AtomicReference<Throwable> failure = new AtomicReference<>();
@@ -252,10 +242,8 @@ class SnapshotIsolationTest {
     @Test
     @DisplayName("the arena snapshot survives the delete pass an adapter would run")
     void theArenaSnapshotSurvivesTheDeletePassAnAdapterWouldRun() {
-        // ArenaAdapter#saveArenas deletes every stored arena whose id is absent from what it is given.
-        // With a live view, an arena created during the write was simply not in the collection, and the
-        // adapter deleted it from storage. With a snapshot, every arena that existed at capture time is
-        // still there when the delete pass reads the keys.
+        // With a live view, an arena created during the write is simply not in the collection, and the adapter's
+        // delete pass removes it from storage.
         final ArenaHandler handler = new ArenaHandler(Mockito.mock(Guilds.class));
         final Arena original = arenaNamed("original");
         handler.addArena(original);
@@ -269,72 +257,8 @@ class SnapshotIsolationTest {
     }
 
     @Test
-    @Timeout(60)
-    @DisplayName("copying a map while another thread writes to it is not safe")
-    void copyingAMapWhileAnotherThreadWritesToItIsNotSafe() throws InterruptedException {
-        // Characterisation test for why the copy has to happen on the main thread rather than "somewhere
-        // that is not the write worker". `HashMap(Map)` iterates the source, so a concurrent `put`
-        // either fails fast or returns a short map.
-        //
-        // This asserts that the hazard is real, not that the plugin is broken. It would start failing
-        // if a future JDK made `HashMap(Map)` tolerant of concurrent writes, which is fine, because the
-        // production code would then be safe either way.
-        // HashMap, not LinkedHashMap: the collections this change copies are `new HashMap<>(...)` in
-        // PluginSnapshot and `new ArrayList<>(...)` over a HashSet, so the fixture should be the same kind
-        // of map. LinkedHashMap also happens to resize less often, which made the hazard rarer to hit.
-        final Map<String, String> backing = new java.util.HashMap<>();
-        final int seed = 5000;
-        for (int i = 0; i < seed; i++) {
-            backing.put("seed-" + i, "value");
-        }
-
-        // AtomicBoolean, not a boolean[]. A plain field read in a spin loop can be hoisted, and this test
-        // used to leave a hot-spinning daemon thread behind whenever that happened.
-        final AtomicBoolean stopped = new AtomicBoolean(false);
-        final AtomicBoolean writerFailed = new AtomicBoolean(false);
-        final Thread writer = new Thread(() -> {
-            int i = 0;
-            while (!stopped.get()) {
-                try {
-                    backing.put("churn-" + (i++), "x");
-                } catch (RuntimeException e) {
-                    writerFailed.set(true);
-                    return;
-                }
-            }
-        });
-        writer.setDaemon(true);
-        writer.start();
-
-        int shortCopies = 0;
-        int thrownCopies = 0;
-        try {
-            for (int attempt = 0; attempt < 500; attempt++) {
-                try {
-                    final Map<String, String> copy = new java.util.HashMap<>(backing);
-                    if (copy.size() < seed) {
-                        shortCopies++;
-                    }
-                } catch (java.util.ConcurrentModificationException e) {
-                    thrownCopies++;
-                }
-            }
-        } finally {
-            stopped.set(true);
-            writer.join(10_000L);
-        }
-
-        assertFalse(writer.isAlive(), "the writer thread must have stopped");
-        assertTrue(thrownCopies > 0 || shortCopies > 0,
-                "expected at least one concurrent copy to throw or come back short, got "
-                        + thrownCopies + " thrown and " + shortCopies + " short");
-        assertFalse(writerFailed.get(), "the writer corrupting the map is not what this test is about");
-    }
-
-    @Test
     @DisplayName("a live view reads through to later changes, a snapshot does not")
     void aLiveViewReadsThroughToLaterChangesASnapshotDoesNot() {
-        // The distinction in one place. The old code passed the first; the new code passes the second.
         final Map<String, String> backing = new LinkedHashMap<>();
         backing.put("a", "1");
 

@@ -36,20 +36,17 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * An immutable point-in-time copy of everything the plugin persists, in the exact bytes each
- * backend will receive.
+ * An immutable point-in-time copy of everything the plugin persists, in the exact bytes each backend
+ * will receive.
  *
  * <p>These are deliberately <em>serialised</em> records rather than copies of the live models. A
- * {@code List<Guild>} taken on the main thread is not a snapshot of anything: the {@link
- * me.glaremasters.guilds.guild.Guild} objects in it are the same instances the main thread keeps
- * mutating, so Gson would read a moving target on the write thread and could emit a record whose
- * member list was half-updated. Detaching at the byte level removes the question. The write thread
- * only ever moves strings, which cannot change underneath it, and the payload is byte-identical to
- * what the old code produced because it is produced by the same
+ * {@code List<Guild>} taken on the main thread is not a snapshot of anything: the objects in it are
+ * the same instances the main thread keeps mutating, so Gson would read a moving target on the write
+ * thread. The payload is byte-identical to what the old code produced, because it comes from the same
  * {@code Guilds.getGson().toJson(...)} call, just earlier.
  *
  * <p>Cooldowns are the exception. {@link Cooldown} has four {@code final} fields and no setters, so
- * a list of references is already fully detached and re-serialising them would only cost time.
+ * a list of references is already fully detached.
  *
  * <p>Instances are produced on the main thread and consumed anywhere. They are safe to publish to
  * another thread without further synchronisation because every field is final and every collection
@@ -89,9 +86,8 @@ public final class PluginSnapshot {
     /**
      * The backend this snapshot was captured against.
      *
-     * <p>A save must write here rather than re-reading the plugin's current backend. Migration
-     * replaces the plugin's adapter mid-save, and a writer that re-read the field would write half
-     * its records to the old backend and half to the new one.
+     * <p>A save must write here rather than re-reading the plugin's current backend: migration replaces
+     * that mid-save, and a writer that re-read the field would split its records across two backends.
      *
      * @return the captured adapter, or null if the plugin had no database
      */
@@ -111,9 +107,8 @@ public final class PluginSnapshot {
     /**
      * Serialised arena records, keyed by arena id.
      *
-     * <p>The keys matter on their own: {@code ArenaAdapter#saveArenas} deletes every stored arena
-     * missing from the collection it is given, so a truncated key set is data loss rather than a
-     * skipped write.
+     * <p>The keys matter on their own: {@code ArenaAdapter} deletes every stored arena missing from the
+     * collection it is given, so a truncated key set is data loss rather than a skipped write.
      *
      * @return unmodifiable map of id to JSON
      */

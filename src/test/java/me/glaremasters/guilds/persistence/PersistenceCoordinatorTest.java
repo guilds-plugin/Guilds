@@ -62,18 +62,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Covers the coordinator's ordering, gating and failure handling.
  *
- * <p>These are the tests that matter for the bugs actually found in review. The gate and the snapshot
- * were straightforward; the defects were all in the sequencing around them:
- *
- * <ul>
- *   <li>a write scheduled onto a worker that never ran it left the permit held forever, disabling every
- *       later save including the shutdown flush;</li>
- *   <li>a failed adapter threw out of {@code writeTo} and skipped the collections sequenced after it;</li>
- *   <li>the shutdown flush closed the connection pool while a writer the drain had given up on was still
- *       using it;</li>
- *   <li>a save re-read the plugin's backend instead of using the one captured with the data, so a
- *       migration swapping the field mid-save split the records across two backends.</li>
- * </ul>
+ * <p>The gate and the snapshot are covered elsewhere; these are the sequencing hazards: a write left on a
+ * worker that never ran it, a failed adapter skipping the collections sequenced after it, a shutdown flush
+ * closing the pool under a writer it had given up on, and a save that reads the plugin's backend instead of
+ * the one captured with the data.
  */
 class PersistenceCoordinatorTest {
 
@@ -107,13 +99,11 @@ class PersistenceCoordinatorTest {
         plugin = Mockito.mock(Guilds.class);
         Mockito.when(plugin.getDatabase()).thenReturn(database);
 
-        // Real handlers rather than mocks, so `capture()` goes through the production snapshot path. An
-        // empty handler would make the snapshot empty, and an empty snapshot legitimately skips every
-        // adapter, which is a different thing from what these tests are checking.
+        // Real handlers rather than mocks, so `capture()` goes through the production snapshot path. An empty
+        // handler would make the snapshot empty, and an empty snapshot legitimately skips every adapter.
         //
         // `GuildHandler` is left null: its constructor reads roles.yml and tiers.yml off the plugin data
-        // folder and queries the database, so it is not constructible here. Guild content is covered in
-        // SnapshotIsolationTest and by the adapters receiving whatever the snapshot holds.
+        // folder and queries the database. Guild content is covered in GuildSnapshotRemovalTest.
         final ArenaHandler arenaHandler = new ArenaHandler(plugin);
         arenaHandler.addArena(new me.glaremasters.guilds.arena.Arena(UUID.randomUUID(), "test-arena"));
 
@@ -160,11 +150,9 @@ class PersistenceCoordinatorTest {
         );
     }
 
-    /**
-     * Publishes the real Gson instance into {@code Guilds}'s private static field.
-     *
-     * <p>{@code Guilds#getGson()} is assigned in {@code onEnable} and there is no setter, so
-     * {@code capture()} returns an empty snapshot without it. Built the same way production builds it,
+/**
+     * Publishes the real Gson instance into {@code Guilds}'s private static field, which
+     * {@code onEnable} normally assigns and which has no setter. Built the same way production builds it,
      * pretty printing included, so what the tests serialise is what a server would write.
      */
     private static void installGson() {
@@ -209,9 +197,8 @@ class PersistenceCoordinatorTest {
         @Test
         @DisplayName("writes to the captured backend even after the plugin's backend changes")
         void writesToTheCapturedBackendEvenAfterThePluginsBackendChanges() throws IOException {
-            // A save resolves its backend from the snapshot, not from `plugin.getDatabase()`. Migration
-            // replaces that field mid-save, and a writer that re-read it would put some guilds in the old
-            // backend and the rest in the new one.
+            // A save resolves its backend from the snapshot, not from `plugin.getDatabase()`. Migration replaces
+            // that field mid-save, and a writer that re-read it would split its records across two backends.
             final DatabaseAdapter other = Mockito.mock(DatabaseAdapter.class);
             final Guilds plugin = Mockito.mock(Guilds.class);
             Mockito.when(plugin.getDatabase()).thenReturn(database, other);
@@ -249,9 +236,7 @@ class PersistenceCoordinatorTest {
         @Test
         @DisplayName("a failing adapter does not stop the other collections")
         void aFailingAdapterDoesNotStopTheOtherCollections() throws IOException {
-            // The promise in the class javadoc: one bad record does not cost the operator every other kind
-            // of data. Cooldowns are last and guarded precisely because their adapter throws unchecked
-            // exceptions on a stale connection.
+            // One bad record must not cost the operator every other kind of data.
             Mockito.doThrow(new IOException("guild table is gone"))
                     .when(guildAdapter).saveSerialized(Mockito.anyMap());
             Mockito.doThrow(new IllegalStateException("HikariDataSource has been closed"))
@@ -266,8 +251,7 @@ class PersistenceCoordinatorTest {
         @Test
         @DisplayName("challenges are written before a cooldown failure")
         void challengesAreWrittenBeforeACooldownFailure() throws IOException {
-            // Sequencing matters as much as guarding: a cooldown exception used to skip challenges,
-            // because challenges were written after it.
+            // Sequencing matters as much as guarding: challenges must be written before the cooldowns that can throw.
             Mockito.doThrow(new IllegalStateException("pool closed"))
                     .when(cooldownAdapter).saveCooldowns(Mockito.anyCollection());
 
@@ -310,10 +294,8 @@ class PersistenceCoordinatorTest {
         @Test
         @DisplayName("reports a failed collection so migration can refuse to swap")
         void reportsAFailedCollectionSoMigrationCanRefuseToSwap() throws IOException {
-            // Migration is about to close the old backend and point the plugin at this one. Each collection
-            // is written inside its own try, so without an explicit signal a failure here is invisible: the
-            // swap goes ahead, the old pool closes, and the operator is told it worked while the new backend
-            // holds nothing.
+            // Migration is about to close the old backend and point the plugin at this one, so a failure it does not
+            // notice means a swap onto an empty backend and an operator who was told it worked.
             Mockito.doThrow(new IllegalStateException("HikariDataSource has been closed"))
                     .when(arenaAdapter).saveSerialized(Mockito.anyMap());
 
@@ -341,11 +323,8 @@ class PersistenceCoordinatorTest {
         @Test
         @DisplayName("an empty arena set still runs the delete pass")
         void anEmptyArenaSetStillRunsTheDeletePass() throws IOException {
-            // Not a no-op. `ArenaAdapter#saveSerialized` deletes every stored arena absent from the map it
-            // is given, and that pass is the only thing that persists an arena deletion: `removeArena` only
-            // touches the in-memory map. Skipping it on an empty set means the last arena an admin deletes
-            // is never removed from storage, comes back on the next restart, and can never be deleted again
-            // because the map is now permanently empty.
+            // Not a no-op: the delete pass inside the arena adapter is the only thing that persists an arena
+            // deletion, so skipping it on an empty set makes the last deletion permanently unremovable.
             coordinator.write(new PluginSnapshot(
                     Collections.emptyMap(),
                     Collections.emptyMap(),
@@ -362,7 +341,7 @@ class PersistenceCoordinatorTest {
     @DisplayName("autosave")
     class Autosave {
 
-        /** One minute, so the first tick always starts a capture and later ones wait. */
+        /** Long enough that the first tick always starts a capture and later ones wait. */
         private final long intervalNanos = TimeUnit.MINUTES.toNanos(1L);
 
         private void tickUntilWriteHandedOff(AtomicReference<Runnable> queued, long budgetNanos) {
@@ -403,9 +382,8 @@ class PersistenceCoordinatorTest {
         @Timeout(15)
         @DisplayName("releases the permit when the write cannot even be scheduled")
         void releasesThePermitWhenTheWriteCannotEvenBeScheduled() {
-            // `BukkitScheduler#runTaskAsynchronously` throws IllegalPluginAccessException once the plugin
-            // is disabled. Before this was handled, that exception escaped the autosave and the permit
-            // stayed held, which on a `/reload` cycle silently disabled saving for the rest of the session.
+            // A scheduler refuses to queue a task for a disabled plugin. Letting that escape would leave the permit
+            // held for the rest of the session.
             coordinator.tick(TimeUnit.HOURS.toNanos(1L), intervalNanos, write -> {
                 throw new IllegalStateException("Plugin attempted to register task while disabled");
             });
@@ -425,8 +403,7 @@ class PersistenceCoordinatorTest {
                 throw new IllegalStateException("Plugin attempted to register task while disabled");
             });
 
-            // Losing the data is worse than doing the work on the main thread. This is the situation the
-            // server is in when it is shutting down, and blocking the tick to write beats discarding a save.
+            // Blocking the tick to write beats discarding a save, unless shutdown is under way.
             assertTrue(wroteInline.get(), "the write should still have happened");
             Mockito.verify(arenaAdapter).saveSerialized(Mockito.anyMap());
         }
@@ -449,10 +426,9 @@ class PersistenceCoordinatorTest {
         @Test
         @DisplayName("skips while a migration is running")
         void skipsWhileAMigrationIsRunning() {
-            // The autosave used to check this flag and no longer does by accident. Migration holds the
-            // write permit across its write and the backend swap, so an autosave that starts first makes
-            // migration wait out the remainder of a spread capture and then report itself busy. The admin
-            // has already spent their confirmation at that point.
+            // Migration holds the write permit across its write and the backend swap, so an autosave that starts first
+            // makes migration wait out the remainder of a spread capture and then report itself busy. The
+            // admin has already spent their confirmation at that point.
             gate.beginMigration();
             final AtomicBoolean handedOff = new AtomicBoolean(false);
 
@@ -499,9 +475,8 @@ class PersistenceCoordinatorTest {
 
             Mockito.verify(arenaAdapter, Mockito.times(1)).saveSerialized(Mockito.anyMap());
 
-            // The interval has not elapsed, so the next tick must not start a second capture. Without this
-            // the autosave would run every tick instead of every interval, and the arena delete pass would
-            // run every tick too.
+            // Without this the autosave would run every tick instead of every interval, and the arena delete pass with
+            // it.
             coordinator.tick(TimeUnit.HOURS.toNanos(1L), intervalNanos, write -> { });
 
             assertFalse(coordinator.hasPendingCapture(), "no capture should have started");
@@ -517,31 +492,44 @@ class PersistenceCoordinatorTest {
         @Timeout(20)
         @DisplayName("waits for an in-flight write before writing")
         void waitsForAnInFlightWriteBeforeWriting() throws Exception {
+            // The shutdown thread signals that it has started and is about to drain. Because the permit is
+            // still held at that point, and the holder only releases it after the test says so, the flush
+            // cannot have written yet. No sleep decides the order, and the assertion cannot pass vacuously
+            // because the shutdown thread is known to be past its start.
             assertTrue(gate.tryAcquireWriter(), "simulate a save already running");
+
             final CountDownLatch release = new CountDownLatch(1);
-            final CountDownLatch flushStarted = new CountDownLatch(1);
+            final CountDownLatch draining = new CountDownLatch(1);
+            final AtomicBoolean wroteBeforeRelease = new AtomicBoolean(false);
 
             final Thread holder = new Thread(() -> {
                 try {
-                    release.await(10, TimeUnit.SECONDS);
+                    release.await(20, TimeUnit.SECONDS);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 } finally {
                     gate.releaseWriter();
                 }
-            });
+            }, "test-permit-holder");
+            holder.setDaemon(true);
             holder.start();
 
-            final Thread shutdown = new Thread(() -> coordinator.shutdownFlush(() -> { }));
+            final Thread shutdown = new Thread(() -> {
+                coordinator.shutdownFlush(() -> wroteBeforeRelease.set(
+                        Mockito.mockingDetails(arenaAdapter).getInvocations().size() > 0));
+                draining.countDown();
+            }, "test-shutdown");
+            shutdown.setDaemon(true);
             shutdown.start();
 
-            Thread.sleep(300L);
-            assertFalse(flushStarted.await(200, TimeUnit.MILLISECONDS),
-                    "the flush should still be waiting for the drain");
+            // The drain is a bounded 5s wait, so give it a bounded chance to finish while the permit is
+            // still held. It must not: the holder is not releasing until asked.
+            assertFalse(draining.await(1, TimeUnit.SECONDS),
+                    "the flush should still be waiting for the permit to be released");
 
             release.countDown();
-            shutdown.join(15_000L);
-            holder.join(15_000L);
+            assertTrue(draining.await(20, TimeUnit.SECONDS), "the flush should finish once the permit is free");
+            holder.join(20_000L);
 
             Mockito.verify(arenaAdapter, Mockito.atLeastOnce()).saveSerialized(Mockito.anyMap());
         }
@@ -550,7 +538,7 @@ class PersistenceCoordinatorTest {
         @Timeout(20)
         @DisplayName("closes the database only after writing")
         void closesTheDatabaseOnlyAfterWriting() throws IOException {
-            // Arenas, because there is no GuildHandler here and so no guilds to write. See setUp.
+            // Arenas, because there is no GuildHandler here. See setUp.
             final InOrder order = Mockito.inOrder(arenaAdapter);
             final AtomicBoolean closed = new AtomicBoolean(false);
 
@@ -583,10 +571,8 @@ class PersistenceCoordinatorTest {
         @Timeout(30)
         @DisplayName("does not write or close underneath a writer the drain gave up on")
         void doesNotWriteOrCloseUnderneathAWriterTheDrainGaveUpOn() {
-            // A save wedged on a dead connection must not stop the server stopping, but writing anyway is
-            // worse than not writing: two threads writing the same `<uuid>.json` files interleave into JSON
-            // that will not parse on the next boot, and closing the pool under a running writer has the same
-            // character. Corruption beats staleness as a failure only when it is the less likely outcome.
+            // Not writing is better than writing anyway: two threads writing the same `<uuid>.json` files interleave
+            // into JSON that will not parse on the next boot.
             assertTrue(gate.tryAcquireWriter(), "simulate a save that never finishes");
             final AtomicBoolean closed = new AtomicBoolean(false);
 
@@ -603,14 +589,12 @@ class PersistenceCoordinatorTest {
         @Test
         @DisplayName("a capture in progress is abandoned so its permit is not held forever")
         void aCaptureInProgressIsAbandonedSoItsPermitIsNotHeldForever() throws Exception {
-            // A spread capture only advances on the main thread, and `shutdownFlush` runs on the main
-            // thread. Waiting for one to finish would wait forever, so it has to be abandoned instead. If it
-            // were not, the drain below would time out after its full wait, the permit would stay taken, and
-            // every later save would skip. On a `/reload` that is permanent, because the plugin instance is
-            // re-enabled rather than rebuilt.
+            // A spread capture only advances on the main thread, so `shutdownFlush` cannot wait for one. Left running,
+            // the capture would hold the permit, the drain would time out after its full wait, and every
+            // later save would skip.
             //
-            // A real handler with real guilds is needed here: with none, a capture finishes inside its first
-            // step and there is nothing to abandon.
+            // A real handler with real guilds is needed: with none, a capture finishes inside its first step
+            // and there is nothing to abandon.
             final GuildHandler handler = GuildSnapshotRemovalTest.newHandler(8, tempFolder);
             final PersistenceCoordinator spread = new PersistenceCoordinator(
                     plugin, gate, handler, null, null, null);
@@ -629,9 +613,7 @@ class PersistenceCoordinatorTest {
         @Timeout(30)
         @DisplayName("does not return a permit it never took")
         void doesNotReturnAPermitItNeverTook() {
-            // On the drain-timeout path the permit is still held by the other writer. Releasing it here
-            // would make it available while that writer is still using it, which is the overlap this class
-            // exists to prevent.
+            // Releasing on the drain-timeout path would make the permit available while the other writer still holds it.
             assertTrue(gate.tryAcquireWriter(), "simulate a save that never finishes");
 
             coordinator.shutdownFlush(() -> { });

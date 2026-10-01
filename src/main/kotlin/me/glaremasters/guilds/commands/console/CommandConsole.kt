@@ -27,15 +27,12 @@ import ch.jalu.configme.SettingsManager
 import co.aikar.commands.BaseCommand
 import co.aikar.commands.CommandIssuer
 import co.aikar.commands.annotation.*
-import java.util.concurrent.atomic.AtomicBoolean
-import java.util.concurrent.atomic.AtomicReference
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.actions.ActionHandler
 import me.glaremasters.guilds.actions.ConfirmAction
 import me.glaremasters.guilds.arena.ArenaHandler
 import me.glaremasters.guilds.challenges.ChallengeHandler
 import me.glaremasters.guilds.cooldowns.CooldownHandler
-import me.glaremasters.guilds.database.DatabaseAdapter
 import me.glaremasters.guilds.database.DatabaseBackend
 import me.glaremasters.guilds.exceptions.ExpectationNotMet
 import me.glaremasters.guilds.guild.GuildHandler
@@ -89,24 +86,18 @@ internal class CommandConsole : BaseCommand() {
     /**
      * Copies every collection to another backend, then swaps to it.
      *
-     * The shape of this is the fix. It used to hand the adapters the live collections from inside the
-     * async block, so the migration read `guildHandler.guilds`, the arena map and the challenge set
-     * while the main thread kept changing them. Three consequences followed from that:
+     * <p>Three things this has to get right, each of which was a defect before.
      *
-     * - A `ConcurrentModificationException` mid-migration matched neither `catch` clause, so
-     *   `isMigrating` was left `true` forever: the autosave skipped on every tick after it, and every
-     *   command carrying `NotMigrating` was refused for the rest of the session.
-     * - TaskChain aborts the rest of the chain when a step throws, so the `.sync` step that calls
-     *   `removeAction` never ran. The `ConfirmAction` stayed registered, and the next `/guilds confirm`
-     *   silently started the whole migration again. The `unclaimall` command below carries a comment
-     *   about exactly this hazard.
-     * - `guilds.database` was swapped and the old pool closed while an autosave that had already passed
-     *   its `isMigrating` check could still be writing to it.
+     * <p>A failure must leave the plugin running on the backend it already had. So the flag and the permit
+     * are claimed before anything can throw, the snapshot is taken before the destination is opened, and the
+     * old adapter is closed only after the new one is published.
      *
-     * Now: the gate is claimed synchronously so the flag is never briefly unset, the snapshot is taken
-     * on the main thread, the write happens under the same permit the autosave respects, and every exit
-     * path releases both in a `finally`. A failure leaves the old backend in place and open, and the
-     * swap only happens once the new backend has been confirmed to hold every collection.
+     * <p>The destination must be complete before it is published, or the operator loses data and is told it
+     * worked. So every collection is confirmed written, and the reconciliation that follows confirms the
+     * destination matches the live plugin rather than the snapshot.
+     *
+     * <p>A failure must not leave a destructive action armed. The {@code ConfirmAction} is removed here
+     * rather than at the end of the chain, because TaskChain skips the trailing steps when one throws.
      */
     @Subcommand("console migrate")
     @Description("{@@descriptions.console-migrate}")
@@ -127,32 +118,27 @@ internal class CommandConsole : BaseCommand() {
                     ?: throw ExpectationNotMet(Messages.MIGRATE__FAILED)
                 val gate = coordinator.gate
 
-                // Claimed here, on the main thread, rather than inside the async block. The flag gates
-                // both the autosave and the NotMigrating commands, and both of those run on other
-                // threads; setting it from a worker left a window where the flag was not yet visible.
+                // Claimed on the main thread, where the command handler runs. The flag gates the autosave
+                // and the NotMigrating commands, both of which read it from other threads, so setting it
+                // from a worker left a window where it was not yet visible.
                 if (!gate.beginMigration()) {
                     throw ExpectationNotMet(Messages.MIGRATE__BUSY)
                 }
-
                 if (gate.isShuttingDown) {
                     gate.endMigration()
                     throw ExpectationNotMet(Messages.MIGRATE__FAILED)
                 }
 
-                // Removed up front, not in a `.sync` step at the end. If the async block throws, TaskChain
-                // aborts the chain and the trailing step never runs, which is how a failed migration used
-                // to leave a registered action that silently re-ran on the next `/guilds confirm`.
+                // Removed here rather than in the trailing step. TaskChain skips the rest of a chain when a
+                // step throws, so an action removed at the end would survive a failure and silently re-run
+                // the whole migration on the next `/guilds confirm`.
                 actionHandler.removeAction(issuer.getIssuer())
 
                 val commandIssuer = guilds.commandManager.getCommandIssuer(issuer.getIssuer())
 
-                // Captured here, synchronously, on the main thread.
-                //
-                // The obvious alternative is a nested `newChain().sync { capture() }.execute()` inside the
-                // async block, and that is broken: `execute()` does not block. It hands the task to the
-                // next tick and returns, so the read of the captured value happens before the capture does
-                // and is always null. The gate is already claimed at this point, so nothing can be writing,
-                // and this is the one place the live collections may be read.
+                // Captured synchronously. A nested `newChain().sync { capture() }.execute()` does not block:
+                // it queues for the next tick and returns, so the result is read before the capture runs and
+                // is always null.
                 val captured = try {
                     coordinator.capture()
                 } catch (ex: RuntimeException) {
@@ -162,85 +148,20 @@ internal class CommandConsole : BaseCommand() {
                     return
                 }
 
-                // Written on a worker, with the outcome reported back on the main thread.
-                //
-                // `migrated` is atomic because it is written on the worker and read on the main thread in
-                // the `.sync` step below. The TaskChain handoff happens to supply a happens-before edge
-                // today, but the same class of bug as the non-volatile `isMigrating` flag this change
-                // removed, and invisible if the handoff ever changes.
-                val migrated = AtomicBoolean(false)
-                val failureMessage = AtomicReference<Messages?>(null)
+                val outcome = MigrationOutcome()
 
                 Guilds.newChain<Any>().async {
-                    var resolvedAdapter: DatabaseAdapter? = null
-                    var swapped = false
-                    try {
-                        val adapter = guilds.database.cloneWith(resolvedBackend)
-                        resolvedAdapter = adapter
-
-                        if (!adapter.isConnected) {
-                            failureMessage.set(Messages.MIGRATE__CONNECTION_FAILED)
-                            return@async
-                        }
-
-                        // The permit is held across the write and the swap, so no autosave can be writing to
-                        // the old backend while it is being closed. The gate's flag was claimed earlier, so
-                        // the autosave has been skipping for the whole time up to here.
-                        if (!gate.acquireWriter(MIGRATION_LOCK_TIMEOUT_MS)) {
-                            failureMessage.set(Messages.MIGRATE__BUSY)
-                            return@async
-                        }
-
-                        try {
-                            if (gate.isShuttingDown) {
-                                failureMessage.set(Messages.MIGRATE__FAILED)
-                                return@async
-                            }
-
-                            // Checked, not assumed. Every collection is written inside its own try, so a
-                            // failure on the new backend is otherwise invisible here: the swap would go
-                            // ahead, the old pool would close, and the operator would be told it worked
-                            // while the new backend held nothing.
-                            val failures = ArrayList<String>()
-                            if (!coordinator.writeTo(adapter, captured, failures)) {
-                                LoggingUtils.severe(
-                                    "Migration to ${resolvedBackend.backendName} failed for: ${failures.joinToString("; ")}",
-                                )
-                                failureMessage.set(Messages.MIGRATE__FAILED)
-                                return@async
-                            }
-
-                            val old = guilds.database
-                            guilds.database = adapter
-                            old.close()
-                            swapped = true
-                            migrated.set(true)
-                        } finally {
-                            gate.releaseWriter()
-                        }
-                    } catch (ex: IllegalArgumentException) {
-                        LoggingUtils.warn("Migration to ${resolvedBackend.backendName} was refused: it is the backend already in use.", ex)
-                        failureMessage.set(Messages.MIGRATE__SAME_BACKEND)
-                    } catch (ex: Exception) {
-                        LoggingUtils.severe("Migration to ${resolvedBackend.backendName} failed. The previous backend is still in use.", ex)
-                        failureMessage.set(Messages.MIGRATE__FAILED)
-                    } finally {
-                        // Close the half-built adapter on every path that did not swap it in, so a failed
-                        // attempt does not leak a connection pool. The old backend is never touched on those
-                        // paths, so the plugin keeps running on it.
-                        if (!swapped) {
-                            resolvedAdapter?.close()
-                        }
-                        gate.endMigration()
-                    }
+                    // Never propagates out of this step, so the chain always reaches the one below.
+                    outcome.write(guilds, gate, coordinator, resolvedBackend, captured)
                 }.sync {
-                    // Always runs: the async block above returns normally on every path, including the
-                    // early returns, so TaskChain never aborts the chain and this step is never skipped.
-                    val failure = failureMessage.get()
-                    when {
-                        failure != null -> commandIssuer.sendInfo(failure)
-                        migrated.get() -> commandIssuer.sendInfo(Messages.MIGRATE__COMPLETE, "{amount}", guildHandler.guildsSize.toString())
-                        else -> commandIssuer.sendInfo(Messages.MIGRATE__FAILED)
+                    // Main thread: nothing can run between the reconciliation and the publication.
+                    try {
+                        outcome.publish(
+                            coordinator, captured, gate, commandIssuer, resolvedBackend, guildHandler.guildsSize,
+                        )
+                    } finally {
+                        outcome.closeUnpublished()
+                        gate.endMigration()
                     }
                 }.execute()
             }
@@ -274,8 +195,8 @@ internal class CommandConsole : BaseCommand() {
                     }
                 }
                 currentCommandIssuer.sendInfo(Messages.UNCLAIM__ALL_SUCCESS)
-                // Without this the action stays registered, so every later /guilds confirm silently
-                // re-runs a destructive unclaim-all.
+                // Without this the action stays registered, so every later /guilds confirm silently re-runs a
+                // destructive unclaim-all.
                 actionHandler.removeAction(issuer.getIssuer())
             }
 
@@ -286,12 +207,4 @@ internal class CommandConsole : BaseCommand() {
         })
     }
 
-    private companion object {
-        /**
-         * How long a migration waits for an in-flight save before giving up.
-         *
-         * Bounded so a wedged save cannot make the command hang indefinitely.
-         */
-        const val MIGRATION_LOCK_TIMEOUT_MS = 10_000L
-    }
 }

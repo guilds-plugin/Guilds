@@ -159,11 +159,42 @@ tasks.withType<KotlinCompile>().configureEach {
     }
 }
 
+/*
+ * `SnapshotCostBenchmark` prints timings and asserts nothing. The measurements depend on the machine they
+ * were taken on, so it can never gate anything, and it is slow enough to be worth keeping out of every
+ * build. JUnit only filters on what it is told to filter, so the `@Tag` on the class does nothing on its
+ * own, and the exclusion is applied to `test` and `testJava11` by name rather than through
+ * `configureEach`, which would also apply it to the `benchmark` task that exists to include them.
+ */
+val benchmarkTag = "benchmark"
+
 tasks.withType<Test>().configureEach {
     useJUnitPlatform()
     testLogging {
         events("passed", "skipped", "failed")
         exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+    }
+}
+
+/** Runs the measurement-only tests that `check` excludes. See the `excludeTags` above. */
+tasks.register<Test>("benchmark") {
+    description = "Runs the snapshot cost benchmark, which prints timings and asserts nothing."
+    group = "verification"
+    testClassesDirs = sourceSets.test.get().output.classesDirs
+    classpath = sourceSets.test.get().runtimeClasspath
+    useJUnitPlatform {
+        includeTags(benchmarkTag)
+    }
+    testLogging {
+        showStandardStreams = true
+    }
+}
+
+// `-PrunBenchmarks` puts the measurement tests back into the ordinary run, for when a local build is the
+// place to compare a change against the figures in the pull request.
+tasks.named<Test>("test") {
+    if (!project.hasProperty("runBenchmarks")) {
+        useJUnitPlatform { excludeTags(benchmarkTag) }
     }
 }
 
@@ -577,5 +608,8 @@ afterEvaluate {
         javaLauncher.set(javaToolchains.launcherFor {
             languageVersion.set(JavaLanguageVersion.of(11))
         })
+        if (!project.hasProperty("runBenchmarks")) {
+            useJUnitPlatform { excludeTags(benchmarkTag) }
+        }
     }
 }

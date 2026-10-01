@@ -65,31 +65,19 @@ import java.util.UUID;
 /**
  * Measures what {@link PersistenceCoordinator#capture()} costs on the main thread.
  *
- * <p>Not a correctness test. {@code capture()} moved onto the main thread so that guild vault
- * inventories are read where {@code Bukkit.getItemFactory()} is legal, and the open question is what
- * that costs a tick. A Minecraft tick is 50ms, so the answer is only meaningful as a number, and a
- * number this test produces is environment-dependent anyway: it is printed, never asserted. A
- * timing assertion would be a flaky gate, so there is deliberately not one.
+ * <p>Not a correctness test, and deliberately without a timing assertion: the figures depend on the machine
+ * they were taken on, so they are printed rather than asserted. {@code build.gradle.kts} excludes the
+ * {@code benchmark} tag from {@code test} and {@code testJava11}, so this does not run on every build;
+ * {@code ./gradlew benchmark} runs it.
  *
- * <p>Excluded from being a gate by three things: the {@code benchmark} tag, a name that does not end
- * in {@code Test}, and no {@code assertTimeout} anywhere in the file. {@code
- * ./gradlew test --tests '*'} still runs it; {@code -DexcludeTags=benchmark} skips it.
- *
- * <h2>What can and cannot be measured without a server</h2>
- *
- * <p>{@code Bukkit.getServer()} is null in these tests and there is no {@code Bukkit.setServer}, so
- * {@code Bukkit.createInventory}, {@code ItemStack.serialize}, {@code ItemStack.getItemMeta},
- * {@code Bukkit.getItemFactory} and {@code Bukkit.getUnsafe} all throw. The saving grace is that
- * {@code Inventory} is an interface: a Mockito mock supplies {@code getSize()} and
- * {@code getContents()}, so {@code Serialization#serializeInventory(Inventory)} runs end to end
- * against real code with zero Bukkit calls, as long as the slots are null. {@code ItemStack} is a
- * final concrete class whose {@code serialize()} reaches the server, so a populated slot cannot be
- * serialised here; {@link VaultItemSurrogate} stands in for it at the exact point of substitution
- * and is described where it is declared.
- *
- * <p>{@code Guilds.getGson()} is a private static that is null here, so this builds
- * {@code new GsonBuilder().setPrettyPrinting().create()}, which is byte for byte what
- * {@code Guilds#onEnable} assigns.
+ * <p>What can and cannot be measured without a server: {@code Bukkit.getServer()} is null here and there is
+ * no {@code Bukkit.setServer}, so {@code Bukkit.createInventory}, {@code ItemStack.serialize},
+ * {@code ItemStack.getItemMeta}, {@code Bukkit.getItemFactory} and {@code Bukkit.getUnsafe} all throw.
+ * {@code Inventory} is an interface, though, so a Mockito mock supplies {@code getSize()} and
+ * {@code getContents()} and {@code Serialization#serializeInventory(Inventory)} runs end to end against real
+ * code with zero Bukkit calls as long as the slots are null. {@code ItemStack} is a final concrete class
+ * whose {@code serialize()} reaches the server, so {@link VaultItemSurrogate} stands in for it at the
+ * exact point of substitution.
  */
 @Tag("benchmark")
 class SnapshotCostBenchmark {
@@ -99,10 +87,7 @@ class SnapshotCostBenchmark {
      */
     private static final double TICK_MILLIS = 50.0;
 
-    /**
-     * Exactly what {@code Guilds#onEnable} assigns to its Gson. Guilds#getGson is a private static
-     * that is null in a unit test, and this is the only faithful substitute.
-     */
+    /** Exactly what {@code Guilds#onEnable} assigns to its Gson, which is null in a unit test. */
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     private static final GuildRole MASTER = new GuildRole("GuildMaster", "guilds.roles.master", 0);
@@ -143,10 +128,8 @@ class SnapshotCostBenchmark {
     private static Gson previousGson;
 
     /**
-     * {@code capture()} reads {@code Guilds.getGson()}, which is a private static assigned in
-     * {@code onEnable} and is therefore null in a unit test. Reflection is the only way to put the
-     * real one there, and it matters: section 5 is the only measurement in this file that runs
-     * production {@code capture()} rather than a copy of its body.
+     * {@code capture()} reads {@code Guilds.getGson()}, so section 5 is the only measurement here that runs
+     * production {@code capture()} rather than a copy of its body. That needs reflection to arrange.
      */
     @BeforeAll
     static void installProductionGson() throws Exception {
@@ -162,8 +145,8 @@ class SnapshotCostBenchmark {
         field.setAccessible(true);
         field.set(null, previousGson);
 
-        // ConfigurationSerialization is a process-wide static registry and JUnit reuses the JVM
-        // across test classes, so undo the alias rather than leaving a lie in it for the next class.
+        // ConfigurationSerialization is a process-wide static registry and JUnit reuses the JVM across test
+        // classes, so undo the alias rather than leaving a lie in it.
         ConfigurationSerialization.unregisterClass("org.bukkit.inventory.ItemStack");
     }
 
@@ -214,9 +197,8 @@ class SnapshotCostBenchmark {
     void vaultInventoryCost() {
         header("2. VAULT SERIALISATION (Serialization#serializeInventory)");
 
-        // Warm the JsonConfiguration / json-smart path. This has to be substantial: the per-vault
-        // figures below are tens of microseconds, and an un-warmed JsonConfiguration constructor
-        // plus json-smart's first pass is milliseconds.
+        // Warm the JsonConfiguration / json-smart path hard: the per-vault figures below are tens of
+        // microseconds and an un-warmed constructor plus json-smart's first pass is milliseconds.
         final Object[] empty = emptySlots(54);
         final Object[] mixed = mixedVault(54);
         for (int i = 0; i < 4000; i++) {
@@ -260,14 +242,11 @@ class SnapshotCostBenchmark {
         extrapolate();
     }
 
-    /**
-     * Turns a per-vault cost into a per-capture cost, which is the question that matters.
-     */
     private void extrapolate() {
         header("2d. EXTRAPOLATION -- a guild with 3 vaults, by guild count");
 
-        // Measured in 2a/2b above; recomputed here from the same workload so the table cannot drift
-        // away from the printed per-vault numbers.
+        // Recomputed here from the same workload as 2a/2b so the table cannot drift from the printed
+        // per-vault numbers.
         final Object[] mixed = mixedVault(54);
         final int perRep = 3000;
         final long[] samples = measure(5, () -> {
@@ -336,9 +315,7 @@ class SnapshotCostBenchmark {
             serialized.put(guild.getId().toString(), GSON.toJson(guild, Guild.class));
         }
 
-        // getGuildsForSnapshot() allocates two lists: the one it returns, and the throwaway
-        // `new ArrayList<>(guilds.values())` it iterates. Measured together, because that is how
-        // the method runs. saveVaultCache is excluded; section 2 measures it.
+        // Measured together because that is how the method runs. saveVaultCache is excluded; section 2 has it.
         final int reps = 2000;
         copyRow("getGuildsForSnapshot()'s two ArrayLists (N=5000)", reps, () -> {
             final List<Guild> snapshot = new ArrayList<>(guilds.size());
@@ -362,11 +339,6 @@ class SnapshotCostBenchmark {
         note("~1000 ms of serialisation that sections 1 and 2 cost at the same scale.");
     }
 
-    /**
-     * @param label what is being copied
-     * @param reps  how many times to do it
-     * @param body  the copy
-     */
     private void copyRow(String label, int reps, Runnable body) {
         final com.sun.management.ThreadMXBean threads =
                 (com.sun.management.ThreadMXBean) java.lang.management.ManagementFactory.getThreadMXBean();
@@ -407,8 +379,8 @@ class SnapshotCostBenchmark {
         System.out.printf("%-46s %14s %14s%n", "workload", "allocated", "per guild");
         System.out.println(repeat('-', 78));
 
-        // The fixtures are built outside the measured region: building 1000 guilds allocates tens of
-        // thousands of UUIDs and members, and counting that as capture cost would be nonsense.
+        // Fixtures are built outside the measured region: counting their construction as capture cost would be
+        // nonsense.
         allocatedRow(threads, id, guilds(100, 15), "gson.toJson x 100 (guild, no vault bytes)", 100);
         allocatedRow(threads, id, guilds(1000, 15), "gson.toJson x 1000 (guild, no vault bytes)", 1000);
 
@@ -442,8 +414,8 @@ class SnapshotCostBenchmark {
     }
 
     /**
-     * Prints what the test JVM is actually holding. The CI runner is memory constrained and this
-     * file builds 5000 guilds with 15 members each, so the ceiling matters as much as the timings.
+     * Prints what the test JVM is holding. The CI runner is memory constrained and this file builds 5000
+     * guilds with 15 members each, so the ceiling matters as much as the timings.
      *
      * @param where a description of what has just been allocated
      */
@@ -481,9 +453,7 @@ private void allocatedRow(com.sun.management.ThreadMXBean threads, long id,
 
         writeConfigFiles(dataFolder);
 
-        // 5a. Real GuildHandler, real getGuildsForSnapshot, real saveVaultCache, real
-        // Serialization#serializeInventory, real capture(). The mocked Inventory has empty slots,
-        // which is the only population a test without a server can serialise honestly.
+        // The mocked Inventory has empty slots, the only population a test without a server can serialise.
         final int n = 1000;
         final List<Guild> guilds = guilds(n, 15);
         final GuildHandler handler = newHandler(dataFolder, guilds);
@@ -504,10 +474,9 @@ private void allocatedRow(com.sun.management.ThreadMXBean threads, long id,
                 fmt(snapshotChars / 1024.0));
         System.out.printf("%-58s %10.1f%%%n", "     share of one 50 ms tick", 100.0 * capturedMillis / TICK_MILLIS);
 
-        // 5b. What the same capture() costs when the vaults are populated. saveVaultCache cannot be
-        // fed real ItemStacks without a server, so the two effects are measured separately and
-        // added: the extra JsonConfiguration and json-smart work per populated vault, and the extra
-        // bytes the guild JSON has to carry because a real vault is ~9 KiB of string, not ~12 bytes.
+        // 5b. saveVaultCache cannot be fed real ItemStacks without a server, so the two effects are measured
+        // separately and added: the extra JsonConfiguration work per populated vault, and the extra bytes
+        // the guild JSON carries because a real vault is ~9 KiB of string, not ~12 bytes.
         final Object[] mixed = mixedVault(54);
         final int perRep = 3000;
         final double emptyVaultMillis = perVaultMillis(
@@ -570,15 +539,11 @@ private void allocatedRow(com.sun.management.ThreadMXBean threads, long id,
     }
 
     /**
-     * Measures what the per-tick budget actually costs, which is the number that matters now.
+     * Measures the worst case for a single tick of a budgeted capture: the budget plus however long the last
+     * guild overran it.
      *
-     * <p>Section 5 measures a whole capture at once. That is still the right number for shutdown and for
-     * migration, both of which do the whole thing in one pass, but the autosave no longer does: it spends
-     * {@link me.glaremasters.guilds.Guilds#CAPTURE_BUDGET_MILLIS} per tick and spreads the rest.
-     *
-     * <p>So this measures the worst case for a single tick, which is the budget plus however long the
-     * last guild overran it. The overshoot is bounded by one guild, because the budget is only checked
-     * after a guild has been serialised, and that is the guarantee the budgeted capture rests on.
+     * <p>The overshoot is bounded by one guild, because the budget is only checked after a guild has been
+     * serialised. That is the guarantee the budgeted capture rests on.
      */
     @Test
     @DisplayName("6. worst-case duration of a single tick of a budgeted capture")
@@ -591,8 +556,8 @@ private void allocatedRow(com.sun.management.ThreadMXBean threads, long id,
         final List<Guild> guilds = guilds(n, 15);
         final GuildHandler handler = newHandler(dataFolder, guilds);
 
-        // Warm up hard. The first pass pays for JIT compilation of Gson and the serialisation path, and
-        // a 5000-guild capture is enough work to be dominated by it if it is not compiled first.
+        // Warm up hard: a 5000-guild capture is enough work to be dominated by JIT compilation if it is not
+        // compiled first.
         for (int i = 0; i < 12; i++) {
             drainWithBudget(handler, BUDGET_MILLIS);
         }
@@ -619,8 +584,8 @@ private void allocatedRow(com.sun.management.ThreadMXBean threads, long id,
                 stepNanosList.add(stepNanos);
                 if (stepNanos > overshootNanos) {
                     overshootNanos = stepNanos;
-                    // Recorded, not printed. Printing inside the timed loop costs more than the work it
-                    // is measuring, which is what made an earlier version of this report a 12ms overshoot.
+                    // Recorded, not printed: printing inside the timed loop costs more than the work it is
+                    // measuring.
                     overshootGuilds = ticks;
                 }
                 if (done) {
@@ -653,19 +618,15 @@ private void allocatedRow(com.sun.management.ThreadMXBean threads, long id,
         }
         System.out.println();
 
-        // The worst tick is not budget leakage. The budget is only checked after a guild has been
-        // serialised, so the overshoot the design allows is one guild, about 0.4ms with full vaults. If
-        // the worst tick serialised only a handful of guilds yet took far longer than the budget, the
-        // excess is a JVM pause (a young collection, most likely) landing inside the step, not the
-        // capture doing more work than it was told to.
+        // A worst tick that serialised a handful of guilds is a GC pause inside the step, not the budget failing.
+        // A worst tick that serialised hundreds would be the deadline check not firing.
         note("The budget is " + BUDGET_MILLIS + "ms and the overshoot it allows is one guild, about 0.4ms");
         note("with full vaults. Check the guilds-serialised figure against the worst figure above: a worst");
         note("tick that serialised a handful of guilds is a GC pause inside the step, not the budget");
         note("failing. A worst tick that serialised hundreds would be the deadline check not firing.");
         System.out.println();
 
-        // Same measurement with the populated-vault cost added per guild, which is what a real server
-        // with stocked vaults sees. Derived from 5b's terms rather than re-derived here.
+        // Derived from 5b's terms rather than re-derived here.
         final Object[] mixed = mixedVault(54);
         final int perRep = 3000;
         final double emptyVaultMillis = perVaultMillis(
@@ -700,10 +661,6 @@ private void allocatedRow(com.sun.management.ThreadMXBean threads, long id,
     }
 
     /**
-     * A percentile of a sorted list of nanosecond timings.
-     *
-     * @param sorted sorted timings
-     * @param fraction the percentile, 0 to 1
      * @return the value at that percentile
      */
     private static long percentile(List<Long> sorted, double fraction) {
@@ -715,35 +672,26 @@ private void allocatedRow(com.sun.management.ThreadMXBean threads, long id,
     }
 
     /**
-     * How many extra guilds a single tick's budget buys, from the guilds-per-second figure the mean
-     * tick implies. Used to turn the per-guild populated-vault cost into an overshoot estimate.
+     * Turns the per-guild populated-vault cost into an overshoot estimate. Carrying the extra string into
+     * the guild JSON costs proportionally less than producing it, because Gson copies characters into a
+     * buffer it already sized.
      *
      * @return the ratio of a populated vault's string size to the guild JSON it sits in
      */
     private static double vaultStringCarryFactor() {
-        // A mixed 54-slot vault serialises to about 8.9 KiB, and the guild JSON around it is about
-        // 4.06 KiB. Carrying the extra string into the guild JSON costs proportionally less than
-        // producing it, because Gson is copying characters into a buffer it already sized.
         return 0.15;
     }
 
-    /**
-     * Runs a capture to completion with a per-tick budget, discarding the result.
-     *
-     * @param handler the handler to capture
-     * @param budgetMillis the per-tick budget
-     */
+    /** Runs a capture to completion with a per-tick budget, discarding the result. */
     private void drainWithBudget(GuildHandler handler, long budgetMillis) {
         final CaptureSession session = new CaptureSession(handler, null, null, null, null);
         while (!session.step(budgetMillis * 1_000_000L)) {
-            // Intentionally empty: this is the warm-up path, the result is not used.
+            // Intentionally empty: this is the warm-up path.
         }
         session.finish();
     }
 
     /**
-     * @param samples the timings of {@code reps} passes, each doing {@code perRep} serialisations
-     * @param perRep  how many serialisations one pass did
      * @return the median cost of one serialisation, in milliseconds
      */
     private static double perVaultMillis(long[] samples, int perRep) {
@@ -751,9 +699,8 @@ private void allocatedRow(com.sun.management.ThreadMXBean threads, long id,
     }
 
     /**
-     * Builds a real {@link GuildHandler}. Its constructor calls {@code loadRoles}, {@code loadTiers}
-     * and {@code loadGuilds}, which need a data folder and a database, so all three are satisfied
-     * with real config files and a stubbed adapter rather than by mocking the handler itself.
+     * Builds a real {@link GuildHandler}. Its constructor needs a data folder and a database, so both are
+     * satisfied with real config files and a stubbed adapter rather than by mocking the handler itself.
      */
     private GuildHandler newHandler(Path dataFolder, List<Guild> guilds) throws IOException {
         final Guilds plugin = Mockito.mock(Guilds.class);
@@ -769,12 +716,9 @@ private void allocatedRow(com.sun.management.ThreadMXBean threads, long id,
 
         final GuildHandler handler = new GuildHandler(plugin, null);
 
-        // addGuild -> createVaultCache would try to deserialize whatever strings the guild carries,
-        // and Serialization#deserializeInventory calls Bukkit.createInventory, which needs a server.
-        // So the guilds enter with no vault strings and the cache is filled with the inventories
-        // that deserialization would have produced. Everything downstream of that -- the cache
-        // lookup in saveVaultCache, Serialization#serializeInventory, guild.setVaults, and the Gson
-        // pass in capture() -- is the real code.
+        // The guilds enter with no vault strings, because Serialization#deserializeInventory calls
+        // Bukkit.createInventory, and the cache is filled with the inventories deserialization would have
+        // produced. Everything downstream is the real code.
         for (Guild guild : guilds) {
             guild.setVaults(new ArrayList<String>());
             handler.addGuild(guild);
@@ -789,9 +733,8 @@ private void allocatedRow(com.sun.management.ThreadMXBean threads, long id,
     }
 
     /**
-     * One real {@code capture()} with only the guilds populated. Arenas, challenges and cooldowns
-     * are null handlers, so capture() skips them; their cost is a rounding error next to guilds and
-     * a guild is the only collection that can be measured without a database.
+     * One real {@code capture()} with only the guilds populated. Arenas, challenges and cooldowns are null
+     * handlers, so capture() skips them, and a guild is the only collection measurable without a database.
      */
     private PluginSnapshot capture(GuildHandler handler) {
         final Guilds plugin = Mockito.mock(Guilds.class);
@@ -801,8 +744,8 @@ private void allocatedRow(com.sun.management.ThreadMXBean threads, long id,
     }
 
     /**
-     * The plugin's own roles.yml and tiers.yml are shipped inside the jar, not on disk, so a
-     * GuildHandler needs both to exist before its constructor returns.
+     * Writes the roles.yml and tiers.yml a {@link GuildHandler} needs before its constructor returns. They
+     * are shipped inside the jar, not on disk.
      */
     private void writeConfigFiles(Path dataFolder) throws IOException {
         final File roles = new File(dataFolder.toFile(), "roles.yml");
@@ -835,15 +778,12 @@ private void allocatedRow(com.sun.management.ThreadMXBean threads, long id,
     // ---------------------------------------------------------------------------------------
 
     /**
-     * One guild as {@code GuildHandler} leaves it after {@code loadGuilds}: a name and prefix with
-     * colour codes, a master, a home, a tier, a score, a balance, members on the shipped role
-     * hierarchy, some allies and pending allies, an invite code or two, three vault slots, and a
-     * creation date.
+     * One guild as {@code GuildHandler} leaves it after {@code loadGuilds}.
      *
      * <p>{@code guildSkull} is the one persisted field left null, because {@link
-     * me.glaremasters.guilds.guild.GuildSkull}'s constructors build an {@code ItemStack} through
-     * XSeries and cannot run without a server. It is a single base64 string in production, so
-     * leaving it out makes this fixture slightly lighter than the real thing.
+     * me.glaremasters.guilds.guild.GuildSkull}'s constructors build an {@code ItemStack} through XSeries and
+     * cannot run without a server. It is a single base64 string in production, so leaving it out makes this
+     * fixture slightly lighter than the real thing.
      */
     private static List<Guild> guilds(int count, int membersEach) {
         final List<Guild> guilds = new ArrayList<>(count);
@@ -911,10 +851,8 @@ private void allocatedRow(com.sun.management.ThreadMXBean threads, long id,
     }
 
     /**
-     * A 54-slot vault with no Bukkit calls: {@code Inventory#getSize()} and
-     * {@code Inventory#getContents()} are the only two methods
-     * {@link Serialization#serializeInventory(Inventory)} uses, and both are stubbable on a mock
-     * because {@code Inventory} is an interface.
+     * A 54-slot vault with no Bukkit calls: {@code getSize()} and {@code getContents()} are the only two
+     * methods {@link Serialization#serializeInventory(Inventory)} uses, and both are stubbable on a mock.
      */
     private static Inventory mockInventory(org.bukkit.inventory.ItemStack[] contents) {
         final Inventory inventory = Mockito.mock(Inventory.class);
@@ -924,16 +862,13 @@ private void allocatedRow(com.sun.management.ThreadMXBean threads, long id,
     }
 
     /**
-     * The all-empty {@code ItemStack[]} the empty-vault measurement needs. Built once rather than
-     * per rep, because allocating it is not what is being measured.
+     * The all-empty {@code ItemStack[]} the empty-vault measurement needs, built once because allocating it
+     * is not what is being measured.
      */
     private static final org.bukkit.inventory.ItemStack[] EMPTY_ITEMSTACKS =
             new org.bukkit.inventory.ItemStack[54];
 
-    /**
-     * The same empty array behind a mocked {@code Inventory}, built once so it cannot be built
-     * inside a measured region.
-     */
+    /** The same empty array behind a mocked {@code Inventory}, built once so it cannot land in a measured region. */
     private static final Inventory EMPTY_ITEMSTACKS_INVENTORY = mockInventory(EMPTY_ITEMSTACKS);
 
     private static Object[] emptySlots(int size) {
@@ -976,12 +911,12 @@ private void allocatedRow(com.sun.management.ThreadMXBean threads, long id,
      * with the slot type widened from {@code ItemStack} to {@code Object}.
      *
      * <p>That widening is the whole point and the whole compromise. {@code JsonConfiguration},
-     * {@code createSection}, {@code saveToString}, {@code SerializationHelper.serialize} and the
-     * json-smart writer are the exact production objects and run the exact production code, and the
-     * slots must be {@code ConfigurationSerializable} rather than {@code Map} because
-     * {@code MemorySection#createSection} eagerly turns a {@code Map} into a nested section, which
-     * is a different path from the one a real slot takes. Only {@code ItemStack#serialize()} itself
-     * is substituted, because it calls {@code Bukkit.getItemFactory()} and there is no server.
+     * {@code createSection}, {@code saveToString}, {@code SerializationHelper.serialize} and the json-smart
+     * writer are the production objects running the production code, and the slots must be
+     * {@code ConfigurationSerializable} rather than {@code Map} because {@code MemorySection#createSection}
+     * eagerly turns a {@code Map} into a nested section, which is a different path from the one a real slot
+     * takes. Only {@code ItemStack#serialize()} is substituted, because it calls
+     * {@code Bukkit.getItemFactory()} and there is no server.
      */
     private static String serializeVaultSurrogate(int size, Object[] items) {
         final JsonConfiguration json = new JsonConfiguration();
@@ -998,17 +933,14 @@ private void allocatedRow(com.sun.management.ThreadMXBean threads, long id,
     /**
      * Stands in for one {@code ItemStack} inside a vault.
      *
-     * <p>{@code SerializationHelper} reaches a slot through its {@code ConfigurationSerializable}
-     * branch, exactly as it does for a real slot, and calls {@code serialize()}. This returns the
-     * map shape CraftBukkit returns from {@code ItemStack#serialize()}: the {@code ==} alias, the
-     * data version, the type, the amount, and a meta block. For the enchanted kind the meta also
-     * carries an enchantment store and a base64 NBT payload, because those are what make a real
-     * enchanted item expensive to serialise.
+     * <p>{@code SerializationHelper} reaches a slot through its {@code ConfigurationSerializable} branch,
+     * exactly as it does for a real slot, and calls {@code serialize()}. For the enchanted kind the meta
+     * carries an enchantment store and a base64 NBT payload, because those are what make a real enchanted
+     * item expensive to serialise.
      *
-     * <p>What this does <em>not</em> measure: {@code CraftItemStack#getItemMeta} building the meta
-     * object in the first place, and {@code CraftMetaItem#serialize} reading the live NBT compound
-     * off the stack. Both live behind the server and neither can be reached here, so the figure in
-     * section 2 is a floor, not a total. The alias is registered under the real
+     * <p>What this does <em>not</em> measure: {@code CraftItemStack#getItemMeta} building the meta object
+     * and {@code CraftMetaItem#serialize} reading the live NBT compound off the stack. Both live behind the
+     * server, so the figure in section 2 is a floor, not a total. The alias is registered under the real
      * {@code "org.bukkit.inventory.ItemStack"} string so the JSON is the right shape and length.
      */
     static final class VaultItemSurrogate implements ConfigurationSerializable {
@@ -1031,8 +963,8 @@ private void allocatedRow(com.sun.management.ThreadMXBean threads, long id,
         private static final long DATA_VERSION = 1_636_051_645L;
 
         static {
-            // One registration for the whole JVM. The alias is the real ItemStack alias so the JSON
-            // the writer emits has the production shape and length.
+            // One registration for the whole JVM, under the real ItemStack alias so the JSON the writer emits has the
+            // production shape and length.
             ConfigurationSerialization.registerClass(VaultItemSurrogate.class, "org.bukkit.inventory.ItemStack");
         }
 
@@ -1160,9 +1092,8 @@ private void allocatedRow(com.sun.management.ThreadMXBean threads, long id,
      */
     private static long[] measure(int reps, Runnable body) {
         final long[] samples = new long[reps];
-        // One collection before the loop, none inside it. A System.gc() per rep looks tidier but it
-        // leaves the heap cold for the first few dozen iterations of the pass that follows, which on
-        // a short per-rep workload dominates the median.
+        // One collection before the loop, none inside it: a System.gc() per rep leaves the heap cold for the first
+        // few dozen iterations of the pass that follows, which dominates the median on a short workload.
         System.gc();
         for (int i = 0; i < reps; i++) {
             final long start = System.nanoTime();
@@ -1181,10 +1112,8 @@ private void allocatedRow(com.sun.management.ThreadMXBean threads, long id,
     /**
      * Holds the last copied collection so it genuinely escapes.
      *
-     * <p>A sink that does nothing measurable is not a sink: the JIT inlines it, sees the copy has
-     * no observer, and deletes the loop that filled the array. An earlier version of this file
-     * reported 70ns to allocate and fill two 5000-element ArrayLists, which is roughly 340 GB/s and
-     * therefore a measurement of nothing at all. Even with this, a 5000-reference copy is fast
+     * <p>A sink that does nothing measurable is not a sink: the JIT inlines it, sees the copy has no
+     * observer, and deletes the loop that filled the array. Even with this, a 5000-reference copy is fast
      * enough that section 3 trusts its allocation column over its time column.
      */
     private static volatile Object escape;

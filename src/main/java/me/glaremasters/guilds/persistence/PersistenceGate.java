@@ -30,19 +30,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * The single point of serialisation for everything that writes plugin data to storage.
  *
- * <p>Three writers exist: the autosave task, the console migration command, and the shutdown
- * flush. They used to be independent, and two of them could be inside the same write at once:
- * {@code scheduleAsyncRepeatingTask} re-arms its timer without waiting for the running copy to
- * finish, and the {@code isMigrating} flag that migration set was a check-then-act on a plain
- * {@code boolean}, so an autosave that had already passed the check kept writing to the adapter
- * that migration was closing underneath it.
- *
- * <p>Ownership is a permit rather than a lock. A {@link Semaphore} hands out a permit that any
- * thread may return, while {@link java.util.concurrent.locks.ReentrantLock} can only be unlocked by
- * the thread that took it. That distinction matters here: a write is acquired on one thread and
- * released on another (the autosave acquires before snapshotting on the main thread and releases at
- * the end of the async worker), and a migration holds its permit across a hop back to the main
- * thread to swap the backend. Neither is expressible with a thread-owned lock.
+ * <p>Three writers exist: the autosave task, the console migration command, and the shutdown flush.
+ * A {@link Semaphore} permit rather than a {@link java.util.concurrent.locks.ReentrantLock}, because
+ * a lock can only be unlocked by the thread that took it, and here a write is acquired on one thread
+ * and released on another. A migration also holds its permit across a hop back to the main thread to
+ * swap the backend. Neither is expressible with a thread-owned lock.
  *
  * <p>Every method here is safe to call from any thread.
  */
@@ -56,10 +48,10 @@ public final class PersistenceGate {
     /**
      * Whether a backend migration is in progress.
      *
-     * <p>This replaces {@code GuildHandler#migrating}, which was a plain {@code boolean} written on
-     * a TaskChain thread and read both by the autosave worker and by the ACF command condition. With
-     * no happens-before edge between them, a reader was permitted to observe a stale value for an
-     * unbounded time, which is the opposite of what a "don't write while I migrate" flag needs.
+     * <p>Atomic rather than a plain {@code boolean} because this replaces {@code GuildHandler#migrating},
+     * which was written on a TaskChain thread and read both by the autosave worker and by the ACF
+     * command condition. With no happens-before edge between them, a reader could observe a stale value
+     * for an unbounded time, which is the opposite of what a "don't write while I migrate" flag needs.
      */
     private final AtomicBoolean migrating = new AtomicBoolean(false);
 
@@ -103,19 +95,16 @@ public final class PersistenceGate {
     /**
      * Releases the migration flag.
      *
-     * <p>Must be called from a {@code finally} block. Leaving it set is not a cosmetic failure: the
-     * autosave skips while it is true, so a stuck flag silently stops all periodic saving for the
-     * rest of the session, and every command carrying the {@code NotMigrating} condition is refused.
+     * <p>Must be called from a {@code finally} block. Leaving it set is not cosmetic: the autosave skips
+     * while it is true, so a stuck flag silently stops all periodic saving for the rest of the session.
      */
     public void endMigration() {
         migrating.set(false);
     }
 
     /**
-     * Marks the plugin as shutting down.
-     *
-     * <p>Called once from {@code onDisable}, before the final flush, so an in-flight migration stops
-     * rather than swapping a backend behind a closing connection pool.
+     * Marks the plugin as shutting down, so an in-flight migration stops rather than swapping a backend
+     * behind a closing connection pool.
      */
     public void beginShutdown() {
         shuttingDown.set(true);

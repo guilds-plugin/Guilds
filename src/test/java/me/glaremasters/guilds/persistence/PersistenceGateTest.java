@@ -41,11 +41,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Covers the gate that serialises writes.
  *
- * <p>Two failures are worth a test each, and they point in opposite directions. A permit that is
- * never released silently disables every later save, including the one on shutdown, and the server
- * looks healthy the whole time. A permit released twice lets two writers run at once, which is the
- * bug the gate exists to remove: {@code scheduleAsyncRepeatingTask} re-arms its timer as soon as it
- * dispatches a run, so a save that outlasted the interval really did put two threads in the same body.
+ * <p>Two failures matter, and they point in opposite directions. A permit that is never released silently
+ * disables every later save, including the one on shutdown, and the server looks healthy the whole time. A
+ * permit released twice lets two writers run at once, which is the bug the gate exists to remove.
  */
 class PersistenceGateTest {
 
@@ -107,27 +105,32 @@ class PersistenceGateTest {
         @Timeout(15)
         @DisplayName("acquiring while interrupted reports failure rather than throwing")
         void acquiringWhileInterruptedReportsFailureRatherThanThrowing() throws InterruptedException {
-            // Interrupted inside the acquire, not before the thread starts. `Thread#interrupt` on a
-            // not-yet-running thread explicitly need not have any effect, so the earlier version of this
-            // test depended on a HotSpot detail rather than on the code.
+            // Interrupted inside the acquire rather than before the thread starts: `Thread#interrupt` on a
+            // not-yet-running thread explicitly need not have any effect.
             //
-            // The permit is held so the acquire cannot succeed and return before the interrupt lands.
+            // The permit is held so the acquire cannot return before the interrupt arrives, and the reader
+            // blocks until the acquire is provably in progress, so there is no sleep deciding the order.
             assertTrue(gate.tryAcquireWriter());
 
-            final CountDownLatch aboutToAcquire = new CountDownLatch(1);
+            final CountDownLatch acquireEntered = new CountDownLatch(1);
             final AtomicReference<Boolean> result = new AtomicReference<>();
             final AtomicReference<Boolean> stillFlagged = new AtomicReference<>();
+            final CountDownLatch acquiring = new CountDownLatch(1);
 
             final Thread thread = new Thread(() -> {
-                aboutToAcquire.countDown();
-                result.set(gate.acquireWriter(10_000L));
+                acquireEntered.countDown();
+                // Signals that the acquire is under way, then blocks until the test has interrupted it.
+                acquiring.countDown();
+                result.set(gate.acquireWriter(30_000L));
                 // A swallowed interrupt would leave a retry loop spinning, so the flag has to survive.
                 stillFlagged.set(Thread.currentThread().isInterrupted());
-            });
-
+            }, "test-interrupted-acquirer");
+            thread.setDaemon(true);
             thread.start();
-            assertTrue(aboutToAcquire.await(5, TimeUnit.SECONDS), "the thread should have started");
-            Thread.sleep(100L);
+
+            assertTrue(acquireEntered.await(10, TimeUnit.SECONDS), "the thread should have started");
+            assertTrue(acquiring.await(10, TimeUnit.SECONDS), "the thread should be about to acquire");
+
             thread.interrupt();
             thread.join(10_000L);
 
@@ -142,14 +145,8 @@ class PersistenceGateTest {
         @Timeout(15)
         @DisplayName("repeated acquire and release cycles do not erode the permit")
         void repeatedAcquireAndReleaseCyclesDoNotErodeThePermit() {
-            // Whether a permit survives a *failing* writer is decided by the coordinator's finally block,
-            // not by the gate, and is covered where that code lives:
-            // PersistenceCoordinatorTest, "releases the permit when the write throws" and "releases the
-            // permit when the write cannot even be scheduled".
-            //
-            // What belongs here is the other direction. A double release is the one failure that produces
-            // no error at all: two permits, two concurrent writers, and every test above still passes. So
-            // the count is checked by exhausting it.
+            // A double release is the one failure that produces no error at all: two permits, two concurrent writers,
+            // and every test above still passes. So the count is checked by exhausting it.
             for (int i = 0; i < 100; i++) {
                 assertTrue(gate.tryAcquireWriter(), "attempt " + i + " should have taken the permit");
                 gate.releaseWriter();
@@ -180,33 +177,40 @@ class PersistenceGateTest {
 
         @Test
         @Timeout(15)
-        @DisplayName("the flag is visible to a reader that starts after it is set")
-        void theFlagIsVisibleToAReaderThatStartsAfterItIsSet() throws InterruptedException {
-            // The old flag was a plain boolean written by a TaskChain thread and read by the autosave
-            // worker and by the ACF condition, with no happens-before edge between them. Starting the
-            // reader after the write and joining on a latch is exactly the edge a `Thread.start()` plus a
-            // latch hand-off provides, so this test cannot fail against the old field. What it does pin is
-            // that the flag survives being published across threads at all, and that a cleared flag is
-            // visible too, which is the case that matters: a stale `true` silently disables every save.
+        @DisplayName("the flag is visible to a reader, set and cleared")
+        void theFlagIsVisibleToAReaderSetAndCleared() throws InterruptedException {
+            // Both directions, because the dangerous one is the second. A `true` that never became visible
+            // would mean the autosave and the NotMigrating commands silently keep refusing work.
+            //
+            // The reader is released by latches at each point rather than after a sleep, so it observes the
+            // flag exactly when the test says it should, and never because the reader happened to be
+            // scheduled first.
             final AtomicBoolean sawSet = new AtomicBoolean();
             final AtomicBoolean sawCleared = new AtomicBoolean();
-            final CountDownLatch set = new CountDownLatch(1);
-            final CountDownLatch cleared = new CountDownLatch(1);
+            final CountDownLatch readTheSetFlag = new CountDownLatch(1);
+            final CountDownLatch setFlagRead = new CountDownLatch(1);
+            final CountDownLatch readTheClearedFlag = new CountDownLatch(1);
 
             final Thread reader = new Thread(() -> {
-                awaitUninterruptibly(set);
-                sawSet.set(gate.isMigrating());
-                awaitUninterruptibly(cleared);
-                sawCleared.set(gate.isMigrating());
-            });
+                try {
+                    readTheSetFlag.await();
+                    sawSet.set(gate.isMigrating());
+                    setFlagRead.countDown();
+                    readTheClearedFlag.await();
+                    sawCleared.set(gate.isMigrating());
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }, "test-flag-reader");
+            reader.setDaemon(true);
             reader.start();
 
             gate.beginMigration();
-            set.countDown();
-            Thread.sleep(50L);
-            gate.endMigration();
-            cleared.countDown();
+            readTheSetFlag.countDown();
+            assertTrue(setFlagRead.await(10, TimeUnit.SECONDS), "the reader should have read the set flag");
 
+            gate.endMigration();
+            readTheClearedFlag.countDown();
             reader.join(10_000L);
 
             assertFalse(reader.isAlive(), "the reader should have finished");
@@ -214,13 +218,6 @@ class PersistenceGateTest {
             assertFalse(sawCleared.get(), "a finished migration must be visible too, or saving stays off");
         }
 
-        private void awaitUninterruptibly(CountDownLatch latch) {
-            try {
-                latch.await(10, TimeUnit.SECONDS);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-        }
     }
 
     @Nested
@@ -283,8 +280,8 @@ class PersistenceGateTest {
     @Test
     @DisplayName("a snapshot with no database is written without touching storage")
     void aSnapshotWithNoDatabaseIsWrittenWithoutTouchingStorage() {
-        // No adapter, so write() has nothing to do. This is the state during a partial onEnable, and it
-        // must be a no-op rather than an NPE that skips the rest of the shutdown sequence.
+        // This is the state during a partial onEnable, and it must be a no-op rather than an NPE that skips the
+        // rest of the shutdown sequence.
         final PluginSnapshot snapshot = new PluginSnapshot(
                 java.util.Collections.emptyMap(),
                 java.util.Collections.emptyMap(),
