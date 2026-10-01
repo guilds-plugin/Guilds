@@ -87,7 +87,10 @@ class MembersGUI(private val guilds: Guilds, private val settingsManager: Settin
      * @param guild the guild of the player
      */
     private fun addItems(gui: PaginatedGui, guild: Guild, player: Player) {
-        val members = guild.members
+        // Sort a copy. Guild#getMembers() hands back the live list, and that list is what gets
+        // serialised on save, so sorting it in place made the persisted member order depend on who
+        // happened to open this GUI.
+        val members = guild.members.toMutableList()
 
         when (settingsManager.getProperty(GuildInfoMemberSettings.SORT_ORDER).uppercase(Locale.getDefault())) {
             "ROLE" -> members.sortWith(Comparator.comparingInt { g: GuildMember -> g.role.level })

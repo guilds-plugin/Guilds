@@ -59,24 +59,37 @@ internal class CommandPromote : BaseCommand() {
     fun promote(player: Player, @Conditions("perm:perm=PROMOTE") guild: Guild, @Values("@members") @Single target: String) {
         val user = Bukkit.getOfflinePlayer(target)
 
-        if (user.name.equals(player.name)) {
+        // Compare by UUID. OfflinePlayer#getName() is nullable and follows the player's current
+        // name, so comparing names let a renamed player slip past the self-check.
+        if (RoleUtils.isSamePlayer(user, player)) {
             throw ExpectationNotMet(Messages.PROMOTE__CANT_PROMOTE)
         }
 
-        if (!RoleUtils.inGuild(guild, user) && !RoleUtils.checkPromote(guild, user, player)) {
-            throw ExpectationNotMet(Messages.ERROR__PLAYER_NOT_IN_GUILD, "{player}", target)
+        val targetMember = guild.getMember(user.uniqueId)
+            ?: throw ExpectationNotMet(Messages.ERROR__PLAYER_NOT_IN_GUILD, "{player}", target)
+
+        if (!RoleUtils.checkPromote(guild, user, player)) {
+            throw ExpectationNotMet(Messages.PROMOTE__CANT_PROMOTE)
         }
 
+        // Promoting an officer would create a second guild master, which is what transfer is for.
         if (RoleUtils.isOfficer(guild, user)) {
             throw ExpectationNotMet(Messages.PROMOTE__CANT_PROMOTE)
         }
 
-        val asMember = guild.getMember(user.uniqueId)
+        // Refuse before mutating anything: there is no role above the top of the hierarchy, and
+        // writing that missing role leaves the member with a null role.
+        if (RoleUtils.getNextHigherRole(guildHandler, targetMember) == null) {
+            throw ExpectationNotMet(Messages.PROMOTE__CANT_PROMOTE)
+        }
 
-        RoleUtils.promote(guildHandler, guild, user)
+        val oldRole = targetMember.role.name
 
-        val oldRole = RoleUtils.getPrePromotedRoleName(guildHandler, asMember)
-        val newRole = RoleUtils.getCurrentRoleName(asMember)
+        if (!RoleUtils.promote(guildHandler, guild, user)) {
+            throw ExpectationNotMet(Messages.PROMOTE__CANT_PROMOTE)
+        }
+
+        val newRole = targetMember.role.name
 
         currentCommandIssuer.sendInfo(Messages.PROMOTE__PROMOTE_SUCCESSFUL, "{player}", target, "{old}", oldRole, "{new}", newRole)
 

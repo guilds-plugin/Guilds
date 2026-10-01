@@ -68,11 +68,32 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.codemc.worldguardwrapper.WorldGuardWrapper;
 import org.bxteam.quark.bukkit.BukkitLibraryManager;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.util.stream.Stream;
 
 public final class Guilds extends JavaPlugin {
+
+    /** Ticks in one Minecraft minute, as used by the autosave period. */
+    private static final long TICKS_PER_MINUTE = 20L * 60L;
+
+    /** Delay before the first autosave runs, in ticks (one minute). */
+    private static final long SAVE_TASK_INITIAL_DELAY_TICKS = TICKS_PER_MINUTE;
+
+    /** Smallest autosave period the scheduler will accept, in whole minutes. */
+    private static final int MINIMUM_SAVE_INTERVAL_MINUTES = 1;
+
+    /**
+     * A save routine that is allowed to throw {@link IOException}.
+     *
+     * <p>{@link java.util.function.Consumer} cannot express a checked exception, so the save
+     * paths need their own functional interface to be passed around as a value.
+     */
+    @FunctionalInterface
+    private interface SaveRoutine {
+        void run() throws IOException;
+    }
 
     private static GuildsAPI api;
     private static Gson gson;
@@ -109,41 +130,72 @@ public final class Guilds extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        if (checkVault() && economy != null) {
-            try {
-                if (guildHandler != null) {
-                    guildHandler.saveData();
-                }
-                if (cooldownHandler != null) {
-                    cooldownHandler.saveCooldowns();
-                }
-                if (arenaHandler != null) {
-                    arenaHandler.saveArenas();
-                }
-            } catch (IOException e) {
-                LoggingUtils.severe("An error occurred while saving plugin data during shutdown.", e);
-            }
+        /*
+         * Persist first, and unconditionally. This sat behind a `checkVault() && economy != null`
+         * guard, so a server that lost its Vault economy provider saved nothing at all.
+         */
+        savePluginData();
+
+        /*
+         * Every field below can legitimately be null: onEnable() bails out early when Vault, an
+         * economy provider, a permissions provider, or the database is missing. Dereferencing them
+         * unconditionally threw a NullPointerException that buried the original startup error and
+         * skipped the database and Adventure cleanup. See #777.
+         */
+        if (guildHandler != null) {
             guildHandler.chatLogout();
             guildHandler.getLookupCache().clear();
+        }
+
+        if (commandManager != null) {
             commandManager.unregisterCommands();
-            if (guildHandler != null) {
-                guildHandler.chatLogout();
-                guildHandler.getLookupCache().clear();
-            }
-            if (commandManager != null) {
-                commandManager.unregisterCommands();
-            }
         }
 
         if (database != null) {
             LoggingUtils.info("Shutting down database...");
-            database.close();
+            try {
+                database.close();
+            } catch (RuntimeException e) {
+                LoggingUtils.severe("An error occurred while closing the database during shutdown.", e);
+            }
             LoggingUtils.info("Database has been shut down.");
         }
 
         if (adventure != null) {
             adventure.close();
             adventure = null;
+        }
+    }
+
+    /**
+     * Flushes every data handler to its storage backend.
+     *
+     * <p>Failures are logged rather than propagated, so a save error during {@link #onDisable()}
+     * cannot mask whatever failure brought the plugin down. Each handler is saved independently, so
+     * one bad record does not cost the server owner every other kind of data.
+     */
+    private void savePluginData() {
+        saveData(guildHandler, guildHandler == null ? null : guildHandler::saveData, "guild");
+        saveData(cooldownHandler, cooldownHandler == null ? null : cooldownHandler::saveCooldowns, "cooldown");
+        saveData(arenaHandler, arenaHandler == null ? null : arenaHandler::saveArenas, "arena");
+    }
+
+    /**
+     * Runs a single save routine, logging (never rethrowing) whatever it throws.
+     *
+     * @param handler the handler being saved, may be null when startup never got that far
+     * @param save    the save routine
+     * @param label   short name of the data type, used in log messages
+     */
+    private void saveData(@Nullable Object handler, @Nullable SaveRoutine save, String label) {
+        if (handler == null || save == null) {
+            return;
+        }
+
+        try {
+            save.run();
+        } catch (IOException | RuntimeException e) {
+            LoggingUtils.severe("An error occurred while saving " + label + " data.", e);
         }
     }
 
@@ -296,19 +348,32 @@ public final class Guilds extends JavaPlugin {
                 //cooldownHandler.saveCooldowns(); We are going to save on shutdown only, no need for runtime saving
                 arenaHandler.saveArenas();
                 challengeHandler.saveData();
-            } catch (IOException e) {
+            } catch (IOException | RuntimeException e) {
                 LoggingUtils.severe("An error occurred while saving plugin data during the scheduled save task.", e);
             }
-        }, 20 * 60, (20 * 60) * settingsHandler.getMainConf().getProperty(StorageSettings.SAVE_INTERVAL));
+        }, SAVE_TASK_INITIAL_DELAY_TICKS, resolveSaveIntervalTicks());
     }
 
     /**
-     * Check if Vault is running
+     * Resolves the configured autosave interval into a period Bukkit will accept.
      *
-     * @return true or false
+     * <p>{@code scheduleAsyncRepeatingTask} rejects a non-positive period, and {@code 0} is a
+     * natural thing to write to mean "only on shutdown". A large interval also overflows the
+     * {@code int} tick count. Both used to escape {@link #onEnable()} as a stack trace that never
+     * named the config key.
+     *
+     * @return the autosave period in ticks, always positive
      */
-    private boolean checkVault() {
-        return Bukkit.getPluginManager().isPluginEnabled("Vault");
+    private long resolveSaveIntervalTicks() {
+        final int configuredMinutes = settingsHandler.getMainConf().getProperty(StorageSettings.SAVE_INTERVAL);
+
+        if (configuredMinutes < MINIMUM_SAVE_INTERVAL_MINUTES) {
+            LoggingUtils.warn("storage.save-interval must be at least " + MINIMUM_SAVE_INTERVAL_MINUTES
+                    + " (found " + configuredMinutes + "). Falling back to " + MINIMUM_SAVE_INTERVAL_MINUTES
+                    + ". Data is still saved when the server stops.");
+        }
+
+        return Math.max((long) configuredMinutes, MINIMUM_SAVE_INTERVAL_MINUTES) * TICKS_PER_MINUTE;
     }
 
     //todo what about a hook package with a hook manager for these 3 listeners and PlaceholderAPI?

@@ -201,6 +201,9 @@ internal class CommandWar : BaseCommand() {
 
         var side = ""
 
+        // The side reported to GuildWarPlayerJoinEvent has to match the roster the player was just
+        // added to. These were previously swapped, so third-party listeners were told the wrong
+        // team for every single join.
         if (challenge.defender == guild) {
             if (challenge.defendPlayers.contains(player.uniqueId)) {
                 throw ExpectationNotMet(Messages.WAR__ALREADY_JOINED)
@@ -209,7 +212,7 @@ internal class CommandWar : BaseCommand() {
                 throw ExpectationNotMet(Messages.WAR__ALREADY_AT_MAX)
             }
             challenge.defendPlayers.add(player.uniqueId)
-            side = "challenger"
+            side = "defender"
         } else {
             if (challenge.challengePlayers.contains(player.uniqueId)) {
                 throw ExpectationNotMet(Messages.WAR__ALREADY_JOINED)
@@ -218,7 +221,7 @@ internal class CommandWar : BaseCommand() {
                 throw ExpectationNotMet(Messages.WAR__ALREADY_AT_MAX)
             }
             challenge.challengePlayers.add(player.uniqueId)
-            side = "defender"
+            side = "challenger"
         }
 
         val event = GuildWarPlayerJoinEvent(challenge.challenger, challenge.defender, player, side)

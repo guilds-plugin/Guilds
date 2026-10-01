@@ -27,8 +27,10 @@ import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.ACFBukkitUtil;
 import me.glaremasters.guilds.configuration.sections.GuildSettings;
 import me.glaremasters.guilds.guild.Guild;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 /**
@@ -83,8 +85,24 @@ public final class GuildInputValidator {
      * @return true when an existing guild has the same visible name
      */
     public static boolean isNameTaken(String input, Collection<Guild> guilds) {
+        return isNameTaken(input, guilds, null);
+    }
+
+    /**
+     * Check whether a guild name is already used by a guild other than the one being renamed.
+     *
+     * <p>A rename has to compare against every guild <em>except</em> its own, otherwise a guild can
+     * never keep or return to a name it already has.
+     *
+     * @param input the raw proposed guild name
+     * @param guilds the existing guilds
+     * @param ignoredGuildId the guild to leave out of the comparison, or null to compare against all
+     * @return true when a different guild already has the same visible name
+     */
+    public static boolean isNameTaken(String input, Collection<Guild> guilds, @Nullable UUID ignoredGuildId) {
         final String normalizedInput = normalizeName(input);
         return guilds.stream()
+                .filter(guild -> ignoredGuildId == null || !ignoredGuildId.equals(guild.getId()))
                 .map(Guild::getName)
                 .map(GuildInputValidator::normalizeName)
                 .anyMatch(normalizedInput::equalsIgnoreCase);

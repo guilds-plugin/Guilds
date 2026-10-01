@@ -157,6 +157,9 @@ internal class CommandConsole : BaseCommand() {
                     }
                 }
                 currentCommandIssuer.sendInfo(Messages.UNCLAIM__ALL_SUCCESS)
+                // Without this the action stays registered, so every later /guilds confirm silently
+                // re-runs a destructive unclaim-all.
+                actionHandler.removeAction(issuer.getIssuer())
             }
 
             override fun decline() {
