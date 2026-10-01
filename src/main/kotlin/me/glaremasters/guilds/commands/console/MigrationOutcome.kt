@@ -48,6 +48,8 @@ internal class MigrationOutcome {
     private var failure: Messages? = null
     private var permitHeld = false
     private var published = false
+    private var catchUpSnapshot: PluginSnapshot? = null
+    private var persistedGuildCount = 0
 
     /**
      * Opens the destination and writes the snapshot into it. Runs on a worker.
@@ -97,8 +99,7 @@ internal class MigrationOutcome {
             return
         }
 
-        // Refused before the pool opens. See `DatabaseAdapter#sharesStorageWith` for what counts as the
-        // same tables.
+        // Refused before the pool opens. See `DatabaseAdapter#sharesStorageWith`.
         if (guilds.database.sharesStorageWith(backend)) {
             LoggingUtils.severe(
                 "Migration from ${guilds.database.backend.backendName} to ${backend.backendName} was refused:" +
@@ -157,34 +158,29 @@ internal class MigrationOutcome {
     }
 
     /**
-     * Reconciles the destination and publishes it, and releases the write permit. Runs on the main thread.
+     * Reconciles the destination and publishes it. Runs on the main thread.
      *
-     * <p>The main thread is the consistency boundary rather than a convention. Guild disbanding happens
-     * there, so reconciling and publishing adjacently on that thread leaves no instant at which the
-     * destination can be brought into line and then have a guild removed from under it. A worker would
-     * leave that window open, and `GuildAdapter` has no delete pass, so a guild caught in it would be
-     * resurrected in the destination permanently.
+     * <p>Main thread, and adjacent to nothing else, so no disband can land between reconciling the
+     * destination and publishing it. See `PersistenceCoordinator#reconcileAndPublish`.
      *
-     * @param coordinator    used for the reconciliation
-     * @param snapshot       the state the destination was written from
-     * @param gate           the shared gate
-     * @param issuer         told what happened
-     * @param backend        the backend being migrated to, for the log
-     * @param guildCount     reported to the operator on success
+     * <p>Says nothing to the operator, and keeps holding the write permit. The destination still holds the
+     * snapshot rather than the plugin's current state, and [report] runs only once [writeCatchUp] has put
+     * that right.
+     *
+     * @param coordinator used for the reconciliation
+     * @param snapshot    the state the destination was written from
+     * @param backend     the backend being migrated to, for the log
      */
     fun publish(
         coordinator: PersistenceCoordinator,
         snapshot: PluginSnapshot,
-        gate: PersistenceGate,
-        issuer: CommandIssuer,
-        backend: DatabaseBackend,
-        guildCount: Int
+        backend: DatabaseBackend
     ) {
+        // Total, like `write`. A throw here aborts the chain, and the step that returns the permit and the
+        // migration flag is the last one in it, so both would be held for the rest of the session.
         try {
             val adapter = destination
-            val alreadyFailed = failure
-            if (adapter == null || alreadyFailed != null) {
-                issuer.sendInfo(alreadyFailed ?: Messages.MIGRATE__FAILED)
+            if (adapter == null || failure != null) {
                 return
             }
 
@@ -193,46 +189,145 @@ internal class MigrationOutcome {
                 LoggingUtils.severe(
                     "Migration to ${backend.backendName} could not be reconciled: ${failures.joinToString("; ")}",
                 )
-                issuer.sendInfo(Messages.MIGRATE__FAILED)
+                fail(Messages.MIGRATE__FAILED, null, "reconciling the destination")
                 return
             }
 
             published = true
-            issuer.sendInfo(Messages.MIGRATE__COMPLETE, "{amount}", guildCount.toString())
-        } finally {
-            if (permitHeld) {
-                gate.releaseWriter()
-            }
+        } catch (ex: Throwable) {
+            fail(Messages.MIGRATE__FAILED, ex, "reconciling the destination")
         }
     }
 
     /**
-     * Closes a destination that was opened but never published.
+     * Captures what the migration window changed, so it can be written to the destination. Main thread.
      *
-     * <p>Called after {@link #publish} has reported, so it runs whether publication succeeded or not. A
-     * destination left open is a leaked connection pool and, on a SQL backend, a pool's worth of open
-     * connections to a server the operator has no reason to be connected to.
+     * <p>The autosave is gated off for the whole migration, so this write is the only thing that persists
+     * what changed during it.
+     *
+     * <p>Total, like [write]. Refuses off the main thread — TaskChain runs a sync step inline on the
+     * calling thread when the plugin is disabled.
      */
-    fun closeUnpublished() {
-        // A published destination is the plugin's live backend. Closing it here would leave every later
-        // save and every guild deletion throwing "HikariDataSource has been closed", while the operator
-        // had been told the migration worked. On the JSON backend `close` is a no-op, which is why this
-        // survives manual testing and only bites on SQL.
-        if (published) {
+    fun catchUp(coordinator: PersistenceCoordinator, gate: PersistenceGate) {
+        if (!published) {
             return
         }
+        if (gate.isShuttingDown) {
+            // `shutdownFlush` writes the live backend, which is the published destination, so this would be
+            // the same write twice, against a shutdown that is already waiting on the permit.
+            return
+        }
+        // Insurance rather than a reachable path: the two are adjacent sync steps, so a capture here is on
+        // the main thread by construction. Kept because TaskChain's `postToMain` runs a task inline on the
+        // calling thread when the plugin is disabled, and "by construction" is the kind of thing that
+        // changes.
+        if (!coordinator.isOnMainThread) {
+            LoggingUtils.severe(
+                "Migration could not save the changes made while it ran: the capture would not have been on" +
+                    " the server's main thread. The destination holds the state from the start of the" +
+                    " migration; the next save will bring it level.",
+            )
+            failAfterPublish("capturing the changes made during the migration")
+            return
+        }
+        catchUpSnapshot = try {
+            coordinator.capture()
+        } catch (ex: Throwable) {
+            LoggingUtils.severe("Migration could not read plugin data to save the changes made during it.", ex)
+            failAfterPublish("capturing the changes made during the migration")
+            null
+        }
+    }
 
-        val adapter = destination ?: return
+    /**
+     * Writes what [catchUp] captured into the now-live destination. Runs on a worker.
+     *
+     * <p>Never throws, for the reason [write] gives.
+     */
+    fun writeCatchUp(coordinator: PersistenceCoordinator, gate: PersistenceGate) {
+        val snapshot = catchUpSnapshot
+        if (!published || snapshot == null || gate.isShuttingDown) {
+            return
+        }
+        persistedGuildCount = snapshot.guilds.size
         try {
-            adapter.close()
-        } catch (ex: RuntimeException) {
-            LoggingUtils.severe("Migration left an unused database connection open.", ex)
+            val failures = ArrayList<String>()
+            if (!coordinator.writeTo(destination!!, snapshot, failures)) {
+                LoggingUtils.severe(
+                    "Migration could not save the changes made while it ran: ${failures.joinToString("; ")}",
+                )
+                failAfterPublish("saving the changes made during the migration")
+            }
+        } catch (ex: Throwable) {
+            failAfterPublish("saving the changes made during the migration")
+        }
+    }
+
+    /**
+     * Tells the operator how it went. Main thread, and only after the changes made during the migration have
+     * been written.
+     *
+     * @param issuer  told what happened
+     * @param backend the backend migrated to, for the log
+     */
+    fun report(issuer: CommandIssuer, backend: DatabaseBackend) {
+        val alreadyFailed = failure
+        if (alreadyFailed != null) {
+            issuer.sendInfo(alreadyFailed)
+            return
+        }
+        if (!published) {
+            issuer.sendInfo(Messages.MIGRATE__FAILED)
+            return
+        }
+        LoggingUtils.info("Migration to ${backend.backendName} completed.")
+        issuer.sendInfo(Messages.MIGRATE__COMPLETE, "{amount}", persistedGuildCount.toString())
+    }
+
+    /**
+     * Closes a destination that was opened but never published, and gives the write permit back. Main
+     * thread, and last: the permit covers the catch-up write as well as the migration's own.
+     *
+     * <p>Runs whether the migration succeeded or not. A destination left open is a leaked connection pool
+     * and, on a SQL backend, a pool's worth of open connections to a server the operator has no reason to be
+     * connected to.
+     *
+     * @param gate the shared gate
+     */
+    fun finish(gate: PersistenceGate) {
+        // A published destination is the live backend; closing it would break every later save.
+        val adapter = if (published) null else destination
+        if (adapter != null) {
+            try {
+                adapter.close()
+            } catch (ex: RuntimeException) {
+                LoggingUtils.severe("Migration left an unused database connection open.", ex)
+            }
+        }
+
+        // Not inside the branch above: a published migration held the permit through its catch-up write.
+        if (permitHeld) {
+            permitHeld = false
+            gate.releaseWriter()
         }
     }
 
     private fun fail(message: Messages, cause: Throwable?, doing: String) {
         LoggingUtils.severe("Migration failed while $doing. The previous backend is still in use.", cause)
         failure = message
+    }
+
+    /**
+     * Fails after the destination is already the live backend, which `migrate.failed` denies: the plugin is
+     * no longer on the old one and its pool is closed, and an operator who believes otherwise will reboot
+     * back onto it.
+     */
+    private fun failAfterPublish(doing: String) {
+        LoggingUtils.severe(
+            "Migration could not $doing after the new backend was published. The new backend is in use and" +
+                " the previous one is closed; the changes made during the migration are not on it.",
+        )
+        failure = Messages.MIGRATE__PUBLISHED_UNSAVED
     }
 
     private companion object {

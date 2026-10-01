@@ -92,19 +92,13 @@ public final class PersistenceCoordinator {
     static final int MAX_RECONCILED_ROWS = 500;
 
     /**
-     * Guilds disbanded since the last write finished, by id string.
+     * Guilds the plugin no longer has, whose rows a save still has to delete.
      *
-     * <p>Concurrent because the main thread adds to it while a worker reads it. Pruned at the end of every
-     * guild write, which is the only point at which pruning is safe: a capture does <em>not</em> hold the
-     * write permit, because a migration captures before it takes one, so clearing on capture would erase a
-     * disband that an autosave write already in flight was about to read and put the row back. The write is
-     * the right place — the gate admits one writer at a time, so nothing else is reading the set when it ends.
-     *
-     * <p>Entries left behind by an abandoned capture are harmless rather than harmful. The guild is out of the
-     * live map, so no later snapshot contains it, and the worst an entry can do is one redundant
-     * {@code deleteGuild} per save.
+     * <p>Concurrent because the main thread adds to it while a worker reads it. Nothing prunes it on capture:
+     * a capture does not hold the write permit, so pruning there would erase a disband a write already in
+     * flight was about to act on. A guild id is never reused, so a stale entry cannot name a live guild.
      */
-    private final Set<String> guildsDisbandedDuringSave = ConcurrentHashMap.newKeySet();
+    private final Set<String> pendingGuildDisbands = ConcurrentHashMap.newKeySet();
 
     /** Whether the calling thread is the one that owns mutable plugin state. Overridden in tests. */
     private final java.util.function.BooleanSupplier onMainThread;
@@ -167,18 +161,24 @@ public final class PersistenceCoordinator {
     }
 
     /**
-     * Records that a guild was disbanded, so a save already in flight cannot write it back.
+     * Records a guild the plugin no longer has, as work a save still owes the backend.
      *
-     * <p>Must be called on the main thread, before or with the removal from the live map.
-     *
-     * <p>{@code GuildAdapter} has no delete pass, so a stale snapshot does not merely fail to delete a
-     * disbanded guild, it puts the row back: the disband's own delete lands first and the worker's write
-     * recreates the row afterwards, leaving it in storage permanently.
+     * <p>Must be called on the main thread, before or with the removal from the live map. Acknowledged only
+     * by a save that has deleted the row, so a failed delete stays outstanding.
      *
      * @param guildId the guild that was disbanded
      */
     public void noteGuildDisbanded(@NotNull UUID guildId) {
-        guildsDisbandedDuringSave.add(guildId.toString());
+        pendingGuildDisbands.add(guildId.toString());
+    }
+
+    /**
+     * Whether the calling thread is the one that owns mutable plugin state.
+     *
+     * @return true on the main thread
+     */
+    public boolean isOnMainThread() {
+        return onMainThread.getAsBoolean();
     }
 
     /**
@@ -902,73 +902,73 @@ public final class PersistenceCoordinator {
     }
 
     private boolean saveGuilds(@NotNull DatabaseAdapter database, @NotNull PluginSnapshot snapshot, @Nullable List<String> failures) {
-        try {
-            if (snapshot.getGuilds().isEmpty()) {
-                return true;
+        final Set<String> tombstones = new HashSet<>(pendingGuildDisbands);
+        boolean complete = true;
+
+        // Deletes before writes. A crash between the two then leaves a surviving guild at its previous
+        // stored version, which the next save repairs, rather than a disbanded guild written back for good.
+        // No transaction spans these: the JSON provider rewrites one file per guild, and SQL takes a
+        // connection per statement, so ordering is the only lever there is.
+        //
+        // Acknowledged only against the backend that could actually hold the row. A migration's first write
+        // targets a destination that never had it, and acknowledging there would drop a tombstone whose row
+        // is still in the backend the plugin stays on when the migration fails.
+        if (database == plugin.getDatabase()) {
+            for (String id : tombstones) {
+                complete &= deleteTombstone(database, id, failures);
             }
-
-            // Read once. A guild disbanded after this point is not in the map below, so the pass that
-            // follows the write is what catches it.
-            final Set<String> excluded = new HashSet<>(guildsDisbandedDuringSave);
-
-            Map<String, String> written = snapshot.getGuilds();
-            if (!excluded.isEmpty()) {
-                written = new LinkedHashMap<>(written);
-                written.keySet().removeAll(excluded);
-                if (written.isEmpty()) {
-                    return true;
+            // Arrived while the deletes above were running, so it is not written back below.
+            for (String id : new HashSet<>(pendingGuildDisbands)) {
+                if (!tombstones.contains(id)) {
+                    complete &= deleteTombstone(database, id, failures);
+                    tombstones.add(id);
                 }
             }
+        } else {
+            LoggingUtils.warn("A migration's first write left " + tombstones.size()
+                    + " disbanded guild(s) for the autosave to delete. The destination never held them.");
+        }
 
-            boolean complete = true;
+        Map<String, String> written = snapshot.getGuilds();
+        if (!tombstones.isEmpty()) {
+            written = new LinkedHashMap<>(written);
+            written.keySet().removeAll(tombstones);
+        }
+
+        // Not short-circuited on an empty map: a tombstone is work this call owes the backend whatever the
+        // snapshot holds.
+        if (!written.isEmpty()) {
             try {
                 database.getGuildAdapter().saveSerialized(written);
             } catch (IOException | RuntimeException e) {
                 complete = failed("guild", failures, e);
-            } finally {
-                // A guild disbanded while the write was running is not covered by the filter above, and the
-                // row the write put there still has to go. In a `finally` because the write throwing is
-                // exactly when a resurrected row is most likely, including when what it throws is an `Error`.
-                complete &= removeGuildsDisbandedDuringWrite(database, excluded, failures);
-            }
-            return complete;
-        } finally {
-            guildsDisbandedDuringSave.clear();
-        }
-    }
-
-    /**
-     * Deletes the rows of guilds disbanded after the guild write had already chosen what to write.
-     *
-     * @param database the backend that was written to
-     * @param excluded ids already left out of the write, which need no second look
-     * @param failures collects a description of what went wrong, or null
-     * @return true when every row was deleted without throwing
-     */
-    private boolean removeGuildsDisbandedDuringWrite(
-            @NotNull DatabaseAdapter database,
-            @NotNull Set<String> excluded,
-            @Nullable List<String> failures
-    ) {
-        final Set<String> late = new HashSet<>(guildsDisbandedDuringSave);
-        late.removeAll(excluded);
-        if (late.isEmpty()) {
-            return true;
-        }
-
-        boolean complete = true;
-        for (String id : late) {
-            try {
-                database.getGuildAdapter().deleteGuild(id);
-            } catch (IOException | RuntimeException e) {
-                complete &= failed("guild", failures, e);
             }
         }
         return complete;
     }
 
+    /**
+     * Deletes one tombstoned guild's row and, only if that worked, stops owing it.
+     *
+     * @return true when the row was deleted, or when the backend is plainly unreachable
+     */
+    private boolean deleteTombstone(@NotNull DatabaseAdapter database, @NotNull String id, @Nullable List<String> failures) {
+        if (!database.isConnected()) {
+            // Every tombstone would otherwise pay a full connection timeout and log a stack trace per save.
+            // Reported as not done, and left outstanding, which is the same thing.
+            return false;
+        }
+        try {
+            database.getGuildAdapter().deleteGuild(id);
+            pendingGuildDisbands.remove(id);
+            return true;
+        } catch (IOException | RuntimeException e) {
+            return failed("guild", failures, e);
+        }
+    }
+
     private boolean saveArenas(@NotNull DatabaseAdapter database, @NotNull PluginSnapshot snapshot, @Nullable List<String> failures) {
-        // Deliberately not short-circuited on an empty map, unlike the three above.
+        // Deliberately not short-circuited on an empty map, unlike challenges and cooldowns above.
         //
         // `ArenaAdapter#saveSerialized` deletes every stored arena whose id is absent from the map it is
         // given, and that delete pass is the only thing that persists an arena deletion: `removeArena`

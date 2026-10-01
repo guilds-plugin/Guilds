@@ -34,10 +34,12 @@ import me.glaremasters.guilds.persistence.PluginSnapshot;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.InOrder;
 import org.mockito.Mockito;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.Map;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -105,11 +107,24 @@ class MigrationOutcomeTest {
     }
 
     private void publish(MigrationOutcome outcome) {
-        outcome.publish(coordinator, snapshot, gate, issuer, DatabaseBackend.MYSQL, 7);
+        outcome.publish(coordinator, snapshot, DatabaseBackend.MYSQL);
     }
 
     private void publishReportingCallerIsNotMain(MigrationOutcome outcome) {
-        outcome.publish(coordinatorReporting(false), snapshot, gate, issuer, DatabaseBackend.MYSQL, 7);
+        outcome.publish(coordinatorReporting(false), snapshot, DatabaseBackend.MYSQL);
+    }
+
+    /**
+     * The chain the console command runs, in the same order, so these tests exercise the real ordering
+     * rather than a shortened version of it.
+     */
+    private void runMigration(MigrationOutcome outcome) {
+        write(outcome);
+        publish(outcome);
+        outcome.catchUp(coordinator, gate);
+        outcome.writeCatchUp(coordinator, gate);
+        outcome.report(issuer, DatabaseBackend.MYSQL);
+        outcome.finish(gate);
     }
 
     /**
@@ -145,9 +160,7 @@ class MigrationOutcomeTest {
         final MigrationOutcome outcome = new MigrationOutcome();
         Mockito.when(source.cloneWith(DatabaseBackend.MYSQL)).thenReturn(destination);
 
-        write(outcome);
-        publish(outcome);
-        outcome.closeUnpublished();
+        runMigration(outcome);
 
         Mockito.verify(destination, Mockito.never()).close();
     }
@@ -169,7 +182,7 @@ class MigrationOutcomeTest {
         write(outcome);
         // The reconcile is refused, so nothing is published and the pool is still ours to close.
         publishReportingCallerIsNotMain(outcome);
-        outcome.closeUnpublished();
+        outcome.finish(gate);
 
         Mockito.verify(destination).close();
     }
@@ -186,9 +199,7 @@ class MigrationOutcomeTest {
         Mockito.when(source.cloneWith(DatabaseBackend.MYSQL)).thenReturn(dead);
         Mockito.when(dead.isConnected()).thenReturn(false);
 
-        write(outcome);
-        publish(outcome);
-        outcome.closeUnpublished();
+        runMigration(outcome);
 
         Mockito.verify(dead).close();
         assertEquals(Messages.MIGRATE__CONNECTION_FAILED, reportedMessage());
@@ -200,9 +211,7 @@ class MigrationOutcomeTest {
         final MigrationOutcome outcome = new MigrationOutcome();
         Mockito.when(source.cloneWith(DatabaseBackend.MYSQL)).thenThrow(new IllegalArgumentException("same backend"));
 
-        write(outcome);
-        publish(outcome);
-        outcome.closeUnpublished();
+        runMigration(outcome);
 
         assertEquals(Messages.MIGRATE__SAME_BACKEND, reportedMessage());
         assertTrue(gate.tryAcquireWriter(), "no permit should have been taken");
@@ -218,9 +227,7 @@ class MigrationOutcomeTest {
         Mockito.when(source.sharesStorageWith(DatabaseBackend.MYSQL)).thenReturn(true);
 
         final MigrationOutcome outcome = new MigrationOutcome();
-        write(outcome);
-        publish(outcome);
-        outcome.closeUnpublished();
+        runMigration(outcome);
 
         Mockito.verify(source, Mockito.never()).cloneWith(Mockito.any());
         assertEquals(Messages.MIGRATE__FAILED, reportedMessage());
@@ -228,8 +235,129 @@ class MigrationOutcomeTest {
     }
 
     // ---------------------------------------------------------------------------------------
+    // The changes made while the migration ran
+    // ---------------------------------------------------------------------------------------
+
+    @Test
+    @DisplayName("the changes made during a migration are written before it is reported complete")
+    void theChangesMadeDuringAMigrationAreWrittenBeforeItIsReportedComplete() throws IOException {
+        // Scheduling the next autosave is not the same as having saved. The autosave is gated off until the
+        // migration flag clears, and a server that stops before the next interval would have been told the
+        // migration completed with the change still only in memory.
+        final PersistenceCoordinator spy = Mockito.mock(PersistenceCoordinator.class);
+        Mockito.when(spy.isOnMainThread()).thenReturn(true);
+        Mockito.when(spy.reconcileAndPublish(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
+
+        final PluginSnapshot during = new PluginSnapshot(
+                Collections.singletonMap(UUID.randomUUID().toString(), "{}"),
+                Collections.emptyMap(), Collections.emptyMap(), Collections.emptyList(), destination);
+        Mockito.when(spy.capture()).thenReturn(during);
+        Mockito.when(spy.writeTo(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
+
+        stubWorkingDestination();
+        final MigrationOutcome outcome = new MigrationOutcome();
+
+        write(outcome);
+        outcome.publish(spy, snapshot, DatabaseBackend.MYSQL);
+        outcome.catchUp(spy, gate);
+        outcome.writeCatchUp(spy, gate);
+        outcome.report(issuer, DatabaseBackend.MYSQL);
+        outcome.finish(gate);
+
+        assertEquals(Messages.MIGRATE__COMPLETE, reportedMessage());
+
+        final InOrder order = Mockito.inOrder(spy, issuer);
+        order.verify(spy).capture();
+        order.verify(spy).writeTo(Mockito.eq(destination), Mockito.eq(during), Mockito.any());
+        // One, because `during` holds one guild: the reported count is the one that was persisted.
+        order.verify(issuer).sendInfo(Messages.MIGRATE__COMPLETE, "{amount}", "1");
+    }
+
+    @Test
+    @DisplayName("a migration that could not save the changes it made reports a failure")
+    void aMigrationThatCouldNotSaveTheChangesItMadeReportsAFailure() throws IOException {
+        // The point of the ordering above is that "complete" means persisted. A catch-up that fails has to
+        // take the report with it, or the guarantee is worth nothing.
+        final PersistenceCoordinator spy = Mockito.mock(PersistenceCoordinator.class);
+        Mockito.when(spy.isOnMainThread()).thenReturn(true);
+        Mockito.when(spy.reconcileAndPublish(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
+        final PluginSnapshot during = new PluginSnapshot(
+                Collections.emptyMap(), Collections.emptyMap(), Collections.emptyMap(),
+                Collections.emptyList(), destination);
+        Mockito.when(spy.capture()).thenReturn(during);
+        Mockito.when(spy.writeTo(Mockito.eq(destination), Mockito.eq(during), Mockito.any()))
+                .thenReturn(false);
+
+        stubWorkingDestination();
+        final MigrationOutcome outcome = new MigrationOutcome();
+
+        write(outcome);
+        outcome.publish(spy, snapshot, DatabaseBackend.MYSQL);
+        outcome.catchUp(spy, gate);
+        outcome.writeCatchUp(spy, gate);
+        outcome.report(issuer, DatabaseBackend.MYSQL);
+        outcome.finish(gate);
+
+        // Not `migrate.failed`, which promises the previous backend is still in use. It is not: the
+        // destination is live and the old pool is closed, and an operator who believes otherwise reboots
+        // back onto the backend they were migrating away from.
+        assertEquals(Messages.MIGRATE__PUBLISHED_UNSAVED, reportedMessage());
+        Mockito.verify(issuer, Mockito.never())
+                .sendInfo(Mockito.eq(Messages.MIGRATE__COMPLETE), Mockito.any(), Mockito.any());
+    }
+
+    @Test
+    @DisplayName("a catch-up that could not run on the main thread reports a failure instead of capturing")
+    void aCatchUpThatCouldNotRunOnTheMainThreadReportsAFailureInsteadOfCapturing() throws IOException {
+        // TaskChain runs a sync step inline on the calling thread when the plugin is disabled, so a migration
+        // in flight at `/stop` would capture the live collections from a pool thread.
+        final PersistenceCoordinator spy = Mockito.mock(PersistenceCoordinator.class);
+        Mockito.when(spy.isOnMainThread()).thenReturn(false);
+        Mockito.when(spy.reconcileAndPublish(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
+
+        stubWorkingDestination();
+        final MigrationOutcome outcome = new MigrationOutcome();
+
+        write(outcome);
+        outcome.publish(spy, snapshot, DatabaseBackend.MYSQL);
+        outcome.catchUp(spy, gate);
+        outcome.writeCatchUp(spy, gate);
+        outcome.report(issuer, DatabaseBackend.MYSQL);
+        outcome.finish(gate);
+
+        assertEquals(Messages.MIGRATE__PUBLISHED_UNSAVED, reportedMessage());
+        Mockito.verify(spy, Mockito.never()).capture();
+    }
+
+    // ---------------------------------------------------------------------------------------
     // Permit
     // ---------------------------------------------------------------------------------------
+
+    @Test
+    @DisplayName("an Error from the reconciliation still returns the permit and reports a failure")
+    void anErrorFromTheReconciliationStillReturnsThePermitAndReportsAFailure() throws IOException {
+        // TaskChain drops every remaining step when one throws, and the step that returns the permit and
+        // the migration flag is the last one in the chain. So a step that lets a Throwable out takes both
+        // with it: every later save skips and every NotMigrating command is refused, for the session.
+        final PersistenceCoordinator spy = Mockito.mock(PersistenceCoordinator.class);
+        Mockito.when(spy.isOnMainThread()).thenReturn(true);
+        Mockito.when(spy.reconcileAndPublish(Mockito.any(), Mockito.any(), Mockito.any()))
+                .thenThrow(new OutOfMemoryError("five thousand guilds to SQL"));
+
+        stubWorkingDestination();
+        final MigrationOutcome outcome = new MigrationOutcome();
+
+        write(outcome);
+        outcome.publish(spy, snapshot, DatabaseBackend.MYSQL);
+        outcome.catchUp(spy, gate);
+        outcome.writeCatchUp(spy, gate);
+        outcome.report(issuer, DatabaseBackend.MYSQL);
+        outcome.finish(gate);
+
+        assertEquals(Messages.MIGRATE__FAILED, reportedMessage());
+        assertTrue(gate.tryAcquireWriter(), "an Error must not strand the permit");
+        gate.releaseWriter();
+    }
 
     @Test
     @DisplayName("the permit is returned after a successful migration")
@@ -240,8 +368,14 @@ class MigrationOutcomeTest {
         write(outcome);
         assertFalse(gate.tryAcquireWriter(), "the migration should be holding the permit");
 
+        // Held across the catch-up write, not handed back at publication: the catch-up is another write and
+        // must not run beside anything else.
         publish(outcome);
-        assertTrue(gate.tryAcquireWriter(), "publish must hand the permit back");
+        assertFalse(gate.tryAcquireWriter(), "publish must not hand the permit back yet");
+
+        outcome.finish(gate);
+        assertTrue(gate.tryAcquireWriter(), "finish must hand the permit back");
+        gate.releaseWriter();
     }
 
     @Test
@@ -259,8 +393,7 @@ class MigrationOutcomeTest {
         Mockito.doThrow(new OutOfMemoryError("five thousand guilds to SQL"))
                 .when(failing).saveSerialized(Mockito.anyMap());
 
-        write(outcome);
-        publish(outcome);
+        runMigration(outcome);
 
         assertTrue(gate.tryAcquireWriter(), "an Error must not strand the permit");
         assertEquals(Messages.MIGRATE__FAILED, reportedMessage());
@@ -272,9 +405,7 @@ class MigrationOutcomeTest {
         final MigrationOutcome outcome = new MigrationOutcome();
         Mockito.when(source.cloneWith(DatabaseBackend.MYSQL)).thenThrow(new IOException("connection refused"));
 
-        write(outcome);
-        publish(outcome);
-        outcome.closeUnpublished();
+        runMigration(outcome);
 
         assertTrue(gate.tryAcquireWriter(), "a permit must not have been taken");
         assertEquals(Messages.MIGRATE__CONNECTION_FAILED, reportedMessage());
@@ -287,9 +418,7 @@ class MigrationOutcomeTest {
         assertTrue(gate.tryAcquireWriter(), "simulate a save already running");
 
         final MigrationOutcome outcome = new MigrationOutcome();
-        write(outcome);
-        publish(outcome);
-        outcome.closeUnpublished();
+        runMigration(outcome);
 
         assertEquals(Messages.MIGRATE__BUSY, reportedMessage());
         assertFalse(gate.tryAcquireWriter(), "the permit it never took must still be held by the save");
@@ -314,6 +443,8 @@ class MigrationOutcomeTest {
 
         write(outcome);
         publishReportingCallerIsNotMain(outcome);
+        outcome.report(issuer, DatabaseBackend.MYSQL);
+        outcome.finish(gate);
 
         assertEquals(Messages.MIGRATE__FAILED, reportedMessage());
         Mockito.verify(plugin, Mockito.never()).setDatabase(Mockito.any());
@@ -326,16 +457,39 @@ class MigrationOutcomeTest {
     // ---------------------------------------------------------------------------------------
 
     @Test
-    @DisplayName("a successful migration reports the guild count")
-    void aSuccessfulMigrationReportsTheGuildCount() throws IOException {
+    @DisplayName("a successful migration reports the count it persisted, not the live one")
+    void aSuccessfulMigrationReportsTheCountItPersistedNotTheLiveOne() throws IOException {
+        // The live count can be higher: a guild created between the catch-up capture and the report is
+        // counted but not on the backend, and "{amount}" reads as "guilds migrated".
+        final PersistenceCoordinator spy = spyWithSevenGuilds();
         final MigrationOutcome outcome = new MigrationOutcome();
         stubWorkingDestination();
 
         write(outcome);
-        publish(outcome);
+        outcome.publish(spy, snapshot, DatabaseBackend.MYSQL);
+        outcome.catchUp(spy, gate);
+        outcome.writeCatchUp(spy, gate);
+        outcome.report(issuer, DatabaseBackend.MYSQL);
+        outcome.finish(gate);
 
         Mockito.verify(issuer).sendInfo(Mockito.eq(Messages.MIGRATE__COMPLETE), Mockito.eq("{amount}"),
                 Mockito.eq("7"));
+    }
+
+    /** A coordinator that reconciles, and whose catch-up capture holds seven guilds. */
+    private PersistenceCoordinator spyWithSevenGuilds() {
+        final PersistenceCoordinator spy = Mockito.mock(PersistenceCoordinator.class);
+        Mockito.when(spy.isOnMainThread()).thenReturn(true);
+        Mockito.when(spy.reconcileAndPublish(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
+        Mockito.when(spy.writeTo(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
+
+        final Map<String, String> seven = new java.util.LinkedHashMap<>();
+        for (int i = 0; i < 7; i++) {
+            seven.put(UUID.randomUUID().toString(), "{}");
+        }
+        Mockito.when(spy.capture()).thenReturn(new PluginSnapshot(
+                seven, Collections.emptyMap(), Collections.emptyMap(), Collections.emptyList(), destination));
+        return spy;
     }
 
     private void stubWorkingDestination() throws IOException {

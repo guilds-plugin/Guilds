@@ -113,6 +113,7 @@ class MigrationCoordinatorTest {
         Mockito.when(destination.getCooldownAdapter()).thenReturn(destinationCooldowns);
         Mockito.when(destination.getChallengeAdapter())
                 .thenReturn(Mockito.mock(me.glaremasters.guilds.database.challenges.ChallengeAdapter.class));
+        Mockito.when(destination.isConnected()).thenReturn(true);
 
         // The destination starts empty, as a freshly-created backend is.
         Mockito.when(destinationGuilds.getAllGuildIds()).thenReturn(new ArrayList<String>());
@@ -782,6 +783,58 @@ class MigrationCoordinatorTest {
                     System.currentTimeMillis() + 600000L));
         }
         return cooldowns;
+    }
+
+    @Test
+    @DisplayName("a guild created after the first capture reaches the destination on the second")
+    void aGuildCreatedAfterTheFirstCaptureReachesTheDestinationOnTheSecond() throws IOException {
+        // The primitives the catch-up is built from, in the order it uses them. That they compose this way is
+        // pinned in `MigrationOutcomeTest`, which is where the migration's own ordering lives.
+        final PersistenceCoordinator migrating = withRealGuilds(2);
+        Mockito.when(plugin.getDatabase()).thenReturn(destination);
+
+        final PluginSnapshot first = migrating.capture();
+        migrating.writeTo(destination, first, null);
+        migrating.reconcileAndPublish(destination, first, new ArrayList<String>());
+
+        final Guild late = new Guild(UUID.randomUUID());
+        late.setVaults(new ArrayList<String>());
+        guildHandler.addGuild(late);
+
+        final PluginSnapshot second = migrating.capture();
+        assertTrue(second.getGuilds().containsKey(late.getId().toString()));
+        migrating.writeTo(destination, second, null);
+
+        Mockito.verify(destinationGuilds).saveSerialized(
+                Mockito.argThat(guilds -> guilds.containsKey(late.getId().toString())));
+    }
+
+    @Test
+    @DisplayName("a guild disbanded during the catch-up is not in what the catch-up writes")
+    void aGuildDisbandedDuringTheCatchUpIsNotInWhatTheCatchUpWrites() throws IOException {
+        // The catch-up capture and its write are on different threads, so a disband can land between them.
+        // The tombstone is what stops the catch-up from putting the row back.
+        // The handler is built against this test's plugin, so `removeGuild` reports to this coordinator.
+        guildHandler = GuildSnapshotRemovalTest.newHandler(3, dataFolder, plugin);
+        final PersistenceCoordinator migrating =
+                new PersistenceCoordinator(plugin, gate, guildHandler, arenaHandler, null, cooldownHandler, onTestThread);
+        Mockito.when(plugin.getPersistenceCoordinator()).thenReturn(migrating);
+        Mockito.when(plugin.getDatabase()).thenReturn(destination);
+
+        final PluginSnapshot first = migrating.capture();
+        migrating.writeTo(destination, first, null);
+        migrating.reconcileAndPublish(destination, first, new ArrayList<String>());
+
+        final PluginSnapshot second = migrating.capture();
+        final Guild victim = new ArrayList<>(guildHandler.getGuilds().values()).get(0);
+        guildHandler.removeGuild(victim);
+
+        migrating.writeTo(destination, second, null);
+
+        // Exactly twice: once by removeGuild's own delete, and once by the save honouring the tombstone it
+        // left behind. The second is what covers the first having failed. Asserted at an exact count because
+        // `atLeastOnce` is already satisfied by removeGuild alone and so would pass against the old save.
+        Mockito.verify(destinationGuilds, Mockito.times(2)).deleteGuild(victim.getId().toString());
     }
 
     @Test

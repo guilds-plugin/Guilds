@@ -157,12 +157,20 @@ internal class CommandConsole : BaseCommand() {
                     outcome.write(guilds, gate, coordinator, resolvedBackend, captured)
                 }.sync {
                     // Main thread: nothing can run between the reconciliation and the publication.
+                    outcome.publish(coordinator, captured, resolvedBackend)
+                }.sync {
+                    // Main thread: the destination holds the snapshot, not what the plugin looks like now.
+                    outcome.catchUp(coordinator, gate)
+                }.async {
+                    outcome.writeCatchUp(coordinator, gate)
+                }.sync {
+                    // Reached only after the catch-up write returned, so "complete" means the changes made
+                    // during the migration are on the new backend. `finish` in a `finally` because every
+                    // step above is total, and this is the one place the permit and the flag come back.
                     try {
-                        outcome.publish(
-                            coordinator, captured, gate, commandIssuer, resolvedBackend, guildHandler.guildsSize,
-                        )
+                        outcome.report(commandIssuer, resolvedBackend)
                     } finally {
-                        outcome.closeUnpublished()
+                        outcome.finish(gate)
                         gate.endMigration()
                     }
                 }.execute()
