@@ -30,6 +30,12 @@ import org.bukkit.Location
 /**
  * Represents an Arena with unique id and name.
  *
+ * The generated `equals` and `hashCode` cover `challenger`, `defender` and `inUse`, all of which
+ * change while a war runs. Arenas are looked up by name through [ArenaHandler] rather than by hash,
+ * so that is harmless here, but an arena must never be used as a key in a hash based collection:
+ * reserving one would change its hash while it was stored, and it would become unreachable. The same
+ * trap is what [me.glaremasters.guilds.guild.GuildChallenge] used to fall into.
+ *
  * @property id the unique id of the arena.
  * @property name the name of the arena.
  * @property challenger the challenger location string representation, can be null.
