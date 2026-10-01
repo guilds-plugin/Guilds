@@ -153,8 +153,9 @@ public final class Guilds extends JavaPlugin {
 
         if (database != null) {
             LoggingUtils.info("Shutting down database...");
-            runCleanup(database::close, "the database");
-            LoggingUtils.info("Database has been shut down.");
+            if (runCleanup(database::close, "the database")) {
+                LoggingUtils.info("Database has been shut down.");
+            }
         }
 
         if (adventure != null) {
@@ -180,16 +181,19 @@ public final class Guilds extends JavaPlugin {
      *
      * @param step  the routine, or null when the object it needs was never created
      * @param label what is being saved or cleaned up, used in log messages
+     * @return true when the step ran without throwing
      */
-    private void runCleanup(@Nullable SaveRoutine step, String label) {
+    private boolean runCleanup(@Nullable SaveRoutine step, String label) {
         if (step == null) {
-            return;
+            return false;
         }
 
         try {
             step.run();
+            return true;
         } catch (IOException | RuntimeException e) {
             LoggingUtils.severe("An error occurred while saving or cleaning up " + label + ".", e);
+            return false;
         }
     }
 
