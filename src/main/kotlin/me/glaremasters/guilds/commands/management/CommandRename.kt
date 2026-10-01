@@ -63,7 +63,8 @@ internal class CommandRename : BaseCommand() {
     @CommandPermission(Constants.BASE_PERM + "rename")
     @Syntax("%name")
     fun rename(player: Player, @Conditions("perm:perm=RENAME") guild: Guild, name: String) {
-        if (GuildInputValidator.isNameTaken(name, guildHandler.guilds.values)) {
+        // Exclude this guild so it can keep or return to a name it already has.
+        if (GuildInputValidator.isNameTaken(name, guildHandler.guilds.values, guild.id)) {
             throw ExpectationNotMet(Messages.CREATE__GUILD_NAME_TAKEN)
         }
 

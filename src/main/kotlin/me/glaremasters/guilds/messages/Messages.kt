@@ -302,8 +302,13 @@ enum class Messages : MessageKeyProvider {
 
     /**
      * Message keys that grab from the config to send messages
+     *
+     * [Locale.ROOT] is deliberate. With the default locale, a Turkish-locale JVM lowercases `"I"`
+     * to a dotless `"ı"`, which turns `INVITE__ALREADY_INVITED` into `ınvıte.already-ınvıted`. No
+     * such key exists in the language files, so every invite message silently falls back to
+     * showing the raw key.
      */
-    private val key = MessageKey.of(name.lowercase(Locale.getDefault()).replace("__", ".").replace("_", "-"))
+    private val key = MessageKey.of(name.lowercase(Locale.ROOT).replace("__", ".").replace("_", "-"))
 
     /**
      * Get the message get from the config

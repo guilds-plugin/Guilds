@@ -30,12 +30,15 @@ import co.aikar.commands.annotation.CommandPermission
 import co.aikar.commands.annotation.Dependency
 import co.aikar.commands.annotation.Description
 import co.aikar.commands.annotation.Flags
+import co.aikar.commands.annotation.Optional
 import co.aikar.commands.annotation.Subcommand
 import co.aikar.commands.annotation.Syntax
 import co.aikar.commands.annotation.Values
 import me.glaremasters.guilds.Guilds
+import me.glaremasters.guilds.exceptions.ExpectationNotMet
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
+import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.Constants
 import org.bukkit.entity.Player
 
@@ -48,8 +51,17 @@ internal class CommandAdminVault : BaseCommand() {
     @Description("{@@descriptions.admin-vault}")
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
-    @Syntax("%guild %vault-number")
-    fun vault(player: Player, @Flags("other") @Values("@guilds") guild: Guild) {
-        guilds.guiHandler.vaults.get(guild, player).open(player)
+    @Syntax("%guild %optional %vault-number")
+    fun vault(player: Player, @Flags("other") @Values("@guilds") guild: Guild, @Optional vaultNumber: Int?) {
+        // Same behaviour as /guilds vault: no number opens the picker, a number opens that vault
+        // directly. The syntax already promised the number, but the handler never took it.
+        if (vaultNumber == null) {
+            guilds.guiHandler.vaults.get(guild, player).open(player)
+            return
+        }
+
+        if (!guilds.guiHandler.vaults.open(guild, player, vaultNumber)) {
+            throw ExpectationNotMet(Messages.VAULTS__MAXED)
+        }
     }
 }

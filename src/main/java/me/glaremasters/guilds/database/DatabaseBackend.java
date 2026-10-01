@@ -45,6 +45,7 @@ import me.glaremasters.guilds.database.guild.provider.GuildMySQLProvider;
 import me.glaremasters.guilds.database.guild.provider.GuildSQLiteProvider;
 
 import java.util.Arrays;
+import java.util.Locale;
 
 public enum DatabaseBackend {
     JSON("json", GuildJsonProvider.class, ChallengeJsonProvider.class, ArenaJsonProvider.class, CooldownJsonProvider.class),
@@ -85,7 +86,21 @@ public enum DatabaseBackend {
         return cooldownProvider;
     }
 
+    /**
+     * Resolves a configured backend name.
+     *
+     * <p>Normalises with {@link Locale#ROOT} rather than the default locale: on a Turkish-locale
+     * JVM {@code toLowerCase()} turns {@code "I"} into a dotless {@code "ı"}, so
+     * {@code /guilds console migrate MARIADB} matched nothing and reported an invalid backend.
+     *
+     * @param backendName the configured name, in any case
+     * @return the matching backend, or null when the name is not recognised
+     */
     public static DatabaseBackend getByBackendName(String backendName) {
-        return Arrays.stream(values()).filter(n -> n.backendName.equals(backendName.toLowerCase())).findFirst().orElse(null);
+        if (backendName == null) {
+            return null;
+        }
+
+        return Arrays.stream(values()).filter(n -> n.backendName.equals(backendName.toLowerCase(Locale.ROOT))).findFirst().orElse(null);
     }
 }

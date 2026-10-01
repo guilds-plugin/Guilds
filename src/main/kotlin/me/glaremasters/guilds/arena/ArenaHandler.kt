@@ -37,12 +37,24 @@ class ArenaHandler(private val guilds: Guilds) {
     private val arenas = mutableMapOf<String, Arena>()
 
     /**
+     * Builds the map key an [Arena] is stored under.
+     *
+     * Add, get, and remove all have to agree on this, or a lookup misses an arena that is present.
+     * `Locale.ROOT` is deliberate: the default locale would map `"I"` to a dotless `"ı"` on a
+     * Turkish-locale JVM, so the same name could resolve on one path and miss on another.
+     *
+     * @param name The raw [Arena] name.
+     * @return The normalised key.
+     */
+    private fun key(name: String): String = name.lowercase(Locale.ROOT)
+
+    /**
      * Adds a [Arena] to the map of arenas.
      *
      * @param arena The [Arena] to be added.
      */
     fun addArena(arena: Arena) {
-        arenas[arena.name.lowercase(Locale.getDefault())] = arena
+        arenas[key(arena.name)] = arena
     }
 
     /**
@@ -51,7 +63,7 @@ class ArenaHandler(private val guilds: Guilds) {
      * @param arena The [Arena] to be removed.
      */
     fun removeArena(arena: Arena) {
-        arenas.remove(arena.name)
+        arenas.remove(key(arena.name))
     }
 
     /**
@@ -70,7 +82,7 @@ class ArenaHandler(private val guilds: Guilds) {
      * @return An [Optional] object containing the [Arena] object.
      */
     fun getArena(name: String): Optional<Arena> {
-        return Optional.ofNullable(arenas[name.lowercase(Locale.getDefault())])
+        return Optional.ofNullable(arenas[key(name)])
     }
 
     /**

@@ -59,15 +59,14 @@ internal class CommandDemote : BaseCommand() {
     fun demote(player: Player, @Conditions("perm:perm=DEMOTE") guild: Guild, @Values("@members") @Single target: String) {
         val user = Bukkit.getOfflinePlayer(target)
 
-        if (user.name.equals(player.name)) {
+        // Compare by UUID. OfflinePlayer#getName() is nullable and follows the player's current
+        // name, so comparing names let a renamed player slip past the self-check.
+        if (RoleUtils.isSamePlayer(user, player)) {
             throw ExpectationNotMet(Messages.DEMOTE__CANT_DEMOTE)
         }
 
-        if (!RoleUtils.inGuild(guild, user)) {
-            throw ExpectationNotMet(Messages.ERROR__PLAYER_NOT_IN_GUILD, "{player}", target)
-        }
-
         val asMember = guild.getMember(user.uniqueId)
+            ?: throw ExpectationNotMet(Messages.ERROR__PLAYER_NOT_IN_GUILD, "{player}", target)
 
         if (RoleUtils.sameRole(guild, player, user)) {
             throw ExpectationNotMet(Messages.DEMOTE__CANT_DEMOTE)
@@ -77,10 +76,13 @@ internal class CommandDemote : BaseCommand() {
             throw ExpectationNotMet(Messages.DEMOTE__CANT_DEMOTE)
         }
 
-        RoleUtils.demote(guildHandler, guild, user)
+        val oldRole = asMember.role.name
 
-        val oldRole = RoleUtils.getPreDemotedRoleName(guildHandler, asMember)
-        val newRole = RoleUtils.getCurrentRoleName(asMember)
+        if (!RoleUtils.tryDemote(guildHandler, guild, user)) {
+            throw ExpectationNotMet(Messages.DEMOTE__CANT_DEMOTE)
+        }
+
+        val newRole = asMember.role.name
 
         currentCommandIssuer.sendInfo(Messages.DEMOTE__DEMOTE_SUCCESSFUL, "{player}", target, "{old}", oldRole, "{new}", newRole)
 

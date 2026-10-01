@@ -42,6 +42,18 @@ import java.util.*
 import kotlin.Comparator
 import kotlin.collections.ArrayList
 
+/**
+ * The guild master's display name, for use in a lore or name placeholder.
+ *
+ * Both the stored [me.glaremasters.guilds.guild.GuildMember] and the resolved
+ * [org.bukkit.OfflinePlayer] expose a nullable name, so dereferencing it here used to throw and
+ * take the whole `/guilds list` GUI down for every player whenever a single guild had an
+ * unresolvable master.
+ *
+ * @return the master's name, or `"Master"` when it cannot be resolved
+ */
+private fun Guild.guildMasterName(): String = this.guildMaster?.name ?: "Master"
+
 class ListGUI(private val guilds: Guilds, private val settingsManager: SettingsManager, private val guildHandler: GuildHandler) {
     private val items: MutableList<GuiItem>
 
@@ -114,7 +126,7 @@ class ListGUI(private val guilds: Guilds, private val settingsManager: SettingsM
         var name = settingsManager.getProperty(GuildListSettings.GUILD_LIST_ITEM_NAME)
 
         name = StringUtils.color(name)
-        name = name.replace("{player}", if (guild.guildMaster != null) guild.guildMaster.name.toString() else "Master")
+        name = name.replace("{player}", guild.guildMasterName())
         name = name.replace("{guild}", guild.name)
 
         meta?.setDisplayName(name)
@@ -152,7 +164,7 @@ class ListGUI(private val guilds: Guilds, private val settingsManager: SettingsM
             updated.add(StringUtils.color(line
                     .replace("{guild-name}", guild.name)
                     .replace("{guild-prefix}", guild.prefix)
-                    .replace("{guild-master}", guild.guildMaster.asOfflinePlayer.name.toString())
+                    .replace("{guild-master}", guild.guildMasterName())
                     .replace("{guild-status}", status)
                     .replace("{guild-tier}", tier)
                     .replace("{guild-balance}", EconomyUtils.format(guild.balance))

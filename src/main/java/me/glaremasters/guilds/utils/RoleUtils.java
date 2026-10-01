@@ -26,8 +26,10 @@ package me.glaremasters.guilds.utils;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildMember;
+import me.glaremasters.guilds.guild.GuildRole;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.OfflinePlayer;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Created by Glare
@@ -35,6 +37,12 @@ import org.bukkit.OfflinePlayer;
  * Time: 11:35 PM
  */
 public class RoleUtils {
+
+    /**
+     * Role level of the guild master, the top of the hierarchy. Promotion never grants it; the seat
+     * changes hands through transfer instead.
+     */
+    private static final int MASTER_LEVEL = 0;
 
     /**
      * Simple method to check if a user is in the same guild
@@ -47,13 +55,29 @@ public class RoleUtils {
     }
 
     /**
+     * Compare two players by identity rather than by name.
+     *
+     * <p>{@link OfflinePlayer#getName()} is nullable and follows whatever name a player currently
+     * has, so a name comparison silently fails to recognise a player who renamed themselves. The
+     * UUID is the stable identity and is what the rest of the plugin keys on.
+     *
+     * @param one   the first player, may be null
+     * @param other the second player, may be null
+     * @return true when both are non-null and refer to the same player
+     */
+    public static boolean isSamePlayer(@Nullable OfflinePlayer one, @Nullable OfflinePlayer other) {
+        return one != null && other != null && one.getUniqueId().equals(other.getUniqueId());
+    }
+
+    /**
      * Simple method to check if the player being promote can be promoted
      * @param guild the guild of the player
      * @param player the player being checked
      * @return can be promoted or not
      */
     public static boolean canPromote(Guild guild, OfflinePlayer player) {
-        return guild.getMember(player.getUniqueId()).getRole().getLevel() >= 1;
+        final GuildMember member = guild.getMember(player.getUniqueId());
+        return member != null && member.getRole().getLevel() >= 1;
     }
 
     /**
@@ -63,18 +87,35 @@ public class RoleUtils {
      * @return if officer or not
      */
     public static boolean isOfficer(Guild guild, OfflinePlayer player) {
-        return guild.getMember(player.getUniqueId()).getRole().getLevel() == 1;
+        final GuildMember member = guild.getMember(player.getUniqueId());
+        return member != null && member.getRole().getLevel() == 1;
     }
 
     /**
-     * Check if you a user can promote another user
+     * Check if a user is allowed to promote another user.
+     *
+     * <p>A promotion moves the target up exactly one rank. The result has to land strictly below
+     * the actor, so nobody can hand out a rank equal to or above their own, and it can never be the
+     * guild master role: that is a single seat handed over by transfer, not something promotion
+     * grants. With the shipped hierarchy (master 0, officer 1, veteran 2, member 3) this means a
+     * master may promote a veteran to officer, an officer may promote a member to veteran, and a
+     * master may not promote an officer.
+     *
      * @param guild the guild they are in
-     * @param target the target to check
-     * @param player the player to check
-     * @return if they can promote or not
+     * @param target the member being promoted
+     * @param actor the member doing the promoting
+     * @return if the promotion is allowed
      */
-    public static boolean checkPromote(Guild guild, OfflinePlayer target, OfflinePlayer player) {
-        return (guild.getMember(target.getUniqueId()).getRole().getLevel() - 1) == guild.getMember(player.getUniqueId()).getRole().getLevel();
+    public static boolean checkPromote(Guild guild, OfflinePlayer target, OfflinePlayer actor) {
+        final GuildMember targetMember = guild.getMember(target.getUniqueId());
+        final GuildMember actorMember = guild.getMember(actor.getUniqueId());
+
+        if (targetMember == null || actorMember == null) {
+            return false;
+        }
+
+        final int newLevel = targetMember.getRole().getLevel() - 1;
+        return newLevel > actorMember.getRole().getLevel() && newLevel > MASTER_LEVEL;
     }
 
     /**
@@ -85,35 +126,123 @@ public class RoleUtils {
      * @return same role or not
      */
     public static boolean sameRole(Guild guild, OfflinePlayer player, OfflinePlayer target) {
-        return (guild.getMember(player.getUniqueId()).getRole().getLevel() == guild.getMember(target.getUniqueId()).getRole().getLevel());
+        final GuildMember playerMember = guild.getMember(player.getUniqueId());
+        final GuildMember targetMember = guild.getMember(target.getUniqueId());
+
+        if (playerMember == null || targetMember == null) {
+            return false;
+        }
+
+        return playerMember.getRole().getLevel() == targetMember.getRole().getLevel();
     }
 
     /**
-     * Simple method to promote a user
+     * Resolve the role a member would move to if they were promoted one step.
+     *
+     * <p>Returns null at the top of the hierarchy. That is exactly the case a caller has to refuse:
+     * promoting there resolves to a role that does not exist, and writing that null into the
+     * member's role field makes every later permission check for that member fail.
+     *
+     * @param guildHandler guild handler
+     * @param member the member being promoted
+     * @return the next higher role, or null when the member is already at the top
+     */
+    @Nullable public static GuildRole getNextHigherRole(GuildHandler guildHandler, @Nullable GuildMember member) {
+        if (member == null) {
+            return null;
+        }
+
+        return guildHandler.getGuildRole(member.getRole().getLevel() - 1);
+    }
+
+    /**
+     * Resolve the role a member would move to if they were demoted one step.
+     *
+     * @param guildHandler guild handler
+     * @param member the member being demoted
+     * @return the next lower role, or null when none is configured
+     */
+    @Nullable public static GuildRole getNextLowerRole(GuildHandler guildHandler, @Nullable GuildMember member) {
+        if (member == null) {
+            return null;
+        }
+
+        return guildHandler.getGuildRole(member.getRole().getLevel() + 1);
+    }
+
+    /**
+     * Simple method to promote a user.
+     *
+     * <p>Does nothing when the member is not in the guild or has no rank above them. Callers that
+     * need to tell the user why should check {@link #checkPromote} first, or use
+     * {@link #tryPromote}.
+     *
      * @param guildHandler the guild handler
      * @param guild the guild of the player
-     * @param player the player
+     * @param player the player being promoted
      */
     public static void promote(final GuildHandler guildHandler, final Guild guild, final OfflinePlayer player) {
-        final Permission permission = guildHandler.getGuildsPlugin().getPermissions();
-        GuildMember member = guild.getMember(player.getUniqueId());
-        guildHandler.removeRolePerm(permission, player);
-        member.setRole(guildHandler.getGuildRole(member.getRole().getLevel() - 1));
-        guildHandler.addRolePerm(permission, player);
+        tryPromote(guildHandler, guild, player);
     }
 
     /**
-     * Demote a player
+     * Promote a user, reporting whether the role actually changed.
+     *
+     * @param guildHandler the guild handler
+     * @param guild the guild of the player
+     * @param player the player being promoted
+     * @return true when the role was changed, false when there was no higher role to move to
+     */
+    public static boolean tryPromote(final GuildHandler guildHandler, final Guild guild, final OfflinePlayer player) {
+        final GuildMember member = guild.getMember(player.getUniqueId());
+        final GuildRole nextRole = getNextHigherRole(guildHandler, member);
+
+        if (member == null || nextRole == null) {
+            return false;
+        }
+
+        final Permission permission = guildHandler.getGuildsPlugin().getPermissions();
+        guildHandler.removeRolePerm(permission, player);
+        member.setRole(nextRole);
+        guildHandler.addRolePerm(permission, player);
+        return true;
+    }
+
+    /**
+     * Demote a player.
+     *
+     * <p>Does nothing when the member is not in the guild or has no rank below them. Callers that
+     * need to tell the user why should check first, or use {@link #tryDemote}.
+     *
      * @param guildHandler guild handler
      * @param guild the guild they are in
      * @param player the player being demoted
      */
     public static void demote(final GuildHandler guildHandler, final Guild guild, final OfflinePlayer player) {
+        tryDemote(guildHandler, guild, player);
+    }
+
+    /**
+     * Demote a player, reporting whether the role actually changed.
+     *
+     * @param guildHandler guild handler
+     * @param guild the guild they are in
+     * @param player the player being demoted
+     * @return true when the role was changed, false when there was no lower role to move to
+     */
+    public static boolean tryDemote(final GuildHandler guildHandler, final Guild guild, final OfflinePlayer player) {
+        final GuildMember member = guild.getMember(player.getUniqueId());
+        final GuildRole nextRole = getNextLowerRole(guildHandler, member);
+
+        if (member == null || nextRole == null) {
+            return false;
+        }
+
         final Permission permission = guildHandler.getGuildsPlugin().getPermissions();
-        GuildMember member = guild.getMember(player.getUniqueId());
         guildHandler.removeRolePerm(permission, player);
-        member.setRole(guildHandler.getGuildRole(member.getRole().getLevel() + 1));
+        member.setRole(nextRole);
         guildHandler.addRolePerm(permission, player);
+        return true;
     }
 
     /**
@@ -128,21 +257,31 @@ public class RoleUtils {
     /**
      * Get the role of a user before they were promoted
      * @param guildHandler guild handler
-     * @param member the member being looked at
+     * @param member the member being looked at, which has already been promoted
      * @return the name of the pre promoted role name
      */
-    public static String getPrePromotedRoleName(GuildHandler guildHandler, GuildMember member) {
-        return guildHandler.getGuildRole(member.getRole().getLevel() + 1).getName();
+    @Nullable public static String getPrePromotedRoleName(GuildHandler guildHandler, @Nullable GuildMember member) {
+        if (member == null) {
+            return null;
+        }
+
+        final GuildRole previous = guildHandler.getGuildRole(member.getRole().getLevel() + 1);
+        return previous == null ? null : previous.getName();
     }
 
     /**
      * Get the role of a user before they were demoted
-     * @param guildHandler the guild handler
+     * @param guildHandler guild handler
      * @param member the member being looked at
      * @return name of pre demoted role
      */
-    public static String getPreDemotedRoleName(GuildHandler guildHandler, GuildMember member) {
-        return guildHandler.getGuildRole(member.getRole().getLevel() - 1).getName();
+    @Nullable public static String getPreDemotedRoleName(GuildHandler guildHandler, @Nullable GuildMember member) {
+        if (member == null) {
+            return null;
+        }
+
+        final GuildRole previous = guildHandler.getGuildRole(member.getRole().getLevel() - 1);
+        return previous == null ? null : previous.getName();
     }
 
     /**
@@ -161,7 +300,11 @@ public class RoleUtils {
      * @param member player being checked
      * @return if their role is lower
      */
-    public static boolean isLower(GuildMember target, GuildMember member) {
+    public static boolean isLower(@Nullable GuildMember target, @Nullable GuildMember member) {
+        if (target == null || member == null) {
+            return false;
+        }
+
         return target.getRole().getLevel() < member.getRole().getLevel();
     }
 

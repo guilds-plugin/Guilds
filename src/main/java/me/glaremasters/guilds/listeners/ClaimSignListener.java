@@ -113,7 +113,10 @@ public class ClaimSignListener implements Listener {
 
         Player player = event.getPlayer();
 
-        if (!sign.getLine(0).equalsIgnoreCase("[Guild Claim]"))
+        // Read the configured text, same as onSignChange. This used to hardcode the default
+        // "[Guild Claim]" while the writer used the config value, so changing
+        // claims.claim-sign-text made placed signs unpurchasable.
+        if (!sign.getLine(0).equalsIgnoreCase(settingsManager.getProperty(ClaimSettings.CLAIM_SIGN_TEXT)))
             return;
 
         if (!settingsManager.getProperty(ClaimSettings.CLAIM_SIGNS)) {

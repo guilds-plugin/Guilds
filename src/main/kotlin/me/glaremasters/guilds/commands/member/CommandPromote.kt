@@ -59,24 +59,26 @@ internal class CommandPromote : BaseCommand() {
     fun promote(player: Player, @Conditions("perm:perm=PROMOTE") guild: Guild, @Values("@members") @Single target: String) {
         val user = Bukkit.getOfflinePlayer(target)
 
-        if (user.name.equals(player.name)) {
+        // Compare by UUID. OfflinePlayer#getName() is nullable and follows the player's current
+        // name, so comparing names let a renamed player slip past the self-check.
+        if (RoleUtils.isSamePlayer(user, player)) {
             throw ExpectationNotMet(Messages.PROMOTE__CANT_PROMOTE)
         }
 
-        if (!RoleUtils.inGuild(guild, user) && !RoleUtils.checkPromote(guild, user, player)) {
-            throw ExpectationNotMet(Messages.ERROR__PLAYER_NOT_IN_GUILD, "{player}", target)
-        }
+        val targetMember = guild.getMember(user.uniqueId)
+            ?: throw ExpectationNotMet(Messages.ERROR__PLAYER_NOT_IN_GUILD, "{player}", target)
 
-        if (RoleUtils.isOfficer(guild, user)) {
+        if (!RoleUtils.checkPromote(guild, user, player)) {
             throw ExpectationNotMet(Messages.PROMOTE__CANT_PROMOTE)
         }
 
-        val asMember = guild.getMember(user.uniqueId)
+        val oldRole = targetMember.role.name
 
-        RoleUtils.promote(guildHandler, guild, user)
+        if (!RoleUtils.tryPromote(guildHandler, guild, user)) {
+            throw ExpectationNotMet(Messages.PROMOTE__CANT_PROMOTE)
+        }
 
-        val oldRole = RoleUtils.getPrePromotedRoleName(guildHandler, asMember)
-        val newRole = RoleUtils.getCurrentRoleName(asMember)
+        val newRole = targetMember.role.name
 
         currentCommandIssuer.sendInfo(Messages.PROMOTE__PROMOTE_SUCCESSFUL, "{player}", target, "{old}", oldRole, "{new}", newRole)
 

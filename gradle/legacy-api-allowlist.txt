@@ -1,0 +1,26 @@
+# Bukkit Material constants that are allowed to be missing on Minecraft 1.8.8.
+#
+# The legacyApiProbe Gradle task compiles a generated list of every org.bukkit.Material constant
+# referenced from src/main against the 1.8.8 API. Anything that does not exist there fails the
+# build. This file is the escape hatch for deliberate use.
+#
+# Before adding an entry, ask whether the reference is actually needed:
+#
+#   - Prefer XSeries. The plugin already depends on it and it is relocated in the jar, so
+#     XMaterial.GRAY_STAINED_GLASS_PANE resolves to the right constant on every supported version.
+#     Most entries are avoidable that way.
+#
+#   - If a raw Bukkit constant really is the right call, the surrounding code must be safe on a
+#     1.8.8 server. XSeries reports unsupported materials as null, so a guarded call returns null
+#     and the caller needs a branch. A raw constant has no such guard: it throws
+#     NoSuchFieldError before any code you write can react to it.
+#
+#   - The exception is a reference that is never evaluated on an old server, or that sits inside a
+#     try/catch for LinkageError or NoSuchFieldError. Say so in the comment.
+#
+# Format: one constant name per line. Everything after a # is a comment.
+#
+# Example:
+#   FOO_BAR   # reason this is safe on 1.8.8
+#
+# Currently empty: the plugin references no Bukkit Material constant that 1.8.8 lacks.
