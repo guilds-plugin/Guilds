@@ -1,3 +1,4 @@
+import java.util.UUID
 import com.diffplug.gradle.spotless.FormatExtension
 import com.diffplug.gradle.spotless.SpotlessExtension
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
@@ -187,6 +188,24 @@ tasks.withType<Test>().configureEach {
         events("passed", "skipped", "failed")
         exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
     }
+
+    /*
+     * Run each test JVM in a directory of its own.
+     *
+     * `SqliteSmokeTest` opens a real database at the JDBC URL `DatabaseManager` builds for SQLite, which is
+     * the relative path `plugins/Guilds/guilds.db`. Relative to the project directory that is where a
+     * developer's own server keeps its data, so a test that deleted what it found there would destroy it.
+     * Moving the working directory leaves the production URL exactly as it is, and puts everything the
+     * tests write somewhere disposable.
+     *
+     * Named per invocation, because two builds of the same checkout can be running at once and both
+     * resolve the same relative path. Gradle will not run two tasks of one project in parallel, so the
+     * task name alone would not be enough to separate separate invocations.
+     */
+    val isolatedWorkingDir = File(temporaryDir, "cwd-${UUID.randomUUID()}")
+    doFirst { isolatedWorkingDir.mkdirs() }
+    doLast { isolatedWorkingDir.deleteRecursively() }
+    workingDir = isolatedWorkingDir
 }
 
 /** Runs the measurement-only tests that `check` excludes. See the `excludeTags` above. */

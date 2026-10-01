@@ -36,11 +36,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.mockito.Mockito;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -48,9 +49,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -80,31 +83,115 @@ class SqliteSmokeTest {
      */
     private static final String SQLITE_PATH = "plugins/Guilds/guilds.db";
 
-    private static Path createdDirectory;
-    private static Path databaseFile;
+    /** The database this test opens, which lives under the working directory Gradle gave it. */
+    private static final Path DATABASE_FILE = Paths.get(SQLITE_PATH);
+
+    /**
+     * Whether setup established that this class owns the path it is about to write to.
+     *
+     * <p>Teardown reads it rather than assuming. JUnit runs {@code @AfterAll} even when {@code @BeforeAll}
+     * throws, so an unconditional delete would remove a file whose provenance the failed setup never
+     * checked — which is the original bug, reached a second way.
+     */
+    private static boolean ownsDatabasePath;
 
     @BeforeAll
-    static void prepareDirectory() throws IOException {
+    static void setUpIsolatedDatabase() throws IOException {
+        requireIsolatedWorkingDirectory();
+        // The flag is set only once the claim has succeeded, so a setup that gives up leaves teardown with
+        // nothing it may remove.
+        prepare(Paths.get(""));
+        ownsDatabasePath = true;
+
         installGson();
+    }
 
-        // The JDBC driver does not create parent directories.
-        final Path directory = new File(SQLITE_PATH).toPath().getParent();
-        Files.createDirectories(directory);
-        createdDirectory = directory;
-        databaseFile = new File(SQLITE_PATH).toPath();
+    /**
+     * Removes a directory tree this test created, deepest entry first.
+     *
+     * @param root a directory this test created
+     */
+    private static void deleteTree(Path root) throws IOException {
+        if (!Files.exists(root)) {
+            return;
+        }
+        final List<Path> deepestFirst;
+        try (java.util.stream.Stream<Path> paths = Files.walk(root)) {
+            deepestFirst = paths
+                    .sorted(java.util.Comparator.reverseOrder())
+                    .collect(java.util.stream.Collectors.toList());
+        }
+        for (Path path : deepestFirst) {
+            Files.deleteIfExists(path);
+        }
+    }
 
-        Files.deleteIfExists(databaseFile);
+    /**
+     * Claims {@code base} as this class's own storage: nothing may be there yet, and the directory is made.
+     *
+     * <p>Parameterised on the base so the claim itself can be tested against a pre-existing database, which
+     * is the case that used to destroy one. It asserts rather than calling {@code deleteIfExists} precisely
+     * because the first version of this test tidied up with {@code deleteIfExists}, and was therefore
+     * capable of removing a developer's server database.
+     *
+     * @param base the directory the production SQLite URL resolves against
+     * @throws IOException if the directory could not be created
+     */
+    static void prepare(Path base) throws IOException {
+        final Path database = base.resolve(SQLITE_PATH);
+        assertFalse(Files.exists(database),
+                database + " already exists and is not this test's to overwrite or remove");
+        assertFalse(Files.exists(database.getParent()),
+                database.getParent() + " already exists and is not this test's to remove");
+
+        // The JDBC driver does not make parent directories itself.
+        Files.createDirectories(database.getParent());
+    }
+
+    private static void requireIsolatedWorkingDirectory() {
+        // Fails rather than tidying up. The production SQLite URL is a relative path, so a run whose working
+        // directory is the project directory is about to write to, and would then have deleted, whatever a
+        // developer's own server keeps at `plugins/Guilds/guilds.db`. Gradle gives every test task a private
+        // working directory; an IDE run does not, and this is what says so.
+        assertFalse(Files.exists(Paths.get("build.gradle.kts")),
+                "SqliteSmokeTest must not run with the project directory as its working directory. The"
+                        + " production SQLite URL is relative, so this would open a real server's database."
+                        + " Run it through Gradle, which gives each test task a working directory of its own.");
+
+        assertNothingToOverwrite();
     }
 
     @AfterAll
     static void removeDatabase() throws IOException {
-        if (databaseFile != null) {
-            Files.deleteIfExists(databaseFile);
+        if (!ownsDatabasePath) {
+            // Setup never established that the path was this class's, so there is nothing here it may remove.
+            return;
         }
-        if (createdDirectory != null) {
-            Files.deleteIfExists(createdDirectory);
-            Files.deleteIfExists(createdDirectory.getParent());
+        // Safe because setup asserted, before any test ran, that neither the file nor its directory
+        // existed, so anything present now was made by this class. Gradle also discards the whole working
+        // directory afterwards, though not when the build fails, which is one more reason this is the
+        // only cleanup here.
+        Files.deleteIfExists(DATABASE_FILE);
+        try {
+            Files.deleteIfExists(DATABASE_FILE.getParent());
+        } catch (IOException e) {
+            // Not fatal, and not worth failing a class over: a rollback journal left beside the database
+            // makes the directory non-empty. Gradle discards the whole working directory regardless.
         }
+    }
+
+    /**
+     * Asserts that nothing exists at the production SQLite path, so nothing here can be someone else's.
+     *
+     * <p>An assertion rather than {@code deleteIfExists}, which is what the first version of this test did
+     * and is how it came to be capable of deleting a developer's server database. If this ever fires the
+     * safe move is to stop and say so, not to remove a file whose provenance is unknown.
+     */
+    private static void assertNothingToOverwrite() {
+        assertFalse(Files.exists(DATABASE_FILE),
+                SQLITE_PATH + " already exists and is not this test's to overwrite or remove");
+        assertFalse(Files.exists(DATABASE_FILE.getParent()),
+                DATABASE_FILE.getParent() + " already exists and is not this test's to remove");
     }
 
     private static void installGson() {
@@ -121,8 +208,11 @@ class SqliteSmokeTest {
     private static SettingsManager settingsForSqlite() {
         // The real configuration data, so the properties carry the plugin's own defaults rather than
         // whatever a bare builder would invent.
+        // Nothing saves to this: the database package never calls `save()`, and ConfigMe only writes on
+        // `save()`. The path exists because the builder wants a file, and it resolves inside the working
+        // directory this test was given.
         final SettingsManager settings = SettingsManagerBuilder
-                .withYamlFile(new File("target/unused-sqlite-smoke-config.yml"))
+                .withYamlFile(Paths.get("").toAbsolutePath().resolve("unused-sqlite-smoke-config.yml").toFile())
                 .configurationData(me.glaremasters.guilds.configuration.GuildConfigurationBuilder.buildConfigurationData())
                 .create();
         settings.setProperty(me.glaremasters.guilds.configuration.sections.StorageSettings.STORAGE_TYPE, "sqlite");
@@ -171,6 +261,105 @@ class SqliteSmokeTest {
     }
 
     // ---------------------------------------------------------------------------------------
+    // Filesystem ownership
+    // ---------------------------------------------------------------------------------------
+
+    @Test
+    @DisplayName("the SQLite path resolves inside a directory this test owns")
+    void theSqlitePathResolvesInsideADirectoryThisTestOwns() {
+        // The structural half of the guard, and the one that fails first if the isolated working directory
+        // is ever dropped from the build. Every relative path a test resolves is a path into somebody's
+        // checkout unless something moved the working directory out of the way.
+        final Path work = Paths.get("").toAbsolutePath();
+
+        // The discriminator. `DATABASE_FILE` is relative, so where it resolves follows the working directory,
+        // and the working directory is the only thing keeping it out of a developer's checkout.
+        assertFalse(Files.exists(work.resolve("build.gradle.kts")),
+                "the working directory should be a private one, not the project directory");
+        assertTrue(Files.exists(DATABASE_FILE.getParent()),
+                "setup should have claimed the directory the SQLite URL resolves into");
+    }
+
+    @Test
+    @DisplayName("setup refuses a database that is already there, and leaves it byte-identical")
+    void setupRefusesADatabaseThatIsAlreadyThereAndLeavesItByteIdentical() throws IOException {
+        // The regression, and the one that bites. The first version of this test called `deleteIfExists` on
+        // whatever sat at the production SQLite path, in setup and again in teardown. Run from a checkout
+        // that also runs a server, that path is the server's database, and the test removed it.
+        //
+        // The sentinel has to sit at the production path, not somewhere harmless, or this would pass against
+        // the buggy version too. So the claim is exercised directly against a base directory of our choosing
+        // with a database already in place.
+        final byte[] sentinel = "a real server's guilds.db".getBytes(StandardCharsets.UTF_8);
+        final Path base = Files.createTempDirectory("guilds-sqlite-claim-");
+        final Path database = base.resolve(SQLITE_PATH);
+        Files.createDirectories(database.getParent());
+        Files.write(database, sentinel);
+
+        try {
+            assertThrows(AssertionError.class, () -> prepare(base), "setup must refuse, not tidy up");
+            assertArrayEquals(sentinel, Files.readAllBytes(database),
+                    "a database this test did not create must be left exactly as it was");
+        } finally {
+            // `base` is a directory this test created and nothing else is in it, so it goes as a whole.
+            deleteTree(base);
+        }
+    }
+
+    @Test
+    @DisplayName("opening and closing a real database leaves another one alone")
+    void openingAndClosingARealDatabaseLeavesAnotherOneAlone() throws IOException {
+        // The other half of the original bug: the delete was not the only way to reach a stranger's file.
+        final byte[] sentinel = "a real server's guilds.db".getBytes(StandardCharsets.UTF_8);
+        final Path elsewhere = Files.createTempDirectory("guilds-not-ours-");
+        final Path sentinelFile = elsewhere.resolve("guilds.db");
+
+        try {
+            Files.write(sentinelFile, sentinel);
+
+            try (DatabaseAdapter adapter = open()) {
+                assertTrue(adapter.isConnected());
+                adapter.getGuildAdapter().saveSerialized(Collections.singletonMap(
+                        UUID.randomUUID().toString(), guildData(UUID.randomUUID().toString(), "Written")));
+            }
+
+            assertArrayEquals(sentinel, Files.readAllBytes(sentinelFile),
+                    "a database outside the working directory must be left exactly as it was");
+        } finally {
+            deleteTree(elsewhere);
+        }
+    }
+
+    @Test
+    @DisplayName("everything this test writes lands under the working directory")
+    void everythingThisTestWritesLandsUnderTheWorkingDirectory() throws IOException {
+        try (DatabaseAdapter adapter = open()) {
+            adapter.getGuildAdapter().saveSerialized(Collections.singletonMap(
+                    UUID.randomUUID().toString(), guildData(UUID.randomUUID().toString(), "Owned")));
+        }
+
+        assertTrue(Files.exists(DATABASE_FILE), "the database should be under the working directory");
+
+        final java.util.Set<String> claimed = new java.util.TreeSet<>();
+        try (java.util.stream.Stream<Path> entries = Files.list(DATABASE_FILE.getParent())) {
+            entries.forEach(path -> claimed.add(path.getFileName().toString()));
+        }
+        // Asserted on the whole directory rather than on `*.db`, so a SQLite journal or WAL file beside the
+        // database would show up here instead of passing unnoticed.
+        assertEquals(Collections.singleton("guilds.db"), claimed,
+                "the claimed directory should hold this test's database and nothing else");
+
+        try (java.util.stream.Stream<Path> entries = Files.walk(Paths.get("").toAbsolutePath())) {
+            final List<Path> databases = entries
+                    .filter(Files::isRegularFile)
+                    .filter(path -> path.toString().endsWith(".db"))
+                    .collect(java.util.stream.Collectors.toList());
+            assertEquals(1, databases.size(),
+                    "only this test's own database should exist under the working directory, found " + databases);
+        }
+    }
+
+    // ---------------------------------------------------------------------------------------
     // Lifecycle
     // ---------------------------------------------------------------------------------------
 
@@ -197,8 +386,8 @@ class SqliteSmokeTest {
             assertEquals(1, tables, "smoke_guild should exist in the real database");
         }
 
-        assertTrue(Files.exists(databaseFile), "the database file should be on disk at " + SQLITE_PATH);
-        assertTrue(Files.size(databaseFile) > 0, "the database file should not be empty");
+        assertTrue(Files.exists(DATABASE_FILE), "the database file should be on disk at " + SQLITE_PATH);
+        assertTrue(Files.size(DATABASE_FILE) > 0, "the database file should not be empty");
     }
 
     @Test

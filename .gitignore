@@ -19,7 +19,3 @@ build
 out
 
 **/run/
-
-# `SqliteSmokeTest` opens a real database at the JDBC URL `DatabaseManager` hardcodes, which is
-# relative to the working directory. Cleaned up after itself, but a killed JVM would leave it behind.
-/plugins/
