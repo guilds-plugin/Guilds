@@ -76,7 +76,8 @@ class WorldGuardListener(private val guildHandler: GuildHandler, private val wra
         }
 
         val guild = guildHandler.getGuild(player) ?: return
-        val region = wrapper.getRegions(player.location).firstOrNull { region -> region.id == guild.id.toString() } ?: return
+        val block = clickedBlock ?: return
+        val region = wrapper.getRegions(block.location).firstOrNull { region -> region.id == guild.id.toString() } ?: return
 
         if (!guild.memberHasPermission(player, GuildRolePerm.INTERACT)) {
             setUseInteractedBlock(Event.Result.DENY)
