@@ -33,6 +33,7 @@ import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -145,6 +146,24 @@ class ChallengeHandlerTest {
         handler.removeChallenge(challenge.getId());
 
         assertNull(handler.getChallenge(challenge.getId()));
+    }
+
+    @Test
+    @DisplayName("a side's roster is the players that fought for it")
+    void rosterResolvesToThePlayersOfThatSide() {
+        final UUID challengerId = UUID.randomUUID();
+        final Guild challenger = new Guild(challengerId);
+        final Guild defender = new Guild(UUID.randomUUID());
+        final List<UUID> challengers = new ArrayList<>(List.of(UUID.randomUUID()));
+        final List<UUID> defenders = new ArrayList<>(List.of(UUID.randomUUID()));
+        final GuildChallenge challenge = new GuildChallenge(UUID.randomUUID(), System.currentTimeMillis(),
+                challenger, defender, false, false, false, false, 1, 2,
+                challengers, defenders, arena(), null, null,
+                new LinkedHashMap<>(), new LinkedHashMap<>());
+        final ChallengeHandler handler = handler();
+
+        assertEquals(challengers, handler.rosterOf(new Guild(UUID.fromString(challengerId.toString())), challenge));
+        assertEquals(defenders, handler.rosterOf(defender, challenge));
     }
 
     private static ChallengeHandler handler() {
