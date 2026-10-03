@@ -27,6 +27,7 @@ import ch.jalu.configme.SettingsManager;
 import com.dumptruckman.bukkit.configuration.json.JsonConfiguration;
 import me.glaremasters.guilds.configuration.sections.GuildVaultSettings;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -102,7 +103,11 @@ public class Serialization {
             title = StringUtils.color(settingsManager.getProperty(GuildVaultSettings.VAULT_NAME));
 
             Inventory inventory = Bukkit.createInventory(null, size, title);
-            Map<String, Object> items = json.getConfigurationSection("items").getValues(false);
+            ConfigurationSection itemsSection = json.getConfigurationSection("items");
+            if (itemsSection == null) {
+                return null;
+            }
+            Map<String, Object> items = itemsSection.getValues(false);
             for (Map.Entry<String, Object> item : items.entrySet()) {
                 ItemStack itemstack = (ItemStack) item.getValue();
                 int idx = Integer.parseInt(item.getKey());
