@@ -92,7 +92,9 @@ class MembersGUI(private val guilds: Guilds, private val settingsManager: Settin
         // happened to open this GUI.
         val members = guild.members.toMutableList()
 
-        when (settingsManager.getProperty(GuildInfoMemberSettings.SORT_ORDER).uppercase(Locale.getDefault())) {
+        // Locale.ROOT keeps the match below independent of the server's default locale. None of
+        // these keys contain an "i" today, so this is a guard rather than a fix for a live bug.
+        when (settingsManager.getProperty(GuildInfoMemberSettings.SORT_ORDER).uppercase(Locale.ROOT)) {
             "ROLE" -> members.sortWith(Comparator.comparingInt { g: GuildMember -> g.role.level })
             "NAME" -> members.sortWith(compareBy(GuildMember::name))
             "AGE" -> members.sortWith(Comparator.comparingLong(GuildMember::joinDate))
@@ -111,7 +113,7 @@ class MembersGUI(private val guilds: Guilds, private val settingsManager: Settin
             }
             val status = if (online) settingsManager.getProperty(GuildInfoMemberSettings.MEMBERS_ONLINE) else settingsManager.getProperty(GuildInfoMemberSettings.MEMBERS_OFFLINE)
             val role = guildHandler.getGuildRole(member.role.level)!!
-            val name = member.name
+            val name = member.name ?: "Member"
             val updated = mutableListOf<String>()
 
             lore.forEach { line ->
