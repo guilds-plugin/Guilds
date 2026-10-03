@@ -524,7 +524,12 @@ public class GuildHandler {
         // Deserialize the vaults and add them to the list
         guild.getVaults().forEach(v -> {
             try {
-                vaults.add(Serialization.deserializeInventory(v, settingsManager));
+                Inventory vault = Serialization.deserializeInventory(v, settingsManager);
+                if (vault == null) {
+                    LoggingUtils.warn("Unable to deserialize a vault inventory for guild " + guild.getId() + ". The invalid vault entry will be skipped.");
+                    return;
+                }
+                vaults.add(vault);
             } catch (InvalidConfigurationException e) {
                 LoggingUtils.warn("Unable to deserialize a vault inventory for guild " + guild.getId() + ". The invalid vault entry will be skipped.", e);
             }
@@ -543,6 +548,10 @@ public class GuildHandler {
         if (guild.getVaults() == null) return;
         // Serialize the inventory objects in the cache and add them to a list.
         this.vaults.get(guild).forEach(v -> vaults.add(Serialization.serializeInventory(v)));
+        if (vaults.size() != guild.getVaults().size()) {
+            LoggingUtils.warn("Not every vault inventory of guild " + guild.getId() + " could be serialized. The stored vaults will be left untouched to avoid losing items.");
+            return;
+        }
         // Set the serialized inventory data to the guild's vaults list.
         guild.setVaults(vaults);
     }
