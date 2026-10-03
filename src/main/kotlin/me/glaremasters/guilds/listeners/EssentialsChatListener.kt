@@ -37,10 +37,12 @@ class EssentialsChatListener(private val guildHandler: GuildHandler) : Listener 
 
         if (guild == null) {
             val regex = "(\\{GUILD(?:.*?)})"
-            val formatted = "(\\\\{GUILD_FORMATTED\\\\})"
+            val formatted = "(\\{GUILD_FORMATTED})"
 
-            format = message.replace(formatted, guildHandler.getFormattedPlaceholder(player))
-            format = message.replace(regex.toRegex(), "")
+            // Resolve the placeholder first, otherwise the strip below would eat it
+            message = message.replace(formatted.toRegex(), guildHandler.getFormattedPlaceholder(player))
+            message = message.replace(regex.toRegex(), "")
+            format = message
             return
         }
 
