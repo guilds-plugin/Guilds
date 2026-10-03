@@ -33,7 +33,9 @@ import me.glaremasters.guilds.database.guild.GuildAdapter;
 import me.glaremasters.guilds.utils.LoggingUtils;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 /**
  * A class that implements the DatabaseAdapter interface.
@@ -221,6 +223,15 @@ public final class DatabaseAdapter implements AutoCloseable {
         }
 
         DatabaseBackend configuredBackend = DatabaseBackend.getByBackendName(backendName.toLowerCase(Locale.ROOT));
-        return configuredBackend == null ? DatabaseBackend.JSON : configuredBackend;
+
+        if (configuredBackend == null) {
+            LoggingUtils.warn("storage.storage-type must be one of "
+                    + Arrays.stream(DatabaseBackend.values()).map(DatabaseBackend::getBackendName).collect(Collectors.joining(", "))
+                    + " (found '" + backendName + "'). Falling back to " + DatabaseBackend.JSON.getBackendName()
+                    + ". Any data saved in the configured database will not be loaded.");
+            return DatabaseBackend.JSON;
+        }
+
+        return configuredBackend;
     }
 }
