@@ -73,7 +73,7 @@ internal class CommandAdminRemovePlayer : BaseCommand() {
         guildHandler.removeFromMemberCache(user.uniqueId)
 
         if (user.isOnline) {
-            currentCommandManager.getCommandIssuer(user).sendInfo(Messages.ADMIN__PLAYER_REMOVED)
+            currentCommandManager.getCommandIssuer(user).sendInfo(Messages.ADMIN__PLAYER_REMOVED, "{guild}", guild.name)
         }
 
         guildHandler.removeFromChat(user.uniqueId)
