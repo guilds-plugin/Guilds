@@ -113,7 +113,9 @@ class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCo
                     ?: throw InvalidCommandArgument(Messages.ERROR__NO_GUILD)
             guild
         }
-        commandManager.commandContexts.registerContext(Arena::class.java) { c -> arenaHandler.getArena(c.popFirstArg()).get() }
+        commandManager.commandContexts.registerContext(Arena::class.java) { c ->
+            arenaHandler.getArena(c.popFirstArg()).orElseThrow { InvalidCommandArgument(Messages.ARENA__NO_EXIST) }
+        }
     }
 
     private fun loadConditions(guildHandler: GuildHandler) {
