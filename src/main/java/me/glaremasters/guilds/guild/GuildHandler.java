@@ -63,6 +63,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -113,6 +114,14 @@ public class GuildHandler {
         for (Guild guild : guilds.values()) {
             // Create the vault cache
             createVaultCache(guild);
+            // A guild whose tier could not be resolved when it was last saved has a null tier.
+            // Gson omits null fields, so the tier key is missing from the stored JSON entirely.
+            // Reading through it here would throw and take the whole plugin down at startup, so
+            // put the guild back on the lowest tier and say so.
+            if (guild.getTier() == null) {
+                guild.setTier(getLowestGuildTier());
+                LoggingUtils.severe("The guild (" + guild.getName() + ") had no tier saved. To prevent issues, they've been automatically set to the lowest tier level on the server.");
+            }
             // Create a temp tier object for the guild
             GuildTier tier = getGuildTier(guild.getTier().getLevel());
             if (tier != null) {
@@ -200,6 +209,28 @@ public class GuildHandler {
                     .useBuffs(tierSec.getBoolean(key + ".use-buffs", true))
                     .permissions(tierSec.getStringList(key + ".permissions"))
                     .build());
+        }
+
+        warnAboutSuspiciousTiers();
+    }
+
+    /**
+     * Warns about a tier ladder that is likely a typo. Deliberately does not prevent the plugin
+     * from starting: an owner with an odd ladder should still get a working server, and refusing
+     * to load would be a worse outcome than the problem being reported.
+     */
+    private void warnAboutSuspiciousTiers() {
+        if (tiers.isEmpty()) {
+            LoggingUtils.severe("No guild tiers were loaded from tiers.yml. Every guild will be treated as being at the top tier.");
+            return;
+        }
+
+        final Set<Integer> levels = tiers.stream().map(GuildTier::getLevel).collect(Collectors.toSet());
+        if (levels.size() != tiers.size()) {
+            LoggingUtils.severe("tiers.yml contains more than one tier with the same level: "
+                    + tiers.stream().map(GuildTier::getLevel).collect(Collectors.toList())
+                    + ". Guilds upgrade to the first tier loaded for a level, so the others are unreachable. "
+                    + "Give every tier a distinct level.");
         }
     }
 
@@ -447,22 +478,58 @@ public class GuildHandler {
     }
 
     /**
-     * Returns the max tier level
+     * Returns the highest tier level configured in tiers.yml.
      *
-     * @return the max tier level
+     * <p>This used to return {@code tiers.size()}, the number of tiers. The two are only equal
+     * while the levels happen to be numbered 1..N, so the old value disagreed with
+     * {@link #getGuildTier(int)} the moment an owner deleted or renumbered a tier.
+     *
+     * @return the highest configured tier level, or 0 if no tiers are loaded
      */
     public int getMaxTierLevel() {
-        return tiers.size();
+        return tiers.stream().mapToInt(GuildTier::getLevel).max().orElse(0);
+    }
+
+    /**
+     * Returns the tier a guild would move to next, or null when it is already at the top.
+     *
+     * <p>The next tier is the lowest tier <em>above</em> the guild's current level, not the tier
+     * numbered exactly one higher. That keeps a ladder with a gap in it usable: with levels
+     * 1, 2, 4 and 5 a guild on 2 moves to 4. It also means {@link #upgradeTier(Guild)} can no
+     * longer be handed a level that does not exist and store null.
+     *
+     * @param guild the guild to check
+     * @return the tier above the guild's current one, or null if there is none
+     */
+    @Nullable public GuildTier getNextGuildTier(@NotNull Guild guild) {
+        return nextTierAbove(tiers, guild.getTier().getLevel());
+    }
+
+    /**
+     * Finds the lowest tier above the given level.
+     *
+     * @param tiers the configured tiers
+     * @param currentLevel the level to look above
+     * @return the next tier, or null if the level is already the highest
+     */
+    @Nullable static GuildTier nextTierAbove(@NotNull List<GuildTier> tiers, int currentLevel) {
+        return tiers.stream()
+                .filter(tier -> tier.getLevel() > currentLevel)
+                .min((a, b) -> Integer.compare(a.getLevel(), b.getLevel()))
+                .orElse(null);
     }
 
     /**
      * Checks if a guild has reached the maximum tier level.
      *
+     * <p>Derived from {@link #getNextGuildTier(Guild)} so this and the upgrade path can never
+     * disagree about whether a guild may upgrade.
+     *
      * @param guild the guild to check
      * @return true if the guild has reached the maximum tier level, false otherwise
      */
     public boolean isMaxTier(Guild guild) {
-        return guild.getTier().getLevel() >= getMaxTierLevel();
+        return getNextGuildTier(guild) == null;
     }
 
     /**
@@ -484,12 +551,23 @@ public class GuildHandler {
     }
 
     /**
-     * Upgrades the tier of a guild.
+     * Upgrades the tier of a guild to the next tier above its current one.
+     *
+     * <p>Refuses and logs when the guild is already at the top. This previously did
+     * {@code getGuildTier(level + 1)}, which returns null whenever that exact level is absent, and
+     * then assigned the null to the guild. Gson omits null fields, so the tier vanished from the
+     * saved JSON and the guild could not be loaded again.
      *
      * @param guild the guild whose tier will be upgraded
      */
     public void upgradeTier(Guild guild) {
-        guild.setTier(getGuildTier(guild.getTier().getLevel() + 1));
+        final GuildTier next = getNextGuildTier(guild);
+        if (next == null) {
+            LoggingUtils.warn("Guild " + guild.getId() + " is already at the highest tier (level "
+                    + guild.getTier().getLevel() + "). The upgrade was ignored.");
+            return;
+        }
+        guild.setTier(next);
     }
 
     /**

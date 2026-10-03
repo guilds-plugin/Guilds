@@ -53,7 +53,9 @@ class TicketListener(private val guilds: Guilds, private val guildHandler: Guild
             return
         }
 
-        if (guildHandler.isMaxTier(guild)) {
+        // Resolve the target tier before the ticket is taken. The ticket used to be consumed first, so a
+        // guild that could not be upgraded lost the ticket and the upgrade at the same time.
+        if (guildHandler.getNextGuildTier(guild) == null) {
             guilds.commandManager.getCommandIssuer(player).sendInfo(Messages.UPGRADE__TIER_MAX)
             return
         }
