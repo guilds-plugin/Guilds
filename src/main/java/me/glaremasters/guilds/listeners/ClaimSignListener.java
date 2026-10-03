@@ -40,6 +40,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.codemc.worldguardwrapper.WorldGuardWrapper;
+import org.codemc.worldguardwrapper.region.IWrappedRegion;
 import org.codemc.worldguardwrapper.selection.ICuboidSelection;
 
 import java.util.OptionalDouble;
@@ -154,11 +155,21 @@ public class ClaimSignListener implements Listener {
             return;
         }
 
-        ClaimUtils.getClaim(wrapper, player, sign.getLine(1)).ifPresent(region -> {
-            ICuboidSelection selection = ClaimUtils.getSelection(wrapper, player, region.getId());
-            wrapper.removeRegion(player.getWorld(), region.getId());
-            ClaimUtils.createClaim(wrapper, guild, selection);
-        });
+        IWrappedRegion existingRegion = ClaimUtils.getClaim(wrapper, player, sign.getLine(1)).orElse(null);
+
+        // The region can be deleted or renamed between the sign being placed and bought,
+        // so resolve the selection before touching anything. Without it there is no claim
+        // to create, and the player must not be charged for one they never got.
+        if (existingRegion == null) {
+            guilds.getCommandManager().getCommandIssuer(player).sendInfo(Messages.CLAIM__SIGN_INVALID_REGION);
+            return;
+        }
+
+        ICuboidSelection selection = ClaimUtils.getSelection(wrapper, player, existingRegion.getId());
+
+        wrapper.removeRegion(player.getWorld(), existingRegion.getId());
+
+        ClaimUtils.createClaim(wrapper, guild, selection);
 
         ClaimUtils.getGuildClaim(wrapper, player, guild).ifPresent(region -> {
             ClaimUtils.addOwner(region, guild);
