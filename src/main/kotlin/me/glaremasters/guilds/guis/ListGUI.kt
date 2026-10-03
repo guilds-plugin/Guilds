@@ -50,9 +50,11 @@ import kotlin.collections.ArrayList
  * take the whole `/guilds list` GUI down for every player whenever a single guild had an
  * unresolvable master.
  *
+ * Shared with the placeholder expansion, which resolves the master's name for `%guilds_master%`.
+ *
  * @return the master's name, or `"Master"` when it cannot be resolved
  */
-private fun Guild.guildMasterName(): String = this.guildMaster?.name ?: "Master"
+internal fun Guild.guildMasterName(): String = this.guildMaster?.name ?: "Master"
 
 class ListGUI(private val guilds: Guilds, private val settingsManager: SettingsManager, private val guildHandler: GuildHandler) {
     private val items: MutableList<GuiItem>
@@ -90,7 +92,9 @@ class ListGUI(private val guilds: Guilds, private val settingsManager: SettingsM
     private fun createListItems(gui: PaginatedGui, player: Player) {
         val guilds = guildHandler.guilds.values.toMutableList()
 
-        when (settingsManager.getProperty(GuildListSettings.GUILD_LIST_SORT).uppercase(Locale.getDefault())) {
+        // Locale.ROOT: on a Turkish-locale JVM the default locale uppercases "i" to "İ" and misses
+        // the match below.
+        when (settingsManager.getProperty(GuildListSettings.GUILD_LIST_SORT).uppercase(Locale.ROOT)) {
             "TIER" -> guilds.sortWith(Comparator.comparingInt { g: Guild -> g.tier.level }.reversed())
             "MEMBERS" -> guilds.sortWith(Comparator.comparingInt { g: Guild -> g.members.size }.reversed())
             "BALANCE" -> guilds.sortWith(Comparator.comparingDouble { obj: Guild -> obj.balance }.reversed())

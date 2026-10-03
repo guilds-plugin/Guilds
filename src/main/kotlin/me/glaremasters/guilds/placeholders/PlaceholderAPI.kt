@@ -27,6 +27,7 @@ import me.clip.placeholderapi.expansion.PlaceholderExpansion
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.exte.rounded
 import me.glaremasters.guilds.guild.GuildHandler
+import me.glaremasters.guilds.guis.guildMasterName
 import me.glaremasters.guilds.utils.EconomyUtils
 import org.bukkit.entity.Player
 import java.util.*
@@ -56,7 +57,8 @@ class PlaceholderAPI(private val guildHandler: GuildHandler) : PlaceholderExpans
         val api = Guilds.getApi() ?: return ""
 
         // Check formatted here because this needs to return before we check the guild
-        if (arg.lowercase(Locale.getDefault()) == "formatted") {
+        // Locale.ROOT: on a Turkish-locale JVM the default locale lowercases "I" to a dotless "ı"
+        if (arg.lowercase(Locale.ROOT) == "formatted") {
             return guildHandler.getFormattedPlaceholder(player)
         }
 
@@ -179,10 +181,12 @@ class PlaceholderAPI(private val guildHandler: GuildHandler) : PlaceholderExpans
             return member.name ?: ""
         }
 
-        return when (arg.lowercase(Locale.getDefault())) {
+        // Locale.ROOT: on a Turkish-locale JVM the default locale lowercases "I" to a dotless "ı", so
+        // "ID" would miss the branch below and fall through to ""
+        return when (arg.lowercase(Locale.ROOT)) {
             "id" -> guild.id.toString()
             "name" -> guild.name
-            "master" -> guild.guildMaster.asOfflinePlayer.name.toString()
+            "master" -> guild.guildMasterName()
             "member_count" -> guild.members.size.toString()
             "prefix" -> guild.prefix
             "members_online" -> guild.onlineMembers.size.toString()
