@@ -79,6 +79,12 @@ internal class CommandWar : BaseCommand() {
         val challenge = challengeHandler.getChallenge(guild) ?: throw ExpectationNotMet(Messages.WAR__NO_PENDING_CHALLENGE)
         val challenger = challenge.challenger
 
+        // A challenge is answered by the guild being challenged. The challenger answering its own
+        // challenge would accept or deny the war without the defender ever consenting to it.
+        if (challenge.defender != guild) {
+            throw ExpectationNotMet(Messages.WAR__NO_PENDING_CHALLENGE)
+        }
+
         if (challenge.isAccepted) {
             throw ExpectationNotMet(Messages.WAR__ALREADY_ACCEPTED)
         }
@@ -176,6 +182,12 @@ internal class CommandWar : BaseCommand() {
     fun deny(player: Player, @Conditions("perm:perm=INITIATE_WAR") guild: Guild) {
         val challenge = challengeHandler.getChallenge(guild) ?: throw ExpectationNotMet(Messages.WAR__NO_PENDING_CHALLENGE)
         val challenger = challenge.challenger
+
+        // Only the challenged guild may deny, otherwise the challenger could clear its own
+        // challenge and free the arena while pretending the defender declined it.
+        if (challenge.defender != guild) {
+            throw ExpectationNotMet(Messages.WAR__NO_PENDING_CHALLENGE)
+        }
 
         val event = GuildWarDeclineEvent(player, challenger, guild)
         Bukkit.getPluginManager().callEvent(event)
