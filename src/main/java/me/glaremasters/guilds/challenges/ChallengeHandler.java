@@ -384,25 +384,42 @@ public class ChallengeHandler {
      * @param challenge the challenge
      */
     public void giveRewards(@NotNull SettingsManager settingsManager, @NotNull GuildChallenge challenge) {
-        List<UUID> winners;
-        UUID teamWinner = challenge.getWinner().getId();
-        if (teamWinner == challenge.getChallenger().getId()) {
-            winners = challenge.getChallengePlayers();
-        } else {
-            winners = challenge.getDefendPlayers();
-        }
-        List<String> commands = settingsManager.getProperty(WarSettings.WAR_REWARDS);
         if (settingsManager.getProperty(WarSettings.WAR_REWARDS_ENABLED)) {
-            winners.forEach(p -> {
-                Player player = Bukkit.getPlayer(p);
-                if (player != null) {
-                    commands.forEach(c -> {
-                        c = c.replace("{player}", player.getName());
-                        Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), c);
-                    });
-                }
-            });
+            dispatchRewards(rosterOf(challenge.getWinner(), challenge), settingsManager.getProperty(WarSettings.WAR_REWARDS));
         }
+    }
+
+    /**
+     * Give the rewards to the loser
+     * @param settingsManager the settings manager
+     * @param challenge the challenge
+     */
+    public void giveLoserRewards(@NotNull SettingsManager settingsManager, @NotNull GuildChallenge challenge) {
+        if (settingsManager.getProperty(WarSettings.WAR_LOSER_REWARDS_ENABLED)) {
+            dispatchRewards(rosterOf(challenge.getLoser(), challenge), settingsManager.getProperty(WarSettings.WAR_LOSER_REWARDS));
+        }
+    }
+
+    /**
+     * Get the players that fought on the given Guild's side
+     * @param guild the guild to look up
+     * @param challenge the challenge
+     * @return the roster that belongs to the guild
+     */
+    @NotNull List<UUID> rosterOf(@NotNull Guild guild, @NotNull GuildChallenge challenge) {
+        return guild.getId().equals(challenge.getChallenger().getId())
+                ? challenge.getChallengePlayers()
+                : challenge.getDefendPlayers();
+    }
+
+    private void dispatchRewards(@NotNull List<UUID> roster, @NotNull List<String> commands) {
+        roster.forEach(p -> {
+            Player player = Bukkit.getPlayer(p);
+            if (player != null) {
+                commands.forEach(c ->
+                        Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), c.replace("{player}", player.getName())));
+            }
+        });
     }
 
     /**
@@ -444,6 +461,7 @@ public class ChallengeHandler {
             teleportRemaining(challenge);
             // Run the reward commands
             giveRewards(settingsManager, challenge);
+            giveLoserRewards(settingsManager, challenge);
             // Execute post war commands
             if (settingsManager.getProperty(WarSettings.ENABLE_POST_CHALLENGE_COMMANDS)) {
                 settingsManager.getProperty(WarSettings.POST_CHALLENGE_COMMANDS).forEach(c -> {
