@@ -88,16 +88,20 @@ internal class CommandUpgrade : BaseCommand() {
                     throw ExpectationNotMet(Messages.UPGRADE__NOT_ENOUGH_MONEY, "{needed}", EconomyUtils.format(cost - guild.balance))
                 }
 
+                val event = GuildUpgradeEvent(player, guild, tier)
+                Bukkit.getPluginManager().callEvent(event)
+
+                if (event.isCancelled) {
+                    actionHandler.removeAction(player)
+                    return
+                }
+
                 guild.balance = guild.balance - cost
 
                 guildHandler.removeGuildPermsFromAll(permission, guild)
                 guildHandler.upgradeTier(guild)
                 guildHandler.addGuildPermsToAll(permission, guild)
                 currentCommandIssuer.sendInfo(Messages.UPGRADE__SUCCESS)
-
-
-                val event = GuildUpgradeEvent(player, guild, guild.tier)
-                Bukkit.getPluginManager().callEvent(event)
 
                 actionHandler.removeAction(player)
             }
