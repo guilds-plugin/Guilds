@@ -92,6 +92,10 @@ internal class CommandWar : BaseCommand() {
         val event = GuildWarAcceptEvent(player, guild, challenger)
         Bukkit.getPluginManager().callEvent(event)
 
+        if (event.isCancelled) {
+            return
+        }
+
         val joinTime = settingsManager.getProperty(WarSettings.JOIN_TIME)
         val readyTime = settingsManager.getProperty(WarSettings.READY_TIME)
 
@@ -191,6 +195,10 @@ internal class CommandWar : BaseCommand() {
 
         val event = GuildWarDeclineEvent(player, challenger, guild)
         Bukkit.getPluginManager().callEvent(event)
+
+        if (event.isCancelled) {
+            return
+        }
 
         challenger.sendMessage(currentCommandManager, Messages.WAR__CHALLENGE_DENIED_CHALLENGER, "{guild}", guild.name)
         guild.sendMessage(currentCommandManager, Messages.WAR__CHALLENGE_DENIED_DEFENDER, "{guild}", challenger.name)
