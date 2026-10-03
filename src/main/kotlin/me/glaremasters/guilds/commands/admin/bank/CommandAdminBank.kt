@@ -65,8 +65,8 @@ internal class CommandAdminBank : BaseCommand() {
     @Syntax("%guild %amount")
     @CommandCompletion("@guilds")
     fun deposit(issuer: CommandIssuer, @Flags("other") @Values("@guilds") guild: Guild, amount: Double) {
-        if (amount < 0) {
-            return
+        if (!amount.isFinite() || amount <= 0) {
+            throw ExpectationNotMet(Messages.SYNTAX__AMOUNT)
         }
 
         val rounded = amount.rounded()
@@ -83,15 +83,15 @@ internal class CommandAdminBank : BaseCommand() {
     @Syntax("%guild %amount")
     @CommandCompletion("@guilds")
     fun withdraw(issuer: CommandIssuer, @Flags("other") @Values("@guilds") guild: Guild, amount: Double) {
-        if (amount < 0) {
-            return
+        if (!amount.isFinite() || amount <= 0) {
+            throw ExpectationNotMet(Messages.SYNTAX__AMOUNT)
         }
 
         val rounded = amount.rounded()
 
         val total = guild.balance - rounded
 
-        if (guild.balance < total) {
+        if (total < 0) {
             throw ExpectationNotMet(Messages.BANK__NOT_ENOUGH_BANK)
         }
 
