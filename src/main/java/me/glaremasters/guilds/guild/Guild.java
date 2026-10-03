@@ -544,6 +544,9 @@ public class Guild {
         final GuildMember currentGuildMaster = getMember(getGuildMaster().getUuid());
         final GuildMember newGuildMaster = getMember(master.getUniqueId());
 
+        // Bail out before touching permissions if either player is not a member of this guild
+        if (currentGuildMaster == null || newGuildMaster == null) return;
+
         // Get the current master's guild role
         final GuildRole guildMasterRole = currentGuildMaster.getRole();
 

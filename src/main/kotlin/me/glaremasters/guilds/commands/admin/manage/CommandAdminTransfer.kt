@@ -65,6 +65,10 @@ internal class CommandAdminTransfer : BaseCommand() {
             throw ExpectationNotMet(Messages.ERROR__TRANSFER_SAME_PERSON)
         }
 
+        if (guild.getMember(transfer.uniqueId) == null) {
+            throw ExpectationNotMet(Messages.ERROR__PLAYER_NOT_IN_GUILD, "{player}", transfer.name.toString())
+        }
+
         guild.transferGuildAdmin(transfer, guildHandler, permission)
         currentCommandIssuer.sendInfo(Messages.TRANSFER__SUCCESS)
     }
