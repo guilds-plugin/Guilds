@@ -50,7 +50,9 @@ internal class CommandAdminUpgrade : BaseCommand() {
     @CommandCompletion("@guilds")
     @Syntax("%guild")
     fun upgrade(issuer: CommandIssuer, @Flags("other") @Values("@guilds") guild: Guild) {
-        if (guildHandler.isMaxTier(guild)) {
+        // Resolve the target tier before touching permissions. upgradeTier refuses when there is no
+        // tier above this one, so there is nothing left to guard against here.
+        if (guildHandler.getNextGuildTier(guild) == null) {
             throw ExpectationNotMet(Messages.UPGRADE__TIER_MAX)
         }
 
