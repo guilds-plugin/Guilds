@@ -31,83 +31,27 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * A provider interface for guild data management.
+ * Stores guilds in whichever backend is configured.
  */
 public interface GuildProvider {
 
-    /**
-     * Creates the container that will hold guilds.
-     *
-     * @param tablePrefix the prefix, if any, to use.
-     * @throws IOException if an error occurs while creating the container.
-     */
+    /** Creates the guild table, or the guild data folder on the JSON backend. */
     void createContainer(@Nullable String tablePrefix) throws IOException;
 
-    /**
-     * Checks whether a guild with the specified id exists.
-     *
-     * @param tablePrefix the prefix, if any, to use.
-     * @param id          the id of the guild to check.
-     * @return true if the guild exists, false otherwise.
-     * @throws IOException if an error occurs while checking for the guild.
-     */
     boolean guildExists(@Nullable String tablePrefix, @NotNull String id) throws IOException;
-
-    /**
-     * Gets all guild IDs from the database.
-     *
-     * @param tablePrefix the prefix, if any, to use.
-     * @return a list of all guild IDs in the database.
-     * @throws IOException if an error occurs while retrieving the guild IDs.
-     */
 
     List<String> getAllGuildIds(@Nullable String tablePrefix) throws IOException;
 
-    /**
-     * Gets all guilds from the database.
-     *
-     * @param tablePrefix the prefix, if any, to use.
-     * @return a list of all guilds in the database.
-     * @throws IOException if an error occurs while retrieving the guilds.
-     */
     List<Guild> getAllGuilds(@Nullable String tablePrefix) throws IOException;
 
-    /**
-     * Gets a single guild by id.
-     *
-     * @param tablePrefix the prefix, if any, to use.
-     * @param id          the id of the guild to retrieve.
-     * @return the found guild or null if no guild with the specified id was found.
-     * @throws IOException if an error occurs while retrieving the guild.
-     */
+    /** Returns null when no guild has that id, so callers have to null-check. */
     Guild getGuild(@Nullable String tablePrefix, @NotNull String id) throws IOException;
 
-    /**
-     * Saves a new Guild to the database.
-     *
-     * @param tablePrefix the prefix, if any, to use.
-     * @param id          the id of the new guild.
-     * @param data        the data of the new guild.
-     * @throws IOException if an error occurs while saving the guild.
-     */
+    /** Stores a new guild; data is the guild serialised by Gson. */
     void createGuild(@Nullable String tablePrefix, String id, String data) throws IOException;
 
-    /**
-     * Updates a Guild in the database.
-     *
-     * @param tablePrefix the prefix, if any, to use.
-     * @param id          the id of the guild to update.
-     * @param data        the updated data of the guild.
-     * @throws IOException if an error occurs while updating the guild.
-     */
+    /** Replaces an existing guild; data is the guild serialised by Gson. */
     void updateGuild(@Nullable String tablePrefix, @NotNull String id, @NotNull String data) throws IOException;
 
-    /**
-     * Deletes a guild from the database.
-     *
-     * @param tablePrefix the prefix, if any, to use
-     * @param id          the guild id to delete
-     * @throws IOException if an I/O error occurs while deleting the guild
-     */
     void deleteGuild(@Nullable String tablePrefix, @NotNull String id) throws IOException;
 }
