@@ -170,14 +170,12 @@ class PlaceholderAPI(private val guildHandler: GuildHandler) : PlaceholderExpans
 
         val guild = api.getGuild(player) ?: return ""
 
-        if (arg.startsWith("member_")) {
-            val updated = try {
-                arg.replace("member_", "").toInt()
-            } catch (ex: NumberFormatException) {
-                return ""
-            }
-
-            val member = guild.members.toList().getOrNull(updated - 1) ?: return ""
+        // "member_count" also starts with "member_", so this branch has to check the suffix is
+        // numeric before it claims the arg. Without that, the "member_count" case in the when below
+        // is unreachable and %guilds_member_count% resolves to an empty string.
+        if (arg.startsWith("member_") && arg.removePrefix("member_").all(Char::isDigit)) {
+            val position = arg.removePrefix("member_").toIntOrNull() ?: return ""
+            val member = guild.members.toList().getOrNull(position - 1) ?: return ""
             return member.name ?: ""
         }
 
