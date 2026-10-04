@@ -42,7 +42,8 @@ import net.milkbowl.vault.permission.Permission
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 
-// todo Fix the logic on this because what if you force remove the guild master?
+// An admin cannot remove a guild's own master: the guild would be left with an owner who is not in
+// it, which nothing can recover from. Transfer the guild first, or remove the guild itself.
 @CommandAlias("%guilds")
 internal class CommandAdminRemovePlayer : BaseCommand() {
     @Dependency lateinit var guilds: Guilds
@@ -62,6 +63,13 @@ internal class CommandAdminRemovePlayer : BaseCommand() {
 
         if (event.isCancelled) {
             return
+        }
+
+        // Checked before anything is mutated. Removing the master used to leave guildMaster
+        // pointing at somebody who is no longer a member, after which every later read of it threw
+        // and the guild could never be transferred to anyone again.
+        if (guild.isMaster(user)) {
+            throw ExpectationNotMet(Messages.ADMIN__CANT_REMOVE_MASTER, "{player}", user.name ?: name, "{guild}", guild.name)
         }
 
         ClaimUtils.kickMember(user, player, guild, settingsManager)

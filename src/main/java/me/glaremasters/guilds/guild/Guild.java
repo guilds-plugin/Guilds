@@ -28,6 +28,8 @@ import co.aikar.commands.CommandManager;
 import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.configuration.sections.GuildListSettings;
 import me.glaremasters.guilds.messages.Messages;
+import me.glaremasters.guilds.utils.LoggingUtils;
+import me.glaremasters.guilds.utils.RoleUtils;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -222,18 +224,37 @@ public class Guild {
 
     /**
      * Remove a member by their GuildMember object
+     *
+     * <p>Refuses to remove the guild master. {@code guildMaster} is a bare UUID field that nothing
+     * here keeps in sync, so removing the master used to leave it pointing at somebody who was no
+     * longer a member. {@link #getGuildMaster()} then returned null, every later read of it threw,
+     * and {@link #tryTransferGuildAdmin} refused forever — so an admin could never hand the guild to
+     * anyone else. Transfer ownership first, or remove the guild.
+     *
      * @param guildMember the guildmember to remove
+     * @return true if the member was removed, false if they are the guild master
      */
-    public void removeMember(GuildMember guildMember){
-        members.remove(guildMember);
+    public boolean removeMember(GuildMember guildMember) {
+        if (guildMember == null) {
+            return false;
+        }
+
+        if (guildMember.equals(guildMaster)) {
+            LoggingUtils.severe("Refused to remove the guild master (" + guildMember.getUuid()
+                    + ") from " + getName() + ". Transfer the guild first, or remove the guild itself.");
+            return false;
+        }
+
+        return members.remove(guildMember);
     }
 
     /**
      * Remove a member using it's OfflinePlayer object
      * @param player the OfflinePlayer to remove
+     * @return true if the member was removed, false if they are the guild master
      */
-    public void removeMember(OfflinePlayer player){
-        removeMember(getMember(player.getUniqueId()));
+    public boolean removeMember(OfflinePlayer player){
+        return removeMember(getMember(player.getUniqueId()));
     }
 
     /**
@@ -535,36 +556,60 @@ public class Guild {
 
     /**
      * Administration method to move a guild to a new user
+     *
+     * <p>Refuses rather than half-applying, so a caller can tell the difference between a transfer
+     * that happened and one that did not. Both destination roles are resolved before any permission
+     * is touched: {@link GuildHandler#getGuildRole(int)} is nullable and these are hardcoded ladder
+     * positions, so a {@code roles.yml} with a gap — master 0, officer 2, member 3, nothing at 1 —
+     * used to store a null role here. Gson omits null fields, so the {@code role} key then vanished
+     * from the saved guild and {@code loadGuilds} threw on the next boot.
+     *
+     * <p>Named for the {@code tryPromote}/{@code tryDemote} convention in {@link RoleUtils}: do
+     * nothing and report false when the preconditions are not met.
+     *
      * @param master the new leader of the guild
      * @param handler guild handler
      * @param permission vault permissions
+     * @return true if the guild was transferred, false if it was left untouched
      */
-    public void transferGuildAdmin(final OfflinePlayer master, final GuildHandler handler, final Permission permission) {
+    public boolean tryTransferGuildAdmin(final OfflinePlayer master, final GuildHandler handler, final Permission permission) {
         // Get the current and new guild master
         final GuildMember currentGuildMaster = getMember(getGuildMaster().getUuid());
         final GuildMember newGuildMaster = getMember(master.getUniqueId());
 
         // Bail out before touching permissions if either player is not a member of this guild
-        if (currentGuildMaster == null || newGuildMaster == null) return;
+        if (currentGuildMaster == null || newGuildMaster == null) return false;
 
         // Get the current master's guild role
         final GuildRole guildMasterRole = currentGuildMaster.getRole();
+
+        // Resolve both roles up front. Both are @Nullable and both are arithmetic on the ladder.
+        final GuildRole demotedRole = handler.getGuildRole(guildMasterRole.getLevel() + 1);
+        final GuildRole promotedRole = handler.getGuildRole(0);
+
+        if (demotedRole == null || promotedRole == null) {
+            LoggingUtils.severe("Refused to transfer " + getName() + ": roles.yml has no role at level "
+                    + (guildMasterRole.getLevel() + 1) + " or at level 0, so the demoted or promoted"
+                    + " member would be left with no role.");
+            return false;
+        }
 
         // Remove old role perms from both players
         handler.removeRolePerm(permission, currentGuildMaster.getAsOfflinePlayer());
         handler.removeRolePerm(permission, newGuildMaster.getAsOfflinePlayer());
 
         // Set current master to new master's role
-        currentGuildMaster.setRole(handler.getGuildRole(guildMasterRole.getLevel() + 1));
+        currentGuildMaster.setRole(demotedRole);
 
         // Set new master to current master role
-        newGuildMaster.setRole(handler.getGuildRole(0));
+        newGuildMaster.setRole(promotedRole);
 
         // Set updated role perms for both players
         handler.addRolePerm(permission, currentGuildMaster.getAsOfflinePlayer());
         handler.addRolePerm(permission, newGuildMaster.getAsOfflinePlayer());
 
         setGuildMaster(newGuildMaster);
+        return true;
     }
 
     /**
