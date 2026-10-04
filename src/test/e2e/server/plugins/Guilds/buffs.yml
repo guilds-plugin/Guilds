@@ -1,0 +1,75 @@
+# Guild buff configuration for the Plugwright end-to-end environment.
+#
+# Two buffs instead of the nine defaults, so the buff GUI fits on one page and every assertion
+# can name an exact item. Both are behind the same test-only permission node, which the suite
+# grants and revokes explicitly.
+
+guild-buffs:
+  gui-name: "Guild Buffs"
+
+  # Short enough that "bought a buff, try again shortly" is observable and then expires.
+  cooldown: 3
+
+  # With stacking off, a click while any potion effect is active returns silently. Tests buy
+  # buffs on a freshly connected bot with no effects, so the observable outcomes stay the
+  # three that matter: bought, no permission, not enough bank.
+  buff-stacking: false
+
+  buffs:
+    - identifier: 'haste'
+      locked:
+        name: '&7Locked: Haste'
+        material: FEATHER
+        lore:
+        - '&cRequires &7guilds.test.buff'
+        - '&aType » &7Haste'
+        - '&aCost » &7$50'
+      unlocked:
+        name: '&a&lSubstance of the Redmod Graff'
+        material: FEATHER
+        lore:
+        - '&aType » &7Haste'
+        - '&aLength » &760 Seconds'
+        - '&aCost » &7$50'
+      price: 50.0
+      effects:
+      - 'FAST_DIGGING;0;60'
+      permission: guilds.test.buff
+      clicker:
+        enabled: false
+        commands:
+        - ''
+      guild:
+        enabled: false
+        commands:
+        - ''
+
+    - identifier: 'blindness'
+      locked:
+        name: '&7Locked: Blindness'
+        material: BLAZE_POWDER
+        lore:
+        - '&cRequires &7guilds.test.buff'
+        - '&aType » &7Blindness'
+        - '&aCost » &7$5000'
+      unlocked:
+        name: '&a&lScales of the Dragon'
+        material: BLAZE_POWDER
+        lore:
+        - '&aType » &7Blindness'
+        - '&aLength » &760 Seconds'
+        - '&aCost » &7$5000'
+      # Deliberately above the tier 1 bank limit's reachable range for a funded-but-poor guild,
+      # so "not enough in the bank" is reachable without draining anyone's real balance.
+      price: 5000.0
+      effects:
+      - 'BLINDNESS;0;60'
+      permission: guilds.test.buff
+      clicker:
+        enabled: false
+        commands:
+        - ''
+      guild:
+        enabled: false
+        commands:
+        - ''

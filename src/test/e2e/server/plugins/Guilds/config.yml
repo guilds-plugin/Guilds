@@ -1,0 +1,91 @@
+# Guilds configuration for the Plugwright end-to-end environment.
+#
+# Staged into the throwaway Paper server's plugins/Guilds folder by the `plugwright { }` block in
+# build.gradle.kts, so every run starts from exactly this state. Only the keys the E2E suite
+# actually depends on are listed: ConfigMe fills in the rest from the plugin's own defaults, which
+# keeps this file from drifting away from what a fresh install produces.
+#
+# Deliberately NOT set here, and instead exercised at their shipped defaults:
+#   guild.blacklist.*          the default word list is used to test blacklist rejection
+#   tiers.yml / roles.yml      tier and role tables are shipped defaults
+#   codes.*                    invite code generation is the default length/count
+
+settings:
+  announcements:
+    # Keeps the bot chat buffers free of plugin chatter, so a negative assertion
+    # ("this player must not see that message") cannot pass or fail by accident.
+    console: false
+    in-game: false
+  # English for the whole suite. The one test that changes a locale restores it itself.
+  messagesLanguage: en-US
+  update-check: false
+  plugin-aliases: "guild|guilds|g"
+
+storage:
+  storage-type: json
+  save-interval: 1
+
+hooks:
+  essentials-chat: false
+  worldguard-claims: false
+
+guis:
+  guild-info:
+    # Off by default: clicking the home button is a no-op unless this is on, and the home
+    # suite clicks it.
+    home-teleport: true
+    home-empty: "&fNot Set"
+  guild-list:
+    sort: NAME
+  guild-info-members:
+    sort: ROLE
+  vault-picker:
+    # Tier 1 unlocks a single vault; two rows leaves room for the locked-vault entry without
+    # the GUI silently growing.
+    rows: 2
+  vault:
+    blacklist:
+      # One blacklisted material so the vault's refusal path is reachable; the default is an
+      # empty list, which makes that branch untestable.
+      materials: "BEDROCK"
+      names: ""
+      lores: ""
+
+guild:
+  # MOTD on login writes into the chat buffer of every bot that joins a guild, which every
+  # multi-bot test does.
+  motd-on-login: false
+  format:
+    log-guild-chat: false
+    log-ally-chat: false
+
+cost:
+  # Non-zero so "insufficient funds to create" and "insufficient funds to upgrade" are
+  # reachable without contriving a negative balance.
+  creation: 100.0
+  # Renaming is free here: charging for it would add an economy precondition to every rename
+  # assertion without testing anything the bank suite does not already cover.
+  rename: 0.0
+  # Charged from the guild bank, so it also covers "sethome with an empty bank".
+  sethome: 25.0
+
+timers:
+  cooldowns:
+    # Long enough that "blocked by cooldown" is observable, short enough that a suite can
+    # watch one expire. The shipped defaults (60/60/120) would add minutes per run.
+    sethome: 3
+    home: 3
+    request: 3
+    join: 3
+  warmups:
+    home:
+      # Off, so /guild home teleports immediately and the suite can assert on the bot's
+      # actual position rather than on a stand-still timer.
+      enabled: false
+      time: 3
+
+codes:
+  length: 7
+  list-inactive-codes: true
+  # Two, so "too many active invite codes" is reachable without creating eleven of them.
+  amount: 2

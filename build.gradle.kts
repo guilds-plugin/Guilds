@@ -1,6 +1,7 @@
 import com.diffplug.gradle.spotless.FormatExtension
 import com.diffplug.gradle.spotless.SpotlessExtension
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import me.drownek.plugwright.local.LocalMode
 import org.gradle.language.jvm.tasks.ProcessResources
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
@@ -17,6 +18,11 @@ plugins {
     alias(libs.plugins.dokka)
     alias(libs.plugins.run.paper)
     alias(libs.plugins.quark)
+
+    // End-to-end testing with real Paper server and real player bots. 3.0.0 is the latest
+    // stable release; the Gradle plugin only resolves from the Plugin Portal, which `plugins {}`
+    // consults implicitly.
+    id("io.github.drownek.plugwright") version "3.0.0"
 }
 
 group = "me.glaremasters"
@@ -560,6 +566,56 @@ tasks {
                 "Runs a Paper test server for Minecraft ${target.minecraftVersion} using Java ${target.javaVersion}."
 
             configureGuildsRunServer(target)
+        }
+    }
+}
+
+/*
+ * End-to-end testing.
+ *
+ * Plugwright downloads a Paper server, stages Guilds' shadowJar plus the three plugins Guilds
+ * refuses to start without, starts the server and drives it with real mineflayer bots. One
+ * environment only: 1.21.8 on Java 21, the newest version in `supportedMinecraftVersions` that
+ * both Paper and minecraft-data can serve. Adding the historical matrix is separate work.
+ */
+plugwright {
+    testsDir.set(file("src/test/e2e"))
+    primaryEnvironment.set("local")
+
+    environments {
+        create("local", LocalMode) {
+            minecraftVersion.set(
+                providers.gradleProperty("e2eMinecraftVersion").getOrElse("1.21.8")
+            )
+            acceptEula.set(true)
+            jvmArgs.set(listOf("-Xmx3G"))
+
+            /*
+             * The same pins `configureGuildsRunServer` already downloads for the manual
+             * runServer* tasks. Vault is not on Hangar or any Maven repo, so it comes from the
+             * upstream release jar; LuckPerms' loader URL moved, so Modrinth's copy is used.
+             */
+            downloadPlugins {
+                url("https://github.com/MilkBowl/Vault/releases/download/1.7.3/Vault.jar")
+                url("https://cdn.modrinth.com/data/hXiIvTyT/versions/nY6VN1XH/EssentialsX-2.22.0.jar")
+                url("https://cdn.modrinth.com/data/Vebnzrzj/versions/b0mk8uS6/LuckPerms-Bukkit-5.5.71.jar")
+            }
+
+            /*
+             * Guilds has no plugin.yml defaults for its commands, so a non-op player has none of
+             * `guilds.command.*`. Staging the config here is what makes every test deterministic:
+             * `plugwrightClean` wipes the run directory before each provision, so the plugin only
+             * ever sees this config and a freshly generated tiers.yml/roles.yml.
+             */
+            writeFiles {
+                file("plugins/Guilds/config.yml", file("src/test/e2e/server/plugins/Guilds/config.yml"))
+                file("plugins/Guilds/tiers.yml", file("src/test/e2e/server/plugins/Guilds/tiers.yml"))
+                file("plugins/Guilds/buffs.yml", file("src/test/e2e/server/plugins/Guilds/buffs.yml"))
+            }
+
+            plugins {
+                local("guilds")
+            }
         }
     }
 }

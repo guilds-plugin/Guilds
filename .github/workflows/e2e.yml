@@ -1,0 +1,98 @@
+name: E2E (Plugwright)
+
+# End-to-end tests against a real Paper server with real player bots. Manual dispatch only for now:
+# the suite has been run repeatedly against 1.21.8 but has not yet proven stable enough on shared
+# runners to gate a pull request. Flip `pull_request` on once it has — see docs/e2e-testing.md.
+on:
+  workflow_dispatch:
+    inputs:
+      minecraft-version:
+        description: Minecraft version to test against
+        required: false
+        default: "1.21.8"
+      gradle-args:
+        description: Extra arguments for plugwrightTest
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  e2e:
+    name: Plugwright ${{ inputs.minecraft-version || '1.21.8' }}
+    runs-on: ubuntu-latest
+    # Paper's first start generates three worlds and the plugins do their own setup. The suite
+    # itself has been observed at roughly 9 minutes; the margin is for a cold npm and Paper cache.
+    timeout-minutes: 45
+
+    env:
+      E2E_MINECRAFT_VERSION: ${{ inputs.minecraft-version || '1.21.8' }}
+      # The runner's per-test default is 30s. The cooldown tests genuinely wait on a real three
+      # second cooldown expiring and then re-trying, which puts them in the mid-20s — close enough
+      # to 30s that ordinary variation would fail them. 60s is headroom for that, not permission
+      # for a test to hang: anything actually broken fails on an assertion well before this.
+      TEST_TIMEOUT: "60000"
+
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v7
+
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          # Plugwright launches the server with a provisioned JDK; the Gradle build itself is
+          # pinned to Java 21 by the toolchain in build.gradle.kts.
+          java-version: "21"
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          cache-provider: basic
+
+      - name: Make Gradle wrapper executable
+        run: chmod +x ./gradlew
+
+      - name: Build the production jar
+        # The suite runs the real shaded plugin, so this is the artifact under test — not a
+        # test-only build of it.
+        run: ./gradlew shadowJar --no-daemon --stacktrace --no-configuration-cache
+
+      # npm is the only dependency worth caching here. Plugwright downloads Paper and the three
+      # plugin jars into the server directory, and `plugwrightClean` deletes that directory at the
+      # start of every provision — so caching it would restore stale worlds and player records
+      # between runs, which is exactly the shared state this suite is written to avoid. Those
+      # downloads are a few hundred MB against a 45-minute budget, and re-fetching them is what
+      # makes each run start from a genuinely clean server.
+      - name: Set up Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: src/test/e2e/package-lock.json
+
+      - name: Run the E2E suite
+        run: ./gradlew plugwrightTest -Pe2eMinecraftVersion="$E2E_MINECRAFT_VERSION" --no-daemon --stacktrace ${{ inputs.gradle-args }}
+
+      # A failed assertion fails the step above, which fails the job. Uploading unconditionally
+      # keeps the server log around for the failures that are not assertion failures at all: a
+      # plugin that throws on startup, a dependency that did not load, a port already in use.
+      # The JSON and JUnit reports both live under build/reports/plugwright.
+      - name: Upload server logs and test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-${{ inputs.minecraft-version || '1.21.8' }}
+          if-no-files-found: warn
+          retention-days: 14
+          path: |
+            build/reports/plugwright/**
+            src/test/e2e/generated/*/run/logs/**
+
+# No merge, no deploy: this workflow builds, tests and reports. The jar it produces is never
+# published from here, and the job holds no write permission beyond its own checks.

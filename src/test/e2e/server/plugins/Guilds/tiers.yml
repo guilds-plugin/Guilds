@@ -1,0 +1,59 @@
+# Guild tiers for the Plugwright end-to-end environment.
+#
+# Same three tiers the plugin ships, with two changes that make otherwise-unreachable branches
+# testable without inventing unrealistic scenarios:
+#
+#   max-members: 2 on tier 1 — enough bots exist in a test to fill a guild and prove the "this
+#     guild is full" refusal, which a limit of 15 would need sixteen.
+#   permissions: ["guilds.command.admin"] — the shipped default grants every member the
+#     placeholder `example.perm.here` through Vault, which nothing can observe. Granting a real
+#     command node instead is what makes "the guild gave this member a permission, and took it
+#     away again on the way out" an assertion about something a player can see. The E2E runner
+#     denies that node on LuckPerms' default group, so it only ever resolves through Guilds.
+#
+# A consequence worth stating: no E2E test may ever put a third player in a tier 1 guild.
+
+tiers:
+  list:
+    1:
+      level: 1
+      name: "Bronze"
+      cost: 0.0
+      max-members: 2
+      vault-amount: 1
+      mob-xp-multiplier: 1.0
+      damage-multiplier: 1.0
+      max-bank-balance: 10000.0
+      members-to-rankup: 0
+      max-allies: 5
+      use-buffs: true
+      permissions:
+      - guilds.command.admin
+    2:
+      level: 2
+      name: "Silver"
+      cost: 200.0
+      max-members: 30
+      vault-amount: 2
+      mob-xp-multiplier: 2.0
+      damage-multiplier: 1.0
+      max-bank-balance: 20000.0
+      members-to-rankup: 0
+      max-allies: 10
+      use-buffs: true
+      permissions:
+      - guilds.command.admin
+    3:
+      level: 3
+      name: "Gold"
+      cost: 300.0
+      max-members: 50
+      vault-amount: 3
+      mob-xp-multiplier: 3.0
+      damage-multiplier: 1.0
+      max-bank-balance: 30000.0
+      members-to-rankup: 0
+      max-allies: 15
+      use-buffs: true
+      permissions:
+      - guilds.command.admin
