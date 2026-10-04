@@ -37,7 +37,14 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.List;
 
-public interface CooldownSQLiteProvider extends CooldownProvider {
+/**
+ * Cooldown storage over any SQL backend.
+ *
+ * <p>The MySQL, MariaDB and SQLite variants carried byte-identical SQL, so they were collapsed into
+ * this one interface and the {@code MYSQL}, {@code MARIADB} and {@code SQLITE} entries of
+ * {@link me.glaremasters.guilds.database.DatabaseBackend} all point at it.
+ */
+public interface CooldownSqlProvider extends CooldownProvider {
     @Override
     @SqlUpdate(
             "CREATE TABLE IF NOT EXISTS <prefix>cooldowns (\n" +

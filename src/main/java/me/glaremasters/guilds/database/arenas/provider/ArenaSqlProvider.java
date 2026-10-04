@@ -36,7 +36,14 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.util.List;
 
-public interface ArenaMySQLProvider extends ArenaProvider {
+/**
+ * Arena storage over any SQL backend.
+ *
+ * <p>The MySQL, MariaDB and SQLite variants carried byte-identical SQL, so they were collapsed into
+ * this one interface and the {@code MYSQL}, {@code MARIADB} and {@code SQLITE} entries of
+ * {@link me.glaremasters.guilds.database.DatabaseBackend} all point at it.
+ */
+public interface ArenaSqlProvider extends ArenaProvider {
     @Override
     @SqlUpdate(
             "CREATE TABLE IF NOT EXISTS <prefix>arena (\n" +
