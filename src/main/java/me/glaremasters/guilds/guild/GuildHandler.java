@@ -61,6 +61,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -178,13 +179,30 @@ public class GuildHandler {
             final GuildRole role = new GuildRole(name, perm, level);
 
             for (GuildRolePerm rolePerm : GuildRolePerm.values()) {
-                final String valuePath = path + rolePerm.name().replace("_", "-").toLowerCase();
+                final String valuePath = path + rolePermissionKey(rolePerm);
                 if (roleSec.getBoolean(valuePath)) {
                     role.addPerm(rolePerm);
                 }
             }
             this.roles.add(role);
         }
+    }
+
+    /**
+     * Derives the {@code roles.yml} key suffix for a single role permission.
+     *
+     * <p>Lowercases with {@link Locale#ROOT} rather than the default locale: on a Turkish-locale JVM
+     * {@code toLowerCase()} turns {@code "I"} into a dotless {@code "\u0131"}, so {@code INITIATE_WAR}
+     * was looked up as {@code roles.0.permissions.\u0131n\u0131tate-war}. No such key exists, so the
+     * permission was silently never granted to any role. {@code /guild war accept|challenge|deny}
+     * then rejected every player with an invalid-permission error and the defender list came back
+     * empty. The plugin ships a {@code tr-TR.yml}, so Turkish servers are a supported audience.
+     *
+     * @param rolePerm the permission to derive a key for
+     * @return the lowercased, dash-separated key suffix, for example {@code initiate-war}
+     */
+    static String rolePermissionKey(@NotNull final GuildRolePerm rolePerm) {
+        return rolePerm.name().replace("_", "-").toLowerCase(Locale.ROOT);
     }
 
     /**
