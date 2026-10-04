@@ -1222,6 +1222,10 @@ public class GuildHandler {
     /**
      * Handles sending guild chat messages to the proper locations
      *
+     * <p>Must be called on the main thread. Resolves players through {@code Bukkit.getPlayer}, calls
+     * {@code Player#getDisplayName} and PlaceholderAPI, and iterates the spy list, which the main
+     * thread mutates. {@code ChatListener} hops across for exactly this reason.
+     *
      * @param guild   the guild of the player
      * @param player  the player sending the message
      * @param message the message the player is sending
@@ -1244,6 +1248,8 @@ public class GuildHandler {
 
     /**
      * Handles sending a chat message to all allies of a guild
+     *
+     * <p>Must be called on the main thread, for the same reasons as {@link #handleGuildChat}.
      *
      * @param guild   the guild sending the message
      * @param player  the player sending the message
