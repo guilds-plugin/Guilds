@@ -60,7 +60,7 @@ meaningful.
 | Commands restricted by guild role | a plain member is refused the commands their role does not carry |
 | Commands restricted by Bukkit permission nodes | a Bukkit permission node can close a command the role allows (LuckPerms) |
 | Unauthorized members cannot perform admin actions | a member can run the admin commands their tier grants, but not the role-gated ones |
-| Tier permissions after upgrade | upgrading charges the tier price and moves the guild onto the new tier / **an upgrade leaves the guild without the permissions the new tier grants (reproducer)** — a Guilds bug, see `e2e-testing.md` |
+| Tier permissions after upgrade | upgrading charges the tier price and moves the guild onto the new tier / **an upgrade leaves the master with the permissions the new tier grants** |
 | A player in no guild | a player in no guild is told so rather than refused by role |
 | Unreachable admin route | an admin bank deposit of a named guild is refused by the argument check / the same admin command works through the player-facing bank commands |
 

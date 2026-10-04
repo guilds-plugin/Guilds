@@ -120,22 +120,18 @@ test('upgrading charges the tier price and moves the guild onto the new tier', a
 });
 
 /*
- * Guilds bug, kept as a reproducer rather than a fix — see docs/e2e-testing.md.
+ * Tier permissions survive an upgrade.
  *
- * `CommandUpgrade.accept` refreshes a guild's Bukkit permissions with
+ * `CommandUpgrade.accept` used to refresh a guild's Bukkit permissions with
  * `removeGuildPermsFromAll` → `upgradeTier` → `addGuildPermsToAll`, and both permission calls
- * dispatch onto the async executor (`storage.run-vault-async`). Nothing orders them relative to
- * each other, so the removal can land after the addition. Tiers 1 and 2 in the staged tiers.yml
- * grant the same node, which makes the outcome unambiguous: after an upgrade the guild master has
- * lost `guilds.command.admin` and is refused the very command they could run a moment earlier.
+ * dispatch onto the async executor (`settings.run-vault-async`). Nothing ordered them relative to
+ * each other, so the removal could land after the addition. Tiers 1 and 2 in the staged tiers.yml
+ * grant the same node, which makes the outcome unambiguous: after an upgrade the guild master had
+ * lost `guilds.command.admin` and was refused the very command they could run a moment earlier.
  *
- * This is the minimal reproducer. When the ordering is fixed, the expectation flips back to
- * MSG.statusChanged('Public').
+ * `GuildHandler.applyTierPerms` now runs both halves in one chain, revoke before grant.
  */
-test('an upgrade leaves the guild without the permissions the new tier grants (reproducer)', async ({
-    player,
-    guilds,
-}) => {
+test('an upgrade leaves the master with the permissions the new tier grants', async ({ player, guilds }) => {
     const guild = await guilds.createGuild(player);
     await guilds.setBank(guild, 200);
 
@@ -149,10 +145,9 @@ test('an upgrade leaves the guild without the permissions the new tier grants (r
     await guilds.confirm(player);
     await expect(player).toHaveReceivedMessage(MSG.upgradeSuccess);
 
-    // After: refused, because the asynchronous removal overtook the addition.
-    const after = player.getMessageBufferIndex();
-    await guilds.run(player, `/guild admin status ${guild}`);
-    await expectReceived(player, MSG.permissionDenied, after);
+    // After: still in force. LuckPerms reaches the client on its own schedule, so wait for the
+    // command to answer rather than for a fixed delay.
+    await guilds.awaitEffect(player, `/guild admin status ${guild}`, MSG.statusChanged('Public'));
 });
 
 test('a member can run the admin commands their tier grants, but not the role-gated ones', async ({
