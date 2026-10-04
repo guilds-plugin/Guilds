@@ -132,24 +132,6 @@ Never sleep a fixed length to "let something happen". Poll for the thing (`expec
 and no longer. The one exception is a cooldown, and there the suite waits for the number Guilds
 itself printed rather than a constant.
 
-## Bugs found by this suite
-
-Kept here rather than fixed, because this is a testing PR. It has a test that pins the current
-behaviour, so fixing it will fail that test rather than pass silently.
-
-### The vault blacklist does not refuse anything
-
-`guis.vault.blacklist.materials` is read by `VaultBlacklistListener.onItemClick`, which is supposed
-to cancel the click and send `vaults.blacklisted`. With `materials: BEDROCK` staged, a bedrock
-stack is picked up and dropped into the guild vault with no message and nothing stopping it.
-
-`onItemClick` returns early unless `guildHandler.getOpened().contains(player)`, and that list is
-populated in `VaultGUI.open` and emptied in `VaultBlacklistListener.onInventoryClose` — which fires
-for *any* inventory close, including the picker closing as the vault opens. The two listeners race,
-and by the time a click inside the vault arrives the player is no longer on the list.
-
-Reproducer: `tests/gui.spec.ts`, `a blacklisted item still goes into the vault`.
-
 ## Bugs this suite found, and the plugin has since fixed
 
 ### An upgrade used to leave the guild without the tier's permissions
@@ -161,6 +143,14 @@ permissions the new tier grants` in its place, and `GuildHandler.applyTierPerms`
 one chain.
 
 ## Deliberate limitations
+
+**A list setting has to be written as a list in the staged config.** ConfigMe reads `guis.vault.
+blacklist.materials` by asking SnakeYAML for a `List` at that path, and a scalar node fails the type
+check and falls back to the property's default. `materials: "BEDROCK"` therefore loads as `''` and
+the vault blacklist matches nothing — no error, no log line, just a setting that silently is not
+the one in the file. `server/plugins/Guilds/config.yml` writes the vault blacklist as a YAML list for
+this reason; keep it that way. This cost an afternoon once already: the vault blacklist looked
+broken in the plugin when the config file was the thing at fault.
 
 **A player's own inventory index is not the window slot.** `bot.inventory.slots` follows the player
 inventory window's ordering — main inventory at 9-35, hotbar at 36-44 — while a container window

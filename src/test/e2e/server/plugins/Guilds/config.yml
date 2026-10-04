@@ -47,9 +47,15 @@ guis:
     blacklist:
       # One blacklisted material so the vault's refusal path is reachable; the default is an
       # empty list, which makes that branch untestable.
-      materials: "BEDROCK"
-      names: ""
-      lores: ""
+      #
+      # These have to be written as YAML lists. ConfigMe asks SnakeYAML for a `List` at this
+      # path and falls back to the property's default when the node is a scalar, so the one-line
+      # `materials: "BEDROCK"` form this file used to carry was silently dropped on load and the
+      # blacklist came up empty.
+      materials:
+        - BEDROCK
+      names: []
+      lores: []
 
 guild:
   # MOTD on login writes into the chat buffer of every bot that joins a guild, which every

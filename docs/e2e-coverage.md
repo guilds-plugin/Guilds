@@ -148,7 +148,7 @@ are read from the staged `config.yml`/`buffs.yml` via `plugins/support/expected.
 | Guild list | the guild list shows every guild with its master and tier / clicking a guild in the list opens its members |
 | Member list | the members GUI renders the roster and its navigation |
 | Guild vault | the vault picker lists the vaults the tier unlocks / a locked vault is marked as locked and cannot be opened / a vault holds items and gives them back |
-| Vault blacklist | **a blacklisted item still goes into the vault** — a Guilds bug, see `e2e-testing.md` |
+| Vault blacklist | a blacklisted item is refused by the vault |
 | Guild buffs | the buff GUI shows a locked buff and refuses to sell it / a buff can be bought once the permission is granted / a buff the guild bank cannot pay for is refused / a guild that has just bought a buff is on cooldown for the next one / a member without the buff role cannot open the buff GUI |
 | Navigation | the info GUI navigates to the members GUI and back / clicking a guild in the list opens its members |
 | Permission-dependent visibility | the buff GUI shows a locked buff and refuses to sell it / a member without the buff role cannot open the buff GUI |
