@@ -61,6 +61,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -780,7 +781,7 @@ public class GuildHandler {
      */
     public boolean blacklistCheck(String name, SettingsManager settingsManager) {
         if (settingsManager.getProperty(GuildSettings.BLACKLIST_SENSITIVE))
-            return settingsManager.getProperty(GuildSettings.BLACKLIST_WORDS).stream().anyMatch(s -> s.toLowerCase().contains(name));
+            return settingsManager.getProperty(GuildSettings.BLACKLIST_WORDS).stream().anyMatch(s -> s.toLowerCase(Locale.ROOT).contains(name));
         else
             return settingsManager.getProperty(GuildSettings.BLACKLIST_WORDS).stream().anyMatch(s -> s.equalsIgnoreCase(name));
     }
