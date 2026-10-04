@@ -59,21 +59,15 @@ public class DatabaseManager {
         switch (backend) {
             case MYSQL:
                 config.setPoolName("Guilds MySQL Connection Pool");
+                // Connector jars older than 8.0 have no com.mysql.cj package, so fall back to the
+                // legacy class name when the modern one is not on the classpath.
                 config.setDataSourceClassName(requireDataSourceClassName(
                         backend,
                         "com.mysql.cj.jdbc.MysqlDataSource",
                         "com.mysql.jdbc.jdbc2.optional.MysqlDataSource"
                 ));
-                config.addDataSourceProperty("serverName", settingsManager.getProperty(StorageSettings.SQL_HOST));
-                config.addDataSourceProperty("port", settingsManager.getProperty(StorageSettings.SQL_PORT));
-                config.addDataSourceProperty("databaseName", databaseName);
-                config.addDataSourceProperty("user", settingsManager.getProperty(StorageSettings.SQL_USERNAME));
-                config.addDataSourceProperty("password", settingsManager.getProperty(StorageSettings.SQL_PASSWORD));
                 config.addDataSourceProperty("useSSL", settingsManager.getProperty(StorageSettings.SQL_ENABLE_SSL));
-
-                if (settingsManager.getProperty(StorageSettings.UTF8)) {
-                    config.addDataSourceProperty("characterEncoding", "utf8");
-                }
+                applySqlProperties(config, settingsManager, databaseName);
                 break;
             case SQLITE:
                 config.setPoolName("Guilds SQLite Connection Pool");
@@ -86,15 +80,7 @@ public class DatabaseManager {
                         backend,
                         "org.mariadb.jdbc.MariaDbDataSource"
                 ));
-                config.addDataSourceProperty("serverName", settingsManager.getProperty(StorageSettings.SQL_HOST));
-                config.addDataSourceProperty("port", settingsManager.getProperty(StorageSettings.SQL_PORT));
-                config.addDataSourceProperty("databaseName", databaseName);
-                config.addDataSourceProperty("user", settingsManager.getProperty(StorageSettings.SQL_USERNAME));
-                config.addDataSourceProperty("password", settingsManager.getProperty(StorageSettings.SQL_PASSWORD));
-
-                if (settingsManager.getProperty(StorageSettings.UTF8)) {
-                    config.addDataSourceProperty("characterEncoding", "utf8");
-                }
+                applySqlProperties(config, settingsManager, databaseName);
                 break;
             default:
                 throw new IllegalArgumentException("Invalid backend for DatabaseManager setup: " + backend.getBackendName());
@@ -129,6 +115,31 @@ public class DatabaseManager {
 
     public HikariDataSource getHikari() {
         return hikari;
+    }
+
+    /**
+     * Applies the connection properties every MySQL-family backend shares. MariaDB's driver takes
+     * the same property names as MySQL's, so only the datasource class and the pool name differ
+     * between the two backends.
+     *
+     * @param config          the config to add the connection properties to
+     * @param settingsManager the settings manager that provides the connection properties
+     * @param databaseName    the name of the database to connect to
+     */
+    private static void applySqlProperties(
+            HikariConfig config,
+            SettingsManager settingsManager,
+            String databaseName
+    ) {
+        config.addDataSourceProperty("serverName", settingsManager.getProperty(StorageSettings.SQL_HOST));
+        config.addDataSourceProperty("port", settingsManager.getProperty(StorageSettings.SQL_PORT));
+        config.addDataSourceProperty("databaseName", databaseName);
+        config.addDataSourceProperty("user", settingsManager.getProperty(StorageSettings.SQL_USERNAME));
+        config.addDataSourceProperty("password", settingsManager.getProperty(StorageSettings.SQL_PASSWORD));
+
+        if (settingsManager.getProperty(StorageSettings.UTF8)) {
+            config.addDataSourceProperty("characterEncoding", "utf8");
+        }
     }
 
     private static String requireDataSourceClassName(DatabaseBackend backend, String... classNames) throws IOException {
