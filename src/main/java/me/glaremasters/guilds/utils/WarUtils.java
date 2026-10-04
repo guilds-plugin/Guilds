@@ -28,6 +28,8 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.title.Title;
 
+import java.util.Locale;
+
 /**
  * Created by Glare
  * Date: 1/15/2021
@@ -44,7 +46,9 @@ public class WarUtils {
      */
     public static void notify(final String type, final String message, final Audience audience) {
         final Component updated = LegacyComponentSerializer.legacyAmpersand().deserialize(message);
-        switch (type.toLowerCase()) {
+        // Locale.ROOT, not the default locale: on a Turkish-locale JVM "TITLE" lowercases to "tıtle",
+        // which matches no case below and silently falls through to the actionbar branch.
+        switch (type.toLowerCase(Locale.ROOT)) {
             case "title":
                 audience.showTitle(Title.title(updated, Component.empty()));
                 break;
