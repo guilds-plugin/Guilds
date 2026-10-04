@@ -84,20 +84,30 @@ public class ChatListener implements Listener {
             return;
         }
 
-        final Guild guild = guildHandler.getGuild(player);
+        // AsyncPlayerChatEvent is fired on the chat thread, and everything the fan-out touches
+        // belongs to the main thread: Guild#sendMessage resolves Bukkit.getPlayer, chatGenerator
+        // calls Player#getDisplayName and PlaceholderAPI, and the spy list is an ArrayList that
+        // addSpy mutates from the main thread. Iterating it from here can throw
+        // ConcurrentModificationException — and because the event is already cancelled by
+        // onChatLowest, that swallows the player's message with nothing logged.
+        //
+        // Only the delivery hops. Cancelling stays where it is, on the chat thread: the event reads
+        // its cancelled state when it returns, so a cancelled event that has not been cancelled yet
+        // would also be broadcast to the server. The guild lookup moves across too, since
+        // getGuild reads an unsynchronised HashMap.
+        Bukkit.getScheduler().runTask(guilds, () -> {
+            final Guild guild = guildHandler.getGuild(player);
 
-        if (guild == null) {
-            return;
-        }
+            if (guild == null) {
+                return;
+            }
 
-        if (chatType.equals(ChatType.GUILD)) {
-            guildHandler.handleGuildChat(guild, player, message);
-            return;
-        }
-
-        if (chatType.equals(ChatType.ALLY)) {
-            guildHandler.handleAllyChat(guild, player, message);
-        }
+            if (chatType.equals(ChatType.GUILD)) {
+                guildHandler.handleGuildChat(guild, player, message);
+            } else if (chatType.equals(ChatType.ALLY)) {
+                guildHandler.handleAllyChat(guild, player, message);
+            }
+        });
     }
 
     @EventHandler
