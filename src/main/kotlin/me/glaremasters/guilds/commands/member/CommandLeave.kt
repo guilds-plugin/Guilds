@@ -84,6 +84,7 @@ internal class CommandLeave : BaseCommand() {
                 Bukkit.getPluginManager().callEvent(event)
 
                 if (event.isCancelled) {
+                    actionHandler.removeAction(player)
                     return
                 }
 
@@ -92,6 +93,7 @@ internal class CommandLeave : BaseCommand() {
                     Bukkit.getPluginManager().callEvent(removeEvent)
 
                     if (removeEvent.isCancelled) {
+                        actionHandler.removeAction(player)
                         return
                     }
 
