@@ -100,7 +100,6 @@ dependencies {
     compileOnly(libs.spigot.api)
     compileOnly(libs.vault)
     compileOnly(libs.placeholderapi)
-    compileOnly(libs.jsr305)
     compileOnly(libs.authlib) {
         isTransitive = false
     }

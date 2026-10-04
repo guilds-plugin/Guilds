@@ -34,16 +34,6 @@ import java.util.UUID;
 public class PlayerUtils {
 
     /**
-     * Check if a player exists with the specified name.
-     *
-     * @param target the name of the player to check
-     * @return {@code true} if the player exists, {@code false} otherwise
-     */
-    public static boolean doesExist(String target) {
-        return Bukkit.getOfflinePlayer(target) != null;
-    }
-
-    /**
      * Retrieve a player object from their name.
      *
      * @param target the name of the player

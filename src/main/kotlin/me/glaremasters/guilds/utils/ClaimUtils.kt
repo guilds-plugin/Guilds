@@ -32,7 +32,6 @@ import org.bukkit.Location
 import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 import org.codemc.worldguardwrapper.WorldGuardWrapper
-import org.codemc.worldguardwrapper.flag.WrappedState
 import org.codemc.worldguardwrapper.region.IWrappedDomain
 import org.codemc.worldguardwrapper.region.IWrappedRegion
 import org.codemc.worldguardwrapper.selection.ICuboidSelection
@@ -390,33 +389,6 @@ object ClaimUtils {
                     .replace("{prefix}", guild.prefix)
             )
         )
-    }
-
-    /**
-     * Check if the PvP is disabled for the [player].
-     *
-     * @param player The player to check the PvP status for.
-     * @return Returns `true` if PvP is disabled, `false` otherwise.
-     */
-    @JvmStatic
-    fun checkPvpDisabled(player: Player): Boolean {
-        val wrapper = WorldGuardWrapper.getInstance()
-        val flag = wrapper.getFlag("pvp", WrappedState::class.java)
-        var state = WrappedState.ALLOW
-
-        if (!flag.isPresent) {
-            return false
-        }
-
-        val check = flag.map { f -> wrapper.queryFlag(player, player.location, f) }
-        check.ifPresent {
-            state = try {
-                it.get()
-            } catch (ex: Exception) {
-                WrappedState.ALLOW
-            }
-        }
-        return state == WrappedState.DENY
     }
 
     /**
