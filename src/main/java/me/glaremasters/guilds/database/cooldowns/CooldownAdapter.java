@@ -90,15 +90,33 @@ public class CooldownAdapter {
         provider.deleteCooldown(sqlTablePrefix, cooldownType.getTypeName(), cooldownOwner.toString());
     }
 
+    /**
+     * Saves every cooldown that is not already stored, one record at a time.
+     *
+     * <p>Previously a single wrapped try around the whole loop: the first failure abandoned every
+     * cooldown after it, and the catch logged a fixed string with no record identity and, crucially,
+     * no throwable — so the cause was never visible anywhere. The only caller is the shutdown save,
+     * so each abandoned cooldown was lost for good.
+     *
+     * @param cooldowns the cooldowns to save
+     */
     public void saveCooldowns(Collection<Cooldown> cooldowns) {
-        try {
-            for (Cooldown cooldown : cooldowns) {
+        int failed = 0;
+
+        for (Cooldown cooldown : cooldowns) {
+            try {
                 if (!cooldownExists(cooldown)) {
                     createCooldown(cooldown);
                 }
+            } catch (IOException | RuntimeException e) {
+                failed++;
+                LoggingUtils.warn("Failed to save cooldown " + cooldown.getCooldownType().getTypeName()
+                        + " for " + cooldown.getCooldownOwner() + "; the other cooldowns are still being saved.", e);
             }
-        } catch (IOException ex) {
-            LoggingUtils.warn("Failed to save cooldowns");
+        }
+
+        if (failed > 0) {
+            LoggingUtils.severe(failed + " of " + cooldowns.size() + " cooldowns failed to save. See the warnings above.");
         }
     }
 }

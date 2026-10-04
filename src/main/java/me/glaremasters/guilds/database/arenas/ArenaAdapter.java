@@ -28,6 +28,7 @@ import me.glaremasters.guilds.arena.Arena;
 import me.glaremasters.guilds.database.DatabaseAdapter;
 import me.glaremasters.guilds.database.DatabaseBackend;
 import me.glaremasters.guilds.database.arenas.provider.ArenaJsonProvider;
+import me.glaremasters.guilds.utils.LoggingUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -114,9 +115,19 @@ public class ArenaAdapter {
      */
     public void saveArenas(@NotNull Collection<Arena> arenas) throws IOException {
         List<String> savedIds = new ArrayList<>();
+        int failed = 0;
 
         for (Arena arena : arenas) {
-            saveArena(arena);
+            try {
+                saveArena(arena);
+            } catch (IOException | RuntimeException e) {
+                // The id is still recorded, and must stay recorded: the delete pass below removes any
+                // row not in savedIds, so dropping it here would delete the arena's existing row
+                // because its update failed.
+                failed++;
+                LoggingUtils.warn("Failed to save arena " + arena.getId() + "; the other arenas are still being saved.", e);
+            }
+
             savedIds.add(arena.getId().toString());
         }
 
@@ -125,6 +136,10 @@ public class ArenaAdapter {
             if (!keep) {
                 deleteArena(arenaId);
             }
+        }
+
+        if (failed > 0) {
+            LoggingUtils.severe(failed + " of " + arenas.size() + " arenas failed to save. See the warnings above.");
         }
 
         savedIds.clear();
