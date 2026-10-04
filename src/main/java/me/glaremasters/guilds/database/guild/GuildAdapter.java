@@ -28,6 +28,7 @@ import me.glaremasters.guilds.database.DatabaseAdapter;
 import me.glaremasters.guilds.database.DatabaseBackend;
 import me.glaremasters.guilds.database.guild.provider.GuildJsonProvider;
 import me.glaremasters.guilds.guild.Guild;
+import me.glaremasters.guilds.utils.LoggingUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -76,9 +77,35 @@ public class GuildAdapter {
         return provider.getGuild(sqlTablePrefix, id);
     }
 
+    /**
+     * Saves every guild, one record at a time.
+     *
+     * <p>A record that fails to save is logged with its id and the cause, then the batch carries on.
+     * Previously the first failure propagated out of the loop and every guild after it was silently
+     * never written. That is only survivable while saving periodically, but this is also the
+     * shutdown save, where it means the remaining guilds are lost for good.
+     *
+     * <p>Reports a summary once at the end rather than rethrowing: the caller has no better recovery
+     * than continuing, and rethrowing is what used to abandon the rest of the batch.
+     *
+     * @param guilds the guilds to save
+     * @throws IOException retained for source compatibility; a single failed record no longer aborts
+     *         the batch, so this is not thrown for a per-record failure
+     */
     public void saveGuilds(@NotNull Collection<Guild> guilds) throws IOException {
+        int failed = 0;
+
         for (Guild guild : guilds) {
-            saveGuild(guild);
+            try {
+                saveGuild(guild);
+            } catch (IOException | RuntimeException e) {
+                failed++;
+                LoggingUtils.warn("Failed to save guild " + guild.getId() + "; the other guilds are still being saved.", e);
+            }
+        }
+
+        if (failed > 0) {
+            LoggingUtils.severe(failed + " of " + guilds.size() + " guilds failed to save. See the warnings above.");
         }
     }
 

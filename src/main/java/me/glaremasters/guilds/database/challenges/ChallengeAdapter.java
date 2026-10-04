@@ -28,6 +28,7 @@ import me.glaremasters.guilds.database.DatabaseAdapter;
 import me.glaremasters.guilds.database.DatabaseBackend;
 import me.glaremasters.guilds.database.challenges.provider.ChallengeJsonProvider;
 import me.glaremasters.guilds.guild.GuildChallenge;
+import me.glaremasters.guilds.utils.LoggingUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -71,10 +72,35 @@ public class ChallengeAdapter {
         return provider.getChallenge(sqlTablePrefix, id);
    }
 
+   /**
+    * Saves every challenge, one record at a time.
+    *
+    * <p>A record that fails to save is logged with its id and the cause, then the batch carries on.
+    * Previously the first failure propagated out of the loop and every challenge after it was never
+    * written. Summarised at the end rather than rethrown, since rethrowing is what abandoned the
+    * rest of the batch.
+    *
+    * @param challenges the challenges to save
+    * @throws IOException retained for source compatibility; a single failed record no longer aborts
+    *         the batch
+    */
    public void saveChallenges(@NotNull Set<GuildChallenge> challenges) throws IOException {
-        for (GuildChallenge challenge : challenges) {
-            saveChallenge(challenge);
-        }
+       int failed = 0;
+
+       for (GuildChallenge challenge : challenges) {
+           try {
+               saveChallenge(challenge);
+           } catch (IOException | RuntimeException e) {
+               failed++;
+               LoggingUtils.warn("Failed to save challenge " + challenge.getId()
+                       + "; the other challenges are still being saved.", e);
+           }
+       }
+
+       if (failed > 0) {
+           LoggingUtils.severe(failed + " of " + challenges.size()
+                   + " challenges failed to save. See the warnings above.");
+       }
    }
 
    public void saveChallenge(@NotNull GuildChallenge challenge) throws IOException {
