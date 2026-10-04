@@ -117,9 +117,9 @@ export function amount(value: number): string {
  * long is left as a number of seconds, so a test can wait exactly as long as the plugin says
  * instead of guessing. The three wordings differ, so all three are matched:
  *
- * - "You must wait at least 3 seconds before doing this again" (home, sethome)
- * - "You are currently on cooldown from joining a guild. Try again in 3 seconds." (accept)
- * - "You can't send another request for 3 seconds." (request)
+ * - "You must wait at least 15 seconds before doing this again" (home, sethome)
+ * - "You are currently on cooldown from joining a guild. Try again in 15 seconds." (accept)
+ * - "You can't send another request for 15 seconds." (request)
  */
 export function secondsRemaining(text: string): number | undefined {
     const match = stripColors(text).match(

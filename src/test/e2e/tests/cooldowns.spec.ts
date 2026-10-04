@@ -9,10 +9,10 @@ import { teleportAndSettle } from '../plugins/support/state.js';
  * Cooldowns and argument validation.
  *
  * Guilds keeps three cooldowns in play that a player can observe, and the staged
- * `src/test/e2e/server/plugins/Guilds/config.yml` shortens all of them to three seconds so a suite
- * can watch one start, block the next attempt, and then expire. Every wait here is for the number
- * the plugin prints rather than a guessed constant, because a fixed sleep would either be flaky or
- * needlessly slow.
+ * `src/test/e2e/server/plugins/Guilds/config.yml` shortens all of them well below the shipped
+ * defaults so a suite can watch one start, block the next attempt, and then expire. Every wait
+ * here is for the number the plugin prints rather than a guessed constant, because a fixed sleep
+ * would either be flaky or needlessly slow.
  *
  * The validation half of the file covers what ACF and Guilds do with bad input: a missing argument,
  * a value of the wrong shape, a target the server does not know, and a command whose subcommand is
@@ -48,7 +48,7 @@ test('a second home cannot be set until the cooldown expires', async ({ player, 
     await guilds.run(player, '/guild sethome');
     await expect(player).toHaveReceivedMessage(MSG.sethomeSuccess);
 
-    // timers.cooldowns.sethome is three seconds in the staged config.
+    // timers.cooldowns.sethome is short in the staged config, and has to outlast command latency.
     const blocked = player.getMessageBufferIndex();
     await guilds.run(player, '/guild sethome');
     // Whichever of the two answers arrives first, and a refusal is the one that proves the cooldown
@@ -109,7 +109,7 @@ test('a second join request cannot be sent until the cooldown expires', async ({
     await guilds.run(asker, `/guild request ${guild}`);
     await expectReceived(asker, MSG.requestSuccess(guild), first);
 
-    // timers.cooldowns.request is three seconds in the staged config.
+    // timers.cooldowns.request is short in the staged config, and has to outlast command latency.
     const blocked = asker.getMessageBufferIndex();
     await guilds.run(asker, `/guild request ${guild}`);
     const outcome = await expectEither(asker, blocked, MSG.requestCooldown, MSG.requestSuccess(guild));
