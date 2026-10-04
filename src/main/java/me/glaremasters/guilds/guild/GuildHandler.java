@@ -897,19 +897,9 @@ public class GuildHandler {
      */
     public void removePerms(final Permission permission, final OfflinePlayer offlinePlayer, final List<String> nodes) {
         if (settingsManager.getProperty(PluginSettings.RUN_VAULT_ASYNC)) {
-            Guilds.newChain().async(() -> {
-                for (final String node : nodes) {
-                    if (!node.equals("")) {
-                        permission.playerRemove(null, offlinePlayer, node);
-                    }
-                }
-            }).execute();
+            Guilds.newChain().async(() -> removePermsNow(permission, offlinePlayer, nodes)).execute();
         } else {
-            for (final String node : nodes) {
-                if (!node.equals("")) {
-                    permission.playerRemove(null, offlinePlayer, node);
-                }
-            }
+            removePermsNow(permission, offlinePlayer, nodes);
         }
     }
 
@@ -921,20 +911,96 @@ public class GuildHandler {
      */
     public void addPerms(final Permission permission, final OfflinePlayer offlinePlayer, final List<String> nodes) {
         if (settingsManager.getProperty(PluginSettings.RUN_VAULT_ASYNC)) {
-            Guilds.newChain().async(() -> {
-                for (final String node : nodes) {
-                    if (!node.equals("")) {
-                        permission.playerAdd(null, offlinePlayer, node);
-                    }
-                }
-            }).execute();
+            Guilds.newChain().async(() -> addPermsNow(permission, offlinePlayer, nodes)).execute();
         } else {
-            for (final String node : nodes) {
-                if (!node.equals("")) {
-                    permission.playerAdd(null, offlinePlayer, node);
-                }
+            addPermsNow(permission, offlinePlayer, nodes);
+        }
+    }
+
+    /**
+     * The body of {@link #removePerms}, with the dispatch to the executor already done.
+     *
+     * <p>Kept separate so {@link #applyTierPerms} can run several writes for one player in a single
+     * task, in a known order, rather than handing each one to the executor on its own.
+     *
+     * @param permission vault permissions
+     * @param offlinePlayer the player to modify
+     * @param nodes the permission nodes to remove
+     */
+    private static void removePermsNow(final Permission permission, final OfflinePlayer offlinePlayer, final List<String> nodes) {
+        for (final String node : nodes) {
+            if (!node.equals("")) {
+                permission.playerRemove(null, offlinePlayer, node);
             }
         }
+    }
+
+    /**
+     * The body of {@link #addPerms}, with the dispatch to the executor already done.
+     *
+     * @param permission vault permissions
+     * @param offlinePlayer the player to modify
+     * @param nodes the permission nodes to add
+     */
+    private static void addPermsNow(final Permission permission, final OfflinePlayer offlinePlayer, final List<String> nodes) {
+        for (final String node : nodes) {
+            if (!node.equals("")) {
+                permission.playerAdd(null, offlinePlayer, node);
+            }
+        }
+    }
+
+    /**
+     * Moves every member of a guild from the permissions of the tier it is leaving to the
+     * permissions of the tier it has just moved onto.
+     *
+     * <p>This is what the upgrade paths use, and it replaces two calls that used to sit either side
+     * of {@link #upgradeTier(Guild)}: {@link #removeGuildPermsFromAll} for the old tier, then
+     * {@link #addGuildPermsToAll} for the new one. Both of those go through {@link #addPerms} and
+     * {@link #removePerms}, which hand the work to a shared executor while
+     * {@code settings.run-vault-async} is on — and it is on by default. Nothing ordered the two
+     * dispatches, so the removal could land after the addition and leave the guild without a node
+     * the new tier grants. Every tier in the shipped {@code tiers.yml} grants the same placeholder
+     * node, so an upgrade from one to the other revoked that node and then re-granted it: a guild
+     * master who had just upgraded was refused the very commands the new tier was meant to open,
+     * and had to be handed the node through LuckPerms before they worked again.
+     *
+     * <p>Both halves now run inside one chain, per member, revoke before grant, so the last write
+     * to a node is always the grant. The tier being moved onto is read straight off the guild, which
+     * is what the old grant call already had in hand, rather than looked up again by level.
+     *
+     * @param permission vault permissions
+     * @param guild the guild whose members to move over
+     * @param from the tier the guild is leaving
+     */
+    public void applyTierPerms(final Permission permission, final Guild guild, final GuildTier from) {
+        final List<String> revoke = from.getPermissions();
+        final List<String> grant = guild.getTier().getPermissions();
+        if (revoke.isEmpty() && grant.isEmpty()) {
+            return;
+        }
+        final List<OfflinePlayer> members = guild.getAllAsPlayers();
+        if (settingsManager.getProperty(PluginSettings.RUN_VAULT_ASYNC)) {
+            Guilds.newChain().async(() -> members.forEach(member -> applyTierPermsTo(permission, member, revoke, grant))).execute();
+        } else {
+            members.forEach(member -> applyTierPermsTo(permission, member, revoke, grant));
+        }
+    }
+
+    /**
+     * Revokes the old tier's nodes and then grants the new tier's, for one member, in that order.
+     *
+     * <p>Order is the whole point: a node both tiers grant is removed and then re-granted, so
+     * reversing these two calls drops it.
+     *
+     * @param permission vault permissions
+     * @param member the member to move the permissions of
+     * @param revoke the nodes the tier being left granted
+     * @param grant the nodes the tier being moved onto grants
+     */
+    static void applyTierPermsTo(final Permission permission, final OfflinePlayer member, final List<String> revoke, final List<String> grant) {
+        removePermsNow(permission, member, revoke);
+        addPermsNow(permission, member, grant);
     }
 
     /**

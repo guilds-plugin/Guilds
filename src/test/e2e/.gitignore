@@ -1,0 +1,8 @@
+# Installed by plugwrightCompileTests
+node_modules/
+# Generated from the npm { } block; may hold registry credentials
+.npmrc
+# Compiled specs and plugins
+dist/
+# Whatever the environments write while they run: servers, worlds, logs
+generated/
