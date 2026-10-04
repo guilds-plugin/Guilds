@@ -1,9 +1,16 @@
 name: E2E (Plugwright)
 
-# End-to-end tests against a real Paper server with real player bots. Manual dispatch only for now:
-# the suite has been run repeatedly against 1.21.8 but has not yet proven stable enough on shared
-# runners to gate a pull request. Flip `pull_request` on once it has — see docs/e2e-testing.md.
+# End-to-end tests against a real Paper server with real player bots.
+#
+# This originally shipped as `workflow_dispatch` only, on the assumption that a maintainer would run
+# it on demand. That does not work: GitHub resolves a dispatch target against the default branch, so
+# a workflow that exists only in a feature branch returns 404 and cannot be run at all. The suite
+# would have been unreachable until after the merge it is supposed to guard.
+#
+# So it runs on pull requests. `workflow_dispatch` stays for re-running a single version by hand.
+# If it proves too slow or too noisy to gate, deleting the `pull_request` key is the whole change.
 on:
+  pull_request:
   workflow_dispatch:
     inputs:
       minecraft-version:
@@ -27,7 +34,7 @@ jobs:
     name: Plugwright ${{ inputs.minecraft-version || '1.21.8' }}
     runs-on: ubuntu-latest
     # Paper's first start generates three worlds and the plugins do their own setup. The suite
-    # itself has been observed at roughly 9 minutes; the margin is for a cold npm and Paper cache.
+    # itself takes about ten minutes; the margin is for a cold npm and Paper cache.
     timeout-minutes: 45
 
     env:
