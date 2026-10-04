@@ -149,12 +149,18 @@ test('an upgrade the bank cannot pay for is refused', async ({ player, guilds })
 test('a guild at the top tier cannot upgrade again', async ({ player, guilds }) => {
     const guild = await guilds.createGuild(player, { balance: 50_000 });
 
+    // Both replies are scoped to this iteration. Without `since`, the second pass matched the
+    // first pass's messages, so the test sent the next command while the upgrade it was waiting on
+    // had not finished, and its reply landed inside the following command's window.
     for (let tier = 2; tier <= 3; tier++) {
         await guilds.setBank(guild, tier === 2 ? 200 : 300);
+
+        const warning = player.getMessageBufferIndex();
         await guilds.run(player, '/guild upgrade');
-        await expect(player).toHaveReceivedMessage(MSG.upgradeMoneyWarning);
+        await expectReceived(player, MSG.upgradeMoneyWarning, warning);
+
         await guilds.confirm(player);
-        await expect(player).toHaveReceivedMessage(MSG.upgradeSuccess);
+        await expectReceived(player, MSG.upgradeSuccess, warning);
     }
 
     await commandWithout(player, guilds, '/guild upgrade', MSG.upgradeTierMax, MSG.upgradeMoneyWarning);

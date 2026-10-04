@@ -248,14 +248,11 @@ test('a vault holds items and gives them back', async ({ player, guilds }) => {
     expect(containerItems(player).length).toBe(0);
 });
 
-test('a blacklisted item still goes into the vault', async ({ player, guilds }) => {
-    // Characterisation of a Guilds bug, not an endorsement — see docs/e2e-testing.md.
-    //
-    // `guis.vault.blacklist.materials` names BEDROCK in the staged config and
-    // `VaultBlacklistListener.onItemClick` is supposed to refuse it with `vaults.blacklisted`, but
-    // nothing arrives and the stack lands in the vault anyway. Asserting the refusal here would
-    // pin a behaviour the plugin does not have; asserting the acceptance does at least make the
-    // day the bug is fixed show up as a failing test rather than a silent change.
+test('a blacklisted item is refused by the vault', async ({ player, guilds }) => {
+    // `guis.vault.blacklist.materials` names BEDROCK in the staged config, so the refusal branch in
+    // VaultBlacklistListener is reachable. Taking the stack is the click that gets refused: it can
+    // only reach a vault slot by first coming off the cursor, so refusing the pickup is what keeps
+    // it out.
     await guilds.createGuild(player);
     await player.giveItem('bedrock', 4);
     await player.giveItem('cobblestone', 4);
@@ -265,30 +262,27 @@ test('a blacklisted item still goes into the vault', async ({ player, guilds }) 
     await awaitGui(player, GUI.vault);
 
     const since = player.getMessageBufferIndex();
-    const bedrock = ownItemWindowSlot(player, 'bedrock');
-    await clickSlot(player, bedrock);
+    await clickSlot(player, ownItemWindowSlot(player, 'bedrock'));
+    await expect(player).toHaveReceivedMessage(MSG.vaultBlacklisted, { since, timeout: 10_000 });
+
+    // prismarine-windows applies a click locally before the server answers, so the cursor is only
+    // evidence once the server's correction has landed: the blacklisted stack goes back into the
+    // player's own inventory instead of being carried into the vault.
     await expect.poll(() => cursorItem(player), {
         timeout: 5_000,
-        message: 'the bedrock should be on the cursor',
-    }).toBe('bedrockx4');
-    await clickSlot(player, 0);
+        message: 'the refused stack should leave the cursor',
+    }).toBeNull();
+    await expect(player).toContainItem('bedrock', { count: 4 });
+    expect(containerItems(player).some(item => item.name === 'bedrock')).toBe(false);
 
-    // No refusal is sent …
-    await expect(player).not.toHaveReceivedMessage(MSG.vaultBlacklisted, { since });
-
-    // … and the blacklisted stack is accepted, while an ordinary one still works alongside it.
-    await expect.poll(() => containerItems(player).map(item => item.name).sort(), {
-        timeout: 10_000,
-        message: 'the vault currently takes the blacklisted item',
-    }).toEqual(['bedrock']);
-
+    // An ordinary item still goes in, so the refusal is the blacklist and not a closed vault.
     const cobble = ownItemWindowSlot(player, 'cobblestone');
     await clickSlot(player, cobble);
-    await clickSlot(player, 1);
+    await clickSlot(player, 0);
     await expect.poll(() => containerItems(player).map(item => item.name).sort(), {
         timeout: 10_000,
         message: 'an item that is not blacklisted should still be accepted',
-    }).toEqual(['bedrock', 'cobblestone']);
+    }).toEqual(['cobblestone']);
 });
 
 test('the buff GUI shows a locked buff and refuses to sell it', async ({ player, guilds }) => {

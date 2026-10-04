@@ -23,20 +23,36 @@ async function pair(ctx: { player: any; createPlayer: any; guilds: any }) {
     return { otherMaster, mine, theirs };
 }
 
-/** Sends `ally add` and waits for both sides to acknowledge it. */
+/**
+ * Sends `ally add` and waits for both sides to acknowledge it.
+ *
+ * Both waits are scoped to a cursor taken before the send. Several tests build an alliance, tear it
+ * down and build it again between the *same two guilds*, and these three messages repeat verbatim
+ * each time round, so an unscoped wait matched the previous round's reply and returned before the
+ * server had done anything. That is not a flake: it let the next command run against state the
+ * plugin had not reached yet.
+ */
 async function requestAlly(guilds: any, asker: any, mine: string, otherMaster: any, theirs: string) {
+    // One cursor per buffer. `getMessageBufferIndex` counts lines in a single player's own buffer, so
+    // a cursor taken from the asker means nothing to the bot being asked, and using it there skipped
+    // past the very line the wait was looking for.
+    const asked = asker.getMessageBufferIndex();
+    const heard = otherMaster.getMessageBufferIndex();
     await guilds.run(asker, `/guild ally add ${theirs}`);
-    await expectReceived(asker, MSG.allyInviteSent(theirs));
-    await expectReceived(otherMaster, MSG.allyIncoming(mine));
+    await expectReceived(asker, MSG.allyInviteSent(theirs), asked);
+    await expectReceived(otherMaster, MSG.allyIncoming(mine), heard);
 }
 
 /** Sends `ally accept` and waits for both sides to acknowledge it. */
 async function acceptAlly(guilds: any, otherMaster: any, mine: string, asker: any, theirs: string) {
+    // Per buffer again, for the same reason as in `requestAlly`.
+    const accepted = otherMaster.getMessageBufferIndex();
+    const told = asker.getMessageBufferIndex();
     await guilds.run(otherMaster, `/guild ally accept ${mine}`);
-    await expectReceived(otherMaster, MSG.allyAccepted(mine));
+    await expectReceived(otherMaster, MSG.allyAccepted(mine), accepted);
     // Guilds bug: the message names the guild that *accepted*, not the one the request went to.
     // See docs/e2e-testing.md.
-    await expectReceived(asker, MSG.allyTargetAccepted(theirs));
+    await expectReceived(asker, MSG.allyTargetAccepted(theirs), told);
 }
 
 test('an alliance request is sent, received and accepted', async ({ player, createPlayer, guilds }) => {

@@ -132,33 +132,38 @@ Never sleep a fixed length to "let something happen". Poll for the thing (`expec
 and no longer. The one exception is a cooldown, and there the suite waits for the number Guilds
 itself printed rather than a constant.
 
-## Bugs found by this suite
-
-Kept here rather than fixed, because this is a testing PR. It has a test that pins the current
-behaviour, so fixing it will fail that test rather than pass silently.
-
-### The vault blacklist does not refuse anything
-
-`guis.vault.blacklist.materials` is read by `VaultBlacklistListener.onItemClick`, which is supposed
-to cancel the click and send `vaults.blacklisted`. With `materials: BEDROCK` staged, a bedrock
-stack is picked up and dropped into the guild vault with no message and nothing stopping it.
-
-`onItemClick` returns early unless `guildHandler.getOpened().contains(player)`, and that list is
-populated in `VaultGUI.open` and emptied in `VaultBlacklistListener.onInventoryClose` — which fires
-for *any* inventory close, including the picker closing as the vault opens. The two listeners race,
-and by the time a click inside the vault arrives the player is no longer on the list.
-
-Reproducer: `tests/gui.spec.ts`, `a blacklisted item still goes into the vault`.
-
-## Bugs this suite found, and the plugin has since fixed
+## Bugs this suite found
 
 ### An upgrade used to leave the guild without the tier's permissions
 
 The tier change revoked the old tier's Bukkit nodes and granted the new tier's as two independent
-calls, each of which dispatches onto the async executor, and nothing ordered the two — so the removal
-could land after the addition. `roles.spec.ts` now carries `an upgrade leaves the master with the
-permissions the new tier grants` in its place, and `GuildHandler.applyTierPerms` runs both halves in
-one chain.
+calls, each of which dispatches onto the async executor, and nothing ordered the two, so the removal
+could land after the addition. A master who had just upgraded was refused the commands the new tier
+was meant to open, and had to be handed the node through LuckPerms before they worked again.
+`roles.spec.ts` now carries `an upgrade leaves the master with the permissions the new tier grants`,
+and `GuildHandler.applyTierPerms` runs both halves in one chain, revoke before grant. Fixed in #799.
+
+### The vault blacklist, which was never broken
+
+Worth writing down because it cost real time and reads exactly like a plugin bug.
+`guis.vault.blacklist.materials` is read through ConfigMe's `ListProperty`, which asks the YAML
+reader for a `List` at that path:
+
+```java
+protected <T> T getTypedObject(String path, Class<T> type) {
+    Object value = getObject(path);
+    return type.isInstance(value) ? type.cast(value) : null;   // null, no exception, no log
+}
+```
+
+The staged config gave it `materials: "BEDROCK"`, a scalar. `String` is not a `List`, so the property
+fell back to its default of empty and matched nothing. No error and no log line, and because the
+server rewrites `config.yml` on save, the file on disk still read `- BEDROCK` afterwards. An empty
+list is the default, so "nothing is refused" is indistinguishable from "the listener never runs",
+which is what I concluded after a long detour through listener-ordering theories.
+`src/test/e2e/server/plugins/Guilds/config.yml` now writes the value as a YAML list, which is also
+how the shipped default is written, and `a blacklisted item is refused by the vault` asserts the
+refusal.
 
 ## Deliberate limitations
 

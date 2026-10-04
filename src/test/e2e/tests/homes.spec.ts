@@ -1,8 +1,16 @@
 import { expect, test } from '@plugwright/runner';
-import { commandWithout, expectNeverSeen, expectReceived } from '../plugins/support/assertions.js';
+import { commandWithout, expectEither, expectNeverSeen, expectReceived } from '../plugins/support/assertions.js';
 import { SETHOME_COST } from '../plugins/support/fixtures.js';
 import { MSG } from '../plugins/support/expected.js';
-import { GUI, ITEM, contentItems, hasLoreFragment, openGui } from '../plugins/support/state.js';
+import {
+    GUI,
+    ITEM,
+    contentItems,
+    hasLoreFragment,
+    loreNumbers,
+    openGui,
+    teleportAndSettle,
+} from '../plugins/support/state.js';
 import { secondsRemaining, sleep, stripColors } from '../plugins/support/text.js';
 
 /**
@@ -22,7 +30,7 @@ test('a home can be set, teleported to and deleted', async ({ player, guilds }) 
     // cost.sethome is charged from the bank, not from the player.
     await guilds.setBank(guild, SETHOME_COST);
 
-    await player.teleport(HOME.x, HOME.y, HOME.z);
+    const home = await teleportAndSettle(player, HOME.x, HOME.y, HOME.z);
     const setting = player.getMessageBufferIndex();
     await guilds.run(player, '/guild sethome');
     await expectReceived(player, MSG.sethomeSuccess, setting);
@@ -33,7 +41,7 @@ test('a home can be set, teleported to and deleted', async ({ player, guilds }) 
     const going = player.getMessageBufferIndex();
     await guilds.run(player, '/guild home');
     await expectReceived(player, MSG.homeTeleported, going);
-    await expect(player).toBeNear(HOME.x, HOME.y, HOME.z, { tolerance: 1.5 });
+    await expect(player).toBeNear(home.x, home.y, home.z, { tolerance: 1.5 });
 
     const deleting = player.getMessageBufferIndex();
     await guilds.run(player, '/guild delhome');
@@ -57,7 +65,7 @@ test('a second home cannot be set until the cooldown expires', async ({ player, 
     const guild = await guilds.createGuild(player);
     await guilds.setBank(guild, SETHOME_COST * 2);
 
-    await player.teleport(HOME.x, HOME.y, HOME.z);
+    const home = await teleportAndSettle(player, HOME.x, HOME.y, HOME.z);
     await guilds.run(player, '/guild sethome');
     await expect(player).toHaveReceivedMessage(MSG.sethomeSuccess);
 
@@ -66,8 +74,7 @@ test('a second home cannot be set until the cooldown expires', async ({ player, 
     // timers.cooldowns.sethome is three seconds in the staged config.
     const refused = player.getMessageBufferIndex();
     await guilds.run(player, '/guild sethome');
-    await expectReceived(player, MSG.sethomeCooldown, refused, 2_000);
-    await expect(player).not.toHaveReceivedMessage(MSG.sethomeSuccess, { since: refused });
+    expect(await expectEither(player, refused, MSG.sethomeCooldown, MSG.sethomeSuccess)).toBe('expected');
 
     // The refusal says how long is left, so the wait is the plugin's own number rather than a
     // guess. Re-issuing sethome in the meantime would only start the cooldown again.
@@ -89,7 +96,7 @@ test('a second teleport home cannot happen until the cooldown expires', async ({
     const guild = await guilds.createGuild(player);
     await guilds.setBank(guild, SETHOME_COST);
 
-    await player.teleport(HOME.x, HOME.y, HOME.z);
+    const home = await teleportAndSettle(player, HOME.x, HOME.y, HOME.z);
     await guilds.run(player, '/guild sethome');
     await expect(player).toHaveReceivedMessage(MSG.sethomeSuccess);
 
@@ -100,8 +107,7 @@ test('a second teleport home cannot happen until the cooldown expires', async ({
 
     const refused = player.getMessageBufferIndex();
     await guilds.run(player, '/guild home');
-    await expectReceived(player, MSG.homeCooldown, refused, 2_000);
-    await expect(player).not.toHaveReceivedMessage(MSG.homeTeleported, { since: refused });
+    expect(await expectEither(player, refused, MSG.homeCooldown, MSG.homeTeleported)).toBe('expected');
     // Still standing where they were: a refused teleport must not move anyone.
     expect(Math.abs(player.bot.entity.position.x - ELSEWHERE.x)).toBeLessThan(5);
 
@@ -112,7 +118,7 @@ test('a second teleport home cannot happen until the cooldown expires', async ({
     const retried = player.getMessageBufferIndex();
     await guilds.run(player, '/guild home');
     await expectReceived(player, MSG.homeTeleported, retried);
-    await expect(player).toBeNear(HOME.x, HOME.y, HOME.z, { tolerance: 1.5 });
+    await expect(player).toBeNear(home.x, home.y, home.z, { tolerance: 1.5 });
 });
 
 test('a member without the change-home role cannot set or delete a home', async ({ player, createPlayer, guilds }) => {
@@ -125,7 +131,7 @@ test('a member without the change-home role cannot set or delete a home', async 
     await commandWithout(member, guilds, '/guild sethome', MSG.roleNoPermission, MSG.sethomeSuccess);
 
     // The guild master sets one, and the member still cannot remove it.
-    await player.teleport(HOME.x, HOME.y, HOME.z);
+    const home = await teleportAndSettle(player, HOME.x, HOME.y, HOME.z);
     await guilds.run(player, '/guild sethome');
     await expect(player).toHaveReceivedMessage(MSG.sethomeSuccess);
 
@@ -134,7 +140,7 @@ test('a member without the change-home role cannot set or delete a home', async 
     // Going to the home is not role-gated at all — only setting and deleting one are — so the
     // member can follow the guild there even though they may not move the guild's home.
     await commandWithout(member, guilds, '/guild home', MSG.homeTeleported, MSG.roleNoPermission);
-    await expect(member).toBeNear(HOME.x, HOME.y, HOME.z, { tolerance: 1.5 });
+    await expect(member).toBeNear(home.x, home.y, home.z, { tolerance: 1.5 });
 });
 
 test('the info GUI shows the home and teleports to it', async ({ player, guilds }) => {
@@ -146,15 +152,22 @@ test('the info GUI shows the home and teleports to it', async ({ player, guilds 
     expect(contentItems(player).some(item => stripColors(item.displayName).includes('Guild Home'))).toBe(true);
     expect(hasLoreFragment(player, ITEM.homeEmpty)).toBe(true);
 
-    await player.teleport(HOME.x, HOME.y, HOME.z);
+    const home = await teleportAndSettle(player, HOME.x, HOME.y, HOME.z);
     await guilds.run(player, '/guild sethome');
     await expect(player).toHaveReceivedMessage(MSG.sethomeSuccess);
 
     await openGui(player, '/guild info', GUI.info);
     expect(hasLoreFragment(player, ITEM.homeEmpty)).toBe(false);
-    // The lore carries the coordinates, not just "somewhere".
-    expect(hasLoreFragment(player, String(HOME.x))).toBe(true);
-    expect(hasLoreFragment(player, String(HOME.z))).toBe(true);
+    // The lore carries the position, not just "somewhere". Compared numerically, because the bot
+    // settles wherever the ground is and the plugin renders the coordinate in its own format.
+    const shown = loreNumbers(player, 'Home:');
+    for (const [axis, value] of [['x', home.x], ['y', home.y], ['z', home.z]] as const) {
+        // The runner's expect takes no message argument, so the axis goes in the compared value.
+        const match = shown.find(n => Math.abs(n - value) <= 1);
+        if (match === undefined) {
+            throw new Error(`the home's ${axis} should be about ${value}; the lore showed ${shown}`);
+        }
+    }
 
     await player.teleport(ELSEWHERE.x, ELSEWHERE.y, ELSEWHERE.z);
 
@@ -163,7 +176,7 @@ test('the info GUI shows the home and teleports to it', async ({ player, guilds 
     const handle = await openGui(player, '/guild info', GUI.info);
     await handle.locator(item => stripColors(item.displayName).includes('Guild Home')).click({ timeout: 10_000 });
 
-    await expect(player).toBeNear(HOME.x, HOME.y, HOME.z, { tolerance: 1.5 });
+    await expect(player).toBeNear(home.x, home.y, home.z, { tolerance: 1.5 });
 });
 
 test('a player in no guild cannot use the home commands', async ({ createPlayer, guilds }) => {
@@ -178,14 +191,14 @@ test('the home cooldown is per player, not per guild', async ({ player, createPl
     const mine = await guilds.createGuild(player);
     await guilds.setBank(mine, SETHOME_COST);
 
-    await player.teleport(HOME.x, HOME.y, HOME.z);
+    const home = await teleportAndSettle(player, HOME.x, HOME.y, HOME.z);
     await guilds.run(player, '/guild sethome');
     await expect(player).toHaveReceivedMessage(MSG.sethomeSuccess);
 
     // A second sethome is refused on cooldown …
     const refused = player.getMessageBufferIndex();
     await guilds.run(player, '/guild sethome');
-    await expectReceived(player, MSG.sethomeCooldown, refused, 2_000);
+    expect(await expectEither(player, refused, MSG.sethomeCooldown, MSG.sethomeSuccess)).toBe('expected');
 
     // … but the cooldown is keyed by player, so another bot's guild is unaffected.
     const other = await createPlayer({ username: guilds.playerName() });

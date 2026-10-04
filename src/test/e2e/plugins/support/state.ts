@@ -1,6 +1,6 @@
 import { LiveGuiHandle, type ItemWrapper, type PlayerWrapper, type ServerWrapper } from '@plugwright/runner';
 import { GUI, ITEM } from './expected.js';
-import { numberIn, stripColors } from './text.js';
+import { numberIn, sleep, stripColors } from './text.js';
 
 /**
  * Reading Guilds' state back out of the server.
@@ -10,6 +10,111 @@ import { numberIn, stripColors } from './text.js';
  * a GUI stops rendering the balance, `guildBank` stops finding it and the test fails, instead of
  * quietly reading a stale internal value and passing.
  */
+
+/**
+ * How many chat messages a bot may send at once, and how many per second it may keep sending.
+ *
+ * Paper's chat throttle is a budget rather than a rate limit, so the pacing here is modelled the
+ * same way instead of being a fixed gap. `ServerGamePacketListenerImpl` builds
+ * `chatSpamThrottler = new TickThrottler(20, 200)` and per chat message calls
+ *
+ *     count.addAndGet(20) < 200      // isIncrementAndUnderThreshold()
+ *
+ * while `TickThrottler.tick()` drains exactly one per tick, so twenty per second. Every message
+ * costs twenty and the drain returns twenty per second, which means the budget is ten messages of
+ * burst followed by a sustained one per second. The threshold is not configurable: `spam-limiter`
+ * in paper-global.yml exposes only the recipe and tab limiters.
+ *
+ * A flat one-second gap would respect that but waste the burst allowance, stretching the suite from
+ * six minutes to twenty for no safety gained. The leaky bucket below spends the allowance instead:
+ * a bot that has been quiet may send `BURST` messages back to back, and every second of waiting
+ * earns one more.
+ *
+ * At 200ms, which is five messages a second, this suite added a hundred per second against a drain
+ * of twenty and was kicked thirteen times in a single run.
+ */
+/** Messages a bot may send back to back after being quiet, matching Paper's burst allowance. */
+const BURST = 10;
+
+/** Messages per second a bot may keep sending once the burst is spent. */
+const PER_SECOND = 1;
+
+const lastCommandAt = new WeakMap<PlayerWrapper, number>();
+
+/** Unspent burst messages per bot. See {@link BURST}. */
+const allowance = new WeakMap<PlayerWrapper, number>();
+
+/** Why a bot's connection ended, once it has. Keyed per bot. */
+const disconnectedBecause = new WeakMap<PlayerWrapper, string>();
+const watched = new WeakSet<PlayerWrapper>();
+
+/**
+ * Records when a bot's connection ends, so a later command can say so instead of silently vanishing.
+ *
+ * mineflayer's `bot.end` is a *method*, not a flag, so there is no property to read — the events are
+ * the only documented signal. Listening once per bot keeps the reason available for the message:
+ * Paper's "Kicked for spamming" is worth surfacing verbatim, because it explains a whole cascade of
+ * timeouts that otherwise look like unrelated assertion failures.
+ */
+function watchConnection(player: PlayerWrapper): void {
+    if (watched.has(player)) return;
+    watched.add(player);
+
+    const bot = player.bot as unknown as {
+        on(event: string, handler: (...args: any[]) => void): void;
+    };
+    bot.on('end', (reason: unknown) => disconnectedBecause.set(player, reasonText(reason)));
+    bot.on('kicked', (reason: unknown) => disconnectedBecause.set(player, reasonText(reason)));
+    bot.on('error', (reason: unknown) => disconnectedBecause.set(player, reasonText(reason)));
+}
+
+function reasonText(reason: unknown): string {
+    if (reason == null) return 'the connection closed';
+    if (reason instanceof Error) return reason.message;
+    if (typeof reason === 'string') return reason;
+    return JSON.stringify(reason);
+}
+
+/**
+ * Sends one command, holding off just long enough that a burst of them cannot trip Paper's chat
+ * throttle. Every helper in the fixture and every spec goes through here rather than
+ * `player.chat`.
+ *
+ * A bot whose connection has already ended throws instead of being sent another command. mineflayer
+ * accepts a `chat` on a closed socket without complaint and drops it, so without this guard a kicked
+ * bot turns every subsequent wait into a timeout against a message that was never going to arrive —
+ * which reads as a broken assertion rather than a broken connection.
+ */
+export async function run(player: PlayerWrapper, command: string): Promise<void> {
+    watchConnection(player);
+
+    const reason = disconnectedBecause.get(player);
+    if (reason !== undefined) {
+        throw new Error(
+            `${player.username}'s connection had already ended (${reason}); ` +
+                `"${command}" would never have been sent`,
+        );
+    }
+
+    const now = Date.now();
+    const previous = lastCommandAt.get(player);
+    if (previous !== undefined) {
+        // One token back for every second elapsed since the last send, capped at the burst.
+        const earned = Math.floor(((now - previous) / 1000) * PER_SECOND);
+        allowance.set(player, Math.min(BURST, (allowance.get(player) ?? BURST) + earned));
+    } else {
+        allowance.set(player, BURST);
+    }
+
+    while ((allowance.get(player) ?? 0) < 1) {
+        await sleep(1000 / PER_SECOND);
+        allowance.set(player, (allowance.get(player) ?? 0) + PER_SECOND);
+    }
+
+    allowance.set(player, (allowance.get(player) ?? 0) - 1);
+    lastCommandAt.set(player, Date.now());
+    player.chat(command);
+}
 
 /** Polls `read` until it returns something other than null or undefined. */
 export async function waitFor<T>(
@@ -161,10 +266,13 @@ export async function openGui(
     player: PlayerWrapper,
     command: string,
     title: string,
-    timeout = 10_000,
+    timeout = 20_000,
 ): Promise<LiveGuiHandle> {
     await closeGui(player);
-    player.chat(command);
+    // Paced like every other send. `openGui` is the most-called function in the GUI tests, and
+    // `guildList` opens it once per `createGuild`, so sending here raw left a large fraction of
+    // the suite's chat traffic outside the throttle guard.
+    await run(player, command);
     await waitFor(
         () => {
             const current = player.bot.currentWindow;
@@ -181,6 +289,11 @@ export async function openGui(
      * this module just accepted. `openGui` has already checked the title with the reader above;
      * from here the handle is a live view of whatever window the bot has open, which is what its
      * locators need.
+     *
+     * The wait defaults to 20s rather than 10s. This is a wait on a positive signal, so a
+     * generous budget costs nothing when the server is healthy. The 10s it replaced was
+     * tight enough that a loaded CI runner, still generating three worlds, missed the
+     * window and failed the test.
      */
     return new LiveGuiHandle(player.bot as never, () => true);
 }
@@ -332,6 +445,26 @@ export async function playerBalance(server: ServerWrapper, player: PlayerWrapper
     return Number(match[1].replace(/,/g, ''));
 }
 
+/**
+ * The numbers on the lore line carrying `label`, in order.
+ *
+ * Guilds renders a home's position as one interpolated string, and how a fractional coordinate is
+ * rendered depends on the location's own formatting. Comparing the numbers instead of the text means
+ * the assertion survives a bot settling at 320.5 rather than exactly 320.
+ */
+export function loreNumbers(player: PlayerWrapper, label: string): number[] {
+    for (const item of openItems(player)) {
+        for (const line of item.lore) {
+            const text = stripColors(line);
+            if (!text.includes(label)) continue;
+            return Array.from(text.matchAll(/-?[\d,]+(?:\.\d+)?/g), match =>
+                Number(match[0].replace(/,/g, '')),
+            );
+        }
+    }
+    throw new Error(`no lore line containing "${label}" is on screen`);
+}
+
 /** True when an item whose display name contains `fragment` is on screen right now. */
 export function hasItem(player: PlayerWrapper, fragment: string): boolean {
     return openItems(player).some(item => stripColors(item.displayName).includes(fragment));
@@ -386,6 +519,55 @@ export function ownItemWindowSlot(player: PlayerWrapper, itemName: string): numb
     }
     return slot;
 }
+
+/**
+ * Teleports a bot and waits for it to land, returning where it came to rest.
+ *
+ * Guild homes are recorded wherever the player is standing when `/guild sethome` runs, so a test
+ * that teleports into the air and immediately sets a home is really asserting about how quickly the
+ * bot fell rather than about the teleport. The returned position is the honest one to assert
+ * against: the home the plugin stored is the home the player was standing on.
+ */
+export async function teleportAndSettle(
+    player: PlayerWrapper,
+    x: number,
+    y: number,
+    z: number,
+): Promise<{ x: number; y: number; z: number }> {
+    await player.teleport(x, y, z);
+
+    /*
+     * Wait for the height to hold still for a full second, not for two equal readings.
+     *
+     * Two readings a quarter of a second apart agree while the bot is still at the height it was
+     * teleported to, before gravity has had a chance to move it, so that check reported a position
+     * the bot was about to leave. A second of stillness is longer than a tick and than the pause
+     * between a teleport and the first fall, so it means the bot has actually landed.
+     */
+    // A tenth of a block over most of a second. Tight enough to mean the bot has stopped falling,
+    // loose enough that standing in a current or on a slope still counts as settled: what the caller
+    // needs is a position it can rely on for the home, and the assertions already allow a block.
+    const HOLD_MS = 800;
+    const EPSILON = 0.1;
+    let previous = Number.NaN;
+    let stillSince = Date.now();
+    await waitFor(
+        () => {
+            const current = player.bot.entity.position.y;
+            if (Math.abs(current - previous) >= EPSILON) {
+                stillSince = Date.now();
+            }
+            previous = current;
+            return Date.now() - stillSince >= HOLD_MS ? true : undefined;
+        },
+        `${player.username} to settle after being teleported to ${x}, ${y}, ${z}`,
+        { timeout: 30_000, interval: 100 },
+    );
+
+    const position = player.bot.entity.position;
+    return { x: position.x, y: position.y, z: position.z };
+}
+
 
 /** Items stored in the container the bot is looking at, not the ones it is carrying. */
 export function containerItems(player: PlayerWrapper): ItemWrapper[] {

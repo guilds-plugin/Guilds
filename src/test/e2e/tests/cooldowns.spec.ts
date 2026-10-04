@@ -1,8 +1,9 @@
 import { expect, test } from '@plugwright/runner';
-import { commandWithout, expectReceived } from '../plugins/support/assertions.js';
+import { commandWithout, expectEither, expectReceived } from '../plugins/support/assertions.js';
 import { SETHOME_COST } from '../plugins/support/fixtures.js';
 import { MSG } from '../plugins/support/expected.js';
 import { secondsRemaining, sleep, stripColors } from '../plugins/support/text.js';
+import { teleportAndSettle } from '../plugins/support/state.js';
 
 /**
  * Cooldowns and argument validation.
@@ -50,8 +51,11 @@ test('a second home cannot be set until the cooldown expires', async ({ player, 
     // timers.cooldowns.sethome is three seconds in the staged config.
     const blocked = player.getMessageBufferIndex();
     await guilds.run(player, '/guild sethome');
-    await expectReceived(player, MSG.sethomeCooldown, blocked, 2_000);
-    await expect(player).not.toHaveReceivedMessage(MSG.sethomeSuccess, { since: blocked });
+    // Whichever of the two answers arrives first, and a refusal is the one that proves the cooldown
+    // did its job. Waiting for a specific reply inside a short fixed window fails on a loaded runner
+    // for no reason other than the server being slow.
+    const outcome = await expectEither(player, blocked, MSG.sethomeCooldown, MSG.sethomeSuccess);
+    expect(outcome).toBe('expected');
 
     await waitOutCooldown(player, blocked, 'sethome');
 
@@ -66,21 +70,21 @@ test('a second teleport home cannot happen until the cooldown expires', async ({
     const guild = await guilds.createGuild(player);
     await guilds.setBank(guild, SETHOME_COST);
 
-    await player.teleport(HOME.x, HOME.y, HOME.z);
+    const home = await teleportAndSettle(player, HOME.x, HOME.y, HOME.z);
     await guilds.run(player, '/guild sethome');
     await expect(player).toHaveReceivedMessage(MSG.sethomeSuccess);
 
     await guilds.run(player, '/guild home');
     await expect(player).toHaveReceivedMessage(MSG.homeTeleported);
-    await expect(player).toBeNear(HOME.x, HOME.y, HOME.z, { tolerance: 1.5 });
+    await expect(player).toBeNear(home.x, home.y, home.z, { tolerance: 1.5 });
 
     const elsewhere = { x: -260, y: 90, z: 200 };
     await player.teleport(elsewhere.x, elsewhere.y, elsewhere.z);
 
     const blocked = player.getMessageBufferIndex();
     await guilds.run(player, '/guild home');
-    await expectReceived(player, MSG.homeCooldown, blocked, 2_000);
-    await expect(player).not.toHaveReceivedMessage(MSG.homeTeleported, { since: blocked });
+    const outcome = await expectEither(player, blocked, MSG.homeCooldown, MSG.homeTeleported);
+    expect(outcome).toBe('expected');
 
     // A refused teleport must not have moved anyone.
     expect(Math.abs(player.bot.entity.position.x - elsewhere.x)).toBeLessThan(5);
@@ -90,7 +94,7 @@ test('a second teleport home cannot happen until the cooldown expires', async ({
     const retried = player.getMessageBufferIndex();
     await guilds.run(player, '/guild home');
     await expectReceived(player, MSG.homeTeleported, retried);
-    await expect(player).toBeNear(HOME.x, HOME.y, HOME.z, { tolerance: 1.5 });
+    await expect(player).toBeNear(home.x, home.y, home.z, { tolerance: 1.5 });
 });
 
 test('a second join request cannot be sent until the cooldown expires', async ({ createPlayer, guilds }) => {
@@ -108,8 +112,8 @@ test('a second join request cannot be sent until the cooldown expires', async ({
     // timers.cooldowns.request is three seconds in the staged config.
     const blocked = asker.getMessageBufferIndex();
     await guilds.run(asker, `/guild request ${guild}`);
-    await expectReceived(asker, MSG.requestCooldown, blocked, 2_000);
-    await expect(asker).not.toHaveReceivedMessage(MSG.requestSuccess(guild), { since: blocked });
+    const outcome = await expectEither(asker, blocked, MSG.requestCooldown, MSG.requestSuccess(guild));
+    expect(outcome).toBe('expected');
 
     await waitOutCooldown(asker, blocked, 'request');
 
@@ -125,13 +129,13 @@ test('a cooldown is keyed by player, not by guild', async ({ player, createPlaye
     const mine = await guilds.createGuild(player);
     await guilds.setBank(mine, SETHOME_COST);
 
-    await player.teleport(HOME.x, HOME.y, HOME.z);
+    const home = await teleportAndSettle(player, HOME.x, HOME.y, HOME.z);
     await guilds.run(player, '/guild sethome');
     await expect(player).toHaveReceivedMessage(MSG.sethomeSuccess);
 
     const blocked = player.getMessageBufferIndex();
     await guilds.run(player, '/guild sethome');
-    await expectReceived(player, MSG.sethomeCooldown, blocked, 2_000);
+    expect(await expectEither(player, blocked, MSG.sethomeCooldown, MSG.sethomeSuccess)).toBe('expected');
 
     // The guild's own home is untouched by the refusal: going there still works, and lands where it
     // was put. (The `home` cooldown is separate and is not running, since no teleport has happened.)
@@ -139,7 +143,7 @@ test('a cooldown is keyed by player, not by guild', async ({ player, createPlaye
     const going = player.getMessageBufferIndex();
     await guilds.run(player, '/guild home');
     await expectReceived(player, MSG.homeTeleported, going);
-    await expect(player).toBeNear(HOME.x, HOME.y, HOME.z, { tolerance: 1.5 });
+    await expect(player).toBeNear(home.x, home.y, home.z, { tolerance: 1.5 });
 
     // A different bot's guild is entirely unaffected by the first one's cooldown.
     const other = await createPlayer({ username: guilds.playerName() });

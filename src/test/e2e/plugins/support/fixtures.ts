@@ -1,7 +1,11 @@
 import { expect, type PlayerWrapper, type TestContext } from '@plugwright/runner';
 import { MSG } from './expected.js';
-import { guildBank, guildList, playerBalance, waitFor } from './state.js';
+import { guildBank, guildList, playerBalance, run, waitFor } from './state.js';
 import { amount, money, received, says, stripColors, waitUntil } from './text.js';
+
+// The pacing helper lives in state.ts so openGui can use it without a cycle. Re-exported here
+// because that is where every spec reaches for it.
+export { run };
 
 
 
@@ -31,20 +35,6 @@ export const SETHOME_COST = 25;
 /** tiers.yml tier 2 costs this out of the bank to upgrade into. */
 export const TIER_TWO_COST = 200;
 
-/**
- * Minimum gap between two chat/command messages from the same bot.
- *
- * Paper counts chat per connection and disconnects with "Kicked for spamming" once a player's
- * excess-message counter passes a threshold; at 120ms this suite was still fast enough to trip it
- * on three bots in a single run, which then surfaced as an unrelated-looking timeout in whichever
- * test happened to own that bot. 200ms keeps a bot at five commands a second, which the whole
- * suite sustains comfortably without ever reaching the threshold.
- *
- * The cost is real and deliberate: this is the single largest contributor to the suite's runtime,
- * and paying it is cheaper than a green run that is really a green run with three bots missing.
- */
-const COMMAND_INTERVAL_MS = 200;
-
 /** Roles, by name, from the shipped roles.yml. */
 export const ROLE = {
     master: 'GuildMaster',
@@ -52,67 +42,6 @@ export const ROLE = {
     veteran: 'Veteran',
     member: 'Member',
 } as const;
-
-const lastCommandAt = new WeakMap<PlayerWrapper, number>();
-
-/** Why a bot's connection ended, once it has. Keyed per bot. */
-const disconnectedBecause = new WeakMap<PlayerWrapper, string>();
-const watched = new WeakSet<PlayerWrapper>();
-
-/**
- * Records when a bot's connection ends, so a later command can say so instead of silently vanishing.
- *
- * mineflayer's `bot.end` is a *method*, not a flag, so there is no property to read — the events are
- * the only documented signal. Listening once per bot keeps the reason available for the message:
- * Paper's "Kicked for spamming" is worth surfacing verbatim, because it explains a whole cascade of
- * timeouts that otherwise look like unrelated assertion failures.
- */
-function watchConnection(player: PlayerWrapper): void {
-    if (watched.has(player)) return;
-    watched.add(player);
-
-    const bot = player.bot as unknown as {
-        on(event: string, handler: (...args: any[]) => void): void;
-    };
-    bot.on('end', (reason: unknown) => disconnectedBecause.set(player, reasonText(reason)));
-    bot.on('kicked', (reason: unknown) => disconnectedBecause.set(player, reasonText(reason)));
-    bot.on('error', (reason: unknown) => disconnectedBecause.set(player, reasonText(reason)));
-}
-
-function reasonText(reason: unknown): string {
-    if (reason == null) return 'the connection closed';
-    if (reason instanceof Error) return reason.message;
-    if (typeof reason === 'string') return reason;
-    return JSON.stringify(reason);
-}
-
-/**
- * Sends one command, holding off just long enough that a burst of them cannot trip Paper's chat
- * throttle. Every helper in the fixture and every spec goes through here rather than
- * `player.chat`.
- *
- * A bot whose connection has already ended throws instead of being sent another command. mineflayer
- * accepts a `chat` on a closed socket without complaint and drops it, so without this guard a kicked
- * bot turns every subsequent wait into a timeout against a message that was never going to arrive —
- * which reads as a broken assertion rather than a broken connection.
- */
-export async function run(player: PlayerWrapper, command: string): Promise<void> {
-    watchConnection(player);
-
-    const reason = disconnectedBecause.get(player);
-    if (reason !== undefined) {
-        throw new Error(
-            `${player.username}'s connection had already ended (${reason}); ` +
-                `"${command}" would never have been sent`,
-        );
-    }
-
-    const last = lastCommandAt.get(player) ?? 0;
-    const wait = last + COMMAND_INTERVAL_MS - Date.now();
-    if (wait > 0) await new Promise(resolve => setTimeout(resolve, wait));
-    lastCommandAt.set(player, Date.now());
-    player.chat(command);
-}
 
 let sequence = 0;
 
@@ -489,13 +418,30 @@ export function guildsFixtures(ctx: TestContext): GuildsFixtures {
         }
 
         // The test's bot is still connected while finalizers run, so the player-only delete works.
+        const problems: string[] = [];
         for (const guild of tracked.splice(0)) {
             if (!surviving.has(guild)) continue;
             try {
                 await remove(ctx.player, guild);
-            } catch {
-                // The guild's owner may have left along with it, taking the guild with them.
+            } catch (error) {
+                problems.push(`${guild}: ${error instanceof Error ? error.message : String(error)}`);
             }
+        }
+
+        /*
+         * A teardown failure fails the test.
+         *
+         * This used to be swallowed, and that turned out to matter more than it looks. A bot
+         * disconnected by Paper mid-teardown made `remove` throw, the throw was caught, the guild
+         * leaked, and the run still reported every test as passed: thirteen kicks in one run, all
+         * invisible. A leaked guild then changes what later tests see, so the suite quietly loses
+         * the isolation it is built on. If teardown cannot finish, the test did not really pass.
+         */
+        if (problems.length > 0) {
+            throw new Error(
+                `${problems.length} guild(s) could not be removed in teardown, so this test's state ` +
+                    `leaked into later tests:\n  ${problems.join('\n  ')}`,
+            );
         }
     });
 
