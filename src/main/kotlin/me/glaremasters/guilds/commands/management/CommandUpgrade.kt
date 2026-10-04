@@ -96,9 +96,12 @@ internal class CommandUpgrade : BaseCommand() {
 
                 guild.balance = guild.balance - cost
 
-                guildHandler.removeGuildPermsFromAll(permission, guild)
+                // The old tier's permissions have to be captured before the move, and handed to
+                // applyTierPerms together with the new tier's: removing and granting them as two
+                // calls either side of upgradeTier let the removal land after the grant.
+                val previousTier = guild.tier
                 guildHandler.upgradeTier(guild)
-                guildHandler.addGuildPermsToAll(permission, guild)
+                guildHandler.applyTierPerms(permission, guild, previousTier)
                 currentCommandIssuer.sendInfo(Messages.UPGRADE__SUCCESS)
 
                 actionHandler.removeAction(player)

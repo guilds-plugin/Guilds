@@ -56,9 +56,9 @@ internal class CommandAdminUpgrade : BaseCommand() {
             throw ExpectationNotMet(Messages.UPGRADE__TIER_MAX)
         }
 
-        guildHandler.removeGuildPermsFromAll(permission, guild)
+        val previousTier = guild.tier
         guildHandler.upgradeTier(guild)
-        guildHandler.addGuildPermsToAll(permission, guild)
+        guildHandler.applyTierPerms(permission, guild, previousTier)
 
         currentCommandIssuer.sendInfo(Messages.ADMIN__ADMIN_UPGRADE, "{guild}", guild.name)
         guild.sendMessage(currentCommandManager, Messages.ADMIN__ADMIN_GUILD_UPGRADE)

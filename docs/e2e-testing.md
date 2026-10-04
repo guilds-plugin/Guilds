@@ -134,8 +134,8 @@ itself printed rather than a constant.
 
 ## Bugs found by this suite
 
-Kept here rather than fixed, because this is a testing PR. Both have a test that pins the current
-behaviour, so fixing either will fail that test rather than pass silently.
+Kept here rather than fixed, because this is a testing PR. It has a test that pins the current
+behaviour, so fixing it will fail that test rather than pass silently.
 
 ### The vault blacklist does not refuse anything
 
@@ -150,13 +150,15 @@ and by the time a click inside the vault arrives the player is no longer on the 
 
 Reproducer: `tests/gui.spec.ts`, `a blacklisted item still goes into the vault`.
 
-### An upgrade leaves the guild without the tier's permissions
+## Bugs this suite found, and the plugin has since fixed
 
-`roles.spec.ts` has a test named `an upgrade leaves the guild without the permissions the new tier
-grants`, which asserts the behaviour rather than the intent: after upgrading, the master cannot use
-commands the new tier is supposed to open, and has to be granted the node through LuckPerms first.
-Either the tier permissions are not applied on upgrade, or they are applied and then dropped. Worth
-a look by someone who knows which was meant.
+### An upgrade used to leave the guild without the tier's permissions
+
+The tier change revoked the old tier's Bukkit nodes and granted the new tier's as two independent
+calls, each of which dispatches onto the async executor, and nothing ordered the two — so the removal
+could land after the addition. `roles.spec.ts` now carries `an upgrade leaves the master with the
+permissions the new tier grants` in its place, and `GuildHandler.applyTierPerms` runs both halves in
+one chain.
 
 ## Deliberate limitations
 
