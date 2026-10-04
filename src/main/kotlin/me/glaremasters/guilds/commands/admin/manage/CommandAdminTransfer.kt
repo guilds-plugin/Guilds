@@ -69,7 +69,13 @@ internal class CommandAdminTransfer : BaseCommand() {
             throw ExpectationNotMet(Messages.ERROR__PLAYER_NOT_IN_GUILD, "{player}", transfer.name.toString())
         }
 
-        guild.transferGuildAdmin(transfer, guildHandler, permission)
+        // tryTransferGuildAdmin refuses rather than half-applying, so a false here is a real
+        // failure to report instead of a transfer that silently did not happen. It logs the reason
+        // to the console; this is the player-facing half.
+        if (!guild.tryTransferGuildAdmin(transfer, guildHandler, permission)) {
+            throw ExpectationNotMet(Messages.TRANSFER__FAILED)
+        }
+
         currentCommandIssuer.sendInfo(Messages.TRANSFER__SUCCESS)
     }
 }
