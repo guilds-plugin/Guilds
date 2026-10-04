@@ -73,6 +73,7 @@ internal class CommandAdminRemove : BaseCommand() {
                 Bukkit.getPluginManager().callEvent(event)
 
                 if (event.isCancelled) {
+                    actionHandler.removeAction(player)
                     return
                 }
 
