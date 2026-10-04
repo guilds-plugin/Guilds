@@ -31,74 +31,26 @@ import java.io.IOException;
 import java.util.Set;
 
 /**
- * The `ChallengeProvider` interface provides methods for interacting with a database to manage challenges.
+ * Stores guild challenges in whichever backend is configured.
  */
 public interface ChallengeProvider {
 
-    /**
-     * Creates the container that will hold challenges.
-     *
-     * @param tablePrefix the prefix, if any, to use for the container's name.
-     * @throws IOException if an I/O error occurs while creating the container.
-     */
+    /** Creates the challenge table, or the challenge data folder on the JSON backend. */
     void createContainer(@Nullable String tablePrefix) throws IOException;
 
-    /**
-     * Gets all challenges from the database.
-     *
-     * @param tablePrefix the prefix, if any, to use for the container's name.
-     * @return a set of `GuildChallenge` objects representing the challenges in the database.
-     * @throws IOException if an I/O error occurs while fetching the challenges.
-     */
     Set<GuildChallenge> getAllChallenges(@Nullable String tablePrefix) throws IOException;
 
-    /**
-     * Checks whether a challenge with the specified id exists.
-     *
-     * @param tablePrefix the prefix, if any, to use for the container's name.
-     * @param id          the id of the challenge to check for.
-     * @return `true` if a challenge with the specified id exists, `false` otherwise.
-     * @throws IOException if an I/O error occurs while checking for the challenge.
-     */
     boolean challengeExists(@Nullable String tablePrefix, @NotNull String id) throws IOException;
 
-    /**
-     * Gets a single challenge by id.
-     *
-     * @param tablePrefix the prefix, if any, to use for the container's name.
-     * @param id          the id of the challenge to retrieve.
-     * @return a `GuildChallenge` object representing the found challenge, or `null` if no challenge with the specified id exists.
-     * @throws IOException if an I/O error occurs while retrieving the challenge.
-     */
+    /** Returns null when no challenge has that id, so callers have to null-check. */
     GuildChallenge getChallenge(@Nullable String tablePrefix, @NotNull String id) throws IOException;
 
-    /**
-     * Saves a new challenge to the database.
-     *
-     * @param tablePrefix the prefix, if any, to use for the container's name.
-     * @param id          the id of the new challenge.
-     * @param data        the data of the new challenge.
-     * @throws IOException if an I/O error occurs while saving the challenge.
-     */
+    /** Stores a new challenge; data is the challenge serialised by Gson. */
     void createChallenge(@Nullable String tablePrefix, String id, String data) throws IOException;
 
-    /**
-     * Updates a challenge in the database.
-     *
-     * @param tablePrefix the prefix, if any, to use for the container's name.
-     * @param id          the id of the challenge to update.
-     * @param data        the updated data of the challenge.
-     * @throws IOException if an I/O error occurs while updating the challenge.
-     */
+    /** Replaces an existing challenge; data is the challenge serialised by Gson. */
     void updateChallenge(@Nullable String tablePrefix, @NotNull String id, @NotNull String data) throws IOException;
 
-    /**
-     * Deletes a challenge from the database
-     *
-     * @param tablePrefix the prefix, if any, to use
-     * @param id          the challenge id to delete. The id cannot be null.
-     * @throws IOException if an I/O error occurs while deleting the challenge
-     */
     void deleteChallenge(@Nullable String tablePrefix, @NotNull String id) throws IOException;
 
 }
