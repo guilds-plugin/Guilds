@@ -31,7 +31,6 @@ import me.glaremasters.guilds.utils.ItemBuilder
 import me.glaremasters.guilds.utils.LoggingUtils
 import me.glaremasters.guilds.utils.StringUtils
 import org.bukkit.inventory.ItemStack
-import java.util.*
 
 /**
  * The glass pane every Guilds GUI uses as filler.
@@ -86,5 +85,5 @@ internal fun addBottom(gui: PaginatedGui) {
 }
 
 fun Double.rounded(): Double {
-    return String.format(Locale.ENGLISH, "%.2f", this).toDouble()
+    return kotlin.math.round(this * 100) / 100
 }
