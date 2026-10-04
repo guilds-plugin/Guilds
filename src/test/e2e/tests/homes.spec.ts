@@ -71,7 +71,7 @@ test('a second home cannot be set until the cooldown expires', async ({ player, 
 
     await player.teleport(ELSEWHERE.x, ELSEWHERE.y, ELSEWHERE.z);
 
-    // timers.cooldowns.sethome is three seconds in the staged config.
+    // timers.cooldowns.sethome is short in the staged config, and has to outlast command latency.
     const refused = player.getMessageBufferIndex();
     await guilds.run(player, '/guild sethome');
     expect(await expectEither(player, refused, MSG.sethomeCooldown, MSG.sethomeSuccess)).toBe('expected');

@@ -80,10 +80,17 @@ timers:
   cooldowns:
     # Long enough that "blocked by cooldown" is observable, short enough that a suite can
     # watch one expire. The shipped defaults (60/60/120) would add minutes per run.
-    sethome: 3
-    home: 3
-    request: 3
-    join: 3
+    #
+    # These also have to outlast the bot-to-server transport. A cooldown test has to get its
+    # "blocked" command *processed* while the cooldown is still live, and on a loaded runner
+    # that command has been measured reaching the server anywhere from 0.0s to 5.1s after the
+    # bot sent it. At three seconds a latency spike outran the cooldown, the server correctly
+    # teleported the player, and the test failed against correct code. Fifteen leaves about
+    # three times the worst latency observed so far.
+    sethome: 15
+    home: 15
+    request: 15
+    join: 15
   warmups:
     home:
       # Off, so /guild home teleports immediately and the suite can assert on the bot's
