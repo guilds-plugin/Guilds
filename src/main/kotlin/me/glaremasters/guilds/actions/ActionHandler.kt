@@ -63,13 +63,4 @@ class ActionHandler {
     fun getAction(sender: CommandSender?): ConfirmAction? {
         return actions[sender]
     }
-
-    /**
-     * Returns all the actions stored in the map.
-     *
-     * @return Map containing [CommandSender] as key and [ConfirmAction] as value.
-     */
-    fun getActions(): Map<CommandSender, ConfirmAction> {
-        return actions
-    }
 }

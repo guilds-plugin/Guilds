@@ -30,8 +30,8 @@ import me.glaremasters.guilds.database.challenges.ChallengeProvider;
 import me.glaremasters.guilds.guild.GuildChallenge;
 import me.glaremasters.guilds.utils.LoggingUtils;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;

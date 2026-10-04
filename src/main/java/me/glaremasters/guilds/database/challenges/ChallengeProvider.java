@@ -25,8 +25,8 @@ package me.glaremasters.guilds.database.challenges;
 
 import me.glaremasters.guilds.guild.GuildChallenge;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.Set;
 

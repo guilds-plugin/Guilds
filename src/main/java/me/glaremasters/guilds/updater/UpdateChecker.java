@@ -37,8 +37,6 @@ import java.util.regex.Pattern;
  */
 public final class UpdateChecker {
 
-    public static final VersionScheme VERSION_SCHEME_DECIMAL = UpdateChecker::compareDecimalVersions;
-
     private static final String USER_AGENT = "CHOCO-update-checker";
     private static final String UPDATE_URL = "https://api.spigotmc.org/simple/0.1/index.php?action=getResource&id=%d";
     private static final String CURRENT_VERSION_KEY = "current_version";
@@ -46,16 +44,12 @@ public final class UpdateChecker {
 
     private static UpdateChecker instance;
 
-    private UpdateResult lastResult = null;
-
     private final JavaPlugin plugin;
     private final int pluginID;
-    private final VersionScheme versionScheme;
 
-    private UpdateChecker(JavaPlugin plugin, int pluginID, VersionScheme versionScheme) {
+    private UpdateChecker(JavaPlugin plugin, int pluginID) {
         this.plugin = plugin;
         this.pluginID = pluginID;
-        this.versionScheme = versionScheme;
     }
 
     /**
@@ -96,18 +90,8 @@ public final class UpdateChecker {
         });
     }
 
-    /**
-     * Get the last update result that was queried by {@link #requestUpdateCheck()}. If no update
-     * check was performed since this class' initialization, this method will return null.
-     *
-     * @return the last update check result. null if none.
-     */
-    public UpdateResult getLastResult() {
-        return lastResult;
-    }
-
     private UpdateResult createUpdateResult(String current, String newest) {
-        String latest = versionScheme.compareVersions(current, newest);
+        String latest = compareDecimalVersions(current, newest);
 
         if (latest == null) {
             return new UpdateResult(UpdateReason.UNSUPPORTED_VERSION_SCHEME);
@@ -169,29 +153,7 @@ public final class UpdateChecker {
 
     /**
      * Initialize this update checker with the specified values and return its instance. If an instance
-     * of UpdateChecker has already been initialized, this method will act similarly to {@link #get()}
-     * (which is recommended after initialization).
-     *
-     * @param plugin the plugin for which to check updates. Cannot be null
-     * @param pluginID the ID of the plugin as identified in the SpigotMC resource link. For example,
-     * "https://www.spigotmc.org/resources/veinminer.<b>12038</b>/" would expect "12038" as a value. The
-     * value must be greater than 0
-     * @param versionScheme a custom version scheme parser. Cannot be null
-     *
-     * @return the UpdateChecker instance
-     */
-    public static UpdateChecker init(JavaPlugin plugin, int pluginID, VersionScheme versionScheme) {
-        Preconditions.checkArgument(plugin != null, "Plugin cannot be null");
-        Preconditions.checkArgument(pluginID > 0, "Plugin ID must be greater than 0");
-        Preconditions.checkArgument(versionScheme != null, "null version schemes are unsupported");
-
-        return (instance == null) ? instance = new UpdateChecker(plugin, pluginID, versionScheme) : instance;
-    }
-
-    /**
-     * Initialize this update checker with the specified values and return its instance. If an instance
-     * of UpdateChecker has already been initialized, this method will act similarly to {@link #get()}
-     * (which is recommended after initialization).
+     * of UpdateChecker has already been initialized, the existing instance is returned.
      *
      * @param plugin the plugin for which to check updates. Cannot be null
      * @param pluginID the ID of the plugin as identified in the SpigotMC resource link. For example,
@@ -201,48 +163,10 @@ public final class UpdateChecker {
      * @return the UpdateChecker instance
      */
     public static UpdateChecker init(JavaPlugin plugin, int pluginID) {
-        return init(plugin, pluginID, VERSION_SCHEME_DECIMAL);
-    }
+        Preconditions.checkArgument(plugin != null, "Plugin cannot be null");
+        Preconditions.checkArgument(pluginID > 0, "Plugin ID must be greater than 0");
 
-    /**
-     * Get the initialized instance of UpdateChecker. If {@link #init(JavaPlugin, int)} has not yet been
-     * invoked, this method will throw an exception.
-     *
-     * @return the UpdateChecker instance
-     */
-    public static UpdateChecker get() {
-        Preconditions.checkState(instance != null, "Instance has not yet been initialized. Be sure #init() has been invoked");
-        return instance;
-    }
-
-    /**
-     * Check whether the UpdateChecker has been initialized or not (if {@link #init(JavaPlugin, int)}
-     * has been invoked) and {@link #get()} is safe to use.
-     *
-     * @return true if initialized, false otherwise
-     */
-    public static boolean isInitialized() {
-        return instance != null;
-    }
-
-
-    /**
-     * A functional interface to compare two version Strings with similar version schemes.
-     */
-    @FunctionalInterface
-    public static interface VersionScheme {
-
-        /**
-         * Compare two versions and return the higher of the two. If null is returned, it is assumed
-         * that at least one of the two versions are unsupported by this version scheme parser.
-         *
-         * @param first the first version to check
-         * @param second the second version to check
-         *
-         * @return the greater of the two versions. null if unsupported version schemes
-         */
-        public String compareVersions(String first, String second);
-
+        return (instance == null) ? instance = new UpdateChecker(plugin, pluginID) : instance;
     }
 
     /**
@@ -302,10 +226,6 @@ public final class UpdateChecker {
         private final UpdateReason reason;
         private final String newestVersion;
 
-        { // An actual use for initializer blocks. This is madness!
-            UpdateChecker.this.lastResult = this;
-        }
-
         private UpdateResult(UpdateReason reason, String newestVersion) {
             this.reason = reason;
             this.newestVersion = newestVersion;
@@ -347,7 +267,7 @@ public final class UpdateChecker {
 
     }
 
-    public static int toInt(final String str, final int defaultValue) {
+    private static int toInt(final String str, final int defaultValue) {
         if (str == null) {
             return defaultValue;
         }
