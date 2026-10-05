@@ -125,4 +125,21 @@ class GuildsMigrationServiceTest {
     void inlineTiersStillTriggerMigration() throws IOException {
         assertTrue(needsMigration(readerFor("tiers.list.1.level: 1")));
     }
+
+    @Test
+    @DisplayName("a leftover announcement block is cleaned up by a migration")
+    void leftoverAnnouncementsTriggerMigration() throws IOException {
+        // The announcement system was removed, so PluginSettings no longer defines these keys and
+        // an existing config.yml still carries them. Without a deprecated entry the block would sit
+        // there unread indefinitely, and a server owner who had tuned it would have no way to tell
+        // that it no longer does anything.
+        final PropertyReader reader = readerFor(String.join("\n",
+                "settings:",
+                "  announcements:",
+                "    console: false",
+                "    in-game: false",
+                ""));
+
+        assertTrue(needsMigration(reader));
+    }
 }
