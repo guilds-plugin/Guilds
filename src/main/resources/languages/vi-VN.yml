@@ -157,6 +157,7 @@ admin:
   admin-player-added: "&aBạn đã thêm {player} vào {guild}!"
   admin-guild-add: "&a{player} đã được thêm vào guild của bạn bởi một Admin!"
   player-removed: "&cBạn đã bị xoá khỏi {guild} bởi một Admin!"
+  cant-remove-master: "&c{player} is the Guild Master of {guild}. Transfer the guild to someone else first, or remove the guild."
   admin-player-removed: "&aBạn đã xoá {player} khỏi {guild}!"
   admin-guild-remove: "&a{player} đã bị xoá khỏi guild của bạn bởi một Admin!"
   admin-upgrade: "&aYou have upgraded {guild}'s tier!"
@@ -204,6 +205,7 @@ leave:
 transfer:
   newmaster: "&aBạn là Guild Master mới trong Guild của bạn!"
   success: "&aGuild đã được chuyển nhượng!"
+  failed: "&cSorry, the guild could not be transferred. Check the server console for details."
 invite:
   already-invited: "Người dùng này đã được mời vào guild của bạn"
   message: "&a{player} has invited you to his/her guild, '{guild}' Type /guild join {guild} to join!"
