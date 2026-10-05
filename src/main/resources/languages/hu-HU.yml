@@ -157,6 +157,7 @@ admin:
   admin-player-added: "&aHozzáadtad {player}-t az alábbi céhhez: {guild}!"
   admin-guild-add: "&a{player} hozzá lett adva a céhhez egy adminisztrátor által!"
   player-removed: "&cEl lettél távolítva az alábbi céhből: {guild} egy adminisztrátor által!"
+  cant-remove-master: "&c{player} is the Guild Master of {guild}. Transfer the guild to someone else first, or remove the guild."
   admin-player-removed: "&aEltávolítottad {player} játékost az alábbi céhből: {guild}"
   admin-guild-remove: "&a{player} el lett távolítva a céhből egy adminisztrátor által!"
   admin-upgrade: "&aFelfejlesztetted a {guild} céh szintjét!"
@@ -204,6 +205,7 @@ leave:
 transfer:
   newmaster: "&aTe vagy a céh új vezetője!"
   success: "&aA céh át lett transzformálva!"
+  failed: "&cSorry, the guild could not be transferred. Check the server console for details."
 invite:
   already-invited: "Ezt a játékost már valaki meghívta ebbe a céhbe."
   message: "&a{player} meghívott, hogy csatlakozz a céhébe: '{guild}' Írd be a /guild join {guild} parancsot a céhhez való csatlakozáshoz."

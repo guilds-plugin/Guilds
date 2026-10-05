@@ -157,6 +157,7 @@ admin:
   admin-player-added: "&aDu har lagt til {player} i {guild}!"
   admin-guild-add: "&a{player} har blitt lagt i din guild av en Admin!"
   player-removed: "&cDu har blitt fjernet i {guild} av en Admin!"
+  cant-remove-master: "&c{player} is the Guild Master of {guild}. Transfer the guild to someone else first, or remove the guild."
   admin-player-removed: "&aDu har fjernet {player} fra {guild}!"
   admin-guild-remove: "&a{player} har blitt fjernet fra din guild av en Admin!"
   admin-upgrade: "&aDu har oppgradert {guild} sitt tier!"
@@ -204,6 +205,7 @@ leave:
 transfer:
   newmaster: "&aYou are the new Guild Master of your Guild!"
   success: "&aGuild has been transferred!"
+  failed: "&cSorry, the guild could not be transferred. Check the server console for details."
 invite:
   already-invited: "User is already invited to your guild"
   message: "&a{player} has invited you to his/her guild, '{guild}' Type /guild join {guild} to join!"

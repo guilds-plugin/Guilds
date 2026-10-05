@@ -157,6 +157,7 @@ admin:
   admin-player-added: "&aPřidal jste {player} do cechu {guild}!"
   admin-guild-add: "&a{player} byl přidán do vašeho cechu adminem!"
   player-removed: "&cByl jste odstraněn z cechu {guild} adminem!"
+  cant-remove-master: "&c{player} is the Guild Master of {guild}. Transfer the guild to someone else first, or remove the guild."
   admin-player-removed: "&aOdstranili jste hráče {player} z {guild}!"
   admin-guild-remove: "&a{player} byl odstraněn z cechu adminem!"
   admin-upgrade: "&aUpgradovali jste úroveň cechu {guild}!"
@@ -204,6 +205,7 @@ leave:
 transfer:
   newmaster: "&aStal jsi se mistrem cechu!"
   success: "&aCech byl předán!"
+  failed: "&cSorry, the guild could not be transferred. Check the server console for details."
 invite:
   already-invited: "Hráč je již pozván do vašeho cechu"
   message: "&a{player} vás pozval/a do jeho/jejího cechu, '{guild}' příkaz /guild join {guild} pro přípojení!"

@@ -157,6 +157,7 @@ admin:
   admin-player-added: "&aΤοποθετήσατε τον {player} στην ομάδα {guild}!"
   admin-guild-add: "&aΟ {player} προστέθηκε στην ομάδα σας από έναν διαχειριστή!"
   player-removed: "&cΈνας διαχειριστής σας αφαίρεσε από την ομάδα {guild}!"
+  cant-remove-master: "&c{player} is the Guild Master of {guild}. Transfer the guild to someone else first, or remove the guild."
   admin-player-removed: "&aΑφαιρέσατε τον παίκτη {player} από την ομάδα {guild}!"
   admin-guild-remove: "&aΟ {player} αφαιρέθηκε από την ομάδα σας από έναν διαχειριστή!"
   admin-upgrade: "&aΈχετε αναβαθμίσει το επίπεδο του {guild}!"
@@ -204,6 +205,7 @@ leave:
 transfer:
   newmaster: "&aΕίστε ο νέος αρχηγός της ομάδας σας!"
   success: "&aΗ ομάδα έχει μεταφερθεί!"
+  failed: "&cSorry, the guild could not be transferred. Check the server console for details."
 invite:
   already-invited: "Ο πλέκτης έχει ήδη προσκληθεί"
   message: "&aΟ {player} σας προσκάλεσε στην ομάδα του/της, '{guild}', Πληκτρολογήστε /guild join {guild} για να μπείτε!"

@@ -157,6 +157,7 @@ admin:
   admin-player-added: "&a{player} isimli oyuncuyu {guild}'e ekledin!"
   admin-guild-add: "&aBir oyuncu tarafından loncanıza {player} eklendi!"
   player-removed: "&c{guild}'den bir Yönetici tarafından kaldırıldınız!"
+  cant-remove-master: "&c{player} is the Guild Master of {guild}. Transfer the guild to someone else first, or remove the guild."
   admin-player-removed: "&a{player} isimli oyuncuyu {guild}'den çıkarttın!"
   admin-guild-remove: "&a{player} bir Yönetici tarafından loncanızdan kaldırıldı!"
   admin-upgrade: "&a{guild}'in aşamasını yükseltin!"
@@ -204,6 +205,7 @@ leave:
 transfer:
   newmaster: "&aLoncanın yeni Lonca Ustası sensin!"
   success: "&aLonca transfer edildi!"
+  failed: "&cSorry, the guild could not be transferred. Check the server console for details."
 invite:
   already-invited: "Kullanıcı zaten Lonca'nıza davet edildi"
   message: "&a{player} has invited you to his/her guild, '{guild}' Type /guild join {guild} to join!"

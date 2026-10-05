@@ -157,6 +157,7 @@ admin:
   admin-player-added: "&8[&6公會&8] &f你已添加玩家 {player} 至 《 {guild} 》公會 ！"
   admin-guild-add: "&8[&6公會&8] &f{player} 已被管理員強制加入至你的公會 ！"
   player-removed: "&8[&6公會&8] &f你已被管理員從 《 {guild} 》 移除 ！"
+  cant-remove-master: "&c{player} is the Guild Master of {guild}. Transfer the guild to someone else first, or remove the guild."
   admin-player-removed: "&8[&6公會&8] &f你已從 《 {guild} 》 移除玩家 {player} ！"
   admin-guild-remove: "&8[&6公會&8] &f{player} 已被管理員強制移除自你的公會 ！"
   admin-upgrade: "&8[&6公會&8] &f你已成功升級 《 {guild} 》至下一個等級 ！"
@@ -204,6 +205,7 @@ leave:
 transfer:
   newmaster: "&8[&6公會&8] &f前任會長已轉讓會長至你的名下， 你已成為目前公會會長"
   success: "&8[&6公會&8] &f已轉讓公會 ！"
+  failed: "&cSorry, the guild could not be transferred. Check the server console for details."
 invite:
   already-invited: "&8[&6公會&8] &f已邀請玩家至你的公會"
   message: "&8[&6公會&8] &f {player} 邀情你加入他的公會 《 {guild} 》 .輸入 /guild join 《 {guild} 》 即可加入 ！"
