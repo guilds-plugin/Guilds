@@ -157,6 +157,7 @@ admin:
   admin-player-added: "&aAti adaugat pe {player} in Breasla {guild}!"
   admin-guild-add: "&a{player} a fost adaugat in Breasla ta de catre un Admin!"
   player-removed: "&cAti fost data afata din {guild} de catre un Admin!"
+  cant-remove-master: "&c{player} is the Guild Master of {guild}. Transfer the guild to someone else first, or remove the guild."
   admin-player-removed: "&aL-ati data afara pe {player} din {guild}!"
   admin-guild-remove: "&a{player} a fost data afara din Breasla ta de catre un Admin!"
   admin-upgrade: "&aAti upgradat nivelul Breslei {guild}!"
@@ -204,6 +205,7 @@ leave:
 transfer:
   newmaster: "&aSunteti noul Maestru al Breslei!"
   success: "&aBreasla a fost transferata!"
+  failed: "&cSorry, the guild could not be transferred. Check the server console for details."
 invite:
   already-invited: "Jucatorul este deja invitat in breasla ta"
   message: "&a{player} te-a invitat in breasla sa, '{guild}' Scrie /guild join {guild} ca sa intrii!"
