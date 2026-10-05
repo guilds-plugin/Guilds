@@ -33,7 +33,6 @@ import me.glaremasters.guilds.placeholders.PlaceholderAPI;
 import me.glaremasters.guilds.updater.UpdateChecker;
 import me.glaremasters.guilds.utils.LanguageUpdater;
 import me.glaremasters.guilds.utils.LoggingUtils;
-import me.glaremasters.guilds.utils.StringUtils;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -285,16 +284,6 @@ public final class Guilds extends JavaPlugin {
         acfHandler.load();
 
         guiHandler = new GUIHandler(this, settingsHandler.getMainConf(), guildHandler, getCommandManager(), cooldownHandler);
-
-        if (settingsHandler.getMainConf().getProperty(PluginSettings.ANNOUNCEMENTS_CONSOLE)) {
-            newChain().async(() -> {
-                try {
-                    LoggingUtils.info(StringUtils.getAnnouncements(this));
-                } catch (IOException e) {
-                    LoggingUtils.warn("Unable to fetch console announcements.", e);
-                }
-            }).execute();
-        }
 
         UpdateChecker.runCheck(this, settingsHandler.getMainConf());
 

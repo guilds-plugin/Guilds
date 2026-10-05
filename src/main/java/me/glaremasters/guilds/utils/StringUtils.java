@@ -1,16 +1,8 @@
 package me.glaremasters.guilds.utils;
 
 import org.bukkit.ChatColor;
-import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 
 /**
@@ -35,32 +27,6 @@ public final class StringUtils {
     }
 
     /**
-     * Get the announcements for the plugin.
-     *
-     * @param plugin the plugin for which the announcements are to be fetched
-     * @return the announcements for the plugin
-     * @throws IOException if an I/O error occurs while fetching the announcements
-     */
-    public static String getAnnouncements(JavaPlugin plugin) throws IOException {
-        final String ver = plugin.getDescription().getVersion();
-        String announcement;
-        final String reg = String.format("https://glaremasters.me/api/guilds/?id=%s", ver);
-        final String prem = String.format("https://glaremasters.me/api/guilds/?id=%s&u=%s&d=%s", ver, PremiumFun.getUserID(), PremiumFun.getDownloadID());
-        URL url = new URL(PremiumFun.isPremium() ? prem : reg);
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        con.setRequestProperty("User-Agent", Constants.USER_AGENT);
-        try (InputStream in = con.getInputStream()) {
-            String result = new BufferedReader(new InputStreamReader(in)).lines().collect(Collectors.joining("\n"));
-            announcement = StringUtils.convert_html(result);
-            con.disconnect();
-        } catch (Exception ex) {
-            LoggingUtils.warn("Could not fetch Guilds announcements.", ex);
-            announcement = "Could not fetch announcements!";
-        }
-        return announcement;
-    }
-
-    /**
      * Generates a random string with the specified length.
      *
      * @param length the length of the generated string
@@ -75,16 +41,6 @@ public final class StringUtils {
         }
 
         return builder.toString();
-    }
-
-    /**
-     * Converts HTML colour codes into the section sign codes Minecraft expects.
-     *
-     * @param html the html string
-     * @return a new converted string
-     */
-    public static String convert_html(String html) {
-        return html.replace('&', '§');
     }
 
 }

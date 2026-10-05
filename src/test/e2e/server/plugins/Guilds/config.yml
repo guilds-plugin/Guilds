@@ -11,11 +11,6 @@
 #   codes.*                    invite code generation is the default length/count
 
 settings:
-  announcements:
-    # Keeps the bot chat buffers free of plugin chatter, so a negative assertion
-    # ("this player must not see that message") cannot pass or fail by accident.
-    console: false
-    in-game: false
   # English for the whole suite. The one test that changes a locale restores it itself.
   messagesLanguage: en-US
   update-check: false

@@ -52,6 +52,7 @@ public class GuildsMigrationService extends PlainMigrationService {
                 "tablist.enabled",
                 "settings.save-interval",
                 "settings.player-update-languages",
+                "settings.announcements",
                 "tiers.list",
                 "tiers.carry-over",
                 "roles",
