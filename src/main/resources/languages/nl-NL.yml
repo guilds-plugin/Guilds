@@ -157,6 +157,7 @@ admin:
   admin-player-added: "&aJe hebt {player} toegevoegd aan {guild}!"
   admin-guild-add: "&a{player} is aan jouw Guild toegevoegd door een Admin!"
   player-removed: "&cJe bent uit Guild {guild} gezet door een Admin!"
+  cant-remove-master: "&c{player} is the Guild Master of {guild}. Transfer the guild to someone else first, or remove the guild."
   admin-player-removed: "&aJe hebt {player} verwijderd uit Guild {guild}!"
   admin-guild-remove: "&a{player} is verwijderd uit jouw Guild door een Admin!"
   admin-upgrade: "&aJe hebt jouw Guild {guild}'s tier geupgrade!"
@@ -204,6 +205,7 @@ leave:
 transfer:
   newmaster: "&aJe bent de nieuwe Guild Master van jouw Guild!"
   success: "&aGuild is overgedragen naar een nieuwe Guild Master!"
+  failed: "&cSorry, the guild could not be transferred. Check the server console for details."
 invite:
   already-invited: "Deze speler is al uitgenodigd voor jouw Guild"
   message: "&a{player} heeft jouw uitgenodigd voor zijn/haar Guild, '{guild}' Typ /guild join {guild} om toe te treden!"
