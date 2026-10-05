@@ -157,6 +157,7 @@ admin:
   admin-player-added: "¡&aHas añadido a {player} al gremio {guild}!"
   admin-guild-add: "¡&a{player} ha sido añadido a tu gremio por un administrador!"
   player-removed: "¡&cHas sido eliminado de {guild} por un administrador!"
+  cant-remove-master: "&c{player} is the Guild Master of {guild}. Transfer the guild to someone else first, or remove the guild."
   admin-player-removed: "¡&aHas eliminado a {player} de {guild}!"
   admin-guild-remove: "¡&a{player} ha sido eliminado de tu gremio por un administrador!"
   admin-upgrade: "¡&aUsted ha actualizado el nivel a {guild}!"
@@ -204,6 +205,7 @@ leave:
 transfer:
   newmaster: "&aAhora eres el Dueño del Gremio!"
   success: "&aGremio Transferido!"
+  failed: "&cSorry, the guild could not be transferred. Check the server console for details."
 invite:
   already-invited: "El jugador ya fue invitado a tu Gremio"
   message: "&a{player} te ha invitado a su gremio, '{guild}' escribe /guild join {guild} para unirte!"
