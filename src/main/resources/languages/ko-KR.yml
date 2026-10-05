@@ -157,6 +157,7 @@ admin:
   admin-player-added: "&a{guild} 길드에 {player} 님을 추가했어요!"
   admin-guild-add: "관리자가 길드에{player} 를 추가했습니다!"
   player-removed: "&c 당신은 관리인에 의해 {guild} 길드에서 추방 되었습니다!"
+  cant-remove-master: "&c{player} is the Guild Master of {guild}. Transfer the guild to someone else first, or remove the guild."
   admin-player-removed: "&a {guild} 길드에서 {player} 를 추방했어요!"
   admin-guild-remove: "&a관리자가 길드에서{player} 를 제거합니다!"
   admin-upgrade: "&a 당신은 {guild} 티어를 업그레이드했습니다!"
@@ -204,6 +205,7 @@ leave:
 transfer:
   newmaster: "&a당신은 당신의 길드의 새로운 길드 마스터입니다!"
   success: "&a길드가 이전되었습니다!"
+  failed: "&cSorry, the guild could not be transferred. Check the server console for details."
 invite:
   already-invited: "사용자가 이미 길드에 초대되었습니다."
   message: "&a{player} 님이 자신의 길드 '{guild}'에 귀하를 초대했습니다. 가입하려면 /guild join {guild} 를 입력하세요!"
