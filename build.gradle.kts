@@ -103,6 +103,7 @@ dependencies {
     compileOnly(libs.authlib) {
         isTransitive = false
     }
+    compileOnly(libs.guava)
 
     /*
      * Tests run without a server, so spigot-api and vault have to be on the test classpath even
