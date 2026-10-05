@@ -1,6 +1,6 @@
 [versions]
 kotlin = "2.4.0"
-indra = "4.0.0"
+indra = "4.1.0"
 shadow = "9.4.3"
 run-paper = "3.0.2"
 versions-plugin = "0.54.0"
