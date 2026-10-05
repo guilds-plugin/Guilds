@@ -613,6 +613,22 @@ public class Guild {
     }
 
     /**
+     * Administration method to move a guild to a new user
+     *
+     * @param master the new leader of the guild
+     * @param handler guild handler
+     * @param permission vault permissions
+     * @deprecated use {@link #tryTransferGuildAdmin(OfflinePlayer, GuildHandler, Permission)}, which
+     * reports whether the transfer happened. This method is {@code void} and cannot, so a caller
+     * using it has no way to tell a completed transfer from a refused one. Kept so code written
+     * against the old signature still compiles; it delegates and discards the result.
+     */
+    @Deprecated
+    public void transferGuildAdmin(final OfflinePlayer master, final GuildHandler handler, final Permission permission) {
+        tryTransferGuildAdmin(master, handler, permission);
+    }
+
+    /**
      * Determine if a player has role permission
      * @param player the player to check
      * @param perm the permission as a string to check
