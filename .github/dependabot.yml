@@ -5,3 +5,17 @@ updates:
   schedule:
     interval: daily
   open-pull-requests-limit: 10
+  ignore:
+    # Java 11 is the documented runtime floor and Minecraft 1.8.8 is still supported, so a library
+    # compiled for a newer JVM cannot ship: a Java 11 or older server throws
+    # UnsupportedClassVersionError when Quark loads it at startup. jdbi 3.50.0 is the last Java 11
+    # release. #781 pinned this back for the same reason; Dependabot has no way to know that, and
+    # the CI job that would catch it does not exist yet.
+    - dependency-name: "org.jdbi:jdbi3-core"
+      versions: [">=3.50.0"]
+    - dependency-name: "org.jdbi:jdbi3-sqlobject"
+      versions: [">=3.50.0"]
+    # Not on Maven Central under this coordinate, and nothing in the plugin imports it. It is on the
+    # compile classpath only because XSeries signatures mention com.mojang.authlib.GameProfile, so
+    # javac needs the class to resolve. The server supplies it at runtime.
+    - dependency-name: "com.mojang:authlib"
