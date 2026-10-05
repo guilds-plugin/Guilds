@@ -70,7 +70,7 @@ indra = { id = "net.kyori.indra", version.ref = "indra" }
 indra-publishing = { id = "net.kyori.indra.publishing", version.ref = "indra" }
 shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
 run-paper = { id = "xyz.jpenilla.run-paper", version.ref = "run-paper" }
-versions = { id = "com.github.ben-manes.versions", version.ref = "versions-plugin" }
+versions = { id = "io.github.ben-manes.versions", version.ref = "versions-plugin" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 quark = { id = "org.bxteam.quark", version.ref = "quark" }
