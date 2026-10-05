@@ -1,7 +1,7 @@
 [versions]
 kotlin = "2.4.0"
 indra = "4.0.0"
-shadow = "9.4.3"
+shadow = "9.6.1"
 run-paper = "3.0.2"
 versions-plugin = "0.54.0"
 dokka = "2.2.0"
