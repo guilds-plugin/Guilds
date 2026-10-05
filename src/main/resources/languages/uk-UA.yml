@@ -157,6 +157,7 @@ admin:
   admin-player-added: "&aВи додали {player} до гільдії {guild}!"
   admin-guild-add: "&a{player} був доданий до вашої гільдії адміністратором!"
   player-removed: "&cВас було виключено з гільдії {guild} адміністратором!"
+  cant-remove-master: "&c{player} is the Guild Master of {guild}. Transfer the guild to someone else first, or remove the guild."
   admin-player-removed: "&aВи виключили {player} з гільдії {guild}!"
   admin-guild-remove: "&a{player} був виключений з вашої гільдії адміністратором!"
   admin-upgrade: "&aВи підвищили рівень гільдії {guild}!"
@@ -204,6 +205,7 @@ leave:
 transfer:
   newmaster: "&aВи стали новим главою гільдії!"
   success: "&aГільдію успішно передано!"
+  failed: "&cSorry, the guild could not be transferred. Check the server console for details."
 invite:
   already-invited: "Користувач уже запрошений до вашої гільдії"
   message: "&a{player} запросив вас до своєї гільдії '{guild}'. Введіть /guild join {guild}, щоб приєднатися!"
