@@ -66,7 +66,7 @@ internal class CommandWar : BaseCommand() {
             throw ExpectationNotMet(Messages.WAR__ALREADY_ACCEPTED)
         }
 
-        val event = GuildWarAcceptEvent(player, guild, challenger)
+        val event = GuildWarAcceptEvent(player, challenger, guild)
         Bukkit.getPluginManager().callEvent(event)
 
         if (event.isCancelled) {
