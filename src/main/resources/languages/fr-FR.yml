@@ -157,6 +157,7 @@ admin:
   admin-player-added: "&aVous avez ajouté {player} à la guilde {guild}!"
   admin-guild-add: "&a{player} a été ajouté à votre guilde par un administrateur !"
   player-removed: "&cVous avez été retiré de {guild} par un Admin !"
+  cant-remove-master: "&c{player} is the Guild Master of {guild}. Transfer the guild to someone else first, or remove the guild."
   admin-player-removed: "&aVous avez retiré {player} de la guilde {guild}!"
   admin-guild-remove: "&a{player} a été retiré de votre guilde par un administrateur !"
   admin-upgrade: "&aVous avez amélioré le tier de la guilde {guild}'!"
@@ -204,6 +205,7 @@ leave:
 transfer:
   newmaster: "&aVous êtes le nouveau maître de guilde de {guild} !"
   success: "&aLa guilde a été transférée !"
+  failed: "&cSorry, the guild could not be transferred. Check the server console for details."
 invite:
   already-invited: "L'utilisateur est déjà invité dans votre guilde"
   message: "&a{player} vous a invité à rejoindre sa guilde, '{guild}' écrivez /guild join {guild} pour la rejoindre !"
