@@ -10,11 +10,11 @@ quark = "1.3.0"
 junit = "5.11.4"
 mockito = "5.24.0"
 
-minecraft-spigot-api = "26.2-R0.1-SNAPSHOT"
-minecraft-spigot-api-legacy = "1.8.8-R0.1-SNAPSHOT"
+minecraft-spigot-api = "26.3-R0.1-SNAPSHOT"
+minecraft-spigot-api-legacy = "26.3-R0.1-SNAPSHOT"
 # Newest Spigot API that is still Java 11 loadable. The main source set compiles against the current
 # API, whose bytecode a Java 11 JVM cannot load, so the tests get this one instead.
-minecraft-spigot-api-test = "1.16.5-R0.1-SNAPSHOT"
+minecraft-spigot-api-test = "26.3-R0.1-SNAPSHOT"
 
 acf = "0.5.1-SNAPSHOT"
 bstats = "3.2.1"
