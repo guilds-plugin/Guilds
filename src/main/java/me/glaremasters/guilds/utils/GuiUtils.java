@@ -1,7 +1,6 @@
 package me.glaremasters.guilds.utils;
 
 import com.cryptomorin.xseries.XMaterial;
-import com.cryptomorin.xseries.profiles.builder.XSkull;
 import com.cryptomorin.xseries.profiles.objects.ProfileInputType;
 import com.cryptomorin.xseries.profiles.objects.Profileable;
 import me.glaremasters.guilds.guild.GuildMember;
@@ -62,7 +61,7 @@ public class GuiUtils {
             playerProfile = Profileable.of(backupType, "c10591e6909e6a281b371836e462d67a2c78fa0952e910f32b41a26c48c1757c");
         }
 
-        final ItemStack itemStack = XSkull.createItem().profile(playerProfile).apply();
+        final ItemStack itemStack = SkullUtils.create(playerProfile);
         final ItemMeta meta = itemStack.getItemMeta();
 
         meta.setDisplayName(StringUtils.color(name));

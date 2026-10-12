@@ -1,8 +1,8 @@
 package me.glaremasters.guilds.guild;
 
-import com.cryptomorin.xseries.profiles.builder.XSkull;
 import com.cryptomorin.xseries.profiles.objects.ProfileInputType;
 import com.cryptomorin.xseries.profiles.objects.Profileable;
+import me.glaremasters.guilds.utils.SkullUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -24,8 +24,8 @@ public class GuildSkull {
     public GuildSkull(Player player) {
         final Profileable playerProfile = Profileable.of(player);
 
-        itemStack = XSkull.createItem().profile(playerProfile).apply();
-        serialized = XSkull.of(itemStack.getItemMeta()).getProfileValue();
+        itemStack = SkullUtils.create(playerProfile);
+        serialized = SkullUtils.profileValue(itemStack, player.getUniqueId().toString());
     }
 
     /**
@@ -57,12 +57,12 @@ public class GuildSkull {
             final ProfileInputType backupType = ProfileInputType.typeOf("c10591e6909e6a281b371836e462d67a2c78fa0952e910f32b41a26c48c1757c");
             final Profileable backupProfile = Profileable.of(backupType, serialized);
 
-            return XSkull.createItem().profile(backupProfile).apply();
+            return SkullUtils.create(backupProfile);
         }
 
         final Profileable playerProfile = Profileable.of(type, serialized);
 
-        return XSkull.createItem().profile(playerProfile).apply();
+        return SkullUtils.create(playerProfile);
     }
 
     /**
