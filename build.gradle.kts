@@ -499,7 +499,8 @@ val supportedMinecraftVersions = listOf(
     MinecraftRunTarget("1.21.1", 21),
     MinecraftRunTarget("1.21.4", 21),
     MinecraftRunTarget("1.21.8", 21),
-    MinecraftRunTarget("26.1.2", 25)
+    MinecraftRunTarget("26.1.2", 25),
+    MinecraftRunTarget("26.3", 25)
 )
 
 fun RunServer.configureGuildsRunServer(target: MinecraftRunTarget) {

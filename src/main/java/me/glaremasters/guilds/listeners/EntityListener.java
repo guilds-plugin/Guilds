@@ -2,6 +2,7 @@ package me.glaremasters.guilds.listeners;
 
 import ch.jalu.configme.SettingsManager;
 import com.cryptomorin.xseries.XPotion;
+import com.cryptomorin.xseries.XTag;
 import me.glaremasters.guilds.challenges.ChallengeHandler;
 import me.glaremasters.guilds.configuration.sections.GuildSettings;
 import me.glaremasters.guilds.guild.Guild;
@@ -239,7 +240,7 @@ public class EntityListener implements Listener {
      */
     private boolean isHarmfulPotion(final ThrownPotion potion) {
         for (final PotionEffect effect : potion.getEffects()) {
-            if (XPotion.DEBUFFS.contains(XPotion.matchXPotion(effect.getType()))) {
+            if (XTag.DEBUFFS.isTagged(XPotion.of(effect.getType()))) {
                 return true;
             }
         }
