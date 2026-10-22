@@ -3,7 +3,7 @@
 Which Guilds feature is tested where, and what is deliberately left out. See `e2e-testing.md` for
 how to run any of it.
 
-160 tests across 14 spec files, plus 3 preflight tests that run before every suite and fail the run
+162 tests across 14 spec files, plus 3 preflight tests that run before every suite and fail the run
 if Guilds or any of its hard dependencies did not load.
 
 ## Preflight — `plugins/guilds-preflight.spec.ts`
@@ -33,7 +33,7 @@ meaningful.
 | Status and information commands | toggles the guild between public and private / changes the guild prefix / sets, shows and clears the guild MOTD / reports guild membership through the guild list and rejects guild-scoped commands elsewhere |
 | Name blacklist | rejects a guild name that is a substring of a blacklisted word / accepts a guild name that contains a blacklisted word |
 
-## B. Membership management — `tests/membership.spec.ts` (20)
+## B. Membership management — `tests/membership.spec.ts` (21)
 
 | Requirement | Test |
 | --- | --- |
@@ -194,6 +194,10 @@ Every test switches only its own bot and restores `en-US` in a `finally`, so a f
 the server answering in another language for the rest of the run. ACF's `usePerIssuerLocale(true,
 false)` is what makes that safe, and one player switching language leaves everyone else in English
 asserts it rather than assuming it.
+
+## L. Startup and the guild data — `tests/startup-loading.spec.ts` (4)
+
+## Runtime smoke coverage — `tests/smoke.spec.ts` (7)
 
 ## Fixture self-check — `tests/bank.spec.ts`
 
