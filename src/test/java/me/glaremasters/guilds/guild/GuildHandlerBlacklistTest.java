@@ -118,7 +118,7 @@ class GuildHandlerBlacklistTest {
     void nameThatIsOnlyASubstringIsAllowed() throws IOException {
         final SettingsManager settings = settings(true, words("crap", "ass", "stupid"));
 
-        // "cr" is inside "crap", but it is not a blacklisted word, so it is allowed.
+        // "cr" is inside "crap", but "cr" does not contain "crap", so it is allowed.
         assertFalse(handler.blacklistCheck("cr", settings));
         assertFalse(handler.blacklistCheck("ap", settings));
         assertFalse(handler.blacklistCheck("stu", settings));
@@ -144,7 +144,7 @@ class GuildHandlerBlacklistTest {
     }
 
     @Test
-    @DisplayName("the case-insensitive setting ignores case but still matches the whole word")
+    @DisplayName("the case-insensitive setting ignores case and still matches by containment")
     void caseInsensitiveIgnoresCase() throws IOException {
         final SettingsManager settings = settings(false, words("crap"));
 
@@ -152,7 +152,8 @@ class GuildHandlerBlacklistTest {
         assertTrue(handler.blacklistCheck("Crapguild", settings));
         assertTrue(handler.blacklistCheck("CRAPGUILD", settings));
 
-        // Ignoring case does not turn the check into a substring of the name.
+        // The check does not run the other way round: "cr" is allowed because it does not contain
+        // "crap", even though "crap" contains "cr".
         assertFalse(handler.blacklistCheck("cr", settings));
         assertFalse(handler.blacklistCheck("ap", settings));
     }
