@@ -78,10 +78,8 @@ export const MSG = {
     playerNotFound: (player: string) => `Player '${player}' is not online!`,
     playerNotInGuild: (player: string) => `${player} is not in your Guild!`,
     /**
-     * error.player-no-exist. No test asserts this arrives, for the same reason
-     * `guildNoExist` has none: the command completions only ever offer names the server knows, so
-     * ACF refuses the argument before the handler can. Kept because it documents the branch that
-     * is currently unreachable, and because a test that ever does reach it will want it here.
+     * error.player-no-exist — what an admin command says when it is handed a name the server has
+     * never seen.
      */
     playerNoExist: (player: string) => `it doesn't look like that player has ever been on the server`,
     blacklist: 'is on the blacklist!',
@@ -219,7 +217,8 @@ export const MSG = {
      * The completion name is part of the sentence and differs per command, so it is a parameter.
      * This is what stops an unknown player from being named as a target — the `@players` list only
      * contains names the server has seen, so a player who has never joined is rejected here rather
-     * than by the handler's own "player not found" branch.
+     * than by the handler's own "player not found" branch. It only ever applies to a command's
+     * last argument, which is the only place ACF's check lines up with the argument it reads.
      */
     valueRejected: (completion: string) => `Please specify one of (@${completion})`,
 

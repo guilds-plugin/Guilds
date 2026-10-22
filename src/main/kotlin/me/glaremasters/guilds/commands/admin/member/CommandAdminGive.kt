@@ -11,7 +11,6 @@ import co.aikar.commands.annotation.Dependency
 import co.aikar.commands.annotation.Description
 import co.aikar.commands.annotation.Subcommand
 import co.aikar.commands.annotation.Syntax
-import co.aikar.commands.annotation.Values
 import co.aikar.commands.bukkit.contexts.OnlinePlayer
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.guild.GuildHandler
@@ -29,7 +28,7 @@ internal class CommandAdminGive : BaseCommand() {
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@players")
     @Syntax("%player %amount")
-    fun give(issuer: CommandIssuer, @Values("@players") player: OnlinePlayer, @Default("1") amount: Int) {
+    fun give(issuer: CommandIssuer, player: OnlinePlayer, @Default("1") amount: Int) {
         player.player.inventory.addItem(guildHandler.getUpgradeTicket(settingsManager, amount))
         currentCommandIssuer.sendInfo(Messages.CONFIRM__SUCCESS)
     }

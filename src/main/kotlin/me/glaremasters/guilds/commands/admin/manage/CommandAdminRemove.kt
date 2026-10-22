@@ -11,7 +11,6 @@ import co.aikar.commands.annotation.Description
 import co.aikar.commands.annotation.Flags
 import co.aikar.commands.annotation.Subcommand
 import co.aikar.commands.annotation.Syntax
-import co.aikar.commands.annotation.Values
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.actions.ActionHandler
 import me.glaremasters.guilds.actions.ConfirmAction
@@ -40,7 +39,7 @@ internal class CommandAdminRemove : BaseCommand() {
     @CommandCompletion("@guilds")
     @Syntax("%guild")
     @Conditions("NotMigrating")
-    fun remove(player: Player, @Flags("other") @Values("@guilds") guild: Guild) {
+    fun remove(player: Player, @Flags("other") guild: Guild) {
         val name = guild.name
 
         currentCommandIssuer.sendInfo(Messages.ADMIN__DELETE_WARNING, "{guild}", name)

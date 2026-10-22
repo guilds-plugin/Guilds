@@ -1,6 +1,6 @@
 import { expect, waitForAssertion, type PlayerWrapper } from '@plugwright/runner';
 import type { GuildsFixtures } from './fixtures.js';
-import { received, says, sleep } from './text.js';
+import { received, says, secondsRemaining, sleep, stripColors } from './text.js';
 
 /**
  * Assertion shapes that the runner's matchers do not cover on their own.
@@ -58,6 +58,24 @@ export async function commandWithout(
     await expectReceived(player, reply, since, timeout);
     await settleBuffer(player);
     await expect(player).not.toHaveReceivedMessage(absent, { since });
+}
+
+/**
+ * Waits for a cooldown to run out, using the seconds Guilds reported in its refusal.
+ *
+ * The refusal prints whole seconds while the real expiry is fractional, so the printed number can
+ * be up to a second short. The margin covers that, and re-issuing the command while the cooldown is
+ * live would only start it again.
+ */
+export async function waitOutCooldown(player: PlayerWrapper, since: number, what: string): Promise<void> {
+    const seen = player.messageBuffer.slice(since).map(stripColors).join(' | ');
+    const wait = secondsRemaining(seen);
+    // A refusal that does not say how long is left would turn the wait below into a guess, so the
+    // number has to be there before it is used.
+    if (wait === undefined || !(wait > 0)) {
+        throw new Error(`the ${what} refusal should say how long is left, but the bot received: ${seen}`);
+    }
+    await sleep((wait + 1.5) * 1000);
 }
 
 /**

@@ -82,13 +82,13 @@ class ACFHandler(private val plugin: Guilds, private val commandManager: PaperCo
 
     private fun loadContexts(guildHandler: GuildHandler, arenaHandler: ArenaHandler) {
         commandManager.commandContexts.registerIssuerAwareContext(Guild::class.java) { c ->
-            val guild: Guild = (if (c.hasFlag("other")) {
-                guildHandler.getGuild(c.popFirstArg())
+            if (c.hasFlag("other")) {
+                val name = c.popFirstArg()
+                val guild = if (name == null) null else guildHandler.getGuild(name)
+                guild ?: throw InvalidCommandArgument(Messages.ERROR__GUILD_NO_EXIST)
             } else {
-                guildHandler.getGuild(c.player)
-            })
-                    ?: throw InvalidCommandArgument(Messages.ERROR__NO_GUILD)
-            guild
+                guildHandler.getGuild(c.player) ?: throw InvalidCommandArgument(Messages.ERROR__NO_GUILD)
+            }
         }
         commandManager.commandContexts.registerContext(Arena::class.java) { c ->
             arenaHandler.getArena(c.popFirstArg()).orElseThrow { InvalidCommandArgument(Messages.ARENA__NO_EXIST) }

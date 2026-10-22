@@ -11,7 +11,6 @@ import co.aikar.commands.annotation.Description
 import co.aikar.commands.annotation.Flags
 import co.aikar.commands.annotation.Subcommand
 import co.aikar.commands.annotation.Syntax
-import co.aikar.commands.annotation.Values
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.exceptions.ExpectationNotMet
 import me.glaremasters.guilds.guild.Guild
@@ -33,7 +32,7 @@ internal class CommandAdminClaim : BaseCommand() {
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
     @Syntax("%guild")
-    fun claim(player: Player, @Flags("other") @Values("@guilds") guild: Guild) {
+    fun claim(player: Player, @Flags("other") guild: Guild) {
         if (!ClaimUtils.isEnabled(settingsManager)) {
             throw ExpectationNotMet(Messages.CLAIM__HOOK_DISABLED)
         }
@@ -67,7 +66,7 @@ internal class CommandAdminClaim : BaseCommand() {
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
     @Syntax("%guild")
-    fun unclaim(player: Player, @Flags("other") @Values("@guilds") guild: Guild) {
+    fun unclaim(player: Player, @Flags("other") guild: Guild) {
         if (!ClaimUtils.isEnabled(settingsManager)) {
             throw ExpectationNotMet(Messages.CLAIM__HOOK_DISABLED)
         }

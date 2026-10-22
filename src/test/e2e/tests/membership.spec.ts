@@ -1,5 +1,5 @@
 import { expect, test } from '@plugwright/runner';
-import { commandWithout, expectNeverSeen, expectReceived } from '../plugins/support/assertions.js';
+import { commandWithout, expectNeverSeen, expectReceived, waitOutCooldown } from '../plugins/support/assertions.js';
 import { ROLE } from '../plugins/support/fixtures.js';
 import { MSG } from '../plugins/support/expected.js';
 import { guildList, guildMembers } from '../plugins/support/state.js';
@@ -109,6 +109,39 @@ test('a member can leave and the guild is told', async ({ player, createPlayer, 
 
     const roster = await guildMembers(player);
     expect(roster.map(member => member.name)).toEqual([player.username]);
+});
+
+test('a member can leave, be invited back and join the guild again', async ({
+    player,
+    createPlayer,
+    guilds,
+}) => {
+    const guild = await guilds.createGuild(player);
+    const member = await createPlayer({ username: guilds.playerName() });
+    await guilds.addMember(player, member, guild);
+
+    await guilds.run(member, '/guild leave');
+    await expect(member).toHaveReceivedMessage(MSG.leaveWarning);
+    await guilds.confirm(member);
+    await expect(member).toHaveReceivedMessage(MSG.leaveSuccess);
+
+    const roster = await guildMembers(player);
+    expect(roster.map(entry => entry.name)).toEqual([player.username]);
+
+    // The guild master invites the member back.
+    await guilds.invite(player, member, guild);
+
+    // Leaving starts the join cooldown, so the first attempt is refused, and it says for how long.
+    const blocked = member.getMessageBufferIndex();
+    await guilds.run(member, `/guild accept ${guild}`);
+    await expectReceived(member, MSG.acceptCooldown, blocked);
+    await waitOutCooldown(member, blocked, 'accept');
+
+    // The same command joins the guild again once the cooldown has run out.
+    await guilds.accept(member, guild);
+
+    const rejoined = await guildMembers(player);
+    expect(rejoined.map(entry => entry.name).sort()).toEqual([player.username, member.username].sort());
 });
 
 test('a member leaving warns that the guild master deletes the guild by leaving', async ({ player, guilds }) => {

@@ -10,7 +10,6 @@ import co.aikar.commands.annotation.Flags
 import co.aikar.commands.annotation.Optional
 import co.aikar.commands.annotation.Subcommand
 import co.aikar.commands.annotation.Syntax
-import co.aikar.commands.annotation.Values
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.exceptions.ExpectationNotMet
 import me.glaremasters.guilds.guild.Guild
@@ -29,7 +28,7 @@ internal class CommandAdminVault : BaseCommand() {
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
     @Syntax("%guild %optional %vault-number")
-    fun vault(player: Player, @Flags("other") @Values("@guilds") guild: Guild, @Optional vaultNumber: Int?) {
+    fun vault(player: Player, @Flags("other") guild: Guild, @Optional vaultNumber: Int?) {
         // Same behaviour as /guilds vault: no number opens the picker, a number opens that vault
         // directly. The syntax already promised the number, but the handler never took it.
         if (vaultNumber == null) {

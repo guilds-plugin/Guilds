@@ -11,7 +11,6 @@ import co.aikar.commands.annotation.Description
 import co.aikar.commands.annotation.Flags
 import co.aikar.commands.annotation.Subcommand
 import co.aikar.commands.annotation.Syntax
-import co.aikar.commands.annotation.Values
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.exceptions.ExpectationNotMet
 import me.glaremasters.guilds.exte.rounded
@@ -32,7 +31,7 @@ internal class CommandAdminBank : BaseCommand() {
     @CommandPermission(Constants.ADMIN_PERM)
     @Syntax("%guild")
     @CommandCompletion("@guilds")
-    fun balance(issuer: CommandIssuer, @Flags("other") @Values("@guilds") guild: Guild) {
+    fun balance(issuer: CommandIssuer, @Flags("other") guild: Guild) {
         currentCommandIssuer.sendInfo(Messages.ADMIN__BANK_BALANCE, "{guild}", guild.name, "{balance}", EconomyUtils.format(guild.balance))
     }
 
@@ -41,7 +40,7 @@ internal class CommandAdminBank : BaseCommand() {
     @CommandPermission(Constants.ADMIN_PERM)
     @Syntax("%guild %amount")
     @CommandCompletion("@guilds")
-    fun deposit(issuer: CommandIssuer, @Flags("other") @Values("@guilds") guild: Guild, amount: Double) {
+    fun deposit(issuer: CommandIssuer, @Flags("other") guild: Guild, amount: Double) {
         if (!amount.isFinite() || amount <= 0) {
             throw ExpectationNotMet(Messages.SYNTAX__AMOUNT)
         }
@@ -59,7 +58,7 @@ internal class CommandAdminBank : BaseCommand() {
     @CommandPermission(Constants.ADMIN_PERM)
     @Syntax("%guild %amount")
     @CommandCompletion("@guilds")
-    fun withdraw(issuer: CommandIssuer, @Flags("other") @Values("@guilds") guild: Guild, amount: Double) {
+    fun withdraw(issuer: CommandIssuer, @Flags("other") guild: Guild, amount: Double) {
         if (!amount.isFinite() || amount <= 0) {
             throw ExpectationNotMet(Messages.SYNTAX__AMOUNT)
         }

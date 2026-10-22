@@ -165,6 +165,20 @@ which is what I concluded after a long detour through listener-ordering theories
 how the shipped default is written, and `a blacklisted item is refused by the vault` asserts the
 refusal.
 
+### Every admin command that named a guild was refused
+
+ACF validates a `@Values` argument against the *last* argument of the command, while the parameter
+it belongs to was the *first* one — the guild name the command had already consumed. The completion
+came back filtered by the second argument, so the guild name was not in it, and the command was
+refused with "Please specify one of (@guilds)" before its handler ran. `/guild admin bank deposit
+<guild> <amount>`, `/guild admin addplayer <guild> <player>` and every other two-argument admin
+command were unreachable; the single-argument forms kept working, which is what made it easy to
+miss.
+
+The `@Values` annotation is only meaningful on a command's last argument, so it is gone from the
+parameters ACF resolves by name, and Guilds' own context resolver answers with the guild it found
+or with `error.guild-no-exist`. `admin.spec.ts` covers the surface.
+
 ## Deliberate limitations
 
 **A player's own inventory index is not the window slot.** `bot.inventory.slots` follows the player
@@ -173,14 +187,10 @@ puts its own slots first. Adding the container size to an inventory index is off
 length. `ownItemWindowSlot` in `plugins/support/state.ts` reconciles the two through the offset
 mineflayer itself uses; use it rather than doing the arithmetic.
 
-**Guilds' admin commands that take a guild and a second argument are unreachable.** ACF's `@Values`
-check refuses them, so `/guild admin bank deposit <guild> <amount>` never reaches its handler. The
-suite drives the bank through the owning player's own `/guild bank deposit` instead, and
-`roles.spec.ts` keeps a test that documents the admin route's refusal.
-
-**`error.guild-no-exist` has no test that reaches its handler.** Member commands take the sender's
-own guild as their `guild` argument, and the admin commands are `@Values("@guilds")`, so an invented
-guild name is always rejected by the completion first. `cooldowns.spec.ts` asserts that instead.
+**A guild name is only ever resolved by Guilds itself.** The admin commands take a guild by name
+and the context resolver looks it up, so an invented name is answered with the plugin's own
+`error.guild-no-exist` rather than with ACF's completion error. `admin.spec.ts` and
+`cooldowns.spec.ts` assert that.
 
 **Waiting for a LuckPerms change to reach a client is indirect.** LuckPerms recalculates an online
 player's permissions on its own schedule, and the acknowledgement of the console command that made

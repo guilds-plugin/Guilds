@@ -1,8 +1,8 @@
 import { expect, test } from '@plugwright/runner';
-import { commandWithout, expectEither, expectReceived } from '../plugins/support/assertions.js';
+import { commandWithout, expectEither, expectReceived, waitOutCooldown } from '../plugins/support/assertions.js';
 import { SETHOME_COST } from '../plugins/support/fixtures.js';
 import { MSG } from '../plugins/support/expected.js';
-import { secondsRemaining, sleep, stripColors } from '../plugins/support/text.js';
+import { stripColors } from '../plugins/support/text.js';
 import { teleportAndSettle } from '../plugins/support/state.js';
 
 /**
@@ -21,24 +21,6 @@ import { teleportAndSettle } from '../plugins/support/state.js';
 
 /** Somewhere flat and clear of spawn, for the sethome steps. */
 const HOME = { x: 260, y: 90, z: -200 };
-
-/**
- * Waits for a cooldown to run out, using the seconds Guilds reported in its refusal.
- *
- * The refusal prints whole seconds while the real expiry is fractional, so the printed number can
- * be up to a second short. The margin covers that, and re-issuing the command while the cooldown is
- * live would only start it again.
- */
-async function waitOutCooldown(player: any, since: number, what: string): Promise<void> {
-    const seen = player.messageBuffer.slice(since).map(stripColors).join(' | ');
-    const wait = secondsRemaining(seen);
-    // A refusal that does not say how long is left would turn the wait below into a guess, so the
-    // number has to be there before it is used.
-    if (wait === undefined || !(wait > 0)) {
-        throw new Error(`the ${what} refusal should say how long is left, but the bot received: ${seen}`);
-    }
-    await sleep((wait + 1.5) * 1000);
-}
 
 test('a second home cannot be set until the cooldown expires', async ({ player, guilds }) => {
     const guild = await guilds.createGuild(player);
@@ -198,13 +180,11 @@ test('a player the server does not know cannot be named as a target', async ({ p
 });
 
 test('a guild that does not exist is refused by name', async ({ guilds }) => {
-    // Guilds has no command whose *guild* argument can name a guild that is not the sender's own:
-    // the member commands take the sender's own guild, and the admin commands are
-    // `@Values("@guilds")`, so an invented name is rejected by ACF's completion rather than by the
-    // plugin's own `error.guild-no-exist`. That is why `MSG.guildNoExist` has no test that reaches
-    // its handler — the completion is always the thing that answers first.
+    // The admin commands name their guild, and the name is resolved by Guilds itself, so an
+    // invented one is answered with the plugin's own `error.guild-no-exist` rather than with
+    // ACF's completion error.
     const output = await guilds.console('guild admin bank balance NoSuchGuild');
-    expect(stripColors(output)).toContain(MSG.valueRejected('guilds'));
+    expect(stripColors(output)).toContain(MSG.guildNoExist);
     expect(stripColors(output)).not.toContain('bank balance of');
 });
 
