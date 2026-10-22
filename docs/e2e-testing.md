@@ -179,6 +179,19 @@ The `@Values` annotation is only meaningful on a command's last argument, so it 
 parameters ACF resolves by name, and Guilds' own context resolver answers with the guild it found
 or with `error.guild-no-exist`. `admin.spec.ts` covers the surface.
 
+### The name blacklist compared the wrong way round
+
+`GuildHandler.blacklistCheck` asked whether a blacklisted *word* contained the proposed *name*.
+With the shipped `guild.blacklist.case-sensitive: true` that refused a guild called "cr" — a
+substring of "crap" — and allowed "crapguild", which is the name the blacklist exists to refuse.
+The other branch compared for equality instead, so it refused only a name that *was* a blacklisted
+word and let every name containing one through.
+
+Both branches now ask the same question, in the direction the config comment asks it: does the
+name contain one of the words? `guild.blacklist.case-sensitive` decides whether that comparison is
+made case-sensitively or ignoring case, which is what its name says and what it has meant since
+it was added in 2019. `lifecycle.spec.ts` carries both halves.
+
 ## Deliberate limitations
 
 **A player's own inventory index is not the window slot.** `bot.inventory.slots` follows the player

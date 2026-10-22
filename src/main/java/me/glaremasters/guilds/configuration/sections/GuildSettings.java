@@ -47,12 +47,13 @@ public class GuildSettings implements SettingsHolder {
             newProperty("guild.blacklist.enabled", true);
 
     @Comment({"How should these words be matched against a guild name?",
-            "true  = the guild name must CONTAIN one of these words (the word is lower-cased, the name is used as typed)",
-            "false = the guild name must EQUAL one of these words, ignoring case"})
+            "true  = the guild name must CONTAIN one of these words, spelled exactly as they are written here",
+            "false = the guild name must CONTAIN one of these words, ignoring case"})
     public static final Property<Boolean> BLACKLIST_SENSITIVE =
             newProperty("guild.blacklist.case-sensitive", true);
 
-    @Comment("What words would you like to blacklist from being used?")
+    @Comment({"What words would you like to blacklist from being used?",
+            "A guild name or prefix that contains one of these words is refused."})
     public static final Property<List<String>> BLACKLIST_WORDS =
             newListProperty("guild.blacklist.words", "crap", "ass", "stupid");
 

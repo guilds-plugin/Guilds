@@ -30,7 +30,7 @@ meaningful.
 | Guild renaming | renames a guild / rejects a rename to a name another guild already holds / allows a guild to keep the name it already has |
 | Guild deletion and its confirmation | deletes a guild once the prompt is confirmed / cancelling the delete prompt keeps the guild |
 | Status and information commands | toggles the guild between public and private / changes the guild prefix / sets, shows and clears the guild MOTD / reports guild membership through the guild list and rejects guild-scoped commands elsewhere |
-| Name blacklist | rejects a guild name that is a substring of a blacklisted word / accepts a guild name that contains a blacklisted word |
+| Name blacklist | rejects a guild name that contains a blacklisted word / accepts a guild name that is only a substring of a blacklisted word |
 
 ## B. Membership management — `tests/membership.spec.ts` (19)
 

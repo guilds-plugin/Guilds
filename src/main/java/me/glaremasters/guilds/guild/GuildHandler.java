@@ -769,15 +769,43 @@ public class GuildHandler {
     /**
      * Check if a word is in the blacklist or not
      *
+     * <p>A name is blacklisted when it <em>contains</em> one of the configured words. The
+     * {@code guild.blacklist.case-sensitive} setting decides whether that containment check is
+     * made case-sensitively or ignoring case; it does not change what is matched.
+     *
      * @param name            name to check
      * @param settingsManager settings manager
      * @return blacklisted or not
      */
     public boolean blacklistCheck(String name, SettingsManager settingsManager) {
-        if (settingsManager.getProperty(GuildSettings.BLACKLIST_SENSITIVE))
-            return settingsManager.getProperty(GuildSettings.BLACKLIST_WORDS).stream().anyMatch(s -> s.toLowerCase(Locale.ROOT).contains(name));
-        else
-            return settingsManager.getProperty(GuildSettings.BLACKLIST_WORDS).stream().anyMatch(s -> s.equalsIgnoreCase(name));
+        final List<String> words = settingsManager.getProperty(GuildSettings.BLACKLIST_WORDS);
+        final boolean caseSensitive = settingsManager.getProperty(GuildSettings.BLACKLIST_SENSITIVE);
+
+        if (caseSensitive) {
+            return words.stream()
+                    .filter(GuildHandler::isUsableBlacklistWord)
+                    .anyMatch(name::contains);
+        }
+
+        // Both sides are lowered with Locale.ROOT, so the result does not depend on the locale of
+        // the server: a Turkish JVM lowercases "I" to a dotless "ı" and would lose the match.
+        final String loweredName = name.toLowerCase(Locale.ROOT);
+        return words.stream()
+                .filter(GuildHandler::isUsableBlacklistWord)
+                .anyMatch(word -> loweredName.contains(word.toLowerCase(Locale.ROOT)));
+    }
+
+    /**
+     * Whether a word from the blacklist list can be matched against a name at all.
+     *
+     * <p>A blank entry is contained in every name, so matching it literally would refuse every
+     * guild on the server.
+     *
+     * @param word a word from the configured blacklist
+     * @return true when the word can be matched
+     */
+    private static boolean isUsableBlacklistWord(String word) {
+        return word != null && !word.trim().isEmpty();
     }
 
     /**

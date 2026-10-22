@@ -81,27 +81,23 @@ test('rejects an explicit prefix that breaks the prefix requirements', async ({ 
 });
 
 /*
- * Guilds bug, kept as a reproducer rather than a fix — see docs/e2e-testing.md.
- *
- * `GuildHandler.blacklistCheck` compares the arguments the wrong way round. With the shipped
- * `guild.blacklist.case-sensitive: true` it asks whether a blacklisted *word* contains the
- * proposed *name*, so a name that is a substring of "crap" is refused while a name that merely
- * contains "crap" sails through — the opposite of what the config comment asks for. Both halves
- * are pinned below so the behaviour cannot change unnoticed; these are the expectations to correct
- * when the comparison is fixed.
+ * The name blacklist refuses a guild name that contains a blacklisted word. With the shipped
+ * `guild.blacklist.case-sensitive: true` the comparison is exact, so "crapguild" is refused
+ * because it contains "crap", while "cr" is allowed: it is a substring of "crap", but it does
+ * not contain a blacklisted word.
  */
-test('rejects a guild name that is a substring of a blacklisted word', async ({ player, guilds }) => {
+test('rejects a guild name that contains a blacklisted word', async ({ player, guilds }) => {
     await guilds.fund(player, STARTING_BALANCE);
 
-    // "crap" is one of the shipped blacklisted words, and it contains "cr".
-    await commandWithout(player, guilds, '/guild create cr', MSG.blacklist, MSG.created('cr'));
+    // "crap" is one of the shipped blacklisted words, and "crapguild" contains it.
+    await commandWithout(player, guilds, '/guild create crapguild Crappy', MSG.blacklist, MSG.created('crapguild'));
 });
 
-test('accepts a guild name that contains a blacklisted word', async ({ player, guilds }) => {
-    const name = 'crapguild';
+test('accepts a guild name that is only a substring of a blacklisted word', async ({ player, guilds }) => {
+    const name = 'cr';
 
     await guilds.fund(player, STARTING_BALANCE);
-    await guilds.run(player, `/guild create ${name} Crappy`);
+    await guilds.run(player, `/guild create ${name} Cr`);
     await expect(player).toHaveReceivedMessage(MSG.createWarning);
     await guilds.confirm(player);
     await expect(player).toHaveReceivedMessage(MSG.created(name));
