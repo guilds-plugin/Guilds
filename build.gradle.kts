@@ -831,31 +831,34 @@ fun smokeLauncherScript(javaPath: String, refusesNoGui: Boolean): String {
 }
 
 /**
- * The server.properties the 1.8.8 environment runs with.
+ * The server.properties the E2E servers run with.
  *
- * That server ships Netty 4.0, which decides whether it can use direct buffers by reading the
- * address of a heap buffer, which no longer reads as zero on Java 9 and later. Without that support
- * the native transport cannot work, and every connection the server accepts dies with "Unable to
- * access address of buffer" — the bot never gets a reply and the smoke test fails on a socket
- * error rather than on anything to do with Guilds.
+ * `allow-flight` is what keeps the server from kicking a bot that a teleport left in mid-air.
+ * Paper refuses a player whose client reports that it is not on the ground for 80 ticks, which is
+ * four seconds, unless the server allows flight: `MinecraftServer.isFlightAllowed()` is what
+ * makes Paper skip the check. The suite teleports bots into the air on purpose, so the throwaway
+ * server it drives allows it. Without this the server kicks the bot with "Flying is not enabled on
+ * this server" in the middle of a test that was only waiting for a cooldown to expire.
  *
- * Turning the native transport off puts the server on the same NIO transport every Windows server
- * uses, which works on a Java 11 JVM.
+ * The 1.8.8 server also needs the native transport turned off. That server ships Netty 4.0,
+ * which decides whether it can use direct buffers by reading the address of a heap buffer, and
+ * that address no longer reads as zero on Java 9 and later. Without the support the native
+ * transport cannot work, and every connection the server accepts dies with "Unable to access
+ * address of buffer" — the bot never gets a reply and the smoke test fails on a socket error
+ * rather than on anything to do with Guilds. Turning the native transport off puts the server on
+ * the same NIO transport every Windows server uses, which works on a Java 11 JVM.
  */
-fun writeLegacyServerProperties(properties: File) {
-    val line = "use-native-transport=false"
+fun writeE2eServerProperties(properties: File, values: Map<String, String>) {
     val existing = if (properties.exists()) properties.readText() else ""
 
-    val updated = if (existing.lines().any { it.trim().startsWith("use-native-transport=") }) {
-        existing.lines().joinToString("\n") {
-            if (it.trim().startsWith("use-native-transport=")) line else it
-        }
-    } else {
-        listOf(existing.trimEnd(), line).filter { it.isNotEmpty() }.joinToString("\n")
+    val kept = existing.lines().filter { line ->
+        values.keys.none { key -> line.trim().startsWith("$key=") }
     }
 
     properties.parentFile.mkdirs()
-    properties.writeText(updated + System.lineSeparator())
+    properties.writeText(
+        (kept + values.map { (key, value) -> "$key=$value" }).joinToString("\n", postfix = "\n")
+    )
 }
 
 /**
@@ -1007,6 +1010,30 @@ fun downloadNewestPaperBuild(version: String, serverJar: File, versionMarker: Fi
  * its own afterEvaluate block, which runs first.
  */
 afterEvaluate {
+    /*
+     * The local environment's server needs the same properties the smoke environments get, and it
+     * is the one the full suite runs against. The homes spec teleports its bot into the air and
+     * then waits out a cooldown, and Paper kicks a player that stays in the air without flight
+     * permission.
+     */
+    val localRunDir = (plugwright.environments.get("local")!!.spec as LocalEnvironmentSpec)
+        .runDir.get().asFile
+    val localProperties = File(localRunDir, "server.properties")
+    val localServerProperties = tasks.register("e2eServerPropertiesLocal") {
+        outputs.file(localProperties)
+
+        doLast {
+            writeE2eServerProperties(localProperties, mapOf("allow-flight" to "true"))
+        }
+    }
+
+    tasks.named("plugwrightProvisionLocal") {
+        dependsOn(localServerProperties)
+    }
+    localServerProperties.configure {
+        mustRunAfter(tasks.named("plugwrightCleanLocal"))
+    }
+
     val smokeServerChecks = mutableListOf<TaskProvider<Task>>()
     val smokeTestTasks = smokeEnvironments.map { smoke ->
         val entry = plugwright.environments.get(smoke.name)!!
@@ -1058,25 +1085,29 @@ afterEvaluate {
         val clean = tasks.named("plugwrightClean$suffix")
 
         /*
-         * The server properties the versions that need them run with. The provision task rewrites
-         * the keys it knows about and leaves the rest alone, so writing this first is enough.
+         * The server properties the environment runs with. The provision task rewrites the keys it
+         * knows about and leaves the rest alone, so writing these first is enough.
          */
         val properties = File(runDir, "server.properties")
-        if (smoke.needsNioTransport) {
-            val serverProperties = tasks.register("smokeServerProperties$suffix") {
-                outputs.file(properties)
+        val serverProperties = tasks.register("smokeServerProperties$suffix") {
+            outputs.file(properties)
 
-                doLast {
-                    writeLegacyServerProperties(properties)
-                }
+            doLast {
+                writeE2eServerProperties(
+                    properties,
+                    buildMap {
+                        put("allow-flight", "true")
+                        if (smoke.needsNioTransport) put("use-native-transport", "false")
+                    }
+                )
             }
+        }
 
-            tasks.named("plugwrightProvision$suffix") {
-                dependsOn(serverProperties)
-            }
-            serverProperties.configure {
-                mustRunAfter(clean)
-            }
+        tasks.named("plugwrightProvision$suffix") {
+            dependsOn(serverProperties)
+        }
+        serverProperties.configure {
+            mustRunAfter(clean)
         }
 
         tasks.named("plugwrightProvision$suffix") {
