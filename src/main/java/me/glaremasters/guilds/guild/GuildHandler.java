@@ -2,6 +2,8 @@ package me.glaremasters.guilds.guild;
 
 import ch.jalu.configme.SettingsManager;
 import com.cryptomorin.xseries.XMaterial;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.PaperCommandManager;
@@ -34,6 +36,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Reader;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -57,6 +62,19 @@ public class GuildHandler {
     private final List<Player> spies = new ArrayList<>();
 
     private final Map<Guild, List<Inventory>> vaults = new HashMap<>();
+
+    /**
+     * The name of the folder the copies of the guild files go in.
+     */
+    private static final String GUILD_BACKUP_TYPE = "guilds";
+
+    /**
+     * Reads the guild files that were copied aside.
+     *
+     * <p>The plugin's own reader is built once the plugin has started, and a guild can be read
+     * before that. A plain reader is enough for these files: they are written by a plain writer.
+     */
+    private static final Gson GSON = new Gson();
 
     /**
      * The positions of the vaults that could not be read in full, per guild.
@@ -676,8 +694,16 @@ public class GuildHandler {
                     + vaults + " could not be read and the data stored for them has been left untouched.");
             return;
         }
+
+        final File existing = findCopyOfTheSameDamage(dataFolder, guild, damaged);
+        if (existing != null) {
+            LoggingUtils.warn("Vault " + vaults + " of guild " + guild.getId() + " could not be read. The same data is already backed up at "
+                    + existing.getAbsolutePath() + ".");
+            return;
+        }
+
         final File file = guildDataFile(guild);
-        final CorruptDataBackup.Result result = CorruptDataBackup.backup(dataFolder, file, "guilds");
+        final CorruptDataBackup.Result result = CorruptDataBackup.backup(dataFolder, file, GUILD_BACKUP_TYPE);
         if (result.isCreated()) {
             LoggingUtils.severe("Vault " + vaults + " of guild " + guild.getId() + " could not be read. A copy of the guild file has been made at "
                     + result.getBackupFile().getAbsolutePath() + ". The file itself has been left where it was.");
@@ -687,6 +713,95 @@ public class GuildHandler {
         } else if (result.isFailed()) {
             LoggingUtils.severe("Vault " + vaults + " of guild " + guild.getId() + " could not be read, and the guild file could not be copied: "
                     + result.getFailure() + ". The file itself has been left where it was.");
+        }
+    }
+
+    /**
+     * Finds a copy of the guild file that already holds the same damaged vault data.
+     *
+     * <p>The identity of the damage is the stored data of the vaults that could not be read. That
+     * is what is being preserved, so that is what the copies are compared on. A copy that holds the
+     * same data is the same corruption, and the file is not copied again.
+     *
+     * <p>The comparison has to happen here rather than in the backup helper, because the helper
+     * names a copy after the last modified time of the file it copies. The plugin rewrites the
+     * guild file on every save, so the same corruption would land in a new folder on every restart
+     * and the operator would collect a copy of it every time.
+     *
+     * @param dataFolder the plugin's data folder
+     * @param guild the guild
+     * @param damaged the positions of the vaults that could not be read in full
+     * @return the copy that holds the same data, or null when there is none
+     */
+    private File findCopyOfTheSameDamage(@NotNull final File dataFolder, @NotNull final Guild guild, @NotNull final Set<Integer> damaged) {
+        final File[] folders = new File(dataFolder, CorruptDataBackup.BACKUP_DIRECTORY).listFiles();
+        if (folders == null) {
+            return null;
+        }
+        final String name = guild.getId() + ".json";
+        for (File folder : folders) {
+            final File[] copies = new File(folder, GUILD_BACKUP_TYPE).listFiles();
+            if (copies == null) {
+                continue;
+            }
+            for (File copy : copies) {
+                if (copy.getName().startsWith(name) && holdsTheSameDamage(copy, guild, damaged)) {
+                    return copy;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Whether a copy of the guild file holds the same stored data for the damaged vaults.
+     *
+     * @param copy the copy to look at
+     * @param guild the guild
+     * @param damaged the positions of the vaults that could not be read in full
+     * @return true when the copy holds the same data
+     */
+    private boolean holdsTheSameDamage(@NotNull final File copy, @NotNull final Guild guild, @NotNull final Set<Integer> damaged) {
+        final List<String> stored = readStoredVaults(copy);
+        if (stored == null) {
+            return false;
+        }
+        final List<String> current = guild.getVaults();
+        for (Integer position : damaged) {
+            if (position >= stored.size() || position >= current.size()) {
+                return false;
+            }
+            final String before = stored.get(position);
+            if (before == null || !before.equals(current.get(position))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Reads the stored vaults out of a guild file.
+     *
+     * @param file the file to read
+     * @return the stored vaults, or null when the file cannot be read
+     */
+    private static List<String> readStoredVaults(@NotNull final File file) {
+        try (Reader reader = Files.newBufferedReader(file.toPath(), StandardCharsets.UTF_8)) {
+            final JsonElement root = GSON.fromJson(reader, JsonElement.class);
+            if (root == null || !root.isJsonObject()) {
+                return null;
+            }
+            final JsonElement vaults = root.getAsJsonObject().get("vaults");
+            if (vaults == null || !vaults.isJsonArray()) {
+                return null;
+            }
+            final List<String> stored = new ArrayList<>();
+            for (JsonElement vault : vaults.getAsJsonArray()) {
+                stored.add(vault.isJsonNull() ? null : vault.getAsString());
+            }
+            return stored;
+        } catch (Exception e) {
+            return null;
         }
     }
 
@@ -764,21 +879,19 @@ public class GuildHandler {
      *
      * <p>A vault whose stored data could not be read in full has no inventory to give: the items
      * that were left out of it are still in the stored data, and an inventory without them looks
-     * complete to whoever is handed it.
+     * complete to whoever is handed it. A vault number that is not one of the guild's vaults still
+     * fails the way it always did.
      *
      * @param guild The guild which owns the vault.
      * @param vault The number of the vault to be opened.
-     * @return The inventory of the specified guild vault, or null when there is none to open.
+     * @return The inventory of the specified guild vault, or null when the vault cannot be opened.
      */
     public Inventory getGuildVault(Guild guild, int vault) {
-        final List<Inventory> cached = vaults.get(guild);
-        if (cached == null || vault < 1 || vault > cached.size()) {
-            return null;
-        }
+        final Inventory inventory = vaults.get(guild).get(vault - 1);
         if (isVaultDamaged(guild, vault)) {
             return null;
         }
-        return cached.get(vault - 1);
+        return inventory;
     }
 
     /**

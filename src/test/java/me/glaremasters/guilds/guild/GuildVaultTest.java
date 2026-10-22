@@ -1,6 +1,7 @@
 package me.glaremasters.guilds.guild;
 
 import ch.jalu.configme.SettingsManager;
+import com.google.gson.Gson;
 import co.aikar.commands.BukkitCommandIssuer;
 import co.aikar.commands.PaperCommandManager;
 import me.glaremasters.guilds.Guilds;
@@ -31,7 +32,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Stream;
@@ -41,6 +44,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -140,9 +144,20 @@ class GuildVaultTest {
      * @return the stored vault
      */
     private static String storedWithUnreadableItem() {
+        return storedWithUnreadableItem("WOOD");
+    }
+
+    /**
+     * A stored vault holding a good item and an item of a material the running server does not
+     * have.
+     *
+     * @param material the material that cannot be read
+     * @return the stored vault
+     */
+    private static String storedWithUnreadableItem(String material) {
         return "{\"size\":54,\"items\":{"
                 + "\"0\":{\"==\":\"org.bukkit.inventory.ItemStack\",\"v\":3465,\"type\":\"STONE\"},"
-                + "\"1\":{\"==\":\"org.bukkit.inventory.ItemStack\",\"v\":3465,\"type\":\"WOOD\"}}}";
+                + "\"1\":{\"==\":\"org.bukkit.inventory.ItemStack\",\"v\":3465,\"type\":\"" + material + "\"}}}";
     }
 
     /**
@@ -163,13 +178,19 @@ class GuildVaultTest {
      * Writes the file a guild is stored in, the way the JSON storage provider does.
      *
      * @param guild the guild
-     * @param content the content of the file
+     * @param vaults the stored vaults the file holds
+     * @param balance the balance the file holds
      * @return the file
      */
-    private Path writeGuildFile(Guild guild, String content) throws IOException {
+    private Path writeGuildFile(Guild guild, List<String> vaults, double balance) throws IOException {
+        final Map<String, Object> data = new LinkedHashMap<>();
+        data.put("id", guild.getId().toString());
+        data.put("name", guild.getName());
+        data.put("vaults", vaults);
+        data.put("balance", balance);
         final Path file = dataFolder.resolve("data").resolve(guild.getId() + ".json");
         Files.createDirectories(file.getParent());
-        Files.write(file, content.getBytes(StandardCharsets.UTF_8));
+        Files.write(file, new Gson().toJson(data).getBytes(StandardCharsets.UTF_8));
         return file;
     }
 
@@ -388,7 +409,7 @@ class GuildVaultTest {
     @DisplayName("the guild file is copied when a vault of it cannot be read")
     void guildFileIsCopiedWhenAVaultCannotBeRead() throws Exception {
         final Guild guild = guild(Arrays.asList(stored(Material.STONE), storedWithUnreadableItem()));
-        final Path file = writeGuildFile(guild, "{\"id\":\"" + guild.getId() + "\",\"vaults\":[]}");
+        final Path file = writeGuildFile(guild, guild.getVaults(), 500);
 
         handler.addGuild(guild);
 
@@ -402,7 +423,7 @@ class GuildVaultTest {
     @DisplayName("the guild file is copied when a vault of it cannot be read at all")
     void guildFileIsCopiedWhenAVaultCannotBeReadAtAll() throws Exception {
         final Guild guild = guild(Arrays.asList(stored(Material.STONE), UNREADABLE));
-        final Path file = writeGuildFile(guild, "{\"id\":\"" + guild.getId() + "\",\"vaults\":[]}");
+        final Path file = writeGuildFile(guild, guild.getVaults(), 500);
 
         handler.addGuild(guild);
         handler.saveData();
@@ -411,6 +432,59 @@ class GuildVaultTest {
         assertEquals(1, backups.size(), "the guild file has to be copied: " + backups);
         assertArrayEquals(Files.readAllBytes(file), Files.readAllBytes(backups.get(0)), "the copy has to hold the same bytes");
         assertEquals(UNREADABLE, guild.getVaults().get(1), "the data that could not be read has to be left alone");
+    }
+
+    @Test
+    @DisplayName("the guild file is not copied again while the same damage is there")
+    void unchangedDamageIsNotCopiedAgain() throws Exception {
+        final Guild guild = guild(Arrays.asList(stored(Material.STONE), storedWithUnreadableItem()));
+        writeGuildFile(guild, guild.getVaults(), 500);
+
+        handler.addGuild(guild);
+        final List<Path> first = backups();
+        assertEquals(1, first.size(), "the guild file has to be copied: " + first);
+
+        // The plugin rewrites the guild file on every save, so the file changes while the damage
+        // does not. A copy of the same damage is the same corruption and does not need a copy.
+        writeGuildFile(guild, guild.getVaults(), 750);
+
+        final GuildHandler reloaded = new GuildHandler(plugin, settingsManager);
+        reloaded.addGuild(guild);
+
+        final List<Path> second = backups();
+        assertEquals(1, second.size(), "the same damage must not be copied again: " + second);
+        assertEquals(first.get(0), second.get(0), "the copy that is already there is the one that counts");
+    }
+
+    @Test
+    @DisplayName("a different corruption in the same vault is copied again")
+    void changedDamageIsCopiedAgain() throws Exception {
+        final Guild guild = guild(Arrays.asList(stored(Material.STONE), storedWithUnreadableItem()));
+        writeGuildFile(guild, guild.getVaults(), 500);
+
+        handler.addGuild(guild);
+        assertEquals(1, backups().size(), "the guild file has to be copied: " + backups());
+
+        // The vault holds a different item that cannot be read now, which is a different corruption.
+        guild.setVaults(Arrays.asList(stored(Material.STONE), storedWithUnreadableItem("GOLD_RECORD")));
+        writeGuildFile(guild, guild.getVaults(), 500);
+
+        final GuildHandler reloaded = new GuildHandler(plugin, settingsManager);
+        reloaded.addGuild(guild);
+
+        assertEquals(2, backups().size(), "a different corruption deserves its own copy: " + backups());
+    }
+
+    @Test
+    @DisplayName("a vault number that is not one of the guild's vaults still fails the way it always did")
+    void vaultNumberOutsideTheGuildStillFails() {
+        final Guild guild = guild(Arrays.asList(stored(Material.STONE), stored(Material.DIRT)));
+
+        handler.addGuild(guild);
+
+        assertThrows(IndexOutOfBoundsException.class, () -> handler.getGuildVault(guild, 3),
+                "a vault number outside the guild's vaults has to fail the way it always did");
+        assertThrows(IndexOutOfBoundsException.class, () -> handler.getGuildVault(guild, 0));
     }
 
     @Test
