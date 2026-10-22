@@ -26,7 +26,7 @@ internal class CommandAdminUpgrade : BaseCommand() {
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
     @Syntax("%guild")
-    fun upgrade(issuer: CommandIssuer, @Flags("other") @Values("@guilds") guild: Guild) {
+    fun upgrade(issuer: CommandIssuer, @Flags("other") guild: Guild) {
         // Resolve the target tier before touching permissions. upgradeTier refuses when there is no
         // tier above this one, so there is nothing left to guard against here.
         if (guildHandler.getNextGuildTier(guild) == null) {

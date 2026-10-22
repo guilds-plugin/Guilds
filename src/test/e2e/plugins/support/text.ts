@@ -123,7 +123,7 @@ export function amount(value: number): string {
  */
 export function secondsRemaining(text: string): number | undefined {
     const match = stripColors(text).match(
-        /must wait at least ([\d.]+) seconds|currently on cooldown[^.]*?([\d.]+)|another request for ([\d.]+) seconds/i,
+        /must wait at least ([\d.]+) seconds|currently on cooldown[^\d]*?([\d.]+) seconds|another request for ([\d.]+) seconds/i,
     );
     if (!match) return undefined;
     const value = Number(match[1] ?? match[2] ?? match[3]);

@@ -10,7 +10,6 @@ import co.aikar.commands.annotation.Description
 import co.aikar.commands.annotation.Flags
 import co.aikar.commands.annotation.Subcommand
 import co.aikar.commands.annotation.Syntax
-import co.aikar.commands.annotation.Values
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
@@ -27,7 +26,7 @@ internal class CommandAdminScore : BaseCommand() {
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
     @Syntax("%guild %amount")
-    fun setWins(issuer: CommandIssuer, @Flags("other") @Values("@guilds") guild: Guild, amount: Int) {
+    fun setWins(issuer: CommandIssuer, @Flags("other") guild: Guild, amount: Int) {
         guild.guildScore.wins = amount
         currentCommandIssuer.sendInfo(Messages.ADMIN__SCORE_SETWINS, "{guild}", guild.name, "{amount}", amount.toString())
     }
@@ -37,7 +36,7 @@ internal class CommandAdminScore : BaseCommand() {
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
     @Syntax("%guild %amount")
-    fun setLoses(issuer: CommandIssuer, @Flags("other") @Values("@guilds") guild: Guild, amount: Int) {
+    fun setLoses(issuer: CommandIssuer, @Flags("other") guild: Guild, amount: Int) {
         guild.guildScore.loses = amount
         currentCommandIssuer.sendInfo(Messages.ADMIN__SCORE_SETLOSES, "{guild}", guild.name, "{amount}", amount.toString())
     }

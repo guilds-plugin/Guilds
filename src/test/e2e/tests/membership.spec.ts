@@ -1,5 +1,5 @@
 import { expect, test } from '@plugwright/runner';
-import { commandWithout, expectNeverSeen, expectReceived } from '../plugins/support/assertions.js';
+import { commandWithout, expectNeverSeen, expectReceived, waitOutCooldown } from '../plugins/support/assertions.js';
 import { ROLE } from '../plugins/support/fixtures.js';
 import { MSG } from '../plugins/support/expected.js';
 import { guildList, guildMembers } from '../plugins/support/state.js';
@@ -53,6 +53,21 @@ test('a player cannot accept a guild they were never invited to', async ({ playe
 
     // New guilds are private, so an uninvited accept is refused.
     await commandWithout(stranger, guilds, `/guild accept ${guild}`, MSG.acceptNotInvited, MSG.acceptSuccess(guild));
+});
+
+test('a player accepting a guild that does not exist is told the guild does not exist', async ({
+    createPlayer,
+    guilds,
+}) => {
+    const stranger = await createPlayer({ username: guilds.playerName() });
+
+    // The guild name is resolved by Guilds, so a name that matches nothing is answered with the
+    // plugin's own "that guild does not exist" rather than with "you're not in a guild", which
+    // describes the sender and not the name they typed.
+    const since = stranger.getMessageBufferIndex();
+    await guilds.run(stranger, '/guild accept NoSuchGuild');
+    await expectReceived(stranger, MSG.guildNoExist, since);
+    await expect(stranger).not.toHaveReceivedMessage(MSG.noGuild, { since });
 });
 
 test('a player cannot be invited twice', async ({ player, createPlayer, guilds }) => {
@@ -109,6 +124,39 @@ test('a member can leave and the guild is told', async ({ player, createPlayer, 
 
     const roster = await guildMembers(player);
     expect(roster.map(member => member.name)).toEqual([player.username]);
+});
+
+test('a member can leave, be invited back and join the guild again', async ({
+    player,
+    createPlayer,
+    guilds,
+}) => {
+    const guild = await guilds.createGuild(player);
+    const member = await createPlayer({ username: guilds.playerName() });
+    await guilds.addMember(player, member, guild);
+
+    await guilds.run(member, '/guild leave');
+    await expect(member).toHaveReceivedMessage(MSG.leaveWarning);
+    await guilds.confirm(member);
+    await expect(member).toHaveReceivedMessage(MSG.leaveSuccess);
+
+    const roster = await guildMembers(player);
+    expect(roster.map(entry => entry.name)).toEqual([player.username]);
+
+    // The guild master invites the member back.
+    await guilds.invite(player, member, guild);
+
+    // Leaving starts the join cooldown, so the first attempt is refused, and it says for how long.
+    const blocked = member.getMessageBufferIndex();
+    await guilds.run(member, `/guild accept ${guild}`);
+    await expectReceived(member, MSG.acceptCooldown, blocked);
+    await waitOutCooldown(member, blocked, 'accept');
+
+    // The same command joins the guild again once the cooldown has run out.
+    await guilds.accept(member, guild);
+
+    const rejoined = await guildMembers(player);
+    expect(rejoined.map(entry => entry.name).sort()).toEqual([player.username, member.username].sort());
 });
 
 test('a member leaving warns that the guild master deletes the guild by leaving', async ({ player, guilds }) => {

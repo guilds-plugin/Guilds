@@ -12,7 +12,6 @@ import co.aikar.commands.annotation.Flags
 import co.aikar.commands.annotation.Single
 import co.aikar.commands.annotation.Subcommand
 import co.aikar.commands.annotation.Syntax
-import co.aikar.commands.annotation.Values
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.configuration.sections.GuildSettings
 import me.glaremasters.guilds.exceptions.ExpectationNotMet
@@ -35,7 +34,7 @@ internal class CommandAdminRename : BaseCommand() {
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
     @Syntax("%guild %new-name")
-    fun rename(issuer: CommandIssuer, @Flags("other") @Values("@guilds") guild: Guild, @Single name: String) {
+    fun rename(issuer: CommandIssuer, @Flags("other") guild: Guild, @Single name: String) {
         // The same validation the player-facing rename runs, minus the economy cost. Without it an
         // admin could set a duplicate visible name, and every --other command resolves the target
         // guild by that name, so the duplicate would make those commands non-deterministic.

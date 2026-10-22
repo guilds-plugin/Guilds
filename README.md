@@ -93,7 +93,7 @@ The commands players use most:
 | --- | --- |
 | `/guild create <name>` | Start a guild |
 | `/guild invite <player>` | Invite someone |
-| `/guild accept` | Take an invite |
+| `/guild accept <guild>` | Take an invite |
 | `/guild list` | See every guild |
 | `/guild info` | Open the guild info window |
 | `/guild members` | See who's in the guild |
@@ -116,27 +116,31 @@ Two commands cover most of the rest: `/guild help` lists what your server has en
 
 | Command | What it does |
 | --- | --- |
-| `/guild admin addplayer` / `removeplayer` | Add or remove a member by hand |
+| `/guild admin addplayer <guild> <player>` | Add a member by hand |
+| `/guild admin removeplayer <player>` | Remove a member from their guild by hand |
 | `/guild admin transfer <guild> <player>` | Hand a guild to someone else |
 | `/guild admin rename <guild> <name>` | Rename a guild |
 | `/guild admin remove <guild>` | Delete a guild |
 | `/guild admin prefix <guild> <prefix>` | Change the chat prefix |
-| `/guild admin motd set` / `remove` | Manage the message of the day |
-| `/guild admin status <guild> <status>` | Set whether a guild is recruiting |
+| `/guild admin motd <guild>` / `set <guild> <motd>` / `remove <guild>` | Manage the message of the day |
+| `/guild admin status <guild>` | Flip a guild between recruiting and private |
 | `/guild admin upgrade <guild>` | Upgrade without charging the bank |
-| `/guild admin bank deposit` / `withdraw` / `balance` | Move money in or out by hand |
-| `/guild admin sethome` / `home` / `delhome` | Manage homes from outside the guild |
-| `/guild admin claim` / `unclaim` | Claim and release land |
-| `/guild admin vault [number]` | Open a guild vault |
+| `/guild admin bank balance <guild>` | Read a guild's bank |
+| `/guild admin bank deposit <guild> <amount>` | Put money into a guild's bank |
+| `/guild admin bank withdraw <guild> <amount>` | Take money out of a guild's bank |
+| `/guild admin sethome <guild>` / `home <guild>` / `delhome <guild>` | Manage homes from outside the guild |
+| `/guild admin claim <guild>` / `unclaim <guild>` | Claim and release land |
+| `/guild admin vault <guild> [number]` | Open a guild vault |
 | `/guild admin give <player> <amount>` | Hand out upgrade tickets |
 | `/guild admin spy` | Watch guild chat |
-| `/guild admin score setwins` / `setloses` / `resetall` | Adjust war records |
-| `/guild arena create` / `delete` / `list` | Manage war arenas |
-| `/guild arena set challenger` / `defender` | Set the two spawn points |
-| `/guild arena tp` | Jump to an arena spot |
+| `/guild admin score setwins <guild> <amount>` / `setloses <guild> <amount>` / `resetall` | Adjust war records |
+| `/guild arena create <name>` / `delete <name>` / `list` | Manage war arenas |
+| `/guild arena set challenger <arena>` / `defender <arena>` | Set the two spawn points |
+| `/guild arena tp <arena> <position>` | Jump to an arena spot |
 | `/guild console backup` | Back up all guild data |
 | `/guild console migrate <backend>` | Move data between storage backends |
 | `/guild console unclaimall` | Release every claim on the server |
+| `/guild reload` | Re-read the configuration |
 
 </details>
 

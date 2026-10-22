@@ -179,32 +179,13 @@ test('a player in no guild is told so rather than refused by role', async ({ cre
 });
 
 /*
- * Guilds bug, kept as a reproducer rather than a fix — see docs/e2e-testing.md.
- *
- * Every admin command whose first argument is a guild resolved with `@Flags("other") @Values("@guilds")`
- * is refused by ACF as soon as the command takes a *second* argument: `admin bank deposit <guild>
- * <amount>`, `admin rename <guild> <name>`, `admin prefix <guild> <prefix>` and `admin motd set
- * <guild> <motd>` all answer "Please specify one of (@guilds)", from the console and from a player
- * alike. The single-argument forms (`admin bank balance <guild>`, `admin status <guild>`) work,
- * which is what makes the failure easy to miss. ACF validates the `@Values` parameter against the
- * argument *after* the one the `@Flags` context consumed.
- *
- * These two tests pin the behaviour. When it is fixed they are the expectations to correct — and
- * `setBank` in the fixtures can go back to the admin route it no longer uses.
+ * The admin commands that name a guild used to be unreachable: ACF validated the guild name
+ * against the argument *after* the one the guild context had consumed, so `admin bank deposit
+ * <guild> <amount>` and every other two-argument admin command answered "Please specify one of
+ * (@guilds)" before their handler ran. `admin.spec.ts` covers that surface now; what is left
+ * here is the part this file is about, which is that the member-facing bank commands still work.
  */
-test('an admin bank deposit of a named guild is refused by the argument check', async ({ player, server, guilds }) => {
-    const guild = await guilds.createGuild(player);
-    await guilds.setBank(guild, 100);
-
-    const response = await server.execute(`guild admin bank deposit ${guild} 500`);
-    expect(response).toContain('Please specify one of');
-
-    // Nothing changed, and the same command with only the guild does work.
-    expect(await guilds.bankOf(guild)).toBe(100);
-    expect(await server.execute(`guild admin bank balance ${guild}`)).toContain('bank balance of 100');
-});
-
-test('the same admin command works through the player-facing bank commands', async ({ player, guilds }) => {
+test('the player-facing bank commands work', async ({ player, guilds }) => {
     const guild = await guilds.createGuild(player);
     await guilds.setBank(guild, 100);
 

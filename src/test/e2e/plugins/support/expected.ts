@@ -50,6 +50,10 @@ export const ITEM = {
     nextPage: 'Next Page',
     /** guis.guild-list.previous-page-item-name */
     previousPage: 'Previous Page',
+    /** tickets.name — the upgrade ticket an admin hands out, from the plugin's default config. */
+    ticket: 'Guild Upgrade Ticket',
+    /** tickets.material — the item the upgrade ticket is made of, as the client names it. */
+    ticketMaterial: 'paper',
 } as const;
 
 /**
@@ -78,10 +82,8 @@ export const MSG = {
     playerNotFound: (player: string) => `Player '${player}' is not online!`,
     playerNotInGuild: (player: string) => `${player} is not in your Guild!`,
     /**
-     * error.player-no-exist. No test asserts this arrives, for the same reason
-     * `guildNoExist` has none: the command completions only ever offer names the server knows, so
-     * ACF refuses the argument before the handler can. Kept because it documents the branch that
-     * is currently unreachable, and because a test that ever does reach it will want it here.
+     * error.player-no-exist — what an admin command says when it is handed a name the server has
+     * never seen.
      */
     playerNoExist: (player: string) => `it doesn't look like that player has ever been on the server`,
     blacklist: 'is on the blacklist!',
@@ -202,6 +204,14 @@ export const MSG = {
     motdSet: (motd: string) => `You've successfully set your guild's MOTD to ${motd}`,
     motdRemove: "You've successfully removed your guild's MOTD.",
 
+    // arenas
+    arenaCreated: (arena: string) => `You've successfully created an arena called ${arena}`,
+    arenaDeleted: (arena: string) => `You've successfully deleted the arena called ${arena}`,
+    arenaChallengerSet: (arena: string) => `You've successfully set the Challenger location for ${arena}`,
+    arenaTeleported: (team: string, arena: string) =>
+        `You've teleported to the ${team} spawn point for ${arena}`,
+    arenaNoExist: 'An arena with that name does not exist.',
+
     // buffs
     buffNoPermission: 'you do not have permission to buy this buff',
     buffCooldown: 'your guild has recently bought a buff',
@@ -219,7 +229,8 @@ export const MSG = {
      * The completion name is part of the sentence and differs per command, so it is a parameter.
      * This is what stops an unknown player from being named as a target — the `@players` list only
      * contains names the server has seen, so a player who has never joined is rejected here rather
-     * than by the handler's own "player not found" branch.
+     * than by the handler's own "player not found" branch. It only ever applies to a command's
+     * last argument, which is the only place ACF's check lines up with the argument it reads.
      */
     valueRejected: (completion: string) => `Please specify one of (@${completion})`,
 

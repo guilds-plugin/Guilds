@@ -191,12 +191,12 @@ export function guildsFixtures(ctx: TestContext): GuildsFixtures {
         /**
          * Sets a guild's bank to an exact balance.
          *
-         * Deliberately routed through the owning player's own `/guild bank deposit` and
-         * `/guild bank withdraw` rather than the console's `/guild admin bank …`: every admin
-         * command that takes a guild *and* a second argument is currently refused by ACF's
-         * `@Values` check, so the admin route cannot reach the handler at all. See
-         * docs/e2e-testing.md. A deposit is funded first, since it comes out of the player's own
-         * money; a withdrawal pays into it, which does not matter to the assertions.
+         * Routed through the owning player's own `/guild bank deposit` and `/guild bank withdraw`
+         * rather than the console's `/guild admin bank …`, because the money has to come out of
+         * the player's own balance: the bank tests assert on both sides of that transfer, and an
+         * admin deposit would leave the player's balance untouched. A deposit is funded first,
+         * since it comes out of the player's own money; a withdrawal pays into it, which does not
+         * matter to the assertions.
          */
         async setBank(guild, target, actor: PlayerWrapper = ctx.player) {
             for (let attempt = 0; attempt < 6; attempt++) {

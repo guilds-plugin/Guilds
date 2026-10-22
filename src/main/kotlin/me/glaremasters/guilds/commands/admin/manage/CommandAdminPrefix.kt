@@ -10,7 +10,6 @@ import co.aikar.commands.annotation.Description
 import co.aikar.commands.annotation.Flags
 import co.aikar.commands.annotation.Subcommand
 import co.aikar.commands.annotation.Syntax
-import co.aikar.commands.annotation.Values
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
@@ -29,7 +28,7 @@ internal class CommandAdminPrefix : BaseCommand() {
     @CommandPermission(Constants.ADMIN_PERM)
     @CommandCompletion("@guilds")
     @Syntax("%guild %prefix")
-    fun prefix(issuer: CommandIssuer, @Flags("other") @Values("@guilds") guild: Guild, prefix: String) {
+    fun prefix(issuer: CommandIssuer, @Flags("other") guild: Guild, prefix: String) {
         guild.prefix = StringUtils.color(prefix)
         currentCommandIssuer.sendInfo(Messages.PREFIX__SUCCESSFUL, "{prefix}", guild.prefix)
     }

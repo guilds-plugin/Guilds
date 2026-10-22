@@ -33,7 +33,7 @@ internal class CommandAdminArena : BaseCommand() {
     @Description("{@@descriptions.arena-challenger}")
     @Syntax("%arena")
     @CommandCompletion("@arenas")
-    fun challenger(player: Player, @Values("@arenas") arena: Arena) {
+    fun challenger(player: Player, arena: Arena) {
         arena.challenger = ACFBukkitUtil.fullLocationToString(player.location)
         currentCommandIssuer.sendInfo(Messages.ARENA__CHALLENGER_SET, "{arena}", arena.name)
     }
@@ -53,7 +53,7 @@ internal class CommandAdminArena : BaseCommand() {
     @Description("{@@descriptions.arena-defender}")
     @Syntax("%arena")
     @CommandCompletion("@arenas")
-    fun defender(player: Player, @Values("@arenas") arena: Arena) {
+    fun defender(player: Player, arena: Arena) {
         arena.defender = ACFBukkitUtil.fullLocationToString(player.location)
         currentCommandIssuer.sendInfo(Messages.ARENA__DEFENDER_SET, "{arena}", arena.name)
     }
@@ -63,7 +63,7 @@ internal class CommandAdminArena : BaseCommand() {
     @Description("{@@descriptions.arena-delete}")
     @CommandCompletion("@arenas")
     @Syntax("%name")
-    fun delete(issuer: CommandIssuer, @Values("@arenas") arena: Arena) {
+    fun delete(issuer: CommandIssuer, arena: Arena) {
         val name = arena.name
         arenaHandler.removeArena(arena)
         currentCommandIssuer.sendInfo(Messages.ARENA__DELETED, "{arena}", name)
@@ -87,7 +87,7 @@ internal class CommandAdminArena : BaseCommand() {
     @Description("{@@descriptions.arena-tp}")
     @Syntax("%arena %position")
     @CommandCompletion("@arenas @locations")
-    fun teleport(player: Player, @Values("@arenas") arena: Arena, @Values("@locations") @Single location: String) {
+    fun teleport(player: Player, arena: Arena, @Values("@locations") @Single location: String) {
         if (location.equals("challenger", ignoreCase = true)) {
             if (arena.challenger == null) {
                 throw ExpectationNotMet(Messages.ARENA__POSITION_NOT_SET)
