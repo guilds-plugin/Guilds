@@ -1,8 +1,35 @@
-import { expect, test } from '@plugwright/runner';
+import { expect, test, type PlayerWrapper } from '@plugwright/runner';
 import { commandWithout } from '../plugins/support/assertions.js';
-import { CREATION_COST, STARTING_BALANCE } from '../plugins/support/fixtures.js';
+import { CREATION_COST, STARTING_BALANCE, type GuildsFixtures } from '../plugins/support/fixtures.js';
 import { MSG } from '../plugins/support/expected.js';
 import { guildList } from '../plugins/support/state.js';
+import { received, says, waitUntil } from '../plugins/support/text.js';
+
+/**
+ * Makes sure the bot is in no guild, for a command that refuses a player who is in one.
+ *
+ * The plugin's storage lives in the server directory and outlives a run, and the runner reuses a
+ * bot name for the same offline account, so a bot can turn up already in a guild. The create
+ * fixture leaves any guild for exactly that reason; this is the same step, for a bot that is not
+ * about to create a guild.
+ */
+async function ensureNoGuild(player: PlayerWrapper, guilds: GuildsFixtures): Promise<void> {
+    const leaving = player.getMessageBufferIndex();
+    await guilds.run(player, '/guild leave');
+    // A master is told they are the master rather than that they are leaving, but the prompt is
+    // registered either way, so both wordings mean there is something to confirm.
+    const prompted = () =>
+        received(player.messageBuffer, says(MSG.leaveWarning), leaving) ||
+        received(player.messageBuffer, says(MSG.leaveWarningMaster), leaving);
+    await waitUntil(
+        () => (prompted() || received(player.messageBuffer, says(MSG.noGuild), leaving) ? true : undefined),
+        { timeout: 10_000, interval: 25 },
+    );
+    if (prompted()) {
+        await guilds.confirm(player);
+        await expect(player).toHaveReceivedMessage(MSG.leaveSuccess, { timeout: 10_000 });
+    }
+}
 
 /**
  * Guild lifecycle: creating a guild, the confirmation prompt that gates it, every input rule that
@@ -131,6 +158,72 @@ test('rejects creation while the player is already in a guild', async ({ player,
     const second = guilds.guildName('second');
 
     await commandWithout(player, guilds, `/guild create ${second} Sec`, MSG.alreadyInGuild, MSG.created(second));
+});
+
+/*
+ * The confirmation is answered some time after the command, and the world moves on in between.
+ * The checks the command ran are therefore run again when the pending action is confirmed: the
+ * player can join another guild, another guild can take the name, the owner can reload the config.
+ * Without that, the confirmation creates a guild the command would have refused to create.
+ */
+test('refuses the confirmation when the player joined a guild in the meantime', async ({
+    player,
+    createPlayer,
+    guilds,
+}) => {
+    const name = guilds.guildName('joined');
+
+    await ensureNoGuild(player, guilds);
+    await guilds.fund(player, STARTING_BALANCE);
+    await guilds.run(player, `/guild create ${name} Joined`);
+    await expect(player).toHaveReceivedMessage(MSG.createWarning);
+
+    // The player joins somebody else's guild before the prompt is answered.
+    const other = await createPlayer({ username: guilds.playerName() });
+    const elsewhere = await guilds.createGuild(other);
+    await guilds.addMember(other, player, elsewhere);
+
+    await commandWithout(player, guilds, '/guild confirm', MSG.alreadyInGuild, MSG.created(name));
+
+    // No second guild, and the player is only in the guild they joined.
+    const listed = await guildList(player);
+    expect(listed.some(guild => guild.name === name)).toBe(false);
+    expect(listed.filter(guild => guild.master === player.username)).toHaveLength(0);
+    expect(listed.find(guild => guild.name === elsewhere)!.memberCount).toBe(2);
+
+    // The refused offer is dropped, so it cannot be confirmed later by accident.
+    await commandWithout(player, guilds, '/guild confirm', MSG.confirmError, MSG.created(name));
+
+    // Nothing was charged for a guild that was never created.
+    expect(await guilds.balanceOf(player)).toBe(STARTING_BALANCE);
+});
+
+test('refuses the confirmation when another guild took the name in the meantime', async ({
+    player,
+    createPlayer,
+    guilds,
+}) => {
+    const name = guilds.guildName('taken');
+
+    await ensureNoGuild(player, guilds);
+    await guilds.fund(player, STARTING_BALANCE);
+    await guilds.run(player, `/guild create ${name} Taken`);
+    await expect(player).toHaveReceivedMessage(MSG.createWarning);
+
+    // Another player claims the name before the prompt is answered.
+    const other = await createPlayer({ username: guilds.playerName() });
+    await guilds.createGuild(other, { name });
+
+    await commandWithout(player, guilds, '/guild confirm', MSG.nameTaken, MSG.created(name));
+
+    // One guild with that name, and it is the other player's.
+    const listed = await guildList(player);
+    expect(listed.filter(guild => guild.name === name)).toHaveLength(1);
+    expect(listed.find(guild => guild.name === name)!.master).toBe(other.username);
+
+    // The player is in no guild at all, and was charged nothing.
+    await commandWithout(player, guilds, '/guild bank balance', MSG.noGuild, MSG.bankBalance);
+    expect(await guilds.balanceOf(player)).toBe(STARTING_BALANCE);
 });
 
 test('renames a guild', async ({ player, guilds }) => {

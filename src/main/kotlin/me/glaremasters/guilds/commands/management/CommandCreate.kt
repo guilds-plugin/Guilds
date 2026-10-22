@@ -59,39 +59,24 @@ internal class CommandCreate : BaseCommand() {
 
         val cost = settingsManager.getProperty(CostSettings.CREATION)
 
-        if (GuildInputValidator.isNameTaken(name, guildHandler.guilds.values)) {
-            throw ExpectationNotMet(Messages.CREATE__GUILD_NAME_TAKEN)
-        }
-
-        if (settingsManager.getProperty(GuildSettings.BLACKLIST_TOGGLE) && guildHandler.blacklistCheck(name, settingsManager)) {
-            throw ExpectationNotMet(Messages.ERROR__BLACKLIST)
-        }
-
-        if (!GuildInputValidator.isValidName(name, settingsManager)) {
-            throw ExpectationNotMet(Messages.CREATE__REQUIREMENTS)
-        }
-
-        if (!settingsManager.getProperty(GuildSettings.DISABLE_PREFIX)) {
-            if (prefix != null) {
-                if (!GuildInputValidator.isValidPrefix(prefix, settingsManager)) {
-                    throw ExpectationNotMet(Messages.CREATE__PREFIX_TOO_LONG)
-                }
-            } else {
-                if (!GuildInputValidator.isValidPrefix(name, settingsManager)) {
-                    throw ExpectationNotMet(Messages.CREATE__NAME_TOO_LONG)
-                }
-            }
-        }
-
-        if (!EconomyUtils.hasEnough(currentCommandManager, economy, player, cost)) {
-            throw ExpectationNotMet(Messages.ERROR__NOT_ENOUGH_MONEY)
-        }
+        checkCreationAllowed(player, name, prefix, cost)
 
         currentCommandIssuer.sendInfo(Messages.CREATE__WARNING, "{amount}", EconomyUtils.format(cost))
         actionHandler.addAction(player, object : ConfirmAction {
             override fun accept() {
-                if (!EconomyUtils.hasEnough(currentCommandManager, economy, player, cost)) {
-                    throw ExpectationNotMet(Messages.ERROR__NOT_ENOUGH_MONEY)
+                // The world can change between the prompt and this confirmation: the player can join
+                // another guild, another guild can take the name, the owner can reload the config
+                // and change the requirements. Everything the command checked is therefore checked
+                // again here, with the same validators and the same messages, so a refusal reads
+                // exactly like the one the command would have given.
+                try {
+                    checkCreationAllowed(player, name, prefix, cost)
+                } catch (refused: ExpectationNotMet) {
+                    // The offer is void once it has been refused. Leaving the action registered
+                    // would let a later /guild confirm create the guild, and charge for it, long
+                    // after the player was told it could not be created.
+                    actionHandler.removeAction(player)
+                    throw refused
                 }
 
                 val gb = Guild.builder()
@@ -152,5 +137,60 @@ internal class CommandCreate : BaseCommand() {
                 actionHandler.removeAction(player)
             }
         })
+    }
+
+    /**
+     * Runs every check a guild creation has to pass.
+     *
+     * This runs twice for one creation: once when the command is issued, and again when the pending
+     * action is confirmed. Between the prompt and the confirmation the world can change - the player
+     * can join another guild, another guild can take the name, the owner can reload the config and
+     * change the requirements - and the confirmation used to assume the command's answers still
+     * held. The same validators and the same message keys are used in both places, so a refusal at
+     * confirmation time reads exactly like the refusal the command would have given.
+     *
+     * The cost is the one the player was quoted, so the amount charged is the amount they were
+     * shown. Whether they can still afford it is what is re-checked, since they may have spent it
+     * since the prompt.
+     *
+     * @param player the player the guild would be created for
+     * @param name the proposed guild name
+     * @param prefix the proposed guild prefix, or null to use the name as the prefix
+     * @param cost the creation cost the player was quoted
+     */
+    private fun checkCreationAllowed(player: Player, name: String, prefix: String?, cost: Double) {
+        // The command is guarded by the NoGuild condition, but that only holds for the moment the
+        // command ran: by the time the action is confirmed the player can be in a guild already.
+        if (guildHandler.getGuild(player) != null) {
+            throw ExpectationNotMet(Messages.ERROR__ALREADY_IN_GUILD)
+        }
+
+        if (GuildInputValidator.isNameTaken(name, guildHandler.guilds.values)) {
+            throw ExpectationNotMet(Messages.CREATE__GUILD_NAME_TAKEN)
+        }
+
+        if (settingsManager.getProperty(GuildSettings.BLACKLIST_TOGGLE) && guildHandler.blacklistCheck(name, settingsManager)) {
+            throw ExpectationNotMet(Messages.ERROR__BLACKLIST)
+        }
+
+        if (!GuildInputValidator.isValidName(name, settingsManager)) {
+            throw ExpectationNotMet(Messages.CREATE__REQUIREMENTS)
+        }
+
+        if (!settingsManager.getProperty(GuildSettings.DISABLE_PREFIX)) {
+            if (prefix != null) {
+                if (!GuildInputValidator.isValidPrefix(prefix, settingsManager)) {
+                    throw ExpectationNotMet(Messages.CREATE__PREFIX_TOO_LONG)
+                }
+            } else {
+                if (!GuildInputValidator.isValidPrefix(name, settingsManager)) {
+                    throw ExpectationNotMet(Messages.CREATE__NAME_TOO_LONG)
+                }
+            }
+        }
+
+        if (!EconomyUtils.hasEnough(currentCommandManager, economy, player, cost)) {
+            throw ExpectationNotMet(Messages.ERROR__NOT_ENOUGH_MONEY)
+        }
     }
 }
