@@ -102,7 +102,7 @@ test('the guilds that could be read are available', async ({ player }) => {
     expect(listed.some(entry => entry.name === UNREADABLE_GUILD_NAME)).toBe(false);
 });
 
-test('the guild file that could not be read is left on disk, unchanged', async () => {
+test('the guild file that could not be read is left on disk, with a copy in the backup folder', async () => {
     const file = join(dataFolder(), `${UNREADABLE_GUILD_ID}.json`);
     const copies = backupsOf(`${UNREADABLE_GUILD_ID}.json`);
 
@@ -111,6 +111,8 @@ test('the guild file that could not be read is left on disk, unchanged', async (
     // The backup was taken when the plugin read the file, so the file on disk and the backup are
     // the same bytes: nothing has written over it since.
     expect(readFileSync(file, 'utf8')).toBe(readFileSync(copies[0], 'utf8'));
+    // The copy sits outside the folder the plugin reads its guilds from, so it is never a guild.
+    expect(copies[0].startsWith(dataFolder())).toBe(false);
 });
 
 test('the guild file that could be read is still readable', async () => {
@@ -118,18 +120,4 @@ test('the guild file that could be read is still readable', async () => {
 
     expect(existsSync(file)).toBe(true);
     expect(readFileSync(file, 'utf8')).toContain(READABLE_GUILD_NAME);
-});
-
-test('the guild file that could not be read was copied to the backup folder', async () => {
-    const original = join(dataFolder(), `${UNREADABLE_GUILD_ID}.json`);
-    const copies = backupsOf(`${UNREADABLE_GUILD_ID}.json`);
-
-    expect(copies.length).toBe(1);
-    expect(readFileSync(copies[0], 'utf8')).toBe(readFileSync(original, 'utf8'));
-});
-
-test('the backup of the guild file is outside the data folder', async () => {
-    for (const copy of backupsOf(`${UNREADABLE_GUILD_ID}.json`)) {
-        expect(copy.startsWith(dataFolder())).toBe(false);
-    }
 });

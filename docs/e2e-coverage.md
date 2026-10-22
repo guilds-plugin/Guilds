@@ -3,7 +3,7 @@
 Which Guilds feature is tested where, and what is deliberately left out. See `e2e-testing.md` for
 how to run any of it.
 
-147 tests across 13 spec files, plus 3 preflight tests that run before every suite and fail the run
+160 tests across 14 spec files, plus 3 preflight tests that run before every suite and fail the run
 if Guilds or any of its hard dependencies did not load.
 
 ## Preflight — `plugins/guilds-preflight.spec.ts`
@@ -128,17 +128,19 @@ meaningful.
 | Alliance chat between guilds | `chat.spec.ts`, ally chat reaches an allied guild and not the third party |
 | Cleanup on deletion | a deleted guild drops out of its allies |
 
-## H. Invite codes — `tests/codes.spec.ts` (12, of which 5 are one `describe.serial` chain)
+## H. Invite codes — `tests/codes.spec.ts` (18, of which 5 are one `describe.serial` chain)
 
 | Requirement | Test |
 | --- | --- |
 | Creating invite codes | a code can be created, listed and deleted |
 | Viewing and listing codes | a code can be created, listed and deleted / *and it is listed for the guild master* |
-| Redeeming a code | a code can be redeemed and puts the player in the guild |
+| Redeeming a code | a code can be redeemed and puts the player in the guild / a code with two uses can be redeemed twice |
 | Deleting codes | a code can be created, listed and deleted |
-| Invalid codes | an invalid code is refused |
+| Invalid codes | an invalid code is refused / a code with no uses is refused and nothing is stored / a code with a negative number of uses is refused and nothing is stored |
 | Reusing codes where restricted | a code runs out of uses and then says so |
-| Permission restrictions | code information is restricted by role / *a member can be added and cannot manage codes* |
+| Refused codes | a refused code does not use up the guild allowance of codes |
+| Permission restrictions | code information is restricted by role / *a member can be added and cannot manage codes* / a player who joins by code gets the permissions their guild grants them |
+| Redemption cooldowns | a code cannot be redeemed while the join cooldown is running |
 | Full lifecycle | *one code through its whole life* — a `describe.serial` chain: create → listed → redeem → deleted, asserting membership at each step rather than the command's reply |
 
 ## I. Inventory and GUI functionality — `tests/gui.spec.ts` (18)
@@ -188,7 +190,7 @@ the server answering in another language for the rest of the run. ACF's `usePerI
 false)` is what makes that safe, and one player switching language leaves everyone else in English
 asserts it rather than assuming it.
 
-## L. Startup and the guild data — `tests/startup-loading.spec.ts` (6)
+## L. Startup and the guild data — `tests/startup-loading.spec.ts` (4)
 
 The environment stages two guild files into the plugin's data folder: one that reads and one that
 does not parse.
@@ -197,10 +199,8 @@ does not parse.
 | --- | --- |
 | One unreadable file does not stop the plugin | the plugin starts with a guild file it cannot read, and says which file |
 | The guilds that could be read are available | the guilds that could be read are available |
-| The unreadable file is left alone | the guild file that could not be read is left on disk, unchanged |
+| The unreadable file is left alone, and copied aside | the guild file that could not be read is left on disk, with a copy in the backup folder |
 | The readable file is untouched | the guild file that could be read is still readable |
-| The unreadable file is copied aside | the guild file that could not be read was copied to the backup folder |
-| The copy is outside the data folder | the backup of the guild file is outside the data folder |
 
 ## Fixture self-check — `tests/bank.spec.ts`
 
