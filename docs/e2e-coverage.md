@@ -3,7 +3,7 @@
 Which Guilds feature is tested where, and what is deliberately left out. See `e2e-testing.md` for
 how to run any of it.
 
-141 tests across 12 spec files, plus 3 preflight tests that run before every suite and fail the run
+143 tests across 12 spec files, plus 3 preflight tests that run before every suite and fail the run
 if Guilds or any of its hard dependencies did not load.
 
 ## Preflight — `plugins/guilds-preflight.spec.ts`
@@ -128,13 +128,15 @@ meaningful.
 | Alliance chat between guilds | `chat.spec.ts`, ally chat reaches an allied guild and not the third party |
 | Cleanup on deletion | a deleted guild drops out of its allies |
 
-## H. Invite codes — `tests/codes.spec.ts` (12, of which 5 are one `describe.serial` chain)
+## H. Invite codes — `tests/codes.spec.ts` (14, of which 5 are one `describe.serial` chain)
 
 | Requirement | Test |
 | --- | --- |
 | Creating invite codes | a code can be created, listed and deleted |
 | Viewing and listing codes | a code can be created, listed and deleted / *and it is listed for the guild master* |
 | Redeeming a code | a code can be redeemed and puts the player in the guild |
+| Redeeming a code grants what the guild grants | a player who joins by code gets the permissions their guild grants them |
+| The join cooldown applies to a code | a code cannot be redeemed while the join cooldown is running |
 | Deleting codes | a code can be created, listed and deleted |
 | Invalid codes | an invalid code is refused |
 | Reusing codes where restricted | a code runs out of uses and then says so |

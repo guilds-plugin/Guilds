@@ -6,6 +6,7 @@ import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.ACFUtil;
 import co.aikar.commands.PaperCommandManager;
 import me.glaremasters.guilds.Guilds;
+import me.glaremasters.guilds.api.events.GuildJoinEvent;
 import me.glaremasters.guilds.configuration.sections.GuildSettings;
 import me.glaremasters.guilds.configuration.sections.GuildVaultSettings;
 import me.glaremasters.guilds.configuration.sections.PluginSettings;
@@ -1107,6 +1108,11 @@ public class GuildHandler {
     /**
      * Handle inviting player when redeeming a code
      *
+     * <p>A code is a way into a guild, so this does what {@code /guild accept} does: it fires the
+     * cancellable {@link GuildJoinEvent} before anything is consumed, registers the member the
+     * same way an invite does, and hands the member the permissions their guild and role grant.
+     * A plugin that cancels the join event stops the redeem, and the code keeps its use.
+     *
      * @param manager command manager
      * @param player  the player redeeming the code
      * @param guild   the guild they are trying to join
@@ -1116,10 +1122,23 @@ public class GuildHandler {
         if (code.getUses() <= 0)
             ACFUtil.sneaky(new ExpectationNotMet(Messages.CODES__OUT));
 
+        final GuildJoinEvent event = new GuildJoinEvent(player, guild);
+        Bukkit.getPluginManager().callEvent(event);
+
+        if (event.isCancelled()) {
+            return;
+        }
+
         code.addRedeemer(player);
 
-        guild.addMemberByCode(new GuildMember(player.getUniqueId(), getLowestGuildRole()));
+        guild.addMember(player, this);
         addToMemberCache(player.getUniqueId(), guild.getId());
+
+        final Permission permission = getGuildsPlugin().getPermissions();
+        if (permission != null) {
+            addGuildPerms(permission, player);
+            addRolePerm(permission, player);
+        }
 
         if (ClaimUtils.isEnabled(settingsManager)) {
             WorldGuardWrapper wrapper = WorldGuardWrapper.getInstance();

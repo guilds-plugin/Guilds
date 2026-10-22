@@ -15,6 +15,8 @@ import co.aikar.commands.annotation.Syntax
 import co.aikar.commands.annotation.Values
 import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.configuration.sections.CodeSettings
+import me.glaremasters.guilds.cooldowns.Cooldown
+import me.glaremasters.guilds.cooldowns.CooldownHandler
 import me.glaremasters.guilds.exceptions.ExpectationNotMet
 import me.glaremasters.guilds.guild.Guild
 import me.glaremasters.guilds.guild.GuildHandler
@@ -32,6 +34,8 @@ internal class CommandCode : BaseCommand() {
     lateinit var settingsManager: SettingsManager
     @Dependency
     lateinit var guildHandler: GuildHandler
+    @Dependency
+    lateinit var cooldownHandler: CooldownHandler
 
     @Subcommand("code create")
     @Description("{@@descriptions.code-create}")
@@ -97,6 +101,14 @@ internal class CommandCode : BaseCommand() {
     @Syntax("%code")
     fun redeem(@Conditions("NoGuild") player: Player, code: String) {
         val guild = guildHandler.getGuildByCode(code) ?: throw ExpectationNotMet(Messages.CODES__INVALID_CODE)
+
+        // A code is a way into a guild, so it is refused while the join cooldown runs, the same
+        // way `/guild accept` and `/guild create` refuse it.
+        val cooldown = Cooldown.Type.Join.name
+
+        if (cooldownHandler.hasCooldown(cooldown, player.uniqueId)) {
+            throw ExpectationNotMet(Messages.ACCEPT__COOLDOWN, "{amount}", cooldownHandler.getRemaining(cooldown, player.uniqueId).toString())
+        }
 
         if (guildHandler.checkIfFull(guild)) {
             throw ExpectationNotMet(Messages.ACCEPT__GUILD_FULL)

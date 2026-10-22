@@ -180,23 +180,43 @@ public class Guild {
 
     /**
      * Add player to a guild
+     *
      * @param player the player being added
      * @param guildHandler guild handler
      */
     public void addMember(OfflinePlayer player, GuildHandler guildHandler) {
-        GuildMember member = new GuildMember(player.getUniqueId(), guildHandler.getLowestGuildRole());
-        if (members.contains(member)) return;
-        removeInvitedMember(member.getUuid());
-        members.add(member);
-        member.setJoinDate(System.currentTimeMillis());
+        addMember(new GuildMember(player.getUniqueId(), guildHandler.getLowestGuildRole()));
     }
 
     /**
      * Invite a member by guild code
-     * @param guildMember
+     *
+     * <p>The same registration as {@link #addMember(OfflinePlayer, GuildHandler)}: a player is only
+     * in the guild once, a stale invite is dropped, and the member carries the date they joined.
+     * The role is whatever the caller decided, which for a code is the lowest role in the guild.
+     *
+     * @param guildMember the member to add
      */
     public void addMemberByCode(GuildMember guildMember) {
-        members.add(guildMember);
+        addMember(guildMember);
+    }
+
+    /**
+     * Registers a member with the guild.
+     *
+     * <p>A member is identified by their uuid, not by the object: {@link GuildMember} does not
+     * override {@code equals}, so comparing objects would never find the member that is already in
+     * the guild and every caller would be free to add a second entry for the same player.
+     *
+     * @param member the member to register
+     */
+    private void addMember(GuildMember member) {
+        if (getMember(member.getUuid()) != null) return;
+        removeInvitedMember(member.getUuid());
+        members.add(member);
+        if (member.getJoinDate() == 0L) {
+            member.setJoinDate(System.currentTimeMillis());
+        }
     }
 
     /**

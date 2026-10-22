@@ -1,7 +1,8 @@
 import { describe, expect, test } from '@plugwright/runner';
 import { commandWithout, expectReceived } from '../plugins/support/assertions.js';
 import { MSG } from '../plugins/support/expected.js';
-import { guildList } from '../plugins/support/state.js';
+import { ROLE } from '../plugins/support/fixtures.js';
+import { guildList, guildMembers } from '../plugins/support/state.js';
 import { stripColors } from '../plugins/support/text.js';
 
 /**
@@ -63,6 +64,65 @@ test('a code can be redeemed and puts the player in the guild', async ({ player,
 
     const entry = (await guildList(joiner)).find(item => item.name === guild)!;
     expect(entry.memberCount).toBe(2);
+
+    // The roster is the one an invited member appears on, with the same role.
+    const roster = await guildMembers(player);
+    expect(roster.map(member => member.name).sort()).toEqual([player.username, joiner.username].sort());
+    expect(roster.find(member => member.name === joiner.username)!.role).toBe(ROLE.member);
+});
+
+test('a player who joins by code gets the permissions their guild grants them', async ({
+    player,
+    createPlayer,
+    guilds,
+}) => {
+    const guild = await guilds.createGuild(player);
+    const created = player.getMessageBufferIndex();
+    await guilds.run(player, '/guild code create 2');
+    await expectReceived(player, MSG.codeCreated, created);
+    const code = parseCode(player.messageBuffer.slice(created).join('\n'))!;
+
+    const joiner = await createPlayer({ username: guilds.playerName() });
+    const joining = joiner.getMessageBufferIndex();
+    await guilds.run(joiner, `/guild code redeem ${code}`);
+    await expectReceived(joiner, MSG.codeJoined(guild), joining);
+
+    // tiers.yml grants guilds.command.admin to every member, and the runner denies that node on
+    // LuckPerms' default group, so an admin command answering at all is the proof that the guild
+    // handed the node over. LuckPerms applies it to an online player on its own schedule, so the
+    // probe is re-issued until it works.
+    const asMember = joiner.getMessageBufferIndex();
+    try {
+        await guilds.awaitEffect(joiner, `/guild admin motd ${guild}`, MSG.motdNotSet);
+    } catch {
+        const told = joiner.messageBuffer.slice(asMember).map(stripColors).join(' | ');
+        throw new Error(`the joiner never got the permissions their guild grants; they were told: ${told}`);
+    }
+});
+
+test('a code cannot be redeemed while the join cooldown is running', async ({ player, createPlayer, guilds }) => {
+    const guild = await guilds.createGuild(player);
+    const created = player.getMessageBufferIndex();
+    await guilds.run(player, '/guild code create 2');
+    await expectReceived(player, MSG.codeCreated, created);
+    const code = parseCode(player.messageBuffer.slice(created).join('\n'))!;
+
+    const joiner = await createPlayer({ username: guilds.playerName() });
+    const joining = joiner.getMessageBufferIndex();
+    await guilds.run(joiner, `/guild code redeem ${code}`);
+    await expectReceived(joiner, MSG.codeJoined(guild), joining);
+
+    // Leaving starts the join cooldown, and joining a guild is what that cooldown is about. A code
+    // is a way into a guild, so it is refused the same way an invite is.
+    await guilds.run(joiner, '/guild leave');
+    await expect(joiner).toHaveReceivedMessage(MSG.leaveWarning);
+    await guilds.confirm(joiner);
+    await expect(joiner).toHaveReceivedMessage(MSG.leaveSuccess);
+
+    const blocked = joiner.getMessageBufferIndex();
+    await guilds.run(joiner, `/guild code redeem ${code}`);
+    await expectReceived(joiner, MSG.acceptCooldown, blocked);
+    await expect(joiner).not.toHaveReceivedMessage(MSG.codeJoined(guild), { since: blocked });
 });
 
 test('an invalid code is refused', async ({ player, createPlayer, guilds }) => {
