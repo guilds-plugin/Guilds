@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -74,7 +75,7 @@ class ChallengeJsonProviderTest {
 
     @Test
     @DisplayName("only the challenge data files are loaded as challenges")
-    void onlyDataFilesAreLoaded() {
+    void onlyDataFilesAreLoaded() throws IOException {
         final Set<GuildChallenge> challenges = provider.getAllChallenges(null);
 
         assertEquals(1, challenges.size());
@@ -83,7 +84,7 @@ class ChallengeJsonProviderTest {
 
     @Test
     @DisplayName("a file that is not a challenge file is not reported as an error")
-    void ignoredFilesAreNotReportedAsErrors() {
+    void ignoredFilesAreNotReportedAsErrors() throws IOException {
         try (LogCapture log = new LogCapture()) {
             provider.getAllChallenges(null);
 
@@ -95,7 +96,7 @@ class ChallengeJsonProviderTest {
 
     @Test
     @DisplayName("only the challenge data files count as an existing challenge")
-    void onlyDataFilesExist() {
+    void onlyDataFilesExist() throws IOException {
         assertTrue(provider.challengeExists(null, CHALLENGE_ID));
         assertFalse(provider.challengeExists(null, "notes"));
         assertFalse(provider.challengeExists(null, "README"));
@@ -173,5 +174,28 @@ class ChallengeJsonProviderTest {
         provider.getAllChallenges(null);
 
         assertTrue(Files.exists(tempDir.resolve("no-id-challenge.json")));
+    }
+
+    @Test
+    @DisplayName("a challenge file that could not be read is not written over")
+    void aChallengeFileThatCouldNotBeReadIsNotWrittenOver() throws IOException {
+        write("broken-challenge.json", "{ this is not json");
+
+        provider.getAllChallenges(null);
+
+        assertThrows(IOException.class, () -> provider.updateChallenge(null, "broken-challenge", challengeJson(CHALLENGE_ID)));
+        assertEquals("{ this is not json", new String(
+                Files.readAllBytes(tempDir.resolve("broken-challenge.json")), StandardCharsets.UTF_8));
+    }
+
+    @Test
+    @DisplayName("a challenge file that could not be read is not deleted")
+    void aChallengeFileThatCouldNotBeReadIsNotDeleted() throws IOException {
+        write("broken-challenge.json", "{ this is not json");
+
+        provider.getAllChallenges(null);
+
+        assertThrows(IOException.class, () -> provider.deleteChallenge(null, "broken-challenge"));
+        assertTrue(Files.exists(tempDir.resolve("broken-challenge.json")));
     }
 }

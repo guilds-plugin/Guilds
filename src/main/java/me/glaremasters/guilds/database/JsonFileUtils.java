@@ -51,9 +51,12 @@ public final class JsonFileUtils {
      * <p>Ignored files are left alone. They are not the plugin's to remove.
      *
      * @param folder the folder to look in
-     * @return the data files in the folder, in no particular order, empty if the folder cannot be read
+     * @return the data files in the folder, in no particular order
+     * @throws IOException if the folder cannot be listed. A folder that cannot be read is a problem
+     *         with the storage rather than with one record, and it has to say so: a folder that
+     *         looks empty is a server that comes up with no guilds and no explanation.
      */
-    public static List<File> listDataFiles(@Nullable File folder) {
+    public static List<File> listDataFiles(@Nullable File folder) throws IOException {
         final List<File> dataFiles = new ArrayList<>();
 
         if (folder == null) {
@@ -63,7 +66,7 @@ public final class JsonFileUtils {
         final File[] files = folder.listFiles();
 
         if (files == null) {
-            return dataFiles;
+            throw new IOException("The data folder could not be read: " + folder.getAbsolutePath());
         }
 
         for (File file : files) {

@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -93,13 +94,13 @@ class GuildJsonProviderTest {
 
     @Test
     @DisplayName("only the guild data files are enumerated")
-    void onlyDataFilesAreEnumerated() {
+    void onlyDataFilesAreEnumerated() throws IOException {
         assertEquals(List.of(GUILD_ID), provider.getAllGuildIds(null));
     }
 
     @Test
     @DisplayName("only the guild data files are loaded as guilds")
-    void onlyDataFilesAreLoaded() {
+    void onlyDataFilesAreLoaded() throws IOException {
         final List<Guild> guilds = provider.getAllGuilds(null);
 
         assertEquals(1, guilds.size());
@@ -109,7 +110,7 @@ class GuildJsonProviderTest {
 
     @Test
     @DisplayName("a file that is not a guild file is not reported as an error")
-    void ignoredFilesAreNotReportedAsErrors() {
+    void ignoredFilesAreNotReportedAsErrors() throws IOException {
         try (LogCapture log = new LogCapture()) {
             provider.getAllGuilds(null);
 
@@ -121,7 +122,7 @@ class GuildJsonProviderTest {
 
     @Test
     @DisplayName("only the guild data files count as an existing guild")
-    void onlyDataFilesExist() {
+    void onlyDataFilesExist() throws IOException {
         assertTrue(provider.guildExists(null, GUILD_ID));
         assertFalse(provider.guildExists(null, "notes"));
         assertFalse(provider.guildExists(null, "README"));
@@ -203,5 +204,51 @@ class GuildJsonProviderTest {
         assertTrue(Files.exists(tempDir.resolve(OTHER_GUILD_ID + ".json")));
         assertEquals("{ \"name\": \"No Id Here\" }", new String(
                 Files.readAllBytes(tempDir.resolve(OTHER_GUILD_ID + ".json")), StandardCharsets.UTF_8));
+    }
+
+    @Test
+    @DisplayName("a guild file that could not be read is not written over")
+    void aGuildFileThatCouldNotBeReadIsNotWrittenOver() throws IOException {
+        write(OTHER_GUILD_ID + ".json", "{ this is not json");
+
+        provider.getAllGuilds(null);
+
+        assertThrows(IOException.class, () -> provider.updateGuild(null, OTHER_GUILD_ID, guildJson(OTHER_GUILD_ID, "Replaced")));
+        assertEquals("{ this is not json", new String(
+                Files.readAllBytes(tempDir.resolve(OTHER_GUILD_ID + ".json")), StandardCharsets.UTF_8));
+    }
+
+    @Test
+    @DisplayName("a guild file without an id is not written over")
+    void aGuildFileWithoutAnIdIsNotWrittenOver() throws IOException {
+        write(OTHER_GUILD_ID + ".json", "{ \"name\": \"No Id Here\" }");
+
+        provider.getAllGuilds(null);
+
+        assertThrows(IOException.class, () -> provider.updateGuild(null, OTHER_GUILD_ID, guildJson(OTHER_GUILD_ID, "Replaced")));
+        assertEquals("{ \"name\": \"No Id Here\" }", new String(
+                Files.readAllBytes(tempDir.resolve(OTHER_GUILD_ID + ".json")), StandardCharsets.UTF_8));
+    }
+
+    @Test
+    @DisplayName("a guild file that could not be read is not deleted")
+    void aGuildFileThatCouldNotBeReadIsNotDeleted() throws IOException {
+        write(OTHER_GUILD_ID + ".json", "{ this is not json");
+
+        provider.getAllGuilds(null);
+
+        assertThrows(IOException.class, () -> provider.deleteGuild(null, OTHER_GUILD_ID));
+        assertTrue(Files.exists(tempDir.resolve(OTHER_GUILD_ID + ".json")));
+    }
+
+    @Test
+    @DisplayName("a guild file without an id is not deleted")
+    void aGuildFileWithoutAnIdIsNotDeleted() throws IOException {
+        write(OTHER_GUILD_ID + ".json", "{ \"name\": \"No Id Here\" }");
+
+        provider.getAllGuilds(null);
+
+        assertThrows(IOException.class, () -> provider.deleteGuild(null, OTHER_GUILD_ID));
+        assertTrue(Files.exists(tempDir.resolve(OTHER_GUILD_ID + ".json")));
     }
 }

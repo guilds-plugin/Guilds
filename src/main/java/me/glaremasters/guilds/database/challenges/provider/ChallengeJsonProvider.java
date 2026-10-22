@@ -19,6 +19,15 @@ public class ChallengeJsonProvider implements ChallengeProvider {
     private final File dataFolder;
     private final Gson gson;
 
+    /**
+     * The challenge files that could not be read when the challenges were loaded.
+     *
+     * <p>A file in here holds a challenge the plugin could not use: one it could not parse, or one
+     * whose record has no id. The file is the only copy of that challenge's data, so it is never
+     * written to or deleted.
+     */
+    private final Set<String> unreadableFiles = new HashSet<>();
+
     public ChallengeJsonProvider(File dataFolder) {
         this.dataFolder = dataFolder;
         this.gson = Guilds.getGson();
@@ -30,7 +39,7 @@ public class ChallengeJsonProvider implements ChallengeProvider {
     }
 
     @Override
-    public Set<GuildChallenge> getAllChallenges(@Nullable String tablePrefix) {
+    public Set<GuildChallenge> getAllChallenges(@Nullable String tablePrefix) throws IOException {
         final Set<GuildChallenge> challenges = new HashSet<>();
 
         for (File file : JsonFileUtils.listDataFiles(this.dataFolder)) {
@@ -40,6 +49,8 @@ public class ChallengeJsonProvider implements ChallengeProvider {
                 // The id is what a challenge is looked up and removed by. A record without one
                 // cannot be worked with, so it is not loaded.
                 if (challenge == null || challenge.getId() == null) {
+                    // The file holds the only copy of that challenge, so it is remembered and left alone.
+                    unreadableFiles.add(file.getName());
                     LoggingUtils.severe("The GuildChallenge file " + file.getAbsolutePath() + " has no id, so it has been prevented from loading.");
                     LoggingUtils.severe("The file has been left where it is, so it can be repaired by hand.");
                     continue;
@@ -47,6 +58,8 @@ public class ChallengeJsonProvider implements ChallengeProvider {
 
                 challenges.add(challenge);
             } catch (Exception ex) {
+                // The file holds the only copy of that challenge, so it is remembered and left alone.
+                unreadableFiles.add(file.getName());
                 LoggingUtils.severe("There was an error loading a GuildChallenge from the following file: " + file.getAbsolutePath(), ex);
                 LoggingUtils.severe("To prevent data loss in the plugin, this GuildChallenge has been prevented from loading.");
                 LoggingUtils.severe("The file has been left where it is, so it can be repaired by hand.");
@@ -57,7 +70,7 @@ public class ChallengeJsonProvider implements ChallengeProvider {
     }
 
     @Override
-    public boolean challengeExists(@Nullable String tablePrefix, @NotNull String id) {
+    public boolean challengeExists(@Nullable String tablePrefix, @NotNull String id) throws IOException {
         return JsonFileUtils.listDataFiles(this.dataFolder).stream()
                 .anyMatch(f -> JsonFileUtils.getRecordId(f).equals(id));
     }
@@ -84,16 +97,38 @@ public class ChallengeJsonProvider implements ChallengeProvider {
         writeChallengeFile(new File(dataFolder, id + JsonFileUtils.DATA_FILE_EXTENSION), data);
     }
 
-    @Override
-    public void deleteChallenge(@Nullable String tablePrefix, @NotNull String id) {
-        deleteChallenge(new File(dataFolder, id + JsonFileUtils.DATA_FILE_EXTENSION));
-    }
-
     private void writeChallengeFile(File file, String data) throws IOException {
+        refuseToOverwriteUnreadableFile(file);
         JsonFileUtils.writeAtomically(file, data);
     }
 
-    private void deleteChallenge(File file) {
+    /**
+     * Refuses to change a challenge file that could not be read when the challenges were loaded.
+     *
+     * <p>That file is the only copy of the challenge it holds. The plugin has no challenge for it
+     * in memory, so anything written there would replace data the plugin never read with data it
+     * never had.
+     *
+     * @param file the file that is about to be written or deleted
+     * @throws IOException if the file is one the plugin could not read
+     */
+    private void refuseToOverwriteUnreadableFile(File file) throws IOException {
+        if (!unreadableFiles.contains(file.getName())) {
+            return;
+        }
+
+        throw new IOException("The challenge file " + file.getAbsolutePath() + " could not be read when the plugin started, "
+                + "so it has not been changed. Fix the file and restart the server.");
+    }
+
+    @Override
+    public void deleteChallenge(@Nullable String tablePrefix, @NotNull String id) throws IOException {
+        deleteChallenge(new File(dataFolder, id + JsonFileUtils.DATA_FILE_EXTENSION));
+    }
+
+    private void deleteChallenge(File file) throws IOException {
+        refuseToOverwriteUnreadableFile(file);
+
         if (file.exists()) file.delete();
     }
 }

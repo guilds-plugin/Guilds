@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -180,6 +181,42 @@ class ArenaJsonProviderTest {
 
         provider.getAllArenas(null);
 
+        assertTrue(Files.exists(tempDir.resolve("no-id-arena.json")));
+    }
+
+    @Test
+    @DisplayName("an arena file that could not be read is not written over")
+    void anArenaFileThatCouldNotBeReadIsNotWrittenOver() throws IOException {
+        write("broken-arena.json", "{ this is not json");
+
+        provider.getAllArenas(null);
+
+        assertThrows(IOException.class, () -> provider.updateArena(null, "broken-arena", arenaJson(ARENA_ID, "Replaced")));
+        assertEquals("{ this is not json", new String(
+                Files.readAllBytes(tempDir.resolve("broken-arena.json")), StandardCharsets.UTF_8));
+    }
+
+    @Test
+    @DisplayName("an arena file that could not be read is not deleted")
+    void anArenaFileThatCouldNotBeReadIsNotDeleted() throws IOException {
+        write("broken-arena.json", "{ this is not json");
+
+        provider.getAllArenas(null);
+
+        // The arena storage deletes the files it has no record for, so a file it could not read
+        // has to survive that pass.
+        provider.deleteArena(null, "broken-arena");
+        assertTrue(Files.exists(tempDir.resolve("broken-arena.json")));
+    }
+
+    @Test
+    @DisplayName("an arena file without an id is not deleted")
+    void anArenaFileWithoutAnIdIsNotDeleted() throws IOException {
+        write("no-id-arena.json", "{ \"name\": \"No Id Here\" }");
+
+        provider.getAllArenas(null);
+
+        provider.deleteArena(null, "no-id-arena");
         assertTrue(Files.exists(tempDir.resolve("no-id-arena.json")));
     }
 }
