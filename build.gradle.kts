@@ -69,6 +69,7 @@ dependencies {
     implementation(libs.worldguardwrapper)
     implementation(libs.configme)
     implementation(libs.jsonconfiguration)
+    implementation(libs.json.smart)
     implementation(libs.xseries)
     implementation(libs.adventure.platform.bukkit)
     implementation(libs.triumph.gui)
