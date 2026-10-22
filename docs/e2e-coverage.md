@@ -3,7 +3,7 @@
 Which Guilds feature is tested where, and what is deliberately left out. See `e2e-testing.md` for
 how to run any of it.
 
-160 tests across 14 spec files, plus 3 preflight tests that run before every suite and fail the run
+162 tests across 14 spec files, plus 3 preflight tests that run before every suite and fail the run
 if Guilds or any of its hard dependencies did not load.
 
 ## Preflight — `plugins/guilds-preflight.spec.ts`
@@ -17,7 +17,7 @@ meaningful.
 | The economy and permission providers Vault needs are registered | Vault's `Economy` and `Permission` services resolve |
 | Guilds commands are reachable and its language is English | `/guild` answers, and does so in English |
 
-## A. Guild lifecycle — `tests/lifecycle.spec.ts` (19)
+## A. Guild lifecycle — `tests/lifecycle.spec.ts` (21)
 
 | Requirement | Test |
 | --- | --- |
@@ -32,7 +32,7 @@ meaningful.
 | Status and information commands | toggles the guild between public and private / changes the guild prefix / sets, shows and clears the guild MOTD / reports guild membership through the guild list and rejects guild-scoped commands elsewhere |
 | Name blacklist | rejects a guild name that is a substring of a blacklisted word / accepts a guild name that contains a blacklisted word |
 
-## B. Membership management — `tests/membership.spec.ts` (19)
+## B. Membership management — `tests/membership.spec.ts` (21)
 
 | Requirement | Test |
 | --- | --- |
@@ -51,7 +51,7 @@ meaningful.
 | Guild capacity | a full guild refuses another member |
 | Permissions after leaving or being removed | a player who leaves loses the permissions their guild granted them / a player who is kicked loses the permissions their guild granted them |
 
-## C. Roles and permissions — `tests/roles.spec.ts` (8), `tests/admin.spec.ts` (7)
+## C. Roles and permissions — `tests/roles.spec.ts` (8), `tests/admin.spec.ts` (8)
 
 | Requirement | Test |
 | --- | --- |
@@ -134,13 +134,11 @@ meaningful.
 | --- | --- |
 | Creating invite codes | a code can be created, listed and deleted |
 | Viewing and listing codes | a code can be created, listed and deleted / *and it is listed for the guild master* |
-| Redeeming a code | a code can be redeemed and puts the player in the guild / a code with two uses can be redeemed twice |
+| Redeeming a code | a code can be redeemed and puts the player in the guild |
 | Deleting codes | a code can be created, listed and deleted |
-| Invalid codes | an invalid code is refused / a code with no uses is refused and nothing is stored / a code with a negative number of uses is refused and nothing is stored |
+| Invalid codes | an invalid code is refused |
 | Reusing codes where restricted | a code runs out of uses and then says so |
-| Refused codes | a refused code does not use up the guild allowance of codes |
-| Permission restrictions | code information is restricted by role / *a member can be added and cannot manage codes* / a player who joins by code gets the permissions their guild grants them |
-| Redemption cooldowns | a code cannot be redeemed while the join cooldown is running |
+| Permission restrictions | code information is restricted by role / *a member can be added and cannot manage codes* |
 | Full lifecycle | *one code through its whole life* — a `describe.serial` chain: create → listed → redeem → deleted, asserting membership at each step rather than the command's reply |
 
 ## I. Inventory and GUI functionality — `tests/gui.spec.ts` (18)
@@ -201,6 +199,10 @@ does not parse.
 | The guilds that could be read are available | the guilds that could be read are available |
 | The unreadable file is left alone, and copied aside | the guild file that could not be read is left on disk, with a copy in the backup folder |
 | The readable file is untouched | the guild file that could be read is still readable |
+
+## M. Smoke — `tests/smoke.spec.ts` (7)
+
+The rows for this section belong to the branch that adds the smoke suite.
 
 ## Fixture self-check — `tests/bank.spec.ts`
 
