@@ -54,6 +54,8 @@ public class GuildJsonProvider implements GuildProvider {
         this.dataFolder = dataFolder;
         this.pluginDataFolder = pluginDataFolder;
         this.gson = Guilds.getGson();
+
+        JsonFileUtils.warnIfFoldersAreSwapped(pluginDataFolder, dataFolder, DATA_TYPE);
     }
 
     @Override
@@ -166,6 +168,17 @@ public class GuildJsonProvider implements GuildProvider {
     private void deleteGuild(File file) throws IOException {
         refuseToOverwriteUnreadableFile(file);
 
-        if (file.exists()) file.delete();
+        if (!file.exists()) return;
+
+        file.delete();
+
+        /*
+         * A delete that did not happen has to be reported. The caller has already taken the guild
+         * out of the plugin, so the autosave will not touch the file again, and the next restart
+         * would load the guild the player was told was deleted.
+         */
+        if (file.exists()) {
+            throw new IOException("The guild file " + file.getAbsolutePath() + " could not be deleted.");
+        }
     }
 }

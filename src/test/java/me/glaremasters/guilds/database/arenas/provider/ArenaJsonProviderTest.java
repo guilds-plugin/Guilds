@@ -1,14 +1,20 @@
 package me.glaremasters.guilds.database.arenas.provider;
 
+import me.glaremasters.guilds.Guilds;
 import me.glaremasters.guilds.arena.Arena;
 import me.glaremasters.guilds.database.CorruptBackups;
+import me.glaremasters.guilds.database.DatabaseAdapter;
+import me.glaremasters.guilds.database.DatabaseBackend;
 import me.glaremasters.guilds.database.LogCapture;
 import me.glaremasters.guilds.database.TestGson;
+import me.glaremasters.guilds.database.UnwritableFolders;
+import me.glaremasters.guilds.database.arenas.ArenaAdapter;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.mockito.Mockito;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -25,6 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  * Covers which files the JSON arena storage treats as arenas, and what happens to the ones it
@@ -373,5 +380,47 @@ class ArenaJsonProviderTest {
         final ArenaJsonProvider restarted = new ArenaJsonProvider(dataFolder().toFile(), pluginFolder().toFile());
         restarted.getAllArenas(null);
         assertEquals(1, CorruptBackups.backupFiles(pluginFolder(), "arenas").size());
+    }
+
+    @Test
+    @DisplayName("an arena file that cannot be deleted is reported rather than swallowed")
+    void anArenaFileThatCannotBeDeletedIsReported() throws IOException {
+        write("stuck-arena.json", arenaJson(ARENA_ID, "Stuck"));
+
+        assumeTrue(UnwritableFolders.lock(dataFolder()), "the test needs a folder that cannot be written to");
+
+        try {
+            final IOException failure = assertThrows(IOException.class, () -> provider.deleteArena(null, "stuck-arena"));
+
+            assertTrue(failure.getMessage().contains("stuck-arena.json"), "the failure did not name the file");
+            assertTrue(Files.exists(dataFolder().resolve("stuck-arena.json")), "the file was removed after all");
+        } finally {
+            UnwritableFolders.unlock(dataFolder());
+        }
+    }
+
+    @Test
+    @DisplayName("one arena file that cannot be deleted does not stop the rest of the batch")
+    void oneUndeletableArenaFileDoesNotStopTheBatch() throws IOException {
+        write("stuck-arena.json", arenaJson(ARENA_ID, "Stuck"));
+        write("doomed-arena.json", arenaJson(ARENA_ID, "Doomed"));
+
+        final Guilds guilds = Mockito.mock(Guilds.class);
+        Mockito.when(guilds.getDataFolder()).thenReturn(pluginFolder().toFile());
+        final DatabaseAdapter adapter = Mockito.mock(DatabaseAdapter.class);
+        Mockito.when(adapter.getBackend()).thenReturn(DatabaseBackend.JSON);
+        final ArenaAdapter arenaAdapter = new ArenaAdapter(guilds, adapter);
+
+        assumeTrue(UnwritableFolders.lock(dataFolder()), "the test needs a folder that cannot be written to");
+
+        try (LogCapture log = new LogCapture()) {
+            // Nothing to save, so every arena file is one the storage has no record for.
+            arenaAdapter.saveArenas(List.of());
+
+            assertTrue(log.contains("stuck-arena.json"), "the failure did not name the file");
+            assertTrue(log.contains("doomed-arena.json"), "the batch stopped at the first file it could not delete");
+        } finally {
+            UnwritableFolders.unlock(dataFolder());
+        }
     }
 }

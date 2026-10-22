@@ -111,7 +111,14 @@ public class ArenaAdapter {
         for (String arenaId : getAllArenaIds()) {
             boolean keep = savedIds.stream().anyMatch(id -> id.equals(arenaId));
             if (!keep) {
-                deleteArena(arenaId);
+                try {
+                    deleteArena(arenaId);
+                } catch (IOException ex) {
+                    // The arena file could not be removed. The rest of the batch carries on: one
+                    // file that will not delete must not cost the other arenas their cleanup.
+                    LoggingUtils.warn("The arena " + arenaId + " could not be deleted: " + ex.getMessage()
+                            + " The other arenas have still been cleaned up.", ex);
+                }
             }
         }
 

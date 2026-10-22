@@ -3,6 +3,7 @@ package me.glaremasters.guilds.database.challenges.provider;
 import me.glaremasters.guilds.database.CorruptBackups;
 import me.glaremasters.guilds.database.LogCapture;
 import me.glaremasters.guilds.database.TestGson;
+import me.glaremasters.guilds.database.UnwritableFolders;
 import me.glaremasters.guilds.guild.GuildChallenge;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  * Covers which files the JSON challenge storage treats as challenges, and what happens to the ones
@@ -353,5 +355,22 @@ class ChallengeJsonProviderTest {
         final ChallengeJsonProvider restarted = new ChallengeJsonProvider(dataFolder().toFile(), pluginFolder().toFile());
         restarted.getAllChallenges(null);
         assertEquals(1, CorruptBackups.backupFiles(pluginFolder(), "challenges").size());
+    }
+
+    @Test
+    @DisplayName("a challenge file that cannot be deleted is reported rather than swallowed")
+    void aChallengeFileThatCannotBeDeletedIsReported() throws IOException {
+        write("stuck-challenge.json", challengeJson(CHALLENGE_ID));
+
+        assumeTrue(UnwritableFolders.lock(dataFolder()), "the test needs a folder that cannot be written to");
+
+        try {
+            final IOException failure = assertThrows(IOException.class, () -> provider.deleteChallenge(null, "stuck-challenge"));
+
+            assertTrue(failure.getMessage().contains("stuck-challenge.json"), "the failure did not name the file");
+            assertTrue(Files.exists(dataFolder().resolve("stuck-challenge.json")), "the file was removed after all");
+        } finally {
+            UnwritableFolders.unlock(dataFolder());
+        }
     }
 }

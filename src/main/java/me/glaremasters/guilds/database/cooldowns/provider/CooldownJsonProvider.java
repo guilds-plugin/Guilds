@@ -46,6 +46,8 @@ public class CooldownJsonProvider implements CooldownProvider {
         this.pluginDataFolder = pluginDataFolder;
         this.cooldownFile = new File(dataFolder, "cooldowns.json");
         this.gson = Guilds.getGson();
+
+        JsonFileUtils.warnIfFoldersAreSwapped(pluginDataFolder, dataFolder, DATA_TYPE);
     }
 
     @Override

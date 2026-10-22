@@ -141,4 +141,34 @@ class JsonStorageBackupTest {
         assertArrayEquals(corrupt.getBytes(StandardCharsets.UTF_8), Files.readAllBytes(guildBackup));
         assertArrayEquals(corrupt.getBytes(StandardCharsets.UTF_8), Files.readAllBytes(arenaBackup));
     }
+
+    @Test
+    @DisplayName("the four providers complain when the two folders are given the wrong way round")
+    void theProvidersComplainWhenTheFoldersAreSwapped() throws IOException {
+        try (LogCapture log = new LogCapture()) {
+            // The plugin's data folder handed over as the record folder, and the record folder as
+            // the plugin's folder. Both are File arguments, so the compiler does not notice.
+            new GuildJsonProvider(pluginFolder().toFile(), dataFolder().toFile());
+            new ArenaJsonProvider(pluginFolder().toFile(), arenaFolder().toFile());
+            new ChallengeJsonProvider(pluginFolder().toFile(), challengeFolder().toFile());
+            new CooldownJsonProvider(pluginFolder().toFile(), cooldownFolder().toFile());
+
+            assertTrue(log.contains("wrong way round"), "the swap was not reported");
+            assertTrue(log.contains(pluginFolder().toString()), "the message did not name the plugin's data folder");
+            assertTrue(log.contains(dataFolder().toString()), "the message did not name the record folder");
+        }
+    }
+
+    @Test
+    @DisplayName("the four providers do not complain about the folders the plugin uses")
+    void theProvidersDoNotComplainAboutTheRightFolders() throws IOException {
+        try (LogCapture log = new LogCapture()) {
+            new GuildJsonProvider(dataFolder().toFile(), pluginFolder().toFile());
+            new ArenaJsonProvider(arenaFolder().toFile(), pluginFolder().toFile());
+            new ChallengeJsonProvider(challengeFolder().toFile(), pluginFolder().toFile());
+            new CooldownJsonProvider(cooldownFolder().toFile(), pluginFolder().toFile());
+
+            assertFalse(log.contains("wrong way round"), "the right folders were reported as the wrong way round");
+        }
+    }
 }

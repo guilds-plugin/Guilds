@@ -46,6 +46,8 @@ public class ChallengeJsonProvider implements ChallengeProvider {
         this.dataFolder = dataFolder;
         this.pluginDataFolder = pluginDataFolder;
         this.gson = Guilds.getGson();
+
+        JsonFileUtils.warnIfFoldersAreSwapped(pluginDataFolder, dataFolder, DATA_TYPE);
     }
 
     @Override
@@ -146,6 +148,17 @@ public class ChallengeJsonProvider implements ChallengeProvider {
     private void deleteChallenge(File file) throws IOException {
         refuseToOverwriteUnreadableFile(file);
 
-        if (file.exists()) file.delete();
+        if (!file.exists()) return;
+
+        file.delete();
+
+        /*
+         * A delete that did not happen has to be reported. The challenge is gone from the plugin
+         * once the delete is asked for, so nothing would try again, and the next restart would
+         * load the challenge that was supposed to be gone.
+         */
+        if (file.exists()) {
+            throw new IOException("The challenge file " + file.getAbsolutePath() + " could not be deleted.");
+        }
     }
 }

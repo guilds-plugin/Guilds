@@ -49,6 +49,8 @@ public class ArenaJsonProvider implements ArenaProvider {
         this.dataFolder = dataFolder;
         this.pluginDataFolder = pluginDataFolder;
         this.gson = Guilds.getGson();
+
+        JsonFileUtils.warnIfFoldersAreSwapped(pluginDataFolder, dataFolder, DATA_TYPE);
     }
 
     @Override
@@ -166,13 +168,24 @@ public class ArenaJsonProvider implements ArenaProvider {
      * and one unreadable file must not stop the rest of the batch from being cleaned up. The
      * load already said which files could not be read.
      *
+     * <p>A delete that did not happen is a different matter, and it is raised. The caller is told
+     * which file is still there, so it can carry on with the rest of the batch and say what it
+     * could not remove.
+     *
      * @param file the file to delete
+     * @throws IOException if the file could not be deleted
      */
-    private void deleteArena(File file) {
+    private void deleteArena(File file) throws IOException {
         if (unreadableFiles.contains(file.getName())) {
             return;
         }
 
-        if (file.exists()) file.delete();
+        if (!file.exists()) return;
+
+        file.delete();
+
+        if (file.exists()) {
+            throw new IOException("The arena file " + file.getAbsolutePath() + " could not be deleted.");
+        }
     }
 }

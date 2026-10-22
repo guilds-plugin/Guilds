@@ -3,6 +3,7 @@ package me.glaremasters.guilds.database.guild.provider;
 import me.glaremasters.guilds.database.CorruptBackups;
 import me.glaremasters.guilds.database.LogCapture;
 import me.glaremasters.guilds.database.TestGson;
+import me.glaremasters.guilds.database.UnwritableFolders;
 import me.glaremasters.guilds.guild.Guild;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  * Covers which files the JSON guild storage treats as guilds, and what happens to the ones it
@@ -414,5 +416,22 @@ class GuildJsonProviderTest {
         final GuildJsonProvider restarted = new GuildJsonProvider(dataFolder().toFile(), pluginFolder().toFile());
         restarted.getAllGuilds(null);
         assertEquals(1, CorruptBackups.backupFiles(pluginFolder(), "guilds").size());
+    }
+
+    @Test
+    @DisplayName("a guild file that cannot be deleted is reported rather than swallowed")
+    void aGuildFileThatCannotBeDeletedIsReported() throws IOException {
+        write(OTHER_GUILD_ID + ".json", guildJson(OTHER_GUILD_ID, "Another Guild"));
+
+        assumeTrue(UnwritableFolders.lock(dataFolder()), "the test needs a folder that cannot be written to");
+
+        try {
+            final IOException failure = assertThrows(IOException.class, () -> provider.deleteGuild(null, OTHER_GUILD_ID));
+
+            assertTrue(failure.getMessage().contains(OTHER_GUILD_ID + ".json"), "the failure did not name the file");
+            assertTrue(Files.exists(dataFolder().resolve(OTHER_GUILD_ID + ".json")), "the file was removed after all");
+        } finally {
+            UnwritableFolders.unlock(dataFolder());
+        }
     }
 }
