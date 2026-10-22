@@ -3,7 +3,7 @@
 Which Guilds feature is tested where, and what is deliberately left out. See `e2e-testing.md` for
 how to run any of it.
 
-141 tests across 12 spec files, plus 3 preflight tests that run before every suite and fail the run
+147 tests across 12 spec files, plus 3 preflight tests that run before every suite and fail the run
 if Guilds or any of its hard dependencies did not load.
 
 ## Preflight — `plugins/guilds-preflight.spec.ts`
@@ -128,7 +128,7 @@ meaningful.
 | Alliance chat between guilds | `chat.spec.ts`, ally chat reaches an allied guild and not the third party |
 | Cleanup on deletion | a deleted guild drops out of its allies |
 
-## H. Invite codes — `tests/codes.spec.ts` (16, of which 5 are one `describe.serial` chain)
+## H. Invite codes — `tests/codes.spec.ts` (18, of which 5 are one `describe.serial` chain)
 
 | Requirement | Test |
 | --- | --- |
@@ -136,6 +136,8 @@ meaningful.
 | Viewing and listing codes | a code can be created, listed and deleted / *and it is listed for the guild master* |
 | Redeeming a code | a code can be redeemed and puts the player in the guild |
 | Redeeming a code more than once | a code with two uses can be redeemed twice |
+| Redeeming a code grants what the guild grants | a player who joins by code gets the permissions their guild grants them |
+| The join cooldown applies to a code | a code cannot be redeemed while the join cooldown is running |
 | Deleting codes | a code can be created, listed and deleted |
 | Invalid codes | an invalid code is refused |
 | Use counts that could never be redeemed | a code with no uses is refused and nothing is stored / a code with a negative number of uses is refused and nothing is stored / a refused code does not use up the guild allowance of codes |
