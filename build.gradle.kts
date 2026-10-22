@@ -612,6 +612,23 @@ plugwright {
                 file("plugins/Guilds/config.yml", file("src/test/e2e/server/plugins/Guilds/config.yml"))
                 file("plugins/Guilds/tiers.yml", file("src/test/e2e/server/plugins/Guilds/tiers.yml"))
                 file("plugins/Guilds/buffs.yml", file("src/test/e2e/server/plugins/Guilds/buffs.yml"))
+
+                /*
+                 * Two guild files the plugin finds in its data folder when it starts.
+                 *
+                 * One of them is a guild that reads, and one of them is a file that does not parse.
+                 * The second one is the case `startup-loading.spec.ts` is about: a single file the
+                 * plugin cannot read must not stop it, must not cost it the guilds that did read,
+                 * and must be left on disk untouched.
+                 */
+                file(
+                    "plugins/Guilds/data/11111111-1111-1111-1111-111111111111.json",
+                    file("src/test/e2e/server/plugins/Guilds/data/11111111-1111-1111-1111-111111111111.json"),
+                )
+                file(
+                    "plugins/Guilds/data/22222222-2222-2222-2222-222222222222.json",
+                    file("src/test/e2e/server/plugins/Guilds/data/22222222-2222-2222-2222-222222222222.json"),
+                )
             }
 
             plugins {

@@ -255,10 +255,28 @@ public final class Guilds extends JavaPlugin {
             // Load the challenge handler
             challengeHandler = new ChallengeHandler(this);
             challengeHandler.loadChallenges();
-            // Load guildhandler with provider
-            guildHandler = new GuildHandler(this, settingsHandler.getMainConf());
         } catch (IOException e) {
             LoggingUtils.severe("An error occurred loading data! Stopping plugin..", e);
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
+
+        /*
+         * Load the guild data.
+         *
+         * The guilds are the data the plugin cannot do without, and a load that failed leaves the
+         * plugin without them. This used to happen inside the guild handler, which caught the
+         * failure, logged it and carried on with an empty guild map: the server came up as if
+         * nothing was wrong, and the first save then wrote that empty map back over the guild data
+         * the plugin had failed to read. The failure stops the plugin instead, and the message
+         * names what could not be read.
+         */
+        try {
+            guildHandler = new GuildHandler(this, settingsHandler.getMainConf());
+        } catch (IOException | RuntimeException e) {
+            LoggingUtils.severe("Guilds could not load the guild data, so it will not start. "
+                    + "The guild files in the data folder have not been changed. "
+                    + "Fix the cause reported below and restart the server.", e);
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }

@@ -66,21 +66,40 @@ public class GuildHandler {
 
     //as well as guild permissions from tiers using permission field and tiers list.
 
-    public GuildHandler(Guilds guildsPlugin, SettingsManager settingsManager) {
+    /**
+     * Creates the handler and loads the guild data.
+     *
+     * <p>A failure to read the guild data is reported to the caller rather than swallowed. This
+     * used to catch the {@link IOException}, log it and carry on with an empty guild map, which
+     * left the failure invisible to the plugin lifecycle: the server came up as if nothing was
+     * wrong, and the first save then wrote that empty map back over the very data the plugin had
+     * failed to read.
+     *
+     * @param guildsPlugin    the plugin
+     * @param settingsManager the plugin's settings
+     * @throws IOException if the guild data cannot be read. The plugin must not start in that
+     *                     case, because it cannot know what its guilds are.
+     */
+    public GuildHandler(Guilds guildsPlugin, SettingsManager settingsManager) throws IOException {
         this.guildsPlugin = guildsPlugin;
         this.settingsManager = settingsManager;
 
         loadRoles();
         loadTiers();
-        try {
-            loadGuilds();
-        } catch (IOException e) {
-            LoggingUtils.severe("An error occurred while loading guild data.", e);
-        }
+        loadGuilds();
     }
 
     /**
      * Loads all guilds from the database and sets the necessary data for each guild and member.
+     *
+     * <p>Reading the guild data as a whole is all or nothing. An {@link IOException} here means the
+     * plugin cannot know what its guilds are, so it is passed on and the plugin stops rather than
+     * running on an empty map.
+     *
+     * <p>One guild that cannot be set up is a different matter, and is handled the way the tier
+     * fallback below handles a guild with an unknown tier: that guild is left out of the running
+     * plugin, with a message naming it, and every other guild carries on. Its file is not written
+     * to, because the save only writes the guilds that are in memory.
      *
      * @throws IOException if there is an error while loading guilds from the database.
      */
@@ -88,45 +107,90 @@ public class GuildHandler {
         final List<Guild> loaded = guildsPlugin.getDatabase().getGuildAdapter().getAllGuilds();
         loaded.forEach(guild -> guilds.put(guild.getId(), guild));
 
+        int usable = 0;
+
         // Loop through each guild and set the data needed
-        for (Guild guild : guilds.values()) {
-            // Create the vault cache
-            createVaultCache(guild);
-            // A guild whose tier could not be resolved when it was last saved has a null tier.
-            // Gson omits null fields, so the tier key is missing from the stored JSON entirely.
-            // Reading through it here would throw and take the whole plugin down at startup, so
-            // put the guild back on the lowest tier and say so.
-            if (guild.getTier() == null) {
-                guild.setTier(getLowestGuildTier());
-                LoggingUtils.severe("The guild (" + guild.getName() + ") had no tier saved. To prevent issues, they've been automatically set to the lowest tier level on the server.");
-            }
-            // Create a temp tier object for the guild
-            GuildTier tier = getGuildTier(guild.getTier().getLevel());
-            if (tier != null) {
-                // Set the tier object
-                guild.setTier(tier);
-            } else {
-                guild.setTier(getLowestGuildTier());
-                LoggingUtils.severe("The guild (" + guild.getName() + ") had a tier level that doesn't exist on the server anymore. To prevent issues, they've been automatically set the the lowest tier level on the server.");
-            }
-            // Check creation date
-            if (guild.getCreationDate() == 0) {
-                guild.setCreationDate(System.currentTimeMillis());
-            }
-            // Loop through each member.
-            for (GuildMember member : guild.getMembers()) {
-                // Create a temp role
-                GuildRole role = getGuildRole(member.getRole().getLevel());
-                if (role != null) {
-                    // Set each member to their role
-                    member.setRole(role);
-                } else {
-                    member.setRole(getLowestGuildRole());
-                    LoggingUtils.severe("The player (" + member.getName() + ") had a role level that doesn't exist on the server anymore. To prevent issues, they've been automatically set the the lowest role level on the server.");
-                }
-                addToMemberCache(member.getUuid(), guild.getId());
+        for (Guild guild : new ArrayList<>(guilds.values())) {
+            try {
+                setUpGuild(guild);
+                usable++;
+            } catch (RuntimeException e) {
+                leaveOutGuild(guild, e);
             }
         }
+
+        // Every guild failing to set up is not one broken guild, it is a broken setup: the plugin
+        // would come up with no guilds at all and quietly write that back. Stop instead.
+        if (usable == 0 && !loaded.isEmpty()) {
+            throw new IOException("None of the " + loaded.size() + " guilds in the database could be read. "
+                    + "The guild files have not been changed.");
+        }
+    }
+
+    /**
+     * Sets up the data a loaded guild needs before it can be used: its vault cache, its tier and
+     * the role of each of its members.
+     *
+     * @param guild the guild to set up
+     */
+    private void setUpGuild(Guild guild) {
+        // Create the vault cache
+        createVaultCache(guild);
+        // A guild whose tier could not be resolved when it was last saved has a null tier.
+        // Gson omits null fields, so the tier key is missing from the stored JSON entirely.
+        // Reading through it here would throw and take the whole plugin down at startup, so
+        // put the guild back on the lowest tier and say so.
+        if (guild.getTier() == null) {
+            guild.setTier(getLowestGuildTier());
+            LoggingUtils.severe("The guild (" + guild.getName() + ") had no tier saved. To prevent issues, they've been automatically set to the lowest tier level on the server.");
+        }
+        // Create a temp tier object for the guild
+        GuildTier tier = getGuildTier(guild.getTier().getLevel());
+        if (tier != null) {
+            // Set the tier object
+            guild.setTier(tier);
+        } else {
+            guild.setTier(getLowestGuildTier());
+            LoggingUtils.severe("The guild (" + guild.getName() + ") had a tier level that doesn't exist on the server anymore. To prevent issues, they've been automatically set to the lowest tier level on the server.");
+        }
+        // Check creation date
+        if (guild.getCreationDate() == 0) {
+            guild.setCreationDate(System.currentTimeMillis());
+        }
+        // Loop through each member.
+        for (GuildMember member : guild.getMembers()) {
+            // Create a temp role
+            GuildRole role = getGuildRole(member.getRole().getLevel());
+            if (role != null) {
+                // Set each member to their role
+                member.setRole(role);
+            } else {
+                member.setRole(getLowestGuildRole());
+                LoggingUtils.severe("The player (" + member.getName() + ") had a role level that doesn't exist on the server anymore. To prevent issues, they've been automatically set to the lowest role level on the server.");
+            }
+            addToMemberCache(member.getUuid(), guild.getId());
+        }
+    }
+
+    /**
+     * Leaves a guild that could not be set up out of the running plugin.
+     *
+     * <p>The guild is dropped from the map, so the save does not write it and its file stays as it
+     * is on disk. The other guilds are unaffected.
+     *
+     * @param guild the guild that could not be set up
+     * @param error what went wrong
+     */
+    private void leaveOutGuild(Guild guild, RuntimeException error) {
+        guilds.remove(guild.getId());
+
+        final List<GuildMember> members = guild.getMembers();
+        if (members != null) {
+            members.forEach(member -> removeFromMemberCache(member.getUuid()));
+        }
+
+        LoggingUtils.severe("The guild (" + guild.getName() + ") could not be read and has been left out of the plugin. "
+                + "Its data has not been changed. Fix the guild's file and restart the server.", error);
     }
 
 

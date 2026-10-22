@@ -1,0 +1,36 @@
+{
+  "id": "11111111-1111-1111-1111-111111111111",
+  "name": "E2EStaged",
+  "prefix": "Staged",
+  "motd": "A guild that was on the server before it started.",
+  "guildMaster": {
+    "uuid": "99999999-9999-9999-9999-999999999999",
+    "role": {
+      "level": 0
+    },
+    "joinDate": 1700000000000,
+    "lastLogin": 1700000000000
+  },
+  "status": "Public",
+  "tier": {
+    "level": 1
+  },
+  "balance": 0.0,
+  "members": [
+    {
+      "uuid": "99999999-9999-9999-9999-999999999999",
+      "role": {
+        "level": 0
+      },
+      "joinDate": 1700000000000,
+      "lastLogin": 1700000000000
+    }
+  ],
+  "invitedMembers": [],
+  "allies": [],
+  "pendingAllies": [],
+  "codes": [],
+  "vaults": [],
+  "lastDefended": 0,
+  "creationDate": 1700000000000
+}
