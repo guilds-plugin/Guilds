@@ -145,9 +145,9 @@ public final class JsonFileUtils {
             return;
         }
 
-        LoggingUtils.severe("The " + dataType + " data folder (" + dataFolder.getAbsolutePath() + ") is not inside the plugin's data folder ("
-                + pluginDataFolder.getAbsolutePath() + "), so the copies of the files the plugin cannot read will not land where they should. "
-                + "The two folders may have been given the wrong way round.");
+        LoggingUtils.severe("The " + dataType + " data folder (" + dataFolder.getAbsolutePath() + ") is not a folder inside the "
+                + "plugin's data folder (" + pluginDataFolder.getAbsolutePath() + "), so the copies of the files the plugin cannot read "
+                + "will not land where they should. The two folders may have been given the wrong way round.");
     }
 
     /**
