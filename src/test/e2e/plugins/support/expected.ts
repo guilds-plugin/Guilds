@@ -196,6 +196,8 @@ export const MSG = {
     codeJoined: (guild: string) => `You've successfully joined ${guild} using an invite code!`,
     codeOut: 'That invite code is all out of uses!',
     codeMax: 'You already have too many active invite codes in your guild!',
+    /** codes.invalid-uses — what a code creation with no uses to offer is answered with. */
+    codeInvalidUses: 'The number of uses must be at least 1!',
 
     // motd
     motdNotSet: 'Your guild currently does not have a MOTD set',

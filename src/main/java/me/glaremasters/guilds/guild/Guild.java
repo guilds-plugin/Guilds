@@ -391,8 +391,13 @@ public class Guild {
      * @param code the code being added
      * @param uses the amount of uses it has
      * @param creator the creator of the code
+     * @throws IllegalArgumentException if the code would have no uses left to begin with
      */
     public void addCode(String code, int uses, Player creator) {
+        if (uses < GuildCode.MIN_USES) {
+            throw new IllegalArgumentException(
+                    "An invite code needs at least " + GuildCode.MIN_USES + " use, but got " + uses);
+        }
         codes.add(new GuildCode(code, uses, creator.getUniqueId(), new ArrayList<>()));
     }
 

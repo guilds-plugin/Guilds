@@ -17,6 +17,7 @@ import me.glaremasters.guilds.Guilds
 import me.glaremasters.guilds.configuration.sections.CodeSettings
 import me.glaremasters.guilds.exceptions.ExpectationNotMet
 import me.glaremasters.guilds.guild.Guild
+import me.glaremasters.guilds.guild.GuildCode
 import me.glaremasters.guilds.guild.GuildHandler
 import me.glaremasters.guilds.messages.Messages
 import me.glaremasters.guilds.utils.Constants
@@ -38,6 +39,10 @@ internal class CommandCode : BaseCommand() {
     @Syntax("%uses")
     @CommandPermission(Constants.CODE_PERM + "create")
     fun create(player: Player, @Conditions("perm:perm=CREATE_CODE") guild: Guild, @Default("1") uses: Int) {
+        if (uses < GuildCode.MIN_USES) {
+            throw ExpectationNotMet(Messages.CODES__INVALID_USES)
+        }
+
         if (guild.getActiveCheck(settingsManager.getProperty(CodeSettings.ACTIVE_CODE_AMOUNT))) {
             throw ExpectationNotMet(Messages.CODES__MAX)
         }

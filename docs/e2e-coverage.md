@@ -128,15 +128,17 @@ meaningful.
 | Alliance chat between guilds | `chat.spec.ts`, ally chat reaches an allied guild and not the third party |
 | Cleanup on deletion | a deleted guild drops out of its allies |
 
-## H. Invite codes — `tests/codes.spec.ts` (12, of which 5 are one `describe.serial` chain)
+## H. Invite codes — `tests/codes.spec.ts` (16, of which 5 are one `describe.serial` chain)
 
 | Requirement | Test |
 | --- | --- |
 | Creating invite codes | a code can be created, listed and deleted |
 | Viewing and listing codes | a code can be created, listed and deleted / *and it is listed for the guild master* |
 | Redeeming a code | a code can be redeemed and puts the player in the guild |
+| Redeeming a code more than once | a code with two uses can be redeemed twice |
 | Deleting codes | a code can be created, listed and deleted |
 | Invalid codes | an invalid code is refused |
+| Use counts that could never be redeemed | a code with no uses is refused and nothing is stored / a code with a negative number of uses is refused and nothing is stored / a refused code does not use up the guild allowance of codes |
 | Reusing codes where restricted | a code runs out of uses and then says so |
 | Permission restrictions | code information is restricted by role / *a member can be added and cannot manage codes* |
 | Full lifecycle | *one code through its whole life* — a `describe.serial` chain: create → listed → redeem → deleted, asserting membership at each step rather than the command's reply |

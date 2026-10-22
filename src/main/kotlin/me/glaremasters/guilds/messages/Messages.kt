@@ -213,6 +213,7 @@ enum class Messages : MessageKeyProvider {
     CODES__OUT,
     CODES__INFO,
     CODES__MAX,
+    CODES__INVALID_USES,
     CODES__GUILD_MESSAGE,
 
     VAULTS__MAXED,

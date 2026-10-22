@@ -114,6 +114,69 @@ test('a guild cannot hold more active codes than the configured limit', async ({
     await commandWithout(player, guilds, '/guild code create', MSG.codeMax, MSG.codeCreated);
 });
 
+test('a code with no uses is refused and nothing is stored', async ({ player, guilds }) => {
+    await guilds.createGuild(player);
+
+    await commandWithout(player, guilds, '/guild code create 0', MSG.codeInvalidUses, MSG.codeCreated);
+
+    // Nothing was stored, so the guild has no codes at all.
+    await commandWithout(player, guilds, '/guild code list', MSG.codeEmpty, MSG.codeListHeader);
+});
+
+test('a code with a negative number of uses is refused and nothing is stored', async ({ player, guilds }) => {
+    await guilds.createGuild(player);
+
+    await commandWithout(player, guilds, '/guild code create -1', MSG.codeInvalidUses, MSG.codeCreated);
+
+    // Nothing was stored, so the guild has no codes at all.
+    await commandWithout(player, guilds, '/guild code list', MSG.codeEmpty, MSG.codeListHeader);
+});
+
+test('a refused code does not use up the guild allowance of codes', async ({ player, guilds }) => {
+    await guilds.createGuild(player);
+
+    await commandWithout(player, guilds, '/guild code create 0', MSG.codeInvalidUses, MSG.codeCreated);
+    await commandWithout(player, guilds, '/guild code create -1', MSG.codeInvalidUses, MSG.codeCreated);
+
+    // codes.amount is two in the staged config, and neither refusal took a slot.
+    for (let index = 0; index < 2; index++) {
+        const since = player.getMessageBufferIndex();
+        await guilds.run(player, '/guild code create');
+        await expectReceived(player, MSG.codeCreated, since);
+    }
+
+    await commandWithout(player, guilds, '/guild code create', MSG.codeMax, MSG.codeCreated);
+});
+
+test('a code with two uses can be redeemed twice', async ({ player, createPlayer, guilds }) => {
+    const guild = await guilds.createGuild(player);
+    const created = player.getMessageBufferIndex();
+    await guilds.run(player, '/guild code create 2');
+    await expectReceived(player, MSG.codeCreated, created);
+    const code = parseCode(player.messageBuffer.slice(created).join('\n'))!;
+
+    const first = await createPlayer({ username: guilds.playerName() });
+    const joining = first.getMessageBufferIndex();
+    await guilds.run(first, `/guild code redeem ${code}`);
+    await expectReceived(first, MSG.codeJoined(guild), joining);
+
+    // Tier 1 allows two members, so the first joiner has to make room for the second.
+    await guilds.run(player, `/guild kick ${first.username}`);
+    await expect(player).toHaveReceivedMessage(MSG.kickSuccess(first.username));
+
+    const second = await createPlayer({ username: guilds.playerName() });
+    const secondJoining = second.getMessageBufferIndex();
+    await guilds.run(second, `/guild code redeem ${code}`);
+    await expectReceived(second, MSG.codeJoined(guild), secondJoining);
+
+    // Both uses are spent now, so the code is refused.
+    await guilds.run(player, `/guild kick ${second.username}`);
+    await expect(player).toHaveReceivedMessage(MSG.kickSuccess(second.username));
+
+    const third = await createPlayer({ username: guilds.playerName() });
+    await commandWithout(third, guilds, `/guild code redeem ${code}`, MSG.codeOut, MSG.codeJoined(guild));
+});
+
 test('code information is restricted by role', async ({ player, createPlayer, guilds }) => {
     const guild = await guilds.createGuild(player);
     const created = player.getMessageBufferIndex();

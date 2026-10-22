@@ -18,6 +18,16 @@ class GuildCode(
     val redeemers: MutableList<UUID>
 ) {
 
+    companion object {
+        /**
+         * The smallest number of uses a code can be created with.
+         *
+         * A code that has been redeemed down to zero is a normal, spent code, so the rule belongs at
+         * creation: a count that could never be redeemed is refused before the code is stored.
+         */
+        const val MIN_USES = 1
+    }
+
     /**
      * Adds a player to the list of redeemers and reduces the number of uses by 1.
      *
