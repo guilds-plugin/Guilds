@@ -1085,14 +1085,15 @@ afterEvaluate {
 
     /*
      * One server at a time. Every environment binds the same port, and two servers on one port
-     * means one of them fails to bind and the run fails for the wrong reason.
+     * means one of them fails to bind and the run fails for the wrong reason. The server-level
+     * check starts a server too, so it is part of the chain.
      */
-    smokeTestTasks.zipWithNext().forEach { (earlier, later) ->
+    (smokeTestTasks + smokeServerChecks).zipWithNext().forEach { (earlier, later) ->
         later.configure { mustRunAfter(earlier) }
     }
 
     val matrix = tasks.named("plugwrightTest")
-    smokeTestTasks.forEach { smokeTask ->
+    (smokeTestTasks + smokeServerChecks).forEach { smokeTask ->
         smokeTask.configure { mustRunAfter(matrix) }
     }
 }
