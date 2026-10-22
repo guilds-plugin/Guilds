@@ -6,7 +6,7 @@ how to run any of it.
 141 tests across 12 spec files, plus 3 preflight tests that run before every suite and fail the run
 if Guilds or any of its hard dependencies did not load.
 
-The runtime smoke suite (`tests/smoke.spec.ts`, 5 tests) is a separate, much smaller suite that
+The runtime smoke suite (`tests/smoke.spec.ts`, 7 tests) is a separate, much smaller suite that
 runs on the older Minecraft versions the full suite cannot. It is listed under "Runtime smoke
 coverage" below.
 
@@ -192,7 +192,7 @@ the server answering in another language for the rest of the run. ACF's `usePerI
 false)` is what makes that safe, and one player switching language leaves everyone else in English
 asserts it rather than assuming it.
 
-## Runtime smoke coverage — `tests/smoke.spec.ts` (5)
+## Runtime smoke coverage — `tests/smoke.spec.ts` (7)
 
 The full suite above is written against a modern server. The smoke suite is the part that has to
 hold on every version the plugin claims to support, so it is much smaller: the plugin and its
@@ -206,10 +206,17 @@ money, a command answers, and a guild can be created.
 | The economy works | the economy moves money |
 | The command layer works | a guild command answers |
 | The plugin is usable | a guild can be created |
+| A backup of unreadable data is not a record | a guild file in the backup directory is not loaded as a record |
+| The ordinary storage path still works | a guild file in the data folder is loaded |
 
 The same spec runs on every environment, the modern ones included, so a smoke failure on 1.21.8
 is as loud as one on 1.8.8. See `e2e-testing.md` for how the per-version environments are set up
 and what each one can and cannot prove.
+
+The last two checks are the ones the recovery work needs. The build stages two guild files into
+each smoke environment: one in the data folder, which the plugin is expected to load, and one in
+the backup directory the recovery work writes to, which it must not. They are restricted to the
+smoke environments, because a guild in the data folder would change what the full suite sees.
 
 ## Fixture self-check — `tests/bank.spec.ts`
 

@@ -101,14 +101,36 @@ instead:
 ```
 
 It starts the server and asserts that Guilds and its hard dependencies enabled, that Guilds did
-not disable itself, and that it found the economy and the permission provider. It cannot prove
-that the command layer works, because that needs a player.
+not disable itself, and that it found the economy and the permission provider. It also asks the
+console about the two staged guild files, which is what stands in for a player there: the guild in
+the backup directory has to be unknown to the plugin, and the guild in the data folder has to be
+known to it.
 
 26.1.2 is the same protocol as 26.1, which is the newest one minecraft-data knows, so the bot
 connects to that environment as 26.1.
 
 The legacy environments start the server through a shell script, and so does the 26.3 server
 check, so they do not run on Windows.
+
+#### The staged guild files
+
+Two guild files are staged into each smoke environment's plugin data folder, both complete and
+valid guild records:
+
+| File | What the plugin has to do with it |
+| --- | --- |
+| `plugins/Guilds/data/8d3f1a67-….json` | load it, the way it loads any guild in the data folder |
+| `plugins/Guilds/backups/corrupt/20240101-000000/guilds/1f6b9c2e-….json` | leave it alone, because the backup directory is not a data folder |
+
+The first one is the ordinary path, so a check that it is loaded catches a storage change that
+broke the reading of a good file. The second one is the recovery path: a plugin that treated the
+backup directory as a data folder would load it as a guild, and the smoke suite asserts that it
+does not.
+
+The local environment gets neither. A guild in its data folder would change what the full suite
+sees, so the two checks that use these files are restricted to the smoke environments. A new
+smoke environment has to be added to `SMOKE_ENVIRONMENTS` in `tests/smoke.spec.ts` as well, or
+those two checks are skipped on it.
 
 ### Running one file, or one test
 

@@ -1,0 +1,42 @@
+{
+  "id": "8d3f1a67-2b95-4c08-9e14-6a5d0c7b3f28",
+  "name": "StoredSentinel",
+  "prefix": "STO",
+  "motd": "",
+  "guildMaster": {
+    "uuid": "8d3f1a67-2b95-4c08-9e14-6a5d0c7b3f28",
+    "role": {
+      "level": 0
+    },
+    "joinDate": 0,
+    "lastLogin": 0
+  },
+  "home": null,
+  "guildSkull": null,
+  "status": "Public",
+  "tier": {
+    "level": 1
+  },
+  "guildScore": {
+    "wins": 0,
+    "loses": 0
+  },
+  "balance": 0.0,
+  "members": [
+    {
+      "uuid": "8d3f1a67-2b95-4c08-9e14-6a5d0c7b3f28",
+      "role": {
+        "level": 0
+      },
+      "joinDate": 0,
+      "lastLogin": 0
+    }
+  ],
+  "invitedMembers": [],
+  "allies": [],
+  "pendingAllies": [],
+  "codes": [],
+  "vaults": [],
+  "lastDefended": 0,
+  "creationDate": 0
+}

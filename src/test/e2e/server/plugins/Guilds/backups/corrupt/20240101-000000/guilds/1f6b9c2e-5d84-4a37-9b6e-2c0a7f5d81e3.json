@@ -1,0 +1,42 @@
+{
+  "id": "1f6b9c2e-5d84-4a37-9b6e-2c0a7f5d81e3",
+  "name": "BackupSentinel",
+  "prefix": "BKP",
+  "motd": "",
+  "guildMaster": {
+    "uuid": "1f6b9c2e-5d84-4a37-9b6e-2c0a7f5d81e3",
+    "role": {
+      "level": 0
+    },
+    "joinDate": 0,
+    "lastLogin": 0
+  },
+  "home": null,
+  "guildSkull": null,
+  "status": "Public",
+  "tier": {
+    "level": 1
+  },
+  "guildScore": {
+    "wins": 0,
+    "loses": 0
+  },
+  "balance": 0.0,
+  "members": [
+    {
+      "uuid": "1f6b9c2e-5d84-4a37-9b6e-2c0a7f5d81e3",
+      "role": {
+        "level": 0
+      },
+      "joinDate": 0,
+      "lastLogin": 0
+    }
+  ],
+  "invitedMembers": [],
+  "allies": [],
+  "pendingAllies": [],
+  "codes": [],
+  "vaults": [],
+  "lastDefended": 0,
+  "creationDate": 0
+}

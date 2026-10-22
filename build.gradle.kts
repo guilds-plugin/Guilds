@@ -677,6 +677,28 @@ val smokeEnvironments = listOf(
     }
 
 /*
+ * The files the smoke environments stage into the server's plugin data folder.
+ *
+ * The plugin reads four folders under plugins/Guilds when it starts: data, arenas, challenges and
+ * cooldowns. Two files are staged next to them:
+ *
+ * - A guild file in the backup directory the recovery work writes to, plugins/Guilds/backups/
+ *   corrupt/<timestamp>/guilds/. It is a complete, valid guild record, so a plugin that treated
+ *   the backup directory as a data folder would load it as a guild. The smoke suite asserts that
+ *   it does not.
+ *
+ * - A guild file in the data folder itself. It is the same shape, and the plugin is expected to
+ *   load it, which is what proves the recovery work did not break the ordinary path.
+ *
+ * The local environment gets neither. A guild in its data folder would change what the full suite
+ * sees, and the full suite is not what these files are for.
+ */
+val smokeStagedFiles = listOf(
+    "src/test/e2e/server/plugins/Guilds/backups/corrupt/20240101-000000/guilds/1f6b9c2e-5d84-4a37-9b6e-2c0a7f5d81e3.json",
+    "src/test/e2e/server/plugins/Guilds/data/8d3f1a67-2b95-4c08-9e14-6a5d0c7b3f28.json",
+).map { source -> source.removePrefix("src/test/e2e/server/") to file(source) }
+
+/*
  * End-to-end testing.
  *
  * Plugwright downloads a Paper server, stages Guilds' shadowJar plus the three plugins Guilds
@@ -715,11 +737,12 @@ plugwright {
                  */
                 includeInMatrix.set(false)
 
-                configureGuildsEnvironment(listOf("-Xmx1500M"), smoke.essentialsX)
+                configureGuildsEnvironment(listOf("-Xmx1500M"), smoke.essentialsX, smokeStagedFiles)
             }
         }
     }
 }
+
 
 /**
  * The plugin set and the staged configuration every Guilds E2E environment runs with.
@@ -728,8 +751,15 @@ plugwright {
  * `guilds.command.*`. Staging the config here is what makes every test deterministic:
  * `plugwrightClean` wipes the run directory before each provision, so the plugin only ever sees
  * this config and a freshly generated tiers.yml/roles.yml.
+ *
+ * The staged files are written by one call, because the plugin's own file list is replaced rather
+ * than added to on every call.
  */
-fun LocalEnvironmentSpec.configureGuildsEnvironment(jvmArgs: List<String>, essentialsX: String) {
+fun LocalEnvironmentSpec.configureGuildsEnvironment(
+    jvmArgs: List<String>,
+    essentialsX: String,
+    stagedFiles: List<Pair<String, File>> = emptyList(),
+) {
     acceptEula.set(true)
     this.jvmArgs.set(jvmArgs)
 
@@ -748,6 +778,10 @@ fun LocalEnvironmentSpec.configureGuildsEnvironment(jvmArgs: List<String>, essen
         file("plugins/Guilds/config.yml", file("src/test/e2e/server/plugins/Guilds/config.yml"))
         file("plugins/Guilds/tiers.yml", file("src/test/e2e/server/plugins/Guilds/tiers.yml"))
         file("plugins/Guilds/buffs.yml", file("src/test/e2e/server/plugins/Guilds/buffs.yml"))
+
+        stagedFiles.forEach { (path, source) ->
+            file(path, source)
+        }
     }
 
     plugins {
@@ -827,10 +861,10 @@ fun writeLegacyServerProperties(properties: File) {
 /**
  * Starts a Paper server and checks that Guilds came up on it.
  *
- * This is what a version no bot can be driven on gets instead of the smoke spec. It cannot prove
- * that the command layer works — that needs a player — but it does prove that the plugin loads,
- * that its hard dependencies load with it, and that Guilds finds the economy and the permission
- * provider it refuses to start without.
+ * This is what a version no bot can be driven on gets instead of the smoke spec. It cannot play
+ * the part of a player, but the console can ask the plugin about a guild, which is what the
+ * recovery fixtures need: a guild in the backup directory must be unknown to the plugin, and a
+ * guild in the data folder must be known to it.
  */
 fun checkServerLoads(smoke: SmokeEnvironment, launcher: File, runDir: File) {
     val server = ProcessBuilder(
@@ -880,12 +914,47 @@ fun checkServerLoads(smoke: SmokeEnvironment, launcher: File, runDir: File) {
         check(text.contains("Permissions Found:")) {
             "Guilds found no permission provider on Minecraft ${smoke.minecraftVersion}.\n$text"
         }
+
+        /*
+         * The two staged guild files, asked about over the console.
+         *
+         * The one in the backup directory is a complete, valid guild record, so a plugin that read
+         * the backup directory as a data folder would know it. The one in the data folder is the
+         * same shape and has to be known, which is what shows the ordinary path still works.
+         */
+        askConsole(server, log, "guild admin bank balance BackupSentinel", "That Guild does not exist!")
+        askConsole(server, log, "guild admin bank balance StoredSentinel", "has a bank balance of")
     } finally {
         server.outputStream.write("stop\n".toByteArray())
         server.outputStream.flush()
         if (!server.waitFor(60, TimeUnit.SECONDS)) {
             server.destroyForcibly()
         }
+    }
+}
+
+/**
+ * Runs a console command and waits for the answer to appear in the server's output.
+ *
+ * Only the output written after the command was sent counts, so an earlier answer to the same
+ * question cannot make this pass.
+ */
+fun askConsole(server: Process, log: StringBuilder, command: String, expected: String) {
+    val from = synchronized(log) { log.length }
+
+    server.outputStream.write((command + "\n").toByteArray())
+    server.outputStream.flush()
+
+    val deadline = System.currentTimeMillis() + 30_000
+    while (System.currentTimeMillis() < deadline) {
+        val answered = synchronized(log) { log.substring(from).contains(expected) }
+        if (answered || !server.isAlive) break
+        Thread.sleep(200)
+    }
+
+    val text = synchronized(log) { log.toString() }
+    check(text.substring(from).contains(expected)) {
+        "The console command \"$command\" did not answer with \"$expected\".\n$text"
     }
 }
 
