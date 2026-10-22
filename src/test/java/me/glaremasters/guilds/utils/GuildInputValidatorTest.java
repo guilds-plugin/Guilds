@@ -123,6 +123,22 @@ class GuildInputValidatorTest {
     }
 
     @Test
+    @DisplayName("duplicate detection and the name matcher apply the same rule")
+    void duplicateDetectionUsesTheSharedRule() {
+        final List<Guild> guilds = Collections.singletonList(guildNamed("§cRaiders"));
+
+        // Every spelling of the name is the same name for both, so a name the server refuses to
+        // hand out is a name the lookup can resolve.
+        for (final String candidate : Arrays.asList("Raiders", "raiders", "RAIDERS", "&cRaiders", "§cRaiders", "§4Raiders")) {
+            assertTrue(GuildInputValidator.isNameTaken(candidate, guilds), candidate + " should be taken");
+            assertTrue(GuildNameMatcher.isSameName("§cRaiders", candidate), candidate + " should name the same guild");
+        }
+
+        assertFalse(GuildInputValidator.isNameTaken("Rangers", guilds));
+        assertFalse(GuildNameMatcher.isSameName("§cRaiders", "Rangers"));
+    }
+
+    @Test
     @DisplayName("names are validated against the configured regex")
     void namesAreValidatedAgainstTheRegex() throws IOException {
         final SettingsManager settings = settings(DEFAULT_NAME_REQUIREMENTS, true);

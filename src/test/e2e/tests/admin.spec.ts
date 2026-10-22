@@ -47,6 +47,20 @@ test('an admin command that names a guild which does not exist says so', async (
     expect(await guilds.bankOf(guild)).toBe(0);
 });
 
+test('an admin command finds its guild when the name is typed in a different case', async ({
+    player,
+    guilds,
+}) => {
+    // The name is created with letters in mixed case, so the lowercased form is a different string
+    // and not merely a different spelling of the same one.
+    const name = guilds.guildName('CaseTest');
+    const guild = await guilds.createGuild(player, { name });
+
+    const response = stripColors(await guilds.console(`guild admin bank deposit ${name.toLowerCase()} 500`));
+    expect(response).toContain('put 500.0 into');
+    expect(await guilds.bankOf(guild)).toBe(500);
+});
+
 test('an admin command can put a player into a guild', async ({ player, createPlayer, guilds }) => {
     const guild = await guilds.createGuild(player);
     const guest = await createPlayer({ username: guilds.playerName() });

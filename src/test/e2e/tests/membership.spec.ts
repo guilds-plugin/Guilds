@@ -70,6 +70,24 @@ test('a player accepting a guild that does not exist is told the guild does not 
     await expect(stranger).not.toHaveReceivedMessage(MSG.noGuild, { since });
 });
 
+test('a guild is found when its name is typed in a different case', async ({ player, createPlayer, guilds }) => {
+    // The name is created with letters in mixed case, so the lowercased form is a different string
+    // and not merely a different spelling of the same one.
+    const name = guilds.guildName('CaseTest');
+    const guild = await guilds.createGuild(player, { name });
+    const guest = await createPlayer({ username: guilds.playerName() });
+
+    await guilds.invite(player, guest, guild);
+
+    // The guild is named in one case and accepted in another. Duplicate-name detection treats the
+    // two as the same name, so the lookup has to as well.
+    await guilds.run(guest, `/guild accept ${name.toLowerCase()}`);
+    await expect(guest).toHaveReceivedMessage(MSG.acceptSuccess(guild));
+
+    const roster = await guildMembers(player);
+    expect(roster.map(member => member.name).sort()).toEqual([player.username, guest.username].sort());
+});
+
 test('a player cannot be invited twice', async ({ player, createPlayer, guilds }) => {
     const guild = await guilds.createGuild(player);
     const guest = await createPlayer({ username: guilds.playerName() });

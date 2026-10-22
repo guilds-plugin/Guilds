@@ -13,6 +13,7 @@ import me.glaremasters.guilds.configuration.sections.TicketSettings;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.ClaimUtils;
+import me.glaremasters.guilds.utils.GuildNameMatcher;
 import me.glaremasters.guilds.utils.ItemBuilder;
 import me.glaremasters.guilds.utils.LoggingUtils;
 import me.glaremasters.guilds.utils.Serialization;
@@ -275,11 +276,67 @@ public class GuildHandler {
     /**
      * Retrieves a [guild] by its name.
      *
+     * <p>The name is matched the way {@code /guild create} compares names: the colour codes are
+     * removed and the case is ignored, so a guild called "Raiders" is found as "Raiders", as
+     * "raiders" and as "&amp;cRaiders". The two rules have to agree, otherwise the server refuses
+     * to create a name that it also refuses to resolve.
+     *
+     * <p>Two guilds whose visible names differ only by case or by colour are a broken state that
+     * duplicate detection prevents but legacy data can still hold. Such a name is ambiguous, and an
+     * ambiguous name resolves to nothing rather than to one of the two by accident: acting on the
+     * wrong guild is worse than not acting at all. The conflict is reported in the server log, with
+     * the ids of the guilds involved.
+     *
      * @param name the name of the guild to retrieve
      * @return the guild with the given name, or {@code null} if no such guild exists
      */
     @Nullable public Guild getGuild(@NotNull String name) {
-        return guilds.values().stream().filter(guild -> ACFBukkitUtil.removeColors(guild.getName()).equals(name)).findFirst().orElse(null);
+        final String query = GuildNameMatcher.normalize(name);
+
+        final List<Guild> candidates = new ArrayList<>();
+        // A guild whose visible name is exactly the typed one is the one that was meant, even when
+        // another guild differs from it only by case.
+        Guild exact = null;
+        int exactMatches = 0;
+
+        for (final Guild guild : guilds.values()) {
+            final String stored = guild.getName();
+            if (stored == null) {
+                // A guild without a name cannot be named either, and must not break the lookup of
+                // the others.
+                continue;
+            }
+            final String visible = GuildNameMatcher.normalize(stored);
+            if (!visible.equalsIgnoreCase(query)) {
+                continue;
+            }
+            candidates.add(guild);
+            if (visible.equals(query)) {
+                exactMatches++;
+                if (exact == null) {
+                    exact = guild;
+                }
+            }
+        }
+
+        if (candidates.isEmpty()) {
+            return null;
+        }
+
+        if (exactMatches == 1) {
+            return exact;
+        }
+
+        if (exactMatches == 0 && candidates.size() == 1) {
+            return candidates.get(0);
+        }
+
+        LoggingUtils.severe("The guild name '" + query + "' matches more than one guild ("
+                + candidates.stream()
+                .map(guild -> guild.getName() + " (" + guild.getId() + ")")
+                .collect(Collectors.joining(", "))
+                + "). It was not resolved to any of them. Rename one of them so that the name is unique.");
+        return null;
     }
 
     /**
@@ -577,6 +634,10 @@ public class GuildHandler {
 
     /**
      * Returns a string list of the name of all guilds on the server
+     *
+     * <p>The names are the visible ones, with the colour codes removed. Whatever a player types
+     * back from this list is matched by {@link #getGuild(String)} against the stored name, so the
+     * list and the lookup agree on which guild a name belongs to.
      *
      * @return a string list of guild names
      */
@@ -1189,11 +1250,16 @@ public class GuildHandler {
     /**
      * Check if a guild name already exists
      *
+     * <p>Uses the same rule as {@link #getGuild(String)}, so this answers "is there a guild by this
+     * name" the same way the lookup does.
+     *
      * @param name name to check
      * @return exists or not
      */
     public boolean checkGuildNames(String name) {
-        return guilds.values().stream().anyMatch(g -> g.getName().equalsIgnoreCase(name));
+        final String query = GuildNameMatcher.normalize(name);
+        return guilds.values().stream()
+                .anyMatch(guild -> GuildNameMatcher.normalize(guild.getName()).equalsIgnoreCase(query));
     }
 
     /**
