@@ -3,7 +3,7 @@
 Which Guilds feature is tested where, and what is deliberately left out. See `e2e-testing.md` for
 how to run any of it.
 
-141 tests across 12 spec files, plus 3 preflight tests that run before every suite and fail the run
+162 tests across 14 spec files, plus 3 preflight tests that run before every suite and fail the run
 if Guilds or any of its hard dependencies did not load.
 
 The runtime smoke suite (`tests/smoke.spec.ts`, 7 tests) is a separate, much smaller suite that
@@ -21,7 +21,7 @@ meaningful.
 | The economy and permission providers Vault needs are registered | Vault's `Economy` and `Permission` services resolve |
 | Guilds commands are reachable and its language is English | `/guild` answers, and does so in English |
 
-## A. Guild lifecycle — `tests/lifecycle.spec.ts` (19)
+## A. Guild lifecycle — `tests/lifecycle.spec.ts` (21)
 
 | Requirement | Test |
 | --- | --- |
@@ -36,7 +36,7 @@ meaningful.
 | Status and information commands | toggles the guild between public and private / changes the guild prefix / sets, shows and clears the guild MOTD / reports guild membership through the guild list and rejects guild-scoped commands elsewhere |
 | Name blacklist | rejects a guild name that is a substring of a blacklisted word / accepts a guild name that contains a blacklisted word |
 
-## B. Membership management — `tests/membership.spec.ts` (19)
+## B. Membership management — `tests/membership.spec.ts` (21)
 
 | Requirement | Test |
 | --- | --- |
@@ -55,7 +55,7 @@ meaningful.
 | Guild capacity | a full guild refuses another member |
 | Permissions after leaving or being removed | a player who leaves loses the permissions their guild granted them / a player who is kicked loses the permissions their guild granted them |
 
-## C. Roles and permissions — `tests/roles.spec.ts` (8), `tests/admin.spec.ts` (7)
+## C. Roles and permissions — `tests/roles.spec.ts` (8), `tests/admin.spec.ts` (8)
 
 | Requirement | Test |
 | --- | --- |
@@ -132,7 +132,7 @@ meaningful.
 | Alliance chat between guilds | `chat.spec.ts`, ally chat reaches an allied guild and not the third party |
 | Cleanup on deletion | a deleted guild drops out of its allies |
 
-## H. Invite codes — `tests/codes.spec.ts` (12, of which 5 are one `describe.serial` chain)
+## H. Invite codes — `tests/codes.spec.ts` (18, of which 5 are one `describe.serial` chain)
 
 | Requirement | Test |
 | --- | --- |
@@ -191,6 +191,11 @@ Every test switches only its own bot and restores `en-US` in a `finally`, so a f
 the server answering in another language for the rest of the run. ACF's `usePerIssuerLocale(true,
 false)` is what makes that safe, and one player switching language leaves everyone else in English
 asserts it rather than assuming it.
+
+## Startup loading — `tests/startup-loading.spec.ts` (4)
+
+The section belongs to the pull request that adds the spec file. Only the heading is here, so that
+the counts in this document add up to the total above.
 
 ## Runtime smoke coverage — `tests/smoke.spec.ts` (7)
 
