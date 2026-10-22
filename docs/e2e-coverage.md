@@ -3,7 +3,7 @@
 Which Guilds feature is tested where, and what is deliberately left out. See `e2e-testing.md` for
 how to run any of it.
 
-147 tests across 12 spec files, plus 3 preflight tests that run before every suite and fail the run
+160 tests across 14 spec files, plus 3 preflight tests that run before every suite and fail the run
 if Guilds or any of its hard dependencies did not load.
 
 ## Preflight — `plugins/guilds-preflight.spec.ts`
@@ -17,12 +17,13 @@ meaningful.
 | The economy and permission providers Vault needs are registered | Vault's `Economy` and `Permission` services resolve |
 | Guilds commands are reachable and its language is English | `/guild` answers, and does so in English |
 
-## A. Guild lifecycle — `tests/lifecycle.spec.ts` (19)
+## A. Guild lifecycle — `tests/lifecycle.spec.ts` (21)
 
 | Requirement | Test |
 | --- | --- |
 | Successful guild creation | creates a guild, charges for it, and shows it in the guild list |
 | Creation confirmation and cancellation | cancelling the prompt leaves no guild and no charge |
+| The confirmation is checked again | refuses the confirmation when the player joined a guild in the meantime / refuses the confirmation when another guild took the name in the meantime |
 | Invalid guild names and prefixes | rejects a guild name that breaks the configured requirements / rejects a name too long to serve as its own prefix / rejects an explicit prefix that breaks the prefix requirements |
 | Duplicate guild names | rejects a guild name another guild already holds |
 | Insufficient funds | rejects creation when the player cannot afford it |
@@ -32,7 +33,7 @@ meaningful.
 | Status and information commands | toggles the guild between public and private / changes the guild prefix / sets, shows and clears the guild MOTD / reports guild membership through the guild list and rejects guild-scoped commands elsewhere |
 | Name blacklist | rejects a guild name that is a substring of a blacklisted word / accepts a guild name that contains a blacklisted word |
 
-## B. Membership management — `tests/membership.spec.ts` (19)
+## B. Membership management — `tests/membership.spec.ts` (20)
 
 | Requirement | Test |
 | --- | --- |
@@ -41,6 +42,7 @@ meaningful.
 | Declining an invitation | an invited player can decline and stays without a guild |
 | Preventing duplicate invitations | a player cannot be invited twice / a player who is already in a guild cannot be invited |
 | Preventing joining when already in another guild | a player cannot join a second guild while in one / a player cannot accept a guild they were never invited to / a player accepting a guild that does not exist is told the guild does not exist |
+| Finding a guild by name | a guild is found when its name is typed in a different case |
 | Leaving a guild | a member can leave and the guild is told |
 | Leaving and being invited back | a member can leave, be invited back and join the guild again |
 | Master leaving deletes the guild | a member leaving warns that the guild master deletes the guild by leaving |
@@ -51,7 +53,7 @@ meaningful.
 | Guild capacity | a full guild refuses another member |
 | Permissions after leaving or being removed | a player who leaves loses the permissions their guild granted them / a player who is kicked loses the permissions their guild granted them |
 
-## C. Roles and permissions — `tests/roles.spec.ts` (8), `tests/admin.spec.ts` (7)
+## C. Roles and permissions — `tests/roles.spec.ts` (8), `tests/admin.spec.ts` (8)
 
 | Requirement | Test |
 | --- | --- |
@@ -64,6 +66,7 @@ meaningful.
 | Tier permissions after upgrade | upgrading charges the tier price and moves the guild onto the new tier / **an upgrade leaves the master with the permissions the new tier grants** |
 | A player in no guild | a player in no guild is told so rather than refused by role |
 | Admin commands that name a guild and a second argument | an admin command that names a guild and a second argument reaches its handler / an admin command that names a guild which does not exist says so / an admin command that names a guild and a second argument is refused for an unknown player |
+| Admin commands that name a guild in a different case | an admin command finds its guild when the name is typed in a different case |
 | Admin commands that act on a player | an admin command can put a player into a guild / an admin command can hand a player upgrade tickets / an admin command can hand a guild to one of its members |
 | Admin commands that act on an arena | an admin command can teleport to an arena spawn point |
 | The player-facing bank commands | the player-facing bank commands work |
