@@ -80,6 +80,18 @@ public class FakeEconomy implements Economy {
     }
 
     /**
+     * Changes the balance without going through a transaction.
+     *
+     * <p>Used to move the world on between the prompt and the confirmation, the way a player who
+     * spends their money in another plugin does.
+     *
+     * @param balance the balance the player has from now on
+     */
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
+    /**
      * @return how often a withdrawal was asked for
      */
     public int withdrawals() {

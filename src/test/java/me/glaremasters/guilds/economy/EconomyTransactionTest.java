@@ -13,6 +13,7 @@ import me.glaremasters.guilds.configuration.sections.CostSettings;
 import me.glaremasters.guilds.configuration.sections.GuildSettings;
 import me.glaremasters.guilds.cooldowns.CooldownHandler;
 import me.glaremasters.guilds.economy.FakeEconomy.Behaviour;
+import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.guild.Guild;
 import me.glaremasters.guilds.guild.GuildHandler;
 import me.glaremasters.guilds.guild.GuildRole;
@@ -35,6 +36,8 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Covers the money that moves between a player and a guild bank.
@@ -213,6 +216,8 @@ class EconomyTransactionTest {
         Mockito.verify(guildHandler, Mockito.never()).addToMemberCache(Mockito.any(), Mockito.any());
         Mockito.verify(issuer).sendInfo(Messages.ERROR__ECONOMY_TRANSACTION_FAILED,
                 "{reason}", "Insufficient funds");
+        assertNull(actionHandler.getAction(player),
+                "a refused payment must void the offer, so a later confirm cannot charge for it");
     }
 
     @Test
@@ -274,6 +279,30 @@ class EconomyTransactionTest {
         Mockito.verify(guildHandler, Mockito.times(1)).addGuild(Mockito.any());
     }
 
+    @Test
+    @DisplayName("a guild creation the player can no longer afford charges nothing and leaves no guild")
+    void unaffordableGuildCreation() {
+        // The player is quoted a price they can pay, and spends the money before they confirm.
+        // The affordability is checked again at that point, and nothing is taken and no guild is
+        // made. This is the check that has to run before the payment.
+        final GuildHandler guildHandler = guildHandler();
+        final ActionHandler actionHandler = new ActionHandler();
+
+        try (MockedStatic<Bukkit> bukkit = mockBukkit();
+             MockedStatic<Guilds> guilds = mockGuilds()) {
+            final ConfirmAction action = startGuildCreation(actionHandler, guildHandler, CREATION_COST);
+
+            economy.setBalance(CREATION_COST - 1.0);
+
+            assertThrows(ExpectationNotMet.class, action::accept);
+        }
+
+        assertEquals(CREATION_COST - 1.0, economy.balance(), 0.001,
+                "a guild the player cannot afford must not be paid for");
+        Mockito.verify(guildHandler, Mockito.never()).addGuild(Mockito.any());
+        Mockito.verify(guildHandler, Mockito.never()).addToMemberCache(Mockito.any(), Mockito.any());
+    }
+
     /**
      * Runs the create command and confirms it, the way a player would.
      *
@@ -282,6 +311,18 @@ class EconomyTransactionTest {
      * @param cost          what the guild costs
      */
     private void createGuild(ActionHandler actionHandler, GuildHandler guildHandler, double cost) {
+        startGuildCreation(actionHandler, guildHandler, cost).accept();
+    }
+
+    /**
+     * Runs the create command and leaves the confirmation pending.
+     *
+     * @param actionHandler the handler that holds the confirmation
+     * @param guildHandler  the handler that would hold the new guild
+     * @param cost          what the guild costs
+     * @return the pending confirmation
+     */
+    private ConfirmAction startGuildCreation(ActionHandler actionHandler, GuildHandler guildHandler, double cost) {
         final CommandCreate command = new CommandCreate();
         command.setEconomy(economy);
         command.setGuildHandler(guildHandler);
@@ -294,7 +335,7 @@ class EconomyTransactionTest {
 
         final ConfirmAction action = actionHandler.getAction(player);
         assertNotNull(action, "the create command should have asked for a confirmation");
-        action.accept();
+        return action;
     }
 
     /**
