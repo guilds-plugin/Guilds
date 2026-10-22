@@ -6,6 +6,10 @@ how to run any of it.
 141 tests across 12 spec files, plus 3 preflight tests that run before every suite and fail the run
 if Guilds or any of its hard dependencies did not load.
 
+The runtime smoke suite (`tests/smoke.spec.ts`, 5 tests) is a separate, much smaller suite that
+runs on the older Minecraft versions the full suite cannot. It is listed under "Runtime smoke
+coverage" below.
+
 ## Preflight — `plugins/guilds-preflight.spec.ts`
 
 Runs first, every time. A failure here means the environment is broken and nothing after it is
@@ -188,6 +192,25 @@ the server answering in another language for the rest of the run. ACF's `usePerI
 false)` is what makes that safe, and one player switching language leaves everyone else in English
 asserts it rather than assuming it.
 
+## Runtime smoke coverage — `tests/smoke.spec.ts` (5)
+
+The full suite above is written against a modern server. The smoke suite is the part that has to
+hold on every version the plugin claims to support, so it is much smaller: the plugin and its
+hard dependencies came up, Vault found an economy and a permission provider, the economy moves
+money, a command answers, and a guild can be created.
+
+| Requirement | Test |
+| --- | --- |
+| The plugin loads | Guilds and its hard dependencies are enabled |
+| The plugin finds what it needs | the economy and permission providers Vault needs are registered |
+| The economy works | the economy moves money |
+| The command layer works | a guild command answers |
+| The plugin is usable | a guild can be created |
+
+The same spec runs on every environment, the modern ones included, so a smoke failure on 1.21.8
+is as loud as one on 1.8.8. See `e2e-testing.md` for how the per-version environments are set up
+and what each one can and cannot prove.
+
 ## Fixture self-check — `tests/bank.spec.ts`
 
 `STARTING_BALANCE is what the fixtures actually fund` is not a Guilds test. It checks that the
@@ -206,5 +229,5 @@ Out of scope for this phase, as agreed:
 | Server restart and migration | The suite assumes a freshly provisioned server and never restarts one; migration testing needs a stop/start harness the runner does not currently expose |
 | Internal API and event inspection | Deliberately excluded: the suite asserts on player-visible outcomes only. Reaching into the API would make tests pass on internals that a player would never see |
 | PlaceholderAPI | Needs a second plugin and a way to read resolved placeholders as a bot; there is no command surface for it |
-| Historical Minecraft versions | One environment (1.21.8 / Java 21). The build pins `e2eMinecraftVersion` as a property, so a matrix is a matter of adding environments once one is proven |
+| Historical Minecraft versions | The full suite runs on one version (1.21.8 / Java 21). The older ones are covered by the runtime smoke suite instead, which proves the plugin loads and answers there rather than exercising every feature |
 | Spy mode | `GuildHandler#isSpy` has no command or GUI surface a bot can exercise |

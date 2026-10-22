@@ -101,5 +101,60 @@ jobs:
             build/reports/plugwright/**
             src/test/e2e/generated/*/run/logs/**
 
+  # The runtime smoke suite: the same plugin, the same staged config and the same dependencies on
+  # every Minecraft version the plugin claims to support. It proves that the plugin loads and
+  # answers on the old servers, which the full suite above cannot run on.
+  smoke:
+    name: Runtime smoke (every supported version)
+    runs-on: ubuntu-latest
+    # Six servers, one after the other, each with its own Paper build to download and its own JDK
+    # to provision.
+    timeout-minutes: 45
+
+    env:
+      TEST_TIMEOUT: "60000"
+
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v7
+
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          # The build itself is pinned to Java 21 by the toolchain in build.gradle.kts. Each smoke
+          # environment starts its server on the JDK its Minecraft version needs, which Gradle
+          # provisions through the toolchain resolver.
+          java-version: "21"
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          cache-provider: basic
+
+      - name: Make Gradle wrapper executable
+        run: chmod +x ./gradlew
+
+      - name: Set up Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: src/test/e2e/package-lock.json
+
+      - name: Run the smoke suite
+        run: ./gradlew plugwrightSmokeTest --no-daemon --stacktrace
+
+      - name: Upload server logs and test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-smoke
+          if-no-files-found: warn
+          retention-days: 14
+          path: |
+            build/reports/plugwright/**
+            src/test/e2e/generated/*/run/logs/**
+
 # No merge, no deploy: this workflow builds, tests and reports. The jar it produces is never
 # published from here, and the job holds no write permission beyond its own checks.

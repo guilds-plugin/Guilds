@@ -1,11 +1,22 @@
 import com.diffplug.gradle.spotless.FormatExtension
 import com.diffplug.gradle.spotless.SpotlessExtension
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import me.drownek.plugwright.PlugwrightTestTask
+import me.drownek.plugwright.api.ConfigNodeBuilder
+import me.drownek.plugwright.api.ConfigValue
+import me.drownek.plugwright.api.EnvironmentSpec
+import me.drownek.plugwright.api.PlugwrightMode
+import me.drownek.plugwright.local.LocalEnvironmentSpec
 import me.drownek.plugwright.local.LocalMode
 import org.gradle.language.jvm.tasks.ProcessResources
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import xyz.jpenilla.runpaper.task.RunServer
+import java.net.URI
+import java.net.http.HttpClient
+import java.net.http.HttpRequest
+import java.net.http.HttpResponse
+import java.util.concurrent.TimeUnit
 
 plugins {
     `java-library`
@@ -492,6 +503,7 @@ data class MinecraftRunTarget(
 
 val supportedMinecraftVersions = listOf(
     MinecraftRunTarget("1.8.8", 11),
+    MinecraftRunTarget("1.12.2", 11),
     MinecraftRunTarget("1.16.5", 16),
     MinecraftRunTarget("1.18.2", 17),
     MinecraftRunTarget("1.19.4", 17),
@@ -572,12 +584,113 @@ tasks {
 }
 
 /*
+ * The versions the runtime smoke suite runs on.
+ *
+ * The full suite only runs on a modern server; the oldest supported versions get the smoke suite
+ * instead, which proves the plugin loads and answers there without dragging the whole suite along.
+ * The newest supported release is included so a regression in the current Paper build is caught
+ * here too.
+ *
+ * The JDK each version needs is the one `supportedMinecraftVersions` already maps it to, so the
+ * two lists cannot drift apart.
+ */
+data class SmokeEnvironment(
+    val name: String,
+    val minecraftVersion: String,
+    val javaVersion: Int,
+    /**
+     * Whether CraftBukkit on this version refuses the `--nogui` flag the runner passes.
+     *
+     * The old builds parse their command line with joptsimple and reject the flag as an unknown
+     * option, which stops the server before it loads a single plugin.
+     */
+    val refusesNoGui: Boolean,
+    /**
+     * Whether the server's Netty cannot use direct buffers on a modern JVM.
+     *
+     * Netty 4.0, which 1.8.8 ships, decides whether it can by reading the address of a heap
+     * buffer, which no longer reads as zero on Java 9 and later. Without that support its native
+     * transport cannot work, and every connection the server accepts dies with "Unable to access
+     * address of buffer".
+     */
+    val needsNioTransport: Boolean,
+    /**
+     * The EssentialsX build this environment runs.
+     *
+     * EssentialsX 2.21 and newer need an Adventure API that Paper only started shipping with
+     * 1.18, so on the older servers the plugin fails to enable with a NoClassDefFoundError for
+     * MiniMessage's TagResolver. 2.20.1 is the newest build that does not need it.
+     */
+    val essentialsX: String,
+    /**
+     * The Minecraft version the bot connects with.
+     *
+     * minecraft-data — the protocol table mineflayer reads — has no entry for 26.3 yet, and a bot
+     * asked for a version it does not know refuses to start at all. 26.1 and 26.2 are the same
+     * protocol, so the bot is pointed at 26.1 for those.
+     */
+    val botVersion: String,
+    /**
+     * Whether a bot can be driven on this version at all.
+     *
+     * 26.3 is a protocol newer than anything minecraft-data knows, so the server refuses the bot
+     * as an outdated client. The server itself is fine, so that environment gets a server-level
+     * check instead of the bot-driven one.
+     */
+    val botless: Boolean,
+)
+
+/*
+ * The EssentialsX builds the environments run.
+ *
+ * EssentialsX 2.21 and newer need an Adventure API that Paper only started shipping with 1.18,
+ * so on the older servers the plugin fails to enable with a NoClassDefFoundError for MiniMessage's
+ * TagResolver. 2.20.1 is the newest build that does not need it, and it is what the legacy
+ * environments run.
+ */
+val CURRENT_ESSENTIALS_X = "https://cdn.modrinth.com/data/hXiIvTyT/versions/nY6VN1XH/EssentialsX-2.22.0.jar"
+val LEGACY_ESSENTIALS_X = "https://cdn.modrinth.com/data/hXiIvTyT/versions/puUfqBpY/EssentialsX-2.20.1.jar"
+
+val smokeEnvironments = listOf(
+    "1.8.8",
+    "1.12.2",
+    "1.16.5",
+    "1.21.8",
+    "26.1.2",
+    supportedMinecraftVersions.last().minecraftVersion,
+)
+    .distinct()
+    .map { version ->
+        val target = supportedMinecraftVersions.first { it.minecraftVersion == version }
+        val legacy = version == "1.8.8" || version == "1.12.2" || version == "1.16.5"
+
+        SmokeEnvironment(
+            name = "smoke-$version",
+            minecraftVersion = version,
+            javaVersion = target.javaVersion,
+            refusesNoGui = version == "1.8.8" || version == "1.12.2",
+            needsNioTransport = version == "1.8.8",
+            essentialsX = if (legacy) LEGACY_ESSENTIALS_X else CURRENT_ESSENTIALS_X,
+            botVersion = if (version.startsWith("26.")) "26.1" else version,
+            botless = version == "26.3",
+        )
+    }
+
+/*
  * End-to-end testing.
  *
  * Plugwright downloads a Paper server, stages Guilds' shadowJar plus the three plugins Guilds
- * refuses to start without, starts the server and drives it with real mineflayer bots. One
- * environment only: 1.21.8 on Java 21, the newest version in `supportedMinecraftVersions` that
- * both Paper and minecraft-data can serve. Adding the historical matrix is separate work.
+ * refuses to start without, starts the server and drives it with real mineflayer bots.
+ *
+ * Two sets of environments live here:
+ *
+ * - "local" runs the whole suite on one version, 1.21.8 by default and whatever
+ *   -Pe2eMinecraftVersion names otherwise. This is what the pull-request job runs.
+ *
+ * - The smoke environments run the same plugin, the same staged config and the same dependencies
+ *   on the versions the full suite cannot run on: the oldest ones the plugin supports and the
+ *   newest one. They run a single spec file and have their own task, so the pull-request job is
+ *   left exactly as it was.
  */
 plugwright {
     testsDir.set(file("src/test/e2e"))
@@ -588,36 +701,396 @@ plugwright {
             minecraftVersion.set(
                 providers.gradleProperty("e2eMinecraftVersion").getOrElse("1.21.8")
             )
-            acceptEula.set(true)
-            jvmArgs.set(listOf("-Xmx3G"))
+            configureGuildsEnvironment(listOf("-Xmx3G"), CURRENT_ESSENTIALS_X)
+        }
 
-            /*
-             * The same pins `configureGuildsRunServer` already downloads for the manual
-             * runServer* tasks. Vault is not on Hangar or any Maven repo, so it comes from the
-             * upstream release jar; LuckPerms' loader URL moved, so Modrinth's copy is used.
-             */
-            downloadPlugins {
-                url("https://github.com/MilkBowl/Vault/releases/download/1.7.3/Vault.jar")
-                url("https://cdn.modrinth.com/data/hXiIvTyT/versions/nY6VN1XH/EssentialsX-2.22.0.jar")
-                url("https://cdn.modrinth.com/data/Vebnzrzj/versions/b0mk8uS6/LuckPerms-Bukkit-5.5.71.jar")
-            }
+        smokeEnvironments.forEach { smoke ->
+            create(smoke.name, LocalMode) {
+                minecraftVersion.set(smoke.minecraftVersion)
 
-            /*
-             * Guilds has no plugin.yml defaults for its commands, so a non-op player has none of
-             * `guilds.command.*`. Staging the config here is what makes every test deterministic:
-             * `plugwrightClean` wipes the run directory before each provision, so the plugin only
-             * ever sees this config and a freshly generated tiers.yml/roles.yml.
-             */
-            writeFiles {
-                file("plugins/Guilds/config.yml", file("src/test/e2e/server/plugins/Guilds/config.yml"))
-                file("plugins/Guilds/tiers.yml", file("src/test/e2e/server/plugins/Guilds/tiers.yml"))
-                file("plugins/Guilds/buffs.yml", file("src/test/e2e/server/plugins/Guilds/buffs.yml"))
-            }
+                /*
+                 * The pull-request job runs the full suite on "local" and nothing else. The smoke
+                 * environments have their own task, so leaving them out of the matrix keeps that
+                 * job's runtime and its failure surface exactly what it was.
+                 */
+                includeInMatrix.set(false)
 
-            plugins {
-                local("guilds")
+                configureGuildsEnvironment(listOf("-Xmx1500M"), smoke.essentialsX)
             }
         }
+    }
+}
+
+/**
+ * The plugin set and the staged configuration every Guilds E2E environment runs with.
+ *
+ * Guilds has no plugin.yml defaults for its commands, so a non-op player has none of
+ * `guilds.command.*`. Staging the config here is what makes every test deterministic:
+ * `plugwrightClean` wipes the run directory before each provision, so the plugin only ever sees
+ * this config and a freshly generated tiers.yml/roles.yml.
+ */
+fun LocalEnvironmentSpec.configureGuildsEnvironment(jvmArgs: List<String>, essentialsX: String) {
+    acceptEula.set(true)
+    this.jvmArgs.set(jvmArgs)
+
+    /*
+     * The same pins `configureGuildsRunServer` already downloads for the manual runServer* tasks.
+     * Vault is not on Hangar or any Maven repo, so it comes from the upstream release jar;
+     * LuckPerms' loader URL moved, so Modrinth's copy is used.
+     */
+    downloadPlugins {
+        url("https://github.com/MilkBowl/Vault/releases/download/1.7.3/Vault.jar")
+        url(essentialsX)
+        url("https://cdn.modrinth.com/data/Vebnzrzj/versions/b0mk8uS6/LuckPerms-Bukkit-5.5.71.jar")
+    }
+
+    writeFiles {
+        file("plugins/Guilds/config.yml", file("src/test/e2e/server/plugins/Guilds/config.yml"))
+        file("plugins/Guilds/tiers.yml", file("src/test/e2e/server/plugins/Guilds/tiers.yml"))
+        file("plugins/Guilds/buffs.yml", file("src/test/e2e/server/plugins/Guilds/buffs.yml"))
+    }
+
+    plugins {
+        local("guilds")
+    }
+}
+
+/**
+ * The script a smoke environment's server is started with.
+ *
+ * It exists for two reasons, both of them things plugwright's local mode cannot do per
+ * environment:
+ *
+ * - It runs the server on the JDK that the Minecraft version needs. Plugwright starts the server
+ *   with the JVM of the project's Java toolchain, which is one setting for the whole build, and a
+ *   Paper 1.8.8 server does not run on Java 21.
+ *
+ * - It makes the legacy servers start at all. Their CraftBukkit refuses the `--nogui` flag the
+ *   runner always passes.
+ */
+fun smokeLauncherScript(javaPath: String, refusesNoGui: Boolean): String {
+    val dropNoGui = if (refusesNoGui) {
+        """
+        # CraftBukkit on this version rejects --nogui as an unknown option, and the runner always
+        # passes it, so it is dropped here.
+        count=${'$'}#
+        index=0
+        while [ "${'$'}index" -lt "${'$'}count" ]; do
+            argument="${'$'}1"
+            shift
+            if [ "${'$'}argument" != "--nogui" ]; then
+                set -- "${'$'}@" "${'$'}argument"
+            fi
+            index=${'$'}((index + 1))
+        done
+        """.trimIndent()
+    } else {
+        ""
+    }
+
+    return """
+    #!/bin/sh
+    # Starts the Paper server for one of the Guilds smoke environments.
+    $dropNoGui
+    exec "$javaPath" "${'$'}@"
+    """.trimIndent() + System.lineSeparator()
+}
+
+/**
+ * The server.properties the 1.8.8 environment runs with.
+ *
+ * That server ships Netty 4.0, which decides whether it can use direct buffers by reading the
+ * address of a heap buffer, which no longer reads as zero on Java 9 and later. Without that support
+ * the native transport cannot work, and every connection the server accepts dies with "Unable to
+ * access address of buffer" — the bot never gets a reply and the smoke test fails on a socket
+ * error rather than on anything to do with Guilds.
+ *
+ * Turning the native transport off puts the server on the same NIO transport every Windows server
+ * uses, which works on a Java 11 JVM.
+ */
+fun writeLegacyServerProperties(properties: File) {
+    val line = "use-native-transport=false"
+    val existing = if (properties.exists()) properties.readText() else ""
+
+    val updated = if (existing.lines().any { it.trim().startsWith("use-native-transport=") }) {
+        existing.lines().joinToString("\n") {
+            if (it.trim().startsWith("use-native-transport=")) line else it
+        }
+    } else {
+        listOf(existing.trimEnd(), line).filter { it.isNotEmpty() }.joinToString("\n")
+    }
+
+    properties.parentFile.mkdirs()
+    properties.writeText(updated + System.lineSeparator())
+}
+
+/**
+ * Starts a Paper server and checks that Guilds came up on it.
+ *
+ * This is what a version no bot can be driven on gets instead of the smoke spec. It cannot prove
+ * that the command layer works — that needs a player — but it does prove that the plugin loads,
+ * that its hard dependencies load with it, and that Guilds finds the economy and the permission
+ * provider it refuses to start without.
+ */
+fun checkServerLoads(smoke: SmokeEnvironment, launcher: File, runDir: File) {
+    val server = ProcessBuilder(
+        "/bin/sh",
+        launcher.absolutePath,
+        "-Xmx1500M",
+        "-Dcom.mojang.eula.agree=true",
+        "-jar",
+        "server.jar",
+    )
+        .directory(runDir)
+        .redirectErrorStream(true)
+        .start()
+
+    val log = StringBuilder()
+    val reader = Thread {
+        server.inputStream.bufferedReader().forEachLine { line ->
+            synchronized(log) { log.appendLine(line) }
+        }
+    }
+    reader.isDaemon = true
+    reader.start()
+
+    try {
+        val deadline = System.currentTimeMillis() + 300_000
+        while (System.currentTimeMillis() < deadline) {
+            val ready = synchronized(log) { log.contains("Done (") }
+            if (ready || !server.isAlive) break
+            Thread.sleep(500)
+        }
+
+        val text = synchronized(log) { log.toString() }
+        check(text.contains("Done (")) {
+            "The Paper server for Minecraft ${smoke.minecraftVersion} did not finish starting.\n$text"
+        }
+        for (plugin in listOf("Vault", "Essentials", "LuckPerms", "Guilds")) {
+            check(text.contains("Enabling $plugin")) {
+                "$plugin was not enabled on Minecraft ${smoke.minecraftVersion}.\n$text"
+            }
+        }
+        check(!text.contains("Disabling Guilds")) {
+            "Guilds disabled itself on Minecraft ${smoke.minecraftVersion}.\n$text"
+        }
+        check(text.contains("Economy Found:")) {
+            "Guilds found no economy on Minecraft ${smoke.minecraftVersion}.\n$text"
+        }
+        check(text.contains("Permissions Found:")) {
+            "Guilds found no permission provider on Minecraft ${smoke.minecraftVersion}.\n$text"
+        }
+    } finally {
+        server.outputStream.write("stop\n".toByteArray())
+        server.outputStream.flush()
+        if (!server.waitFor(60, TimeUnit.SECONDS)) {
+            server.destroyForcibly()
+        }
+    }
+}
+
+/*
+ * The smoke environments need a Paper build of their own as well.
+ *
+ * Plugwright's provision task downloads the oldest build the API lists for a version. For 1.8.8
+ * and 1.12.2 that build is a paperclip jar whose patch data points at a Mojang URL that no longer
+ * serves the vanilla server jar, so the server exits before it starts. The smoke environments
+ * download the newest build instead, and the provision task leaves a server jar that is already in
+ * the run directory alone.
+ */
+fun downloadNewestPaperBuild(version: String, serverJar: File, versionMarker: File) {
+    val client = HttpClient.newHttpClient()
+
+    fun get(url: String): String {
+        val request = HttpRequest.newBuilder(URI.create(url)).GET().build()
+        val response = client.send(request, HttpResponse.BodyHandlers.ofString())
+        check(response.statusCode() == 200) { "GET $url returned ${response.statusCode()}" }
+        return response.body()
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    val builds = groovy.json.JsonSlurper()
+        .parseText(get("https://fill.papermc.io/v3/projects/paper/versions/$version/builds")) as List<Map<String, Any>>
+    val newest = builds.maxByOrNull { (it["id"] as Number).toInt() }
+        ?: error("Paper publishes no build for Minecraft $version")
+
+    @Suppress("UNCHECKED_CAST")
+    val build = groovy.json.JsonSlurper()
+        .parseText(
+            get("https://fill.papermc.io/v3/projects/paper/versions/$version/builds/${newest["id"]}")
+        ) as Map<String, Any>
+    @Suppress("UNCHECKED_CAST")
+    val downloads = build["downloads"] as Map<String, Map<String, Any>>
+    val download = downloads["server:default"] ?: downloads["application"]
+        ?: error("Paper build ${newest["id"]} of Minecraft $version has no server download")
+
+    serverJar.parentFile.mkdirs()
+    URI.create(download["url"] as String).toURL().openStream().use { input ->
+        serverJar.outputStream().use { output -> input.copyTo(output) }
+    }
+    versionMarker.writeText(version)
+}
+
+/*
+ * Wires the smoke environments up.
+ *
+ * afterEvaluate, because the plugwright plugin registers the environments and their tasks from
+ * its own afterEvaluate block, which runs first.
+ */
+afterEvaluate {
+    val smokeServerChecks = mutableListOf<TaskProvider<Task>>()
+    val smokeTestTasks = smokeEnvironments.map { smoke ->
+        val entry = plugwright.environments.get(smoke.name)!!
+        @Suppress("UNCHECKED_CAST")
+        val spec = entry.spec as LocalEnvironmentSpec
+        val runDir = spec.runDir.get().asFile
+        val suffix = smoke.name.replaceFirstChar { it.uppercase() }
+
+        /*
+         * The launcher script. The environment's runner configuration points at it, so the server
+         * runs on this version's JDK rather than on the project's toolchain.
+         */
+        val launcherScript = layout.buildDirectory.file("smoke/${smoke.name}/launcher.sh")
+        val launcher = tasks.register("smokeLauncher$suffix") {
+            val javaLauncher = javaToolchains.launcherFor {
+                languageVersion.set(JavaLanguageVersion.of(smoke.javaVersion))
+            }
+
+            inputs.property("minecraftVersion", smoke.minecraftVersion)
+            inputs.property("javaVersion", smoke.javaVersion)
+            outputs.file(launcherScript)
+
+            doLast {
+                val script = launcherScript.get().asFile
+                script.parentFile.mkdirs()
+                script.writeText(
+                    smokeLauncherScript(
+                        javaLauncher.get().executablePath.asFile.absolutePath,
+                        smoke.refusesNoGui,
+                    )
+                )
+                script.setExecutable(true)
+            }
+        }
+
+        /* The Paper build, downloaded before the provision task looks for a server jar. */
+        val serverJar = File(runDir, "server.jar")
+        val versionMarker = File(runDir, ".minecraft-version")
+        val paper = tasks.register("smokePaper$suffix") {
+            inputs.property("minecraftVersion", smoke.minecraftVersion)
+            outputs.file(serverJar)
+
+            doLast {
+                downloadNewestPaperBuild(smoke.minecraftVersion, serverJar, versionMarker)
+                logger.lifecycle("Paper ${smoke.minecraftVersion} downloaded to $serverJar")
+            }
+        }
+
+        val clean = tasks.named("plugwrightClean$suffix")
+
+        /*
+         * The server properties the versions that need them run with. The provision task rewrites
+         * the keys it knows about and leaves the rest alone, so writing this first is enough.
+         */
+        val properties = File(runDir, "server.properties")
+        val serverProperties = tasks.register("smokeServerProperties$suffix") {
+            outputs.file(properties)
+
+            doLast {
+                if (smoke.needsNioTransport) {
+                    writeLegacyServerProperties(properties)
+                }
+            }
+        }
+
+        tasks.named("plugwrightProvision$suffix") {
+            dependsOn(paper)
+            dependsOn(serverProperties)
+        }
+        paper.configure {
+            mustRunAfter(clean)
+        }
+        serverProperties.configure {
+            mustRunAfter(clean)
+        }
+
+        val test = tasks.named<PlugwrightTestTask>("plugwrightTest$suffix")
+        test.configure {
+            dependsOn(launcher)
+
+            /*
+             * Only the smoke spec runs here. The rest of the suite is written against a modern
+             * server and its expectations do not hold on 1.8.8.
+             */
+            testFiles.set("smoke")
+
+            /*
+             * The server runs on the launcher script instead of on the JVM of the project's Java
+             * toolchain, and the bot connects with the protocol version mineflayer knows. Everything
+             * else in the environment configuration is plugwright's own, so only those two change.
+             */
+            environmentConfig.set(
+                providers.provider {
+                    val node = ConfigNodeBuilder()
+                    @Suppress("UNCHECKED_CAST")
+                    (entry.mode as PlugwrightMode<EnvironmentSpec>).serialize(entry.spec as EnvironmentSpec, node)
+
+                    val original = node.build()
+                    original.copy(
+                        entries = original.entries + mapOf(
+                            "javaPath" to ConfigValue.Str(launcherScript.get().asFile.absolutePath),
+                            "minecraftVersion" to ConfigValue.Str(smoke.botVersion),
+                        )
+                    )
+                }
+            )
+        }
+
+        if (smoke.botless) {
+            /*
+             * No bot can be driven on this version, so the bot-driven task has nothing to do. The
+             * environment stays, because it is what provisions the server the check below runs.
+             */
+            test.configure {
+                enabled = false
+            }
+
+            tasks.register("smokeServerCheck$suffix") {
+                group = "verification"
+                description =
+                    "Checks that Guilds loads and finds its providers on Minecraft ${smoke.minecraftVersion}."
+
+                dependsOn(launcher)
+                dependsOn(tasks.named("plugwrightProvision$suffix"))
+
+                doLast {
+                    checkServerLoads(smoke, launcherScript.get().asFile, runDir)
+                }
+            }.also { smokeServerChecks.add(it) }
+        }
+
+        test
+    }
+
+    tasks.register("plugwrightSmokeTest") {
+        group = "verification"
+        description = "Runs the runtime smoke suite on every supported Minecraft version."
+
+        dependsOn(smokeTestTasks)
+        dependsOn(smokeServerChecks)
+    }
+
+    /*
+     * One server at a time. Every environment binds the same port, and two servers on one port
+     * means one of them fails to bind and the run fails for the wrong reason.
+     */
+    smokeTestTasks.zipWithNext().forEach { (earlier, later) ->
+        later.configure { mustRunAfter(earlier) }
+    }
+
+    val matrix = tasks.named("plugwrightTest")
+    smokeTestTasks.forEach { smokeTask ->
+        smokeTask.configure { mustRunAfter(matrix) }
     }
 }
 

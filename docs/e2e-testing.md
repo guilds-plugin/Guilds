@@ -27,6 +27,85 @@ The first run takes a few minutes because it downloads a server. After that, the
 ./gradlew plugwrightTest          # re-run the whole suite
 ```
 
+### The smoke suite on the other versions
+
+`plugwrightTest` runs the whole suite on 1.21.8. The versions the plugin supports but the full
+suite cannot run on are covered by a smaller smoke suite instead: the plugin and its hard
+dependencies come up, Vault finds an economy and a permission provider, the economy moves money, a
+command answers, and a guild can be created.
+
+```bash
+./gradlew plugwrightSmokeTest     # every supported version, one after the other
+```
+
+One environment at a time, because every environment binds the same port. The run takes about
+three minutes, most of it server start-up.
+
+| Environment | Minecraft | JDK | What it runs |
+| --- | --- | --- | --- |
+| `smoke-1.8.8` | 1.8.8 | 11 | the smoke spec |
+| `smoke-1.12.2` | 1.12.2 | 11 | the smoke spec |
+| `smoke-1.16.5` | 1.16.5 | 16 | the smoke spec |
+| `smoke-1.21.8` | 1.21.8 | 21 | the smoke spec |
+| `smoke-26.1.2` | 26.1.2 | 25 | the smoke spec |
+| `smoke-26.3` | 26.3 | 25 | a server-level check, see below |
+
+A single environment can be run on its own:
+
+```bash
+./gradlew plugwrightTestSmoke-1.8.8
+```
+
+#### What the older environments need, and why
+
+Three things about the old servers are not obvious, and each of them is handled in
+`build.gradle.kts` rather than in the test:
+
+**A JDK of their own.** Plugwright's local mode starts the server with the JVM of the project's
+Java toolchain, and that toolchain is one setting for the whole build. A Paper 1.8.8 server does
+not run on Java 21, and a Paper 26.3 server does not run on it either. Every smoke environment
+therefore gets a launcher script that runs the server on the JDK its version needs.
+
+**No `--nogui` flag.** The runner always passes it, and the old CraftBukkit builds reject it as an
+unknown option, which stops the server before it loads a single plugin. The launcher script drops
+it for the versions that refuse it.
+
+**No native transport.** The old CraftBukkit builds ship a Netty that predates Java 9 and decides
+whether it can use direct buffers by reading the address of a heap buffer, which no longer reads
+as zero on a modern JVM. Without that support the native transport cannot work, and every
+connection the server accepts dies with "Unable to access address of buffer" — the bot never gets
+a reply, and the test fails on a socket error rather than on anything to do with Guilds. The
+legacy environments set `use-native-transport=false` in `server.properties`, which puts the server
+on the same NIO transport every Windows server uses.
+
+**An older EssentialsX.** EssentialsX 2.21 and newer need an Adventure API that Paper only
+started shipping with 1.18, so on 1.16.5 the plugin fails to enable with a
+`NoClassDefFoundError` for MiniMessage's `TagResolver`. The legacy environments run 2.20.1, the
+newest build that does not need it.
+
+**The newest Paper build, not the oldest.** Plugwright's provision task downloads the oldest
+build the API lists for a version, and for 1.8.8 and 1.12.2 that build is a paperclip jar whose
+patch data points at a Mojang URL that no longer serves the vanilla server jar, so the server
+exits before it starts. The smoke environments download the newest build instead.
+
+#### 26.3 has no bot yet
+
+`minecraft-data`, the protocol table mineflayer reads, has no entry for 26.3. The server is fine
+— it comes up, Guilds enables and it finds its providers — but the bot is refused as an outdated
+client, so no test that needs a player can run there. That environment gets a server-level check
+instead:
+
+```bash
+./gradlew smokeServerCheckSmoke-26.3
+```
+
+It starts the server and asserts that Guilds and its hard dependencies enabled, that Guilds did
+not disable itself, and that it found the economy and the permission provider. It cannot prove
+that the command layer works, because that needs a player.
+
+26.1.2 is the same protocol as 26.1, which is the newest one minecraft-data knows, so the bot
+connects to that environment as 26.1.
+
 ### Running one file, or one test
 
 Plugwright filters by substring, through the generated config rather than a Gradle flag. The config
@@ -63,6 +142,12 @@ values out of that config and will fail confusingly against the defaults.
 
 Useful when a test fails and you want to walk into the situation yourself with a real client.
 
+The smoke environments have their own, and the server they start is the one the test drives:
+
+```bash
+./gradlew plugwrightRunServerSmoke-1.8.8
+```
+
 ### Wiping state
 
 ```bash
@@ -78,7 +163,7 @@ writes anything outside that directory.
 ```
 src/test/e2e/
   plugins/            runner plugin: fixtures, assertions, read-back helpers, expected strings
-  tests/              the specs, one file per feature area
+  tests/              the specs, one file per feature area, plus smoke.spec.ts
   server/plugins/     the Guilds config the tests are written against
   generated/          the server, worlds and reports (git-ignored)
 ```
@@ -91,6 +176,9 @@ file is the only thing that needs to change.
 
 A full run is roughly ten minutes: about 1,500 commands paced at 200ms each, plus the handful of
 tests that wait on a real three-second cooldown expiring.
+
+The smoke suite is about three minutes for every version together, almost all of it server
+start-up: each version downloads its own Paper build and starts its own server.
 
 The runner's per-test timeout defaults to 30s, which the cooldown tests sit uncomfortably close to.
 CI sets `TEST_TIMEOUT=60000` for headroom. To match locally:
