@@ -164,6 +164,18 @@ public final class CorruptDataBackup {
     }
 
     /**
+     * Whether a backup file is a byte-for-byte copy of its source.
+     *
+     * @param sourceFile the original file
+     * @param backupFile the proposed backup
+     * @return true when both files exist and have the same contents
+     */
+    public static boolean isVerifiedCopy(File sourceFile, File backupFile) {
+        return sourceFile != null && sourceFile.isFile() && backupFile != null && backupFile.isFile()
+                && sameContent(sourceFile, backupFile);
+    }
+
+    /**
      * The directory a backup of a file goes in.
      *
      * <p>The timestamp is the file's own last-modified time, so an unchanged file always maps to

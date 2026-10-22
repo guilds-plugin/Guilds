@@ -171,8 +171,11 @@ public class CooldownJsonProvider implements CooldownProvider {
          * be read are still loaded.
          */
         if (!contents.unreadable.isEmpty()) {
-            JsonFileUtils.backupCorruptFile(pluginDataFolder, this.cooldownFile, DATA_TYPE,
-                    contents.unreadable.size() + " of the " + entries.size() + " entries could not be read");
+            final String reason = contents.unreadable.size() + " of the " + entries.size() + " entries could not be read";
+            if (!JsonFileUtils.backupCorruptFileAndVerify(pluginDataFolder, this.cooldownFile, DATA_TYPE, reason)) {
+                throw new IOException("The cooldowns JSON file could not be backed up and verified: "
+                        + this.cooldownFile.getAbsolutePath());
+            }
         }
 
         return contents;

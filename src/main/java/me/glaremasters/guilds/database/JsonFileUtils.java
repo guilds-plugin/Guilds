@@ -203,6 +203,42 @@ public final class JsonFileUtils {
     }
 
     /**
+     * Keeps a copy of a corrupt file and reports whether the copy exists and matches its source.
+     *
+     * @param pluginDataFolder the plugin's data folder
+     * @param file the corrupt file
+     * @param dataType the kind of data the file holds
+     * @param reason why the file could not be read
+     * @return true when a byte-for-byte backup is available
+     */
+    public static boolean backupCorruptFileAndVerify(File pluginDataFolder, File file, String dataType, String reason) {
+        final CorruptDataBackup.Result result = CorruptDataBackup.backup(pluginDataFolder, file, dataType);
+
+        if (result.isFailed()) {
+            LoggingUtils.severe("The " + dataType + " file " + file.getAbsolutePath() + " could not be read (" + reason + "), "
+                    + "and its backup could not be written: " + result.getFailure() + ". The file has been left where it is.");
+            return false;
+        }
+
+        if (!CorruptDataBackup.isVerifiedCopy(file, result.getBackupFile())) {
+            LoggingUtils.severe("The " + dataType + " file " + file.getAbsolutePath() + " could not be read (" + reason + "), "
+                    + "and its backup could not be verified. The file has been left where it is.");
+            return false;
+        }
+
+        if (result.isSkipped()) {
+            LoggingUtils.severe("The " + dataType + " file " + file.getAbsolutePath() + " could not be read (" + reason + "). "
+                    + "A verified copy of it is already at " + result.getBackupFile().getAbsolutePath() + ".");
+        } else {
+            LoggingUtils.severe("The " + dataType + " file " + file.getAbsolutePath() + " could not be read (" + reason + "). "
+                    + "A verified copy of it was written to " + result.getBackupFile().getAbsolutePath() + ". "
+                    + "The file itself has been left where it is.");
+        }
+
+        return true;
+    }
+
+    /**
      * Describes what went wrong, in a form that fits in a log line.
      *
      * @param cause what went wrong

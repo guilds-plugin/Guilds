@@ -272,6 +272,37 @@ class CooldownJsonProviderTest {
     }
 
     @Test
+    @DisplayName("creating a cooldown is refused when a partial-corruption backup cannot be written")
+    void createIsRefusedWhenPartialCorruptionCannotBeBackedUp() throws IOException {
+        final String corrupt = "[\n"
+                + "  \"this is not a cooldown\",\n"
+                + cooldownEntry(COOLDOWN_ID, Cooldown.Type.Request, OWNER_ID, 9999999999999L) + "\n"
+                + "]\n";
+        writeCooldowns(corrupt);
+        Files.createFile(pluginFolder().resolve("backups"));
+
+        assertThrows(IOException.class, () -> provider.createCooldown(null, UUID.randomUUID().toString(),
+                Cooldown.Type.Home.name(), OWNER_ID.toString(), new Timestamp(9999999999999L)));
+
+        assertArrayEquals(corrupt.getBytes(StandardCharsets.UTF_8), Files.readAllBytes(cooldownFile()));
+    }
+
+    @Test
+    @DisplayName("deleting a cooldown is refused when a partial-corruption backup cannot be written")
+    void deleteIsRefusedWhenPartialCorruptionCannotBeBackedUp() throws IOException {
+        final String corrupt = "[\n"
+                + "  \"this is not a cooldown\",\n"
+                + cooldownEntry(COOLDOWN_ID, Cooldown.Type.Request, OWNER_ID, 9999999999999L) + "\n"
+                + "]\n";
+        writeCooldowns(corrupt);
+        Files.createFile(pluginFolder().resolve("backups"));
+
+        assertThrows(IOException.class, () -> provider.deleteCooldown(null, Cooldown.Type.Request.name(), OWNER_ID.toString()));
+
+        assertArrayEquals(corrupt.getBytes(StandardCharsets.UTF_8), Files.readAllBytes(cooldownFile()));
+    }
+
+    @Test
     @DisplayName("the same cooldown corruption is backed up once, not once per read")
     void theSameCorruptionIsBackedUpOnce() throws IOException {
         writeCooldowns("{ this is not json");
