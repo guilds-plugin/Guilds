@@ -13,9 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Created by GlareMasters
@@ -38,17 +36,16 @@ public class GuildJsonProvider implements GuildProvider {
 
     @Override
     public boolean guildExists(@Nullable String tablePrefix, @NotNull String id) {
-        return Arrays.stream(Objects.requireNonNull(dataFolder.listFiles()))
-                .map(f -> com.google.common.io.Files.getNameWithoutExtension(f.getName()))
-                .anyMatch(n -> n.equals(id));
+        return JsonFileUtils.listDataFiles(this.dataFolder).stream()
+                .anyMatch(f -> JsonFileUtils.getRecordId(f).equals(id));
     }
 
     @Override
     public List<String> getAllGuildIds(@Nullable String tablePrefix) {
         List<String> loadedGuildIds = new ArrayList<>();
 
-        for (File file : Objects.requireNonNull(dataFolder.listFiles())) {
-            loadedGuildIds.add(com.google.common.io.Files.getNameWithoutExtension(file.getName()));
+        for (File file : JsonFileUtils.listDataFiles(this.dataFolder)) {
+            loadedGuildIds.add(JsonFileUtils.getRecordId(file));
         }
 
         return loadedGuildIds;
@@ -58,14 +55,23 @@ public class GuildJsonProvider implements GuildProvider {
     public List<Guild> getAllGuilds(@Nullable String tablePrefix) {
         List<Guild> loadedGuilds = new ArrayList<>();
 
-        for (File file : Objects.requireNonNull(dataFolder.listFiles())) {
+        for (File file : JsonFileUtils.listDataFiles(this.dataFolder)) {
             try {
                 Guild guild = JsonFileUtils.readJson(file, gson, Guild.class, "Guild");
-                guild.getId();
+
+                // The id is the key the guild is stored and looked up under. A record without one
+                // cannot be saved, found or removed, so it is not a guild the plugin can work with.
+                if (guild == null || guild.getId() == null) {
+                    LoggingUtils.severe("The Guild file " + file.getAbsolutePath() + " has no id, so it has been prevented from loading.");
+                    LoggingUtils.severe("The file has been left where it is, so it can be repaired by hand.");
+                    continue;
+                }
+
                 loadedGuilds.add(guild);
             } catch (Exception ex) {
                 LoggingUtils.severe("There was an error loading a Guild from the following file: " + file.getAbsolutePath(), ex);
                 LoggingUtils.severe("To prevent data loss in the plugin, this Guild has been prevented from loading.");
+                LoggingUtils.severe("The file has been left where it is, so it can be repaired by hand.");
             }
         }
 
@@ -74,8 +80,8 @@ public class GuildJsonProvider implements GuildProvider {
 
     @Override
     public Guild getGuild(@Nullable String tablePrefix, @NotNull String id) throws IOException {
-        File data = Arrays.stream(Objects.requireNonNull(dataFolder.listFiles()))
-                .filter(f -> com.google.common.io.Files.getNameWithoutExtension(f.getName()).equals(id))
+        File data = JsonFileUtils.listDataFiles(this.dataFolder).stream()
+                .filter(f -> JsonFileUtils.getRecordId(f).equals(id))
                 .findFirst()
                 .orElse(null);
 
@@ -87,12 +93,12 @@ public class GuildJsonProvider implements GuildProvider {
     @Override
     public void createGuild(@Nullable String tablePrefix, @NotNull String id, @NotNull String data) throws IOException {
         if (guildExists(tablePrefix, id)) return;
-        writeGuildFile(new File(dataFolder, id + ".json"), data);
+        writeGuildFile(new File(dataFolder, id + JsonFileUtils.DATA_FILE_EXTENSION), data);
     }
 
     @Override
     public void updateGuild(@Nullable String tablePrefix, @NotNull String id, @NotNull String data) throws IOException {
-        writeGuildFile(new File(dataFolder, id + ".json"), data);
+        writeGuildFile(new File(dataFolder, id + JsonFileUtils.DATA_FILE_EXTENSION), data);
     }
 
     private void writeGuildFile(File file, String data) throws IOException {
@@ -101,7 +107,7 @@ public class GuildJsonProvider implements GuildProvider {
 
     @Override
     public void deleteGuild(@Nullable String tablePrefix, @NotNull String id) {
-        deleteGuild(new File(dataFolder, id + ".json"));
+        deleteGuild(new File(dataFolder, id + JsonFileUtils.DATA_FILE_EXTENSION));
     }
 
     private void deleteGuild(File file) {

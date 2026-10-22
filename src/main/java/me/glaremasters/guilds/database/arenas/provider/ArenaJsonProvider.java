@@ -13,9 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 public class ArenaJsonProvider implements ArenaProvider {
     private final File dataFolder;
@@ -33,17 +31,16 @@ public class ArenaJsonProvider implements ArenaProvider {
 
     @Override
     public boolean arenaExists(@Nullable String tablePrefix, @NotNull String id) throws IOException {
-        return Arrays.stream(Objects.requireNonNull(dataFolder.listFiles()))
-                .map(f -> com.google.common.io.Files.getNameWithoutExtension(f.getName()))
-                .anyMatch(n -> n.equals(id));
+        return JsonFileUtils.listDataFiles(this.dataFolder).stream()
+                .anyMatch(f -> JsonFileUtils.getRecordId(f).equals(id));
     }
 
     @Override
     public List<String> getAllArenaIds(@Nullable String tablePrefix) throws IOException {
         List<String> loadedArenaIds = new ArrayList<>();
 
-        for (File file : Objects.requireNonNull(dataFolder.listFiles())) {
-            loadedArenaIds.add(com.google.common.io.Files.getNameWithoutExtension(file.getName()));
+        for (File file : JsonFileUtils.listDataFiles(this.dataFolder)) {
+            loadedArenaIds.add(JsonFileUtils.getRecordId(file));
         }
 
         return loadedArenaIds;
@@ -53,14 +50,23 @@ public class ArenaJsonProvider implements ArenaProvider {
     public List<Arena> getAllArenas(@Nullable String tablePrefix) throws IOException {
         List<Arena> loadedArenas = new ArrayList<>();
 
-        for (File file : Objects.requireNonNull(dataFolder.listFiles())) {
+        for (File file : JsonFileUtils.listDataFiles(this.dataFolder)) {
             try {
                 Arena arena = JsonFileUtils.readJson(file, gson, Arena.class, "Arena");
-                arena.getId();
+
+                // The id is the key the arena is stored and looked up under. A record without one
+                // cannot be saved, found or removed, so it is not an arena the plugin can work with.
+                if (arena == null || arena.getId() == null) {
+                    LoggingUtils.severe("The Arena file " + file.getAbsolutePath() + " has no id, so it has been prevented from loading.");
+                    LoggingUtils.severe("The file has been left where it is, so it can be repaired by hand.");
+                    continue;
+                }
+
                 loadedArenas.add(arena);
             } catch (Exception ex) {
                 LoggingUtils.severe("There was an error loading an Arena from the following file: " + file.getAbsolutePath(), ex);
                 LoggingUtils.severe("To prevent data loss in the plugin, this Arena has been prevented from loading.");
+                LoggingUtils.severe("The file has been left where it is, so it can be repaired by hand.");
             }
         }
 
@@ -69,8 +75,8 @@ public class ArenaJsonProvider implements ArenaProvider {
 
     @Override
     public Arena getArena(@Nullable String tablePrefix, @NotNull String id) throws IOException {
-        File data = Arrays.stream(Objects.requireNonNull(dataFolder.listFiles()))
-                .filter(f -> com.google.common.io.Files.getNameWithoutExtension(f.getName()).equals(id))
+        File data = JsonFileUtils.listDataFiles(this.dataFolder).stream()
+                .filter(f -> JsonFileUtils.getRecordId(f).equals(id))
                 .findFirst()
                 .orElse(null);
 
@@ -82,12 +88,12 @@ public class ArenaJsonProvider implements ArenaProvider {
     @Override
     public void createArena(@Nullable String tablePrefix, String id, String data) throws IOException {
         if (arenaExists(tablePrefix, id)) return;
-        writeArenaFile(new File(dataFolder, id + ".json"), data);
+        writeArenaFile(new File(dataFolder, id + JsonFileUtils.DATA_FILE_EXTENSION), data);
     }
 
     @Override
     public void updateArena(@Nullable String tablePrefix, @NotNull String id, @NotNull String data) throws IOException {
-        writeArenaFile(new File(dataFolder, id + ".json"), data);
+        writeArenaFile(new File(dataFolder, id + JsonFileUtils.DATA_FILE_EXTENSION), data);
     }
 
     private void writeArenaFile(File file, String data) throws IOException {
@@ -96,7 +102,7 @@ public class ArenaJsonProvider implements ArenaProvider {
 
     @Override
     public void deleteArena(@Nullable String tablePrefix, @NotNull String id) throws IOException {
-        deleteArena(new File(dataFolder, id + ".json"));
+        deleteArena(new File(dataFolder, id + JsonFileUtils.DATA_FILE_EXTENSION));
     }
 
     private void deleteArena(File file) {
