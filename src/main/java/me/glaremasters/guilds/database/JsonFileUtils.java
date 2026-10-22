@@ -112,6 +112,45 @@ public final class JsonFileUtils {
     }
 
     /**
+     * Warns when the plugin's data folder is not the parent of a data folder.
+     *
+     * <p>The data folders sit inside the plugin's own folder: {@code plugins/Guilds/data},
+     * {@code plugins/Guilds/arenas}, {@code plugins/Guilds/challenges} and
+     * {@code plugins/Guilds/cooldowns}. The copies of the files the plugin cannot read go into
+     * {@code plugins/Guilds/backups/corrupt}, so they have to be taken from the plugin's folder
+     * rather than from the data folder.
+     *
+     * <p>Both are {@link File} arguments, so the two can be given the wrong way round without the
+     * compiler noticing. That would put the copies inside the folder the plugin enumerates, where
+     * they would be read as records. A loud message at startup is the right weight for it: the
+     * constructor is public, and another layout is a legitimate thing for a third-party caller to
+     * want.
+     *
+     * @param pluginDataFolder the plugin's data folder
+     * @param dataFolder       the folder the records live in
+     * @param dataType         the kind of record the folder holds
+     */
+    public static void warnIfFoldersAreSwapped(File pluginDataFolder, File dataFolder, String dataType) {
+        if (pluginDataFolder == null || dataFolder == null) {
+            return;
+        }
+
+        final File parent = dataFolder.getParentFile();
+
+        if (parent == null) {
+            return;
+        }
+
+        if (parent.getAbsoluteFile().equals(pluginDataFolder.getAbsoluteFile())) {
+            return;
+        }
+
+        LoggingUtils.severe("The " + dataType + " data folder (" + dataFolder.getAbsolutePath() + ") is not a folder inside the "
+                + "plugin's data folder (" + pluginDataFolder.getAbsolutePath() + "), so the copies of the files the plugin cannot read "
+                + "will not land where they should. The two folders may have been given the wrong way round.");
+    }
+
+    /**
      * Keeps a copy of a file the plugin could not read and says where it is.
      *
      * <p>The copy is byte for byte. The original is left exactly as it was: a backup is a

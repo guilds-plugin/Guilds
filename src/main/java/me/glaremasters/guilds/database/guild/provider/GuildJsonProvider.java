@@ -23,7 +23,6 @@ import java.util.Set;
  * Time: 11:38 AM
  */
 public class GuildJsonProvider implements GuildProvider {
-
     /**
      * The kind of record the guild files hold, used as the name of the backup folder.
      */
@@ -43,21 +42,11 @@ public class GuildJsonProvider implements GuildProvider {
      */
     private final Set<String> unreadableFiles = new HashSet<>();
 
-    /**
-     * Creates a provider over a guild data folder.
-     *
-     * <p>The plugin's own data folder is the parent of the guild data folder, which is where the
-     * backups of unreadable files go.
-     *
-     * @param dataFolder the folder the guild files live in
-     */
     public GuildJsonProvider(File dataFolder) {
         this(dataFolder, dataFolder == null ? null : dataFolder.getParentFile());
     }
 
     /**
-     * Creates a provider over a guild data folder.
-     *
      * @param dataFolder       the folder the guild files live in
      * @param pluginDataFolder the plugin's data folder, where the backups are kept
      */
@@ -66,39 +55,7 @@ public class GuildJsonProvider implements GuildProvider {
         this.pluginDataFolder = pluginDataFolder;
         this.gson = Guilds.getGson();
 
-        warnAboutAnUnexpectedLayout(dataFolder, pluginDataFolder);
-    }
-
-    /**
-     * Warns when the plugin's data folder is not the parent of the guild data folder.
-     *
-     * <p>Every record folder the plugin reads is a direct child of the plugin's data folder, and
-     * the backups of the files it cannot read are written next to them. The two folders are both
-     * plain files, so a caller that passes them the wrong way round gets no complaint from the
-     * compiler and ends up with the backups inside the folder the plugin reads its records from.
-     *
-     * <p>This is a warning rather than an exception. The constructor is public, and a caller with
-     * another layout is allowed to use it; it just has to be told that the backups will not land
-     * where they are expected to.
-     *
-     * @param dataFolder       the folder the guild files live in
-     * @param pluginDataFolder the plugin's data folder
-     */
-    private static void warnAboutAnUnexpectedLayout(File dataFolder, File pluginDataFolder) {
-        if (dataFolder == null || pluginDataFolder == null) {
-            return;
-        }
-
-        final File parent = dataFolder.getAbsoluteFile().getParentFile();
-
-        if (parent != null && parent.equals(pluginDataFolder.getAbsoluteFile())) {
-            return;
-        }
-
-        LoggingUtils.severe("The guild data folder (" + dataFolder.getAbsolutePath() + ") is not a folder inside the "
-                + "plugin's data folder (" + pluginDataFolder.getAbsolutePath() + "), so the backup of a guild file "
-                + "the plugin cannot read will not land where it should. Every guild folder the plugin uses is a "
-                + "direct child of the plugin's data folder.");
+        JsonFileUtils.warnIfFoldersAreSwapped(pluginDataFolder, dataFolder, DATA_TYPE);
     }
 
     @Override
@@ -233,6 +190,17 @@ public class GuildJsonProvider implements GuildProvider {
     private void deleteGuild(File file) throws IOException {
         refuseToOverwriteUnreadableFile(file);
 
-        if (file.exists()) file.delete();
+        if (!file.exists()) return;
+
+        file.delete();
+
+        /*
+         * A delete that did not happen has to be reported. The caller has already taken the guild
+         * out of the plugin, so the autosave will not touch the file again, and the next restart
+         * would load the guild the player was told was deleted.
+         */
+        if (file.exists()) {
+            throw new IOException("The guild file " + file.getAbsolutePath() + " could not be deleted.");
+        }
     }
 }

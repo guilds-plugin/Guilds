@@ -4,6 +4,7 @@ import me.glaremasters.guilds.database.CorruptBackups;
 import me.glaremasters.guilds.database.DatabaseBackend;
 import me.glaremasters.guilds.database.LogCapture;
 import me.glaremasters.guilds.database.TestGson;
+import me.glaremasters.guilds.database.UnwritableFolders;
 import me.glaremasters.guilds.database.guild.GuildAdapter;
 import me.glaremasters.guilds.guild.Guild;
 import org.junit.jupiter.api.BeforeAll;
@@ -27,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -41,21 +43,11 @@ import static org.mockito.Mockito.when;
  *
  * <p>A file the plugin cannot read is a different matter. It is the only copy of that guild's
  * data, so it is copied aside and left exactly where it was.
- *
- * <p>And a folder where nothing at all can be read is not an empty guild database. It is a guild
- * database the plugin failed to read, and a server that comes up as if it had no guilds would let
- * the first save write over them.
  */
 class GuildJsonProviderTest {
 
     private static final String GUILD_ID = "11111111-1111-1111-1111-111111111111";
     private static final String OTHER_GUILD_ID = "22222222-2222-2222-2222-222222222222";
-
-    /** A guild file that does not parse. */
-    private static final String BROKEN_CONTENT = "{ this is not json";
-
-    /** A guild file that parses but carries no id. */
-    private static final String NO_ID_CONTENT = "{ \"name\": \"No Id Here\" }";
 
     @TempDir
     Path tempDir;
@@ -215,7 +207,7 @@ class GuildJsonProviderTest {
     @Test
     @DisplayName("a guild file that cannot be parsed does not take the other guilds with it")
     void aBrokenGuildFileDoesNotTakeTheOthersWithIt() throws IOException {
-        write(OTHER_GUILD_ID + ".json", BROKEN_CONTENT);
+        write(OTHER_GUILD_ID + ".json", "{ this is not json");
 
         final List<Guild> guilds = provider.getAllGuilds(null);
 
@@ -226,19 +218,19 @@ class GuildJsonProviderTest {
     @Test
     @DisplayName("a guild file that cannot be parsed is left on disk")
     void aBrokenGuildFileIsLeftOnDisk() throws IOException {
-        write(OTHER_GUILD_ID + ".json", BROKEN_CONTENT);
+        write(OTHER_GUILD_ID + ".json", "{ this is not json");
 
         provider.getAllGuilds(null);
 
         assertTrue(Files.exists(dataFolder().resolve(OTHER_GUILD_ID + ".json")));
-        assertEquals(BROKEN_CONTENT, new String(
+        assertEquals("{ this is not json", new String(
                 Files.readAllBytes(dataFolder().resolve(OTHER_GUILD_ID + ".json")), StandardCharsets.UTF_8));
     }
 
     @Test
     @DisplayName("a guild file without an id does not take the other guilds with it")
     void aGuildFileWithoutAnIdDoesNotTakeTheOthersWithIt() throws IOException {
-        write(OTHER_GUILD_ID + ".json", NO_ID_CONTENT);
+        write(OTHER_GUILD_ID + ".json", "{ \"name\": \"No Id Here\" }");
 
         final List<Guild> guilds = provider.getAllGuilds(null);
 
@@ -249,43 +241,43 @@ class GuildJsonProviderTest {
     @Test
     @DisplayName("a guild file without an id is left on disk")
     void aGuildFileWithoutAnIdIsLeftOnDisk() throws IOException {
-        write(OTHER_GUILD_ID + ".json", NO_ID_CONTENT);
+        write(OTHER_GUILD_ID + ".json", "{ \"name\": \"No Id Here\" }");
 
         provider.getAllGuilds(null);
 
         assertTrue(Files.exists(dataFolder().resolve(OTHER_GUILD_ID + ".json")));
-        assertEquals(NO_ID_CONTENT, new String(
+        assertEquals("{ \"name\": \"No Id Here\" }", new String(
                 Files.readAllBytes(dataFolder().resolve(OTHER_GUILD_ID + ".json")), StandardCharsets.UTF_8));
     }
 
     @Test
     @DisplayName("a guild file that could not be read is not written over")
     void aGuildFileThatCouldNotBeReadIsNotWrittenOver() throws IOException {
-        write(OTHER_GUILD_ID + ".json", BROKEN_CONTENT);
+        write(OTHER_GUILD_ID + ".json", "{ this is not json");
 
         provider.getAllGuilds(null);
 
         assertThrows(IOException.class, () -> provider.updateGuild(null, OTHER_GUILD_ID, guildJson(OTHER_GUILD_ID, "Replaced")));
-        assertEquals(BROKEN_CONTENT, new String(
+        assertEquals("{ this is not json", new String(
                 Files.readAllBytes(dataFolder().resolve(OTHER_GUILD_ID + ".json")), StandardCharsets.UTF_8));
     }
 
     @Test
     @DisplayName("a guild file without an id is not written over")
     void aGuildFileWithoutAnIdIsNotWrittenOver() throws IOException {
-        write(OTHER_GUILD_ID + ".json", NO_ID_CONTENT);
+        write(OTHER_GUILD_ID + ".json", "{ \"name\": \"No Id Here\" }");
 
         provider.getAllGuilds(null);
 
         assertThrows(IOException.class, () -> provider.updateGuild(null, OTHER_GUILD_ID, guildJson(OTHER_GUILD_ID, "Replaced")));
-        assertEquals(NO_ID_CONTENT, new String(
+        assertEquals("{ \"name\": \"No Id Here\" }", new String(
                 Files.readAllBytes(dataFolder().resolve(OTHER_GUILD_ID + ".json")), StandardCharsets.UTF_8));
     }
 
     @Test
     @DisplayName("a guild file that could not be read is not deleted")
     void aGuildFileThatCouldNotBeReadIsNotDeleted() throws IOException {
-        write(OTHER_GUILD_ID + ".json", BROKEN_CONTENT);
+        write(OTHER_GUILD_ID + ".json", "{ this is not json");
 
         provider.getAllGuilds(null);
 
@@ -296,7 +288,7 @@ class GuildJsonProviderTest {
     @Test
     @DisplayName("a guild file without an id is not deleted")
     void aGuildFileWithoutAnIdIsNotDeleted() throws IOException {
-        write(OTHER_GUILD_ID + ".json", NO_ID_CONTENT);
+        write(OTHER_GUILD_ID + ".json", "{ \"name\": \"No Id Here\" }");
 
         provider.getAllGuilds(null);
 
@@ -305,38 +297,40 @@ class GuildJsonProviderTest {
     }
 
     @Test
-    @DisplayName("a guild file that could not be read is backed up byte for byte")
+    @DisplayName("a guild file that cannot be read is backed up byte for byte")
     void aBrokenGuildFileIsBackedUpByteForByte() throws IOException {
-        write(OTHER_GUILD_ID + ".json", BROKEN_CONTENT);
+        final String corrupt = "{ this is not json";
+        write(OTHER_GUILD_ID + ".json", corrupt);
 
         provider.getAllGuilds(null);
 
         final Path backup = CorruptBackups.onlyBackup(pluginFolder(), "guilds");
-        assertArrayEquals(BROKEN_CONTENT.getBytes(StandardCharsets.UTF_8), Files.readAllBytes(backup));
+        assertArrayEquals(corrupt.getBytes(StandardCharsets.UTF_8), Files.readAllBytes(backup));
 
         // The original is still there, with the same bytes.
         assertTrue(Files.exists(dataFolder().resolve(OTHER_GUILD_ID + ".json")));
-        assertArrayEquals(BROKEN_CONTENT.getBytes(StandardCharsets.UTF_8),
+        assertArrayEquals(corrupt.getBytes(StandardCharsets.UTF_8),
                 Files.readAllBytes(dataFolder().resolve(OTHER_GUILD_ID + ".json")));
     }
 
     @Test
     @DisplayName("a guild file without an id is backed up byte for byte")
     void aGuildFileWithoutAnIdIsBackedUpByteForByte() throws IOException {
-        write(OTHER_GUILD_ID + ".json", NO_ID_CONTENT);
+        final String unusable = "{ \"name\": \"No Id Here\" }";
+        write(OTHER_GUILD_ID + ".json", unusable);
 
         provider.getAllGuilds(null);
 
         final Path backup = CorruptBackups.onlyBackup(pluginFolder(), "guilds");
-        assertArrayEquals(NO_ID_CONTENT.getBytes(StandardCharsets.UTF_8), Files.readAllBytes(backup));
-        assertArrayEquals(NO_ID_CONTENT.getBytes(StandardCharsets.UTF_8),
+        assertArrayEquals(unusable.getBytes(StandardCharsets.UTF_8), Files.readAllBytes(backup));
+        assertArrayEquals(unusable.getBytes(StandardCharsets.UTF_8),
                 Files.readAllBytes(dataFolder().resolve(OTHER_GUILD_ID + ".json")));
     }
 
     @Test
     @DisplayName("the backup lands outside the data folder and keeps the file name")
     void theBackupLandsOutsideTheDataFolder() throws IOException {
-        write(OTHER_GUILD_ID + ".json", BROKEN_CONTENT);
+        write(OTHER_GUILD_ID + ".json", "{ this is not json");
 
         provider.getAllGuilds(null);
 
@@ -355,7 +349,7 @@ class GuildJsonProviderTest {
     @Test
     @DisplayName("the log names the file, the reason and the backup")
     void theLogNamesTheFileTheReasonAndTheBackup() throws IOException {
-        write(OTHER_GUILD_ID + ".json", BROKEN_CONTENT);
+        write(OTHER_GUILD_ID + ".json", "{ this is not json");
 
         try (LogCapture log = new LogCapture()) {
             provider.getAllGuilds(null);
@@ -370,7 +364,7 @@ class GuildJsonProviderTest {
     @DisplayName("two corrupt guild files with the same name do not overwrite each other")
     void twoCorruptGuildFilesWithTheSameNameDoNotOverwriteEachOther() throws IOException {
         final Path file = dataFolder().resolve(OTHER_GUILD_ID + ".json");
-        final String first = BROKEN_CONTENT;
+        final String first = "{ this is not json";
         write(OTHER_GUILD_ID + ".json", first);
         final long modified = Files.getLastModifiedTime(file).toMillis();
 
@@ -406,7 +400,8 @@ class GuildJsonProviderTest {
     @Test
     @DisplayName("a backup that cannot be written is reported and nothing is lost")
     void aBackupThatCannotBeWrittenIsReportedAndNothingIsLost() throws IOException {
-        write(OTHER_GUILD_ID + ".json", BROKEN_CONTENT);
+        final String corrupt = "{ this is not json";
+        write(OTHER_GUILD_ID + ".json", corrupt);
 
         // A file where the backup folder should be, so the backup cannot be written.
         Files.createFile(pluginFolder().resolve("backups"));
@@ -420,7 +415,7 @@ class GuildJsonProviderTest {
 
         // The file itself is untouched, and the guild that reads is still loaded.
         assertTrue(Files.exists(dataFolder().resolve(OTHER_GUILD_ID + ".json")));
-        assertArrayEquals(BROKEN_CONTENT.getBytes(StandardCharsets.UTF_8),
+        assertArrayEquals(corrupt.getBytes(StandardCharsets.UTF_8),
                 Files.readAllBytes(dataFolder().resolve(OTHER_GUILD_ID + ".json")));
         assertEquals(1, provider.getAllGuilds(null).size());
     }
@@ -428,7 +423,7 @@ class GuildJsonProviderTest {
     @Test
     @DisplayName("the same corruption is backed up once, not once per read")
     void theSameCorruptionIsBackedUpOnce() throws IOException {
-        write(OTHER_GUILD_ID + ".json", BROKEN_CONTENT);
+        write(OTHER_GUILD_ID + ".json", "{ this is not json");
 
         provider.getAllGuilds(null);
         assertEquals(1, CorruptBackups.backupFiles(pluginFolder(), "guilds").size());
@@ -443,36 +438,26 @@ class GuildJsonProviderTest {
     }
 
     @Test
-    @DisplayName("a provider whose two folders are the wrong way round says so")
-    void aProviderWithSwappedFoldersSaysSo() {
-        try (LogCapture log = new LogCapture()) {
-            // The plugin's data folder and the record folder are both files, so a caller can pass
-            // them the wrong way round and the compiler says nothing about it.
-            new GuildJsonProvider(pluginFolder().toFile(), dataFolder().toFile());
+    @DisplayName("a guild file that cannot be deleted is reported rather than swallowed")
+    void aGuildFileThatCannotBeDeletedIsReported() throws IOException {
+        write(OTHER_GUILD_ID + ".json", guildJson(OTHER_GUILD_ID, "Another Guild"));
 
-            assertTrue(log.contains("not a folder inside the plugin's data folder"),
-                    "the provider did not say that the backup would land in the wrong place");
-            assertTrue(log.contains(pluginFolder().toString()), "the log did not name the plugin data folder");
-            assertTrue(log.contains(dataFolder().toString()), "the log did not name the record folder");
+        assumeTrue(UnwritableFolders.lock(dataFolder()), "the test needs a folder that cannot be written to");
+
+        try {
+            final IOException failure = assertThrows(IOException.class, () -> provider.deleteGuild(null, OTHER_GUILD_ID));
+
+            assertTrue(failure.getMessage().contains(OTHER_GUILD_ID + ".json"), "the failure did not name the file");
+            assertTrue(Files.exists(dataFolder().resolve(OTHER_GUILD_ID + ".json")), "the file was removed after all");
+        } finally {
+            UnwritableFolders.unlock(dataFolder());
         }
-    }
-
-    @Test
-    @DisplayName("the load does not write anything")
-    void theLoadDoesNotWriteAnything() throws IOException {
-        final Path good = dataFolder().resolve(GUILD_ID + ".json");
-        final byte[] before = Files.readAllBytes(good);
-        write(OTHER_GUILD_ID + ".json", BROKEN_CONTENT);
-
-        provider.getAllGuilds(null);
-
-        assertArrayEquals(before, Files.readAllBytes(good), "loading must not write anything");
     }
 
     @Test
     @DisplayName("a folder where no guild file can be read is a load failure")
     void aFolderWhereNothingCanBeReadIsALoadFailure() throws IOException {
-        write(OTHER_GUILD_ID + ".json", BROKEN_CONTENT);
+        write(OTHER_GUILD_ID + ".json", "{ this is not json");
         Files.delete(dataFolder().resolve(GUILD_ID + ".json"));
 
         final IOException failure = assertThrows(IOException.class, () -> provider.getAllGuilds(null));
@@ -484,8 +469,8 @@ class GuildJsonProviderTest {
     @Test
     @DisplayName("a folder where every guild file is unreadable is a load failure")
     void aFolderWhereEveryGuildFileIsUnreadableIsALoadFailure() throws IOException {
-        write(OTHER_GUILD_ID + ".json", BROKEN_CONTENT);
-        write("33333333-3333-3333-3333-333333333333.json", NO_ID_CONTENT);
+        write(OTHER_GUILD_ID + ".json", "{ this is not json");
+        write("33333333-3333-3333-3333-333333333333.json", "{ \"name\": \"No Id Here\" }");
         Files.delete(dataFolder().resolve(GUILD_ID + ".json"));
 
         assertThrows(IOException.class, () -> provider.getAllGuilds(null),
@@ -501,9 +486,21 @@ class GuildJsonProviderTest {
     }
 
     @Test
+    @DisplayName("the load does not write anything")
+    void theLoadDoesNotWriteAnything() throws IOException {
+        final Path good = dataFolder().resolve(GUILD_ID + ".json");
+        final byte[] before = Files.readAllBytes(good);
+        write(OTHER_GUILD_ID + ".json", "{ this is not json");
+
+        provider.getAllGuilds(null);
+
+        assertArrayEquals(before, Files.readAllBytes(good), "loading must not write anything");
+    }
+
+    @Test
     @DisplayName("the save after a partial load does not overwrite the file that could not be parsed")
     void theSaveAfterAPartialLoadDoesNotOverwriteTheCorruptFile() throws IOException {
-        write(OTHER_GUILD_ID + ".json", BROKEN_CONTENT);
+        write(OTHER_GUILD_ID + ".json", "{ this is not json");
         final byte[] before = Files.readAllBytes(dataFolder().resolve(OTHER_GUILD_ID + ".json"));
 
         final GuildAdapter guildAdapter = adapter();
@@ -521,7 +518,7 @@ class GuildJsonProviderTest {
     @Test
     @DisplayName("the guilds that could be read are still there after a save and a restart")
     void theHealthyGuildsSurviveASaveAndARestart() throws IOException {
-        write(OTHER_GUILD_ID + ".json", BROKEN_CONTENT);
+        write(OTHER_GUILD_ID + ".json", "{ this is not json");
         final byte[] corruptBefore = Files.readAllBytes(dataFolder().resolve(OTHER_GUILD_ID + ".json"));
 
         // The server starts.
@@ -540,5 +537,20 @@ class GuildJsonProviderTest {
         assertEquals(GUILD_ID, reloaded.get(0).getId().toString());
         assertArrayEquals(corruptBefore, Files.readAllBytes(dataFolder().resolve(OTHER_GUILD_ID + ".json")),
                 "a restart must not change the file the plugin could not read");
+    }
+
+    @Test
+    @DisplayName("a provider whose two folders are the wrong way round says so")
+    void aProviderWithSwappedFoldersSaysSo() {
+        try (LogCapture log = new LogCapture()) {
+            // The plugin's data folder and the record folder are both files, so a caller can pass
+            // them the wrong way round and the compiler says nothing about it.
+            new GuildJsonProvider(pluginFolder().toFile(), dataFolder().toFile());
+
+            assertTrue(log.contains("is not a folder inside the plugin's data folder"),
+                    "the provider did not say that the backup would land in the wrong place");
+            assertTrue(log.contains(pluginFolder().toString()), "the log did not name the plugin data folder");
+            assertTrue(log.contains(dataFolder().toString()), "the log did not name the record folder");
+        }
     }
 }
