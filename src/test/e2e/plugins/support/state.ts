@@ -46,6 +46,9 @@ const allowance = new WeakMap<PlayerWrapper, number>();
 
 /** Why a bot's connection ended, once it has. Keyed per bot. */
 const disconnectedBecause = new WeakMap<PlayerWrapper, string>();
+
+/** Why the server disconnected a bot, when it said. Keyed per bot. */
+const kickedBecause = new WeakMap<PlayerWrapper, string>();
 const watched = new WeakSet<PlayerWrapper>();
 
 /**
@@ -64,15 +67,33 @@ function watchConnection(player: PlayerWrapper): void {
         on(event: string, handler: (...args: any[]) => void): void;
     };
     bot.on('end', (reason: unknown) => disconnectedBecause.set(player, reasonText(reason)));
-    bot.on('kicked', (reason: unknown) => disconnectedBecause.set(player, reasonText(reason)));
+    bot.on('kicked', (reason: unknown) => kickedBecause.set(player, reasonText(reason)));
     bot.on('error', (reason: unknown) => disconnectedBecause.set(player, reasonText(reason)));
 }
 
 function reasonText(reason: unknown): string {
     if (reason == null) return 'the connection closed';
     if (reason instanceof Error) return reason.message;
-    if (typeof reason === 'string') return reason;
+    if (typeof reason === 'string') return disconnectReasonText(reason);
     return JSON.stringify(reason);
+}
+
+/**
+ * The text of a disconnect reason.
+ *
+ * A modern server sends its reason as a JSON document rather than as a plain string, so
+ * "Flying is not enabled on this server" arrives wrapped in one. Unwrapping it is the difference
+ * between a failure that says what the server objected to and one that says the socket closed.
+ */
+function disconnectReasonText(reason: string): string {
+    if (!reason.startsWith('{')) return reason;
+
+    try {
+        const parsed = JSON.parse(reason) as { text?: string; description?: string };
+        return parsed.text ?? parsed.description ?? reason;
+    } catch {
+        return reason;
+    }
 }
 
 /**
@@ -88,7 +109,7 @@ function reasonText(reason: unknown): string {
 export async function run(player: PlayerWrapper, command: string): Promise<void> {
     watchConnection(player);
 
-    const reason = disconnectedBecause.get(player);
+    const reason = kickedBecause.get(player) ?? disconnectedBecause.get(player);
     if (reason !== undefined) {
         throw new Error(
             `${player.username}'s connection had already ended (${reason}); ` +
