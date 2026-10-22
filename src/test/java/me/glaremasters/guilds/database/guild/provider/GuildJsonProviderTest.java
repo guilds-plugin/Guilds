@@ -443,6 +443,21 @@ class GuildJsonProviderTest {
     }
 
     @Test
+    @DisplayName("a provider whose two folders are the wrong way round says so")
+    void aProviderWithSwappedFoldersSaysSo() {
+        try (LogCapture log = new LogCapture()) {
+            // The plugin's data folder and the record folder are both files, so a caller can pass
+            // them the wrong way round and the compiler says nothing about it.
+            new GuildJsonProvider(pluginFolder().toFile(), dataFolder().toFile());
+
+            assertTrue(log.contains("not a folder inside the plugin's data folder"),
+                    "the provider did not say that the backup would land in the wrong place");
+            assertTrue(log.contains(pluginFolder().toString()), "the log did not name the plugin data folder");
+            assertTrue(log.contains(dataFolder().toString()), "the log did not name the record folder");
+        }
+    }
+
+    @Test
     @DisplayName("the load does not write anything")
     void theLoadDoesNotWriteAnything() throws IOException {
         final Path good = dataFolder().resolve(GUILD_ID + ".json");
