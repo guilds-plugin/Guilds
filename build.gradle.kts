@@ -993,24 +993,27 @@ afterEvaluate {
          * the keys it knows about and leaves the rest alone, so writing this first is enough.
          */
         val properties = File(runDir, "server.properties")
-        val serverProperties = tasks.register("smokeServerProperties$suffix") {
-            outputs.file(properties)
+        if (smoke.needsNioTransport) {
+            val serverProperties = tasks.register("smokeServerProperties$suffix") {
+                outputs.file(properties)
 
-            doLast {
-                if (smoke.needsNioTransport) {
+                doLast {
                     writeLegacyServerProperties(properties)
                 }
+            }
+
+            tasks.named("plugwrightProvision$suffix") {
+                dependsOn(serverProperties)
+            }
+            serverProperties.configure {
+                mustRunAfter(clean)
             }
         }
 
         tasks.named("plugwrightProvision$suffix") {
             dependsOn(paper)
-            dependsOn(serverProperties)
         }
         paper.configure {
-            mustRunAfter(clean)
-        }
-        serverProperties.configure {
             mustRunAfter(clean)
         }
 

@@ -106,6 +106,9 @@ that the command layer works, because that needs a player.
 26.1.2 is the same protocol as 26.1, which is the newest one minecraft-data knows, so the bot
 connects to that environment as 26.1.
 
+The legacy environments start the server through a shell script, and so does the 26.3 server
+check, so they do not run on Windows.
+
 ### Running one file, or one test
 
 Plugwright filters by substring, through the generated config rather than a Gradle flag. The config
