@@ -58,7 +58,7 @@ A single environment can be run on its own:
 
 #### What the older environments need, and why
 
-Three things about the old servers are not obvious, and each of them is handled in
+Five things about the old servers are not obvious, and each of them is handled in
 `build.gradle.kts` rather than in the test:
 
 **A JDK of their own.** Plugwright's local mode starts the server with the JVM of the project's
@@ -66,17 +66,18 @@ Java toolchain, and that toolchain is one setting for the whole build. A Paper 1
 not run on Java 21, and a Paper 26.3 server does not run on it either. Every smoke environment
 therefore gets a launcher script that runs the server on the JDK its version needs.
 
-**No `--nogui` flag.** The runner always passes it, and the old CraftBukkit builds reject it as an
-unknown option, which stops the server before it loads a single plugin. The launcher script drops
-it for the versions that refuse it.
+**No `--nogui` flag.** The runner always passes it, and the CraftBukkit builds on 1.8.8 and 1.12.2
+reject it as an unknown option, which stops the server before it loads a single plugin. The
+launcher script drops it for those two versions.
 
-**No native transport.** The old CraftBukkit builds ship a Netty that predates Java 9 and decides
-whether it can use direct buffers by reading the address of a heap buffer, which no longer reads
-as zero on a modern JVM. Without that support the native transport cannot work, and every
-connection the server accepts dies with "Unable to access address of buffer" — the bot never gets
-a reply, and the test fails on a socket error rather than on anything to do with Guilds. The
-legacy environments set `use-native-transport=false` in `server.properties`, which puts the server
-on the same NIO transport every Windows server uses.
+**No native transport, on 1.8.8.** That server ships Netty 4.0, which decides whether it can use
+direct buffers by reading the address of a heap buffer, and that address no longer reads as zero on
+Java 9 and later. Without that support the native transport cannot work, and every connection the
+server accepts dies with "Unable to access address of buffer" — the bot never gets a reply, and the
+test fails on a socket error rather than on anything to do with Guilds. The 1.8.8 environment sets
+`use-native-transport=false` in `server.properties`, which puts the server on the same NIO
+transport every Windows server uses. 1.12.2 and 1.16.5 ship Netty 4.1, which copes with a modern
+JVM on its own.
 
 **An older EssentialsX.** EssentialsX 2.21 and newer need an Adventure API that Paper only
 started shipping with 1.18, so on 1.16.5 the plugin fails to enable with a
