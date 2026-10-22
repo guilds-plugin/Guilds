@@ -23,7 +23,8 @@ public class GuildAdapter {
             default:
             case JSON:
                 File fileDataFolder = new File(guilds.getDataFolder(), "data");
-                provider = new GuildJsonProvider(fileDataFolder);
+                // The plugin's own data folder is where the backups of unreadable guild files go.
+                provider = new GuildJsonProvider(guilds.getDataFolder(), fileDataFolder);
                 break;
             case MYSQL:
             case SQLITE:

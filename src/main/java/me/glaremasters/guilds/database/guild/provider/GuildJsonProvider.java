@@ -2,6 +2,7 @@ package me.glaremasters.guilds.database.guild.provider;
 
 import com.google.gson.Gson;
 import me.glaremasters.guilds.Guilds;
+import me.glaremasters.guilds.database.CorruptDataBackup;
 import me.glaremasters.guilds.database.JsonFileUtils;
 import me.glaremasters.guilds.database.guild.GuildProvider;
 import me.glaremasters.guilds.guild.Guild;
@@ -24,6 +25,13 @@ import java.util.Set;
  * Time: 11:38 AM
  */
 public class GuildJsonProvider implements GuildProvider {
+
+    /**
+     * The name the unreadable guild files are copied under, inside the backup folder.
+     */
+    private static final String BACKUP_DATA_TYPE = "guilds";
+
+    private final File pluginDataFolder;
     private final File dataFolder;
     private Gson gson;
 
@@ -36,7 +44,27 @@ public class GuildJsonProvider implements GuildProvider {
      */
     private final Set<String> unreadableFiles = new HashSet<>();
 
+    /**
+     * Creates a provider over a guild data folder.
+     *
+     * <p>The plugin's own data folder is the parent of the guild data folder, which is where the
+     * backups of unreadable files go.
+     *
+     * @param dataFolder the folder the guild files live in
+     */
     public GuildJsonProvider(File dataFolder) {
+        this(dataFolder == null ? null : dataFolder.getParentFile(), dataFolder);
+    }
+
+    /**
+     * Creates a provider over a guild data folder.
+     *
+     * @param pluginDataFolder the plugin's data folder, {@code plugins/Guilds}. The backups of
+     *                         unreadable guild files are written below it.
+     * @param dataFolder       the folder the guild files live in
+     */
+    public GuildJsonProvider(File pluginDataFolder, File dataFolder) {
+        this.pluginDataFolder = pluginDataFolder;
         this.dataFolder = dataFolder;
         this.gson = Guilds.getGson();
     }
@@ -87,9 +115,10 @@ public class GuildJsonProvider implements GuildProvider {
     @Override
     public List<Guild> getAllGuilds(@Nullable String tablePrefix) throws IOException {
         List<Guild> loadedGuilds = new ArrayList<>();
+        final File[] files = listGuildFiles();
         int unreadable = 0;
 
-        for (File file : listGuildFiles()) {
+        for (File file : files) {
             try {
                 Guild guild = JsonFileUtils.readJson(file, gson, Guild.class, "Guild");
                 guild.getId();
@@ -102,6 +131,7 @@ public class GuildJsonProvider implements GuildProvider {
                 LoggingUtils.severe("To prevent data loss in the plugin, this Guild has been prevented from loading. "
                         + "The file has been left untouched and will not be written to. "
                         + "Fix the file, or move it out of the data folder, and restart the server.");
+                backUp(file);
             }
         }
 
@@ -110,7 +140,41 @@ public class GuildJsonProvider implements GuildProvider {
                     + "Those guilds are not available until the files are fixed.");
         }
 
+        /*
+         * A folder full of files the plugin cannot read is not an empty guild database. It is a
+         * guild database the plugin failed to read, and a server that comes up as if it had no
+         * guilds at all hides that: the guilds are still on disk, and the first save would write
+         * over them. The load fails instead, the way a folder that cannot be listed does.
+         */
+        if (loadedGuilds.isEmpty() && files.length > 0) {
+            throw new IOException("None of the " + files.length + " files in " + dataFolder.getAbsolutePath()
+                    + " could be read as a guild, so the guild data could not be loaded. "
+                    + "The files have been left where they are. "
+                    + "Fix them, or move them out of the data folder, and restart the server.");
+        }
+
         return loadedGuilds;
+    }
+
+    /**
+     * Copies a guild file the plugin could not read into the backup folder.
+     *
+     * <p>The copy is a safeguard, not a repair. The original stays exactly where the operator put
+     * it, and the plugin keeps refusing to write to it.
+     *
+     * @param file the file that could not be read
+     */
+    private void backUp(File file) {
+        final CorruptDataBackup.Result backup = CorruptDataBackup.backup(pluginDataFolder, file, BACKUP_DATA_TYPE);
+
+        if (backup.isCreated()) {
+            LoggingUtils.severe("A copy of the file was taken to " + backup.getBackupFile().getAbsolutePath() + ".");
+        } else if (backup.isSkipped()) {
+            LoggingUtils.severe("A copy of the file was already taken to " + backup.getBackupFile().getAbsolutePath() + ".");
+        } else {
+            LoggingUtils.severe("No copy of the file could be taken: " + backup.getFailure() + ". "
+                    + "The file itself is still where it was.");
+        }
     }
 
     @Override

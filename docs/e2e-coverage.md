@@ -3,7 +3,7 @@
 Which Guilds feature is tested where, and what is deliberately left out. See `e2e-testing.md` for
 how to run any of it.
 
-145 tests across 13 spec files, plus 3 preflight tests that run before every suite and fail the run
+147 tests across 13 spec files, plus 3 preflight tests that run before every suite and fail the run
 if Guilds or any of its hard dependencies did not load.
 
 ## Preflight — `plugins/guilds-preflight.spec.ts`
@@ -188,7 +188,7 @@ the server answering in another language for the rest of the run. ACF's `usePerI
 false)` is what makes that safe, and one player switching language leaves everyone else in English
 asserts it rather than assuming it.
 
-## L. Startup and the guild data — `tests/startup-loading.spec.ts` (4)
+## L. Startup and the guild data — `tests/startup-loading.spec.ts` (6)
 
 The environment stages two guild files into the plugin's data folder: one that reads and one that
 does not parse.
@@ -197,8 +197,10 @@ does not parse.
 | --- | --- |
 | One unreadable file does not stop the plugin | the plugin starts with a guild file it cannot read, and says which file |
 | The guilds that could be read are available | the guilds that could be read are available |
-| The unreadable file is left alone | the guild file that could not be read is left on disk |
+| The unreadable file is left alone | the guild file that could not be read is left on disk, unchanged |
 | The readable file is untouched | the guild file that could be read is still readable |
+| The unreadable file is copied aside | the guild file that could not be read was copied to the backup folder |
+| The copy is outside the data folder | the backup of the guild file is outside the data folder |
 
 ## Fixture self-check — `tests/bank.spec.ts`
 

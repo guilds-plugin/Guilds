@@ -167,6 +167,19 @@ class GuildHandlerLoadTest {
     }
 
     @Test
+    @DisplayName("a load where every guild file is unreadable stops the plugin")
+    void aLoadWhereNothingCanBeReadStopsThePlugin() throws IOException {
+        // What the JSON provider does when it finds files and cannot read one of them.
+        when(guildAdapter.getAllGuilds()).thenThrow(new IOException(
+                "None of the 3 files in /plugins/Guilds/data could be read as a guild, so the guild data could not be loaded."));
+
+        final SettingsManager settings = mock(SettingsManager.class);
+
+        assertThrows(IOException.class, () -> new GuildHandler(plugin, settings),
+                "a server that comes up with no guilds at all hides that the guild data could not be read");
+    }
+
+    @Test
     @DisplayName("a guild data load that works still loads the guilds")
     void successfulLoadStillWorks() throws IOException {
         when(guildAdapter.getAllGuilds()).thenReturn(Collections.singletonList(guild()));

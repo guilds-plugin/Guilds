@@ -1,5 +1,5 @@
 import { expect, test } from '@plugwright/runner';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { guildList } from '../plugins/support/state.js';
 
@@ -28,22 +28,21 @@ const READABLE_GUILD_NAME = 'E2EStaged';
 const UNREADABLE_GUILD_NAME = 'E2EBroken';
 
 /**
- * The plugin's guild data folder inside the throwaway server directory.
+ * The plugin's data folder inside the throwaway server directory.
  *
  * The folder is looked up rather than assumed: the runner's working directory depends on how it
  * was started, and a spec that hard-codes a path fails for a reason that has nothing to do with
  * what it is testing.
  *
- * @returns the path of the guild data folder
+ * @returns the path of the plugin's data folder
  */
-function dataFolder(): string {
-    const data = join('plugins', 'Guilds', 'data');
+function pluginFolder(): string {
     let dir = process.cwd();
 
     for (let depth = 0; depth < 8; depth++) {
         const candidates = [
-            join(dir, 'generated', 'local', 'run', data),
-            join(dir, 'src', 'test', 'e2e', 'generated', 'local', 'run', data),
+            join(dir, 'generated', 'local', 'run', 'plugins', 'Guilds'),
+            join(dir, 'src', 'test', 'e2e', 'generated', 'local', 'run', 'plugins', 'Guilds'),
         ];
 
         for (const candidate of candidates) {
@@ -53,7 +52,34 @@ function dataFolder(): string {
         dir = dirname(dir);
     }
 
-    throw new Error('could not find the server data folder');
+    throw new Error('could not find the plugin data folder');
+}
+
+/**
+ * @returns the folder the plugin reads its guild files from
+ */
+function dataFolder(): string {
+    return join(pluginFolder(), 'data');
+}
+
+/**
+ * @param name the file's name
+ * @returns every copy of that file in the backup folder
+ */
+function backupsOf(name: string): string[] {
+    const root = join(pluginFolder(), 'backups', 'corrupt');
+    if (!existsSync(root)) return [];
+
+    const copies: string[] = [];
+    for (const stamp of readdirSync(root)) {
+        const folder = join(root, stamp, 'guilds');
+        if (!existsSync(folder)) continue;
+        for (const file of readdirSync(folder)) {
+            copies.push(join(folder, file));
+        }
+    }
+
+    return copies.filter(copy => copy.endsWith(name));
 }
 
 test('the plugin starts with a guild file it cannot read, and says which file', async ({ server }) => {
@@ -76,11 +102,15 @@ test('the guilds that could be read are available', async ({ player }) => {
     expect(listed.some(entry => entry.name === UNREADABLE_GUILD_NAME)).toBe(false);
 });
 
-test('the guild file that could not be read is left on disk', async () => {
+test('the guild file that could not be read is left on disk, unchanged', async () => {
     const file = join(dataFolder(), `${UNREADABLE_GUILD_ID}.json`);
+    const copies = backupsOf(`${UNREADABLE_GUILD_ID}.json`);
 
     expect(existsSync(file)).toBe(true);
-    expect(readFileSync(file, 'utf8')).toContain(UNREADABLE_GUILD_NAME);
+    expect(copies.length).toBe(1);
+    // The backup was taken when the plugin read the file, so the file on disk and the backup are
+    // the same bytes: nothing has written over it since.
+    expect(readFileSync(file, 'utf8')).toBe(readFileSync(copies[0], 'utf8'));
 });
 
 test('the guild file that could be read is still readable', async () => {
@@ -88,4 +118,18 @@ test('the guild file that could be read is still readable', async () => {
 
     expect(existsSync(file)).toBe(true);
     expect(readFileSync(file, 'utf8')).toContain(READABLE_GUILD_NAME);
+});
+
+test('the guild file that could not be read was copied to the backup folder', async () => {
+    const original = join(dataFolder(), `${UNREADABLE_GUILD_ID}.json`);
+    const copies = backupsOf(`${UNREADABLE_GUILD_ID}.json`);
+
+    expect(copies.length).toBe(1);
+    expect(readFileSync(copies[0], 'utf8')).toBe(readFileSync(original, 'utf8'));
+});
+
+test('the backup of the guild file is outside the data folder', async () => {
+    for (const copy of backupsOf(`${UNREADABLE_GUILD_ID}.json`)) {
+        expect(copy.startsWith(dataFolder())).toBe(false);
+    }
 });
