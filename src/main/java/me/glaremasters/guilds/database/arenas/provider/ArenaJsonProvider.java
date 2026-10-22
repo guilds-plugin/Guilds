@@ -18,7 +18,13 @@ import java.util.List;
 import java.util.Set;
 
 public class ArenaJsonProvider implements ArenaProvider {
+    /**
+     * The kind of record the arena files hold, used as the name of the backup folder.
+     */
+    private static final String DATA_TYPE = "arenas";
+
     private final File dataFolder;
+    private final File pluginDataFolder;
     private Gson gson;
 
     /**
@@ -32,7 +38,16 @@ public class ArenaJsonProvider implements ArenaProvider {
     private final Set<String> unreadableFiles = new HashSet<>();
 
     public ArenaJsonProvider(File dataFolder) {
+        this(dataFolder, dataFolder.getParentFile());
+    }
+
+    /**
+     * @param dataFolder       the folder the arena files live in
+     * @param pluginDataFolder the plugin's data folder, where the backups are kept
+     */
+    public ArenaJsonProvider(File dataFolder, File pluginDataFolder) {
         this.dataFolder = dataFolder;
+        this.pluginDataFolder = pluginDataFolder;
         this.gson = Guilds.getGson();
     }
 
@@ -73,6 +88,7 @@ public class ArenaJsonProvider implements ArenaProvider {
                     unreadableFiles.add(file.getName());
                     LoggingUtils.severe("The Arena file " + file.getAbsolutePath() + " has no id, so it has been prevented from loading.");
                     LoggingUtils.severe("The file has been left where it is, so it can be repaired by hand.");
+                    JsonFileUtils.backupCorruptFile(pluginDataFolder, file, DATA_TYPE, "the record has no id");
                     continue;
                 }
 
@@ -83,6 +99,7 @@ public class ArenaJsonProvider implements ArenaProvider {
                 LoggingUtils.severe("There was an error loading an Arena from the following file: " + file.getAbsolutePath(), ex);
                 LoggingUtils.severe("To prevent data loss in the plugin, this Arena has been prevented from loading.");
                 LoggingUtils.severe("The file has been left where it is, so it can be repaired by hand.");
+                JsonFileUtils.backupCorruptFile(pluginDataFolder, file, DATA_TYPE, ex);
             }
         }
 

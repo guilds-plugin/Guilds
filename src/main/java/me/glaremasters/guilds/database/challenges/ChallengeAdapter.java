@@ -22,7 +22,7 @@ public class ChallengeAdapter {
             default:
             case JSON:
                 File fileDataFolder = new File(guilds.getDataFolder(), "challenges");
-                provider = new ChallengeJsonProvider(fileDataFolder);
+                provider = new ChallengeJsonProvider(fileDataFolder, guilds.getDataFolder());
                 break;
             case MYSQL:
             case SQLITE:

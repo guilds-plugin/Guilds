@@ -16,7 +16,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class ChallengeJsonProvider implements ChallengeProvider {
+    /**
+     * The kind of record the challenge files hold, used as the name of the backup folder.
+     */
+    private static final String DATA_TYPE = "challenges";
+
     private final File dataFolder;
+    private final File pluginDataFolder;
     private final Gson gson;
 
     /**
@@ -29,7 +35,16 @@ public class ChallengeJsonProvider implements ChallengeProvider {
     private final Set<String> unreadableFiles = new HashSet<>();
 
     public ChallengeJsonProvider(File dataFolder) {
+        this(dataFolder, dataFolder.getParentFile());
+    }
+
+    /**
+     * @param dataFolder       the folder the challenge files live in
+     * @param pluginDataFolder the plugin's data folder, where the backups are kept
+     */
+    public ChallengeJsonProvider(File dataFolder, File pluginDataFolder) {
         this.dataFolder = dataFolder;
+        this.pluginDataFolder = pluginDataFolder;
         this.gson = Guilds.getGson();
     }
 
@@ -53,6 +68,7 @@ public class ChallengeJsonProvider implements ChallengeProvider {
                     unreadableFiles.add(file.getName());
                     LoggingUtils.severe("The GuildChallenge file " + file.getAbsolutePath() + " has no id, so it has been prevented from loading.");
                     LoggingUtils.severe("The file has been left where it is, so it can be repaired by hand.");
+                    JsonFileUtils.backupCorruptFile(pluginDataFolder, file, DATA_TYPE, "the record has no id");
                     continue;
                 }
 
@@ -63,6 +79,7 @@ public class ChallengeJsonProvider implements ChallengeProvider {
                 LoggingUtils.severe("There was an error loading a GuildChallenge from the following file: " + file.getAbsolutePath(), ex);
                 LoggingUtils.severe("To prevent data loss in the plugin, this GuildChallenge has been prevented from loading.");
                 LoggingUtils.severe("The file has been left where it is, so it can be repaired by hand.");
+                JsonFileUtils.backupCorruptFile(pluginDataFolder, file, DATA_TYPE, ex);
             }
         }
 

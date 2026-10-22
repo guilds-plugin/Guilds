@@ -23,7 +23,13 @@ import java.util.Set;
  * Time: 11:38 AM
  */
 public class GuildJsonProvider implements GuildProvider {
+    /**
+     * The kind of record the guild files hold, used as the name of the backup folder.
+     */
+    private static final String DATA_TYPE = "guilds";
+
     private final File dataFolder;
+    private final File pluginDataFolder;
     private Gson gson;
 
     /**
@@ -37,7 +43,16 @@ public class GuildJsonProvider implements GuildProvider {
     private final Set<String> unreadableFiles = new HashSet<>();
 
     public GuildJsonProvider(File dataFolder) {
+        this(dataFolder, dataFolder.getParentFile());
+    }
+
+    /**
+     * @param dataFolder       the folder the guild files live in
+     * @param pluginDataFolder the plugin's data folder, where the backups are kept
+     */
+    public GuildJsonProvider(File dataFolder, File pluginDataFolder) {
         this.dataFolder = dataFolder;
+        this.pluginDataFolder = pluginDataFolder;
         this.gson = Guilds.getGson();
     }
 
@@ -78,6 +93,7 @@ public class GuildJsonProvider implements GuildProvider {
                     unreadableFiles.add(file.getName());
                     LoggingUtils.severe("The Guild file " + file.getAbsolutePath() + " has no id, so it has been prevented from loading.");
                     LoggingUtils.severe("The file has been left where it is, so it can be repaired by hand.");
+                    JsonFileUtils.backupCorruptFile(pluginDataFolder, file, DATA_TYPE, "the record has no id");
                     continue;
                 }
 
@@ -88,6 +104,7 @@ public class GuildJsonProvider implements GuildProvider {
                 LoggingUtils.severe("There was an error loading a Guild from the following file: " + file.getAbsolutePath(), ex);
                 LoggingUtils.severe("To prevent data loss in the plugin, this Guild has been prevented from loading.");
                 LoggingUtils.severe("The file has been left where it is, so it can be repaired by hand.");
+                JsonFileUtils.backupCorruptFile(pluginDataFolder, file, DATA_TYPE, ex);
             }
         }
 

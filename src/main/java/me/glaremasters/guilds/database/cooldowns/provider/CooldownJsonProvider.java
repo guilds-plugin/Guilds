@@ -23,12 +23,27 @@ import java.util.List;
 import java.util.UUID;
 
 public class CooldownJsonProvider implements CooldownProvider {
+    /**
+     * The kind of record the cooldown file holds, used as the name of the backup folder.
+     */
+    private static final String DATA_TYPE = "cooldowns";
+
     private final File dataFolder;
+    private final File pluginDataFolder;
     private final File cooldownFile;
     private Gson gson;
 
     public CooldownJsonProvider(File dataFolder) {
+        this(dataFolder, dataFolder.getParentFile());
+    }
+
+    /**
+     * @param dataFolder       the folder the cooldown file lives in
+     * @param pluginDataFolder the plugin's data folder, where the backups are kept
+     */
+    public CooldownJsonProvider(File dataFolder, File pluginDataFolder) {
         this.dataFolder = dataFolder;
+        this.pluginDataFolder = pluginDataFolder;
         this.cooldownFile = new File(dataFolder, "cooldowns.json");
         this.gson = Guilds.getGson();
     }
@@ -108,6 +123,8 @@ public class CooldownJsonProvider implements CooldownProvider {
         try (Reader reader = Files.newBufferedReader(this.cooldownFile.toPath(), StandardCharsets.UTF_8)) {
             root = new JsonParser().parse(reader);
         } catch (RuntimeException ex) {
+            // The file cannot be read at all, so it is kept aside before the caller is told.
+            JsonFileUtils.backupCorruptFile(pluginDataFolder, this.cooldownFile, DATA_TYPE, ex);
             throw new IOException("Failed to parse cooldowns JSON file: " + this.cooldownFile.getAbsolutePath(), ex);
         }
 
@@ -117,6 +134,7 @@ public class CooldownJsonProvider implements CooldownProvider {
         }
 
         if (!root.isJsonArray()) {
+            JsonFileUtils.backupCorruptFile(pluginDataFolder, this.cooldownFile, DATA_TYPE, "the file does not hold a list of cooldowns");
             throw new IOException("The cooldowns JSON file does not hold a list of cooldowns: " + this.cooldownFile.getAbsolutePath());
         }
 
@@ -133,7 +151,7 @@ public class CooldownJsonProvider implements CooldownProvider {
                 if (cooldown == null || cooldown.getCooldownType() == null || cooldown.getCooldownOwner() == null) {
                     contents.unreadable.add(entry);
                     LoggingUtils.severe("There was an error loading a Cooldown from the cooldowns file: " + this.cooldownFile.getAbsolutePath());
-                    LoggingUtils.severe("To prevent data loss in the plugin, this Cooldown has been prevented from loading. The entry has been left in the file as it is.");
+                    LoggingUtils.severe("The entry at position " + i + " could not be read. To prevent data loss in the plugin, this Cooldown has been prevented from loading. The entry has been left in the file as it is.");
                     continue;
                 }
 
@@ -141,8 +159,18 @@ public class CooldownJsonProvider implements CooldownProvider {
             } catch (RuntimeException ex) {
                 contents.unreadable.add(entry);
                 LoggingUtils.severe("There was an error loading a Cooldown from the cooldowns file: " + this.cooldownFile.getAbsolutePath(), ex);
-                LoggingUtils.severe("To prevent data loss in the plugin, this Cooldown has been prevented from loading. The entry has been left in the file as it is.");
+                LoggingUtils.severe("The entry at position " + i + " could not be read. To prevent data loss in the plugin, this Cooldown has been prevented from loading. The entry has been left in the file as it is.");
             }
+        }
+
+        /*
+         * One entry that cannot be read costs every entry in the file, because the file is the
+         * only place the cooldowns are. The whole file is kept aside, and the entries that could
+         * be read are still loaded.
+         */
+        if (!contents.unreadable.isEmpty()) {
+            JsonFileUtils.backupCorruptFile(pluginDataFolder, this.cooldownFile, DATA_TYPE,
+                    contents.unreadable.size() + " of the " + entries.size() + " entries could not be read");
         }
 
         return contents;

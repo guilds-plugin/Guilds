@@ -1,6 +1,7 @@
 package me.glaremasters.guilds.database;
 
 import com.google.gson.Gson;
+import me.glaremasters.guilds.utils.LoggingUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
@@ -108,6 +109,72 @@ public final class JsonFileUtils {
         final String name = file.getName();
         final int dotIndex = name.lastIndexOf('.');
         return dotIndex == -1 ? name : name.substring(0, dotIndex);
+    }
+
+    /**
+     * Keeps a copy of a file the plugin could not read and says where it is.
+     *
+     * <p>The copy is byte for byte. The original is left exactly as it was: a backup is a
+     * safeguard, not permission to replace the file.
+     *
+     * <p>The log line names the file that could not be read, why it could not be read and where
+     * the copy is, so an operator has all three in one place.
+     *
+     * @param pluginDataFolder the plugin's data folder, {@code plugins/Guilds}
+     * @param file             the file that could not be read
+     * @param dataType         the kind of record the file holds
+     * @param cause            what went wrong while reading the file
+     */
+    public static void backupCorruptFile(File pluginDataFolder, File file, String dataType, Throwable cause) {
+        backupCorruptFile(pluginDataFolder, file, dataType, describe(cause));
+    }
+
+    /**
+     * Keeps a copy of a file the plugin could not read and says where it is.
+     *
+     * <p>The copy is byte for byte. The original is left exactly as it was: a backup is a
+     * safeguard, not permission to replace the file.
+     *
+     * <p>The log line names the file that could not be read, why it could not be read and where
+     * the copy is, so an operator has all three in one place.
+     *
+     * @param pluginDataFolder the plugin's data folder, {@code plugins/Guilds}
+     * @param file             the file that could not be read
+     * @param dataType         the kind of record the file holds
+     * @param reason           why the file could not be read
+     */
+    public static void backupCorruptFile(File pluginDataFolder, File file, String dataType, String reason) {
+        final CorruptDataBackup.Result result = CorruptDataBackup.backup(pluginDataFolder, file, dataType);
+
+        if (result.isFailed()) {
+            LoggingUtils.severe("The " + dataType + " file " + file.getAbsolutePath() + " could not be read (" + reason + "), "
+                    + "and its backup could not be written: " + result.getFailure() + ". The file has been left where it is.");
+            return;
+        }
+
+        if (result.isSkipped()) {
+            LoggingUtils.severe("The " + dataType + " file " + file.getAbsolutePath() + " could not be read (" + reason + "). "
+                    + "A copy of it is already at " + result.getBackupFile().getAbsolutePath() + ".");
+            return;
+        }
+
+        LoggingUtils.severe("The " + dataType + " file " + file.getAbsolutePath() + " could not be read (" + reason + "). "
+                + "A copy of it was written to " + result.getBackupFile().getAbsolutePath() + ". "
+                + "The file itself has been left where it is.");
+    }
+
+    /**
+     * Describes what went wrong, in a form that fits in a log line.
+     *
+     * @param cause what went wrong
+     * @return the message of the cause, or the cause itself when it has no message
+     */
+    private static String describe(Throwable cause) {
+        if (cause == null) {
+            return "the reason was not reported";
+        }
+
+        return cause.getMessage() == null ? cause.toString() : cause.getMessage();
     }
 
     public static <T> T readJson(File file, Gson gson, Class<T> type) throws IOException {

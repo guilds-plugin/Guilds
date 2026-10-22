@@ -23,7 +23,7 @@ public class GuildAdapter {
             default:
             case JSON:
                 File fileDataFolder = new File(guilds.getDataFolder(), "data");
-                provider = new GuildJsonProvider(fileDataFolder);
+                provider = new GuildJsonProvider(fileDataFolder, guilds.getDataFolder());
                 break;
             case MYSQL:
             case SQLITE:

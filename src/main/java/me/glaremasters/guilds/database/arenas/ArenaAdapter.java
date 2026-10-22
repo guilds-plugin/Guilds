@@ -33,7 +33,7 @@ public class ArenaAdapter {
             default:
             case JSON:
                 File fileDataFolder = new File(guilds.getDataFolder(), "arenas");
-                provider = new ArenaJsonProvider(fileDataFolder);
+                provider = new ArenaJsonProvider(fileDataFolder, guilds.getDataFolder());
                 break;
             case MYSQL:
             case SQLITE:

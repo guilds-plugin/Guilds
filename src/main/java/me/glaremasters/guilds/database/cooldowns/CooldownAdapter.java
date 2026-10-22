@@ -24,7 +24,7 @@ public class CooldownAdapter {
             default:
             case JSON:
                 File fileDataFolder = new File(guilds.getDataFolder(), "cooldowns");
-                provider = new CooldownJsonProvider(fileDataFolder);
+                provider = new CooldownJsonProvider(fileDataFolder, guilds.getDataFolder());
                 break;
             case MYSQL:
             case SQLITE:

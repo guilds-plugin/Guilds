@@ -3,6 +3,8 @@ package me.glaremasters.guilds.database.cooldowns.provider;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import me.glaremasters.guilds.cooldowns.Cooldown;
+import me.glaremasters.guilds.database.CorruptBackups;
+import me.glaremasters.guilds.database.LogCapture;
 import me.glaremasters.guilds.database.TestGson;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,11 +22,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Covers what the JSON cooldown storage does with an entry it cannot read.
+ * Covers what the JSON cooldown storage does with an entry it cannot read, and with the file it
+ * cannot read at all.
  *
  * <p>The cooldown file is the one data file that holds a list rather than a single record, so it
  * is the one place where a single broken entry used to cost every other entry as well: the file
@@ -48,12 +53,27 @@ class CooldownJsonProviderTest {
 
     @BeforeEach
     void setUp() throws IOException {
-        provider = new CooldownJsonProvider(tempDir.toFile());
+        Files.createDirectories(dataFolder());
+        provider = new CooldownJsonProvider(dataFolder().toFile(), pluginFolder().toFile());
         provider.createContainer(null);
     }
 
+    /**
+     * @return the plugin's data folder, the one the backups are kept in
+     */
+    private Path pluginFolder() {
+        return tempDir;
+    }
+
+    /**
+     * @return the folder the cooldown file lives in
+     */
+    private Path dataFolder() {
+        return tempDir.resolve("cooldowns");
+    }
+
     private Path cooldownFile() {
-        return tempDir.resolve("cooldowns.json");
+        return dataFolder().resolve("cooldowns.json");
     }
 
     private void writeCooldowns(String content) throws IOException {
@@ -137,5 +157,134 @@ class CooldownJsonProviderTest {
     @DisplayName("an empty cooldown file holds no cooldowns")
     void anEmptyFileHoldsNoCooldowns() throws IOException {
         assertTrue(provider.getAllCooldowns(null).isEmpty());
+    }
+
+    @Test
+    @DisplayName("a cooldown file that cannot be read is backed up byte for byte")
+    void aBrokenCooldownFileIsBackedUpByteForByte() throws IOException {
+        final String corrupt = "{ this is not json";
+        writeCooldowns(corrupt);
+
+        assertThrows(IOException.class, () -> provider.getAllCooldowns(null));
+
+        final Path backup = CorruptBackups.onlyBackup(pluginFolder(), "cooldowns");
+        assertArrayEquals(corrupt.getBytes(StandardCharsets.UTF_8), Files.readAllBytes(backup));
+
+        // The original is still there, with the same bytes.
+        assertTrue(Files.exists(cooldownFile()));
+        assertArrayEquals(corrupt.getBytes(StandardCharsets.UTF_8), Files.readAllBytes(cooldownFile()));
+    }
+
+    @Test
+    @DisplayName("a cooldown file that does not hold a list is backed up")
+    void aCooldownFileThatIsNotAListIsBackedUp() throws IOException {
+        final String unusable = "{ \"not\": \"a list\" }";
+        writeCooldowns(unusable);
+
+        assertThrows(IOException.class, () -> provider.getAllCooldowns(null));
+
+        final Path backup = CorruptBackups.onlyBackup(pluginFolder(), "cooldowns");
+        assertArrayEquals(unusable.getBytes(StandardCharsets.UTF_8), Files.readAllBytes(backup));
+        assertArrayEquals(unusable.getBytes(StandardCharsets.UTF_8), Files.readAllBytes(cooldownFile()));
+    }
+
+    @Test
+    @DisplayName("a cooldown file with a broken entry is backed up")
+    void aCooldownFileWithABrokenEntryIsBackedUp() throws IOException {
+        final String broken = "[\n"
+                + "  \"this is not a cooldown\",\n"
+                + cooldownEntry(COOLDOWN_ID, Cooldown.Type.Request, OWNER_ID, 9999999999999L) + "\n"
+                + "]\n";
+        writeCooldowns(broken);
+
+        provider.getAllCooldowns(null);
+
+        final Path backup = CorruptBackups.onlyBackup(pluginFolder(), "cooldowns");
+        assertArrayEquals(broken.getBytes(StandardCharsets.UTF_8), Files.readAllBytes(backup));
+        assertArrayEquals(broken.getBytes(StandardCharsets.UTF_8), Files.readAllBytes(cooldownFile()));
+    }
+
+    @Test
+    @DisplayName("the cooldown backup lands outside the data folder and keeps the file name")
+    void theBackupLandsOutsideTheDataFolder() throws IOException {
+        writeCooldowns("{ this is not json");
+
+        assertThrows(IOException.class, () -> provider.getAllCooldowns(null));
+
+        final Path backup = CorruptBackups.onlyBackup(pluginFolder(), "cooldowns");
+
+        assertEquals("cooldowns.json", backup.getFileName().toString());
+        assertEquals("cooldowns", backup.getParent().getFileName().toString());
+        assertTrue(backup.getParent().getParent().getFileName().toString().matches("\\d{8}-\\d{6}"),
+                "the backup folder is not named after a timestamp: " + backup);
+        assertEquals("corrupt", backup.getParent().getParent().getParent().getFileName().toString());
+        assertEquals("backups", backup.getParent().getParent().getParent().getParent().getFileName().toString());
+        assertEquals(pluginFolder(), backup.getParent().getParent().getParent().getParent().getParent());
+        assertTrue(backup.startsWith(pluginFolder()));
+    }
+
+    @Test
+    @DisplayName("the log names the cooldown file, the reason and the backup")
+    void theLogNamesTheFileTheReasonAndTheBackup() throws IOException {
+        writeCooldowns("{ this is not json");
+
+        try (LogCapture log = new LogCapture()) {
+            assertThrows(IOException.class, () -> provider.getAllCooldowns(null));
+
+            assertTrue(log.contains("cooldowns.json"), "the log did not name the file");
+            assertTrue(log.contains("could not be read"), "the log did not say what went wrong");
+            assertTrue(log.contains("backups"), "the log did not say where the backup is");
+        }
+    }
+
+    @Test
+    @DisplayName("the log says which entry of the cooldown file could not be read")
+    void theLogSaysWhichEntryCouldNotBeRead() throws IOException {
+        writeCooldowns("[\n"
+                + "  \"this is not a cooldown\",\n"
+                + cooldownEntry(COOLDOWN_ID, Cooldown.Type.Request, OWNER_ID, 9999999999999L) + "\n"
+                + "]\n");
+
+        try (LogCapture log = new LogCapture()) {
+            provider.getAllCooldowns(null);
+
+            assertTrue(log.contains("position 0"), "the log did not say which entry was at fault");
+        }
+    }
+
+    @Test
+    @DisplayName("a cooldown backup that cannot be written is reported and nothing is lost")
+    void aBackupThatCannotBeWrittenIsReportedAndNothingIsLost() throws IOException {
+        final String corrupt = "{ this is not json";
+        writeCooldowns(corrupt);
+
+        Files.createFile(pluginFolder().resolve("backups"));
+
+        try (LogCapture log = new LogCapture()) {
+            assertThrows(IOException.class, () -> provider.getAllCooldowns(null));
+
+            assertTrue(log.contains("could not be written"), "the failure to back the file up was not reported");
+            assertTrue(log.contains("cooldowns.json"), "the log did not name the file");
+        }
+
+        assertTrue(Files.exists(cooldownFile()));
+        assertArrayEquals(corrupt.getBytes(StandardCharsets.UTF_8), Files.readAllBytes(cooldownFile()));
+    }
+
+    @Test
+    @DisplayName("the same cooldown corruption is backed up once, not once per read")
+    void theSameCorruptionIsBackedUpOnce() throws IOException {
+        writeCooldowns("{ this is not json");
+
+        assertThrows(IOException.class, () -> provider.getAllCooldowns(null));
+        assertEquals(1, CorruptBackups.backupFiles(pluginFolder(), "cooldowns").size());
+
+        assertThrows(IOException.class, () -> provider.getAllCooldowns(null));
+        assertEquals(1, CorruptBackups.backupFiles(pluginFolder(), "cooldowns").size());
+
+        // A restart: a new provider over the same folder.
+        final CooldownJsonProvider restarted = new CooldownJsonProvider(dataFolder().toFile(), pluginFolder().toFile());
+        assertThrows(IOException.class, () -> restarted.getAllCooldowns(null));
+        assertEquals(1, CorruptBackups.backupFiles(pluginFolder(), "cooldowns").size());
     }
 }

@@ -1,5 +1,6 @@
 package me.glaremasters.guilds.database.guild.provider;
 
+import me.glaremasters.guilds.database.CorruptBackups;
 import me.glaremasters.guilds.database.LogCapture;
 import me.glaremasters.guilds.database.TestGson;
 import me.glaremasters.guilds.guild.Guild;
@@ -13,8 +14,11 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.attribute.FileTime;
+import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -23,12 +27,16 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Covers which files the JSON guild storage treats as guilds.
+ * Covers which files the JSON guild storage treats as guilds, and what happens to the ones it
+ * cannot read.
  *
  * <p>The guild data folder is a folder an operator can see and touch. Anything can end up in it:
  * a leftover temporary file from a write that was interrupted, a note, a backup folder. The
  * provider used to take every entry it found and call it a guild, which let a stray file stand in
  * for a real guild and made the plugin report a guild that did not exist.
+ *
+ * <p>A file the plugin cannot read is a different matter. It is the only copy of that guild's
+ * data, so it is copied aside and left exactly where it was.
  */
 class GuildJsonProviderTest {
 
@@ -47,7 +55,8 @@ class GuildJsonProviderTest {
 
     @BeforeEach
     void setUp() throws IOException {
-        provider = new GuildJsonProvider(tempDir.toFile());
+        Files.createDirectories(dataFolder());
+        provider = new GuildJsonProvider(dataFolder().toFile(), pluginFolder().toFile());
 
         // The one real guild.
         write(GUILD_ID + ".json", guildJson(GUILD_ID, "The Real Guild"));
@@ -61,12 +70,26 @@ class GuildJsonProviderTest {
         write("README", "nothing to see here");
 
         // A folder, because people make backups that way.
-        Files.createDirectory(tempDir.resolve("backup"));
-        write(tempDir.resolve("backup").resolve("old-guild.json"), guildJson(OTHER_GUILD_ID, "Old Guild"));
+        Files.createDirectory(dataFolder().resolve("backup"));
+        write(dataFolder().resolve("backup").resolve("old-guild.json"), guildJson(OTHER_GUILD_ID, "Old Guild"));
+    }
+
+    /**
+     * @return the plugin's data folder, the one the backups are kept in
+     */
+    private Path pluginFolder() {
+        return tempDir;
+    }
+
+    /**
+     * @return the folder the guild files live in
+     */
+    private Path dataFolder() {
+        return tempDir.resolve("data");
     }
 
     private void write(String name, String content) throws IOException {
-        write(tempDir.resolve(name), content);
+        write(dataFolder().resolve(name), content);
     }
 
     private void write(Path path, String content) throws IOException {
@@ -152,12 +175,12 @@ class GuildJsonProviderTest {
         provider.guildExists(null, GUILD_ID);
         provider.getGuild(null, GUILD_ID);
 
-        assertTrue(Files.exists(tempDir.resolve(GUILD_ID + ".json")));
-        assertTrue(Files.exists(tempDir.resolve(GUILD_ID + ".json" + "1234567890" + ".tmp")));
-        assertTrue(Files.exists(tempDir.resolve("notes.txt")));
-        assertTrue(Files.exists(tempDir.resolve("README")));
-        assertTrue(Files.isDirectory(tempDir.resolve("backup")));
-        assertTrue(Files.exists(tempDir.resolve("backup").resolve("old-guild.json")));
+        assertTrue(Files.exists(dataFolder().resolve(GUILD_ID + ".json")));
+        assertTrue(Files.exists(dataFolder().resolve(GUILD_ID + ".json" + "1234567890" + ".tmp")));
+        assertTrue(Files.exists(dataFolder().resolve("notes.txt")));
+        assertTrue(Files.exists(dataFolder().resolve("README")));
+        assertTrue(Files.isDirectory(dataFolder().resolve("backup")));
+        assertTrue(Files.exists(dataFolder().resolve("backup").resolve("old-guild.json")));
     }
 
     @Test
@@ -178,9 +201,9 @@ class GuildJsonProviderTest {
 
         provider.getAllGuilds(null);
 
-        assertTrue(Files.exists(tempDir.resolve(OTHER_GUILD_ID + ".json")));
+        assertTrue(Files.exists(dataFolder().resolve(OTHER_GUILD_ID + ".json")));
         assertEquals("{ this is not json", new String(
-                Files.readAllBytes(tempDir.resolve(OTHER_GUILD_ID + ".json")), StandardCharsets.UTF_8));
+                Files.readAllBytes(dataFolder().resolve(OTHER_GUILD_ID + ".json")), StandardCharsets.UTF_8));
     }
 
     @Test
@@ -201,9 +224,9 @@ class GuildJsonProviderTest {
 
         provider.getAllGuilds(null);
 
-        assertTrue(Files.exists(tempDir.resolve(OTHER_GUILD_ID + ".json")));
+        assertTrue(Files.exists(dataFolder().resolve(OTHER_GUILD_ID + ".json")));
         assertEquals("{ \"name\": \"No Id Here\" }", new String(
-                Files.readAllBytes(tempDir.resolve(OTHER_GUILD_ID + ".json")), StandardCharsets.UTF_8));
+                Files.readAllBytes(dataFolder().resolve(OTHER_GUILD_ID + ".json")), StandardCharsets.UTF_8));
     }
 
     @Test
@@ -215,7 +238,7 @@ class GuildJsonProviderTest {
 
         assertThrows(IOException.class, () -> provider.updateGuild(null, OTHER_GUILD_ID, guildJson(OTHER_GUILD_ID, "Replaced")));
         assertEquals("{ this is not json", new String(
-                Files.readAllBytes(tempDir.resolve(OTHER_GUILD_ID + ".json")), StandardCharsets.UTF_8));
+                Files.readAllBytes(dataFolder().resolve(OTHER_GUILD_ID + ".json")), StandardCharsets.UTF_8));
     }
 
     @Test
@@ -227,7 +250,7 @@ class GuildJsonProviderTest {
 
         assertThrows(IOException.class, () -> provider.updateGuild(null, OTHER_GUILD_ID, guildJson(OTHER_GUILD_ID, "Replaced")));
         assertEquals("{ \"name\": \"No Id Here\" }", new String(
-                Files.readAllBytes(tempDir.resolve(OTHER_GUILD_ID + ".json")), StandardCharsets.UTF_8));
+                Files.readAllBytes(dataFolder().resolve(OTHER_GUILD_ID + ".json")), StandardCharsets.UTF_8));
     }
 
     @Test
@@ -238,7 +261,7 @@ class GuildJsonProviderTest {
         provider.getAllGuilds(null);
 
         assertThrows(IOException.class, () -> provider.deleteGuild(null, OTHER_GUILD_ID));
-        assertTrue(Files.exists(tempDir.resolve(OTHER_GUILD_ID + ".json")));
+        assertTrue(Files.exists(dataFolder().resolve(OTHER_GUILD_ID + ".json")));
     }
 
     @Test
@@ -249,6 +272,147 @@ class GuildJsonProviderTest {
         provider.getAllGuilds(null);
 
         assertThrows(IOException.class, () -> provider.deleteGuild(null, OTHER_GUILD_ID));
-        assertTrue(Files.exists(tempDir.resolve(OTHER_GUILD_ID + ".json")));
+        assertTrue(Files.exists(dataFolder().resolve(OTHER_GUILD_ID + ".json")));
+    }
+
+    @Test
+    @DisplayName("a guild file that cannot be read is backed up byte for byte")
+    void aBrokenGuildFileIsBackedUpByteForByte() throws IOException {
+        final String corrupt = "{ this is not json";
+        write(OTHER_GUILD_ID + ".json", corrupt);
+
+        provider.getAllGuilds(null);
+
+        final Path backup = CorruptBackups.onlyBackup(pluginFolder(), "guilds");
+        assertArrayEquals(corrupt.getBytes(StandardCharsets.UTF_8), Files.readAllBytes(backup));
+
+        // The original is still there, with the same bytes.
+        assertTrue(Files.exists(dataFolder().resolve(OTHER_GUILD_ID + ".json")));
+        assertArrayEquals(corrupt.getBytes(StandardCharsets.UTF_8),
+                Files.readAllBytes(dataFolder().resolve(OTHER_GUILD_ID + ".json")));
+    }
+
+    @Test
+    @DisplayName("a guild file without an id is backed up byte for byte")
+    void aGuildFileWithoutAnIdIsBackedUpByteForByte() throws IOException {
+        final String unusable = "{ \"name\": \"No Id Here\" }";
+        write(OTHER_GUILD_ID + ".json", unusable);
+
+        provider.getAllGuilds(null);
+
+        final Path backup = CorruptBackups.onlyBackup(pluginFolder(), "guilds");
+        assertArrayEquals(unusable.getBytes(StandardCharsets.UTF_8), Files.readAllBytes(backup));
+        assertArrayEquals(unusable.getBytes(StandardCharsets.UTF_8),
+                Files.readAllBytes(dataFolder().resolve(OTHER_GUILD_ID + ".json")));
+    }
+
+    @Test
+    @DisplayName("the backup lands outside the data folder and keeps the file name")
+    void theBackupLandsOutsideTheDataFolder() throws IOException {
+        write(OTHER_GUILD_ID + ".json", "{ this is not json");
+
+        provider.getAllGuilds(null);
+
+        final Path backup = CorruptBackups.onlyBackup(pluginFolder(), "guilds");
+
+        assertEquals(OTHER_GUILD_ID + ".json", backup.getFileName().toString());
+        assertEquals("guilds", backup.getParent().getFileName().toString());
+        assertTrue(backup.getParent().getParent().getFileName().toString().matches("\\d{8}-\\d{6}"),
+                "the backup folder is not named after a timestamp: " + backup);
+        assertEquals("corrupt", backup.getParent().getParent().getParent().getFileName().toString());
+        assertEquals("backups", backup.getParent().getParent().getParent().getParent().getFileName().toString());
+        assertEquals(pluginFolder(), backup.getParent().getParent().getParent().getParent().getParent());
+        assertFalse(backup.startsWith(dataFolder()));
+    }
+
+    @Test
+    @DisplayName("the log names the file, the reason and the backup")
+    void theLogNamesTheFileTheReasonAndTheBackup() throws IOException {
+        write(OTHER_GUILD_ID + ".json", "{ this is not json");
+
+        try (LogCapture log = new LogCapture()) {
+            provider.getAllGuilds(null);
+
+            assertTrue(log.contains(OTHER_GUILD_ID + ".json"), "the log did not name the file");
+            assertTrue(log.contains("could not be read"), "the log did not say what went wrong");
+            assertTrue(log.contains("backups"), "the log did not say where the backup is");
+        }
+    }
+
+    @Test
+    @DisplayName("two corrupt guild files with the same name do not overwrite each other")
+    void twoCorruptGuildFilesWithTheSameNameDoNotOverwriteEachOther() throws IOException {
+        final Path file = dataFolder().resolve(OTHER_GUILD_ID + ".json");
+        final String first = "{ this is not json";
+        write(OTHER_GUILD_ID + ".json", first);
+        final long modified = Files.getLastModifiedTime(file).toMillis();
+
+        provider.getAllGuilds(null);
+
+        // The same name, different content, and the same last modified time, so the second copy
+        // lands in the same backup folder and has to get a name of its own.
+        final String second = "{ this is not json either";
+        write(OTHER_GUILD_ID + ".json", second);
+        Files.setLastModifiedTime(file, FileTime.fromMillis(modified));
+
+        provider.getAllGuilds(null);
+
+        final List<Path> backups = CorruptBackups.backupFiles(pluginFolder(), "guilds");
+        assertEquals(2, backups.size());
+        assertEquals(2, backups.stream().map(path -> path.getFileName().toString()).distinct().count());
+        assertTrue(backups.stream().anyMatch(path -> {
+            try {
+                return Arrays.equals(first.getBytes(StandardCharsets.UTF_8), Files.readAllBytes(path));
+            } catch (IOException ex) {
+                return false;
+            }
+        }), "the first backup was overwritten");
+        assertTrue(backups.stream().anyMatch(path -> {
+            try {
+                return Arrays.equals(second.getBytes(StandardCharsets.UTF_8), Files.readAllBytes(path));
+            } catch (IOException ex) {
+                return false;
+            }
+        }), "the second backup was not written");
+    }
+
+    @Test
+    @DisplayName("a backup that cannot be written is reported and nothing is lost")
+    void aBackupThatCannotBeWrittenIsReportedAndNothingIsLost() throws IOException {
+        final String corrupt = "{ this is not json";
+        write(OTHER_GUILD_ID + ".json", corrupt);
+
+        // A file where the backup folder should be, so the backup cannot be written.
+        Files.createFile(pluginFolder().resolve("backups"));
+
+        try (LogCapture log = new LogCapture()) {
+            provider.getAllGuilds(null);
+
+            assertTrue(log.contains("could not be written"), "the failure to back the file up was not reported");
+            assertTrue(log.contains(OTHER_GUILD_ID + ".json"), "the log did not name the file");
+        }
+
+        // The file itself is untouched, and the guild that reads is still loaded.
+        assertTrue(Files.exists(dataFolder().resolve(OTHER_GUILD_ID + ".json")));
+        assertArrayEquals(corrupt.getBytes(StandardCharsets.UTF_8),
+                Files.readAllBytes(dataFolder().resolve(OTHER_GUILD_ID + ".json")));
+        assertEquals(1, provider.getAllGuilds(null).size());
+    }
+
+    @Test
+    @DisplayName("the same corruption is backed up once, not once per read")
+    void theSameCorruptionIsBackedUpOnce() throws IOException {
+        write(OTHER_GUILD_ID + ".json", "{ this is not json");
+
+        provider.getAllGuilds(null);
+        assertEquals(1, CorruptBackups.backupFiles(pluginFolder(), "guilds").size());
+
+        provider.getAllGuilds(null);
+        assertEquals(1, CorruptBackups.backupFiles(pluginFolder(), "guilds").size());
+
+        // A restart: a new provider over the same folder.
+        final GuildJsonProvider restarted = new GuildJsonProvider(dataFolder().toFile(), pluginFolder().toFile());
+        restarted.getAllGuilds(null);
+        assertEquals(1, CorruptBackups.backupFiles(pluginFolder(), "guilds").size());
     }
 }
