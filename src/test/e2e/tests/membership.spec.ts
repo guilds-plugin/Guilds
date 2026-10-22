@@ -55,6 +55,21 @@ test('a player cannot accept a guild they were never invited to', async ({ playe
     await commandWithout(stranger, guilds, `/guild accept ${guild}`, MSG.acceptNotInvited, MSG.acceptSuccess(guild));
 });
 
+test('a player accepting a guild that does not exist is told the guild does not exist', async ({
+    createPlayer,
+    guilds,
+}) => {
+    const stranger = await createPlayer({ username: guilds.playerName() });
+
+    // The guild name is resolved by Guilds, so a name that matches nothing is answered with the
+    // plugin's own "that guild does not exist" rather than with "you're not in a guild", which
+    // describes the sender and not the name they typed.
+    const since = stranger.getMessageBufferIndex();
+    await guilds.run(stranger, '/guild accept NoSuchGuild');
+    await expectReceived(stranger, MSG.guildNoExist, since);
+    await expect(stranger).not.toHaveReceivedMessage(MSG.noGuild, { since });
+});
+
 test('a player cannot be invited twice', async ({ player, createPlayer, guilds }) => {
     const guild = await guilds.createGuild(player);
     const guest = await createPlayer({ username: guilds.playerName() });

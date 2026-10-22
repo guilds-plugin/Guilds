@@ -3,7 +3,7 @@
 Which Guilds feature is tested where, and what is deliberately left out. See `e2e-testing.md` for
 how to run any of it.
 
-137 tests across 12 spec files, plus 3 preflight tests that run before every suite and fail the run
+141 tests across 12 spec files, plus 3 preflight tests that run before every suite and fail the run
 if Guilds or any of its hard dependencies did not load.
 
 ## Preflight — `plugins/guilds-preflight.spec.ts`
@@ -40,7 +40,7 @@ meaningful.
 | Receiving and accepting | an invited player accepts and both sides see it happen |
 | Declining an invitation | an invited player can decline and stays without a guild |
 | Preventing duplicate invitations | a player cannot be invited twice / a player who is already in a guild cannot be invited |
-| Preventing joining when already in another guild | a player cannot join a second guild while in one / a player cannot accept a guild they were never invited to |
+| Preventing joining when already in another guild | a player cannot join a second guild while in one / a player cannot accept a guild they were never invited to / a player accepting a guild that does not exist is told the guild does not exist |
 | Leaving a guild | a member can leave and the guild is told |
 | Leaving and being invited back | a member can leave, be invited back and join the guild again |
 | Master leaving deletes the guild | a member leaving warns that the guild master deletes the guild by leaving |
@@ -51,7 +51,7 @@ meaningful.
 | Guild capacity | a full guild refuses another member |
 | Permissions after leaving or being removed | a player who leaves loses the permissions their guild granted them / a player who is kicked loses the permissions their guild granted them |
 
-## C. Roles and permissions — `tests/roles.spec.ts` (8), `tests/admin.spec.ts` (4)
+## C. Roles and permissions — `tests/roles.spec.ts` (8), `tests/admin.spec.ts` (7)
 
 | Requirement | Test |
 | --- | --- |
@@ -63,7 +63,9 @@ meaningful.
 | Unauthorized members cannot perform admin actions | a member can run the admin commands their tier grants, but not the role-gated ones |
 | Tier permissions after upgrade | upgrading charges the tier price and moves the guild onto the new tier / **an upgrade leaves the master with the permissions the new tier grants** |
 | A player in no guild | a player in no guild is told so rather than refused by role |
-| Admin commands that name a guild | an admin command that names a guild and a second argument reaches its handler / an admin command that names a guild which does not exist says so / an admin command can put a player into a guild / an admin command that names a guild and a second argument is refused for an unknown player |
+| Admin commands that name a guild and a second argument | an admin command that names a guild and a second argument reaches its handler / an admin command that names a guild which does not exist says so / an admin command that names a guild and a second argument is refused for an unknown player |
+| Admin commands that act on a player | an admin command can put a player into a guild / an admin command can hand a player upgrade tickets / an admin command can hand a guild to one of its members |
+| Admin commands that act on an arena | an admin command can teleport to an arena spawn point |
 | The player-facing bank commands | the player-facing bank commands work |
 
 ## D. Guild bank and upgrades — `tests/bank.spec.ts` (15)
@@ -199,7 +201,7 @@ Out of scope for this phase, as agreed:
 | Area | Why it is not here |
 | --- | --- |
 | WorldGuard land claims and region protection | Needs a WorldGuard server and region fixtures; nothing in Guilds' claim commands is reachable without one |
-| Guild wars and the arena | Arena setup is a separate orchestration with its own timing and no command-level entry point that does not first require a challenge |
+| Guild wars | The arena commands are covered in `admin.spec.ts`, but the war itself is not: it needs two guilds, a challenge, an acceptance and a timed round, which is a separate orchestration |
 | Database backend compatibility | One environment runs JSON storage. Exercising SQL/MariaDB needs a second provisioned server per backend, which is a matrix, not a suite |
 | Server restart and migration | The suite assumes a freshly provisioned server and never restarts one; migration testing needs a stop/start harness the runner does not currently expose |
 | Internal API and event inspection | Deliberately excluded: the suite asserts on player-visible outcomes only. Reaching into the API would make tests pass on internals that a player would never see |

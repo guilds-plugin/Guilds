@@ -50,6 +50,10 @@ export const ITEM = {
     nextPage: 'Next Page',
     /** guis.guild-list.previous-page-item-name */
     previousPage: 'Previous Page',
+    /** tickets.name — the upgrade ticket an admin hands out, from the plugin's default config. */
+    ticket: 'Guild Upgrade Ticket',
+    /** tickets.material — the item the upgrade ticket is made of, as the client names it. */
+    ticketMaterial: 'paper',
 } as const;
 
 /**
@@ -199,6 +203,14 @@ export const MSG = {
     motdView: () => '[Guild MOTD]',
     motdSet: (motd: string) => `You've successfully set your guild's MOTD to ${motd}`,
     motdRemove: "You've successfully removed your guild's MOTD.",
+
+    // arenas
+    arenaCreated: (arena: string) => `You've successfully created an arena called ${arena}`,
+    arenaDeleted: (arena: string) => `You've successfully deleted the arena called ${arena}`,
+    arenaChallengerSet: (arena: string) => `You've successfully set the Challenger location for ${arena}`,
+    arenaTeleported: (team: string, arena: string) =>
+        `You've teleported to the ${team} spawn point for ${arena}`,
+    arenaNoExist: 'An arena with that name does not exist.',
 
     // buffs
     buffNoPermission: 'you do not have permission to buy this buff',
