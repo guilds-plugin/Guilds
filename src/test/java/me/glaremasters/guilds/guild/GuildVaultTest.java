@@ -204,10 +204,11 @@ class GuildVaultTest {
     @DisplayName("a stored vault the cache does not have is not dropped")
     void storedVaultWithoutCacheIsKept() {
         final List<String> stored = Arrays.asList(stored(Material.STONE), UNREADABLE, stored(Material.DIRT));
+        final Guild guild = guild(stored);
         final List<Inventory> cache = new ArrayList<>();
         cache.add(BukkitFixtures.inventory(54));
 
-        final List<String> written = GuildHandler.serializeVaultCache(cache, stored, Collections.singleton(1));
+        final List<String> written = GuildHandler.serializeVaultCache(guild, cache, Collections.singleton(1));
 
         assertEquals(3, written.size(), "the stored list must not be truncated");
         assertEquals(stored.get(1), written.get(1), "the stored vaults that are not cached have to be left alone");
@@ -218,15 +219,16 @@ class GuildVaultTest {
     @DisplayName("a vault that cannot be read keeps its data until something is put into it")
     void unreadableVaultKeepsItsDataUntilItIsUsed() throws Exception {
         final List<String> stored = Arrays.asList(UNREADABLE);
+        final Guild guild = guild(stored);
         final List<Inventory> cache = new ArrayList<>();
         cache.add(BukkitFixtures.inventory(54));
         final Set<Integer> unreadable = Collections.singleton(0);
 
-        assertEquals(stored, GuildHandler.serializeVaultCache(cache, stored, unreadable),
+        assertEquals(stored, GuildHandler.serializeVaultCache(guild, cache, unreadable),
                 "an untouched vault that cannot be read keeps the data it has");
 
         cache.get(0).setItem(0, new ItemStack(Material.DIAMOND, 1));
-        final List<String> written = GuildHandler.serializeVaultCache(cache, stored, unreadable);
+        final List<String> written = GuildHandler.serializeVaultCache(guild, cache, unreadable);
         assertNotEquals(UNREADABLE, written.get(0), "what the player put in has to be saved");
         assertEquals(Material.DIAMOND, Serialization.deserializeInventory(written.get(0), settingsManager).getItem(0).getType());
     }
@@ -237,7 +239,7 @@ class GuildVaultTest {
         final List<String> stored = Arrays.asList(stored(Material.STONE), stored(Material.DIRT), stored(Material.GOLD_INGOT));
 
         final Set<Integer> unreadable = new HashSet<>();
-        final List<Inventory> cache = GuildHandler.buildVaultCache(stored, settingsManager, unreadable);
+        final List<Inventory> cache = GuildHandler.buildVaultCache(guild(stored), settingsManager, unreadable);
 
         assertEquals(3, cache.size());
         assertTrue(unreadable.isEmpty(), "nothing was unreadable");

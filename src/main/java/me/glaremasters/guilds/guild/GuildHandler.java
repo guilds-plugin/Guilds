@@ -603,7 +603,7 @@ public class GuildHandler {
     private void createVaultCache(@NotNull final Guild guild) {
         final Set<Integer> unreadable = new HashSet<>();
         // Deserialize the vaults and add them to the list.
-        this.vaults.put(guild, buildVaultCache(guild.getVaults(), settingsManager, unreadable));
+        this.vaults.put(guild, buildVaultCache(guild, settingsManager, unreadable));
         // Remember which of them could not be read, so that saving does not replace the stored
         // data of those with the empty vault that took their place.
         this.unreadableVaults.put(guild, unreadable);
@@ -617,23 +617,24 @@ public class GuildHandler {
      * it one place up. A player asking for vault 2 would then be served the contents of vault 3,
      * and the vault that could not be read would be written over by the one that could.
      *
-     * @param stored the stored vaults of the guild
+     * @param guild the guild whose vaults are read
      * @param settingsManager the settings manager
      * @param unreadable collects the positions of the vaults that could not be read
      * @return the cache, in the same order and of the same length as the stored vaults
      */
-    static List<Inventory> buildVaultCache(@NotNull final List<String> stored, @NotNull final SettingsManager settingsManager, @NotNull final Set<Integer> unreadable) {
+    static List<Inventory> buildVaultCache(@NotNull final Guild guild, @NotNull final SettingsManager settingsManager, @NotNull final Set<Integer> unreadable) {
+        final List<String> stored = guild.getVaults();
         final List<Inventory> cache = new ArrayList<>(stored.size());
         for (int position = 0; position < stored.size(); position++) {
             Inventory vault = null;
             try {
                 vault = Serialization.deserializeInventory(stored.get(position), settingsManager);
             } catch (Exception e) {
-                LoggingUtils.warn("Unable to read vault " + (position + 1) + " of a guild.", e);
+                LoggingUtils.warn("Unable to read vault " + (position + 1) + " of guild " + guild.getId() + ".", e);
             }
             if (vault == null) {
                 unreadable.add(position);
-                LoggingUtils.warn("Vault " + (position + 1) + " of a guild could not be read. It opens empty for now, and the data stored for it is left untouched until it can be read again.");
+                LoggingUtils.warn("Vault " + (position + 1) + " of guild " + guild.getId() + " could not be read. It opens empty for now, and the data stored for it is left untouched until it can be read again.");
                 vault = createEmptyVault(settingsManager);
             }
             cache.add(vault);
@@ -652,8 +653,7 @@ public class GuildHandler {
             return;
         }
         // Set the serialized inventory data to the guild's vaults list.
-        guild.setVaults(serializeVaultCache(cached, guild.getVaults(),
-                this.unreadableVaults.getOrDefault(guild, Collections.emptySet())));
+        guild.setVaults(serializeVaultCache(guild, cached, this.unreadableVaults.getOrDefault(guild, Collections.emptySet())));
     }
 
     /**
@@ -669,12 +669,13 @@ public class GuildHandler {
      *     a player has opened for the first time.</li>
      * </ul>
      *
+     * @param guild the guild whose vaults are written
      * @param cached the cached vaults
-     * @param stored the stored vaults of the guild
      * @param unreadable the positions of the vaults that could not be read
      * @return the vaults to store
      */
-    static List<String> serializeVaultCache(@NotNull final List<Inventory> cached, @NotNull final List<String> stored, @NotNull final Set<Integer> unreadable) {
+    static List<String> serializeVaultCache(@NotNull final Guild guild, @NotNull final List<Inventory> cached, @NotNull final Set<Integer> unreadable) {
+        final List<String> stored = guild.getVaults();
         final List<String> vaults = new ArrayList<>(cached.size());
         for (int position = 0; position < cached.size(); position++) {
             final Inventory vault = cached.get(position);
@@ -685,12 +686,12 @@ public class GuildHandler {
                     vaults.add(stored.get(position));
                     continue;
                 }
-                LoggingUtils.warn("Vault " + (position + 1) + " of a guild could not be read earlier and is being replaced by what is in it now. The data that could not be read is lost.");
+                LoggingUtils.warn("Vault " + (position + 1) + " of guild " + guild.getId() + " could not be read earlier and is being replaced by what is in it now. The data that could not be read is lost.");
             }
             try {
                 vaults.add(Serialization.serializeInventory(vault));
             } catch (Exception e) {
-                LoggingUtils.warn("Unable to write vault " + (position + 1) + " of a guild. The data stored for it is left untouched.", e);
+                LoggingUtils.warn("Unable to write vault " + (position + 1) + " of guild " + guild.getId() + ". The data stored for it is left untouched.", e);
                 vaults.add(position < stored.size() ? stored.get(position) : "");
             }
         }
