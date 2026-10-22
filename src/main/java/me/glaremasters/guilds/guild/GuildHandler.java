@@ -10,6 +10,7 @@ import me.glaremasters.guilds.configuration.sections.GuildSettings;
 import me.glaremasters.guilds.configuration.sections.GuildVaultSettings;
 import me.glaremasters.guilds.configuration.sections.PluginSettings;
 import me.glaremasters.guilds.configuration.sections.TicketSettings;
+import me.glaremasters.guilds.database.CorruptDataBackup;
 import me.glaremasters.guilds.exceptions.ExpectationNotMet;
 import me.glaremasters.guilds.messages.Messages;
 import me.glaremasters.guilds.utils.ClaimUtils;
@@ -58,13 +59,13 @@ public class GuildHandler {
     private final Map<Guild, List<Inventory>> vaults = new HashMap<>();
 
     /**
-     * The positions of the vaults that could not be read, per guild.
+     * The positions of the vaults that could not be read in full, per guild.
      *
      * <p>A vault that cannot be read still takes its place in the cache, so that vault N is always
-     * vault N. The position is remembered here so that saving the guild does not replace the data
-     * stored for that vault with the empty vault that took its place.
+     * vault N. The position is remembered here so that the vault is not opened and so that saving
+     * the guild does not replace the data stored for it with an inventory that is missing items.
      */
-    private final Map<Guild, Set<Integer>> unreadableVaults = new HashMap<>();
+    private final Map<Guild, Set<Integer>> damagedVaults = new HashMap<>();
 
     private final List<Player> opened = new ArrayList<>();
 
@@ -272,7 +273,7 @@ public class GuildHandler {
      */
     public void removeGuild(@NotNull Guild guild) {
         vaults.remove(guild);
-        unreadableVaults.remove(guild);
+        damagedVaults.remove(guild);
         guild.getMembers().forEach(member -> removeFromMemberCache(member.getUuid()));
         guilds.remove(guild.getId());
 
@@ -601,12 +602,15 @@ public class GuildHandler {
      * @param guild the guild for which to create the cache
      */
     private void createVaultCache(@NotNull final Guild guild) {
-        final Set<Integer> unreadable = new HashSet<>();
+        final Set<Integer> damaged = new HashSet<>();
         // Deserialize the vaults and add them to the list.
-        this.vaults.put(guild, buildVaultCache(guild, settingsManager, unreadable));
-        // Remember which of them could not be read, so that saving does not replace the stored
-        // data of those with the empty vault that took their place.
-        this.unreadableVaults.put(guild, unreadable);
+        this.vaults.put(guild, buildVaultCache(guild, settingsManager, damaged));
+        // Remember which of them could not be read in full, so that saving does not replace the
+        // stored data of those with an inventory that is missing items.
+        this.damagedVaults.put(guild, damaged);
+        if (!damaged.isEmpty()) {
+            backupGuildData(guild, damaged);
+        }
     }
 
     /**
@@ -617,29 +621,87 @@ public class GuildHandler {
      * it one place up. A player asking for vault 2 would then be served the contents of vault 3,
      * and the vault that could not be read would be written over by the one that could.
      *
+     * <p>A vault that was read but lost an item on the way is damaged as well. The item is still in
+     * the stored data and nowhere else, so that data is kept as it is and the vault is not opened.
+     *
      * @param guild the guild whose vaults are read
      * @param settingsManager the settings manager
-     * @param unreadable collects the positions of the vaults that could not be read
+     * @param damaged collects the positions of the vaults that could not be read in full
      * @return the cache, in the same order and of the same length as the stored vaults
      */
-    static List<Inventory> buildVaultCache(@NotNull final Guild guild, @NotNull final SettingsManager settingsManager, @NotNull final Set<Integer> unreadable) {
+    static List<Inventory> buildVaultCache(@NotNull final Guild guild, @NotNull final SettingsManager settingsManager, @NotNull final Set<Integer> damaged) {
         final List<String> stored = guild.getVaults();
         final List<Inventory> cache = new ArrayList<>(stored.size());
         for (int position = 0; position < stored.size(); position++) {
-            Inventory vault = null;
+            final Serialization.ReadResult read;
             try {
-                vault = Serialization.deserializeInventory(stored.get(position), settingsManager);
+                read = Serialization.readInventory(stored.get(position), settingsManager);
             } catch (Exception e) {
                 LoggingUtils.warn("Unable to read vault " + (position + 1) + " of guild " + guild.getId() + ".", e);
+                damaged.add(position);
+                cache.add(createEmptyVault(settingsManager));
+                continue;
             }
-            if (vault == null) {
-                unreadable.add(position);
-                LoggingUtils.warn("Vault " + (position + 1) + " of guild " + guild.getId() + " could not be read. It opens empty for now, and the data stored for it is left untouched until it can be read again.");
-                vault = createEmptyVault(settingsManager);
+            if (!read.isComplete()) {
+                damaged.add(position);
+                if (read.isReadable()) {
+                    LoggingUtils.severe("Vault " + (position + 1) + " of guild " + guild.getId() + " holds items that cannot be read on this server version: the item in slot "
+                            + String.join(", ", read.getUnreadableSlots()) + " was left out. The vault is not opened and the data stored for it is left untouched.");
+                } else {
+                    LoggingUtils.severe("Vault " + (position + 1) + " of guild " + guild.getId() + " could not be read. The vault is not opened and the data stored for it is left untouched.");
+                }
+                cache.add(createEmptyVault(settingsManager));
+                continue;
             }
-            cache.add(vault);
+            cache.add(read.getInventory());
         }
         return cache;
+    }
+
+    /**
+     * Copies the file a guild is stored in, when one of its vaults could not be read.
+     *
+     * <p>The file is the only copy of the data that could not be read. A copy is made before
+     * anything is written, so that the original is still there when the copy is taken. The file
+     * itself is left where it is.
+     *
+     * @param guild the guild whose file is copied
+     * @param damaged the positions of the vaults that could not be read in full
+     */
+    private void backupGuildData(@NotNull final Guild guild, @NotNull final Set<Integer> damaged) {
+        final String vaults = damaged.stream().sorted().map(position -> String.valueOf(position + 1)).collect(Collectors.joining(", "));
+        final File dataFolder = guildsPlugin.getDataFolder();
+        if (dataFolder == null) {
+            LoggingUtils.severe("The plugin has no data folder, so the data of guild " + guild.getId() + " could not be copied. Vault "
+                    + vaults + " could not be read and the data stored for them has been left untouched.");
+            return;
+        }
+        final File file = guildDataFile(guild);
+        final CorruptDataBackup.Result result = CorruptDataBackup.backup(dataFolder, file, "guilds");
+        if (result.isCreated()) {
+            LoggingUtils.severe("Vault " + vaults + " of guild " + guild.getId() + " could not be read. A copy of the guild file has been made at "
+                    + result.getBackupFile().getAbsolutePath() + ". The file itself has been left where it was.");
+        } else if (result.isSkipped()) {
+            LoggingUtils.warn("Vault " + vaults + " of guild " + guild.getId() + " could not be read. A copy of the guild file is already at "
+                    + result.getBackupFile().getAbsolutePath() + ".");
+        } else if (result.isFailed()) {
+            LoggingUtils.severe("Vault " + vaults + " of guild " + guild.getId() + " could not be read, and the guild file could not be copied: "
+                    + result.getFailure() + ". The file itself has been left where it was.");
+        }
+    }
+
+    /**
+     * The file a guild is stored in, when the guilds are stored in files.
+     *
+     * <p>This is the layout the JSON storage provider uses: one file per guild, named after the
+     * guild id, in the data folder under the plugin's folder. The storage providers own that
+     * layout, so this has to be kept in step with them.
+     *
+     * @param guild the guild
+     * @return the file the guild is stored in
+     */
+    private File guildDataFile(@NotNull final Guild guild) {
+        return new File(new File(guildsPlugin.getDataFolder(), "data"), guild.getId() + ".json");
     }
 
     /**
@@ -653,7 +715,7 @@ public class GuildHandler {
             return;
         }
         // Set the serialized inventory data to the guild's vaults list.
-        guild.setVaults(serializeVaultCache(guild, cached, this.unreadableVaults.getOrDefault(guild, Collections.emptySet())));
+        guild.setVaults(serializeVaultCache(guild, cached, this.damagedVaults.getOrDefault(guild, Collections.emptySet())));
     }
 
     /**
@@ -662,8 +724,8 @@ public class GuildHandler {
      * <p>Three things have to hold here, because the stored list is what the guild file holds and a
      * wrong entry there is an item somebody lost:
      * <ul>
-     *     <li>a vault that could not be read keeps the data it has, unless something has been put
-     *     into it since, so an unreadable entry is not replaced with an empty one;</li>
+     *     <li>a vault that could not be read in full keeps the data it has, so an entry with an
+     *     item missing from it is not replaced with an inventory that is missing that item;</li>
      *     <li>a stored vault the cache does not have is kept, so the list is never truncated;</li>
      *     <li>a vault the cache has and the stored list does not is added, because that is a vault
      *     a player has opened for the first time.</li>
@@ -671,25 +733,21 @@ public class GuildHandler {
      *
      * @param guild the guild whose vaults are written
      * @param cached the cached vaults
-     * @param unreadable the positions of the vaults that could not be read
+     * @param damaged the positions of the vaults that could not be read in full
      * @return the vaults to store
      */
-    static List<String> serializeVaultCache(@NotNull final Guild guild, @NotNull final List<Inventory> cached, @NotNull final Set<Integer> unreadable) {
+    static List<String> serializeVaultCache(@NotNull final Guild guild, @NotNull final List<Inventory> cached, @NotNull final Set<Integer> damaged) {
         final List<String> stored = guild.getVaults();
         final List<String> vaults = new ArrayList<>(cached.size());
         for (int position = 0; position < cached.size(); position++) {
-            final Inventory vault = cached.get(position);
-            if (unreadable.contains(position) && position < stored.size()) {
-                if (isEmpty(vault)) {
-                    // The stored data could not be read and nothing has been put into the vault
-                    // since, so keep what is stored rather than replacing it with an empty vault.
-                    vaults.add(stored.get(position));
-                    continue;
-                }
-                LoggingUtils.warn("Vault " + (position + 1) + " of guild " + guild.getId() + " could not be read earlier and is being replaced by what is in it now. The data that could not be read is lost.");
+            if (damaged.contains(position) && position < stored.size()) {
+                // The stored data could not be read in full and it is the only copy of the items
+                // that were left out, so it is kept exactly as it is.
+                vaults.add(stored.get(position));
+                continue;
             }
             try {
-                vaults.add(Serialization.serializeInventory(vault));
+                vaults.add(Serialization.serializeInventory(cached.get(position)));
             } catch (Exception e) {
                 LoggingUtils.warn("Unable to write vault " + (position + 1) + " of guild " + guild.getId() + ". The data stored for it is left untouched.", e);
                 vaults.add(position < stored.size() ? stored.get(position) : "");
@@ -702,29 +760,57 @@ public class GuildHandler {
     }
 
     /**
-     * Checks whether an inventory holds nothing.
-     *
-     * @param inventory the inventory
-     * @return true if every slot of the inventory is empty
-     */
-    private static boolean isEmpty(@NotNull final Inventory inventory) {
-        for (ItemStack item : inventory.getContents()) {
-            if (item != null) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
      * Get the inventory of a specified guild vault.
+     *
+     * <p>A vault whose stored data could not be read in full has no inventory to give: the items
+     * that were left out of it are still in the stored data, and an inventory without them looks
+     * complete to whoever is handed it.
      *
      * @param guild The guild which owns the vault.
      * @param vault The number of the vault to be opened.
-     * @return The inventory of the specified guild vault.
+     * @return The inventory of the specified guild vault, or null when there is none to open.
      */
     public Inventory getGuildVault(Guild guild, int vault) {
-        return vaults.get(guild).get(vault - 1);
+        final List<Inventory> cached = vaults.get(guild);
+        if (cached == null || vault < 1 || vault > cached.size()) {
+            return null;
+        }
+        if (isVaultDamaged(guild, vault)) {
+            return null;
+        }
+        return cached.get(vault - 1);
+    }
+
+    /**
+     * Get the inventory of a specified guild vault, and tell the player when there is none.
+     *
+     * @param guild The guild which owns the vault.
+     * @param player The player who wants to open the vault.
+     * @param vault The number of the vault to be opened.
+     * @return The inventory of the specified guild vault, or null when it cannot be opened.
+     */
+    public Inventory getGuildVault(Guild guild, Player player, int vault) {
+        final Inventory inventory = getGuildVault(guild, vault);
+        if (inventory == null && isVaultDamaged(guild, vault)) {
+            guildsPlugin.getCommandManager().getCommandIssuer(player)
+                    .sendInfo(Messages.VAULTS__UNREADABLE, "{number}", String.valueOf(vault));
+        }
+        return inventory;
+    }
+
+    /**
+     * Whether a vault of a guild holds data the plugin could not read.
+     *
+     * <p>Such a vault is not opened. The items that could not be read are still in the stored data,
+     * and the stored data is the only copy of them.
+     *
+     * @param guild The guild which owns the vault.
+     * @param vault The number of the vault.
+     * @return true when the vault cannot be opened.
+     */
+    public boolean isVaultDamaged(Guild guild, int vault) {
+        final Set<Integer> damaged = this.damagedVaults.get(guild);
+        return damaged != null && damaged.contains(vault - 1);
     }
 
     /**

@@ -301,6 +301,7 @@ codes:
 vaults:
   maxed: "&cYou can't open this vault because you already have the max amount of vaults for your Guild Tier!"
   blacklisted: "&cYou can't put that item in your Guild Vault because it is blacklisted!"
+  unreadable: "&cVault #{number} cannot be opened because its contents cannot be read on this server version. The data stored for it has been left untouched, please contact an administrator."
 languages:
   set: "&aYou've successfully set your language to {language}"
   warning: "&cYou are about to update all the language files. This will delete all current language files and recreate them. Type /guilds confirm to continue, type /guilds cancel to cancel."

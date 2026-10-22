@@ -34,6 +34,10 @@ class VaultGUI(private val guilds: Guilds, private val settingsManager: Settings
     /**
      * Opens a specific guild vault, creating any missing cached vaults up to that number.
      *
+     * A vault whose stored data could not be read is not opened. The items that were left out of
+     * it are still in the stored data, and the stored data is the only copy of them, so the vault
+     * stays closed and the player is told why.
+     *
      * @param guild the guild that owns the vault
      * @param player the player opening the vault
      * @param vaultNumber the one-based vault number
@@ -49,7 +53,8 @@ class VaultGUI(private val guilds: Guilds, private val settingsManager: Settings
             vaults.add(guildHandler.createNewVault(settingsManager))
         }
 
-        player.openInventory(guildHandler.getGuildVault(guild, vaultNumber))
+        val vault = guildHandler.getGuildVault(guild, player, vaultNumber) ?: return false
+        player.openInventory(vault)
         guildHandler.opened.add(player)
         return true
     }

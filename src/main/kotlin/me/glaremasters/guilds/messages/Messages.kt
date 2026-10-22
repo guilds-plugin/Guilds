@@ -217,6 +217,7 @@ enum class Messages : MessageKeyProvider {
 
     VAULTS__MAXED,
     VAULTS__BLACKLISTED,
+    VAULTS__UNREADABLE,
 
     LANGUAGES__SET,
 

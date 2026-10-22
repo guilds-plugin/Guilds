@@ -11,8 +11,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -25,6 +28,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * can be edited, truncated or left behind by a server version whose items no longer exist. Reading
  * it is therefore the one place in the vault code that has to assume the data is broken: a single
  * bad entry must not take the rest of the vault, or the rest of the guild, down with it.
+ *
+ * <p>An item that cannot be read is still in the document, and the document is the only copy of it.
+ * The read therefore reports which items it could not reconstruct, and no half-read inventory is
+ * handed out through {@link Serialization#deserializeInventory(String, SettingsManager)}: an
+ * inventory with a hole in it looks complete to whoever holds it, and writing it back loses the
+ * item that is missing.
  */
 class SerializationTest {
 
@@ -103,70 +112,77 @@ class SerializationTest {
     }
 
     @Test
-    @DisplayName("a slot key that is not a number is skipped")
+    @DisplayName("a slot key that is not a number is reported as an item that could not be read")
     void malformedSlotKey() throws Exception {
         final String stored = document("\"first\":" + item(Material.STONE), "\"0\":" + item(Material.DIRT));
 
-        final Inventory read = assertDoesNotThrow(() -> Serialization.deserializeInventory(stored, settingsManager),
+        final Serialization.ReadResult read = assertDoesNotThrow(() -> Serialization.readInventory(stored, settingsManager),
                 "a slot key that is not a number must not take the vault down");
 
-        assertNotNull(read);
-        assertEquals(Material.DIRT, read.getItem(0).getType(), "the item in a valid slot still has to be there");
-        assertNull(read.getItem(1));
+        assertTrue(read.isReadable(), "the rest of the vault still has to be read");
+        assertFalse(read.isComplete(), "the read has to report that an item was left out");
+        assertEquals(Arrays.asList("first"), read.getUnreadableSlots());
+        assertEquals(Material.DIRT, read.getInventory().getItem(0).getType(), "the item in a valid slot still has to be there");
+        assertNull(Serialization.deserializeInventory(stored, settingsManager),
+                "an inventory with an item missing from it must not be handed out");
     }
 
     @Test
-    @DisplayName("a slot outside the inventory is skipped")
+    @DisplayName("a slot outside the inventory is reported as an item that could not be read")
     void slotOutsideTheInventory() throws Exception {
         final String stored = document("\"0\":" + item(Material.STONE), "\"999\":" + item(Material.DIRT));
 
-        final Inventory read = assertDoesNotThrow(() -> Serialization.deserializeInventory(stored, settingsManager),
+        final Serialization.ReadResult read = assertDoesNotThrow(() -> Serialization.readInventory(stored, settingsManager),
                 "a slot outside the inventory must not take the vault down");
 
-        assertNotNull(read);
-        assertEquals(Material.STONE, read.getItem(0).getType());
-        assertNull(read.getItem(1));
+        assertFalse(read.isComplete(), "the read has to report that an item was left out");
+        assertEquals(Arrays.asList("999"), read.getUnreadableSlots());
+        assertEquals(Material.STONE, read.getInventory().getItem(0).getType());
     }
 
     @Test
-    @DisplayName("a value that is not an item is skipped")
+    @DisplayName("a value that is not an item is reported as an item that could not be read")
     void valueThatIsNotAnItem() throws Exception {
         final String stored = document("\"0\":" + item(Material.STONE), "\"1\":\"not an item\"");
 
-        final Inventory read = assertDoesNotThrow(() -> Serialization.deserializeInventory(stored, settingsManager),
+        final Serialization.ReadResult read = assertDoesNotThrow(() -> Serialization.readInventory(stored, settingsManager),
                 "a value that is not an item must not take the vault down");
 
-        assertNotNull(read);
-        assertEquals(Material.STONE, read.getItem(0).getType());
-        assertNull(read.getItem(1));
+        assertFalse(read.isComplete(), "the read has to report that an item was left out");
+        assertEquals(Arrays.asList("1"), read.getUnreadableSlots());
+        assertEquals(Material.STONE, read.getInventory().getItem(0).getType());
     }
 
     @Test
-    @DisplayName("an item whose material does not exist on this server is skipped")
+    @DisplayName("an item whose material does not exist on this server is reported as an item that could not be read")
     void itemWithAnUnknownMaterial() throws Exception {
         final String stored = document("\"0\":" + item(Material.STONE),
                 "\"1\":{\"==\":\"org.bukkit.inventory.ItemStack\",\"v\":3465,\"type\":\"WOOD\"}");
 
-        final Inventory read = assertDoesNotThrow(() -> Serialization.deserializeInventory(stored, settingsManager),
+        final Serialization.ReadResult read = assertDoesNotThrow(() -> Serialization.readInventory(stored, settingsManager),
                 "an item that cannot exist on this server must not take the vault down");
 
-        assertNotNull(read, "the vault still has to open, with the items that can be read");
-        assertEquals(Material.STONE, read.getItem(0).getType());
-        assertNull(read.getItem(1));
+        assertTrue(read.isReadable(), "the vault still has to open, with the items that can be read");
+        assertFalse(read.isComplete(), "the read has to report that an item was left out");
+        assertEquals(Arrays.asList("1"), read.getUnreadableSlots());
+        assertEquals(Material.STONE, read.getInventory().getItem(0).getType());
+        assertNull(read.getInventory().getItem(1));
+        assertNull(Serialization.deserializeInventory(stored, settingsManager),
+                "an inventory with an item missing from it must not be handed out");
     }
 
     @Test
     @DisplayName("an item with meta that cannot be read does not take the vault down")
-    void itemWithUnreadableMeta() {
+    void itemWithUnreadableMeta() throws Exception {
         final String stored = document("\"0\":" + item(Material.STONE),
                 "\"1\":{\"==\":\"org.bukkit.inventory.ItemStack\",\"v\":3465,\"type\":\"DIRT\","
                         + "\"meta\":{\"==\":\"org.bukkit.inventory.meta.ItemMeta\",\"display\":{\"raw\":\"hello\"}}}");
 
-        final Inventory read = assertDoesNotThrow(() -> Serialization.deserializeInventory(stored, settingsManager),
+        final Serialization.ReadResult read = assertDoesNotThrow(() -> Serialization.readInventory(stored, settingsManager),
                 "an item whose meta cannot be read must not take the vault down");
 
         assertNotNull(read, "the vault still has to open");
-        assertEquals(Material.STONE, read.getItem(0).getType(), "the other items are still there");
+        assertEquals(Material.STONE, read.getInventory().getItem(0).getType(), "the other items are still there");
     }
 
     @Test
@@ -175,11 +191,17 @@ class SerializationTest {
         assertNull(Serialization.deserializeInventory("this is not a vault", settingsManager));
         assertNull(Serialization.deserializeInventory("", settingsManager));
         assertNull(Serialization.deserializeInventory(null, settingsManager));
+
+        final Serialization.ReadResult read = Serialization.readInventory("this is not a vault", settingsManager);
+        assertFalse(read.isReadable(), "a document that is not a document cannot be read");
+        assertNull(read.getInventory());
+        assertTrue(read.getUnreadableSlots().isEmpty());
     }
 
     @Test
     @DisplayName("a document without an items section is reported as unreadable")
     void documentWithoutItems() throws Exception {
         assertNull(Serialization.deserializeInventory("{\"size\":54}", settingsManager));
+        assertFalse(Serialization.readInventory("{\"size\":54}", settingsManager).isReadable());
     }
 }
