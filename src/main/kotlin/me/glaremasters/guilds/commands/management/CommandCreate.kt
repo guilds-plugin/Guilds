@@ -134,8 +134,15 @@ internal class CommandCreate : BaseCommand() {
                     return
                 }
 
+                // The guild is only created once the money is actually gone. The other way round, a
+                // provider that refuses the withdrawal still leaves the player with a guild they
+                // did not pay for.
+                if (!EconomyUtils.withdraw(currentCommandIssuer, economy, player, cost)) {
+                    actionHandler.removeAction(player)
+                    return
+                }
+
                 guildHandler.addGuild(guild)
-                economy.withdrawPlayer(player, cost)
                 currentCommandIssuer.sendInfo(Messages.CREATE__SUCCESSFUL, "{guild}", guild.name)
 
                 guildHandler.addToMemberCache(player.uniqueId, guild.id)

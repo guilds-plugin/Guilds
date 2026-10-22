@@ -74,7 +74,13 @@ internal class CommandBank : BaseCommand() {
             return
         }
 
-        economy.withdrawPlayer(player, rounded)
+        // The money has to be out of the player's account before the bank is credited. The other
+        // way round, a provider that refuses the withdrawal leaves the player where they were and
+        // the bank holding money that nobody paid for.
+        if (!EconomyUtils.withdraw(currentCommandIssuer, economy, player, rounded)) {
+            return
+        }
+
         guild.balance = total
         guild.sendMessage(currentCommandManager, Messages.BANK__DEPOSIT_SUCCESS, "{player}", player.name,
                 "{amount}", EconomyUtils.format(rounded), "{total}", EconomyUtils.format(guild.balance))
@@ -106,8 +112,14 @@ internal class CommandBank : BaseCommand() {
             return
         }
 
+        // The money has to be in the player's account before the bank is debited. The other way
+        // round, a provider that refuses the deposit leaves the player where they were and the
+        // bank holding money that nobody received.
+        if (!EconomyUtils.deposit(currentCommandIssuer, economy, player, rounded)) {
+            return
+        }
+
         guild.balance = bal - rounded
-        economy.depositPlayer(player, rounded)
         guild.sendMessage(currentCommandManager, Messages.BANK__WITHDRAWAL_SUCCESS, "{player}", player.name,
                 "{amount}", EconomyUtils.format(rounded), "{total}", EconomyUtils.format(guild.balance))
     }
