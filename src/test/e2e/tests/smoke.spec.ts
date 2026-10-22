@@ -20,7 +20,7 @@ import { stripColors } from '../plugins/support/text.js';
 /** The plugins Guilds refuses to start without, as they appear in the server log. */
 const REQUIRED_PLUGINS = ['Vault', 'Essentials', 'LuckPerms'] as const;
 
-test('Guilds and its hard dependencies are enabled', async ({ server }) => {
+test('Guilds and its dependencies are up', async ({ server }) => {
     const log = server.session.consoleLog.slice().join('\n');
 
     for (const plugin of REQUIRED_PLUGINS) {
@@ -33,7 +33,7 @@ test('Guilds and its hard dependencies are enabled', async ({ server }) => {
     expect(log).not.toContain('Disabling Guilds');
 });
 
-test('the economy and permission providers Vault needs are registered', async ({ server }) => {
+test('Vault has both an economy and a permission provider', async ({ server }) => {
     const vaults = stripColors(await server.execute('vault-info'));
 
     expect(vaults).toContain('Economy:');
